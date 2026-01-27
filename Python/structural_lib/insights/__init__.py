@@ -39,14 +39,17 @@ from .smart_designer import (
     SmartDesigner,
     quick_analysis,
 )
+from .wrappers import code_checks_live, generate_dashboard
 
 __all__ = [
     "calculate_constructability_score",
     "calculate_robustness",
     "compare_designs",
     "cost_aware_sensitivity",
+    "code_checks_live",
     "quick_analysis",
     "quick_precheck",
+    "generate_dashboard",
     "sensitivity_analysis",
     "optimize_beam_design",
     "suggest_improvements",

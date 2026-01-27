@@ -4,12 +4,14 @@
 
 from __future__ import annotations
 
+import math
 import time
 from dataclasses import dataclass
 
 from structural_lib import flexure
 from structural_lib.costing import CostBreakdown, CostProfile, calculate_beam_cost
 from structural_lib.data_types import FlexureResult
+from structural_lib.rebar_optimizer import optimize_bar_arrangement
 
 
 @dataclass
@@ -261,6 +263,85 @@ def optimize_beam_cost(
         candidates_valid=valid,
         computation_time_sec=round(computation_time, 3),
     )
+
+
+def suggest_rebar_options(
+    *,
+    ast_required_mm2: float,
+    b_mm: float,
+    cover_mm: float,
+    stirrup_dia_mm: float = 8.0,
+    allowed_dia_mm: list[float] | None = None,
+    max_layers: int = 2,
+    agg_size_mm: float = 20.0,
+    min_total_bars: int = 2,
+    max_bars_per_layer: int | None = None,
+) -> dict[str, object]:
+    """Suggest feasible bar arrangements using deterministic optimizer."""
+    objectives = ["min_area", "min_bar_count", "max_spacing"]
+    suggestions: list[dict[str, object]] = []
+    seen: set[tuple[int, float, int]] = set()
+
+    def _sanitize(value: object) -> object:
+        if isinstance(value, float):
+            if math.isinf(value) or math.isnan(value):
+                return None
+            return value
+        if isinstance(value, list):
+            return [_sanitize(v) for v in value]
+        if isinstance(value, dict):
+            return {k: _sanitize(v) for k, v in value.items()}
+        return value
+
+    for objective in objectives:
+        result = optimize_bar_arrangement(
+            ast_required_mm2=ast_required_mm2,
+            b_mm=b_mm,
+            cover_mm=cover_mm,
+            stirrup_dia_mm=stirrup_dia_mm,
+            allowed_dia_mm=allowed_dia_mm,
+            max_layers=max_layers,
+            objective=objective,  # type: ignore[arg-type]
+            agg_size_mm=agg_size_mm,
+            min_total_bars=min_total_bars,
+            max_bars_per_layer=max_bars_per_layer,
+        )
+
+        arrangement = result.arrangement
+        if not result.is_feasible or arrangement is None:
+            continue
+
+        key = (arrangement.count, float(arrangement.diameter), arrangement.layers)
+        if key in seen:
+            continue
+        seen.add(key)
+
+        spacing_val = (
+            arrangement.spacing if math.isfinite(arrangement.spacing) else None
+        )
+
+        suggestions.append(
+            {
+                "objective": objective,
+                "count": arrangement.count,
+                "diameter": arrangement.diameter,
+                "layers": arrangement.layers,
+                "area_provided": arrangement.area_provided,
+                "spacing": spacing_val,
+                "remarks": result.remarks,
+                "checks": _sanitize(result.checks),
+            }
+        )
+
+    return {
+        "success": len(suggestions) > 0,
+        "message": (
+            f"Generated {len(suggestions)} rebar arrangement(s)"
+            if suggestions
+            else "No feasible rebar arrangement found"
+        ),
+        "suggestions": suggestions,
+    }
 
 
 def _quick_feasibility(b: float, d: float, mu_knm: float, span_mm: float) -> bool:

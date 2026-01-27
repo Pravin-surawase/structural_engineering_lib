@@ -64,6 +64,7 @@ __all__ = [
     "Beam3DGeometry",
     "BuildingBeam3D",
     "Building3DGeometry",
+    "CrossSectionGeometry",
     # Computation functions
     "compute_rebar_positions",
     "compute_stirrup_path",
@@ -71,6 +72,7 @@ __all__ = [
     "compute_beam_outline",
     "beam_to_3d_geometry",
     "building_to_3d_geometry",
+    "cross_section_geometry",
 ]
 
 
@@ -389,6 +391,31 @@ class Building3DGeometry:
         }
 
 
+@dataclass
+class CrossSectionGeometry:
+    """Cross-section geometry for editor previews."""
+
+    width_mm: float
+    depth_mm: float
+    cover_mm: float
+    outline: list[Point3D]
+    stirrup: list[Point3D]
+    bars: list[Point3D]
+    metadata: dict = field(default_factory=dict)
+
+    def to_dict(self) -> dict:
+        return {
+            "width_mm": self.width_mm,
+            "depth_mm": self.depth_mm,
+            "cover_mm": self.cover_mm,
+            "outline": [pt.to_dict() for pt in self.outline],
+            "stirrup": [pt.to_dict() for pt in self.stirrup],
+            "bars": [pt.to_dict() for pt in self.bars],
+            "metadata": self.metadata,
+            "version": "1.0.0",
+        }
+
+
 # =============================================================================
 # Coordinate Computation Functions
 # =============================================================================
@@ -474,6 +501,69 @@ def building_to_3d_geometry(
         metadata={
             "unitScale": unit_scale,
             "beamCount": len(beam_list),
+        },
+    )
+
+
+def cross_section_geometry(
+    *,
+    beam_width: float,
+    beam_depth: float,
+    cover: float,
+    bar_count: int,
+    bar_dia: float,
+    stirrup_dia: float,
+    is_top: bool = False,
+    layers: int = 1,
+) -> CrossSectionGeometry:
+    """Generate cross-section geometry (outline, stirrup, bars).
+
+    Coordinates follow the same convention as compute_rebar_positions:
+    - y spans width (center at 0)
+    - z spans depth (0 at soffit)
+    - x is fixed at 0 for a cross-section slice
+    """
+    outline = [
+        Point3D(0.0, -beam_width / 2, 0.0),
+        Point3D(0.0, beam_width / 2, 0.0),
+        Point3D(0.0, beam_width / 2, beam_depth),
+        Point3D(0.0, -beam_width / 2, beam_depth),
+        Point3D(0.0, -beam_width / 2, 0.0),
+    ]
+
+    stirrup_path = compute_stirrup_path(
+        beam_width=beam_width,
+        beam_depth=beam_depth,
+        cover=cover,
+        stirrup_dia=stirrup_dia,
+        position_x=0.0,
+        legs=2,
+    )
+
+    bar_positions = compute_rebar_positions(
+        beam_width=beam_width,
+        beam_depth=beam_depth,
+        cover=cover,
+        bar_count=bar_count,
+        bar_dia=bar_dia,
+        stirrup_dia=stirrup_dia,
+        is_top=is_top,
+        layers=layers,
+    )
+
+    return CrossSectionGeometry(
+        width_mm=beam_width,
+        depth_mm=beam_depth,
+        cover_mm=cover,
+        outline=outline,
+        stirrup=stirrup_path,
+        bars=bar_positions,
+        metadata={
+            "barCount": bar_count,
+            "barDia": bar_dia,
+            "stirrupDia": stirrup_dia,
+            "layers": layers,
+            "isTop": is_top,
         },
     )
 

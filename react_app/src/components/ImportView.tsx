@@ -8,6 +8,7 @@ import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { loadSampleData } from "../api/client";
 import { mapSampleBeamsToRows } from "../utils/sampleData";
 import { applyMaterialOverrides } from "../utils/materialOverrides";
+import { useDualCSVImport } from "../hooks/useCSVImport";
 
 interface ImportViewProps {
   onBack: () => void;
@@ -18,8 +19,21 @@ export function ImportView({ onBack, onImportComplete }: ImportViewProps) {
   const [fck, setFck] = useState(25);
   const [fy, setFy] = useState(500);
   const [cover, setCover] = useState(40);
-  const { beams, isImporting, error, setBeams, setError, setImporting } = useImportedBeamsStore();
+  const [geometryFile, setGeometryFile] = useState<File | null>(null);
+  const [forcesFile, setForcesFile] = useState<File | null>(null);
+  const {
+    beams,
+    isImporting,
+    error,
+    warnings,
+    unmatchedBeams,
+    unmatchedForces,
+    setBeams,
+    setError,
+    setImporting,
+  } = useImportedBeamsStore();
   const materialOverrides = { fck, fy, cover };
+  const dualImport = useDualCSVImport();
 
   const handleLoadSample = async () => {
     setImporting(true);
@@ -109,6 +123,70 @@ export function ImportView({ onBack, onImportComplete }: ImportViewProps) {
                 <Play className="w-4 h-4" />
                 View 3D Model
               </button>
+            </div>
+          )}
+
+          {/* Dual CSV Import */}
+          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-white font-medium">Dual CSV Import</p>
+                <p className="text-xs text-white/50">
+                  Upload geometry + forces as separate files
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  if (!geometryFile || !forcesFile) {
+                    setError("Please select both geometry and forces CSV files");
+                    return;
+                  }
+                  dualImport.importFiles(geometryFile, forcesFile, "auto", materialOverrides);
+                }}
+                disabled={isImporting || dualImport.isImporting}
+                className="px-4 py-2 text-sm font-medium text-white bg-purple-600 hover:bg-purple-500 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+              >
+                <Upload className="w-4 h-4" />
+                Import Dual CSV
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <label className="block text-xs text-white/60">
+                Geometry CSV
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={(e) => setGeometryFile(e.target.files?.[0] || null)}
+                  className="mt-2 block w-full text-xs text-white/70 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-2 file:text-xs file:text-white"
+                />
+              </label>
+              <label className="block text-xs text-white/60">
+                Forces CSV
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={(e) => setForcesFile(e.target.files?.[0] || null)}
+                  className="mt-2 block w-full text-xs text-white/70 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-2 file:text-xs file:text-white"
+                />
+              </label>
+            </div>
+          </div>
+
+          {(warnings.length > 0 || unmatchedBeams.length > 0 || unmatchedForces.length > 0) && (
+            <div className="mt-6 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
+              <p className="text-yellow-300 font-medium mb-2">Import Warnings</p>
+              <ul className="text-xs text-yellow-200/80 space-y-1">
+                {warnings.map((warning, idx) => (
+                  <li key={`warn-${idx}`}>• {warning}</li>
+                ))}
+                {unmatchedBeams.length > 0 && (
+                  <li>• {unmatchedBeams.length} beams missing forces</li>
+                )}
+                {unmatchedForces.length > 0 && (
+                  <li>• {unmatchedForces.length} forces missing geometry</li>
+                )}
+              </ul>
             </div>
           )}
 

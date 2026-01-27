@@ -58,18 +58,23 @@ We already have a strong library core (design, adapters, smart analysis, 3D sing
 
 1. **`building_to_3d_geometry`** — Implemented in `Python/structural_lib/visualization/geometry_3d.py`
 2. **`design_beams_iter`** — Implemented in `Python/structural_lib/batch.py` and used by SSE
-3. **`validate_rebar_config`** — Implemented in `Python/structural_lib/rebar.py`
+3. **`validate_rebar_config` + `apply_rebar_config`** — Implemented in `Python/structural_lib/rebar.py`
+4. **`cross_section_geometry`** — Implemented in `Python/structural_lib/visualization/geometry_3d.py`
+5. **FastAPI endpoints** — `/api/v1/geometry/building`, `/api/v1/geometry/cross-section`, `/api/v1/rebar/validate`, `/api/v1/rebar/apply`
+6. **Insights wrappers + endpoints** — `generate_dashboard`, `code_checks_live`, `suggest_rebar_options` + `/api/v1/insights/*`
+7. **React hooks** — `useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`, `useRebarApply`, `useDashboardInsights`, `useCodeChecks`, `useRebarSuggestions`
+8. **Dual CSV UI wiring + warnings panel** — Import UI now calls dual CSV and surfaces warnings.
 
-### ⏳ Remaining Gaps (Still Open)
+### ⏳ Remaining Gaps (UI Integration)
 
-1. **FastAPI** building geometry endpoint (`/api/v1/geometry/building`) + React hook
-2. **FastAPI** rebar validate/apply endpoints (`/api/v1/rebar/validate`, `/api/v1/rebar/apply`)
-3. **Library** cross-section geometry helper (`geometry_3d.cross_section_geometry`)
-4. **Insights** dashboard + live code checks wrappers
+1. Wire editor mode to **rebar validation/apply** + **cross-section preview** hooks.
+2. Wire 3D building view to **focus/zoom** on the active beam row.
+3. Add **dashboard/code-checks/optimizer** panels to the React editor.
+4. Add **SSE stream ordering** integration test.
 
 ### Verdict
 
-**The previous agent's verification was accurate at the time.** The three gaps above are now resolved; remaining gaps are listed for Phase 2–3 work.
+**The previous agent's verification was accurate at the time.** All listed backend gaps are now resolved; remaining gaps are React editor integration and a streaming test.
 
 ---
 
@@ -92,29 +97,34 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 ## Progress Update (Jan 27, 2026)
 
-**Phase 1 (Complete, UI wiring pending)**
+**Phase 1 (Complete)**
 - ✅ FastAPI import + batch endpoints exist (`/api/v1/import/csv`, `/api/v1/import/batch-design`).
 - ✅ SSE batch streaming endpoint exists (`/stream/batch-design`) and uses `design_beams_iter`.
 - ✅ Library dual‑CSV wrapper added: `structural_lib.imports.parse_dual_csv` + validation helpers.
 - ✅ Library batch generator + batch helper added: `structural_lib.batch.design_beams_iter` / `design_beams`.
 - ✅ FastAPI dual CSV endpoint added (`/api/v1/import/dual-csv`).
 - ✅ React hook added (`useDualCSVImport`).
-- ⏳ React import UI still needs to call dual CSV + show warnings panel.
+- ✅ React import UI now calls dual CSV + shows warnings panel.
 
-**Phase 2 (Partial)**
+**Phase 2 (Complete backend + hooks; UI integration pending)**
 - ✅ React building frame visualization exists (3D frame from import data).
 - ✅ Full single‑beam geometry endpoint exists (`/api/v1/geometry/beam/full`).
 - ✅ Library building geometry added (`building_to_3d_geometry`).
+- ✅ Library cross-section geometry added (`cross_section_geometry`).
 - ✅ Rebar validation/apply helpers added (`validate_rebar_config`, `apply_rebar_config`).
+- ✅ FastAPI endpoints added (`/api/v1/geometry/building`, `/api/v1/geometry/cross-section`, `/api/v1/rebar/*`).
+- ✅ React hooks added (`useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`, `useRebarApply`).
+- ⏳ Editor UI integration: live rebar preview + cross-section update + focus/zoom.
 
-**Phase 3 (Not Started)**
-- ⏳ Dashboard wrapper + live code checks + rebar suggestions (library + API + React).
-
-**Commit:** `6ee623f` — feat: add dual-csv import + building geometry + rebar helpers
+**Phase 3 (Complete backend + hooks; UI integration pending)**
+- ✅ Library wrappers: `generate_dashboard`, `code_checks_live`, `suggest_rebar_options`.
+- ✅ FastAPI endpoints: `/api/v1/insights/dashboard`, `/api/v1/insights/code-checks`, `/api/v1/optimization/rebar/suggest`.
+- ✅ React hooks: `useDashboardInsights`, `useCodeChecks`, `useRebarSuggestions`.
+- ⏳ React editor panels for dashboard/code checks/optimizer.
 
 ### Phase 1 — Canonical Inputs + Batch Foundations (Weeks 4–5)
 
-**Status:** ✅ Complete (library + API), ⏳ UI wiring pending (commit `6ee623f`)
+**Status:** ✅ Complete (library + API + UI wiring)
 
 **Goal:** Clean, repeatable import + design flows that React can trust.
 
@@ -133,8 +143,8 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 **React Tasks**
 1. ✅ Add `useDualCSVImport` hook for geometry + forces
-2. ⏳ Update import UI to call dual CSV endpoint (geometry + forces)
-3. ⏳ Render import warnings inline; do not block UI on warnings
+2. ✅ Update import UI to call dual CSV endpoint (geometry + forces)
+3. ✅ Render import warnings inline; do not block UI on warnings
 
 **Quality + Automation**
 - ✅ Unit tests for import/merge edge cases
@@ -149,21 +159,22 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 **Library Tasks**
 1. ✅ `structural_lib.geometry_3d.building_to_3d_geometry(models, lod="auto")`
-2. ⏳ `structural_lib.geometry_3d.cross_section_geometry(beam, rebar_config)`
+2. ✅ `structural_lib.geometry_3d.cross_section_geometry(beam, rebar_config)`
 3. ✅ `structural_lib.rebar.validate_rebar_config(beam, config)`
 4. ✅ `structural_lib.rebar.apply_rebar_config(beam, config)` (returns updated design + geometry)
 
 **FastAPI Tasks**
-1. ⏳ `POST /api/v1/geometry/building` (returns instancing-ready meshes)
-2. ⏳ `POST /api/v1/geometry/cross-section`
-3. ⏳ `POST /api/v1/rebar/validate` + `POST /api/v1/rebar/apply`
+1. ✅ `POST /api/v1/geometry/building` (returns instancing-ready meshes)
+2. ✅ `POST /api/v1/geometry/cross-section`
+3. ✅ `POST /api/v1/rebar/validate` + `POST /api/v1/rebar/apply`
 
 **React Tasks**
 1. ✅ Building frame visualization exists (import-driven)
-2. ⏳ Building view: new `useBuildingGeometry` hook with LOD controls
-3. ⏳ Editor mode: live rebar validation + cross-section update
-4. ⏳ Dynamic focus: when editing beam row, 3D view filters + zooms to beam
-5. ✅ `ConnectionStatus` + `useLiveDesign` already available for live updates
+2. ✅ Building view: new `useBuildingGeometry` hook with LOD controls
+3. ✅ Add `useCrossSectionGeometry`, `useRebarValidation`, `useRebarApply`
+4. ⏳ Editor mode: live rebar validation + cross-section update
+5. ⏳ Dynamic focus: when editing beam row, 3D view filters + zooms to beam
+6. ✅ `ConnectionStatus` + `useLiveDesign` already available for live updates
 
 **Quality + Automation**
 - Snapshot tests for geometry schema (single + building)
@@ -177,21 +188,22 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 **Goal:** Engineer-first full-page editor with real-time IS-code pass/fail and optimizer insights.
 
 **Library Tasks**
-1. `structural_lib.insights.generate_dashboard(design_result)` (wrapper)
-2. `structural_lib.insights.code_checks_live(beam, config)` (fast pass/fail)
-3. `structural_lib.optimization.suggest_rebar_options(beam, targets)`
+1. ✅ `structural_lib.insights.generate_dashboard(design_result)` (wrapper)
+2. ✅ `structural_lib.insights.code_checks_live(beam, config)` (fast pass/fail)
+3. ✅ `structural_lib.optimization.suggest_rebar_options(beam, targets)`
 4. Optional: `structural_lib.export.to_bbs/to_dxf` unified wrappers (UI-ready)
 
 **FastAPI Tasks**
-1. `POST /api/v1/insights/dashboard`
-2. `POST /api/v1/insights/code-checks`
-3. `POST /api/v1/optimization/rebar-suggest`
+1. ✅ `POST /api/v1/insights/dashboard`
+2. ✅ `POST /api/v1/insights/code-checks`
+3. ✅ `POST /api/v1/optimization/rebar/suggest`
 
 **React Tasks**
-1. Full-page editor layout: 3D view on top + grid editor below
-2. Live IS-code status (pass/fail + actionable warnings)
-3. Optimizer suggestions panel with “Apply” workflow
-4. Export buttons for BBS/DXF + audit/cert links
+1. ✅ Add hooks: `useDashboardInsights`, `useCodeChecks`, `useRebarSuggestions`
+2. ⏳ Full-page editor layout: 3D view on top + grid editor below
+3. ⏳ Live IS-code status (pass/fail + actionable warnings)
+4. ⏳ Optimizer suggestions panel with “Apply” workflow
+5. ⏳ Export buttons for BBS/DXF + audit/cert links
 
 **Quality + Automation**
 - SSE/WebSocket latency budget (<150ms)
@@ -206,18 +218,18 @@ This section mirrors **# V3 React Migration Roadmap (7-Week Plan)** and explains
 
 ### Phase 4 (Week 5) — Live Design + Streaming
 - **Use existing hooks:** `useLiveDesign`, `useBeamGeometry`, `useCSVFileImport`, `useDualCSVImport`.
-- **UI task:** wire dual CSV import into the ImportView and surface warnings panel.
+- ✅ **Completed:** dual CSV import wired into ImportView with warnings panel.
 - **Error policy:** show parse warnings in a non-blocking panel; hard errors block only when no beams are parsed.
 - **Debug:** log request IDs + beam IDs; include error trace in dev console.
 
 ### Phase 5 (Week 6) — Building 3D + Editor
-- **Add hooks:** `useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`.
-- **Use library:** `building_to_3d_geometry`, `cross_section_geometry`, `validate_rebar_config`.
+- ✅ **Hooks added:** `useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`, `useRebarApply`.
+- **Use library:** `building_to_3d_geometry`, `cross_section_geometry`, `validate_rebar_config`, `apply_rebar_config`.
 - **UX behavior:** editing a beam row focuses 3D, filters others, updates cross-section and rebar hints.
 - **Error policy:** invalid rebar configs show inline warnings and disable “Apply”, but keep editor editable.
 
 ### Phase 6 (Week 7) — Intelligent UX + Optimizer
-- **Add hooks:** `useDashboardInsights`, `useRebarSuggestions`.
+- ✅ **Hooks added:** `useDashboardInsights`, `useCodeChecks`, `useRebarSuggestions`.
 - **Use library:** SmartDesigner + `generate_dashboard`, `suggest_rebar_options`.
 - **Debug:** include a “why failed” drawer with code clause references + link to calculation report.
 - **Error policy:** missing optimization results degrade gracefully to “manual edit” mode.
@@ -242,12 +254,10 @@ This section mirrors **# V3 React Migration Roadmap (7-Week Plan)** and explains
 
 ## Implementation Checklist (Next Up)
 
-1. Add FastAPI endpoints: `/api/v1/geometry/building`, `/api/v1/geometry/cross-section`.
-2. Add FastAPI endpoints: `/api/v1/rebar/validate`, `/api/v1/rebar/apply`.
-3. Implement `geometry_3d.cross_section_geometry` in library.
-4. Wire Import UI to dual CSV + warnings panel (use `useDualCSVImport`).
-5. Add React hooks: `useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`.
-6. Add integration test for SSE stream ordering.
+1. Wire editor mode to `useRebarValidation` + `useRebarApply` + `useCrossSectionGeometry`.
+2. Implement 3D focus/zoom on active beam row (filters + camera targeting).
+3. Add React panels for dashboard/code-checks/optimizer suggestions.
+4. Add integration test for SSE stream ordering.
 
 ---
 

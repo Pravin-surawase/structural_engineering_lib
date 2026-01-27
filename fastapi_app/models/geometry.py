@@ -128,6 +128,107 @@ class BeamGeometryResponse(BaseModel):
 
 
 # =============================================================================
+# Building Geometry Models
+# =============================================================================
+
+
+class BuildingBeamInput(BaseModel):
+    """Input beam for building-level geometry."""
+
+    beam_id: str = Field(description="Beam identifier")
+    story: str | None = Field(default=None, description="Story/floor")
+    frame_type: str = Field(default="beam", description="Frame type: beam/column/brace")
+    point1: Point3DModel = Field(description="Start point (meters or model units)")
+    point2: Point3DModel = Field(description="End point (meters or model units)")
+    width_mm: float = Field(default=300.0, description="Beam width (mm)")
+    depth_mm: float = Field(default=500.0, description="Beam depth (mm)")
+    fck_mpa: float = Field(default=25.0, description="Concrete strength (MPa)")
+    fy_mpa: float = Field(default=500.0, description="Steel strength (MPa)")
+    cover_mm: float = Field(default=40.0, description="Clear cover (mm)")
+
+
+class BuildingGeometryRequest(BaseModel):
+    """Request model for building geometry."""
+
+    beams: list[BuildingBeamInput] = Field(min_length=1, description="Beam inputs")
+    unit_scale: float = Field(
+        default=1000.0, description="Scale applied to coordinates (m → mm)"
+    )
+    include_frame_types: list[str] | None = Field(
+        default=None, description="Optional frame type filter"
+    )
+
+
+class BuildingBeamModel(BaseModel):
+    """Output beam line segment for building geometry."""
+
+    beamId: str
+    story: str
+    frameType: str
+    start: Point3DModel
+    end: Point3DModel
+
+
+class BuildingGeometryModel(BaseModel):
+    """Building-level geometry model."""
+
+    beams: list[BuildingBeamModel]
+    boundingBox: dict[str, float]
+    center: Point3DModel
+    metadata: dict = Field(default_factory=dict)
+    version: str = Field(default="1.0.0")
+
+
+class BuildingGeometryResponse(BaseModel):
+    """Response for building geometry."""
+
+    success: bool
+    message: str
+    geometry: BuildingGeometryModel | None = None
+    warnings: list[str] = Field(default_factory=list)
+
+
+# =============================================================================
+# Cross-Section Geometry Models
+# =============================================================================
+
+
+class CrossSectionRequest(BaseModel):
+    """Request model for cross-section geometry."""
+
+    width_mm: float = Field(gt=0, description="Beam width (mm)")
+    depth_mm: float = Field(gt=0, description="Beam depth (mm)")
+    cover_mm: float = Field(default=40.0, description="Clear cover (mm)")
+    bar_count: int = Field(gt=0, description="Number of bars in layer")
+    bar_dia_mm: float = Field(gt=0, description="Bar diameter (mm)")
+    stirrup_dia_mm: float = Field(default=8.0, description="Stirrup diameter (mm)")
+    layers: int = Field(default=1, ge=1, description="Number of layers")
+    is_top: bool = Field(default=False, description="Top layer bars")
+
+
+class CrossSectionGeometryModel(BaseModel):
+    """Cross-section geometry payload."""
+
+    width_mm: float
+    depth_mm: float
+    cover_mm: float
+    outline: list[Point3DModel]
+    stirrup: list[Point3DModel]
+    bars: list[Point3DModel]
+    metadata: dict = Field(default_factory=dict)
+    version: str = Field(default="1.0.0")
+
+
+class CrossSectionResponse(BaseModel):
+    """Response model for cross-section geometry."""
+
+    success: bool
+    message: str
+    geometry: CrossSectionGeometryModel | None = None
+    warnings: list[str] = Field(default_factory=list)
+
+
+# =============================================================================
 # Request Models
 # =============================================================================
 

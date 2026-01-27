@@ -206,3 +206,43 @@ class CostOptimizationResponse(BaseModel):
     warnings: list[str] = Field(
         default_factory=list, description="Optimization warnings"
     )
+
+
+# =============================================================================
+# Rebar Suggestion Models
+# =============================================================================
+
+
+class RebarSuggestionRequest(BaseModel):
+    """Request model for rebar suggestion."""
+
+    ast_required_mm2: float = Field(gt=0, description="Required steel area (mm²)")
+    width_mm: float = Field(gt=0, description="Beam width (mm)")
+    cover_mm: float = Field(default=40.0, description="Clear cover (mm)")
+    stirrup_dia_mm: float = Field(default=8.0, description="Stirrup diameter (mm)")
+    allowed_dia_mm: list[float] | None = Field(
+        default=None, description="Allowed bar diameters (mm)"
+    )
+    max_layers: int = Field(default=2, ge=1, description="Maximum layers")
+    agg_size_mm: float = Field(default=20.0, description="Aggregate size (mm)")
+    min_total_bars: int = Field(default=2, ge=1, description="Minimum total bars")
+    max_bars_per_layer: int | None = Field(
+        default=None, description="Optional maximum bars per layer"
+    )
+
+
+class RebarSuggestionItem(BaseModel):
+    objective: str
+    count: int
+    diameter: float
+    layers: int
+    area_provided: float
+    spacing: float | None = None
+    remarks: str | None = None
+    checks: dict | None = None
+
+
+class RebarSuggestionResponse(BaseModel):
+    success: bool
+    message: str
+    suggestions: list[RebarSuggestionItem] = Field(default_factory=list)

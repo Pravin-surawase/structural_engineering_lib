@@ -29,10 +29,12 @@ from __future__ import annotations
 
 from structural_lib.visualization.geometry_3d import (
     Beam3DGeometry,
+    CrossSectionGeometry,
     Point3D,
     RebarPath,
     RebarSegment,
     StirrupLoop,
+    cross_section_geometry,
 )
 
 __all__ = [
@@ -41,4 +43,6 @@ __all__ = [
     "RebarPath",
     "StirrupLoop",
     "Beam3DGeometry",
+    "CrossSectionGeometry",
+    "cross_section_geometry",
 ]

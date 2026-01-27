@@ -20,6 +20,13 @@ from fastapi_app.models.geometry import (
     RebarPathModel,
     RebarSegmentModel,
     StirrupLoopModel,
+    BuildingGeometryRequest,
+    BuildingGeometryResponse,
+    BuildingGeometryModel,
+    BuildingBeamModel,
+    CrossSectionRequest,
+    CrossSectionResponse,
+    CrossSectionGeometryModel,
 )
 
 router = APIRouter(
@@ -363,6 +370,153 @@ async def generate_full_beam_geometry(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Geometry generation failed: {e}",
+        )
+
+
+@router.post(
+    "/building",
+    response_model=BuildingGeometryResponse,
+    summary="Generate Building Geometry",
+    description="Generate line geometry for building-level visualization.",
+)
+async def generate_building_geometry(
+    request: BuildingGeometryRequest,
+) -> BuildingGeometryResponse:
+    """Generate building-level line geometry from beam inputs."""
+    try:
+        from structural_lib.models import BeamGeometry, FrameType, Point3D, SectionProperties
+        from structural_lib.visualization.geometry_3d import building_to_3d_geometry
+
+        beam_models: list[BeamGeometry] = []
+        for beam in request.beams:
+            frame_type_value = (beam.frame_type or "beam").lower()
+            try:
+                frame_type = FrameType(frame_type_value)
+            except ValueError:
+                frame_type = FrameType.BEAM
+
+            section = SectionProperties(
+                width_mm=beam.width_mm,
+                depth_mm=beam.depth_mm,
+                fck_mpa=beam.fck_mpa,
+                fy_mpa=beam.fy_mpa,
+                cover_mm=beam.cover_mm,
+            )
+
+            beam_models.append(
+                BeamGeometry(
+                    id=beam.beam_id,
+                    label=beam.beam_id,
+                    story=beam.story or "Default",
+                    frame_type=frame_type,
+                    point1=Point3D(x=beam.point1.x, y=beam.point1.y, z=beam.point1.z),
+                    point2=Point3D(x=beam.point2.x, y=beam.point2.y, z=beam.point2.z),
+                    section=section,
+                    angle=0.0,
+                    source_id=beam.beam_id,
+                )
+            )
+
+        include_types = (
+            tuple(request.include_frame_types) if request.include_frame_types else None
+        )
+        geometry = building_to_3d_geometry(
+            beam_models,
+            unit_scale=request.unit_scale,
+            include_frame_types=include_types,
+        )
+
+        geometry_dict = geometry.to_dict()
+        beams_out = []
+        for item in geometry_dict["beams"]:
+            beams_out.append(
+                BuildingBeamModel(
+                    beamId=item["beamId"],
+                    story=item["story"],
+                    frameType=item["frameType"],
+                    start=Point3DModel(**item["start"]),
+                    end=Point3DModel(**item["end"]),
+                )
+            )
+
+        geometry_model = BuildingGeometryModel(
+            beams=beams_out,
+            boundingBox=geometry_dict["boundingBox"],
+            center=Point3DModel(**geometry_dict["center"]),
+            metadata=geometry_dict["metadata"],
+            version=geometry_dict.get("version", "1.0.0"),
+        )
+
+        return BuildingGeometryResponse(
+            success=True,
+            message=f"Generated building geometry for {len(beams_out)} beams",
+            geometry=geometry_model,
+            warnings=[],
+        )
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Building geometry failed: {e}",
+        )
+
+
+@router.post(
+    "/cross-section",
+    response_model=CrossSectionResponse,
+    summary="Generate Cross-Section Geometry",
+    description="Generate cross-section geometry for rebar editor previews.",
+)
+async def generate_cross_section_geometry(
+    request: CrossSectionRequest,
+) -> CrossSectionResponse:
+    """Generate cross-section geometry for editor preview."""
+    try:
+        from structural_lib.visualization.geometry_3d import cross_section_geometry
+
+        geometry = cross_section_geometry(
+            beam_width=request.width_mm,
+            beam_depth=request.depth_mm,
+            cover=request.cover_mm,
+            bar_count=request.bar_count,
+            bar_dia=request.bar_dia_mm,
+            stirrup_dia=request.stirrup_dia_mm,
+            is_top=request.is_top,
+            layers=request.layers,
+        )
+
+        geometry_dict = geometry.to_dict()
+        geometry_model = CrossSectionGeometryModel(
+            width_mm=geometry_dict["width_mm"],
+            depth_mm=geometry_dict["depth_mm"],
+            cover_mm=geometry_dict["cover_mm"],
+            outline=[Point3DModel(**pt) for pt in geometry_dict["outline"]],
+            stirrup=[Point3DModel(**pt) for pt in geometry_dict["stirrup"]],
+            bars=[Point3DModel(**pt) for pt in geometry_dict["bars"]],
+            metadata=geometry_dict["metadata"],
+            version=geometry_dict.get("version", "1.0.0"),
+        )
+
+        return CrossSectionResponse(
+            success=True,
+            message="Generated cross-section geometry",
+            geometry=geometry_model,
+            warnings=[],
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Cross-section geometry failed: {e}",
         )
 
 

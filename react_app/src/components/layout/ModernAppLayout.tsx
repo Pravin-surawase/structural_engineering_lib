@@ -11,6 +11,7 @@ import { Viewport3D } from "../Viewport3D";
 import { LandingView } from "../LandingView";
 import { ImportView } from "../ImportView";
 import { DesignView } from "../DesignView";
+import { BeamTable, type BeamRowData } from "../BeamTable";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { loadSampleData } from "../../api/client";
 import { mapSampleBeamsToRows } from "../../utils/sampleData";
@@ -114,10 +115,7 @@ export function ModernAppLayout() {
         )}
 
         {viewMode === "results" && (
-          <ResultsView
-            beamCount={beams.length}
-            onBack={() => setViewMode("home")}
-          />
+          <ResultsView onBack={() => setViewMode("home")} />
         )}
 
         {viewMode === "settings" && (
@@ -135,11 +133,29 @@ export function ModernAppLayout() {
  * Results view with 3D visualization and beam list.
  */
 interface ResultsViewProps {
-  beamCount: number;
   onBack: () => void;
 }
 
-function ResultsView({ beamCount, onBack }: ResultsViewProps) {
+function ResultsView({ onBack }: ResultsViewProps) {
+  const { beams, selectedId, selectBeam } = useImportedBeamsStore();
+  const beamCount = beams.length;
+
+  const rows = beams.map<BeamRowData>((beam) => ({
+    id: beam.id,
+    story: beam.story ?? "",
+    width_mm: beam.b,
+    depth_mm: beam.D,
+    span_mm: beam.span,
+    mu_knm: beam.Mu_mid ?? beam.Mu_start ?? beam.Mu_end ?? 0,
+    vu_kn: beam.Vu_start ?? beam.Vu_end ?? 0,
+    fck_mpa: beam.fck ?? 25,
+    fy_mpa: beam.fy ?? 500,
+    ast_required: beam.ast_required,
+    ast_provided: beam.ast_provided,
+    utilization: beam.utilization,
+    status: beam.status ?? "pending",
+  }));
+
   return (
     <div className="flex flex-col h-full p-6">
       {/* Header */}
@@ -156,19 +172,45 @@ function ResultsView({ beamCount, onBack }: ResultsViewProps) {
         </button>
       </div>
 
-      {/* 3D Viewport */}
-      <div className="flex-1 rounded-2xl overflow-hidden border border-white/10">
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center h-full bg-zinc-900">
-              <div className="animate-pulse text-white/50">
-                Loading 3D viewport...
+      <div className="grid grid-cols-12 gap-6 flex-1 min-h-0">
+        {/* 3D Viewport */}
+        <div className="col-span-7 rounded-2xl overflow-hidden border border-white/10 min-h-[400px]">
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center h-full bg-zinc-900">
+                <div className="animate-pulse text-white/50">
+                  Loading 3D viewport...
+                </div>
               </div>
-            </div>
-          }
-        >
-          <Viewport3D />
-        </Suspense>
+            }
+          >
+            <Viewport3D mode="building" />
+          </Suspense>
+        </div>
+
+        {/* Beam Table */}
+        <div className="col-span-5 flex flex-col gap-3 min-h-0">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-white/60">Beam List</p>
+            {selectedId && (
+              <button
+                onClick={() => selectBeam(null)}
+                className="text-xs text-white/60 hover:text-white"
+              >
+                Clear Selection
+              </button>
+            )}
+          </div>
+          <BeamTable
+            beams={rows}
+            onSelectionChange={(ids) => selectBeam(ids[0] ?? null)}
+            onBeamClick={(beamId) => selectBeam(beamId)}
+            selectedBeamId={selectedId}
+          />
+          <p className="text-xs text-white/40">
+            Click a row to focus the 3D view on that beam.
+          </p>
+        </div>
       </div>
     </div>
   );

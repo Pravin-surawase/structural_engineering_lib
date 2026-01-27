@@ -11,6 +11,9 @@ export interface ImportedBeamsState {
   selectedId: string | null;
   isImporting: boolean;
   error: string | null;
+  warnings: string[];
+  unmatchedBeams: string[];
+  unmatchedForces: string[];
 
   // Actions
   setBeams: (beams: BeamCSVRow[]) => void;
@@ -18,6 +21,7 @@ export interface ImportedBeamsState {
   selectBeam: (id: string | null) => void;
   setImporting: (importing: boolean) => void;
   setError: (error: string | null) => void;
+  setImportWarnings: (warnings: string[], unmatchedBeams: string[], unmatchedForces: string[]) => void;
   clearBeams: () => void;
 }
 
@@ -26,6 +30,9 @@ export const useImportedBeamsStore = create<ImportedBeamsState>((set) => ({
   selectedId: null,
   isImporting: false,
   error: null,
+  warnings: [],
+  unmatchedBeams: [],
+  unmatchedForces: [],
 
   setBeams: (beams) => set({ beams, error: null }),
 
@@ -40,5 +47,16 @@ export const useImportedBeamsStore = create<ImportedBeamsState>((set) => ({
 
   setError: (error) => set({ error, isImporting: false }),
 
-  clearBeams: () => set({ beams: [], selectedId: null, error: null }),
+  setImportWarnings: (warnings, unmatchedBeams, unmatchedForces) =>
+    set({ warnings, unmatchedBeams, unmatchedForces }),
+
+  clearBeams: () =>
+    set({
+      beams: [],
+      selectedId: null,
+      error: null,
+      warnings: [],
+      unmatchedBeams: [],
+      unmatchedForces: [],
+    }),
 }));

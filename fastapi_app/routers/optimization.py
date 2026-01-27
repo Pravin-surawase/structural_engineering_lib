@@ -11,6 +11,9 @@ from fastapi_app.models.optimization import (
     CostOptimizationResponse,
     OptimalDesign,
     CostBreakdown,
+    RebarSuggestionRequest,
+    RebarSuggestionResponse,
+    RebarSuggestionItem,
 )
 
 router = APIRouter(
@@ -150,6 +153,63 @@ async def optimize_beam_cost(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Optimization failed: {e}",
+        )
+
+
+@router.post(
+    "/rebar/suggest",
+    response_model=RebarSuggestionResponse,
+    summary="Suggest rebar arrangements",
+    description="Suggest feasible rebar arrangements for required steel area.",
+)
+async def suggest_rebar(
+    request: RebarSuggestionRequest,
+) -> RebarSuggestionResponse:
+    try:
+        from structural_lib.optimization import suggest_rebar_options
+
+        result = suggest_rebar_options(
+            ast_required_mm2=request.ast_required_mm2,
+            b_mm=request.width_mm,
+            cover_mm=request.cover_mm,
+            stirrup_dia_mm=request.stirrup_dia_mm,
+            allowed_dia_mm=request.allowed_dia_mm,
+            max_layers=request.max_layers,
+            agg_size_mm=request.agg_size_mm,
+            min_total_bars=request.min_total_bars,
+            max_bars_per_layer=request.max_bars_per_layer,
+        )
+
+        suggestions = []
+        for item in result.get("suggestions", []):
+            suggestions.append(
+                RebarSuggestionItem(
+                    objective=item.get("objective", ""),
+                    count=item.get("count", 0),
+                    diameter=item.get("diameter", 0.0),
+                    layers=item.get("layers", 1),
+                    area_provided=item.get("area_provided", 0.0),
+                    spacing=item.get("spacing", 0.0),
+                    remarks=item.get("remarks"),
+                    checks=item.get("checks"),
+                )
+            )
+
+        return RebarSuggestionResponse(
+            success=bool(result.get("success")),
+            message=result.get("message", ""),
+            suggestions=suggestions,
+        )
+
+    except (ValueError, AttributeError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Rebar suggestion failed: {e}",
         )
 
 

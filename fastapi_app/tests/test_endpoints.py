@@ -291,6 +291,128 @@ class TestGeometryEndpoints:
         assert "steel" in data
         assert "color" in data["concrete"]
 
+    def test_generate_building_geometry(self, client):
+        """Test building geometry endpoint."""
+        payload = {
+            "beams": [
+                {
+                    "beam_id": "B1",
+                    "story": "GF",
+                    "frame_type": "beam",
+                    "point1": {"x": 0.0, "y": 0.0, "z": 0.0},
+                    "point2": {"x": 5.0, "y": 0.0, "z": 0.0},
+                    "width_mm": 300.0,
+                    "depth_mm": 500.0,
+                }
+            ],
+            "unit_scale": 1000.0,
+        }
+        response = client.post("/api/v1/geometry/building", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["success"] is True
+        assert data["geometry"]["beams"]
+
+    def test_generate_cross_section_geometry(self, client):
+        """Test cross-section geometry endpoint."""
+        payload = {
+            "width_mm": 300.0,
+            "depth_mm": 500.0,
+            "cover_mm": 40.0,
+            "bar_count": 3,
+            "bar_dia_mm": 16.0,
+            "stirrup_dia_mm": 8.0,
+            "layers": 1,
+            "is_top": False,
+        }
+        response = client.post("/api/v1/geometry/cross-section", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["success"] is True
+        assert len(data["geometry"]["bars"]) == 3
+
+
+class TestRebarEndpoints:
+    """Tests for rebar validation/apply endpoints."""
+
+    def test_rebar_validate(self, client):
+        payload = {
+            "beam": {"width_mm": 300.0, "depth_mm": 500.0, "cover_mm": 40.0},
+            "config": {"bar_count": 3, "bar_dia_mm": 16.0, "stirrup_dia_mm": 8.0},
+        }
+        response = client.post("/api/v1/rebar/validate", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert "validation" in data
+
+    def test_rebar_apply(self, client):
+        payload = {
+            "beam": {"width_mm": 300.0, "depth_mm": 500.0, "cover_mm": 40.0},
+            "config": {
+                "bar_count": 3,
+                "bar_dia_mm": 16.0,
+                "stirrup_dia_mm": 8.0,
+                "stirrup_spacing_start": 150.0,
+                "stirrup_spacing_mid": 200.0,
+                "stirrup_spacing_end": 150.0,
+            },
+        }
+        response = client.post("/api/v1/rebar/apply", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert "geometry" in data
+
+
+class TestInsightsEndpoints:
+    """Tests for insights endpoints."""
+
+    def test_dashboard(self, client):
+        payload = {
+            "width": 300.0,
+            "depth": 500.0,
+            "span": 5000.0,
+            "moment": 150.0,
+            "shear": 80.0,
+            "fck": 25.0,
+            "fy": 500.0,
+            "cover": 40.0,
+        }
+        response = client.post("/api/v1/insights/dashboard", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["success"] is True
+        assert data["dashboard"] is not None
+
+    def test_code_checks(self, client):
+        payload = {
+            "width": 300.0,
+            "depth": 500.0,
+            "span": 5000.0,
+            "moment": 150.0,
+            "fck": 25.0,
+            "fy": 500.0,
+            "cover": 40.0,
+        }
+        response = client.post("/api/v1/insights/code-checks", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["success"] is True
+
+
+class TestRebarSuggestionEndpoint:
+    """Tests for rebar suggestion endpoint."""
+
+    def test_rebar_suggest(self, client):
+        payload = {
+            "ast_required_mm2": 1200.0,
+            "width_mm": 300.0,
+            "cover_mm": 40.0,
+        }
+        response = client.post("/api/v1/optimization/rebar/suggest", json=payload)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["success"] is True
+
 
 class TestOpenAPIDocumentation:
     """Tests for OpenAPI documentation endpoints."""

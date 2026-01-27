@@ -4,7 +4,10 @@
 export { useAutoDesign } from './useAutoDesign';
 export { useDesignWebSocket } from './useDesignWebSocket';
 export { useBeamGeometry } from './useBeamGeometry';
+export { useBuildingGeometry, useCrossSectionGeometry } from './useBuildingGeometry';
 export { useLiveDesign } from './useLiveDesign';
+export { useRebarApply, useRebarValidation } from './useRebarTools';
+export { useCodeChecks, useDashboardInsights, useRebarSuggestions } from './useInsights';
 export {
   useCSVFileImport,
   useCSVTextImport,
@@ -21,6 +24,12 @@ export type {
   Beam3DGeometry,
   BeamGeometryRequest,
 } from './useBeamGeometry';
+export type {
+  BuildingGeometryRequest,
+  BuildingGeometry,
+  CrossSectionRequest,
+  CrossSectionGeometry,
+} from './useBuildingGeometry';
 export type {
   ImportedBeam,
   DesignedBeam,

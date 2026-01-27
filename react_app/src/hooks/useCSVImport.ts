@@ -55,6 +55,8 @@ interface CSVImportResponse {
   beams: ImportedBeam[];
   column_mapping: Record<string, string>;
   warnings: string[];
+  unmatched_beams?: string[];
+  unmatched_forces?: string[];
 }
 
 interface DualCSVImportResponse {
@@ -191,7 +193,7 @@ async function batchDesign(
  * ```
  */
 export function useCSVFileImport() {
-  const { setBeams, setImporting, setError } = useImportedBeamsStore();
+  const { setBeams, setImporting, setError, setImportWarnings } = useImportedBeamsStore();
 
   const mutation = useMutation({
     mutationFn: ({ file, format }: { file: File; format?: string; overrides?: MaterialOverrides }) =>
@@ -199,6 +201,7 @@ export function useCSVFileImport() {
     onMutate: () => {
       setImporting(true);
       setError(null);
+      setImportWarnings([], [], []);
     },
     onSuccess: (data, variables) => {
       setImporting(false);
@@ -221,6 +224,7 @@ export function useCSVFileImport() {
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams as any); // Type cast for compatibility
+        setImportWarnings(data.warnings ?? [], data.unmatched_beams ?? [], data.unmatched_forces ?? []);
       } else {
         setError(data.message);
       }
@@ -254,7 +258,7 @@ export function useCSVFileImport() {
  * ```
  */
 export function useCSVTextImport() {
-  const { setBeams, setImporting, setError } = useImportedBeamsStore();
+  const { setBeams, setImporting, setError, setImportWarnings } = useImportedBeamsStore();
 
   const mutation = useMutation({
     mutationFn: ({ text, format }: { text: string; format?: string; overrides?: MaterialOverrides }) =>
@@ -262,6 +266,7 @@ export function useCSVTextImport() {
     onMutate: () => {
       setImporting(true);
       setError(null);
+      setImportWarnings([], [], []);
     },
     onSuccess: (data, variables) => {
       setImporting(false);
@@ -283,6 +288,7 @@ export function useCSVTextImport() {
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams as any);
+        setImportWarnings(data.warnings ?? [], data.unmatched_beams ?? [], data.unmatched_forces ?? []);
       } else {
         setError(data.message);
       }
@@ -307,7 +313,7 @@ export function useCSVTextImport() {
  * useDualCSVImport - Hook for dual CSV (geometry + forces) import.
  */
 export function useDualCSVImport() {
-  const { setBeams, setImporting, setError } = useImportedBeamsStore();
+  const { setBeams, setImporting, setError, setImportWarnings } = useImportedBeamsStore();
 
   const mutation = useMutation({
     mutationFn: ({
@@ -323,6 +329,7 @@ export function useDualCSVImport() {
     onMutate: () => {
       setImporting(true);
       setError(null);
+      setImportWarnings([], [], []);
     },
     onSuccess: (data, variables) => {
       setImporting(false);
@@ -344,6 +351,7 @@ export function useDualCSVImport() {
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams as any);
+        setImportWarnings(data.warnings ?? [], data.unmatched_beams ?? [], data.unmatched_forces ?? []);
       } else {
         setError(data.message);
       }

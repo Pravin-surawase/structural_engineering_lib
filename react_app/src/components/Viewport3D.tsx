@@ -9,10 +9,11 @@
  * Uses library API via useBeamGeometry hook for accurate bar positions
  * instead of manual calculations.
  */
-import { useMemo, useCallback, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { useMemo, useCallback, Suspense, useEffect, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Grid, Environment, PerspectiveCamera, Line } from '@react-three/drei';
 import * as THREE from 'three';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { useDesignStore } from '../store/designStore';
 import { useImportedBeamsStore } from '../store/importedBeamsStore';
 import { useBeamGeometry } from '../hooks/useBeamGeometry';
@@ -207,6 +208,8 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
  */
 function BuildingFrame() {
   const { beams, selectedId, selectBeam } = useImportedBeamsStore();
+  const { camera } = useThree();
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
   // Filter beams that have 3D positions
   const beamsWithGeometry = useMemo(
@@ -229,6 +232,27 @@ function BuildingFrame() {
     return [sumX / n, sumZ / n, -sumY / n]; // Transform to Three.js coords
   }, [beamsWithGeometry]);
 
+  const selectedTarget = useMemo(() => {
+    if (!selectedId) return null;
+    const selected = beamsWithGeometry.find((beam) => beam.id === selectedId);
+    if (!selected?.point1 || !selected?.point2) return null;
+    return [
+      (selected.point1.x + selected.point2.x) / 2,
+      (selected.point1.z + selected.point2.z) / 2,
+      -(selected.point1.y + selected.point2.y) / 2,
+    ] as [number, number, number];
+  }, [beamsWithGeometry, selectedId]);
+
+  const selectedLength = useMemo(() => {
+    if (!selectedId) return null;
+    const selected = beamsWithGeometry.find((beam) => beam.id === selectedId);
+    if (!selected?.point1 || !selected?.point2) return null;
+    const dx = selected.point1.x - selected.point2.x;
+    const dy = selected.point1.z - selected.point2.z;
+    const dz = selected.point1.y - selected.point2.y;
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }, [beamsWithGeometry, selectedId]);
+
   // Calculate building bounds for camera distance
   const buildingSize = useMemo(() => {
     if (beamsWithGeometry.length === 0) return 10;
@@ -248,6 +272,23 @@ function BuildingFrame() {
     });
     return Math.max(maxDist * 2, 10);
   }, [beamsWithGeometry, buildingCenter]);
+
+  useEffect(() => {
+    const target = (selectedTarget ?? buildingCenter) as [number, number, number];
+    const distance = selectedLength
+      ? Math.min(Math.max(selectedLength * 1.8, 8), 100)
+      : Math.min(Math.max(buildingSize * 1.2, 10), 120);
+    camera.position.set(
+      target[0] + distance,
+      target[1] + distance * 0.6,
+      target[2] + distance
+    );
+    camera.lookAt(new THREE.Vector3(target[0], target[1], target[2]));
+    if (controlsRef.current) {
+      controlsRef.current.target.set(target[0], target[1], target[2]);
+      controlsRef.current.update();
+    }
+  }, [buildingCenter, buildingSize, camera, selectedLength, selectedTarget]);
 
   // Get beam color based on design status
   const getBeamColor = useCallback((beam: typeof beams[0], isSelected: boolean) => {
@@ -337,17 +378,23 @@ function BuildingFrame() {
 
       {/* Controls */}
       <OrbitControls
+        ref={controlsRef}
         enableDamping
         dampingFactor={0.1}
         minDistance={5}
         maxDistance={100}
-        target={buildingCenter as [number, number, number]}
+        target={(selectedTarget ?? buildingCenter) as [number, number, number]}
       />
     </>
   );
 }
 
-function Scene() {
+export interface RebarPreviewGeometry {
+  rebars: RebarPath[];
+  stirrups: StirrupLoop[];
+}
+
+function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry | null }) {
   const { inputs, length, result } = useDesignStore();
 
   // Fetch geometry from library API when design is complete
@@ -368,6 +415,8 @@ function Scene() {
       : null,
     { enabled: result !== null }
   );
+
+  const activeGeometry = overrideGeometry ?? geometry;
 
   return (
     <>
@@ -405,10 +454,10 @@ function Scene() {
       />
 
       {/* Reinforcement from API geometry */}
-      {geometry && geometry.rebars.length > 0 && (
+      {activeGeometry && activeGeometry.rebars.length > 0 && (
         <>
-          <RebarVisualization rebars={geometry.rebars} />
-          <StirrupVisualization stirrups={geometry.stirrups} />
+          <RebarVisualization rebars={activeGeometry.rebars} />
+          <StirrupVisualization stirrups={activeGeometry.stirrups} />
         </>
       )}
 
@@ -428,6 +477,7 @@ export type Viewport3DMode = 'design' | 'building';
 
 interface Viewport3DProps {
   mode?: Viewport3DMode;
+  overrideGeometry?: RebarPreviewGeometry | null;
 }
 
 /**
@@ -435,7 +485,7 @@ interface Viewport3DProps {
  *
  * @param mode - 'design' for single beam with rebar, 'building' for imported beams frame
  */
-export function Viewport3D({ mode = 'design' }: Viewport3DProps) {
+export function Viewport3D({ mode = 'design', overrideGeometry = null }: Viewport3DProps) {
   const { beams } = useImportedBeamsStore();
 
   // Auto-detect mode: use building view if there are imported beams with 3D positions
@@ -449,7 +499,11 @@ export function Viewport3D({ mode = 'design' }: Viewport3DProps) {
     <div className="viewport3d">
       <Canvas shadows>
         <Suspense fallback={null}>
-          {effectiveMode === 'building' ? <BuildingFrame /> : <Scene />}
+          {effectiveMode === 'building' ? (
+            <BuildingFrame />
+          ) : (
+            <Scene overrideGeometry={overrideGeometry} />
+          )}
         </Suspense>
       </Canvas>
       <div className="viewport-overlay">
