@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from structural_lib.models import BeamGeometry, Point3D, SectionProperties, FrameType
+from structural_lib.models import BeamGeometry, FrameType, Point3D, SectionProperties
 from structural_lib.visualization.geometry_3d import building_to_3d_geometry
 
 

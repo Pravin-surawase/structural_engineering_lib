@@ -35,9 +35,7 @@ B2,120,60,1.5(DL+LL)
 """,
     )
 
-    batch, warnings = parse_dual_csv(
-        geometry_csv, forces_csv, format_hint="generic"
-    )
+    batch, warnings = parse_dual_csv(geometry_csv, forces_csv, format_hint="generic")
 
     assert len(batch.beams) == 2
     assert len(batch.forces) == 2
@@ -69,9 +67,7 @@ B1,150,80
 """,
     )
 
-    batch, warnings = parse_dual_csv(
-        geometry_csv, forces_csv, format_hint="generic"
-    )
+    batch, warnings = parse_dual_csv(geometry_csv, forces_csv, format_hint="generic")
 
     assert len(batch.beams) == 2
     assert len(batch.forces) == 1

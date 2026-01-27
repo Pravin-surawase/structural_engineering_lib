@@ -53,6 +53,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from structural_lib.codes.is456.detailing import BeamDetailingResult
+    from structural_lib.models import BeamGeometry
 
 
 __all__ = [
@@ -395,7 +396,7 @@ class Building3DGeometry:
 
 
 def building_to_3d_geometry(
-    beams: Iterable["BeamGeometry"],
+    beams: Iterable[BeamGeometry],
     *,
     unit_scale: float = 1000.0,
     include_frame_types: tuple[str, ...] | None = None,

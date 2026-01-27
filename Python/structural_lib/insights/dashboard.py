@@ -22,7 +22,6 @@ from typing import Any
 
 from structural_lib.codes.is456 import detailing
 
-
 __all__ = [
     # Dataclasses
     "DashboardData",
@@ -276,7 +275,9 @@ def generate_dashboard(
         d_mm = _get_param(beam_params, ["D_mm", "depth", "D"], 450.0)
 
     effective_depth = d_mm - 50  # Approximate
-    steel_ratio = (ast_required / (b_mm * effective_depth)) * 100 if effective_depth > 0 else 0.0
+    steel_ratio = (
+        (ast_required / (b_mm * effective_depth)) * 100 if effective_depth > 0 else 0.0
+    )
 
     # Code checks summary (simplified)
     messages = data.get("messages", [])
@@ -374,8 +375,11 @@ def code_checks_live(
     if bar_count > 1:
         try:
             spacing = detailing.calculate_bar_spacing(
-                b=b_mm, cover=cover, stirrup_dia=stirrup_dia,
-                bar_dia=bar_dia, bar_count=bar_count,
+                b=b_mm,
+                cover=cover,
+                stirrup_dia=stirrup_dia,
+                bar_dia=bar_dia,
+                bar_count=bar_count,
             )
             min_spacing = max(bar_dia, agg_size + 5, 25.0)
             spacing_ok = spacing >= min_spacing
@@ -385,11 +389,17 @@ def code_checks_live(
                 passed=spacing_ok,
                 value=round(spacing, 1),
                 limit=round(min_spacing, 1),
-                message="" if spacing_ok else f"Spacing {spacing:.0f}mm < min {min_spacing:.0f}mm",
+                message=(
+                    ""
+                    if spacing_ok
+                    else f"Spacing {spacing:.0f}mm < min {min_spacing:.0f}mm"
+                ),
             )
             checks.append(check_spacing)
             if not spacing_ok:
-                warnings.append(f"Bar spacing {spacing:.0f}mm below minimum {min_spacing:.0f}mm")
+                warnings.append(
+                    f"Bar spacing {spacing:.0f}mm below minimum {min_spacing:.0f}mm"
+                )
         except Exception as e:
             errors.append(f"Spacing calculation failed: {e}")
 
@@ -494,12 +504,14 @@ def suggest_rebar_options(
     target_dict = _to_dict(targets)
 
     b_mm = _get_param(beam_dict, ["b_mm", "width", "b"], 300.0)
-    d_mm = _get_param(beam_dict, ["D_mm", "depth", "D"], 450.0)
+    _d_mm = _get_param(beam_dict, ["D_mm", "depth", "D"], 450.0)  # noqa: F841
     cover = _get_param(beam_dict, ["cover_mm", "cover"], 40.0)
     stirrup_dia = _get_param(beam_dict, ["stirrup_dia_mm", "stirrup_dia"], 8.0)
     agg_size = _get_param(beam_dict, ["agg_size_mm", "agg_size"], 20.0)
 
-    ast_required = _get_param(target_dict, ["ast_required_mm2", "ast_required", "ast"], 200.0)
+    ast_required = _get_param(
+        target_dict, ["ast_required_mm2", "ast_required", "ast"], 200.0
+    )
     min_bars = int(_get_param(target_dict, ["min_bars"], 2))
     max_layers = int(_get_param(target_dict, ["max_layers"], 2))
 
@@ -519,9 +531,7 @@ def suggest_rebar_options(
             # Calculate max bars that fit per layer
             available_width = b_mm - 2 * (cover + stirrup_dia) - dia
             min_spacing = max(dia, agg_size + 5, 25.0)
-            max_bars_per_layer = max(
-                2, int(available_width / (dia + min_spacing)) + 1
-            )
+            max_bars_per_layer = max(2, int(available_width / (dia + min_spacing)) + 1)
 
             for bars_per_layer in range(min_bars, max_bars_per_layer + 1):
                 bar_count = bars_per_layer * layer_count
@@ -533,8 +543,11 @@ def suggest_rebar_options(
                 # Check spacing
                 try:
                     spacing = detailing.calculate_bar_spacing(
-                        b=b_mm, cover=cover, stirrup_dia=stirrup_dia,
-                        bar_dia=dia, bar_count=bars_per_layer,
+                        b=b_mm,
+                        cover=cover,
+                        stirrup_dia=stirrup_dia,
+                        bar_dia=dia,
+                        bar_count=bars_per_layer,
                     )
                     spacing_ok = spacing >= min_spacing
                 except Exception:
