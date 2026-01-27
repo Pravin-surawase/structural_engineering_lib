@@ -13,11 +13,11 @@
 
 ## Executive Summary
 
-We already have a strong library core (design, adapters, smart analysis, 3D single-beam geometry). The remaining gaps block the React workspace: building-level 3D, batch streaming at the library level, rebar editor constraints, and CSV dual-file parsing as a canonical library API. This plan narrows to future work, organized into three phases, and aligns with **# V3 React Migration Roadmap (7-Week Plan)** so the React app can ship a premium, engineer-first UI without duplication.
+We already have a strong library core (design, adapters, smart analysis, 3D single-beam geometry). The remaining gaps now sit at the **API + React integration layer**: building-level geometry endpoint, cross-section geometry helper, rebar validation/apply endpoints, and live code‑check insights. This plan narrows to future work, organized into three phases, and aligns with **# V3 React Migration Roadmap (7-Week Plan)** so the React app can ship a premium, engineer-first UI without duplication.
 
 ---
 
-## Verification Snapshot (Jan 26, 2026)
+## Verification Snapshot (Jan 27, 2026)
 
 ## Verification Complete
 
@@ -51,23 +51,25 @@ We already have a strong library core (design, adapters, smart analysis, 3D sing
 ### ⚠️ One Path Correction
 
 **geometry_3d.py** is at:
-- ❌ geometry_3d.py (claimed path doesn't exist)
-- ✅ geometry_3d.py (correct path)
+- ❌ `geometry_3d.py` (claimed path doesn't exist)
+- ✅ `Python/structural_lib/visualization/geometry_3d.py` (correct path)
 
-### ✅ Confirmed Gaps (Plan is Correct)
+### ✅ Resolved Gaps (Completed Jan 27, 2026)
 
-1. **`building_to_3d_geometry`** — Does NOT exist in library
-   - Only `create_building_3d_figure` in Streamlit's ai_workspace.py (UI-layer, uses Plotly meshes)
-   - Library has `beam_to_3d_geometry` (single beam), needs multi-beam/building version
+1. **`building_to_3d_geometry`** — Implemented in `Python/structural_lib/visualization/geometry_3d.py`
+2. **`design_beams_iter`** — Implemented in `Python/structural_lib/batch.py` and used by SSE
+3. **`validate_rebar_config`** — Implemented in `Python/structural_lib/rebar.py`
 
-2. **`design_beams_iter`** — async streaming generator doesn't exist in library
-   - FastAPI has SSE endpoint, but library lacks native async design iterator
+### ⏳ Remaining Gaps (Still Open)
 
-3. **`validate_rebar_config`** — not found as standalone function
+1. **FastAPI** building geometry endpoint (`/api/v1/geometry/building`) + React hook
+2. **FastAPI** rebar validate/apply endpoints (`/api/v1/rebar/validate`, `/api/v1/rebar/apply`)
+3. **Library** cross-section geometry helper (`geometry_3d.cross_section_geometry`)
+4. **Insights** dashboard + live code checks wrappers
 
 ### Verdict
 
-**The previous agent's verification is ~95% accurate.** All line numbers and function existence claims are correct. Only correction: geometry_3d.py path should include the `visualization/` subfolder.
+**The previous agent's verification was accurate at the time.** The three gaps above are now resolved; remaining gaps are listed for Phase 2–3 work.
 
 ---
 
@@ -110,29 +112,31 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 ### Phase 1 — Canonical Inputs + Batch Foundations (Weeks 4–5)
 
+**Status:** ✅ Complete (commit `6ee623f`)
+
 **Goal:** Clean, repeatable import + design flows that React can trust.
 
 **Library Tasks**
-1. `structural_lib.imports.parse_dual_csv(geometry_csv, forces_csv, format="auto", defaults=None)`
-2. `structural_lib.imports.merge_geometry_forces(geometry_list, forces_list, key="beam_id")`
-3. `structural_lib.imports.validate_import(data)` with warnings + row/column context
-4. `structural_lib.batch.design_beams(models, defaults)` (sync batch)
-5. `structural_lib.batch.design_beams_iter(models, defaults)` (streaming generator)
+1. ✅ `structural_lib.imports.parse_dual_csv(geometry_csv, forces_csv, format="auto", defaults=None)`
+2. ✅ `structural_lib.imports.merge_geometry_forces(geometry_list, forces_list, key="beam_id")`
+3. ✅ `structural_lib.imports.validate_import(data)` with warnings + row/column context
+4. ✅ `structural_lib.batch.design_beams(models, defaults)` (sync batch)
+5. ✅ `structural_lib.batch.design_beams_iter(models, defaults)` (streaming generator)
 
 **FastAPI Tasks**
-1. `POST /api/v1/import/dual-csv` → wraps `parse_dual_csv`
-2. `POST /api/v1/design/batch` → wraps `design_beams`
-3. `GET /stream/batch-design` → switch to `design_beams_iter` generator
+1. ✅ `POST /api/v1/import/dual-csv` → wraps `parse_dual_csv`
+2. ✅ `GET /stream/batch-design` → uses `design_beams_iter` generator
+3. ⏳ `POST /api/v1/design/batch` → wraps `design_beams` (still needed)
 
 **React Tasks**
-1. Update import UI to call dual CSV endpoint (geometry + forces)
-2. Use `useCSVFileImport` + new `useDualCSVImport` hook
-3. Render import warnings inline; do not block UI on warnings
+1. ✅ Add `useDualCSVImport` hook for geometry + forces
+2. ⏳ Update import UI to call dual CSV endpoint (geometry + forces)
+3. ⏳ Render import warnings inline; do not block UI on warnings
 
 **Quality + Automation**
-- Run `scripts/discover_api_signatures.py` before wrapping
-- Add unit tests for import/merge edge cases (missing IDs, mixed units)
-- Add integration tests for dual CSV endpoint + SSE stream ordering
+- ✅ Unit tests for import/merge edge cases
+- ✅ Integration test for dual CSV endpoint
+- ⏳ Integration test for SSE stream ordering
 
 ---
 
@@ -141,21 +145,22 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 **Goal:** Make React’s 3D workspace dynamic and trustworthy.
 
 **Library Tasks**
-1. `structural_lib.geometry_3d.building_to_3d_geometry(models, lod="auto")`
-2. `structural_lib.geometry_3d.cross_section_geometry(beam, rebar_config)`
-3. `structural_lib.rebar.validate_rebar_config(beam, config)`
-4. `structural_lib.rebar.apply_rebar_config(beam, config)` (returns updated design + geometry)
+1. ✅ `structural_lib.geometry_3d.building_to_3d_geometry(models, lod="auto")`
+2. ⏳ `structural_lib.geometry_3d.cross_section_geometry(beam, rebar_config)`
+3. ✅ `structural_lib.rebar.validate_rebar_config(beam, config)`
+4. ✅ `structural_lib.rebar.apply_rebar_config(beam, config)` (returns updated design + geometry)
 
 **FastAPI Tasks**
-1. `POST /api/v1/geometry/building` (returns instancing-ready meshes)
-2. `POST /api/v1/geometry/cross-section`
-3. `POST /api/v1/rebar/validate` + `POST /api/v1/rebar/apply`
+1. ⏳ `POST /api/v1/geometry/building` (returns instancing-ready meshes)
+2. ⏳ `POST /api/v1/geometry/cross-section`
+3. ⏳ `POST /api/v1/rebar/validate` + `POST /api/v1/rebar/apply`
 
 **React Tasks**
-1. Building view: new `useBuildingGeometry` hook with LOD controls
-2. Editor mode: live rebar validation + cross-section update
-3. Dynamic focus: when editing beam row, 3D view filters + zooms to beam
-4. Add `ConnectionStatus` + `useLiveDesign` for live updates
+1. ✅ Building frame visualization exists (import-driven)
+2. ⏳ Building view: new `useBuildingGeometry` hook with LOD controls
+3. ⏳ Editor mode: live rebar validation + cross-section update
+4. ⏳ Dynamic focus: when editing beam row, 3D view filters + zooms to beam
+5. ✅ `ConnectionStatus` + `useLiveDesign` already available for live updates
 
 **Quality + Automation**
 - Snapshot tests for geometry schema (single + building)
