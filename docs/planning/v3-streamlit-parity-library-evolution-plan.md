@@ -107,12 +107,14 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 ## Progress Update (Jan 27, 2026)
 
-**Phase 1 (Complete)**
-- ✅ FastAPI import + batch endpoints already exist (`/api/v1/import/csv`, `/api/v1/import/batch-design`).
-- ✅ SSE batch streaming endpoint exists (`/stream/batch-design`).
+**Phase 1 (Complete, UI wiring pending)**
+- ✅ FastAPI import + batch endpoints exist (`/api/v1/import/csv`, `/api/v1/import/batch-design`).
+- ✅ SSE batch streaming endpoint exists (`/stream/batch-design`) and uses `design_beams_iter`.
 - ✅ Library dual‑CSV wrapper added: `structural_lib.imports.parse_dual_csv` + validation helpers.
 - ✅ Library batch generator + batch helper added: `structural_lib.batch.design_beams_iter` / `design_beams`.
-- ✅ FastAPI dual CSV endpoint added (`/api/v1/import/dual-csv`) + React hook (`useDualCSVImport`).
+- ✅ FastAPI dual CSV endpoint added (`/api/v1/import/dual-csv`).
+- ✅ React hook added (`useDualCSVImport`).
+- ⏳ React import UI still needs to call dual CSV + show warnings panel.
 
 **Phase 2 (Complete)**
 - ✅ React building frame visualization exists (3D frame from import data).
@@ -132,7 +134,7 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 ### Phase 1 — Canonical Inputs + Batch Foundations (Weeks 4–5)
 
-**Status:** ✅ Complete (commit `6ee623f`)
+**Status:** ✅ Complete (library + API), ⏳ UI wiring pending (commit `6ee623f`)
 
 **Goal:** Clean, repeatable import + design flows that React can trust.
 
@@ -145,8 +147,9 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 **FastAPI Tasks**
 1. ✅ `POST /api/v1/import/dual-csv` → wraps `parse_dual_csv`
-2. ✅ `GET /stream/batch-design` → uses `design_beams_iter` generator
-3. ⏳ `POST /api/v1/design/batch` → wraps `design_beams` (still needed)
+2. ✅ `POST /api/v1/import/batch-design` → wraps `design_beams`
+3. ✅ `GET /stream/batch-design` → uses `design_beams_iter` generator
+4. ⏳ Optional alias: `POST /api/v1/design/batch` (only if we want naming symmetry)
 
 **React Tasks**
 1. ✅ Add `useDualCSVImport` hook for geometry + forces
@@ -225,8 +228,8 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 This section mirrors **# V3 React Migration Roadmap (7-Week Plan)** and explains what React should do and which library functions it should call (or add).
 
 ### Phase 4 (Week 5) — Live Design + Streaming
-- **Use existing hooks:** `useLiveDesign`, `useBeamGeometry`, `useCSVFileImport`.
-- **Add hook:** `useDualCSVImport` → calls new `/import/dual-csv` endpoint.
+- **Use existing hooks:** `useLiveDesign`, `useBeamGeometry`, `useCSVFileImport`, `useDualCSVImport`.
+- **UI task:** wire dual CSV import into the ImportView and surface warnings panel.
 - **Error policy:** show parse warnings in a non-blocking panel; hard errors block only when no beams are parsed.
 - **Debug:** log request IDs + beam IDs; include error trace in dev console.
 
@@ -260,12 +263,14 @@ This section mirrors **# V3 React Migration Roadmap (7-Week Plan)** and explains
 
 ---
 
-## Implementation Checklist (Start Now)
+## Implementation Checklist (Next Up)
 
-1. Add Phase 1 library tasks to TASKS.md + split by function.
-2. Add FastAPI endpoints for dual CSV + batch streaming generator.
-3. Create `useDualCSVImport` hook + UI warnings panel in React.
-4. Add schema tests for `parse_dual_csv` and `design_beams_iter`.
+1. Add FastAPI endpoints: `/api/v1/geometry/building`, `/api/v1/geometry/cross-section`.
+2. Add FastAPI endpoints: `/api/v1/rebar/validate`, `/api/v1/rebar/apply`.
+3. Implement `geometry_3d.cross_section_geometry` in library.
+4. Wire Import UI to dual CSV + warnings panel (use `useDualCSVImport`).
+5. Add React hooks: `useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`.
+6. Add integration test for SSE stream ordering.
 
 ---
 

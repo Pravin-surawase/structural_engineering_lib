@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-27
-- Focus: Dual CSV import + building geometry + rebar helpers integrated
+- Focus: Phase 2 Complete — Building geometry + rebar + cross-section endpoints + React hooks
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,32 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** Session 81 | **Focus:** Dual CSV import + building geometry + rebar helpers
+**Last Session:** Session 82 | **Focus:** Phase 2 geometry/rebar endpoints + React hooks
+
+---
+
+## ✅ Session 82 Summary (Jan 27, 2026)
+
+### Completed This Session — Phase 2 COMPLETE
+
+1. **Library Layer**
+   - `cross_section_geometry()` in `geometry_3d.py`
+   - `CrossSectionGeometry` dataclass for 2D section cuts
+
+2. **FastAPI Endpoints (4 new)**
+   - `POST /api/v1/geometry/building` — Building wireframe
+   - `POST /api/v1/geometry/cross-section` — 2D section cut
+   - `POST /api/v1/geometry/rebar/validate` — IS 456 validation
+   - `POST /api/v1/geometry/rebar/apply` — Apply + geometry preview
+
+3. **React Hooks (4 new)**
+   - `useBuildingGeometry` / `useBuildingGeometryMutation`
+   - `useRebarValidation` / `useRebarApply`
+
+### PR
+| Number | Description | Status |
+|--------|-------------|--------|
+| #415 | Phase 2 geometry + rebar endpoints + hooks | 🟡 Open |
 
 ---
 
@@ -94,65 +119,70 @@
 | Hook | Purpose |
 |------|---------|
 | `useBeamGeometry` | 3D rebar/stirrup positions from API |
+| `useBuildingGeometry` | Building-level 3D wireframe |
+| `useRebarValidation` | Rebar config validation |
+| `useRebarApply` | Apply rebar + preview geometry |
 | `useCSVFileImport` | CSV import via library adapters |
-| `useCSVTextImport` | Clipboard CSV import |
+| `useDualCSVImport` | Geometry + forces CSV import |
 | `useBatchDesign` | Batch design all beams |
-| `useDesignWebSocket` | WebSocket live design (partial) |
+| `useDesignWebSocket` | WebSocket live design |
 
 ### FastAPI Endpoints
 | Endpoint | Purpose |
 |----------|---------|
+| `POST /api/v1/geometry/beam/full` | Full 3D beam geometry |
+| `POST /api/v1/geometry/building` | Building wireframe |
+| `POST /api/v1/geometry/cross-section` | 2D section cut |
+| `POST /api/v1/geometry/rebar/validate` | Rebar validation |
+| `POST /api/v1/geometry/rebar/apply` | Rebar apply + geometry |
 | `POST /api/v1/import/csv` | CSV file import |
-| `POST /api/v1/import/csv/text` | CSV text import |
-| `POST /api/v1/geometry/beam/full` | Full 3D geometry |
+| `POST /api/v1/import/dual-csv` | Dual file import |
 | `POST /api/v1/design/beam` | Beam design |
-| `/ws/design/{session}` | WebSocket live updates |
 
 ### Library Functions
 | Module | Key Functions |
 |--------|---------------|
 | `api.py` | `design_beam_is456()`, `detail_beam_is456()` |
 | `adapters.py` | `GenericCSVAdapter`, `ETABSAdapter` |
-| `geometry_3d.py` | `beam_to_3d_geometry()` |
+| `geometry_3d.py` | `beam_to_3d_geometry()`, `building_to_3d_geometry()`, `cross_section_geometry()` |
+| `rebar.py` | `validate_rebar_config()`, `apply_rebar_config()` |
+| `batch.py` | `design_beams()`, `design_beams_iter()` |
 
 ---
 
-## 🔥 Next Session Priorities
+## 🔥 Next Session Priorities — Phase 3
 
-### Priority 1: End-to-End Test (Required)
+### Priority 1: Insights Library Module
 
-**Goal:** Verify FastAPI + React work together
+**Goal:** Create `structural_lib.insights` module
 
-```bash
-# Terminal 1: Start FastAPI
-docker compose -f docker-compose.dev.yml up --build
-
-# Terminal 2: Start React
-cd react_app && npm run dev
-
-# Test: Open http://localhost:5173
-# 1. Design a beam → View 3D
-# 2. Import CSV → View multiple beams
+```python
+# New file: Python/structural_lib/insights.py
+def generate_dashboard(design_result) -> DashboardData
+def code_checks_live(beam, config) -> CodeCheckResult
 ```
 
-### Priority 2: WebSocket Polish
+### Priority 2: FastAPI Insight Endpoints
 
-**Goal:** Complete live design updates
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/v1/insights/dashboard` | Aggregated design summary |
+| `POST /api/v1/insights/code-checks` | Live IS 456 pass/fail |
+| `POST /api/v1/optimization/rebar-suggest` | Rebar optimization hints |
 
-| Task | Status |
-|------|--------|
-| Add reconnecting-websocket library | 📋 TODO |
-| Handle connection state (online/offline) | 📋 TODO |
-| Add loading skeleton states | 📋 TODO |
-| Error handling | 📋 TODO |
+### Priority 3: React Integration
 
-### Priority 3: AG Grid (Optional)
+| Hook | Purpose |
+|------|---------|
+| `useDashboardInsights` | Fetch dashboard data |
+| `useCodeChecks` | Real-time code validation |
+| `useRebarSuggestions` | Optimization suggestions |
 
-**Goal:** Professional data tables for beam list
+### Priority 4: UI Polish
 
-### Priority 4: Command Palette (Optional)
-
-**Goal:** Keyboard shortcuts (Cmd+Shift+P)
+- Live IS-code status badge (pass/fail + warnings)
+- Optimizer suggestions panel with "Apply" button
+- Export buttons for BBS/DXF
 
 ---
 
@@ -161,10 +191,10 @@ cd react_app && npm run dev
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1 | Automation Foundation | ✅ DONE |
-| **Phase 2** | 2-3 | FastAPI Backend | ✅ DONE |
-| **Phase 3** | 3-4 | React Shell + 3D | ✅ DONE |
-| **Phase 4** | 5 | WebSocket Live Updates | 🟡 PARTIAL |
-| **Phase 5-6** | 6-7 | Multi-Beam + Polish | 📋 TODO |
+| **Phase 2** | 2-3 | FastAPI + React Foundation | ✅ DONE |
+| **Phase 3** | 4-5 | Live Design + Streaming | ✅ DONE |
+| **Phase 4** | 5-6 | Geometry + Editor | ✅ DONE |
+| **Phase 5** | 6-7 | Insights + Code Checks | 🟡 NEXT |
 | **Launch** | 7 | Beta Launch | 🎯 TARGET |
 
 **Target:** March 15, 2026 (V3 Beta)

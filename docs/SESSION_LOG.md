@@ -4,6 +4,54 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-27 — Session 82: Phase 2 Geometry + Rebar + Cross-Section Endpoints + React Hooks
+
+### Summary
+Completed Phase 2 of V3 Streamlit Parity Plan by adding FastAPI endpoints for building geometry, cross-section, and rebar validation/apply. Created corresponding React hooks for seamless integration.
+
+### Key Accomplishments
+
+1. **Library Layer**
+   - Added `cross_section_geometry()` function in `geometry_3d.py`
+   - Added `CrossSectionGeometry` dataclass for 2D section cuts
+
+2. **FastAPI Endpoints (4 new)**
+   - `POST /api/v1/geometry/building` — Building-level 3D wireframe geometry
+   - `POST /api/v1/geometry/cross-section` — 2D cross-section for section cuts
+   - `POST /api/v1/geometry/rebar/validate` — Rebar config validation per IS 456
+   - `POST /api/v1/geometry/rebar/apply` — Rebar apply + geometry preview
+
+3. **React Hooks (4 new)**
+   - `useBuildingGeometry` / `useBuildingGeometryMutation` — Building frame geometry
+   - `useRebarValidation` / `useRebarApply` — Real-time rebar validation + apply
+
+4. **Documentation**
+   - Updated `v3-streamlit-parity-library-evolution-plan.md` with Phase 2 completion
+
+### PR
+| Number | Description | Status |
+|--------|-------------|--------|
+| #415 | TASK-V3-PHASE2: Add Phase 2 geometry and rebar endpoints + React hooks | 🟡 Open |
+
+### Test Results
+```
+✅ pytest tests/unit/test_rebar.py tests/unit/test_building_geometry.py - 4 passed
+✅ npm run build - React app builds successfully
+✅ cross_section_geometry() function verified working
+✅ All 7 geometry routes verified: /building, /cross-section, /rebar/validate, /rebar/apply
+```
+
+### Phase 2 Status: ✅ COMPLETE
+All library functions, FastAPI endpoints, and React hooks for Phase 2 are implemented.
+
+### Next Session Priorities
+1. Implement Phase 3: Insights dashboard + live code checks
+2. Add `structural_lib.insights` module with `generate_dashboard`, `code_checks_live`
+3. Add optimization endpoints for rebar suggestions
+4. Wire React editor with live IS-code pass/fail display
+
+---
+
 ## 2026-01-27 — Session 81: Dual CSV Import + Building Geometry + Rebar Helpers
 
 ### Summary
