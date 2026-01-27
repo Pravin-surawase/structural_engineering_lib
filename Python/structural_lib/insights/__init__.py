@@ -12,6 +12,15 @@ from .comparison import (
 )
 from .constructability import calculate_constructability_score
 from .cost_optimization import CostOptimizationResult, CostProfile, optimize_beam_design
+from .dashboard import (
+    CodeCheck,
+    CodeCheckResult,
+    DashboardData,
+    RebarSuggestion,
+    code_checks_live,
+    generate_dashboard,
+    suggest_rebar_options,
+)
 from .data_types import (
     ConstructabilityFactor,
     ConstructabilityScore,
@@ -43,13 +52,18 @@ from .smart_designer import (
 __all__ = [
     "calculate_constructability_score",
     "calculate_robustness",
+    "code_checks_live",
     "compare_designs",
     "cost_aware_sensitivity",
+    "generate_dashboard",
     "quick_analysis",
     "quick_precheck",
     "sensitivity_analysis",
     "optimize_beam_design",
     "suggest_improvements",
+    "suggest_rebar_options",
+    "CodeCheck",
+    "CodeCheckResult",
     "ComparisonMetrics",
     "ComparisonResult",
     "ConstructabilityInsights",
@@ -59,6 +73,7 @@ __all__ = [
     "CostSensitivityResult",
     "ConstructabilityFactor",
     "ConstructabilityScore",
+    "DashboardData",
     "DashboardReport",
     "DesignAlternative",
     "DesignSuggestion",
@@ -66,6 +81,7 @@ __all__ = [
     "HeuristicWarning",
     "ImpactLevel",
     "PredictiveCheckResult",
+    "RebarSuggestion",
     "RobustnessScore",
     "SensitivityInsights",
     "SensitivityResult",

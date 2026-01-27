@@ -11,6 +11,14 @@ export {
   useDualCSVImport,
   useBatchDesign,
 } from './useCSVImport';
+export {
+  useDashboard,
+  useCodeChecks,
+  useRebarSuggestions,
+  useDashboardMutation,
+  useCodeChecksMutation,
+  useRebarSuggestionsMutation,
+} from './useInsights';
 
 // Type exports
 export type {
@@ -29,3 +37,13 @@ export type {
   ConnectionStatus as WebSocketConnectionStatus,
   WebSocketState,
 } from './useDesignWebSocket';
+export type {
+  BeamParams,
+  RebarConfig,
+  DesignResult,
+  DashboardResponse,
+  CodeChecksResponse,
+  SingleCodeCheck,
+  RebarSuggestion,
+  RebarSuggestResponse,
+} from './useInsights';
