@@ -47,6 +47,7 @@ References:
 from __future__ import annotations
 
 import math
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -61,12 +62,15 @@ __all__ = [
     "RebarPath",
     "StirrupLoop",
     "Beam3DGeometry",
+    "BuildingBeam3D",
+    "Building3DGeometry",
     # Computation functions
     "compute_rebar_positions",
     "compute_stirrup_path",
     "compute_stirrup_positions",
     "compute_beam_outline",
     "beam_to_3d_geometry",
+    "building_to_3d_geometry",
 ]
 
 
@@ -346,9 +350,132 @@ class Beam3DGeometry:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class BuildingBeam3D:
+    """Line representation of a beam in building context."""
+
+    beam_id: str
+    story: str
+    frame_type: str
+    start: Point3D
+    end: Point3D
+
+    def to_dict(self) -> dict:
+        return {
+            "beamId": self.beam_id,
+            "story": self.story,
+            "frameType": self.frame_type,
+            "start": self.start.to_dict(),
+            "end": self.end.to_dict(),
+        }
+
+
+@dataclass
+class Building3DGeometry:
+    """Building-level geometry for multi-beam visualization."""
+
+    beams: list[BuildingBeam3D]
+    bounding_box: dict[str, float]
+    center: Point3D
+    metadata: dict = field(default_factory=dict)
+
+    def to_dict(self) -> dict:
+        return {
+            "beams": [beam.to_dict() for beam in self.beams],
+            "boundingBox": self.bounding_box,
+            "center": self.center.to_dict(),
+            "metadata": self.metadata,
+            "version": "1.0.0",
+        }
+
+
 # =============================================================================
 # Coordinate Computation Functions
 # =============================================================================
+
+
+def building_to_3d_geometry(
+    beams: Iterable["BeamGeometry"],
+    *,
+    unit_scale: float = 1000.0,
+    include_frame_types: tuple[str, ...] | None = None,
+) -> Building3DGeometry:
+    """Build line geometry for a multi-beam building view.
+
+    Args:
+        beams: Iterable of BeamGeometry (coordinates typically in meters).
+        unit_scale: Scale factor applied to coordinates (default converts m -> mm).
+        include_frame_types: Optional filter for frame types ("beam", "column", "brace").
+
+    Returns:
+        Building3DGeometry with line segments, bounding box, and center.
+    """
+    from structural_lib.models import BeamGeometry
+
+    beam_list: list[BuildingBeam3D] = []
+
+    for beam in beams:
+        if not isinstance(beam, BeamGeometry):
+            continue
+        frame_type = str(beam.frame_type.value)
+        if include_frame_types and frame_type not in include_frame_types:
+            continue
+
+        start = Point3D(
+            beam.point1.x * unit_scale,
+            beam.point1.y * unit_scale,
+            beam.point1.z * unit_scale,
+        )
+        end = Point3D(
+            beam.point2.x * unit_scale,
+            beam.point2.y * unit_scale,
+            beam.point2.z * unit_scale,
+        )
+
+        beam_list.append(
+            BuildingBeam3D(
+                beam_id=beam.id,
+                story=beam.story,
+                frame_type=frame_type,
+                start=start,
+                end=end,
+            )
+        )
+
+    if not beam_list:
+        raise ValueError("No beams provided for building geometry")
+
+    min_x = min(min(b.start.x, b.end.x) for b in beam_list)
+    max_x = max(max(b.start.x, b.end.x) for b in beam_list)
+    min_y = min(min(b.start.y, b.end.y) for b in beam_list)
+    max_y = max(max(b.start.y, b.end.y) for b in beam_list)
+    min_z = min(min(b.start.z, b.end.z) for b in beam_list)
+    max_z = max(max(b.start.z, b.end.z) for b in beam_list)
+
+    center = Point3D(
+        (min_x + max_x) / 2,
+        (min_y + max_y) / 2,
+        (min_z + max_z) / 2,
+    )
+
+    bounding_box = {
+        "min_x": round(min_x, 3),
+        "max_x": round(max_x, 3),
+        "min_y": round(min_y, 3),
+        "max_y": round(max_y, 3),
+        "min_z": round(min_z, 3),
+        "max_z": round(max_z, 3),
+    }
+
+    return Building3DGeometry(
+        beams=beam_list,
+        bounding_box=bounding_box,
+        center=center,
+        metadata={
+            "unitScale": unit_scale,
+            "beamCount": len(beam_list),
+        },
+    )
 
 
 def compute_rebar_positions(

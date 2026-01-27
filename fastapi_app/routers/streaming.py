@@ -28,8 +28,7 @@ from typing import Any, AsyncGenerator
 from fastapi import APIRouter, Depends, Query, Request
 from sse_starlette.sse import EventSourceResponse
 
-# Import structural_lib API with proper signature discovery
-from structural_lib import api
+from structural_lib import batch
 from fastapi_app.auth import check_rate_limit
 
 logger = logging.getLogger(__name__)
@@ -195,79 +194,22 @@ async def stream_batch_design(
             ),
         }
 
-        for idx, beam_params in enumerate(beam_list):
+        for outcome in batch.design_beams_iter(beam_list, units="IS456"):
             # Check if client disconnected
             if await request.is_disconnected():
                 logger.info(f"Client disconnected during batch job {job_id}")
                 break
 
-            try:
-                # Extract parameters with defaults
-                width = beam_params.get("width", 300)
-                depth = beam_params.get("depth", 500)
-                moment = beam_params.get("moment", 100)
-                shear = beam_params.get("shear", 50)
-                fck = beam_params.get("fck", 25)
-                fy = beam_params.get("fy", 500)
-                cover = beam_params.get("cover", 40)
-                beam_id = beam_params.get("id", f"beam_{idx + 1}")
-
-                d_mm = depth - cover - 8
-
-                # Run design in thread pool
-                result = await asyncio.to_thread(
-                    api.design_beam_is456,
-                    units="IS456",
-                    b_mm=float(width),
-                    D_mm=float(depth),
-                    d_mm=float(d_mm),
-                    mu_knm=float(moment),
-                    vu_kn=float(shear),
-                    fck_nmm2=float(fck),
-                    fy_nmm2=float(fy),
-                )
-
-                result_data = {
-                    "beam_id": beam_id,
-                    "index": idx,
-                    "input": beam_params,
-                    "flexure": {
-                        "ast_required": result.flexure.ast_required,
-                        "mu_lim": result.flexure.mu_lim,
-                        "xu": result.flexure.xu,
-                        "is_safe": result.flexure.is_safe,
-                    },
-                    "shear": (
-                        {
-                            "tv": result.shear.tv if result.shear else None,
-                            "tc": result.shear.tc if result.shear else None,
-                            "is_safe": result.shear.is_safe if result.shear else None,
-                        }
-                        if result.shear
-                        else None
-                    ),
-                    "status": "PASS" if result.flexure.is_safe else "FAIL",
-                }
-
+            if outcome.get("success"):
+                result_data = outcome["data"]
                 job_manager.update_progress(job_id, success=True, result=result_data)
-
                 yield {"event": "design_result", "data": json.dumps(result_data)}
-
-            except Exception as e:
-                logger.exception(f"Error designing beam {idx}")
-                error_msg = str(e)
-                job_manager.update_progress(job_id, success=False, error=error_msg)
-
-                yield {
-                    "event": "error",
-                    "data": json.dumps(
-                        {
-                            "beam_id": beam_params.get("id", f"beam_{idx + 1}"),
-                            "index": idx,
-                            "message": error_msg,
-                        }
-                    ),
-                }
+            else:
+                error_data = outcome["error"]
+                job_manager.update_progress(
+                    job_id, success=False, error=error_data.get("message")
+                )
+                yield {"event": "error", "data": json.dumps(error_data)}
 
             # Send progress update
             job = job_manager.get_job(job_id)
@@ -282,6 +224,8 @@ async def stream_batch_design(
                     }
                 ),
             }
+
+            await asyncio.sleep(0)
 
         # Send complete event
         job = job_manager.get_job(job_id)

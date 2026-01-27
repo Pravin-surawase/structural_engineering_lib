@@ -153,6 +153,41 @@ class TestDetailingEndpoints:
         assert data["ld"] > 0
 
 
+class TestImportEndpoints:
+    """Tests for CSV import endpoints."""
+
+    def test_dual_csv_import(self, client):
+        """Test dual CSV import endpoint."""
+        geometry_csv = (
+            "BeamID,Story,b (mm),D (mm),Span (mm),fck,fy,Cover (mm)\n"
+            "B1,GF,300,500,5000,25,500,40\n"
+        )
+        forces_csv = "BeamID,Story,Mu (kN-m),Vu (kN)\nB1,GF,150,80\n"
+
+        files = {
+            "geometry_file": (
+                "geometry.csv",
+                geometry_csv.encode("utf-8"),
+                "text/csv",
+            ),
+            "forces_file": (
+                "forces.csv",
+                forces_csv.encode("utf-8"),
+                "text/csv",
+            ),
+        }
+        response = client.post(
+            "/api/v1/import/dual-csv?format_hint=generic",
+            files=files,
+        )
+        assert response.status_code == status.HTTP_200_OK
+
+        data = response.json()
+        assert data["success"] is True
+        assert data["beam_count"] == 1
+        assert data["beams"][0]["point1"] is not None
+
+
 class TestOptimizationEndpoints:
     """Tests for cost optimization endpoints."""
 
