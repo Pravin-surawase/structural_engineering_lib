@@ -128,7 +128,7 @@ export function DesignView() {
       <div className="flex-1 flex flex-col bg-zinc-900/30">
         {/* 3D Viewport (top 60%) */}
         <div className="flex-[3] min-h-0 relative">
-          <Viewport3D mode="design" />
+          <Viewport3D mode="design" forceMode />
           {state.isConnected && state.latency !== null && (
             <div className="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/50 text-[10px] text-white/40 backdrop-blur">
               {state.latency}ms

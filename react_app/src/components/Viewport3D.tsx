@@ -11,7 +11,7 @@
  */
 import { useMemo, useCallback, Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Grid, Environment, PerspectiveCamera } from '@react-three/drei';
+import { OrbitControls, Grid, Environment, PerspectiveCamera, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { useDesignStore } from '../store/designStore';
@@ -308,10 +308,15 @@ function BuildingFrame() {
     }
   }, []);
 
-  // Determine opacity for floor isolation
+  // Determine opacity for floor isolation (normalize story names for comparison)
   const getBeamOpacity = useCallback((beam: typeof beams[0], isSelected: boolean) => {
     if (isSelected) return 1;
-    if (selectedFloor && beam.story !== selectedFloor) return 0.08; // Fade non-selected floors
+    if (selectedFloor) {
+      const normalizedSelectedFloor = selectedFloor.trim().toLowerCase();
+      const normalizedBeamStory = (beam.story ?? '').trim().toLowerCase();
+      // If a floor is selected and this beam is on a different floor, fade it
+      if (normalizedBeamStory !== normalizedSelectedFloor) return 0.08;
+    }
     return 1;
   }, [selectedFloor]);
 
@@ -450,14 +455,34 @@ function BuildingFrame() {
                 opacity={opacity}
                 metalness={0.1}
                 roughness={0.8}
+                emissive={isSelected ? '#00ff88' : '#000000'}
+                emissiveIntensity={isSelected ? 0.3 : 0}
               />
             </mesh>
-            {/* Wireframe outline for selected beam */}
+            {/* Glow effect + wireframe for selected beam */}
             {isSelected && (
-              <mesh position={mid} quaternion={quat}>
-                <boxGeometry args={[beamLength, bD, bW]} />
-                <meshBasicMaterial color="#ffffff" wireframe opacity={0.4} transparent />
-              </mesh>
+              <>
+                <mesh position={mid} quaternion={quat}>
+                  <boxGeometry args={[beamLength * 1.02, bD * 1.1, bW * 1.1]} />
+                  <meshBasicMaterial color="#00ff88" transparent opacity={0.15} />
+                </mesh>
+                <mesh position={mid} quaternion={quat}>
+                  <boxGeometry args={[beamLength, bD, bW]} />
+                  <meshBasicMaterial color="#ffffff" wireframe opacity={0.5} transparent />
+                </mesh>
+                {/* Beam label */}
+                <Html
+                  position={[mid.x, mid.y + bD + 0.3, mid.z]}
+                  center
+                  distanceFactor={15}
+                  style={{ pointerEvents: 'none' }}
+                >
+                  <div className="px-2 py-1 rounded-md bg-black/80 backdrop-blur text-white text-xs font-medium whitespace-nowrap border border-green-400/50 shadow-lg">
+                    {beam.id}
+                    <span className="text-green-400 ml-1">{beam.story}</span>
+                  </div>
+                </Html>
+              </>
             )}
           </group>
         );
@@ -479,6 +504,33 @@ function BuildingFrame() {
 }
 
 function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
+  const { beams } = useImportedBeamsStore();
+
+  // Find adjacent beams (share an endpoint with selected beam, within tolerance)
+  const adjacentBeams = useMemo(() => {
+    if (!beam?.point1 || !beam.point2) return [];
+    const tolerance = 0.1; // 10cm tolerance for matching endpoints
+    const beamP1 = beam.point1;
+    const beamP2 = beam.point2;
+
+    const isNear = (p1: { x: number; y: number; z: number }, p2: { x: number; y: number; z: number }) => {
+      const dist = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2 + (p1.z - p2.z) ** 2);
+      return dist < tolerance;
+    };
+
+    return beams.filter((b) => {
+      if (b.id === beam.id) return false;
+      if (!b.point1 || !b.point2) return false;
+      // Check if any endpoint matches
+      return (
+        isNear(b.point1, beamP1) ||
+        isNear(b.point1, beamP2) ||
+        isNear(b.point2, beamP1) ||
+        isNear(b.point2, beamP2)
+      );
+    });
+  }, [beam, beams]);
+
   const astBase = useMemo(() => {
     if (!beam) return null;
     if (typeof beam.ast_provided === "number") return beam.ast_provided;
@@ -546,10 +598,124 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
   if (!detailGeometry || !placement) return null;
 
   return (
+    <>
+      {/* Selected beam rebar */}
+      <group position={placement.start} quaternion={placement.quat}>
+        <RebarVisualization rebars={detailGeometry.rebars} />
+        {detailGeometry.stirrups.length > 0 && (
+          <StirrupVisualization stirrups={detailGeometry.stirrups} />
+        )}
+      </group>
+
+      {/* Adjacent beams rebar (for continuity check) */}
+      {adjacentBeams.map((adjBeam) => (
+        <AdjacentBeamRebar key={adjBeam.id} beam={adjBeam} />
+      ))}
+    </>
+  );
+}
+
+/** Render rebar for an adjacent beam (lighter opacity) */
+function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
+  const astBase = useMemo(() => {
+    if (typeof beam.ast_provided === "number") return beam.ast_provided;
+    if (typeof beam.ast_required === "number") return beam.ast_required;
+    if (typeof beam.bar_count === "number" && typeof beam.bar_diameter === "number") {
+      return beam.bar_count * Math.PI * (beam.bar_diameter / 2) ** 2;
+    }
+    return null;
+  }, [beam]);
+
+  const detailParams = useMemo(() => {
+    if (!astBase) return null;
+    const spanMm = beam.span
+      ? beam.span
+      : beam.point1 && beam.point2
+      ? Math.sqrt(
+          (beam.point1.x - beam.point2.x) ** 2 +
+            (beam.point1.y - beam.point2.y) ** 2 +
+            (beam.point1.z - beam.point2.z) ** 2
+        ) * 1000
+      : 0;
+    const stirrupSpacing = beam.stirrup_spacing ?? 150;
+    return {
+      width: beam.b,
+      depth: beam.D,
+      span: spanMm,
+      fck: beam.fck ?? 25,
+      fy: beam.fy ?? 500,
+      ast_start: astBase,
+      ast_mid: astBase,
+      ast_end: astBase,
+      stirrup_dia: beam.stirrup_diameter ?? 8,
+      stirrup_spacing_start: stirrupSpacing,
+      stirrup_spacing_mid: stirrupSpacing,
+      stirrup_spacing_end: stirrupSpacing,
+      cover: beam.cover ?? 40,
+    };
+  }, [astBase, beam]);
+
+  const { data: geom } = useBeamGeometry(detailParams, { enabled: Boolean(astBase && detailParams) });
+
+  const placement = useMemo(() => {
+    if (!beam.point1 || !beam.point2) return null;
+    const start = new THREE.Vector3(beam.point1.x, beam.point1.z, -beam.point1.y);
+    const end = new THREE.Vector3(beam.point2.x, beam.point2.z, -beam.point2.y);
+    const direction = new THREE.Vector3().subVectors(end, start);
+    if (direction.length() === 0) return null;
+    direction.normalize();
+    const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), direction);
+    return { start, quat };
+  }, [beam]);
+
+  if (!geom || !placement) return null;
+
+  // Render with reduced opacity to show adjacency
+  const fadedRebarMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: '#a06838',
+        metalness: 0.5,
+        roughness: 0.5,
+        transparent: true,
+        opacity: 0.5,
+      }),
+    []
+  );
+
+  return (
     <group position={placement.start} quaternion={placement.quat}>
-      <RebarVisualization rebars={detailGeometry.rebars} />
-      {detailGeometry.stirrups.length > 0 && (
-        <StirrupVisualization stirrups={detailGeometry.stirrups} />
+      {geom.rebars.map((rebar) =>
+        rebar.segments.map((segment, segIdx) => {
+          const start: [number, number, number] = [
+            segment.start.x * SCALE,
+            segment.start.z * SCALE,
+            segment.start.y * SCALE,
+          ];
+          const end: [number, number, number] = [
+            segment.end.x * SCALE,
+            segment.end.z * SCALE,
+            segment.end.y * SCALE,
+          ];
+          const midpoint: [number, number, number] = [
+            (start[0] + end[0]) / 2,
+            (start[1] + end[1]) / 2,
+            (start[2] + end[2]) / 2,
+          ];
+          const length = segment.length * SCALE;
+          const radius = (segment.diameter / 2) * SCALE;
+
+          return (
+            <mesh
+              key={`adj-${beam.id}-${rebar.barId}-${segIdx}`}
+              position={midpoint}
+              rotation={[0, 0, Math.PI / 2]}
+              material={fadedRebarMaterial}
+            >
+              <cylinderGeometry args={[radius, radius, length, 8]} />
+            </mesh>
+          );
+        })
       )}
     </group>
   );
@@ -644,22 +810,28 @@ export type Viewport3DMode = 'design' | 'building';
 interface Viewport3DProps {
   mode?: Viewport3DMode;
   overrideGeometry?: RebarPreviewGeometry | null;
+  /** If true, don't auto-detect mode; use the provided mode exactly */
+  forceMode?: boolean;
 }
 
 /**
  * Viewport3D - 3D visualization component.
  *
  * @param mode - 'design' for single beam with rebar, 'building' for imported beams frame
+ * @param forceMode - if true, don't auto-detect mode, use the provided mode
  */
-export function Viewport3D({ mode = 'design', overrideGeometry = null }: Viewport3DProps) {
+export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode = false }: Viewport3DProps) {
   const { beams } = useImportedBeamsStore();
 
-  // Auto-detect mode: use building view if there are imported beams with 3D positions
-  const effectiveMode =
-    mode === 'building' ||
-    (beams.length > 0 && beams.some((b) => b.point1 && b.point2))
+  // Use exact mode if forced, otherwise auto-detect for 'design' mode
+  // Auto-detect only if mode is 'design' AND not forced
+  const effectiveMode = forceMode
+    ? mode
+    : mode === 'building'
       ? 'building'
-      : 'design';
+      : beams.length > 0 && beams.some((b) => b.point1 && b.point2)
+        ? 'building'
+        : 'design';
 
   return (
     <div className="viewport3d">
