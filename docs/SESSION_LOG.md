@@ -4,6 +4,47 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-28 — Session 84: React UI Consolidation + V3 Parity Update
+
+### Summary
+Committed 19 React UI files with major refactoring of DesignView, ImportView, Viewport3D plus new components (CrossSectionView, TopBar, pages/*). Updated V3 Parity document with proof of work from all open PRs.
+
+### Key Accomplishments
+
+1. **React UI Refactoring** (19 files, 2179 additions, 486 deletions)
+   - **Enhanced:** DesignView, ImportView, Viewport3D, ModernAppLayout
+   - **New Components:** CrossSectionView.tsx, TopBar.tsx
+   - **New Pages:** BeamDetailPage, BuildingEditorPage, HomePage, ModeSelectPage
+   - **New Utilities:** beamStatus.ts (status helpers)
+   - **Updated:** hooks (useCSVImport, index.ts), stores (importedBeamsStore), types (csv.ts)
+
+2. **V3 Parity Document Updated**
+   - Added PR table with proof of work (#413-#418)
+   - Updated phase status summary (Phase 1 ✅, Phase 2 80%, Phase 3 library ✅, Phase 4 ✅)
+   - Reorganized checklist by priority (High/Medium/Low)
+
+### PRs Status
+| Number | Description | Status |
+|--------|-------------|--------|
+| #418 | TASK-V3-UIUX: React UI refactoring + new components | 🟢 Pending CI |
+| #417 | TASK-V3-PHASE4: Phase 4 UI integration | 🟡 Pending Review |
+| #416 | TASK-090: Phase 3 insights API | 🟡 Pending Review |
+| #415 | TASK-V3-PHASE2: Phase 2 geometry + rebar | 🟡 Pending CI |
+| #414 | TASK-DUALCSV: Dual CSV import | 🟡 Pending Review |
+| #413 | TASK-V3PARITY: Phase 1-2 library | 🟡 Pending Review |
+
+### Commits
+- `016664d` — feat(react): UI refactoring - enhanced views + new components
+- `6ff87f6` — docs: update V3 Parity plan with PR progress and proof of work
+
+### Next Session Priorities
+1. Monitor PRs for CI pass → merge
+2. Implement remaining FastAPI endpoints (geometry/building, cross-section, rebar/*, insights/*)
+3. Add `useBuildingGeometry`, `useCrossSectionGeometry` React hooks
+4. Complete Phase 3 FastAPI + React integration
+
+---
+
 ## 2026-01-27 — Session 83: Phase 4 UI Integration + UI Flow Documentation
 
 ### Summary
