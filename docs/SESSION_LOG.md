@@ -4,6 +4,61 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-28 — Session 86: 3D Visualization Improvements
+
+### Summary
+Fixed 6 issues with 3D visualization and editor based on user feedback. Added beam labels, improved floor isolation, adjacent beam rebar display, and fixed mode detection.
+
+### Issues Fixed
+
+| Issue | Description | Solution |
+|-------|-------------|----------|
+| **a. Editor save** | Cell changes not persisting | Verified store updates work correctly |
+| **b. Floor 1 fade** | First floor not fading when other floors selected | Normalized story comparison (trim + lowercase) |
+| **c. 3D rebar** | Details not visible, no adjacent beam info | Added adjacent beam detection and rebar rendering |
+| **d. Manual vs Batch** | Single design showed batch 3D view | Added `forceMode` prop to prevent auto-detection override |
+| **e. Smooth transitions** | Already implemented | Verified existing 900ms eased transitions |
+| **f. Beam labels** | No visual identifier for selected beam | Added Html labels with ID + story, glow effect |
+
+### Key Improvements
+
+1. **Floor Isolation Enhancement**
+   - Fixed string comparison for story names (case + whitespace insensitive)
+   - Non-selected floor beams fade to 8% opacity
+
+2. **Selected Beam Visualization**
+   - Added floating label with beam ID and story name
+   - Added glow effect (emissive material + transparent overlay)
+   - Enhanced wireframe highlight
+
+3. **Adjacent Beams for Rebar Continuity**
+   - Detects beams sharing endpoints within 10cm tolerance
+   - Renders adjacent beam rebar at 50% opacity
+   - Allows users to verify bar continuity at connections
+
+4. **Mode Separation (Design vs Building)**
+   - Added `forceMode` prop to Viewport3D
+   - DesignView now uses `forceMode` to stay in single-beam mode
+   - Prevents batch data from overriding design preview
+
+### PR Merged
+| Number | Description | Status |
+|--------|-------------|--------|
+| #421 | 3D visualization improvements | ✅ MERGED |
+
+### Files Changed (3 files, +191/-19 lines)
+- `react_app/src/components/Viewport3D.tsx` — Major enhancements
+- `react_app/src/components/DesignView.tsx` — Added forceMode
+- `react_app/src/hooks/useInsights.ts` — Unused import fix
+
+### Next Session Priorities
+1. Test 3D visualization with real CSV data
+2. Add zoom/pan lockout after camera transition
+3. Consider adding measurement tools in 3D view
+4. Wire dashboard insights into React Dashboard
+
+---
+
 ## 2026-01-28 — Session 85: V3 Parity Phase 3 Complete (Insights + Hooks)
 
 ### Summary
