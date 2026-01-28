@@ -35,6 +35,10 @@ export interface BeamCSVRow {
   Vu_end?: number;    // shear at end kN
   cover?: number;     // cover in mm
 
+  // Envelope values for design (computed from start/mid/end)
+  mu_envelope?: number;  // max(|Mu_start|, |Mu_mid|, |Mu_end|) kN·m
+  vu_envelope?: number;  // max(|Vu_start|, |Vu_end|) kN
+
   // 3D position for building visualization (optional)
   point1?: Point3D;   // start point (from ETABS geometry)
   point2?: Point3D;   // end point (from ETABS geometry)
@@ -44,8 +48,15 @@ export interface BeamCSVRow {
 
   // Design results (added after batch design)
   ast_required?: number;    // Required steel area mm²
+  asc_required?: number;    // Required compression steel mm²
   ast_provided?: number;    // Provided steel area mm²
   utilization?: number;     // Utilization ratio (0-1+)
+  bar_count?: number;
+  bar_diameter?: number;
+  stirrup_diameter?: number;
+  stirrup_spacing?: number;
+  is_valid?: boolean;
+  remarks?: string[];
 }
 
 export interface ImportedBeamsState {

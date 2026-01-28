@@ -9,14 +9,17 @@
  * Uses library API via useBeamGeometry hook for accurate bar positions
  * instead of manual calculations.
  */
-import { useMemo, useCallback, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, Environment, PerspectiveCamera, Line } from '@react-three/drei';
+import { useMemo, useCallback, Suspense, useEffect, useRef } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { OrbitControls, Grid, Environment, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { useDesignStore } from '../store/designStore';
 import { useImportedBeamsStore } from '../store/importedBeamsStore';
 import { useBeamGeometry } from '../hooks/useBeamGeometry';
 import type { RebarPath, StirrupLoop } from '../hooks/useBeamGeometry';
+import { deriveBeamStatus } from '../utils/beamStatus';
+import type { BeamCSVRow } from '../types/csv';
 import './Viewport3D.css';
 
 // Constants
@@ -47,7 +50,7 @@ function BeamMesh({ width, depth, length, isDesigned }: BeamMeshProps) {
   );
 
   return (
-    <mesh position={[0, d / 2, 0]} material={material}>
+    <mesh position={[l / 2, d / 2, 0]} material={material}>
       <boxGeometry args={[l, d, w]} />
     </mesh>
   );
@@ -206,7 +209,22 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
  * Supports color-coding by design status.
  */
 function BuildingFrame() {
-  const { beams, selectedId, selectBeam } = useImportedBeamsStore();
+  const { beams, selectedId, selectedFloor, selectBeam } = useImportedBeamsStore();
+  const { camera } = useThree();
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  const focusRef = useRef({
+    target: new THREE.Vector3(0, 0, 0),
+    position: new THREE.Vector3(0, 5, 10),
+  });
+  const transitionRef = useRef({
+    startTime: 0,
+    durationMs: 900,
+    startPos: new THREE.Vector3(0, 5, 10),
+    startTarget: new THREE.Vector3(0, 0, 0),
+    endPos: new THREE.Vector3(0, 5, 10),
+    endTarget: new THREE.Vector3(0, 0, 0),
+    active: false,
+  });
 
   // Filter beams that have 3D positions
   const beamsWithGeometry = useMemo(
@@ -229,6 +247,28 @@ function BuildingFrame() {
     return [sumX / n, sumZ / n, -sumY / n]; // Transform to Three.js coords
   }, [beamsWithGeometry]);
 
+  const selectedBeam = useMemo(
+    () => beamsWithGeometry.find((beam) => beam.id === selectedId) ?? null,
+    [beamsWithGeometry, selectedId]
+  );
+
+  const selectedTarget = useMemo(() => {
+    if (!selectedBeam?.point1 || !selectedBeam?.point2) return null;
+    return [
+      (selectedBeam.point1.x + selectedBeam.point2.x) / 2,
+      (selectedBeam.point1.z + selectedBeam.point2.z) / 2,
+      -(selectedBeam.point1.y + selectedBeam.point2.y) / 2,
+    ] as [number, number, number];
+  }, [selectedBeam]);
+
+  const selectedLength = useMemo(() => {
+    if (!selectedBeam?.point1 || !selectedBeam?.point2) return null;
+    const dx = selectedBeam.point1.x - selectedBeam.point2.x;
+    const dy = selectedBeam.point1.z - selectedBeam.point2.z;
+    const dz = selectedBeam.point1.y - selectedBeam.point2.y;
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }, [selectedBeam]);
+
   // Calculate building bounds for camera distance
   const buildingSize = useMemo(() => {
     if (beamsWithGeometry.length === 0) return 10;
@@ -249,25 +289,92 @@ function BuildingFrame() {
     return Math.max(maxDist * 2, 10);
   }, [beamsWithGeometry, buildingCenter]);
 
-  // Get beam color based on design status
+  // Get beam color based on design status and floor isolation
   const getBeamColor = useCallback((beam: typeof beams[0], isSelected: boolean) => {
-    if (isSelected) return '#00ff88'; // Selected - green
+    if (isSelected) return '#00ff88'; // Selected - bright green
 
-    // Check for design status (from design result)
-    const status = beam.status;
+    const status = deriveBeamStatus(beam);
     switch (status) {
       case 'pass':
-        return '#22c55e'; // Emerald - safe
+        return '#22c55e';
       case 'fail':
-        return '#ef4444'; // Red - failed
+        return '#ef4444';
       case 'warning':
-        return '#f59e0b'; // Amber - warning
+        return '#f59e0b';
       case 'designing':
-        return '#3b82f6'; // Blue - in progress
+        return '#3b82f6';
       default:
-        return '#4aa3ff'; // Default blue - pending
+        return '#4aa3ff';
     }
   }, []);
+
+  // Determine opacity for floor isolation
+  const getBeamOpacity = useCallback((beam: typeof beams[0], isSelected: boolean) => {
+    if (isSelected) return 1;
+    if (selectedFloor && beam.story !== selectedFloor) return 0.08; // Fade non-selected floors
+    return 1;
+  }, [selectedFloor]);
+
+  useEffect(() => {
+    const target = (selectedTarget ?? buildingCenter) as [number, number, number];
+    const distance = selectedLength
+      ? Math.min(Math.max(selectedLength * 1.8, 8), 120)
+      : Math.min(Math.max(buildingSize * 1.2, 10), 120);
+
+    focusRef.current.target.set(target[0], target[1], target[2]);
+    focusRef.current.position.set(
+      target[0] + distance,
+      target[1] + distance * 0.6,
+      target[2] + distance
+    );
+
+    transitionRef.current.startTime = performance.now();
+    transitionRef.current.startPos.copy(camera.position);
+    transitionRef.current.startTarget.copy(
+      controlsRef.current?.target ?? focusRef.current.target
+    );
+    transitionRef.current.endPos.copy(focusRef.current.position);
+    transitionRef.current.endTarget.copy(focusRef.current.target);
+    transitionRef.current.active = true;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTarget, selectedLength]);
+
+  useFrame(() => {
+    const transition = transitionRef.current;
+    if (!transition.active) {
+      camera.position.lerp(focusRef.current.position, 0.08);
+      if (controlsRef.current) {
+        controlsRef.current.target.lerp(focusRef.current.target, 0.1);
+        controlsRef.current.update();
+      } else {
+        camera.lookAt(focusRef.current.target);
+      }
+      return;
+    }
+
+    const elapsed = performance.now() - transition.startTime;
+    const t = Math.min(1, elapsed / transition.durationMs);
+    const c1 = 1.70158;
+    const c3 = c1 + 1;
+    const eased =
+      t >= 1 ? 1 : 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+
+    camera.position.lerpVectors(transition.startPos, transition.endPos, eased);
+    if (controlsRef.current) {
+      controlsRef.current.target.lerpVectors(
+        transition.startTarget,
+        transition.endTarget,
+        eased
+      );
+      controlsRef.current.update();
+    } else {
+      camera.lookAt(transition.endTarget);
+    }
+
+    if (t >= 1) {
+      transition.active = false;
+    }
+  });
 
   return (
     <>
@@ -304,50 +411,156 @@ function BuildingFrame() {
         infiniteGrid
       />
 
-      {/* Render each beam as a line with status color */}
+      {/* Render each beam as a 3D box */}
       {beamsWithGeometry.map((beam) => {
         if (!beam.point1 || !beam.point2) return null;
 
-        // Transform from ETABS coords (X, Y horizontal, Z vertical)
-        // to Three.js coords (X, Z horizontal, Y vertical)
-        const start: [number, number, number] = [
-          beam.point1.x,
-          beam.point1.z, // Z in ETABS = Y in Three.js (up)
-          -beam.point1.y, // Y in ETABS = -Z in Three.js
-        ];
-        const end: [number, number, number] = [
-          beam.point2.x,
-          beam.point2.z,
-          -beam.point2.y,
-        ];
+        const start = new THREE.Vector3(beam.point1.x, beam.point1.z, -beam.point1.y);
+        const end = new THREE.Vector3(beam.point2.x, beam.point2.z, -beam.point2.y);
+        const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+        const dir = new THREE.Vector3().subVectors(end, start);
+        const beamLength = dir.length();
+        if (beamLength < 0.01) return null;
+        dir.normalize();
+
+        // Beam cross-section (use data or fallback)
+        const bW = (beam.b ?? 230) * SCALE; // width in meters
+        const bD = (beam.D ?? 450) * SCALE; // depth in meters
+
+        const quat = new THREE.Quaternion().setFromUnitVectors(
+          new THREE.Vector3(1, 0, 0),
+          dir
+        );
 
         const isSelected = beam.id === selectedId;
         const color = getBeamColor(beam, isSelected);
+        const opacity = getBeamOpacity(beam, isSelected);
 
         return (
-          <Line
-            key={beam.id}
-            points={[start, end]}
-            color={color}
-            lineWidth={isSelected ? 4 : 2}
-            onClick={() => selectBeam(beam.id)}
-          />
+          <group key={beam.id}>
+            <mesh
+              position={mid}
+              quaternion={quat}
+              onClick={() => selectBeam(beam.id)}
+            >
+              <boxGeometry args={[beamLength, bD, bW]} />
+              <meshStandardMaterial
+                color={color}
+                transparent={opacity < 1}
+                opacity={opacity}
+                metalness={0.1}
+                roughness={0.8}
+              />
+            </mesh>
+            {/* Wireframe outline for selected beam */}
+            {isSelected && (
+              <mesh position={mid} quaternion={quat}>
+                <boxGeometry args={[beamLength, bD, bW]} />
+                <meshBasicMaterial color="#ffffff" wireframe opacity={0.4} transparent />
+              </mesh>
+            )}
+          </group>
         );
       })}
 
+      <SelectedBeamDetail beam={selectedBeam} />
+
       {/* Controls */}
       <OrbitControls
+        ref={controlsRef}
         enableDamping
         dampingFactor={0.1}
         minDistance={5}
         maxDistance={100}
-        target={buildingCenter as [number, number, number]}
+        target={(selectedTarget ?? buildingCenter) as [number, number, number]}
       />
     </>
   );
 }
 
-function Scene() {
+function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
+  const astBase = useMemo(() => {
+    if (!beam) return null;
+    if (typeof beam.ast_provided === "number") return beam.ast_provided;
+    if (typeof beam.ast_required === "number") return beam.ast_required;
+    if (typeof beam.bar_count === "number" && typeof beam.bar_diameter === "number") {
+      return beam.bar_count * Math.PI * (beam.bar_diameter / 2) ** 2;
+    }
+    return null;
+  }, [beam]);
+
+  const detailParams = useMemo(() => {
+    if (!beam || !astBase) return null;
+    const spanMm = beam.span
+      ? beam.span
+      : beam.point1 && beam.point2
+      ? Math.sqrt(
+          (beam.point1.x - beam.point2.x) ** 2 +
+            (beam.point1.y - beam.point2.y) ** 2 +
+            (beam.point1.z - beam.point2.z) ** 2
+        ) * 1000
+      : 0;
+    const stirrupSpacing = beam.stirrup_spacing ?? 150;
+    return {
+      width: beam.b,
+      depth: beam.D,
+      span: spanMm,
+      fck: beam.fck ?? 25,
+      fy: beam.fy ?? 500,
+      ast_start: astBase,
+      ast_mid: astBase,
+      ast_end: astBase,
+      stirrup_dia: beam.stirrup_diameter ?? 8,
+      stirrup_spacing_start: stirrupSpacing,
+      stirrup_spacing_mid: stirrupSpacing,
+      stirrup_spacing_end: stirrupSpacing,
+      cover: beam.cover ?? 40,
+    };
+  }, [astBase, beam]);
+
+  const shouldShow = Boolean(beam && astBase && detailParams);
+  const { data: detailGeometry } = useBeamGeometry(detailParams, { enabled: shouldShow });
+
+  const placement = useMemo(() => {
+    if (!beam?.point1 || !beam.point2) return null;
+    const start = new THREE.Vector3(
+      beam.point1.x,
+      beam.point1.z,
+      -beam.point1.y
+    );
+    const end = new THREE.Vector3(
+      beam.point2.x,
+      beam.point2.z,
+      -beam.point2.y
+    );
+    const direction = new THREE.Vector3().subVectors(end, start);
+    if (direction.length() === 0) return null;
+    direction.normalize();
+    const quat = new THREE.Quaternion().setFromUnitVectors(
+      new THREE.Vector3(1, 0, 0),
+      direction
+    );
+    return { start, quat };
+  }, [beam]);
+
+  if (!detailGeometry || !placement) return null;
+
+  return (
+    <group position={placement.start} quaternion={placement.quat}>
+      <RebarVisualization rebars={detailGeometry.rebars} />
+      {detailGeometry.stirrups.length > 0 && (
+        <StirrupVisualization stirrups={detailGeometry.stirrups} />
+      )}
+    </group>
+  );
+}
+
+export interface RebarPreviewGeometry {
+  rebars: RebarPath[];
+  stirrups: StirrupLoop[];
+}
+
+function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry | null }) {
   const { inputs, length, result } = useDesignStore();
 
   // Fetch geometry from library API when design is complete
@@ -368,6 +581,8 @@ function Scene() {
       : null,
     { enabled: result !== null }
   );
+
+  const activeGeometry = overrideGeometry ?? geometry;
 
   return (
     <>
@@ -405,10 +620,10 @@ function Scene() {
       />
 
       {/* Reinforcement from API geometry */}
-      {geometry && geometry.rebars.length > 0 && (
+      {activeGeometry && activeGeometry.rebars.length > 0 && (
         <>
-          <RebarVisualization rebars={geometry.rebars} />
-          <StirrupVisualization stirrups={geometry.stirrups} />
+          <RebarVisualization rebars={activeGeometry.rebars} />
+          <StirrupVisualization stirrups={activeGeometry.stirrups} />
         </>
       )}
 
@@ -428,6 +643,7 @@ export type Viewport3DMode = 'design' | 'building';
 
 interface Viewport3DProps {
   mode?: Viewport3DMode;
+  overrideGeometry?: RebarPreviewGeometry | null;
 }
 
 /**
@@ -435,7 +651,7 @@ interface Viewport3DProps {
  *
  * @param mode - 'design' for single beam with rebar, 'building' for imported beams frame
  */
-export function Viewport3D({ mode = 'design' }: Viewport3DProps) {
+export function Viewport3D({ mode = 'design', overrideGeometry = null }: Viewport3DProps) {
   const { beams } = useImportedBeamsStore();
 
   // Auto-detect mode: use building view if there are imported beams with 3D positions
@@ -449,7 +665,11 @@ export function Viewport3D({ mode = 'design' }: Viewport3DProps) {
     <div className="viewport3d">
       <Canvas shadows>
         <Suspense fallback={null}>
-          {effectiveMode === 'building' ? <BuildingFrame /> : <Scene />}
+          {effectiveMode === 'building' ? (
+            <BuildingFrame />
+          ) : (
+            <Scene overrideGeometry={overrideGeometry} />
+          )}
         </Suspense>
       </Canvas>
       <div className="viewport-overlay">

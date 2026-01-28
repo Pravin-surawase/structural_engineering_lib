@@ -24,6 +24,7 @@ export type {
 export type {
   ImportedBeam,
   DesignedBeam,
+  BeamDesignPayload,
 } from './useCSVImport';
 export type {
   ConnectionStatus as WebSocketConnectionStatus,
