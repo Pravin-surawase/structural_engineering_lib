@@ -4,22 +4,62 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-28 — Session
+## 2026-01-28 — Session 84: React UI Consolidation + FastAPI Endpoints
 
 ### Summary
--
+Committed 19 React UI files with major refactoring, added 3 FastAPI endpoints (building geometry, cross-section, rebar validate/apply), updated V3 Parity document with proof of work from all open PRs.
 
-### PRs Merged
-| PR | Summary |
-|----|---------|
-| #XX | - |
+### Key Accomplishments
 
-### Key Deliverables
--
+1. **React UI Refactoring** (19 files, 2179 additions, 486 deletions)
+   - **Enhanced:** DesignView, ImportView, Viewport3D, ModernAppLayout
+   - **New Components:** CrossSectionView.tsx, TopBar.tsx
+   - **New Pages:** BeamDetailPage, BuildingEditorPage, HomePage, ModeSelectPage
+   - **New Utilities:** beamStatus.ts (status helpers)
 
-### Notes
--
+2. **FastAPI Endpoints** (5 files, 528 additions)
+   - `POST /api/v1/geometry/building` — Building-level 3D line geometry
+   - `POST /api/v1/geometry/cross-section` — 2D cross-section with rebar positions
+   - `POST /api/v1/rebar/validate` — Rebar config validation per IS 456
+   - `POST /api/v1/rebar/apply` — Rebar apply with geometry preview
+   - New router: `fastapi_app/routers/rebar.py`
 
+3. **V3 Parity Document Updated**
+   - Added PR table with proof of work (#413-#419)
+   - Updated phase status: Phase 2 now complete (was 80%)
+   - Reorganized checklist by priority
+
+### PRs Status
+| Number | Description | Status |
+|--------|-------------|--------|
+| #419 | TASK-FASTAPI-ENDPOINTS: Building/cross-section/rebar endpoints | 🟢 Pending CI |
+| #418 | TASK-V3-UIUX: React UI refactoring + new components | 🟢 Pending CI |
+| #417 | TASK-V3-PHASE4: Phase 4 UI integration | 🟡 Pending Review |
+| #416 | TASK-090: Phase 3 insights API | 🟡 Pending Review |
+| #415 | TASK-V3-PHASE2: Phase 2 geometry + rebar | 🟡 Pending CI |
+| #414 | TASK-DUALCSV: Dual CSV import | 🟡 Pending Review |
+| #413 | TASK-V3PARITY: Phase 1-2 library | 🟡 Pending Review |
+
+### Commits
+- `016664d` — feat(react): UI refactoring - enhanced views + new components
+- `62fff8e` — feat(api): add building geometry, cross-section, and rebar endpoints
+- `6ff87f6` — docs: update V3 Parity plan with PR progress
+- `644de1b` — docs: add Session 84 entry to session log
+
+### Test Results
+```
+✅ pytest tests/unit/test_rebar.py tests/unit/test_building_geometry.py - 4 passed
+✅ FastAPI app imports OK - 34 routes
+✅ npm run build - React builds in 4.56s
+```
+
+### Next Session Priorities
+1. Monitor PRs for CI pass → merge
+2. Add insights FastAPI endpoints (`/insights/dashboard`, `/insights/code-checks`)
+3. Add React hooks: `useBuildingGeometry`, `useCrossSectionGeometry`
+4. Complete Phase 3 FastAPI + React integration
+
+---
 
 ## 2026-01-27 — Session 83: Phase 4 UI Integration + UI Flow Documentation
 
