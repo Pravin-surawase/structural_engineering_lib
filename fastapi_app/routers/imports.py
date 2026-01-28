@@ -9,7 +9,6 @@ DO NOT DUPLICATE PARSING LOGIC!
 from __future__ import annotations
 
 import csv
-import io
 import math
 from pathlib import Path
 from typing import Literal
