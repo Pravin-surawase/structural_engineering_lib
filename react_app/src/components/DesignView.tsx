@@ -1,19 +1,36 @@
 /**
- * DesignView - Single beam design form with live results.
+ * DesignView - Compact single beam design with live 3D preview.
+ *
+ * Layout: Left 340px compact form | Right: 3D viewport + results
  */
 import { useMemo, useState } from "react";
-import { ArrowLeft, Calculator, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight } from "lucide-react";
 import type { BeamDesignResponse } from "../api/client";
 import { useDesignStore } from "../store/designStore";
 import { useLiveDesign } from "../hooks/useLiveDesign";
 import { ConnectionStatus } from "./ui/ConnectionStatus";
 import { Viewport3D } from "./Viewport3D";
 
-interface DesignViewProps {
-  onBack: () => void;
+/** Collapsible accordion section */
+function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="rounded-xl bg-white/[0.03] border border-white/8">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold text-white/70 hover:text-white/90 transition-colors"
+      >
+        {title}
+        {open ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+      </button>
+      {open && <div className="px-3.5 pb-3.5 grid grid-cols-2 gap-2.5">{children}</div>}
+    </div>
+  );
 }
 
-export function DesignView({ onBack }: DesignViewProps) {
+export function DesignView() {
+  const navigate = useNavigate();
   const { inputs, length } = useDesignStore();
   const [autoDesign, setAutoDesign] = useState(true);
 
@@ -25,186 +42,116 @@ export function DesignView({ onBack }: DesignViewProps) {
   const spanMeters = useMemo(() => Number((length / 1000).toFixed(2)), [length]);
 
   return (
-    <div className="flex flex-col h-full p-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onBack}
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-white/60" />
-          </button>
+    <div className="flex h-screen pt-14">
+      {/* Left: Compact Input Form */}
+      <div className="w-[340px] min-w-[300px] flex flex-col border-r border-white/5 bg-zinc-950">
+        {/* Header strip */}
+        <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-white">Single Beam Design</h2>
-            <p className="text-white/50">
-              IS 456:2000 flexure and shear design
-            </p>
+            <h2 className="text-sm font-bold text-white">Beam Design</h2>
+            <p className="text-[10px] text-white/40">IS 456:2000</p>
           </div>
+          <ConnectionStatus
+            status={state.connectionStatus}
+            latency={state.latency}
+            error={state.error}
+            onReconnect={actions.reconnect}
+          />
         </div>
-        <ConnectionStatus
-          status={state.connectionStatus}
-          latency={state.latency}
-          error={state.error}
-          onReconnect={actions.reconnect}
-        />
-      </div>
 
-      <div className="grid grid-cols-12 gap-6 flex-1">
-        {/* Left: Inputs */}
-        <div className="col-span-5 space-y-6">
-          <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
-            <label className="flex items-center gap-2 text-sm text-white/70">
+        {/* Form body */}
+        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2.5">
+          {/* Auto design toggle */}
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/[0.03] border border-white/8">
+            <label className="flex items-center gap-2 text-xs text-white/60">
               <input
                 type="checkbox"
                 checked={autoDesign}
                 onChange={(e) => setAutoDesign(e.target.checked)}
-                className="accent-blue-500"
+                className="accent-blue-500 w-3.5 h-3.5"
               />
               Auto Design
             </label>
-            {!autoDesign && (
-              <button
-                onClick={actions.triggerDesign}
-                disabled={!state.isConnected || state.isDesigning}
-                className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors disabled:opacity-50"
-              >
-                {state.isDesigning ? "Designing..." : "Design Beam"}
-              </button>
-            )}
+            {state.isDesigning && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
           </div>
 
-          <InputSection title="Beam Dimensions">
-            <InputField
-              label="Width"
-              value={inputs.width}
-              onChange={(value) => actions.updateInputs({ width: value })}
-              unit="mm"
-              min={150}
-              max={600}
-            />
-            <InputField
-              label="Depth"
-              value={inputs.depth}
-              onChange={(value) => actions.updateInputs({ depth: value })}
-              unit="mm"
-              min={300}
-              max={1200}
-            />
-            <InputField
-              label="Span"
-              value={spanMeters}
-              onChange={(value) => actions.updateLength(value * 1000)}
-              unit="m"
-              min={1}
-              max={15}
-              step={0.5}
-            />
-            <InputField
-              label="Clear Cover"
-              value={40}
-              onChange={() => {}}
-              unit="mm"
-              min={25}
-              max={75}
-              disabled
-            />
-          </InputSection>
+          <AccordionSection title="Dimensions">
+            <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} />
+            <InputField label="Depth" value={inputs.depth} onChange={(v) => actions.updateInputs({ depth: v })} unit="mm" min={300} max={1200} />
+            <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} />
+            <InputField label="Cover" value={40} onChange={() => {}} unit="mm" disabled />
+          </AccordionSection>
 
-          <InputSection title="Material Properties">
-            <DropdownField
-              label="Concrete Grade"
-              value={inputs.fck}
-              onChange={(value) => actions.updateInputs({ fck: value })}
-              options={[20, 25, 30, 35, 40, 45, 50]}
-              format={(v) => `M${v} (${v} MPa)`}
-            />
-            <DropdownField
-              label="Steel Grade"
-              value={inputs.fy}
-              onChange={(value) => actions.updateInputs({ fy: value })}
-              options={[415, 500, 550]}
-              format={(v) => `Fe ${v} (${v} MPa)`}
-            />
-          </InputSection>
+          <AccordionSection title="Materials">
+            <DropdownField label="Concrete" value={inputs.fck} onChange={(v) => actions.updateInputs({ fck: v })} options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
+            <DropdownField label="Steel" value={inputs.fy} onChange={(v) => actions.updateInputs({ fy: v })} options={[415, 500, 550]} format={(v) => `Fe${v}`} />
+          </AccordionSection>
 
-          <InputSection title="Design Forces">
-            <InputField
-              label="Moment (Mu)"
-              value={inputs.moment}
-              onChange={(value) => actions.updateInputs({ moment: value })}
-              unit="kN·m"
-              min={0}
-              max={2000}
-            />
-            <InputField
-              label="Shear (Vu)"
-              value={inputs.shear ?? 0}
-              onChange={(value) => actions.updateInputs({ shear: value })}
-              unit="kN"
-              min={0}
-              max={1000}
-            />
-          </InputSection>
+          <AccordionSection title="Design Forces">
+            <InputField label="Moment (Mu)" value={inputs.moment} onChange={(v) => actions.updateInputs({ moment: v })} unit="kN·m" min={0} max={2000} />
+            <InputField label="Shear (Vu)" value={inputs.shear ?? 0} onChange={(v) => actions.updateInputs({ shear: v })} unit="kN" min={0} max={1000} />
+          </AccordionSection>
+        </div>
 
+        {/* Bottom actions */}
+        <div className="px-3 pb-3 space-y-2">
           <button
             onClick={actions.triggerDesign}
             disabled={!state.isConnected || state.isDesigning}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
           >
             {state.isDesigning ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
                 Calculating...
               </>
             ) : (
               <>
-                <Calculator className="w-5 h-5" />
+                <Calculator className="w-4 h-4" />
                 Design Beam
               </>
             )}
           </button>
+          {state.result && (
+            <button
+              onClick={() => navigate("/design/results")}
+              className="w-full py-2.5 bg-white/5 hover:bg-white/10 text-white/70 text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2 border border-white/10"
+            >
+              <Eye className="w-4 h-4" />
+              Full 3D Detail View
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Right: 3D Viewport + Results */}
+      <div className="flex-1 flex flex-col bg-zinc-900/30">
+        {/* 3D Viewport (top 60%) */}
+        <div className="flex-[3] min-h-0 relative">
+          <Viewport3D mode="design" />
+          {state.isConnected && state.latency !== null && (
+            <div className="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/50 text-[10px] text-white/40 backdrop-blur">
+              {state.latency}ms
+            </div>
+          )}
         </div>
 
-        {/* Right: Preview + Results */}
-        <div className="col-span-7 flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-white">Live 3D Preview</h3>
-              <p className="text-xs text-white/50">WebSocket-driven updates</p>
-            </div>
-            {state.isConnected && state.latency !== null && (
-              <span className="text-xs text-white/40">{state.latency}ms</span>
-            )}
-          </div>
-
-          <div className="h-[300px] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900">
-            <Viewport3D mode="design" />
-          </div>
-
+        {/* Results (bottom 40%) */}
+        <div className="flex-[2] min-h-0 overflow-y-auto border-t border-white/5 p-4">
           {state.result ? (
-            <ResultsPanel result={state.result} />
+            <CompactResults result={state.result} />
           ) : state.error ? (
-            <div className="p-6 rounded-xl bg-red-500/10 border border-red-500/30">
-              <div className="flex items-center gap-3">
-                <AlertCircle className="w-6 h-6 text-red-400" />
-                <div>
-                  <p className="text-red-400 font-medium">Design Failed</p>
-                  <p className="text-sm text-red-400/70">
-                    {state.error}
-                  </p>
-                </div>
+            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+              <div>
+                <p className="text-red-400 font-medium text-sm">Design Failed</p>
+                <p className="text-xs text-red-400/60">{state.error}</p>
               </div>
             </div>
           ) : (
-            <div className="p-8 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center">
-              <Calculator className="w-12 h-12 text-white/20 mb-4" />
-              <p className="text-white/40">
-                Enter beam parameters and click "Design Beam"
-              </p>
-              <p className="text-sm text-white/30 mt-2">
-                Results will appear here
-              </p>
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <Calculator className="w-10 h-10 text-white/10 mb-3" />
+              <p className="text-white/30 text-sm">Enter parameters to see results</p>
             </div>
           )}
         </div>
@@ -213,194 +160,111 @@ export function DesignView({ onBack }: DesignViewProps) {
   );
 }
 
-interface InputSectionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-function InputSection({ title, children }: InputSectionProps) {
-  return (
-    <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-      <h3 className="text-sm font-semibold text-white/80 mb-4">{title}</h3>
-      <div className="grid grid-cols-2 gap-3">{children}</div>
-    </div>
-  );
-}
-
-interface InputFieldProps {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  unit: string;
-  min?: number;
-  max?: number;
-  step?: number;
-  disabled?: boolean;
-}
-
-function InputField({
-  label,
-  value,
-  onChange,
-  unit,
-  min,
-  max,
-  step = 1,
-  disabled = false,
-}: InputFieldProps) {
-  return (
-    <div>
-      <label className="block text-xs text-white/50 mb-1">{label}</label>
-      <div className="relative">
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-          className="w-full px-3 py-2 pr-12 text-sm text-white bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50"
-        />
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/40">
-          {unit}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-interface DropdownFieldProps {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  options: number[];
-  format: (v: number) => string;
-}
-
-function DropdownField({ label, value, onChange, options, format }: DropdownFieldProps) {
-  return (
-    <div className="col-span-2">
-      <label className="block text-xs text-white/50 mb-1">{label}</label>
-      <select
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full px-3 py-2 text-sm text-white bg-white/5 border border-white/10 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500/50"
-      >
-        {options.map((opt) => (
-          <option key={opt} value={opt} className="bg-zinc-900">
-            {format(opt)}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-interface ResultsPanelProps {
-  result: BeamDesignResponse;
-}
-
-function ResultsPanel({ result }: ResultsPanelProps) {
+/** Compact results display */
+function CompactResults({ result }: { result: BeamDesignResponse }) {
   const isSuccess = result.success;
-
   return (
-    <div className="h-full flex flex-col gap-4">
-      {/* Status Banner */}
-      <div
-        className={`p-4 rounded-xl border flex items-center gap-3 ${
-          isSuccess
-            ? "bg-green-500/10 border-green-500/30"
-            : "bg-red-500/10 border-red-500/30"
-        }`}
-      >
-        {isSuccess ? (
-          <CheckCircle className="w-6 h-6 text-green-400" />
-        ) : (
-          <AlertCircle className="w-6 h-6 text-red-400" />
-        )}
+    <div className="space-y-3">
+      {/* Status */}
+      <div className={`p-3 rounded-xl border flex items-center gap-2.5 ${isSuccess ? "bg-green-500/10 border-green-500/30" : "bg-red-500/10 border-red-500/30"}`}>
+        {isSuccess ? <CheckCircle className="w-5 h-5 text-green-400" /> : <AlertCircle className="w-5 h-5 text-red-400" />}
         <div>
-          <p className={`font-semibold ${isSuccess ? "text-green-400" : "text-red-400"}`}>
-            Design {isSuccess ? "Safe" : "Requires Revision"}
+          <p className={`font-semibold text-sm ${isSuccess ? "text-green-400" : "text-red-400"}`}>
+            {isSuccess ? "Design Safe" : "Requires Revision"}
           </p>
-          <p className="text-sm text-white/60">
-            {result.message || "IS 456:2000 compliant"}
-          </p>
+          <p className="text-[11px] text-white/50">{result.message || "IS 456:2000"}</p>
+        </div>
+        <div className="ml-auto text-right">
+          <p className="text-lg font-bold text-white">{(result.utilization_ratio * 100).toFixed(0)}%</p>
+          <p className="text-[10px] text-white/40">utilization</p>
         </div>
       </div>
 
-      {/* Results Grid */}
-      <div className="grid grid-cols-2 gap-4 flex-1">
-        <ResultCard
-          title="Flexure Design"
-          items={[
-            { label: "Ast Required", value: `${result.flexure?.ast_required?.toFixed(0) || "-"} mm²` },
-            { label: "Ast Min", value: `${result.flexure?.ast_min?.toFixed(0) || "-"} mm²` },
-            { label: "Ast Max", value: `${result.flexure?.ast_max?.toFixed(0) || "-"} mm²` },
-            { label: "Moment Capacity", value: `${result.flexure?.moment_capacity?.toFixed(0) || "-"} kN·m` },
-          ]}
-        />
-        <ResultCard
-          title="Shear Design"
-          items={[
-            { label: "τv", value: result.shear?.tau_v ? `${result.shear.tau_v.toFixed(2)} MPa` : "-" },
-            { label: "τc", value: result.shear?.tau_c ? `${result.shear.tau_c.toFixed(2)} MPa` : "-" },
-            { label: "Stirrup Spacing", value: result.shear?.stirrup_spacing ? `${result.shear.stirrup_spacing} mm` : "-" },
-            { label: "Shear Capacity", value: result.shear?.shear_capacity ? `${result.shear.shear_capacity.toFixed(0)} kN` : "-" },
-          ]}
-        />
-        <ResultCard
-          title="Neutral Axis"
-          items={[
-            { label: "xu", value: `${result.flexure?.xu?.toFixed(1) || "-"} mm` },
-            { label: "xu,max", value: `${result.flexure?.xu_max?.toFixed(1) || "-"} mm` },
-            { label: "Under Reinforced", value: result.flexure?.is_under_reinforced ? "Yes ✓" : "No" },
-            { label: "Utilization", value: `${(result.utilization_ratio * 100).toFixed(0)}%` },
-          ]}
-        />
-        <ResultCard
-          title="Summary"
-          items={[
-            { label: "Total Ast", value: `${result.ast_total?.toFixed(0) || "-"} mm²` },
-            { label: "Asc (if any)", value: `${result.asc_total?.toFixed(0) || "0"} mm²` },
-            { label: "Code", value: "IS 456:2000" },
-            { label: "Status", value: result.success ? "SAFE" : "FAIL" },
-          ]}
-        />
+      {/* Cards row */}
+      <div className="grid grid-cols-3 gap-2.5">
+        <ResultMiniCard title="Flexure" items={[
+          { l: "Ast", v: `${result.flexure?.ast_required?.toFixed(0) || "-"} mm²` },
+          { l: "xu", v: `${result.flexure?.xu?.toFixed(1) || "-"} mm` },
+          { l: "Mu,cap", v: `${result.flexure?.moment_capacity?.toFixed(0) || "-"} kN·m` },
+        ]} />
+        <ResultMiniCard title="Shear" items={[
+          { l: "τv", v: result.shear?.tau_v ? `${result.shear.tau_v.toFixed(2)} MPa` : "-" },
+          { l: "Sv", v: result.shear?.stirrup_spacing ? `${result.shear.stirrup_spacing} mm` : "-" },
+          { l: "Vu,cap", v: result.shear?.shear_capacity ? `${result.shear.shear_capacity.toFixed(0)} kN` : "-" },
+        ]} />
+        <ResultMiniCard title="Summary" items={[
+          { l: "Ast total", v: `${result.ast_total?.toFixed(0) || "-"} mm²` },
+          { l: "Asc", v: `${result.asc_total?.toFixed(0) || "0"} mm²` },
+          { l: "Status", v: result.success ? "SAFE" : "FAIL" },
+        ]} />
       </div>
 
       {/* Warnings */}
       {result.warnings && result.warnings.length > 0 && (
-        <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
-          <p className="text-sm text-yellow-400 font-medium">Warnings:</p>
-          <ul className="mt-1 text-sm text-yellow-400/70">
-            {result.warnings.map((w, i) => (
-              <li key={i}>• {w}</li>
-            ))}
-          </ul>
+        <div className="p-2.5 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
+          {result.warnings.map((w, i) => (
+            <p key={i} className="text-xs text-yellow-400/80">• {w}</p>
+          ))}
         </div>
       )}
     </div>
   );
 }
 
-interface ResultCardProps {
-  title: string;
-  items: { label: string; value: string }[];
-}
-
-function ResultCard({ title, items }: ResultCardProps) {
+function ResultMiniCard({ title, items }: { title: string; items: { l: string; v: string }[] }) {
   return (
-    <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-      <h4 className="text-sm font-semibold text-white/80 mb-3">{title}</h4>
-      <div className="space-y-2">
+    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
+      <h4 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-2">{title}</h4>
+      <div className="space-y-1.5">
         {items.map((item) => (
-          <div key={item.label} className="flex justify-between text-sm">
-            <span className="text-white/50">{item.label}</span>
-            <span className="text-white font-medium">{item.value}</span>
+          <div key={item.l} className="flex justify-between text-xs">
+            <span className="text-white/40">{item.l}</span>
+            <span className="text-white font-medium">{item.v}</span>
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ---------- Input Components ---------- */
+
+function InputField({ label, value, onChange, unit, min, max, step = 1, disabled = false }: {
+  label: string; value: number; onChange: (v: number) => void; unit: string;
+  min?: number; max?: number; step?: number; disabled?: boolean;
+}) {
+  return (
+    <div>
+      <label className="block text-[10px] text-white/40 mb-0.5">{label}</label>
+      <div className="relative">
+        <input
+          type="number"
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          min={min} max={max} step={step} disabled={disabled}
+          className="w-full px-2.5 py-1.5 pr-10 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50 disabled:opacity-40"
+        />
+        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-white/30">{unit}</span>
+      </div>
+    </div>
+  );
+}
+
+function DropdownField({ label, value, onChange, options, format }: {
+  label: string; value: number; onChange: (v: number) => void; options: number[]; format: (v: number) => string;
+}) {
+  return (
+    <div>
+      <label className="block text-[10px] text-white/40 mb-0.5">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full px-2.5 py-1.5 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+      >
+        {options.map((opt) => (
+          <option key={opt} value={opt} className="bg-zinc-900">{format(opt)}</option>
+        ))}
+      </select>
     </div>
   );
 }

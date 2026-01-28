@@ -9,6 +9,7 @@ import type { BeamCSVRow } from '../types/csv';
 export interface ImportedBeamsState {
   beams: BeamCSVRow[];
   selectedId: string | null;
+  selectedFloor: string | null;
   isImporting: boolean;
   error: string | null;
 
@@ -16,6 +17,7 @@ export interface ImportedBeamsState {
   setBeams: (beams: BeamCSVRow[]) => void;
   addBeam: (beam: BeamCSVRow) => void;
   selectBeam: (id: string | null) => void;
+  selectFloor: (floor: string | null) => void;
   setImporting: (importing: boolean) => void;
   setError: (error: string | null) => void;
   clearBeams: () => void;
@@ -24,6 +26,7 @@ export interface ImportedBeamsState {
 export const useImportedBeamsStore = create<ImportedBeamsState>((set) => ({
   beams: [],
   selectedId: null,
+  selectedFloor: null,
   isImporting: false,
   error: null,
 
@@ -34,11 +37,17 @@ export const useImportedBeamsStore = create<ImportedBeamsState>((set) => ({
       beams: [...state.beams, beam],
     })),
 
-  selectBeam: (selectedId) => set({ selectedId }),
+  selectBeam: (selectedId) =>
+    set((state) => {
+      const beam = state.beams.find((b) => b.id === selectedId);
+      return { selectedId, selectedFloor: beam?.story ?? state.selectedFloor };
+    }),
+
+  selectFloor: (selectedFloor) => set({ selectedFloor }),
 
   setImporting: (isImporting) => set({ isImporting }),
 
   setError: (error) => set({ error, isImporting: false }),
 
-  clearBeams: () => set({ beams: [], selectedId: null, error: null }),
+  clearBeams: () => set({ beams: [], selectedId: null, selectedFloor: null, error: null }),
 }));
