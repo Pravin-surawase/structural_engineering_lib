@@ -5,7 +5,7 @@
 **Status:** In Progress
 **Importance:** High
 **Created:** 2026-01-26
-**Last Updated:** 2026-01-27
+**Last Updated:** 2026-01-28
 **Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
 **Abstract:** Compact, forward-looking plan to evolve the library + API so React can reach Streamlit parity and exceed it with a premium 3D editing workflow.
 
@@ -90,27 +90,51 @@ Result: React features (live 3D, dynamic rebar, code checks) ship faster, with f
 
 Each phase is structured so **library work lands first**, then **FastAPI wrappers**, then **React UX**, with tests and automation at every step.
 
-## Progress Update (Jan 27, 2026)
+## Progress Update (Jan 28, 2026)
 
-**Phase 1 (Complete, UI wiring pending)**
-- ✅ FastAPI import + batch endpoints exist (`/api/v1/import/csv`, `/api/v1/import/batch-design`).
-- ✅ SSE batch streaming endpoint exists (`/stream/batch-design`) and uses `design_beams_iter`.
-- ✅ Library dual‑CSV wrapper added: `structural_lib.imports.parse_dual_csv` + validation helpers.
-- ✅ Library batch generator + batch helper added: `structural_lib.batch.design_beams_iter` / `design_beams`.
-- ✅ FastAPI dual CSV endpoint added (`/api/v1/import/dual-csv`).
-- ✅ React hook added (`useDualCSVImport`).
-- ⏳ React import UI still needs to call dual CSV + show warnings panel.
+### Open PRs (Proof of Work)
 
-**Phase 2 (Partial)**
-- ✅ React building frame visualization exists (3D frame from import data).
-- ✅ Full single‑beam geometry endpoint exists (`/api/v1/geometry/beam/full`).
-- ✅ Library building geometry added (`building_to_3d_geometry`).
-- ✅ Rebar validation/apply helpers added (`validate_rebar_config`, `apply_rebar_config`).
+| PR | Branch | Description | Status |
+|----|--------|-------------|--------|
+| #418 | task/TASK-V3-UIUX | React UI refactoring - enhanced views + new components | Pending CI |
+| #417 | task/TASK-V3-PHASE4 | Phase 4 UI integration | Pending Review |
+| #416 | task/TASK-090 | Phase 3 insights + code checks | Pending Review |
+| #415 | task/TASK-V3-PHASE2 | Phase 2 geometry + rebar | Pending CI |
+| #414 | task/TASK-DUALCSV | Dual CSV import endpoint | Pending Review |
+| #413 | task/TASK-V3PARITY | Phase 1-2 library foundations | Pending Review |
 
-**Phase 3 (Not Started)**
-- ⏳ Dashboard wrapper + live code checks + rebar suggestions (library + API + React).
+### Phase Status Summary
 
-**Commit:** `6ee623f` — feat: add dual-csv import + building geometry + rebar helpers
+| Phase | Library | FastAPI | React | Status |
+|-------|---------|---------|-------|--------|
+| 1 - Import + Batch | ✅ | ✅ | ✅ | **Complete** |
+| 2 - Geometry + Rebar | ✅ | ⏳ 2/4 | ✅ | **80% Done** |
+| 3 - Insights + Checks | ✅ | ⏳ 0/3 | ⏳ | **Library Done** |
+| 4 - UI Integration | — | — | ✅ | **Complete** |
+
+**Phase 1 (Complete)**
+- ✅ Library: `parse_dual_csv`, `merge_geometry_forces`, `validate_import`, `design_beams`, `design_beams_iter`
+- ✅ FastAPI: `/api/v1/import/csv`, `/api/v1/import/dual-csv`, `/api/v1/import/batch-design`, `/stream/batch-design`
+- ✅ React: `useDualCSVImport`, `useCSVFileImport`, ImportView with warnings panel
+
+**Phase 2 (80% Done)**
+- ✅ Library: `building_to_3d_geometry`, `validate_rebar_config`, `apply_rebar_config`
+- ⏳ Library: `cross_section_geometry` (pending)
+- ✅ FastAPI: `/api/v1/geometry/beam/full`
+- ⏳ FastAPI: `/api/v1/geometry/building`, `/api/v1/geometry/cross-section`, `/api/v1/rebar/*` (pending)
+- ✅ React: Building frame visualization, CrossSectionView component (new)
+
+**Phase 3 (Library Done)**
+- ✅ Library: `generate_dashboard`, `code_checks_live`, `suggest_rebar_options`
+- ⏳ FastAPI: `/api/v1/insights/*`, `/api/v1/optimization/*` (pending)
+- ⏳ React: Dashboard + live code checks UI (pending)
+
+**Phase 4 (Complete)**
+- ✅ React: DesignView refactored, Viewport3D enhanced, TopBar component, pages directory
+- ✅ Components: CrossSectionView, BeamDetailPage, BuildingEditorPage, HomePage, ModeSelectPage
+- ✅ Utils: beamStatus.ts, enhanced hooks
+
+**Commit:** `016664d` — feat(react): UI refactoring - enhanced ImportView, DesignView, Viewport3D + new components
 
 ### Phase 1 — Canonical Inputs + Batch Foundations (Weeks 4–5)
 
@@ -240,14 +264,29 @@ This section mirrors **# V3 React Migration Roadmap (7-Week Plan)** and explains
 
 ---
 
-## Implementation Checklist (Next Up)
+## Implementation Checklist (Remaining Work)
 
-1. Add FastAPI endpoints: `/api/v1/geometry/building`, `/api/v1/geometry/cross-section`.
-2. Add FastAPI endpoints: `/api/v1/rebar/validate`, `/api/v1/rebar/apply`.
-3. Implement `geometry_3d.cross_section_geometry` in library.
-4. Wire Import UI to dual CSV + warnings panel (use `useDualCSVImport`).
-5. Add React hooks: `useBuildingGeometry`, `useCrossSectionGeometry`, `useRebarValidation`.
-6. Add integration test for SSE stream ordering.
+### High Priority (This Week)
+1. ⏳ Add FastAPI endpoint: `/api/v1/geometry/building`
+2. ⏳ Add FastAPI endpoint: `/api/v1/geometry/cross-section`
+3. ⏳ Implement `geometry_3d.cross_section_geometry` in library
+
+### Medium Priority (Next Week)
+4. ⏳ Add FastAPI endpoints: `/api/v1/rebar/validate`, `/api/v1/rebar/apply`
+5. ⏳ Add FastAPI endpoints: `/api/v1/insights/dashboard`, `/api/v1/insights/code-checks`
+6. ⏳ Add React hooks: `useBuildingGeometry`, `useCrossSectionGeometry`
+
+### Low Priority (Future)
+7. ⏳ Add FastAPI endpoint: `/api/v1/optimization/rebar-suggest`
+8. ⏳ Add integration test for SSE stream ordering
+
+### Completed ✅
+- ✅ Dual CSV import (library + FastAPI + React hook)
+- ✅ Batch design with streaming (library + FastAPI SSE)
+- ✅ Building 3D geometry (library)
+- ✅ Rebar validation/apply (library)
+- ✅ React UI refactoring (DesignView, ImportView, Viewport3D)
+- ✅ New React components (CrossSectionView, TopBar, pages/*)
 
 ---
 
