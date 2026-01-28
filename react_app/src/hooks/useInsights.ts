@@ -7,7 +7,7 @@
  * Uses the /api/v1/insights/* endpoints which wrap the
  * structural_lib.dashboard module.
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
