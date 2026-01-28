@@ -247,7 +247,9 @@ def code_checks_live(
     _fck = float(_safe_get(beam, ["fck_mpa", "fck", "fck_nmm2"], 25))  # noqa: F841
     fy = float(_safe_get(beam, ["fy_mpa", "fy", "fy_nmm2"], 500))
     mu_knm = float(_safe_get(beam, ["mu_knm", "moment"], 100))
-    _vu_kn = float(_safe_get(beam, ["vu_kn", "shear"], 50))  # noqa: F841 - reserved for future shear checks
+    _vu_kn = float(
+        _safe_get(beam, ["vu_kn", "shear"], 50)
+    )  # noqa: F841 - reserved for future shear checks
 
     # Config parameters
     if config:
