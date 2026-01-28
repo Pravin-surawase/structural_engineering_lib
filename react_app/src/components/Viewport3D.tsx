@@ -49,8 +49,10 @@ function BeamMesh({ width, depth, length, isDesigned }: BeamMeshProps) {
     [isDesigned]
   );
 
+  // Center beam at origin for better camera framing
+  // Beam extends from -l/2 to +l/2 along X, 0 to d along Y
   return (
-    <mesh position={[l / 2, d / 2, 0]} material={material}>
+    <mesh position={[0, d / 2, 0]} material={material}>
       <boxGeometry args={[l, d, w]} />
     </mesh>
   );
@@ -346,14 +348,8 @@ function BuildingFrame() {
 
   useFrame(() => {
     const transition = transitionRef.current;
+    // Only animate during active transition - allow free user control otherwise
     if (!transition.active) {
-      camera.position.lerp(focusRef.current.position, 0.08);
-      if (controlsRef.current) {
-        controlsRef.current.target.lerp(focusRef.current.target, 0.1);
-        controlsRef.current.update();
-      } else {
-        camera.lookAt(focusRef.current.target);
-      }
       return;
     }
 
@@ -543,6 +539,9 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
 
   const detailParams = useMemo(() => {
     if (!beam || !astBase) return null;
+    // Guard against missing dimensions
+    if (!beam.b || !beam.D) return null;
+
     const spanMm = beam.span
       ? beam.span
       : beam.point1 && beam.point2
@@ -552,6 +551,10 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
             (beam.point1.z - beam.point2.z) ** 2
         ) * 1000
       : 0;
+
+    // Need valid span for geometry
+    if (spanMm <= 0) return null;
+
     const stirrupSpacing = beam.stirrup_spacing ?? 150;
     return {
       width: beam.b,
@@ -628,6 +631,9 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
 
   const detailParams = useMemo(() => {
     if (!astBase) return null;
+    // Guard against missing dimensions
+    if (!beam.b || !beam.D) return null;
+
     const spanMm = beam.span
       ? beam.span
       : beam.point1 && beam.point2
@@ -637,6 +643,10 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
             (beam.point1.z - beam.point2.z) ** 2
         ) * 1000
       : 0;
+
+    // Need valid span for geometry
+    if (spanMm <= 0) return null;
+
     const stirrupSpacing = beam.stirrup_spacing ?? 150;
     return {
       width: beam.b,
@@ -785,12 +795,12 @@ function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry |
         isDesigned={result !== null}
       />
 
-      {/* Reinforcement from API geometry */}
+      {/* Reinforcement from API geometry - offset by -span/2 to center with beam */}
       {activeGeometry && activeGeometry.rebars.length > 0 && (
-        <>
+        <group position={[-(length * SCALE) / 2, 0, 0]}>
           <RebarVisualization rebars={activeGeometry.rebars} />
           <StirrupVisualization stirrups={activeGeometry.stirrups} />
-        </>
+        </group>
       )}
 
       {/* Controls */}
