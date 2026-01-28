@@ -28,7 +28,7 @@ def _coerce_mapping(value: Any) -> dict[str, Any]:
         return value.model_dump()  # type: ignore[no-any-return]
     if hasattr(value, "dict"):
         return value.dict()  # type: ignore[no-any-return]
-    return vars(value)
+    return vars(value)  # type: ignore[no-any-return]
 
 
 def _pick(params: Mapping[str, Any], keys: list[str], default: Any) -> Any:
@@ -118,7 +118,9 @@ def validate_rebar_config(
         "spacing_mm": spacing_mm,
     }
 
-    return ValidationReport(ok=len(errors) == 0, errors=errors, warnings=warnings, details=details)
+    return ValidationReport(
+        ok=len(errors) == 0, errors=errors, warnings=warnings, details=details
+    )
 
 
 def apply_rebar_config(
@@ -141,13 +143,21 @@ def apply_rebar_config(
     beam_params = _coerce_mapping(beam)
     cfg = dict(config)
 
-    b_mm = _to_float(_pick(beam_params, ["b_mm", "width_mm", "width", "b"], 300.0), 300.0)
-    d_mm = _to_float(_pick(beam_params, ["D_mm", "depth_mm", "depth", "D"], 500.0), 500.0)
+    b_mm = _to_float(
+        _pick(beam_params, ["b_mm", "width_mm", "width", "b"], 300.0), 300.0
+    )
+    d_mm = _to_float(
+        _pick(beam_params, ["D_mm", "depth_mm", "depth", "D"], 500.0), 500.0
+    )
     cover_mm = _to_float(_pick(beam_params, ["cover_mm", "cover"], 40.0), 40.0)
-    span_mm = _to_float(_pick(beam_params, ["span_mm", "span", "length_mm"], 5000.0), 5000.0)
+    span_mm = _to_float(
+        _pick(beam_params, ["span_mm", "span", "length_mm"], 5000.0), 5000.0
+    )
 
     bar_count = int(_pick(cfg, ["bar_count", "bars", "count"], 2) or 2)
-    bar_dia_mm = _to_float(_pick(cfg, ["bar_dia_mm", "bar_dia", "diameter"], 16.0), 16.0)
+    bar_dia_mm = _to_float(
+        _pick(cfg, ["bar_dia_mm", "bar_dia", "diameter"], 16.0), 16.0
+    )
     stirrup_dia_mm = _to_float(
         _pick(cfg, ["stirrup_dia_mm", "stirrup_dia", "stirrup_dia"], 8.0),
         8.0,

@@ -30,10 +30,10 @@ def _coerce_params(beam: Any) -> dict[str, Any]:
     if isinstance(beam, Mapping):
         return dict(beam)
     if hasattr(beam, "model_dump"):
-        return beam.model_dump()
+        return beam.model_dump()  # type: ignore[no-any-return]
     if hasattr(beam, "dict"):
-        return beam.dict()
-    return vars(beam)
+        return beam.dict()  # type: ignore[no-any-return]
+    return vars(beam)  # type: ignore[no-any-return]
 
 
 def _design_single_beam(

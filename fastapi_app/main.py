@@ -21,16 +21,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_app import __version__
 from fastapi_app.routers import (
+    analysis,
     design,
     detailing,
-    optimization,
-    analysis,
     geometry,
     health,
-    rebar,
-    websocket,
-    streaming,
     imports,
+    insights,
+    optimization,
+    rebar,
+    streaming,
+    websocket,
 )
 
 # =============================================================================
@@ -188,6 +189,10 @@ app.include_router(
 )
 app.include_router(
     rebar.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    insights.router,
     prefix=API_V1_PREFIX,
 )
 

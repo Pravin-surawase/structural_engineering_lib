@@ -8,9 +8,9 @@ These helpers provide a stable, library-first API for dual-file imports
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from .adapters import (
     ETABSAdapter,
@@ -81,7 +81,7 @@ def parse_dual_csv(
     Returns:
         (BeamBatchInput, ImportWarnings)
     """
-    defaults = defaults or DesignDefaults()
+    defaults = defaults or DesignDefaults()  # type: ignore[call-arg]
     adapter = _select_adapter(
         geometry_csv=geometry_csv, forces_csv=forces_csv, format_hint=format_hint
     )
