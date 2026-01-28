@@ -4,22 +4,57 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-29 — Session
+## 2026-01-29 — Session 87: 3D Viewport Critical Bug Fixes
 
 ### Summary
--
+Fixed 4 critical bugs in 3D visualization after Session 86's improvements. PR #422 merged successfully with fast CI (1m 42s).
+
+### Issues Fixed
+
+| Issue | Root Cause | Solution |
+|-------|------------|----------|
+| **Blank screen on beam click** | Null pointer when beam missing dimensions | Added null guards for `beam.b`, `beam.D`, span validation |
+| **Beam off-center in design view** | Camera at [3,2,3] but beam at [l/2, d/2, 0] | Centered beam at origin [0, d/2, 0], dynamic camera positioning |
+| **Camera locked after transition** | Continuous lerping preventing user control | Removed lerp when `!transition.active` |
+| **Cell edits not saving** | Stale closure in `handleCellValueChanged` | Use fresh state via `useImportedBeamsStore.getState()` |
 
 ### PRs Merged
 | PR | Summary |
 |----|---------|
-| #XX | - |
+| #422 | 3D viewport centering and camera control fixes |
 
-### Key Deliverables
--
+### Key Changes
 
-### Notes
--
+**Viewport3D.tsx:**
+- Beam centering: Position `[0, d/2, 0]` instead of `[l/2, d/2, 0]`
+- Camera: Dynamic positioning based on beam dimensions (distance = `max(beamL * 0.8, 2)`)
+- Camera control: Only animate during `transition.active === true`
+- Null safety: Added guards for beam dimensions before rendering rebar
 
+**BuildingEditorPage.tsx:**
+- Fixed cell value change handler to avoid stale state closures
+- Now uses `useImportedBeamsStore.getState()` for fresh state access
+
+### Test Results
+```
+✅ React build: 2754 modules in 4.11s (no errors)
+✅ Python tests: 52 geometry_3d tests pass
+✅ FastAPI tests: 3 geometry endpoint tests pass
+✅ CI checks: All passed in 1m 42s
+```
+
+### Documentation Updates
+- Updated agent-bootstrap.md with V3 stack infrastructure table
+- Enhanced agent-essentials.md with comprehensive React hooks/components/stores tables
+- Commit b81c5f5: "docs: update agent guides with V3 stack details"
+
+### Next Session Priorities
+1. Test stirrup rendering with real data (library generates correctly, verify UI displays)
+2. Add measurement tools in 3D viewport
+3. Add zoom presets (fit beam, fit building, top view, side view)
+4. Wire dashboard insights into React Dashboard component
+
+---
 
 ## 2026-01-28 — Session 86: 3D Visualization Improvements
 

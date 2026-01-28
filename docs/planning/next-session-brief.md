@@ -5,15 +5,15 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-27
+**Last Updated:** 2026-01-29
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-27
-- Focus: Phase 2 Complete — Building geometry + rebar + cross-section endpoints + React hooks
+- Date: 2026-01-29
+- Focus: Session 87 — Fixed 4 critical 3D viewport bugs (centering, camera control, null safety)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,44 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** Session 82 | **Focus:** Phase 2 geometry/rebar endpoints + React hooks
+**Last Session:** Session 87 | **Focus:** Critical 3D viewport bug fixes (PR #422 merged)
+
+---
+
+## ✅ Session 87 Summary (Jan 29, 2026)
+
+### Completed This Session
+
+**User reported 4 critical bugs after Session 86:**
+
+1. **Blank screen on beam click** → Fixed: Added null guards for beam dimensions
+2. **Beam off-center in design view** → Fixed: Centered beam at origin, dynamic camera positioning
+3. **Camera locked after transition** → Fixed: Removed continuous lerping when not animating
+4. **Cell edits not saving** → Fixed: Use fresh Zustand state instead of stale closure
+
+### PR
+| Number | Description | Status |
+|--------|-------------|--------|
+| #422 | 3D viewport centering and camera control fixes | ✅ MERGED (1m 42s CI) |
+
+### Files Changed
+- `react_app/src/components/Viewport3D.tsx` — Beam centering + camera control fix
+- `react_app/src/components/pages/BuildingEditorPage.tsx` — Cell edit state fix
+- `docs/getting-started/agent-bootstrap.md` — Updated V3 infrastructure table
+- `docs/getting-started/agent-essentials.md` — Enhanced React hooks/components tables
+
+### Test Results
+```
+✅ React build: 2754 modules in 4.11s
+✅ Python geometry tests: 52 passed
+✅ FastAPI tests: 3 geometry endpoints passed
+✅ CI checks: All passed (1m 42s)
+```
+
+### Next Priorities
+1. Test stirrup rendering with real CSV data
+2. Add measurement tools in 3D viewport
+3. Wire dashboard insights into React UI
 
 ---
 
