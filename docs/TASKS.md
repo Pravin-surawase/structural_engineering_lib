@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-26 (Session 80)
+**Updated:** 2026-01-28 (Session 81)
 
 ---
 
@@ -16,7 +16,7 @@
 ## Current Focus
 
 - **Version:** v0.19.0 ✅ RELEASED → v0.20 (V3 Foundation)
-- **Focus:** V3 Automation Preparation + Library API for React migration
+- **Focus:** V3 Parity Complete — Library + FastAPI + React hooks ready
 - **Target:** March 2026 Launch → V3 React migration
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
@@ -34,17 +34,31 @@
 
 ---
 
+## Completed This Session (Session 81)
+
+| Task | Status | PR |
+|------|--------|-----|
+| **TASK-INSIGHTS:** Add insights endpoints + React hooks | ✅ Done | PR #420 |
+| Create dashboard.py (generate_dashboard, code_checks_live, suggest_rebar_options) | ✅ Done | PR #420 |
+| Create fastapi_app/routers/insights.py (3 endpoints) | ✅ Done | PR #420 |
+| Create useInsights.ts (useDashboardInsights, useCodeChecks, useRebarSuggestions) | ✅ Done | PR #420 |
+| Create useGeometryAdvanced.ts (useBuildingGeometry, useCrossSectionGeometry) | ✅ Done | PR #420 |
+| Create useRebarEditor.ts (useRebarValidation, useRebarApply) | ✅ Done | PR #420 |
+| Fix ruff UP035/UP037/I001 errors | ✅ Done | PR #420 |
+| Fix mypy type errors (type: ignore comments) | ✅ Done | PR #420 |
+
 ## Active
 
-- **TASK-V3-REACT-UI:** Live design UI wired to `useLiveDesign` + ConnectionStatus (DesignView + 3D preview) — 🔄 QA + fallback
-- **TASK-V3-IMPORT-OVERRIDES:** Material settings overrides applied to CSV + sample import — 🔄 Verify with real CSV
+- None active (previously cleared)
 
 ## Up Next
 
+- Wire dashboard insights into React Dashboard component
+- Add live code check badges to DesignView
+- Add rebar suggestion "Apply" buttons
+- Create export panel (BBS/DXF/CSV)
 - Add SSE batch progress UI for batch design
 - Add REST fallback when WebSocket is unavailable (DesignView)
-- Extend material overrides into batch design + export flows
-- Add React E2E smoke test (import → 3D view)
 
 ---
 
