@@ -103,14 +103,11 @@ export function ModernAppLayout() {
         )}
 
         {viewMode === "design" && (
-          <DesignView onBack={() => setViewMode("home")} />
+          <DesignView />
         )}
 
         {viewMode === "import" && (
-          <ImportView
-            onBack={() => setViewMode("home")}
-            onImportComplete={() => setViewMode("results")}
-          />
+          <ImportView />
         )}
 
         {viewMode === "results" && (

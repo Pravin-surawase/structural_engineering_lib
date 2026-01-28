@@ -34,6 +34,22 @@ export interface ImportedBeam {
   unit_source?: string;
 }
 
+/**
+ * Payload for batch design API - matches backend's BeamRow model.
+ */
+export interface BeamDesignPayload {
+  id: string;
+  story?: string | null;
+  width_mm: number;
+  depth_mm: number;
+  span_mm: number;
+  mu_knm: number;
+  vu_kn: number;
+  fck_mpa: number;
+  fy_mpa: number;
+  cover_mm: number;
+}
+
 export interface DesignedBeam extends ImportedBeam {
   design?: {
     ast_required?: number;
@@ -154,14 +170,15 @@ async function importDualCSVFiles(
 
 /**
  * Batch design all imported beams.
+ * Accepts BeamDesignPayload[] which matches the backend's BeamRow model.
  */
 async function batchDesign(
-  beams: ImportedBeam[]
+  beams: BeamDesignPayload[]
 ): Promise<BatchDesignResponse> {
   const response = await fetch(`${API_BASE_URL}/api/v1/import/batch-design`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ beams }),
+    body: JSON.stringify(beams),  // API expects array directly, not wrapped
   });
 
   if (!response.ok) {
