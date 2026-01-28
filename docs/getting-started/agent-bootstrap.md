@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 2.3.0
 **Created:** 2026-01-08
-**Last Updated:** 2026-01-26
+**Last Updated:** 2026-01-29
 
 ---
 
@@ -27,11 +27,18 @@
 | CSV parsing | `GenericCSVAdapter` (40+ column names) | `structural_lib/adapters.py` |
 | 3D bar positions | `beam_to_3d_geometry()` | `structural_lib/geometry_3d.py` |
 | React CSV import | `useCSVFileImport()` hook | `react_app/src/hooks/useCSVImport.ts` |
+| React ETABS import | `useDualCSVImport()` hook | `react_app/src/hooks/useCSVImport.ts` |
+| React batch design | `useBatchDesign()` hook | `react_app/src/hooks/useCSVImport.ts` |
 | React 3D geometry | `useBeamGeometry()` hook | `react_app/src/hooks/useBeamGeometry.ts` |
+| React live design | `useLiveDesign()` hook | `react_app/src/hooks/useLiveDesign.ts` |
 | React file upload | `FileDropZone` component | `react_app/src/components/ui/FileDropZone.tsx` |
 | React 3D viewport | `Viewport3D` component | `react_app/src/components/Viewport3D.tsx` |
-| FastAPI CSV import | `POST /api/v1/import/csv` | `fastapi_app/routers/import_routes.py` |
+| React beam editor | `BuildingEditorPage` | `react_app/src/components/pages/BuildingEditorPage.tsx` |
+| FastAPI CSV import | `POST /api/v1/import/csv` | `fastapi_app/routers/imports.py` |
+| FastAPI ETABS dual | `POST /api/v1/import/dual-csv` | `fastapi_app/routers/imports.py` |
+| FastAPI batch design | `POST /api/v1/import/batch-design` | `fastapi_app/routers/imports.py` |
 | FastAPI geometry | `POST /api/v1/geometry/beam/full` | `fastapi_app/routers/geometry.py` |
+| FastAPI sample data | `GET /api/v1/import/sample` | `fastapi_app/routers/imports.py` |
 
 **Quick check before coding:**
 ```bash

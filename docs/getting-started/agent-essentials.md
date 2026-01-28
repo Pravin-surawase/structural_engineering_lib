@@ -39,16 +39,40 @@
 | `/docs` | OpenAPI documentation | Guessing API schemas |
 
 ### React App (`react_app/src/`)
-| Component/Hook | Purpose | File |
-|----------------|---------|------|
-| `useBeamGeometry` | Fetch 3D geometry from API | `hooks/useBeamGeometry.ts` |
-| `useCSVFileImport` | Import CSV via API adapters | `hooks/useCSVImport.ts` |
-| `useCSVTextImport` | Import CSV text via API | `hooks/useCSVImport.ts` |
-| `useBatchDesign` | Batch design all beams | `hooks/useCSVImport.ts` |
+
+**Hooks** (`hooks/index.ts` — barrel export):
+| Hook | Purpose | File |
+|------|---------|------|
+| `useBeamGeometry` | 3D rebar/stirrup geometry from API | `useBeamGeometry.ts` |
+| `useCSVFileImport` | CSV file import via adapters | `useCSVImport.ts` |
+| `useCSVTextImport` | CSV text/paste import | `useCSVImport.ts` |
+| `useDualCSVImport` | ETABS geometry+forces import | `useCSVImport.ts` |
+| `useBatchDesign` | Batch design all beams | `useCSVImport.ts` |
+| `useLiveDesign` | WebSocket-based live design | `useLiveDesign.ts` |
+| `useAutoDesign` | Auto-trigger design on input change | `useAutoDesign.ts` |
+| `useBuildingGeometry` | Building 3D geometry | `useGeometryAdvanced.ts` |
+| `useCrossSectionGeometry` | Cross-section visualization | `useGeometryAdvanced.ts` |
+| `useRebarValidation` | Rebar edit validation | `useRebarEditor.ts` |
+| `useRebarApply` | Apply rebar changes | `useRebarEditor.ts` |
+| `useDashboardInsights` | Dashboard data | `useInsights.ts` |
+| `useCodeChecks` | IS 456 code checks | `useInsights.ts` |
+| `useRebarSuggestions` | AI-driven rebar suggestions | `useInsights.ts` |
+
+**Key Components**:
+| Component | Purpose | File |
+|-----------|---------|------|
+| `Viewport3D` | 3D beam/building visualization (R3F) | `components/Viewport3D.tsx` |
+| `BuildingEditorPage` | AG Grid beam editor | `components/pages/BuildingEditorPage.tsx` |
+| `DesignView` | Single beam design page | `components/DesignView.tsx` |
 | `FileDropZone` | Drag-drop CSV upload | `components/ui/FileDropZone.tsx` |
-| `Viewport3D` | 3D beam visualization (R3F) | `components/Viewport3D.tsx` |
 | `BentoGrid` | Modern card layout | `components/ui/BentoGrid.tsx` |
 | `FloatingDock` | Bottom navigation dock | `components/ui/FloatingDock.tsx` |
+
+**State Stores** (`store/`):
+| Store | Purpose | File |
+|-------|---------|------|
+| `useDesignStore` | Single beam design inputs/results | `designStore.ts` |
+| `useImportedBeamsStore` | Imported CSV beams + selection | `importedBeamsStore.ts` |
 
 ### Library (`Python/structural_lib/`)
 | Module | Purpose | Key Functions |
