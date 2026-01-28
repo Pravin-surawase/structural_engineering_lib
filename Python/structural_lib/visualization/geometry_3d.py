@@ -53,6 +53,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from structural_lib.codes.is456.detailing import BeamDetailingResult
+    from structural_lib.models import BeamGeometry
 
 
 __all__ = [
@@ -395,7 +396,7 @@ class Building3DGeometry:
 
 
 def building_to_3d_geometry(
-    beams: Iterable["BeamGeometry"],
+    beams: Iterable[BeamGeometry],
     *,
     unit_scale: float = 1000.0,
     include_frame_types: tuple[str, ...] | None = None,
@@ -410,12 +411,12 @@ def building_to_3d_geometry(
     Returns:
         Building3DGeometry with line segments, bounding box, and center.
     """
-    from structural_lib.models import BeamGeometry
+    from structural_lib.models import BeamGeometry as BeamGeometryModel
 
     beam_list: list[BuildingBeam3D] = []
 
     for beam in beams:
-        if not isinstance(beam, BeamGeometry):
+        if not isinstance(beam, BeamGeometryModel):
             continue
         frame_type = str(beam.frame_type.value)
         if include_frame_types and frame_type not in include_frame_types:
