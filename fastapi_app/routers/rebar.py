@@ -35,13 +35,23 @@ class RebarConfig(BaseModel):
 
     bar_count: int = Field(ge=2, le=12, description="Number of bars")
     bar_dia: float = Field(ge=8.0, le=40.0, description="Bar diameter (mm)")
-    stirrup_dia: float = Field(default=8.0, ge=6.0, le=16.0, description="Stirrup diameter (mm)")
+    stirrup_dia: float = Field(
+        default=8.0, ge=6.0, le=16.0, description="Stirrup diameter (mm)"
+    )
     layers: int = Field(default=1, ge=1, le=3, description="Number of bar layers")
     is_top: bool = Field(default=False, description="Whether bars are in top zone")
-    stirrup_spacing_start: float = Field(default=150.0, gt=0, le=300.0, description="Stirrup spacing at start (mm)")
-    stirrup_spacing_mid: float = Field(default=200.0, gt=0, le=300.0, description="Stirrup spacing at mid (mm)")
-    stirrup_spacing_end: float = Field(default=150.0, gt=0, le=300.0, description="Stirrup spacing at end (mm)")
-    agg_size: float = Field(default=20.0, ge=10.0, le=40.0, description="Aggregate size (mm)")
+    stirrup_spacing_start: float = Field(
+        default=150.0, gt=0, le=300.0, description="Stirrup spacing at start (mm)"
+    )
+    stirrup_spacing_mid: float = Field(
+        default=200.0, gt=0, le=300.0, description="Stirrup spacing at mid (mm)"
+    )
+    stirrup_spacing_end: float = Field(
+        default=150.0, gt=0, le=300.0, description="Stirrup spacing at end (mm)"
+    )
+    agg_size: float = Field(
+        default=20.0, ge=10.0, le=40.0, description="Aggregate size (mm)"
+    )
 
 
 class RebarValidateRequest(BaseModel):
@@ -80,9 +90,13 @@ class RebarApplyResponse(BaseModel):
 
     success: bool = Field(description="Whether apply succeeded")
     message: str = Field(description="Summary message")
-    ast_provided_mm2: float | None = Field(default=None, description="Steel area provided (mm²)")
+    ast_provided_mm2: float | None = Field(
+        default=None, description="Steel area provided (mm²)"
+    )
     validation: ValidationResult = Field(description="Validation results")
-    geometry: dict | None = Field(default=None, description="Rebar geometry for visualization")
+    geometry: dict | None = Field(
+        default=None, description="Rebar geometry for visualization"
+    )
 
 
 # =============================================================================

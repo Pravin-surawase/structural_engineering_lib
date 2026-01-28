@@ -30,6 +30,7 @@ router = APIRouter(
 
 class Point3D(BaseModel):
     """3D point for beam geometry."""
+
     x: float = 0.0
     y: float = 0.0
     z: float = 0.0
@@ -221,9 +222,7 @@ async def import_csv(
                     forces_map = {f.id: f for f in forces_list}
                 except (ValueError, NotImplementedError):
                     forces_map = {}
-                    warnings.append(
-                        "Force data not found in CSV - using geometry only"
-                    )
+                    warnings.append("Force data not found in CSV - using geometry only")
 
                 # Combine geometry and forces
                 for geom in geometry_list:
@@ -439,6 +438,7 @@ async def import_dual_csv(
             detail=f"Could not parse dual CSV: {e}",
         )
 
+
 @router.post(
     "/csv/text",
     response_model=CSVImportResponse,
@@ -644,7 +644,9 @@ async def get_sample_data() -> SampleDataResponse:
     """
     # Path to sample CSV files
     base_path = Path(__file__).parent.parent.parent
-    sample_dir = base_path / "VBA" / "ETABS_Export_v2" / "Etabs_output" / "2026-01-17_222801"
+    sample_dir = (
+        base_path / "VBA" / "ETABS_Export_v2" / "Etabs_output" / "2026-01-17_222801"
+    )
     forces_path = sample_dir / "beam_forces.csv"
     geometry_path = sample_dir / "frames_geometry.csv"
 

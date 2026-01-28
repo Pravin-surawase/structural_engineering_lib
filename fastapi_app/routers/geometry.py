@@ -487,7 +487,9 @@ async def generate_building_geometry(
         from structural_lib.visualization.geometry_3d import building_to_3d_geometry
 
         # Generate geometry
-        include_types = tuple(request.include_frame_types) if request.include_frame_types else None
+        include_types = (
+            tuple(request.include_frame_types) if request.include_frame_types else None
+        )
         geometry = building_to_3d_geometry(
             beam_objects,
             unit_scale=request.unit_scale,
