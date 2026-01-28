@@ -128,6 +128,77 @@ class BeamGeometryResponse(BaseModel):
 
 
 # =============================================================================
+# Building Geometry Models
+# =============================================================================
+
+
+class BuildingBeamModel(BaseModel):
+    """Single beam in building geometry (line representation)."""
+
+    beam_id: str = Field(description="Beam identifier")
+    story: str = Field(description="Story/floor identifier")
+    frame_type: str = Field(description="Frame type: beam, column, brace")
+    start: Point3DModel = Field(description="Start point (mm)")
+    end: Point3DModel = Field(description="End point (mm)")
+
+
+class BuildingGeometryResponse(BaseModel):
+    """Response model for building-level 3D geometry."""
+
+    success: bool = Field(description="Whether generation succeeded")
+    message: str = Field(description="Summary message")
+    beams: list[BuildingBeamModel] = Field(description="All building members")
+    bounding_box: dict[str, float] = Field(description="Overall bounding box")
+    center: Point3DModel = Field(description="Center point")
+    metadata: dict = Field(default_factory=dict, description="Additional metadata")
+    warnings: list[str] = Field(default_factory=list, description="Any warnings")
+
+
+class BuildingGeometryRequest(BaseModel):
+    """Request model for building geometry generation."""
+
+    beams: list[dict] = Field(
+        description="List of beam geometry dicts with point1, point2, id, story, frame_type"
+    )
+    unit_scale: float = Field(
+        default=1000.0, description="Scale factor (default: m to mm)"
+    )
+    include_frame_types: list[str] | None = Field(
+        default=None, description="Optional filter for frame types"
+    )
+
+
+# =============================================================================
+# Cross-Section Geometry Models
+# =============================================================================
+
+
+class CrossSectionRequest(BaseModel):
+    """Request model for 2D cross-section geometry."""
+
+    width: float = Field(gt=0, le=2000.0, description="Beam width b (mm)")
+    depth: float = Field(gt=0, le=3000.0, description="Beam depth D (mm)")
+    cover: float = Field(default=40.0, ge=20.0, le=75.0, description="Clear cover (mm)")
+    tension_bars: int = Field(default=3, ge=2, le=12, description="Number of tension bars")
+    compression_bars: int = Field(default=2, ge=0, le=8, description="Number of compression bars")
+    bar_dia: float = Field(default=16.0, ge=8.0, le=36.0, description="Main bar diameter (mm)")
+    stirrup_dia: float = Field(default=8.0, ge=6.0, le=16.0, description="Stirrup diameter (mm)")
+
+
+class CrossSectionResponse(BaseModel):
+    """Response model for 2D cross-section geometry."""
+
+    success: bool = Field(description="Whether generation succeeded")
+    message: str = Field(description="Summary message")
+    outline: list[Point3DModel] = Field(description="Section outline corners")
+    tension_bars: list[Point3DModel] = Field(description="Tension bar positions")
+    compression_bars: list[Point3DModel] = Field(description="Compression bar positions")
+    stirrup_path: list[Point3DModel] = Field(description="Stirrup inner path")
+    dimensions: dict[str, float] = Field(description="Section dimensions")
+    warnings: list[str] = Field(default_factory=list, description="Any warnings")
+
+
+# =============================================================================
 # Request Models
 # =============================================================================
 

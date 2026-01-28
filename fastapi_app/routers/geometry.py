@@ -20,6 +20,11 @@ from fastapi_app.models.geometry import (
     RebarPathModel,
     RebarSegmentModel,
     StirrupLoopModel,
+    BuildingGeometryRequest,
+    BuildingGeometryResponse,
+    BuildingBeamModel,
+    CrossSectionRequest,
+    CrossSectionResponse,
 )
 
 router = APIRouter(
@@ -403,3 +408,216 @@ async def get_materials() -> dict:
             "description": "Highlight color for selection",
         },
     }
+
+
+# =============================================================================
+# Building-Level Geometry Endpoints
+# =============================================================================
+
+
+@router.post(
+    "/building",
+    response_model=BuildingGeometryResponse,
+    summary="Generate Building 3D Geometry",
+    description="""
+Generate 3D line geometry for a multi-beam building view.
+
+Returns line segments for all beams/columns suitable for instanced rendering.
+Ideal for React Three Fiber with LineSegments or Tubes.
+""",
+)
+async def generate_building_geometry(
+    request: BuildingGeometryRequest,
+) -> BuildingGeometryResponse:
+    """
+    Generate building-level 3D geometry for visualization.
+
+    Uses structural_lib.visualization.geometry_3d.building_to_3d_geometry()
+    to compute line geometry for all structural members.
+    """
+    try:
+        from structural_lib.models import BeamGeometry, Point3D, FrameType
+
+        # Convert request dicts to BeamGeometry objects
+        beam_objects = []
+        for beam_dict in request.beams:
+            try:
+                # Parse frame type
+                frame_type_str = beam_dict.get("frame_type", "beam").lower()
+                frame_type = FrameType.BEAM
+                if frame_type_str == "column":
+                    frame_type = FrameType.COLUMN
+                elif frame_type_str == "brace":
+                    frame_type = FrameType.BRACE
+
+                # Parse points
+                p1 = beam_dict.get("point1", {})
+                p2 = beam_dict.get("point2", {})
+
+                beam_geom = BeamGeometry(
+                    id=beam_dict.get("id", f"beam_{len(beam_objects)}"),
+                    story=beam_dict.get("story", "1F"),
+                    frame_type=frame_type,
+                    point1=Point3D(
+                        x=float(p1.get("x", 0)),
+                        y=float(p1.get("y", 0)),
+                        z=float(p1.get("z", 0)),
+                    ),
+                    point2=Point3D(
+                        x=float(p2.get("x", 0)),
+                        y=float(p2.get("y", 0)),
+                        z=float(p2.get("z", 0)),
+                    ),
+                )
+                beam_objects.append(beam_geom)
+            except (KeyError, ValueError, TypeError):
+                continue  # Skip invalid beams
+
+        if not beam_objects:
+            return BuildingGeometryResponse(
+                success=False,
+                message="No valid beams could be parsed from request",
+                beams=[],
+                bounding_box={},
+                center=Point3DModel(x=0, y=0, z=0),
+                metadata={},
+                warnings=["No beams parsed - check input format"],
+            )
+
+        from structural_lib.visualization.geometry_3d import building_to_3d_geometry
+
+        # Generate geometry
+        include_types = tuple(request.include_frame_types) if request.include_frame_types else None
+        geometry = building_to_3d_geometry(
+            beam_objects,
+            unit_scale=request.unit_scale,
+            include_frame_types=include_types,
+        )
+
+        # Convert to response models
+        beam_models = [
+            BuildingBeamModel(
+                beam_id=b.beam_id,
+                story=b.story,
+                frame_type=b.frame_type,
+                start=Point3DModel(x=b.start.x, y=b.start.y, z=b.start.z),
+                end=Point3DModel(x=b.end.x, y=b.end.y, z=b.end.z),
+            )
+            for b in geometry.beams
+        ]
+
+        return BuildingGeometryResponse(
+            success=True,
+            message=f"Generated geometry for {len(beam_models)} members",
+            beams=beam_models,
+            bounding_box=geometry.bounding_box,
+            center=Point3DModel(
+                x=geometry.center.x,
+                y=geometry.center.y,
+                z=geometry.center.z,
+            ),
+            metadata=geometry.metadata,
+            warnings=[],
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"structural_lib not available: {e}",
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Invalid parameters: {e}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Building geometry generation failed: {e}",
+        )
+
+
+# =============================================================================
+# Cross-Section Geometry Endpoints
+# =============================================================================
+
+
+@router.post(
+    "/cross-section",
+    response_model=CrossSectionResponse,
+    summary="Generate 2D Cross-Section Geometry",
+    description="""
+Generate 2D cross-section geometry for beam section view.
+
+Returns outline, rebar positions, and stirrup path for visualization.
+Ideal for React SVG or Canvas 2D rendering.
+""",
+)
+async def generate_cross_section_geometry(
+    request: CrossSectionRequest,
+) -> CrossSectionResponse:
+    """
+    Generate 2D cross-section geometry for beam visualization.
+
+    Computes rebar positions based on IS 456 spacing rules.
+    """
+    try:
+        w = request.width
+        d = request.depth
+        cover = request.cover
+        stirrup_dia = request.stirrup_dia
+        bar_dia = request.bar_dia
+
+        # Section outline (4 corners)
+        outline = [
+            Point3DModel(x=0, y=0, z=0),
+            Point3DModel(x=w, y=0, z=0),
+            Point3DModel(x=w, y=d, z=0),
+            Point3DModel(x=0, y=d, z=0),
+        ]
+
+        # Effective cover to bar center
+        eff_cover = cover + stirrup_dia + bar_dia / 2
+
+        # Tension bars (bottom)
+        tension_bars = []
+        if request.tension_bars > 0:
+            spacing = (w - 2 * eff_cover) / max(1, request.tension_bars - 1)
+            for i in range(request.tension_bars):
+                x = eff_cover + i * spacing if request.tension_bars > 1 else w / 2
+                tension_bars.append(Point3DModel(x=x, y=eff_cover, z=0))
+
+        # Compression bars (top)
+        compression_bars = []
+        if request.compression_bars > 0:
+            spacing = (w - 2 * eff_cover) / max(1, request.compression_bars - 1)
+            for i in range(request.compression_bars):
+                x = eff_cover + i * spacing if request.compression_bars > 1 else w / 2
+                compression_bars.append(Point3DModel(x=x, y=d - eff_cover, z=0))
+
+        # Stirrup path (inner rectangle)
+        inner_cover = cover + stirrup_dia / 2
+        stirrup_path = [
+            Point3DModel(x=inner_cover, y=inner_cover, z=0),
+            Point3DModel(x=w - inner_cover, y=inner_cover, z=0),
+            Point3DModel(x=w - inner_cover, y=d - inner_cover, z=0),
+            Point3DModel(x=inner_cover, y=d - inner_cover, z=0),
+            Point3DModel(x=inner_cover, y=inner_cover, z=0),  # Close loop
+        ]
+
+        return CrossSectionResponse(
+            success=True,
+            message=f"Generated cross-section with {len(tension_bars)} tension + {len(compression_bars)} compression bars",
+            outline=outline,
+            tension_bars=tension_bars,
+            compression_bars=compression_bars,
+            stirrup_path=stirrup_path,
+            dimensions={"width": w, "depth": d, "cover": cover},
+            warnings=[],
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Cross-section generation failed: {e}",
+        )

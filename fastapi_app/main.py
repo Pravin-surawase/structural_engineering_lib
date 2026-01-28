@@ -27,6 +27,7 @@ from fastapi_app.routers import (
     analysis,
     geometry,
     health,
+    rebar,
     websocket,
     streaming,
     imports,
@@ -183,6 +184,10 @@ app.include_router(
 )
 app.include_router(
     imports.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    rebar.router,
     prefix=API_V1_PREFIX,
 )
 
