@@ -11,6 +11,19 @@ export {
   useDualCSVImport,
   useBatchDesign,
 } from './useCSVImport';
+export {
+  useBuildingGeometry,
+  useCrossSectionGeometry,
+} from './useGeometryAdvanced';
+export {
+  useRebarValidation,
+  useRebarApply,
+} from './useRebarEditor';
+export {
+  useDashboardInsights,
+  useCodeChecks,
+  useRebarSuggestions,
+} from './useInsights';
 
 // Type exports
 export type {
@@ -30,3 +43,26 @@ export type {
   ConnectionStatus as WebSocketConnectionStatus,
   WebSocketState,
 } from './useDesignWebSocket';
+export type {
+  BuildingBeamInput,
+  BuildingBeamResult,
+  BuildingGeometryResponse,
+  CrossSectionRequest,
+  CrossSectionResponse,
+  BarPosition,
+} from './useGeometryAdvanced';
+export type {
+  BeamParams as RebarBeamParams,
+  RebarConfig,
+  ValidationDetail,
+  RebarValidateResponse,
+  RebarApplyResponse,
+} from './useRebarEditor';
+export type {
+  BeamResult,
+  DashboardData,
+  CheckDetail,
+  CodeChecksResult,
+  SuggestionItem,
+  RebarSuggestionsResult,
+} from './useInsights';
