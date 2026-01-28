@@ -28,7 +28,7 @@ def _coerce_mapping(value: Any) -> dict[str, Any]:
         return value.model_dump()  # type: ignore[no-any-return]
     if hasattr(value, "dict"):
         return value.dict()  # type: ignore[no-any-return]
-    return vars(value)
+    return vars(value)  # type: ignore[no-any-return]
 
 
 def _pick(params: Mapping[str, Any], keys: list[str], default: Any) -> Any:

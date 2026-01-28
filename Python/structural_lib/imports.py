@@ -81,7 +81,7 @@ def parse_dual_csv(
     Returns:
         (BeamBatchInput, ImportWarnings)
     """
-    defaults = defaults or DesignDefaults()
+    defaults = defaults or DesignDefaults()  # type: ignore[call-arg]
     adapter = _select_adapter(
         geometry_csv=geometry_csv, forces_csv=forces_csv, format_hint=format_hint
     )
