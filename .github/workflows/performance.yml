@@ -209,7 +209,7 @@ jobs:
 
       - name: Download baseline (for comparison)
         if: github.event_name == 'pull_request'
-        uses: dawidd6/action-download-artifact@v12
+        uses: dawidd6/action-download-artifact@v14
         with:
           workflow: performance.yml
           branch: main
