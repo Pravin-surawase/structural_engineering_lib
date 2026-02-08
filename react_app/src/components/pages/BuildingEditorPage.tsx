@@ -229,13 +229,17 @@ export function BuildingEditorPage() {
   const handleCellValueChanged = useCallback(
     (event: CellValueChangedEvent<BeamCSVRow>) => {
       if (event.data) {
-        const updatedBeams = beams.map((b) =>
-          b.id === event.data!.id ? { ...b, ...event.data, status: "pending" as const } : b
+        // Get fresh state inside callback to avoid stale closure issues
+        const currentBeams = useImportedBeamsStore.getState().beams;
+        const updatedBeams = currentBeams.map((b) =>
+          b.id === event.data!.id
+            ? { ...b, ...event.data, status: "pending" as const }
+            : b
         );
         useImportedBeamsStore.getState().setBeams(updatedBeams);
       }
     },
-    [beams]
+    [] // No dependencies - we get fresh state inside
   );
 
   // Column definitions — envelope-based default, advanced for detail
@@ -447,7 +451,7 @@ export function BuildingEditorPage() {
           {/* 3D Building View (top 30%) */}
           <div className="h-[30%] min-h-[200px] border-b border-white/5 relative">
             <Suspense fallback={<div className="flex items-center justify-center h-full bg-zinc-900"><p className="text-white/40 animate-pulse">Loading 3D...</p></div>}>
-              <Viewport3D mode="building" />
+              <Viewport3D mode="building" forceMode />
             </Suspense>
 
             {selectedBeam && (

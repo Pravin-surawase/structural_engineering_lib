@@ -5,7 +5,7 @@
  * Step 2: Preview imported beams in table
  * Step 3: Navigate to building editor
  */
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileDropZone } from "./ui/FileDropZone";
 import {
@@ -15,11 +15,14 @@ import {
   ArrowRight,
   Loader2,
   CheckCircle,
+  Upload,
+  Layers,
 } from "lucide-react";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { loadSampleData } from "../api/client";
 import { mapSampleBeamsToRows } from "../utils/sampleData";
 import { applyMaterialOverrides } from "../utils/materialOverrides";
+import { useDualCSVImport } from "../hooks/useCSVImport";
 
 type ImportStep = "upload" | "preview";
 
@@ -121,6 +124,28 @@ interface UploadStepProps {
 }
 
 function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onFileImported, isImporting, error, materialOverrides }: UploadStepProps) {
+  const [importMode, setImportMode] = useState<"single" | "dual">("single");
+  const [geometryFile, setGeometryFile] = useState<File | null>(null);
+  const [forcesFile, setForcesFile] = useState<File | null>(null);
+  const { importFiles, isImporting: isDualImporting, error: dualError } = useDualCSVImport();
+
+  const handleDualImport = useCallback(() => {
+    if (!geometryFile || !forcesFile) return;
+    importFiles(geometryFile, forcesFile, "auto", materialOverrides);
+  }, [geometryFile, forcesFile, importFiles, materialOverrides]);
+
+  // Auto-trigger dual import when both files are set
+  const handleGeometryFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) setGeometryFile(file);
+  }, []);
+  const handleForcesFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) setForcesFile(file);
+  }, []);
+
+  const displayError = error || dualError?.message;
+
   return (
     <div className="flex-1 flex items-start justify-center px-6 pt-8 gap-6 overflow-y-auto">
       {/* Left: Upload zones */}
@@ -130,41 +155,126 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
           <p className="text-sm text-white/40">Upload CSV from ETABS, SAFE, STAAD, or generic format</p>
         </div>
 
-        {/* Drop zones */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-xs text-white/50 mb-2">Geometry + Forces (Single CSV)</p>
-            <FileDropZone
-              onSuccess={onFileImported}
-              onError={(err) => console.error(err)}
-              materialOverrides={materialOverrides}
-            />
-          </div>
-          <div>
-            <p className="text-xs text-white/50 mb-2">Or use sample data</p>
-            <button
-              onClick={onLoadSample}
-              disabled={isImporting}
-              className="w-full h-full min-h-[160px] rounded-2xl border-2 border-dashed border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-blue-500/5 transition-all flex flex-col items-center justify-center gap-3 disabled:opacity-50"
-            >
-              {isImporting ? (
-                <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
-              ) : (
-                <>
-                  <FileSpreadsheet className="w-8 h-8 text-blue-400" />
-                  <div className="text-center">
-                    <p className="text-sm text-white font-medium">Sample Building</p>
-                    <p className="text-[11px] text-white/40">154 beams from ETABS</p>
-                  </div>
-                </>
-              )}
-            </button>
-          </div>
+        {/* Import mode tabs */}
+        <div className="flex gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/8 w-fit">
+          <button
+            onClick={() => setImportMode("single")}
+            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
+              importMode === "single"
+                ? "bg-blue-500/20 text-blue-400"
+                : "text-white/40 hover:text-white/60"
+            }`}
+          >
+            <Upload className="w-3.5 h-3.5" />
+            Single CSV
+          </button>
+          <button
+            onClick={() => setImportMode("dual")}
+            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
+              importMode === "dual"
+                ? "bg-blue-500/20 text-blue-400"
+                : "text-white/40 hover:text-white/60"
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            Dual CSV (Geometry + Forces)
+          </button>
         </div>
 
-        {error && (
+        {importMode === "single" ? (
+          /* Single CSV mode */
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs text-white/50 mb-2">Geometry + Forces (Single CSV)</p>
+              <FileDropZone
+                onSuccess={onFileImported}
+                onError={(err) => console.error(err)}
+                materialOverrides={materialOverrides}
+              />
+            </div>
+            <div>
+              <p className="text-xs text-white/50 mb-2">Or use sample data</p>
+              <button
+                onClick={onLoadSample}
+                disabled={isImporting}
+                className="w-full h-full min-h-[160px] rounded-2xl border-2 border-dashed border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-blue-500/5 transition-all flex flex-col items-center justify-center gap-3 disabled:opacity-50"
+              >
+                {isImporting ? (
+                  <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                ) : (
+                  <>
+                    <FileSpreadsheet className="w-8 h-8 text-blue-400" />
+                    <div className="text-center">
+                      <p className="text-sm text-white font-medium">Sample Building</p>
+                      <p className="text-[11px] text-white/40">154 beams from ETABS</p>
+                    </div>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* Dual CSV mode */
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              {/* Geometry file */}
+              <DualFileZone
+                label="1. Geometry CSV"
+                description="Beam IDs, widths, depths, spans, coordinates"
+                file={geometryFile}
+                onFileChange={handleGeometryFile}
+                accept=".csv"
+                inputId="geometry-csv-input"
+              />
+              {/* Forces file */}
+              <DualFileZone
+                label="2. Forces CSV"
+                description="Beam IDs, moments (Mu), shears (Vu)"
+                file={forcesFile}
+                onFileChange={handleForcesFile}
+                accept=".csv"
+                inputId="forces-csv-input"
+              />
+            </div>
+
+            {/* Import button */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleDualImport}
+                disabled={!geometryFile || !forcesFile || isDualImporting}
+                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-white/5 disabled:text-white/20 text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
+              >
+                {isDualImporting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
+                {isDualImporting ? "Importing..." : "Import & Merge"}
+              </button>
+              {geometryFile && forcesFile && !isDualImporting && (
+                <p className="text-xs text-white/40">
+                  Ready: {geometryFile.name} + {forcesFile.name}
+                </p>
+              )}
+            </div>
+
+            {/* Sample data button */}
+            <div className="pt-2 border-t border-white/8">
+              <button
+                onClick={onLoadSample}
+                disabled={isImporting}
+                className="text-xs text-blue-400/70 hover:text-blue-400 transition-colors flex items-center gap-1.5"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5" />
+                Or load sample building (154 beams)
+              </button>
+            </div>
+          </div>
+        )}
+
+        {displayError && (
           <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30">
-            <p className="text-sm text-red-400">{error}</p>
+            <p className="text-sm text-red-400">{displayError}</p>
           </div>
         )}
       </div>
@@ -296,6 +406,51 @@ function DropdownField({ label, value, onChange, options, format }: {
         </select>
         <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
       </div>
+    </div>
+  );
+}
+
+/** File picker zone for dual CSV mode */
+function DualFileZone({ label, description, file, onFileChange, accept, inputId }: {
+  label: string;
+  description: string;
+  file: File | null;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  accept: string;
+  inputId: string;
+}) {
+  return (
+    <div>
+      <p className="text-xs text-white/50 mb-2">{label}</p>
+      <label
+        htmlFor={inputId}
+        className={`block min-h-[140px] rounded-2xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-2 ${
+          file
+            ? "border-green-500/30 bg-green-500/5"
+            : "border-white/10 hover:border-blue-500/30 bg-white/[0.02] hover:bg-blue-500/5"
+        }`}
+      >
+        <input
+          type="file"
+          accept={accept}
+          onChange={onFileChange}
+          id={inputId}
+          className="hidden"
+        />
+        {file ? (
+          <>
+            <CheckCircle className="w-6 h-6 text-green-400" />
+            <p className="text-sm text-green-400 font-medium">{file.name}</p>
+            <p className="text-[10px] text-white/30">Click to replace</p>
+          </>
+        ) : (
+          <>
+            <Upload className="w-6 h-6 text-white/30" />
+            <p className="text-xs text-white/50 text-center px-4">{description}</p>
+            <p className="text-[10px] text-white/30">Click to browse</p>
+          </>
+        )}
+      </label>
     </div>
   );
 }

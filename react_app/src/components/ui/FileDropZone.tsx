@@ -140,11 +140,11 @@ export function FileDropZone({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       style={{
-        border: `2px dashed ${isDragging ? "#3b82f6" : "#d1d5db"}`,
+        border: `2px dashed ${isDragging ? "#3b82f6" : "#52525b"}`,
         borderRadius: "8px",
         padding: "32px",
         textAlign: "center",
-        backgroundColor: isDragging ? "#eff6ff" : "#f9fafb",
+        backgroundColor: isDragging ? "#172554" : "#18181b",
         cursor: isImporting ? "wait" : "pointer",
         transition: "all 0.2s ease",
       }}
@@ -192,7 +192,7 @@ export function FileDropZone({
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            <p style={{ marginTop: "12px", color: "#6b7280" }}>
+            <p style={{ marginTop: "12px", color: "#a1a1aa" }}>
               Importing CSV...
             </p>
           </div>
@@ -216,10 +216,10 @@ export function FileDropZone({
                 d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
               />
             </svg>
-            <p style={{ marginTop: "12px", color: "#374151", fontWeight: 500 }}>
+            <p style={{ marginTop: "12px", color: "#e4e4e7", fontWeight: 500 }}>
               {isDragging ? "Drop CSV file here" : "Drag & drop CSV file"}
             </p>
-            <p style={{ marginTop: "4px", color: "#6b7280", fontSize: "14px" }}>
+            <p style={{ marginTop: "4px", color: "#a1a1aa", fontSize: "14px" }}>
               or click to browse
             </p>
           </div>
@@ -232,9 +232,9 @@ export function FileDropZone({
           style={{
             marginTop: "16px",
             padding: "12px",
-            backgroundColor: "#d1fae5",
+            backgroundColor: "#052e16",
             borderRadius: "6px",
-            color: "#065f46",
+            color: "#4ade80",
           }}
         >
           <p style={{ fontWeight: 500 }}>
@@ -254,9 +254,9 @@ export function FileDropZone({
           style={{
             marginTop: "16px",
             padding: "12px",
-            backgroundColor: "#fee2e2",
+            backgroundColor: "#450a0a",
             borderRadius: "6px",
-            color: "#991b1b",
+            color: "#fca5a5",
           }}
         >
           <p>{displayError}</p>
@@ -281,7 +281,7 @@ export function FileDropZone({
         }
         .file-drop-zone:hover:not(.importing) {
           border-color: #3b82f6;
-          background-color: #eff6ff;
+          background-color: #172554;
         }
       `}</style>
     </div>

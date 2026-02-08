@@ -9,7 +9,7 @@
  * Uses library API via useBeamGeometry hook for accurate bar positions
  * instead of manual calculations.
  */
-import { useMemo, useCallback, Suspense, useEffect, useRef } from 'react';
+import React, { useMemo, useCallback, Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Grid, Environment, PerspectiveCamera, Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -104,11 +104,22 @@ function RebarVisualization({ rebars }: RebarProps) {
           const length = segment.length * SCALE;
           const radius = (segment.diameter / 2) * SCALE;
 
+          // Calculate rotation to align cylinder along bar direction
+          // CylinderGeometry is aligned along Y by default
+          const dir = new THREE.Vector3(
+            end[0] - start[0],
+            end[1] - start[1],
+            end[2] - start[2]
+          ).normalize();
+          const yAxis = new THREE.Vector3(0, 1, 0);
+          const quat = new THREE.Quaternion().setFromUnitVectors(yAxis, dir);
+          const euler = new THREE.Euler().setFromQuaternion(quat);
+
           return (
             <mesh
               key={`${rebar.barId}-${segIdx}`}
               position={midpoint}
-              rotation={[0, 0, Math.PI / 2]}
+              rotation={[euler.x, euler.y, euler.z]}
               material={rebarMaterial}
             >
               <cylinderGeometry args={[radius, radius, length, 12]} />
@@ -182,14 +193,18 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
                 (start[2] + end[2]) / 2,
               ];
 
-              // Calculate rotation to align cylinder with segment
-              const isVertical = Math.abs(dy) > Math.abs(dz);
+              // Calculate rotation to align cylinder with segment direction
+              // CylinderGeometry is aligned along Y by default
+              const dir = new THREE.Vector3(dx, dy, dz).normalize();
+              const yAxis = new THREE.Vector3(0, 1, 0);
+              const quaternion = new THREE.Quaternion().setFromUnitVectors(yAxis, dir);
+              const euler = new THREE.Euler().setFromQuaternion(quaternion);
 
               return (
                 <mesh
                   key={`${i}-${j}`}
                   position={midpoint}
-                  rotation={isVertical ? [Math.PI / 2, 0, 0] : [0, Math.PI / 2, 0]}
+                  rotation={[euler.x, euler.y, euler.z]}
                   material={stirrupMaterial}
                 >
                   <cylinderGeometry args={[radius, radius, segmentLength, 8]} />
@@ -214,6 +229,13 @@ function BuildingFrame() {
   const { beams, selectedId, selectedFloor, selectBeam } = useImportedBeamsStore();
   const { camera } = useThree();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+
+  // Debug logging for blank screen issue
+  console.log('[BuildingFrame] Rendering:', {
+    beamCount: beams.length,
+    selectedId,
+    selectedFloor
+  });
   const focusRef = useRef({
     target: new THREE.Vector3(0, 0, 0),
     position: new THREE.Vector3(0, 5, 10),
@@ -466,11 +488,11 @@ function BuildingFrame() {
                   <boxGeometry args={[beamLength, bD, bW]} />
                   <meshBasicMaterial color="#ffffff" wireframe opacity={0.5} transparent />
                 </mesh>
-                {/* Beam label */}
+                {/* Beam label - sprite mode keeps constant size regardless of zoom */}
                 <Html
                   position={[mid.x, mid.y + bD + 0.3, mid.z]}
                   center
-                  distanceFactor={15}
+                  sprite
                   style={{ pointerEvents: 'none' }}
                 >
                   <div className="px-2 py-1 rounded-md bg-black/80 backdrop-blur text-white text-xs font-medium whitespace-nowrap border border-green-400/50 shadow-lg">
@@ -501,6 +523,9 @@ function BuildingFrame() {
 
 function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
   const { beams } = useImportedBeamsStore();
+
+  // Debug logging for blank screen issue
+  console.log('[SelectedBeamDetail] Rendering with beam:', beam?.id ?? 'null');
 
   // Find adjacent beams (share an endpoint with selected beam, within tolerance)
   const adjacentBeams = useMemo(() => {
@@ -538,9 +563,15 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
   }, [beam]);
 
   const detailParams = useMemo(() => {
-    if (!beam || !astBase) return null;
+    if (!beam || !astBase) {
+      console.log('[SelectedBeamDetail] No beam or astBase:', { beam: beam?.id, astBase });
+      return null;
+    }
     // Guard against missing dimensions
-    if (!beam.b || !beam.D) return null;
+    if (!beam.b || !beam.D) {
+      console.log('[SelectedBeamDetail] Missing dimensions:', { b: beam.b, D: beam.D });
+      return null;
+    }
 
     const spanMm = beam.span
       ? beam.span
@@ -553,10 +584,13 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
       : 0;
 
     // Need valid span for geometry
-    if (spanMm <= 0) return null;
+    if (spanMm <= 0) {
+      console.log('[SelectedBeamDetail] Invalid span:', spanMm);
+      return null;
+    }
 
     const stirrupSpacing = beam.stirrup_spacing ?? 150;
-    return {
+    const params = {
       width: beam.b,
       depth: beam.D,
       span: spanMm,
@@ -571,10 +605,39 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
       stirrup_spacing_end: stirrupSpacing,
       cover: beam.cover ?? 40,
     };
+    console.log('[SelectedBeamDetail] Built params:', params);
+    return params;
   }, [astBase, beam]);
 
+  // Default params to avoid conditional hook calls (React hooks rule)
+  const safeParams = detailParams ?? {
+    width: 300,
+    depth: 450,
+    span: 5000,
+    fck: 25,
+    fy: 500,
+    ast_start: 1000,
+    ast_mid: 1000,
+    ast_end: 1000,
+    stirrup_dia: 8,
+    stirrup_spacing_start: 150,
+    stirrup_spacing_mid: 150,
+    stirrup_spacing_end: 150,
+    cover: 40,
+  };
   const shouldShow = Boolean(beam && astBase && detailParams);
-  const { data: detailGeometry } = useBeamGeometry(detailParams, { enabled: shouldShow });
+  console.log('[SelectedBeamDetail] shouldShow:', shouldShow, { astBase, hasParams: !!detailParams });
+  const { data: detailGeometry, error: geometryError } = useBeamGeometry(safeParams, { enabled: shouldShow });
+
+  if (geometryError) {
+    console.error('[SelectedBeamDetail] Geometry fetch error:', geometryError);
+  }
+  if (detailGeometry) {
+    console.log('[SelectedBeamDetail] Got geometry:', {
+      rebars: detailGeometry.rebars.length,
+      stirrups: detailGeometry.stirrups.length,
+    });
+  }
 
   const placement = useMemo(() => {
     if (!beam?.point1 || !beam.point2) return null;
@@ -665,7 +728,23 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
     };
   }, [astBase, beam]);
 
-  const { data: geom } = useBeamGeometry(detailParams, { enabled: Boolean(astBase && detailParams) });
+  // Default params to avoid conditional hook calls (React hooks rule)
+  const safeParams = detailParams ?? {
+    width: 300,
+    depth: 450,
+    span: 5000,
+    fck: 25,
+    fy: 500,
+    ast_start: 1000,
+    ast_mid: 1000,
+    ast_end: 1000,
+    stirrup_dia: 8,
+    stirrup_spacing_start: 150,
+    stirrup_spacing_mid: 150,
+    stirrup_spacing_end: 150,
+    cover: 40,
+  };
+  const { data: geom } = useBeamGeometry(safeParams, { enabled: Boolean(astBase && detailParams) });
 
   const placement = useMemo(() => {
     if (!beam.point1 || !beam.point2) return null;
@@ -678,9 +757,7 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
     return { start, quat };
   }, [beam]);
 
-  if (!geom || !placement) return null;
-
-  // Render with reduced opacity to show adjacency
+  // MUST be before any conditional return to satisfy Rules of Hooks
   const fadedRebarMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -692,6 +769,8 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
       }),
     []
   );
+
+  if (!geom || !placement) return null;
 
   return (
     <group position={placement.start} quaternion={placement.quat}>
@@ -715,11 +794,21 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
           const length = segment.length * SCALE;
           const radius = (segment.diameter / 2) * SCALE;
 
+          // Calculate rotation to align cylinder along bar direction
+          const dir = new THREE.Vector3(
+            end[0] - start[0],
+            end[1] - start[1],
+            end[2] - start[2]
+          ).normalize();
+          const yAxis = new THREE.Vector3(0, 1, 0);
+          const adjQuat = new THREE.Quaternion().setFromUnitVectors(yAxis, dir);
+          const adjEuler = new THREE.Euler().setFromQuaternion(adjQuat);
+
           return (
             <mesh
               key={`adj-${beam.id}-${rebar.barId}-${segIdx}`}
               position={midpoint}
-              rotation={[0, 0, Math.PI / 2]}
+              rotation={[adjEuler.x, adjEuler.y, adjEuler.z]}
               material={fadedRebarMaterial}
             >
               <cylinderGeometry args={[radius, radius, length, 8]} />
@@ -739,31 +828,66 @@ export interface RebarPreviewGeometry {
 function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry | null }) {
   const { inputs, length, result } = useDesignStore();
 
+  // Calculate beam dimensions for camera positioning
+  const beamL = length * SCALE;  // in meters
+  const beamD = inputs.depth * SCALE;
+
+  // Camera position based on beam size - positioned to see the whole beam
+  const cameraDistance = Math.max(beamL * 0.8, 2);
+  const cameraPos = useMemo<[number, number, number]>(() => [
+    cameraDistance * 0.5,
+    beamD / 2 + cameraDistance * 0.4,
+    cameraDistance * 0.8,
+  ], [cameraDistance, beamD]);
+
+  const cameraTarget = useMemo<[number, number, number]>(() => [
+    0, beamD / 2, 0
+  ], [beamD]);
+
   // Fetch geometry from library API when design is complete
-  const { data: geometry } = useBeamGeometry(
-    result
-      ? {
-          width: inputs.width,
-          depth: inputs.depth,
-          span: length,
-          ast_start: result.flexure?.ast_required ?? 500,
-          ast_mid: result.flexure?.ast_required ?? 400,
-          ast_end: result.flexure?.ast_required ?? 500,
-          stirrup_spacing_start: result.shear?.stirrup_spacing ?? 100,
-          stirrup_spacing_mid: result.shear?.stirrup_spacing ?? 150,
-          stirrup_spacing_end: result.shear?.stirrup_spacing ?? 100,
-          cover: 40,
-        }
-      : null,
-    { enabled: result !== null }
-  );
+  // Always provide valid params to avoid conditional hook calls (React hooks rule)
+  const geometryParams = result
+    ? {
+        width: inputs.width,
+        depth: inputs.depth,
+        span: length,
+        ast_start: result.flexure?.ast_required ?? 500,
+        ast_mid: result.flexure?.ast_required ?? 400,
+        ast_end: result.flexure?.ast_required ?? 500,
+        stirrup_spacing_start: result.shear?.stirrup_spacing ?? 100,
+        stirrup_spacing_mid: result.shear?.stirrup_spacing ?? 150,
+        stirrup_spacing_end: result.shear?.stirrup_spacing ?? 100,
+        cover: 40,
+      }
+    : {
+        width: 300,
+        depth: 450,
+        span: 5000,
+        ast_start: 1000,
+        ast_mid: 1000,
+        ast_end: 1000,
+        stirrup_spacing_start: 150,
+        stirrup_spacing_mid: 150,
+        stirrup_spacing_end: 150,
+        cover: 40,
+      };
+
+  const { data: geometry } = useBeamGeometry(geometryParams, { enabled: result !== null });
 
   const activeGeometry = overrideGeometry ?? geometry;
 
+  // Debug logging for geometry
+  if (activeGeometry) {
+    console.log('[Scene] Active geometry:', {
+      rebars: activeGeometry.rebars.length,
+      stirrups: activeGeometry.stirrups.length,
+    });
+  }
+
   return (
     <>
-      {/* Camera */}
-      <PerspectiveCamera makeDefault position={[3, 2, 3]} fov={50} />
+      {/* Camera - positioned based on beam dimensions */}
+      <PerspectiveCamera makeDefault position={cameraPos} fov={50} />
 
       {/* Lighting */}
       <ambientLight intensity={0.5} />
@@ -796,20 +920,24 @@ function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry |
       />
 
       {/* Reinforcement from API geometry - offset by -span/2 to center with beam */}
-      {activeGeometry && activeGeometry.rebars.length > 0 && (
+      {activeGeometry && (
         <group position={[-(length * SCALE) / 2, 0, 0]}>
-          <RebarVisualization rebars={activeGeometry.rebars} />
-          <StirrupVisualization stirrups={activeGeometry.stirrups} />
+          {activeGeometry.rebars.length > 0 && (
+            <RebarVisualization rebars={activeGeometry.rebars} />
+          )}
+          {activeGeometry.stirrups.length > 0 && (
+            <StirrupVisualization stirrups={activeGeometry.stirrups} />
+          )}
         </group>
       )}
 
-      {/* Controls */}
+      {/* Controls - target at beam center */}
       <OrbitControls
         enableDamping
         dampingFactor={0.1}
-        minDistance={1}
+        minDistance={0.5}
         maxDistance={20}
-        target={[0, 0.2, 0]}
+        target={cameraTarget}
       />
     </>
   );
@@ -830,6 +958,45 @@ interface Viewport3DProps {
  * @param mode - 'design' for single beam with rebar, 'building' for imported beams frame
  * @param forceMode - if true, don't auto-detect mode, use the provided mode
  */
+// Error boundary for 3D rendering
+class Viewport3DErrorBoundary extends React.Component<
+  { children: React.ReactNode; fallback?: React.ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode; fallback?: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('[Viewport3D Error]', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? (
+        <div className="flex items-center justify-center h-full bg-red-900/20 text-red-300 p-4">
+          <div className="text-center">
+            <p className="font-bold mb-2">3D Rendering Error</p>
+            <p className="text-xs text-red-400">{this.state.error?.message || 'Unknown error'}</p>
+            <button
+              className="mt-3 px-3 py-1 bg-red-600/30 rounded text-xs hover:bg-red-600/50"
+              onClick={() => this.setState({ hasError: false, error: null })}
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode = false }: Viewport3DProps) {
   const { beams } = useImportedBeamsStore();
 
@@ -843,17 +1010,21 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
         ? 'building'
         : 'design';
 
+  console.log('[Viewport3D] Rendering:', { mode, effectiveMode, beamCount: beams.length });
+
   return (
     <div className="viewport3d">
-      <Canvas shadows>
-        <Suspense fallback={null}>
-          {effectiveMode === 'building' ? (
-            <BuildingFrame />
-          ) : (
-            <Scene overrideGeometry={overrideGeometry} />
-          )}
-        </Suspense>
-      </Canvas>
+      <Viewport3DErrorBoundary>
+        <Canvas shadows>
+          <Suspense fallback={null}>
+            {effectiveMode === 'building' ? (
+              <BuildingFrame key="building-mode" />
+            ) : (
+              <Scene key="design-mode" overrideGeometry={overrideGeometry} />
+            )}
+          </Suspense>
+        </Canvas>
+      </Viewport3DErrorBoundary>
       <div className="viewport-overlay">
         <span>
           {effectiveMode === 'building'

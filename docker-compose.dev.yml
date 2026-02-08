@@ -13,6 +13,7 @@ services:
     volumes:
       - ./fastapi_app:/app/fastapi_app
       - ./Python/structural_lib:/app/Python/structural_lib
+      - ./VBA:/app/VBA
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
