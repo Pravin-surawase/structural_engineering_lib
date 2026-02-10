@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
-"""Validate folder structure against governance rules.
+"""Validate folder structure against governance rules and Python library structure.
 
-This script checks if the project folder structure follows the rules defined in:
-docs/guidelines/folder-structure-governance.md
+This script checks:
+1. Governance folder rules (docs/, agents/, root file limits, naming)
+2. Python library structure (core/, codes/, required exports, registration)
+
+Rules source: docs/guidelines/folder-structure-governance.md
 
 Usage:
     python scripts/validate_folder_structure.py
-    python scripts/validate_folder_structure.py --fix  # Auto-fix some issues
-    python scripts/validate_folder_structure.py --report  # Detailed report
+    python scripts/validate_folder_structure.py --fix       # Auto-fix some issues
+    python scripts/validate_folder_structure.py --report    # Detailed report
+    python scripts/validate_folder_structure.py --lib-only  # Python lib checks only
+    python scripts/validate_folder_structure.py --json      # JSON output
 
 Exit codes:
     0: All checks passed
     1: Violations found
 """
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -136,18 +142,22 @@ class FolderValidator:
         self.warnings: List[str] = []
         self.info: List[str] = []
 
-    def validate_all(self) -> bool:
+    def validate_all(self, lib_only: bool = False) -> bool:
         """Run all validation checks."""
         print("🔍 Validating folder structure...")
         print()
 
-        self.check_root_files()
-        self.check_docs_root_files()
-        self.check_agents_root_files()
-        self.check_category_folders()
-        self.check_dated_files()
-        self.check_naming_conventions()
-        self.check_duplicate_folders()
+        if not lib_only:
+            self.check_root_files()
+            self.check_docs_root_files()
+            self.check_agents_root_files()
+            self.check_category_folders()
+            self.check_dated_files()
+            self.check_naming_conventions()
+            self.check_duplicate_folders()
+
+        # Python library structure checks (absorbed from check_folder_structure.py)
+        self.check_python_lib_structure()
 
         return self.print_results()
 
@@ -343,6 +353,65 @@ class FolderValidator:
         # We no longer flag these as "should be migrated" since they are valid
         # working locations for certain content types.
 
+    def check_python_lib_structure(self):
+        """Check Python library structure for multi-code architecture.
+
+        Absorbed from check_folder_structure.py.
+        """
+        lib_root = self.project_root / "Python" / "structural_lib"
+        if not lib_root.exists():
+            self.warnings.append("Python/structural_lib/ not found — skipping lib checks")
+            return
+
+        # Required folders
+        required_folders = ["core", "codes", "codes/is456"]
+        for folder in required_folders:
+            path = lib_root / folder
+            if path.exists() and path.is_dir():
+                self.info.append(f"✅ structural_lib/{folder}/")
+            else:
+                self.errors.append(f"Missing required lib folder: structural_lib/{folder}/")
+
+        # Optional folders (info only)
+        for folder in ("codes/aci318", "codes/ec2", "integration", "utils"):
+            path = lib_root / folder
+            if path.exists():
+                self.info.append(f"✓ structural_lib/{folder}/ (optional)")
+
+        # Required files and exports
+        required_files = {
+            "core/__init__.py": ["CodeRegistry", "RectangularSection", "MaterialFactory"],
+            "core/base.py": ["DesignCode", "DesignResult", "FlexureDesigner"],
+            "core/materials.py": ["Concrete", "Steel", "MaterialFactory"],
+            "core/geometry.py": ["Section", "RectangularSection", "TSection"],
+            "core/registry.py": ["CodeRegistry", "register_code"],
+            "codes/__init__.py": ["is456"],
+            "codes/is456/__init__.py": ["IS456Code"],
+        }
+        for file_path, exports in required_files.items():
+            full = lib_root / file_path
+            if not full.exists():
+                self.errors.append(f"Missing lib file: structural_lib/{file_path}")
+                continue
+            content = full.read_text(encoding="utf-8")
+            missing = [e for e in exports if e not in content]
+            if missing:
+                self.warnings.append(
+                    f"structural_lib/{file_path} missing exports: {', '.join(missing)}"
+                )
+
+        # Code registration check
+        try:
+            sys.path.insert(0, str(self.project_root / "Python"))
+            from structural_lib.core import CodeRegistry
+            from structural_lib.codes import is456  # noqa: F401
+            if CodeRegistry.is_registered("IS456"):
+                self.info.append("✅ IS456 registered in CodeRegistry")
+            else:
+                self.errors.append("IS456 not registered in CodeRegistry")
+        except ImportError as e:
+            self.warnings.append(f"Cannot verify code registration: {e}")
+
     def print_results(self) -> bool:
         """Print validation results."""
         print()
@@ -383,7 +452,14 @@ class FolderValidator:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="Validate folder structure against governance rules"
+        description="Validate folder structure against governance rules and Python lib structure",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  python scripts/validate_folder_structure.py             # All checks\n"
+            "  python scripts/validate_folder_structure.py --lib-only  # Lib structure only\n"
+            "  python scripts/validate_folder_structure.py --json      # JSON output\n"
+        ),
     )
     parser.add_argument(
         "--fix",
@@ -394,6 +470,16 @@ def main():
         "--report",
         action="store_true",
         help="Generate detailed report",
+    )
+    parser.add_argument(
+        "--lib-only",
+        action="store_true",
+        help="Only run Python library structure checks",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Output results as JSON",
     )
     args = parser.parse_args()
 
@@ -425,7 +511,16 @@ def main():
     print()
 
     validator = FolderValidator(project_root, fix=args.fix)
-    success = validator.validate_all()
+    success = validator.validate_all(lib_only=args.lib_only)
+
+    if args.json:
+        result = {
+            "errors": validator.errors,
+            "warnings": validator.warnings,
+            "info": validator.info,
+            "success": success,
+        }
+        print(json.dumps(result, indent=2))
 
     sys.exit(0 if success else 1)
 
