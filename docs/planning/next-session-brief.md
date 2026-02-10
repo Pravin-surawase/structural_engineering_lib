@@ -5,15 +5,15 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-29
+**Last Updated:** 2026-02-10
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-29
-- Focus: Session 87 — Fixed 4 critical 3D viewport bugs (centering, camera control, null safety)
+- Date: 2026-02-10
+- Focus: Session 88 — Folder structure refactor PR #424, script consolidation (163→97), materials.py resolved, deep script audit
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,7 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** Session 87 | **Focus:** Critical 3D viewport bug fixes (PR #422 merged)
+**Last Session:** Session 88 | **Focus:** Folder structure refactor + script consolidation (PR #424)
 
 ---
 
