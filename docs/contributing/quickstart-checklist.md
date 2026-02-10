@@ -54,7 +54,7 @@ Quick reference for common development tasks with step-by-step checklists.
 
 - [ ] **7. Run scanner:**
   ```bash
-  .venv/bin/python scripts/check_streamlit_issues.py --page page_name
+  .venv/bin/python scripts/check_streamlit.py --page page_name
   ```
 
 - [ ] **8. Write tests** (minimum 5 tests):
@@ -303,7 +303,7 @@ class TestFeatureErrors:
 
 - [ ] **7. Run scanner:**
   ```bash
-  .venv/bin/python scripts/check_streamlit_issues.py --file streamlit_app/utils/utility_name.py
+  .venv/bin/python scripts/check_streamlit.py --file streamlit_app/utils/utility_name.py
   ```
 
 - [ ] **8. Commit:**
@@ -327,7 +327,7 @@ class TestFeatureErrors:
 ### Manual Workflow (if quick_check unavailable)
 ```bash
 # 1. Scanner
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+.venv/bin/python scripts/check_streamlit.py --all-pages --fail-on-critical
 
 # 2. Type check
 mypy changed_files.py --ignore-missing-imports
@@ -467,7 +467,7 @@ except Exception as e:
 - **UI Patterns:** `docs/planning/ui-layout-decision.md`
 - **Testing Guide:** `docs/contributing/development-guide.md`
 - **Git Workflow:** `docs/contributing/git-workflow-for-ai-agents.md`
-- **Scanner Usage:** `scripts/check_streamlit_issues.py --help`
+- **Scanner Usage:** `scripts/check_streamlit.py --help`
 - **Agent 6 Tasks:** `docs/planning/agent-6-tasks-streamlit.md`
 
 ---
@@ -484,7 +484,7 @@ except Exception as e:
 .venv/bin/python scripts/create_test_scaffold.py ClassName module.path
 
 # Validation
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 pytest tests/ -v
 mypy file.py --ignore-missing-imports
 

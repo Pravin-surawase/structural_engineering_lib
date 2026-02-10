@@ -58,7 +58,7 @@
 | Task | Status | Commit |
 |------|--------|--------|
 | Validate 7 new review claims | ✅ Done | All 7 CONFIRMED |
-| Fix validate_folder_structure.py max_files 20→10 | ✅ Done | 252101c |
+| Fix check_governance.py --structure max_files 20→10 | ✅ Done | 252101c |
 | Rename uppercase files to kebab-case | ✅ Done | 252101c |
 | Archive duplicate governance folder | ✅ Done | 252101c |
 | Fix 24 broken links from consolidation | ✅ Done | 252101c |
@@ -101,7 +101,7 @@
 | Created FOLDER_STRUCTURE_GOVERNANCE.md | ✅ Done | V2.0 spec |
 | Reorganized agents/ folder | ✅ Done | roles/, guides/ structure |
 | Moved governance docs | ✅ Done | docs/guidelines/ |
-| Created validation scripts | ✅ Done | check_governance_compliance.py |
+| Created validation scripts | ✅ Done | check_governance.py |
 
 ---
 
@@ -151,11 +151,11 @@ All high priority governance issues have been resolved.
 
 | Script | Status | Notes |
 |--------|--------|-------|
-| check_governance_compliance.py | ✅ Fixed | Session 13 - 3 bugs + _archive skip |
+| check_governance.py | ✅ Fixed | Session 13 - 3 bugs + _archive skip |
 | check_root_file_count.sh | ✅ Fixed | Session 13 - consistent counting |
 | check_links.py | ✅ Working | 0 broken links |
 | check_redirect_stubs.py | ✅ Working | Skips _archive (consistent) |
-| validate_folder_structure.py | ✅ Fixed | max_files=10, docs/guidelines/ |
+| check_governance.py --structure | ✅ Fixed | max_files=10, docs/guidelines/ |
 
 ---
 
@@ -165,7 +165,7 @@ All high priority governance issues have been resolved.
 
 | Claim | Validated | Result |
 |-------|-----------|--------|
-| validate_folder_structure.py max_files=20 | ✅ Yes | CONFIRMED - Fixed to 10 |
+| check_governance.py --structure max_files=20 | ✅ Yes | CONFIRMED - Fixed to 10 |
 | Uppercase filenames fail validation | ✅ Yes | CONFIRMED - Renamed |
 | Duplicate governance specs | ✅ Yes | CONFIRMED - Archived duplicate |
 | Redirect-stub policy inconsistent | ✅ Yes | CONFIRMED - Unified |

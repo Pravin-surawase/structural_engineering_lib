@@ -35,7 +35,7 @@
 
 # Legacy commands (still work):
 ./scripts/agent_start.sh --quick
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 .venv/bin/python scripts/session.py start
 ```
 
@@ -104,7 +104,7 @@
 |-----------|---------------|
 | **Pattern Recognition** | 10+ similar issues = automation script, not manual fixes |
 | **Research First** | Check `scripts/` for existing tools before writing new ones |
-| **Build Once, Use Many** | Scripts like `fix_broken_links.py` save hours of future work |
+| **Build Once, Use Many** | Scripts like `check_links.py` save hours of future work |
 | **Commit Incrementally** | Use `ai_commit.sh` frequently, don't accumulate changes |
 | **Full Sessions** | Aim for 5-10+ commits per session, don't stop early |
 | **Document Everything** | Update TASKS.md, SESSION_LOG.md after significant work |
@@ -112,10 +112,10 @@
 ### Example Automation Scripts
 ```bash
 # Fix broken links automatically (fixed 213 links in 5 seconds)
-.venv/bin/python scripts/fix_broken_links.py --fix
+.venv/bin/python scripts/check_links.py --fix
 
 # Validate folder structure
-.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_governance.py --structure
 
 # Check doc version drift
 .venv/bin/python scripts/check_doc_versions.py
@@ -160,7 +160,7 @@ START
   │   └─ Use: ai_commit.sh directly
   │
   └─ Long-running task (30+ min)? ──YES→ Background Agent
-      └─ Use: Worktree + agent_setup.sh --worktree
+      └─ Use: Worktree + agent_start.sh --worktree
 ```
 
 ---
@@ -170,7 +170,7 @@ START
 ### Pattern A: Direct Commit (Docs/Small Changes)
 ```bash
 # 1. Preflight check
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 
 # 2. Make changes
 # ... edit files ...
@@ -184,7 +184,7 @@ START
 ### Pattern B: PR Workflow (Production Code)
 ```bash
 # 1. Preflight check
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 
 # 2. Create task branch
 ./scripts/create_task_pr.sh TASK-270 "Fix benchmark signatures"
@@ -230,8 +230,8 @@ cd $PROJECT_ROOT
 
 | Script | Purpose | When to Use |
 |--------|---------|-------------|
-| `agent_setup.sh` | Setup environment | Once per session |
-| `agent_preflight.sh` | Pre-task validation | Before every task |
+| `agent_start.sh` | Setup environment | Once per session |
+| `agent_start.sh` | Pre-task validation | Before every task |
 | `ai_commit.sh` | Safe commit & push | Every commit |
 | `should_use_pr.sh` | Decision helper | When unsure |
 | `git_ops.sh --status` | State-aware router | When unsure what to do |
@@ -407,7 +407,7 @@ cd $PROJECT_ROOT
 ### Pre-Push Gates (Manual)
 ```bash
 # Run before pushing
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 
 # Checks:
 # - Git state clean
@@ -419,7 +419,7 @@ cd $PROJECT_ROOT
 ### Streamlit Validation (Automatic in CI/Pre-commit)
 ```bash
 # AST Scanner - detects runtime errors before they happen
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 
 # Pylint - code quality checks
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
@@ -567,7 +567,7 @@ cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 
 ### Before Starting Work
 - [ ] Ran `./scripts/agent_start.sh --quick`
-- [ ] Ran `./scripts/agent_preflight.sh`
+- [ ] Ran `./scripts/agent_start.sh`
 - [ ] Read relevant task in TASKS.md
 - [ ] Understand PR vs direct commit decision
 
@@ -594,7 +594,7 @@ cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 ## 🎓 Learning Path
 
 ### Level 1: Basics (Day 1)
-1. Run agent_setup.sh
+1. Run agent_start.sh
 2. Use ai_commit.sh for simple docs change
 3. Understand should_use_pr.sh output
 
@@ -631,7 +631,7 @@ All agents MUST follow the published governance spec. Key rules:
 **ALWAYS check:** Does this file need folder migration pre-approval?
 ```bash
 # BEFORE creating a file:
-.venv/bin/python scripts/check_governance_compliance.py --strict
+.venv/bin/python scripts/check_governance.py --strict
 
 # WHEN creating a file:
 # Include metadata header (see next section)
@@ -652,7 +652,7 @@ All agents MUST follow the published governance spec. Key rules:
 ### Pre-Migration Checklist
 Before moving files or creating new folder structures:
 - [ ] Check [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
-- [ ] Run `.venv/bin/python scripts/check_governance_compliance.py --strict`
+- [ ] Run `.venv/bin/python scripts/check_governance.py --strict`
 - [ ] Verify target folder is compliant with governance
 - [ ] Document migration in TASKS.md
 - [ ] Use safe_file_move.py for all moves

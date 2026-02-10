@@ -214,7 +214,7 @@ All 48 root-level `.py` files are **backward-compat shims** that re-export from 
 |------|-------|--------|
 | Layer boundaries | `validate_imports.py --scope structural_lib` | 0 violations |
 | No orphan imports | `validate_imports.py --scope all` | Excludes legacy streamlit |
-| Folder structure | `validate_folder_structure.py` | Pre-commit hook |
+| Folder structure | `check_governance.py --structure` | Pre-commit hook |
 | New modules | Use `migrate_python_module.py` for moves | Creates stubs automatically |
 
 ---
@@ -510,4 +510,4 @@ agents/
 
 **Owner:** Project Governance Team
 **Review Schedule:** Quarterly (2026-04-11)
-**Validator:** scripts/validate_folder_structure.py + pre-commit hooks
+**Validator:** scripts/check_governance.py --structure + pre-commit hooks

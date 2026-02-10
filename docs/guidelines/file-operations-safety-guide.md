@@ -36,7 +36,7 @@ File operations (delete, move, rename) can break:
 | **Rename Folder** | `rename_folder_safe.py` | `.venv/bin/python scripts/rename_folder_safe.py "old folder" "new_folder"` |
 | **Find orphans** | `find_orphan_files.py` | `.venv/bin/python scripts/find_orphan_files.py --age` |
 | **Check links** | `check_links.py` | `.venv/bin/python scripts/check_links.py` |
-| **Fix links** | `fix_broken_links.py` | `.venv/bin/python scripts/fix_broken_links.py --fix` |
+| **Fix links** | `check_links.py` | `.venv/bin/python scripts/check_links.py --fix` |
 
 ---
 
@@ -213,7 +213,7 @@ git restore path/to/original/file.md
 .venv/bin/python scripts/check_links.py
 
 # If broken links found, auto-fix
-.venv/bin/python scripts/fix_broken_links.py --fix
+.venv/bin/python scripts/check_links.py --fix
 ```
 
 ---

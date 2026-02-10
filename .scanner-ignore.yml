@@ -1,5 +1,5 @@
 # Scanner ignore patterns for Phase 3+ features
-# Used by check_streamlit_issues.py to suppress false positives.
+# Used by check_streamlit.py to suppress false positives.
 # Document WHY each item is ignored to prevent hiding real bugs.
 #
 # Updated: 2026-01-23 (Phase 9 reduces need for many entries)

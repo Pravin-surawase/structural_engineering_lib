@@ -29,7 +29,7 @@ open docs/guidelines/migration-workflow-guide.md
 ### 3. Validate Changes
 ```bash
 # Run validation bundle after any structure changes
-.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_governance.py --structure
 .venv/bin/python scripts/check_links.py
 .venv/bin/python scripts/check_docs.py --index-links
 ```
@@ -85,7 +85,7 @@ Is this a script?
 
 | Command | Purpose |
 |---------|---------|
-| `validate_folder_structure.py` | Check rule compliance |
+| `check_governance.py --structure` | Check rule compliance |
 | `check_links.py` | Find broken links |
 | `check_docs.py --index-links` | Verify index accuracy |
 | `check_root_file_count.sh` | Ensure <10 root files |
@@ -98,7 +98,7 @@ Is this a script?
 ### Task 1: Move a Document
 ```bash
 # 1. Check if it violates rules
-.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_governance.py --structure
 
 # 2. Use safe_file_move.py (preserves history + updates links)
 .venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
@@ -130,7 +130,7 @@ rg "old/path.md" docs/ agents/ .github/
 ### Task 3: Run Structure Validation
 ```bash
 # 1. Run governance compliance check
-.venv/bin/python scripts/check_governance_compliance.py
+.venv/bin/python scripts/check_governance.py
 
 # 2. Read governance spec
 open docs/guidelines/folder-structure-governance.md
@@ -167,7 +167,7 @@ open docs/guidelines/migration-workflow-guide.md
 - [migration-preflight-checklist.md](../../guidelines/migration-preflight-checklist.md) - Pre-migration checks
 
 **Validation Scripts:**
-- `check_governance_compliance.py` - Full compliance check
+- `check_governance.py` - Full compliance check
 - `check_links.py` - Link validation
 - `check_root_file_count.sh` - Root file limit check
 
@@ -186,7 +186,7 @@ open docs/guidelines/migration-workflow-guide.md
 # ... edit files ...
 
 # 4. Validate
-.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_governance.py --structure
 .venv/bin/python scripts/check_links.py
 
 # 5. Commit
@@ -222,7 +222,7 @@ If structure changes cause issues:
 
 1. **Check validation errors:**
    ```bash
-   .venv/bin/python scripts/validate_folder_structure.py
+   .venv/bin/python scripts/check_governance.py --structure
    ```
 
 2. **Find broken links:**

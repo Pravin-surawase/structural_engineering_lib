@@ -44,7 +44,7 @@ Entries here represent "locked" versions that have been verified and approved.
 
 6. **Recommended: clean-venv verification**
    ```bash
-   .venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi
+   .venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi
    ```
 
 ### TestPyPI (for testing before release)
@@ -174,7 +174,7 @@ Use workflow_dispatch with `testpypi` target:
 - `scripts/agent_start.sh` (164 lines) - Unified onboarding replacing 4 commands
 - `docs/guidelines/folder-structure-governance.md` (272 lines) - V2.0 governance spec
 - `scripts/safe_file_move.py` (200+ lines) - Automated link-safe file operations
-- `scripts/check_governance_compliance.py` - CI-enforced folder validation
+- `scripts/check_governance.py` - CI-enforced folder validation
 - `Python/structural_lib/core/` - Code-agnostic base modules (geometry, materials)
 - `Python/structural_lib/codes/is456/` - IS 456 module namespace (7 modules)
 
