@@ -19,7 +19,7 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any
 
-from structural_lib.data_types import (
+from structural_lib.core.data_types import (
     CrackWidthResult,
     DeflectionLevelBResult,
     DeflectionLevelCResult,

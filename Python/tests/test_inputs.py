@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.inputs import (
+from structural_lib.core.inputs import (
     BeamGeometryInput,
     BeamInput,
     DetailingConfigInput,

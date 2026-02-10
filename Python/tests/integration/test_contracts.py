@@ -21,7 +21,7 @@ from typing import get_type_hints
 import pytest
 
 from structural_lib import api
-from structural_lib.data_types import (
+from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     FlexureResult,

@@ -1,5 +1,5 @@
 from structural_lib import api, compliance, serviceability
-from structural_lib.types import (
+from structural_lib.core.types import (
     CrackWidthResult,
     DeflectionResult,
     ExposureClass,

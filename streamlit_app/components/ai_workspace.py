@@ -55,7 +55,7 @@ try:
         SAFEAdapter,
         GenericCSVAdapter,
     )
-    from structural_lib.models import (
+    from structural_lib.core.models import (
         BeamGeometry,
         BeamForces,
         DesignDefaults,

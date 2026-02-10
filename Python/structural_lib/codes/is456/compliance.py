@@ -22,7 +22,7 @@ from dataclasses import asdict
 from enum import Enum
 from typing import Any
 
-from structural_lib.data_types import (
+from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
@@ -35,7 +35,7 @@ from structural_lib.data_types import (
     ShearResult,
     SupportCondition,
 )
-from structural_lib.errors import Severity
+from structural_lib.core.errors import Severity
 
 from . import flexure, serviceability, shear
 

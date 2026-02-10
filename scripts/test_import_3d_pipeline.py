@@ -33,7 +33,7 @@ sys.path.insert(0, str(python_dir))
 sys.path.insert(0, str(streamlit_dir))
 
 from structural_lib.adapters import ETABSAdapter
-from structural_lib.models import DesignDefaults
+from structural_lib.core.models import DesignDefaults
 
 # Import the Streamlit cached design function
 try:

@@ -21,7 +21,7 @@ from structural_lib.etabs_import import (
     to_beam_forces,
     to_beam_geometry,
 )
-from structural_lib.models import BeamForces, BeamGeometry, FrameType
+from structural_lib.core.models import BeamForces, BeamGeometry, FrameType
 
 # =============================================================================
 # Test Fixtures

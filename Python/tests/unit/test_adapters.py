@@ -20,7 +20,7 @@ from structural_lib.adapters import (
     InputAdapter,
     ManualInputAdapter,
 )
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamForces,
     BeamGeometry,
     DesignDefaults,

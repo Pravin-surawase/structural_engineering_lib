@@ -19,8 +19,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from structural_lib.error_messages import material_property_out_of_range
-from structural_lib.errors import ComplianceError, ConfigurationError, MaterialError
+from structural_lib.core.error_messages import material_property_out_of_range
+from structural_lib.core.errors import ComplianceError, ConfigurationError, MaterialError
 
 from .traceability import clause
 

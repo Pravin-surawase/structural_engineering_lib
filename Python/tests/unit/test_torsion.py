@@ -20,7 +20,7 @@ from structural_lib.codes.is456.torsion import (
     calculate_torsion_stirrup_area,
     design_torsion,
 )
-from structural_lib.errors import DimensionError, MaterialError
+from structural_lib.core.errors import DimensionError, MaterialError
 
 
 class TestEquivalentShear:

@@ -9,7 +9,7 @@ from dataclasses import dataclass
 
 from structural_lib import flexure
 from structural_lib.costing import CostBreakdown, CostProfile, calculate_beam_cost
-from structural_lib.data_types import FlexureResult
+from structural_lib.core.data_types import FlexureResult
 
 
 @dataclass

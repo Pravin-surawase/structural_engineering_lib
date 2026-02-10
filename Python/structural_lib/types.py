@@ -1,15 +1,12 @@
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2024-2026 Pravin Surawase
-"""
-Compatibility shim for the renamed data_types module.
+"""Backward compatibility stub.
 
-This keeps historical imports like `structural_lib.types` working while the
-project transitions to `structural_lib.data_types`.
-"""
+This module has been migrated to: structural_lib.core.types
+All functionality is re-exported here for backward compatibility.
+Prefer importing directly from structural_lib.core.types."""
 
 from __future__ import annotations
 
-from .data_types import (
+from structural_lib.core.types import (  # noqa: F401, E402
     BeamGeometry,
     BeamType,
     ComplianceCaseResult,
@@ -28,23 +25,3 @@ from .data_types import (
     SupportCondition,
     ValidationReport,
 )
-
-__all__ = [
-    "BeamGeometry",
-    "BeamType",
-    "DesignSectionType",
-    "ExposureClass",
-    "FlexureResult",
-    "JobSpec",
-    "LoadCase",
-    "ShearResult",
-    "SupportCondition",
-    "DeflectionResult",
-    "DeflectionLevelBResult",
-    "CrackWidthResult",
-    "ComplianceCaseResult",
-    "ComplianceReport",
-    "ValidationReport",
-    "CuttingAssignment",
-    "CuttingPlan",
-]

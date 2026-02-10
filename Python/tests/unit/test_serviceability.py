@@ -1,7 +1,7 @@
 import pytest
 
 from structural_lib.serviceability import check_crack_width, check_deflection_span_depth
-from structural_lib.types import ExposureClass, SupportCondition
+from structural_lib.core.types import ExposureClass, SupportCondition
 
 
 def test_deflection_ok_simple_defaults_recorded():

@@ -53,7 +53,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from structural_lib.codes.is456.detailing import BeamDetailingResult
-    from structural_lib.models import BeamGeometry
+    from structural_lib.core.models import BeamGeometry
 
 
 __all__ = [
@@ -411,7 +411,7 @@ def building_to_3d_geometry(
     Returns:
         Building3DGeometry with line segments, bounding box, and center.
     """
-    from structural_lib.models import BeamGeometry as BeamGeometryModel
+    from structural_lib.core.models import BeamGeometry as BeamGeometryModel
 
     beam_list: list[BuildingBeam3D] = []
 

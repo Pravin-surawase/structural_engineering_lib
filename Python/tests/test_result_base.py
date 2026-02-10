@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import pytest
 
-from structural_lib.result_base import BaseResult, CalculationResult, ComplianceResult
+from structural_lib.core.result_base import BaseResult, CalculationResult, ComplianceResult
 
 
 # Test concrete implementations

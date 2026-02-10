@@ -212,7 +212,7 @@ def test_constructability_to_dict():
 
 def test_heuristic_warning_to_dict():
     """Verify HeuristicWarning.to_dict() handles enum conversion."""
-    from structural_lib.errors import Severity
+    from structural_lib.core.errors import Severity
     from structural_lib.insights.types import HeuristicWarning
 
     warning = HeuristicWarning(

@@ -7,7 +7,7 @@ import pytest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from structural_lib.flexure import design_flanged_beam, design_singly_reinforced
-from structural_lib.types import DesignSectionType
+from structural_lib.core.types import DesignSectionType
 
 
 def test_flanged_beam_neutral_axis_in_flange():

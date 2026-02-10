@@ -216,7 +216,7 @@ def validate_module(
 
         if missing_types:
             print("\n# Add data type re-exports:")
-            print("from structural_lib.data_types import (  # noqa: F401")
+            print("from structural_lib.core.data_types import (  # noqa: F401")
             for name in sorted(missing_types):
                 print(f"    {name},")
             print(")")

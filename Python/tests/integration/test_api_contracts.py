@@ -26,7 +26,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamBatchInput,
     BeamBatchResult,
     BeamDesignResult,

@@ -18,7 +18,7 @@ import math
 import pytest
 
 from structural_lib import detailing, flexure, materials, serviceability, shear, tables
-from structural_lib.types import DesignSectionType
+from structural_lib.core.types import DesignSectionType
 
 # =============================================================================
 # Section 1: Clause-Critical Flexure Calculations
@@ -56,7 +56,7 @@ class TestMuLimCalculation:
 
     def test_mu_lim_zero_dimensions(self):
         """Mu_lim should raise DimensionError for zero/invalid dimensions."""
-        from structural_lib.errors import DimensionError
+        from structural_lib.core.errors import DimensionError
 
         with pytest.raises(DimensionError, match="beam width b"):
             flexure.calculate_mu_lim(0, 450, 25, 500)

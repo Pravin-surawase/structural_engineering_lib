@@ -1,7 +1,7 @@
 import pytest
 
 from structural_lib import api
-from structural_lib.types import ComplianceCaseResult, ComplianceReport
+from structural_lib.core.types import ComplianceCaseResult, ComplianceReport
 
 
 def test_design_beam_is456_requires_units_param():

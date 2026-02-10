@@ -4,7 +4,7 @@
 
 import pytest
 
-from structural_lib.errors import (
+from structural_lib.core.errors import (
     CalculationError,
     ComplianceError,
     ConfigurationError,

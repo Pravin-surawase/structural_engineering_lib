@@ -64,7 +64,7 @@ try:
         GenericCSVAdapter,
         ManualInputAdapter,
     )
-    from structural_lib.models import (
+    from structural_lib.core.models import (
         BeamGeometry,
         BeamForces,
         DesignDefaults,
@@ -1399,7 +1399,7 @@ with tab4:
 
         # Import BuildingStatistics if available
         try:
-            from structural_lib.models import BuildingStatistics
+            from structural_lib.core.models import BuildingStatistics
 
             stats = BuildingStatistics.from_beams(beams)
             col1, col2, col3, col4 = st.columns(4)

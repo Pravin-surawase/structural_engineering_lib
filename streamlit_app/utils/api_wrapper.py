@@ -42,7 +42,7 @@ try:
     from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
     from structural_lib.codes.is456.shear import select_stirrup_diameter
     from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
-    from structural_lib.data_types import LoadDefinition, LoadType
+    from structural_lib.core.data_types import LoadDefinition, LoadType
 
     _LIBRARY_AVAILABLE = True
 except ImportError as e:

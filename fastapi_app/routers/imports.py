@@ -162,7 +162,7 @@ async def import_csv(
             STAADAdapter,
             GenericCSVAdapter,
         )
-        from structural_lib.models import DesignDefaults
+        from structural_lib.core.models import DesignDefaults
 
         # Create temp file for adapter (adapters expect file paths)
         import tempfile

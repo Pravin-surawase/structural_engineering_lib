@@ -35,7 +35,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamForces,
     BeamGeometry,
     FrameType,

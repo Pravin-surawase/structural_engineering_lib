@@ -62,7 +62,7 @@ def test_calculate_tv_handles_zero_bd():
     import pytest
 
     from structural_lib import shear
-    from structural_lib.errors import DimensionError
+    from structural_lib.core.errors import DimensionError
 
     with pytest.raises(DimensionError, match="beam width b"):
         shear.calculate_tv(100.0, b=0.0, d=450.0)

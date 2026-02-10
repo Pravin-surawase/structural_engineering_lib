@@ -32,7 +32,7 @@ from typing import Any
 # Add Python module to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "Python"))
 
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamDesignResult,
     BeamForces,
     BeamGeometry,

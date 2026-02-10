@@ -436,7 +436,7 @@ async def generate_building_geometry(
     to compute line geometry for all structural members.
     """
     try:
-        from structural_lib.models import BeamGeometry, Point3D, FrameType
+        from structural_lib.core.models import BeamGeometry, Point3D, FrameType
 
         # Convert request dicts to BeamGeometry objects
         beam_objects = []

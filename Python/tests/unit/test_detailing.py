@@ -25,7 +25,7 @@ from structural_lib.detailing import (
     get_stirrup_legs,
     select_bar_arrangement,
 )
-from structural_lib.errors import ConfigurationError
+from structural_lib.core.errors import ConfigurationError
 
 
 class TestBondStress:
@@ -454,7 +454,7 @@ class TestMinBendRadius:
     def test_invalid_diameter(self):
         """Should raise MaterialError for invalid diameter."""
         from structural_lib.detailing import get_min_bend_radius
-        from structural_lib.errors import MaterialError
+        from structural_lib.core.errors import MaterialError
 
         with pytest.raises(MaterialError):
             get_min_bend_radius(0)
@@ -509,7 +509,7 @@ class TestStandardHook:
     def test_invalid_bar_diameter(self):
         """Should raise MaterialError for invalid diameter."""
         from structural_lib.detailing import calculate_standard_hook
-        from structural_lib.errors import MaterialError
+        from structural_lib.core.errors import MaterialError
 
         with pytest.raises(MaterialError):
             calculate_standard_hook(0, "180")
@@ -587,7 +587,7 @@ class TestStirrupAnchorage:
     def test_invalid_diameter(self):
         """Should raise MaterialError for invalid diameter."""
         from structural_lib.detailing import calculate_stirrup_anchorage
-        from structural_lib.errors import MaterialError
+        from structural_lib.core.errors import MaterialError
 
         with pytest.raises(MaterialError):
             calculate_stirrup_anchorage(0)

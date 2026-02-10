@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamBatchInput,
     BeamBatchResult,
     BeamDesignResult,

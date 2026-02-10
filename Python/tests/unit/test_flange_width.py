@@ -1,7 +1,7 @@
 import pytest
 
 from structural_lib import flexure
-from structural_lib.types import BeamType
+from structural_lib.core.types import BeamType
 
 
 def test_effective_flange_width_t_code_limit():
@@ -31,7 +31,7 @@ def test_effective_flange_width_l_geometry_limit():
 
 
 def test_effective_flange_width_rectangular_rejects_overhangs():
-    from structural_lib.errors import ConfigurationError
+    from structural_lib.core.errors import ConfigurationError
 
     with pytest.raises(
         ConfigurationError, match="Rectangular beam cannot have flange overhangs"
@@ -47,7 +47,7 @@ def test_effective_flange_width_rectangular_rejects_overhangs():
 
 
 def test_effective_flange_width_invalid_beam_type():
-    from structural_lib.errors import ConfigurationError
+    from structural_lib.core.errors import ConfigurationError
 
     with pytest.raises(ConfigurationError, match="beam_type"):
         flexure.calculate_effective_flange_width(
@@ -61,7 +61,7 @@ def test_effective_flange_width_invalid_beam_type():
 
 
 def test_effective_flange_width_negative_overhang_rejected():
-    from structural_lib.errors import DimensionError
+    from structural_lib.core.errors import DimensionError
 
     with pytest.raises(DimensionError, match=r"(?i)flange overhang.*negative"):
         flexure.calculate_effective_flange_width(
