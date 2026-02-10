@@ -379,7 +379,7 @@ def main():
 
     # 5. Governance compliance check (NEW - Session 12)
     print("📋 Governance Compliance:")
-    gov_script = REPO_ROOT / "scripts" / "check_governance_compliance.py"
+    gov_script = REPO_ROOT / "scripts" / "check_governance.py"
     if gov_script.exists():
         venv_python = REPO_ROOT / ".venv" / "bin" / "python"
         python_exe = str(venv_python) if venv_python.exists() else sys.executable

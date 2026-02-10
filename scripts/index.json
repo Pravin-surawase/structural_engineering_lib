@@ -67,8 +67,6 @@
       "description": "Session start, end, and handoff",
       "scripts": {
         "agent_start.sh": "UNIFIED - Start session (recommended)",
-        "agent_setup.sh": "Legacy - Environment setup",
-        "agent_preflight.sh": "Legacy - Pre-task validation",
         "start_session.py": "Initialize session tracking",
         "end_session.py": "End session with checks",
         "agent_mistakes_report.sh": "Show common mistakes reminder",
@@ -89,7 +87,7 @@
         "check_circular_imports.py": "Detect circular import issues",
         "check_type_annotations.py": "Validate type annotations",
         "check_python_version.py": "Check Python version compatibility",
-        "validate_streamlit_page.py": "Full Streamlit page validation",
+
         "validate_session_state.py": "Validate session state usage",
         "audit_error_handling.py": "Audit error handling patterns",
         "audit_input_validation.py": "Audit input validation",
@@ -108,13 +106,11 @@
     "documentation": {
       "description": "Documentation validation and generation",
       "scripts": {
-        "check_links.py": "Validate all internal markdown links",
-        "fix_broken_links.py": "Auto-fix broken links",
+        "check_links.py": "Validate + auto-fix markdown links (--fix, --map, --exclude-archive)",
         "check_doc_versions.py": "Check version consistency in docs",
         "check_doc_metadata.py": "Validate document metadata headers",
         "check_doc_frontmatter.py": "Check doc frontmatter format",
-        "check_docs_index.py": "Validate docs index structure",
-        "check_docs_index_links.py": "Validate docs index links",
+        "check_docs.py": "Unified docs validation (--index, --index-links, --metadata, --all)",
         "check_duplicate_docs.py": "Find duplicate documentation",
         "check_doc_similarity.py": "Find similar docs before creating new ones",
         "check_readme_quality.py": "Assess README quality",
@@ -147,8 +143,7 @@
       "description": "Validate project structure and governance",
       "scripts": {
         "check_folder_structure.py": "Validate folder architecture",
-        "validate_folder_structure.py": "Full folder validation",
-        "check_governance_compliance.py": "Check governance rules",
+        "check_governance.py": "Unified governance checker (--structure, --compliance, --full, --json)",
         "audit_readiness_report.py": "Generate audit evidence bundle (NIST SSDF aligned)",
         "check_root_file_count.sh": "Monitor root file count",
         "check_repo_hygiene.py": "Check repository hygiene",
@@ -163,9 +158,7 @@
     "api_validation": {
       "description": "API documentation and validation",
       "scripts": {
-        "check_api_signatures.py": "Check API function signatures",
-        "check_api_doc_signatures.py": "Check API function signatures",
-        "check_api_docs_sync.py": "Sync API docs with code",
+        "check_api.py": "Unified API validation (--signatures, --docs, --sync, --all)",
         "validate_stub_exports.py": "Validate stub module exports",
         "create_reexport_stub.py": "Create re-export stub module",
         "update_is456_init.py": "Update IS456 __init__.py exports",
@@ -189,9 +182,7 @@
         "validate_trial_data.py": "Validate trial/test data",
         "run_vba_smoke_tests.py": "Run VBA smoke tests via Excel automation (macOS)",
         "test_import_3d_pipeline.py": "Integration test for import → design → 3D pipeline",
-        "test_setup.py": "Quick test of structural_lib installation",
-        "test_vba_adapter.py": "Test ETABSAdapter with VBA ETABS export data",
-        "vba_validator.py": "VBA syntax validator (no Excel/Office required)"
+        "test_vba_adapter.py": "Test ETABSAdapter with VBA ETABS export data"
       }
     },
     "release": {
@@ -214,7 +205,7 @@
         "pre-push-hook.sh": "Pre-push hook",
         "install_enforcement_hook.sh": "Install enforcement hooks",
         "quick_check.sh": "Quick validation checks",
-        "comprehensive_validator.py": "Comprehensive validation suite",
+
         "collect_metrics.sh": "Collect project metrics",
         "risk_cache.sh": "Risk assessment cache"
       }
@@ -255,7 +246,7 @@
         "analyze_release_cadence.py": "Analyze and recommend optimal release cadence (TASK-288)",
         "collect_metrics.sh": "Collect project metrics for governance analysis",
         "check_next_session_brief_length.py": "Check brief length limits",
-        "copilot_setup.sh": "Setup copilot instructions",
+
         "lint_docs_git_examples.sh": "Lint git examples in docs"
       }
     },
@@ -285,7 +276,7 @@
     "end_session": ".venv/bin/python scripts/end_session.py",
     "fix_git_issues": "./scripts/recover_git_state.sh",
     "validate_links": ".venv/bin/python scripts/check_links.py",
-    "fix_links": ".venv/bin/python scripts/fix_broken_links.py --fix",
+    "fix_links": ".venv/bin/python scripts/check_links.py --fix",
     "check_streamlit": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
     "check_fastapi": ".venv/bin/python scripts/check_fastapi_issues.py",
     "check_docker": ".venv/bin/python scripts/check_docker_config.py",
@@ -316,12 +307,27 @@
     ]
   },
   "deprecated": {
-    "description": "Scripts that should NOT be used directly",
+    "description": "Scripts that should NOT be used directly (archived to scripts/_archive/)",
     "scripts": {
       "safe_push.sh": "Use ai_commit.sh instead (internal)",
-      "quick_push.sh": "Use ai_commit.sh instead",
-      "agent_setup.sh": "Use agent_start.sh --quick instead",
-      "agent_preflight.sh": "Use agent_start.sh instead"
+      "quick_push.sh": "Use ai_commit.sh instead"
+    },
+    "archived": {
+      "agent_setup.sh": "Merged into agent_start.sh",
+      "agent_preflight.sh": "Merged into agent_start.sh",
+      "copilot_setup.sh": "One-time setup, no longer needed",
+      "test_setup.py": "Replaced by pytest suite",
+      "vba_validator.py": "Replaced by lint_vba.py",
+      "comprehensive_validator.py": "Replaced by CI pipeline",
+      "validate_streamlit_page.py": "Replaced by check_streamlit_issues.py",
+      "check_api_signatures.py": "Merged into check_api.py",
+      "check_api_doc_signatures.py": "Merged into check_api.py",
+      "check_api_docs_sync.py": "Merged into check_api.py",
+      "validate_folder_structure.py": "Merged into check_governance.py",
+      "check_governance_compliance.py": "Merged into check_governance.py",
+      "fix_broken_links.py": "Merged into check_links.py --fix",
+      "check_docs_index.py": "Merged into check_docs.py --index",
+      "check_docs_index_links.py": "Merged into check_docs.py --index-links"
     }
   }
 }
