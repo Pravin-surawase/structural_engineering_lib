@@ -21,7 +21,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from structural_lib.calculation_report import (
+from structural_lib.services.calculation_report import (
     CalculationReport,
     InputSection,
     ProjectInfo,

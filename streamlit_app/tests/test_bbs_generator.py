@@ -58,7 +58,7 @@ def sample_beam_design():
 def sample_bbs_document():
     """Sample BBS document for testing."""
     try:
-        from structural_lib.bbs import BBSLineItem, BBSummary, BBSDocument
+        from structural_lib.services.bbs import BBSLineItem, BBSummary, BBSDocument
 
         item1 = BBSLineItem(
             bar_mark="B1-BM-B",

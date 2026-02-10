@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from structural_lib import report_svg
-from structural_lib.report import (
+from structural_lib.services.report import (
     export_critical_csv,
     export_critical_html,
     export_design_json,
@@ -506,7 +506,7 @@ class TestLoadJobSpec:
 
     def test_load_job_spec_valid(self, tmp_path: Path) -> None:
         """Test loading a valid job spec."""
-        from structural_lib.job_runner import load_job_spec
+        from structural_lib.services.job_runner import load_job_spec
 
         job_file = tmp_path / "job.json"
         job_file.write_text(json.dumps(SAMPLE_JOB), encoding="utf-8")
@@ -521,14 +521,14 @@ class TestLoadJobSpec:
 
     def test_load_job_spec_missing_file(self, tmp_path: Path) -> None:
         """Test that missing file raises FileNotFoundError."""
-        from structural_lib.job_runner import load_job_spec
+        from structural_lib.services.job_runner import load_job_spec
 
         with pytest.raises(FileNotFoundError):
             load_job_spec(tmp_path / "nonexistent.json")
 
     def test_load_job_spec_missing_schema_version(self, tmp_path: Path) -> None:
         """Test that missing schema_version raises ValueError."""
-        from structural_lib.job_runner import load_job_spec
+        from structural_lib.services.job_runner import load_job_spec
 
         bad_job = {"job_id": "X", "code": "IS456", "beam": {}, "cases": []}
         job_file = tmp_path / "job.json"

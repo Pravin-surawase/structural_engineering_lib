@@ -88,7 +88,7 @@ class _FakeEzdxf:
 
 
 def test_check_ezdxf_raises_when_missing(monkeypatch):
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
 
     monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", False, raising=True)
 
@@ -98,7 +98,7 @@ def test_check_ezdxf_raises_when_missing(monkeypatch):
 
 def test_setup_layers_is_idempotent():
     # Calling setup_layers twice should not crash (second call hits "already exists" path).
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
 
     if not dxf_export.EZDXF_AVAILABLE:
         pytest.skip("ezdxf not installed")
@@ -114,7 +114,7 @@ def test_setup_layers_is_idempotent():
 
 
 def test_draw_rectangle_adds_four_lines():
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
 
     msp = _FakeModelspace()
     dxf_export.draw_rectangle(msp, 0, 0, 10, 5, layer="BEAM_OUTLINE")
@@ -124,7 +124,7 @@ def test_draw_rectangle_adds_four_lines():
 
 
 def test_draw_stirrup_adds_u_and_hooks():
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
 
     msp = _FakeModelspace()
     dxf_export.draw_stirrup(
@@ -149,7 +149,7 @@ def test_draw_stirrup_adds_u_and_hooks():
 def test_generate_beam_dxf_runs_with_stubbed_ezdxf(
     monkeypatch, tmp_path, include_dimensions, include_annotations
 ):
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,
@@ -241,8 +241,7 @@ def test_generate_beam_dxf_runs_with_stubbed_ezdxf(
 def test_dxf_export_cli_main_reads_json_and_writes(monkeypatch, tmp_path, capsys):
     import json
 
-    import structural_lib.detailing as detailing
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
 
     # Prepare input JSON
     payload = {
@@ -285,7 +284,7 @@ def test_dxf_export_cli_main_reads_json_and_writes(monkeypatch, tmp_path, capsys
         return output_path
 
     monkeypatch.setattr(
-        detailing, "create_beam_detailing", _fake_create_beam_detailing, raising=True
+        dxf_export, "create_beam_detailing", _fake_create_beam_detailing, raising=True
     )
     monkeypatch.setattr(
         dxf_export, "generate_beam_dxf", _fake_generate_beam_dxf, raising=True
@@ -314,7 +313,7 @@ def test_dxf_export_cli_main_reads_json_and_writes(monkeypatch, tmp_path, capsys
 
 def test_section_cuts_added_when_enabled(monkeypatch, tmp_path):
     """Test that section cut views are added when include_section_cuts=True."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,
@@ -400,7 +399,7 @@ def test_section_cuts_added_when_enabled(monkeypatch, tmp_path):
 
 def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
     """Test that generate_multi_beam_dxf creates a combined drawing."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,
@@ -523,7 +522,7 @@ def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
 
 def test_multi_beam_layout_rejects_empty_list(monkeypatch, tmp_path):
     """Test that generate_multi_beam_dxf raises error for empty list."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
 
     monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
     monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
@@ -542,7 +541,7 @@ def test_multi_beam_layout_rejects_empty_list(monkeypatch, tmp_path):
 
 def test_multi_beam_layout_rejects_zero_columns(monkeypatch, tmp_path):
     """Test that generate_multi_beam_dxf raises error for columns < 1."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,
@@ -593,7 +592,7 @@ def test_multi_beam_layout_rejects_zero_columns(monkeypatch, tmp_path):
 
 def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
     """Test that beams with different spans/widths don't overlap in grid layout."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,
@@ -716,7 +715,7 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
 
 def test_multi_beam_layout_single_beam(monkeypatch, tmp_path):
     """Q-014: Single beam with columns=1 should work correctly."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,
@@ -772,7 +771,7 @@ def test_multi_beam_layout_single_beam(monkeypatch, tmp_path):
 
 def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
     """Q-014: 12 beams in 3x4 grid should work without overlap."""
-    import structural_lib.dxf_export as dxf_export
+    import structural_lib.services.dxf_export as dxf_export
     from structural_lib.detailing import (
         BarArrangement,
         BeamDetailingResult,

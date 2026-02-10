@@ -18,8 +18,8 @@ import tempfile
 import pytest
 
 from structural_lib import api, detailing, flexure, serviceability, shear
-from structural_lib.job_runner import run_job_is456
 from structural_lib.materials import get_ec, get_fcr
+from structural_lib.services.job_runner import run_job_is456
 from structural_lib.services.optimization import optimize_beam_cost
 from structural_lib.services.rebar_optimizer import optimize_bar_arrangement
 
