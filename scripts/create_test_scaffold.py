@@ -19,6 +19,7 @@ Author: Agent 6 (Quality Improvement - Solution 2)
 Date: 2026-01-09
 """
 
+import argparse
 import sys
 from pathlib import Path
 from datetime import datetime
@@ -366,35 +367,30 @@ class Test{page_name}UIComponents:
 
 def main():
     """Main entry point."""
-    if len(sys.argv) < 3:
-        print("Test Scaffold Generator")
-        print("=" * 50)
-        print()
-        print("Usage:")
-        print(
-            "  python scripts/create_test_scaffold.py <ClassName> <module.path> [test_type]"
-        )
-        print()
-        print("Examples:")
-        print("  # Generate class test:")
-        print(
-            "  python scripts/create_test_scaffold.py SmartCache streamlit_app.utils.caching"
-        )
-        print()
-        print("  # Generate Streamlit page test:")
-        print(
-            "  python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page"
-        )
-        print()
-        print("Test Types:")
-        print("  class         - Standard class test (default)")
-        print("  streamlit_page - Streamlit page test with UI mocks")
-        print()
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Generate comprehensive test scaffolds for classes and Streamlit pages",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  python scripts/create_test_scaffold.py SmartCache streamlit_app.utils.caching\n"
+            "  python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page\n"
+        ),
+    )
+    parser.add_argument("class_name", help="Name of the class to generate tests for")
+    parser.add_argument("module_path", help="Dotted Python module path (e.g. streamlit_app.utils.caching)")
+    parser.add_argument(
+        "test_type",
+        nargs="?",
+        default="class",
+        choices=["class", "streamlit_page"],
+        help="Type of test to generate (default: class)",
+    )
 
-    class_name = sys.argv[1]
-    module_path = sys.argv[2]
-    test_type = sys.argv[3] if len(sys.argv) > 3 else "class"
+    args = parser.parse_args()
+
+    class_name = args.class_name
+    module_path = args.module_path
+    test_type = args.test_type
 
     # Generate test content
     test_content = generate_test_scaffold(class_name, module_path, test_type)
