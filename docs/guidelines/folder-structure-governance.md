@@ -4,9 +4,9 @@
 **Audience:** All Agents
 **Status:** Production Ready
 **Importance:** Critical
-**Version:** 2.0
+**Version:** 3.0
 **Created:** 2025-12-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-02-10
 **Enforcement:** Automated validators + pre-commit hooks
 
 ---
@@ -125,7 +125,215 @@
 
 ---
 
-## IV. Agents Folder (agents/)
+## IV. Python Library (Python/structural_lib/)
+
+**Purpose:** IS 456 RC beam design library with 4-layer architecture
+**Structure:** 4 layers — Core, Codes, Services, Insights
+**Migration:** Completed Feb 10, 2026 (Phases 1-3 of folder-structure-migration-v2)
+
+### IV.A. Architecture Layers
+
+| Layer | Location | Purpose | Import Rule |
+|-------|----------|---------|-------------|
+| **Core** | `core/` | Pure math, types, validation, errors | Cannot import from Services or Codes |
+| **Codes** | `codes/is456/` (+ future `aci318/`, `ec2/`) | Design code calculations | Can import Core only |
+| **Services** | `services/` | Orchestration, adapters, I/O, business logic | Can import Core + Codes |
+| **Insights** | `insights/`, `reports/`, `visualization/` | Analysis, reports, 3D geometry | Can import Core + Codes + Services |
+
+### IV.B. Directory Structure
+
+```
+Python/structural_lib/
+├── __init__.py                    # Package root (re-exports from core/ + services/)
+├── __main__.py                    # CLI entry point
+│
+├── core/                          # LAYER 1: Types, models, validation, errors (15 files)
+│   ├── base.py                    # Abstract base classes
+│   ├── constants.py               # Engineering constants
+│   ├── data_types.py              # Data type definitions
+│   ├── error_messages.py          # Error message catalog
+│   ├── errors.py                  # Exception classes
+│   ├── geometry.py                # Cross-section geometry
+│   ├── inputs.py                  # Input validation types
+│   ├── materials.py               # Material properties
+│   ├── models.py                  # Domain models
+│   ├── registry.py                # Code registry
+│   ├── result_base.py             # Result base classes
+│   ├── types.py                   # Type definitions
+│   ├── utilities.py               # Pure utility functions
+│   └── validation.py              # Input validation logic
+│
+├── codes/                         # LAYER 1: Code-specific calculations
+│   ├── is456/                     # IS 456:2000 (12 files)
+│   │   ├── flexure.py, shear.py, detailing.py, torsion.py
+│   │   ├── ductile.py, serviceability.py, slenderness.py
+│   │   ├── tables.py, compliance.py, materials.py
+│   │   └── design_checks.py, cost_optimizer.py
+│   ├── aci318/                    # ACI 318 (placeholder)
+│   └── ec2/                       # Eurocode 2 (placeholder)
+│
+├── services/                      # LAYER 2: Integration & business logic (27 files)
+│   ├── api.py                     # Public API facade (43 functions)
+│   ├── api_results.py             # Result formatting
+│   ├── adapters.py                # CSV adapters (Generic, ETABS, SAFE)
+│   ├── batch.py                   # Batch design operations
+│   ├── beam_pipeline.py           # Design orchestration
+│   ├── bbs.py                     # Bar bending schedule
+│   ├── dxf_export.py              # CAD export
+│   ├── report.py, report_svg.py, calculation_report.py  # Reports
+│   ├── excel_bridge.py, excel_integration.py             # Excel I/O
+│   ├── job_runner.py, job_cli.py                         # Job execution
+│   ├── rebar.py, rebar_optimizer.py                      # Rebar operations
+│   ├── optimization.py, multi_objective_optimizer.py     # Optimization
+│   ├── imports.py, etabs_import.py                       # Import handling
+│   ├── costing.py, compliance.py, audit.py               # Business logic
+│   ├── intelligence.py, dashboard.py                     # Smart features
+│   ├── serialization.py, testing_strategies.py           # Support
+│   └── __init__.py
+│
+├── insights/                      # LAYER 3: Smart analysis (10 files)
+├── reports/                       # LAYER 3: Report generation (2 files)
+├── visualization/                 # LAYER 3: 3D geometry (2 files)
+│
+└── 48 backward-compat stubs      # Re-export from core/ or services/
+    ├── api.py → services.api      # Old imports still work
+    ├── types.py → core.types      # Deprecation warnings added
+    └── ...                        # Safe to remove after v1.0
+```
+
+### IV.C. Backward Compatibility
+
+All 48 root-level `.py` files are **backward-compat shims** that re-export from `core/` or `services/`. This ensures:
+- `from structural_lib.api import design_beam_is456` still works
+- `from structural_lib.types import BeamInput` still works
+- Deprecation warnings guide users to new paths
+
+### IV.D. Enforcement
+
+| Rule | Check | Script |
+|------|-------|--------|
+| Layer boundaries | `validate_imports.py --scope structural_lib` | 0 violations |
+| No orphan imports | `validate_imports.py --scope all` | Excludes legacy streamlit |
+| Folder structure | `validate_folder_structure.py` | Pre-commit hook |
+| New modules | Use `migrate_python_module.py` for moves | Creates stubs automatically |
+
+---
+
+## V. React App (react_app/src/)
+
+**Purpose:** V3 frontend — React 19 + React Three Fiber + Tailwind v4
+**Structure:** Feature-grouped components
+**Migration:** Completed Feb 10, 2026 (Phase 4 of folder-structure-migration-v2)
+
+### V.A. Directory Structure
+
+```
+react_app/src/
+├── api/                           # HTTP/WS client (1 file)
+│   └── client.ts
+│
+├── components/                    # UI components (feature-grouped)
+│   ├── design/                    # Beam design feature
+│   │   ├── DesignView.tsx         # Design page (form + viewport + results)
+│   │   ├── BeamForm.tsx           # Input form with live validation
+│   │   ├── ResultsPanel.tsx       # Design results display
+│   │   ├── CrossSectionView.tsx   # Cross-section visualization
+│   │   └── index.ts              # Barrel export
+│   │
+│   ├── import/                    # Data import feature
+│   │   ├── ImportView.tsx         # Import page
+│   │   ├── CSVImportPanel.tsx     # Drag-drop CSV import
+│   │   ├── BeamTable.tsx          # Imported beams table
+│   │   └── index.ts              # Barrel export
+│   │
+│   ├── viewport/                  # 3D visualization feature
+│   │   ├── Viewport3D.tsx         # 3D beam/building visualization (R3F)
+│   │   ├── WorkspaceLayout.tsx    # Dockview IDE-like layout
+│   │   ├── LandingView.tsx        # Landing page content
+│   │   └── index.ts              # Barrel export
+│   │
+│   ├── layout/                    # App shell & navigation
+│   │   ├── TopBar.tsx
+│   │   └── ModernAppLayout.tsx
+│   │
+│   ├── pages/                     # Route-level pages
+│   │   ├── HomePage.tsx
+│   │   ├── ModeSelectPage.tsx
+│   │   ├── BuildingEditorPage.tsx
+│   │   └── BeamDetailPage.tsx
+│   │
+│   ├── ui/                        # Shared/primitive UI components
+│   │   ├── BentoGrid.tsx, FloatingDock.tsx, Toast.tsx
+│   │   ├── ConnectionStatus.tsx, FileDropZone.tsx
+│   │   ├── Skeleton.tsx, ErrorBoundary.tsx
+│   │   └── index.ts
+│   │
+│   ├── CommandPalette.tsx         # Global overlay (stays in root)
+│   └── index.ts                   # Master barrel export
+│
+├── hooks/                         # Custom hooks (8 files)
+│   ├── useCSVImport.ts            # CSV import via API adapters
+│   ├── useBeamGeometry.ts         # 3D rebar/stirrup geometry from API
+│   ├── useLiveDesign.ts           # WebSocket live design
+│   ├── useAutoDesign.ts           # Auto-trigger on input change
+│   ├── useGeometryAdvanced.ts     # Building & cross-section geometry
+│   └── useRebarEditor.ts          # Rebar edit validation
+│
+├── store/                         # Zustand state stores (2 files)
+│   ├── designStore.ts             # Single beam design inputs/results
+│   └── importedBeamsStore.ts      # Imported CSV beams + selection
+│
+├── types/                         # TypeScript types (2 files)
+├── utils/                         # Utility functions (3 files)
+├── lib/                           # External lib wrappers (1 file)
+└── assets/                        # Static assets (1 file)
+```
+
+### V.B. Component Grouping Rules
+
+| Group | Purpose | When to add here |
+|-------|---------|------------------|
+| `design/` | Single beam design flow | Forms, results, design-specific views |
+| `import/` | Data import flow | CSV, JSON, file handling components |
+| `viewport/` | 3D visualization | R3F-based rendering, 3D layouts |
+| `layout/` | App shell | Top bars, sidebars, navigation |
+| `pages/` | Route-level components | Full pages rendered by React Router |
+| `ui/` | Shared primitives | Reusable across multiple features |
+
+### V.C. Enforcement
+
+| Rule | Check | Script |
+|------|-------|--------|
+| TypeScript compilation | `npm run build` (catches all import errors) | 2754 modules |
+| Component moves | Use `migrate_react_component.py` | Updates all imports + barrel exports |
+| Index generation | `generate_enhanced_index.py` | Per-folder index.json + index.md |
+
+---
+
+## VI. FastAPI App (fastapi_app/)
+
+**Purpose:** REST + WebSocket API layer
+**Status:** Already well-organized — no changes needed
+
+```
+fastapi_app/
+├── main.py                        # App entry point
+├── config.py                      # Configuration
+├── auth.py                        # Authentication
+├── models/                        # Pydantic models (5 files)
+│   ├── beam.py, geometry.py, analysis.py
+│   ├── optimization.py, common.py
+│   └── __init__.py
+├── routers/                       # API routes (11 files, one per domain)
+│   ├── design.py, geometry.py, import_router.py
+│   ├── insights.py, optimization.py, export.py
+│   └── ...
+└── tests/                         # Route tests (7 files)
+```
+
+---
+
+## VII. Agents Folder (agents/)
 
 **Purpose:** Agent definitions, role descriptions, index
 **Structure (ENFORCED):**
@@ -177,7 +385,7 @@ agents/
 
 ---
 
-## V. Document Metadata Standard
+## VIII. Document Metadata Standard
 
 **NEW (Session 11):** Every document should have a metadata section.
 
@@ -204,7 +412,7 @@ agents/
 
 ---
 
-## VI. Validation Checklist
+## IX. Validation Checklist
 
 ### Automated Checks (Pre-commit)
 
@@ -225,7 +433,7 @@ agents/
 
 ---
 
-## VII. Rule Updates & Governance
+## X. Rule Updates & Governance
 
 ### Changing the Spec
 
@@ -248,9 +456,9 @@ agents/
 
 ---
 
-## VIII. Current Status
+## XI. Current Status
 
-**Last Updated:** 2026-01-11 (Session 13 Part 2)
+**Last Updated:** 2026-02-10 (Session 89 — Folder Structure Migration v2 complete)
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
@@ -263,21 +471,40 @@ agents/
 | Spec/validator sync | ✅ PASS | max_files=10 aligned |
 | Naming convention | ✅ PASS | All files kebab-case |
 | Doc metadata | ⚠️ IN PROGRESS | New standard being applied |
+| **Python library** | ✅ PASS | 4-layer: core/ + codes/ + services/ + insights/ |
+| **React feature groups** | ✅ PASS | design/ + import/ + viewport/ + layout/ + pages/ + ui/ |
+| **FastAPI** | ✅ PASS | Already well-organized (no changes needed) |
+| **Backward compat** | ✅ PASS | 48 root stubs re-export from core/ + services/ |
 
 ---
 
-## IX. Migration Path (Session 11-12)
+## XII. Migration History
+
+### Phase 1: Docs Reorganization (Sessions 11-12, Jan 2026)
 
 | Phase | Task | Status |
 |-------|------|--------|
-| 1 | Publish this governance spec | ✅ Complete (Session 11) |
-| 2 | Update validators | ✅ Complete (Session 12) |
+| 1 | Publish governance spec | ✅ Complete |
+| 2 | Update validators | ✅ Complete |
 | 3 | Create migration tools | ✅ Complete (safe_file_move.py) |
-| 4 | Migrate agents/ roles (12 files) | ✅ Complete (Session 11) |
-| 5 | Reorganize docs/agents (6 files) | ✅ Complete (Session 11) |
-| 6 | Move agents/GOVERNANCE.md | ✅ Complete (to agents/roles/) |
+| 4 | Migrate agents/ roles (12 files) | ✅ Complete |
+| 5 | Reorganize docs/agents (6 files) | ✅ Complete |
+| 6 | Move agents/GOVERNANCE.md | ✅ Complete |
 | 7 | Apply document metadata standard | ⏳ In Progress |
-| 8 | Reduce root files (14 → 10) | ⏳ Session 12 Priority |
+| 8 | Reduce root files (14 → 10) | ✅ Complete |
+
+### Phase 2: Code Folder Structure (Session 88-89, Feb 2026)
+
+| Phase | Task | Status |
+|-------|------|--------|
+| 0 | Create migration automation scripts | ✅ Complete |
+| 1 | Python library — core/ expansion (15 files) | ✅ Complete |
+| 2 | Python library — services/ creation (18 files) | ✅ Complete |
+| 3 | Python library — integration merged into services/ (9 files) | ✅ Complete |
+| 4 | React app — feature grouping (10 components) | ✅ Complete |
+| 5 | Root cleanup — stale dirs deleted, indexes generated | ✅ Complete |
+
+**Validation:** 3196 Python tests passed, React build 2754 modules, 0 broken imports in structural_lib. PR #426 merged.
 
 ---
 
