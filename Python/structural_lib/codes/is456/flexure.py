@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import math
 
-from structural_lib import materials
+from structural_lib.codes.is456 import materials
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import BeamType, DesignSectionType, FlexureResult
 from structural_lib.core.error_messages import (
