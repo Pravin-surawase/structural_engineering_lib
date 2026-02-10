@@ -56,10 +56,10 @@ jobs:
           pids=()
           python scripts/check_doc_versions.py --ci & pids+=($!)
           python scripts/check_docs.py --index & pids+=($!)
-          python scripts/check_release_docs.py & pids+=($!)
-          python scripts/check_session_docs.py & pids+=($!)
+          python scripts/release.py check-docs & pids+=($!)
+          python scripts/session.py check & pids+=($!)
           python scripts/check_api.py --sync & pids+=($!)
-          python scripts/check_pre_release_checklist.py & pids+=($!)
+          python scripts/release.py checklist & pids+=($!)
           python scripts/check_api.py --docs & pids+=($!)
           python scripts/check_next_session_brief_length.py & pids+=($!)
           python scripts/check_cli_reference.py & pids+=($!)
@@ -194,10 +194,10 @@ jobs:
           echo '{"scanners": {}}' > evidence/scanner-results.json
 
           # Streamlit scanner
-          python scripts/check_streamlit_issues.py --all-pages > evidence/streamlit-scanner.txt 2>&1 || true
+          python scripts/check_streamlit.py --all-pages > evidence/streamlit-scanner.txt 2>&1 || true
 
           # Fragment validator
-          python scripts/check_fragment_violations.py > evidence/fragment-validator.txt 2>&1 || true
+          python scripts/check_streamlit.py --fragments > evidence/fragment-validator.txt 2>&1 || true
 
           # Circular imports
           python scripts/check_circular_imports.py > evidence/circular-imports.txt 2>&1 || true

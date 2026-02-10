@@ -176,7 +176,7 @@ pytest tests/ -v
 
 ```bash
 # Streamlit-specific scanner (checks for runtime errors)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 
 # Pylint
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/

@@ -47,7 +47,7 @@
 | `check_links.py` | Validate internal markdown links |
 | `fix_broken_links.py` | Auto-fix broken links |
 | `check_folder_structure.py` | Validate multi-code architecture |
-| `check_streamlit_issues.py` | AST scanner for Streamlit code |
+| `check_streamlit.py` | Unified Streamlit validation (AST scanner + fragment checks) |
 | `check_doc_versions.py` | Check version drift in docs |
 | `generate_api_manifest.py` | Generate API manifest JSON |
 | `check_scripts_index.py` | Ensure scripts index is in sync |
@@ -72,8 +72,7 @@
 ### Session Management
 | Script | Purpose |
 |--------|---------|
-| `start_session.py` | Initialize work session |
-| `end_session.py` | End session with checks |
+| `session.py` | Unified session management (start, end, handoff, check) |
 | `agent_setup.sh` | Agent environment setup |
 | `agent_preflight.sh` | Pre-flight checks |
 | `collect_diagnostics.py` | Bundle debug context (env, git, logs) |
@@ -82,8 +81,7 @@
 | Script | Purpose |
 |--------|---------|
 | `bump_version.py` | Version management |
-| `release.py` | Release workflow |
-| `check_release_docs.py` | Validate release docs |
+| `release.py` | Unified release management (run, verify, check-docs, checklist) |
 
 ## Guidelines
 

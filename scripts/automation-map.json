@@ -49,7 +49,7 @@
       ]
     },
     "check streamlit code": {
-      "script": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
+      "script": ".venv/bin/python scripts/check_streamlit.py --all-pages",
       "description": "Detect runtime errors before they happen",
       "context_docs": [
         "docs/guidelines/streamlit-fragment-best-practices.md",
@@ -106,7 +106,7 @@
       ]
     },
     "end session": {
-      "script": ".venv/bin/python scripts/end_session.py",
+      "script": ".venv/bin/python scripts/session.py end",
       "description": "Validate handoff and update session docs",
       "context_docs": [
         "docs/contributing/handoff.md",

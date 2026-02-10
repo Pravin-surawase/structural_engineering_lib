@@ -253,7 +253,7 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
     """Collect static analysis evidence."""
 
     # Check Streamlit issues scanner
-    scanner = Path("scripts/check_streamlit_issues.py")
+    scanner = Path("scripts/check_streamlit.py")
     if scanner.exists():
         code, stdout, stderr = run_script(str(scanner), ["--all-pages"])
         passed = code == 0 and "error" not in stdout.lower()
@@ -269,9 +269,9 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
         )
 
     # Check fragment violations
-    fragment_checker = Path("scripts/check_fragment_violations.py")
+    fragment_checker = Path("scripts/check_streamlit.py")
     if fragment_checker.exists():
-        code, stdout, stderr = run_script(str(fragment_checker))
+        code, stdout, stderr = run_script(str(fragment_checker), ["--fragments"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -279,7 +279,7 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
                 name="Fragment API Validator",
                 status="PASS" if passed else "FAIL",
                 required=True,
-                source=str(fragment_checker),
+                source="scripts/check_streamlit.py --fragments",
                 details="Validates @st.fragment usage patterns",
             )
         )
@@ -290,7 +290,7 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
                 name="Fragment API Validator",
                 status="SKIP",
                 required=True,
-                source="scripts/check_fragment_violations.py",
+                source="scripts/check_streamlit.py",
                 details="Script not found",
             )
         )

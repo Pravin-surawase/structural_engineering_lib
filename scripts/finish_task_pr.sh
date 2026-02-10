@@ -123,11 +123,11 @@ cd "$PROJECT_ROOT"
 
 if [[ "$SESSION_DOCS" == "true" ]]; then
     echo "→ Updating handoff from SESSION_LOG..."
-    if [[ -f "$PROJECT_ROOT/scripts/update_handoff.py" ]]; then
+    if [[ -f "$PROJECT_ROOT/scripts/session.py" ]]; then
         if [[ -x "$PROJECT_ROOT/.venv/bin/python" ]]; then
-            "$PROJECT_ROOT/.venv/bin/python" "$PROJECT_ROOT/scripts/update_handoff.py" || true
+            "$PROJECT_ROOT/.venv/bin/python" "$PROJECT_ROOT/scripts/session.py" handoff || true
         else
-            python3 "$PROJECT_ROOT/scripts/update_handoff.py" || true
+            python3 "$PROJECT_ROOT/scripts/session.py" handoff || true
         fi
     fi
 
@@ -205,7 +205,7 @@ echo -e "${GREEN}✓ Pull request created: #$PR_NUMBER${NC}"
 echo ""
 echo -e "${YELLOW}📝 Session docs reminder${NC}"
 echo "  1. Update docs/SESSION_LOG.md with PR #$PR_NUMBER"
-echo "  2. Run: python3 scripts/update_handoff.py"
+echo "  2. Run: python3 scripts/session.py handoff"
 echo "  3. Commit: ./scripts/ai_commit.sh \"docs: update session log and handoff\""
 echo "  4. Push to update this PR"
 echo ""
