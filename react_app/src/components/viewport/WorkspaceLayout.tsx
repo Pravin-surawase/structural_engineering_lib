@@ -10,7 +10,6 @@ import 'dockview/dist/styles/dockview.css';
 import { BeamForm } from '../design/BeamForm';
 import { Viewport3D } from './Viewport3D';
 import { ResultsPanel } from '../design/ResultsPanel';
-import './WorkspaceLayout.css';
 
 // Panel components wrapped for Dockview
 function BeamFormPanel(_props: IDockviewPanelProps) {
@@ -71,9 +70,9 @@ export function WorkspaceLayout() {
   }, []);
 
   return (
-    <div className="workspace-layout">
+    <div className="w-screen h-screen overflow-hidden">
       <DockviewReact
-        className="dockview-container"
+        className="w-full h-full dockview-theme-dark"
         components={components}
         onReady={onReady}
         watermarkComponent={() => null}

@@ -20,7 +20,6 @@ import { useBeamGeometry } from '../../hooks/useBeamGeometry';
 import type { RebarPath, StirrupLoop } from '../../hooks/useBeamGeometry';
 import { deriveBeamStatus } from '../../utils/beamStatus';
 import type { BeamCSVRow } from '../../types/csv';
-import './Viewport3D.css';
 
 // Constants
 const SCALE = 0.001; // mm to meters
@@ -1013,9 +1012,9 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
   console.log('[Viewport3D] Rendering:', { mode, effectiveMode, beamCount: beams.length });
 
   return (
-    <div className="viewport3d">
+    <div className="w-full h-full relative" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>
       <Viewport3DErrorBoundary>
-        <Canvas shadows>
+        <Canvas shadows className="!w-full !h-full">
           <Suspense fallback={null}>
             {effectiveMode === 'building' ? (
               <BuildingFrame key="building-mode" />
@@ -1025,7 +1024,7 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
           </Suspense>
         </Canvas>
       </Viewport3DErrorBoundary>
-      <div className="viewport-overlay">
+      <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/50 rounded text-[11px] text-[#888] pointer-events-none">
         <span>
           {effectiveMode === 'building'
             ? `Building Frame (${beams.length} beams) • Click to select`

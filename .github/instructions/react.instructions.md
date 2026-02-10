@@ -9,11 +9,13 @@ applyTo: "**/react_app/**"
 ```
 react_app/src/
 ├── components/          # UI components (grouped by feature)
-│   ├── layout/          # Layout components (TopBar, Sidebar, etc.)
-│   ├── BeamForm.tsx     # Beam input form
-│   ├── DesignView.tsx   # Design results view
-│   ├── ImportView.tsx   # CSV import view
-│   └── Viewport3D.tsx   # 3D visualization
+│   ├── design/          # Beam design (DesignView, BeamForm, ResultsPanel, CrossSectionView)
+│   ├── import/          # Data import (ImportView, CSVImportPanel, BeamTable)
+│   ├── viewport/        # 3D visualization (Viewport3D, WorkspaceLayout, LandingView)
+│   ├── layout/          # App shell (TopBar, ModernAppLayout)
+│   ├── pages/           # Route-level pages (Home, ModeSelect, Building, BeamDetail)
+│   ├── ui/              # Shared primitives (BentoGrid, FileDropZone, Toast, etc.)
+│   └── CommandPalette.tsx # Global overlay
 ├── hooks/               # Custom hooks (CSV import, geometry, live design)
 ├── store/               # Zustand stores (design, imported beams)
 ├── types/               # TypeScript type definitions
@@ -21,6 +23,12 @@ react_app/src/
 ├── App.tsx              # Root component
 └── main.tsx             # Entry point
 ```
+
+## Styling: Tailwind Only
+
+- All components use Tailwind utility classes — **no custom CSS files**
+- Dockview theme vars are in `index.css` (the only non-Tailwind CSS)
+- Never create `.css` files for components — use Tailwind classes inline
 
 ## Key Patterns — Check BEFORE Creating New Code
 
