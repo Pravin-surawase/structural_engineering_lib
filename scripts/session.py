@@ -21,7 +21,8 @@ from datetime import date
 from pathlib import Path
 from typing import Optional
 
-REPO_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"

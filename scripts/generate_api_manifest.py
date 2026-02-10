@@ -10,7 +10,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
 DEFAULT_OUT = REPO_ROOT / "docs/reference/api-manifest.json"
 
 

@@ -38,9 +38,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-# ── Project paths ──────────────────────────────────────────────────────────
-REPO_ROOT = Path(__file__).parent.parent
-DOCS_DIR = REPO_ROOT / "docs"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT, DOCS_DIR
 DOCS_INDEX = DOCS_DIR / "README.md"
 
 # ═══════════════════════════════════════════════════════════════════════════

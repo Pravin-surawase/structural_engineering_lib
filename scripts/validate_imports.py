@@ -19,7 +19,10 @@ import re
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).parent.parent.resolve()
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
+
+PROJECT_ROOT = REPO_ROOT  # alias for backward compatibility
 
 SEARCH_DIRS = {
     "all": [

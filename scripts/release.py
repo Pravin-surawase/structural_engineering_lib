@@ -21,7 +21,8 @@ import sys
 import tempfile
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
 BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 CHANGELOG = REPO_ROOT / "CHANGELOG.md"
 RELEASES = REPO_ROOT / "docs" / "getting-started" / "releases.md"

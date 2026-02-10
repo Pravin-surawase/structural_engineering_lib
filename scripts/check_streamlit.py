@@ -68,6 +68,9 @@ from pathlib import Path
 from typing import List, Tuple, Set, Dict, Optional, Any
 from collections import defaultdict
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
+
 # =============================================================================
 # PHASE 3: FUNCTION SIGNATURE REGISTRY
 # =============================================================================
@@ -2184,7 +2187,7 @@ def _check_fragments_directory(directory: Path) -> list[tuple[str, int, str, str
 
 def _run_fragment_check(args: argparse.Namespace) -> int:
     """Run fragment API violation detection."""
-    project_root = Path(__file__).parent.parent
+    project_root = REPO_ROOT
 
     if hasattr(args, "file") and args.file:
         path = Path(args.file)
@@ -2283,7 +2286,7 @@ def main():
         fail_on_severities = [s.strip() for s in args.fail_on.split(",")]
 
     # Determine project root
-    project_root = Path(__file__).parent.parent
+    project_root = REPO_ROOT
     pages_dir = project_root / "streamlit_app" / "pages"
 
     # Load ignore configuration

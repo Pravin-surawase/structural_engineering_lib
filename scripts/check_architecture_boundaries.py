@@ -41,6 +41,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterator
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
+
 # =============================================================================
 # Architecture Rules
 # =============================================================================
@@ -467,8 +470,8 @@ def main() -> int:
 
     args = parser.parse_args()
 
-    # Find project root
-    project_root = Path(__file__).parent.parent
+    # Use shared project root
+    project_root = REPO_ROOT
 
     if not args.json:
         print(f"Scanning {project_root}...")

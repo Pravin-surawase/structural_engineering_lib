@@ -2,7 +2,7 @@
 
 **Type:** Research
 **Audience:** All Agents
-**Status:** Phase 2 Complete
+**Status:** Phase 3 Complete
 **Importance:** High
 **Created:** 2026-02-10
 **Last Updated:** 2026-02-11
@@ -21,6 +21,8 @@ The `scripts/` directory contains **97 active scripts** (71 Python + 26 shell) t
 - **7 consolidation groups** that would reduce 97→55 scripts (42% reduction)
 - **2 broken CI references** (archived scripts still called in workflows)
 - **0 scripts using the shared `_lib/utils.py`** that already exists
+
+**Update (Session 91):** Phase 3 complete — created `_lib/output.py` and `_lib/ast_helpers.py`, migrated 10 scripts to use shared `_lib/utils.py` imports.
 
 ---
 
@@ -388,11 +390,11 @@ scripts/
 
 **Bonus:** ✅ **Merge Streamlit scripts** → `check_streamlit.py` with `--all-pages`, `--fragments` (Session 90, PR #429)
 
-### Phase 3: Infrastructure (1-2 sessions, medium risk)
+### Phase 3: Infrastructure (1-2 sessions, medium risk) — ✅ DONE (Session 91)
 
-9. **Make scripts import `_lib/utils.py`** → Start with 10 most-used scripts
-10. **Create `_lib/output.py`** → Unified JSON/table output
-11. **Create `_lib/ast_helpers.py`** → Shared AST parsing
+9. ✅ **Make scripts import `_lib/utils.py`** → Migrated 10 scripts: check_governance, check_api, check_links, session, release, check_streamlit, check_architecture_boundaries, check_docs, generate_api_manifest, validate_imports
+10. ✅ **Create `_lib/output.py`** → Unified JSON/table/summary output (print_json, print_table, print_summary, StatusLine, CheckResult)
+11. ✅ **Create `_lib/ast_helpers.py`** → Shared AST parsing (parse_python_file, extract_imports, find_functions, find_classes, find_constants)
 
 ### Phase 4: Folder Reorganization (1 session, high risk)
 
@@ -413,7 +415,7 @@ scripts/
 |--------|--------|---------|--------|
 | Active scripts | 97 | ~79 | ~55 |
 | In CI | ~30 (31%) | ~30 (38%) | ~35 (64%) |
-| Using `_lib/` | 0 (0%) | 0 (0%) | 30+ (55%) |
+| Using `_lib/` | 0 (0%) | 10 (13%) | 30+ (55%) |
 | With argparse | 55 (77% of Python) | 55 | 50+ (90%+) |
 | With logging | 1 (1%) | 1 | 20+ (36%) |
 | Broken CI refs | 2 | 0 ✅ | 0 |
