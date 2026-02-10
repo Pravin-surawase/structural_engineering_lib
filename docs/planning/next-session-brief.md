@@ -5,15 +5,15 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-02-10
+**Last Updated:** 2026-02-11
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-02-10
-- Focus: Session 88 — Folder structure refactor PR #424, script consolidation (163→97), materials.py resolved, deep script audit
+- Date: 2026-02-11
+- Focus: Session 89 — Scripts consolidation Phase 1+2: archive 7 dead scripts, merge 8→3 (check_api, check_governance, check_links), fix 2 broken CI refs, PR #428
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,11 +21,58 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** Session 88 | **Focus:** Folder structure refactor + script consolidation (PR #424)
+**Last Session:** Session 89 | **Focus:** Scripts consolidation Phase 1+2 (PR #428)
 
 ---
 
-## ✅ Session 87 Summary (Jan 29, 2026)
+## ✅ Session 89 Summary (Feb 11, 2026)
+
+### Completed This Session
+
+Implemented the Prioritized Action Plan from the Scripts Improvement Research doc.
+
+**Phase 1 — Quick Wins:**
+1. Archived 7 Tier-1 dead scripts to `scripts/_archive/`
+2. Fixed 2 broken CI refs in python-tests.yml (check_docs_index.py → check_docs.py --index)
+
+**Phase 2 — Consolidation Merges (8 scripts → 3):**
+3. **check_api.py** — Merged check_api_signatures.py + check_api_doc_signatures.py + check_api_docs_sync.py
+4. **check_governance.py** — Merged validate_folder_structure.py + check_governance_compliance.py
+5. **check_links.py** — Merged old check_links.py + fix_broken_links.py (with fuzzy matching)
+6. Updated all 3 CI workflows (fast-checks.yml, python-tests.yml, streamlit-validation.yml)
+7. Updated scripts/index.json + automation-map.json
+
+### PR
+| Number | Description | Status |
+|--------|-------------|--------|
+| #428 | refactor: scripts consolidation phase 1 | 🟡 Open |
+
+### Files Changed (23 files)
+- 3 new consolidated scripts: check_api.py, check_governance.py, check_links.py (rewritten)
+- 15 scripts archived to scripts/_archive/
+- 3 CI workflows updated
+- 2 JSON indexes updated
+- 1 script reference updated (end_session.py)
+
+### Test Results
+```
+✅ check_api.py --help: Working
+✅ check_governance.py --structure: All checks passed
+✅ check_links.py --exclude-archive: Working
+✅ Python tests: 3181 passed, 3 skipped
+✅ YAML validation: All 3 workflows valid
+✅ JSON validation: Both index files valid
+```
+
+### Next Priorities (Scripts Consolidation)
+1. **Merge PR #428** after CI passes
+2. **Session scripts merge** (start_session.py + end_session.py + update_handoff.py + check_session_docs.py → session.py)
+3. **Release scripts merge** (release.py + verify_release.py + check_release_docs.py + check_pre_release_checklist.py → release.py)
+4. **Streamlit scripts merge** (check_streamlit_issues.py + check_fragment_violations.py + check_streamlit_imports.py → check_streamlit.py)
+
+---
+
+## ✅ Session 88 Summary (Feb 10, 2026)
 
 ### Completed This Session
 

@@ -372,19 +372,19 @@ scripts/
 
 ## 9. Prioritized Action Plan
 
-### Phase 1: Quick Wins (1 session, low risk)
+### Phase 1: Quick Wins (1 session, low risk) — ✅ DONE (Session 89, PR #428)
 
-1. **Archive 7 Tier-1 dead scripts** → Immediate cleanup
-2. **Fix 2 broken CI references** → `check_docs_index.py` → `check_docs.py`
-3. **Archive `vba_validator.py`** → `lint_vba.py` is the canonical VBA linter
+1. ✅ **Archive 7 Tier-1 dead scripts** → Moved to `scripts/_archive/`
+2. ✅ **Fix 2 broken CI references** → `check_docs_index.py` → `check_docs.py --index`
+3. ✅ **Archive `vba_validator.py`** → `lint_vba.py` is the canonical VBA linter
 
-### Phase 2: Consolidation Merges (2-3 sessions, medium risk)
+### Phase 2: Consolidation Merges (2-3 sessions, medium risk) — 🟡 3 of 5 done
 
-4. **Merge `check_links.py` + `fix_broken_links.py`** → Single script with fuzzy matching
-5. **Merge `validate_folder_structure.py` + `check_governance_compliance.py`** → `check_governance.py`
-6. **Merge 3 `check_api_*.py`** → `check_api.py` with subcommands
-7. **Merge session scripts** → `session.py` CLI
-8. **Merge release scripts** → Expand existing `release.py`
+4. ✅ **Merge `check_links.py` + `fix_broken_links.py`** → Single script with `--fix` + fuzzy matching
+5. ✅ **Merge `validate_folder_structure.py` + `check_governance_compliance.py`** → `check_governance.py`
+6. ✅ **Merge 3 `check_api_*.py`** → `check_api.py` with `--signatures`, `--docs`, `--sync`
+7. **Merge session scripts** → `session.py` CLI (next session)
+8. **Merge release scripts** → Expand existing `release.py` (next session)
 
 ### Phase 3: Infrastructure (1-2 sessions, medium risk)
 
@@ -407,16 +407,16 @@ scripts/
 
 ## 10. Metrics & Success Criteria
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| Active scripts | 97 | ~55 |
-| In CI | ~30 (31%) | ~35 (64%) |
-| Using `_lib/` | 0 (0%) | 30+ (55%) |
-| With argparse | 55 (77% of Python) | 50+ (90%+) |
-| With logging | 1 (1%) | 20+ (36%) |
-| Broken CI refs | 2 | 0 |
-| High-overlap pairs | 4 | 0 |
-| Dead scripts | 7-14 | 0 |
+| Metric | Before | Current | Target |
+|--------|--------|---------|--------|
+| Active scripts | 97 | ~85 | ~55 |
+| In CI | ~30 (31%) | ~30 (35%) | ~35 (64%) |
+| Using `_lib/` | 0 (0%) | 0 (0%) | 30+ (55%) |
+| With argparse | 55 (77% of Python) | 55 | 50+ (90%+) |
+| With logging | 1 (1%) | 1 | 20+ (36%) |
+| Broken CI refs | 2 | 0 ✅ | 0 |
+| High-overlap pairs | 4 | 1 | 0 |
+| Dead scripts | 7-14 | 0 ✅ | 0 |
 
 ---
 
