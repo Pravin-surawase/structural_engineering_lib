@@ -41,6 +41,25 @@ cd Python && .venv/bin/pytest tests/ -v         # Tests (85% coverage gate)
 .venv/bin/python scripts/find_automation.py "x" # Find automation
 ```
 
+## Migration & Folder Structure Scripts
+
+```bash
+.venv/bin/python scripts/migrate_python_module.py <src> <dst> --dry-run   # Move Python module + update imports
+.venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
+.venv/bin/python scripts/validate_imports.py --scope structural_lib       # Check for broken imports
+.venv/bin/python scripts/validate_folder_structure.py                     # Validate folder conventions
+.venv/bin/python scripts/generate_enhanced_index.py <folder>              # Generate index.json + index.md
+.venv/bin/python scripts/generate_enhanced_index.py --all                 # Regenerate all folder indexes
+```
+
+## Folder Indexes (AI Agent Context)
+
+Each key folder has `index.json` + `index.md` for fast context loading:
+- `index.json` — Machine-readable: file list, classes, functions, params, descriptions
+- `index.md` — Human-readable: tables with descriptions, exports, line counts
+- Read indexes FIRST before diving into individual files
+- After moving files, regenerate indexes: `.venv/bin/python scripts/generate_enhanced_index.py <folder>`
+
 Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI models, versions) online with `fetch_webpage`.
 
 ## Context Size (413 Error Prevention)

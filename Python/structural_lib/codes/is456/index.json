@@ -1,0 +1,891 @@
+{
+  "folder": "Python/structural_lib/codes/is456",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-02-10",
+  "file_count": 14,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 131,
+      "last_updated": "2026-01-23",
+      "description": "IS 456:2000 - Indian Standard for Plain and Reinforced Concrete.",
+      "classes": [
+        {
+          "name": "IS456Code",
+          "description": "IS 456:2000 design code implementation.",
+          "public_methods": [
+            "code_id",
+            "code_name",
+            "code_version",
+            "get_design_strength_concrete",
+            "get_design_strength_steel",
+            "get_tau_c",
+            "get_tau_c_max"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "clause_cli.py",
+      "type": "python",
+      "size_lines": 283,
+      "last_updated": "2026-01-23",
+      "description": "IS 456 Clause CLI",
+      "functions": [
+        {
+          "name": "format_clause_info",
+          "description": "Format clause information for display.",
+          "params": [
+            "clause_ref",
+            "info"
+          ]
+        },
+        {
+          "name": "cmd_lookup",
+          "description": "Look up a specific clause.",
+          "params": [
+            "clause_ref"
+          ]
+        },
+        {
+          "name": "cmd_search",
+          "description": "Search clauses by keyword.",
+          "params": [
+            "keyword"
+          ]
+        },
+        {
+          "name": "cmd_category",
+          "description": "List clauses in a category.",
+          "params": [
+            "category"
+          ]
+        },
+        {
+          "name": "cmd_report",
+          "description": "Generate traceability report.",
+          "params": [
+            "output_json"
+          ]
+        },
+        {
+          "name": "cmd_stats",
+          "description": "Show database statistics."
+        },
+        {
+          "name": "main",
+          "description": "Main CLI entry point."
+        }
+      ]
+    },
+    {
+      "name": "clauses.json",
+      "type": "config",
+      "last_updated": "2026-01-23",
+      "top_level_keys": [
+        "$schema",
+        "metadata",
+        "clauses",
+        "tables",
+        "figures",
+        "annexures"
+      ]
+    },
+    {
+      "name": "compliance.py",
+      "type": "python",
+      "size_lines": 477,
+      "last_updated": "2026-01-23",
+      "description": "Module: compliance",
+      "functions": [
+        {
+          "name": "check_compliance_case",
+          "description": "Run a single compliance case."
+        },
+        {
+          "name": "check_compliance_report",
+          "description": "Run multiple cases and pick a deterministic governing case."
+        },
+        {
+          "name": "report_to_dict",
+          "description": "Serialize report to a JSON/Excel-friendly dict.",
+          "params": [
+            "report"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "detailing.py",
+      "type": "python",
+      "size_lines": 1186,
+      "last_updated": "2026-01-23",
+      "description": "Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement Detailing",
+      "classes": [
+        {
+          "name": "BarArrangement",
+          "description": "Represents a reinforcement bar arrangement.",
+          "public_methods": [
+            "callout"
+          ]
+        },
+        {
+          "name": "StirrupArrangement",
+          "description": "Represents a stirrup arrangement for a zone.",
+          "public_methods": [
+            "callout"
+          ]
+        },
+        {
+          "name": "BeamDetailingResult",
+          "description": "Complete detailing result for a beam section.",
+          "public_methods": [
+            "to_3d_json"
+          ]
+        },
+        {
+          "name": "HookDimensions",
+          "description": "Dimensions for a standard hook per IS 456 Cl 26.2.2."
+        },
+        {
+          "name": "AnchorageCheckResult",
+          "description": "Result of anchorage check at simple support."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_bond_stress",
+          "description": "Get design bond stress τbd.",
+          "params": [
+            "fck",
+            "bar_type"
+          ]
+        },
+        {
+          "name": "calculate_development_length",
+          "description": "Calculate development length (Ld) per IS 456 Cl 26.2.1.",
+          "params": [
+            "bar_dia",
+            "fck",
+            "fy",
+            "bar_type",
+            "stress_ratio"
+          ]
+        },
+        {
+          "name": "calculate_lap_length",
+          "description": "Calculate lap splice length per IS 456 Cl 26.2.5.",
+          "params": [
+            "bar_dia",
+            "fck",
+            "fy",
+            "bar_type",
+            "splice_percent",
+            "is_seismic",
+            "in_tension"
+          ]
+        },
+        {
+          "name": "get_min_bend_radius",
+          "description": "Get minimum internal bend radius per IS 456 Cl 26.2.2.1.",
+          "params": [
+            "bar_dia",
+            "bar_type"
+          ]
+        },
+        {
+          "name": "calculate_standard_hook",
+          "description": "Calculate standard hook dimensions per IS 456 Cl 26.2.2.",
+          "params": [
+            "bar_dia",
+            "hook_type",
+            "bar_type"
+          ]
+        },
+        {
+          "name": "calculate_anchorage_length",
+          "description": "Calculate anchorage arrangement combining straight + hook.",
+          "params": [
+            "bar_dia",
+            "fck",
+            "fy",
+            "available_length",
+            "bar_type",
+            "use_hook",
+            "hook_type",
+            "stress_ratio"
+          ]
+        },
+        {
+          "name": "calculate_stirrup_anchorage",
+          "description": "Calculate stirrup anchorage hook requirements per IS 456.",
+          "params": [
+            "stirrup_dia",
+            "is_seismic"
+          ]
+        },
+        {
+          "name": "check_anchorage_at_simple_support",
+          "description": "Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.",
+          "params": [
+            "bar_dia",
+            "fck",
+            "fy",
+            "vu_kn",
+            "support_width",
+            "cover",
+            "bar_type",
+            "has_standard_bend"
+          ]
+        },
+        {
+          "name": "calculate_bar_spacing",
+          "description": "Calculate center-to-center spacing of bars.",
+          "params": [
+            "b",
+            "cover",
+            "stirrup_dia",
+            "bar_dia",
+            "bar_count"
+          ]
+        },
+        {
+          "name": "check_min_spacing",
+          "description": "Check if bar spacing meets IS 456 Cl 26.3.2 requirements.",
+          "params": [
+            "spacing",
+            "bar_dia",
+            "agg_size"
+          ]
+        },
+        {
+          "name": "check_side_face_reinforcement",
+          "description": "Check if side-face reinforcement is required per IS 456 Cl 26.5.1.3.",
+          "params": [
+            "D",
+            "b",
+            "cover"
+          ]
+        },
+        {
+          "name": "select_bar_arrangement",
+          "description": "Select a practical bar arrangement to provide required steel area.",
+          "params": [
+            "ast_required",
+            "b",
+            "cover",
+            "stirrup_dia",
+            "preferred_dia",
+            "max_layers"
+          ]
+        },
+        {
+          "name": "get_stirrup_legs",
+          "description": "Determine number of stirrup legs based on beam width.",
+          "params": [
+            "b"
+          ]
+        },
+        {
+          "name": "format_bar_callout",
+          "description": "Format bar callout in standard notation.",
+          "params": [
+            "count",
+            "diameter"
+          ]
+        },
+        {
+          "name": "format_stirrup_callout",
+          "description": "Format stirrup callout.",
+          "params": [
+            "legs",
+            "diameter",
+            "spacing"
+          ]
+        },
+        {
+          "name": "create_beam_detailing",
+          "description": "Create complete beam detailing from design output.",
+          "params": [
+            "beam_id",
+            "story",
+            "b",
+            "D",
+            "span",
+            "cover",
+            "fck",
+            "fy"
+          ]
+        }
+      ],
+      "constants": [
+        "BOND_STRESS_DEFORMED",
+        "STANDARD_BAR_DIAMETERS",
+        "STANDARD_STIRRUP_DIAMETERS"
+      ]
+    },
+    {
+      "name": "ductile.py",
+      "type": "python",
+      "size_lines": 182,
+      "last_updated": "2026-01-23",
+      "description": "Module:       ductile",
+      "classes": [
+        {
+          "name": "DuctileBeamResult"
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_geometry",
+          "description": "Clause 6.1: Geometry requirements",
+          "params": [
+            "b",
+            "D"
+          ]
+        },
+        {
+          "name": "get_min_tension_steel_percentage",
+          "description": "Clause 6.2.1 (b): Min tension steel ratio",
+          "params": [
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "get_max_tension_steel_percentage",
+          "description": "Clause 6.2.2: Max tension steel ratio = 2.5%"
+        },
+        {
+          "name": "calculate_confinement_spacing",
+          "description": "Clause 6.3.5: Hoop spacing in confinement zone (2d from face)",
+          "params": [
+            "d",
+            "min_long_bar_dia"
+          ]
+        },
+        {
+          "name": "check_beam_ductility",
+          "description": "Perform comprehensive ductility checks for a beam section.",
+          "params": [
+            "b",
+            "D",
+            "d",
+            "fck",
+            "fy",
+            "min_long_bar_dia"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flexure.py",
+      "type": "python",
+      "size_lines": 924,
+      "last_updated": "2026-01-23",
+      "description": "Module:       flexure",
+      "functions": [
+        {
+          "name": "calculate_mu_lim",
+          "description": "Calculate limiting moment of resistance for a rectangular section.",
+          "params": [
+            "b",
+            "d",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "calculate_effective_flange_width",
+          "description": "Calculate effective flange width (IS 456 Cl 23.1.2)."
+        },
+        {
+          "name": "calculate_ast_required",
+          "description": "Calculate required tension steel for a singly reinforced section.",
+          "params": [
+            "b",
+            "d",
+            "mu_knm",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "design_singly_reinforced",
+          "description": "Design a singly reinforced rectangular beam section.",
+          "params": [
+            "b",
+            "d",
+            "d_total",
+            "mu_knm",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "design_doubly_reinforced",
+          "description": "Design a beam that can be singly or doubly reinforced.",
+          "params": [
+            "b",
+            "d",
+            "d_dash",
+            "d_total",
+            "mu_knm",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "calculate_mu_lim_flanged",
+          "description": "Calculate limiting moment of resistance for a flanged (T/L) section.",
+          "params": [
+            "bw",
+            "bf",
+            "d",
+            "Df",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "design_flanged_beam",
+          "description": "Design a Flanged Beam (T-Beam).",
+          "params": [
+            "bw",
+            "bf",
+            "d",
+            "Df",
+            "d_total",
+            "mu_knm",
+            "fck",
+            "fy"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "load_analysis.py",
+      "type": "python",
+      "size_lines": 453,
+      "last_updated": "2026-01-23",
+      "description": "Module:       load_analysis",
+      "functions": [
+        {
+          "name": "compute_udl_bmd_sfd",
+          "description": "Compute BMD and SFD for UDL on simply supported beam.",
+          "params": [
+            "span_mm",
+            "w_kn_per_m",
+            "num_points"
+          ]
+        },
+        {
+          "name": "compute_point_load_bmd_sfd",
+          "description": "Compute BMD and SFD for point load on simply supported beam.",
+          "params": [
+            "span_mm",
+            "p_kn",
+            "a_mm",
+            "num_points"
+          ]
+        },
+        {
+          "name": "compute_cantilever_udl_bmd_sfd",
+          "description": "Compute BMD and SFD for UDL on cantilever beam (fixed at x=0).",
+          "params": [
+            "span_mm",
+            "w_kn_per_m",
+            "num_points"
+          ]
+        },
+        {
+          "name": "compute_cantilever_point_load_bmd_sfd",
+          "description": "Compute BMD and SFD for point load on cantilever beam.",
+          "params": [
+            "span_mm",
+            "p_kn",
+            "a_mm",
+            "num_points"
+          ]
+        },
+        {
+          "name": "compute_bmd_sfd",
+          "description": "Compute BMD and SFD for a beam with specified loads.",
+          "params": [
+            "span_mm",
+            "support_condition",
+            "loads",
+            "num_points"
+          ]
+        }
+      ],
+      "constants": [
+        "DEFAULT_NUM_POINTS"
+      ]
+    },
+    {
+      "name": "serviceability.py",
+      "type": "python",
+      "size_lines": 1357,
+      "last_updated": "2026-01-23",
+      "description": "Module: serviceability",
+      "functions": [
+        {
+          "name": "check_deflection_span_depth",
+          "description": "Level A deflection check using span/depth ratio."
+        },
+        {
+          "name": "check_crack_width",
+          "description": "Level A crack width check."
+        },
+        {
+          "name": "calculate_cracking_moment",
+          "description": "Calculate cracking moment Mcr per IS 456 Annex C."
+        },
+        {
+          "name": "calculate_gross_moment_of_inertia",
+          "description": "Calculate gross moment of inertia Igross for rectangular section."
+        },
+        {
+          "name": "calculate_cracked_moment_of_inertia",
+          "description": "Calculate cracked moment of inertia Icr for rectangular section."
+        },
+        {
+          "name": "calculate_effective_moment_of_inertia",
+          "description": "Calculate effective moment of inertia Ieff per IS 456 Annex C."
+        },
+        {
+          "name": "get_long_term_deflection_factor",
+          "description": "Calculate long-term deflection multiplier per IS 456 Cl 23.2.1."
+        },
+        {
+          "name": "calculate_short_term_deflection",
+          "description": "Calculate short-term (immediate) deflection using elastic analysis."
+        },
+        {
+          "name": "check_deflection_level_b",
+          "description": "Level B deflection check with full curvature-based calculation."
+        },
+        {
+          "name": "get_creep_coefficient",
+          "description": "Calculate creep coefficient (θ) per IS 456 Annex C."
+        },
+        {
+          "name": "calculate_shrinkage_curvature",
+          "description": "Calculate shrinkage curvature per IS 456 Annex C."
+        },
+        {
+          "name": "calculate_creep_deflection",
+          "description": "Calculate creep deflection component."
+        },
+        {
+          "name": "calculate_shrinkage_deflection",
+          "description": "Calculate shrinkage deflection from shrinkage curvature."
+        },
+        {
+          "name": "check_deflection_level_c",
+          "description": "Level C deflection check with separate creep and shrinkage."
+        }
+      ]
+    },
+    {
+      "name": "shear.py",
+      "type": "python",
+      "size_lines": 369,
+      "last_updated": "2026-01-23",
+      "description": "Module:       shear",
+      "functions": [
+        {
+          "name": "round_to_practical_spacing",
+          "description": "Round calculated stirrup spacing to practical construction values.",
+          "params": [
+            "spacing_mm",
+            "round_down"
+          ]
+        },
+        {
+          "name": "select_stirrup_diameter",
+          "description": "Select appropriate stirrup diameter based on shear demand.",
+          "params": [
+            "vu_kn",
+            "b_mm",
+            "d_mm",
+            "fck",
+            "main_bar_dia",
+            "num_legs"
+          ]
+        },
+        {
+          "name": "calculate_tv",
+          "description": "Calculate nominal shear stress (tv).",
+          "params": [
+            "vu_kn",
+            "b",
+            "d"
+          ]
+        },
+        {
+          "name": "design_shear",
+          "description": "Main Shear Design Function",
+          "params": [
+            "vu_kn",
+            "b",
+            "d",
+            "fck",
+            "fy",
+            "asv",
+            "pt"
+          ]
+        }
+      ],
+      "constants": [
+        "STANDARD_STIRRUP_SPACINGS",
+        "STANDARD_STIRRUP_DIAMETERS"
+      ]
+    },
+    {
+      "name": "slenderness.py",
+      "type": "python",
+      "size_lines": 364,
+      "last_updated": "2026-01-23",
+      "description": "Slenderness Check Module — IS 456:2000 Beam Lateral Stability",
+      "classes": [
+        {
+          "name": "BeamType",
+          "description": "Classification of beam for slenderness limits."
+        },
+        {
+          "name": "SlendernessResult",
+          "description": "Result of beam slenderness (lateral stability) check."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_slenderness_limit",
+          "description": "Get the slenderness limit for a given beam type.",
+          "params": [
+            "beam_type"
+          ]
+        },
+        {
+          "name": "calculate_slenderness_ratio",
+          "description": "Calculate the slenderness ratio for a beam.",
+          "params": [
+            "l_eff_mm",
+            "b_mm"
+          ]
+        },
+        {
+          "name": "check_beam_slenderness",
+          "description": "Check beam slenderness for lateral stability per IS 456 Cl 23.3.",
+          "params": [
+            "b_mm",
+            "d_mm",
+            "l_eff_mm",
+            "beam_type",
+            "has_lateral_restraint"
+          ]
+        }
+      ],
+      "constants": [
+        "_DEPTH_WIDTH_LIMIT_WARNING"
+      ]
+    },
+    {
+      "name": "tables.py",
+      "type": "python",
+      "size_lines": 97,
+      "last_updated": "2026-01-23",
+      "description": "Module:       tables",
+      "functions": [
+        {
+          "name": "get_tc_value",
+          "description": "Get Design Shear Strength (Tc) from Table 19.",
+          "params": [
+            "fck",
+            "pt"
+          ]
+        },
+        {
+          "name": "get_tc_max_value",
+          "description": "Get Maximum Shear Stress (Tc_max) from Table 20.",
+          "params": [
+            "fck"
+          ]
+        }
+      ],
+      "constants": [
+        "_PT_ROWS",
+        "_TC_COLUMNS"
+      ]
+    },
+    {
+      "name": "torsion.py",
+      "type": "python",
+      "size_lines": 534,
+      "last_updated": "2026-01-23",
+      "description": "Module:       torsion",
+      "classes": [
+        {
+          "name": "TorsionResult",
+          "description": "Result of torsion design per IS 456 Clause 41."
+        }
+      ],
+      "functions": [
+        {
+          "name": "calculate_equivalent_shear",
+          "description": "Calculate equivalent shear force per IS 456 Cl 41.3.1.",
+          "params": [
+            "vu_kn",
+            "tu_knm",
+            "b"
+          ]
+        },
+        {
+          "name": "calculate_equivalent_moment",
+          "description": "Calculate equivalent bending moment per IS 456 Cl 41.4.2.",
+          "params": [
+            "mu_knm",
+            "tu_knm",
+            "d",
+            "b"
+          ]
+        },
+        {
+          "name": "calculate_torsion_shear_stress",
+          "description": "Calculate equivalent shear stress for torsion design.",
+          "params": [
+            "ve_kn",
+            "b",
+            "d"
+          ]
+        },
+        {
+          "name": "calculate_torsion_stirrup_area",
+          "description": "Calculate stirrup area for combined torsion and shear.",
+          "params": [
+            "tu_knm",
+            "vu_kn",
+            "b",
+            "d",
+            "b1",
+            "d1",
+            "fy",
+            "tc"
+          ]
+        },
+        {
+          "name": "calculate_longitudinal_torsion_steel",
+          "description": "Calculate longitudinal reinforcement for torsion.",
+          "params": [
+            "tu_knm",
+            "vu_kn",
+            "b1",
+            "d1",
+            "fy",
+            "sv"
+          ]
+        },
+        {
+          "name": "design_torsion",
+          "description": "Design beam for combined torsion, shear, and bending.",
+          "params": [
+            "tu_knm",
+            "vu_kn",
+            "mu_knm",
+            "b",
+            "D",
+            "d",
+            "fck",
+            "fy"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "traceability.py",
+      "type": "python",
+      "size_lines": 367,
+      "last_updated": "2026-01-23",
+      "description": "IS 456 Traceability Module",
+      "functions": [
+        {
+          "name": "clause",
+          "description": "Decorator to mark a function with IS 456 clause references."
+        },
+        {
+          "name": "get_clause_refs",
+          "description": "Get IS 456 clause references for a function.",
+          "params": [
+            "func"
+          ]
+        },
+        {
+          "name": "get_clause_info",
+          "description": "Get detailed information about a specific IS 456 clause.",
+          "params": [
+            "clause_ref"
+          ]
+        },
+        {
+          "name": "list_clauses_by_category",
+          "description": "List all clauses in a specific category.",
+          "params": [
+            "category"
+          ]
+        },
+        {
+          "name": "get_all_registered_functions",
+          "description": "Get all functions registered with clause decorators."
+        },
+        {
+          "name": "search_clauses",
+          "description": "Search clauses by keyword in title, text, or keywords.",
+          "params": [
+            "keyword"
+          ]
+        },
+        {
+          "name": "generate_traceability_report",
+          "description": "Generate a traceability report for all registered functions."
+        },
+        {
+          "name": "get_database_metadata",
+          "description": "Get metadata about the clause database."
+        },
+        {
+          "name": "cli_lookup",
+          "description": "CLI function to lookup clause information.",
+          "params": [
+            "clause_ref"
+          ]
+        }
+      ],
+      "constants": [
+        "F"
+      ]
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "public_api": [
+    "IS456Code",
+    "tables",
+    "shear",
+    "flexure",
+    "detailing",
+    "serviceability",
+    "compliance",
+    "ductile",
+    "slenderness",
+    "torsion",
+    "traceability",
+    "clause",
+    "get_clause_refs",
+    "get_clause_info",
+    "list_clauses_by_category",
+    "search_clauses"
+  ]
+}
