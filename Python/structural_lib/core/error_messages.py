@@ -248,7 +248,7 @@ def capacity_exceeded(
         parts.append(f"(IS 456:2000 {clause_ref})")
 
     if suggestions:
-        options = ", ".join(f"({i+1}) {s}" for i, s in enumerate(suggestions))
+        options = ", ".join(f"({i + 1}) {s}" for i, s in enumerate(suggestions))
         parts.append(f"Options: {options}.")
 
     return " ".join(parts)

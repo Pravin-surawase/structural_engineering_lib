@@ -9,7 +9,10 @@ beam design meeting IS 456:2000 requirements.
 from __future__ import annotations
 
 from structural_lib.services.costing import CostProfile
-from structural_lib.services.optimization import CostOptimizationResult, optimize_beam_cost
+from structural_lib.services.optimization import (
+    CostOptimizationResult,
+    optimize_beam_cost,
+)
 
 __all__ = ["optimize_beam_design", "CostProfile", "CostOptimizationResult"]
 

@@ -8,7 +8,6 @@ Author: Agent 6 (Streamlit UI Specialist)
 Date: 2026-01-09
 """
 
-
 from streamlit_app.utils.responsive import (
     get_device_type,
     get_responsive_columns,

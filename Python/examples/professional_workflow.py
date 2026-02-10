@@ -211,7 +211,7 @@ def main() -> None:
     cases = tester.generate_beam_cases(n=3)
     for i, case in enumerate(cases):
         print(
-            f"      Case {i+1}: b={case.inputs['b_mm']:.0f}, D={case.inputs['D_mm']:.0f}, fck={case.inputs['fck_nmm2']}"
+            f"      Case {i + 1}: b={case.inputs['b_mm']:.0f}, D={case.inputs['D_mm']:.0f}, fck={case.inputs['fck_nmm2']}"
         )
 
     # =========================================================================

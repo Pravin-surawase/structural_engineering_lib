@@ -60,7 +60,7 @@ class TestGeometryCheck:
         D = b / 0.2  # This ensures b/D = 0.2 < 0.3
 
         is_valid, msg, errors = ductile.check_geometry(b, D)
-        assert not is_valid, f"b/D < 0.3 should fail: b={b}, D={D}, ratio={b/D:.2f}"
+        assert not is_valid, f"b/D < 0.3 should fail: b={b}, D={D}, ratio={b / D:.2f}"
         assert "0.3" in msg or "ratio" in msg.lower(), "Message should mention ratio"
 
 
@@ -142,7 +142,7 @@ class TestConfinementSpacing:
     def test_spacing_never_exceeds_d_over_4(self, d: float, dia: int) -> None:
         """Confinement spacing should never exceed d/4 (IS 13920 Cl 6.3.5)."""
         spacing = ductile.calculate_confinement_spacing(d, float(dia))
-        assert spacing <= d / 4 + 0.01, f"Spacing {spacing} should be <= d/4 = {d/4}"
+        assert spacing <= d / 4 + 0.01, f"Spacing {spacing} should be <= d/4 = {d / 4}"
 
     @given(d=effective_depth(), dia=bar_diameter())
     def test_spacing_never_exceeds_8_times_dia(self, d: float, dia: int) -> None:
@@ -150,7 +150,7 @@ class TestConfinementSpacing:
         spacing = ductile.calculate_confinement_spacing(d, float(dia))
         assert (
             spacing <= 8 * dia + 0.01
-        ), f"Spacing {spacing} should be <= 8*{dia} = {8*dia}"
+        ), f"Spacing {spacing} should be <= 8*{dia} = {8 * dia}"
 
     @given(d=effective_depth(), dia=bar_diameter())
     def test_spacing_is_minimum_of_three_criteria(self, d: float, dia: int) -> None:
@@ -159,7 +159,7 @@ class TestConfinementSpacing:
         expected = min(d / 4, 8 * float(dia), 100.0)
         assert (
             abs(spacing - expected) < 0.01
-        ), f"Spacing {spacing} != min({d/4}, {8*dia}, 100) = {expected}"
+        ), f"Spacing {spacing} != min({d / 4}, {8 * dia}, 100) = {expected}"
 
 
 class TestBeamDuctility:
@@ -179,7 +179,7 @@ class TestBeamDuctility:
 
         assert result.is_geometry_valid, (
             f"Valid ductile beam should pass: b={inputs['b']}, D={inputs['D']}, "
-            f"ratio={inputs['b']/inputs['D']:.2f}, errors={result.errors}"
+            f"ratio={inputs['b'] / inputs['D']:.2f}, errors={result.errors}"
         )
 
     @given(inputs=ductile_inputs())

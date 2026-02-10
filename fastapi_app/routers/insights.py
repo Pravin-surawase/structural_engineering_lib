@@ -188,7 +188,9 @@ async def generate_dashboard(request: DashboardRequest) -> DashboardResponse:
     - Per-story breakdown
     """
     try:
-        from structural_lib.services.dashboard import generate_dashboard as lib_dashboard
+        from structural_lib.services.dashboard import (
+            generate_dashboard as lib_dashboard,
+        )
 
         # Convert Pydantic models to dicts for library
         results_dicts = [r.model_dump() for r in request.results]
@@ -318,7 +320,9 @@ async def suggest_rebar_options(request: RebarSuggestRequest) -> RebarSuggestRes
     Returns up to 5 suggestions sorted by savings.
     """
     try:
-        from structural_lib.services.dashboard import suggest_rebar_options as lib_suggest
+        from structural_lib.services.dashboard import (
+            suggest_rebar_options as lib_suggest,
+        )
 
         beam_dict = request.model_dump()
         result = lib_suggest(beam_dict)

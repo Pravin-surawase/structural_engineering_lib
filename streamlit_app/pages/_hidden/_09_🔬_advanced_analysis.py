@@ -135,7 +135,9 @@ def parametric_study_fck(base_params: Dict, fck_range: List[float]) -> pd.DataFr
 
 
 def parametric_study_dimensions(
-    base_params: Dict, dimension: str, dim_range: List[float]  # "b_mm" or "D_mm"
+    base_params: Dict,
+    dimension: str,
+    dim_range: List[float],  # "b_mm" or "D_mm"
 ) -> pd.DataFrame:
     """Run parametric study varying beam dimension."""
     results = []
@@ -576,8 +578,8 @@ elif analysis_type == "🎯 Sensitivity Analysis":
             # Insights
             most_sensitive = sens_df.iloc[-1]
             st.info(f"""
-            **Key Insight:** The design is most sensitive to changes in **{most_sensitive['parameter']}**.
-            A {variation}% increase causes a {most_sensitive['sensitivity_plus']:.1f}% change in steel area.
+            **Key Insight:** The design is most sensitive to changes in **{most_sensitive["parameter"]}**.
+            A {variation}% increase causes a {most_sensitive["sensitivity_plus"]:.1f}% change in steel area.
             """)
 
 
@@ -620,10 +622,12 @@ else:  # Loading Scenarios
 
     scenarios = []
     for i in range(num_scenarios):
-        with st.expander(f"Scenario {i+1}"):
+        with st.expander(f"Scenario {i + 1}"):
             col1, col2, col3 = st.columns(3)
             with col1:
-                name = st.text_input("Name", value=f"Load Case {i+1}", key=f"name_{i}")
+                name = st.text_input(
+                    "Name", value=f"Load Case {i + 1}", key=f"name_{i}"
+                )
             with col2:
                 sc_mu_knm = st.number_input(
                     "Mu (kN·m)", value=150.0 + i * 20, step=10.0, key=f"Mu_{i}"

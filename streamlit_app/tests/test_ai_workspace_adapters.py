@@ -11,7 +11,6 @@ import tempfile
 from pathlib import Path
 
 
-
 class TestAdapterIntegration:
     """Test adapter system integration in ai_workspace."""
 

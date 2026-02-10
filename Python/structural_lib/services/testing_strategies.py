@@ -86,7 +86,7 @@ class ToleranceSpec:
                 f"{message}\n"
                 f"  Expected: {expected:.6f}\n"
                 f"  Actual:   {actual:.6f}\n"
-                f"  Diff:     {diff:.6f} ({rel_diff*100:.3f}%)\n"
+                f"  Diff:     {diff:.6f} ({rel_diff * 100:.3f}%)\n"
                 f"  Tolerance: rel={self.relative}, abs={self.absolute}"
             )
 

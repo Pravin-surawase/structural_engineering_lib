@@ -141,8 +141,7 @@ def compare_designs(
     weight_sum = sum(weights.values())
     if abs(weight_sum - 1.0) > 0.01:
         raise ValueError(
-            f"Weights must sum to 1.0, got {weight_sum:.3f}. "
-            f"Adjust weights: {weights}"
+            f"Weights must sum to 1.0, got {weight_sum:.3f}. Adjust weights: {weights}"
         )
 
     # Calculate metrics for each alternative

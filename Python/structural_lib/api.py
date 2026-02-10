@@ -6,8 +6,8 @@ Prefer importing directly from structural_lib.services.api."""
 
 from __future__ import annotations
 
-from structural_lib.services.api import *  # noqa: F401, F403, E402
-from structural_lib.services.api import __all__  # noqa: F401, E402
-
 # Re-export non-__all__ names used by tests/callers
 from importlib.metadata import PackageNotFoundError, version  # noqa: F401, E402
+
+from structural_lib.services.api import *  # noqa: F401, F403, E402
+from structural_lib.services.api import __all__  # noqa: F401, E402

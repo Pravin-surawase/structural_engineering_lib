@@ -24,10 +24,16 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
-from . import api
 from structural_lib import detailing
-from structural_lib.core.data_types import BarDict, CrackWidthParams, DeflectionParams, StirrupDict
+from structural_lib.core.data_types import (
+    BarDict,
+    CrackWidthParams,
+    DeflectionParams,
+    StirrupDict,
+)
 from structural_lib.core.errors import DesignError
+
+from . import api
 
 # =============================================================================
 # Schema Version

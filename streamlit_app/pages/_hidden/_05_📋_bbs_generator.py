@@ -20,7 +20,7 @@ Status: 🚧 IN DEVELOPMENT
 import io
 import sys
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Dict
 
 import pandas as pd
 import streamlit as st
@@ -253,7 +253,7 @@ def bbs_to_dataframe(bbs_doc: BBSDocument) -> pd.DataFrame:
                 "Location": item.location.capitalize(),
                 "No. of Bars": item.no_of_bars,
                 "Cut Length (mm)": safe_int(item.cut_length_mm, default=0),
-                "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
+                "Total Length (m)": f"{item.total_length_mm / 1000:.2f}",
                 "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
                 "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
                 "Remarks": item.remarks,
@@ -349,7 +349,7 @@ if mode == "auto":
             col1, col2, col3, col4 = st.columns(4)
 
             with col1:
-                st.metric("Span", f"{inputs.get('span_mm', 0)/1000:.1f} m")
+                st.metric("Span", f"{inputs.get('span_mm', 0) / 1000:.1f} m")
             with col2:
                 st.metric("Width", f"{inputs.get('b_mm', 0)} mm")
             with col3:

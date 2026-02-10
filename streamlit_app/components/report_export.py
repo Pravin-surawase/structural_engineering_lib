@@ -342,7 +342,7 @@ def show_dxf_export(
 
     if not dxf_available:
         st.warning(
-            "⚠️ DXF export requires ezdxf library. " "Install with: `pip install ezdxf`"
+            "⚠️ DXF export requires ezdxf library. Install with: `pip install ezdxf`"
         )
         st.info("💡 For full DXF functionality, visit the **📐 DXF Export** page.")
         return

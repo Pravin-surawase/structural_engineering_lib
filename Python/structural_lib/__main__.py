@@ -28,7 +28,6 @@ import sys
 from pathlib import Path
 from typing import cast
 
-from .services import api
 from . import (
     beam_pipeline,
     detailing,
@@ -38,6 +37,7 @@ from . import (
     report,
 )
 from .core.data_types import CrackWidthParams, DeflectionParams
+from .services import api
 
 
 def _fmt_cell(v: object) -> str:
@@ -1061,8 +1061,7 @@ def cmd_critical(args: argparse.Namespace) -> int:
             return 0
 
         print(
-            f"Found {len(critical_cases)} case(s) "
-            f"(top={top_n if top_n else 'all'})",
+            f"Found {len(critical_cases)} case(s) (top={top_n if top_n else 'all'})",
             file=sys.stderr,
         )
 

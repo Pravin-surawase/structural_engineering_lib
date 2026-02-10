@@ -100,8 +100,7 @@ def calculate_constructability_score(
                 score=0,
                 penalty=-penalty,
                 message=(
-                    f"Stirrup spacing {min_stirrup_spacing:.0f}mm < 100mm "
-                    "(very tight)"
+                    f"Stirrup spacing {min_stirrup_spacing:.0f}mm < 100mm (very tight)"
                 ),
                 recommendation="Increase stirrup diameter or review shear demand. Impact: Poor vibration access.",
             )
@@ -115,7 +114,7 @@ def calculate_constructability_score(
                 score=0,
                 penalty=-penalty,
                 message=(
-                    f"Stirrup spacing {min_stirrup_spacing:.0f}mm < 125mm " "(tight)"
+                    f"Stirrup spacing {min_stirrup_spacing:.0f}mm < 125mm (tight)"
                 ),
                 recommendation="Spacing >= 125mm improves concrete vibration. Impact: Moderate labor increase.",
             )

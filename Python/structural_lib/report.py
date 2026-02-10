@@ -1473,7 +1473,7 @@ def render_design_report_single(
     <h2>Beam Index</h2>
     {index_table}
 </div>
-{''.join(sections)}"""
+{"".join(sections)}"""
 
     return _wrap_html("Beam Design Report (Batch)", body)
 

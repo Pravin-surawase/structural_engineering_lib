@@ -111,8 +111,7 @@ def quick_precheck(
                 warning_type="steel_congestion",
                 severity=Severity.INFO,
                 message=(
-                    f"Estimated steel % {pt_estimate:.2f} > 2% "
-                    "(spacing may be tight)"
+                    f"Estimated steel % {pt_estimate:.2f} > 2% (spacing may be tight)"
                 ),
                 suggestion="Review bar spacing and constructability.",
                 rule_basis="Practical congestion threshold (~2%)",

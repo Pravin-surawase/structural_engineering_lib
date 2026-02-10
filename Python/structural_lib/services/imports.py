@@ -12,6 +12,14 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
+from structural_lib.core.data_types import ValidationReport
+from structural_lib.core.models import (
+    BeamBatchInput,
+    BeamForces,
+    BeamGeometry,
+    DesignDefaults,
+)
+
 from .adapters import (
     ETABSAdapter,
     GenericCSVAdapter,
@@ -19,8 +27,6 @@ from .adapters import (
     SAFEAdapter,
     STAADAdapter,
 )
-from structural_lib.core.data_types import ValidationReport
-from structural_lib.core.models import BeamBatchInput, BeamForces, BeamGeometry, DesignDefaults
 
 
 @dataclass(frozen=True)

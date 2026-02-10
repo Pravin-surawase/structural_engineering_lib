@@ -94,7 +94,9 @@ def test_feasibility_check_rejects_impossible_designs():
     # If valid designs exist, verify they meet constraints
     try:
         result = optimize_beam_cost(
-            span_mm=8000, mu_knm=500, vu_kn=200  # Very high moment
+            span_mm=8000,
+            mu_knm=500,
+            vu_kn=200,  # Very high moment
         )
         # If it succeeds, verify the design is actually valid
         assert result.optimal_candidate.is_valid
@@ -111,7 +113,9 @@ def test_m30_designs_included_in_results():
     (due to requiring less steel or smaller section).
     """
     result = optimize_beam_cost(
-        span_mm=6000, mu_knm=250, vu_kn=120  # Moderate-to-high moment
+        span_mm=6000,
+        mu_knm=250,
+        vu_kn=120,  # Moderate-to-high moment
     )
 
     # Should evaluate candidates with both M25 and M30
@@ -151,7 +155,9 @@ def test_baseline_increases_depth_when_needed():
     Baseline should use span/10 instead.
     """
     result = optimize_beam_cost(
-        span_mm=6000, mu_knm=300, vu_kn=150  # High moment requiring deep section
+        span_mm=6000,
+        mu_knm=300,
+        vu_kn=150,  # High moment requiring deep section
     )
 
     # Baseline should be valid (not fallback to optimal cost)

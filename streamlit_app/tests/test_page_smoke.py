@@ -126,9 +126,9 @@ def test_pages_import_streamlit():
             source = f.read()
 
         # All pages should import streamlit
-        assert (
-            "import streamlit" in source or "from streamlit" in source
-        ), f"{page_file.name} should import streamlit"
+        assert "import streamlit" in source or "from streamlit" in source, (
+            f"{page_file.name} should import streamlit"
+        )
 
 
 def test_pages_have_docstrings():
@@ -182,9 +182,9 @@ def test_pages_dont_have_circular_imports():
         # Pages should not be imported by other modules
         # (they're entry points, not libraries)
         # This is enforced by Streamlit architecture
-        assert (
-            "import pages" not in source
-        ), f"{page_file.name} should not import from pages/"
+        assert "import pages" not in source, (
+            f"{page_file.name} should not import from pages/"
+        )
 
 
 # ============================================================================
@@ -238,9 +238,9 @@ def test_pages_use_design_system_imports():
         )
 
         if uses_tokens:
-            assert (
-                "design_system" in source or "from utils" in source
-            ), f"{page_file.name} uses design tokens but doesn't import design_system"
+            assert "design_system" in source or "from utils" in source, (
+                f"{page_file.name} uses design tokens but doesn't import design_system"
+            )
 
 
 def test_pages_dont_define_custom_styles_inline():
@@ -486,7 +486,6 @@ class TestAllComponentImports:
     def test_inputs_imports(self):
         """Input components import without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"inputs import failed: {e}")
@@ -494,7 +493,6 @@ class TestAllComponentImports:
     def test_results_imports(self):
         """Result components import without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"results import failed: {e}")
@@ -502,7 +500,6 @@ class TestAllComponentImports:
     def test_visualizations_imports(self):
         """Visualization components import without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"visualizations import failed: {e}")
@@ -510,7 +507,6 @@ class TestAllComponentImports:
     def test_layout_imports(self):
         """Layout utilities import without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"layout import failed: {e}")
@@ -518,7 +514,6 @@ class TestAllComponentImports:
     def test_styled_components_imports(self):
         """Styled components import without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"styled_components import failed: {e}")
@@ -530,7 +525,6 @@ class TestUtilityImports:
     def test_design_system_imports(self):
         """Design system imports without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"design_system import failed: {e}")
@@ -538,7 +532,6 @@ class TestUtilityImports:
     def test_theme_manager_imports(self):
         """Theme manager imports without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"theme_manager import failed: {e}")
@@ -546,7 +539,6 @@ class TestUtilityImports:
     def test_global_styles_imports(self):
         """Global styles imports without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"global_styles import failed: {e}")
@@ -554,7 +546,6 @@ class TestUtilityImports:
     def test_plotly_theme_imports(self):
         """Plotly theme imports without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"plotly_theme import failed: {e}")
@@ -562,7 +553,6 @@ class TestUtilityImports:
     def test_api_wrapper_imports(self):
         """API wrapper imports without errors."""
         try:
-
             assert True
         except AttributeError as e:
             pytest.fail(f"api_wrapper import failed: {e}")
@@ -574,7 +564,6 @@ class TestCriticalPathImports:
     def test_main_app_imports(self):
         """Main app.py imports without errors (with streamlit mocked)."""
         try:
-
             assert True
         except AttributeError as e:
             # If it's a streamlit session_state OR set_page_config issue, skip (expected in tests)
@@ -652,7 +641,6 @@ class TestRegressionPreventionImports:
         Incident: 2026-01-08, layout.py used ELEVATION.shadow_sm before it existed
         """
         try:
-
             # Should import successfully now
             assert True
         except AttributeError as e:
@@ -665,7 +653,6 @@ class TestRegressionPreventionImports:
         Incident: 2026-01-08, visualizations.py used ANIMATION.duration_normal
         """
         try:
-
             # Should import successfully now
             assert True
         except AttributeError as e:

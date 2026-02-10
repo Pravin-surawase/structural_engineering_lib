@@ -365,10 +365,9 @@ class TestDesignTokenConsistency:
             if not has_import:
                 errors.append(f"  {py_file.name} uses tokens but doesn't import")
 
-        assert (
-            not errors
-        ), f"❌ Found {len(errors)} file(s) using tokens without import:\n" + "\n".join(
-            errors
+        assert not errors, (
+            f"❌ Found {len(errors)} file(s) using tokens without import:\n"
+            + "\n".join(errors)
         )
 
 
@@ -387,9 +386,9 @@ class TestRegressionPrevention:
         Root cause: Used semantic alias before it was defined
         """
         # This should now pass because we added shadow_sm
-        assert hasattr(
-            ELEVATION, "shadow_sm"
-        ), "REGRESSION: ELEVATION.shadow_sm removed"
+        assert hasattr(ELEVATION, "shadow_sm"), (
+            "REGRESSION: ELEVATION.shadow_sm removed"
+        )
 
     def test_2026_01_08_body_md_regression(self):
         """

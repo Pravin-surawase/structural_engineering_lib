@@ -71,17 +71,17 @@ class TestComplianceKeyMatching:
         source = get_compliance_page_source()
         assert source is not None
 
-        assert (
-            "def run_compliance_checks" in source
-        ), "run_compliance_checks function must be defined"
+        assert "def run_compliance_checks" in source, (
+            "run_compliance_checks function must be defined"
+        )
 
         # Check that function handles the config keys
-        assert (
-            "flexure_steel_area" in source
-        ), "run_compliance_checks should handle flexure_steel_area"
-        assert (
-            "shear_stress" in source
-        ), "run_compliance_checks should handle shear_stress"
+        assert "flexure_steel_area" in source, (
+            "run_compliance_checks should handle flexure_steel_area"
+        )
+        assert "shear_stress" in source, (
+            "run_compliance_checks should handle shear_stress"
+        )
 
     def test_flexure_steel_area_key_used(self):
         """Flexure check uses 'flexure_steel_area' key, not 'flexure_capacity'."""
@@ -89,36 +89,36 @@ class TestComplianceKeyMatching:
         assert source is not None
 
         # The config should use the correct key
-        assert (
-            "flexure_steel_area" in source
-        ), "Should use 'flexure_steel_area' key (was 'flexure_capacity')"
+        assert "flexure_steel_area" in source, (
+            "Should use 'flexure_steel_area' key (was 'flexure_capacity')"
+        )
         # Old key should NOT appear in config section
         config_section = (
             source.split("COMPLIANCE_CHECKS")[1].split("}")[0]
             if "COMPLIANCE_CHECKS" in source
             else ""
         )
-        assert (
-            "flexure_capacity" not in config_section
-        ), "Should NOT use old 'flexure_capacity' key"
+        assert "flexure_capacity" not in config_section, (
+            "Should NOT use old 'flexure_capacity' key"
+        )
 
     def test_shear_stress_key_used(self):
         """Shear check uses 'shear_stress' key, not 'shear_capacity'."""
         source = get_compliance_page_source()
         assert source is not None
 
-        assert (
-            "shear_stress" in source
-        ), "Should use 'shear_stress' key (was 'shear_capacity')"
+        assert "shear_stress" in source, (
+            "Should use 'shear_stress' key (was 'shear_capacity')"
+        )
 
     def test_shear_spacing_key_exists(self):
         """Shear spacing check key exists."""
         source = get_compliance_page_source()
         assert source is not None
 
-        assert (
-            "shear_spacing" in source
-        ), "Should have 'shear_spacing' key for stirrup spacing check"
+        assert "shear_spacing" in source, (
+            "Should have 'shear_spacing' key for stirrup spacing check"
+        )
 
 
 # ============================================================================
@@ -138,17 +138,17 @@ class TestPracticalStirrupSpacing:
         """round_to_practical_spacing function exists in shear module."""
         from structural_lib.codes.is456 import shear
 
-        assert hasattr(
-            shear, "round_to_practical_spacing"
-        ), "round_to_practical_spacing function must exist"
+        assert hasattr(shear, "round_to_practical_spacing"), (
+            "round_to_practical_spacing function must exist"
+        )
 
     def test_standard_spacings_defined(self):
         """Standard stirrup spacings are defined."""
         from structural_lib.codes.is456 import shear
 
-        assert hasattr(
-            shear, "STANDARD_STIRRUP_SPACINGS"
-        ), "STANDARD_STIRRUP_SPACINGS must be defined"
+        assert hasattr(shear, "STANDARD_STIRRUP_SPACINGS"), (
+            "STANDARD_STIRRUP_SPACINGS must be defined"
+        )
 
         spacings = shear.STANDARD_STIRRUP_SPACINGS
         assert len(spacings) >= 8, "Should have at least 8 standard spacings"
@@ -170,9 +170,9 @@ class TestPracticalStirrupSpacing:
 
         for spacing in [75, 100, 125, 150, 175, 200, 225, 250, 275, 300]:
             result = round_to_practical_spacing(spacing)
-            assert (
-                result == spacing
-            ), f"Exact standard spacing {spacing} should be preserved, got {result}"
+            assert result == spacing, (
+                f"Exact standard spacing {spacing} should be preserved, got {result}"
+            )
 
     def test_values_below_minimum_return_minimum(self):
         """Values below minimum return minimum standard spacing."""
@@ -222,9 +222,9 @@ class TestPracticalStirrupSpacing:
         # Check that spacing is a practical value
         spacing = result.spacing if hasattr(result, "spacing") else 0
         if spacing > 0:
-            assert (
-                spacing in STANDARD_STIRRUP_SPACINGS
-            ), f"design_shear returned non-practical spacing: {spacing}mm"
+            assert spacing in STANDARD_STIRRUP_SPACINGS, (
+                f"design_shear returned non-practical spacing: {spacing}mm"
+            )
 
 
 # ============================================================================
@@ -264,9 +264,9 @@ class TestReportGeneratorSessionState:
         assert source is not None
 
         # Should import from pdf_generator
-        assert (
-            "pdf_generator" in source
-        ), "Report generator should use pdf_generator module"
+        assert "pdf_generator" in source, (
+            "Report generator should use pdf_generator module"
+        )
 
     def test_report_generator_has_error_handling(self):
         """Report generator has error handling for missing dependencies."""
@@ -311,9 +311,9 @@ class TestDropdownVisibility:
         # Should have z-index fix for popovers
         assert "z-index" in source.lower(), "global_styles should include z-index fixes"
 
-        assert (
-            "popover" in source.lower() or "data-baseweb" in source
-        ), "global_styles should target popover elements"
+        assert "popover" in source.lower() or "data-baseweb" in source, (
+            "global_styles should target popover elements"
+        )
 
     def test_global_styles_has_overflow_fix(self):
         """global_styles.py includes overflow:visible for columns."""
@@ -387,9 +387,9 @@ class TestFixedWorkflows:
                         STANDARD_STIRRUP_SPACINGS,
                     )
 
-                    assert (
-                        spacing in STANDARD_STIRRUP_SPACINGS
-                    ), f"Shear design returned non-practical spacing: {spacing}mm"
+                    assert spacing in STANDARD_STIRRUP_SPACINGS, (
+                        f"Shear design returned non-practical spacing: {spacing}mm"
+                    )
         except ImportError:
             pytest.skip("api_wrapper not available")
 

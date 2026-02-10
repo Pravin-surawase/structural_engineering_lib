@@ -334,17 +334,17 @@ if demo_mode == "🎯 Single Demo":
             else:
                 steel_pct = 0.0
             st.markdown(f"""
-            - **Moment Capacity**: {flexure.get('Mu_capacity', 0)/1e6:.1f} kN·m
-            - **xu/d Ratio**: {flexure.get('xu_by_d', 0):.3f} {'✅' if flexure.get('xu_by_d', 0) <= 0.46 else '❌'}
+            - **Moment Capacity**: {flexure.get("Mu_capacity", 0) / 1e6:.1f} kN·m
+            - **xu/d Ratio**: {flexure.get("xu_by_d", 0):.3f} {"✅" if flexure.get("xu_by_d", 0) <= 0.46 else "❌"}
             - **Steel Percentage**: {steel_pct:.2f}%
             """)
 
         with tab2:
             st.markdown(f"""
-            - **Shear Stress (τv)**: {shear.get('tau_v', 0):.2f} N/mm²
-            - **Concrete Capacity (τc)**: {shear.get('tau_c', 0):.2f} N/mm²
-            - **Stirrup Legs**: {shear.get('legs', 2)}
-            - **Stirrup Diameter**: {shear.get('diameter_mm', 8)} mm
+            - **Shear Stress (τv)**: {shear.get("tau_v", 0):.2f} N/mm²
+            - **Concrete Capacity (τc)**: {shear.get("tau_c", 0):.2f} N/mm²
+            - **Stirrup Legs**: {shear.get("legs", 2)}
+            - **Stirrup Diameter**: {shear.get("diameter_mm", 8)} mm
             """)
 
         with tab3:
@@ -503,7 +503,7 @@ else:  # Auto-Tour
                 # Update progress
                 progress = (idx + 1) / total_demos
                 progress_bar.progress(progress)
-                status_text.text(f"Demo {idx+1}/{total_demos}: {demo_name}")
+                status_text.text(f"Demo {idx + 1}/{total_demos}: {demo_name}")
 
                 # Show scenario info
                 st.subheader(f"{scenario['icon']} {demo_name}")

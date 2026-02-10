@@ -17,7 +17,6 @@ Related: TASK-351
 
 from __future__ import annotations
 
-import math
 from typing import TYPE_CHECKING, Any
 
 import pandas as pd
@@ -125,7 +124,7 @@ def design_single_beam(
             "ast_prov": None,
             "utilization": 0,
             "is_safe": False,
-            "status": f"⚠️ Error",
+            "status": "⚠️ Error",
             "flexure": {},
             "shear": {},
             "error": str(e),

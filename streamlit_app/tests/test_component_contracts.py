@@ -58,9 +58,9 @@ def test_dimension_input_has_docstring():
     from components.inputs import dimension_input
 
     assert dimension_input.__doc__ is not None, "dimension_input should have docstring"
-    assert (
-        len(dimension_input.__doc__) > 50
-    ), "dimension_input docstring should be descriptive"
+    assert len(dimension_input.__doc__) > 50, (
+        "dimension_input docstring should be descriptive"
+    )
 
 
 def test_material_selector_exists():
@@ -127,9 +127,9 @@ def test_input_components_have_key_param():
         params = list(sig.parameters.keys())
 
         # Streamlit widgets require 'key' for uniqueness
-        assert (
-            "key" in params or "kwargs" in params
-        ), f"{component.__name__} should accept 'key' parameter"
+        assert "key" in params or "kwargs" in params, (
+            f"{component.__name__} should accept 'key' parameter"
+        )
 
 
 # ============================================================================
@@ -184,9 +184,9 @@ def test_create_cost_comparison_signature():
     sig = inspect.signature(create_cost_comparison)
     params = list(sig.parameters.keys())
 
-    assert (
-        "alternatives" in params
-    ), "create_cost_comparison should accept 'alternatives' parameter"
+    assert "alternatives" in params, (
+        "create_cost_comparison should accept 'alternatives' parameter"
+    )
 
 
 def test_create_utilization_gauge_exists():
@@ -246,9 +246,9 @@ def test_display_flexure_result_signature():
     sig = inspect.signature(display_flexure_result)
     params = list(sig.parameters.keys())
 
-    assert (
-        "flexure_result" in params
-    ), "display_flexure_result should accept 'flexure_result' parameter"
+    assert "flexure_result" in params, (
+        "display_flexure_result should accept 'flexure_result' parameter"
+    )
 
 
 def test_display_shear_result_exists():
@@ -265,9 +265,9 @@ def test_display_shear_result_signature():
     sig = inspect.signature(display_shear_result)
     params = list(sig.parameters.keys())
 
-    assert (
-        "shear_result" in params
-    ), "display_shear_result should accept 'shear_result' parameter"
+    assert "shear_result" in params, (
+        "display_shear_result should accept 'shear_result' parameter"
+    )
 
 
 def test_display_summary_metrics_exists():
@@ -308,9 +308,9 @@ def test_results_components_accept_dict():
         params = sig.parameters
 
         # Should accept dict (result object)
-        assert (
-            len(params) >= 1
-        ), f"{component.__name__} should accept at least one parameter"
+        assert len(params) >= 1, (
+            f"{component.__name__} should accept at least one parameter"
+        )
 
 
 # ============================================================================
@@ -367,9 +367,9 @@ def test_styled_components_use_design_system():
         source = inspect.getsource(sc_module)
 
         # Should import from design_system
-        assert (
-            "design_system" in source or "COLORS" in source
-        ), "Styled components should use design system tokens"
+        assert "design_system" in source or "COLORS" in source, (
+            "Styled components should use design system tokens"
+        )
     except (ImportError, AttributeError):
         pytest.skip("styled_components module not yet fully implemented")
 

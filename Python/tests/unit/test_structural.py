@@ -19,7 +19,6 @@ def _has_error_with_message(errors, message_substring: str) -> bool:
 
 
 class TestStructuralLib(unittest.TestCase):
-
     def test_materials(self):
         # Check Xu_max/d
         self.assertAlmostEqual(materials.get_xu_max_d(250), 0.53)

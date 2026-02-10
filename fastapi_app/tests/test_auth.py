@@ -141,7 +141,7 @@ class TestRateLimiter:
         # First 5 requests should be allowed
         for i in range(5):
             allowed, headers = limiter.is_allowed(request)
-            assert allowed, f"Request {i+1} should be allowed"
+            assert allowed, f"Request {i + 1} should be allowed"
             assert headers["X-RateLimit-Limit"] == "5"
             assert int(headers["X-RateLimit-Remaining"]) == 5 - i - 1
 

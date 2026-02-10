@@ -59,8 +59,7 @@ class CodeRegistry:
             if code_id not in cls._codes:
                 available = ", ".join(cls._codes.keys()) or "none"
                 raise KeyError(
-                    f"Design code '{code_id}' not found. "
-                    f"Available codes: {available}"
+                    f"Design code '{code_id}' not found. Available codes: {available}"
                 )
             cls._instances[code_id] = cls._codes[code_id]()
         return cls._instances[code_id]

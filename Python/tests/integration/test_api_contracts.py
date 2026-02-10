@@ -206,7 +206,9 @@ class TestSectionPropertiesContract:
     def test_computed_effective_depth(self):
         """Verify effective_depth_mm is computed correctly."""
         section = SectionProperties(
-            width_mm=300, depth_mm=500, cover_mm=40  # d = 500 - 40 - 12.5 = 447.5
+            width_mm=300,
+            depth_mm=500,
+            cover_mm=40,  # d = 500 - 40 - 12.5 = 447.5
         )
         assert section.effective_depth_mm == pytest.approx(447.5)
 

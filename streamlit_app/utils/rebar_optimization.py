@@ -153,8 +153,12 @@ def _fallback_bar_selection(
 ) -> dict[str, Any]:
     """Fallback bar selection when library not available."""
     bar_options = [12, 16, 20, 25, 32]
-    best_config = {"bottom_layer1_dia": 16, "bottom_layer1_count": 4,
-                   "bottom_layer2_dia": 0, "bottom_layer2_count": 0}
+    best_config = {
+        "bottom_layer1_dia": 16,
+        "bottom_layer1_count": 4,
+        "bottom_layer2_dia": 0,
+        "bottom_layer2_count": 0,
+    }
 
     for dia in bar_options:
         area = math.pi * (dia / 2) ** 2
@@ -293,15 +297,14 @@ def optimize_beam_line(
     # Step 2: Unify bar sizes (use max diameter for consistency)
     max_bottom_dia = max(
         (c.get("bottom_layer1_dia", 16) for c in individual_configs.values()),
-        default=16
+        default=16,
     )
     max_stirrup_dia = max(
-        (c.get("stirrup_dia", 8) for c in individual_configs.values()),
-        default=8
+        (c.get("stirrup_dia", 8) for c in individual_configs.values()), default=8
     )
     min_stirrup_spacing = min(
         (c.get("stirrup_spacing", 150) for c in individual_configs.values()),
-        default=150
+        default=150,
     )
 
     # Step 3: Recalculate with unified bar size

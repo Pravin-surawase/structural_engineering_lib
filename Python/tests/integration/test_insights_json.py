@@ -6,7 +6,6 @@ dictionaries for CLI output and API integration.
 
 import json
 
-from structural_lib.services.api import design_beam_is456
 from structural_lib.detailing import (
     BarArrangement,
     BeamDetailingResult,
@@ -17,6 +16,7 @@ from structural_lib.insights import (
     quick_precheck,
     sensitivity_analysis,
 )
+from structural_lib.services.api import design_beam_is456
 
 
 def test_precheck_to_dict():

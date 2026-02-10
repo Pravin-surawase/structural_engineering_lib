@@ -7,10 +7,10 @@ Prefer importing directly from structural_lib.services.costing."""
 from __future__ import annotations
 
 from structural_lib.services.costing import (  # noqa: F401, E402
-    CostBreakdown,
-    CostProfile,
     DEFAULT_CONCRETE_GRADE,
     STEEL_DENSITY_KG_PER_M3,
+    CostBreakdown,
+    CostProfile,
     calculate_beam_cost,
     calculate_concrete_cost,
     calculate_concrete_volume,

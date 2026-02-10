@@ -903,7 +903,7 @@ The **Pareto front** shows all designs where improving one objective means sacri
                         st.markdown("---")
                         st.subheader("🔍 Design Deep Dive")
                         design_options = [
-                            d.get("bar_config", f"Design {i+1}")
+                            d.get("bar_config", f"Design {i + 1}")
                             for i, d in enumerate(pareto_front)
                         ]
                         selected_design_idx = st.selectbox(

@@ -413,25 +413,25 @@ IS 456:2000 COMPLIANCE CERTIFICATE
 ===================================
 
 Beam Design Parameters:
-- Width (b): {inputs.get('b_mm', 0):.0f} mm
-- Depth (D): {inputs.get('D_mm', 0):.0f} mm
-- Effective Depth (d): {inputs.get('d_mm', 0):.0f} mm
-- Span: {inputs.get('span_mm', 0):.0f} mm
-- Concrete Grade: M{inputs.get('fck_nmm2', 0):.0f}
-- Steel Grade: Fe{inputs.get('fy_nmm2', 0):.0f}
+- Width (b): {inputs.get("b_mm", 0):.0f} mm
+- Depth (D): {inputs.get("D_mm", 0):.0f} mm
+- Effective Depth (d): {inputs.get("d_mm", 0):.0f} mm
+- Span: {inputs.get("span_mm", 0):.0f} mm
+- Concrete Grade: M{inputs.get("fck_nmm2", 0):.0f}
+- Steel Grade: Fe{inputs.get("fy_nmm2", 0):.0f}
 
 Compliance Summary:
 - Total Checks: {total_checks}
 - Passed: {pass_count}
-- Warnings: {results.get('warning_count', 0)}
-- Failed: {results.get('fail_count', 0)}
+- Warnings: {results.get("warning_count", 0)}
+- Failed: {results.get("fail_count", 0)}
 
 Overall Status: {overall_status.upper()}
 
 This design {"complies with" if overall_status == "pass" else "does NOT fully comply with"}
 IS 456:2000 requirements for reinforced concrete beam design.
 
-Certificate generated on: {st.session_state.get('timestamp', 'N/A')}
+Certificate generated on: {st.session_state.get("timestamp", "N/A")}
 """
     return cert
 

@@ -1102,7 +1102,7 @@ def _format_summary_html(summary: BBSummary) -> str:
 <tr><th>Dia (mm)</th><th>Count</th><th>Length (m)</th><th>Weight (kg)</th></tr>
 </thead>
 <tbody>
-{''.join(rows)}
+{"".join(rows)}
 {total_row}
 </tbody>
 </table>"""

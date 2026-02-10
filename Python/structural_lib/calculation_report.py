@@ -446,18 +446,32 @@ class CalculationReport:
         <h3>1.1 Geometry</h3>
         <table class="data-table">
             <tr><th>Parameter</th><th>Value</th><th>Units</th></tr>
-            <tr><td>Beam Width (b)</td><td class="number">{inputs.geometry.get('b_mm', 'N/A')}</td><td>mm</td></tr>
-            <tr><td>Overall Depth (D)</td><td class="number">{inputs.geometry.get('D_mm', 'N/A')}</td><td>mm</td></tr>
-            <tr><td>Effective Depth (d)</td><td class="number">{inputs.geometry.get('d_mm', 'N/A')}</td><td>mm</td></tr>
-            <tr><td>Clear Span</td><td class="number">{inputs.geometry.get('span_mm', 'N/A')}</td><td>mm</td></tr>
-            <tr><td>Clear Cover</td><td class="number">{inputs.geometry.get('cover_mm', 'N/A')}</td><td>mm</td></tr>
+            <tr><td>Beam Width (b)</td><td class="number">{
+            inputs.geometry.get("b_mm", "N/A")
+        }</td><td>mm</td></tr>
+            <tr><td>Overall Depth (D)</td><td class="number">{
+            inputs.geometry.get("D_mm", "N/A")
+        }</td><td>mm</td></tr>
+            <tr><td>Effective Depth (d)</td><td class="number">{
+            inputs.geometry.get("d_mm", "N/A")
+        }</td><td>mm</td></tr>
+            <tr><td>Clear Span</td><td class="number">{
+            inputs.geometry.get("span_mm", "N/A")
+        }</td><td>mm</td></tr>
+            <tr><td>Clear Cover</td><td class="number">{
+            inputs.geometry.get("cover_mm", "N/A")
+        }</td><td>mm</td></tr>
         </table>
 
         <h3>1.2 Materials</h3>
         <table class="data-table">
             <tr><th>Parameter</th><th>Value</th><th>Units</th></tr>
-            <tr><td>Concrete Grade (f<sub>ck</sub>)</td><td class="number">{inputs.materials.get('fck_nmm2', 'N/A')}</td><td>N/mm²</td></tr>
-            <tr><td>Steel Grade (f<sub>y</sub>)</td><td class="number">{inputs.materials.get('fy_nmm2', 'N/A')}</td><td>N/mm²</td></tr>
+            <tr><td>Concrete Grade (f<sub>ck</sub>)</td><td class="number">{
+            inputs.materials.get("fck_nmm2", "N/A")
+        }</td><td>N/mm²</td></tr>
+            <tr><td>Steel Grade (f<sub>y</sub>)</td><td class="number">{
+            inputs.materials.get("fy_nmm2", "N/A")
+        }</td><td>N/mm²</td></tr>
         </table>
     </div>
 
@@ -466,31 +480,48 @@ class CalculationReport:
         <h3>2.1 Flexure Design</h3>
         <table class="data-table">
             <tr><th>Parameter</th><th>Value</th><th>Units</th></tr>
-            <tr><td>Beam Type</td><td>{results.flexure.get('beam_type', 'N/A')}</td><td>-</td></tr>
-            <tr><td>A<sub>st</sub> Required</td><td class="number">{_format_number(results.flexure.get('ast_required'))}</td><td>mm²</td></tr>
-            <tr><td>A<sub>st</sub> Provided</td><td class="number">{_format_number(results.flexure.get('ast_provided'))}</td><td>mm²</td></tr>
+            <tr><td>Beam Type</td><td>{
+            results.flexure.get("beam_type", "N/A")
+        }</td><td>-</td></tr>
+            <tr><td>A<sub>st</sub> Required</td><td class="number">{
+            _format_number(results.flexure.get("ast_required"))
+        }</td><td>mm²</td></tr>
+            <tr><td>A<sub>st</sub> Provided</td><td class="number">{
+            _format_number(results.flexure.get("ast_provided"))
+        }</td><td>mm²</td></tr>
         </table>
 
         <h3>2.2 Shear Design</h3>
         <table class="data-table">
             <tr><th>Parameter</th><th>Value</th><th>Units</th></tr>
-            <tr><td>V<sub>u</sub> (Factored Shear)</td><td class="number">{_format_number(results.shear.get('vu_kn'))}</td><td>kN</td></tr>
-            <tr><td>V<sub>c</sub> (Concrete Capacity)</td><td class="number">{_format_number(results.shear.get('vc_kn'))}</td><td>kN</td></tr>
-            <tr><td>V<sub>s</sub> (Stirrup Capacity)</td><td class="number">{_format_number(results.shear.get('vs_kn'))}</td><td>kN</td></tr>
-            <tr><td>Shear Check</td><td class="{status_class if results.shear.get('is_ok') else 'status-fail'}">{
-                'PASS' if results.shear.get('is_ok', True) else 'FAIL'}</td><td>-</td></tr>
+            <tr><td>V<sub>u</sub> (Factored Shear)</td><td class="number">{
+            _format_number(results.shear.get("vu_kn"))
+        }</td><td>kN</td></tr>
+            <tr><td>V<sub>c</sub> (Concrete Capacity)</td><td class="number">{
+            _format_number(results.shear.get("vc_kn"))
+        }</td><td>kN</td></tr>
+            <tr><td>V<sub>s</sub> (Stirrup Capacity)</td><td class="number">{
+            _format_number(results.shear.get("vs_kn"))
+        }</td><td>kN</td></tr>
+            <tr><td>Shear Check</td><td class="{
+            status_class if results.shear.get("is_ok") else "status-fail"
+        }">{"PASS" if results.shear.get("is_ok", True) else "FAIL"}</td><td>-</td></tr>
         </table>
     </div>
 
     <div class="summary-box">
         <h3>DESIGN STATUS: <span class="{status_class}">{status_text}</span></h3>
-        <p>{e(results.summary.get('summary', ''))}</p>
+        <p>{e(results.summary.get("summary", ""))}</p>
     </div>
 
     <div class="footer">
         <p><strong>Report ID:</strong> {e(self.report_id)}</p>
         <p><strong>Generated:</strong> {e(self.generated_at)}</p>
-        {f'<p><strong>Verification Hash:</strong> {e(self.verification_hash[:32])}...</p>' if self.verification_hash else ''}
+        {
+            f"<p><strong>Verification Hash:</strong> {e(self.verification_hash[:32])}...</p>"
+            if self.verification_hash
+            else ""
+        }
         <p><em>Generated by structural-lib-is456</em></p>
     </div>
 </body>
@@ -528,18 +559,18 @@ class CalculationReport:
 
 | Parameter | Value | Units |
 |-----------|-------|-------|
-| Beam Width (b) | {inputs.geometry.get('b_mm', 'N/A')} | mm |
-| Overall Depth (D) | {inputs.geometry.get('D_mm', 'N/A')} | mm |
-| Effective Depth (d) | {inputs.geometry.get('d_mm', 'N/A')} | mm |
-| Clear Span | {inputs.geometry.get('span_mm', 'N/A')} | mm |
-| Clear Cover | {inputs.geometry.get('cover_mm', 'N/A')} | mm |
+| Beam Width (b) | {inputs.geometry.get("b_mm", "N/A")} | mm |
+| Overall Depth (D) | {inputs.geometry.get("D_mm", "N/A")} | mm |
+| Effective Depth (d) | {inputs.geometry.get("d_mm", "N/A")} | mm |
+| Clear Span | {inputs.geometry.get("span_mm", "N/A")} | mm |
+| Clear Cover | {inputs.geometry.get("cover_mm", "N/A")} | mm |
 
 ### 1.2 Materials
 
 | Parameter | Value | Units |
 |-----------|-------|-------|
-| Concrete Grade (fck) | {inputs.materials.get('fck_nmm2', 'N/A')} | N/mm² |
-| Steel Grade (fy) | {inputs.materials.get('fy_nmm2', 'N/A')} | N/mm² |
+| Concrete Grade (fck) | {inputs.materials.get("fck_nmm2", "N/A")} | N/mm² |
+| Steel Grade (fy) | {inputs.materials.get("fy_nmm2", "N/A")} | N/mm² |
 
 ---
 
@@ -549,17 +580,17 @@ class CalculationReport:
 
 | Parameter | Value | Units |
 |-----------|-------|-------|
-| Beam Type | {results.flexure.get('beam_type', 'N/A')} | - |
-| Ast Required | {_format_number(results.flexure.get('ast_required'))} | mm² |
-| Ast Provided | {_format_number(results.flexure.get('ast_provided'))} | mm² |
+| Beam Type | {results.flexure.get("beam_type", "N/A")} | - |
+| Ast Required | {_format_number(results.flexure.get("ast_required"))} | mm² |
+| Ast Provided | {_format_number(results.flexure.get("ast_provided"))} | mm² |
 
 ### 2.2 Shear Design
 
 | Parameter | Value | Units |
 |-----------|-------|-------|
-| Vu (Factored Shear) | {_format_number(results.shear.get('vu_kn'))} | kN |
-| Vc (Concrete Capacity) | {_format_number(results.shear.get('vc_kn'))} | kN |
-| Vs (Stirrup Capacity) | {_format_number(results.shear.get('vs_kn'))} | kN |
+| Vu (Factored Shear) | {_format_number(results.shear.get("vu_kn"))} | kN |
+| Vc (Concrete Capacity) | {_format_number(results.shear.get("vc_kn"))} | kN |
+| Vs (Stirrup Capacity) | {_format_number(results.shear.get("vs_kn"))} | kN |
 
 ---
 
@@ -567,13 +598,13 @@ class CalculationReport:
 
 **Design Status:** {status}
 
-{results.summary.get('summary', '')}
+{results.summary.get("summary", "")}
 
 ---
 
 **Report ID:** {self.report_id}
 **Generated:** {self.generated_at}
-{f'**Verification Hash:** {self.verification_hash[:32]}...' if self.verification_hash else ''}
+{f"**Verification Hash:** {self.verification_hash[:32]}..." if self.verification_hash else ""}
 
 *Generated by structural-lib-is456*
 """

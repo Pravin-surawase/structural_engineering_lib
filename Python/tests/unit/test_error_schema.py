@@ -11,7 +11,6 @@ import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib.ductile import check_beam_ductility
 from structural_lib.core.errors import (
     E_DUCTILE_001,
     E_FLEXURE_001,
@@ -29,6 +28,7 @@ from structural_lib.core.errors import (
     Severity,
     make_error,
 )
+from structural_lib.ductile import check_beam_ductility
 from structural_lib.flexure import design_singly_reinforced
 from structural_lib.shear import design_shear
 

@@ -20,7 +20,11 @@ import math
 from dataclasses import dataclass, field
 
 from structural_lib.core.error_messages import material_property_out_of_range
-from structural_lib.core.errors import ComplianceError, ConfigurationError, MaterialError
+from structural_lib.core.errors import (
+    ComplianceError,
+    ConfigurationError,
+    MaterialError,
+)
 
 from .traceability import clause
 
@@ -683,7 +687,7 @@ def check_anchorage_at_simple_support(
         lo = (support_width / 2) - cover
         if lo < 0:
             warnings.append(
-                f"Cover ({cover}mm) exceeds half support width ({support_width/2}mm), "
+                f"Cover ({cover}mm) exceeds half support width ({support_width / 2}mm), "
                 "standard bend recommended"
             )
             lo = 0.0

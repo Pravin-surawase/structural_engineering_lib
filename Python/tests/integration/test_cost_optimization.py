@@ -1,7 +1,7 @@
 """Tests for cost optimization feature."""
 
-from structural_lib.services.costing import CostProfile, calculate_beam_cost
 from structural_lib.insights import optimize_beam_design
+from structural_lib.services.costing import CostProfile, calculate_beam_cost
 from structural_lib.services.optimization import optimize_beam_cost
 
 

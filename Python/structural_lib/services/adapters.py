@@ -1404,7 +1404,7 @@ class STAADAdapter(InputAdapter):
             missing = [r for r in required if r not in column_map]
             if missing:
                 raise ValueError(
-                    f"Missing required columns: {missing}. " f"Available: {headers}"
+                    f"Missing required columns: {missing}. Available: {headers}"
                 )
 
             for row in reader:

@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 
+from structural_lib.core.models import BeamForces, BeamGeometry, FrameType
 from structural_lib.services.etabs_import import (
     ETABSEnvelopeResult,
     FrameGeometry,
@@ -21,7 +22,6 @@ from structural_lib.services.etabs_import import (
     to_beam_forces,
     to_beam_geometry,
 )
-from structural_lib.core.models import BeamForces, BeamGeometry, FrameType
 
 # =============================================================================
 # Test Fixtures

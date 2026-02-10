@@ -370,7 +370,9 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
     config = st.session_state.mf_rebar_config
     if config is None or config.get("beam_id") != beam_id:
         ast_req = float(row.get("Ast_req", 500)) if row.get("Ast_req") != "-" else 500
-        layout = calculate_rebar_layout_for_beam(ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm)
+        layout = calculate_rebar_layout_for_beam(
+            ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm
+        )
         config = {
             "beam_id": beam_id,
             "bottom_layer1_dia": layout.get("bar_diameter", 16),
@@ -414,51 +416,81 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
         with bc1:
             # Use .get() with defaults to avoid KeyError
             bottom_dia = config.get("bottom_layer1_dia", 16)
-            l1_dia = st.selectbox("Dia", [10, 12, 16, 20, 25, 32],
-                index=[10, 12, 16, 20, 25, 32].index(bottom_dia) if bottom_dia in [10, 12, 16, 20, 25, 32] else 2,
-                key="mf_l1_dia", label_visibility="collapsed")
+            l1_dia = st.selectbox(
+                "Dia",
+                [10, 12, 16, 20, 25, 32],
+                index=[10, 12, 16, 20, 25, 32].index(bottom_dia)
+                if bottom_dia in [10, 12, 16, 20, 25, 32]
+                else 2,
+                key="mf_l1_dia",
+                label_visibility="collapsed",
+            )
         with bc2:
             bottom_count = config.get("bottom_layer1_count", 4)
-            l1_count = st.number_input("Cnt", 2, 8, bottom_count,
-                key="mf_l1_cnt", label_visibility="collapsed")
+            l1_count = st.number_input(
+                "Cnt", 2, 8, bottom_count, key="mf_l1_cnt", label_visibility="collapsed"
+            )
         st.caption(f"{l1_count}×Φ{l1_dia}")
 
         # Top bars
         st.caption("**Top Bars**")
         tc1, tc2 = st.columns(2)
         with tc1:
-            top_dia = st.selectbox("TDia", [10, 12, 16, 20],
+            top_dia = st.selectbox(
+                "TDia",
+                [10, 12, 16, 20],
                 index=[10, 12, 16, 20].index(config.get("top_dia", 12)),
-                key="mf_top_dia", label_visibility="collapsed")
+                key="mf_top_dia",
+                label_visibility="collapsed",
+            )
         with tc2:
-            top_count = st.number_input("TCnt", 2, 6, config.get("top_count", 2),
-                key="mf_top_cnt", label_visibility="collapsed")
+            top_count = st.number_input(
+                "TCnt",
+                2,
+                6,
+                config.get("top_count", 2),
+                key="mf_top_cnt",
+                label_visibility="collapsed",
+            )
 
         # Stirrups
         st.caption("**Stirrups**")
         sc1, sc2 = st.columns(2)
         with sc1:
-            stir_dia = st.selectbox("SDia", [6, 8, 10, 12],
+            stir_dia = st.selectbox(
+                "SDia",
+                [6, 8, 10, 12],
                 index=[6, 8, 10, 12].index(config.get("stirrup_dia", 8)),
-                key="mf_stir_dia", label_visibility="collapsed")
+                key="mf_stir_dia",
+                label_visibility="collapsed",
+            )
         with sc2:
-            stir_spacing = st.number_input("Sp", 75, 300, config.get("stirrup_spacing", 150),
-                step=25, key="mf_stir_sp", label_visibility="collapsed")
+            stir_spacing = st.number_input(
+                "Sp",
+                75,
+                300,
+                config.get("stirrup_spacing", 150),
+                step=25,
+                key="mf_stir_sp",
+                label_visibility="collapsed",
+            )
         st.caption(f"Φ{stir_dia}@{stir_spacing}mm")
 
         # Update config
-        config.update({
-            "bottom_layer1_dia": l1_dia,
-            "bottom_layer1_count": l1_count,
-            "top_dia": top_dia,
-            "top_count": top_count,
-            "stirrup_dia": stir_dia,
-            "stirrup_spacing": stir_spacing,
-        })
+        config.update(
+            {
+                "bottom_layer1_dia": l1_dia,
+                "bottom_layer1_count": l1_count,
+                "top_dia": top_dia,
+                "top_count": top_count,
+                "stirrup_dia": stir_dia,
+                "stirrup_spacing": stir_spacing,
+            }
+        )
         st.session_state.mf_rebar_config = config
 
         # Calculate checks (math imported at module level)
-        ast_provided = l1_count * math.pi * (l1_dia ** 2) / 4
+        ast_provided = l1_count * math.pi * (l1_dia**2) / 4
         ast_req = float(row.get("Ast_req", 500)) if row.get("Ast_req") != "-" else 500
         d_mm = D_mm - cover_mm - stir_dia - l1_dia / 2
         # Guard: fy should always be positive (typical: 415, 500 N/mm²)
@@ -471,9 +503,15 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
 
         st.divider()
         st.markdown("##### ✓ Checks")
-        st.markdown(f"{'🟢' if flex_ok else '🔴'} **Ast:** {ast_provided:.0f} {'≥' if flex_ok else '<'} {ast_req:.0f} mm²")
-        st.markdown(f"{'🟢' if min_ok else '🔴'} **Min:** {ast_provided:.0f} ≥ {ast_min:.0f} mm²")
-        st.markdown(f"{'🟢' if max_ok else '🔴'} **Max:** {ast_provided:.0f} ≤ {ast_max:.0f} mm²")
+        st.markdown(
+            f"{'🟢' if flex_ok else '🔴'} **Ast:** {ast_provided:.0f} {'≥' if flex_ok else '<'} {ast_req:.0f} mm²"
+        )
+        st.markdown(
+            f"{'🟢' if min_ok else '🔴'} **Min:** {ast_provided:.0f} ≥ {ast_min:.0f} mm²"
+        )
+        st.markdown(
+            f"{'🟢' if max_ok else '🔴'} **Max:** {ast_provided:.0f} ≤ {ast_max:.0f} mm²"
+        )
 
         all_ok = flex_ok and min_ok and max_ok
         if all_ok:
@@ -514,18 +552,31 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
             st.session_state.mf_rebar_config = None
             st.rerun()
     with nav3:
-        jump_to = st.selectbox("Jump", beam_ids, index=current_idx, key="mf_jump", label_visibility="collapsed")
+        jump_to = st.selectbox(
+            "Jump",
+            beam_ids,
+            index=current_idx,
+            key="mf_jump",
+            label_visibility="collapsed",
+        )
         if jump_to != beam_id:
             st.session_state.mf_editor_beam_idx = beam_ids.index(jump_to)
             st.session_state.mf_rebar_config = None
             st.rerun()
     with nav4:
-        if st.button("Next ▶", use_container_width=True, type="primary", disabled=current_idx >= len(beam_ids) - 1):
+        if st.button(
+            "Next ▶",
+            use_container_width=True,
+            type="primary",
+            disabled=current_idx >= len(beam_ids) - 1,
+        ):
             st.session_state.mf_editor_beam_idx = current_idx + 1
             st.session_state.mf_rebar_config = None
             st.rerun()
     with nav5:
-        if st.button("▶▶", use_container_width=True, disabled=current_idx >= len(beam_ids) - 1):
+        if st.button(
+            "▶▶", use_container_width=True, disabled=current_idx >= len(beam_ids) - 1
+        ):
             st.session_state.mf_editor_beam_idx = len(beam_ids) - 1
             st.session_state.mf_rebar_config = None
             st.rerun()
@@ -748,7 +799,9 @@ def create_building_3d_view(
                 g = int((1 - (util_clamped - 0.5) * 2) * 200)
                 b = 50
             color = f"rgba({r}, {g}, {b}, 0.85)"
-            edge_color = f"rgba({max(0,r-40)}, {max(0,g-40)}, {max(0,b-40)}, 1)"
+            edge_color = (
+                f"rgba({max(0, r - 40)}, {max(0, g - 40)}, {max(0, b - 40)}, 1)"
+            )
         else:
             # By Story mode or no results - use story color
             base_color = story_colors.get(beam.story, "#2196F3")
@@ -757,7 +810,9 @@ def create_building_3d_view(
             g = int(base_color[3:5], 16)
             b = int(base_color[5:7], 16)
             color = f"rgba({r}, {g}, {b}, 0.75)"
-            edge_color = f"rgba({max(0,r-40)}, {max(0,g-40)}, {max(0,b-40)}, 1)"
+            edge_color = (
+                f"rgba({max(0, r - 40)}, {max(0, g - 40)}, {max(0, b - 40)}, 1)"
+            )
 
         # Create hover text
         hover_text = (
@@ -1226,12 +1281,16 @@ with tab3:
         else:
             st.markdown(f"Ready to design **{len(beams)} beams**")
 
-            if st.button("🚀 Design All Beams", type="primary", use_container_width=True):
+            if st.button(
+                "🚀 Design All Beams", type="primary", use_container_width=True
+            ):
                 progress_bar = st.progress(0)
                 status_text = st.empty()
 
                 with loading_context("Designing beams..."):
-                    results_df = design_all_beams(beams, forces, progress_bar, status_text)
+                    results_df = design_all_beams(
+                        beams, forces, progress_bar, status_text
+                    )
 
                 st.session_state.mf_design_results = results_df
                 progress_bar.empty()
@@ -1255,8 +1314,12 @@ with tab3:
             col3.metric("Failed ❌", failed)
             col4.metric("No Forces ⚠️", no_forces)
             with col5:
-                if st.button("✏️ Edit", type="primary", use_container_width=True,
-                            help="Open unified editor to adjust reinforcement"):
+                if st.button(
+                    "✏️ Edit",
+                    type="primary",
+                    use_container_width=True,
+                    help="Open unified editor to adjust reinforcement",
+                ):
                     st.session_state.mf_editor_mode = True
                     st.session_state.mf_editor_beam_idx = 0
                     st.session_state.mf_rebar_config = None
@@ -1556,13 +1619,13 @@ with tab4:
                         | Clear Cover | {cover} mm |
 
                         **Reinforcement:**
-                        - Bottom: {rebar_layout['summary']}
-                        - Top: 2T{rebar_layout.get('bar_diameter', 16)} (hanger)
-                        - {rebar_layout['spacing_summary']}
+                        - Bottom: {rebar_layout["summary"]}
+                        - Top: 2T{rebar_layout.get("bar_diameter", 16)} (hanger)
+                        - {rebar_layout["spacing_summary"]}
 
                         **Design Forces:**
-                        - Mu = {row.get('Mu (kN·m)', '-')} kN·m
-                        - Vu = {row.get('Vu (kN)', '-')} kN
+                        - Mu = {row.get("Mu (kN·m)", "-")} kN·m
+                        - Vu = {row.get("Vu (kN)", "-")} kN
                         """)
                 else:
                     st.warning(f"Could not find beam data for {selected_beam_id}")

@@ -89,7 +89,7 @@ def styled_card(
         {border}
         margin-bottom: {SPACING.space_4};
     ">
-        {f'<h4 style="margin-top: 0; color: {COLORS.gray_900}; font-size: {TYPOGRAPHY.h4_size};">{title}</h4>' if title else ''}
+        {f'<h4 style="margin-top: 0; color: {COLORS.gray_900}; font-size: {TYPOGRAPHY.h4_size};">{title}</h4>' if title else ""}
         {content}
     </div>
     """
@@ -340,7 +340,7 @@ def progress_bar(
 
     progress_html = f"""
     <div style="margin-bottom: {SPACING.space_4};">
-        {f'<div style="font-size: {TYPOGRAPHY.body_sm_size}; color: {COLORS.gray_600}; margin-bottom: {SPACING.space_2};">{label}</div>' if label else ''}
+        {f'<div style="font-size: {TYPOGRAPHY.body_sm_size}; color: {COLORS.gray_600}; margin-bottom: {SPACING.space_2};">{label}</div>' if label else ""}
         <div style="
             background: {COLORS.gray_200};
             border-radius: {RADIUS.full};
@@ -356,7 +356,7 @@ def progress_bar(
                 transition: width 0.3s ease;
             "></div>
         </div>
-        {f'<div style="font-family: {TYPOGRAPHY.font_mono}; font-size: {TYPOGRAPHY.caption_size}; color: {COLORS.gray_500}; margin-top: {SPACING.space_1}; text-align: right;">{percentage:.1f}%</div>' if show_percentage else ''}
+        {f'<div style="font-family: {TYPOGRAPHY.font_mono}; font-size: {TYPOGRAPHY.caption_size}; color: {COLORS.gray_500}; margin-top: {SPACING.space_1}; text-align: right;">{percentage:.1f}%</div>' if show_percentage else ""}
     </div>
     """
 
@@ -429,7 +429,7 @@ def styled_table(
             <tr>{header_cells}</tr>
         </thead>
         <tbody>
-            {''.join(body_rows)}
+            {"".join(body_rows)}
         </tbody>
     </table>
     """
@@ -549,7 +549,7 @@ def icon_button_html(
         transition: all 0.2s ease;
         box-shadow: {ELEVATION.level_1};
     ">
-        {f'<span>{icon}</span>' if icon else ''}
+        {f"<span>{icon}</span>" if icon else ""}
         <span>{label}</span>
     </button>
     """

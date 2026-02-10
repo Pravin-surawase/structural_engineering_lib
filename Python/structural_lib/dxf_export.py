@@ -255,7 +255,7 @@ def generate_beam_schedule_table(
         representative = beams[0]
 
         # Collect beam IDs
-        beam_ids = [b.beam_id or f"B{i+1}" for i, b in enumerate(beams)]
+        beam_ids = [b.beam_id or f"B{i + 1}" for i, b in enumerate(beams)]
 
         # Format reinforcement
         if representative.bottom_bars:
@@ -1370,7 +1370,7 @@ def generate_multi_beam_dxf(
         for _type_key, beams in groups.items():
             representative = beams[0]
             if len(beams) > 1:
-                beam_ids = [b.beam_id or f"B{i+1}" for i, b in enumerate(beams)]
+                beam_ids = [b.beam_id or f"B{i + 1}" for i, b in enumerate(beams)]
                 # Create a new beam_id showing all grouped beams
                 representative.beam_id = ", ".join(beam_ids[:3])
                 if len(beam_ids) > 3:

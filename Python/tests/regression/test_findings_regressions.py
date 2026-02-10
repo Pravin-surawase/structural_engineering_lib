@@ -78,8 +78,8 @@ def test_development_length_invalid_inputs():
     """Q-002: calculate_development_length raises MaterialError for invalid inputs."""
     import pytest
 
-    from structural_lib.detailing import calculate_development_length
     from structural_lib.core.errors import MaterialError
+    from structural_lib.detailing import calculate_development_length
 
     with pytest.raises(MaterialError, match=r"(?i)bar diameter"):
         calculate_development_length(bar_dia=0, fck=25, fy=500)
