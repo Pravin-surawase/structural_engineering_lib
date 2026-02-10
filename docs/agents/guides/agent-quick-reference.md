@@ -34,7 +34,7 @@
 | `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
 | `./scripts/git_ops.sh --status` | **Analyze git state & get recommendation** |
 | `./scripts/agent_mistakes_report.sh` | **Common mistakes reminder** |
-| `.venv/bin/python scripts/end_session.py` | **End session** |
+| `.venv/bin/python scripts/session.py end` | **End session** |
 
 ---
 
@@ -149,7 +149,7 @@ cd $PROJECT_ROOT
 1. Update exports in `Python/structural_lib/api.py` (`__all__`).
 2. Update docs in `docs/reference/api.md` and `docs/reference/api-stability.md`.
 3. Regenerate manifest: `./.venv/bin/python scripts/generate_api_manifest.py`.
-4. Run checks: `./.venv/bin/python scripts/check_api_doc_signatures.py`.
+4. Run checks: `./.venv/bin/python scripts/check_api.py --docs`.
 
 Keep public signatures stable unless explicitly approved.
 
@@ -157,7 +157,7 @@ Keep public signatures stable unless explicitly approved.
 
 ## 🔎 Scanner & Validation (Streamlit)
 
-- Run: `.venv/bin/python scripts/check_streamlit_issues.py --all-pages`
+- Run: `.venv/bin/python scripts/check_streamlit.py --all-pages`
 - False positives: `.scanner-ignore.yml`
 - Research: `docs/research/scanner-improvements.md`
 
@@ -167,14 +167,14 @@ Keep public signatures stable unless explicitly approved.
 
 | Scenario | Command |
 |----------|---------|
-| Start day | `./scripts/agent_setup.sh` |
-| Before task | `./scripts/agent_preflight.sh` |
+| Start day | `./scripts/agent_start.sh --quick` |
+| Before task | *(included in agent_start.sh)* |
 | Simple doc edit | `./scripts/ai_commit.sh "docs: fix typo"` |
 | Production code | `./scripts/create_task_pr.sh → ... → finish_task_pr.sh` |
 | Long background task | `./scripts/worktree_manager.sh create AGENT_N` |
 | Check worktrees | `./scripts/worktree_manager.sh list` |
 | Submit agent work | `./scripts/worktree_manager.sh submit AGENT_N "desc"` |
-| End day | `./scripts/end_session.py` |
+| End day | `.venv/bin/python scripts/session.py end` |
 
 ---
 
@@ -182,10 +182,10 @@ Keep public signatures stable unless explicitly approved.
 
 ### ✅ DO
 - Use ai_commit.sh for ALL commits
-- Run agent_preflight.sh before starting
+- Run agent_start.sh --quick before starting
 - Check should_use_pr.sh when unsure
 - Use worktrees for parallel work
-- End session with end_session.py
+- End session with session.py end
 
 ### ❌ DON'T
 - Use `git add/commit/push` manually
@@ -200,16 +200,15 @@ Keep public signatures stable unless explicitly approved.
 
 ```
 scripts/
-├── agent_setup.sh           # Start session
-├── agent_preflight.sh       # Pre-task check
-├── ai_commit.sh             # Commit wrapper
+├── agent_start.sh            # Start session (unified)
+├── ai_commit.sh              # Commit wrapper
 ├── safe_push.sh             # Core git logic
 ├── should_use_pr.sh         # Decision helper
 ├── create_task_pr.sh        # Start PR
 ├── finish_task_pr.sh        # Submit PR
 ├── worktree_manager.sh      # Agent workspaces
 ├── recover_git_state.sh     # Emergency recovery
-└── end_session.py           # End session
+└── session.py               # End session
 
 docs/agents/
 └── agent-workflow-master-guide.md  # Full guide
@@ -252,14 +251,14 @@ docs/agents/
 |-----------|--------|
 | **Pattern Recognition** | See 10+ issues → automate, don't fix manually |
 | **Research First** | Check `scripts/` before writing new tools |
-| **Build Once, Use Many** | `fix_broken_links.py` fixed 213 links in 5 sec |
+| **Build Once, Use Many** | `check_links.py` fixed 213 links in 5 sec |
 | **Full Sessions** | 5-10+ commits per session, don't stop early |
 | **Document Always** | Update TASKS.md, SESSION_LOG after work |
 
 ### Quick Automation Commands
 ```bash
-.venv/bin/python scripts/fix_broken_links.py --fix      # Fix links
-.venv/bin/python scripts/validate_folder_structure.py   # Check structure
+.venv/bin/python scripts/check_links.py --fix              # Fix links
+.venv/bin/python scripts/check_governance.py --structure    # Check structure
 .venv/bin/python scripts/check_doc_versions.py --fix    # Fix versions
 ```
 
@@ -268,7 +267,7 @@ docs/agents/
 ## 🎓 Learning Resources
 
 ### Day 1: Basics
-- Run agent_setup.sh
+- Run agent_start.sh --quick
 - Make doc change
 - Use ai_commit.sh
 - Understand output
@@ -291,7 +290,7 @@ docs/agents/
 **When stuck:**
 1. Check terminal output (scripts are verbose)
 2. Check `logs/git_workflow.log`
-3. Run `./scripts/agent_preflight.sh`
+3. Run `./scripts/agent_start.sh --quick`
 4. Run `./scripts/recover_git_state.sh`
 5. Review [agent-workflow-master-guide.md](agent-workflow-master-guide.md)
 

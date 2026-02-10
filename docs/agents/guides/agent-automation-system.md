@@ -19,8 +19,8 @@ Comprehensive automation system for error-free AI agent workflows. Prevents 99% 
 - **[git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)** - Core workflow rules
 
 ### 🛠️ Automation Scripts
-- **agent_setup.sh** - Session environment setup
-- **agent_preflight.sh** - Pre-task validation
+- **agent_start.sh** - Session environment setup
+- **agent_start.sh** - Pre-task validation
 - **worktree_manager.sh** - Background agent workspace management
 - **test_agent_automation.sh** - Integration testing
 
@@ -39,16 +39,16 @@ Comprehensive automation system for error-free AI agent workflows. Prevents 99% 
 ### For Main Agent (You)
 ```bash
 # 1. Start session
-./scripts/agent_setup.sh
+./scripts/agent_start.sh
 
 # 2. Before any work
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 
 # 3. Make changes and commit
 ./scripts/ai_commit.sh "feat: implement feature"
 
 # 4. End session
-./scripts/end_session.py
+./scripts/session.py end
 ```
 
 ### For Background Agents (Agent 5, 6, etc.)
@@ -78,8 +78,8 @@ Run integration tests:
 ```
 ✓ PASS: All automation scripts exist
 ✓ PASS: All scripts are executable
-✓ PASS: agent_setup.sh executes successfully
-✓ PASS: agent_preflight.sh executes successfully
+✓ PASS: agent_start.sh executes successfully
+✓ PASS: agent_start.sh executes successfully
 ✓ PASS: worktree_manager.sh list works
 ✓ PASS: worktree_manager.sh help works
 ✓ PASS: All documentation files exist
@@ -164,7 +164,7 @@ Main Agent
 
 ## Script Details
 
-### agent_setup.sh
+### agent_start.sh
 **Purpose:** Initialize agent environment
 **Checks:**
 - Git repository state
@@ -175,12 +175,12 @@ Main Agent
 
 **Usage:**
 ```bash
-./scripts/agent_setup.sh              # Main agent
-./scripts/agent_setup.sh --worktree AGENT_5  # Background agent
-./scripts/agent_setup.sh --quick      # Skip slow checks
+./scripts/agent_start.sh              # Main agent
+./scripts/agent_start.sh --worktree AGENT_5  # Background agent
+./scripts/agent_start.sh --quick      # Skip slow checks
 ```
 
-### agent_preflight.sh
+### agent_start.sh
 **Purpose:** Pre-task validation
 **Checks:**
 - Git state (merge, sync, changes)
@@ -193,9 +193,9 @@ Main Agent
 
 **Usage:**
 ```bash
-./scripts/agent_preflight.sh         # Full check
-./scripts/agent_preflight.sh --quick # Fast check
-./scripts/agent_preflight.sh --fix   # Auto-fix issues
+./scripts/agent_start.sh         # Full check
+./scripts/agent_start.sh --quick # Fast check
+./scripts/agent_start.sh --fix   # Auto-fix issues
 ```
 
 ### worktree_manager.sh
@@ -270,7 +270,7 @@ chmod +x scripts/*.sh
 cat logs/git_workflow.log
 
 # 2. Run diagnostics
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 
 # 3. Review docs
 less docs/AGENT_WORKFLOW_MASTER_GUIDE.md
@@ -283,7 +283,7 @@ less docs/AGENT_WORKFLOW_MASTER_GUIDE.md
 ### Adding New Scripts
 1. Create script in `scripts/`
 2. Make executable: `chmod +x scripts/new_script.sh`
-3. Add to `REQUIRED_SCRIPTS` in agent_setup.sh
+3. Add to `REQUIRED_SCRIPTS` in agent_start.sh
 4. Update test_agent_automation.sh
 5. Document in AGENT_WORKFLOW_MASTER_GUIDE.md
 
@@ -309,16 +309,16 @@ less docs/AGENT_WORKFLOW_MASTER_GUIDE.md
 ### From Session History (Recurring Issues)
 1. ✅ **Merge conflicts in TASKS.md** - safe_push.sh pulls first
 2. ✅ **Pre-commit modifying files** - safe_push.sh auto-amends
-3. ✅ **Unfinished merge state** - agent_preflight.sh detects & fixes
+3. ✅ **Unfinished merge state** - agent_start.sh detects & fixes
 4. ✅ **Push rejected (non-fast-forward)** - safe_push.sh syncs first
-5. ✅ **Version drift errors** - agent_preflight.sh auto-fixes
+5. ✅ **Version drift errors** - agent_start.sh auto-fixes
 6. ✅ **CI format failures** - Pre-flight catches early
 7. ✅ **Agent 6 work submission** - worktree_manager.sh handles
 8. ✅ **Unclear workflow decisions** - Documentation clarifies
 
 ### From Production Experience
 1. ✅ **New agent onboarding** - agent_start.sh + AGENT_WORKFLOW_MASTER_GUIDE.md
-2. ✅ **Session hygiene** - agent_setup.sh + agent_preflight.sh
+2. ✅ **Session hygiene** - agent_start.sh + agent_start.sh
 3. ✅ **Parallel work conflicts** - worktree_manager.sh isolates
 4. ✅ **Emergency recovery** - Scripts guide resolution
 5. ✅ **Knowledge transfer** - Self-documenting system

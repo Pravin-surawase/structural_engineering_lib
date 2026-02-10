@@ -46,7 +46,7 @@ cd Python && .venv/bin/pytest tests/ -v         # Python tests (85% coverage gat
 .venv/bin/python scripts/migrate_python_module.py <src> <dst> --dry-run   # Move Python module + update imports
 .venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run # Move React component + update imports
 .venv/bin/python scripts/validate_imports.py --scope structural_lib       # Check for broken imports
-.venv/bin/python scripts/validate_folder_structure.py                     # Validate folder conventions
+.venv/bin/python scripts/check_governance.py --structure                  # Validate folder conventions
 .venv/bin/python scripts/generate_enhanced_index.py <folder>              # Generate index.json + index.md
 .venv/bin/python scripts/generate_enhanced_index.py --all                 # Regenerate all folder indexes
 ```

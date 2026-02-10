@@ -154,7 +154,7 @@ repos:
         verbose: true
       - id: check-api-docs-sync
         name: Check API docs sync
-        entry: .venv/bin/python scripts/check_api_docs_sync.py
+        entry: .venv/bin/python scripts/check_api.py --sync
         language: system
         pass_filenames: false
         always_run: true
@@ -168,7 +168,7 @@ repos:
         verbose: true
       - id: check-api-doc-signatures
         name: Check API doc signatures
-        entry: .venv/bin/python scripts/check_api_doc_signatures.py
+        entry: .venv/bin/python scripts/check_api.py --docs
         language: system
         pass_filenames: false
         always_run: true
@@ -245,7 +245,7 @@ repos:
         verbose: true
       - id: check-api-signatures
         name: Check API function signatures
-        entry: .venv/bin/python scripts/check_api_signatures.py
+        entry: .venv/bin/python scripts/check_api.py --signatures
         language: system
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$

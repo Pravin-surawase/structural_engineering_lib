@@ -87,7 +87,7 @@
 The bootstrap also references these tools or docs without linking them directly:
 - docs/reference/api-stability.md (API stability policy)
 - scripts/generate_api_manifest.py (API manifest)
-- scripts/check_api_doc_signatures.py (API signature validation)
+- scripts/check_api.py --docs (API signature validation)
 - scripts/check_repo_hygiene.py (hygiene audit)
 - scripts/safe_file_move.py / scripts/safe_file_delete.py (safe file operations)
 
@@ -96,8 +96,8 @@ The bootstrap also references these tools or docs without linking them directly:
 ## Startup Flow Notes
 
 - Primary entrypoint: `./scripts/agent_start.sh --quick`
-- `agent_setup.sh` remains in use under `agent_start.sh` for environment validation.
-- `start_session.py` still runs as part of the unified start flow.
+- `agent_start.sh` remains in use under `agent_start.sh` for environment validation.
+- `session.py start` still runs as part of the unified start flow.
 
 ---
 

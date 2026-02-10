@@ -97,7 +97,7 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 
 ### governance
 - `analyze_release_cadence.py` — Analyze and recommend optimal release cadence (TASK-288)
-- `copilot_setup.sh` — Setup copilot instructions
+- `agent_start.sh` — Setup copilot instructions
 - `governance_health_score.py` — Calculate governance health score 0-100 (TASK-289)
 - `lint_docs_git_examples.sh` — Lint git examples in docs
 - `predict_velocity.py` — Predict development velocity and burnout risk (TASK-287)
@@ -106,7 +106,7 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 ### project_structure
 - `audit_readiness_report.py` — Generate audit evidence bundle (NIST SSDF aligned)
 - `check_folder_structure.py` — Validate folder architecture
-- `check_governance_compliance.py` — Check governance rules
+- `check_governance.py` — Check governance rules
 - `check_redirect_stubs.py` — Check redirect stubs
 - `check_scripts_index.py` — Ensure scripts/index.json is in sync
 - `check_wip_limits.sh` — Check WIP limits
@@ -139,7 +139,7 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 
 ## Session Management
 
-### 1. `start_session.py`
+### 1. `session.py start`
 
 **Purpose:** Initialize AI agent with current project state at session start.
 
@@ -151,10 +151,10 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 **Usage:**
 ```bash
 # Full check (recommended)
-.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/session.py start
 
 # Quick mode (skip test count check)
-.venv/bin/python scripts/start_session.py --quick
+.venv/bin/python scripts/session.py start --quick
 ```
 
 **What It Does:**
@@ -185,11 +185,11 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 ============================================================
 ```
 
-**Related:** [end_session.py](#2-end_sessionpy), [handoff.md](../contributing/handoff.md)
+**Related:** [session.py end](#2-end_sessionpy), [handoff.md](../contributing/handoff.md)
 
 ---
 
-### 2. `end_session.py`
+### 2. `session.py end`
 
 **Purpose:** Validate session completeness before handoff to next agent.
 
@@ -201,13 +201,13 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 **Usage:**
 ```bash
 # Check only
-.venv/bin/python scripts/end_session.py
+.venv/bin/python scripts/session.py end
 
 # Auto-fix issues
-.venv/bin/python scripts/end_session.py --fix
+.venv/bin/python scripts/session.py end --fix
 
 # Quick mode
-.venv/bin/python scripts/end_session.py --quick
+.venv/bin/python scripts/session.py end --quick
 ```
 
 **What It Checks:**
@@ -240,22 +240,22 @@ Checking handoff readiness...
 ============================================================
 ```
 
-**Related:** [start_session.py](#1-start_sessionpy), [update_handoff.py](#3-update_handoffpy)
+**Related:** [session.py start](#1-start_sessionpy), [session.py handoff](#3-update_handoffpy)
 
 ---
 
-### 3. `update_handoff.py`
+### 3. `session.py handoff`
 
 **Purpose:** Auto-generate handoff section in next-session-brief.md.
 
 **When to Use:**
 - ✅ After completing major tasks
-- ✅ Before running end_session.py
+- ✅ Before running session.py end
 - ✅ When handoff content needs refresh
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/update_handoff.py
+.venv/bin/python scripts/session.py handoff
 ```
 
 **What It Does:**
@@ -264,13 +264,13 @@ Checking handoff readiness...
 3. Updates HANDOFF:START/END section in next-session-brief.md
 4. Preserves manual content outside markers
 
-**Note:** Usually called automatically by end_session.py with --fix flag.
+**Note:** Usually called automatically by session.py end with --fix flag.
 
-**Related:** [end_session.py](#2-end_sessionpy)
+**Related:** [session.py end](#2-end_sessionpy)
 
 ---
 
-### 4. `agent_setup.sh`
+### 4. `agent_start.sh`
 
 **Purpose:** Prepare the environment for agent work (repo checks, tooling sanity, worktree setup).
 
@@ -281,9 +281,9 @@ Checking handoff readiness...
 
 **Usage:**
 ```bash
-./scripts/agent_setup.sh
-./scripts/agent_setup.sh --worktree AGENT_5
-./scripts/agent_setup.sh --quick
+./scripts/agent_start.sh
+./scripts/agent_start.sh --worktree AGENT_5
+./scripts/agent_start.sh --quick
 ```
 
 **What It Does:**
@@ -291,11 +291,11 @@ Checking handoff readiness...
 - Checks core tooling/venv availability
 - Prints next-step guidance for session start
 
-**Related:** [agent_preflight.sh](#5-agent_preflightsh), [start_session.py](#1-start_sessionpy)
+**Related:** [agent_start.sh](#5-agent_preflightsh), [session.py start](#1-start_sessionpy)
 
 ---
 
-### 5. `agent_preflight.sh`
+### 5. `agent_start.sh`
 
 **Purpose:** Pre-flight checklist to validate environment readiness before work.
 
@@ -306,9 +306,9 @@ Checking handoff readiness...
 
 **Usage:**
 ```bash
-./scripts/agent_preflight.sh
-./scripts/agent_preflight.sh --quick
-./scripts/agent_preflight.sh --fix
+./scripts/agent_start.sh
+./scripts/agent_start.sh --quick
+./scripts/agent_start.sh --fix
 ```
 
 **What It Does:**
@@ -316,7 +316,7 @@ Checking handoff readiness...
 - Flags missing dependencies or repo state issues
 - Optionally applies safe auto-fixes
 
-**Related:** [agent_setup.sh](#4-agent_setupsh), [start_session.py](#1-start_sessionpy)
+**Related:** [agent_start.sh](#4-agent_setupsh), [session.py start](#1-start_sessionpy)
 
 ---
 
@@ -338,7 +338,7 @@ Checking handoff readiness...
 ./scripts/worktree_manager.sh status AGENT_NAME
 ```
 
-**Related:** [agent_setup.sh](#4-agent_setupsh)
+**Related:** [agent_start.sh](#4-agent_setupsh)
 
 ---
 
@@ -782,11 +782,11 @@ Checking links in 193 markdown files...
 ✅ All 450 links valid
 ```
 
-**Related:** [check_docs_index_links.py](#17-check_docs_index_linkspy)
+**Related:** [check_governance.py --index-links](#17-check_docs_index_linkspy)
 
 ---
 
-### 21. `check_docs_index.py`
+### 21. `check_docs.py --index`
 
 **Purpose:** Validate docs/README.md index completeness and structure.
 
@@ -797,7 +797,7 @@ Checking links in 193 markdown files...
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_docs_index.py
+.venv/bin/python scripts/check_docs.py --index
 ```
 
 **What It Checks:**
@@ -806,11 +806,11 @@ Checking links in 193 markdown files...
 - Categories properly organized
 - No orphaned docs
 
-**Related:** [check_docs_index_links.py](#17-check_docs_index_linkspy)
+**Related:** [check_governance.py --index-links](#17-check_docs_index_linkspy)
 
 ---
 
-### 22. `check_docs_index_links.py`
+### 22. `check_governance.py --index-links`
 
 **Purpose:** Validate all links within docs/README.md index.
 
@@ -821,7 +821,7 @@ Checking links in 193 markdown files...
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/python scripts/check_governance.py --index-links
 ```
 
 **What It Checks:**
@@ -829,7 +829,7 @@ Checking links in 193 markdown files...
 - Anchor links valid
 - No broken cross-references
 
-**Related:** [check_docs_index.py](#21-check_docs_indexpy), [check_links.py](#20-check_linkspy)
+**Related:** [check_docs.py --index](#21-check_docs_indexpy), [check_links.py](#20-check_linkspy)
 
 ---
 
@@ -866,7 +866,7 @@ Current version: 0.14.0
 
 ---
 
-### 24. `check_api_docs_sync.py`
+### 24. `check_api.py --sync`
 
 **Purpose:** Ensure API reference docs match actual code signatures.
 
@@ -877,7 +877,7 @@ Current version: 0.14.0
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_api_docs_sync.py
+.venv/bin/python scripts/check_api.py --sync
 ```
 
 **What It Checks:**
@@ -886,11 +886,11 @@ Current version: 0.14.0
 - Return types documented
 - Examples use valid syntax
 
-**Related:** [check_api_doc_signatures.py](#25-check_api_doc_signaturespy)
+**Related:** [check_api.py --docs](#25-check_api_doc_signaturespy)
 
 ---
 
-### 25. `check_api_doc_signatures.py`
+### 25. `check_api.py --docs`
 
 **Purpose:** Validate API documentation function signatures are syntactically correct.
 
@@ -901,7 +901,7 @@ Current version: 0.14.0
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_api_doc_signatures.py
+.venv/bin/python scripts/check_api.py --docs
 ```
 
 **What It Checks:**
@@ -909,7 +909,7 @@ Current version: 0.14.0
 - Type hints correct
 - Consistent formatting
 
-**Related:** [check_api_docs_sync.py](#24-check_api_docs_syncpy)
+**Related:** [check_api.py --sync](#24-check_api_docs_syncpy)
 
 ---
 
@@ -960,7 +960,7 @@ Current version: 0.14.0
 - Examples provided
 - Help text matches docs
 
-**Related:** [check_api_docs_sync.py](#24-check_api_docs_syncpy)
+**Related:** [check_api.py --sync](#24-check_api_docs_syncpy)
 
 ---
 
@@ -988,7 +988,7 @@ Current version: 0.14.0
 next-session-brief.md: 142 lines ✅ (target <150)
 ```
 
-**Related:** [end_session.py](#2-end_sessionpy)
+**Related:** [session.py end](#2-end_sessionpy)
 
 ---
 
@@ -1010,11 +1010,11 @@ next-session-brief.md: 142 lines ✅ (target <150)
 - Counts root `.md`, `.txt`, `.sh` files
 - Fails if the count exceeds the configured limit
 
-**Related:** [validate_folder_structure.py](#30-validate_folder_structurepy)
+**Related:** [check_governance.py --structure](#30-validate_folder_structurepy)
 
 ---
 
-### 30. `validate_folder_structure.py`
+### 30. `check_governance.py --structure`
 
 **Purpose:** Validate repo folder structure against governance rules.
 
@@ -1025,9 +1025,9 @@ next-session-brief.md: 142 lines ✅ (target <150)
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/validate_folder_structure.py
-.venv/bin/python scripts/validate_folder_structure.py --fix
-.venv/bin/python scripts/validate_folder_structure.py --report
+.venv/bin/python scripts/check_governance.py --structure
+.venv/bin/python scripts/check_governance.py --structure --fix
+.venv/bin/python scripts/check_governance.py --structure --report
 ```
 
 **What It Checks:**
@@ -1111,7 +1111,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 7. Creates annotated git tag
 8. Instructions for pushing tag
 
-**Related:** [bump_version.py](#34-bump_versionpy), [verify_release.py](#35-verify_releasepy)
+**Related:** [bump_version.py](#34-bump_versionpy), [release.py verify](#35-verify_releasepy)
 
 ---
 
@@ -1139,7 +1139,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 ---
 
-### 35. `verify_release.py`
+### 35. `release.py verify`
 
 **Purpose:** Validate release after publishing (local wheel or PyPI).
 
@@ -1151,10 +1151,10 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 **Usage:**
 ```bash
 # Verify local wheel (pre-release)
-.venv/bin/python scripts/verify_release.py --source wheel --wheel-dir Python/dist
+.venv/bin/python scripts/release.py verify --source wheel --wheel-dir Python/dist
 
 # Verify PyPI (post-release)
-.venv/bin/python scripts/verify_release.py --version 0.14.0 --source pypi
+.venv/bin/python scripts/release.py verify --version 0.14.0 --source pypi
 ```
 
 **What It Tests:**
@@ -1171,7 +1171,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 ---
 
-### 36. `check_release_docs.py`
+### 36. `release.py check-docs`
 
 **Purpose:** Validate release documentation consistency.
 
@@ -1182,7 +1182,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_release_docs.py
+.venv/bin/python scripts/release.py check-docs
 ```
 
 **What It Checks:**
@@ -1191,7 +1191,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 - Version numbers consistent
 - Release notes complete
 
-**Related:** [release.py](#33-releasepy), [check_pre_release_checklist.py](#39-check_pre_release_checklistpy)
+**Related:** [release.py](#33-releasepy), [release.py checklist](#39-check_pre_release_checklistpy)
 
 ---
 
@@ -1261,7 +1261,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 ---
 
-### 39. `check_pre_release_checklist.py`
+### 39. `release.py checklist`
 
 **Purpose:** Validate pre-release checklist completeness.
 
@@ -1272,7 +1272,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_pre_release_checklist.py
+.venv/bin/python scripts/release.py checklist
 ```
 
 **What It Checks:**
@@ -1322,22 +1322,22 @@ Pre-Release Checklist:
 - No duplicate IDs
 - Proper sections (Active, Up Next, Backlog, Done)
 
-**Related:** [check_session_docs.py](#41-check_session_docspy)
+**Related:** [session.py check](#41-check_session_docspy)
 
 ---
 
-### 41. `check_session_docs.py`
+### 41. `session.py check`
 
 **Purpose:** Validate session document consistency (TASKS, SESSION_LOG, next-session-brief).
 
 **When to Use:**
 - ✅ Before handoff
-- ✅ Part of end_session.py
+- ✅ Part of session.py end
 - ✅ Pre-commit hooks
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_session_docs.py
+.venv/bin/python scripts/session.py check
 ```
 
 **What It Checks:**
@@ -1346,7 +1346,7 @@ Pre-Release Checklist:
 - TASKS.md reflects current state
 - No conflicting task statuses
 
-**Related:** [end_session.py](#2-end_sessionpy), [check_handoff_ready.py](#42-check_handoff_readypy)
+**Related:** [session.py end](#2-end_sessionpy), [check_handoff_ready.py](#42-check_handoff_readypy)
 
 ---
 
@@ -1355,7 +1355,7 @@ Pre-Release Checklist:
 **Purpose:** Comprehensive handoff readiness validation.
 
 **When to Use:**
-- ✅ Part of end_session.py
+- ✅ Part of session.py end
 - ✅ Before major handoffs
 - ✅ Weekly health checks
 
@@ -1373,7 +1373,7 @@ Pre-Release Checklist:
 
 **Output:** Pass/fail with specific issues listed.
 
-**Related:** [end_session.py](#2-end_sessionpy)
+**Related:** [session.py end](#2-end_sessionpy)
 
 ---
 
@@ -1633,7 +1633,7 @@ Summary:
 
 ## Streamlit QA
 
-### 51. `check_streamlit_issues.py`
+### 51. `check_streamlit.py`
 
 **Purpose:** Scan Streamlit pages for common AST-level issues.
 
@@ -1644,9 +1644,9 @@ Summary:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
-.venv/bin/python scripts/check_streamlit_issues.py --page beam_design
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
+.venv/bin/python scripts/check_streamlit.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --page beam_design
+.venv/bin/python scripts/check_streamlit.py --all-pages --fail-on critical,high
 ```
 
 **What It Checks:**
@@ -1654,11 +1654,11 @@ Summary:
 - Import errors and API signature mismatches
 - Streamlit session state patterns
 
-**Related:** [validate_streamlit_page.py](#52-validate_streamlit_pagepy)
+**Related:** [check_streamlit.py](#52-validate_streamlit_pagepy)
 
 ---
 
-### 52. `validate_streamlit_page.py`
+### 52. `check_streamlit.py`
 
 **Purpose:** Validate a single Streamlit page without launching the UI.
 
@@ -1669,10 +1669,10 @@ Summary:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py
+.venv/bin/python scripts/check_streamlit.py streamlit_app/pages/01_beam_design.py
 ```
 
-**Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
+**Related:** [check_streamlit.py](#51-check_streamlit_issuespy)
 
 ---
 
@@ -1692,7 +1692,7 @@ Summary:
 ./scripts/pylint_streamlit.sh --compare
 ```
 
-**Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
+**Related:** [check_streamlit.py](#51-check_streamlit_issuespy)
 
 ---
 
@@ -1834,7 +1834,7 @@ Summary:
 
 ---
 
-### 61. `comprehensive_validator.py`
+### 61. `check_streamlit.py`
 
 **Purpose:** Deep Streamlit page validator with multi-stage analysis.
 
@@ -1845,7 +1845,7 @@ Summary:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/comprehensive_validator.py streamlit_app/pages/01_beam_design.py
+.venv/bin/python scripts/check_streamlit.py streamlit_app/pages/01_beam_design.py
 ```
 
 ---
@@ -1950,7 +1950,7 @@ pip install ezdxf matplotlib reportlab
 **Purpose:** Auto-fix common Streamlit page issues detected by validators.
 
 **When to Use:**
-- ✅ After running comprehensive_validator.py
+- ✅ After running check_streamlit.py
 - ✅ For bulk cleanup of Streamlit pages
 - ✅ During QA automation
 
@@ -1964,7 +1964,7 @@ pip install ezdxf matplotlib reportlab
 - `--dry-run` to report fixes without applying
 - `--pattern` to select file patterns
 
-**Related:** [comprehensive_validator.py](#61-comprehensive_validatorpy)
+**Related:** [check_streamlit.py](#61-comprehensive_validatorpy)
 
 ---
 
@@ -2093,11 +2093,11 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **V3 Relevance:** **Critical** — Documents API surface for FastAPI wrapper generation.
 
-**Related:** [check_api_signatures.py](#73-check_api_signaturespy), [check_api_docs_sync.py](#24-check_api_docs_syncpy)
+**Related:** [check_api.py --signatures](#73-check_api_signaturespy), [check_api.py --sync](#24-check_api_docs_syncpy)
 
 ---
 
-### 73. `check_api_signatures.py`
+### 73. `check_api.py --signatures`
 
 **Purpose:** Validate that Streamlit pages use correct API signatures and response keys.
 
@@ -2108,9 +2108,9 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_api_signatures.py              # Check all pages
-.venv/bin/python scripts/check_api_signatures.py --fix        # Show suggested fixes
-.venv/bin/python scripts/check_api_signatures.py page.py      # Check specific file
+.venv/bin/python scripts/check_api.py --signatures              # Check all pages
+.venv/bin/python scripts/check_api.py --signatures --fix        # Show suggested fixes
+.venv/bin/python scripts/check_api.py --signatures page.py      # Check specific file
 ```
 
 **What It Checks:**
@@ -2404,7 +2404,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **V3 Relevance:** **High** — Tier 0 daily script.
 
-**Related:** [end_session.py](#2-end_sessionpy)
+**Related:** [session.py end](#2-end_sessionpy)
 
 ---
 
@@ -2504,7 +2504,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 89. `fix_broken_links.py`
+### 89. `check_links.py`
 
 **Purpose:** Find and auto-fix broken internal markdown links.
 
@@ -2515,9 +2515,9 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/fix_broken_links.py           # Check only
-.venv/bin/python scripts/fix_broken_links.py --fix     # Auto-fix
-.venv/bin/python scripts/fix_broken_links.py --dry-run # Preview fixes
+.venv/bin/python scripts/check_links.py           # Check only
+.venv/bin/python scripts/check_links.py --fix     # Auto-fix
+.venv/bin/python scripts/check_links.py --dry-run # Preview fixes
 ```
 
 **What It Does:**
@@ -2630,7 +2630,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 95. `check_fragment_violations.py`
+### 95. `check_streamlit.py --fragments`
 
 **Purpose:** Detect Streamlit fragment API violations.
 
@@ -2641,7 +2641,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_fragment_violations.py
+.venv/bin/python scripts/check_streamlit.py --fragments
 ```
 
 **What It Checks:**
@@ -2668,7 +2668,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 .venv/bin/python scripts/check_streamlit_imports.py --all-pages
 ```
 
-**Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
+**Related:** [check_streamlit.py](#51-check_streamlit_issuespy)
 
 ---
 
@@ -2755,7 +2755,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 ## Best Practices
 
 ### When Starting Work
-1. ✅ Run [start_session.py](#1-start_sessionpy) (30 seconds)
+1. ✅ Run [session.py start](#1-start_sessionpy) (30 seconds)
 2. ✅ Check [TASKS.md](../TASKS.md) for active work
 3. ✅ Review [next-session-brief.md](../planning/next-session-brief.md)
 
@@ -2766,16 +2766,16 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 4. ✅ Use [ci_local.sh](#37-ci_localsh) before major changes
 
 ### Before Ending Session
-1. ✅ Run [end_session.py](#2-end_sessionpy) --fix
+1. ✅ Run [session.py end](#2-end_sessionpy) --fix
 2. ✅ Update [next-session-brief.md](../planning/next-session-brief.md)
 3. ✅ Move tasks to Done in [TASKS.md](../TASKS.md)
 4. ✅ Commit all doc changes
 
 ### Before Release
 1. ✅ Run [ci_local.sh](#37-ci_localsh)
-2. ✅ Run [check_pre_release_checklist.py](#39-check_pre_release_checklistpy)
+2. ✅ Run [release.py checklist](#39-check_pre_release_checklistpy)
 3. ✅ Use [release.py](#33-releasepy) for version bump
-4. ✅ Verify with [verify_release.py](#35-verify_releasepy)
+4. ✅ Verify with [release.py verify](#35-verify_releasepy)
 
 ---
 

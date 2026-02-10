@@ -45,7 +45,7 @@
 | Script | Purpose |
 |--------|---------|
 | `check_links.py` | Validate internal markdown links |
-| `fix_broken_links.py` | Auto-fix broken links |
+| `check_links.py` | Auto-fix broken links |
 | `check_folder_structure.py` | Validate multi-code architecture |
 | `check_streamlit.py` | Unified Streamlit validation (AST scanner + fragment checks) |
 | `check_doc_versions.py` | Check version drift in docs |
@@ -66,15 +66,15 @@
 | Script | Purpose |
 |--------|---------|
 | `generate_docs_index.py` | Generate docs-index.json |
-| `check_docs_index.py` | Validate docs index structure |
-| `check_docs_index_links.py` | Validate docs index links |
+| `check_docs.py --index` | Validate docs index structure |
+| `check_governance.py --index-links` | Validate docs index links |
 
 ### Session Management
 | Script | Purpose |
 |--------|---------|
 | `session.py` | Unified session management (start, end, handoff, check) |
-| `agent_setup.sh` | Agent environment setup |
-| `agent_preflight.sh` | Pre-flight checks |
+| `agent_start.sh` | Agent environment setup |
+| `agent_start.sh` | Pre-flight checks |
 | `collect_diagnostics.py` | Bundle debug context (env, git, logs) |
 
 ### Release & Versioning
@@ -103,7 +103,7 @@ When working with scripts:
 
 ```bash
 # Start session
-./scripts/agent_setup.sh && ./scripts/agent_preflight.sh
+./scripts/agent_start.sh && ./scripts/agent_start.sh
 
 # Safe file operations
 python scripts/safe_file_move.py old.md new.md --dry-run

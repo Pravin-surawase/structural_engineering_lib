@@ -95,7 +95,7 @@ print(f"Governing case: {report.governing_case_id}")
 ## New in v0.19.0
 
 - **NSGA-II Multi-Objective Pareto Optimization:** `optimize_pareto_front()` for multi-objective beam optimization with IS 456 clause references.
-- **API Contract Testing:** `check_api_signatures.py` for preventing API mismatches.
+- **API Contract Testing:** `check_api.py --signatures` for preventing API mismatches.
 - **Enhanced Cost Optimizer UI:** Interactive Pareto visualization with WHY explanations.
 
 ## New in v0.19.0

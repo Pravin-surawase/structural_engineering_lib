@@ -18,7 +18,7 @@
 
 **Impact:** Two critical pages were broken at commit time. User discovered the bug by manually loading the app.
 
-**Root Cause:** AST-based scanners (check_streamlit_issues.py) detect direct violations but cannot trace through function calls. Fragments called `st.sidebar.subheader()` and `st.sidebar.form()`, which violates Streamlit's fragment API restriction.
+**Root Cause:** AST-based scanners (check_streamlit.py) detect direct violations but cannot trace through function calls. Fragments called `st.sidebar.subheader()` and `st.sidebar.form()`, which violates Streamlit's fragment API restriction.
 
 **Resolution:** 6 comprehensive commits delivered:
 1. Research analysis (400+ lines)
@@ -36,7 +36,7 @@
 
 ### Why Existing Automation Failed
 
-#### 1. AST Scanner Limitation (check_streamlit_issues.py)
+#### 1. AST Scanner Limitation (check_streamlit.py)
 
 **What it does:** Scans Abstract Syntax Tree for direct unsafe patterns
 - ✅ Detects: `x / y` without zero check
@@ -169,7 +169,7 @@ with st.sidebar:
 
 ## Solution: Specialized Fragment Validator
 
-### Implementation: scripts/check_fragment_violations.py
+### Implementation: scripts/check_streamlit.py --fragments
 
 **Purpose:** Detect Streamlit fragment API violations via static analysis
 
@@ -202,7 +202,7 @@ with st.sidebar:
 # .pre-commit-config.yaml
 - id: check-fragment-violations
   name: Check Streamlit fragment API violations
-  entry: .venv/bin/python scripts/check_fragment_violations.py
+  entry: .venv/bin/python scripts/check_streamlit.py --fragments
   language: system
   pass_filenames: false
   files: ^streamlit_app/.*\.py$
@@ -225,7 +225,7 @@ fragment-validator:
   steps:
     - uses: actions/checkout@v4
     - name: Run Fragment API Validator
-      run: .venv/bin/python scripts/check_fragment_violations.py
+      run: .venv/bin/python scripts/check_streamlit.py --fragments
 ```
 
 **Triggers:** Every push/PR to main
@@ -259,7 +259,7 @@ def render_inputs():
     # ...
 ```
 
-**Validation:** `check_streamlit_issues.py` shows 0 issues
+**Validation:** `check_streamlit.py` shows 0 issues
 
 ### Fix 2: cost_optimizer.py (Commit 45bc7c5)
 
@@ -308,7 +308,7 @@ with st.sidebar:
 
 **Solution:** Identical fix pattern applied
 
-**Validation:** `check_fragment_violations.py` shows 0 violations after fixes
+**Validation:** `check_streamlit.py --fragments` shows 0 violations after fixes
 
 ---
 
@@ -318,7 +318,7 @@ with st.sidebar:
 **File:** `docs/research/fragment-api-restrictions-analysis.md`
 **Size:** 400+ lines
 **Content:**
-- Why check_streamlit_issues.py failed
+- Why check_streamlit.py failed
 - Streamlit fragment API rules (comprehensive)
 - 3-level detection strategy
 - Proposed automation solution
@@ -329,7 +329,7 @@ with st.sidebar:
 **File:** `streamlit_app/pages/01_🏗️_beam_design.py`
 **Change:** Remove `render_theme_toggle()` from fragment
 **Lines Changed:** 8 lines (simplified header, removed theme toggle call)
-**Validation:** check_streamlit_issues.py shows 0 issues
+**Validation:** check_streamlit.py shows 0 issues
 
 **Impact:** beam_design page now loads without error
 
@@ -337,7 +337,7 @@ with st.sidebar:
 **Files:**
 - `streamlit_app/pages/02_💰_cost_optimizer.py` (40 lines changed)
 - `streamlit_app/pages/03_✅_compliance.py` (40 lines changed)
-- `scripts/check_fragment_violations.py` (290 lines new)
+- `scripts/check_streamlit.py --fragments` (290 lines new)
 
 **Changes:**
 - Move fragment calls inside `with st.sidebar:` context
@@ -424,11 +424,11 @@ with st.sidebar:
 
 ```bash
 # Fragment validator
-$ .venv/bin/python scripts/check_fragment_violations.py
+$ .venv/bin/python scripts/check_streamlit.py --fragments
 ✅ No fragment API violations detected
 
 # AST scanner (all pages)
-$ .venv/bin/python scripts/check_streamlit_issues.py --all-pages
+$ .venv/bin/python scripts/check_streamlit.py --all-pages
 ✅ 01_🏗️_beam_design.py: No issues found
 📄 02_💰_cost_optimizer.py: 2 issues (Medium: type hints only)
 📄 03_✅_compliance.py: 2 issues (Medium: type hints only)
@@ -469,12 +469,12 @@ Check Streamlit fragment API violations..................................Passed
 ### 2. The Importance of Specialization
 
 **Before:** Relied on generic static analysis
-- check_streamlit_issues.py: General safety patterns (division, dict access)
+- check_streamlit.py: General safety patterns (division, dict access)
 - pylint: Python best practices
 - mypy: Type checking
 
 **After:** Added specialized validator
-- check_fragment_violations.py: Streamlit fragment API rules
+- check_streamlit.py --fragments: Streamlit fragment API rules
 - Detects violations that generic tools miss
 - Fast, focused, automated
 
@@ -578,7 +578,7 @@ def test_cost_optimizer_manual_inputs():
 
 7. **Comprehensive Streamlit linter**
    - Combine all Streamlit-specific checks
-   - check_streamlit_issues.py + check_fragment_violations.py + new checks
+   - check_streamlit.py + check_streamlit.py --fragments + new checks
    - Single entry point for all validations
 
 8. **AI-assisted bug prevention**
@@ -631,7 +631,7 @@ Layer 3: Documentation (reference, guides humans)
 
 ### 3. Self-Documenting Systems
 
-**check_fragment_violations.py:**
+**check_streamlit.py --fragments:**
 - Not just a validator
 - Provides clear error messages
 - Suggests fixes
@@ -659,7 +659,7 @@ Layer 3: Documentation (reference, guides humans)
 **After:** Knowledge in repo
 - `docs/research/fragment-api-restrictions-analysis.md` (why)
 - `docs/guidelines/streamlit-fragment-best-practices.md` (how)
-- `scripts/check_fragment_violations.py` (automation)
+- `scripts/check_streamlit.py --fragments` (automation)
 - `.github/copilot-instructions.md` (rules)
 
 **Result:** Future agents have complete context in one place.

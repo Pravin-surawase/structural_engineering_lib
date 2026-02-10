@@ -63,11 +63,11 @@
 
 | Scanner | Result | Issues Found |
 |---------|--------|--------------|
-| check_streamlit_issues.py | ⬜ Pass | 0 |
-| check_fragment_violations.py | ⬜ Pass | 0 |
+| check_streamlit.py | ⬜ Pass | 0 |
+| check_streamlit.py --fragments | ⬜ Pass | 0 |
 | check_circular_imports.py | ⬜ Pass | 0 |
 | check_type_annotations.py | ⬜ Pass | ≥50% |
-| check_api_signatures.py | ⬜ Pass | 0 |
+| check_api.py --signatures | ⬜ Pass | 0 |
 
 ---
 

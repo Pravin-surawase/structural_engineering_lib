@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-02-11
-- Focus: Session 89 — Scripts consolidation Phase 1+2: archive 7 dead scripts, merge 8→3 (check_api, check_governance, check_links), fix 2 broken CI refs, PR #428
+- Focus: Session 90 — Scripts consolidation Phase 2 complete (PR #429 merged), 280+ stale doc refs fixed across 45+ files, scripts-improvement-research.md updated
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,54 +21,52 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** Session 89 | **Focus:** Scripts consolidation Phase 1+2 (PR #428)
+**Last Session:** Session 90 | **Focus:** Phase 2 doc cleanup + scripts-improvement-research update
 
 ---
 
-## ✅ Session 89 Summary (Feb 11, 2026)
+## ✅ Session 90 Summary (Feb 11, 2026)
 
 ### Completed This Session
 
-Implemented the Prioritized Action Plan from the Scripts Improvement Research doc.
+**Phase 2 Doc Cleanup — 280+ stale references fixed:**
+1. Fixed 3 **CRITICAL** `.pre-commit-config.yaml` refs (check_api_docs_sync.py → check_api.py --sync, etc.)
+2. Fixed CLAUDE.md + `.github/copilot-instructions.md` + `.github/copilot/instructions.md`
+3. Fixed 8 agent guide docs (agent-quick-reference, agent-workflow-master-guide, agent-automation-system, agent-8-automation, agent-9-governance-hub, agent-6-comprehensive-onboarding, agent-6-streamlit-hub, agent-6-quick-start, agent-bootstrap-complete-review)
+4. Fixed 8 contributing docs (handoff, end-of-session-workflow, repo-professionalism, background-agent-guide, streamlit-maintenance-guide, streamlit-comprehensive-prevention-system, streamlit-prevention-system-review, streamlit-issues-catalog)
+5. Fixed 4 git-automation docs, 2 reference docs, 3 READMEs (docs, scripts, Python)
+6. Fixed audit docs, planning docs, research docs
+7. Updated scripts-improvement-research.md: Phase 2 → ✅ DONE, metrics updated (active scripts: ~79, high-overlap pairs: 0)
+8. Updated agent-bootstrap.md command table
 
-**Phase 1 — Quick Wins:**
-1. Archived 7 Tier-1 dead scripts to `scripts/_archive/`
-2. Fixed 2 broken CI refs in python-tests.yml (check_docs_index.py → check_docs.py --index)
+**Script name mapping applied:**
+| Old Script(s) | New Consolidated Script |
+|---------------|----------------------|
+| `start_session.py`, `end_session.py`, `update_handoff.py`, `check_session_docs.py` | `session.py start/end/handoff/check` |
+| `verify_release.py`, `check_release_docs.py`, `check_pre_release_checklist.py` | `release.py verify/check-docs/checklist` |
+| `check_streamlit_issues.py`, `check_fragment_violations.py`, `validate_streamlit_page.py`, `comprehensive_validator.py` | `check_streamlit.py --all-pages/--fragments` |
+| `check_api_signatures.py`, `check_api_docs_sync.py`, `check_api_doc_signatures.py` | `check_api.py --signatures/--docs/--sync` |
+| `validate_folder_structure.py`, `check_governance_compliance.py` | `check_governance.py --structure/--compliance` |
+| `check_docs_index.py`, `check_docs_index_links.py` | `check_docs.py --index/--index-links` |
+| `fix_broken_links.py` | `check_links.py --fix` |
+| `agent_setup.sh`, `agent_preflight.sh`, `copilot_setup.sh` | `agent_start.sh --quick` |
 
-**Phase 2 — Consolidation Merges (8 scripts → 3):**
-3. **check_api.py** — Merged check_api_signatures.py + check_api_doc_signatures.py + check_api_docs_sync.py
-4. **check_governance.py** — Merged validate_folder_structure.py + check_governance_compliance.py
-5. **check_links.py** — Merged old check_links.py + fix_broken_links.py (with fuzzy matching)
-6. Updated all 3 CI workflows (fast-checks.yml, python-tests.yml, streamlit-validation.yml)
-7. Updated scripts/index.json + automation-map.json
+### Files Changed (~45 files)
+- 1 config: `.pre-commit-config.yaml`
+- 3 instruction files: CLAUDE.md, copilot-instructions.md, copilot/instructions.md
+- 8 agent guides in `docs/agents/guides/`
+- 8 contributing docs
+- 4 git-automation docs
+- 3 READMEs (docs/, scripts/, Python/)
+- 2 reference docs (automation-catalog, streamlit-validation)
+- 3 audit docs, 3 planning docs, 4 research docs
+- 1 getting-started doc (copilot-quick-start)
+- 1 research update (scripts-improvement-research.md)
 
-### PR
-| Number | Description | Status |
-|--------|-------------|--------|
-| #428 | refactor: scripts consolidation phase 1 | 🟡 Open |
-
-### Files Changed (23 files)
-- 3 new consolidated scripts: check_api.py, check_governance.py, check_links.py (rewritten)
-- 15 scripts archived to scripts/_archive/
-- 3 CI workflows updated
-- 2 JSON indexes updated
-- 1 script reference updated (end_session.py)
-
-### Test Results
-```
-✅ check_api.py --help: Working
-✅ check_governance.py --structure: All checks passed
-✅ check_links.py --exclude-archive: Working
-✅ Python tests: 3181 passed, 3 skipped
-✅ YAML validation: All 3 workflows valid
-✅ JSON validation: Both index files valid
-```
-
-### Next Priorities (Scripts Consolidation)
-1. **Merge PR #428** after CI passes
-2. **Session scripts merge** (start_session.py + end_session.py + update_handoff.py + check_session_docs.py → session.py)
-3. **Release scripts merge** (release.py + verify_release.py + check_release_docs.py + check_pre_release_checklist.py → release.py)
-4. **Streamlit scripts merge** (check_streamlit_issues.py + check_fragment_violations.py + check_streamlit_imports.py → check_streamlit.py)
+### Next Priorities (Scripts Phase 3)
+1. **Make scripts import `_lib/utils.py`** — Start with 10 most-used scripts
+2. **Create `_lib/output.py`** — Unified JSON/table output
+3. **Create `_lib/ast_helpers.py`** — Shared AST parsing
 
 ---
 
@@ -282,6 +280,14 @@ def code_checks_live(beam, config) -> CodeCheckResult
 | **Launch** | 7 | Beta Launch | 🎯 TARGET |
 
 **Target:** March 15, 2026 (V3 Beta)
+
+---
+
+## Required Reading
+
+- [CLAUDE.md](../../CLAUDE.md) or [.github/copilot-instructions.md](../../.github/copilot-instructions.md) — Architecture + commit rules
+- [docs/TASKS.md](../TASKS.md) — Current work items
+- [docs/research/scripts-improvement-research.md](../research/scripts-improvement-research.md) — Phase 3 plan (next work)
 
 ---
 

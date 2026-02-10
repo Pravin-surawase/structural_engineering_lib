@@ -95,7 +95,7 @@ Create new job in `.github/workflows/fast-checks.yml`:
         run: pytest fastapi_app/tests/ -v --cov=fastapi_app --cov-report=term
 
       - name: API contract tests
-        run: python scripts/check_api_signatures.py --fastapi
+        run: python scripts/check_api.py --signatures --fastapi
 ```
 
 ---

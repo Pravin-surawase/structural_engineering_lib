@@ -58,7 +58,7 @@ Start here, find what you need, get back to work.
 cd streamlit_app && pytest tests/ -v
 
 # Check for code issues (AST scanner)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 
 # Run pylint on Streamlit code
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
@@ -73,7 +73,7 @@ cd streamlit_app && streamlit run Home.py
 
 Agent 6 uses a **3-layer prevention system** to catch issues before they reach users:
 
-1. **AST Scanner** (`check_streamlit_issues.py`)
+1. **AST Scanner** (`check_streamlit.py`)
    - Detects: NameError, ZeroDivisionError, AttributeError, KeyError
    - Runs: Pre-commit hook + CI
 

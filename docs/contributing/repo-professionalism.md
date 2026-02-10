@@ -58,16 +58,16 @@ Canonical sources:
 - For phased initiatives, use a single umbrella task and list included TASK IDs in its description; track the included tasks in Recently Done.
 
 ### Docs hygiene
-- Docs index structure is enforced locally and in CI: `scripts/check_docs_index.py`.
-- Release docs consistency is enforced locally and in CI: `scripts/check_release_docs.py`.
-- Session docs consistency is enforced locally and in CI: `scripts/check_session_docs.py`.
-- Handoff brief is derived from SESSION_LOG: `scripts/update_handoff.py` (or `scripts/end_session.py --fix`).
-- API docs sync is enforced locally and in CI: `scripts/check_api_docs_sync.py`.
-- Pre-release checklist structure is enforced locally and in CI: `scripts/check_pre_release_checklist.py`.
-- API doc signatures are enforced locally and in CI: `scripts/check_api_doc_signatures.py`.
+- Docs index structure is enforced locally and in CI: `scripts/check_docs.py --index`.
+- Release docs consistency is enforced locally and in CI: `scripts/release.py check-docs`.
+- Session docs consistency is enforced locally and in CI: `scripts/session.py check`.
+- Handoff brief is derived from SESSION_LOG: `scripts/session.py handoff` (or `scripts/session.py end --fix`).
+- API docs sync is enforced locally and in CI: `scripts/check_api.py --sync`.
+- Pre-release checklist structure is enforced locally and in CI: `scripts/release.py checklist`.
+- API doc signatures are enforced locally and in CI: `scripts/check_api.py --docs`.
 - Next-session brief length is enforced locally and in CI: `scripts/check_next_session_brief_length.py`.
 - CLI reference completeness is enforced locally and in CI: `scripts/check_cli_reference.py`.
-- Docs index links are enforced locally and in CI: `scripts/check_docs_index_links.py`.
+- Docs index links are enforced locally and in CI: `scripts/check_governance.py --index-links`.
 - Repo hygiene artifacts are blocked locally: `scripts/check_repo_hygiene.py`.
 
 ### PR discipline
@@ -98,7 +98,7 @@ Recommended minimal labels:
 | Fast code check | `./scripts/quick_check.sh` | Catch basic issues early |
 | Full local CI | `./scripts/ci_local.sh` | CI parity before PR |
 | External CLI test | `.venv/bin/python scripts/external_cli_test.py` | S-007 cold-start validation |
-| Release verify | `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi` | Confirm PyPI artifact |
+| Release verify | `.venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi` | Confirm PyPI artifact |
 
 If any check modifies files, re-stage and re-commit.
 
@@ -179,11 +179,11 @@ If any check modifies files, re-stage and re-commit.
 ## 8) Confidence loop (minimal but effective)
 
 **Per-session checklist**
-1) Run `scripts/start_session.py`.
+1) Run `scripts/session.py start`.
 2) Pick one TASK and finish it.
 3) Run the relevant checks (docs or code).
 4) Update `docs/SESSION_LOG.md` and `docs/TASKS.md`.
-5) Run `scripts/update_handoff.py` (or `scripts/end_session.py --fix`).
+5) Run `scripts/session.py handoff` (or `scripts/session.py end --fix`).
 6) Stop.
 
 **Release checklist (high level)**

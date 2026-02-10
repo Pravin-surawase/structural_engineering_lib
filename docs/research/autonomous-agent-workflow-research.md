@@ -64,7 +64,7 @@ Agent writes code → Agent validates → Agent finds issues → Agent fixes →
 
 #### 1.1 Static Analysis Suite
 ```python
-# scripts/comprehensive_validator.py
+# scripts/check_streamlit.py
 
 class ComprehensiveValidator:
     """Run ALL checks before execution"""
@@ -464,7 +464,7 @@ def test_full_workflow():
 
 **Week 1:**
 1. **Enhanced Static Analyzer** (2 hours)
-   - Extend check_streamlit_issues.py
+   - Extend check_streamlit.py
    - Add dependency graph analysis
    - Add path resolution validator
    - Add type consistency checker
@@ -476,7 +476,7 @@ def test_full_workflow():
    - Create validation report
 
 **Deliverables:**
-- `scripts/comprehensive_validator.py` (500+ lines)
+- `scripts/check_streamlit.py` (500+ lines)
 - Catches 90%+ of issues pre-execution
 - Provides actionable fix suggestions
 

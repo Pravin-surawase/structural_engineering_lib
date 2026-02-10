@@ -42,13 +42,13 @@ Run these after any structure changes:
 
 ```bash
 # Check folder structure compliance
-.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_governance.py --structure
 
 # Find broken links
 .venv/bin/python scripts/check_links.py
 
 # Verify doc index
-.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/python scripts/check_governance.py --index-links
 
 # Check root file count
 ./scripts/check_root_file_count.sh

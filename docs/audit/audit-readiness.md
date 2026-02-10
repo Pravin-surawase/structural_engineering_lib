@@ -40,9 +40,9 @@ This checklist defines the minimum evidence requirements for audit readiness. Ea
 | Type checking passes (mypy) | ⬜ | CI: `fast-checks.yml` | ✅ Yes |
 | No circular imports | ⬜ | `scripts/check_circular_imports.py` | ✅ Yes |
 | Type annotation rate ≥50% | ⬜ | `scripts/check_type_annotations.py` | ✅ Yes |
-| No Streamlit AST issues | ⬜ | `scripts/check_streamlit_issues.py` | ✅ Yes |
-| No fragment API violations | ⬜ | `scripts/check_fragment_violations.py` | ✅ Yes |
-| API signatures valid | ⬜ | `scripts/check_api_signatures.py` | ✅ Yes |
+| No Streamlit AST issues | ⬜ | `scripts/check_streamlit.py` | ✅ Yes |
+| No fragment API violations | ⬜ | `scripts/check_streamlit.py --fragments` | ✅ Yes |
+| API signatures valid | ⬜ | `scripts/check_api.py --signatures` | ✅ Yes |
 
 ---
 
@@ -50,10 +50,10 @@ This checklist defines the minimum evidence requirements for audit readiness. Ea
 
 | Requirement | Status | Evidence Location | Required |
 |-------------|--------|-------------------|----------|
-| Folder structure compliant | ⬜ | `scripts/validate_folder_structure.py` | ✅ Yes |
+| Folder structure compliant | ⬜ | `scripts/check_governance.py --structure` | ✅ Yes |
 | Root file count ≤10 | ⬜ | `scripts/check_root_file_count.sh` | ✅ Yes |
 | Doc metadata valid | ⬜ | `scripts/check_doc_metadata.py` | ✅ Yes |
-| API docs synchronized | ⬜ | `scripts/check_api_docs_sync.py` | ✅ Yes |
+| API docs synchronized | ⬜ | `scripts/check_api.py --sync` | ✅ Yes |
 | Internal links valid | ⬜ | `scripts/check_links.py` | ✅ Yes |
 | CHANGELOG updated | ⬜ | Manual review | ✅ Yes |
 | VERSION bumped | ⬜ | `Python/structural_lib/__init__.py` | ✅ Yes |

@@ -162,7 +162,7 @@ At the start of every Copilot session:
 <summary>🔧 Fallback: Manual pager config (if agent_start.sh unavailable)</summary>
 
 ```bash
-source scripts/copilot_setup.sh
+source scripts/agent_start.sh
 ```
 
 </details>

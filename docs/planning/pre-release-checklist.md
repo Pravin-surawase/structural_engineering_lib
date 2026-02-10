@@ -62,7 +62,7 @@ Target: Public beta with library-first APIs + DXF/BBS quality gates
 - [x] **Document results** in `docs/verification/validation-pack.md` with source refs
 - [ ] **One external engineer tries CLI cold** — note friction points
 - [x] **All tests pass** (see CI and local runs)
-- [ ] **PyPI install verified in clean venv** — `scripts/verify_release.py --version X.Y.Z --source pypi`
+- [ ] **PyPI install verified in clean venv** — `scripts/release.py verify --version X.Y.Z --source pypi`
 
 ### Nice-to-Have Before Beta
 

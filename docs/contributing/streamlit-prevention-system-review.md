@@ -225,7 +225,7 @@ time .venv/bin/python scripts/check_cost_optimizer_issues.py
 # Result: 0.8 seconds
 
 # Projected (all pages):
-time .venv/bin/python scripts/check_streamlit_issues.py --all-pages
+time .venv/bin/python scripts/check_streamlit.py --all-pages
 # Estimate: 3-5 seconds (5 pages)
 
 # With pylint:

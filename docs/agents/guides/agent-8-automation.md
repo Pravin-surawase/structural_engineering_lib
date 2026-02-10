@@ -11,12 +11,12 @@
 ```bash
 ./scripts/agent_start.sh        # Unified setup
 # OR
-./scripts/agent_setup.sh        # Legacy (still works)
+./scripts/agent_start.sh        # Legacy (still works)
 ```
 
 ### 2. Before any work
 ```bash
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 ```
 
 ### 3. Commit & Push (Every commit)
@@ -151,19 +151,19 @@ All Agent 8 scripts are in: **`scripts/`** (project root)
 
 ## Environment Setup Scripts
 
-**`agent_setup.sh`** (8.1K)
+**`agent_start.sh`** (8.1K)
 - **Purpose:** Session initialization
-- **Usage:** `./scripts/agent_setup.sh`
+- **Usage:** `./scripts/agent_start.sh`
 - **Features:**
   - Verifies Python venv
   - Checks git state
   - Validates scripts
   - Shows session context
-- **Worktree Mode:** `./scripts/agent_setup.sh --worktree AGENT_NAME`
+- **Worktree Mode:** `./scripts/agent_start.sh --worktree AGENT_NAME`
 
-**`agent_preflight.sh`** (10K)
+**`agent_start.sh`** (10K)
 - **Purpose:** Pre-task validation
-- **Usage:** `./scripts/agent_preflight.sh`
+- **Usage:** `./scripts/agent_start.sh`
 - **Checks:**
   - Git state clean
   - No unfinished merges
@@ -242,12 +242,12 @@ safe_push.sh
 ├── git (all operations)
 └── Pre-commit hooks (formatting, validation)
 
-agent_setup.sh
+agent_start.sh
 ├── Python venv
 ├── git
 └── validate_git_state.sh
 
-agent_preflight.sh
+agent_start.sh
 ├── git
 └── validate_git_state.sh
 ```
@@ -259,10 +259,10 @@ agent_preflight.sh
 ### Standard Workflow
 ```bash
 # Session start
-./scripts/agent_setup.sh
+./scripts/agent_start.sh
 
 # Before any work
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 
 # Make changes
 # ... edit files ...

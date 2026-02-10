@@ -303,7 +303,7 @@
 
 - [STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md](streamlit-comprehensive-prevention-system.md) - Original proposal
 - [STREAMLIT_PREVENTION_SYSTEM_REVIEW.md](streamlit-prevention-system-review.md) - Refined approach
-- [check_streamlit_issues.py](../../scripts/check_streamlit_issues.py) - Scanner tool
+- [check_streamlit.py](../../scripts/check_streamlit.py) - Scanner tool
 
 ---
 

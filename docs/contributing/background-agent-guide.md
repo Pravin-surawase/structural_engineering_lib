@@ -88,7 +88,7 @@ Then review your specific role:
 
 ```bash
 # Start session with context loading
-.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/session.py start
 
 # Read persistent context
 cat docs/planning/memory.md

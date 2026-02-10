@@ -34,9 +34,9 @@
 ./scripts/agent_start.sh --agent 9 --quick  # For governance agents
 
 # Legacy commands (still work):
-./scripts/agent_setup.sh
+./scripts/agent_start.sh --quick
 ./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/session.py start
 ```
 
 ### Step 2: Work & Commit
@@ -48,7 +48,7 @@
 ### Step 3: End Session
 ```bash
 # Run BEFORE ending session:
-.venv/bin/python scripts/end_session.py
+.venv/bin/python scripts/session.py end
 ```
 
 ---
@@ -125,7 +125,7 @@
 - **Minimum:** 5+ commits or 30+ minutes of substantial work
 - **Target:** Complete a full task or meaningful chunk before stopping
 - **If blocked:** Move to next task instead of ending session
-- **Before stopping:** Update TASKS.md, SESSION_LOG.md, run end_session.py
+- **Before stopping:** Update TASKS.md, SESSION_LOG.md, run session.py end
 
 ---
 
@@ -195,7 +195,7 @@ START
 
 # 4. Update session docs in this PR
 # - Log PR number (not merge hash) in SESSION_LOG
-.venv/bin/python scripts/update_handoff.py
+.venv/bin/python scripts/session.py handoff
 
 # 5. Finish and create PR
 ./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async --with-session-docs
@@ -207,7 +207,7 @@ START
 ### Pattern C: Worktree Workflow (Background Agents)
 ```bash
 # 1. Setup worktree environment
-./scripts/agent_setup.sh --worktree AGENT_5
+./scripts/agent_start.sh --quick  # (worktree: use worktree_manager.sh)
 
 # 2. Work in worktree
 cd worktree-AGENT_5-$(date +%Y-%m-%d)
@@ -236,7 +236,7 @@ cd $PROJECT_ROOT
 | `should_use_pr.sh` | Decision helper | When unsure |
 | `git_ops.sh --status` | State-aware router | When unsure what to do |
 | `agent_mistakes_report.sh` | Mistake reminder | Start of session |
-| `end_session.py` | Session cleanup | End of session |
+| `session.py end` | Session cleanup | End of session |
 
 ### PR Management Scripts
 
@@ -363,13 +363,13 @@ cd ..
 **Workflow:**
 ```bash
 # Start session
-./scripts/agent_setup.sh
+./scripts/agent_start.sh --quick
 
 # Work on request
 ./scripts/ai_commit.sh "..."
 
 # End session
-./scripts/end_session.py
+./scripts/session.py end
 ```
 
 ### Background Agent (Agent 5, 6, etc.)
@@ -382,7 +382,7 @@ cd ..
 **Workflow:**
 ```bash
 # Setup (once)
-./scripts/agent_setup.sh --worktree AGENT_N
+./scripts/agent_start.sh --quick  # (worktree: use worktree_manager.sh)
 
 # Work (in worktree)
 cd worktree-AGENT_N-*
@@ -541,7 +541,7 @@ cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 ### Problem: Python venv not found
 ```bash
 # Setup environment first
-./scripts/agent_setup.sh
+./scripts/agent_start.sh --quick
 ```
 
 ### Problem: Git state corrupted
@@ -566,7 +566,7 @@ cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 ## ✅ Success Checklist
 
 ### Before Starting Work
-- [ ] Ran `./scripts/agent_setup.sh`
+- [ ] Ran `./scripts/agent_start.sh --quick`
 - [ ] Ran `./scripts/agent_preflight.sh`
 - [ ] Read relevant task in TASKS.md
 - [ ] Understand PR vs direct commit decision
@@ -581,7 +581,7 @@ cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 - [ ] All tests passing
 - [ ] CI checks passing (if PR)
 - [ ] Documentation updated
-- [ ] Ran `./scripts/end_session.py`
+- [ ] Ran `./scripts/session.py end`
 
 ### Before Handoff
 - [ ] TASKS.md reflects current state

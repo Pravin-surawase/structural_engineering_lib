@@ -89,7 +89,7 @@
 ### Phase 1: Extend Static Analyzer (HIGH PRIORITY)
 
 #### 1.1 Create Multi-Page Scanner
-**File:** `scripts/check_streamlit_issues.py`
+**File:** `scripts/check_streamlit.py`
 
 **Features:**
 - Scan ALL pages in `streamlit_app/pages/*.py`
@@ -289,7 +289,7 @@ jobs:
 
       - name: Run multi-page issue detector
         run: |
-          .venv/bin/python scripts/check_streamlit_issues.py --all-pages
+          .venv/bin/python scripts/check_streamlit.py --all-pages
 
       - name: Run pylint on all pages
         run: |
@@ -301,7 +301,7 @@ jobs:
 
       - name: Fail on CRITICAL issues
         run: |
-          .venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on critical
+          .venv/bin/python scripts/check_streamlit.py --all-pages --fail-on critical
 ```
 
 #### 3.2 Update Pre-Commit Hook
@@ -312,7 +312,7 @@ jobs:
   hooks:
     - id: check-streamlit-issues
       name: Check Streamlit App Issues (All Pages)
-      entry: .venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
+      entry: .venv/bin/python scripts/check_streamlit.py --all-pages --fail-on critical,high
       language: python
       files: ^streamlit_app/pages/.*\.py$
       pass_filenames: false

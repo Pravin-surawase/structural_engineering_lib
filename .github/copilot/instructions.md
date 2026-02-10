@@ -15,7 +15,7 @@
 
 ```bash
 # Session start
-./scripts/agent_setup.sh && ./scripts/agent_preflight.sh
+./scripts/agent_start.sh --quick
 
 # Commits (ALWAYS use automation)
 ./scripts/ai_commit.sh "commit message"

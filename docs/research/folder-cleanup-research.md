@@ -117,7 +117,7 @@ git mv old/path/file.md new/path/file.md
 echo "# Moved\n\nThis file has moved to [new location](../new/path/file.md)." > old/path/file.md
 
 # Step 5: Run link check
-# Step 6: Fix any broken links using fix_broken_links.py
+# Step 6: Fix any broken links using check_links.py
 ```
 
 ---
@@ -189,7 +189,7 @@ Every folder should have a README.md with:
 
 ### 5.1 Existing Automation
 - ✅ `scripts/check_links.py` - Link validation
-- ✅ `scripts/fix_broken_links.py` - Auto-fix links
+- ✅ `scripts/check_links.py` - Auto-fix links
 - ✅ `scripts/archive_old_files.sh` - Archive from `_active/`
 - ✅ `scripts/check_folder_structure.py` - Structure validation
 - ✅ `scripts/generate_docs_index.py` - Docs index

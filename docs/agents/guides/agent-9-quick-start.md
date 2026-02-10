@@ -31,7 +31,7 @@ open docs/guidelines/migration-workflow-guide.md
 # Run validation bundle after any structure changes
 .venv/bin/python scripts/validate_folder_structure.py
 .venv/bin/python scripts/check_links.py
-.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/python scripts/check_docs.py --index-links
 ```
 
 **That's it!** Agent 9 ensures:
@@ -87,7 +87,7 @@ Is this a script?
 |---------|---------|
 | `validate_folder_structure.py` | Check rule compliance |
 | `check_links.py` | Find broken links |
-| `check_docs_index_links.py` | Verify index accuracy |
+| `check_docs.py --index-links` | Verify index accuracy |
 | `check_root_file_count.sh` | Ensure <10 root files |
 | `generate_dashboard.sh` | Update metrics |
 

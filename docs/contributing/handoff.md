@@ -14,7 +14,7 @@ Goal: enable the next agent to resume in under 2 minutes.
    - **Jan 11 2026**: Session 13 - Folder Governance + Agent Onboarding
    - Created unified `agent_start.sh` (replaces 4 commands with 1)
    - Archived 4 redundant docs, consolidated agent-automation-system.md v1.1.0
-4. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
+4. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi`
 
 ### Quick output sample (agent_start.sh --quick)
 ```
@@ -35,15 +35,15 @@ $ ./scripts/agent_start.sh --quick
 ```
 
 ### Release verify (clean venv)
-- Local wheel (pre-release): `.venv/bin/python scripts/verify_release.py --source wheel --wheel-dir Python/dist`
-- PyPI (post-release): `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
+- Local wheel (pre-release): `.venv/bin/python scripts/release.py verify --source wheel --wheel-dir Python/dist`
+- PyPI (post-release): `.venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi`
 
 ## Handoff (ending)
 
 > **📋 Full workflow:** See [contributing/end-of-session-workflow.md](end-of-session-workflow.md) for comprehensive checklist
 
 **Quick steps (5 minutes):**
-1. Run: `.venv/bin/python scripts/end_session.py --fix`
+1. Run: `.venv/bin/python scripts/session.py end --fix`
 2. Update `docs/planning/next-session-brief.md` with summary + blockers.
 3. Update `docs/TASKS.md` (move items to Done/Active).
 4. Document issues in `docs/contributing/session-issues.md` (if encountered).

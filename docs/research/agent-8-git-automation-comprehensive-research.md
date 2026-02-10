@@ -88,7 +88,7 @@ User Request
      ↓
 [Session Start] → agent_start.sh --quick (6s)
      ↓
-[Pre-Flight Check] → agent_preflight.sh (1-3s)
+[Pre-Flight Check] → agent_start.sh (1-3s)
      ↓
 [Make Changes] → (Actual work)
      ↓
@@ -100,7 +100,7 @@ User Request
      ↓
 [CI Monitor] → gh pr checks --watch (if PR)
      ↓
-[Session End] → end_session.py
+[Session End] → session.py end
 ```
 
 ### 2.2 Script Dependency Graph
@@ -803,11 +803,11 @@ test_branch_operations.sh # Branch edge cases
 
 ```bash
 agent_start.sh            # Unified onboarding (v2.1)
-agent_setup.sh            # Environment setup
-agent_preflight.sh        # Pre-task validation
+agent_start.sh            # Environment setup
+agent_start.sh        # Pre-task validation
 worktree_manager.sh       # Worktree lifecycle
-start_session.py          # Session initialization
-end_session.py            # Session cleanup
+session.py start          # Session initialization
+session.py end            # Session cleanup
 ```
 
 ### 8.4 Pre-Commit Hook Scripts (23 checks)
@@ -1115,7 +1115,7 @@ All serve distinct purposes, no redundancy.
 ./scripts/ai_commit.sh "feat: implement X"    # One command does all
 
 # End session
-.venv/bin/python scripts/end_session.py
+.venv/bin/python scripts/session.py end
 ```
 
 ### Emergency Recovery

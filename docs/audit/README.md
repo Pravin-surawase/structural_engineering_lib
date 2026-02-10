@@ -51,8 +51,8 @@ This folder contains audit evidence templates, checklists, and generated reports
 | Script | Purpose |
 |--------|---------|
 | `scripts/audit_readiness_report.py` | Generate audit evidence bundle |
-| `scripts/check_governance_compliance.py` | Governance health check |
-| `scripts/validate_folder_structure.py` | Structure compliance |
+| `scripts/check_governance.py` | Governance health check |
+| `scripts/check_governance.py --structure` | Structure compliance |
 
 ---
 

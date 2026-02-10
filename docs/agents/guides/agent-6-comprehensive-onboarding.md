@@ -30,7 +30,7 @@ Your mission: Build and maintain production-ready Streamlit dashboards for the I
 cat docs/TASKS.md | grep -A 20 "v0.17.5"
 
 # 3. Validate the app
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 
 # 4. Run tests
 cd streamlit_app && pytest tests/ -v
@@ -103,7 +103,7 @@ streamlit_app/                # ~20,000 lines total
 
 ```bash
 # REQUIRED: Run this before committing any Streamlit changes
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 
 # Scanner catches:
 # - NameError (undefined variables)
@@ -177,14 +177,14 @@ cd streamlit_app && pytest tests/ --cov=. --cov-report=html
    - Update documentation
 
 4. Validate Changes
-   .venv/bin/python scripts/check_streamlit_issues.py <file>
+   .venv/bin/python scripts/check_streamlit.py <file>
    cd streamlit_app && pytest tests/ -v
 
 5. Commit Changes
    ./scripts/ai_commit.sh "feat(streamlit): description"
 
 6. End Session
-   .venv/bin/python scripts/end_session.py
+   .venv/bin/python scripts/session.py end
 ```
 
 ### PR Workflow (For Substantial Changes)
@@ -213,16 +213,16 @@ gh pr merge <PR_NUMBER> --squash --delete-branch
 
 ## 🔍 Quality Tools
 
-### 1. AST Scanner (`check_streamlit_issues.py`)
+### 1. AST Scanner (`check_streamlit.py`)
 
 The scanner uses AST analysis to detect runtime errors before they happen.
 
 ```bash
 # Scan all pages
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --all-pages
 
 # Scan specific file
-.venv/bin/python scripts/check_streamlit_issues.py streamlit_app/pages/01_🏗️_beam_design.py
+.venv/bin/python scripts/check_streamlit.py streamlit_app/pages/01_🏗️_beam_design.py
 
 # What it detects:
 # - CRITICAL: NameError, ZeroDivisionError, ImportError

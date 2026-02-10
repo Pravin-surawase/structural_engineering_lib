@@ -20,7 +20,7 @@
 
 ```bash
 # 1. Run automated checks
-.venv/bin/python scripts/end_session.py --fix
+.venv/bin/python scripts/session.py end --fix
 
 # 2. Review output and fix any issues
 # 3. Commit uncommitted work (if any)
@@ -38,7 +38,7 @@
 
 ```bash
 cd /path/to/structural_engineering_lib
-.venv/bin/python scripts/end_session.py --fix
+.venv/bin/python scripts/session.py end --fix
 ```
 
 **What it checks:**
@@ -254,7 +254,7 @@ git log --oneline -3    # Verify your commits are there
 
 ### Don't Do These Things
 
-❌ **Don't skip end_session.py checks**
+❌ **Don't skip session.py end checks**
 - Takes <30 seconds
 - Catches issues before handoff
 - Prevents broken handoffs
@@ -289,13 +289,13 @@ before running `finish_task_pr.sh`. Record the **PR number** (not the merge hash
 SESSION_LOG entry so you never need a post-merge log commit.
 
 ### Routine Bug Fix (1-2 hours)
-1. Run `end_session.py --quick`
+1. Run `session.py end --quick`
 2. Commit work with clear message
 3. Update TASKS.md if task completed
 4. Done!
 
 ### Feature Implementation (2-4 hours)
-1. Run `end_session.py --fix`
+1. Run `session.py end --fix`
 2. Commit all work
 3. Update TASKS.md (move to Done)
 4. Update next-session-brief.md with summary
@@ -303,7 +303,7 @@ SESSION_LOG entry so you never need a post-merge log commit.
 6. Done!
 
 ### Major Enhancement (4+ hours)
-1. Run `end_session.py --fix`
+1. Run `session.py end --fix`
 2. Commit all work
 3. Update TASKS.md comprehensively
 4. Update next-session-brief.md with details
@@ -324,7 +324,7 @@ SESSION_LOG entry so you never need a post-merge log commit.
 
 ## 📊 Automated vs Manual Steps
 
-| Step | Automated by end_session.py | Manual Required |
+| Step | Automated by session.py end | Manual Required |
 |------|----------------------------|-----------------|
 | Check git status | ✅ Yes | ❌ No |
 | Check session log entry | ✅ Yes | 🟡 Review/edit if needed |
@@ -346,7 +346,7 @@ SESSION_LOG entry so you never need a post-merge log commit.
 
 ### Failure #1: "I don't know what was done last"
 **Cause:** Session log not updated, no handoff brief
-**Prevention:** Run `end_session.py --fix` (auto-creates entry)
+**Prevention:** Run `session.py end --fix` (auto-creates entry)
 
 ### Failure #2: "The working tree is dirty"
 **Cause:** Uncommitted changes left in workspace
@@ -372,7 +372,7 @@ SESSION_LOG entry so you never need a post-merge log commit.
 
 ## 💡 Pro Tips
 
-**Tip 1: Use end_session.py early and often**
+**Tip 1: Use session.py end early and often**
 - Run it before your last commit (catches issues early)
 - Easier to fix issues during session than after
 
@@ -476,7 +476,7 @@ SESSION_LOG entry so you never need a post-merge log commit.
 
 ## 🔗 Related Documentation
 
-- **end_session.py usage:** Run with `--help` for full options
+- **session.py end usage:** Run with `--help` for full options
 - **Automation catalog:** [docs/reference/automation-catalog.md](../reference/automation-catalog.md)
 - **Session issues log:** [docs/contributing/session-issues.md](session-issues.md)
 - **Session log:** [docs/SESSION_LOG.md](../SESSION_LOG.md)

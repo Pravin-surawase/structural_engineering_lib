@@ -180,13 +180,13 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 | Move file | `.venv/bin/python scripts/safe_file_move.py old new --dry-run` (then without flag) |
 | Delete file | `.venv/bin/python scripts/safe_file_delete.py file` |
 | Create doc | `.venv/bin/python scripts/create_doc.py path "Title"` |
-| Fix links | `.venv/bin/python scripts/fix_broken_links.py --fix` |
+| Fix links | `.venv/bin/python scripts/check_links.py --fix` |
 | Find automation | `.venv/bin/python scripts/find_automation.py "task"` |
 | API signatures | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
-| Streamlit check | `.venv/bin/python scripts/check_streamlit_issues.py --all-pages` |
-| Fragment check | `.venv/bin/python scripts/check_fragment_violations.py` |
+| Streamlit check | `.venv/bin/python scripts/check_streamlit.py --all-pages` |
+| Fragment check | `.venv/bin/python scripts/check_streamlit.py --fragments` |
 | Streamlit launch | `./scripts/launch_streamlit.sh` |
-| Session end | `.venv/bin/python scripts/end_session.py` |
+| Session end | `.venv/bin/python scripts/session.py end` |
 
 **Never do manually:** `git add/commit/push`, `rm/mv` docs, create docs without metadata.
 
@@ -237,7 +237,7 @@ If using other tools, the rules below apply. If using Claude Code or Copilot, yo
 - Use safe patterns: `data.get('key', default)` not `data['key']`, check `len()` before index access
 - Imports at module level only — never `import` inside functions
 - Use `st.session_state.get('key', default)` not `st.session_state.key`
-- Run `check_fragment_violations.py` + `check_streamlit_issues.py` before committing
+- Run `check_streamlit.py --fragments` + `check_streamlit.py --all-pages` before committing
 - Full rules: [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md)
 
 ---

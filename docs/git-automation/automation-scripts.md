@@ -97,13 +97,13 @@ Reference for core git automation scripts (subset). For the full automation regi
 ./scripts/agent_start.sh --agent 9  # With agent guidance
 ```
 - **Purpose:** Unified session initialization
-- **Combines:** `agent_setup.sh` + `agent_preflight.sh` + `start_session.py`
+- **Combines:** `agent_start.sh` + `agent_start.sh` + `session.py start`
 - **Quick mode:** 54% faster (6s vs 13s)
 
-**`agent_setup.sh`** (8.1KB) - Legacy Setup
+**`agent_start.sh`** (8.1KB) - Legacy Setup
 ```bash
-./scripts/agent_setup.sh
-./scripts/agent_setup.sh --worktree AGENT_NAME  # Worktree mode
+./scripts/agent_start.sh
+./scripts/agent_start.sh --worktree AGENT_NAME  # Worktree mode
 ```
 - **Purpose:** Session initialization
 - **Features:**
@@ -112,9 +112,9 @@ Reference for core git automation scripts (subset). For the full automation regi
   - Validates scripts
   - Shows session context
 
-**`agent_preflight.sh`** (10KB) - Pre-Task Validation
+**`agent_start.sh`** (10KB) - Pre-Task Validation
 ```bash
-./scripts/agent_preflight.sh
+./scripts/agent_start.sh
 ```
 - **Purpose:** Pre-task validation checks
 - **Checks:**
@@ -132,11 +132,11 @@ Reference for core git automation scripts (subset). For the full automation regi
 - **Purpose:** Quick reminder of common agent mistakes and fixes
 - **Use when:** Start of session (automatically shown by agent_start.sh)
 
-**`end_session.py`** - Session End
+**`session.py end`** - Session End
 ```bash
-.venv/bin/python scripts/end_session.py
-.venv/bin/python scripts/end_session.py --fix   # Auto-fix issues
-.venv/bin/python scripts/end_session.py --quick # Skip slow checks
+.venv/bin/python scripts/session.py end
+.venv/bin/python scripts/session.py end --fix   # Auto-fix issues
+.venv/bin/python scripts/session.py end --quick # Skip slow checks
 ```
 - **Purpose:** Session cleanup and handoff
 - **Checks:**
@@ -326,9 +326,9 @@ Reference for core git automation scripts (subset). For the full automation regi
 ```
 - **Purpose:** Detect version inconsistencies
 
-**`fix_broken_links.py`** - Link Repair
+**`check_links.py`** - Link Repair
 ```bash
-.venv/bin/python scripts/fix_broken_links.py --fix
+.venv/bin/python scripts/check_links.py --fix
 ```
 - **Purpose:** Auto-fix broken links
 
@@ -355,16 +355,16 @@ safe_push.sh
 └── Pre-commit hooks (formatting, validation)
 
 agent_start.sh (unified)
-├── agent_setup.sh (environment)
-├── agent_preflight.sh (validation)
-└── start_session.py (session tracking)
+├── agent_start.sh (environment)
+├── agent_start.sh (validation)
+└── session.py start (session tracking)
 
-agent_setup.sh
+agent_start.sh
 ├── Python venv
 ├── git
 └── validate_git_state.sh
 
-agent_preflight.sh
+agent_start.sh
 ├── git
 └── validate_git_state.sh
 ```

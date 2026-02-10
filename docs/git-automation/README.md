@@ -51,7 +51,7 @@
 | **Clean stale branches** | `./scripts/cleanup_stale_branches.sh` | 10s |
 | **Fix git issues** | `./scripts/recover_git_state.sh` | 5s |
 | **Start session** | `./scripts/agent_start.sh --quick` | 6s |
-| **End session** | `.venv/bin/python scripts/end_session.py` | 3s |
+| **End session** | `.venv/bin/python scripts/session.py end` | 3s |
 
 **Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in the same PR and
 record the PR number (not merge hash).
@@ -87,9 +87,9 @@ record the PR number (not merge hash).
 | **Git Workflow** | 12 | `ai_commit.sh`, `safe_push.sh`, `should_use_pr.sh` |
 | **PR Management** | 5 | `create_task_pr.sh`, `finish_task_pr.sh` |
 | **Recovery** | 4 | `recover_git_state.sh`, `check_unfinished_merge.sh` |
-| **Session** | 6 | `agent_start.sh`, `end_session.py`, `start_session.py` |
+| **Session** | 6 | `agent_start.sh`, `session.py end`, `session.py start` |
 | **Validation** | 25+ | `check_links.py`, `check_doc_versions.py` |
-| **Documentation** | 15+ | `safe_file_move.py`, `fix_broken_links.py` |
+| **Documentation** | 15+ | `safe_file_move.py`, `check_links.py` |
 | **Testing** | 20+ | `run_tests.sh`, verification scripts |
 | **Build/Release** | 10+ | `release.py`, `bump_version.py` |
 
@@ -110,7 +110,7 @@ record the PR number (not merge hash).
 | **Merge conflict** | `./scripts/check_unfinished_merge.sh` |
 | **Pre-commit failed** | Already handled by `ai_commit.sh` |
 | **Push rejected** | Script auto-retries with rebase |
-| **Don't know what to do** | `./scripts/agent_preflight.sh` |
+| **Don't know what to do** | `./scripts/agent_start.sh` |
 
 ---
 
@@ -140,7 +140,7 @@ The following scripts are **legacy** and should NOT be used. They are retained o
 | Script | Purpose | Replaces |
 |--------|---------|----------|
 | `ai_commit.sh` | **PRIMARY** - All commits | Manual git, safe_push.sh directly |
-| `agent_start.sh --quick` | Session start | agent_setup.sh, agent_preflight.sh separately |
+| `agent_start.sh --quick` | Session start | agent_start.sh, agent_start.sh separately |
 | `git_ops.sh --status` | State analysis | Manual git status checking |
 | `recover_git_state.sh` | Emergency recovery | Manual conflict resolution |
 
@@ -150,8 +150,8 @@ The following scripts are **legacy** and should NOT be used. They are retained o
 |--------|--------|-------------|
 | Direct `safe_push.sh` | Internal use only | Use `ai_commit.sh` |
 | Manual add/commit/push workflows | Blocked by hooks | Use `ai_commit.sh` |
-| `agent_setup.sh` alone | Still works | Prefer `agent_start.sh --quick` |
-| `agent_preflight.sh` alone | Still works | Prefer `agent_start.sh` (includes this) |
+| `agent_start.sh` alone | Still works | Prefer `agent_start.sh --quick` |
+| `agent_start.sh` alone | Still works | Prefer `agent_start.sh` (includes this) |
 
 ### Why This Matters
 

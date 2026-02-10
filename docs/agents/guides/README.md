@@ -40,9 +40,9 @@ Agent 8 research documents remain in `docs/research/` for centralized research o
 - Git mv for file moves (preserve history)
 
 ### Validation Tools
-- `validate_folder_structure.py` - Check rule compliance
+- `check_governance.py --structure` - Check rule compliance
 - `check_links.py` - Find broken links
-- `check_docs_index_links.py` - Verify index accuracy
+- `check_governance.py --index-links` - Verify index accuracy
 - `check_root_file_count.sh` - Ensure <10 root files
 
 ---
