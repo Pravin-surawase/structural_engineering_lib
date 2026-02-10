@@ -17,6 +17,11 @@ from pathlib import Path
 
 import pytest
 
+from structural_lib.detailing import (
+    BarArrangement,
+    BeamDetailingResult,
+    StirrupArrangement,
+)
 from structural_lib.services.bbs import (  # Constants; Weight calculations; Cut length calculations; BBS generation; Cutting-stock optimization; Data classes
     STANDARD_STOCK_LENGTHS_MM,
     UNIT_WEIGHTS_KG_M,
@@ -34,11 +39,6 @@ from structural_lib.services.bbs import (  # Constants; Weight calculations; Cut
     export_bom_summary_csv,
     generate_bbs_from_detailing,
     optimize_cutting_stock,
-)
-from structural_lib.detailing import (
-    BarArrangement,
-    BeamDetailingResult,
-    StirrupArrangement,
 )
 
 # =============================================================================
