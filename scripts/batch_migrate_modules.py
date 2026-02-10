@@ -112,6 +112,13 @@ def update_all_imports(
     # Sort by longest module name first to avoid partial matches
     sorted_modules = sorted(module_map.keys(), key=len, reverse=True)
 
+    # Also build a short-name map: "api" -> "services.api" for bare imports
+    short_name_map: dict[str, str] = {}
+    for old_mod, new_mod in module_map.items():
+        old_short = old_mod.split(".")[-1]  # e.g. "api"
+        new_rel = new_mod.replace("structural_lib.", "")  # e.g. "services.api"
+        short_name_map[old_short] = new_rel
+
     for py_file in files:
         try:
             content = py_file.read_text(encoding="utf-8")
@@ -122,28 +129,34 @@ def update_all_imports(
         for old_module in sorted_modules:
             new_module = module_map[old_module]
 
-            # from structural_lib.core.types import X -> from structural_lib.core.types import X
+            # Pattern 1: from structural_lib.api import X -> from structural_lib.services.api import X
             content = re.sub(
                 rf"(from\s+){re.escape(old_module)}(\s+import)",
                 rf"\g<1>{new_module}\g<2>",
                 content,
             )
 
-            # import structural_lib.core.types -> import structural_lib.core.types
+            # Pattern 2: import structural_lib.api -> import structural_lib.services.api
             content = re.sub(
                 rf"(import\s+){re.escape(old_module)}\b",
                 rf"\g<1>{new_module}",
                 content,
             )
 
+        # Pattern 3: from structural_lib import api, batch -> needs per-name update
+        # This handles "from structural_lib import X" where X is a moved module
+        for short_name, new_rel_path in short_name_map.items():
+            # Match: from structural_lib import ... short_name ...
+            # Replace just the module name in the import list
+            content = re.sub(
+                rf"(from\s+structural_lib\s+import\s+.*?)\b{re.escape(short_name)}\b",
+                rf"\g<1>{new_rel_path.replace('/', '.')}",
+                content,
+            )
+
         if content != original:
             if dry_run:
                 rel = py_file.relative_to(PROJECT_ROOT)
-                # Count changes
-                changes = sum(
-                    1 for old_mod in sorted_modules
-                    if old_mod in original and module_map[old_mod] in content
-                )
                 print(f"  Would update: {rel}")
             else:
                 py_file.write_text(content, encoding="utf-8")
@@ -152,6 +165,117 @@ def update_all_imports(
             updated_count += 1
 
     return updated_count
+
+
+def fix_relative_imports_in_moved_files(
+    moves: dict[str, str],
+    dry_run: bool = False,
+) -> int:
+    """Fix relative imports in files that were moved to a new subdirectory.
+
+    When a file moves from structural_lib/ to structural_lib/services/,
+    its relative imports like `from .models import X` now resolve incorrectly
+    to `services.models` instead of the root `structural_lib.models`.
+
+    This function converts broken relative imports to absolute imports.
+    """
+    # Determine which modules are in each destination directory
+    dest_modules: dict[str, set[str]] = {}  # dest_dir -> set of module names
+    for src, dst in moves.items():
+        dest_dir = str(Path(dst).parent)  # e.g. "services" or "core"
+        mod_name = Path(src).stem  # e.g. "api"
+        dest_modules.setdefault(dest_dir, set()).add(mod_name)
+
+    # Known locations of all modules (build from project structure)
+    # Modules in core/
+    core_mods = {
+        "constants", "types", "data_types", "models", "errors", "error_messages",
+        "validation", "inputs", "result_base", "utilities",
+        "base", "geometry", "materials", "registry",
+    }
+    # Subpackages at root level
+    root_subpkgs = {"codes", "insights", "visualization", "reports"}
+    # Root modules (shims and real)
+    root_mods = {
+        "calculation_report", "torsion", "detailing", "materials",
+        "serviceability", "slenderness", "flexure", "shear", "ductile",
+        "tables", "compliance", "bbs", "dxf_export", "excel_integration",
+        "job_runner", "report",
+    }
+
+    fixed_count = 0
+
+    for src, dst in moves.items():
+        dst_path = LIB_ROOT / dst
+        if not dst_path.exists():
+            continue
+
+        dest_dir = str(Path(dst).parent)
+        sibling_mods = dest_modules.get(dest_dir, set())
+
+        try:
+            text = dst_path.read_text(encoding="utf-8")
+            original = text
+        except (OSError, UnicodeDecodeError):
+            continue
+
+        lines = text.split("\n")
+        fixed_lines = []
+
+        for line in lines:
+            # Pattern A: from .module import X (where module is NOT a sibling)
+            m = re.match(r"^(\s*)(from \.)(\w+)(.*)", line)
+            if m:
+                indent, _prefix, module, rest = m.groups()
+                if module in sibling_mods:
+                    fixed_lines.append(line)  # Valid sibling import
+                elif module in core_mods:
+                    fixed_lines.append(f"{indent}from structural_lib.core.{module}{rest}")
+                elif module in root_subpkgs:
+                    fixed_lines.append(f"{indent}from structural_lib.{module}{rest}")
+                elif module in root_mods:
+                    fixed_lines.append(f"{indent}from structural_lib.{module}{rest}")
+                else:
+                    fixed_lines.append(line)  # Unknown — leave as-is
+                continue
+
+            # Pattern B: from . import X, Y, Z (bare package imports)
+            m2 = re.match(r"^(\s*)from \. import (.+)", line)
+            if m2:
+                indent, import_list = m2.groups()
+                # Parse the import names (handle multiline opening parens)
+                if import_list.strip().startswith("("):
+                    # Multi-line import — leave as-is for now, complex to handle
+                    fixed_lines.append(line)
+                    continue
+                names = [n.strip() for n in import_list.split(",")]
+                sibling_names = [n for n in names if n in sibling_mods]
+                non_sibling_names = [n for n in names if n not in sibling_mods]
+                result_lines = []
+                if sibling_names:
+                    result_lines.append(f"{indent}from . import {', '.join(sibling_names)}")
+                if non_sibling_names:
+                    result_lines.append(f"{indent}from structural_lib import {', '.join(non_sibling_names)}")
+                if result_lines:
+                    fixed_lines.extend(result_lines)
+                else:
+                    fixed_lines.append(line)
+                continue
+
+            fixed_lines.append(line)
+
+        new_text = "\n".join(fixed_lines)
+        if new_text != original:
+            if dry_run:
+                rel = dst_path.relative_to(PROJECT_ROOT)
+                print(f"  Would fix relative imports: {rel}")
+            else:
+                dst_path.write_text(new_text, encoding="utf-8")
+                rel = dst_path.relative_to(PROJECT_ROOT)
+                print(f"  Fixed relative imports: {rel}")
+            fixed_count += 1
+
+    return fixed_count
 
 
 def move_files(
@@ -344,6 +468,12 @@ def main():
     all_files = find_python_files()
     updated = update_all_imports(module_map, all_files, args.dry_run)
     print(f"   Updated {updated} files")
+    print()
+
+    # Step 2.5: Fix relative imports in moved files
+    print("🔧 Step 2.5: Fixing relative imports in moved files...")
+    rel_fixed = fix_relative_imports_in_moved_files(moves, args.dry_run)
+    print(f"   Fixed {rel_fixed} files")
     print()
 
     # Step 3: Create stubs

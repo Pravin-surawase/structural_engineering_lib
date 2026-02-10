@@ -148,10 +148,51 @@ def extract_imports(file_path: Path) -> list[tuple[int, str, str]]:
             for alias in node.names:
                 imports.append((node.lineno, alias.name, "import"))
         elif isinstance(node, ast.ImportFrom):
-            if node.module and node.level == 0:  # Absolute imports only
+            if node.module and node.level == 0:  # Absolute imports
                 imports.append((node.lineno, node.module, "from"))
+            elif node.level > 0:  # Relative imports
+                # Resolve relative import to absolute path
+                resolved = _resolve_relative_import(
+                    file_path, node.module or "", node.level
+                )
+                if resolved:
+                    imports.append((node.lineno, resolved, "from(relative)"))
 
     return imports
+
+
+def _resolve_relative_import(
+    file_path: Path, module: str, level: int
+) -> str | None:
+    """Resolve a relative import to an absolute module path for validation.
+
+    E.g., in structural_lib/services/api.py:
+        from .audit import X  (level=1, module="audit")
+        -> "structural_lib.services.audit"
+        from ..core.models import X  (level=2, module="core.models")
+        -> "structural_lib.core.models"
+    """
+    python_dir = PROJECT_ROOT / "Python"
+    try:
+        rel = file_path.relative_to(python_dir)
+    except ValueError:
+        return None
+
+    # Get the package path of the file
+    parts = list(rel.parts[:-1])  # directory parts (e.g. ["structural_lib", "services"])
+
+    # Go up 'level' directories (level=1 means current package)
+    up = level - 1
+    if up > 0:
+        if up > len(parts):
+            return None
+        parts = parts[:-up]
+
+    # Append the module path
+    if module:
+        parts.extend(module.split("."))
+
+    return ".".join(parts)
 
 
 def find_similar_modules(broken: str) -> list[str]:
