@@ -1,229 +1,293 @@
-# Agent Bootstrap
+# Agent Bootstrap — structural_engineering_lib
 
-**Type:** Guide
-**Audience:** All Agents
-**Status:** Approved
-**Importance:** Critical
-**Version:** 2.3.0
-**Created:** 2026-01-08
-**Last Updated:** 2026-01-29
+**Type:** Guide | **Audience:** All Agents | **Status:** Approved | **Importance:** Critical
+
+> **This is THE canonical bootstrap for all AI agents.** Entry points (`CLAUDE.md`, `.github/copilot-instructions.md`) link here.
 
 ---
 
-> **Read this first.** This is the fastest path to productive work.
+## 1. Project Identity
 
-> **👤 For users onboarding a new agent:** See [../contributing/agent-onboarding-message.md](../contributing/agent-onboarding-message.md) for the exact message to send.
+Open-source **IS 456 RC beam design library** for structural engineers.
+- **Python core** (`Python/structural_lib/`) — Design, detailing, optimization, BBS, DXF export
+- **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API
+- **React 19 frontend** (`react_app/`) — 3D visualization with React Three Fiber
+- **Streamlit app** (`streamlit_app/`) — Legacy UI (maintained, not primary)
+- **Current focus:** See [TASKS.md](../TASKS.md) for active work
 
 ---
 
-## 🚨 STOP — READ BEFORE CODING!
+## 2. THE ONE RULE
 
-**Agents keep duplicating code.** We have a mature V3 stack. Check these FIRST:
+```bash
+./scripts/ai_commit.sh "type: message"    # ALL commits
+```
 
-### What We Have (DO NOT REINVENT!)
+**NEVER** use `git add`, `git commit`, `git push`, `git pull` manually.
 
-| Need | We Have | Location |
-|------|---------|----------|
-| CSV parsing | `GenericCSVAdapter` (40+ column names) | `structural_lib/adapters.py` |
-| 3D bar positions | `beam_to_3d_geometry()` | `structural_lib/geometry_3d.py` |
-| React CSV import | `useCSVFileImport()` hook | `react_app/src/hooks/useCSVImport.ts` |
-| React ETABS import | `useDualCSVImport()` hook | `react_app/src/hooks/useCSVImport.ts` |
-| React batch design | `useBatchDesign()` hook | `react_app/src/hooks/useCSVImport.ts` |
-| React 3D geometry | `useBeamGeometry()` hook | `react_app/src/hooks/useBeamGeometry.ts` |
-| React live design | `useLiveDesign()` hook | `react_app/src/hooks/useLiveDesign.ts` |
-| React file upload | `FileDropZone` component | `react_app/src/components/ui/FileDropZone.tsx` |
-| React 3D viewport | `Viewport3D` component | `react_app/src/components/Viewport3D.tsx` |
-| React beam editor | `BuildingEditorPage` | `react_app/src/components/pages/BuildingEditorPage.tsx` |
-| FastAPI CSV import | `POST /api/v1/import/csv` | `fastapi_app/routers/imports.py` |
-| FastAPI ETABS dual | `POST /api/v1/import/dual-csv` | `fastapi_app/routers/imports.py` |
-| FastAPI batch design | `POST /api/v1/import/batch-design` | `fastapi_app/routers/imports.py` |
-| FastAPI geometry | `POST /api/v1/geometry/beam/full` | `fastapi_app/routers/geometry.py` |
-| FastAPI sample data | `GET /api/v1/import/sample` | `fastapi_app/routers/imports.py` |
+---
+
+## 3. V3 Architecture
+
+```
+React 19 + R3F + Tailwind  ──HTTP/WS──>  FastAPI  ──Python──>  structural_lib
+   react_app/                              fastapi_app/           Python/structural_lib/
+```
+
+### 3-Layer Rule (never mix)
+
+| Layer | Location | Rule |
+|-------|----------|------|
+| **Core** | `codes/is456/flexure.py`, `shear.py`, `detailing.py` | Pure math, NO I/O, explicit units (mm, N/mm2, kN, kNm) |
+| **App** | `api.py`, `beam_pipeline.py`, `job_runner.py` | Orchestration, no formatting |
+| **UI/IO** | `react_app/`, `streamlit_app/`, `fastapi_app/`, `dxf_export.py` | External interfaces only |
+
+Core CANNOT import from App or UI. Units always explicit.
+
+---
+
+## 4. What Exists — DON'T Reinvent
+
+### React Hooks (`react_app/src/hooks/`)
+
+| Hook | Purpose | File |
+|------|---------|------|
+| `useCSVFileImport` | CSV import via API adapters (40+ columns) | `useCSVImport.ts` |
+| `useDualCSVImport` | ETABS geometry+forces import | `useCSVImport.ts` |
+| `useBatchDesign` | Batch design all beams | `useCSVImport.ts` |
+| `useBeamGeometry` | 3D rebar/stirrup geometry from API | `useBeamGeometry.ts` |
+| `useLiveDesign` | WebSocket live design | `useLiveDesign.ts` |
+| `useAutoDesign` | Auto-trigger on input change | `useAutoDesign.ts` |
+| `useBuildingGeometry` | Building 3D geometry | `useGeometryAdvanced.ts` |
+| `useCrossSectionGeometry` | Cross-section visualization | `useGeometryAdvanced.ts` |
+| `useRebarValidation` | Rebar edit validation | `useRebarEditor.ts` |
+
+### React Components (`react_app/src/components/`)
+
+| Component | Purpose |
+|-----------|---------|
+| `Viewport3D` | 3D beam/building visualization (R3F) |
+| `BuildingEditorPage` | AG Grid beam editor |
+| `DesignView` | Single beam design page |
+| `ImportView` | CSV/JSON import UI |
+| `FileDropZone` | Drag-drop CSV upload |
+
+### FastAPI Endpoints (`fastapi_app/routers/`)
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/v1/import/csv` | CSV parsing with adapters (40+ column mappings) |
+| `POST /api/v1/import/dual-csv` | ETABS dual CSV import |
+| `POST /api/v1/import/batch-design` | Batch design all beams |
+| `POST /api/v1/geometry/beam/full` | 3D rebar/stirrup positions |
+| `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
+| `/ws/design/{session}` | Live WebSocket updates |
+| `GET /api/v1/import/sample` | Sample data for testing |
+
+### Library (`Python/structural_lib/`)
+
+| Module | Key Functions |
+|--------|---------------|
+| `api.py` | `design_beam_is456()`, `detail_beam_is456()` — 43 public functions |
+| `adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
+| `geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
+| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py` — IS 456:2000 code |
+| `bbs.py` | Bar bending schedule generation |
+| `dxf_export.py` | DXF drawing export |
+| `insights/` | Smart designer, suggestions, sensitivity analysis |
+
+### State Stores (`react_app/src/store/`)
+
+| Store | Purpose |
+|-------|---------|
+| `useDesignStore` | Single beam design inputs/results |
+| `useImportedBeamsStore` | Imported CSV beams + selection |
 
 **Quick check before coding:**
 ```bash
-# Search React hooks
-ls react_app/src/hooks/
-
-# Search FastAPI routes
-grep -r "def " fastapi_app/routers/ | head -20
-
-# Search library functions
-grep -r "^def " Python/structural_lib/api.py | head -20
+ls react_app/src/hooks/                              # React hooks
+grep -r "@router" fastapi_app/routers/ | head -20    # FastAPI routes
+grep -r "^def " Python/structural_lib/api.py | head -20  # Library functions
 ```
 
 ---
 
-## Guide Hierarchy
-
-**You are here:** Quick Start (Bootstrap)
-
-| Need | Guide | Use When |
-|------|-------|----------|
-| **Critical Rules** | [agent-essentials.md](agent-essentials.md) | V3 stack reference, golden rules |
-| **Quick Start** | This document | First 30 seconds ← **YOU ARE HERE** |
-| **Quick Reference** | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) | Cheat sheet, emergency commands |
-| **Complete Guide** | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) | Decision trees, troubleshooting |
-
----
-
-## ⚡ First 30 Seconds
+## 5. Quick Start
 
 ```bash
-# RECOMMENDED: Quick mode (6s)
-./scripts/agent_start.sh --quick
+# Session start
+./scripts/agent_start.sh --quick                     # 6s validation
 
-# OPTIONAL: Full validation (13s, use when debugging)
-./scripts/agent_start.sh
-```
+# FastAPI backend (Docker)
+docker compose up --build                            # http://localhost:8000/docs
+docker compose -f docker-compose.dev.yml up          # Dev with hot reload
 
-This shows: version, branch, active tasks, blockers, and agent-specific commands.
+# React frontend
+cd react_app && npm install && npm run dev           # http://localhost:5173
 
----
-
-## 🏗️ V3 Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    React Frontend (react_app/)              │
-│  Vite + React 19 + React Three Fiber + Tailwind CSS        │
-│  - useBeamGeometry() → Fetches 3D geometry from API        │
-│  - useCSVFileImport() → Imports CSV via API adapters       │
-│  - Viewport3D → R3F 3D scene with rebars/stirrups          │
-│  - BentoGrid + FloatingDock → Modern Gen Z UI              │
-└──────────────┬──────────────────────────────────────────────┘
-               │ HTTP/WebSocket
-               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    FastAPI Backend (fastapi_app/)           │
-│  - /api/v1/import/csv → CSV parsing with adapters          │
-│  - /api/v1/geometry/beam/full → 3D rebar/stirrup positions │
-│  - /api/v1/design/beam → Beam design (Mu, Vu, Ast)         │
-│  - /ws/design/{session} → Live WebSocket updates           │
-│  - /docs → OpenAPI auto-generated documentation            │
-└──────────────┬──────────────────────────────────────────────┘
-               │ Direct Python calls
-               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    structural_lib (Python/structural_lib/)  │
-│  - api.py: 43 public functions (design, detail, optimize)  │
-│  - adapters.py: GenericCSVAdapter, ETABSAdapter, SAFE      │
-│  - geometry_3d.py: beam_to_3d_geometry() → RebarPath[]     │
-│  - codes/is456/: flexure.py, shear.py, detailing.py        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Key Principle: Don't Duplicate, Integrate!
-
-```
-❌ WRONG: Write CSV parsing in React → Manual column mapping
-✅ RIGHT: Use useCSVFileImport() → API → GenericCSVAdapter (40+ columns)
-
-❌ WRONG: Calculate bar positions in Viewport3D manually
-✅ RIGHT: Use useBeamGeometry() → API → geometry_3d.beam_to_3d_geometry()
-```
-
----
-
-## 📖 Required Context
-
-| Priority | Document | Why |
-|----------|----------|-----|
-| 0 | [agent-essentials.md](agent-essentials.md) | V3 stack, critical rules |
-| 1 | [ai-context-pack.md](ai-context-pack.md) | Project summary, layers |
-| 2 | [TASKS.md](../TASKS.md) | Current work: Active, Up Next |
-| 3 | [next-session-brief.md](../planning/next-session-brief.md) | What happened last |
-
----
-
-## 🐳 Quick Start Commands
-
-### FastAPI Backend
-```bash
-# Run with Docker (recommended)
-docker compose up --build              # Production
-docker compose -f docker-compose.dev.yml up  # Dev with hot reload
-
-# Run locally
-cd Python && .venv/bin/uvicorn fastapi_app.main:app --reload
-
-# API docs at http://localhost:8000/docs
-```
-
-### React Frontend
-```bash
-cd react_app
-npm install
-npm run dev    # Dev server at http://localhost:5173
-npm run build  # Production build
-```
-
-### Python Tests
-```bash
+# Python tests (CI requires 85% branch coverage)
 cd Python && .venv/bin/pytest tests/ -v
+
+# React build check
+cd react_app && npm run build
+
+# Streamlit app
+./scripts/launch_streamlit.sh
 ```
 
 ---
 
-## ⚠️ Frontend Compatibility (React + R3F + Drei)
+## 6. Git Workflow
 
 ```bash
-# Check dependency versions
-cd react_app && npm ls react react-dom @react-three/fiber @react-three/drei
+# Decision: PR or direct commit?
+./scripts/should_use_pr.sh --explain
 ```
 
-**Current stack (Jan 2026):**
-- React 19 + React Three Fiber 9 + Drei 10.7+
-- Tailwind CSS 4 + Vite 7
-- dockview (optional, replaced by BentoGrid/FloatingDock)
-
----
-
-## 📚 Duplication Prevention
-
-**Before creating ANY React component or Python function:**
+| Change Type | Strategy |
+|-------------|----------|
+| Production code (`Python/structural_lib/`) | PR required |
+| VBA / CI workflows / Dependencies | PR required |
+| Docs / tests / scripts (<=150 lines, <=2 files) | Direct commit OK |
 
 ```bash
-# Check React hooks/components
-ls react_app/src/hooks/
-ls react_app/src/components/
+# Direct commit
+./scripts/ai_commit.sh "docs: update guide"
 
-# Check library functions
-.venv/bin/python scripts/discover_api_signatures.py <function_name>
+# PR workflow
+./scripts/create_task_pr.sh TASK-XXX "description"
+./scripts/ai_commit.sh "feat: implement X"          # Repeat as needed
+./scripts/finish_task_pr.sh TASK-XXX "description" --async
 
-# Check FastAPI routes
-grep -r "@router" fastapi_app/routers/
+# Emergency recovery
+./scripts/recover_git_state.sh
+./scripts/git_ops.sh --status
+```
+
+**Commit format:** `type: description` (subject <=72 chars, no period at end)
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
+
+**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in same PR. Log the **PR number** (not merge hash). One docs commit at end of session.
+
+---
+
+## 7. Key Scripts
+
+| Action | Script |
+|--------|--------|
+| Commit | `./scripts/ai_commit.sh "msg"` |
+| PR decision | `./scripts/should_use_pr.sh --explain` |
+| Move file | `.venv/bin/python scripts/safe_file_move.py old new --dry-run` (then without flag) |
+| Delete file | `.venv/bin/python scripts/safe_file_delete.py file` |
+| Create doc | `.venv/bin/python scripts/create_doc.py path "Title"` |
+| Fix links | `.venv/bin/python scripts/fix_broken_links.py --fix` |
+| Find automation | `.venv/bin/python scripts/find_automation.py "task"` |
+| API signatures | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
+| Streamlit check | `.venv/bin/python scripts/check_streamlit_issues.py --all-pages` |
+| Fragment check | `.venv/bin/python scripts/check_fragment_violations.py` |
+| Streamlit launch | `./scripts/launch_streamlit.sh` |
+| Session end | `.venv/bin/python scripts/end_session.py` |
+
+**Never do manually:** `git add/commit/push`, `rm/mv` docs, create docs without metadata.
+
+---
+
+## 8. Golden Rules
+
+1. **Search before coding** — Check hooks, components, routes, API functions first
+2. **Never parse CSV manually** — Use `useCSVFileImport` or `GenericCSVAdapter`
+3. **Never calculate bar positions** — Use `useBeamGeometry` or `geometry_3d`
+4. **Never create duplicate docs** — Check `docs/docs-canonical.json` first
+5. **Verify outdated info online** — AI model names, library versions, framework APIs
+6. **Test before commit** — Run build/tests for the stack you changed
+7. **Discover API signatures before wrapping** — Never guess parameter names
+8. **Small, deterministic changes** — No hidden defaults, no assumptions
+9. **Update docs with code** — Doc changes go in the same PR as code changes
+10. **No micro-commits** — Batch small related changes into one meaningful commit
+
+---
+
+## 9. Common Mistakes
+
+| Mistake | Impact | Fix |
+|---------|--------|-----|
+| Manual git commands | 10-30min conflicts | `ai_commit.sh` |
+| Duplicate React code | Broken features, bugs | Check `hooks/` and `components/` first |
+| Guess API params (`width` vs `b_mm`) | Failed tests | `discover_api_signatures.py` |
+| Manual file move/delete | 870+ broken links | `safe_file_move.py` / `safe_file_delete.py` |
+| Skip validation | Runtime errors | Run tests + `check_*` scripts |
+| Create duplicate docs | Clutter, confusion | Check `docs-canonical.json` first |
+| Mix architecture layers | Import errors | Core cannot import App or UI |
+| Use `python` directly | Wrong env, missing deps | Always use `.venv/bin/python` |
+| Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
+
+---
+
+## 10. Scoped Rules (auto-loaded for Claude Code & Copilot)
+
+Claude Code and GitHub Copilot load domain-specific rules automatically:
+- `.claude/rules/` — Scoped by file path (Streamlit, React, Python core, VBA, FastAPI, docs)
+- `.github/instructions/` — Scoped by `applyTo` glob patterns
+
+If using other tools, the rules below apply. If using Claude Code or Copilot, you get these automatically.
+
+## 11. Streamlit Safety (if working on Streamlit)
+
+- **NEVER** use `st.sidebar` inside `@st.fragment` functions — causes `StreamlitAPIException`
+- Use safe patterns: `data.get('key', default)` not `data['key']`, check `len()` before index access
+- Imports at module level only — never `import` inside functions
+- Use `st.session_state.get('key', default)` not `st.session_state.key`
+- Run `check_fragment_violations.py` + `check_streamlit_issues.py` before committing
+- Full rules: [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md)
+
+---
+
+## 12. VBA Rules (if working on VBA/Excel)
+
+- **Python + VBA parity** — Same formulas, units, edge-case behavior
+- VBA import order matters — see [vba-guide.md](../contributing/vba-guide.md)
+- Mac safety: wrap dimension multiplications in `CDbl()` to prevent overflow
+- VBA changes always require PR
+
+---
+
+## 13. Document Metadata (required for new files)
+
+Use `create_doc.py` which adds this automatically, or add manually:
+```markdown
+**Type:** [Guide|Research|Reference|Architecture|Decision]
+**Audience:** [All Agents|Developers|Users]
+**Status:** [Draft|Approved|Deprecated]
+**Importance:** [Critical|High|Medium|Low]
+**Created:** YYYY-MM-DD
+**Last Updated:** YYYY-MM-DD
 ```
 
 ---
 
-## 🌐 Verify Online for Volatile Info
+## 14. On-Demand References
 
-If information is likely to change, verify it online:
-- AI model names and availability
-- Library/framework versions
-- CLI flags and API endpoints
+Load these only when working on that specific area:
 
----
+| Topic | Document |
+|-------|----------|
+| Command cheat sheet | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) |
+| Deep workflow guide | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) |
+| Current tasks | [TASKS.md](../TASKS.md) |
+| Last session context | [next-session-brief.md](../planning/next-session-brief.md) |
+| Git automation details | [git-automation/README.md](../git-automation/README.md) |
+| API reference | [api.md](../reference/api.md) |
+| Streamlit fragment rules | [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md) |
+| Folder structure rules | [folder-structure-governance.md](../guidelines/folder-structure-governance.md) |
+| Architecture overview | [project-overview.md](../architecture/project-overview.md) |
+| Agent roles | [agents/README.md](../../agents/README.md) |
 
-## 📍 Essential Links
+### Machine-Readable Indexes
 
-- **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
-- **Git workflow:** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
-- **V3 Roadmap:** [../planning/8-week-development-plan.md](../planning/8-week-development-plan.md) 🚀
-- **API docs:** [../reference/api.md](../reference/api.md)
-- **Docker guide:** [../learning/docker-fundamentals-guide.md](../learning/docker-fundamentals-guide.md) 🐳
-
----
-
-## 📇 Machine-Readable Indexes
-
-- `scripts/automation-map.json` (task → script)
-- `docs/docs-canonical.json` (topic → canonical doc)
-- `scripts/index.json` (automation catalog)
-
-**Automation lookup:** `.venv/bin/python scripts/find_automation.py "your task"`
+- `scripts/automation-map.json` — task-to-script mapping
+- `docs/docs-canonical.json` — topic-to-canonical-doc mapping
+- `scripts/index.json` — full automation catalog
 
 ---
 
-*Don't hardcode stats here — run `./scripts/agent_start.sh --quick` for live data.*
+*Run `./scripts/agent_start.sh --quick` for live project status.*

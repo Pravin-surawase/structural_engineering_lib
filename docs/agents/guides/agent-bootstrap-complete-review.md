@@ -17,7 +17,7 @@
 | 1 | docs/contributing/agent-onboarding-message.md | Onboarding note | P3 | Exact message to onboard new agents |
 | 2 | docs/agents/guides/agent-quick-reference.md | Guide hierarchy | P2 | Commands and emergency shortcuts |
 | 3 | docs/agents/guides/agent-workflow-master-guide.md | Guide hierarchy | P2 | Full workflow decision trees |
-| 4 | docs/getting-started/ai-context-pack.md | Required context | P1 | Project summary and golden rules |
+| 4 | ~~docs/getting-started/ai-context-pack.md~~ | Deprecated | - | Merged into agent-bootstrap.md |
 | 5 | docs/TASKS.md | Required context | P1 | Current work board and priorities |
 | 6 | docs/planning/next-session-brief.md | Required context | P1 | Latest handoff and blockers |
 | 7 | .github/copilot-instructions.md | Quick reference | P1 | Mandatory workflow rules |
@@ -36,8 +36,8 @@
 
 ## P1 - Critical Path (Read First)
 
-### 1) docs/getting-started/ai-context-pack.md
-- Project summary, golden rules, and canonical reading order.
+### 1) ~~docs/getting-started/ai-context-pack.md~~ (DEPRECATED)
+- Merged into agent-bootstrap.md. Read agent-bootstrap.md instead.
 
 ### 2) docs/TASKS.md
 - Single source of truth for active work and WIP limits.
@@ -104,11 +104,9 @@ The bootstrap also references these tools or docs without linking them directly:
 ## Suggested Reading Path
 
 **New agent (first session):**
-1. docs/getting-started/agent-bootstrap.md
-2. docs/getting-started/ai-context-pack.md
-3. .github/copilot-instructions.md
-4. docs/TASKS.md
-5. docs/planning/next-session-brief.md
+1. docs/getting-started/agent-bootstrap.md (canonical — contains all essential context)
+2. docs/TASKS.md
+3. docs/planning/next-session-brief.md
 
 **Returning agent:**
 1. docs/planning/next-session-brief.md

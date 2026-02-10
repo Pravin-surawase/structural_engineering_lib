@@ -66,8 +66,7 @@ Is this >50 lines OR 2+ files?
 ## ✅ First Session Checklist
 
 ### Before Starting Work (5 minutes)
-- [ ] Read [copilot-instructions.md](../../../.github/copilot-instructions.md) - **MANDATORY**
-- [ ] Print this quick reference - Keep it visible
+- [ ] Read [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) - **CANONICAL BOOTSTRAP**
 - [ ] Read [TASKS.md](../../TASKS.md) - Current work items
 - [ ] Run `./scripts/agent_start.sh --quick` - Validates environment
 

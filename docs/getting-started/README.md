@@ -43,7 +43,7 @@ What's your background?
 | [copilot-quick-start.md](copilot-quick-start.md) | GitHub Copilot integration |
 | [fix-copilot-terminal.md](fix-copilot-terminal.md) | Fix Copilot terminal issues |
 | [agent-bootstrap.md](agent-bootstrap.md) | AI agent quick start |
-| [ai-context-pack.md](ai-context-pack.md) | AI context for agents |
+| [agent-essentials.md](agent-essentials.md) | Redirects to agent-bootstrap.md |
 
 ## Feature Guides
 

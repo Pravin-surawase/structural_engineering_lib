@@ -67,7 +67,7 @@ For VS Code AI-agent work, start with:
 - **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
 - **[AGENT_QUICK_REFERENCE.md](agents/guides/agent-quick-reference.md)** - Essential commands
 - **[ai-agent-coding-guide.md](guides/ai-agent-coding-guide.md)** - Coding standards and quality gates
-- [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
+- [agent-bootstrap.md](getting-started/agent-bootstrap.md) - Full agent context (canonical)
 - [AI summary](../llms.txt) - LLM-friendly summary
 - [Handoff Quick Start](contributing/handoff.md) - Session handoff
 

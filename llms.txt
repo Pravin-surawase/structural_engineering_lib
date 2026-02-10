@@ -3,6 +3,7 @@ structural_engineering_lib
 Purpose
 - IS 456 RC beam design library with Python + VBA parity.
 - Design -> compliance -> detailing -> DXF/BBS outputs.
+- Full-stack: React 19 frontend + FastAPI backend + Python core library.
 
 Install
 - pip install structural-lib-is456
@@ -18,7 +19,20 @@ CLI (python -m structural_lib)
 - job     : run job spec JSON -> output folder
 Command discovery: run python -m structural_lib --help and python -m structural_lib <cmd> --help for full options.
 
+V3 Stack
+- React 19 + React Three Fiber + Tailwind CSS (react_app/)
+- FastAPI REST + WebSocket backend (fastapi_app/)
+- Python structural_lib core (Python/structural_lib/)
+- Docker deployment (docker-compose.yml)
+
+Key API Endpoints (FastAPI)
+- POST /api/v1/design/beam - Beam design (Mu, Vu, Ast)
+- POST /api/v1/import/csv - CSV import with adapters (40+ columns)
+- POST /api/v1/geometry/beam/full - 3D rebar/stirrup positions
+- GET /docs - OpenAPI auto-generated documentation
+
 Docs (start here)
+- docs/getting-started/agent-bootstrap.md (AI agent onboarding)
 - docs/README.md
 - docs/cookbook/cli-reference.md
 - docs/reference/api.md
@@ -33,3 +47,4 @@ Examples
 
 Notes
 - Units: mm, N/mm^2, kN, kN-m (convert at boundaries)
+- 3-layer architecture: Core (pure math) -> App (orchestration) -> UI/IO (interfaces)

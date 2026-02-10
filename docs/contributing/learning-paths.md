@@ -17,7 +17,7 @@ Pick the smallest reading path that still protects quality. Each path lists the 
 | Task type | Path | Read first |
 | --- | --- | --- |
 | Docs-only change | Beginner | `../../.github/copilot-instructions.md`, `../git-workflow-ai-agents.md` |
-| Small bug fix in existing module | Beginner | `../ai-context-pack.md`, `../reference/known-pitfalls.md` |
+| Small bug fix in existing module | Beginner | `../getting-started/agent-bootstrap.md`, `../reference/known-pitfalls.md` |
 | New feature in existing domain | Intermediate | `../architecture/project-overview.md`, `testing-strategy.md` |
 | Refactor or API change | Advanced | `../reference/api.md`, `../architecture/deep-project-map.md` |
 | VBA or Excel change | Intermediate | `vba-guide.md`, `excel-addin-guide.md` |
@@ -42,7 +42,7 @@ Checks to run:
 ## Path B: Intermediate (feature work in existing modules)
 
 Read in order:
-1. `../ai-context-pack.md`
+1. `../getting-started/agent-bootstrap.md`
 2. `../architecture/project-overview.md`
 3. `testing-strategy.md`
 4. `../reference/api.md`

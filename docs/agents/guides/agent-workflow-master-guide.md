@@ -3,8 +3,8 @@
 **Last Updated:** 2026-01-13
 **Status:** ✅ Production Ready
 
-> **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations.
-> Read this FIRST before any work. Following these rules prevents 99% of errors.
+> **Deep reference guide.** Start with [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) first.
+> This guide covers decision trees, troubleshooting, and advanced workflow patterns.
 
 ---
 
