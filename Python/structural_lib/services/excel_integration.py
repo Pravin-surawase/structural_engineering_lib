@@ -18,8 +18,6 @@ import csv
 import json
 import logging
 import os
-
-_logger = logging.getLogger(__name__)
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -29,6 +27,8 @@ from structural_lib.codes.is456.detailing import (
 )
 
 from .dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
+
+_logger = logging.getLogger(__name__)
 
 # =============================================================================
 # Data Classes
