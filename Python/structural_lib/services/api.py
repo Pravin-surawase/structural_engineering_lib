@@ -13,24 +13,23 @@ from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 
-from structural_lib import (
-    bbs,
+from structural_lib.codes.is456 import (
     compliance,
     detailing,
     ductile,
-    job_runner,
-    report,
     serviceability,
     slenderness,
 )
-from structural_lib.calculation_report import (
-    CalculationReport,
-    InputSection,
-    ProjectInfo,
-    ResultSection,
-    generate_calculation_report,
-)
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
+from structural_lib.codes.is456.torsion import (
+    TorsionResult,
+    calculate_equivalent_moment,
+    calculate_equivalent_shear,
+    calculate_longitudinal_torsion_steel,
+    calculate_torsion_shear_stress,
+    calculate_torsion_stirrup_area,
+    design_torsion,
+)
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
@@ -51,14 +50,13 @@ from structural_lib.core.inputs import (
     MaterialsInput,
 )
 from structural_lib.insights import cost_optimization, design_suggestions
-from structural_lib.torsion import (
-    TorsionResult,
-    calculate_equivalent_moment,
-    calculate_equivalent_shear,
-    calculate_longitudinal_torsion_steel,
-    calculate_torsion_shear_stress,
-    calculate_torsion_stirrup_area,
-    design_torsion,
+from structural_lib.services import bbs, job_runner, report
+from structural_lib.services.calculation_report import (
+    CalculationReport,
+    InputSection,
+    ProjectInfo,
+    ResultSection,
+    generate_calculation_report,
 )
 from structural_lib.visualization.geometry_3d import (
     Beam3DGeometry,

@@ -21,7 +21,7 @@ from typing import Any
 import streamlit as st
 
 from structural_lib.services.audit import AuditTrail
-from structural_lib.calculation_report import CalculationReport
+from structural_lib.services.calculation_report import CalculationReport
 from utils.session_manager import DesignResult
 
 logger = logging.getLogger(__name__)
@@ -333,7 +333,7 @@ def show_dxf_export(
 
     # Check if DXF module is available
     try:
-        from structural_lib.dxf_export import quick_dxf_bytes, EZDXF_AVAILABLE
+        from structural_lib.services.dxf_export import quick_dxf_bytes, EZDXF_AVAILABLE
         from structural_lib.detailing import create_beam_detailing
 
         dxf_available = EZDXF_AVAILABLE

@@ -218,7 +218,7 @@ class TestDXFGeneration:
     def test_dxf_bytes_generated(self, mock_detailing):
         """Test that DXF bytes are generated."""
         pytest.importorskip("structural_lib.dxf_export")
-        from structural_lib.dxf_export import EZDXF_AVAILABLE
+        from structural_lib.services.dxf_export import EZDXF_AVAILABLE
 
         if not EZDXF_AVAILABLE:
             pytest.skip("ezdxf not available")
@@ -374,7 +374,7 @@ class TestLayerInformation:
     def test_layer_definitions_exist(self):
         """Test that layer definitions exist."""
         pytest.importorskip("structural_lib.dxf_export")
-        from structural_lib.dxf_export import LAYERS
+        from structural_lib.services.dxf_export import LAYERS
 
         assert len(LAYERS) >= 8
         assert "BEAM_OUTLINE" in LAYERS
@@ -384,7 +384,7 @@ class TestLayerInformation:
     def test_layer_has_color_and_linetype(self):
         """Test that each layer has color and linetype."""
         pytest.importorskip("structural_lib.dxf_export")
-        from structural_lib.dxf_export import LAYERS
+        from structural_lib.services.dxf_export import LAYERS
 
         for layer_name, (color, linetype) in LAYERS.items():
             assert isinstance(color, int)

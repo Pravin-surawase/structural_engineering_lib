@@ -85,7 +85,7 @@ except ImportError as e:
 
 # Import DXF export module
 try:
-    from structural_lib.dxf_export import (
+    from structural_lib.services.dxf_export import (
         quick_dxf_bytes,
         generate_multi_beam_dxf,
         EZDXF_AVAILABLE,
@@ -1917,7 +1917,7 @@ with tab5:
                                     dxf_bytes = f.read()
 
                             # Calculate grouping stats
-                            from structural_lib.dxf_export import group_similar_beams
+                            from structural_lib.services.dxf_export import group_similar_beams
 
                             groups = group_similar_beams(detailings)
                             n_types = len(groups)
@@ -1946,7 +1946,7 @@ with tab5:
                             with st.expander(
                                 "📋 Beam Schedule Summary (Industry Format)"
                             ):
-                                from structural_lib.dxf_export import (
+                                from structural_lib.services.dxf_export import (
                                     generate_beam_schedule_table,
                                 )
 

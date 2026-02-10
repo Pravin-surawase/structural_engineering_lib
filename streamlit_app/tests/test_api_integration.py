@@ -198,7 +198,7 @@ def test_check_compliance_is456_importable():
 def test_generate_summary_table_importable():
     """Test that generate_summary_table() can be imported (NEW in v0.16.0)."""
     try:
-        from structural_lib.bbs import generate_summary_table
+        from structural_lib.services.bbs import generate_summary_table
 
         assert callable(generate_summary_table)
     except ImportError:
@@ -208,7 +208,7 @@ def test_generate_summary_table_importable():
 def test_quick_dxf_importable():
     """Test that quick_dxf() can be imported (NEW in v0.16.0)."""
     try:
-        from structural_lib.dxf_export import quick_dxf
+        from structural_lib.services.dxf_export import quick_dxf
 
         assert callable(quick_dxf)
     except ImportError:

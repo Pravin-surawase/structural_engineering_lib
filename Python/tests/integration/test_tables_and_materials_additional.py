@@ -355,9 +355,9 @@ def test_tables_get_tc_max_value_interpolation_segments():
 
 
 def test_excel_integration_process_single_beam_exception_path(monkeypatch, tmp_path):
-    from structural_lib import excel_integration
+    from structural_lib.services import excel_integration as excel_integration_svc
 
-    beam = excel_integration.BeamDesignData(
+    beam = excel_integration_svc.BeamDesignData(
         beam_id="B1",
         story="S1",
         b=230,
@@ -379,8 +379,8 @@ def test_excel_integration_process_single_beam_exception_path(monkeypatch, tmp_p
     def boom(*_a, **_k):
         raise RuntimeError("boom")
 
-    monkeypatch.setattr(excel_integration, "create_beam_detailing", boom)
-    res = excel_integration.process_single_beam(
+    monkeypatch.setattr(excel_integration_svc, "create_beam_detailing", boom)
+    res = excel_integration_svc.process_single_beam(
         beam, str(tmp_path), is_seismic=False, generate_dxf=False
     )
     assert res.success is False
@@ -393,7 +393,7 @@ def test_excel_integration_generate_detailing_schedule_handles_missing_bottom_ba
         BeamDetailingResult,
         StirrupArrangement,
     )
-    from structural_lib.excel_integration import (
+    from structural_lib.services.excel_integration import (
         ProcessingResult,
         generate_detailing_schedule,
     )
@@ -436,13 +436,13 @@ def test_excel_integration_generate_detailing_schedule_handles_missing_bottom_ba
 
 
 def test_excel_integration_export_schedule_to_csv_empty_schedule_noop(tmp_path):
-    from structural_lib.excel_integration import export_schedule_to_csv
+    from structural_lib.services.excel_integration import export_schedule_to_csv
 
     export_schedule_to_csv([], str(tmp_path / "schedule.csv"))
 
 
 def test_excel_integration_from_dict_keeps_provided_eff_d_value():
-    from structural_lib.excel_integration import BeamDesignData
+    from structural_lib.services.excel_integration import BeamDesignData
 
     data = {
         "beam_id": "B1",
@@ -468,7 +468,7 @@ def test_excel_integration_from_dict_keeps_provided_eff_d_value():
 def test_excel_integration_from_dict_d_does_not_override_explicit_D():
     # Covers the conflict-handling branch where legacy lowercase 'd' (meaning depth)
     # should not overwrite an explicitly provided 'D'.
-    from structural_lib.excel_integration import BeamDesignData
+    from structural_lib.services.excel_integration import BeamDesignData
 
     data = {
         "beam_id": "B1",
@@ -497,6 +497,7 @@ def test_dxf_export_runs_as_main_help_exits_cleanly(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["structural_lib.dxf_export", "--help"])
     with pytest.raises(SystemExit):
         sys.modules.pop("structural_lib.dxf_export", None)
+        sys.modules.pop("structural_lib.services.dxf_export", None)
         runpy.run_module("structural_lib.dxf_export", run_name="__main__")
 
 
@@ -512,9 +513,10 @@ def test_dxf_export_importerror_sets_ezdxf_unavailable(monkeypatch):
     monkeypatch.setattr(builtins, "__import__", guarded_import)
 
     sys.modules.pop("structural_lib.dxf_export", None)
+    sys.modules.pop("structural_lib.services.dxf_export", None)
     sys.modules.pop("ezdxf", None)
 
-    mod = importlib.import_module("structural_lib.dxf_export")
+    mod = importlib.import_module("structural_lib.services.dxf_export")
     assert mod.EZDXF_AVAILABLE is False
 
 

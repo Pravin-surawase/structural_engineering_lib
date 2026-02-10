@@ -15,7 +15,7 @@ import tempfile
 
 import pytest
 
-from structural_lib.excel_integration import (
+from structural_lib.services.excel_integration import (
     BeamDesignData,
     batch_generate_dxf,
     export_beam_data_to_json,
