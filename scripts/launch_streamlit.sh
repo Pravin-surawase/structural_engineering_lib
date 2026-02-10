@@ -246,7 +246,7 @@ fi
 
 # Check 8: Run code scanner for runtime issues
 log_step "Running code scanner on Streamlit pages..."
-SCANNER_SCRIPT="$PROJECT_ROOT/scripts/check_streamlit_issues.py"
+SCANNER_SCRIPT="$PROJECT_ROOT/scripts/check_streamlit.py"
 if [ -f "$SCANNER_SCRIPT" ]; then
     SCAN_OUTPUT=$("$PYTHON_CMD" "$SCANNER_SCRIPT" --all-pages 2>&1 || true)
     # Parse only the summary line counts

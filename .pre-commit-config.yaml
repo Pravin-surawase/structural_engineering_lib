@@ -140,14 +140,14 @@ repos:
         verbose: true
       - id: check-release-docs
         name: Check release docs consistency
-        entry: .venv/bin/python scripts/check_release_docs.py
+        entry: .venv/bin/python scripts/release.py check-docs
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-session-docs
         name: Check session docs consistency
-        entry: .venv/bin/python scripts/check_session_docs.py
+        entry: .venv/bin/python scripts/session.py check
         language: system
         pass_filenames: false
         always_run: true
@@ -161,7 +161,7 @@ repos:
         verbose: true
       - id: check-pre-release-checklist
         name: Check pre-release checklist structure
-        entry: .venv/bin/python scripts/check_pre_release_checklist.py
+        entry: .venv/bin/python scripts/release.py checklist
         language: system
         pass_filenames: false
         always_run: true
@@ -224,14 +224,14 @@ repos:
         verbose: true
       - id: check-streamlit-issues
         name: Check Streamlit app issues (AST scanner)
-        entry: .venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+        entry: .venv/bin/python scripts/check_streamlit.py --all-pages --fail-on-critical
         language: system
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$
         verbose: true
       - id: check-fragment-violations
         name: Check Streamlit fragment API violations
-        entry: .venv/bin/python scripts/check_fragment_violations.py
+        entry: .venv/bin/python scripts/check_streamlit.py --fragments
         language: system
         pass_filenames: false
         files: ^streamlit_app/.*\.py$

@@ -15,7 +15,7 @@
 #   1. source scripts/copilot_setup.sh (git pager config)
 #   2. ./scripts/agent_setup.sh (environment setup)
 #   3. ./scripts/agent_preflight.sh (pre-flight checks)
-#   4. .venv/bin/python scripts/start_session.py (session start)
+#   4. .venv/bin/python scripts/session.py start (session start)
 #
 # Created: 2026-01-11 (Session 13 Part 5)
 # Updated: 2026-01-11 (Session 13 Part 7) - v2.1: Fixed full mode, worktree passthrough
@@ -201,7 +201,7 @@ fi
 # Step 4: Start Session
 echo -e "${BLUE}[4/6]${NC} Starting session..."
 if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
-    "$PROJECT_ROOT/.venv/bin/python" scripts/start_session.py $QUICK
+    "$PROJECT_ROOT/.venv/bin/python" scripts/session.py start $QUICK
 else
     echo -e "  ${RED}✗${NC} Python interpreter not found in .venv"
     echo ""
@@ -227,7 +227,7 @@ if [ -n "$AGENT" ]; then
             echo -e "  ${YELLOW}Tasks:${NC} Look for UI-* or STREAMLIT-* in TASKS.md"
             echo ""
             echo -e "  ${BOLD}Key Commands:${NC}"
-            echo "    .venv/bin/python scripts/check_streamlit_issues.py --all-pages"
+            echo "    .venv/bin/python scripts/check_streamlit.py --all-pages"
             echo "    .venv/bin/python -m streamlit run streamlit_app/Home.py"
             ;;
         8)

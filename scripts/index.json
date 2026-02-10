@@ -32,9 +32,9 @@
         "category": "git",
         "priority": "high"
       },
-      "end_session.py": {
-        "purpose": "End session with validation checks",
-        "usage": ".venv/bin/python scripts/end_session.py",
+      "session.py": {
+        "purpose": "Unified session management (start, end, handoff, check)",
+        "usage": ".venv/bin/python scripts/session.py end",
         "category": "session",
         "priority": "high"
       }
@@ -67,12 +67,9 @@
       "description": "Session start, end, and handoff",
       "scripts": {
         "agent_start.sh": "UNIFIED - Start session (recommended)",
-        "start_session.py": "Initialize session tracking",
-        "end_session.py": "End session with checks",
+        "session.py": "Unified session management (start, end, handoff, check)",
         "agent_mistakes_report.sh": "Show common mistakes reminder",
-        "update_handoff.py": "Update handoff documentation",
         "check_handoff_ready.py": "Validate handoff completeness",
-        "check_session_docs.py": "Validate session documentation",
         "collect_diagnostics.py": "Bundle debug context (env, git, logs)",
         "launch_streamlit.sh": "Launch Streamlit app with env checks",
         "install_hooks.sh": "Install git hooks (commit-msg validation)"
@@ -81,8 +78,7 @@
     "code_validation": {
       "description": "Code quality, linting, and validation",
       "scripts": {
-        "check_streamlit_issues.py": "AST scanner for Streamlit runtime errors",
-        "check_fragment_violations.py": "Detect Streamlit fragment API violations",
+        "check_streamlit.py": "Unified Streamlit validation (AST scanner + fragment checks)",
         "check_streamlit_imports.py": "Validate Streamlit page imports",
         "check_circular_imports.py": "Detect circular import issues",
         "check_type_annotations.py": "Validate type annotations",
@@ -188,12 +184,9 @@
     "release": {
       "description": "Release and versioning",
       "scripts": {
-        "release.py": "Execute release workflow",
-        "verify_release.py": "Verify release artifacts",
+        "release.py": "Unified release management (run, verify, check-docs, checklist)",
         "bump_version.py": "Bump version number",
-        "check_version_consistency.sh": "Check version consistency",
-        "check_release_docs.py": "Validate release documentation",
-        "check_pre_release_checklist.py": "Pre-release checklist validation"
+        "check_version_consistency.sh": "Check version consistency"
       }
     },
     "ci_cd": {
@@ -273,11 +266,11 @@
     "check_pr_needed": "./scripts/should_use_pr.sh --explain",
     "create_pr": "./scripts/create_task_pr.sh TASK-XXX \"description\"",
     "finish_pr": "./scripts/finish_task_pr.sh TASK-XXX \"description\" --async",
-    "end_session": ".venv/bin/python scripts/end_session.py",
+    "end_session": ".venv/bin/python scripts/session.py end",
     "fix_git_issues": "./scripts/recover_git_state.sh",
     "validate_links": ".venv/bin/python scripts/check_links.py",
     "fix_links": ".venv/bin/python scripts/check_links.py --fix",
-    "check_streamlit": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
+    "check_streamlit": ".venv/bin/python scripts/check_streamlit.py --all-pages",
     "check_fastapi": ".venv/bin/python scripts/check_fastapi_issues.py",
     "check_docker": ".venv/bin/python scripts/check_docker_config.py",
     "docker_up": "docker compose up --build",
@@ -319,7 +312,7 @@
       "test_setup.py": "Replaced by pytest suite",
       "vba_validator.py": "Replaced by lint_vba.py",
       "comprehensive_validator.py": "Replaced by CI pipeline",
-      "validate_streamlit_page.py": "Replaced by check_streamlit_issues.py",
+      "validate_streamlit_page.py": "Replaced by check_streamlit.py",
       "check_api_signatures.py": "Merged into check_api.py",
       "check_api_doc_signatures.py": "Merged into check_api.py",
       "check_api_docs_sync.py": "Merged into check_api.py",
@@ -327,7 +320,16 @@
       "check_governance_compliance.py": "Merged into check_governance.py",
       "fix_broken_links.py": "Merged into check_links.py --fix",
       "check_docs_index.py": "Merged into check_docs.py --index",
-      "check_docs_index_links.py": "Merged into check_docs.py --index-links"
+      "check_docs_index_links.py": "Merged into check_docs.py --index-links",
+      "start_session.py": "Merged into session.py start",
+      "end_session.py": "Merged into session.py end",
+      "update_handoff.py": "Merged into session.py handoff",
+      "check_session_docs.py": "Merged into session.py check",
+      "verify_release.py": "Merged into release.py verify",
+      "check_release_docs.py": "Merged into release.py check-docs",
+      "check_pre_release_checklist.py": "Merged into release.py checklist",
+      "check_streamlit_issues.py": "Renamed to check_streamlit.py",
+      "check_fragment_violations.py": "Merged into check_streamlit.py --fragments"
     }
   }
 }

@@ -8,8 +8,7 @@ on:
     paths:
       - 'streamlit_app/**/*.py'
       - 'tests/apptest/**/*.py'
-      - 'scripts/check_streamlit_issues.py'
-      - 'scripts/check_fragment_violations.py'
+      - 'scripts/check_streamlit.py'
       - '.pylintrc-streamlit'
       - '.github/workflows/streamlit-validation.yml'
   pull_request:
@@ -17,8 +16,7 @@ on:
     paths:
       - 'streamlit_app/**/*.py'
       - 'tests/apptest/**/*.py'
-      - 'scripts/check_streamlit_issues.py'
-      - 'scripts/check_fragment_violations.py'
+      - 'scripts/check_streamlit.py'
       - '.pylintrc-streamlit'
 
 jobs:
@@ -35,11 +33,11 @@ jobs:
 
       - name: Run Fragment API Validator
         run: |
-          python scripts/check_fragment_violations.py
+          python scripts/check_streamlit.py --fragments
 
       - name: Check for violations
         run: |
-          EXIT_CODE=$(python scripts/check_fragment_violations.py; echo $?)
+          EXIT_CODE=$(python scripts/check_streamlit.py --fragments; echo $?)
           if [ $EXIT_CODE -ne 0 ]; then
             echo "❌ Fragment API violations found"
             exit 1
@@ -64,12 +62,12 @@ jobs:
 
       - name: Run AST Scanner (all pages)
         run: |
-          python scripts/check_streamlit_issues.py --all-pages --verbose --ignore-file .scanner-ignore.yml
+          python scripts/check_streamlit.py --all-pages --verbose --ignore-file .scanner-ignore.yml
 
       - name: Check for critical issues
         run: |
           # Fail if any critical issues found
-          python scripts/check_streamlit_issues.py --all-pages --fail-on-critical --ignore-file .scanner-ignore.yml
+          python scripts/check_streamlit.py --all-pages --fail-on-critical --ignore-file .scanner-ignore.yml
 
   pylint-check:
     name: Pylint (undefined variables, imports, etc.)
@@ -205,7 +203,7 @@ jobs:
           echo "# Streamlit Validation Report" > report.md
           echo "" >> report.md
           echo "## AST Scanner Results" >> report.md
-          python scripts/check_streamlit_issues.py --all-pages --verbose --ignore-file .scanner-ignore.yml >> report.md 2>&1 || true
+          python scripts/check_streamlit.py --all-pages --verbose --ignore-file .scanner-ignore.yml >> report.md 2>&1 || true
           echo "" >> report.md
           echo "## API Signature Results" >> report.md
           python scripts/check_api.py --signatures --fix >> report.md 2>&1 || true

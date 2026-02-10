@@ -42,6 +42,6 @@ All imports at module level. NEVER import inside functions.
 ## Validation Before Commit
 
 ```bash
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
-.venv/bin/python scripts/check_fragment_violations.py
+.venv/bin/python scripts/check_streamlit.py --all-pages
+.venv/bin/python scripts/check_streamlit.py --fragments
 ```

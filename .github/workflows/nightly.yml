@@ -51,7 +51,7 @@ jobs:
 
       - name: Run Streamlit validation
         run: |
-          python scripts/check_streamlit_issues.py --all-pages
+          python scripts/check_streamlit.py --all-pages
         continue-on-error: true
 
       # ================================================================
@@ -115,7 +115,7 @@ jobs:
 
       - name: Verify wheel install in clean venv
         run: |
-          python scripts/verify_release.py --source wheel --wheel-dir Python/dist
+          python scripts/release.py verify --source wheel --wheel-dir Python/dist
 
       - name: Summarize results
         run: |

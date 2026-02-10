@@ -84,11 +84,11 @@ This folder contains 12 GitHub Actions workflows that automate CI/CD for the pro
 **Runs on:** Changes to `streamlit_app/**/*.py`
 
 **What it checks:**
-- AST Scanner (`check_streamlit_issues.py`): NameError, ZeroDivisionError, KeyError, etc.
+- AST Scanner (`check_streamlit.py`): NameError, ZeroDivisionError, KeyError, etc.
 - Import validation (`check_streamlit_imports.py`)
 - Pylint with Streamlit-specific config
 
-**Agent Action:** Run `python scripts/check_streamlit_issues.py --all-pages` locally before pushing Streamlit changes.
+**Agent Action:** Run `python scripts/check_streamlit.py --all-pages` locally before pushing Streamlit changes.
 
 ---
 
