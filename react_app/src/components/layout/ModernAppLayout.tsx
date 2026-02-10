@@ -7,10 +7,10 @@ import {
   Home,
 } from "lucide-react";
 import { FloatingDock } from "../ui/FloatingDock";
-import { Viewport3D } from "../Viewport3D";
-import { LandingView } from "../LandingView";
-import { ImportView } from "../ImportView";
-import { DesignView } from "../DesignView";
+import { Viewport3D } from "../viewport/Viewport3D";
+import { LandingView } from "../viewport/LandingView";
+import { ImportView } from "../import/ImportView";
+import { DesignView } from "../design/DesignView";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { loadSampleData } from "../../api/client";
 import { mapSampleBeamsToRows } from "../../utils/sampleData";

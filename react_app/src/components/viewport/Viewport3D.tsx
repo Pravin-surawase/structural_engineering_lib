@@ -14,12 +14,12 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Grid, Environment, PerspectiveCamera, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import { useDesignStore } from '../store/designStore';
-import { useImportedBeamsStore } from '../store/importedBeamsStore';
-import { useBeamGeometry } from '../hooks/useBeamGeometry';
-import type { RebarPath, StirrupLoop } from '../hooks/useBeamGeometry';
-import { deriveBeamStatus } from '../utils/beamStatus';
-import type { BeamCSVRow } from '../types/csv';
+import { useDesignStore } from '../../store/designStore';
+import { useImportedBeamsStore } from '../../store/importedBeamsStore';
+import { useBeamGeometry } from '../../hooks/useBeamGeometry';
+import type { RebarPath, StirrupLoop } from '../../hooks/useBeamGeometry';
+import { deriveBeamStatus } from '../../utils/beamStatus';
+import type { BeamCSVRow } from '../../types/csv';
 import './Viewport3D.css';
 
 // Constants

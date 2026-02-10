@@ -26,7 +26,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
-import { Viewport3D } from "../Viewport3D";
+import { Viewport3D } from "../viewport/Viewport3D";
 import { useBatchDesign } from "../../hooks";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";

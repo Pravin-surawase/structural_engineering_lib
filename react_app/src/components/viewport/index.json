@@ -1,0 +1,68 @@
+{
+  "folder": "react_app/src/components/viewport",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-02-10",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "LandingView.tsx",
+      "type": "react-component",
+      "size_lines": 171,
+      "last_updated": "2026-01-26",
+      "exports": [
+        "LandingView"
+      ],
+      "props_type": "LandingViewProps",
+      "description": "LandingView - Hero landing page with quick actions."
+    },
+    {
+      "name": "Viewport3D.css",
+      "type": "stylesheet",
+      "size_lines": 24,
+      "last_updated": "2026-01-25"
+    },
+    {
+      "name": "Viewport3D.tsx",
+      "type": "react-component",
+      "size_lines": 1038,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "RebarPreviewGeometry",
+        "Viewport3DMode",
+        "Viewport3D"
+      ],
+      "props_type": "BeamMeshProps",
+      "description": "Viewport3D Component"
+    },
+    {
+      "name": "WorkspaceLayout.css",
+      "type": "stylesheet",
+      "size_lines": 29,
+      "last_updated": "2026-01-25"
+    },
+    {
+      "name": "WorkspaceLayout.tsx",
+      "type": "react-component",
+      "size_lines": 84,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "WorkspaceLayout"
+      ],
+      "description": "WorkspaceLayout Component"
+    },
+    {
+      "name": "index.ts",
+      "type": "typescript",
+      "size_lines": 7,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "Viewport3D",
+        "WorkspaceLayout",
+        "LandingView"
+      ],
+      "description": "Viewport feature group — 3D visualization components"
+    }
+  ],
+  "subfolders": []
+}

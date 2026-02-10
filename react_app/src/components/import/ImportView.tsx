@@ -7,7 +7,7 @@
  */
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { FileDropZone } from "./ui/FileDropZone";
+import { FileDropZone } from "../ui/FileDropZone";
 import {
   FileSpreadsheet,
   ChevronDown,
@@ -18,11 +18,11 @@ import {
   Upload,
   Layers,
 } from "lucide-react";
-import { useImportedBeamsStore } from "../store/importedBeamsStore";
-import { loadSampleData } from "../api/client";
-import { mapSampleBeamsToRows } from "../utils/sampleData";
-import { applyMaterialOverrides } from "../utils/materialOverrides";
-import { useDualCSVImport } from "../hooks/useCSVImport";
+import { useImportedBeamsStore } from "../../store/importedBeamsStore";
+import { loadSampleData } from "../../api/client";
+import { mapSampleBeamsToRows } from "../../utils/sampleData";
+import { applyMaterialOverrides } from "../../utils/materialOverrides";
+import { useDualCSVImport } from "../../hooks/useCSVImport";
 
 type ImportStep = "upload" | "preview";
 

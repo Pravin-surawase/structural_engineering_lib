@@ -6,11 +6,11 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight } from "lucide-react";
-import type { BeamDesignResponse } from "../api/client";
-import { useDesignStore } from "../store/designStore";
-import { useLiveDesign } from "../hooks/useLiveDesign";
-import { ConnectionStatus } from "./ui/ConnectionStatus";
-import { Viewport3D } from "./Viewport3D";
+import type { BeamDesignResponse } from "../../api/client";
+import { useDesignStore } from "../../store/designStore";
+import { useLiveDesign } from "../../hooks/useLiveDesign";
+import { ConnectionStatus } from "../ui/ConnectionStatus";
+import { Viewport3D } from "../viewport/Viewport3D";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {

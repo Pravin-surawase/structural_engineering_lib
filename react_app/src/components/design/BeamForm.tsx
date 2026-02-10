@@ -5,10 +5,10 @@
  * Supports auto-design mode with debounced updates.
  */
 import { useCallback } from 'react';
-import { useDesignStore } from '../store/designStore';
+import { useDesignStore } from '../../store/designStore';
 import { useMutation } from '@tanstack/react-query';
-import { designBeam } from '../api/client';
-import { useAutoDesign } from '../hooks/useAutoDesign';
+import { designBeam } from '../../api/client';
+import { useAutoDesign } from '../../hooks/useAutoDesign';
 import './BeamForm.css';
 
 export function BeamForm() {

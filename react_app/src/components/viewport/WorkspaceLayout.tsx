@@ -7,9 +7,9 @@ import { useRef, useCallback } from 'react';
 import { DockviewReact } from 'dockview';
 import type { DockviewReadyEvent, IDockviewPanelProps } from 'dockview';
 import 'dockview/dist/styles/dockview.css';
-import { BeamForm } from './BeamForm';
+import { BeamForm } from '../design/BeamForm';
 import { Viewport3D } from './Viewport3D';
-import { ResultsPanel } from './ResultsPanel';
+import { ResultsPanel } from '../design/ResultsPanel';
 import './WorkspaceLayout.css';
 
 // Panel components wrapped for Dockview
