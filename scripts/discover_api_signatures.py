@@ -262,7 +262,7 @@ def get_all_api_functions() -> dict[str, Any]:
     try:
         from structural_lib import api
     except ImportError as e:
-        print(f"❌ Cannot import structural_lib.api: {e}")
+        print(f"❌ Cannot import structural_lib.services.api: {e}")
         print("   Make sure you're running from the project root with .venv activated")
         sys.exit(1)
 

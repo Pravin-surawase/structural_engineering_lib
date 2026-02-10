@@ -8,7 +8,7 @@ Tests cover:
 - Normalized sensitivity coefficients
 """
 
-from structural_lib.api import design_beam_is456
+from structural_lib.services.api import design_beam_is456
 from structural_lib.insights import sensitivity_analysis
 
 

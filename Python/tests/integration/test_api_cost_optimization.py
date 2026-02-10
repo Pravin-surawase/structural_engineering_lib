@@ -7,7 +7,7 @@ and returns properly formatted results as CostOptimizationResult objects.
 import pytest
 
 from structural_lib import api
-from structural_lib.api_results import CostOptimizationResult
+from structural_lib.services.api_results import CostOptimizationResult
 
 
 def test_api_optimize_beam_cost_basic():

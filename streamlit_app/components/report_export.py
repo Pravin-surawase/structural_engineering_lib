@@ -20,7 +20,7 @@ from typing import Any
 
 import streamlit as st
 
-from structural_lib.audit import AuditTrail
+from structural_lib.services.audit import AuditTrail
 from structural_lib.calculation_report import CalculationReport
 from utils.session_manager import DesignResult
 

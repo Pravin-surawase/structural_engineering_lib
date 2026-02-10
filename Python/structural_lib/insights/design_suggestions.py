@@ -126,7 +126,7 @@ def suggest_improvements(
         SuggestionReport with prioritized improvements
 
     Example:
-        >>> from structural_lib.api import design_beam_is456
+        >>> from structural_lib.services.api import design_beam_is456
         >>> design = design_beam_is456(...)
         >>> suggestions = suggest_improvements(design, span_mm=5000, mu_knm=120)
         >>> for s in suggestions.suggestions[:3]:  # Top 3 suggestions

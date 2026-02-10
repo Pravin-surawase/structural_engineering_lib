@@ -48,8 +48,8 @@ async def optimize_beam_cost(
     - Minimum/maximum reinforcement limits
     """
     try:
-        from structural_lib.api import optimize_beam_cost as optimize_func
-        from structural_lib.api import CostProfile
+        from structural_lib.services.api import optimize_beam_cost as optimize_func
+        from structural_lib.services.api import CostProfile
 
         # Create cost profile from request
         # Map user's concrete_cost to the fck=25 grade (default)

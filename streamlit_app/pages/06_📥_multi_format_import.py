@@ -57,7 +57,7 @@ from components.visualizations_3d import create_beam_3d_figure
 
 # Import adapter system
 try:
-    from structural_lib.adapters import (
+    from structural_lib.services.adapters import (
         ETABSAdapter,
         SAFEAdapter,
         STAADAdapter,

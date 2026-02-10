@@ -37,8 +37,8 @@ if str(_lib_path) not in sys.path:
 _LIBRARY_AVAILABLE = False
 _IMPORT_ERROR = ""
 try:
-    from structural_lib.api import design_beam_is456, smart_analyze_design
-    from structural_lib.rebar_optimizer import optimize_bar_arrangement
+    from structural_lib.services.api import design_beam_is456, smart_analyze_design
+    from structural_lib.services.rebar_optimizer import optimize_bar_arrangement
     from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
     from structural_lib.codes.is456.shear import select_stirrup_diameter
     from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
@@ -875,7 +875,7 @@ def get_library_status() -> dict:
 
     if _LIBRARY_AVAILABLE:
         try:
-            from structural_lib.api import get_library_version
+            from structural_lib.services.api import get_library_version
 
             status["version"] = get_library_version()
         except Exception:

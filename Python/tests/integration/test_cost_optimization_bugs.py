@@ -5,7 +5,7 @@ These tests specifically verify the fixes for:
 - Bug #2: Baseline calculation failing for high moments
 """
 
-from structural_lib.optimization import optimize_beam_cost
+from structural_lib.services.optimization import optimize_beam_cost
 
 
 def test_bug1_feasibility_check_m30():

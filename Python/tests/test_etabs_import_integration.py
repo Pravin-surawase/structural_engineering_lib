@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.etabs_import import (
+from structural_lib.services.etabs_import import (
     ETABSEnvelopeResult,
     FrameGeometry,
     envelopes_to_beam_forces,
@@ -293,7 +293,7 @@ class TestRealETABSData:
 
         # The VBA export file has different column names than raw ETABS
         # Use the ETABSAdapter from adapters.py which handles this format
-        from structural_lib.adapters import ETABSAdapter
+        from structural_lib.services.adapters import ETABSAdapter
 
         adapter = ETABSAdapter()
         forces_file = real_etabs_data_dir / "beam_forces.csv"

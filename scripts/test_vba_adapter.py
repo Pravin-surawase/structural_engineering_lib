@@ -18,7 +18,7 @@ script_dir = Path(__file__).resolve().parent
 python_dir = script_dir.parent / "Python"
 sys.path.insert(0, str(python_dir))
 
-from structural_lib.adapters import ETABSAdapter
+from structural_lib.services.adapters import ETABSAdapter
 from structural_lib.core.models import DesignDefaults
 
 def main():

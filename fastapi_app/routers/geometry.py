@@ -66,7 +66,7 @@ async def generate_beam_geometry(
     - 3D printing
     """
     try:
-        from structural_lib.api import detail_beam_is456, beam_to_3d_geometry
+        from structural_lib.services.api import detail_beam_is456, beam_to_3d_geometry
 
         # First create a detailing result to pass to geometry function
         detailing_result = detail_beam_is456(
@@ -268,7 +268,7 @@ async def generate_full_beam_geometry(
     Note: This is the recommended endpoint for modern 3D visualization.
     """
     try:
-        from structural_lib.api import detail_beam_is456, beam_to_3d_geometry
+        from structural_lib.services.api import detail_beam_is456, beam_to_3d_geometry
 
         # Create detailing result from design parameters
         detailing_result = detail_beam_is456(

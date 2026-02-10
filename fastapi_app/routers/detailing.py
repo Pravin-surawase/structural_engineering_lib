@@ -44,7 +44,7 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
     Per IS 456:2000 clause 26 (Development and detailing).
     """
     try:
-        from structural_lib.api import detail_beam_is456
+        from structural_lib.services.api import detail_beam_is456
 
         # Default span if not provided
         span = (
@@ -256,7 +256,7 @@ async def calculate_development_length(
     - τbd = design bond stress (Table 26.2.1.1)
     """
     try:
-        from structural_lib.api import calculate_development_length
+        from structural_lib.services.api import calculate_development_length
 
         result = calculate_development_length(
             bar_diameter=bar_diameter,

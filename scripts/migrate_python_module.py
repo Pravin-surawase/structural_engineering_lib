@@ -98,11 +98,11 @@ def find_import_references(
     references = []
 
     # Patterns to match
-    # from structural_lib.api import X
+    # from structural_lib.services.api import X
     from_pattern = re.compile(
         rf"^(\s*)(from\s+{re.escape(old_module)}\s+import\s+.+)$", re.MULTILINE
     )
-    # import structural_lib.api
+    # import structural_lib.services.api
     import_pattern = re.compile(
         rf"^(\s*)(import\s+{re.escape(old_module)}\b.*)$", re.MULTILINE
     )
@@ -153,14 +153,14 @@ def update_imports(
             continue
 
         # Replace import patterns
-        # from structural_lib.api import X -> from structural_lib.services.api import X
+        # from structural_lib.services.api import X -> from structural_lib.services.api import X
         content = re.sub(
             rf"(from\s+){re.escape(old_module)}(\s+import)",
             rf"\g<1>{new_module}\g<2>",
             content,
         )
 
-        # import structural_lib.api -> import structural_lib.services.api
+        # import structural_lib.services.api -> import structural_lib.services.api
         content = re.sub(
             rf"(import\s+){re.escape(old_module)}\b",
             rf"\g<1>{new_module}",

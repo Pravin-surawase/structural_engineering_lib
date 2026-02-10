@@ -127,7 +127,7 @@ async def validate_rebar(request: RebarValidateRequest) -> RebarValidateResponse
     Returns validation report suitable for UI display.
     """
     try:
-        from structural_lib.rebar import validate_rebar_config
+        from structural_lib.services.rebar import validate_rebar_config
 
         # Convert Pydantic models to dicts for library
         beam_dict = {
@@ -197,7 +197,7 @@ async def apply_rebar(request: RebarApplyRequest) -> RebarApplyResponse:
     Returns geometry for visualization preview.
     """
     try:
-        from structural_lib.rebar import apply_rebar_config
+        from structural_lib.services.rebar import apply_rebar_config
 
         # Convert Pydantic models to dicts for library
         beam_dict = {

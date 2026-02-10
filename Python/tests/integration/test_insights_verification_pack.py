@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.api import design_beam_is456
+from structural_lib.services.api import design_beam_is456
 from structural_lib.detailing import (
     BarArrangement,
     BeamDetailingResult,

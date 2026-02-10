@@ -54,7 +54,7 @@ from utils.loading_states import loading_context
 
 # Import ETABS library functions
 try:
-    from structural_lib.etabs_import import (
+    from structural_lib.services.etabs_import import (
         validate_etabs_csv,
         load_etabs_csv,
         normalize_etabs_forces,

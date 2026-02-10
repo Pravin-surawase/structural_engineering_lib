@@ -20,7 +20,7 @@ from structural_lib.core.models import (
     Point3D,
     SectionProperties,
 )
-from structural_lib.serialization import (
+from structural_lib.services.serialization import (
     cache_exists,
     generate_all_schemas,
     generate_schema,

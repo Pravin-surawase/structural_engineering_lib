@@ -15,7 +15,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from structural_lib.adapters import (
+from structural_lib.services.adapters import (
     ETABSAdapter,
     InputAdapter,
     ManualInputAdapter,

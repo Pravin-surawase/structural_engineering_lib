@@ -13,7 +13,7 @@ from textwrap import dedent
 
 import pytest
 
-from structural_lib.adapters import SAFEAdapter
+from structural_lib.services.adapters import SAFEAdapter
 from structural_lib.core.models import BeamForces, BeamGeometry
 
 # =============================================================================

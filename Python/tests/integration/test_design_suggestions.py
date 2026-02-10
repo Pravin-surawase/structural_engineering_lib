@@ -1,7 +1,7 @@
 """Tests for design suggestions engine."""
 
-from structural_lib.beam_pipeline import design_single_beam
-from structural_lib.costing import CostProfile
+from structural_lib.services.beam_pipeline import design_single_beam
+from structural_lib.services.costing import CostProfile
 from structural_lib.insights.design_suggestions import (
     DesignSuggestion,
     ImpactLevel,

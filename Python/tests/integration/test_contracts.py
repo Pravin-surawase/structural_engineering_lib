@@ -251,7 +251,7 @@ def test_public_api_completeness():
     for name in expected_exports:
         assert name in actual_exports, (
             f"❌ BREAKING CHANGE: '{name}' removed from api.__all__\n"
-            f"This makes the function inaccessible via 'from structural_lib.api import *'.\n"
+            f"This makes the function inaccessible via 'from structural_lib.services.api import *'.\n"
             f"Fix: Restore the export, or bump major version."
         )
 

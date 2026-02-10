@@ -566,7 +566,7 @@ def create_bmd_sfd_diagram(
         Plotly figure with two subplots
 
     Example:
-        >>> from structural_lib.api import compute_bmd_sfd, LoadDefinition, LoadType
+        >>> from structural_lib.services.api import compute_bmd_sfd, LoadDefinition, LoadType
         >>> loads = [LoadDefinition(LoadType.UDL, magnitude=20.0)]
         >>> result = compute_bmd_sfd(6000, "simply_supported", loads)
         >>> fig = create_bmd_sfd_diagram(

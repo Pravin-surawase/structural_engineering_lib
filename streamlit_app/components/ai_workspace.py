@@ -50,7 +50,7 @@ except ImportError:
 
 # Import adapter system (reusing proven infrastructure from multi-format import)
 try:
-    from structural_lib.adapters import (
+    from structural_lib.services.adapters import (
         ETABSAdapter,
         SAFEAdapter,
         GenericCSVAdapter,
