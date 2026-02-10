@@ -101,9 +101,11 @@ classmethod-decorators = ["classmethod"]
 [tool.ruff.lint.per-file-ignores]
 # Excel bridge uses intentional naming for UDF compatibility
 "structural_lib/excel_bridge.py" = ["N802"]
+"structural_lib/services/excel_bridge.py" = ["N802"]
 # Compliance and dxf_export have optional imports after conditionals
 "structural_lib/compliance.py" = ["E402"]
 "structural_lib/dxf_export.py" = ["E402"]
+"structural_lib/services/dxf_export.py" = ["E402"]
 "structural_lib/excel_integration.py" = ["E402"]
 # Test files with intentional naming patterns (updated for new test structure)
 "tests/integration/test_costing.py" = ["N802"]  # setUp method from unittest.TestCase

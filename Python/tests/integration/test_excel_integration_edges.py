@@ -7,7 +7,7 @@ from structural_lib.detailing import (
     BeamDetailingResult,
     StirrupArrangement,
 )
-from structural_lib.excel_integration import (
+from structural_lib.services.excel_integration import (
     BeamDesignData,
     ProcessingResult,
     batch_generate_dxf,
@@ -91,7 +91,7 @@ def test_process_single_beam_can_skip_dxf_when_disabled(tmp_path):
 
 def test_process_single_beam_reports_missing_ezdxf(monkeypatch, tmp_path):
     # Force the integration layer to behave as if ezdxf is unavailable.
-    import structural_lib.excel_integration as excel_integration
+    import structural_lib.services.excel_integration as excel_integration
 
     monkeypatch.setattr(excel_integration, "EZDXF_AVAILABLE", False, raising=True)
 
@@ -123,7 +123,7 @@ def test_process_single_beam_reports_missing_ezdxf(monkeypatch, tmp_path):
 
 
 def test_process_single_beam_generates_dxf_when_available(monkeypatch, tmp_path):
-    import structural_lib.excel_integration as excel_integration
+    import structural_lib.services.excel_integration as excel_integration
 
     # Force DXF path and stub the generator.
     monkeypatch.setattr(excel_integration, "EZDXF_AVAILABLE", True, raising=True)
@@ -166,7 +166,7 @@ def test_process_single_beam_generates_dxf_when_available(monkeypatch, tmp_path)
 
 
 def test_batch_generate_dxf_json_extension(monkeypatch, tmp_path, capsys):
-    import structural_lib.excel_integration as excel_integration
+    import structural_lib.services.excel_integration as excel_integration
 
     p = tmp_path / "beams.json"
     p.write_text(
@@ -260,7 +260,7 @@ def test_load_beam_data_from_csv_skips_invalid_rows_and_warns(tmp_path, capsys):
 
 
 def test_batch_generate_dxf_logs_progress(monkeypatch, tmp_path, capsys):
-    import structural_lib.excel_integration as excel_integration
+    import structural_lib.services.excel_integration as excel_integration
 
     p = tmp_path / "beams.csv"
     p.write_text(
@@ -442,7 +442,7 @@ def test_generate_detailing_schedule_with_single_stirrup_uses_end_for_mid(tmp_pa
 
 
 def test_excel_integration_cli_main_with_schedule(monkeypatch, tmp_path, capsys):
-    import structural_lib.excel_integration as excel_integration
+    import structural_lib.services.excel_integration as excel_integration
 
     # Stub the batch processing to avoid heavy work.
     fake_results = [

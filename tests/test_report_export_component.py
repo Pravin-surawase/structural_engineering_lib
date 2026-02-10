@@ -144,7 +144,7 @@ class TestExportIntegration:
     def test_dxf_export_available_check(self):
         """Test DXF availability check."""
         try:
-            from structural_lib.dxf_export import EZDXF_AVAILABLE
+            from structural_lib.services.dxf_export import EZDXF_AVAILABLE
 
             # If import succeeds, check the flag
             assert isinstance(EZDXF_AVAILABLE, bool)
@@ -155,7 +155,7 @@ class TestExportIntegration:
     def test_dxf_export_functions_exist(self):
         """Test that DXF export functions are importable."""
         try:
-            from structural_lib.dxf_export import (
+            from structural_lib.services.dxf_export import (
                 generate_beam_dxf,
                 quick_dxf,
                 quick_dxf_bytes,
@@ -220,6 +220,6 @@ class TestPDFGenerator:
 
     def test_calculation_report_importable(self):
         """Test that CalculationReport is importable."""
-        from structural_lib.calculation_report import CalculationReport
+        from structural_lib.services.calculation_report import CalculationReport
 
         assert CalculationReport is not None

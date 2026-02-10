@@ -17,7 +17,12 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.bbs import (  # Constants; Weight calculations; Cut length calculations; BBS generation; Cutting-stock optimization; Data classes
+from structural_lib.detailing import (
+    BarArrangement,
+    BeamDetailingResult,
+    StirrupArrangement,
+)
+from structural_lib.services.bbs import (  # Constants; Weight calculations; Cut length calculations; BBS generation; Cutting-stock optimization; Data classes
     STANDARD_STOCK_LENGTHS_MM,
     UNIT_WEIGHTS_KG_M,
     BBSDocument,
@@ -34,11 +39,6 @@ from structural_lib.bbs import (  # Constants; Weight calculations; Cut length c
     export_bom_summary_csv,
     generate_bbs_from_detailing,
     optimize_cutting_stock,
-)
-from structural_lib.detailing import (
-    BarArrangement,
-    BeamDetailingResult,
-    StirrupArrangement,
 )
 
 # =============================================================================
@@ -863,7 +863,7 @@ class TestGenerateSummaryTable:
 
     def test_markdown_output_format(self):
         """Test markdown output has proper table structure."""
-        from structural_lib.bbs import generate_summary_table
+        from structural_lib.services.bbs import generate_summary_table
 
         items = [
             BBSLineItem(
@@ -904,7 +904,7 @@ class TestGenerateSummaryTable:
 
     def test_text_output_format(self):
         """Test text output has proper structure."""
-        from structural_lib.bbs import generate_summary_table
+        from structural_lib.services.bbs import generate_summary_table
 
         items = [
             BBSLineItem(
@@ -931,7 +931,7 @@ class TestGenerateSummaryTable:
 
     def test_html_output_format(self):
         """Test HTML output has proper structure."""
-        from structural_lib.bbs import generate_summary_table
+        from structural_lib.services.bbs import generate_summary_table
 
         items = [
             BBSLineItem(
@@ -959,7 +959,7 @@ class TestGenerateSummaryTable:
 
     def test_custom_member_id(self):
         """Test that member_id is included in the output."""
-        from structural_lib.bbs import generate_summary_table
+        from structural_lib.services.bbs import generate_summary_table
 
         items = [
             BBSLineItem(
@@ -985,7 +985,7 @@ class TestGenerateSummaryTable:
 
     def test_empty_items_returns_valid_table(self):
         """Test that empty items list returns valid table with zeros."""
-        from structural_lib.bbs import generate_summary_table
+        from structural_lib.services.bbs import generate_summary_table
 
         table = generate_summary_table([], format_type="markdown")
 

@@ -45,7 +45,7 @@ from utils.loading_states import loading_context
 
 # Python library imports
 try:
-    from structural_lib.dxf_export import (
+    from structural_lib.services.dxf_export import (
         generate_beam_dxf,
         quick_dxf,
         quick_dxf_bytes,

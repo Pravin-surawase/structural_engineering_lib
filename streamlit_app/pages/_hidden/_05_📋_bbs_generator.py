@@ -47,7 +47,7 @@ from utils.loading_states import loading_context
 
 # Python library imports
 try:
-    from structural_lib.bbs import (
+    from structural_lib.services.bbs import (
         BBSLineItem,
         BBSummary,
         BBSDocument,
