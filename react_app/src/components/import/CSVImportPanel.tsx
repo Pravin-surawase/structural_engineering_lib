@@ -5,8 +5,8 @@
  */
 import { useCallback, useState } from 'react';
 import type { DragEvent } from 'react';
-import { useImportedBeamsStore } from '../store/importedBeamsStore';
-import { parseBeamCSV } from '../types/csv';
+import { useImportedBeamsStore } from '../../store/importedBeamsStore';
+import { parseBeamCSV } from '../../types/csv';
 import './CSVImportPanel.css';
 
 export function CSVImportPanel() {

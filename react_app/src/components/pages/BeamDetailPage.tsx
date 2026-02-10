@@ -8,8 +8,8 @@ import { Suspense, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useDesignStore } from "../../store/designStore";
-import { Viewport3D } from "../Viewport3D";
-import { CrossSectionView } from "../CrossSectionView";
+import { Viewport3D } from "../viewport/Viewport3D";
+import { CrossSectionView } from "../design/CrossSectionView";
 
 type ViewTab = "3d" | "section";
 

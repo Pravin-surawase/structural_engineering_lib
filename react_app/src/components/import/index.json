@@ -1,0 +1,61 @@
+{
+  "folder": "react_app/src/components/import",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-02-10",
+  "file_count": 5,
+  "files": [
+    {
+      "name": "BeamTable.tsx",
+      "type": "react-component",
+      "size_lines": 204,
+      "last_updated": "2026-01-26",
+      "exports": [
+        "BeamRowData",
+        "BeamTable"
+      ],
+      "props_type": "BeamTableProps",
+      "description": "BeamTable Component"
+    },
+    {
+      "name": "CSVImportPanel.css",
+      "type": "stylesheet",
+      "size_lines": 145,
+      "last_updated": "2026-01-26"
+    },
+    {
+      "name": "CSVImportPanel.tsx",
+      "type": "react-component",
+      "size_lines": 127,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "CSVImportPanel"
+      ],
+      "description": "CSVImportPanel Component"
+    },
+    {
+      "name": "ImportView.tsx",
+      "type": "react-component",
+      "size_lines": 457,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "ImportView"
+      ],
+      "props_type": "UploadStepProps",
+      "description": "ImportView - Batch import with dual CSV upload, preview table, and batch design."
+    },
+    {
+      "name": "index.ts",
+      "type": "typescript",
+      "size_lines": 8,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "ImportView",
+        "CSVImportPanel",
+        "BeamTable"
+      ],
+      "description": "Import feature group — CSV/data import components"
+    }
+  ],
+  "subfolders": []
+}

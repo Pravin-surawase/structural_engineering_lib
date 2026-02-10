@@ -1,0 +1,71 @@
+{
+  "folder": "react_app/src/components",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-02-10",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "CommandPalette.tsx",
+      "type": "react-component",
+      "size_lines": 272,
+      "last_updated": "2026-01-26",
+      "exports": [
+        "CommandItem",
+        "CommandPalette",
+        "useCommandPalette"
+      ],
+      "props_type": "CommandPaletteProps",
+      "description": "CommandPalette Component"
+    },
+    {
+      "name": "index.ts",
+      "type": "typescript",
+      "size_lines": 13,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "BeamForm",
+        "Viewport3D",
+        "ResultsPanel",
+        "WorkspaceLayout",
+        "CSVImportPanel",
+        "BeamTable",
+        "CommandPalette",
+        "useCommandPalette"
+      ],
+      "description": "Components barrel export"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "design",
+      "path": "design/",
+      "file_count": 9
+    },
+    {
+      "name": "import",
+      "path": "import/",
+      "file_count": 7
+    },
+    {
+      "name": "layout",
+      "path": "layout/",
+      "file_count": 2
+    },
+    {
+      "name": "pages",
+      "path": "pages/",
+      "file_count": 4
+    },
+    {
+      "name": "ui",
+      "path": "ui/",
+      "file_count": 8
+    },
+    {
+      "name": "viewport",
+      "path": "viewport/",
+      "file_count": 8
+    }
+  ]
+}

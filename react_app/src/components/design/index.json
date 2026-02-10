@@ -1,0 +1,76 @@
+{
+  "folder": "react_app/src/components/design",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-02-10",
+  "file_count": 7,
+  "files": [
+    {
+      "name": "BeamForm.css",
+      "type": "stylesheet",
+      "size_lines": 145,
+      "last_updated": "2026-01-26"
+    },
+    {
+      "name": "BeamForm.tsx",
+      "type": "react-component",
+      "size_lines": 202,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "BeamForm"
+      ],
+      "description": "BeamForm Component"
+    },
+    {
+      "name": "CrossSectionView.tsx",
+      "type": "react-component",
+      "size_lines": 191,
+      "last_updated": "2026-01-28",
+      "exports": [
+        "CrossSectionView"
+      ],
+      "props_type": "CrossSectionViewProps",
+      "description": "CrossSectionView - 2D SVG rendering of beam cross-section."
+    },
+    {
+      "name": "DesignView.tsx",
+      "type": "react-component",
+      "size_lines": 271,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "DesignView"
+      ],
+      "description": "DesignView - Compact single beam design with live 3D preview."
+    },
+    {
+      "name": "ResultsPanel.css",
+      "type": "stylesheet",
+      "size_lines": 139,
+      "last_updated": "2026-01-25"
+    },
+    {
+      "name": "ResultsPanel.tsx",
+      "type": "react-component",
+      "size_lines": 151,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "ResultsPanel"
+      ],
+      "description": "ResultsPanel Component"
+    },
+    {
+      "name": "index.ts",
+      "type": "typescript",
+      "size_lines": 8,
+      "last_updated": "2026-02-10",
+      "exports": [
+        "DesignView",
+        "BeamForm",
+        "ResultsPanel",
+        "CrossSectionView"
+      ],
+      "description": "Design feature group — single beam design components"
+    }
+  ],
+  "subfolders": []
+}

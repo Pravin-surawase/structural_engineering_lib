@@ -3,7 +3,7 @@
  *
  * Displays beam design results from the API.
  */
-import { useDesignStore } from '../store/designStore';
+import { useDesignStore } from '../../store/designStore';
 import './ResultsPanel.css';
 
 export function ResultsPanel() {
