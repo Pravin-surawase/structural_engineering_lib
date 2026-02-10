@@ -171,11 +171,11 @@ jobs:
 
       - name: Run API Signature Checker
         run: |
-          python scripts/check_api_signatures.py --fix
+          python scripts/check_api.py --signatures --fix
 
       - name: Verify no signature issues
         run: |
-          EXIT_CODE=$(python scripts/check_api_signatures.py; echo $?)
+          EXIT_CODE=$(python scripts/check_api.py --signatures; echo $?)
           if [ $EXIT_CODE -ne 0 ]; then
             echo "❌ API signature issues found"
             exit 1
@@ -208,7 +208,7 @@ jobs:
           python scripts/check_streamlit_issues.py --all-pages --verbose --ignore-file .scanner-ignore.yml >> report.md 2>&1 || true
           echo "" >> report.md
           echo "## API Signature Results" >> report.md
-          python scripts/check_api_signatures.py --fix >> report.md 2>&1 || true
+          python scripts/check_api.py --signatures --fix >> report.md 2>&1 || true
           echo "" >> report.md
           echo "## Pylint Results" >> report.md
           python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/*.py >> report.md 2>&1 || true

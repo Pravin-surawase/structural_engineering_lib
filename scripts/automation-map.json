@@ -41,8 +41,8 @@
       "prereq": ".venv/bin/python scripts/check_doc_similarity.py \"topic\""
     },
     "fix broken links": {
-      "script": ".venv/bin/python scripts/fix_broken_links.py --fix",
-      "description": "Find and auto-fix broken internal links",
+      "script": ".venv/bin/python scripts/check_links.py --fix",
+      "description": "Find and auto-fix broken internal links (supports --map for migration maps)",
       "context_docs": [
         "docs/reference/automation-catalog.md",
         "docs/guidelines/documentation-standard.md"
@@ -68,7 +68,7 @@
       "description": "Auto-format Python code"
     },
     "check folder structure": {
-      "script": ".venv/bin/python scripts/check_folder_structure.py",
+      "script": ".venv/bin/python scripts/check_governance.py --structure",
       "description": "Validate project organization",
       "context_docs": [
         "docs/guidelines/folder-structure-governance.md"
@@ -139,13 +139,27 @@
       "description": "Submit PR and trigger async merge"
     },
     "check api docs": {
-      "script": ".venv/bin/python scripts/check_api_doc_signatures.py",
-      "description": "Verify API documentation matches code",
+      "script": ".venv/bin/python scripts/check_api.py --all",
+      "description": "Verify API documentation matches code (signatures, docs, sync)",
       "context_docs": [
         "docs/reference/api.md",
         "docs/reference/api-stability.md",
         "docs/guidelines/api-evolution-standard.md"
       ]
+    },
+    "check governance": {
+      "script": ".venv/bin/python scripts/check_governance.py",
+      "description": "Run full governance check (folder structure + compliance)",
+      "context_docs": [
+        "docs/guidelines/folder-structure-governance.md"
+      ],
+      "options": {
+        "--structure": "Folder structure only",
+        "--compliance": "Compliance only",
+        "--full": "Both (default)",
+        "--json": "JSON output",
+        "--strict": "Fail on warnings"
+      }
     },
     "generate api manifest": {
       "script": ".venv/bin/python scripts/generate_api_manifest.py",
@@ -264,6 +278,7 @@
     "validation": [
       "check streamlit code",
       "check folder structure",
+      "check governance",
       "check for duplicates",
       "check api docs",
       "validate doc metadata"

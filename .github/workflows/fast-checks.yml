@@ -176,7 +176,7 @@ jobs:
         run: |
           python scripts/check_doc_versions.py --ci &
           python scripts/check_tasks_format.py &
-          python scripts/check_api_docs_sync.py &
+          python scripts/check_api.py --sync &
           python scripts/generate_api_manifest.py --check &
           python scripts/check_scripts_index.py &
           python scripts/check_links.py &
@@ -184,8 +184,7 @@ jobs:
 
       - name: Governance checks
         run: |
-          python scripts/validate_folder_structure.py
-          python scripts/check_governance_compliance.py
+          python scripts/check_governance.py
 
   # Always-run minimal check (for status reporting)
   quick-validation:

@@ -55,15 +55,15 @@ jobs:
 
           pids=()
           python scripts/check_doc_versions.py --ci & pids+=($!)
-          python scripts/check_docs_index.py & pids+=($!)
+          python scripts/check_docs.py --index & pids+=($!)
           python scripts/check_release_docs.py & pids+=($!)
           python scripts/check_session_docs.py & pids+=($!)
-          python scripts/check_api_docs_sync.py & pids+=($!)
+          python scripts/check_api.py --sync & pids+=($!)
           python scripts/check_pre_release_checklist.py & pids+=($!)
-          python scripts/check_api_doc_signatures.py & pids+=($!)
+          python scripts/check_api.py --docs & pids+=($!)
           python scripts/check_next_session_brief_length.py & pids+=($!)
           python scripts/check_cli_reference.py & pids+=($!)
-          python scripts/check_docs_index_links.py & pids+=($!)
+          python scripts/check_docs.py --index-links & pids+=($!)
 
           failed=0
           for pid in "${pids[@]}"; do
@@ -206,13 +206,10 @@ jobs:
           python scripts/check_type_annotations.py --json > evidence/type-annotations.json 2>&1 || true
 
           # API signatures
-          python scripts/check_api_signatures.py > evidence/api-signatures.txt 2>&1 || true
+          python scripts/check_api.py --signatures > evidence/api-signatures.txt 2>&1 || true
 
-          # Governance compliance
-          python scripts/check_governance_compliance.py --json > evidence/governance.json 2>&1 || true
-
-          # Folder structure
-          python scripts/validate_folder_structure.py > evidence/folder-structure.txt 2>&1 || true
+          # Governance (structure + compliance)
+          python scripts/check_governance.py --json > evidence/governance.json 2>&1 || true
 
           # Doc checks
           python scripts/check_links.py > evidence/link-check.txt 2>&1 || true
