@@ -309,7 +309,6 @@ def run_job(
 
     if not code:
         raise ValueError(
-            "Missing required field 'code' in job file. "
-            "Currently supported: 'IS456'."
+            "Missing required field 'code' in job file. Currently supported: 'IS456'."
         )
     raise ValueError(f"Unsupported code: '{code}'. Currently supported: 'IS456'.")

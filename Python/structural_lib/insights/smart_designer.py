@@ -12,7 +12,7 @@ This module provides a unified interface to all smart library features:
 
 Example:
     >>> from structural_lib.insights import SmartDesigner
-    >>> from structural_lib.api import design_beam_is456
+    >>> from structural_lib.services.api import design_beam_is456
     >>>
     >>> # Basic design
     >>> result = design_beam_is456(

@@ -792,7 +792,7 @@ def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
     beams = []
     for i in range(12):
         beam = BeamDetailingResult(
-            beam_id=f"B{i+1:02d}",
+            beam_id=f"B{i + 1:02d}",
             story=f"S{(i % 3) + 1}",
             b=230 + (i * 10),  # Varying widths
             D=400 + (i * 20),  # Varying depths
@@ -815,7 +815,7 @@ def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
             ld_compression=400,
             lap_length=600,
             is_valid=True,
-            remarks=f"Beam {i+1}",
+            remarks=f"Beam {i + 1}",
         )
         beams.append(beam)
 
@@ -829,7 +829,7 @@ def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
     # Should have drawings for all 12 beams
     texts = [t.text for t in doc._msp.texts]
     for i in range(12):
-        beam_id = f"B{i+1:02d}"
+        beam_id = f"B{i + 1:02d}"
         assert any(beam_id in t for t in texts), f"Should have {beam_id} beam ID"
 
     # Should have a reasonable number of lines (at least 4 rectangle lines per beam)

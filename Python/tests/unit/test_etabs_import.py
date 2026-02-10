@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.etabs_import import (
+from structural_lib.services.etabs_import import (
     ETABSEnvelopeResult,
     ETABSForceRow,
     FrameGeometry,

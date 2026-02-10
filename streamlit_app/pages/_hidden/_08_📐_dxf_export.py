@@ -19,7 +19,7 @@ Status: ✅ PRODUCTION READY
 
 import sys
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Dict
 
 import streamlit as st
 
@@ -185,7 +185,7 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
     lines.append(f"Beam ID: {detailing.beam_id}")
     lines.append(f"Story: {detailing.story}")
     lines.append(f"Dimensions: {safe_int(detailing.b)} x {safe_int(detailing.D)} mm")
-    lines.append(f"Span: {safe_int(detailing.span)} mm ({detailing.span/1000:.1f} m)")
+    lines.append(f"Span: {safe_int(detailing.span)} mm ({detailing.span / 1000:.1f} m)")
     lines.append(f"Cover: {safe_int(detailing.cover)} mm")
     lines.append("")
 
@@ -196,7 +196,7 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
     if detailing.bottom_bars:
         lines.append("Bottom Bars (Tension):")
         for i, bar in enumerate(detailing.bottom_bars):
-            zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
+            zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i + 1}"
             lines.append(
                 f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
                 f"(Area: {bar.area_provided:.0f} mm²)"
@@ -207,7 +207,7 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("")
         lines.append("Top Bars (Hanger/Compression):")
         for i, bar in enumerate(detailing.top_bars):
-            zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
+            zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i + 1}"
             lines.append(
                 f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
                 f"(Area: {bar.area_provided:.0f} mm²)"
@@ -218,7 +218,7 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("")
         lines.append("Stirrups (Shear):")
         for i, stirrup in enumerate(detailing.stirrups):
-            zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
+            zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i + 1}"
             lines.append(
                 f"  {zone}: Ø{safe_int(stirrup.diameter)} mm @ {safe_int(stirrup.spacing)} mm c/c"
             )
@@ -351,7 +351,7 @@ else:
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            st.metric("Span", f"{inputs.get('span_mm', 0)/1000:.1f} m")
+            st.metric("Span", f"{inputs.get('span_mm', 0) / 1000:.1f} m")
         with col2:
             st.metric("Size", f"{inputs.get('b_mm', 0)}×{inputs.get('D_mm', 0)} mm")
         with col3:

@@ -79,7 +79,7 @@ class BeamDesignRequest(BaseModel):
         """Validate practical depth-to-width ratio."""
         if self.depth / self.width > 6:
             raise ValueError(
-                f"Depth/width ratio {self.depth/self.width:.1f} exceeds practical limit of 6"
+                f"Depth/width ratio {self.depth / self.width:.1f} exceeds practical limit of 6"
             )
         return self
 

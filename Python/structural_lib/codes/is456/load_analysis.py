@@ -29,7 +29,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from structural_lib.data_types import (
+from structural_lib.core.data_types import (
     CriticalPoint,
     LoadDefinition,
     LoadDiagramResult,
@@ -360,7 +360,7 @@ def compute_bmd_sfd(
         ValueError: If span is non-positive or support_condition invalid
 
     Example:
-        >>> from structural_lib.data_types import LoadDefinition, LoadType
+        >>> from structural_lib.core.data_types import LoadDefinition, LoadType
         >>> loads = [LoadDefinition(LoadType.UDL, magnitude=20.0)]
         >>> result = compute_bmd_sfd(6000, "simply_supported", loads)
         >>> print(f"Max moment: {result.max_bm_knm:.1f} kN·m")

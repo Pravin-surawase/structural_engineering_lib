@@ -2,8 +2,13 @@
 """
 VBA Syntax Linter - Pre-import validation
 Catches common errors before Excel import
+
+Usage:
+    python scripts/lint_vba.py <file.bas>
+    python scripts/lint_vba.py Excel/Templates/*.bas
 """
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -168,12 +173,18 @@ class VBALinter:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python scripts/lint_vba.py <file.bas>")
-        print("   or: python scripts/lint_vba.py Excel/Templates/*.bas")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="VBA syntax linter — validates .bas files before Excel import",
+    )
+    parser.add_argument(
+        "files",
+        nargs="+",
+        type=Path,
+        help="One or more .bas files to lint (supports glob patterns)",
+    )
+    args = parser.parse_args()
 
-    files = [Path(arg) for arg in sys.argv[1:]]
+    files = args.files
     all_pass = True
 
     for filepath in files:

@@ -3,7 +3,7 @@ Tests for validation utilities module.
 """
 
 from structural_lib import validation
-from structural_lib.errors import (
+from structural_lib.core.errors import (
     E_INPUT_001,
     E_INPUT_002,
     E_INPUT_003,

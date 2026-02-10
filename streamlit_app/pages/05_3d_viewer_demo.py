@@ -76,7 +76,7 @@ def generate_geometry(
     for i, y in enumerate(y_positions):
         bottom_bars.append(
             {
-                "barId": f"B{i+1}",
+                "barId": f"B{i + 1}",
                 "segments": [
                     {
                         "start": {"x": 0, "y": round(y, 1), "z": round(z_bottom, 1)},
@@ -108,7 +108,7 @@ def generate_geometry(
     for i, y in enumerate(y_positions_top):
         top_bars.append(
             {
-                "barId": f"T{i+1}",
+                "barId": f"T{i + 1}",
                 "segments": [
                     {
                         "start": {"x": 0, "y": round(y, 1), "z": round(z_top, 1)},

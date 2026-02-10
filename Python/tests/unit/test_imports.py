@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from structural_lib.imports import parse_dual_csv, validate_import
+from structural_lib.services.imports import parse_dual_csv, validate_import
 
 
 def _write_csv(path: Path, text: str) -> None:

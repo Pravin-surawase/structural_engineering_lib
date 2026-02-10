@@ -21,7 +21,7 @@ from typing import get_type_hints
 import pytest
 
 from structural_lib import api
-from structural_lib.data_types import (
+from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     FlexureResult,
@@ -251,7 +251,7 @@ def test_public_api_completeness():
     for name in expected_exports:
         assert name in actual_exports, (
             f"❌ BREAKING CHANGE: '{name}' removed from api.__all__\n"
-            f"This makes the function inaccessible via 'from structural_lib.api import *'.\n"
+            f"This makes the function inaccessible via 'from structural_lib.services.api import *'.\n"
             f"Fix: Restore the export, or bump major version."
         )
 

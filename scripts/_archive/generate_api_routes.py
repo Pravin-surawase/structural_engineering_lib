@@ -57,7 +57,7 @@ def load_api():
         from structural_lib import api
         return api
     except ImportError as e:
-        print(f"❌ Cannot import structural_lib.api: {e}")
+        print(f"❌ Cannot import structural_lib.services.api: {e}")
         sys.exit(2)
 
 

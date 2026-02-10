@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from structural_lib.rebar import apply_rebar_config, validate_rebar_config
+from structural_lib.services.rebar import apply_rebar_config, validate_rebar_config
 
 
 def test_validate_rebar_config_ok() -> None:

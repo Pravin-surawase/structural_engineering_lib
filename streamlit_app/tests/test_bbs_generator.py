@@ -224,7 +224,7 @@ class TestDataFrameConversion:
                     "Location": item.location.capitalize(),
                     "No. of Bars": item.no_of_bars,
                     "Cut Length (mm)": int(item.cut_length_mm),
-                    "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
+                    "Total Length (m)": f"{item.total_length_mm / 1000:.2f}",
                     "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
                     "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
                     "Remarks": item.remarks,

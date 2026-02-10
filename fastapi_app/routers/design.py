@@ -45,7 +45,7 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
     Per IS 456:2000 clauses 38.1 (flexure) and 40 (shear).
     """
     try:
-        from structural_lib.api import design_beam_is456
+        from structural_lib.services.api import design_beam_is456
 
         # Calculate effective depth if not provided
         effective_depth = request.effective_depth
@@ -164,7 +164,7 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
     Returns utilization ratios and pass/fail status.
     """
     try:
-        from structural_lib.api import check_beam_is456
+        from structural_lib.services.api import check_beam_is456
 
         # Calculate effective depth
         effective_depth = request.depth - request.clear_cover - 25  # ~bar_dia/2

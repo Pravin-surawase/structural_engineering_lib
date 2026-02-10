@@ -111,7 +111,7 @@ def compare_designs(
         ValueError: If alternatives list is empty or weights don't sum to 1.0
 
     Example:
-        >>> from structural_lib.api import design_beam_is456
+        >>> from structural_lib.services.api import design_beam_is456
         >>> from structural_lib.insights import compare_designs, DesignAlternative
         >>>
         >>> # Define alternatives
@@ -141,8 +141,7 @@ def compare_designs(
     weight_sum = sum(weights.values())
     if abs(weight_sum - 1.0) > 0.01:
         raise ValueError(
-            f"Weights must sum to 1.0, got {weight_sum:.3f}. "
-            f"Adjust weights: {weights}"
+            f"Weights must sum to 1.0, got {weight_sum:.3f}. Adjust weights: {weights}"
         )
 
     # Calculate metrics for each alternative
@@ -242,7 +241,7 @@ def cost_aware_sensitivity(
 
     Example:
         >>> from structural_lib.insights import cost_aware_sensitivity, CostProfile
-        >>> from structural_lib.api import design_beam_is456
+        >>> from structural_lib.services.api import design_beam_is456
         >>>
         >>> params = {"b_mm": 300, "d_mm": 450, "mu_knm": 120, ...}
         >>> costs = CostProfile(

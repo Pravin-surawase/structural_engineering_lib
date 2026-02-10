@@ -24,7 +24,6 @@ st.set_page_config(
 )
 
 # Imports after page config
-import math
 import re
 import sys
 from pathlib import Path
@@ -49,7 +48,6 @@ from utils.rebar_layout import calculate_rebar_layout as shared_rebar_layout
 
 # Import structural_lib at module level
 from structural_lib import api as structural_api
-from structural_lib.codes.is456.detailing import calculate_development_length
 from structural_lib.insights import SmartDesigner
 
 
@@ -428,12 +426,12 @@ def simulate_ai_response(user_message: str) -> str:
             response = f"""I've designed a beam for your requirements:
 {parsed_info}
 **Design Summary:**
-- Section: **{result.get('section', 'N/A')}**
-- Steel Area Required: **{result.get('ast_mm2', 0):.0f} mm²**
-- Utilization: **{result.get('utilization', 0):.1%}**
-- Status: {"✅ **SAFE**" if result.get('is_safe', False) else "❌ **UNSAFE**"}
+- Section: **{result.get("section", "N/A")}**
+- Steel Area Required: **{result.get("ast_mm2", 0):.0f} mm²**
+- Utilization: **{result.get("utilization", 0):.1%}**
+- Status: {"✅ **SAFE**" if result.get("is_safe", False) else "❌ **UNSAFE**"}
 
-The design uses M{updated_params.get('fck', 25)} concrete and Fe{updated_params.get('fy', 500)} steel.
+The design uses M{updated_params.get("fck", 25)} concrete and Fe{updated_params.get("fy", 500)} steel.
 
 Would you like me to:
 1. 💰 Optimize for cost?
@@ -969,9 +967,9 @@ def render_workspace_panel():
                                     }
                                     result = run_design(params)
                                     result["beam_id"] = (
-                                        row.get(id_col, f"B{idx+1}")
+                                        row.get(id_col, f"B{idx + 1}")
                                         if id_col != "--"
-                                        else f"B{idx+1}"
+                                        else f"B{idx + 1}"
                                     )
                                     results.append(result)
                                     progress.progress((idx + 1) / total_beams)
@@ -981,7 +979,7 @@ def render_workspace_panel():
                                     1 for r in results if r.get("is_safe", False)
                                 )
                                 st.success(
-                                    f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results)-safe_count} UNSAFE"
+                                    f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results) - safe_count} UNSAFE"
                                 )
 
                                 # Show results summary

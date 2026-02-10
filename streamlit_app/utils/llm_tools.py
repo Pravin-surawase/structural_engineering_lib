@@ -328,10 +328,10 @@ def format_tool_result_for_display(
 
 | Metric | Value |
 |--------|-------|
-| Section | {result.get('section', 'N/A')} |
-| Steel Required | {result.get('ast_mm2', 0):.0f} mm² |
-| Utilization | {result.get('utilization', 0):.1%} |
-| Status | {'SAFE' if result.get('is_safe') else 'UNSAFE'} |
+| Section | {result.get("section", "N/A")} |
+| Steel Required | {result.get("ast_mm2", 0):.0f} mm² |
+| Utilization | {result.get("utilization", 0):.1%} |
+| Status | {"SAFE" if result.get("is_safe") else "UNSAFE"} |
 """
         else:
             return f"**Design Failed** ❌\n\n{result.get('error', 'Unknown error')}"

@@ -424,11 +424,11 @@ class BeamDesignReportGenerator:
             ["Total Beams Designed", str(total_beams)],
             [
                 "Safe Designs",
-                f"{safe_beams} ({100*safe_beams/max(total_beams,1):.0f}%)",
+                f"{safe_beams} ({100 * safe_beams / max(total_beams, 1):.0f}%)",
             ],
             [
                 "Requires Review",
-                f"{unsafe_beams} ({100*unsafe_beams/max(total_beams,1):.0f}%)",
+                f"{unsafe_beams} ({100 * unsafe_beams / max(total_beams, 1):.0f}%)",
             ],
         ]
 
@@ -538,7 +538,7 @@ class BeamDesignReportGenerator:
                     f"{b:.0f}×{D:.0f}",
                     f"{mu:.1f}",
                     f"{ast:.0f} mm²",
-                    f"{utilization*100:.0f}%",
+                    f"{utilization * 100:.0f}%",
                     "SAFE" if is_safe else "REVIEW",
                 ]
             )

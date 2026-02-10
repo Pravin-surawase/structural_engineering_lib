@@ -8,7 +8,6 @@ Priority: HIGH (new code must have tests)
 Coverage Target: 80%
 """
 
-
 # Import preview functions
 from components.preview import (
     create_beam_preview_diagram,

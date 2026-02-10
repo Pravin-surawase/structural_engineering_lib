@@ -101,9 +101,9 @@ class TestPageStructure:
                 continue
 
             content = page_file.read_text()
-            assert (
-                "import streamlit" in content
-            ), f"Page {page_file.name} doesn't import streamlit"
+            assert "import streamlit" in content, (
+                f"Page {page_file.name} doesn't import streamlit"
+            )
 
     def test_pages_use_components(self):
         """Test pages import custom components"""
@@ -216,9 +216,9 @@ class TestFileNaming:
         # Check numbering pattern
         for page_file in page_files:
             if not page_file.name.startswith("_"):
-                assert page_file.name[
-                    :2
-                ].isdigit(), f"Page {page_file.name} should start with two digits"
+                assert page_file.name[:2].isdigit(), (
+                    f"Page {page_file.name} should start with two digits"
+                )
 
     def test_pages_have_emojis(self):
         """Test pages use emoji icons"""
@@ -230,9 +230,9 @@ class TestFileNaming:
 
             # Page names should have format: NN_emoji_name.py
             name_parts = page_file.name.split("_")
-            assert (
-                len(name_parts) >= 2
-            ), f"Page {page_file.name} should have format NN_emoji_name.py"
+            assert len(name_parts) >= 2, (
+                f"Page {page_file.name} should have format NN_emoji_name.py"
+            )
 
 
 if __name__ == "__main__":

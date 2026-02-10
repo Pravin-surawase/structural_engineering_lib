@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import pytest
 
-from structural_lib.multi_objective_optimizer import (
+from structural_lib.services.multi_objective_optimizer import (
     ParetoCandidate,
     ParetoOptimizationResult,
     _crowding_distance,

@@ -1,35 +1,20 @@
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2024-2026 Pravin Surawase
-"""Compatibility shim for legacy imports.
+"""Backward compatibility stub.
 
-Use `structural_lib.insights` for new code. This module re-exports the
-advisory insights without changing core APIs.
-"""
+This module has been migrated to: structural_lib.services.intelligence
+All functionality is re-exported here for backward compatibility.
+Prefer importing directly from structural_lib.services.intelligence."""
 
-from .insights import (
-    calculate_constructability_score,
-    calculate_robustness,
-    quick_precheck,
-    sensitivity_analysis,
-)
-from .insights.types import (
+from __future__ import annotations
+
+from structural_lib.services.intelligence import (  # noqa: F401, E402
     ConstructabilityFactor,
     ConstructabilityScore,
     HeuristicWarning,
     PredictiveCheckResult,
     RobustnessScore,
     SensitivityResult,
+    calculate_constructability_score,
+    calculate_robustness,
+    quick_precheck,
+    sensitivity_analysis,
 )
-
-__all__ = [
-    "calculate_constructability_score",
-    "calculate_robustness",
-    "quick_precheck",
-    "sensitivity_analysis",
-    "ConstructabilityFactor",
-    "ConstructabilityScore",
-    "HeuristicWarning",
-    "PredictiveCheckResult",
-    "RobustnessScore",
-    "SensitivityResult",
-]

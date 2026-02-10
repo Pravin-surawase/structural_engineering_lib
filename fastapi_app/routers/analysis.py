@@ -50,7 +50,7 @@ async def smart_analyze_beam(
     - Code compliance verification
     """
     try:
-        from structural_lib.api import smart_analyze_design
+        from structural_lib.services.api import smart_analyze_design
 
         # Calculate effective depth
         effective_depth = request.depth - 50  # Approximate

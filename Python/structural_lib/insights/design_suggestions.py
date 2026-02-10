@@ -126,7 +126,7 @@ def suggest_improvements(
         SuggestionReport with prioritized improvements
 
     Example:
-        >>> from structural_lib.api import design_beam_is456
+        >>> from structural_lib.services.api import design_beam_is456
         >>> design = design_beam_is456(...)
         >>> suggestions = suggest_improvements(design, span_mm=5000, mu_knm=120)
         >>> for s in suggestions.suggestions[:3]:  # Top 3 suggestions
@@ -206,7 +206,7 @@ def _check_geometry_rules(
                     ),
                     estimated_benefit=f"~{savings_estimate}% cost reduction",
                     action_steps=[
-                        f"Try reducing depth by {int((1-utilization)*D_mm*0.3)}mm",
+                        f"Try reducing depth by {int((1 - utilization) * D_mm * 0.3)}mm",
                         "Re-run design with smaller section",
                         "Verify serviceability limits",
                     ],
@@ -266,7 +266,7 @@ def _check_geometry_rules(
                 impact=ImpactLevel.MEDIUM,
                 confidence=0.75,
                 title="Increase beam width for stability",
-                description=f"Depth/width ratio {D_mm/b_mm:.1f} is very high",
+                description=f"Depth/width ratio {D_mm / b_mm:.1f} is very high",
                 rationale=(
                     "Deep narrow beams have lateral stability issues and "
                     "require additional bracing during construction. "
@@ -275,7 +275,7 @@ def _check_geometry_rules(
                 ),
                 estimated_benefit="+10% constructability",
                 action_steps=[
-                    f"Consider increasing width to {int(D_mm/3)}mm minimum",
+                    f"Consider increasing width to {int(D_mm / 3)}mm minimum",
                     "Verify lateral stability",
                 ],
                 rule_id="G4",
@@ -292,7 +292,7 @@ def _check_geometry_rules(
                 impact=ImpactLevel.HIGH,
                 confidence=0.80,
                 title="Increase depth for span",
-                description=f"Depth/span ratio {d_mm/span_mm:.3f} is very low",
+                description=f"Depth/span ratio {d_mm / span_mm:.3f} is very low",
                 rationale=(
                     "Shallow beams relative to span will likely fail deflection "
                     "checks and require excessive reinforcement. "

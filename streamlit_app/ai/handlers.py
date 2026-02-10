@@ -237,7 +237,7 @@ def _handle_suggest_optimization(args: dict) -> str:
         suggestions.append(
             {
                 "type": "reduce_section",
-                "message": f"Section is over-designed (util={util*100:.0f}%). Consider reducing depth by 50mm.",
+                "message": f"Section is over-designed (util={util * 100:.0f}%). Consider reducing depth by 50mm.",
                 "savings_pct": 10,
             }
         )
@@ -245,7 +245,7 @@ def _handle_suggest_optimization(args: dict) -> str:
         suggestions.append(
             {
                 "type": "reduce_steel",
-                "message": f"Steel could be reduced (util={util*100:.0f}%). Try smaller bar diameters.",
+                "message": f"Steel could be reduced (util={util * 100:.0f}%). Try smaller bar diameters.",
                 "savings_pct": 5,
             }
         )
@@ -255,7 +255,7 @@ def _handle_suggest_optimization(args: dict) -> str:
         suggestions.append(
             {
                 "type": "increase_section",
-                "message": f"Section fails (util={util*100:.0f}%). Increase depth by 50-100mm.",
+                "message": f"Section fails (util={util * 100:.0f}%). Increase depth by 50-100mm.",
                 "savings_pct": 0,
             }
         )

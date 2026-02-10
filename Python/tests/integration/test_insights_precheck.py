@@ -1,4 +1,4 @@
-from structural_lib.errors import Severity
+from structural_lib.core.errors import Severity
 from structural_lib.insights import quick_precheck
 
 

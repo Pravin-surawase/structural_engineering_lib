@@ -320,7 +320,9 @@ def display_utilization_meters(
         flex_color = (
             "🟢"
             if flex_util < thresholds["green"]
-            else "🟡" if flex_util < thresholds["yellow"] else "🔴"
+            else "🟡"
+            if flex_util < thresholds["yellow"]
+            else "🔴"
         )
         st.markdown(f"{flex_color} {flex_util:.1f}%")
         st.progress(min(flex_util / 100, 1.0))
@@ -344,7 +346,9 @@ def display_utilization_meters(
             shear_color = (
                 "🟢"
                 if shear_util < thresholds["green"]
-                else "🟡" if shear_util < thresholds["yellow"] else "🔴"
+                else "🟡"
+                if shear_util < thresholds["yellow"]
+                else "🔴"
             )
             st.markdown(f"{shear_color} {shear_util:.1f}%")
         st.progress(min(shear_util / 100, 1.0))

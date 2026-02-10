@@ -261,7 +261,7 @@ with col_input:
         d_valid = False
     elif d > D - min_cover_plus_bar:
         st.warning(
-            f"⚠️ d={d:.0f}mm leaves only {D-d:.0f}mm cover. Min: {min_cover_plus_bar}mm"
+            f"⚠️ d={d:.0f}mm leaves only {D - d:.0f}mm cover. Min: {min_cover_plus_bar}mm"
         )
         # Still valid but warn user
 
@@ -774,7 +774,9 @@ with col_preview:
                 flexure_color = (
                     "green"
                     if flexure_util <= 90
-                    else "orange" if flexure_util <= 100 else "red"
+                    else "orange"
+                    if flexure_util <= 100
+                    else "red"
                 )
                 st.markdown(
                     f"**Flexure:** <span style='color:{flexure_color}'>{flexure_util:.1f}%</span>",
@@ -785,7 +787,9 @@ with col_preview:
                 shear_color = (
                     "green"
                     if shear_util <= 90
-                    else "orange" if shear_util <= 100 else "red"
+                    else "orange"
+                    if shear_util <= 100
+                    else "red"
                 )
                 st.markdown(
                     f"**Shear:** <span style='color:{shear_color}'>{shear_util:.1f}%</span>",

@@ -15,15 +15,15 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from structural_lib.adapters import (
-    ETABSAdapter,
-    InputAdapter,
-    ManualInputAdapter,
-)
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamForces,
     BeamGeometry,
     DesignDefaults,
+)
+from structural_lib.services.adapters import (
+    ETABSAdapter,
+    InputAdapter,
+    ManualInputAdapter,
 )
 
 # =============================================================================

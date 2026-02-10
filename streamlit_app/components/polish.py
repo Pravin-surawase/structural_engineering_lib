@@ -291,7 +291,7 @@ def show_progress(
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: {('#ffffff' if percentage > 50 else '#2c3e50')};
+        color: {("#ffffff" if percentage > 50 else "#2c3e50")};
         font-size: 12px;
         font-weight: 600;
     }}
@@ -302,10 +302,10 @@ def show_progress(
 
     progress_html = f"""
     <div class="progress-container">
-        {f'<div class="progress-label">{label}</div>' if label else ''}
+        {f'<div class="progress-label">{label}</div>' if label else ""}
         <div class="progress-bar-bg">
             <div class="progress-bar-fill"></div>
-            {f'<div class="progress-percentage">{percentage:.0f}%</div>' if show_percentage else ''}
+            {f'<div class="progress-percentage">{percentage:.0f}%</div>' if show_percentage else ""}
         </div>
     </div>
     """

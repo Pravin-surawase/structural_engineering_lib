@@ -18,8 +18,8 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.adapters import GenericCSVAdapter
-from structural_lib.models import DesignDefaults
+from structural_lib.core.models import DesignDefaults
+from structural_lib.services.adapters import GenericCSVAdapter
 
 
 @pytest.fixture

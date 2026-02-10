@@ -18,8 +18,8 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.adapters import STAADAdapter
-from structural_lib.models import DesignDefaults, FrameType
+from structural_lib.core.models import DesignDefaults, FrameType
+from structural_lib.services.adapters import STAADAdapter
 
 
 @pytest.fixture

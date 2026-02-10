@@ -133,7 +133,7 @@ repos:
         verbose: true
       - id: check-docs-index
         name: Check docs index structure
-        entry: .venv/bin/python scripts/check_docs_index.py
+        entry: .venv/bin/python scripts/check_docs.py --index
         language: system
         pass_filenames: false
         always_run: true
@@ -203,7 +203,7 @@ repos:
         verbose: true
       - id: check-docs-index-links
         name: Check docs index links
-        entry: .venv/bin/python scripts/check_docs_index_links.py
+        entry: .venv/bin/python scripts/check_docs.py --index-links
         language: system
         pass_filenames: false
         always_run: true
@@ -273,7 +273,7 @@ repos:
         verbose: true
       - id: check-doc-metadata
         name: Check doc metadata (warning mode)
-        entry: .venv/bin/python scripts/check_doc_metadata.py
+        entry: .venv/bin/python scripts/check_docs.py --metadata
         language: system
         pass_filenames: false
         files: ^docs/.*\.md$

@@ -6,8 +6,10 @@ Tests pages without running Streamlit browser to catch errors fast.
 
 Usage:
     python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py
+    python scripts/validate_streamlit_page.py --help
 """
 
+import argparse
 import sys
 import ast
 from pathlib import Path
@@ -165,14 +167,16 @@ class StreamlitPageValidator:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python scripts/validate_streamlit_page.py <page_path>")
-        print(
-            "Example: python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py"
-        )
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Validate a Streamlit page for common issues without running the browser",
+    )
+    parser.add_argument(
+        "page_path",
+        help="Path to Streamlit page file (e.g. streamlit_app/pages/01_beam_design.py)",
+    )
+    args = parser.parse_args()
 
-    page_path = sys.argv[1]
+    page_path = args.page_path
     validator = StreamlitPageValidator(page_path)
     result = validator.validate()
 

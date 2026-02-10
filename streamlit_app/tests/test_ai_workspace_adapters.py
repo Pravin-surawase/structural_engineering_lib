@@ -11,7 +11,6 @@ import tempfile
 from pathlib import Path
 
 
-
 class TestAdapterIntegration:
     """Test adapter system integration in ai_workspace."""
 
@@ -174,7 +173,7 @@ class TestAdapterColumnMapping:
 
     def test_etabs_adapter_maps_columns(self):
         """Test ETABS adapter column detection."""
-        from structural_lib.adapters import ETABSAdapter
+        from structural_lib.services.adapters import ETABSAdapter
 
         adapter = ETABSAdapter()
 

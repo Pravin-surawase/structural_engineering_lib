@@ -19,7 +19,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from structural_lib.testing_strategies import (
+from structural_lib.services.testing_strategies import (
     AREA_TOLERANCE,
     FORCE_TOLERANCE,
     LENGTH_TOLERANCE,

@@ -56,9 +56,9 @@ def add_loading_skeleton(
         border-radius: {border_radius};
         background: linear-gradient(
             90deg,
-            {theme['bg_secondary']} 0%,
-            {theme['bg_tertiary']} 50%,
-            {theme['bg_secondary']} 100%
+            {theme["bg_secondary"]} 0%,
+            {theme["bg_tertiary"]} 50%,
+            {theme["bg_secondary"]} 100%
         );
         background-size: 200px 100%;
         animation: skeleton-loading 1.5s ease-in-out infinite;
@@ -111,14 +111,14 @@ def add_loading_spinner(
     .loading-spinner {{
         width: {size};
         height: {size};
-        border: 4px solid {theme['border_primary']};
+        border: 4px solid {theme["border_primary"]};
         border-top: 4px solid {spinner_color};
         border-radius: 50%;
         animation: spinner-rotate 1s linear infinite;
     }}
 
     .loading-message {{
-        color: {theme['text_secondary']};
+        color: {theme["text_secondary"]};
         font-size: 14px;
         font-weight: 500;
     }}
@@ -163,14 +163,14 @@ def add_loading_progress(
         display: flex;
         justify-content: space-between;
         margin-bottom: 8px;
-        color: {theme['text_secondary']};
+        color: {theme["text_secondary"]};
         font-size: 14px;
     }}
 
     .progress-bar-bg {{
         width: 100%;
         height: 8px;
-        background-color: {theme['bg_tertiary']};
+        background-color: {theme["bg_tertiary"]};
         border-radius: 4px;
         overflow: hidden;
     }}
@@ -178,7 +178,7 @@ def add_loading_progress(
     .progress-bar-fill {{
         height: 100%;
         width: {percentage}%;
-        background: linear-gradient(90deg, {theme['primary']}, {theme['accent']});
+        background: linear-gradient(90deg, {theme["primary"]}, {theme["accent"]});
         border-radius: 4px;
         transition: width {ANIMATION.normal} {ANIMATION.ease_in_out};
     }}
@@ -187,7 +187,7 @@ def add_loading_progress(
     <div class="progress-container">
         <div class="progress-label">
             <span>{message}</span>
-            {f'<span>{percentage}%</span>' if show_percentage else ''}
+            {f"<span>{percentage}%</span>" if show_percentage else ""}
         </div>
         <div class="progress-bar-bg">
             <div class="progress-bar-fill"></div>
@@ -227,7 +227,7 @@ def add_loading_dots(message: str = "Loading", dot_count: int = 3) -> None:
         align-items: center;
         gap: 8px;
         padding: 16px;
-        color: {theme['text_secondary']};
+        color: {theme["text_secondary"]};
         font-size: 16px;
     }}
 
@@ -235,7 +235,7 @@ def add_loading_dots(message: str = "Loading", dot_count: int = 3) -> None:
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: {theme['primary']};
+        background-color: {theme["primary"]};
         animation: dot-flashing 1.4s infinite;
     }}
 
@@ -250,7 +250,7 @@ def add_loading_dots(message: str = "Loading", dot_count: int = 3) -> None:
 
     <div class="loading-dots-container">
         <span>{message}</span>
-        {''.join(['<div class="loading-dot"></div>' for _ in range(dot_count)])}
+        {"".join(['<div class="loading-dot"></div>' for _ in range(dot_count)])}
     </div>
     """
 
@@ -307,7 +307,7 @@ def add_loading_pulse(
     }}
 
     .pulse-message {{
-        color: {theme['text_secondary']};
+        color: {theme["text_secondary"]};
         font-size: 14px;
         font-weight: 500;
     }}
@@ -315,7 +315,7 @@ def add_loading_pulse(
 
     <div class="pulse-container">
         <div class="pulse-circle"></div>
-        {f'<div class="pulse-message">{message}</div>' if message else ''}
+        {f'<div class="pulse-message">{message}</div>' if message else ""}
     </div>
     """
 
@@ -392,8 +392,8 @@ def show_loading_card(
     card_html = f"""
     <style>
     .loading-card {{
-        background-color: {theme['bg_secondary']};
-        border: 1px solid {theme['border_primary']};
+        background-color: {theme["bg_secondary"]};
+        border: 1px solid {theme["border_primary"]};
         border-radius: 8px;
         padding: 24px;
         margin: 16px 0;
@@ -401,14 +401,14 @@ def show_loading_card(
     }}
 
     .loading-card-title {{
-        color: {theme['text_primary']};
+        color: {theme["text_primary"]};
         font-size: 20px;
         font-weight: 600;
         margin-bottom: 8px;
     }}
 
     .loading-card-description {{
-        color: {theme['text_secondary']};
+        color: {theme["text_secondary"]};
         font-size: 14px;
         margin-bottom: 24px;
     }}
@@ -461,9 +461,9 @@ def add_shimmer_effect(height: str = "100px", width: str = "100%") -> None:
         height: {height};
         background: linear-gradient(
             90deg,
-            {theme['bg_secondary']} 25%,
-            {theme['bg_tertiary']} 50%,
-            {theme['bg_secondary']} 75%
+            {theme["bg_secondary"]} 25%,
+            {theme["bg_tertiary"]} 50%,
+            {theme["bg_secondary"]} 75%
         );
         background-size: 1000px 100%;
         animation: shimmer 2s infinite;

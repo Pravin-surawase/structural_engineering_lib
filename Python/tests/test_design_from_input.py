@@ -9,9 +9,8 @@ This tests the integration between the inputs module and the API.
 from __future__ import annotations
 
 from structural_lib import api
-from structural_lib.api_results import DesignAndDetailResult
-from structural_lib.data_types import ComplianceReport
-from structural_lib.inputs import (
+from structural_lib.core.data_types import ComplianceReport
+from structural_lib.core.inputs import (
     BeamGeometryInput,
     BeamInput,
     DetailingConfigInput,
@@ -19,6 +18,7 @@ from structural_lib.inputs import (
     LoadsInput,
     MaterialsInput,
 )
+from structural_lib.services.api_results import DesignAndDetailResult
 
 
 class TestDesignFromInput:

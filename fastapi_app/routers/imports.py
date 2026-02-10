@@ -156,13 +156,13 @@ async def import_csv(
         text = content.decode("utf-8-sig")
 
         # Import adapters from library
-        from structural_lib.adapters import (
+        from structural_lib.services.adapters import (
             ETABSAdapter,
             SAFEAdapter,
             STAADAdapter,
             GenericCSVAdapter,
         )
-        from structural_lib.models import DesignDefaults
+        from structural_lib.core.models import DesignDefaults
 
         # Create temp file for adapter (adapters expect file paths)
         import tempfile
@@ -330,7 +330,7 @@ async def import_dual_csv(
     try:
         import tempfile
 
-        from structural_lib.imports import parse_dual_csv, validate_import
+        from structural_lib.services.imports import parse_dual_csv, validate_import
 
         geometry_path = None
         forces_path = None
@@ -495,7 +495,7 @@ async def batch_design(
     Returns aggregated results.
     """
     try:
-        from structural_lib.api import design_beam_is456
+        from structural_lib.services.api import design_beam_is456
 
         results: list[BatchDesignResult] = []
         passed = 0

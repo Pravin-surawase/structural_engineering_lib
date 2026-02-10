@@ -2,7 +2,7 @@ from typing import cast
 
 import pytest
 
-from structural_lib.rebar_optimizer import Objective, optimize_bar_arrangement
+from structural_lib.services.rebar_optimizer import Objective, optimize_bar_arrangement
 
 
 @pytest.mark.parametrize(

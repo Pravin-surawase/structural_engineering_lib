@@ -604,8 +604,11 @@ def main():
         # Toggle in header
         chat_toggle_col, spacer_col = st.columns([0.15, 0.85])
         with chat_toggle_col:
-            if st.button("💬" if not show_chat else "✕ Hide Chat", key="toggle_chat",
-                        type="secondary" if not show_chat else "primary"):
+            if st.button(
+                "💬" if not show_chat else "✕ Hide Chat",
+                key="toggle_chat",
+                type="secondary" if not show_chat else "primary",
+            ):
                 st.session_state.show_chat_panel = not show_chat
                 st.rerun()
 

@@ -11,16 +11,16 @@ from __future__ import annotations
 
 import math
 
-from structural_lib import materials
+from structural_lib.codes.is456 import materials
 from structural_lib.codes.is456.traceability import clause
-from structural_lib.data_types import BeamType, DesignSectionType, FlexureResult
-from structural_lib.error_messages import (
+from structural_lib.core.data_types import BeamType, DesignSectionType, FlexureResult
+from structural_lib.core.error_messages import (
     dimension_negative,
     dimension_relationship_invalid,
     dimension_too_small,
     material_property_out_of_range,
 )
-from structural_lib.errors import (
+from structural_lib.core.errors import (
     E_FLEXURE_001,
     E_FLEXURE_002,
     E_FLEXURE_003,
@@ -40,7 +40,7 @@ from structural_lib.errors import (
     E_INPUT_003a,
     MaterialError,
 )
-from structural_lib.validation import validate_dimensions, validate_materials
+from structural_lib.core.validation import validate_dimensions, validate_materials
 
 __all__ = [
     "calculate_mu_lim",

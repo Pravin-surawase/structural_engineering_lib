@@ -431,16 +431,16 @@ def generate_lod_summary(beam_count: int) -> str:
 
 | Setting | Value |
 |---------|-------|
-| Stirrups | {'Yes' if config.show_stirrups else 'No'} |
-| All Bars | {'Yes' if config.show_all_bars else 'Corner only'} |
-| Labels | {'Yes' if config.show_labels else 'No'} |
-| Instancing | {'Enabled' if config.use_instancing else 'Disabled'} |
+| Stirrups | {"Yes" if config.show_stirrups else "No"} |
+| All Bars | {"Yes" if config.show_all_bars else "Corner only"} |
+| Labels | {"Yes" if config.show_labels else "No"} |
+| Instancing | {"Enabled" if config.use_instancing else "Disabled"} |
 | Mesh Quality | {config.mesh_segments} segments |
 
 **Performance:**
-- Estimated vertices: {perf['estimated_vertices']:,}
-- Render time: ~{perf['estimated_render_time_ms']:.1f}ms
-- Expected FPS: ~{perf['estimated_fps']}
+- Estimated vertices: {perf["estimated_vertices"]:,}
+- Render time: ~{perf["estimated_render_time_ms"]:.1f}ms
+- Expected FPS: ~{perf["estimated_fps"]}
 """
     return summary
 

@@ -305,7 +305,7 @@ def _generate_fallback_html(context: dict[str, Any]) -> str:
         <p><em>Note: Install Jinja2 for full report formatting:</em></p>
         <code>pip install structural-lib-is456[report]</code>
         <hr>
-        <pre>{html.escape(str(context.get('results', {})))}</pre>
+        <pre>{html.escape(str(context.get("results", {})))}</pre>
     </div>
 </body>
 </html>

@@ -51,7 +51,7 @@ def sensitivity_analysis(
         - RobustnessScore: Overall design robustness assessment
 
     Example:
-        >>> from structural_lib.api import design_beam_is456
+        >>> from structural_lib.services.api import design_beam_is456
         >>> sens, robust = sensitivity_analysis(
         ...     design_beam_is456,
         ...     {"units": "IS456", "mu_knm": 120, "b_mm": 300, "d_mm": 450, ...},

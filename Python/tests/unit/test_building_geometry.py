@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamGeometry,
     FrameType,
     Point3D,

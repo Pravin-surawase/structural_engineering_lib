@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from structural_lib.batch import design_beams, design_beams_iter
+from structural_lib.services.batch import design_beams, design_beams_iter
 
 
 def test_design_beams_iter_success() -> None:

@@ -5,9 +5,9 @@ Module:       shear
 Description:  Shear design and analysis functions
 """
 
-from structural_lib.data_types import ShearResult
-from structural_lib.error_messages import dimension_too_small
-from structural_lib.errors import (
+from structural_lib.core.data_types import ShearResult
+from structural_lib.core.error_messages import dimension_too_small
+from structural_lib.core.errors import (
     E_INPUT_001,
     E_INPUT_002,
     E_INPUT_004,

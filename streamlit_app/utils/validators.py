@@ -196,8 +196,7 @@ def validate_material_inputs(fck: float, fy: float) -> ValidationResult:
         suggestion = "Use Fe 415 or Fe 500"
     elif fy not in standard_fy:
         warnings.append(
-            f"fy = {fy} N/mm² is not a standard grade. "
-            f"Standard grades: {standard_fy}"
+            f"fy = {fy} N/mm² is not a standard grade. Standard grades: {standard_fy}"
         )
 
     is_valid = len(errors) == 0
@@ -263,7 +262,7 @@ def validate_loading_inputs(
         dl_ll_ratio = dead_load_kn_m / live_load_kn_m
         if dl_ll_ratio < 0.3:
             warnings.append(
-                f"DL/LL ratio = {dl_ll_ratio:.2f} is low. " "Typical range: 0.5 to 4.0"
+                f"DL/LL ratio = {dl_ll_ratio:.2f} is low. Typical range: 0.5 to 4.0"
             )
         elif dl_ll_ratio > 5.0:
             warnings.append(
@@ -320,13 +319,11 @@ def sanitize_numeric_input(
     # Check bounds
     if num_val < min_val:
         return min_val, (
-            f"{field_name} = {num_val} is below minimum {min_val}, "
-            f"clamped to {min_val}"
+            f"{field_name} = {num_val} is below minimum {min_val}, clamped to {min_val}"
         )
     elif num_val > max_val:
         return max_val, (
-            f"{field_name} = {num_val} exceeds maximum {max_val}, "
-            f"clamped to {max_val}"
+            f"{field_name} = {num_val} exceeds maximum {max_val}, clamped to {max_val}"
         )
 
     return num_val, None

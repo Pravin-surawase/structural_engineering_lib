@@ -54,7 +54,7 @@ from utils.loading_states import loading_context
 
 # Import ETABS library functions
 try:
-    from structural_lib.etabs_import import (
+    from structural_lib.services.etabs_import import (
         validate_etabs_csv,
         load_etabs_csv,
         normalize_etabs_forces,
@@ -805,7 +805,7 @@ if st.session_state.etabs_design_results is not None:
     col1.metric("Total Beams", total)
     col2.metric("Passed ✅", int(passed))
     col3.metric("Failed ❌", int(failed))
-    col4.metric("Success Rate", f"{100*passed/total:.0f}%" if total > 0 else "N/A")
+    col4.metric("Success Rate", f"{100 * passed / total:.0f}%" if total > 0 else "N/A")
 
     # Tabs for different views
     tab1, tab2, tab3 = st.tabs(["📋 Table", "📊 Charts", "🎮 3D View"])

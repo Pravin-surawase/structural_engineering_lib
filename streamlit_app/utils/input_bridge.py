@@ -28,7 +28,7 @@ import logging
 
 import streamlit as st
 
-from structural_lib.audit import AuditTrail
+from structural_lib.services.audit import AuditTrail
 from utils.session_manager import BeamInputs, DesignResult
 
 logger = logging.getLogger(__name__)

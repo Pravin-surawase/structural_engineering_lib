@@ -9,13 +9,13 @@ Tests cover:
 - Factor-specific penalties and bonuses
 """
 
-from structural_lib.api import design_beam_is456
 from structural_lib.detailing import (
     BarArrangement,
     BeamDetailingResult,
     StirrupArrangement,
 )
 from structural_lib.insights import calculate_constructability_score
+from structural_lib.services.api import design_beam_is456
 
 
 def _design_result():
@@ -125,7 +125,10 @@ def test_light_reinforcement_excellent_score():
     ]
     stirrups = [
         StirrupArrangement(
-            diameter=8.0, legs=2, spacing=150.0, zone_length=2500.0  # Good spacing
+            diameter=8.0,
+            legs=2,
+            spacing=150.0,
+            zone_length=2500.0,  # Good spacing
         )
     ]
 
@@ -183,7 +186,10 @@ def test_typical_reinforcement_good_score():
     ]
     stirrups = [
         StirrupArrangement(
-            diameter=8.0, legs=2, spacing=110.0, zone_length=2500.0  # Slightly tight
+            diameter=8.0,
+            legs=2,
+            spacing=110.0,
+            zone_length=2500.0,  # Slightly tight
         )
     ]
 

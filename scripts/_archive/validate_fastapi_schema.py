@@ -79,7 +79,7 @@ def load_api_module():
         from structural_lib import api
         return api
     except ImportError as e:
-        print(f"❌ Cannot import structural_lib.api: {e}")
+        print(f"❌ Cannot import structural_lib.services.api: {e}")
         print("   Ensure you're running from project root with .venv activated")
         sys.exit(1)
 

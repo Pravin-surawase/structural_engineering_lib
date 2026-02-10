@@ -8,7 +8,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from structural_lib.audit import (
+from structural_lib.services.audit import (
     AuditLogEntry,
     AuditTrail,
     CalculationHash,

@@ -11,7 +11,7 @@ Reference: IS 456:2000 Clause 40
 import pytest
 
 from structural_lib import shear
-from structural_lib.errors import DimensionError
+from structural_lib.core.errors import DimensionError
 
 
 def _has_error_with_code(errors, code: str) -> bool:

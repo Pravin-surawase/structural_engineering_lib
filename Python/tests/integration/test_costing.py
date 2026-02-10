@@ -5,7 +5,7 @@ import unittest
 # Add parent directory to path to import structural_lib
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib.costing import (
+from structural_lib.services.costing import (
     STEEL_DENSITY_KG_PER_M3,
     CostProfile,
     calculate_concrete_cost,

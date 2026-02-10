@@ -132,15 +132,15 @@ show_error_codes = true
 # Pydantic v2 has known mypy compatibility issues
 # See: https://github.com/pydantic/pydantic/issues/6713
 [[tool.mypy.overrides]]
-module = "structural_lib.models"
+module = "structural_lib.core.models"
 disable_error_code = ["prop-decorator", "call-arg", "arg-type", "no-any-return"]
 
 [[tool.mypy.overrides]]
-module = "structural_lib.serialization"
+module = "structural_lib.services.serialization"
 disable_error_code = ["arg-type", "no-any-return"]
 
 [[tool.mypy.overrides]]
-module = "structural_lib.etabs_import"
+module = "structural_lib.services.etabs_import"
 disable_error_code = ["no-any-return"]
 
 [tool.bandit]

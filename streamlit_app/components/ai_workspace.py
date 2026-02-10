@@ -42,7 +42,10 @@ import streamlit as st
 
 # Try to import visualization components
 try:
-    from components.visualizations_3d import create_beam_3d_figure, create_multi_beam_3d_figure
+    from components.visualizations_3d import (
+        create_beam_3d_figure,
+        create_multi_beam_3d_figure,
+    )
 
     VISUALIZATION_AVAILABLE = True
 except ImportError:
@@ -50,12 +53,12 @@ except ImportError:
 
 # Import adapter system (reusing proven infrastructure from multi-format import)
 try:
-    from structural_lib.adapters import (
+    from structural_lib.services.adapters import (
         ETABSAdapter,
         SAFEAdapter,
         GenericCSVAdapter,
     )
-    from structural_lib.models import (
+    from structural_lib.core.models import (
         BeamGeometry,
         BeamForces,
         DesignDefaults,
@@ -1329,7 +1332,7 @@ def render_design_results() -> None:
             "Util",
             "Status",
         ]
-        display_df["Util"] = display_df["Util"].apply(lambda x: f"{x*100:.0f}%")
+        display_df["Util"] = display_df["Util"].apply(lambda x: f"{x * 100:.0f}%")
         st.dataframe(display_df, use_container_width=True, height=180, hide_index=True)
 
     # Beam selector with quick actions
@@ -1350,7 +1353,9 @@ def render_design_results() -> None:
             ):
                 # Initialize editor mode
                 st.session_state.ws_editor_mode["beam_queue"] = beam_options
-                st.session_state.ws_editor_mode["current_beam_idx"] = beam_options.index(selected)
+                st.session_state.ws_editor_mode["current_beam_idx"] = (
+                    beam_options.index(selected)
+                )
                 st.session_state.ws_editor_mode["filter_mode"] = "all"
                 set_workspace_state(WorkspaceState.UNIFIED_EDITOR)
                 st.rerun()
@@ -1526,8 +1531,14 @@ def _render_editable_results_table(
         vu = row.get("vu_kn", 0) if pd.notna(row.get("vu_kn")) else 0
         fck = row.get("fck", 25) if pd.notna(row.get("fck")) else 25
         fy = row.get("fy", 500) if pd.notna(row.get("fy")) else 500
-        bot_bars, bot_dia = safe_int(row.get("bot_bars"), 2), safe_int(row.get("bot_dia"), 16)
-        top_bars, top_dia = safe_int(row.get("top_bars"), 2), safe_int(row.get("top_dia"), 12)
+        bot_bars, bot_dia = (
+            safe_int(row.get("bot_bars"), 2),
+            safe_int(row.get("bot_dia"), 16),
+        )
+        top_bars, top_dia = (
+            safe_int(row.get("top_bars"), 2),
+            safe_int(row.get("top_dia"), 12),
+        )
         stirrup_sp = safe_int(row.get("stirrup_sp"), 150)
 
         # Calculate provided steel area
@@ -1577,7 +1588,7 @@ def _render_editable_results_table(
                 "ID": beam_id,
                 "Ast Req": f"{ast_req:.0f}",
                 "Ast Prov": f"{ast_prov:.0f}",
-                "Util": f"{utilization*100:.0f}%",
+                "Util": f"{utilization * 100:.0f}%",
                 "Status": status,
             }
         )
@@ -1597,7 +1608,9 @@ def _render_editable_results_table(
                 full_df.loc[mask, "bottom_bar_dia"] = safe_int(row.get("bot_dia"), 16)
                 full_df.loc[mask, "top_bar_count"] = safe_int(row.get("top_bars"), 2)
                 full_df.loc[mask, "top_bar_dia"] = safe_int(row.get("top_dia"), 12)
-                full_df.loc[mask, "stirrup_spacing"] = safe_int(row.get("stirrup_sp"), 150)
+                full_df.loc[mask, "stirrup_spacing"] = safe_int(
+                    row.get("stirrup_sp"), 150
+                )
 
         st.session_state.ws_design_results = full_df
         st.success("✅ Changes applied! Recalculating design checks...")
@@ -1794,7 +1807,9 @@ def create_building_3d_figure(
         status_icon = (
             "✅"
             if "SAFE" in str(status).upper()
-            else "❌" if "FAIL" in str(status).upper() else "⏳"
+            else "❌"
+            if "FAIL" in str(status).upper()
+            else "⏳"
         )
         selected_label = "★ SELECTED " if is_selected else ""
         hover = (
@@ -1923,7 +1938,7 @@ def render_building_3d() -> None:
         if "status" in df.columns
         else 0
     )
-    pass_rate = f"{safe_count/total*100:.0f}%" if total > 0 else "N/A"
+    pass_rate = f"{safe_count / total * 100:.0f}%" if total > 0 else "N/A"
 
     st.markdown(
         f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass"
@@ -1950,7 +1965,7 @@ def render_building_3d() -> None:
             util = beam_row.get("utilization", 0)
             dims = f"{beam_row['b_mm']:.0f}×{beam_row['D_mm']:.0f}"
             st.info(
-                f"**{selected_beam}** | {dims}mm | Util: {util*100:.0f}% | {status}"
+                f"**{selected_beam}** | {dims}mm | Util: {util * 100:.0f}% | {status}"
             )
 
     # Create 3D figure with highlighting
@@ -2143,9 +2158,19 @@ def suggest_optimal_rebar(
 
     # Permissible shear stress in concrete (IS 456 Table 19, simplified)
     # For fck=25: tau_c varies from 0.36-0.79 based on Ast%
-    ast_provided = best_config["bottom_layer1_count"] * math.pi * (best_config["bottom_layer1_dia"] ** 2) / 4
+    ast_provided = (
+        best_config["bottom_layer1_count"]
+        * math.pi
+        * (best_config["bottom_layer1_dia"] ** 2)
+        / 4
+    )
     if best_config.get("bottom_layer2_count", 0) > 0:
-        ast_provided += best_config["bottom_layer2_count"] * math.pi * (best_config.get("bottom_layer2_dia", 0) ** 2) / 4
+        ast_provided += (
+            best_config["bottom_layer2_count"]
+            * math.pi
+            * (best_config.get("bottom_layer2_dia", 0) ** 2)
+            / 4
+        )
 
     pt = 100 * ast_provided / (b_mm * d_eff) if d_eff > 0 else 0
 
@@ -2272,7 +2297,7 @@ def optimize_beam_line(
     # This ensures consistency for construction
     max_bottom_dia = max(
         (c.get("bottom_layer1_dia", 16) for c in individual_configs.values()),
-        default=16
+        default=16,
     )
 
     # Step 3: Calculate required bar counts at the unified diameter
@@ -2489,7 +2514,7 @@ def render_rebar_editor() -> None:
 
     # Show fixed properties
     st.markdown(
-        f"**Section:** {b_mm:.0f}×{D_mm:.0f} mm | **Span:** {span_mm/1000:.1f} m | **Mu:** {mu_knm:.1f} kN·m | **Vu:** {vu_kn:.1f} kN"
+        f"**Section:** {b_mm:.0f}×{D_mm:.0f} mm | **Span:** {span_mm / 1000:.1f} m | **Mu:** {mu_knm:.1f} kN·m | **Vu:** {vu_kn:.1f} kN"
     )
 
     # Initialize rebar config from session state or defaults
@@ -2540,10 +2565,18 @@ def render_rebar_editor() -> None:
             )
         with c2:
             l1_count = st.number_input(
-                "Count", 2, 8, config["bottom_layer1_count"], key=f"{re_key_prefix}_l1_cnt"
+                "Count",
+                2,
+                8,
+                config["bottom_layer1_count"],
+                key=f"{re_key_prefix}_l1_cnt",
             )
             l2_count = st.number_input(
-                "Count", 0, 6, config.get("bottom_layer2_count", 0), key=f"{re_key_prefix}_l2_cnt"
+                "Count",
+                0,
+                6,
+                config.get("bottom_layer2_count", 0),
+                key=f"{re_key_prefix}_l2_cnt",
             )
 
         st.markdown("##### Top Reinforcement")
@@ -2557,7 +2590,11 @@ def render_rebar_editor() -> None:
             )
         with c2:
             top_count = st.number_input(
-                "Count", 2, 6, config.get("top_count", 2), key=f"{re_key_prefix}_top_cnt"
+                "Count",
+                2,
+                6,
+                config.get("top_count", 2),
+                key=f"{re_key_prefix}_top_cnt",
             )
 
         st.markdown("##### Stirrups")
@@ -2621,13 +2658,13 @@ def render_rebar_editor() -> None:
         # Flexure
         flex_color = "🟢" if checks["flexure_ok"] else "🔴"
         st.markdown(
-            f"{flex_color} **Flexure:** {checks['flexure_util']*100:.1f}% (Mu = {checks['mu_capacity_knm']:.1f} kN·m)"
+            f"{flex_color} **Flexure:** {checks['flexure_util'] * 100:.1f}% (Mu = {checks['mu_capacity_knm']:.1f} kN·m)"
         )
 
         # Shear
         shear_color = "🟢" if checks["shear_ok"] else "🔴"
         st.markdown(
-            f"{shear_color} **Shear:** {checks['shear_util']*100:.1f}% (Vu = {checks['vu_capacity_kn']:.1f} kN)"
+            f"{shear_color} **Shear:** {checks['shear_util'] * 100:.1f}% (Vu = {checks['vu_capacity_kn']:.1f} kN)"
         )
 
         # Min reinforcement
@@ -2732,7 +2769,9 @@ def render_rebar_editor() -> None:
         st.plotly_chart(fig, use_container_width=True, key="rebar_editor_cross_section")
     else:
         # Fallback text display
-        st.info(f"Section: {b_mm:.0f}×{D_mm:.0f} mm | Bottom: {l1_count}Φ{l1_dia} + {l2_count}Φ{l2_dia} | Top: {top_count}Φ{top_dia}")
+        st.info(
+            f"Section: {b_mm:.0f}×{D_mm:.0f} mm | Bottom: {l1_count}Φ{l1_dia} + {l2_count}Φ{l2_dia} | Top: {top_count}Φ{top_dia}"
+        )
 
     # Navigation
     st.divider()
@@ -3097,13 +3136,13 @@ def render_cross_section() -> None:
             f"{top_count}Φ{top_dia}",
         ],
         "Ast (mm²)": [
-            f"{bottom_count_1 * 3.14159 * (bottom_dia_1/2)**2:.0f}",
+            f"{bottom_count_1 * 3.14159 * (bottom_dia_1 / 2) ** 2:.0f}",
             (
-                f"{bottom_count_2 * 3.14159 * (bottom_dia_2/2)**2:.0f}"
+                f"{bottom_count_2 * 3.14159 * (bottom_dia_2 / 2) ** 2:.0f}"
                 if bottom_count_2 > 0
                 else "-"
             ),
-            f"{top_count * 3.14159 * (top_dia/2)**2:.0f}",
+            f"{top_count * 3.14159 * (top_dia / 2) ** 2:.0f}",
         ],
     }
     st.dataframe(schedule_data, hide_index=True, use_container_width=True)
@@ -3153,7 +3192,7 @@ def render_3d_view() -> None:
     # Beam info metrics
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Section", f"{row['b_mm']:.0f}×{row['D_mm']:.0f}")
-    col2.metric("Span", f"{row['span_mm']/1000:.1f} m")
+    col2.metric("Span", f"{row['span_mm'] / 1000:.1f} m")
     col3.metric("Ast Required", f"{row['ast_req']:.0f} mm²")
     col4.metric("Status", row["status"])
 
@@ -3321,7 +3360,7 @@ def render_beam_editor() -> None:
 
         st.metric("Status", design["status"])
         st.metric("Ast Required", f"{design['ast_req']:.0f} mm²")
-        st.metric("Utilization", f"{design['utilization']*100:.1f}%")
+        st.metric("Utilization", f"{design['utilization'] * 100:.1f}%")
 
         if VISUALIZATION_AVAILABLE and design["ast_req"] > 0:
             rebar = calculate_rebar_layout(
@@ -3425,12 +3464,12 @@ def render_dashboard() -> None:
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Beams", total)
-    c2.metric("Pass Rate", f"{100*passed/max(total,1):.0f}%")
+    c2.metric("Pass Rate", f"{100 * passed / max(total, 1):.0f}%")
     c3.metric("Avg Util", f"{avg_util:.0f}%")
     c4.metric(
         "Failed",
         total - passed,
-        delta=f"-{total-passed}" if total > passed else None,
+        delta=f"-{total - passed}" if total > passed else None,
         delta_color="inverse",
     )
 
@@ -3457,7 +3496,7 @@ def render_dashboard() -> None:
         st.markdown("##### 💡 Suggestions")
         if low > total * 0.3:
             st.success(
-                f"💰 {low} beams under-utilized. Reduce sections to save {low*5:.0f}% material."
+                f"💰 {low} beams under-utilized. Reduce sections to save {low * 5:.0f}% material."
             )
         if high > 0:
             st.warning(
@@ -3484,7 +3523,7 @@ def render_dashboard() -> None:
 
         with col2:
             st.metric("🔩 Reinforcement", f"{takeoff['steel_kg']:.0f} kg")
-            st.caption(f"≈ {takeoff['steel_kg']/1000:.2f} tonnes")
+            st.caption(f"≈ {takeoff['steel_kg'] / 1000:.2f} tonnes")
 
         # Steel ratio
         steel_ratio = (
@@ -3600,25 +3639,25 @@ def render_dashboard() -> None:
         summary_text = f"""BEAM DESIGN SUMMARY
 ====================
 Generated by: structural_engineering_lib AI Assistant v2
-Date: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}
+Date: {pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")}
 
 DESIGN SUMMARY
 --------------
 Total Beams: {len(df)}
-Passed: {len(df[df['is_safe']])}
-Failed: {len(df[~df['is_safe']])}
-Average Utilization: {df['utilization'].mean()*100:.1f}%
+Passed: {len(df[df["is_safe"]])}
+Failed: {len(df[~df["is_safe"]])}
+Average Utilization: {df["utilization"].mean() * 100:.1f}%
 
 MATERIAL TAKEOFF
 ----------------
-Concrete: {takeoff['concrete_m3']:.2f} m³
-Steel: {takeoff['steel_kg']:.0f} kg ({takeoff['steel_kg']/1000:.2f} tonnes)
+Concrete: {takeoff["concrete_m3"]:.2f} m³
+Steel: {takeoff["steel_kg"]:.0f} kg ({takeoff["steel_kg"] / 1000:.2f} tonnes)
 
 COST ESTIMATE (INR)
 -------------------
-Concrete (@₹8000/m³): ₹{takeoff['concrete_cost']:,.0f}
-Steel (@₹85/kg): ₹{takeoff['steel_cost']:,.0f}
-TOTAL: ₹{takeoff['total_cost']:,.0f}
+Concrete (@₹8000/m³): ₹{takeoff["concrete_cost"]:,.0f}
+Steel (@₹85/kg): ₹{takeoff["steel_cost"]:,.0f}
+TOTAL: ₹{takeoff["total_cost"]:,.0f}
 """
         st.download_button(
             label="📄 Download Summary",
@@ -3670,7 +3709,9 @@ def _get_beam_queue(df: pd.DataFrame, filter_mode: str = "all") -> list[str]:
     return filtered["beam_id"].tolist()
 
 
-def _save_current_beam_changes(beam_id: str, config: dict, df: pd.DataFrame) -> pd.DataFrame:
+def _save_current_beam_changes(
+    beam_id: str, config: dict, df: pd.DataFrame
+) -> pd.DataFrame:
     """Save current rebar configuration to the dataframe."""
     if config is None or df is None:
         return df
@@ -3743,10 +3784,18 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         st.session_state.ue_floor_filter = selected_floor
     with tool4:
         # Single optimize button (removed duplicate from below)
-        failed_count = len(df[~df.get("is_safe", True)]) if "is_safe" in df.columns else 0
-        btn_label = f"⚡ Fix {failed_count} Failed" if failed_count > 0 else "⚡ All Optimized"
-        if st.button(btn_label, type="primary" if failed_count > 0 else "secondary",
-                     use_container_width=True, disabled=failed_count == 0):
+        failed_count = (
+            len(df[~df.get("is_safe", True)]) if "is_safe" in df.columns else 0
+        )
+        btn_label = (
+            f"⚡ Fix {failed_count} Failed" if failed_count > 0 else "⚡ All Optimized"
+        )
+        if st.button(
+            btn_label,
+            type="primary" if failed_count > 0 else "secondary",
+            use_container_width=True,
+            disabled=failed_count == 0,
+        ):
             optimized_count = 0
             for idx, row in df.iterrows():
                 if not row.get("is_safe", True):
@@ -3760,12 +3809,19 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
                     if opt:
                         # Apply flexural reinforcement
-                        df.at[idx, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
+                        df.at[idx, "bottom_bar_count"] = opt.get(
+                            "bottom_layer1_count", 4
+                        )
                         df.at[idx, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
                         # Apply shear reinforcement (Session 33: 8/10/12mm, 100-300mm)
                         df.at[idx, "stirrup_dia"] = opt.get("stirrup_dia", 8)
                         df.at[idx, "stirrup_spacing"] = opt.get("stirrup_spacing", 150)
-                        ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
+                        ast_prov = (
+                            opt.get("bottom_layer1_count", 4)
+                            * math.pi
+                            * (opt.get("bottom_layer1_dia", 16) ** 2)
+                            / 4
+                        )
                         ast_req = float(row.get("ast_req", 500))
                         if ast_prov >= ast_req:
                             df.at[idx, "is_safe"] = True
@@ -3814,6 +3870,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
 
             # Calculate bar positions using shared geometry module
             from utils.section_geometry import calculate_bar_positions
+
             bottom_bars, top_bars = calculate_bar_positions(
                 b_mm=b_mm,
                 D_mm=D_mm,
@@ -3837,6 +3894,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
 
             # Create detailed beam figure
             from components.visualizations_3d import create_beam_3d_figure
+
             fig = create_beam_3d_figure(
                 b=b_mm,
                 D=D_mm,
@@ -3857,36 +3915,72 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             with v_col1:
                 is_safe = beam_row.get("is_safe", False)
                 status = "✅" if is_safe else "❌"
-                st.markdown(f"**{status} {selected_beam_id}** — {int(b_mm)}×{int(D_mm)} | {bot_count}Φ{int(bot_dia)}")
+                st.markdown(
+                    f"**{status} {selected_beam_id}** — {int(b_mm)}×{int(D_mm)} | {bot_count}Φ{int(bot_dia)}"
+                )
             with v_col2:
-                if st.button("⚡ Optimize This", key="opt_single", use_container_width=True):
+                if st.button(
+                    "⚡ Optimize This", key="opt_single", use_container_width=True
+                ):
                     # Optimize just this beam
-                    fb, fD = float(beam_row.get("b_mm", 300)), float(beam_row.get("D_mm", 500))
-                    fmu, fvu = float(beam_row.get("mu_knm", 100)), float(beam_row.get("vu_kn", 50))
-                    ffck, ffy = float(beam_row.get("fck", 25)), float(beam_row.get("fy", 500))
+                    fb, fD = (
+                        float(beam_row.get("b_mm", 300)),
+                        float(beam_row.get("D_mm", 500)),
+                    )
+                    fmu, fvu = (
+                        float(beam_row.get("mu_knm", 100)),
+                        float(beam_row.get("vu_kn", 50)),
+                    )
+                    ffck, ffy = (
+                        float(beam_row.get("fck", 25)),
+                        float(beam_row.get("fy", 500)),
+                    )
                     fcover = float(beam_row.get("cover_mm", 40))
                     opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
                     if opt:
                         mask = df["beam_id"] == selected_beam_id
                         # Apply flexural reinforcement
-                        df.loc[mask, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
-                        df.loc[mask, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
+                        df.loc[mask, "bottom_bar_count"] = opt.get(
+                            "bottom_layer1_count", 4
+                        )
+                        df.loc[mask, "bottom_bar_dia"] = opt.get(
+                            "bottom_layer1_dia", 16
+                        )
                         # Apply shear reinforcement (Session 33: 8/10/12mm, 100-300mm)
                         df.loc[mask, "stirrup_dia"] = opt.get("stirrup_dia", 8)
-                        df.loc[mask, "stirrup_spacing"] = opt.get("stirrup_spacing", 150)
-                        ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
+                        df.loc[mask, "stirrup_spacing"] = opt.get(
+                            "stirrup_spacing", 150
+                        )
+                        ast_prov = (
+                            opt.get("bottom_layer1_count", 4)
+                            * math.pi
+                            * (opt.get("bottom_layer1_dia", 16) ** 2)
+                            / 4
+                        )
                         ast_req = float(beam_row.get("ast_req", 500))
                         df.loc[mask, "is_safe"] = ast_prov >= ast_req
                         util = (ast_req / ast_prov * 100) if ast_prov > 0 else 0
-                        df.loc[mask, "status"] = f"✅ {util:.0f}%" if ast_prov >= ast_req else f"❌ {util:.0f}%"
+                        df.loc[mask, "status"] = (
+                            f"✅ {util:.0f}%"
+                            if ast_prov >= ast_req
+                            else f"❌ {util:.0f}%"
+                        )
                         st.session_state.ws_design_results = df
                         st.toast(f"✅ Optimized {selected_beam_id}")
                         st.rerun()
             with v_col3:
                 # Find next failed beam
-                failed_beams = df[~df.get("is_safe", True)]["beam_id"].tolist() if "is_safe" in df.columns else []
+                failed_beams = (
+                    df[~df.get("is_safe", True)]["beam_id"].tolist()
+                    if "is_safe" in df.columns
+                    else []
+                )
                 if failed_beams:
-                    if st.button(f"→ Next Failed ({len(failed_beams)})", key="next_failed", use_container_width=True):
+                    if st.button(
+                        f"→ Next Failed ({len(failed_beams)})",
+                        key="next_failed",
+                        use_container_width=True,
+                    ):
                         # Find next failed after current, or first if at end
                         try:
                             current_idx = failed_beams.index(selected_beam_id)
@@ -3910,7 +4004,6 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     else:
         st.caption("💡 Load data with coordinates to see 3D view")
 
-
     # Initialize rebar columns in MAIN df (not just filtered) - fixes beam line grouping bug
     # Session 32: Adding columns to df ensures they persist across grouping changes
     # Session 33: ALSO recalculate is_safe and status based on new rebar values
@@ -3932,7 +4025,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             df.at[idx, "bottom_bar_dia"] = bar_dia
 
             # Session 33 FIX: Recalculate is_safe based on actual rebar provided
-            ast_prov = bar_count * math.pi * (bar_dia ** 2) / 4
+            ast_prov = bar_count * math.pi * (bar_dia**2) / 4
             is_safe = ast_prov >= ast_req
             util = (ast_req / ast_prov * 100) if ast_prov > 0 else 999
 
@@ -3969,19 +4062,41 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     # Extract beam line from beam_id (e.g., "B1" from "B1-1F" or "FB1" from "FB1-2F")
     def get_beam_line(beam_id):
         import re
+
         match = re.match(r"^([A-Za-z]+\d+)", str(beam_id))
         return match.group(1) if match else beam_id
 
     filtered_df["_beam_line"] = filtered_df["beam_id"].apply(get_beam_line)
-    filtered_df["_section"] = filtered_df["b_mm"].astype(str) + "x" + filtered_df["D_mm"].astype(str)
+    filtered_df["_section"] = (
+        filtered_df["b_mm"].astype(str) + "x" + filtered_df["D_mm"].astype(str)
+    )
 
     # Prepare editable columns
     edit_cols = ["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn"]
 
     # Ensure integer types for rebar columns FIRST (before utilization calc)
-    for col in ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_spacing", "stirrup_dia"]:
+    for col in [
+        "bottom_bar_count",
+        "bottom_bar_dia",
+        "top_bar_count",
+        "top_bar_dia",
+        "stirrup_spacing",
+        "stirrup_dia",
+    ]:
         if col in filtered_df.columns:
-            filtered_df[col] = filtered_df[col].fillna(4 if "count" in col else 16 if "bar_dia" in col else 8 if col == "stirrup_dia" else 150).astype(int)
+            filtered_df[col] = (
+                filtered_df[col]
+                .fillna(
+                    4
+                    if "count" in col
+                    else 16
+                    if "bar_dia" in col
+                    else 8
+                    if col == "stirrup_dia"
+                    else 150
+                )
+                .astype(int)
+            )
 
     # Calculate utilization for each beam (Ast provided / Ast required * 100)
     # Must happen AFTER column cleanup to avoid NaN conversion errors
@@ -3991,12 +4106,21 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             return 100.0
         bar_count = int(row.get("bottom_bar_count", 4))
         bar_dia = float(row.get("bottom_bar_dia", 16))
-        ast_prov = bar_count * math.pi * (bar_dia ** 2) / 4
+        ast_prov = bar_count * math.pi * (bar_dia**2) / 4
         return (ast_req / ast_prov) * 100 if ast_prov > 0 else 999.0
 
     filtered_df["_utilization"] = filtered_df.apply(calc_util, axis=1)
 
-    edit_cols += ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_dia", "stirrup_spacing", "_utilization", "status"]
+    edit_cols += [
+        "bottom_bar_count",
+        "bottom_bar_dia",
+        "top_bar_count",
+        "top_bar_dia",
+        "stirrup_dia",
+        "stirrup_spacing",
+        "_utilization",
+        "status",
+    ]
 
     # Group display
     if group_by == "Story":
@@ -4018,33 +4142,46 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         "story": st.column_config.TextColumn("Floor", disabled=True, width=55),
         "_beam_line": st.column_config.TextColumn("Line", disabled=True, width=55),
         "_section": st.column_config.TextColumn("Size", disabled=True, width=70),
-        "b_mm": st.column_config.NumberColumn("b", disabled=True, width=45, format="%d"),
-        "D_mm": st.column_config.NumberColumn("D", disabled=True, width=45, format="%d"),
-        "mu_knm": st.column_config.NumberColumn("Mu", disabled=True, width=55, format="%.0f"),
-        "vu_kn": st.column_config.NumberColumn("Vu", disabled=True, width=50, format="%.0f"),
+        "b_mm": st.column_config.NumberColumn(
+            "b", disabled=True, width=45, format="%d"
+        ),
+        "D_mm": st.column_config.NumberColumn(
+            "D", disabled=True, width=45, format="%d"
+        ),
+        "mu_knm": st.column_config.NumberColumn(
+            "Mu", disabled=True, width=55, format="%.0f"
+        ),
+        "vu_kn": st.column_config.NumberColumn(
+            "Vu", disabled=True, width=50, format="%.0f"
+        ),
         "bottom_bar_count": st.column_config.NumberColumn(
-            "n", min_value=2, max_value=12, step=1, width=45,
-            help="Number of bottom bars"
+            "n",
+            min_value=2,
+            max_value=12,
+            step=1,
+            width=45,
+            help="Number of bottom bars",
         ),
         "bottom_bar_dia": st.column_config.SelectboxColumn(
-            "ϕ", options=[10, 12, 16, 20, 25, 32], width=50,
-            help="Bottom bar diameter (mm)"
+            "ϕ",
+            options=[10, 12, 16, 20, 25, 32],
+            width=50,
+            help="Bottom bar diameter (mm)",
         ),
         "top_bar_count": st.column_config.NumberColumn(
-            "n'", min_value=2, max_value=8, step=1, width=45,
-            help="Number of top bars"
+            "n'", min_value=2, max_value=8, step=1, width=45, help="Number of top bars"
         ),
         "top_bar_dia": st.column_config.SelectboxColumn(
-            "ϕ'", options=[10, 12, 16, 20], width=50,
-            help="Top bar diameter (mm)"
+            "ϕ'", options=[10, 12, 16, 20], width=50, help="Top bar diameter (mm)"
         ),
         "stirrup_dia": st.column_config.SelectboxColumn(
-            "st", options=[6, 8, 10, 12], width=45,
-            help="Stirrup diameter (mm)"
+            "st", options=[6, 8, 10, 12], width=45, help="Stirrup diameter (mm)"
         ),
         "stirrup_spacing": st.column_config.SelectboxColumn(
-            "Sv", options=[100, 125, 150, 175, 200, 225, 250, 275, 300], width=55,
-            help="Stirrup spacing (mm)"
+            "Sv",
+            options=[100, 125, 150, 175, 200, 225, 250, 275, 300],
+            width=55,
+            help="Stirrup spacing (mm)",
         ),
         "_utilization": st.column_config.ProgressColumn(
             "Util",
@@ -4077,7 +4214,9 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     )
 
     # Tip for selecting beams
-    st.caption("💡 Click beam ID to see 3D detail | Edit cells directly | Changes auto-save")
+    st.caption(
+        "💡 Click beam ID to see 3D detail | Edit cells directly | Changes auto-save"
+    )
 
     # Handle row click for 3D focus (using a workaround since no native row selection)
     # We'll add a selectbox for beam selection as fallback
@@ -4092,10 +4231,16 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                 label_visibility="collapsed",
                 help="Select a beam to see 3D reinforcement detail",
             )
-            if focus_beam != "(none)" and focus_beam != st.session_state.get("ue_selected_beam_id"):
+            if focus_beam != "(none)" and focus_beam != st.session_state.get(
+                "ue_selected_beam_id"
+            ):
                 st.session_state.ue_selected_beam_id = focus_beam
                 # Session 34: Auto-filter to the beam's story for better context
-                beam_story = df[df["beam_id"] == focus_beam]["story"].iloc[0] if focus_beam in df["beam_id"].values else None
+                beam_story = (
+                    df[df["beam_id"] == focus_beam]["story"].iloc[0]
+                    if focus_beam in df["beam_id"].values
+                    else None
+                )
                 if beam_story and beam_story != selected_floor:
                     st.session_state.ue_floor_filter = beam_story
                 st.rerun()
@@ -4125,13 +4270,14 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             stirrup_s = row.get("stirrup_spacing", 150)
 
             # Only recalculate if something changed
-            if (orig.get("bottom_bar_count", 4) != bottom_count or
-                orig.get("bottom_bar_dia", 16) != bottom_dia or
-                orig.get("top_bar_count", 2) != top_count or
-                orig.get("top_bar_dia", 12) != top_dia or
-                orig.get("stirrup_dia", 8) != stirrup_d or
-                orig.get("stirrup_spacing", 150) != stirrup_s):
-
+            if (
+                orig.get("bottom_bar_count", 4) != bottom_count
+                or orig.get("bottom_bar_dia", 16) != bottom_dia
+                or orig.get("top_bar_count", 2) != top_count
+                or orig.get("top_bar_dia", 12) != top_dia
+                or orig.get("stirrup_dia", 8) != stirrup_d
+                or orig.get("stirrup_spacing", 150) != stirrup_s
+            ):
                 # Update rebar configuration
                 df.loc[mask, "bottom_bar_count"] = bottom_count
                 df.loc[mask, "bottom_bar_dia"] = bottom_dia
@@ -4168,9 +4314,9 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     # Find which check failed
                     issues = []
                     if not checks["flexure_ok"]:
-                        issues.append(f"M:{checks['flexure_util']*100:.0f}%")
+                        issues.append(f"M:{checks['flexure_util'] * 100:.0f}%")
                     if not checks["shear_ok"]:
-                        issues.append(f"V:{checks['shear_util']*100:.0f}%")
+                        issues.append(f"V:{checks['shear_util'] * 100:.0f}%")
                     if not checks["spacing_ok"]:
                         issues.append("Sp")
                     if not checks["min_reinf_ok"]:
@@ -4191,7 +4337,9 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     if group_by == "Beam Line" and "_beam_line" in filtered_df.columns:
         st.divider()
         st.subheader("🔗 Beam Line Optimization")
-        st.caption("Optimize all beams in a line for consistent reinforcement (construction-friendly)")
+        st.caption(
+            "Optimize all beams in a line for consistent reinforcement (construction-friendly)"
+        )
 
         # Get unique beam lines
         beam_lines = filtered_df["_beam_line"].unique()
@@ -4201,8 +4349,15 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         for i, beam_line in enumerate(beam_lines):
             col_idx = i % len(line_cols)
             with line_cols[col_idx]:
-                line_beams = filtered_df[filtered_df["_beam_line"] == beam_line]["beam_id"].tolist()
-                failed_count = len(filtered_df[(filtered_df["_beam_line"] == beam_line) & (~filtered_df["is_safe"])])
+                line_beams = filtered_df[filtered_df["_beam_line"] == beam_line][
+                    "beam_id"
+                ].tolist()
+                failed_count = len(
+                    filtered_df[
+                        (filtered_df["_beam_line"] == beam_line)
+                        & (~filtered_df["is_safe"])
+                    ]
+                )
 
                 # Status badge
                 if failed_count > 0:
@@ -4217,7 +4372,9 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     type="primary" if failed_count > 0 else "secondary",
                 ):
                     # Get material properties from first beam
-                    first_row = df[df["beam_id"] == line_beams[0]].iloc[0] if line_beams else {}
+                    first_row = (
+                        df[df["beam_id"] == line_beams[0]].iloc[0] if line_beams else {}
+                    )
                     fck = float(first_row.get("fck", 25))
                     fy = float(first_row.get("fy", 500))
                     cover = float(first_row.get("cover_mm", 40))
@@ -4229,11 +4386,24 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     for beam_id, config in unified.items():
                         mask = df["beam_id"] == beam_id
                         if mask.any():
-                            df.loc[mask, "bottom_bar_count"] = config.get("bottom_layer1_count", 4)
-                            df.loc[mask, "bottom_bar_dia"] = config.get("bottom_layer1_dia", 16)
+                            df.loc[mask, "bottom_bar_count"] = config.get(
+                                "bottom_layer1_count", 4
+                            )
+                            df.loc[mask, "bottom_bar_dia"] = config.get(
+                                "bottom_layer1_dia", 16
+                            )
                             # Recalculate status
-                            ast_prov = config.get("bottom_layer1_count", 4) * math.pi * (config.get("bottom_layer1_dia", 16) ** 2) / 4
-                            ast_req = float(df.loc[mask, "ast_req"].iloc[0]) if "ast_req" in df.columns else 500
+                            ast_prov = (
+                                config.get("bottom_layer1_count", 4)
+                                * math.pi
+                                * (config.get("bottom_layer1_dia", 16) ** 2)
+                                / 4
+                            )
+                            ast_req = (
+                                float(df.loc[mask, "ast_req"].iloc[0])
+                                if "ast_req" in df.columns
+                                else 500
+                            )
                             if ast_prov >= ast_req:
                                 df.loc[mask, "is_safe"] = True
                                 df.loc[mask, "status"] = "✅ PASS"
@@ -4242,7 +4412,9 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                                 df.loc[mask, "status"] = "❌ FAIL"
 
                     st.session_state.ws_design_results = df
-                    st.toast(f"✅ Optimized beam line {beam_line} ({len(unified)} beams) with unified ϕ{unified[line_beams[0]].get('bottom_layer1_dia', 16)}mm bars")
+                    st.toast(
+                        f"✅ Optimized beam line {beam_line} ({len(unified)} beams) with unified ϕ{unified[line_beams[0]].get('bottom_layer1_dia', 16)}mm bars"
+                    )
                     st.rerun()
 
     # Summary row at bottom
@@ -4253,7 +4425,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     s1.metric("Total Beams", total)
     s2.metric("✅ Passed", passed)
     s3.metric("❌ Failed", total - passed)
-    s4.metric("Pass Rate", f"{passed/total*100:.0f}%" if total > 0 else "0%")
+    s4.metric("Pass Rate", f"{passed / total * 100:.0f}%" if total > 0 else "0%")
 
 
 def render_unified_editor() -> None:
@@ -4277,7 +4449,9 @@ def render_unified_editor() -> None:
 
     # Initialize editor state if needed
     if not editor_state.get("beam_queue"):
-        editor_state["beam_queue"] = _get_beam_queue(df, editor_state.get("filter_mode", "all"))
+        editor_state["beam_queue"] = _get_beam_queue(
+            df, editor_state.get("filter_mode", "all")
+        )
         editor_state["current_beam_idx"] = 0
         st.session_state.ws_editor_mode = editor_state
 
@@ -4315,7 +4489,9 @@ def render_unified_editor() -> None:
     config = st.session_state.ws_rebar_config
     if config is None or config.get("beam_id") != beam_id:
         ast_req = float(row.get("ast_req", 500))
-        suggested = calculate_rebar_layout(ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm)
+        suggested = calculate_rebar_layout(
+            ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm
+        )
         config = {
             "beam_id": beam_id,
             "bottom_layer1_dia": suggested.get("bar_diameter", 16),
@@ -4340,7 +4516,9 @@ def render_unified_editor() -> None:
         st.markdown("### ✏️ Beam Editor")
     with hdr_center:
         mode_options = {"🎯 Single Beam": "single", "📋 Table View": "table"}
-        selected_mode_label = "🎯 Single Beam" if view_mode == "single" else "📋 Table View"
+        selected_mode_label = (
+            "🎯 Single Beam" if view_mode == "single" else "📋 Table View"
+        )
         mode_choice = st.radio(
             "View",
             list(mode_options.keys()),
@@ -4385,7 +4563,7 @@ def render_unified_editor() -> None:
     with info2:
         st.caption(f"📐 {b_mm:.0f}×{D_mm:.0f} mm")
     with info3:
-        st.caption(f"📏 {span_mm/1000:.1f} m span")
+        st.caption(f"📏 {span_mm / 1000:.1f} m span")
     with info4:
         st.caption(f"⚡ {mu_knm:.0f} kN·m")
 
@@ -4417,13 +4595,16 @@ def render_unified_editor() -> None:
             )
         with bc2:
             l1_count = st.number_input(
-                "Count", 2, 8, config["bottom_layer1_count"],
+                "Count",
+                2,
+                8,
+                config["bottom_layer1_count"],
                 key=f"{key_prefix}_l1_cnt",
                 label_visibility="collapsed",
                 help="Number of bars",
             )
         # Show provided area
-        ast_l1 = l1_count * math.pi * (l1_dia ** 2) / 4
+        ast_l1 = l1_count * math.pi * (l1_dia**2) / 4
         st.caption(f"{l1_count}×Φ{l1_dia} = **{ast_l1:.0f} mm²**")
 
         # Second layer (optional)
@@ -4433,13 +4614,20 @@ def render_unified_editor() -> None:
                 l2_dia = st.selectbox(
                     "Dia2",
                     [0, 10, 12, 16, 20, 25],
-                    index=[0, 10, 12, 16, 20, 25].index(config.get("bottom_layer2_dia", 0)),
+                    index=[0, 10, 12, 16, 20, 25].index(
+                        config.get("bottom_layer2_dia", 0)
+                    ),
                     key=f"{key_prefix}_l2_dia",
                     label_visibility="collapsed",
                 )
             with l2c2:
                 l2_count = st.number_input(
-                    "Cnt2", 0, 6, config.get("bottom_layer2_count", 0), key=f"{key_prefix}_l2_cnt", label_visibility="collapsed"
+                    "Cnt2",
+                    0,
+                    6,
+                    config.get("bottom_layer2_count", 0),
+                    key=f"{key_prefix}_l2_cnt",
+                    label_visibility="collapsed",
                 )
 
         # Top bars
@@ -4455,7 +4643,12 @@ def render_unified_editor() -> None:
             )
         with tc2:
             top_count = st.number_input(
-                "TCnt", 2, 6, config.get("top_count", 2), key=f"{key_prefix}_top_cnt", label_visibility="collapsed"
+                "TCnt",
+                2,
+                6,
+                config.get("top_count", 2),
+                key=f"{key_prefix}_top_cnt",
+                label_visibility="collapsed",
             )
         st.caption(f"{top_count}×Φ{top_dia}")
 
@@ -4472,21 +4665,29 @@ def render_unified_editor() -> None:
             )
         with sc2:
             stir_spacing = st.number_input(
-                "Sp", 75, 300, config.get("stirrup_spacing", 150), step=25, key=f"{key_prefix}_stir_sp", label_visibility="collapsed"
+                "Sp",
+                75,
+                300,
+                config.get("stirrup_spacing", 150),
+                step=25,
+                key=f"{key_prefix}_stir_sp",
+                label_visibility="collapsed",
             )
         st.caption(f"Φ{stir_dia}@{stir_spacing}mm")
 
     # Update config with new values
-    config.update({
-        "bottom_layer1_dia": l1_dia,
-        "bottom_layer1_count": l1_count,
-        "bottom_layer2_dia": l2_dia,
-        "bottom_layer2_count": l2_count,
-        "top_dia": top_dia,
-        "top_count": top_count,
-        "stirrup_dia": stir_dia,
-        "stirrup_spacing": stir_spacing,
-    })
+    config.update(
+        {
+            "bottom_layer1_dia": l1_dia,
+            "bottom_layer1_count": l1_count,
+            "bottom_layer2_dia": l2_dia,
+            "bottom_layer2_count": l2_count,
+            "top_dia": top_dia,
+            "top_count": top_count,
+            "stirrup_dia": stir_dia,
+            "stirrup_spacing": stir_spacing,
+        }
+    )
     st.session_state.ws_rebar_config = config
 
     # Build bar lists for checks
@@ -4497,8 +4698,17 @@ def render_unified_editor() -> None:
 
     # Calculate checks
     checks = calculate_rebar_checks(
-        b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm,
-        bottom_bars, top_bars, stir_dia, stir_spacing,
+        b_mm,
+        D_mm,
+        mu_knm,
+        vu_kn,
+        fck,
+        fy,
+        cover_mm,
+        bottom_bars,
+        top_bars,
+        stir_dia,
+        stir_spacing,
     )
 
     # --- CENTER: Design Checks ---
@@ -4507,20 +4717,24 @@ def render_unified_editor() -> None:
 
         # Flexure
         flex_icon = "🟢" if checks["flexure_ok"] else "🔴"
-        st.markdown(f"{flex_icon} **Flexure:** {checks['flexure_util']*100:.0f}%")
+        st.markdown(f"{flex_icon} **Flexure:** {checks['flexure_util'] * 100:.0f}%")
         st.caption(f"Mu_cap = {checks['mu_capacity_knm']:.0f} kN·m")
 
         # Shear
         shear_icon = "🟢" if checks["shear_ok"] else "🔴"
-        st.markdown(f"{shear_icon} **Shear:** {checks['shear_util']*100:.0f}%")
+        st.markdown(f"{shear_icon} **Shear:** {checks['shear_util'] * 100:.0f}%")
         st.caption(f"Vu_cap = {checks['vu_capacity_kn']:.0f} kN")
 
         # Min/Max steel
         min_icon = "🟢" if checks["min_reinf_ok"] else "🔴"
-        st.markdown(f"{min_icon} **Min Ast:** {checks['ast_provided']:.0f} ≥ {checks['ast_min']:.0f} mm²")
+        st.markdown(
+            f"{min_icon} **Min Ast:** {checks['ast_provided']:.0f} ≥ {checks['ast_min']:.0f} mm²"
+        )
 
         max_icon = "🟢" if checks["max_reinf_ok"] else "🔴"
-        st.markdown(f"{max_icon} **Max Ast:** {checks['ast_provided']:.0f} ≤ {checks['ast_max']:.0f} mm²")
+        st.markdown(
+            f"{max_icon} **Max Ast:** {checks['ast_provided']:.0f} ≤ {checks['ast_max']:.0f} mm²"
+        )
 
         # Spacing
         sp_icon = "🟢" if checks["spacing_ok"] else "🔴"
@@ -4537,20 +4751,28 @@ def render_unified_editor() -> None:
         # Quick actions
         act1, act2 = st.columns(2)
         with act1:
-            if st.button("⚡ Optimize", use_container_width=True, help="Auto-optimize rebar"):
-                optimized = suggest_optimal_rebar(b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm)
+            if st.button(
+                "⚡ Optimize", use_container_width=True, help="Auto-optimize rebar"
+            ):
+                optimized = suggest_optimal_rebar(
+                    b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm
+                )
                 if optimized:
                     optimized["beam_id"] = beam_id
                     optimized["top_dia"] = config.get("top_dia", 12)
                     optimized["top_count"] = config.get("top_count", 2)
                     optimized["stirrup_dia"] = config.get("stirrup_dia", 8)
                     optimized["stirrup_spacing"] = config.get("stirrup_spacing", 150)
-                    optimized["_version"] = config.get("_version", 0) + 1  # Force widget refresh
+                    optimized["_version"] = (
+                        config.get("_version", 0) + 1
+                    )  # Force widget refresh
                     st.session_state.ws_rebar_config = optimized
                     st.toast("✅ Optimized!")
                     st.rerun()
         with act2:
-            if st.button("🔄 Reset", use_container_width=True, help="Reset to calculated"):
+            if st.button(
+                "🔄 Reset", use_container_width=True, help="Reset to calculated"
+            ):
                 # Clear config to reload from original data
                 st.session_state.ws_rebar_config = None
                 st.rerun()
@@ -4584,13 +4806,21 @@ def render_unified_editor() -> None:
                 )
 
                 fig = create_cross_section_figure(
-                    b=b_mm, D=D_mm, cover=cover_mm,
-                    bottom_bars=bottom_bars_vis, top_bars=top_bars_vis,
-                    stirrup_dia=stir_dia, rebar_config=config,
+                    b=b_mm,
+                    D=D_mm,
+                    cover=cover_mm,
+                    bottom_bars=bottom_bars_vis,
+                    top_bars=top_bars_vis,
+                    stirrup_dia=stir_dia,
+                    rebar_config=config,
                 )
-                st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_cross_section")
+                st.plotly_chart(
+                    fig, use_container_width=True, key=f"{key_prefix}_cross_section"
+                )
             else:
-                st.info(f"{b_mm:.0f}×{D_mm:.0f} | Bot: {l1_count}Φ{l1_dia} | Top: {top_count}Φ{top_dia}")
+                st.info(
+                    f"{b_mm:.0f}×{D_mm:.0f} | Bot: {l1_count}Φ{l1_dia} | Top: {top_count}Φ{top_dia}"
+                )
         else:
             # 3D Beam View
             if VISUALIZATION_AVAILABLE:
@@ -4605,7 +4835,9 @@ def render_unified_editor() -> None:
                         cover_mm=cover_mm,
                     )
                     fig_3d = create_beam_3d_figure(
-                        b=b_mm, D=D_mm, span=span_mm,
+                        b=b_mm,
+                        D=D_mm,
+                        span=span_mm,
                         bottom_bars=rebar_3d["bottom_bars"],
                         top_bars=rebar_3d["top_bars"],
                         stirrup_positions=rebar_3d["stirrup_positions"],
@@ -4613,7 +4845,9 @@ def render_unified_editor() -> None:
                         stirrup_diameter=stir_dia,
                     )
                     fig_3d.update_layout(height=280, margin=dict(l=0, r=0, t=0, b=0))
-                    st.plotly_chart(fig_3d, use_container_width=True, key=f"{key_prefix}_3d_view")
+                    st.plotly_chart(
+                        fig_3d, use_container_width=True, key=f"{key_prefix}_3d_view"
+                    )
                 except Exception as e:
                     st.error(f"3D error: {e}")
             else:
@@ -4668,7 +4902,12 @@ def render_unified_editor() -> None:
             st.rerun()
 
     with nav4:
-        if st.button("Next ▶", use_container_width=True, type="primary", disabled=current_idx >= len(beam_queue) - 1):
+        if st.button(
+            "Next ▶",
+            use_container_width=True,
+            type="primary",
+            disabled=current_idx >= len(beam_queue) - 1,
+        ):
             df = _save_current_beam_changes(beam_id, config, df)
             st.session_state.ws_design_results = df
             editor_state["current_beam_idx"] = current_idx + 1
@@ -4677,7 +4916,11 @@ def render_unified_editor() -> None:
             st.rerun()
 
     with nav5:
-        if st.button("Last ▶▶", use_container_width=True, disabled=current_idx >= len(beam_queue) - 1):
+        if st.button(
+            "Last ▶▶",
+            use_container_width=True,
+            disabled=current_idx >= len(beam_queue) - 1,
+        ):
             df = _save_current_beam_changes(beam_id, config, df)
             st.session_state.ws_design_results = df
             editor_state["current_beam_idx"] = len(beam_queue) - 1
@@ -4698,7 +4941,11 @@ def render_unified_editor() -> None:
                 st.rerun()
         with filter_cols[1]:
             failed_count = len(df[~df["is_safe"]])
-            if st.button(f"Failed ({failed_count})", use_container_width=True, disabled=failed_count == 0):
+            if st.button(
+                f"Failed ({failed_count})",
+                use_container_width=True,
+                disabled=failed_count == 0,
+            ):
                 editor_state["filter_mode"] = "failed"
                 editor_state["beam_queue"] = _get_beam_queue(df, "failed")
                 editor_state["current_beam_idx"] = 0
@@ -4726,9 +4973,12 @@ def render_unified_editor() -> None:
         st.caption("Apply optimizations to multiple beams at once")
         batch_cols = st.columns([0.5, 0.5])
         with batch_cols[0]:
-            if st.button("⚡ Optimize All Failed", use_container_width=True,
-                        disabled=failed_count == 0,
-                        help="Auto-optimize rebar for all failed beams"):
+            if st.button(
+                "⚡ Optimize All Failed",
+                use_container_width=True,
+                disabled=failed_count == 0,
+                help="Auto-optimize rebar for all failed beams",
+            ):
                 # Batch optimize all failed beams
                 failed_beams = df[~df["is_safe"]]["beam_id"].tolist()
                 optimized_count = 0
@@ -4746,7 +4996,7 @@ def render_unified_editor() -> None:
                         # Apply to dataframe (simulate re-design)
                         l1_dia = opt.get("bottom_layer1_dia", 16)
                         l1_cnt = opt.get("bottom_layer1_count", 4)
-                        ast_prov = l1_cnt * math.pi * (l1_dia ** 2) / 4
+                        ast_prov = l1_cnt * math.pi * (l1_dia**2) / 4
                         ast_req = float(failed_row.get("ast_req", 500))
                         if ast_prov >= ast_req:
                             idx = df[df["beam_id"] == failed_id].index[0]
@@ -4754,13 +5004,18 @@ def render_unified_editor() -> None:
                             df.at[idx, "status"] = "✅ PASS"
                             optimized_count += 1
                 st.session_state.ws_design_results = df
-                editor_state["beam_queue"] = _get_beam_queue(df, editor_state.get("filter_mode", "all"))
+                editor_state["beam_queue"] = _get_beam_queue(
+                    df, editor_state.get("filter_mode", "all")
+                )
                 st.toast(f"✅ Optimized {optimized_count} failed beams!")
                 st.rerun()
         with batch_cols[1]:
             total_beams = len(df)
-            if st.button(f"⚡ Optimize All ({total_beams})", use_container_width=True,
-                        help="Auto-optimize rebar for all beams"):
+            if st.button(
+                f"⚡ Optimize All ({total_beams})",
+                use_container_width=True,
+                help="Auto-optimize rebar for all beams",
+            ):
                 optimized_count = 0
                 for _, row in df.iterrows():
                     bid = row["beam_id"]
@@ -4775,7 +5030,7 @@ def render_unified_editor() -> None:
                     if opt:
                         l1_dia = opt.get("bottom_layer1_dia", 16)
                         l1_cnt = opt.get("bottom_layer1_count", 4)
-                        ast_prov = l1_cnt * math.pi * (l1_dia ** 2) / 4
+                        ast_prov = l1_cnt * math.pi * (l1_dia**2) / 4
                         ast_req = float(row.get("ast_req", 500))
                         if ast_prov >= ast_req:
                             idx = df[df["beam_id"] == bid].index[0]
@@ -4783,7 +5038,9 @@ def render_unified_editor() -> None:
                             df.at[idx, "status"] = "✅ PASS"
                             optimized_count += 1
                 st.session_state.ws_design_results = df
-                editor_state["beam_queue"] = _get_beam_queue(df, editor_state.get("filter_mode", "all"))
+                editor_state["beam_queue"] = _get_beam_queue(
+                    df, editor_state.get("filter_mode", "all")
+                )
                 st.toast(f"✅ Optimized {optimized_count} beams!")
                 st.rerun()
 

@@ -117,7 +117,7 @@ def create_beam_preview_diagram(
     fig.add_annotation(
         x=50,
         y=50,
-        text=f"{span_mm/1000:.1f}m × {b_mm}×{D_mm}mm",
+        text=f"{span_mm / 1000:.1f}m × {b_mm}×{D_mm}mm",
         showarrow=False,
         font=dict(size=12, color=COLORS.gray_700),
     )
@@ -389,10 +389,10 @@ def render_status_dashboard(checks: List[Dict]) -> None:
             ">
                 <div style="font-size: 20px;">{icon}</div>
                 <div style="font-weight: 600; font-size: 12px; color: {COLORS.gray_700};">
-                    {check['name']}
+                    {check["name"]}
                 </div>
                 <div style="font-size: 11px; color: {COLORS.gray_500};">
-                    {check['message']}
+                    {check["message"]}
                 </div>
             </div>
             """,

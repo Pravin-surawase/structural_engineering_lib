@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import pytest
 
-from structural_lib.api import (
+from structural_lib.services.api import (
     LoadDefinition,
     LoadDiagramResult,
     LoadType,

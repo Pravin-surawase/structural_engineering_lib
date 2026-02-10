@@ -95,9 +95,9 @@ def test_api_wrapper_has_docstrings():
     from utils.api_wrapper import cached_design, cached_smart_analysis
 
     assert cached_design.__doc__ is not None, "cached_design missing docstring"
-    assert (
-        cached_smart_analysis.__doc__ is not None
-    ), "cached_smart_analysis missing docstring"
+    assert cached_smart_analysis.__doc__ is not None, (
+        "cached_smart_analysis missing docstring"
+    )
 
 
 def test_api_wrapper_uses_streamlit_cache():
@@ -105,9 +105,9 @@ def test_api_wrapper_uses_streamlit_cache():
     from utils.api_wrapper import cached_design
 
     # Check if function has cache decorator (st.cache_data adds __wrapped__)
-    assert hasattr(cached_design, "__wrapped__") or hasattr(
-        cached_design, "clear"
-    ), "cached_design should use @st.cache_data decorator"
+    assert hasattr(cached_design, "__wrapped__") or hasattr(cached_design, "clear"), (
+        "cached_design should use @st.cache_data decorator"
+    )
 
 
 def test_api_wrapper_returns_dict():
@@ -123,7 +123,6 @@ def test_api_wrapper_returns_dict():
 def test_api_wrapper_no_syntax_errors():
     """Test that api_wrapper.py has no syntax errors."""
     try:
-
         # If import succeeds, no syntax errors
         assert True
     except SyntaxError as e:
@@ -159,7 +158,7 @@ def test_structural_lib_api_module_exists():
 def test_design_beam_is456_importable():
     """Test that design_beam_is456() can be imported (when lib installed)."""
     try:
-        from structural_lib.api import design_beam_is456
+        from structural_lib.services.api import design_beam_is456
 
         assert callable(design_beam_is456)
     except ImportError:
@@ -169,7 +168,7 @@ def test_design_beam_is456_importable():
 def test_smart_analyze_design_importable():
     """Test that smart_analyze_design() can be imported (when lib installed)."""
     try:
-        from structural_lib.api import smart_analyze_design
+        from structural_lib.services.api import smart_analyze_design
 
         assert callable(smart_analyze_design)
     except ImportError:
@@ -179,7 +178,7 @@ def test_smart_analyze_design_importable():
 def test_calculate_beam_cost_importable():
     """Test that calculate_beam_cost() can be imported (when lib installed)."""
     try:
-        from structural_lib.api import calculate_beam_cost
+        from structural_lib.services.api import calculate_beam_cost
 
         assert callable(calculate_beam_cost)
     except ImportError:
@@ -189,7 +188,7 @@ def test_calculate_beam_cost_importable():
 def test_check_compliance_is456_importable():
     """Test that check_compliance_is456() can be imported (when lib installed)."""
     try:
-        from structural_lib.api import check_compliance_is456
+        from structural_lib.services.api import check_compliance_is456
 
         assert callable(check_compliance_is456)
     except ImportError:

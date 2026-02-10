@@ -221,18 +221,10 @@ class ElevationSystem:
 
     # Semantic aliases for common use cases
     shadow_xs: str = "0px 1px 2px rgba(0, 0, 0, 0.1)"  # Extra small shadow
-    shadow_sm: str = (
-        "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24)"  # Same as level_1
-    )
-    shadow_md: str = (
-        "0px 3px 6px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.12)"  # Same as level_2
-    )
-    shadow_lg: str = (
-        "0px 10px 20px rgba(0, 0, 0, 0.15), 0px 3px 6px rgba(0, 0, 0, 0.10)"  # Same as level_3
-    )
-    shadow_xl: str = (
-        "0px 15px 25px rgba(0, 0, 0, 0.15), 0px 5px 10px rgba(0, 0, 0, 0.05)"  # Same as level_4
-    )
+    shadow_sm: str = "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24)"  # Same as level_1
+    shadow_md: str = "0px 3px 6px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.12)"  # Same as level_2
+    shadow_lg: str = "0px 10px 20px rgba(0, 0, 0, 0.15), 0px 3px 6px rgba(0, 0, 0, 0.10)"  # Same as level_3
+    shadow_xl: str = "0px 15px 25px rgba(0, 0, 0, 0.15), 0px 5px 10px rgba(0, 0, 0, 0.05)"  # Same as level_4
 
 
 ELEVATION = ElevationSystem()

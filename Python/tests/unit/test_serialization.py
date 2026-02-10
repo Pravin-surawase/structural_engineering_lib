@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.models import (
+from structural_lib.core.models import (
     BeamBatchInput,
     BeamBatchResult,
     BeamDesignResult,
@@ -20,7 +20,7 @@ from structural_lib.models import (
     Point3D,
     SectionProperties,
 )
-from structural_lib.serialization import (
+from structural_lib.services.serialization import (
     cache_exists,
     generate_all_schemas,
     generate_schema,

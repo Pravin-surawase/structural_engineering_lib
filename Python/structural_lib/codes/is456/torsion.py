@@ -22,11 +22,11 @@ import math
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-from structural_lib.error_messages import (
+from structural_lib.core.error_messages import (
     dimension_too_small,
     material_property_out_of_range,
 )
-from structural_lib.errors import (
+from structural_lib.core.errors import (
     E_TORSION_001,
     DesignError,
     DimensionError,

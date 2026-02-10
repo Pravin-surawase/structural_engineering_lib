@@ -2,14 +2,21 @@
 """
 API Performance Benchmark Script.
 
-Measures FastAPI endpoint latencies and throughput for CI reporting.
-Outputs JSON metrics suitable for trend analysis and regression detection.
+Supports two modes:
+    --mode fastapi   Benchmark FastAPI endpoint latencies via TestClient
+    --mode direct    Benchmark direct library API calls (no HTTP overhead)
+    --mode all       Run both (default)
+
+The FastAPI mode measures endpoint latencies and throughput for CI reporting.
+The direct mode benchmarks structural_lib function latencies for V3 requirements.
 
 Usage:
-    python scripts/benchmark_api.py                 # Run all benchmarks
-    python scripts/benchmark_api.py --quick         # Quick smoke test
-    python scripts/benchmark_api.py --output json   # JSON output for CI
-    python scripts/benchmark_api.py --threshold 100 # Fail if p95 > 100ms
+    python scripts/benchmark_api.py                     # Both modes
+    python scripts/benchmark_api.py --mode fastapi      # FastAPI endpoints only
+    python scripts/benchmark_api.py --mode direct       # Direct library calls only
+    python scripts/benchmark_api.py --quick             # Quick smoke test
+    python scripts/benchmark_api.py --output json       # JSON output for CI
+    python scripts/benchmark_api.py --threshold 100     # Fail if p95 > 100ms
 
 Exit Codes:
     0: All benchmarks passed
@@ -20,6 +27,7 @@ Exit Codes:
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import statistics
 import sys
@@ -27,13 +35,14 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 # Add project root for imports
 project_root = Path(__file__).parent.parent
+PYTHON_DIR = project_root / "Python"
+REPORT_PATH = project_root / "docs" / "reference" / "api-benchmark-report.json"
 sys.path.insert(0, str(project_root))
-
-from fastapi.testclient import TestClient
+sys.path.insert(0, str(PYTHON_DIR))
 
 
 @dataclass
@@ -321,9 +330,10 @@ def run_benchmarks(
     threshold_ms: float | None = None,
     verbose: bool = True,
 ) -> BenchmarkSuite:
-    """Run all benchmarks and return results."""
-    # Import FastAPI app
+    """Run all FastAPI benchmarks and return results."""
+    # Lazy import — only needed for fastapi mode
     try:
+        from fastapi.testclient import TestClient
         from fastapi_app.main import app
     except ImportError as e:
         print(f"Error importing FastAPI app: {e}", file=sys.stderr)
@@ -370,9 +380,9 @@ def run_benchmarks(
 
 
 def print_summary(suite: BenchmarkSuite) -> None:
-    """Print human-readable summary."""
+    """Print human-readable summary for FastAPI benchmarks."""
     print(f"\n{'='*60}")
-    print("BENCHMARK SUMMARY")
+    print("FASTAPI BENCHMARK SUMMARY")
     print(f"{'='*60}")
     print(f"Timestamp: {suite.timestamp}")
     print(f"Endpoints tested: {len(suite.results)}")
@@ -397,10 +407,308 @@ def print_summary(suite: BenchmarkSuite) -> None:
                 print(f"  - {f}")
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+# DIRECT LIBRARY BENCHMARKS (absorbed from benchmark_api_latency.py)
+# ═══════════════════════════════════════════════════════════════════════════
+
+@dataclass
+class DirectBenchmarkConfig:
+    """Configuration for a direct library benchmark test."""
+    name: str
+    function: str
+    inputs: dict
+    threshold_ms: float
+    warmup_runs: int = 3
+    iterations: int = 50
+
+
+@dataclass
+class DirectBenchmarkResult:
+    """Result of a direct library benchmark."""
+    name: str
+    function: str
+    min_ms: float
+    max_ms: float
+    mean_ms: float
+    median_ms: float
+    std_ms: float
+    p95_ms: float
+    p99_ms: float
+    threshold_ms: float
+    passed: bool
+    iterations: int
+
+
+# V3 Latency Requirements
+V3_THRESHOLDS = {
+    "design_beam_is456": 50.0,
+    "check_shear_is456": 30.0,
+    "detail_beam_is456": 80.0,
+    "beam_to_3d_geometry": 100.0,
+    "optimize_beam_cost": 200.0,
+    "default": 100.0,
+}
+
+STANDARD_DIRECT_BENCHMARKS = [
+    DirectBenchmarkConfig(
+        name="Design beam - typical case",
+        function="design_beam_is456",
+        inputs={
+            "units": "IS456",
+            "case_id": "TEST-1",
+            "mu_knm": 100.0,
+            "vu_kn": 75.0,
+            "b_mm": 300.0,
+            "D_mm": 450.0,
+            "d_mm": 420.0,
+            "fck_nmm2": 25.0,
+            "fy_nmm2": 500.0,
+        },
+        threshold_ms=50.0,
+    ),
+    DirectBenchmarkConfig(
+        name="Design beam - complex case",
+        function="design_beam_is456",
+        inputs={
+            "units": "IS456",
+            "case_id": "TEST-2",
+            "mu_knm": 350.0,
+            "vu_kn": 200.0,
+            "b_mm": 400.0,
+            "D_mm": 750.0,
+            "d_mm": 700.0,
+            "fck_nmm2": 35.0,
+            "fy_nmm2": 500.0,
+        },
+        threshold_ms=75.0,
+    ),
+    DirectBenchmarkConfig(
+        name="Design beam - minimum steel",
+        function="design_beam_is456",
+        inputs={
+            "units": "IS456",
+            "case_id": "TEST-3",
+            "mu_knm": 25.0,
+            "vu_kn": 20.0,
+            "b_mm": 230.0,
+            "D_mm": 400.0,
+            "d_mm": 370.0,
+            "fck_nmm2": 20.0,
+            "fy_nmm2": 415.0,
+        },
+        threshold_ms=50.0,
+    ),
+]
+
+
+def _load_direct_api():
+    """Load structural_lib.api module for direct benchmarking."""
+    try:
+        from structural_lib import api
+        return api
+    except ImportError as e:
+        print(f"❌ Cannot import structural_lib.api: {e}")
+        sys.exit(2)
+
+
+def _time_function(func: Callable, inputs: dict) -> float:
+    """Time a single function call. Returns ms."""
+    gc.disable()
+    try:
+        start = time.perf_counter()
+        func(**inputs)
+        end = time.perf_counter()
+        return (end - start) * 1000.0
+    finally:
+        gc.enable()
+
+
+def _run_direct_benchmark(api, config: DirectBenchmarkConfig) -> DirectBenchmarkResult:
+    """Run a single direct library benchmark."""
+    func = getattr(api, config.function, None)
+    if func is None:
+        return DirectBenchmarkResult(
+            name=config.name, function=config.function,
+            min_ms=float("inf"), max_ms=float("inf"),
+            mean_ms=float("inf"), median_ms=float("inf"),
+            std_ms=0.0, p95_ms=float("inf"), p99_ms=float("inf"),
+            threshold_ms=config.threshold_ms, passed=False, iterations=0,
+        )
+
+    # Warmup
+    for _ in range(config.warmup_runs):
+        try:
+            func(**config.inputs)
+        except Exception:
+            pass
+    gc.collect()
+
+    times = []
+    for _ in range(config.iterations):
+        try:
+            t = _time_function(func, config.inputs)
+            times.append(t)
+        except Exception as e:
+            print(f"⚠️  Error in {config.function}: {e}")
+
+    if not times:
+        return DirectBenchmarkResult(
+            name=config.name, function=config.function,
+            min_ms=float("inf"), max_ms=float("inf"),
+            mean_ms=float("inf"), median_ms=float("inf"),
+            std_ms=0.0, p95_ms=float("inf"), p99_ms=float("inf"),
+            threshold_ms=config.threshold_ms, passed=False, iterations=0,
+        )
+
+    sorted_times = sorted(times)
+    p95_idx = int(len(sorted_times) * 0.95)
+    p99_idx = int(len(sorted_times) * 0.99)
+
+    return DirectBenchmarkResult(
+        name=config.name,
+        function=config.function,
+        min_ms=min(times),
+        max_ms=max(times),
+        mean_ms=statistics.mean(times),
+        median_ms=statistics.median(times),
+        std_ms=statistics.stdev(times) if len(times) > 1 else 0.0,
+        p95_ms=sorted_times[min(p95_idx, len(sorted_times) - 1)],
+        p99_ms=sorted_times[min(p99_idx, len(sorted_times) - 1)],
+        threshold_ms=config.threshold_ms,
+        passed=statistics.median(times) <= config.threshold_ms,
+        iterations=len(times),
+    )
+
+
+def run_direct_benchmarks(
+    iterations: int = 50,
+    threshold_override: float | None = None,
+    function_filter: str | None = None,
+    verbose: bool = True,
+) -> tuple[list[DirectBenchmarkResult], bool]:
+    """Run direct library benchmarks.
+
+    Returns (results, all_passed).
+    """
+    api = _load_direct_api()
+    benchmarks = [
+        DirectBenchmarkConfig(
+            name=b.name,
+            function=b.function,
+            inputs=b.inputs,
+            threshold_ms=threshold_override if threshold_override else b.threshold_ms,
+            warmup_runs=b.warmup_runs,
+            iterations=iterations,
+        )
+        for b in STANDARD_DIRECT_BENCHMARKS
+    ]
+
+    if function_filter:
+        benchmarks = [b for b in benchmarks if b.function == function_filter]
+
+    if verbose:
+        print(f"\n{'='*60}")
+        print("Direct Library API Benchmarks (V3 Preparation)")
+        print(f"{'='*60}")
+        print(f"Running {len(benchmarks)} benchmarks, {iterations} iterations each...")
+
+    results = []
+    for bench in benchmarks:
+        if verbose:
+            print(f"\n⏱️  {bench.name}...")
+        result = _run_direct_benchmark(api, bench)
+        results.append(result)
+        if verbose:
+            status = "✅" if result.passed else "❌"
+            print(f"   {status} median={result.median_ms:.3f}ms "
+                  f"p95={result.p95_ms:.3f}ms (threshold={result.threshold_ms}ms)")
+
+    all_passed = all(r.passed for r in results)
+    return results, all_passed
+
+
+def print_direct_summary(results: list[DirectBenchmarkResult]) -> None:
+    """Print direct benchmark summary."""
+    passed = sum(1 for r in results if r.passed)
+    failed = len(results) - passed
+
+    print(f"\n{'='*60}")
+    print("DIRECT LIBRARY BENCHMARK SUMMARY")
+    print(f"{'='*60}")
+    print(f"Total benchmarks: {len(results)}")
+    print(f"Passed: {passed} ✅  Failed: {failed} ❌")
+    print()
+    print(f"{'Function':<30} {'Median (ms)':<15} {'Threshold':<12} {'Status'}")
+    print("-" * 65)
+    for r in results:
+        status = "✅ PASS" if r.passed else "❌ FAIL"
+        print(f"{r.function:<30} {r.median_ms:>10.2f}ms   {r.threshold_ms:>8.1f}ms   {status}")
+
+    if failed == 0:
+        print("\n✅ All functions meet V3 latency requirements!")
+    else:
+        print("\n⚠️  Some functions exceed latency thresholds.")
+
+
+def _save_direct_report(results: list[DirectBenchmarkResult]) -> None:
+    """Save direct benchmark report to JSON."""
+    report = {
+        "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "mode": "direct",
+        "summary": {
+            "total": len(results),
+            "passed": sum(1 for r in results if r.passed),
+            "failed": sum(1 for r in results if not r.passed),
+        },
+        "results": [
+            {
+                "name": r.name,
+                "function": r.function,
+                "iterations": r.iterations,
+                "threshold_ms": r.threshold_ms,
+                "stats": {
+                    "min_ms": round(r.min_ms, 3),
+                    "mean_ms": round(r.mean_ms, 3),
+                    "median_ms": round(r.median_ms, 3),
+                    "p95_ms": round(r.p95_ms, 3),
+                    "p99_ms": round(r.p99_ms, 3),
+                    "max_ms": round(r.max_ms, 3),
+                    "std_ms": round(r.std_ms, 3),
+                },
+                "passed": r.passed,
+            }
+            for r in results
+        ],
+    }
+    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(REPORT_PATH, "w") as f:
+        json.dump(report, f, indent=2)
+    print(f"✅ Report written to {REPORT_PATH}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CLI
+# ═══════════════════════════════════════════════════════════════════════════
+
 def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="Benchmark FastAPI endpoint performance"
+        description="Benchmark API performance (FastAPI endpoints and/or direct library calls)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  python scripts/benchmark_api.py                     # Both modes\n"
+            "  python scripts/benchmark_api.py --mode fastapi      # FastAPI only\n"
+            "  python scripts/benchmark_api.py --mode direct       # Direct only\n"
+            "  python scripts/benchmark_api.py --quick             # Quick test\n"
+            "  python scripts/benchmark_api.py --mode direct -n 100\n"
+        ),
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["fastapi", "direct", "all"],
+        default="all",
+        help="Benchmark mode (default: all)",
     )
     parser.add_argument(
         "--quick",
@@ -423,32 +731,65 @@ def main() -> int:
         type=str,
         help="Save JSON results to file",
     )
-
-    args = parser.parse_args()
-
-    # Run benchmarks
-    suite = run_benchmarks(
-        quick=args.quick,
-        threshold_ms=args.threshold,
-        verbose=(args.output == "text"),
+    # Direct-mode options
+    parser.add_argument(
+        "--iterations", "-n",
+        type=int,
+        default=50,
+        help="Number of iterations per benchmark (direct mode)",
+    )
+    parser.add_argument(
+        "--function", "-f",
+        type=str,
+        help="Benchmark a specific function only (direct mode)",
+    )
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Generate JSON report (direct mode)",
     )
 
-    # Output results
-    if args.output == "json":
-        print(json.dumps(suite.to_dict(), indent=2))
-    else:
-        print_summary(suite)
+    args = parser.parse_args()
+    overall_passed = True
 
-    # Save if requested
-    if args.save:
-        output_path = Path(args.save)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "w") as f:
-            json.dump(suite.to_dict(), f, indent=2)
+    # ── FastAPI mode ───────────────────────────────────────────────────
+    if args.mode in ("fastapi", "all"):
+        suite = run_benchmarks(
+            quick=args.quick,
+            threshold_ms=args.threshold,
+            verbose=(args.output == "text"),
+        )
+        if args.output == "json" and args.mode == "fastapi":
+            print(json.dumps(suite.to_dict(), indent=2))
+        elif args.output == "text":
+            print_summary(suite)
+        if not suite.passed:
+            overall_passed = False
+
+        if args.save and args.mode == "fastapi":
+            output_path = Path(args.save)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(output_path, "w") as f:
+                json.dump(suite.to_dict(), f, indent=2)
+            if args.output == "text":
+                print(f"\nResults saved to: {output_path}")
+
+    # ── Direct mode ────────────────────────────────────────────────────
+    if args.mode in ("direct", "all"):
+        direct_results, direct_passed = run_direct_benchmarks(
+            iterations=args.iterations,
+            threshold_override=args.threshold,
+            function_filter=args.function,
+            verbose=(args.output == "text"),
+        )
         if args.output == "text":
-            print(f"\nResults saved to: {output_path}")
+            print_direct_summary(direct_results)
+        if not direct_passed:
+            overall_passed = False
+        if args.report:
+            _save_direct_report(direct_results)
 
-    return 0 if suite.passed else 1
+    return 0 if overall_passed else 1
 
 
 if __name__ == "__main__":

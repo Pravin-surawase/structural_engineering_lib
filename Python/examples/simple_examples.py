@@ -125,7 +125,7 @@ def example_3_development_length():
     print(f"Steel grade = Fe{fy}")
     print(f"Bond stress τbd = {tau_bd:.2f} N/mm²")
     print(f"Development length Ld = {Ld:.0f} mm")
-    print(f"In terms of bar diameter = {Ld/bar_dia:.0f}φ")
+    print(f"In terms of bar diameter = {Ld / bar_dia:.0f}φ")
 
 
 def example_4_lap_length():
@@ -150,8 +150,8 @@ def example_4_lap_length():
     lap_seismic = detailing.calculate_lap_length(bar_dia, fck, fy, is_seismic=True)
 
     print(f"Bar diameter = {bar_dia} mm")
-    print(f"Normal lap length = {lap_normal:.0f} mm ({lap_normal/bar_dia:.0f}φ)")
-    print(f"Seismic lap length = {lap_seismic:.0f} mm ({lap_seismic/bar_dia:.0f}φ)")
+    print(f"Normal lap length = {lap_normal:.0f} mm ({lap_normal / bar_dia:.0f}φ)")
+    print(f"Seismic lap length = {lap_seismic:.0f} mm ({lap_seismic / bar_dia:.0f}φ)")
     print("\nNote: Seismic lap = 1.5 × Ld (IS 13920 requirement)")
 
 

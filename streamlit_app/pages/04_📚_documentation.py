@@ -230,7 +230,7 @@ elif section == "🧮 Formula Calculator":
             Ast_final = max(Ast_req, Ast_min)
 
             st.metric("Ru (N/mm²)", f"{Ru:.3f}")
-            st.metric("Steel Ratio (ρ)", f"{rho*100:.3f}%")
+            st.metric("Steel Ratio (ρ)", f"{rho * 100:.3f}%")
             st.metric("Ast Required", f"{Ast_req:.0f} mm²")
             st.metric("Ast Minimum", f"{Ast_min:.0f} mm²")
             st.metric(

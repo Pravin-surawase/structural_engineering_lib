@@ -2,7 +2,6 @@
 
 import pytest
 
-from structural_lib.api import design_beam_is456
 from structural_lib.insights import (
     ComparisonResult,
     CostProfile,
@@ -11,6 +10,7 @@ from structural_lib.insights import (
     compare_designs,
     cost_aware_sensitivity,
 )
+from structural_lib.services.api import design_beam_is456
 
 
 def _base_params():

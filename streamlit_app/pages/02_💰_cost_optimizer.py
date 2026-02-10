@@ -26,7 +26,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from structural_lib.costing import (
+    from structural_lib.services.costing import (
         calculate_beam_cost,
         CostProfile,
         STEEL_DENSITY_KG_PER_M3,
@@ -39,7 +39,7 @@ except ImportError:
 
 # Import multi-objective optimizer for Pareto front
 try:
-    from structural_lib.multi_objective_optimizer import (
+    from structural_lib.services.multi_objective_optimizer import (
         optimize_pareto_front,
         get_design_explanation,
         ParetoCandidate,
@@ -903,7 +903,7 @@ The **Pareto front** shows all designs where improving one objective means sacri
                         st.markdown("---")
                         st.subheader("🔍 Design Deep Dive")
                         design_options = [
-                            d.get("bar_config", f"Design {i+1}")
+                            d.get("bar_config", f"Design {i + 1}")
                             for i, d in enumerate(pareto_front)
                         ]
                         selected_design_idx = st.selectbox(

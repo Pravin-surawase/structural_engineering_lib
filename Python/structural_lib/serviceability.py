@@ -21,7 +21,7 @@ from structural_lib.codes.is456.serviceability import (  # noqa: F401
 
 # Re-export data types that are expected to be accessible via this module
 # These are needed for type annotations like `serviceability.DeflectionResult`
-from structural_lib.data_types import (  # noqa: F401
+from structural_lib.core.data_types import (  # noqa: F401
     CrackWidthResult,
     DeflectionLevelBResult,
     DeflectionResult,

@@ -4,7 +4,7 @@ Tests for deprecation utilities.
 
 import warnings
 
-from structural_lib.utilities import deprecated, deprecated_field
+from structural_lib.core.utilities import deprecated, deprecated_field
 
 
 class TestDeprecatedDecorator:

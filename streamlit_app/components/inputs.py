@@ -347,9 +347,7 @@ def load_input(
         if ratio < 1.0:
             st.warning("⚠️ Moment/Shear ratio is low (<1m). Verify loads are correct.")
         elif ratio > 15.0:
-            st.warning(
-                "⚠️ Moment/Shear ratio is high (>15m). Verify loads are correct."
-            )
+            st.warning("⚠️ Moment/Shear ratio is high (>15m). Verify loads are correct.")
 
     return {"mu_knm": mu_knm, "vu_kn": vu_kn}
 

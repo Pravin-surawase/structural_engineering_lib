@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from structural_lib.api_results import (
+from structural_lib.services.api_results import (
     CostBreakdown,
     CostOptimizationResult,
     DesignSuggestionsResult,

@@ -583,7 +583,7 @@ def page_header(
                     <span style="font-size: 48px;">{icon}</span>
                     <div>
                         <h1 style="margin: 0; color: {COLORS.primary_700};">{title}</h1>
-                        {f'<p style="margin: 0; color: {COLORS.gray_600}; font-size: {TYPOGRAPHY.body_lg};">{subtitle}</p>' if subtitle else ''}
+                        {f'<p style="margin: 0; color: {COLORS.gray_600}; font-size: {TYPOGRAPHY.body_lg};">{subtitle}</p>' if subtitle else ""}
                     </div>
                 </div>
                 """,
@@ -594,7 +594,7 @@ def page_header(
                 f"""
                 <div>
                     <h1 style="color: {COLORS.primary_700};">{title}</h1>
-                    {f'<p style="color: {COLORS.gray_600}; font-size: {TYPOGRAPHY.body_lg};">{subtitle}</p>' if subtitle else ''}
+                    {f'<p style="color: {COLORS.gray_600}; font-size: {TYPOGRAPHY.body_lg};">{subtitle}</p>' if subtitle else ""}
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -698,7 +698,7 @@ def info_panel(message: str, title: Optional[str] = None, icon: str = "ℹ️") 
             <div style="display: flex; gap: {SPACING.space_3};">
                 <span style="font-size: 24px; flex-shrink: 0;">{icon}</span>
                 <div>
-                    {f'<div style="font-weight: 600; color: {COLORS.primary_700}; margin-bottom: {SPACING.space_2};">{title}</div>' if title else ''}
+                    {f'<div style="font-weight: 600; color: {COLORS.primary_700}; margin-bottom: {SPACING.space_2};">{title}</div>' if title else ""}
                     <div style="color: {COLORS.gray_700};">{message}</div>
                 </div>
             </div>

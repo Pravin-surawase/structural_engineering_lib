@@ -6,7 +6,6 @@ dictionaries for CLI output and API integration.
 
 import json
 
-from structural_lib.api import design_beam_is456
 from structural_lib.detailing import (
     BarArrangement,
     BeamDetailingResult,
@@ -17,6 +16,7 @@ from structural_lib.insights import (
     quick_precheck,
     sensitivity_analysis,
 )
+from structural_lib.services.api import design_beam_is456
 
 
 def test_precheck_to_dict():
@@ -212,7 +212,7 @@ def test_constructability_to_dict():
 
 def test_heuristic_warning_to_dict():
     """Verify HeuristicWarning.to_dict() handles enum conversion."""
-    from structural_lib.errors import Severity
+    from structural_lib.core.errors import Severity
     from structural_lib.insights.types import HeuristicWarning
 
     warning = HeuristicWarning(

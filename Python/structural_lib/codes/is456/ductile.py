@@ -8,7 +8,7 @@ Description:  IS 13920:2016 Ductile Detailing checks for Beams
 import math
 from dataclasses import dataclass, field
 
-from structural_lib.errors import (
+from structural_lib.core.errors import (
     E_DUCTILE_001,
     E_DUCTILE_002,
     E_DUCTILE_003,
@@ -18,7 +18,7 @@ from structural_lib.errors import (
     E_INPUT_011,
     DesignError,
 )
-from structural_lib.utilities import deprecated_field
+from structural_lib.core.utilities import deprecated_field
 
 __all__ = [
     "DuctileBeamResult",
