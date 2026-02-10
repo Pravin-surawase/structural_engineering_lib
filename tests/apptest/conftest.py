@@ -279,7 +279,7 @@ def dxf_app(create_app_test) -> "AppTest":
 @pytest.fixture
 def report_app(create_app_test) -> "AppTest":
     """Pre-configured AppTest for report generator page (now hidden with _ prefix)."""
-    return create_app_test("_07_📄_report_generator.py")
+    return create_app_test("07_📄_report_generator.py")
 
 
 @pytest.fixture

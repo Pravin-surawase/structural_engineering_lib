@@ -18,7 +18,7 @@ Related: TASK-212 (Create exception hierarchy)
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 # =============================================================================
@@ -194,7 +194,7 @@ class LoadError(ValidationError):
 # =============================================================================
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     """Error severity levels."""
 
     ERROR = "error"  # Design fails. Cannot proceed.

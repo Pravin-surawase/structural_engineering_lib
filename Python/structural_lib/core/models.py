@@ -37,7 +37,7 @@ Task: TASK-DATA-001
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
@@ -66,7 +66,7 @@ __all__ = [
 # =============================================================================
 
 
-class FrameType(str, Enum):
+class FrameType(StrEnum):
     """Type of structural frame element."""
 
     BEAM = "beam"
@@ -74,7 +74,7 @@ class FrameType(str, Enum):
     BRACE = "brace"
 
 
-class DesignStatus(str, Enum):
+class DesignStatus(StrEnum):
     """Design check status."""
 
     PASS = "PASS"

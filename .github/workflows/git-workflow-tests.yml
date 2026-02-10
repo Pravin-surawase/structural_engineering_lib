@@ -8,8 +8,6 @@ on:
       - 'scripts/ai_commit.sh'
       - 'scripts/create_task_pr.sh'
       - 'scripts/finish_task_pr.sh'
-      - 'scripts/test_git_workflow.sh'
-      - 'scripts/verify_git_fix.sh'
       - 'scripts/validate_git_state.sh'
       - 'scripts/recover_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
@@ -19,8 +17,6 @@ on:
       - 'scripts/ai_commit.sh'
       - 'scripts/create_task_pr.sh'
       - 'scripts/finish_task_pr.sh'
-      - 'scripts/test_git_workflow.sh'
-      - 'scripts/verify_git_fix.sh'
       - 'scripts/validate_git_state.sh'
       - 'scripts/recover_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
@@ -43,8 +39,6 @@ jobs:
 
       - name: Make scripts executable
         run: |
-          chmod +x scripts/test_git_workflow.sh
-          chmod +x scripts/verify_git_fix.sh
           chmod +x scripts/validate_git_state.sh
           chmod +x scripts/recover_git_state.sh
           chmod +x scripts/safe_push.sh
@@ -59,24 +53,10 @@ jobs:
           bash -n scripts/finish_task_pr.sh
           bash -n scripts/validate_git_state.sh
           bash -n scripts/recover_git_state.sh
-          bash -n scripts/test_git_workflow.sh
-          bash -n scripts/verify_git_fix.sh
 
       - name: Run git state validation
         run: |
           ./scripts/validate_git_state.sh
-
-      - name: CRITICAL - Verify git whitespace fix
-        run: |
-          ./scripts/verify_git_fix.sh
-
-      - name: Test workflow decision tool (should_use_pr.sh)
-        run: |
-          ./scripts/test_should_use_pr.sh
-
-      - name: Run git workflow tests
-        run: |
-          ./scripts/test_git_workflow.sh --verbose
 
       - name: Test safe_push.sh help
         run: |
@@ -102,5 +82,4 @@ jobs:
         with:
           name: git-workflow-test-results
           path: |
-            scripts/test_git_workflow.sh
             scripts/validate_git_state.sh

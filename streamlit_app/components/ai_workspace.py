@@ -42,7 +42,10 @@ import streamlit as st
 
 # Try to import visualization components
 try:
-    from components.visualizations_3d import create_beam_3d_figure
+    from components.visualizations_3d import (
+        create_beam_3d_figure,
+        create_multi_beam_3d_figure,
+    )
 
     VISUALIZATION_AVAILABLE = True
 except ImportError:
@@ -55,7 +58,11 @@ try:
         SAFEAdapter,
         GenericCSVAdapter,
     )
-    from structural_lib.core.models import DesignDefaults
+    from structural_lib.core.models import (
+        BeamGeometry,
+        BeamForces,
+        DesignDefaults,
+    )
 
     ADAPTERS_AVAILABLE = True
     ADAPTERS = {
@@ -97,7 +104,10 @@ except ImportError:
 
 # Import shared batch design utilities (Session 63 consolidation)
 try:
-    from utils.batch_design import design_beam_row as shared_design_beam_row
+    from utils.batch_design import (
+        design_beam_row as shared_design_beam_row,
+        design_all_beams_df as shared_design_all_beams,
+    )
 
     SHARED_BATCH_DESIGN_AVAILABLE = True
 except ImportError:
