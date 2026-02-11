@@ -24,6 +24,7 @@ Exit Codes:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import sys
@@ -339,6 +340,115 @@ def check_python_lib_structure(report: GovernanceReport) -> None:
     report.add_pass("Python lib structure")
 
 
+def _is_main_guard_if(node: ast.If) -> bool:
+    """Return True if node is `if __name__ == "__main__": ...`."""
+    test = node.test
+    if not isinstance(test, ast.Compare):
+        return False
+    if not isinstance(test.left, ast.Name) or test.left.id != "__name__":
+        return False
+    if len(test.ops) != 1 or not isinstance(test.ops[0], ast.Eq):
+        return False
+    if len(test.comparators) != 1:
+        return False
+    comp = test.comparators[0]
+    return isinstance(comp, ast.Constant) and comp.value == "__main__"
+
+
+def _is_warnings_warn_expr(node: ast.Expr) -> bool:
+    """Return True if expression is `warnings.warn(...)`."""
+    if not isinstance(node.value, ast.Call):
+        return False
+    func = node.value.func
+    return (
+        isinstance(func, ast.Attribute)
+        and isinstance(func.value, ast.Name)
+        and func.value.id == "warnings"
+        and func.attr == "warn"
+    )
+
+
+def _is_allowed_stub_try(node: ast.Try) -> bool:
+    """Allow import-only try/except blocks used for compatibility shims."""
+    allowed_stmt_types = (ast.Import, ast.ImportFrom, ast.Pass)
+    body_ok = all(isinstance(stmt, allowed_stmt_types) for stmt in node.body)
+    handlers_ok = True
+    for handler in node.handlers:
+        if not all(isinstance(stmt, allowed_stmt_types) for stmt in handler.body):
+            handlers_ok = False
+            break
+    orelse_ok = all(isinstance(stmt, allowed_stmt_types) for stmt in node.orelse)
+    final_ok = all(isinstance(stmt, allowed_stmt_types) for stmt in node.finalbody)
+    return body_ok and handlers_ok and orelse_ok and final_ok
+
+
+def check_root_python_stub_only(report: GovernanceReport) -> None:
+    """Ensure root structural_lib/*.py files remain compatibility stubs only."""
+    lib_root = REPO_ROOT / "Python" / "structural_lib"
+    if not lib_root.exists():
+        return
+
+    root_modules = sorted(
+        p for p in lib_root.glob("*.py")
+        if p.name not in {"__init__.py", "__main__.py"}
+    )
+
+    violations: list[str] = []
+    for module_path in root_modules:
+        rel = module_path.relative_to(REPO_ROOT)
+        try:
+            source = module_path.read_text(encoding="utf-8")
+            tree = ast.parse(source)
+        except Exception as exc:
+            report.add_error(
+                f"Cannot parse stub module {rel}: {exc}",
+                location=str(rel), rule="Root stub-only modules",
+            )
+            continue
+
+        has_reexport_import = False
+        for idx, stmt in enumerate(tree.body):
+            if (
+                idx == 0
+                and isinstance(stmt, ast.Expr)
+                and isinstance(stmt.value, ast.Constant)
+                and isinstance(stmt.value.value, str)
+            ):
+                # Module docstring
+                continue
+
+            if isinstance(stmt, (ast.Import, ast.ImportFrom, ast.Assign, ast.AnnAssign, ast.Pass)):
+                if isinstance(stmt, ast.ImportFrom):
+                    mod = stmt.module or ""
+                    if mod.startswith("structural_lib"):
+                        has_reexport_import = True
+                continue
+
+            if isinstance(stmt, ast.Expr) and _is_warnings_warn_expr(stmt):
+                continue
+
+            if isinstance(stmt, ast.Try) and _is_allowed_stub_try(stmt):
+                continue
+
+            if isinstance(stmt, ast.If) and _is_main_guard_if(stmt):
+                continue
+
+            # Disallow executable logic drift (functions/classes/loops/custom runtime logic).
+            violations.append(f"{rel}: disallowed top-level {type(stmt).__name__}")
+
+        if not has_reexport_import:
+            violations.append(f"{rel}: missing structural_lib re-export import")
+
+    if violations:
+        report.add_error(
+            f"Found {len(violations)} root modules that are not stub-only",
+            location="Python/structural_lib", rule="Root stub-only modules",
+            files=violations[:20],
+        )
+    else:
+        report.add_pass("Root structural_lib modules are stub-only")
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # COMPLIANCE CHECKS (from check_governance_compliance.py)
 # ═══════════════════════════════════════════════════════════════════════════
@@ -430,6 +540,7 @@ def run_structure(report: GovernanceReport, lib_only: bool = False) -> None:
         check_dated_files(report)
         check_naming_conventions(report)
     check_python_lib_structure(report)
+    check_root_python_stub_only(report)
 
 
 def run_compliance(report: GovernanceReport) -> None:

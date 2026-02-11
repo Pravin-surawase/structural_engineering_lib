@@ -1,9 +1,9 @@
 {
   "$schema": "scripts-index-schema",
   "version": "1.0.0",
-  "updated": "2026-01-25",
+  "updated": "2026-02-11",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 157,
+  "total_scripts": 80,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -49,18 +49,12 @@
         "should_use_pr.sh": "Decide PR vs direct commit",
         "create_task_pr.sh": "Create branch for task PR",
         "finish_task_pr.sh": "Submit PR with --async or --wait",
-        "pr_async_merge.sh": "Monitor and merge PR asynchronously",
         "recover_git_state.sh": "Emergency git recovery",
         "validate_git_state.sh": "Comprehensive git state check",
         "check_unfinished_merge.sh": "Detect unfinished merge",
-        "git_ops.sh": "State-aware router and recommendation",
-        "git_automation_health.sh": "Check all git automation systems",
         "install_git_hooks.sh": "Install hook enforcement",
         "cleanup_stale_branches.py": "Remove old task branches (dry run + delete)",
-        "cleanup_stale_branches.sh": "Shell wrapper for branch cleanup",
-        "worktree_manager.sh": "Manage git worktrees for parallel work",
-        "check_not_main.sh": "Verify not on main branch",
-        "quick_push.sh": "Quick push (use ai_commit.sh instead)"
+        "check_not_main.sh": "Verify not on main branch"
       }
     },
     "session_management": {
@@ -69,34 +63,25 @@
         "agent_start.sh": "UNIFIED - Start session (recommended)",
         "session.py": "Unified session management (start, end, handoff, check)",
         "agent_mistakes_report.sh": "Show common mistakes reminder",
-        "check_handoff_ready.py": "Validate handoff completeness",
         "collect_diagnostics.py": "Bundle debug context (env, git, logs)",
-        "launch_streamlit.sh": "Launch Streamlit app with env checks",
-        "install_hooks.sh": "Install git hooks (commit-msg validation)"
+        "launch_streamlit.sh": "Launch Streamlit app with env checks"
       }
     },
     "code_validation": {
       "description": "Code quality, linting, and validation",
       "scripts": {
         "check_streamlit.py": "Unified Streamlit validation (AST scanner + fragment checks)",
-        "check_streamlit_imports.py": "Validate Streamlit page imports",
         "check_circular_imports.py": "Detect circular import issues",
         "check_type_annotations.py": "Validate type annotations",
         "check_python_version.py": "Check Python version compatibility",
-
         "validate_session_state.py": "Validate session state usage",
         "audit_error_handling.py": "Audit error handling patterns",
         "audit_input_validation.py": "Audit input validation",
         "check_performance_issues.py": "Detect performance issues",
         "check_cost_optimizer_issues.py": "Check cost optimizer issues",
-        "auto_fix_page.py": "Auto-fix common page issues",
-        "autonomous_fixer.py": "Autonomous issue fixer",
         "check_ui_duplication.py": "Detect code duplication in Streamlit UI",
         "check_architecture_boundaries.py": "Enforce 3-layer architecture boundaries",
-        "profile_streamlit_page.py": "Profile page performance",
-        "test_page.sh": "Test a Streamlit page",
-        "streamlit_preflight.sh": "Streamlit pre-flight checks",
-        "pylint_streamlit.sh": "Run pylint on Streamlit code"
+        "profile_streamlit_page.py": "Profile page performance"
       }
     },
     "documentation": {
@@ -104,20 +89,12 @@
       "scripts": {
         "check_links.py": "Validate + auto-fix markdown links (--fix, --map, --exclude-archive)",
         "check_doc_versions.py": "Check version consistency in docs",
-        "check_doc_metadata.py": "Validate document metadata headers",
-        "check_doc_frontmatter.py": "Check doc frontmatter format",
         "check_docs.py": "Unified docs validation (--index, --index-links, --metadata, --all)",
-        "check_duplicate_docs.py": "Find duplicate documentation",
-        "check_doc_similarity.py": "Find similar docs before creating new ones",
-        "check_readme_quality.py": "Assess README quality",
-        "check_folder_readmes.py": "Verify README presence in folders",
         "generate_docs_index.py": "Generate docs-index.json",
-        "generate_folder_index.py": "Generate folder index files",
         "generate_all_indexes.sh": "Generate all index files",
         "create_doc.py": "Create new document with metadata",
-        "enhance_readme.py": "Enhance README content",
-        "analyze_doc_redundancy.py": "Analyze doc redundancy",
-        "find_automation.py": "Search automation scripts by task description"
+        "find_automation.py": "Search automation scripts by task description",
+        "generate_enhanced_index.py": "Generate enhanced folder index files (JSON + Markdown)"
       }
     },
     "file_operations": {
@@ -125,20 +102,12 @@
       "scripts": {
         "safe_file_move.py": "Move file with link updates",
         "safe_file_delete.py": "Delete file with reference check",
-        "rename_folder_safe.py": "Safely rename folder",
-        "find_orphan_files.py": "Find unreferenced files",
-        "archive_old_files.sh": "Archive files older than 90 days",
-        "archive_old_sessions.sh": "Archive old session docs",
-        "archive_deprecated_docs.py": "Archive deprecated docs",
-        "batch_archive.py": "Batch archive operations",
-        "consolidate_docs.py": "Consolidate similar docs",
-        "update_redirect_refs.py": "Update redirect references"
+        "archive_old_files.sh": "Archive files older than 90 days"
       }
     },
     "project_structure": {
       "description": "Validate project structure and governance",
       "scripts": {
-        "check_folder_structure.py": "Validate folder architecture",
         "check_governance.py": "Unified governance checker (--structure, --compliance, --full, --json)",
         "audit_readiness_report.py": "Generate audit evidence bundle (NIST SSDF aligned)",
         "check_root_file_count.sh": "Monitor root file count",
@@ -146,7 +115,6 @@
         "check_tasks_format.py": "Validate TASKS.md format",
         "check_wip_limits.sh": "Check WIP limits",
         "check_cli_reference.py": "Validate CLI reference docs",
-        "check_redirect_stubs.py": "Check redirect stubs",
         "repo_health_check.sh": "Overall repository health",
         "check_scripts_index.py": "Ensure scripts/index.json is in sync"
       }
@@ -155,29 +123,18 @@
       "description": "API documentation and validation",
       "scripts": {
         "check_api.py": "Unified API validation (--signatures, --docs, --sync, --all)",
-        "validate_stub_exports.py": "Validate stub module exports",
-        "create_reexport_stub.py": "Create re-export stub module",
-        "update_is456_init.py": "Update IS456 __init__.py exports",
-        "generate_api_manifest.py": "Generate API manifest JSON",
-        "generate_api_routes.py": "Generate FastAPI route stubs for V3 migration"
+        "generate_api_manifest.py": "Generate API manifest JSON"
       }
     },
     "testing": {
       "description": "Testing utilities and validation",
       "scripts": {
-        "test_git_workflow.sh": "Test git workflow automation",
-        "test_agent_automation.sh": "Test agent automation",
-        "test_should_use_pr.sh": "Test PR decision logic",
-        "test_merge_conflicts.sh": "Test merge conflict handling",
-        "test_branch_operations.sh": "Test branch operations",
-        "verify_git_fix.sh": "Verify git fix implementation",
         "create_test_scaffold.py": "Create test file scaffold",
         "update_test_stats.py": "Update test statistics",
         "watch_tests.sh": "Watch and run tests on change",
         "external_cli_test.py": "Test external CLI integration",
-        "validate_trial_data.py": "Validate trial/test data",
         "run_vba_smoke_tests.py": "Run VBA smoke tests via Excel automation (macOS)",
-        "test_import_3d_pipeline.py": "Integration test for import → design → 3D pipeline",
+        "test_import_3d_pipeline.py": "Integration test for import \u2192 design \u2192 3D pipeline",
         "test_vba_adapter.py": "Test ETABSAdapter with VBA ETABS export data"
       }
     },
@@ -193,34 +150,24 @@
       "description": "CI/CD and automation",
       "scripts": {
         "ci_local.sh": "Run CI checks locally",
-        "ci_monitor_daemon.sh": "Background CI monitoring",
         "pre_commit_check.sh": "Pre-commit hook checks",
-        "pre-push-hook.sh": "Pre-push hook",
-        "install_enforcement_hook.sh": "Install enforcement hooks",
-        "quick_check.sh": "Quick validation checks",
-
-        "collect_metrics.sh": "Collect project metrics",
-        "risk_cache.sh": "Risk assessment cache"
+        "collect_metrics.sh": "Collect project metrics"
       }
     },
     "code_migration": {
       "description": "Code migration and refactoring",
       "scripts": {
-        "migrate_module.py": "Migrate module to new location",
-        "validate_migration.py": "Validate migration correctness",
-        "pre_migration_check.py": "Pre-migration validation",
-        "add_future_annotations.py": "Add future annotations to modules",
-        "add_license_headers.py": "Add license headers to files"
+        "batch_migrate_runner.py": "Batch migration plan executor with per-operation rollback logs",
+        "migrate_python_module.py": "Move Python module + update imports + optional compat stub",
+        "migrate_react_component.py": "Move React component + update imports + barrel exports",
+        "validate_imports.py": "Validate import resolution across scopes (--scope structural_lib/all)"
       }
     },
     "streamlit_dev": {
       "description": "Streamlit development utilities",
       "scripts": {
         "generate_streamlit_page.py": "Generate new Streamlit page",
-        "dxf_render.py": "Render DXF exports",
-        "analyze_navigation_data.py": "Analyze navigation patterns",
-        "measure_agent_navigation.sh": "Measure agent navigation efficiency",
-        "generate_dashboard.sh": "Generate dashboard metrics"
+        "dxf_render.py": "Render DXF exports"
       }
     },
     "vba": {
@@ -232,27 +179,18 @@
     "governance": {
       "description": "Governance, metrics, and compliance",
       "scripts": {
-        "governance_session.sh": "Governance check session",
-        "weekly_governance_check.sh": "Weekly governance audit",
-        "predict_velocity.py": "Predict development velocity and burnout risk (TASK-287)",
         "governance_health_score.py": "Calculate governance health score 0-100 (TASK-289)",
-        "analyze_release_cadence.py": "Analyze and recommend optimal release cadence (TASK-288)",
         "collect_metrics.sh": "Collect project metrics for governance analysis",
-        "check_next_session_brief_length.py": "Check brief length limits",
-
-        "lint_docs_git_examples.sh": "Lint git examples in docs"
+        "check_next_session_brief_length.py": "Check brief length limits"
       }
     },
     "v3_migration": {
       "description": "V3 React + FastAPI migration automation",
       "scripts": {
-        "validate_fastapi_schema.py": "Validate all API functions are FastAPI-compatible",
-        "test_api_parity.py": "Test library ↔ FastAPI serialization parity",
-        "benchmark_api_latency.py": "Benchmark API latency against V3 thresholds (<50ms)",
+        "test_api_parity.py": "Test library \u2194 FastAPI serialization parity",
         "benchmark_api.py": "FastAPI performance benchmarks with p95/p99 latencies (NEW)",
         "validate_api_contracts.py": "Detect breaking API changes vs OpenAPI baseline (NEW)",
         "check_fastapi_issues.py": "AST scanner for FastAPI anti-patterns (NEW)",
-        "generate_api_routes.py": "Auto-generate FastAPI route definitions from API functions",
         "validate_schema_snapshots.py": "Validate Pydantic schemas against snapshots for contract testing",
         "discover_api_signatures.py": "Discover API signatures BEFORE implementing wrappers (CRITICAL)",
         "check_docker_config.py": "Validate Docker configuration (Dockerfile, compose, .dockerignore)",
@@ -302,8 +240,7 @@
   "deprecated": {
     "description": "Scripts that should NOT be used directly (archived to scripts/_archive/)",
     "scripts": {
-      "safe_push.sh": "Use ai_commit.sh instead (internal)",
-      "quick_push.sh": "Use ai_commit.sh instead"
+      "safe_push.sh": "Use ai_commit.sh instead (internal)"
     },
     "archived": {
       "agent_setup.sh": "Merged into agent_start.sh",

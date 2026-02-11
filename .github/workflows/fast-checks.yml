@@ -103,6 +103,11 @@ jobs:
           python scripts/check_performance_issues.py || true
           echo "✅ Code quality checks passed"
 
+      - name: Governance structure gate (stub-only root modules)
+        run: |
+          python scripts/check_governance.py --structure --json > /tmp/governance-structure.json
+          echo "✅ Governance structure gate passed"
+
   # FastAPI validation - only when FastAPI code changes
   fastapi-validation:
     name: FastAPI Validation
@@ -156,11 +161,11 @@ jobs:
           python scripts/benchmark_api.py --quick --threshold 50
           echo "✅ FastAPI performance benchmarks passed"
 
-  # Doc validation - only when docs/scripts change
+  # Doc validation - only when docs change
   docs-validation:
     name: Docs Validation
     needs: changes
-    if: needs.changes.outputs.docs == 'true' || needs.changes.outputs.scripts == 'true'
+    if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -178,13 +183,32 @@ jobs:
           python scripts/check_tasks_format.py &
           python scripts/check_api.py --sync &
           python scripts/generate_api_manifest.py --check &
-          python scripts/check_scripts_index.py &
           python scripts/check_links.py &
           wait
 
       - name: Governance checks
         run: |
           python scripts/check_governance.py
+
+  # Scripts validation - only when scripts change
+  scripts-validation:
+    name: Scripts Validation
+    needs: changes
+    if: needs.changes.outputs.scripts == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Scripts checks
+        run: |
+          python scripts/check_scripts_index.py
 
   # Always-run minimal check (for status reporting)
   quick-validation:

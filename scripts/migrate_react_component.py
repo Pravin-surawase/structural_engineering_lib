@@ -23,6 +23,8 @@ Options:
 from __future__ import annotations
 
 import argparse
+import contextlib
+import json
 import re
 import sys
 from pathlib import Path
@@ -163,9 +165,10 @@ def update_imports(
     new_path: Path,
     references: list[tuple[Path, int, str, str]],
     dry_run: bool = False,
-) -> int:
+) -> tuple[int, list[str]]:
     """Update all import paths from old to new location."""
     updated_count = 0
+    updated_files: list[str] = []
     files_to_update: dict[Path, list[tuple[str, str]]] = {}
 
     for ref_file, _line_num, _line_text, old_import in references:
@@ -202,8 +205,9 @@ def update_imports(
                 rel = src_file.relative_to(PROJECT_ROOT)
                 print(f"  Updated: {rel}")
             updated_count += 1
+            updated_files.append(str(rel))
 
-    return updated_count
+    return updated_count, updated_files
 
 
 def find_colocated_css(component_path: Path) -> Path | None:
@@ -215,7 +219,7 @@ def find_colocated_css(component_path: Path) -> Path | None:
 
 def ensure_barrel_export(
     directory: Path, component_name: str, dry_run: bool = False
-) -> None:
+) -> str:
     """Ensure the target directory has an index.ts with the component exported."""
     index_file = directory / "index.ts"
 
@@ -224,43 +228,35 @@ def ensure_barrel_export(
     if index_file.exists():
         content = index_file.read_text(encoding="utf-8")
         if component_name in content:
-            return  # Already exported
+            return "already_present"
         if dry_run:
             print(f"  Would add export to: {index_file.relative_to(PROJECT_ROOT)}")
+            return "would_update"
         else:
             content += export_line
             index_file.write_text(content, encoding="utf-8")
             print(f"  Updated barrel: {index_file.relative_to(PROJECT_ROOT)}")
+            return "updated"
     else:
         if dry_run:
             print(f"  Would create barrel: {index_file.relative_to(PROJECT_ROOT)}")
+            return "would_create"
         else:
             index_file.write_text(export_line, encoding="utf-8")
             print(f"  Created barrel: {index_file.relative_to(PROJECT_ROOT)}")
+            return "created"
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Migrate React component with import updates"
-    )
-    parser.add_argument(
-        "source",
-        help="Source component path (e.g., src/components/ImportView.tsx)",
-    )
-    parser.add_argument(
-        "destination",
-        help="Destination path (e.g., src/components/import/ImportView.tsx)",
-    )
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Show what would happen"
-    )
-    parser.add_argument(
-        "--no-css", action="store_true", help="Don't move co-located CSS"
-    )
-    parser.add_argument(
-        "--force", action="store_true", help="Overwrite destination if exists"
-    )
-    args = parser.parse_args()
+def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
+    """Execute migration and return (exit_code, structured_result)."""
+    result: dict[str, object] = {
+        "tool": "migrate_react_component",
+        "dry_run": bool(args.dry_run),
+        "mode": "dry-run" if args.dry_run else "live",
+        "success": False,
+        "source": args.source,
+        "destination": args.destination,
+    }
 
     # Resolve paths
     source = Path(args.source)
@@ -284,12 +280,17 @@ def main():
     # Validate
     if not source.exists():
         print(f"❌ Source not found: {source}")
-        sys.exit(1)
+        result["error"] = f"Source not found: {source}"
+        return 1, result
 
     if destination.exists() and not args.force:
         print(f"❌ Destination exists: {destination}")
         print("   Use --force to overwrite")
-        sys.exit(1)
+        result["error"] = f"Destination exists: {destination}"
+        return 1, result
+
+    result["source"] = str(source.relative_to(PROJECT_ROOT))
+    result["destination"] = str(destination.relative_to(PROJECT_ROOT))
 
     print("=" * 60)
     print("⚛️  React Component Migration")
@@ -308,14 +309,21 @@ def main():
             css_dest = destination.parent / css_source.name
             print(f"📎 Co-located CSS: {css_source.name}")
     print()
+    result["css_source"] = str(css_source.relative_to(PROJECT_ROOT)) if css_source else None
+    result["css_destination"] = str(css_dest.relative_to(PROJECT_ROOT)) if css_dest else None
 
     # Step 2: Find all import references
     print("🔍 Step 1: Finding import references...")
     all_files = find_react_files()
     references = find_import_references(source, all_files)
     print(f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} file(s)")
+    result["references_count"] = len(references)
+    result["references"] = [
+        {"file": str(ref_file.relative_to(PROJECT_ROOT)), "line": line_num}
+        for ref_file, line_num, _line_text, _old_import in references
+    ]
 
-    for ref_file, line_num, line_text, _ in references[:10]:
+    for ref_file, line_num, _line_text, _ in references[:10]:
         rel = ref_file.relative_to(PROJECT_ROOT)
         print(f"     {rel}:{line_num}")
     if len(references) > 10:
@@ -336,34 +344,37 @@ def main():
             css_source.rename(css_dest)
             print(f"   Moved: {css_source.name} → {css_dest.relative_to(PROJECT_ROOT)}")
     print()
+    result["moved"] = not args.dry_run
+    result["css_moved"] = bool(css_source and css_dest and not args.dry_run)
 
     # Step 4: Update imports
     print("🔗 Step 3: Updating imports...")
-    updated = update_imports(source, destination, references, args.dry_run)
+    updated, updated_files = update_imports(source, destination, references, args.dry_run)
     print(f"   Updated {updated} file(s)")
     print()
+    result["updated_count"] = updated
+    result["updated_files"] = updated_files
 
     # Step 5: CSS import in moved component
     if css_source and css_dest:
         print("🎨 Step 4: Updating CSS import in component...")
         if not args.dry_run:
             try:
-                content = destination.read_text(encoding="utf-8")
-                old_css_import = f"./{css_source.name}"
-                new_css_import = f"./{css_dest.name}"
+                _ = destination.read_text(encoding="utf-8")
                 # CSS import doesn't change since it's co-located
-                print(f"   CSS remains co-located (no change needed)")
+                print("   CSS remains co-located (no change needed)")
             except Exception:
                 pass
         else:
-            print(f"   CSS remains co-located (no change needed)")
+            print("   CSS remains co-located (no change needed)")
     print()
 
     # Step 6: Barrel export
     print("📋 Step 5: Ensuring barrel export...")
     component_name = destination.stem
-    ensure_barrel_export(destination.parent, component_name, args.dry_run)
+    barrel_status = ensure_barrel_export(destination.parent, component_name, args.dry_run)
     print()
+    result["barrel_status"] = barrel_status
 
     # Summary
     print("=" * 60)
@@ -382,6 +393,52 @@ def main():
         print("  3. Commit: ./scripts/ai_commit.sh 'refactor: move component'")
     print("=" * 60)
 
+    changed_files = set(updated_files)
+    changed_files.update({
+        str(source.relative_to(PROJECT_ROOT)),
+        str(destination.relative_to(PROJECT_ROOT)),
+    })
+    if css_source and css_dest:
+        changed_files.add(str(css_source.relative_to(PROJECT_ROOT)))
+        changed_files.add(str(css_dest.relative_to(PROJECT_ROOT)))
+    result["changed_files"] = sorted(changed_files)
+    result["success"] = True
+    return 0, result
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Migrate React component with import updates"
+    )
+    parser.add_argument(
+        "source",
+        help="Source component path (e.g., src/components/ImportView.tsx)",
+    )
+    parser.add_argument(
+        "destination",
+        help="Destination path (e.g., src/components/import/ImportView.tsx)",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Show what would happen"
+    )
+    parser.add_argument(
+        "--no-css", action="store_true", help="Don't move co-located CSS"
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="Overwrite destination if exists"
+    )
+    parser.add_argument("--json", action="store_true", help="Output structured JSON")
+    args = parser.parse_args()
+
+    if args.json:
+        with contextlib.redirect_stdout(sys.stderr):
+            exit_code, payload = run_migration(args)
+        print(json.dumps(payload, indent=2))
+        return exit_code
+
+    exit_code, _payload = run_migration(args)
+    return exit_code
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
