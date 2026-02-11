@@ -1,0 +1,85 @@
+{
+  "root": {
+    "max_files": 15
+  },
+  "docs_root": {
+    "max_files": 5
+  },
+  "agents_root": {
+    "max_files": 5
+  },
+  "python_lib": {
+    "required_folders": [
+      "core",
+      "codes",
+      "codes/is456",
+      "services",
+      "insights",
+      "reports",
+      "visualization"
+    ],
+    "required_entry_files": [
+      "core/__init__.py",
+      "codes/__init__.py",
+      "codes/is456/__init__.py",
+      "services/__init__.py",
+      "services/api.py",
+      "insights/__init__.py",
+      "reports/__init__.py",
+      "visualization/__init__.py"
+    ],
+    "layer_imports": {
+      "core": [
+        "core"
+      ],
+      "codes": [
+        "core",
+        "codes"
+      ],
+      "services": [
+        "core",
+        "codes",
+        "services"
+      ],
+      "insights": [
+        "core",
+        "codes",
+        "services",
+        "insights",
+        "reports",
+        "visualization"
+      ],
+      "reports": [
+        "core",
+        "codes",
+        "services",
+        "insights",
+        "reports",
+        "visualization"
+      ],
+      "visualization": [
+        "core",
+        "codes",
+        "services",
+        "insights",
+        "reports",
+        "visualization"
+      ]
+    },
+    "layer_import_exceptions": {
+      "codes/is456/detailing.py": [
+        "visualization"
+      ],
+      "services/api.py": [
+        "insights",
+        "visualization"
+      ],
+      "services/intelligence.py": [
+        "insights"
+      ],
+      "services/rebar.py": [
+        "visualization"
+      ]
+    }
+  }
+}

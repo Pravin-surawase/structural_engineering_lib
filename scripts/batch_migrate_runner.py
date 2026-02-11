@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import hashlib
 import json
 import shlex
 import shutil
@@ -173,9 +174,25 @@ def _backup_files(
         if src.exists():
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dst)
+            entry["size_bytes"] = src.stat().st_size
+            with src.open("rb") as fh:
+                entry["sha256"] = hashlib.sha256(fh.read()).hexdigest()
+        else:
+            entry["size_bytes"] = 0
+            entry["sha256"] = None
         backups.append(entry)
 
     return backups
+
+
+def _write_file_rollback_manifest(op_dir: Path, backups: list[dict[str, Any]]) -> Path:
+    """Write per-file rollback metadata for automation/audit tooling."""
+    manifest_path = op_dir / "rollback-files.json"
+    manifest_path.write_text(
+        json.dumps({"files": backups}, indent=2),
+        encoding="utf-8",
+    )
+    return manifest_path
 
 
 def _write_rollback_script(op_dir: Path, backups: list[dict[str, Any]]) -> Path:
@@ -298,11 +315,16 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
 
         backups: list[dict[str, Any]] = []
         rollback_script: Path | None = None
+        rollback_manifest: Path | None = None
         if not args.dry_run:
             backups = _backup_files(predicted_files, op_dir)
+            rollback_manifest = _write_file_rollback_manifest(op_dir, backups)
             rollback_script = _write_rollback_script(op_dir, backups)
         op_log["backups"] = backups
         op_log["rollback_script"] = str(rollback_script) if rollback_script else None
+        op_log["rollback_manifest"] = (
+            str(rollback_manifest) if rollback_manifest else None
+        )
 
         if args.dry_run:
             op_log["status"] = "dry-run"

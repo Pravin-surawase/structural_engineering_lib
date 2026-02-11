@@ -1,0 +1,17 @@
+{
+  "tool": "migrate_python_module",
+  "dry_run": true,
+  "success": true,
+  "source": "Python/structural_lib/_migration_fixtures/sample_module.py",
+  "destination": "Python/structural_lib/_migration_fixtures/moved/sample_module.py",
+  "old_module": "structural_lib._migration_fixtures.sample_module",
+  "new_module": "structural_lib._migration_fixtures.moved.sample_module",
+  "references_count": 0,
+  "updated_count": 0,
+  "stub_created": false,
+  "changed_files": [
+    "Python/structural_lib/_migration_fixtures/moved/sample_module.py",
+    "Python/structural_lib/_migration_fixtures/sample_module.py"
+  ]
+}
+

@@ -1,0 +1,15 @@
+{
+  "tool": "safe_file_move",
+  "dry_run": true,
+  "success": true,
+  "source": "tests/fixtures/migration/docs/__4layer_fixture_source_qzv9.md",
+  "destination": "tests/fixtures/migration/docs/moved/__4layer_fixture_source_qzv9.md",
+  "moved": false,
+  "updated_count": 0,
+  "stub_created": false,
+  "changed_files": [
+    "tests/fixtures/migration/docs/__4layer_fixture_source_qzv9.md",
+    "tests/fixtures/migration/docs/moved/__4layer_fixture_source_qzv9.md"
+  ]
+}
+

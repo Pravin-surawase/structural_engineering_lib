@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from typing import Literal, cast
 
 from structural_lib.core.data_types import OptimizerChecks
-from structural_lib.detailing import (
+from structural_lib.codes.is456.detailing import (
     STANDARD_BAR_DIAMETERS,
     BarArrangement,
     calculate_bar_spacing,

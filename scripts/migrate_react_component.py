@@ -40,6 +40,44 @@ SEARCH_EXTENSIONS = {".ts", ".tsx", ".js", ".jsx", ".css", ".json"}
 SKIP_PATTERNS = {"node_modules", ".turbo", "dist", "build", ".vite"}
 
 
+def _resolve_react_source(path_str: str) -> Path:
+    """Resolve source path supporting src/... and react_app/src/... inputs."""
+    raw = Path(path_str)
+    if raw.is_absolute():
+        return raw.resolve()
+
+    candidates: list[Path] = []
+    if raw.parts and raw.parts[0] == "react_app":
+        candidates.append(PROJECT_ROOT / raw)
+    if raw.parts and raw.parts[0] == "src":
+        candidates.append(REACT_ROOT / raw)
+    candidates.append(REACT_SRC / raw)
+    candidates.append(REACT_ROOT / raw)
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate.resolve()
+
+    # Keep deterministic fallback for error reporting.
+    if raw.parts and raw.parts[0] == "react_app":
+        return (PROJECT_ROOT / raw).resolve()
+    if raw.parts and raw.parts[0] == "src":
+        return (REACT_ROOT / raw).resolve()
+    return (REACT_SRC / raw).resolve()
+
+
+def _resolve_react_destination(path_str: str) -> Path:
+    """Resolve destination path without duplicating react_app/ prefix."""
+    raw = Path(path_str)
+    if raw.is_absolute():
+        return raw.resolve()
+    if raw.parts and raw.parts[0] == "react_app":
+        return (PROJECT_ROOT / raw).resolve()
+    if raw.parts and raw.parts[0] == "src":
+        return (REACT_ROOT / raw).resolve()
+    return (REACT_SRC / raw).resolve()
+
+
 def find_react_files() -> list[Path]:
     """Find all source files in react_app/src/."""
     files = []
@@ -259,23 +297,8 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     }
 
     # Resolve paths
-    source = Path(args.source)
-    if not source.is_absolute():
-        if (REACT_ROOT / source).exists():
-            source = REACT_ROOT / source
-        elif (REACT_SRC / source).exists():
-            source = REACT_SRC / source
-        else:
-            source = REACT_ROOT / source
-    source = source.resolve()
-
-    destination = Path(args.destination)
-    if not destination.is_absolute():
-        if args.destination.startswith("src/"):
-            destination = REACT_ROOT / destination
-        else:
-            destination = REACT_SRC / destination
-    destination = destination.resolve()
+    source = _resolve_react_source(args.source)
+    destination = _resolve_react_destination(args.destination)
 
     # Validate
     if not source.exists():

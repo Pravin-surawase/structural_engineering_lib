@@ -1,0 +1,18 @@
+{
+  "tool": "migrate_react_component",
+  "dry_run": true,
+  "success": true,
+  "source": "react_app/src/__fixtures__/migration/SampleWidget.tsx",
+  "destination": "react_app/src/__fixtures__/migration/moved/SampleWidget.tsx",
+  "references_count": 1,
+  "updated_count": 1,
+  "barrel_status": "would_create",
+  "changed_files": [
+    "react_app/src/__fixtures__/migration/Host.tsx",
+    "react_app/src/__fixtures__/migration/SampleWidget.css",
+    "react_app/src/__fixtures__/migration/SampleWidget.tsx",
+    "react_app/src/__fixtures__/migration/moved/SampleWidget.css",
+    "react_app/src/__fixtures__/migration/moved/SampleWidget.tsx"
+  ]
+}
+

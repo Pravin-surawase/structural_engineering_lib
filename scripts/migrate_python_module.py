@@ -56,6 +56,42 @@ SKIP_PATTERNS = {
 }
 
 
+def _resolve_source_path(path_str: str) -> Path:
+    """Resolve source path with support for both Python/ and structural_lib/ forms."""
+    raw = Path(path_str)
+    if raw.is_absolute():
+        return raw.resolve()
+
+    candidates: list[Path] = []
+    candidates.append(PROJECT_ROOT / raw)
+
+    if raw.parts and raw.parts[0] == "Python":
+        candidates.append(PROJECT_ROOT / Path(*raw.parts[1:]))
+    else:
+        candidates.append(PROJECT_ROOT / "Python" / raw)
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate.resolve()
+
+    # Fall back to canonical Python/ path for consistent error messaging.
+    if raw.parts and raw.parts[0] == "Python":
+        return (PROJECT_ROOT / raw).resolve()
+    return (PROJECT_ROOT / "Python" / raw).resolve()
+
+
+def _resolve_destination_path(path_str: str) -> Path:
+    """Resolve destination path without duplicating Python/ prefix."""
+    raw = Path(path_str)
+    if raw.is_absolute():
+        return raw.resolve()
+    if raw.parts and raw.parts[0] == "Python":
+        return (PROJECT_ROOT / raw).resolve()
+    if raw.parts and raw.parts[0] == "structural_lib":
+        return (PROJECT_ROOT / "Python" / raw).resolve()
+    return (PROJECT_ROOT / "Python" / raw).resolve()
+
+
 def path_to_module(file_path: Path) -> str:
     """Convert file path to Python module path.
 
@@ -285,24 +321,8 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     }
 
     # Resolve paths
-    source = Path(args.source)
-    if not source.is_absolute():
-        # Try relative to Python/ first, then project root
-        if (PROJECT_ROOT / "Python" / source).exists():
-            source = PROJECT_ROOT / "Python" / source
-        elif (PROJECT_ROOT / source).exists():
-            source = PROJECT_ROOT / source
-        else:
-            source = PROJECT_ROOT / "Python" / source
-    source = source.resolve()
-
-    destination = Path(args.destination)
-    if not destination.is_absolute():
-        if args.destination.startswith("structural_lib"):
-            destination = PROJECT_ROOT / "Python" / destination
-        else:
-            destination = PROJECT_ROOT / "Python" / destination
-    destination = destination.resolve()
+    source = _resolve_source_path(args.source)
+    destination = _resolve_destination_path(args.destination)
 
     # Validate
     if not source.exists():

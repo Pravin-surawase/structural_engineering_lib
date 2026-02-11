@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import copy
 import json
 import re
 import sys
@@ -39,7 +40,9 @@ from _lib.utils import REPO_ROOT
 # GOVERNANCE RULES
 # ═══════════════════════════════════════════════════════════════════════════
 
-RULES = {
+GOVERNANCE_LIMITS_PATH = REPO_ROOT / "docs" / "guidelines" / "governance-limits.json"
+
+DEFAULT_RULES = {
     "root": {
         "max_files": 15,
         "allowed_extensions": [
@@ -89,7 +92,44 @@ RULES = {
         ],
         "pattern": r"-202[0-9]-",
     },
+    "python_lib": {
+        "required_folders": [
+            "core",
+            "codes",
+            "codes/is456",
+            "services",
+            "insights",
+            "reports",
+            "visualization",
+        ],
+        "required_entry_files": [
+            "core/__init__.py",
+            "codes/__init__.py",
+            "codes/is456/__init__.py",
+            "services/__init__.py",
+            "services/api.py",
+            "insights/__init__.py",
+            "reports/__init__.py",
+            "visualization/__init__.py",
+        ],
+        "layer_imports": {
+            "core": ["core"],
+            "codes": ["core", "codes"],
+            "services": ["core", "codes", "services"],
+            "insights": ["core", "codes", "services", "insights", "reports", "visualization"],
+            "reports": ["core", "codes", "services", "insights", "reports", "visualization"],
+            "visualization": ["core", "codes", "services", "insights", "reports", "visualization"],
+        },
+        "layer_import_exceptions": {
+            "codes/is456/detailing.py": ["visualization"],
+            "services/api.py": ["insights", "visualization"],
+            "services/intelligence.py": ["insights"],
+            "services/rebar.py": ["visualization"],
+        },
+    },
 }
+
+RULES = copy.deepcopy(DEFAULT_RULES)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -127,6 +167,63 @@ class GovernanceReport:
     @property
     def success(self) -> bool:
         return len(self.errors) == 0
+
+
+def _deep_merge_rules(base: dict[str, Any], overrides: dict[str, Any]) -> dict[str, Any]:
+    """Recursively merge governance overrides into default rules."""
+    for key, value in overrides.items():
+        if (
+            key in base
+            and isinstance(base[key], dict)
+            and isinstance(value, dict)
+        ):
+            _deep_merge_rules(base[key], value)
+        else:
+            base[key] = value
+    return base
+
+
+def load_governance_rules(report: GovernanceReport) -> dict[str, Any]:
+    """Load governance limits from the shared JSON source-of-truth."""
+    rules = copy.deepcopy(DEFAULT_RULES)
+    if not GOVERNANCE_LIMITS_PATH.exists():
+        report.add_warning(
+            f"Governance limits file not found: {GOVERNANCE_LIMITS_PATH.relative_to(REPO_ROOT)}",
+            location="docs/guidelines/",
+            rule="Governance config",
+        )
+        return rules
+
+    try:
+        payload = json.loads(GOVERNANCE_LIMITS_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        report.add_error(
+            f"Invalid JSON in governance limits file: {exc}",
+            location=str(GOVERNANCE_LIMITS_PATH.relative_to(REPO_ROOT)),
+            rule="Governance config",
+        )
+        return rules
+    except OSError as exc:
+        report.add_error(
+            f"Cannot read governance limits file: {exc}",
+            location=str(GOVERNANCE_LIMITS_PATH.relative_to(REPO_ROOT)),
+            rule="Governance config",
+        )
+        return rules
+
+    if not isinstance(payload, dict):
+        report.add_error(
+            "Governance limits file must contain a JSON object",
+            location=str(GOVERNANCE_LIMITS_PATH.relative_to(REPO_ROOT)),
+            rule="Governance config",
+        )
+        return rules
+
+    merged = _deep_merge_rules(rules, payload)
+    report.add_info(
+        f"✅ Loaded governance limits from {GOVERNANCE_LIMITS_PATH.relative_to(REPO_ROOT)}"
+    )
+    return merged
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -292,7 +389,10 @@ def check_python_lib_structure(report: GovernanceReport) -> None:
         report.add_warning("Python/structural_lib/ not found — skipping lib checks", location="Python/", rule="Lib structure")
         return
 
-    required_folders = ["core", "codes", "codes/is456"]
+    required_folders = RULES.get("python_lib", {}).get(
+        "required_folders",
+        ["core", "codes", "codes/is456", "services", "insights", "reports", "visualization"],
+    )
     for folder in required_folders:
         path = lib_root / folder
         if path.exists() and path.is_dir():
@@ -311,7 +411,15 @@ def check_python_lib_structure(report: GovernanceReport) -> None:
         "core/registry.py": ["CodeRegistry", "register_code"],
         "codes/__init__.py": ["is456"],
         "codes/is456/__init__.py": ["IS456Code"],
+        "services/api.py": [],
+        "services/__init__.py": [],
+        "insights/__init__.py": [],
+        "reports/__init__.py": [],
+        "visualization/__init__.py": [],
     }
+    for entry_file in RULES.get("python_lib", {}).get("required_entry_files", []):
+        required_files.setdefault(str(entry_file), [])
+
     for file_path, exports in required_files.items():
         full = lib_root / file_path
         if not full.exists():
@@ -449,6 +557,88 @@ def check_root_python_stub_only(report: GovernanceReport) -> None:
         report.add_pass("Root structural_lib modules are stub-only")
 
 
+def _iter_layer_files(lib_root: Path, layer: str) -> list[Path]:
+    layer_dir = lib_root / layer
+    if not layer_dir.exists():
+        return []
+    return sorted(
+        p
+        for p in layer_dir.rglob("*.py")
+        if "__pycache__" not in p.parts
+    )
+
+
+def _absolute_structural_imports(py_file: Path) -> list[tuple[int, str]]:
+    imports: list[tuple[int, str]] = []
+    try:
+        tree = ast.parse(py_file.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError, UnicodeDecodeError):
+        return imports
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name.startswith("structural_lib."):
+                    imports.append((node.lineno, alias.name))
+        elif isinstance(node, ast.ImportFrom):
+            if node.level == 0 and node.module and node.module.startswith("structural_lib."):
+                imports.append((node.lineno, node.module))
+    return imports
+
+
+def check_python_layer_boundaries(report: GovernanceReport) -> None:
+    """Enforce 4-layer architecture import boundaries for structural_lib."""
+    lib_root = REPO_ROOT / "Python" / "structural_lib"
+    if not lib_root.exists():
+        return
+
+    layer_imports = RULES.get("python_lib", {}).get("layer_imports", {})
+    exceptions = RULES.get("python_lib", {}).get("layer_import_exceptions", {})
+    if not isinstance(layer_imports, dict) or not layer_imports:
+        report.add_warning(
+            "No layer import rules configured; skipping boundary check",
+            location="Python/structural_lib",
+            rule="Layer boundaries",
+        )
+        return
+
+    configured_layers = set(layer_imports.keys())
+    violations: list[str] = []
+
+    for layer, allowed_list in layer_imports.items():
+        allowed = set(allowed_list) if isinstance(allowed_list, list) else set()
+        for py_file in _iter_layer_files(lib_root, layer):
+            rel = py_file.relative_to(REPO_ROOT)
+            rel_in_lib = str(rel).replace("Python/structural_lib/", "")
+            file_exceptions = set(exceptions.get(rel_in_lib, []))
+            for line_no, module in _absolute_structural_imports(py_file):
+                parts = module.split(".")
+                if len(parts) < 2:
+                    continue
+                target_layer = parts[1]
+                if target_layer not in configured_layers:
+                    violations.append(
+                        f"{rel}:{line_no} imports legacy root module {module}"
+                    )
+                    continue
+                if target_layer in file_exceptions:
+                    continue
+                if target_layer not in allowed:
+                    violations.append(
+                        f"{rel}:{line_no} imports disallowed layer {module}"
+                    )
+
+    if violations:
+        report.add_error(
+            f"Found {len(violations)} layer-boundary violation(s)",
+            location="Python/structural_lib",
+            rule="Layer boundaries",
+            files=violations[:30],
+        )
+    else:
+        report.add_pass("Python layer boundary imports")
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # COMPLIANCE CHECKS (from check_governance_compliance.py)
 # ═══════════════════════════════════════════════════════════════════════════
@@ -541,6 +731,7 @@ def run_structure(report: GovernanceReport, lib_only: bool = False) -> None:
         check_naming_conventions(report)
     check_python_lib_structure(report)
     check_root_python_stub_only(report)
+    check_python_layer_boundaries(report)
 
 
 def run_compliance(report: GovernanceReport) -> None:
@@ -629,6 +820,8 @@ def main() -> int:
     run_all = args.full or not any([args.structure, args.compliance])
 
     report = GovernanceReport()
+    global RULES
+    RULES = load_governance_rules(report)
 
     if run_all or args.structure:
         run_structure(report, lib_only=args.lib_only)

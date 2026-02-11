@@ -1,0 +1,13 @@
+{
+  "operations": [
+    {
+      "tool": "python_module",
+      "source": "structural_lib/_migration_fixtures/sample_module.py",
+      "destination": "structural_lib/_migration_fixtures/moved/sample_module.py",
+      "args": [
+        "--no-stub"
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,21 @@
+{
+  "tool": "batch_migrate_runner",
+  "dry_run": true,
+  "success": true,
+  "operations_total": 1,
+  "operations_completed": 1,
+  "operations_failed": 0,
+  "operation": {
+    "tool": "python_module",
+    "status": "dry-run",
+    "source": "structural_lib/_migration_fixtures/sample_module.py",
+    "destination": "structural_lib/_migration_fixtures/moved/sample_module.py",
+    "plan_exit_code": 0,
+    "plan_success": true,
+    "predicted_changed_files": [
+      "Python/structural_lib/_migration_fixtures/moved/sample_module.py",
+      "Python/structural_lib/_migration_fixtures/sample_module.py"
+    ]
+  }
+}
+

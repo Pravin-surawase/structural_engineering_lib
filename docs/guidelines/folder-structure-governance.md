@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 3.0
 **Created:** 2025-12-01
-**Last Updated:** 2026-02-10
+**Last Updated:** 2026-02-11
 **Enforcement:** Automated validators + pre-commit hooks
 
 ---
@@ -18,6 +18,13 @@
 3. **Automation First** - Rules are enforced by code, not conversation
 4. **Long-term Stability** - Structure supports multi-year growth without major reorganization
 5. **Discoverability** - Every document is reachable from a README index
+
+### Source of Truth (Limits)
+
+Numeric governance limits are defined in:
+`docs/guidelines/governance-limits.json`
+
+Both the validator (`scripts/check_governance.py`) and this guide must stay aligned to that file.
 
 ---
 
@@ -45,7 +52,7 @@
 | docker-compose.yml | Docker compose (prod) | OPTIONAL |
 | docker-compose.dev.yml | Docker compose (dev) | OPTIONAL |
 
-**Current count:** 14 files ✅
+**Current count:** 15 files ✅
 **Status:** COMPLIANT
 
 ---
@@ -416,7 +423,7 @@ agents/
 
 ### Automated Checks (Pre-commit)
 
-- [ ] Root has ≤10 files
+- [ ] Root has ≤15 files
 - [ ] docs/ root has ≤5 files
 - [ ] All categories use proper structure
 - [ ] agents/ roles in agents/roles/ folder
@@ -462,13 +469,13 @@ agents/
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| Root files (≤10) | ✅ PASS | 9 files |
+| Root files (≤15) | ✅ PASS | 15 files |
 | docs/ root (≤5) | ✅ PASS | 3 files |
 | Link validity | ✅ PASS | 801 links, 0 broken |
 | agents/ roles | ✅ PASS | 12 files in agents/roles/ |
 | Governance consolidated | ✅ PASS | Single location: docs/guidelines/ |
 | docs/agents structure | ✅ PASS | All agent guides in docs/agents/guides/ |
-| Spec/validator sync | ✅ PASS | max_files=10 aligned |
+| Spec/validator sync | ✅ PASS | values loaded from governance-limits.json |
 | Naming convention | ✅ PASS | All files kebab-case |
 | Doc metadata | ⚠️ IN PROGRESS | New standard being applied |
 | **Python library** | ✅ PASS | 4-layer: core/ + codes/ + services/ + insights/ |

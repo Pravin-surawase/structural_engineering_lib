@@ -196,7 +196,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.scripts == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -209,6 +209,8 @@ jobs:
       - name: Scripts checks
         run: |
           python scripts/check_scripts_index.py
+          python -m pip install --upgrade pip pytest
+          python -m pytest tests/integration/test_migration_scripts.py -q
 
   # Always-run minimal check (for status reporting)
   quick-validation:
