@@ -25,8 +25,9 @@ from __future__ import annotations
 
 import argparse
 import ast
+import contextlib
+import json
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -138,12 +139,13 @@ def update_imports(
     new_module: str,
     files: list[Path],
     dry_run: bool = False,
-) -> int:
+) -> tuple[int, list[str]]:
     """Update all imports from old_module to new_module.
 
     Returns number of files updated.
     """
     updated_count = 0
+    updated_files: list[str] = []
 
     for py_file in files:
         try:
@@ -167,6 +169,14 @@ def update_imports(
             content,
         )
 
+        # "structural_lib.old_module" -> "structural_lib.new_module"
+        # Keep quoted module-path string references in sync with import rewrites.
+        content = re.sub(
+            rf"([\"']){re.escape(old_module)}([\"'])",
+            rf"\g<1>{new_module}\g<2>",
+            content,
+        )
+
         if content != original:
             if dry_run:
                 rel = py_file.relative_to(PROJECT_ROOT)
@@ -176,13 +186,14 @@ def update_imports(
                 rel = py_file.relative_to(PROJECT_ROOT)
                 print(f"  Updated: {rel}")
             updated_count += 1
+            updated_files.append(str(rel))
 
-    return updated_count
+    return updated_count, updated_files
 
 
 def create_backward_compat_stub(
     old_path: Path, old_module: str, new_module: str
-) -> None:
+) -> str:
     """Create backward-compat stub at old location that re-exports from new location."""
     # Get all public names from the module
     new_path = STRUCTURAL_LIB.parent / new_module.replace(".", "/")
@@ -245,7 +256,9 @@ def create_backward_compat_stub(
     stub_lines.append("")
 
     old_path.write_text("\n".join(stub_lines), encoding="utf-8")
-    print(f"  Created backward-compat stub: {old_path.relative_to(PROJECT_ROOT)}")
+    rel = str(old_path.relative_to(PROJECT_ROOT))
+    print(f"  Created backward-compat stub: {rel}")
+    return rel
 
 
 def validate_imports(files: list[Path]) -> list[str]:
@@ -260,25 +273,16 @@ def validate_imports(files: list[Path]) -> list[str]:
     return errors
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Migrate Python module with import updates"
-    )
-    parser.add_argument("source", help="Source module path (e.g., structural_lib/api.py)")
-    parser.add_argument(
-        "destination",
-        help="Destination module path (e.g., structural_lib/services/api.py)",
-    )
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Show what would happen"
-    )
-    parser.add_argument(
-        "--no-stub", action="store_true", help="Don't create backward-compat stub"
-    )
-    parser.add_argument(
-        "--force", action="store_true", help="Overwrite destination if exists"
-    )
-    args = parser.parse_args()
+def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
+    """Execute migration and return (exit_code, structured_result)."""
+    result: dict[str, object] = {
+        "tool": "migrate_python_module",
+        "dry_run": bool(args.dry_run),
+        "mode": "dry-run" if args.dry_run else "live",
+        "success": False,
+        "source": args.source,
+        "destination": args.destination,
+    }
 
     # Resolve paths
     source = Path(args.source)
@@ -303,16 +307,22 @@ def main():
     # Validate
     if not source.exists():
         print(f"❌ Source not found: {source}")
-        sys.exit(1)
+        result["error"] = f"Source not found: {source}"
+        return 1, result
 
     if destination.exists() and not args.force:
         print(f"❌ Destination exists: {destination}")
         print("   Use --force to overwrite")
-        sys.exit(1)
+        result["error"] = f"Destination exists: {destination}"
+        return 1, result
 
     # Calculate module paths
     old_module = path_to_module(source)
     new_module = path_to_module(destination)
+    result["source"] = str(source.relative_to(PROJECT_ROOT))
+    result["destination"] = str(destination.relative_to(PROJECT_ROOT))
+    result["old_module"] = old_module
+    result["new_module"] = new_module
 
     print("=" * 60)
     print("🐍 Python Module Migration")
@@ -329,6 +339,15 @@ def main():
     all_files = find_python_files()
     references = find_import_references(old_module, all_files)
     print(f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} files")
+    result["references_count"] = len(references)
+    result["references"] = [
+        {
+            "file": str(ref_file.relative_to(PROJECT_ROOT)),
+            "line": line_num,
+            "type": imp_type,
+        }
+        for ref_file, line_num, _line, imp_type in references
+    ]
 
     if references:
         for ref_file, line_num, line, imp_type in references[:10]:
@@ -340,6 +359,7 @@ def main():
 
     # Step 2: Move file
     print("📦 Step 2: Moving module...")
+    created_init: str | None = None
     if args.dry_run:
         print(f"   Would move: {source.name} → {destination}")
     else:
@@ -351,41 +371,56 @@ def main():
                 '"""Auto-generated __init__.py for package."""\n',
                 encoding="utf-8",
             )
-            print(f"   Created: {init_file.relative_to(PROJECT_ROOT)}")
+            created_init = str(init_file.relative_to(PROJECT_ROOT))
+            print(f"   Created: {created_init}")
 
         source.rename(destination)
         print(f"   Moved: {source.name} → {destination.relative_to(PROJECT_ROOT)}")
+    result["moved"] = not args.dry_run
+    result["created_init"] = created_init
     print()
 
     # Step 3: Update imports
     print("🔗 Step 3: Updating imports...")
-    updated = update_imports(old_module, new_module, all_files, args.dry_run)
+    updated, updated_files = update_imports(old_module, new_module, all_files, args.dry_run)
     print(f"   Updated {updated} file(s)")
+    result["updated_count"] = updated
+    result["updated_files"] = updated_files
     print()
 
     # Step 4: Create backward-compat stub
+    stub_file: str | None = None
     if not args.no_stub:
         print("📝 Step 4: Creating backward-compat stub...")
         if args.dry_run:
             print(f"   Would create stub at: {source.relative_to(PROJECT_ROOT)}")
+            stub_file = str(source.relative_to(PROJECT_ROOT))
         else:
-            create_backward_compat_stub(source, old_module, new_module)
+            stub_file = create_backward_compat_stub(source, old_module, new_module)
     else:
         print("📝 Step 4: Skipped (--no-stub)")
     print()
+    result["stub_created"] = not args.no_stub
+    result["stub_file"] = stub_file
 
     # Step 5: Validate
     print("✅ Step 5: Validating...")
+    validation_errors: list[str] = []
     if args.dry_run:
         print("   Skipped (dry run)")
     else:
-        errors = validate_imports(all_files)
-        if errors:
+        validation_errors = validate_imports(all_files)
+        if validation_errors:
             print("   ⚠️  Syntax errors found:")
-            for error in errors:
+            for error in validation_errors:
                 print(f"     {error}")
         else:
             print("   All files compile successfully!")
+    result["validation"] = {
+        "checked": not args.dry_run,
+        "errors": validation_errors,
+        "ok": len(validation_errors) == 0,
+    }
     print()
 
     # Summary
@@ -404,7 +439,51 @@ def main():
         print("  2. Run FastAPI tests: .venv/bin/pytest fastapi_app/tests/ -v")
         print("  3. Commit: ./scripts/ai_commit.sh 'refactor: move module'")
     print("=" * 60)
+    changed_files = set(updated_files)
+    changed_files.update({
+        str(source.relative_to(PROJECT_ROOT)),
+        str(destination.relative_to(PROJECT_ROOT)),
+    })
+    if created_init:
+        changed_files.add(created_init)
+    if stub_file:
+        changed_files.add(stub_file)
+    result["changed_files"] = sorted(changed_files)
+    success = args.dry_run or len(validation_errors) == 0
+    result["success"] = success
+    return (0 if success else 1), result
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Migrate Python module with import updates"
+    )
+    parser.add_argument("source", help="Source module path (e.g., structural_lib/api.py)")
+    parser.add_argument(
+        "destination",
+        help="Destination module path (e.g., structural_lib/services/api.py)",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Show what would happen"
+    )
+    parser.add_argument(
+        "--no-stub", action="store_true", help="Don't create backward-compat stub"
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="Overwrite destination if exists"
+    )
+    parser.add_argument("--json", action="store_true", help="Output structured JSON")
+    args = parser.parse_args()
+
+    if args.json:
+        with contextlib.redirect_stdout(sys.stderr):
+            exit_code, payload = run_migration(args)
+        print(json.dumps(payload, indent=2))
+        return exit_code
+
+    exit_code, _payload = run_migration(args)
+    return exit_code
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

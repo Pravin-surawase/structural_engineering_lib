@@ -19,6 +19,9 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import contextlib
+import json
+import os
 import re
 import subprocess
 import sys
@@ -159,31 +162,34 @@ def _find_references_python(
     return references
 
 
+def _relative_posix_path(target: Path, start: Path) -> str:
+    """Return a POSIX-style relative path from start to target."""
+    return Path(os.path.relpath(target, start=start)).as_posix()
+
+
 def update_links(
     old_path: Path, new_path: Path, project_root: Path, dry_run: bool = False
-) -> int:
+) -> tuple[int, list[str]]:
     """Update all links from old_path to new_path.
 
     Returns number of files updated.
     """
     updated_count = 0
-    old_relative = old_path.relative_to(project_root)
-    new_relative = new_path.relative_to(project_root)
-
-    # Patterns to replace
-    old_patterns = [
-        str(old_relative),
-        old_path.name,
-    ]
+    updated_files: list[str] = []
+    old_relative = old_path.relative_to(project_root).as_posix()
+    new_relative = new_path.relative_to(project_root).as_posix()
 
     search_dirs = ["docs", "agents", "Python", "streamlit_app"]
+    text_extensions = {".md", ".json", ".yml", ".yaml", ".txt"}
 
     for search_dir in search_dirs:
         search_path = project_root / search_dir
         if not search_path.exists():
             continue
 
-        for file in search_path.rglob("*.md"):
+        for file in search_path.rglob("*"):
+            if file.suffix not in text_extensions:
+                continue
             if file == old_path or file == new_path:
                 continue
 
@@ -191,27 +197,34 @@ def update_links(
                 content = file.read_text(encoding="utf-8")
                 original_content = content
 
-                # Update relative links
-                # Calculate relative path from this file to old and new locations
+                # Calculate paths from this file location.
                 file_dir = file.parent
+                old_rel_from_file = _relative_posix_path(old_path, file_dir)
+                new_rel_from_file = _relative_posix_path(new_path, file_dir)
 
-                try:
-                    old_rel_from_file = old_path.relative_to(file_dir)
-                except ValueError:
-                    old_rel_from_file = Path("..") / old_relative
+                if file.suffix == ".md":
+                    # Replace markdown link targets for:
+                    # - file-relative links: ](../old.md)
+                    # - repo-relative links: ](docs/path/old.md)
+                    # - root-absolute links: ](/docs/path/old.md)
+                    markdown_link_patterns = {
+                        old_rel_from_file: new_rel_from_file,
+                        old_relative: new_relative,
+                        f"/{old_relative}": f"/{new_relative}",
+                    }
+                    for old_target, new_target in markdown_link_patterns.items():
+                        content = re.sub(
+                            rf"(\[[^\]]+\]\(){re.escape(old_target)}(\))",
+                            rf"\g<1>{new_target}\g<2>",
+                            content,
+                        )
 
-                try:
-                    new_rel_from_file = new_path.relative_to(file_dir)
-                except ValueError:
-                    new_rel_from_file = Path("..") / new_relative
-
-                # Replace patterns in markdown links
-                # [text](old_path) -> [text](new_path)
-                link_pattern = rf"\]\({re.escape(str(old_rel_from_file))}(\)?)"
-                content = re.sub(link_pattern, f"]({new_rel_from_file}\\1", content)
-
-                # Also replace exact filename matches in links
-                content = content.replace(f"]({old_path.name})", f"]({new_path.name})")
+                # Keep root-relative path references synced in json/yaml/txt.
+                content = content.replace(old_relative, new_relative)
+                content = content.replace(
+                    old_relative.replace("/", "\\"),
+                    new_relative.replace("/", "\\"),
+                )
 
                 if content != original_content:
                     if dry_run:
@@ -220,11 +233,12 @@ def update_links(
                         file.write_text(content, encoding="utf-8")
                         print(f"  Updated: {file}")
                     updated_count += 1
+                    updated_files.append(str(file.relative_to(project_root)))
 
             except (OSError, UnicodeDecodeError) as e:
                 print(f"  Warning: Could not process {file}: {e}")
 
-    return updated_count
+    return updated_count, updated_files
 
 
 def create_redirect_stub(old_path: Path, new_path: Path, project_root: Path) -> None:
@@ -243,12 +257,12 @@ This document has been moved to a new location.
     print(f"  Created redirect stub at: {old_path}")
 
 
-def run_link_check(project_root: Path) -> bool:
-    """Run the link checker and return True if all links are valid."""
+def get_broken_link_count(project_root: Path, *, print_output: bool = False) -> int | None:
+    """Run link checker and return broken-link count if parsable."""
     check_script = project_root / "scripts" / "check_links.py"
     if not check_script.exists():
         print("  Warning: check_links.py not found, skipping validation")
-        return True
+        return None
 
     result = subprocess.run(
         [sys.executable, str(check_script)],
@@ -257,32 +271,30 @@ def run_link_check(project_root: Path) -> bool:
         text=True,
     )
 
-    if "Broken links: 0" in result.stdout or result.returncode == 0:
-        return True
-    else:
+    if print_output:
         print(result.stdout)
-        return False
+
+    match = re.search(r"Broken links:\s*(\d+)", result.stdout)
+    if match:
+        return int(match.group(1))
+
+    if result.returncode == 0:
+        return 0
+
+    return None
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Safely move files with automatic link updates"
-    )
-    parser.add_argument("source", help="Source file path")
-    parser.add_argument("destination", help="Destination file path")
-    parser.add_argument(
-        "--stub", action="store_true", help="Create redirect stub at old location"
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Show what would happen without making changes",
-    )
-    parser.add_argument(
-        "--force", action="store_true", help="Proceed even if references are found"
-    )
-
-    args = parser.parse_args()
+def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
+    """Execute safe move and return (exit_code, structured_result)."""
+    result: dict[str, object] = {
+        "tool": "safe_file_move",
+        "dry_run": bool(args.dry_run),
+        "mode": "dry-run" if args.dry_run else "live",
+        "success": False,
+        "source": args.source,
+        "destination": args.destination,
+        "stub_requested": bool(args.stub),
+    }
 
     # Determine project root
     project_root = Path(__file__).parent.parent.resolve()
@@ -300,12 +312,17 @@ def main():
     # Validate
     if not source.exists():
         print(f"❌ Error: Source file not found: {source}")
-        sys.exit(1)
+        result["error"] = f"Source file not found: {source}"
+        return 1, result
 
     if destination.exists() and not args.force:
         print(f"❌ Error: Destination already exists: {destination}")
         print("   Use --force to overwrite")
-        sys.exit(1)
+        result["error"] = f"Destination already exists: {destination}"
+        return 1, result
+
+    result["source"] = str(source.relative_to(project_root))
+    result["destination"] = str(destination.relative_to(project_root))
 
     print("=" * 60)
     print("🔄 Safe File Move")
@@ -315,9 +332,25 @@ def main():
     print(f"Mode:        {'DRY RUN' if args.dry_run else 'LIVE'}")
     print()
 
+    baseline_broken = None
+    if not args.dry_run:
+        baseline_broken = get_broken_link_count(project_root)
+        if baseline_broken is not None:
+            print(f"🔢 Baseline broken links: {baseline_broken}")
+            print()
+    result["baseline_broken_links"] = baseline_broken
+
     # Step 1: Find references
     print("📍 Step 1: Finding references...")
     references = find_references(source, project_root)
+    result["references_count"] = len(references)
+    result["references"] = [
+        {
+            "file": str(ref_file.relative_to(project_root)),
+            "line": ref_lineno,
+        }
+        for ref_file, _ref_line, ref_lineno in references
+    ]
 
     if references:
         print(f"   Found {len(references)} reference(s):")
@@ -338,14 +371,18 @@ def main():
         destination.parent.mkdir(parents=True, exist_ok=True)
         source.rename(destination)
         print(f"   Moved: {source.name} → {destination}")
+    result["moved"] = not args.dry_run
 
     # Step 3: Update links
     print()
     print("🔗 Step 3: Updating links...")
-    updated = update_links(source, destination, project_root, args.dry_run)
+    updated, updated_files = update_links(source, destination, project_root, args.dry_run)
     print(f"   Updated {updated} file(s)")
+    result["updated_count"] = updated
+    result["updated_files"] = updated_files
 
     # Step 4: Create redirect stub if requested
+    stub_created = False
     if args.stub:
         print()
         print("📝 Step 4: Creating redirect stub...")
@@ -353,17 +390,40 @@ def main():
             print(f"   Would create stub at: {source}")
         else:
             create_redirect_stub(source, destination, project_root)
+            stub_created = True
+    result["stub_created"] = stub_created
 
     # Step 5: Validate
     print()
     print("✅ Step 5: Validating links...")
+    broken_after = None
     if args.dry_run:
         print("   Skipped (dry run)")
     else:
-        if run_link_check(project_root):
-            print("   All links valid!")
+        broken_after = get_broken_link_count(project_root, print_output=True)
+        if broken_after is None:
+            print("   ⚠️  Could not parse broken-link count from checker output.")
+        elif baseline_broken is None:
+            print(f"   Broken links after move: {broken_after}")
+        elif broken_after > baseline_broken:
+            print(
+                f"   ❌ Broken links increased ({baseline_broken} → {broken_after})."
+            )
+            print("   Review and fix links before committing.")
+            print()
+            print("=" * 60)
+            print("⚠️  Move completed with link regressions.")
+            print("=" * 60)
+            result["broken_links_after"] = broken_after
+            result["changed_files"] = sorted(
+                set(updated_files)
+                | {str(source.relative_to(project_root)), str(destination.relative_to(project_root))}
+            )
+            result["success"] = False
+            return 1, result
         else:
-            print("   ⚠️  Some links may be broken. Review above.")
+            print(f"   ✅ Broken links unchanged/improved ({baseline_broken} → {broken_after})")
+    result["broken_links_after"] = broken_after
 
     print()
     print("=" * 60)
@@ -376,7 +436,43 @@ def main():
         print("  1. Review changes: git diff")
         print("  2. Commit: ./scripts/ai_commit.sh 'refactor: move file'")
     print("=" * 60)
+    result["changed_files"] = sorted(
+        set(updated_files)
+        | {str(source.relative_to(project_root)), str(destination.relative_to(project_root))}
+    )
+    result["success"] = True
+    return 0, result
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Safely move files with automatic link updates"
+    )
+    parser.add_argument("source", help="Source file path")
+    parser.add_argument("destination", help="Destination file path")
+    parser.add_argument(
+        "--stub", action="store_true", help="Create redirect stub at old location"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would happen without making changes",
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="Proceed even if references are found"
+    )
+    parser.add_argument("--json", action="store_true", help="Output structured JSON")
+    args = parser.parse_args()
+
+    if args.json:
+        with contextlib.redirect_stdout(sys.stderr):
+            exit_code, payload = run_move(args)
+        print(json.dumps(payload, indent=2))
+        return exit_code
+
+    exit_code, _payload = run_move(args)
+    return exit_code
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
