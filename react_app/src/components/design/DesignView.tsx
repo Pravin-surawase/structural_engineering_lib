@@ -3,12 +3,14 @@
  *
  * Layout: Left 340px compact form | Right: 3D viewport + results
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight } from "lucide-react";
+import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight, Shield, Lightbulb } from "lucide-react";
 import type { BeamDesignResponse } from "../../api/client";
 import { useDesignStore } from "../../store/designStore";
 import { useLiveDesign } from "../../hooks/useLiveDesign";
+import { useCodeChecks, useRebarSuggestions } from "../../hooks/useInsights";
+import type { CheckDetail, SuggestionItem } from "../../hooks/useInsights";
 import { ConnectionStatus } from "../ui/ConnectionStatus";
 import { Viewport3D } from "../viewport/Viewport3D";
 
@@ -39,7 +41,37 @@ export function DesignView() {
     enabled: true,
   });
 
+  const codeChecks = useCodeChecks();
+  const rebarSuggestions = useRebarSuggestions();
+
   const spanMeters = useMemo(() => Number((length / 1000).toFixed(2)), [length]);
+
+  // Auto-trigger code checks + rebar suggestions when design result changes
+  useEffect(() => {
+    if (!state.result) return;
+    const r = state.result;
+    codeChecks.mutate({
+      beam: {
+        b_mm: inputs.width,
+        D_mm: inputs.depth,
+        span_mm: length,
+        fck_mpa: inputs.fck,
+        fy_mpa: inputs.fy,
+        mu_knm: inputs.moment,
+        vu_kn: inputs.shear,
+      },
+      config: r.ast_total ? { ast_mm2: r.ast_total } : null,
+    });
+    if (r.flexure?.ast_required) {
+      rebarSuggestions.mutate({
+        ast_required: r.flexure.ast_required,
+        ast_provided: r.ast_total,
+        b_mm: inputs.width,
+        cover_mm: 40,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.result]);
 
   return (
     <div className="flex h-screen pt-14">
@@ -139,7 +171,11 @@ export function DesignView() {
         {/* Results (bottom 40%) */}
         <div className="flex-[2] min-h-0 overflow-y-auto border-t border-white/5 p-4">
           {state.result ? (
-            <CompactResults result={state.result} />
+            <div className="space-y-3">
+              <CompactResults result={state.result} />
+              <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />
+              <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
+            </div>
           ) : state.error ? (
             <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
@@ -223,6 +259,135 @@ function ResultMiniCard({ title, items }: { title: string; items: { l: string; v
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ---------- Code Checks Panel ---------- */
+
+function CodeChecksPanel({ data, isPending }: { data: ReturnType<typeof useCodeChecks>["data"]; isPending: boolean }) {
+  const [expanded, setExpanded] = useState(false);
+  if (isPending) {
+    return (
+      <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
+        <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />
+        <span className="text-xs text-white/40">Running code checks...</span>
+      </div>
+    );
+  }
+  if (!data) return null;
+
+  const passCount = data.checks.filter((c: CheckDetail) => c.passed).length;
+  const totalCount = data.checks.length;
+  const allPassed = data.passed;
+
+  return (
+    <div className={`rounded-xl border ${allPassed ? "bg-green-500/5 border-green-500/20" : "bg-red-500/5 border-red-500/20"}`}>
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center gap-2.5 px-3 py-2.5"
+      >
+        <Shield className={`w-4 h-4 ${allPassed ? "text-green-400" : "text-red-400"}`} />
+        <span className="text-xs font-semibold text-white/80">
+          Code Checks: {passCount}/{totalCount} passed
+        </span>
+        {data.governing_check && (
+          <span className="ml-auto text-[10px] text-white/40 mr-2">Gov: {data.governing_check}</span>
+        )}
+        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-white/40" /> : <ChevronRight className="w-3.5 h-3.5 text-white/40" />}
+      </button>
+      {expanded && (
+        <div className="px-3 pb-3 space-y-1.5">
+          {data.checks.map((check: CheckDetail) => (
+            <div key={check.name} className="flex items-center gap-2 text-xs">
+              {check.passed ? (
+                <CheckCircle className="w-3.5 h-3.5 text-green-400 shrink-0" />
+              ) : (
+                <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
+              )}
+              <span className="text-white/70 flex-1">{check.name}</span>
+              <span className="text-[10px] text-white/30">{check.clause}</span>
+              {check.utilization != null && (
+                <span className={`text-[10px] font-medium ${check.utilization <= 1 ? "text-green-400/70" : "text-red-400/70"}`}>
+                  {(check.utilization * 100).toFixed(0)}%
+                </span>
+              )}
+            </div>
+          ))}
+          {data.critical_failures.length > 0 && (
+            <div className="mt-2 p-2 rounded-lg bg-red-500/10 border border-red-500/20">
+              <p className="text-[10px] font-semibold text-red-400 mb-1">Critical Failures:</p>
+              {data.critical_failures.map((f: string, i: number) => (
+                <p key={i} className="text-[10px] text-red-400/70">• {f}</p>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- Rebar Suggestions Panel ---------- */
+
+function RebarSuggestionsPanel({ data, isPending }: { data: ReturnType<typeof useRebarSuggestions>["data"]; isPending: boolean }) {
+  const [expanded, setExpanded] = useState(false);
+  if (isPending) {
+    return (
+      <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
+        <Loader2 className="w-3.5 h-3.5 text-purple-400 animate-spin" />
+        <span className="text-xs text-white/40">Finding rebar options...</span>
+      </div>
+    );
+  }
+  if (!data || data.suggestions.length === 0) return null;
+
+  return (
+    <div className="rounded-xl bg-purple-500/5 border border-purple-500/20">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center gap-2.5 px-3 py-2.5"
+      >
+        <Lightbulb className="w-4 h-4 text-purple-400" />
+        <span className="text-xs font-semibold text-white/80">
+          {data.suggestion_count} Rebar Option{data.suggestion_count !== 1 ? "s" : ""}
+        </span>
+        {data.max_savings_percent > 0 && (
+          <span className="ml-1 px-1.5 py-0.5 text-[10px] font-medium bg-purple-500/20 text-purple-300 rounded">
+            up to {data.max_savings_percent.toFixed(0)}% saving
+          </span>
+        )}
+        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-white/40 ml-auto" /> : <ChevronRight className="w-3.5 h-3.5 text-white/40 ml-auto" />}
+      </button>
+      {expanded && (
+        <div className="px-3 pb-3 space-y-2">
+          {data.suggestions.map((s: SuggestionItem) => (
+            <div key={s.id} className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-xs font-semibold text-white/90">{s.title}</span>
+                <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${
+                  s.impact === "HIGH" ? "bg-green-500/20 text-green-300" :
+                  s.impact === "MEDIUM" ? "bg-yellow-500/20 text-yellow-300" :
+                  "bg-white/10 text-white/50"
+                }`}>
+                  {s.impact}
+                </span>
+                {s.savings_percent > 0 && (
+                  <span className="text-[10px] text-green-400/70 ml-auto">-{s.savings_percent.toFixed(0)}% steel</span>
+                )}
+              </div>
+              <p className="text-[10px] text-white/50 mb-1">{s.description}</p>
+              <div className="flex gap-3 text-[10px] text-white/40">
+                <span>{s.suggested_config.bar_count}Ø{s.suggested_config.bar_dia_mm}mm</span>
+                <span>Ast: {s.suggested_config.ast_provided_mm2.toFixed(0)} mm²</span>
+                {s.suggested_config.excess_mm2 > 0 && (
+                  <span>+{s.suggested_config.excess_mm2.toFixed(0)} mm² excess</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { DesignView } from './components/design/DesignView';
 import { ImportView } from './components/import/ImportView';
 import { BuildingEditorPage } from './components/pages/BuildingEditorPage';
 import { BeamDetailPage } from './components/pages/BeamDetailPage';
+import { DashboardPage } from './components/pages/DashboardPage';
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -36,6 +37,7 @@ function App() {
             <Route path="/design/results" element={<BeamDetailPage />} />
             <Route path="/import" element={<ImportView />} />
             <Route path="/editor" element={<BuildingEditorPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
           </Routes>
         </div>
       </BrowserRouter>

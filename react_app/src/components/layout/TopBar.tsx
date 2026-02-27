@@ -12,6 +12,7 @@ const routeLabels: Record<string, string> = {
   "/design/results": "Design Results",
   "/import": "Batch Import",
   "/editor": "Building Editor",
+  "/dashboard": "Dashboard",
   "/settings": "Settings",
 };
 
