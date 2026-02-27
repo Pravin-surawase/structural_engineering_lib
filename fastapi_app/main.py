@@ -24,6 +24,7 @@ from fastapi_app.routers import (
     analysis,
     design,
     detailing,
+    export,
     geometry,
     health,
     imports,
@@ -193,6 +194,10 @@ app.include_router(
 )
 app.include_router(
     insights.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    export.router,
     prefix=API_V1_PREFIX,
 )
 

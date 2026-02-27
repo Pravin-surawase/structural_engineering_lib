@@ -10,6 +10,7 @@ import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useDesignStore } from "../../store/designStore";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { CrossSectionView } from "../design/CrossSectionView";
+import { ExportPanel } from "../design/ExportPanel";
 
 type ViewTab = "3d" | "section";
 
@@ -97,22 +98,41 @@ export function BeamDetailPage() {
 
         {/* Floating result panels */}
         {showPanels && (
-          <div className="absolute bottom-4 left-4 right-4 flex gap-3">
-            <FloatingCard title="Flexure" items={[
-              { l: "Ast Required", v: `${result.flexure?.ast_required?.toFixed(0) || "-"} mm²` },
-              { l: "xu / xu,max", v: `${result.flexure?.xu?.toFixed(1) || "-"} / ${result.flexure?.xu_max?.toFixed(1) || "-"} mm` },
-              { l: "Mu,cap", v: `${result.flexure?.moment_capacity?.toFixed(0) || "-"} kN·m` },
-            ]} />
-            <FloatingCard title="Shear" items={[
-              { l: "τv / τc", v: `${result.shear?.tau_v?.toFixed(2) || "-"} / ${result.shear?.tau_c?.toFixed(2) || "-"} MPa` },
-              { l: "Stirrup Sv", v: result.shear?.stirrup_spacing ? `${result.shear.stirrup_spacing} mm` : "-" },
-              { l: "Vu,cap", v: result.shear?.shear_capacity ? `${result.shear.shear_capacity.toFixed(0)} kN` : "-" },
-            ]} />
-            <FloatingCard title="Summary" items={[
-              { l: "Ast total", v: `${result.ast_total?.toFixed(0) || "-"} mm²` },
-              { l: "Utilization", v: `${(result.utilization_ratio * 100).toFixed(0)}%` },
-              { l: "Status", v: result.success ? "SAFE" : "FAIL" },
-            ]} accent={result.success ? "green" : "red"} />
+          <div className="absolute bottom-4 left-4 right-4 space-y-3">
+            <div className="flex gap-3">
+              <FloatingCard title="Flexure" items={[
+                { l: "Ast Required", v: `${result.flexure?.ast_required?.toFixed(0) || "-"} mm²` },
+                { l: "xu / xu,max", v: `${result.flexure?.xu?.toFixed(1) || "-"} / ${result.flexure?.xu_max?.toFixed(1) || "-"} mm` },
+                { l: "Mu,cap", v: `${result.flexure?.moment_capacity?.toFixed(0) || "-"} kN·m` },
+              ]} />
+              <FloatingCard title="Shear" items={[
+                { l: "τv / τc", v: `${result.shear?.tau_v?.toFixed(2) || "-"} / ${result.shear?.tau_c?.toFixed(2) || "-"} MPa` },
+                { l: "Stirrup Sv", v: result.shear?.stirrup_spacing ? `${result.shear.stirrup_spacing} mm` : "-" },
+                { l: "Vu,cap", v: result.shear?.shear_capacity ? `${result.shear.shear_capacity.toFixed(0)} kN` : "-" },
+              ]} />
+              <FloatingCard title="Summary" items={[
+                { l: "Ast total", v: `${result.ast_total?.toFixed(0) || "-"} mm²` },
+                { l: "Utilization", v: `${(result.utilization_ratio * 100).toFixed(0)}%` },
+                { l: "Status", v: result.success ? "SAFE" : "FAIL" },
+              ]} accent={result.success ? "green" : "red"} />
+            </div>
+            <ExportPanel
+              beamParams={{
+                beam_id: "BEAM-1",
+                width: inputs.width,
+                depth: inputs.depth,
+                span_length: length,
+                fck: inputs.fck,
+                fy: inputs.fy,
+                ast_required: result.flexure?.ast_required ?? 0,
+                asc_required: result.asc_total ?? 0,
+                moment: inputs.moment,
+                shear: inputs.shear,
+              }}
+              utilization={result.utilization_ratio}
+              isSafe={result.success}
+              astProvided={result.ast_total}
+            />
           </div>
         )}
       </div>

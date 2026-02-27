@@ -24,6 +24,11 @@ export {
   useCodeChecks,
   useRebarSuggestions,
 } from './useInsights';
+export {
+  useExportBBS,
+  useExportDXF,
+  useExportReport,
+} from './useExport';
 
 // Type exports
 export type {
