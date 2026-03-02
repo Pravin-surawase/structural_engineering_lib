@@ -201,7 +201,7 @@ jobs:
         continue-on-error: true  # Allow comparison step to run even if tests fail
 
       - name: Upload benchmark results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-results-${{ github.sha }}
           path: Python/benchmark_results.json
@@ -209,7 +209,7 @@ jobs:
 
       - name: Download baseline (for comparison)
         if: github.event_name == 'pull_request'
-        uses: dawidd6/action-download-artifact@v14
+        uses: dawidd6/action-download-artifact@v16
         with:
           workflow: performance.yml
           branch: main
@@ -285,7 +285,7 @@ jobs:
 
       - name: Save baseline (main branch only)
         if: github.ref == 'refs/heads/main' || github.event.inputs.save_baseline == 'true'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-baseline
           path: Python/benchmark_results.json
