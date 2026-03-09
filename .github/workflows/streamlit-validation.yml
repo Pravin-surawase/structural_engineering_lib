@@ -212,7 +212,7 @@ jobs:
           python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/*.py >> report.md 2>&1 || true
 
       - name: Upload Report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: streamlit-validation-report
           path: report.md
