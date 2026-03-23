@@ -62,6 +62,12 @@
 - **Update OpenAPI snapshot** (`openapi_baseline.json`) to reflect current 13 routers
 - **Scripts Phase 3 completion** — migrate 10 more scripts to use `_lib/utils.py`
 
+## Technical Debt (Tracked)
+
+- **Fix 20+ architecture violations in streamlit_app/** — UI layer importing directly from IS 456 code layer (`structural_lib.detailing`, `structural_lib.shear`) instead of going through `services/api.py`. Files: `utils/api_wrapper.py`, `utils/rebar_optimization.py`, `utils/rebar_layout.py`, multiple pages. Needs dedicated PR with test coverage.
+- **React test infrastructure** — Zero test files. Needs Vitest setup + core component tests.
+- **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
+
 ---
 
 ## Archived Sessions

@@ -1,0 +1,97 @@
+{
+  "folder": "react_app",
+  "type": "react-source",
+  "description": "React-based IDE for structural beam design with 3D visualization.",
+  "last_updated": "2026-03-24",
+  "file_count": 9,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 82,
+      "last_updated": "2026-01-25",
+      "title": "Structural Engineering React App",
+      "description": "React-based IDE for structural beam design with 3D visualization. - **3D Viewport** - React Three Fiber powered beam visualization",
+      "content_hash": "8570e7367096"
+    },
+    {
+      "name": "eslint.config.js",
+      "type": "react-component",
+      "size_lines": 24,
+      "last_updated": "2026-01-25",
+      "content_hash": "4efe97b16d12"
+    },
+    {
+      "name": "package-lock.json",
+      "type": "config",
+      "last_updated": "2026-01-28",
+      "top_level_keys": [
+        "name",
+        "version",
+        "lockfileVersion",
+        "requires",
+        "packages"
+      ],
+      "description": "Package: react_app",
+      "content_hash": "a37a37ab919c"
+    },
+    {
+      "name": "package.json",
+      "type": "config",
+      "last_updated": "2026-03-24",
+      "top_level_keys": [
+        "name",
+        "private",
+        "version",
+        "type",
+        "scripts",
+        "dependencies",
+        "devDependencies"
+      ],
+      "description": "Package: react_app",
+      "content_hash": "caa8623fa6c2"
+    },
+    {
+      "name": "tsconfig.app.json",
+      "type": "config",
+      "last_updated": "2026-01-25",
+      "content_hash": "922bc5bfb41b"
+    },
+    {
+      "name": "tsconfig.json",
+      "type": "config",
+      "last_updated": "2026-01-25",
+      "top_level_keys": [
+        "files",
+        "references"
+      ],
+      "content_hash": "770b4140bbb5"
+    },
+    {
+      "name": "tsconfig.node.json",
+      "type": "config",
+      "last_updated": "2026-01-25",
+      "content_hash": "c3dd0fb522fe"
+    },
+    {
+      "name": "vite.config.ts",
+      "type": "typescript",
+      "size_lines": 30,
+      "last_updated": "2026-01-26",
+      "content_hash": "604f0d617810"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "public",
+      "path": "public/",
+      "file_count": 1
+    },
+    {
+      "name": "src",
+      "path": "src/",
+      "file_count": 77
+    }
+  ],
+  "content_hash": "d995ade25bb3db21"
+}

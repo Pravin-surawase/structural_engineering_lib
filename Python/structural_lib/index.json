@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
   "last_updated": "2026-03-24",
-  "file_count": 50,
+  "file_count": 51,
   "files": [
     {
       "name": "README.md",
@@ -461,6 +461,14 @@
       "content_hash": "7863500fbb57"
     },
     {
+      "name": "traceability.py",
+      "type": "python",
+      "size_lines": 15,
+      "last_updated": "2026-03-24",
+      "description": "Backward compatibility stub.",
+      "content_hash": "6766aa7f68bd"
+    },
+    {
       "name": "types.py",
       "type": "python",
       "size_lines": 28,
@@ -489,25 +497,25 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 20,
+      "file_count": 22,
       "is_package": true
     },
     {
       "name": "core",
       "path": "core/",
-      "file_count": 15,
+      "file_count": 17,
       "is_package": true
     },
     {
       "name": "insights",
       "path": "insights/",
-      "file_count": 10,
+      "file_count": 12,
       "is_package": true
     },
     {
       "name": "reports",
       "path": "reports/",
-      "file_count": 5,
+      "file_count": 7,
       "is_package": true
     },
     {
@@ -519,11 +527,11 @@
     {
       "name": "visualization",
       "path": "visualization/",
-      "file_count": 2,
+      "file_count": 4,
       "is_package": true
     }
   ],
-  "content_hash": "43d6472aa3c43908",
+  "content_hash": "1ce28b39534fbad1",
   "has_init": true,
   "public_api": [
     "__version__",

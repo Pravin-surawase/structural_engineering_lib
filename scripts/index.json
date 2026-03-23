@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-03-24",
-  "file_count": 85,
+  "file_count": 86,
   "files": [
     {
       "name": "README.md",
@@ -256,7 +256,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-23",
+      "last_updated": "2026-03-24",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -265,7 +265,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "858391b80e83"
+      "content_hash": "6511ee07dd8a"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1062,6 +1062,35 @@
         "RULES"
       ],
       "content_hash": "8f24739aad8a"
+    },
+    {
+      "name": "check_instruction_drift.py",
+      "type": "python",
+      "size_lines": 212,
+      "last_updated": "2026-03-24",
+      "description": "Check for content drift between .github/instructions/ and .claude/rules/.",
+      "functions": [
+        {
+          "name": "check_pair",
+          "description": "Compare one instruction pair and return drift metrics.",
+          "params": [
+            "name",
+            "github_file",
+            "claude_file",
+            "verbose"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "GITHUB_DIR",
+        "CLAUDE_DIR",
+        "PAIRS"
+      ],
+      "content_hash": "4f36f17336c3"
     },
     {
       "name": "check_links.py",
@@ -2198,10 +2227,10 @@
     {
       "name": "install_git_hooks.sh",
       "type": "shell-script",
-      "size_lines": 150,
-      "last_updated": "2026-01-23",
+      "size_lines": 157,
+      "last_updated": "2026-03-24",
       "description": "Install versioned git hooks via core.hooksPath",
-      "content_hash": "bd8c283b56a1"
+      "content_hash": "c41580c0127a"
     },
     {
       "name": "launch_streamlit.sh",
@@ -3323,13 +3352,8 @@
     {
       "name": "git-hooks",
       "path": "git-hooks/",
-      "file_count": 2
-    },
-    {
-      "name": "hooks",
-      "path": "hooks/",
-      "file_count": 1
+      "file_count": 3
     }
   ],
-  "content_hash": "654f6c358ed042ee"
+  "content_hash": "3ded37b26266cfdf"
 }

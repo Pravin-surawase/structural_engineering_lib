@@ -1,54 +1,66 @@
 {
   "folder": "Python",
-  "description": "IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.",
-  "last_updated": "2026-01-21",
-  "file_count": 0,
-  "files": [],
+  "type": "mixed",
+  "description": "IS 456 RC Beam Design Library (Python package).",
+  "last_updated": "2026-03-24",
+  "file_count": 7,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 108,
+      "last_updated": "2026-02-11",
+      "title": "structural-lib-is456",
+      "description": "IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.",
+      "content_hash": "092acf6ee998"
+    },
+    {
+      "name": "pyproject.toml",
+      "type": "config",
+      "last_updated": "2026-02-10",
+      "description": ".TOML configuration file",
+      "content_hash": "a79fde720cb8"
+    },
+    {
+      "name": "test_stats.json",
+      "type": "config",
+      "last_updated": "2026-01-23",
+      "top_level_keys": [
+        "passed",
+        "skipped",
+        "failed",
+        "errors",
+        "total",
+        "date"
+      ],
+      "content_hash": "77ed6a4abaed"
+    }
+  ],
   "subfolders": [
-    {
-      "name": "UNKNOWN.egg-info",
-      "path": "UNKNOWN.egg-info/",
-      "description": ""
-    },
-    {
-      "name": "build",
-      "path": "build/",
-      "description": ""
-    },
-    {
-      "name": "dist",
-      "path": "dist/",
-      "description": ""
-    },
     {
       "name": "examples",
       "path": "examples/",
-      "description": "> **Purpose:** Example scripts demonstrating library usage > **Last Updated:** 2026-01-10"
-    },
-    {
-      "name": "htmlcov",
-      "path": "htmlcov/",
-      "description": ""
+      "file_count": 19,
+      "description": "> **Purpose:** Example scripts demonstrating library usage"
     },
     {
       "name": "scripts",
       "path": "scripts/",
-      "description": ""
+      "file_count": 2
     },
     {
       "name": "structural_lib",
       "path": "structural_lib/",
-      "description": "> **Purpose:** IS 456:2000 RC beam design calculations > **Package:** structural_lib_is456"
-    },
-    {
-      "name": "structural_lib_is456.egg-info",
-      "path": "structural_lib_is456.egg-info/",
-      "description": ""
+      "file_count": 144,
+      "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
+      "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite. - test_detailing.py - Reinforcement detailing calculations"
+      "file_count": 120,
+      "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite."
     }
-  ]
+  ],
+  "content_hash": "eb51129bc2e1f254"
 }

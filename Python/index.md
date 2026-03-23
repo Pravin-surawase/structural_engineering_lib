@@ -1,18 +1,27 @@
-# Python Index
+# Python
 
-IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
+IS 456 RC Beam Design Library (Python package).
 
-**Last Updated:** 2026-01-21
-**File Count:** 0
+**Type:** Mixed
+**Last Updated:** 2026-03-24
+**Files:** 7
+
+## Config Files
+
+- [pyproject.toml](pyproject.toml) — .TOML configuration file
+- [test_stats.json](test_stats.json)
+
+## Documentation Files
+
+| File | Title | Description | Lines |
+|------|-------|-------------|-------|
+| [README.md](README.md) | structural-lib-is456 | IS 456 RC Beam Design Library (Python package). > ⚠️ **Devel | 108 |
 
 ## Subfolders
 
-- [UNKNOWN.egg-info/](UNKNOWN.egg-info/)
-- [build/](build/)
-- [dist/](dist/)
-- [examples/](examples/) - > **Purpose:** Example scripts demonstrating library usage > **Last Updated:** 2026-01-10
-- [htmlcov/](htmlcov/)
-- [scripts/](scripts/)
-- [structural_lib/](structural_lib/) - > **Purpose:** IS 456:2000 RC beam design calculations > **Package:** structural_lib_is456
-- [structural_lib_is456.egg-info/](structural_lib_is456.egg-info/)
-- [tests/](tests/) - This document describes the test taxonomy and structure for the structural_engineering_lib test suite. - test_detailing.py - Reinforcement detailing calculations
+| Folder | Files | Description |
+|--------|-------|-------------|
+| [examples/](examples/) | 19 | > **Purpose:** Example scripts demonstrating library usage |
+| [scripts/](scripts/) | 2 |  |
+| [structural_lib/](structural_lib/) 📦 | 144 | > **Purpose:** IS 456:2000 RC beam design calculations |
+| [tests/](tests/) | 120 | This document describes the test taxonomy and structure for the structural_engin |

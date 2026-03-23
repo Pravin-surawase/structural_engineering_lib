@@ -5,7 +5,7 @@ globs: streamlit_app/**
 
 # Streamlit Safety Rules
 
-## Fragment API (Session 30 crisis — causes runtime crashes)
+## Fragment API (causes runtime crashes)
 
 NEVER use `st.sidebar` inside `@st.fragment` functions — causes `StreamlitAPIException`.
 Also forbidden inside fragments: `st.tabs`, any function that uses `st.sidebar` internally.

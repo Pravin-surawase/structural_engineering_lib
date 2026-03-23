@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-03-24
-**Files:** 85
+**Files:** 86
 
 ## Config Files
 
@@ -37,6 +37,7 @@
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 5 | 534 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 422 |
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 18 | 847 |
+| [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 212 |
 | [check_links.py](check_links.py) | Check and fix broken internal links in markdown files. | 0 | 2 | 327 |
 | [check_next_session_brief_length.py](check_next_session_brief_length.py) | Ensure next-session-brief.md stays concise. | 0 | 1 | 31 |
 | [check_openapi_snapshot.py](check_openapi_snapshot.py) | Check OpenAPI spec against baseline snapshot to detect API d | 0 | 1 | 207 |
@@ -111,5 +112,4 @@
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [git-hooks/](git-hooks/) | 2 |  |
-| [hooks/](hooks/) | 1 |  |
+| [git-hooks/](git-hooks/) | 3 |  |

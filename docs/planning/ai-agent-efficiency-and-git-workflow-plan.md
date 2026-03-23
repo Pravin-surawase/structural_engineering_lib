@@ -210,23 +210,23 @@ This document covers two areas:
 
 ## Implementation Priority Matrix
 
-| # | Item | Impact | Effort | Priority |
-|---|------|--------|--------|----------|
-| A1 | Rule sync script (dedup `.claude/rules/`) | High | Low | **P1** |
-| A2 | Create `AGENTS.md` | Medium | Low | **P1** |
-| A3 | Copilot prompt files (5 templates) | Medium | Medium | **P2** |
-| B1 | Conventional commits enforcement | High | Low | **P1** |
-| B3 | PR template | Medium | Low | **P1** |
-| A6 | SESSION_LOG recent view | Medium | Low | **P2** |
-| B5 | Git log rotation + `.gitignore` | Medium | Low | **P2** |
-| A7 | Automation map tags | Low | Low | **P2** |
-| A8 | Refresh stale `index.json` | Low | Low | **P2** |
-| B2 | Branch protection rules (GitHub settings) | Medium | Low | **P2** |
-| B4 | Pre-push validation improvements | Medium | Medium | **P3** |
-| A4 | Copilot hooks (format on edit) | Medium | Medium | **P3** |
-| A5 | Copilot custom agents | Medium-Low | Medium | **P3** |
-| B6 | Stale branch cleanup script | Low | Low | **P3** |
-| B7 | Commit signing | Low | Low | **P4** |
+| # | Item | Impact | Effort | Priority | Status |
+|---|------|--------|--------|----------|--------|
+| A1 | Instruction drift checker | High | Low | **P1** | ✅ Done (`check_instruction_drift.py`) |
+| A2 | Create `AGENTS.md` | Medium | Low | **P1** | ✅ Done |
+| A3 | Copilot prompt files (5 templates) | Medium | Medium | **P2** | ✅ Done |
+| A8 | Refresh stale `index.json` | Low | Low | **P2** | ✅ Done (4 folders refreshed) |
+| B1 | Conventional commits enforcement | High | Low | **P1** | ✅ Already existed |
+| B3 | PR template | Medium | Low | **P1** | ✅ Improved |
+| B5 | Git log rotation + `.gitignore` | Medium | Low | **P2** | ✅ Already existed |
+| A6 | SESSION_LOG recent view | Medium | Low | **P2** | ❌ Planned |
+| A7 | Automation map tags | Low | Low | **P2** | ❌ Planned |
+| B2 | Branch protection rules (GitHub settings) | Medium | Low | **P2** | ❌ Planned |
+| B4 | Pre-push validation improvements | Medium | Medium | **P3** | ❌ Planned |
+| A4 | Copilot hooks (format on edit) | Medium | Medium | **P3** | ❌ (preview feature) |
+| A5 | Copilot custom agents | Medium-Low | Medium | **P3** | ❌ (experimental) |
+| B6 | Stale branch cleanup script | Low | Low | **P3** | ❌ Planned |
+| B7 | Commit signing | Low | Low | **P4** | ❌ Future |
 
 ---
 
@@ -234,11 +234,20 @@ This document covers two areas:
 
 These items were completed in Session 92:
 
+### Batch 1 (Initial Implementation)
 1. **Created `AGENTS.md`** ✅ — Cross-platform agent instruction file (Copilot, Claude, Cursor, Windsurf)
 2. **Improved `.github/pull_request_template.md`** ✅ — Added architecture/units checklist, multi-stack testing
 3. **Created `.github/prompts/` (5 templates)** ✅ — session-end, new-feature, bug-fix, add-api-endpoint, code-review
 4. **Created `.github/instructions/fastapi.instructions.md`** ✅ — Missing Copilot per-file rules for FastAPI
 5. **Merged divergent instruction content** ✅ — `.github/instructions/` and `.claude/rules/` now both have comprehensive content
+
+### Batch 2 (Post-Audit Deep Improvements)
+6. **Created `scripts/check_instruction_drift.py`** ✅ — Detects content divergence between `.github/instructions/` and `.claude/rules/` (replaces need for sync script)
+7. **Fixed python-core instruction drift** ✅ — `.claude/rules/python-core.md` had "3-Layer" (wrong) and "43 functions" (wrong) — corrected to 4-layer and 23+6
+8. **Refreshed stale index files** ✅ — Python/, react_app/, streamlit_app/, Python/structural_lib/ all regenerated (Python was 2 months stale)
+9. **Categorized planning docs** ✅ — `docs/planning/README.md` now separates Active vs Historical documents
+10. **Tracked architecture violations** ✅ — 20+ streamlit imports from IS 456 layer added to TASKS.md Technical Debt section
+11. **Registered drift checker** ✅ — Added to `automation-map.json` (84/84 scripts mapped)
 
 ### Items that already existed (no action needed):
 - ~~Conventional commits~~ → Already enforced by `scripts/git-hooks/commit-msg` hook

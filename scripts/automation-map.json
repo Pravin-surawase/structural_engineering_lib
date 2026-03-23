@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-03-23",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "83/83 scripts mapped",
+  "_coverage": "84/84 scripts mapped",
 
   "tasks": {
     "commit code": {
@@ -222,6 +222,10 @@
     "check bootstrap freshness": {
       "script": ".venv/bin/python scripts/check_bootstrap_freshness.py",
       "description": "Detect when bootstrap docs are stale — new hooks/routes/components not documented"
+    },
+    "check instruction drift": {
+      "script": ".venv/bin/python scripts/check_instruction_drift.py",
+      "description": "Detect content drift between .github/instructions/ and .claude/rules/ — warns when platforms diverge"
     },
     "check tasks format": {
       "script": ".venv/bin/python scripts/check_tasks_format.py",

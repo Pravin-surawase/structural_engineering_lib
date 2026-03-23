@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-03-24
-**Files:** 50
+**Files:** 51
 
 ## Public API
 
@@ -84,6 +84,7 @@
 | [tables.py](tables.py) | Backward compatibility stub. | 0 | 0 | 31 |
 | [testing_strategies.py](testing_strategies.py) | Backward compatibility stub. | 0 | 0 | 28 |
 | [torsion.py](torsion.py) | Backward compatibility stub. | 0 | 0 | 23 |
+| [traceability.py](traceability.py) | Backward compatibility stub. | 0 | 0 | 15 |
 | [types.py](types.py) | Backward compatibility stub. | 0 | 0 | 28 |
 | [utilities.py](utilities.py) | Backward compatibility stub. | 0 | 0 | 17 |
 | [validation.py](validation.py) | Backward compatibility stub. | 0 | 0 | 24 |
@@ -92,9 +93,9 @@
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [codes/](codes/) 📦 | 20 |  |
-| [core/](core/) 📦 | 15 |  |
-| [insights/](insights/) 📦 | 10 |  |
-| [reports/](reports/) 📦 | 5 |  |
+| [codes/](codes/) 📦 | 22 |  |
+| [core/](core/) 📦 | 17 |  |
+| [insights/](insights/) 📦 | 12 |  |
+| [reports/](reports/) 📦 | 7 |  |
 | [services/](services/) 📦 | 27 |  |
-| [visualization/](visualization/) 📦 | 2 |  |
+| [visualization/](visualization/) 📦 | 4 |  |

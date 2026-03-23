@@ -22,10 +22,11 @@ Python/structural_lib/
 ├── codes/               # Code implementations (IS 456 etc.)
 │   └── is456/           # IS 456:2000 — pure math, NO I/O
 ├── core/                # Shared types, base classes, materials
+├── services/            # Orchestration: api.py, adapters.py, beam_pipeline.py
 ├── insights/            # Design insights & analysis helpers
 ├── reports/             # Report generation
-├── visualization/       # Visualization utilities
-├── api.py               # Public API (43 functions) — orchestration layer
+├── visualization/       # Visualization utilities (geometry_3d.py)
+├── api.py               # Backward-compat STUB → real code in services/api.py
 ├── adapters.py          # CSV/Excel adapters
 ├── beam_pipeline.py     # Multi-step beam design pipeline
 └── types.py             # Shared type definitions
@@ -49,7 +50,7 @@ The public API has 23 functions + 6 private helpers. Key entry points:
 
 ## Key files to check BEFORE coding
 
-- `api.py` — 43 public functions, the main entry point
+- `api.py` — 23 public functions + 6 private helpers, the main entry point
 - `codes/is456/` — all IS 456 math lives here
 - `core/` — base types, sections, materials
 - Before wrapping API functions: `.venv/bin/python scripts/discover_api_signatures.py <func>`

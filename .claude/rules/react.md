@@ -10,12 +10,13 @@ globs: react_app/**
 ```
 react_app/src/
 ├── components/          # UI components (grouped by feature)
-│   ├── design/          # Beam design (DesignView, BeamForm, ResultsPanel)
+│   ├── design/          # Beam design (DesignView, BeamForm, ResultsPanel, CrossSectionView)
 │   ├── import/          # Data import (ImportView, CSVImportPanel, BeamTable)
-│   ├── viewport/        # 3D visualization (Viewport3D, WorkspaceLayout)
+│   ├── viewport/        # 3D visualization (Viewport3D, WorkspaceLayout, LandingView)
 │   ├── layout/          # App shell (TopBar, ModernAppLayout)
-│   ├── pages/           # Route-level pages (Home, ModeSelect, Building)
-│   └── ui/              # Shared primitives (BentoGrid, FileDropZone, Toast)
+│   ├── pages/           # Route-level pages (Home, ModeSelect, Building, BeamDetail)
+│   ├── ui/              # Shared primitives (BentoGrid, FileDropZone, Toast, etc.)
+│   └── CommandPalette.tsx # Global overlay
 ├── hooks/               # Custom hooks (CSV import, geometry, live design)
 ├── store/               # Zustand stores (design, imported beams)
 ├── types/               # TypeScript type definitions
@@ -27,6 +28,7 @@ react_app/src/
 ## Styling: Tailwind Only
 
 - All components use Tailwind utility classes — **no custom CSS files**
+- Dockview theme vars are in `index.css` (the only non-Tailwind CSS)
 - Never create `.css` files for components — use Tailwind classes inline
 
 ## NEVER duplicate hooks or components
@@ -42,6 +44,7 @@ Key hooks you MUST reuse (not reinvent):
 - 3D geometry: `useBeamGeometry` (useBeamGeometry.ts)
 - Live design: `useLiveDesign`, `useAutoDesign`
 - Building viz: `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts)
+- Export: `useExport` (BBS/DXF/report)
 
 Key components:
 - 3D viewport: `Viewport3D` (Viewport3D.tsx)
@@ -66,8 +69,7 @@ RIGHT: useBeamGeometry → POST /api/v1/geometry/beam/full → geometry_3d
 - **Move a component:** `.venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run`
 - Co-located CSS files are moved automatically
 
-## Build check before commit
+## Build & Test
 
-```bash
-cd react_app && npm run build
-```
+- Build check before commit: `cd react_app && npm run build`
+- Dev server: `cd react_app && npm run dev` (port 5173)
