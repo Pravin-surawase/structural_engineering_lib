@@ -165,9 +165,11 @@ if [[ $? -eq 0 ]]; then
     LINK_SCRIPT="$PROJECT_ROOT/scripts/check_links.py"
     if [[ -f "$LINK_SCRIPT" && -f "$VENV_PYTHON" ]]; then
         # Check if any files were renamed or deleted in this commit
-        MOVED=$(git diff --name-status HEAD~1 HEAD 2>/dev/null | grep -c "^[RD]" || echo "0")
+        MOVED=$(git diff --name-status HEAD~1 HEAD 2>/dev/null | grep -c "^[RD]" 2>/dev/null || true)
+        MOVED=${MOVED:-0}
         if [[ "$MOVED" -gt 0 ]]; then
-            BROKEN=$("$VENV_PYTHON" "$LINK_SCRIPT" 2>/dev/null | grep -c "BROKEN\|❌" || echo "0")
+            BROKEN=$("$VENV_PYTHON" "$LINK_SCRIPT" 2>/dev/null | grep -c "BROKEN\|❌" 2>/dev/null || true)
+            BROKEN=${BROKEN:-0}
             if [[ "$BROKEN" -gt 0 ]]; then
                 echo -e "  ${YELLOW}⚠${NC} $BROKEN broken link(s) detected after file move — run: .venv/bin/python scripts/check_links.py --fix"
             fi
