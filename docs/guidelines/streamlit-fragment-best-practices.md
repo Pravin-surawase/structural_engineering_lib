@@ -397,7 +397,7 @@ python --version  # Should match CI
 
 - **Streamlit Fragment Docs:** https://docs.streamlit.io/develop/api-reference/execution-flow/st.fragment
 - **API Restrictions Analysis:** [docs/research/fragment-api-restrictions-analysis.md](../research/fragment-api-restrictions-analysis.md)
-- **Validator Script:** [scripts/check_streamlit.py --fragments](../../scripts/check_streamlit.py --fragments)
+- **Validator Script:** [scripts/check_streamlit.py --fragments](../../scripts/check_streamlit.py)
 - **Session 30 Bug Discovery:** [docs/SESSION_LOG.md](../SESSION_LOG.md) (2026-01-13)
 
 ---

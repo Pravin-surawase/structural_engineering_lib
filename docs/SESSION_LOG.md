@@ -8204,7 +8204,7 @@ All folder structure governance tasks are complete. See [folder-migration-progre
 | [folder-structure-governance.md](guidelines/folder-structure-governance.md) | 350+ | Centralized spec for all folder rules |
 | [session-11-structure-issues-analysis.md](_archive/research-sessions/session-11-structure-issues-analysis.md) | 250+ | Root cause analysis + prevention strategy |
 | [session-11-migration-lessons.md](_archive/research-sessions/session-11-migration-lessons.md) | 251 | Systematic approach + learnings |
-| [check_governance_compliance.py](../scripts/check_governance_compliance.py) | 272 | Validator for governance rules |
+| [check_governance_compliance.py](../scripts/_archive/check_governance_compliance.py) | 272 | Validator for governance rules |
 
 ### 🎊 Back-to-Back-to-Back Milestones 🏆
 

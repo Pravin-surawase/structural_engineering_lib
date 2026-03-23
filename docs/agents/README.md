@@ -21,7 +21,7 @@
 | Commit code changes | **8** | [ai_commit.sh](../../scripts/ai_commit.sh), [safe_push.sh](../../scripts/safe_push.sh) |
 | Fix merge conflicts | **8** | [mistake-prevention](guides/agent-8-mistakes-prevention-guide.md) |
 | Reorganize docs | **9** | [governance spec](../guidelines/folder-structure-governance.md) |
-| Clean up stale files | **9** | [check_redirect_stubs.py](../../scripts/check_redirect_stubs.py) |
+| Clean up stale files | **9** | [check_redirect_stubs.py](../../scripts/_archive/check_redirect_stubs.py) |
 
 ---
 
