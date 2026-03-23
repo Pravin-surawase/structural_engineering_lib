@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-23 (Session 91)
+**Updated:** 2026-03-24 (Session 92)
 
 ---
 
@@ -34,10 +34,12 @@
 
 ---
 
-## Completed Last Sessions (Sessions 81–90)
+## Completed Last Sessions (Sessions 81–92)
 
 | Task | Status | PR |
 |------|--------|-----|
+| AI agent efficiency + git workflow improvements (AGENTS.md, prompts, enriched instructions) | ✅ Done | `a9bf35e` |
+| Full repo folder audit (11 batches) + agent logging rules | ✅ Done | Session 91 |
 | Wire dashboard insights into React DashboardPage | ✅ Done | PR #431 |
 | Add live code check badges to DesignView (CodeChecksPanel) | ✅ Done | PR #431 |
 | Add rebar suggestion panels to DesignView (RebarSuggestionsPanel) | ✅ Done | PR #431 |

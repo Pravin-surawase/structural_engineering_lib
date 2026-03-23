@@ -20,24 +20,25 @@
 | **Current** | v0.19.1 | ✅ Shipped (dashboard insights, ExportPanel, code checks wired) |
 | **Next** | v0.20.0 | 📋 V3 Foundation (code-splitting, SSE progress, REST fallback) |
 
-**Last Session:** Session 91 | **Focus:** Full repo audit + agent logging rules
+**Last Session:** Session 92 | **Focus:** AI agent efficiency + git workflow improvements
 
 ---
 
-## ✅ Session 91 Continued (Mar 24, 2026)
+## ✅ Session 92 (Mar 24, 2026)
 
-### Completed This Extension
+### Completed This Session
 
-**Phase 4 — Audit remediation + agent workflow improvements:**
+**AI Agent Efficiency & Git Workflow Improvements:**
 
-1. **Agent session logging audit** — Found 3 empty SESSION_LOG entries, auto-filled via `session.py summary --write`
-2. **Fixed "unfixable" broken links** — Viewport3D path + worktree_manager archive path (total: 0 broken)
-3. **JWT startup warning** — `auth.py` now warns on default secret key
-4. **React version sync** — `package.json` 0.0.0 → 0.19.0
-5. **Fixed `validate_materials()` stub** — Was always `True`, now checks IS 456 fck/fy ranges
-6. **Corrected TODO audit paths** — Items are in `streamlit_app/`, not `structural_lib/`
-7. **Added MANDATORY session logging rules** — Both `CLAUDE.md` and `copilot-instructions.md` now require session start/end workflow
-8. **Resolved blog-drafts item** — No consolidation needed (distinct pipeline stages)
+1. **Created `AGENTS.md`** — Cross-agent instruction file (Copilot, Claude, Cursor, Windsurf etc.), ~80 lines
+2. **Enriched `.github/instructions/`** — Merged best content from `.claude/rules/` into all 5 existing files (hooks inventory, data flow patterns, fragment API examples, safe patterns)
+3. **Enriched `.claude/rules/`** — Merged best content from `.github/instructions/` into react.md and python-core.md (folder trees, migration scripts)
+4. **Created `.github/instructions/fastapi.instructions.md`** — Was missing (only existed in `.claude/rules/`)
+5. **Created 5 Copilot prompt files** — `.github/prompts/`: session-end, new-feature, bug-fix, add-api-endpoint, code-review
+6. **Improved PR template** — Added task reference, multi-stack testing, architecture checklist
+7. **Created implementation plan** — `docs/planning/ai-agent-efficiency-and-git-workflow-plan.md`
+
+**Key finding:** Many planned improvements already existed (conventional commit hook, PR template, .gitignore for logs/tmp). Careful research prevented duplicating 2 months of prior work.
 
 ### Next Priorities (v0.20 Sprint)
 1. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
@@ -45,6 +46,13 @@
 3. **SSE batch progress UI** — streaming.py router exists, needs React consumer
 4. **React test infrastructure** — Zero test files, needs Vitest + core tests
 5. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
+
+### Lower-Priority Agent Infrastructure (from Session 92 plan)
+- P2: SESSION_LOG recent view (auto-truncate to last 10 sessions)
+- P2: Automation-map tags for better discoverability
+- P2: Refresh stale index.json files
+- P3: Copilot hooks (format-on-edit) — still in preview
+- P3: Copilot custom agents (.github/agents/) — experimental
 
 ---
 

@@ -7,7 +7,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ## 2026-03-24 — Session
 
 ### Summary
-**20 commits**, **187 files changed**
+**23 commits**, **208 files changed**
 
 **Chores:**
 - update OpenAPI baseline after schema drift
@@ -21,17 +21,20 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - ... and 4 more
 
 **Features:**
+- add AGENTS.md, prompt files, enrich agent instructions
 - add OpenAPI snapshot test, post-move link check, TASKS archival, index hash watermarks
 - complete when-to-use docstrings (59/59), add --json to check_scripts_index, migrate 5 scripts to _lib
 - add when-to-use docstrings, session auto-detect, bootstrap freshness checker
 - complete automation-map (81/81 scripts), post-commit stale check, enhanced script index
-- add sync_numbers.py + session.py summary/sync — simplify agent doc workflow
+- ... and 1 more
 
 **Bug Fixes:**
+- validate_materials stub, agent session logging rules, audit updates
+- session log gaps, JWT warning, broken links, version sync
 - repair 11 broken links after file moves
 - deep audit — vendor CHM, arch violations, indexes
 - implement audit findings — remove bloat, fix violations, add 9 READMEs
-- ai_commit.sh post-commit link check syntax error
+- ... and 1 more
 
 **Refactoring:**
 - clean phantom script refs + expand sync_numbers + scripts plan
