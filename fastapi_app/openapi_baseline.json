@@ -937,42 +937,63 @@
         "type": "object"
       },
       "BeamParams": {
-        "description": "Beam parameters for rebar validation.",
+        "description": "Beam parameters for code checks.",
         "properties": {
-          "cover": {
-            "default": 40.0,
-            "description": "Clear cover (mm)",
-            "maximum": 75.0,
-            "minimum": 20.0,
-            "title": "Cover",
+          "D_mm": {
+            "default": 500.0,
+            "description": "Beam depth (mm)",
+            "title": "D Mm",
             "type": "number"
           },
-          "depth": {
-            "description": "Beam depth D (mm)",
-            "exclusiveMinimum": 0.0,
-            "maximum": 3000.0,
-            "title": "Depth",
+          "b_mm": {
+            "default": 300.0,
+            "description": "Beam width (mm)",
+            "title": "B Mm",
             "type": "number"
           },
-          "span": {
+          "d_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Effective depth (mm)",
+            "title": "D Mm"
+          },
+          "fck_mpa": {
+            "default": 25.0,
+            "description": "Concrete grade (MPa)",
+            "title": "Fck Mpa",
+            "type": "number"
+          },
+          "fy_mpa": {
+            "default": 500.0,
+            "description": "Steel grade (MPa)",
+            "title": "Fy Mpa",
+            "type": "number"
+          },
+          "mu_knm": {
+            "default": 100.0,
+            "description": "Design moment (kN\u00b7m)",
+            "title": "Mu Knm",
+            "type": "number"
+          },
+          "span_mm": {
             "default": 5000.0,
             "description": "Beam span (mm)",
-            "exclusiveMinimum": 0.0,
-            "title": "Span",
+            "title": "Span Mm",
             "type": "number"
           },
-          "width": {
-            "description": "Beam width b (mm)",
-            "exclusiveMinimum": 0.0,
-            "maximum": 2000.0,
-            "title": "Width",
+          "vu_kn": {
+            "default": 50.0,
+            "description": "Design shear (kN)",
+            "title": "Vu Kn",
             "type": "number"
           }
         },
-        "required": [
-          "width",
-          "depth"
-        ],
         "title": "BeamParams",
         "type": "object"
       },
@@ -1581,7 +1602,7 @@
         "description": "Request model for live code checks.",
         "properties": {
           "beam": {
-            "$ref": "#/components/schemas/fastapi_app__routers__insights__BeamParams",
+            "$ref": "#/components/schemas/BeamParams",
             "description": "Beam parameters"
           },
           "config": {
@@ -3116,7 +3137,7 @@
         "description": "Request model for rebar apply.",
         "properties": {
           "beam": {
-            "$ref": "#/components/schemas/BeamParams",
+            "$ref": "#/components/schemas/fastapi_app__routers__rebar__BeamParams",
             "description": "Beam parameters"
           },
           "config": {
@@ -3487,7 +3508,7 @@
         "description": "Request model for rebar validation.",
         "properties": {
           "beam": {
-            "$ref": "#/components/schemas/BeamParams",
+            "$ref": "#/components/schemas/fastapi_app__routers__rebar__BeamParams",
             "description": "Beam parameters"
           },
           "config": {
@@ -4136,64 +4157,43 @@
         "title": "ValidationResult",
         "type": "object"
       },
-      "fastapi_app__routers__insights__BeamParams": {
-        "description": "Beam parameters for code checks.",
+      "fastapi_app__routers__rebar__BeamParams": {
+        "description": "Beam parameters for rebar validation.",
         "properties": {
-          "D_mm": {
-            "default": 500.0,
-            "description": "Beam depth (mm)",
-            "title": "D Mm",
+          "cover": {
+            "default": 40.0,
+            "description": "Clear cover (mm)",
+            "maximum": 75.0,
+            "minimum": 20.0,
+            "title": "Cover",
             "type": "number"
           },
-          "b_mm": {
-            "default": 300.0,
-            "description": "Beam width (mm)",
-            "title": "B Mm",
+          "depth": {
+            "description": "Beam depth D (mm)",
+            "exclusiveMinimum": 0.0,
+            "maximum": 3000.0,
+            "title": "Depth",
             "type": "number"
           },
-          "d_mm": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Effective depth (mm)",
-            "title": "D Mm"
-          },
-          "fck_mpa": {
-            "default": 25.0,
-            "description": "Concrete grade (MPa)",
-            "title": "Fck Mpa",
-            "type": "number"
-          },
-          "fy_mpa": {
-            "default": 500.0,
-            "description": "Steel grade (MPa)",
-            "title": "Fy Mpa",
-            "type": "number"
-          },
-          "mu_knm": {
-            "default": 100.0,
-            "description": "Design moment (kN\u00b7m)",
-            "title": "Mu Knm",
-            "type": "number"
-          },
-          "span_mm": {
+          "span": {
             "default": 5000.0,
             "description": "Beam span (mm)",
-            "title": "Span Mm",
+            "exclusiveMinimum": 0.0,
+            "title": "Span",
             "type": "number"
           },
-          "vu_kn": {
-            "default": 50.0,
-            "description": "Design shear (kN)",
-            "title": "Vu Kn",
+          "width": {
+            "description": "Beam width b (mm)",
+            "exclusiveMinimum": 0.0,
+            "maximum": 2000.0,
+            "title": "Width",
             "type": "number"
           }
         },
+        "required": [
+          "width",
+          "depth"
+        ],
         "title": "BeamParams",
         "type": "object"
       }
