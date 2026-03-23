@@ -120,6 +120,15 @@ scratch/
 temp/
 tmp/
 
+# VBA corrupt artifact patterns
+VBA/ETABS_Export/.\!*
+
+# VBA ETABS sample output (local only)
+VBA/ETABS_Export_v2/Etabs_output/
+
+# Research raw data (too large for git)
+docs/research/navigation_study/
+
 # External user artifacts (local only)
 external_data/
 

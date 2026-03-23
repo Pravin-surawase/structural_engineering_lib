@@ -4,7 +4,7 @@
 >
 > **Canonical location:** [copilot-instructions.md](../copilot-instructions.md)
 >
-> All agent instructions (900+ lines) are now in the main file.
+> All agent instructions are now in the main file.
 > This stub exists only for backward compatibility with tools that look here.
 
 ---

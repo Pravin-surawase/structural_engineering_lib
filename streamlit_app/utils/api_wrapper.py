@@ -40,8 +40,8 @@ try:
     from structural_lib.services.api import design_beam_is456, smart_analyze_design
     from structural_lib.services.rebar_optimizer import optimize_bar_arrangement
     from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
-    from structural_lib.codes.is456.shear import select_stirrup_diameter
-    from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
+    from structural_lib.shear import select_stirrup_diameter
+    from structural_lib.load_analysis import compute_bmd_sfd
     from structural_lib.core.data_types import LoadDefinition, LoadType
 
     _LIBRARY_AVAILABLE = True
