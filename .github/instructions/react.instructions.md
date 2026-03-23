@@ -30,12 +30,38 @@ react_app/src/
 - Dockview theme vars are in `index.css` (the only non-Tailwind CSS)
 - Never create `.css` files for components — use Tailwind classes inline
 
-## Key Patterns — Check BEFORE Creating New Code
+## NEVER Duplicate Hooks or Components
 
-- `react_app/src/hooks/` and `react_app/src/components/` — check for existing code
-- CSV import: use `useCSVFileImport` hook → API → GenericCSVAdapter (never parse manually)
-- 3D geometry: use `useBeamGeometry` hook → API → geometry_3d (never calculate manually)
-- State stores: `useDesignStore` (single beam), `useImportedBeamsStore` (imported beams)
+Check what exists BEFORE creating anything new:
+```bash
+ls react_app/src/hooks/       # All custom hooks
+ls react_app/src/components/  # All components
+```
+
+Key hooks you MUST reuse (not reinvent):
+- CSV import: `useCSVFileImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts)
+- 3D geometry: `useBeamGeometry` (useBeamGeometry.ts)
+- Live design: `useLiveDesign`, `useAutoDesign`
+- Building viz: `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts)
+- Export: `useExport` (BBS/DXF/report)
+
+Key components:
+- 3D viewport: `Viewport3D` (Viewport3D.tsx)
+- Beam editor: `BuildingEditorPage` (pages/BuildingEditorPage.tsx)
+- File upload: `FileDropZone` (ui/FileDropZone.tsx)
+
+## All Data Flows Through FastAPI
+
+```
+WRONG: Parse CSV in React, calculate geometry in JS
+RIGHT: useCSVFileImport → POST /api/v1/import/csv → GenericCSVAdapter
+RIGHT: useBeamGeometry → POST /api/v1/geometry/beam/full → geometry_3d
+```
+
+## State Stores (Zustand)
+
+- `useDesignStore` — Single beam design inputs/results
+- `useImportedBeamsStore` — Imported CSV beams + selection
 
 ## Migration Scripts
 

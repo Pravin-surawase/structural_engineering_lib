@@ -29,6 +29,25 @@ The public API has 43 functions. Key entry points:
 - `beam_to_3d_geometry()` — 3D geometry (in geometry_3d.py)
 - `GenericCSVAdapter` — CSV parsing (in adapters.py, 40+ column mappings)
 
+## Folder Structure
+
+```
+Python/structural_lib/
+├── codes/               # Code implementations (IS 456 etc.)
+│   └── is456/           # IS 456:2000 — pure math, NO I/O
+├── core/                # Shared types, base classes, materials
+├── services/            # Orchestration: api.py, adapters.py, beam_pipeline.py
+├── insights/            # Design insights & analysis helpers
+├── reports/             # Report generation
+├── visualization/       # Visualization utilities (geometry_3d.py)
+└── api.py               # Backward-compat STUB → real code in services/api.py
+```
+
+## Migration Scripts
+
+- **Move a module:** `.venv/bin/python scripts/migrate_python_module.py <src> <dst> --dry-run`
+- **Validate imports:** `.venv/bin/python scripts/validate_imports.py --scope structural_lib`
+
 ## Testing
 
 ```bash

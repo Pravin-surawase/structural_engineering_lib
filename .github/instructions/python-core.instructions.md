@@ -4,10 +4,15 @@ applyTo: "**/structural_lib/**"
 
 # Python Core Library Rules
 
-## Architecture
+## Architecture (4-Layer — STRICT)
 
-- 3-layer architecture: Core (`codes/is456/`) cannot import from App or UI layers
-- Units always explicit: mm, N/mm2, kN, kNm — no hidden conversions
+- Core types (`core/`) → base classes, constants — no IS 456 math
+- IS 456 Code (`codes/is456/`) → pure math, NO I/O, explicit units (mm, N/mm², kN, kNm)
+- Services (`services/`) → orchestration: api.py, adapters.py, beam_pipeline.py
+- UI/IO → react_app/, streamlit_app/, fastapi_app/
+
+**Import rule:** Core CANNOT import from Services or UI. Services CANNOT import from UI.
+**Units rule:** Always explicit — no hidden conversions.
 
 ## Folder Structure
 
@@ -25,6 +30,22 @@ Python/structural_lib/
 ├── beam_pipeline.py     # Multi-step beam design pipeline
 └── types.py             # Shared type definitions
 ```
+
+## API Surface
+
+Before wrapping or calling any function from `api.py`:
+```bash
+.venv/bin/python scripts/discover_api_signatures.py <function_name>
+```
+NEVER guess parameter names. It's `b_mm` not `width`, `fck` not `concrete_grade`.
+
+The public API has 23 functions + 6 private helpers. Key entry points:
+- `design_beam_is456()` — Main beam design
+- `detail_beam_is456()` — Detailing
+- `beam_to_3d_geometry()` — 3D geometry (in `visualization/geometry_3d.py`)
+- `GenericCSVAdapter` — CSV parsing (in `services/adapters.py`, 40+ column mappings)
+
+**Stub warning:** `Python/structural_lib/api.py` is a backward-compat stub. Real code → `services/api.py`.
 
 ## Key files to check BEFORE coding
 
