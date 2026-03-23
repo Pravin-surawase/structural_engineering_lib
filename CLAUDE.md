@@ -55,6 +55,33 @@ cd Python && .venv/bin/pytest tests/ -v         # Python tests (85% coverage gat
 
 Or just scan numbers: `.venv/bin/python scripts/sync_numbers.py --fix`
 
+## IMPORTANT: Session Logging (MANDATORY)
+
+Every AI agent session MUST follow this workflow. Skipping these steps breaks continuity for the next agent/session.
+
+### Session Start
+1. Read `docs/planning/next-session-brief.md` to understand current priorities
+2. Read `docs/TASKS.md` for active work items
+3. Run `./scripts/agent_start.sh --quick` to verify environment
+
+### During Session
+- Commit frequently with descriptive conventional messages via `./scripts/ai_commit.sh`
+- Track what you changed, what you decided, and what's unfinished
+
+### Session End (REQUIRED — do NOT skip)
+1. Run `./scripts/ai_commit.sh` for any uncommitted work
+2. Run `.venv/bin/python scripts/session.py summary --write` — auto-generates SESSION_LOG entry
+3. Run `.venv/bin/python scripts/session.py sync --fix` — fixes stale numbers in docs
+4. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
+5. Update `docs/TASKS.md` — mark completed items, add new items discovered
+6. Run `./scripts/ai_commit.sh "docs: session end"` — commit all doc updates
+
+### Why This Matters
+- **SESSION_LOG.md** is the project memory — gaps mean lost context
+- **next-session-brief.md** is the handoff — without it, the next agent wastes time rediscovering state
+- **TASKS.md** tracks priorities — unupdated tasks get repeated or lost
+- Empty sessions (no log, no handoff) have caused 10+ hours of wasted rework historically
+
 ## Migration & Folder Structure Scripts
 
 ```bash

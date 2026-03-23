@@ -1716,6 +1716,9 @@ For each folder audited, record:
 | Added JWT startup warning for default secrets | `fastapi_app/auth.py` + `docker-compose.yml` comment |
 | Synced React package.json version to 0.19.0 | `react_app/package.json` |
 | Repaired all 13 broken internal links | Via `check_links.py --fix` + manual fixes (now 0 broken) |
+| Fixed `validate_materials()` stub (was always True) | `streamlit_app/utils/validation.py` — IS 456 fck/fy range checks |
+| Corrected TODO paths in audit (streamlit_app, not structural_lib) | `docs/planning/folder-audit.md` |
+| Added agent session logging rules to CLAUDE.md & copilot-instructions.md | Ensures agents log work + run session end |
 
 ### Repository Metrics (Post-Audit + Fixes)
 
@@ -1735,6 +1738,8 @@ For each folder audited, record:
 | Empty SESSION_LOG entries | 3 | 0 |
 | JWT startup warning | None | Warns on default secret |
 | React version sync | 0.0.0 (dummy) | 0.19.0 (matches Python) |
+| `validate_materials()` | Always returned True | IS 456 fck/fy range checks |
+| Agent session logging | Optional/undocumented | Required in CLAUDE.md + copilot-instructions.md |
 
 ---
 
@@ -1757,6 +1762,13 @@ All workflow tooling is green as of Session 91:
 ### Deferred Items (Needs Dedicated PR)
 - [ ] **Split `ai_workspace.py`** (5103 lines, 39 functions) — 6 modules: `workspace_state.py`, `data_import.py`, `design_engine.py`, `exporters.py`, `ui_panels.py`, `ui_helpers.py`
 - [ ] **Git history cleanup** — `git filter-branch` or BFG to purge vendor CHM from history (still 30MB in history even though untracked). Optional: only matters if repo size is a concern
-- [ ] **Blog-drafts → publications** — Consolidate `docs/blog-drafts/` into `docs/publications/blog-posts/` pipeline
 - [ ] **React test infrastructure** — Zero test files in `react_app/`. Add Vitest + core hook/component tests (~30 files needed for CI parity)
-- [ ] **5 TODO/FIXME items** — Low priority: `beam_design.py:84` (Phase 2), `bbs_generator.py:140,442` (BBS parse/manual), `validation.py:61` (material checks), `ModernAppLayout.tsx:28` (settings panel)
+- [ ] **4 remaining TODO items** — All are planned features, not bugs:
+  - `streamlit_app/pages/01_beam_design.py:84` — Phase 2+ imports (intentional placeholder)
+  - `streamlit_app/pages/_hidden/_05_bbs_generator.py:140` — Parse result format (hidden page)
+  - `streamlit_app/pages/_hidden/_05_bbs_generator.py:442` — Manual entry interface (hidden page)
+  - `react_app/src/components/layout/ModernAppLayout.tsx:28` — Settings panel (v0.20+)
+  - ~~`streamlit_app/utils/validation.py:61`~~ — ✅ FIXED: Added IS 456 fck/fy range checks
+
+**Resolved this session:**
+- [x] ~~Blog-drafts → publications~~ — No action needed: `blog-drafts/` (4 drafts) and `publications/` (finalized posts + research findings) serve distinct workflow stages

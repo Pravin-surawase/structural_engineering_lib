@@ -20,7 +20,31 @@
 | **Current** | v0.19.1 | ✅ Shipped (dashboard insights, ExportPanel, code checks wired) |
 | **Next** | v0.20.0 | 📋 V3 Foundation (code-splitting, SSE progress, REST fallback) |
 
-**Last Session:** Session 91 | **Focus:** Bootstrap overhaul — docs brought in sync with actual codebase
+**Last Session:** Session 91 | **Focus:** Full repo audit + agent logging rules
+
+---
+
+## ✅ Session 91 Continued (Mar 24, 2026)
+
+### Completed This Extension
+
+**Phase 4 — Audit remediation + agent workflow improvements:**
+
+1. **Agent session logging audit** — Found 3 empty SESSION_LOG entries, auto-filled via `session.py summary --write`
+2. **Fixed "unfixable" broken links** — Viewport3D path + worktree_manager archive path (total: 0 broken)
+3. **JWT startup warning** — `auth.py` now warns on default secret key
+4. **React version sync** — `package.json` 0.0.0 → 0.19.0
+5. **Fixed `validate_materials()` stub** — Was always `True`, now checks IS 456 fck/fy ranges
+6. **Corrected TODO audit paths** — Items are in `streamlit_app/`, not `structural_lib/`
+7. **Added MANDATORY session logging rules** — Both `CLAUDE.md` and `copilot-instructions.md` now require session start/end workflow
+8. **Resolved blog-drafts item** — No consolidation needed (distinct pipeline stages)
+
+### Next Priorities (v0.20 Sprint)
+1. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
+2. **REST fallback in DesignView** — when WebSocket is unavailable
+3. **SSE batch progress UI** — streaming.py router exists, needs React consumer
+4. **React test infrastructure** — Zero test files, needs Vitest + core tests
+5. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
 
 ---
 

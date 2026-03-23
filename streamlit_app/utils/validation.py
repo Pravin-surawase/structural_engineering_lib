@@ -58,7 +58,15 @@ def validate_materials(fck: float, fy: float) -> tuple[bool, str]:
         >>> print(is_valid, msg)
         True, ""
     """
-    # TODO: Add material compatibility checks
+    # IS 456 Table 2: fck range 15–80 N/mm²
+    if fck < 15:
+        return False, "❌ fck must be ≥ 15 N/mm² (IS 456 Table 2)"
+    if fck > 80:
+        return False, "❌ fck must be ≤ 80 N/mm² (IS 456 Table 2)"
+    # IS 456 Table 4: standard fy values
+    valid_fy = {250, 415, 500, 550}
+    if fy not in valid_fy:
+        return False, f"❌ fy must be one of {sorted(valid_fy)} N/mm² (IS 456 Table 4)"
     return True, ""
 
 
