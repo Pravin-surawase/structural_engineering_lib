@@ -31,12 +31,12 @@ Systematic audit of every folder and subfolder in the repository to:
 | 3 | `fastapi_app/` | 35 | No | No | Batch 3 ✅ |
 | 4 | `streamlit_app/` | 249 | Yes | No | Batch 3 ✅ |
 | 5 | `scripts/` | 191 | Yes | Yes | Batch 5 ✅ |
-| 6 | `docs/` | 2504 | Yes | Yes | — |
+| 6 | `docs/` | 2504 | Yes | Yes | Batches 7-8 ✅ |
 | 7 | `Excel/` | 12 | Yes | No | Batch 4 ✅ |
 | 8 | `VBA/` | 85 | Yes | No | Batch 4 ✅ |
 | 9 | `agents/` | 39 | Yes | Yes | — |
 | 10 | `clients/` | 5 | No | No | Batch 1 ✅ |
-| 11 | `tests/` | 26 | No | No | — |
+| 11 | `tests/` | 26 | No | No | Batch 6 ✅ |
 | 12 | `logs/` | 204 | Yes | No | Batch 1 ✅ |
 | 13 | `metrics/` | 2 | No | No | Batch 1 ✅ |
 | 14 | `git_operations_log/` | 3 | No | No | Batch 1 ✅ |
@@ -115,17 +115,20 @@ Realistic plan — one batch per session, prioritized by impact.
 **Goal:** Verify tier classification, find unused scripts, check _archive relevance
 **Completed:** Session 91
 
-### Batch 6: Tests
+### Batch 6: Tests ✅
 **Scope:** `Python/tests/`, `tests/`, `fastapi_app/tests/`, `streamlit_app/tests/`
 **Goal:** Test coverage map, find gaps, dead fixtures
+**Completed:** Session 91
 
-### Batch 7: Docs — Active Content
-**Scope:** `docs/planning/`, `docs/getting-started/`, `docs/architecture/`, `docs/contributing/`, `docs/agents/`, `docs/guidelines/`
+### Batch 7: Docs — Active Content ✅
+**Scope:** `docs/planning/`, `docs/getting-started/`, `docs/architecture/`, `docs/contributing/`, `docs/agents/`, `docs/guidelines/`, plus `guides/`, `cookbook/`, `adr/`, `specs/`, `developers/`, `verification/`
 **Goal:** Find stale docs, overlapping content, update outdated material
+**Completed:** Session 91
 
-### Batch 8: Docs — Research & Publications
-**Scope:** `docs/research/`, `docs/publications/`, `docs/blog-drafts/`, `docs/learning/`
+### Batch 8: Docs — Research & Publications ✅
+**Scope:** `docs/research/`, `docs/publications/`, `docs/blog-drafts/`, `docs/learning/`, plus `legal/`, `vba/`, `git-automation/`, `audit/`, `images/`
 **Goal:** Archive completed research, consolidate findings
+**Completed:** Session 91
 
 ### Batch 9: Docs — Archive & Internal
 **Scope:** `docs/_archive/`, `docs/_internal/`, `docs/_active/`, `docs/_references/`
@@ -733,6 +736,609 @@ For each folder audited, record:
   - [ ] Two hook directories (`git-hooks/` + `hooks/`) should be consolidated
   - [ ] `_archive/` at 93 files (26K lines) could use an INDEX explaining replacements
   - [ ] README says "152 scripts" — should clarify "83 active + 93 archived"
+
+### Batch 6 — Tests (Session 91)
+
+**4 test directories, ~65,500 total test lines, ~176 test files**
+
+#### `Python/tests/` — Main Test Suite
+
+- **Purpose:** Unit, integration, property, regression, and performance tests for structural_lib
+- **Files:** 98 Python files across 7 subdirectories + 17 root-level test files
+- **README:** No
+- **index.json:** No
+- **Total lines:** ~38,640
+- **conftest.py:** 57 lines (shared fixtures)
+
+**Subdirectories:**
+
+| Directory | Files | Lines | Purpose |
+|-----------|------:|------:|---------|
+| unit/ | 26 | ~8,500 | Unit tests for individual modules |
+| integration/ | 39 | ~14,500 | Integration tests across layers |
+| property/ | 8 | ~2,100 | Hypothesis property-based tests |
+| regression/ | 8 | ~2,400 | IS 456 critical regression, VBA parity |
+| performance/ | 1 | 266 | Benchmark tests |
+| data/ | 4 | — | Golden vectors (JSON), parity vectors, insights benchmark |
+| fixtures/ | 11 | — | CLI fixtures, report golden HTML/JSON/CSV |
+
+**Top unit tests by size:**
+
+| File | Lines | Scope |
+|------|------:|-------|
+| test_models.py | 683 | Core models |
+| test_serviceability.py | 669 | Deflection, cracking |
+| test_adapters.py | 615 | GenericCSVAdapter |
+| test_detailing.py | 593 | Rebar detailing |
+| test_validation.py | 534 | Input validation |
+| test_serialization.py | 514 | JSON serialization |
+
+**Top integration tests by size:**
+
+| File | Lines | Scope |
+|------|------:|-------|
+| test_cli.py | 1370 | CLI end-to-end (LARGEST test file) |
+| test_bbs.py | 994 | Bar Bending Schedule |
+| test_dxf_export_edges.py | 837 | DXF export edge cases |
+| test_report.py | 709 | HTML report generation |
+| test_api_contracts.py | 688 | API contract validation |
+
+**Root-level "orphan" tests (17 files, ~7,500 lines):**
+
+| File | Lines | Scope |
+|------|------:|-------|
+| test_visualization_geometry_3d.py | 764 | 3D geometry |
+| test_testing_strategies.py | 646 | Meta-test strategies |
+| test_calculation_report.py | 611 | Calculation report |
+| test_clause_traceability.py | 488 | IS 456 clause tracing |
+| test_audit.py | 467 | Readiness audit |
+| test_performance_edge_cases.py | 450 | Perf edge cases |
+| test_enhanced_inputs.py | 408 | Enhanced inputs |
+| test_serialization_formats.py | 376 | Serialization formats |
+| test_error_handling.py | 366 | Error handling |
+
+**Property tests (Hypothesis-based):**
+- `strategies.py` (335) — Shared Hypothesis strategies
+- `test_slenderness_hypothesis.py` (352), `test_property_invariants.py` (310)
+
+**Regression tests:**
+- `test_critical_is456.py` (529) — Critical IS 456 regression vectors
+- `test_parity_vectors.py` (410), `test_vba_parity.py` (261) — Python↔VBA parity
+
+- **Issues:**
+  - [ ] 17 root-level test files (~7,500 lines) not categorized into unit/integration/etc — orphans
+  - [ ] No README.md or index.json — test organization undocumented
+  - [ ] `test_testing_strategies.py` (646 lines) is a meta-test file — unusual, verify if still needed
+  - [ ] `data/` and `fixtures/` contain golden files but no documentation on regeneration process
+
+#### `tests/` — Top-Level Test Directory
+
+- **Purpose:** Cross-cutting tests — Streamlit smoke tests, migration tests, script tests
+- **Files:** 26 files, ~7,469 lines
+- **README:** No
+- **index.json:** No
+
+**Structure:**
+
+| Path | Files | Lines | Purpose |
+|------|------:|------:|---------|
+| apptest/ | 6 | ~1,060 | Streamlit page smoke + integration tests |
+| fixtures/migration/ | 7 | — | Golden files for migration tests |
+| integration/ | 1 | ~220 | Migration integration test |
+| Root test files | 10 | ~5,600 | Script + component tests |
+
+**Root-level test files:**
+
+| File | Lines | Scope |
+|------|------:|-------|
+| test_check_streamlit_issues.py | 615 | check_streamlit.py validations |
+| test_lod_manager.py | 564 | LOD manager (streamlit component) |
+| test_visualizations_3d.py | 545 | 3D visualizations |
+| test_session_manager.py | 517 | Session manager component |
+| test_error_handling_safe_patterns.py | 499 | Error handling patterns |
+| test_design_system_components.py | 497 | Design system components |
+
+**apptest/ (Streamlit smoke tests):**
+- `conftest.py` (312) — Streamlit page fixtures + browser helpers
+- `test_integration_workflows.py` (261) — Cross-page workflows
+- `test_all_pages_smoke.py` (161) — Smoke test all pages load
+
+- **Issues:**
+  - [ ] No README — unclear which tests belong here vs `Python/tests/` vs `streamlit_app/tests/`
+  - [ ] Ownership ambiguous: root-level tests test streamlit utils, scripts, and components — split across concerns
+  - [ ] `fixtures/migration/` — 7 golden files for migration tests — verify still needed post-migration
+  - [ ] `apptest/` duplicates purpose of `streamlit_app/tests/` — consolidation candidate
+
+#### `fastapi_app/tests/` — FastAPI Tests
+
+- **Purpose:** FastAPI endpoint, auth, WebSocket, streaming, and load tests
+- **Files:** 7 test files, ~2,150 lines
+- **Already documented in Batch 3** — 7 files (security 406, integration 387, endpoints 346, load 285, auth 242, streaming 174, websocket 165)
+- **Issues:** None additional beyond Batch 3 findings
+
+#### `streamlit_app/tests/` — Streamlit Tests
+
+- **Purpose:** Streamlit component, page, and integration tests
+- **Files:** 45 test files, ~17,212 lines
+- **Already documented in Batch 3** — briefly noted
+
+**Top test files by size:**
+
+| File | Lines | Scope |
+|------|------:|-------|
+| test_visualizations.py | 732 | Plotly visualization tests |
+| test_session_manager.py | 703 | Session manager |
+| test_page_smoke.py | 688 | Full page smoke tests |
+| test_error_handler.py | 656 | Error handler |
+| test_design_system_integration.py | 636 | Design system |
+| test_ai_page.py | 609 | AI assistant page |
+| test_loading_states.py | 543 | Loading states |
+| test_cost_optimizer.py | 508 | Cost optimizer |
+| test_enhanced_visualizations.py | 460 | Enhanced viz |
+| test_multi_format_import.py | 453 | CSV import page |
+
+- **Issues:**
+  - [ ] 45 test files is comprehensive but overlap with `tests/` root-level tests (both test Streamlit components)
+  - [ ] `test_session_manager.py` exists both here (703 lines) AND in `tests/` (517 lines) — DUPLICATION
+
+#### Tests Health Summary
+
+| Location | Files | Lines | README | index.json |
+|----------|------:|------:|:------:|:----------:|
+| Python/tests/ | 98 | 38,640 | No | No |
+| tests/ | 26 | 7,469 | No | No |
+| fastapi_app/tests/ | 7 | 2,150 | No | No |
+| streamlit_app/tests/ | 45 | 17,212 | No | No |
+| **Total** | **176** | **65,471** | — | — |
+
+**Cross-cutting Issues:**
+- [ ] Test files spread across **4 separate directories** — no single entry point or test guide
+- [ ] Zero README files across all 4 test dirs — bad for discoverability
+- [ ] `test_session_manager.py` duplicated (tests/ + streamlit_app/tests/) — 1,220 lines total
+- [ ] `tests/` overlaps with `streamlit_app/tests/` for Streamlit component testing
+- [ ] 17 "orphan" tests in Python/tests/ root — should be categorized
+- [ ] No test data documentation — golden files in data/ and fixtures/ lack regen instructions
+- **Actions:**
+  - [ ] Add README to each test directory explaining scope and ownership
+  - [ ] Consolidate Streamlit tests — decide between `tests/` and `streamlit_app/tests/`
+  - [ ] Move 17 orphan root tests into appropriate Python/tests/ subdirs
+  - [ ] Document golden file regeneration process (e.g., `regenerate_golden_files.py`)
+  - [ ] Deduplicate `test_session_manager.py`
+
+### Batch 7 — Docs Active Content (Session 91)
+
+**12 active docs subdirectories, ~199 files total**
+
+#### `docs/planning/` — Project Planning
+
+- **Purpose:** Project plans, roadmaps, assessments, this audit doc
+- **Files:** 41 files (38 .md + README + index.json + 3 research subdirs)
+- **README:** Yes
+- **index.json:** Yes
+- **Subdirs:** `research-findings-validation/` (1), `research-platform/` (1), `research-visual-design/` (1) — each has 1 research summary
+
+**Largest files:**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| ui-layout-implementation-plan.md | 1602 | UI layout plan |
+| folder-audit.md | 753+ | This audit (growing) |
+| project-needs-assessment.md | 1089 | Needs assessment |
+| hygiene-suggestions.md | 1000 | Code hygiene |
+| 8-week-dev-plan.md | 825 | Development plan |
+
+- **Issues:**
+  - [ ] 38 planning docs — some may be stale or completed (e.g., "8-week-dev-plan" from early sessions)
+  - [ ] 3 research subdirs feel misplaced — research belongs in `docs/research/`
+- **Actions:**
+  - [ ] Review each plan for staleness, archive completed plans
+  - [ ] Move `research-*` subdirs to `docs/research/`
+
+#### `docs/getting-started/` — Onboarding & Tutorials
+
+- **Purpose:** Bootstrap, installation, first-run guides, release notes
+- **Files:** 21 files
+- **README:** Yes
+- **index.json:** Yes
+
+**Key files:**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| colab-workflow.ipynb | 1886 | Google Colab tutorial (DUPLICATE in cookbook/) |
+| releases.md | 894 | Release history |
+| insights-guide.md | 536 | Design insights guide |
+| colab-workflow.md | 514 | Colab tutorial (markdown) |
+| design-suggestions-guide.md | 452 | Design suggestions |
+| agent-bootstrap.md | ~380 | Agent bootstrap guide |
+
+- **Issues:**
+  - [ ] `colab-workflow.ipynb` duplicated in `docs/cookbook/` (1886 lines each)
+  - [ ] `colab-workflow.md` AND `colab-workflow.ipynb` — two formats of same content
+- **Actions:**
+  - [ ] Remove duplicate `.ipynb` from cookbook/ (keep canonical in getting-started/)
+  - [ ] Consider if both `.md` and `.ipynb` formats are needed
+
+#### `docs/architecture/` — Architecture Documentation
+
+- **Purpose:** Architecture diagrams, principles, data formats
+- **Files:** 13 files (including dependencies.png)
+- **README:** Yes
+- **index.json:** Yes
+
+**Key files:** `canonical-data-format.md` (360), `mission-and-principles.md` (291), `deep-project-map.md` (270)
+
+- **Issues:** None — clean, well-indexed
+- **Actions:** None needed
+
+#### `docs/contributing/` — Contribution Guides
+
+- **Purpose:** Development guide, coding standards, maintenance guides
+- **Files:** 33 files (LARGEST active docs dir)
+- **README:** Yes
+- **index.json:** Yes
+
+**Largest files:**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| development-guide.md | 1511 | Comprehensive dev guide |
+| streamlit-maintenance-guide.md | 757 | Streamlit maintenance |
+| agent-coding-standards.md | 743 | Agent coding standards |
+| agent-collaboration-framework.md | 665 | Agent collaboration |
+| streamlit-prevention-system-review.md | 607 | Prevention system review |
+| streamlit-comprehensive-prevention-system.md | 503 | Prevention system docs |
+| quickstart-checklist.md | 499 | Quick start checklist |
+
+- **Issues:**
+  - [ ] 33 files is large — potential overlap between guides (3 Streamlit-related docs)
+  - [ ] `agent-coding-standards.md` may overlap with `.github/instructions/` and `.claude/rules/`
+  - [ ] Multiple "prevention system" docs — consolidation candidate
+- **Actions:**
+  - [ ] Audit 3 Streamlit docs for overlap → merge if redundant
+  - [ ] Cross-reference agent standards with instruction files
+
+#### `docs/agents/` — Agent Guides & Sessions
+
+- **Purpose:** Agent-specific onboarding, workflow guides, session history
+- **Files:** 21 files across 2 subdirs
+- **README:** Yes
+- **index.json:** **No** ❌
+- **Subdirs:** `guides/` (17 files), `sessions/` (2 subdirs with 3 files in `2026-01/`)
+
+**Key files in guides/:**
+- `agent-quick-reference.md`, `onboarding.md`, `error-resolution-guide.md`, `context-optimization.md`
+- Various agent-specific guides (git-workflow, pr-workflow, test-strategy, etc.)
+
+- **Issues:**
+  - [ ] No `index.json` — agent discovery blocked
+  - [ ] `sessions/` only has 3 files from Jan 2026 — abandoned? SESSION_LOG.md is now the canonical log
+  - [ ] 17 guide files — some may be outdated from early sessions
+- **Actions:**
+  - [ ] Generate `index.json` for agents/
+  - [ ] Archive `sessions/` if SESSION_LOG.md replaced it
+  - [ ] Audit guides for staleness
+
+#### `docs/guidelines/` — Coding & API Standards
+
+- **Purpose:** Comprehensive coding guidelines and API standards
+- **Files:** 18 files
+- **README:** Yes
+- **index.json:** Yes
+
+**Heavy standards docs (all >1000 lines):**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| api-design-guidelines.md | 2616 | API design (LARGEST) |
+| error-handling-standard.md | 1925 | Error handling |
+| api-evolution-standard.md | 1681 | API versioning |
+| documentation-standard.md | 1604 | Documentation standard |
+| result-object-standard.md | 1427 | Result object pattern |
+| function-signature-standard.md | 1342 | Function signatures |
+
+- **Issues:**
+  - [ ] 6 files over 1000 lines each — very dense. May be hard for agents to consume
+  - [ ] `api-design-guidelines.md` at 2616 lines — consider splitting into focused docs
+  - [ ] May overlap with `docs/contributing/` dev guide sections
+- **Actions:**
+  - [ ] Consider TOC or summary sections for lengthy standards
+  - [ ] Cross-reference with contributing/ to eliminate overlap
+
+#### `docs/guides/` — User Guides
+
+- **Purpose:** User-facing guides for AI agents, ETABS VBA, code reuse
+- **Files:** 7 files
+- **README:** **No** ❌
+- **index.json:** **No** ❌
+
+**Files:** `ai-agent-coding-guide.md` (993), `etabs-vba-user-guide.md` (650), `code-reuse-and-library-structure.md` (591), plus 4 smaller guides
+
+- **Issues:**
+  - [ ] No README or index.json — discoverable only by browsing
+  - [ ] `ai-agent-coding-guide.md` overlaps with `docs/agents/guides/` content
+- **Actions:**
+  - [ ] Add README + index.json
+  - [ ] Consolidate AI agent guides into `docs/agents/guides/`
+
+#### `docs/cookbook/` — Code Recipes
+
+- **Purpose:** Quick recipes, CLI reference, Colab workflow
+- **Files:** 4 files (README + 3 recipes)
+- **README:** Yes
+- **index.json:** **No** ❌
+
+**Files:** `cli-reference.md` (469), `colab_workflow.ipynb` (1886 — **DUPLICATE**), `python-recipes.md` (392)
+
+- **Issues:**
+  - [ ] `colab_workflow.ipynb` is identical to `docs/getting-started/colab-workflow.ipynb` — 1886-line duplicate
+  - [ ] No index.json
+- **Actions:**
+  - [ ] Remove duplicate `.ipynb`, add symlink or cross-reference
+  - [ ] Generate index.json
+
+#### `docs/adr/` — Architecture Decision Records
+
+- **Purpose:** Architecture Decision Records (ADRs) for significant design choices
+- **Files:** 4 files (README + 3 ADRs)
+- **README:** Yes
+- **index.json:** **No** ❌
+
+**ADRs:** `001-csv-adapter-architecture.md`, `002-api-parameter-naming.md`, `003-result-object-standard.md`
+
+- **Issues:**
+  - [ ] Only 3 ADRs for a project this size — underused
+  - [ ] No index.json
+  - [ ] Many decisions documented elsewhere (guidelines, architecture) should have ADRs
+- **Actions:**
+  - [ ] Add retrospective ADRs for key past decisions (4-layer architecture, backward-compat stubs, Streamlit→React migration)
+  - [ ] Generate index.json
+
+#### `docs/specs/` — Specifications
+
+- **Purpose:** Technical specifications for data formats
+- **Files:** 3 files
+- **README:** **No** ❌
+- **index.json:** **No** ❌
+
+**Files:** `csv-import-schema.md` (316), `v0.7-data-mapping.md` (306), `v0.9-job-schema.md` (126)
+
+- **Issues:**
+  - [ ] No README or index.json — invisible to agents
+  - [ ] Versioned specs (v0.7, v0.9) — current version is v0.19.0, these may be very stale
+- **Actions:**
+  - [ ] Add README + index.json
+  - [ ] Check if specs still match current implementation, archive if obsolete
+
+#### `docs/developers/` — Developer Documentation
+
+- **Purpose:** Platform guide, extension guide, integration examples
+- **Files:** 5 files
+- **README:** Yes
+- **index.json:** Yes
+
+**Files:** `platform-guide.md` (990), `extension-guide.md` (651), `integration-examples.md` (465)
+
+- **Issues:** None — clean, well-indexed
+- **Actions:** None needed
+
+#### `docs/verification/` — Verification & Validation
+
+- **Purpose:** Engineering verification examples and validation packs
+- **Files:** 8 files
+- **README:** Yes
+- **index.json:** Yes
+
+**Key files:** `examples.md` (1540), `validation-pack.md` (185)
+
+- **Issues:** None — well-documented, critical for engineering trust
+- **Actions:** None needed
+
+#### Docs Active Content Summary
+
+| Directory | Files | README | index.json | Issues |
+|-----------|------:|:------:|:----------:|--------|
+| planning/ | 41 | ✅ | ✅ | Stale plans, misplaced research |
+| getting-started/ | 21 | ✅ | ✅ | Duplicate colab.ipynb |
+| architecture/ | 13 | ✅ | ✅ | Clean |
+| contributing/ | 33 | ✅ | ✅ | Overlap, 3 streamlit docs |
+| agents/ | 21 | ✅ | ❌ | Missing index, stale sessions |
+| guidelines/ | 18 | ✅ | ✅ | 6 files >1000 lines |
+| guides/ | 7 | ❌ | ❌ | Invisible, overlaps agents/ |
+| cookbook/ | 4 | ✅ | ❌ | Duplicate ipynb |
+| adr/ | 4 | ✅ | ❌ | Only 3 ADRs, underused |
+| specs/ | 3 | ❌ | ❌ | Likely stale, invisible |
+| developers/ | 5 | ✅ | ✅ | Clean |
+| verification/ | 8 | ✅ | ✅ | Clean |
+
+**Cross-cutting Issues:**
+- [ ] 5 directories missing `index.json` (agents, guides, cookbook, adr, specs) — agents can't auto-discover
+- [ ] 2 directories missing README (guides, specs) — invisible to browsing
+- [ ] Duplicate `colab_workflow.ipynb` across `getting-started/` and `cookbook/`
+- [ ] Overlapping AI guide content across `guides/`, `agents/guides/`, `contributing/`
+- [ ] `docs/guidelines/` has 10,595 lines in 6 standards docs alone — dense, consider summaries
+- **Actions:**
+  - [ ] Generate index.json for 5 missing dirs
+  - [ ] Add README to guides/ and specs/
+  - [ ] Deduplicate colab notebook
+  - [ ] Consolidate AI agent documentation into `docs/agents/`
+  - [ ] Add TOC/summary sections to lengthy guidelines
+
+### Batch 8 — Docs Research & Publications (Session 91)
+
+#### `docs/research/` — Research Studies
+
+- **Purpose:** Research explorations, technology deep dives, design pattern analysis
+- **Files:** 186 files (83 root .md files + 6 subdirectories)
+- **README:** Yes
+- **index.json:** Yes
+
+**Subdirectories:**
+
+| Directory | Files | Purpose |
+|-----------|------:|---------|
+| navigation_study/ | 73 | Raw JSON trial data from navigation UX study |
+| literature-review/ | 12 | Academic literature reviews |
+| 01-function-catalog-research/ | 7 | Function catalog research |
+| _online-research/ | 6 | Online research summaries |
+| in-progress/ | 4 | Active research topics |
+| structural-automation-platform/ | 1 | Platform research |
+
+**Top root-level research files by size:**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| live-3d-visualization-architecture.md | 3299 | 3D viz architecture (LARGEST) |
+| 3d-technology-deep-dive-research.md | 2429 | Three.js, R3F deep dive |
+| index-per-folder-efficiency-research.md | 2169 | Index per folder efficiency |
+| api-design-pattern-analysis.md | 1593 | API design patterns |
+| blogging-strategy-research.md | 1310 | Blog strategy |
+| etabs-vba-implementation-plan.md | 1209 | ETABS VBA plan |
+| agent-8-git-automation-comprehensive-research.md | 1191 | Git automation research |
+| documentation-handoff-analysis.md | 1129 | Doc handoff analysis |
+
+- **Issues:**
+  - [ ] **navigation_study/ — 73 files of raw JSON trial data** — massive bloat, should not be in git. Total ~3MB of trial data
+  - [ ] 83 root-level .md files — no categorization beyond filename, hard to navigate
+  - [ ] Many research topics already implemented (3D viz, CSV import, API design) — findings should be archived
+  - [ ] `live-3d-visualization-architecture.md` at 3299 lines — extremely long research doc
+  - [ ] Mix of actionable findings and pure exploration — unclear which are "done"
+- **Actions:**
+  - [ ] Move `navigation_study/` raw data to `.gitignore` or external storage — 73 JSON files shouldn't be tracked
+  - [ ] Archive completed research (3D viz, API patterns, CSV import) → `docs/_archive/research/`
+  - [ ] Categorize remaining root files into subdirs by theme
+  - [ ] Add "Status: Complete|Active|Abandoned" metadata to research files
+
+#### `docs/publications/` — Blog Posts & Published Content
+
+- **Purpose:** Polished blog posts and content strategy
+- **Files:** 10 files across structured subdirectories
+- **README:** Yes
+- **Structure:**
+  - `content-strategy.md` (420) — Publishing strategy
+  - `01-smart-library/` — Blog post: intro to IS 456 library (draft 261 + outline 172)
+  - `02-deterministic-ml/` — Blog post: deterministic vs ML (draft 253 + outline 191)
+  - `03-sensitivity-analysis/` — Blog post: sensitivity analysis (draft 261 + outline 180)
+  - `findings/` — 2 summary files
+
+- **Issues:**
+  - [ ] Well-structured but separate from `blog-drafts/` — potential overlap
+  - [ ] `findings/` may overlap with research findings
+- **Actions:**
+  - [ ] Verify blog-drafts/ vs publications/ — should one be the canonical location?
+
+#### `docs/blog-drafts/` — Draft Blog Posts
+
+- **Purpose:** Blog post drafts (earlier stage than publications/)
+- **Files:** 5 files (4 drafts + README)
+- **README:** Yes
+
+**Drafts:** All short (176-285 lines), covering topics like RC beam library, sensitivity analysis, deterministic vs ML
+
+- **Issues:**
+  - [ ] Overlaps with `docs/publications/` — both contain RC beam library and sensitivity analysis drafts
+  - [ ] Unclear workflow: do drafts start here and graduate to publications/?
+- **Actions:**
+  - [ ] Define clear pipeline: `blog-drafts/` → `publications/` → published
+  - [ ] Or consolidate into single `publications/` with status metadata
+
+#### `docs/learning/` — Learning Materials
+
+- **Purpose:** Internal learning guides for technologies used in the project
+- **Files:** 9 files
+- **README:** Yes
+
+**Key files:** `docker-fundamentals-guide.md` (778), `v3-fastapi-learning-guide.md` (569), `automation-foundation-learning-guide.md` (469)
+
+- **Issues:** None — appropriate size, well-organized
+- **Actions:** None needed
+
+#### `docs/legal/` — Legal Documents
+
+- **Purpose:** Engineering certification templates, usage guidelines, verification checklists
+- **Files:** 3 files
+- **README:** No
+- **Issues:**
+  - [ ] No README — purpose unclear
+- **Actions:**
+  - [ ] Add brief README
+
+#### `docs/vba/` — VBA Documentation
+
+- **Purpose:** ETABS VBA journey narrative and production plan
+- **Files:** 2 files (~762 lines combined)
+- **README:** No
+- **Issues:**
+  - [ ] No README
+  - [ ] May overlap with `VBA/README.md` and `docs/guides/etabs-vba-user-guide.md`
+- **Actions:**
+  - [ ] Cross-reference with VBA/ docs to avoid duplication
+
+#### `docs/git-automation/` — Git Workflow Docs
+
+- **Purpose:** Git automation documentation and research
+- **Files:** 7 files
+- **README:** Yes
+- **Subdirs:** `research/` (2 files)
+- **Issues:** None — compact, well-organized
+- **Actions:** None needed
+
+#### `docs/audit/` — Audit Reports
+
+- **Purpose:** Audit readiness template and evidence bundles
+- **Files:** 4 files (README, audit-readiness doc, evidence template, .gitkeep)
+- **README:** Yes
+- **Issues:** None — clean scaffold, awaiting first real audit
+- **Actions:** None needed
+
+#### `docs/images/` — Documentation Images
+
+- **Purpose:** Images for documentation
+- **Files:** 1 file (README.md only)
+- **Issues:**
+  - [ ] Contains only README — `architecture/dependencies.png` is the only image and it's stored in architecture/
+- **Actions:**
+  - [ ] Consider if this empty dir is needed, or move architecture images here
+
+#### Docs Research & Publications Summary
+
+| Directory | Files | README | Issues |
+|-----------|------:|:------:|--------|
+| research/ | 186 | ✅ | 73 raw JSON files (navigation_study), 83 uncategorized root files |
+| publications/ | 10 | ✅ | Overlaps with blog-drafts/ |
+| blog-drafts/ | 5 | ✅ | Overlaps with publications/ |
+| learning/ | 9 | ✅ | Clean |
+| legal/ | 3 | ❌ | No README |
+| vba/ | 2 | ❌ | No README, potential overlap |
+| git-automation/ | 7 | ✅ | Clean |
+| audit/ | 4 | ✅ | Clean (scaffold) |
+| images/ | 1 | ✅ | Empty (README only) |
+
+**Cross-cutting Issues:**
+- [ ] `docs/research/navigation_study/` — 73 raw JSON files is the single biggest repo bloat in docs/
+- [ ] `blog-drafts/` vs `publications/` overlap — need clear pipeline or consolidation
+- [ ] 83 uncategorized research files at docs/research/ root — hard to navigate
+- [ ] 3 directories missing README (legal, vba, images)
+- **Actions:**
+  - [ ] Remove or .gitignore `navigation_study/` raw data (73 JSON files)
+  - [ ] Archive completed research to `docs/_archive/research/`
+  - [ ] Consolidate blog-drafts/ into publications/ with status workflow
+  - [ ] Add README to legal/ and vba/
+  - [ ] Add research file status metadata (Complete/Active/Abandoned)
+
+### docs/ Root Files
+
+| File | Lines | Purpose |
+|------|------:|---------|
+| SESSION_LOG.md | 10,217 | **Canonical session history** (91 sessions) — LARGEST file in repo |
+| docs-index.json | 7,033 | Full docs index (auto-generated) |
+| TASKS.md | 81 | Active task tracking |
+| README.md | 263 | Docs overview and navigation |
+| index.json | 128 | Folder index |
+| docs-canonical.json | 96 | Canonical doc registry |
+
+- **Issues:**
+  - [ ] `SESSION_LOG.md` at 10,217 lines — will keep growing. Consider rotation (archive older sessions)
 
 ---
 
