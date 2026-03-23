@@ -26,7 +26,7 @@
 ## At a glance
 
 - **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA) with multi-code foundation
-- **Quality:** Contract-tested APIs, 3194 tests, 13 CI workflows, 96 automation scripts
+- **Quality:** Contract-tested APIs, 3199 tests, 13 CI workflows, 81 automation scripts
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
 - **Automation:** Batch-ready CLI + public API wrappers + unified agent onboarding (automation-first workflow)
 - **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
@@ -73,7 +73,7 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 ### Quality & Trust
 - **Professional-Grade Foundation:** Contract tests prevent API breaking changes, validation utilities reduce code duplication 30%
-- **Comprehensive Testing:** 3194 tests, 86% coverage, 13 performance benchmarks
+- **Comprehensive Testing:** 3199 tests, 86% coverage, 13 performance benchmarks
 - **API Stability:** Contract-tested public APIs with deprecation policy for safe evolution
 - **Error Handling:** 5-layer architecture with structured errors, zero silent failures
 - **Type Safety:** Modern PEP 585/604 syntax (`list[X]`, `X | None`), stricter mypy checks
@@ -251,7 +251,7 @@ See `docs/reference/api-stability.md` for stability labels and guarantees.
 
 | Aspect | Status |
 |--------|--------|
-| **Test Coverage** | 2270 tests, 86% overall coverage, 6 modules >90% coverage |
+| **Test Coverage** | 3199 tests, 86% overall coverage, 6 modules >90% coverage |
 | **Determinism** | Same inputs → identical outputs (JSON/CSV/DXF) across runs |
 | **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
 | **Code Quality** | 0 ruff errors, contract-tested APIs, modern type hints (PEP 585/604) |

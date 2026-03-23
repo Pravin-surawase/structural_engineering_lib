@@ -9,6 +9,8 @@ USAGE:
     python scripts/session.py end [--fix] [--quick]
     python scripts/session.py handoff
     python scripts/session.py check
+    python scripts/session.py summary [--write]
+    python scripts/session.py sync [--fix] [--json]
 """
 
 from __future__ import annotations
@@ -17,12 +19,13 @@ import argparse
 import re
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+from _lib.output import StatusLine
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
@@ -792,6 +795,296 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 0
 
 
+# ─── Summary (auto-generate session summary from git log) ────────────────────
+
+
+def _get_last_session_date() -> str | None:
+    """Find the date of the most recent session entry in SESSION_LOG."""
+    if not SESSION_LOG.exists():
+        return None
+    content = SESSION_LOG.read_text(encoding="utf-8")
+    dates = DATE_RE.findall(content)
+    today_str = date.today().strftime("%Y-%m-%d")
+    # Return the first date that isn't today (i.e., last session)
+    for d in dates:
+        if d != today_str:
+            return d
+    return dates[0] if dates else None
+
+
+def _get_commits_since(since_date: str | None) -> list[dict[str, str]]:
+    """Get commits since a date. Returns list of {hash, type, message, files_changed}."""
+    args = ["git", "log", "--format=%H|%s", "--no-merges"]
+    if since_date:
+        args.append(f"--since={since_date}")
+    else:
+        args.append("-n20")
+
+    result = subprocess.run(
+        args, cwd=REPO_ROOT, capture_output=True, text=True,
+    )
+    if not result.stdout.strip():
+        return []
+
+    commits = []
+    for line in result.stdout.strip().splitlines():
+        if "|" not in line:
+            continue
+        hash_val, message = line.split("|", 1)
+        # Parse conventional commit type
+        type_match = re.match(r"^(\w+)(?:\([^)]*\))?:\s*(.+)", message)
+        if type_match:
+            commit_type = type_match.group(1)
+            desc = type_match.group(2)
+        else:
+            commit_type = "other"
+            desc = message
+
+        # Get files changed in this commit
+        files_result = subprocess.run(
+            ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", hash_val.strip()],
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        files = [f for f in files_result.stdout.strip().splitlines() if f]
+
+        commits.append({
+            "hash": hash_val[:7],
+            "type": commit_type,
+            "message": message.strip(),
+            "desc": desc.strip(),
+            "files": files,
+        })
+
+    return commits
+
+
+def _detect_new_artifacts(commits: list[dict[str, str]]) -> dict[str, list[str]]:
+    """Detect new hooks, endpoints, components, test files from commit diffs."""
+    new_items: dict[str, list[str]] = {
+        "hooks": [],
+        "endpoints": [],
+        "components": [],
+        "tests": [],
+    }
+    all_files = set()
+    for c in commits:
+        all_files.update(c.get("files", []))
+
+    for f in all_files:
+        if f.startswith("react_app/src/hooks/") and f.endswith(".ts"):
+            name = Path(f).stem
+            new_items["hooks"].append(name)
+        elif f.startswith("fastapi_app/routers/") and f.endswith(".py") and "__init__" not in f:
+            name = Path(f).stem
+            new_items["endpoints"].append(name)
+        elif f.startswith("react_app/src/components/") and f.endswith(".tsx"):
+            name = Path(f).stem
+            new_items["components"].append(name)
+        elif f.startswith("Python/tests/") and f.endswith(".py"):
+            name = Path(f).stem
+            new_items["tests"].append(name)
+
+    return {k: sorted(set(v)) for k, v in new_items.items() if v}
+
+
+def _group_commits_by_type(commits: list[dict[str, str]]) -> dict[str, list[str]]:
+    """Group commit descriptions by conventional commit type."""
+    groups: dict[str, list[str]] = {}
+    for c in commits:
+        t = c["type"]
+        groups.setdefault(t, []).append(c["desc"])
+    return groups
+
+
+def _build_session_summary(
+    commits: list[dict[str, str]],
+    artifacts: dict[str, list[str]],
+) -> str:
+    """Build markdown summary text from commits and detected artifacts."""
+    if not commits:
+        return "No commits found for this session."
+
+    groups = _group_commits_by_type(commits)
+
+    # Count files changed across all commits
+    all_files = set()
+    for c in commits:
+        all_files.update(c.get("files", []))
+
+    lines = []
+    lines.append(f"**{len(commits)} commits**, **{len(all_files)} files changed**")
+    lines.append("")
+
+    # Commit groups
+    type_labels = {
+        "feat": "Features",
+        "fix": "Bug Fixes",
+        "docs": "Documentation",
+        "refactor": "Refactoring",
+        "test": "Tests",
+        "chore": "Chores",
+        "style": "Style",
+        "perf": "Performance",
+        "ci": "CI",
+    }
+
+    for commit_type, descriptions in sorted(groups.items()):
+        label = type_labels.get(commit_type, commit_type.capitalize())
+        lines.append(f"**{label}:**")
+        for desc in descriptions[:5]:
+            lines.append(f"- {desc}")
+        if len(descriptions) > 5:
+            lines.append(f"- ... and {len(descriptions) - 5} more")
+        lines.append("")
+
+    # New artifacts
+    if artifacts:
+        lines.append("**New/Changed Artifacts:**")
+        for category, items in artifacts.items():
+            lines.append(f"- {category.capitalize()}: {', '.join(items[:5])}")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def _get_session_number() -> int:
+    """Detect the next session number from SESSION_LOG."""
+    if not SESSION_LOG.exists():
+        return 1
+    content = SESSION_LOG.read_text(encoding="utf-8")
+    numbers = re.findall(r"Session\s+(\d+)", content)
+    if numbers:
+        return max(int(n) for n in numbers) + 1
+    return 1
+
+
+def _update_session_log_summary(summary: str, session_num: int) -> bool:
+    """Write summary into today's SESSION_LOG entry."""
+    today_str = date.today().strftime("%Y-%m-%d")
+    content = SESSION_LOG.read_text(encoding="utf-8")
+
+    # Find today's skeleton entry and replace the Summary section
+    lines = content.splitlines()
+    in_today = False
+    summary_start = -1
+    summary_end = -1
+
+    for i, line in enumerate(lines):
+        if line.startswith(f"## {today_str}"):
+            in_today = True
+            # Update the header with session number if missing
+            if "Session" not in line:
+                lines[i] = f"## {today_str} — Session {session_num}"
+            continue
+        if in_today and line.strip() == "### Summary":
+            summary_start = i + 1
+            continue
+        if in_today and summary_start > 0:
+            if line.startswith("### ") or line.startswith("## "):
+                summary_end = i
+                break
+            if summary_end < 0 and line.strip() == "-":
+                # Replace placeholder dash
+                summary_end = i + 1
+
+    if summary_start < 0:
+        return False
+
+    if summary_end < 0:
+        summary_end = summary_start + 1
+
+    # Replace the summary section
+    summary_lines = summary.splitlines()
+    new_lines = lines[:summary_start] + summary_lines + [""] + lines[summary_end:]
+
+    SESSION_LOG.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+    return True
+
+
+def cmd_summary(args: argparse.Namespace) -> int:
+    """Auto-generate session summary from git history."""
+    print()
+    print("=" * 60)
+    print("📊 SESSION SUMMARY GENERATOR")
+    print("=" * 60)
+    print()
+
+    # Find commits since last session
+    last_date = _get_last_session_date()
+    if last_date:
+        print(f"  Last session: {last_date}")
+    else:
+        print("  Last session: unknown (using last 20 commits)")
+
+    commits = _get_commits_since(last_date)
+    if not commits:
+        StatusLine.warn("No commits found since last session")
+        return 0
+
+    print(f"  Commits found: {len(commits)}")
+    print()
+
+    # Detect new artifacts
+    artifacts = _detect_new_artifacts(commits)
+
+    # Build summary
+    summary = _build_session_summary(commits, artifacts)
+    session_num = _get_session_number()
+
+    print("─" * 60)
+    print(f"Session {session_num} Summary:")
+    print("─" * 60)
+    print(summary)
+    print("─" * 60)
+    print()
+
+    if args.write:
+        # Check if today's entry exists
+        has_entry, _ = check_session_log_entry()
+        if not has_entry:
+            print("  Adding skeleton entry first...")
+            add_session_log_entry()
+
+        ok = _update_session_log_summary(summary, session_num)
+        if ok:
+            StatusLine.ok("Updated SESSION_LOG.md with auto-generated summary")
+        else:
+            StatusLine.fail("Could not update SESSION_LOG.md — manual edit needed")
+            return 1
+
+        # Also update handoff
+        ok_h, msg_h = _do_handoff()
+        if ok_h:
+            StatusLine.ok(msg_h)
+        else:
+            StatusLine.warn(f"Handoff update: {msg_h}")
+    else:
+        StatusLine.info("Dry run — use --write to update SESSION_LOG.md and handoff")
+
+    print()
+    return 0
+
+
+# ─── Sync (run sync_numbers.py from session workflow) ────────────────────────
+
+
+def cmd_sync(args: argparse.Namespace) -> int:
+    """Run sync_numbers.py to update stale counts across docs."""
+    sync_script = REPO_ROOT / "scripts" / "sync_numbers.py"
+    if not sync_script.exists():
+        StatusLine.fail("scripts/sync_numbers.py not found")
+        return 1
+
+    cmd_args = [_python_exe(), str(sync_script)]
+    if args.fix:
+        cmd_args.append("--fix")
+    if hasattr(args, "json_output") and args.json_output:
+        cmd_args.append("--json")
+
+    result = subprocess.run(cmd_args, cwd=REPO_ROOT)
+    return result.returncode
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 
@@ -818,6 +1111,15 @@ def build_parser() -> argparse.ArgumentParser:
     # check
     sub.add_parser("check", help="Validate session docs consistency")
 
+    # summary
+    p_summary = sub.add_parser("summary", help="Auto-generate session summary from git history")
+    p_summary.add_argument("--write", action="store_true", help="Write summary to SESSION_LOG + handoff")
+
+    # sync
+    p_sync = sub.add_parser("sync", help="Sync stale numbers across documentation files")
+    p_sync.add_argument("--fix", action="store_true", help="Apply updates to doc files")
+    p_sync.add_argument("--json", dest="json_output", action="store_true", help="Output metrics as JSON")
+
     return parser
 
 
@@ -834,6 +1136,8 @@ def main() -> int:
         "end": cmd_end,
         "handoff": cmd_handoff,
         "check": cmd_check,
+        "summary": cmd_summary,
+        "sync": cmd_sync,
     }
 
     return handlers[args.command](args)

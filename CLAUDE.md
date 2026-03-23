@@ -24,7 +24,7 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
-grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (13 routers)
+grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (12 routers)
 grep "^def " Python/structural_lib/services/api.py | head -20   # 23 public + 6 private helpers
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
 ```
@@ -43,6 +43,17 @@ cd Python && .venv/bin/pytest tests/ -v         # Python tests (85% coverage gat
 .venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
 .venv/bin/python scripts/find_automation.py "x" # Find existing automation
 ```
+
+## Session End (auto-summary + sync)
+
+```bash
+.venv/bin/python scripts/session.py summary --write  # Auto-generate summary from git log
+.venv/bin/python scripts/session.py sync --fix       # Sync stale numbers across docs
+.venv/bin/python scripts/session.py end --fix         # Run end-of-session checks
+./scripts/ai_commit.sh "docs: session end"            # Commit doc updates
+```
+
+Or just scan numbers: `.venv/bin/python scripts/sync_numbers.py --fix`
 
 ## Migration & Folder Structure Scripts
 
@@ -82,4 +93,4 @@ Always use `.venv/bin/python`, never bare `python`.
 
 React hooks: `useCSVFileImport`, `useCSVTextImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts) | `useBeamGeometry` | `useLiveDesign`, `useAutoDesign` | `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts) | `useExport` (BBS/DXF/report) | `useInsights`, `useCodeChecks`, `useRebarSuggestions` | `useRebarValidation`, `useRebarApply` | `useDesignWebSocket`
 
-FastAPI routers (13 total, 35 endpoints): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`, `__init__`
+FastAPI routers (12 routers, 35 endpoints): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`

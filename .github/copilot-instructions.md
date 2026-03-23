@@ -24,7 +24,7 @@ Core CANNOT import from Services or UI.
 Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
-grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes (13 routers)
+grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes (12 routers)
 grep "^def " Python/structural_lib/services/api.py | head -20   # 23 public + 6 private helpers
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names
 ```
@@ -45,6 +45,17 @@ cd Python && .venv/bin/pytest tests/ -v         # Tests (85% coverage gate)
 .venv/bin/python scripts/safe_file_move.py a b  # Safe file move
 .venv/bin/python scripts/find_automation.py "x" # Find automation
 ```
+
+## Session End (auto-summary + sync)
+
+```bash
+.venv/bin/python scripts/session.py summary --write  # Auto-generate summary from git log
+.venv/bin/python scripts/session.py sync --fix       # Sync stale numbers across docs
+.venv/bin/python scripts/session.py end --fix         # Run end-of-session checks
+./scripts/ai_commit.sh "docs: session end"            # Commit doc updates
+```
+
+Or just scan numbers: `.venv/bin/python scripts/sync_numbers.py --fix`
 
 ## Migration & Folder Structure Scripts
 
