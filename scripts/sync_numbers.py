@@ -34,6 +34,7 @@ DOCS_TO_SYNC = [
     REPO_ROOT / "llms.txt",
     REPO_ROOT / "CLAUDE.md",
     REPO_ROOT / ".github" / "copilot-instructions.md",
+    REPO_ROOT / "docs" / "getting-started" / "agent-bootstrap.md",
 ]
 
 
@@ -216,6 +217,10 @@ def get_update_rules() -> list[UpdateRule]:
         (".github/copilot-instructions.md", r"(\d+) public \+ (\d+) private helpers", "{public} public + {private} private helpers", "api_functions"),
         # llms.txt — endpoint count
         ("llms.txt", r"(\d+) endpoints across (\d+) routers", "{endpoints} endpoints across {routers} routers", "endpoint_router"),
+        # agent-bootstrap.md — endpoint/router count
+        ("docs/getting-started/agent-bootstrap.md", r"(\d+) endpoints across (\d+) routers", "{endpoints} endpoints across {routers} routers", "endpoint_router"),
+        # agent-bootstrap.md — function count
+        ("docs/getting-started/agent-bootstrap.md", r"(\d+) public functions \+ (\d+) private helpers", "{public} public functions + {private} private helpers", "api_functions"),
     ]
 
 

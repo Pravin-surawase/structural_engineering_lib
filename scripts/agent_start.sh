@@ -11,11 +11,11 @@
 #   ./scripts/agent_start.sh --worktree AGENT_5  # Background agent worktree
 #   ./scripts/agent_start.sh --skip-preflight    # Skip preflight (for recovery)
 #
-# This script replaces the need to run:
-#   1. source scripts/copilot_setup.sh (git pager config)
-#   2. ./scripts/agent_setup.sh (environment setup)
-#   3. ./scripts/agent_preflight.sh (pre-flight checks)
-#   4. .venv/bin/python scripts/session.py start (session start)
+# This script handles (all-in-one):
+#   1. Git pager config (prevents terminal lock)
+#   2. Environment setup (venv, dependencies)
+#   3. Pre-flight checks (git state, imports)
+#   4. Session start via session.py
 #
 # Created: 2026-01-11 (Session 13 Part 5)
 # Updated: 2026-01-11 (Session 13 Part 7) - v2.1: Fixed full mode, worktree passthrough
@@ -99,51 +99,29 @@ else
     echo -e "  ${YELLOW}⚠${NC} install_git_hooks.sh not found"
 fi
 
-# Step 1: Git Pager Configuration (use copilot_setup.sh if available)
+# Step 1: Git Pager Configuration (inline — copilot_setup.sh was consolidated here)
 echo -e "${BLUE}[1/6]${NC} Configuring git pager (prevents terminal lock)..."
-if [ -f "$SCRIPT_DIR/copilot_setup.sh" ]; then
-    source "$SCRIPT_DIR/copilot_setup.sh" 2>/dev/null || {
-        # Fallback to inline config if copilot_setup.sh fails
-        git config --global core.pager cat 2>/dev/null || true
-        git config --global pager.status false 2>/dev/null || true
-        git config --global pager.branch false 2>/dev/null || true
-        git config --global pager.diff false 2>/dev/null || true
-    }
-else
-    # Inline config if copilot_setup.sh doesn't exist
-    git config --global core.pager cat 2>/dev/null || true
-    git config --global pager.status false 2>/dev/null || true
-    git config --global pager.branch false 2>/dev/null || true
-    git config --global pager.diff false 2>/dev/null || true
-fi
+git config --global core.pager cat 2>/dev/null || true
+git config --global pager.status false 2>/dev/null || true
+git config --global pager.branch false 2>/dev/null || true
+git config --global pager.diff false 2>/dev/null || true
 export GIT_EDITOR=":"
 export PAGER=cat
 echo -e "  ${GREEN}✓${NC} Git pager disabled"
 
-# Step 2: Environment Setup via agent_setup.sh
+# Step 2: Environment Setup (inline — agent_setup.sh was consolidated here)
 echo -e "${BLUE}[2/6]${NC} Running environment setup..."
-if [ -f "$SCRIPT_DIR/agent_setup.sh" ]; then
-    SETUP_ARGS=""
-    [ -n "$WORKTREE" ] && SETUP_ARGS="$SETUP_ARGS --worktree $WORKTREE"
-    [ -n "$QUICK" ] && SETUP_ARGS="$SETUP_ARGS --quick"
-    "$SCRIPT_DIR/agent_setup.sh" $SETUP_ARGS 2>&1 || {
-        echo -e "  ${YELLOW}⚠${NC} agent_setup.sh had warnings (continuing)"
-    }
+if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
+    source "$PROJECT_ROOT/.venv/bin/activate"
+    echo -e "  ${GREEN}✓${NC} Virtual environment activated"
 else
-    # Fallback: basic environment activation
-    echo -e "  ${YELLOW}⚠${NC} agent_setup.sh not found, using fallback..."
-    if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
-        source "$PROJECT_ROOT/.venv/bin/activate"
-        echo -e "  ${GREEN}✓${NC} Virtual environment activated"
-    else
-        echo -e "  ${RED}✗${NC} Virtual environment not found!"
-        echo -e "  ${YELLOW}→${NC} Recovery steps:"
-        echo -e "     1. Run: python3 -m venv .venv"
-        echo -e "     2. Run: source .venv/bin/activate"
-        echo -e "     3. Run: cd Python && pip install -e '.[dev]' && cd .."
-        echo -e "     4. Then re-run: ./scripts/agent_start.sh"
-        exit 1
-    fi
+    echo -e "  ${RED}✗${NC} Virtual environment not found!"
+    echo -e "  ${YELLOW}→${NC} Recovery steps:"
+    echo -e "     1. Run: python3 -m venv .venv"
+    echo -e "     2. Run: source .venv/bin/activate"
+    echo -e "     3. Run: cd Python && pip install -e '.[dev]' && cd .."
+    echo -e "     4. Then re-run: ./scripts/agent_start.sh"
+    exit 1
 fi
 
 # Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
@@ -173,28 +151,32 @@ fi
 if [ -n "$SKIP_PREFLIGHT" ]; then
     echo -e "  ${YELLOW}⊘${NC} Skipped (--skip-preflight)"
 elif [ -n "$QUICK" ]; then
-    if [ -f "$SCRIPT_DIR/agent_preflight.sh" ]; then
-        # In quick mode, run preflight with --quick
-        PREFLIGHT_ARGS="--quick"
-        [ -n "$WORKTREE" ] && PREFLIGHT_ARGS="$PREFLIGHT_ARGS --worktree $WORKTREE"
-        if ! "$SCRIPT_DIR/agent_preflight.sh" $PREFLIGHT_ARGS 2>&1; then
-            echo -e "  ${YELLOW}⚠${NC} Pre-flight found warnings (continuing in quick mode)"
-        fi
+    # Quick mode: basic git state check only
+    if git status --porcelain | grep -q '^UU\|^AA'; then
+        echo -e "  ${YELLOW}⚠${NC} Unresolved merge conflicts detected"
     else
-        echo -e "  ${YELLOW}⊘${NC} Skipped (script not found)"
+        echo -e "  ${GREEN}✓${NC} Quick pre-flight passed"
     fi
 else
-    # Full mode: run full preflight, fail if issues found
-    if [ -f "$SCRIPT_DIR/agent_preflight.sh" ]; then
-        PREFLIGHT_ARGS=""
-        [ -n "$WORKTREE" ] && PREFLIGHT_ARGS="--worktree $WORKTREE"
-        if ! "$SCRIPT_DIR/agent_preflight.sh" $PREFLIGHT_ARGS 2>&1; then
-            echo -e "  ${RED}✗${NC} Pre-flight failed! Fix issues before continuing."
-            echo -e "  ${YELLOW}→${NC} Run with --skip-preflight to bypass (not recommended)"
-            exit 1
-        fi
+    # Full mode: inline pre-flight checks (agent_preflight.sh was consolidated here)
+    PREFLIGHT_OK=true
+    # Check for merge conflicts
+    if git status --porcelain | grep -q '^UU\|^AA'; then
+        echo -e "  ${RED}✗${NC} Unresolved merge conflicts!"
+        PREFLIGHT_OK=false
+    fi
+    # Check for broken imports
+    if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
+        "$PROJECT_ROOT/.venv/bin/python" -c "import structural_lib" 2>/dev/null || {
+            echo -e "  ${YELLOW}⚠${NC} structural_lib import failed (check Python/)"
+        }
+    fi
+    if [ "$PREFLIGHT_OK" = false ]; then
+        echo -e "  ${RED}✗${NC} Pre-flight failed! Fix issues before continuing."
+        echo -e "  ${YELLOW}→${NC} Run with --skip-preflight to bypass (not recommended)"
+        exit 1
     else
-        echo -e "  ${YELLOW}⊘${NC} Skipped (script not found)"
+        echo -e "  ${GREEN}✓${NC} Pre-flight checks passed"
     fi
 fi
 
@@ -238,7 +220,7 @@ if [ -n "$AGENT" ]; then
             echo -e "  ${BOLD}Key Commands:${NC}"
             echo "    ./scripts/ai_commit.sh \"message\"   # All commits"
             echo "    ./scripts/safe_push.sh \"message\"   # Direct push"
-            echo "    ./scripts/worktree_manager.sh list  # Manage worktrees"
+            echo "    git worktree list                  # Check worktrees"
             ;;
         9)
             echo -e "  ${YELLOW}Focus:${NC} Governance, folder structure, documentation"
@@ -246,8 +228,8 @@ if [ -n "$AGENT" ]; then
             echo -e "  ${YELLOW}Tasks:${NC} Look for GOV-* or DOC-* in TASKS.md"
             echo ""
             echo -e "  ${BOLD}Key Commands:${NC}"
-            echo "    .venv/bin/python scripts/validate_folder_structure.py"
-            echo "    .venv/bin/python scripts/check_governance_compliance.py"
+            echo "    .venv/bin/python scripts/check_governance.py --structure"
+            echo "    .venv/bin/python scripts/check_governance.py --compliance"
             echo "    .venv/bin/python scripts/check_links.py"
             ;;
         *)
@@ -266,7 +248,7 @@ if [ -n "$WORKTREE" ]; then
     echo "  Your changes are isolated in this worktree."
     echo "  When done, submit work:"
     echo "    cd $PROJECT_ROOT"
-    echo "    ./scripts/worktree_manager.sh submit $WORKTREE \"description\""
+    echo "    ./scripts/ai_commit.sh \"feat: description\""
     echo ""
 fi
 
@@ -306,7 +288,7 @@ echo ""
 echo -e "${BOLD}🧭 Git Workflow Quick Reference${NC}"
 echo "  1) ./scripts/ai_commit.sh \"message\""
 echo "  2) ./scripts/finish_task_pr.sh TASK-XXX \"description\" [--with-session-docs]"
-echo "  3) ./scripts/git_ops.sh --status"
+echo "  3) git status && git log --oneline -3"
 echo "  Docs: docs/git-automation/README.md"
 echo ""
 
