@@ -1,0 +1,81 @@
+{
+  "folder": "docs/guides",
+  "type": "documentation",
+  "description": "End-user and developer guides for specific workflows.",
+  "last_updated": "2026-03-24",
+  "file_count": 8,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 14,
+      "last_updated": "2026-03-24",
+      "title": "User Guides",
+      "description": "End-user and developer guides for specific workflows. | Guide | Description |",
+      "content_hash": "f74955da283d"
+    },
+    {
+      "name": "ai-agent-coding-guide.md",
+      "type": "documentation",
+      "size_lines": 994,
+      "last_updated": "2026-01-23",
+      "title": "AI Agent Coding Guide",
+      "description": "This guide ensures consistent, high-quality code from all AI agents working on this project. Every AI agent MUST read and follow this guide before writing any code. 1. Library-first: All logic belongs",
+      "content_hash": "0d31a48e817f"
+    },
+    {
+      "name": "code-reuse-and-library-structure.md",
+      "type": "documentation",
+      "size_lines": 592,
+      "last_updated": "2026-01-23",
+      "title": "Code Reuse and Library Structure",
+      "description": "Every calculation, validation, and data transformation MUST live in the library. UI (Streamlit, React) and AI tools are thin wrappers that call library functions. ",
+      "content_hash": "e755f2bd5f10"
+    },
+    {
+      "name": "etabs-vba-user-guide.md",
+      "type": "documentation",
+      "size_lines": 651,
+      "last_updated": "2026-01-23",
+      "description": "This guide helps you set up and use the ETABS VBA Export Macro to export beam forces from ETABS to the structural_engineering_lib CSV format. - ✅ Connects to ETABS automatically",
+      "content_hash": "11ebf208084a"
+    },
+    {
+      "name": "fastapi-deployment-guide.md",
+      "type": "documentation",
+      "size_lines": 412,
+      "last_updated": "2026-01-24",
+      "description": "This guide covers deploying the structural_engineering_lib FastAPI application to production environments. 1. Prerequisites",
+      "content_hash": "f4d6a5435cd3"
+    },
+    {
+      "name": "react-ui-user-flow.md",
+      "type": "documentation",
+      "size_lines": 525,
+      "last_updated": "2026-01-27",
+      "title": "React App User Flow Guide",
+      "description": "This document is the **single source of truth** for React app UX flows, consolidating research from: - STREAMLIT-RESEARCH-009-USER-JOURNEY.md (1,081 lines)",
+      "content_hash": "904e7e18ccd5"
+    },
+    {
+      "name": "testing-and-cicd-strategy.md",
+      "type": "documentation",
+      "size_lines": 272,
+      "last_updated": "2026-01-23",
+      "title": "Testing and CI/CD Strategy",
+      "description": "This project has a **mature, production-grade** CI/CD setup. This document reflects what EXISTS and what's MISSING. ",
+      "content_hash": "ba9f0ec8b756"
+    },
+    {
+      "name": "week3-realtime-features-guide.md",
+      "type": "documentation",
+      "size_lines": 490,
+      "last_updated": "2026-01-24",
+      "title": "Week 3 FastAPI Real-Time Features: Learning Guide",
+      "description": "This document explains the real-time communication features implemented in Week 3 of the FastAPI migration: **WebSocket** for live design sessions, **Server-Sent Events (SSE)** for batch processing, *",
+      "content_hash": "05dc9f009cab"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "edb22779b3e5bfc2"
+}

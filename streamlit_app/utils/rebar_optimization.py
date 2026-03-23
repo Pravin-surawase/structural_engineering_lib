@@ -23,11 +23,11 @@ if TYPE_CHECKING:
 
 # Try to import library functions
 try:
-    from structural_lib.codes.is456.detailing import (
+    from structural_lib.detailing import (
         select_bar_arrangement,
         STANDARD_BAR_DIAMETERS,
     )
-    from structural_lib.codes.is456.shear import design_shear
+    from structural_lib.shear import design_shear
 
     LIBRARY_AVAILABLE = True
 except ImportError:

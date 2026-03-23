@@ -1,264 +1,290 @@
 {
   "folder": "docs/contributing",
-  "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |",
-  "last_updated": "2026-01-21",
-  "file_count": 30,
+  "type": "documentation",
+  "description": "Guides for developers and maintainers of the structural engineering library.",
+  "last_updated": "2026-03-24",
+  "file_count": 31,
   "files": [
     {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 110,
+      "last_updated": "2026-01-23",
+      "title": "Contributing",
+      "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |",
+      "content_hash": "fdb7326e9239"
+    },
+    {
       "name": "agent-coding-standards.md",
+      "type": "documentation",
+      "size_lines": 744,
+      "last_updated": "2026-02-11",
       "title": "Agent Coding Standards for structural_lib",
       "description": "This guide ensures AI agents write code that is: - ✅ Compatible with existing structural_lib code",
-      "last_updated": "2026-01-21",
-      "size_lines": 744,
-      "audience": "AI Agents, Developers",
-      "status": "Approved"
+      "content_hash": "e8d1a45f5c8f"
     },
     {
       "name": "agent-collaboration-framework.md",
+      "type": "documentation",
+      "size_lines": 666,
+      "last_updated": "2026-01-23",
       "title": "Agent Collaboration Framework",
       "description": "This project uses **agent-driven maintenance** where specialized AI agents (researcher, tester, devops, pm, dev) work in parallel on isolated tasks. This framework defines roles, workflows, and coordi",
-      "last_updated": "2026-01-21",
-      "size_lines": 666,
-      "status": "ACTIVE"
+      "content_hash": "9d59f6e48c18"
     },
     {
       "name": "agent-onboarding-message.md",
+      "type": "documentation",
+      "size_lines": 45,
+      "last_updated": "2026-02-10",
       "title": "First Message for New Agents",
       "description": "> **Copy-paste this exact message to any new agent starting work on this project.** ",
-      "last_updated": "2026-01-21",
-      "size_lines": 103
+      "content_hash": "23f9cee2d638"
     },
     {
       "name": "background-agent-guide.md",
+      "type": "documentation",
+      "size_lines": 585,
+      "last_updated": "2026-02-11",
       "title": "Background Agent Parallel Work Guide",
       "description": "- **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatGPT) working on assigned tasks - **MAIN Agent/User:** You (the project owner) coordinating work and handling all remote G",
-      "last_updated": "2026-01-21",
-      "size_lines": 585,
-      "status": "v2.0 - Updated for multi-agent collaboration framework (2026-01-07)"
+      "content_hash": "a1ff0ee56615"
     },
     {
       "name": "changelog-deprecation-template.md",
+      "type": "documentation",
+      "size_lines": 177,
+      "last_updated": "2026-01-23",
       "title": "CHANGELOG Template for Deprecations",
       "description": "This template guides you when adding deprecation entries to CHANGELOG.md. Deprecations go under the **### Deprecated** section for the **current unreleased version**.",
-      "last_updated": "2026-01-21",
-      "size_lines": 177
+      "content_hash": "28846d7a8d7a"
     },
     {
       "name": "commit-message-conventions.md",
+      "type": "documentation",
+      "size_lines": 208,
+      "last_updated": "2026-01-23",
       "title": "Git Commit Message Conventions",
       "description": " <type>(<scope>): <subject>",
-      "last_updated": "2026-01-21",
-      "size_lines": 208,
-      "audience": "All Agents",
-      "status": "Production Ready"
+      "content_hash": "98a93c658742"
     },
     {
       "name": "development-guide.md",
+      "type": "documentation",
+      "size_lines": 1512,
+      "last_updated": "2026-02-11",
       "title": "IS 456 RC Beam Design Library — Development Guide",
       "description": "1. Overview 2. Project Structure",
-      "last_updated": "2026-01-21",
-      "size_lines": 1512,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "387f9d1091ee"
     },
     {
       "name": "doc-template.md",
+      "type": "documentation",
+      "size_lines": 83,
+      "last_updated": "2026-01-23",
       "title": "Documentation Template",
       "description": "Copy this header to new documentation files and fill in the metadata. - owner: Who maintains this doc (Main Agent, Agent 9, User)",
-      "last_updated": "2026-01-21",
-      "size_lines": 83,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "0437080b5ed2"
     },
     {
       "name": "docstring-style-guide.md",
+      "type": "documentation",
+      "size_lines": 368,
+      "last_updated": "2026-01-23",
       "title": "Docstring Style Guide",
       "description": "> **Purpose:** Standard docstring format for all Python modules in structural_lib > **Style:** Google Style (readable, widely adopted in scientific Python)",
-      "last_updated": "2026-01-21",
-      "size_lines": 368,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "7540ffbd01ea"
     },
     {
       "name": "end-of-session-workflow.md",
+      "type": "documentation",
+      "size_lines": 490,
+      "last_updated": "2026-02-11",
       "title": "End-of-Session Workflow",
       "description": "> **Standard procedure for ALL agents when ending a session.** bash",
-      "last_updated": "2026-01-21",
-      "size_lines": 490,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "546d130fba00"
     },
     {
       "name": "excel-addin-guide.md",
+      "type": "documentation",
+      "size_lines": 381,
+      "last_updated": "2026-01-23",
       "title": "How to Create and Use the Excel Add-in (.xlam)",
       "description": "This guide explains how to package the VBA library into a reusable Excel Add-in (StructEngLib.xlam). 1) Open a new blank Excel workbook.",
-      "last_updated": "2026-01-21",
-      "size_lines": 381,
-      "audience": "Developers",
-      "status": "Production Ready"
+      "content_hash": "d70c06f069dc"
     },
     {
       "name": "git-workflow-ai-agents.md",
+      "type": "documentation",
+      "size_lines": 87,
+      "last_updated": "2026-01-23",
       "title": "Git Workflow for AI Agents (Canonical)",
-      "description": "**Never use manual git commit/push.** Always use the workflow scripts. Run:",
-      "last_updated": "2026-01-21",
-      "size_lines": 87
+      "description": "Run: bash",
+      "content_hash": "703b60d758aa"
     },
     {
       "name": "git-workflow-testing.md",
+      "type": "documentation",
+      "size_lines": 334,
+      "last_updated": "2026-01-23",
       "title": "Git Workflow Testing Strategy",
       "description": "This document explains how we test and validate our git workflow to prevent merge conflicts, rebase issues, and other common git problems. 1. **Prevent merge conflicts** through automated conflict det",
-      "last_updated": "2026-01-21",
-      "size_lines": 334,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "43856f588825"
     },
     {
       "name": "github-workflow.md",
+      "type": "documentation",
+      "size_lines": 287,
+      "last_updated": "2026-01-23",
       "title": "GitHub Workflow Guide",
       "description": "bash ./scripts/should_use_pr.sh --explain",
-      "last_updated": "2026-01-21",
-      "size_lines": 287,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "61f93e2b41a0"
     },
     {
       "name": "handoff.md",
+      "type": "documentation",
+      "size_lines": 87,
+      "last_updated": "2026-02-11",
       "title": "Handoff Quick Start",
       "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: ./scripts/agent_start.sh --quick (or with --agent 9 for governance work)",
-      "last_updated": "2026-01-21",
-      "size_lines": 87
+      "content_hash": "91eca2b2ba63"
     },
     {
       "name": "learning-paths.md",
+      "type": "documentation",
+      "size_lines": 90,
+      "last_updated": "2026-02-10",
       "title": "Learning Paths for Contributors",
       "description": "Pick the smallest reading path that still protects quality. Each path lists the minimum docs to read before you work. | Task type | Path | Read first |",
-      "last_updated": "2026-01-21",
-      "size_lines": 90,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "996e45ee878a"
     },
     {
       "name": "lesson-incomplete-implementation.md",
+      "type": "documentation",
+      "size_lines": 363,
+      "last_updated": "2026-01-23",
       "title": "Lesson Learned: Incomplete Implementation (2026-01-09)",
       "description": "✅ \"Background agents work on worktrees (local commits only)\" ✅ \"Automatic detection, zero configuration\"",
-      "last_updated": "2026-01-21",
-      "size_lines": 363,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "6a7cd5f2fd45"
     },
     {
       "name": "naming-conventions.md",
+      "type": "documentation",
+      "size_lines": 68,
+      "last_updated": "2026-01-23",
       "title": "Naming Conventions",
       "description": "This document defines naming standards for files, modules, and symbols in this repository.",
-      "last_updated": "2026-01-21",
-      "size_lines": 68,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "e3b43e364d50"
     },
     {
       "name": "quickstart-checklist.md",
+      "type": "documentation",
+      "size_lines": 500,
+      "last_updated": "2026-02-11",
       "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
       "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** streamlit_app/pages/NN_📋_page_name.py",
-      "last_updated": "2026-01-21",
-      "size_lines": 500,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "b2ebbba1a1a4"
     },
     {
       "name": "repo-professionalism.md",
+      "type": "documentation",
+      "size_lines": 207,
+      "last_updated": "2026-02-11",
       "title": "Repo Professionalism Playbook",
       "description": "This doc does not replace existing rules. It links to the canonical sources and adds a practical \"what to do next\" map. bash",
-      "last_updated": "2026-01-21",
-      "size_lines": 207,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "39707209b117"
     },
     {
       "name": "session-issues.md",
+      "type": "documentation",
+      "size_lines": 62,
+      "last_updated": "2026-01-23",
       "title": "Session Issues and Fixes",
       "description": "Purpose: capture recurring friction points and the fixes so we do not repeat them. - Pre-commit failures (files changed by hooks after staging)",
-      "last_updated": "2026-01-21",
-      "size_lines": 62
+      "content_hash": "5e2418770e03"
     },
     {
       "name": "solo-maintainer-operating-system.md",
+      "type": "documentation",
+      "size_lines": 124,
+      "last_updated": "2026-02-11",
       "title": "Solo Maintainer Operating System (Public)",
       "description": "- Deterministic outputs, explicit units, stable contracts. - One active task at a time (WIP=1).",
-      "last_updated": "2026-01-21",
-      "size_lines": 124,
-      "audience": "Maintainers",
-      "status": "Approved"
+      "content_hash": "90eb796a8fd2"
     },
     {
       "name": "streamlit-comprehensive-prevention-system.md",
+      "type": "documentation",
+      "size_lines": 504,
+      "last_updated": "2026-02-11",
       "title": "Comprehensive Streamlit App Prevention System",
       "description": "> **Context:** Built prevention system for cost_optimizer.py (PR #301), but discovered > NameError in beam_design.py that wasn't caught. Need app-wide solution.",
-      "last_updated": "2026-01-21",
-      "size_lines": 504,
-      "audience": "Developers",
-      "status": "Complete"
+      "content_hash": "c481b72e91c0"
     },
     {
       "name": "streamlit-issues-catalog.md",
+      "type": "documentation",
+      "size_lines": 317,
+      "last_updated": "2026-02-11",
       "title": "Streamlit App Comprehensive Issue Catalog",
       "description": "> **Purpose:** Complete catalog of all issues found across 5 Streamlit pages. > This document guides Phase 1B fixes and tracks progress.",
-      "last_updated": "2026-01-21",
-      "size_lines": 317,
-      "audience": "Developers",
-      "status": "Complete"
+      "content_hash": "c02968dc1511"
     },
     {
       "name": "streamlit-maintenance-guide.md",
+      "type": "documentation",
+      "size_lines": 758,
+      "last_updated": "2026-02-11",
       "title": "Streamlit Maintenance Guide",
       "description": "> **Purpose:** Your complete reference for developing, testing, validating, and maintaining the Streamlit UI. 1. Quick Start",
-      "last_updated": "2026-01-21",
-      "size_lines": 758
+      "content_hash": "dd3bf23c3fc2"
     },
     {
       "name": "streamlit-prevention-system-review.md",
+      "type": "documentation",
+      "size_lines": 608,
+      "last_updated": "2026-02-11",
       "title": "Comprehensive Prevention System - Review & Refinements",
       "description": "> **Purpose:** Critical review of the proposed comprehensive prevention system, > identifying gaps, refining approach, and prioritizing implementation.",
-      "last_updated": "2026-01-21",
-      "size_lines": 608,
-      "status": "📝 UNDER REVIEW"
+      "content_hash": "c3908c48c263"
     },
     {
       "name": "testing-strategy.md",
+      "type": "documentation",
+      "size_lines": 276,
+      "last_updated": "2026-01-23",
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
       "description": "- Location: Python/tests/ - Runner: pytest",
-      "last_updated": "2026-01-21",
-      "size_lines": 276,
-      "audience": "Developers",
-      "status": "Production Ready"
+      "content_hash": "717785d102ab"
     },
     {
       "name": "vba-guide.md",
+      "type": "documentation",
+      "size_lines": 65,
+      "last_updated": "2026-01-23",
       "title": "VBA Library Guide",
       "description": "Practical guide to consume, ship, and maintain the VBA side of the Structural Engineering Library. - **Current modules:** M01_Constants through M17_Serviceability plus optional tests in VBA/Tests.",
-      "last_updated": "2026-01-21",
-      "size_lines": 65,
-      "audience": "Developers",
-      "status": "Production Ready"
+      "content_hash": "6fc46690936c"
     },
     {
       "name": "vba-testing-guide.md",
+      "type": "documentation",
+      "size_lines": 247,
+      "last_updated": "2026-01-23",
       "title": "VBA Testing Guide",
       "description": "1. **Open** the Excel workbook (Excel/StructEng_BeamDesign_v0.5.xlsm or BeamDesignApp.xlsm) 2. **Press** Alt+F11 to open the VBA Editor",
-      "last_updated": "2026-01-21",
-      "size_lines": 247,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "1814529201bb"
     },
     {
       "name": "workflow-professional-review.md",
+      "type": "documentation",
+      "size_lines": 449,
+      "last_updated": "2026-01-23",
       "title": "Git Workflow Professional Review & Recommendations",
       "description": "| Feature | Status | Notes | |---------|--------|-------|",
-      "last_updated": "2026-01-21",
-      "size_lines": 449,
-      "audience": "Developers",
-      "status": "Complete"
+      "content_hash": "27f2d0d06e96"
     }
   ],
-  "subfolders": []
+  "subfolders": [],
+  "content_hash": "b6fc3562d3cbd37f"
 }

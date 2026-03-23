@@ -30,7 +30,7 @@ if str(_lib_path) not in sys.path:
 # Try to import development length from library (preferred)
 _HAS_LIBRARY = False
 try:
-    from structural_lib.codes.is456.detailing import calculate_development_length
+    from structural_lib.detailing import calculate_development_length
 
     _HAS_LIBRARY = True
 except ImportError:

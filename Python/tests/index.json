@@ -1,0 +1,1372 @@
+{
+  "folder": "Python/tests",
+  "type": "python-package",
+  "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
+  "last_updated": "2026-03-24",
+  "file_count": 20,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 394,
+      "last_updated": "2026-01-23",
+      "title": "Test Suite Organization",
+      "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite. - test_detailing.py - Reinforcement detailing calculations",
+      "content_hash": "706b48faeda0"
+    },
+    {
+      "name": "conftest.py",
+      "type": "python",
+      "size_lines": 58,
+      "last_updated": "2026-01-23",
+      "description": "Pytest configuration and Hypothesis profiles for the test suite.",
+      "content_hash": "442e06a4dc4b"
+    },
+    {
+      "name": "test_api_results.py",
+      "type": "python",
+      "size_lines": 394,
+      "last_updated": "2026-02-10",
+      "description": "Tests for API result dataclasses.",
+      "classes": [
+        {
+          "name": "TestCostOptimizationResult",
+          "description": "Tests for CostOptimizationResult.",
+          "public_methods": [
+            "test_create_cost_optimization_result",
+            "test_cost_optimization_summary",
+            "test_cost_optimization_to_dict",
+            "test_cost_optimization_immutable"
+          ]
+        },
+        {
+          "name": "TestDesignSuggestionsResult",
+          "description": "Tests for DesignSuggestionsResult.",
+          "public_methods": [
+            "test_create_design_suggestions_result",
+            "test_suggestions_summary",
+            "test_high_impact_filter",
+            "test_by_category_filter"
+          ]
+        },
+        {
+          "name": "TestSmartAnalysisResult",
+          "description": "Tests for SmartAnalysisResult.",
+          "public_methods": [
+            "test_create_smart_analysis_result",
+            "test_smart_analysis_summary",
+            "test_smart_analysis_to_json",
+            "test_smart_analysis_to_text"
+          ]
+        }
+      ],
+      "content_hash": "5bb1f0f94b11"
+    },
+    {
+      "name": "test_audit.py",
+      "type": "python",
+      "size_lines": 468,
+      "last_updated": "2026-02-10",
+      "description": "Tests for audit module (TASK-278).",
+      "classes": [
+        {
+          "name": "TestCalculationHash",
+          "description": "Tests for CalculationHash class.",
+          "public_methods": [
+            "test_hash_creation",
+            "test_hash_deterministic",
+            "test_hash_different_for_different_inputs",
+            "test_verify_inputs_success",
+            "test_verify_outputs_success",
+            "test_to_dict",
+            "test_hash_handles_complex_types"
+          ]
+        },
+        {
+          "name": "TestComputeHash",
+          "description": "Tests for compute_hash function.",
+          "public_methods": [
+            "test_compute_hash_basic",
+            "test_compute_hash_deterministic",
+            "test_compute_hash_order_independent"
+          ]
+        },
+        {
+          "name": "TestAuditLogEntry",
+          "description": "Tests for AuditLogEntry class.",
+          "public_methods": [
+            "test_entry_creation",
+            "test_entry_to_dict"
+          ]
+        },
+        {
+          "name": "TestAuditTrail",
+          "description": "Tests for AuditTrail class.",
+          "public_methods": [
+            "test_trail_creation",
+            "test_log_design",
+            "test_log_verification",
+            "test_get_entry_by_id",
+            "test_get_entries_for_beam",
+            "test_verify_entry",
+            "test_to_dict_and_json",
+            "test_export_and_import"
+          ]
+        },
+        {
+          "name": "TestCalculationCertificate",
+          "description": "Tests for calculation certificate functions.",
+          "public_methods": [
+            "test_create_certificate",
+            "test_verify_calculation_success",
+            "test_verify_calculation_modified_inputs",
+            "test_verify_calculation_modified_outputs",
+            "test_verify_calculation_both_modified",
+            "test_verify_calculation_missing_hash"
+          ]
+        },
+        {
+          "name": "TestIntegrationWithApi",
+          "description": "Integration tests with api module.",
+          "public_methods": [
+            "test_api_exports_audit_classes",
+            "test_audit_with_real_design"
+          ]
+        }
+      ],
+      "content_hash": "3525592018ee"
+    },
+    {
+      "name": "test_calculation_report.py",
+      "type": "python",
+      "size_lines": 612,
+      "last_updated": "2026-02-10",
+      "description": "Tests for the calculation_report module (TASK-277).",
+      "classes": [
+        {
+          "name": "TestProjectInfo",
+          "description": "Tests for ProjectInfo dataclass.",
+          "public_methods": [
+            "test_default_values",
+            "test_custom_values",
+            "test_date_auto_set",
+            "test_date_preserved"
+          ]
+        },
+        {
+          "name": "TestInputSection",
+          "description": "Tests for InputSection dataclass.",
+          "public_methods": [
+            "test_default_empty",
+            "test_populated_section"
+          ]
+        },
+        {
+          "name": "TestResultSection",
+          "description": "Tests for ResultSection dataclass.",
+          "public_methods": [
+            "test_default_empty",
+            "test_populated_section"
+          ]
+        },
+        {
+          "name": "TestCalculationReport",
+          "description": "Tests for CalculationReport class.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_from_design_result",
+            "test_from_design_result_extracts_geometry",
+            "test_from_design_result_extracts_flexure",
+            "test_from_design_result_extracts_shear",
+            "test_to_dict",
+            "test_to_json",
+            "test_code_references_and_notes",
+            "test_verification_hash"
+          ]
+        },
+        {
+          "name": "TestExportFunctions",
+          "description": "Tests for report export functions.",
+          "public_methods": [
+            "test_export_json",
+            "test_export_json_creates_directories",
+            "test_export_html",
+            "test_export_html_contains_structure",
+            "test_export_html_status_pass",
+            "test_export_html_status_fail",
+            "test_export_markdown",
+            "test_export_markdown_tables"
+          ]
+        },
+        {
+          "name": "TestGenerateCalculationReport",
+          "description": "Tests for the generate_calculation_report convenience function.",
+          "public_methods": [
+            "test_basic_generation",
+            "test_with_project_info",
+            "test_with_html_export",
+            "test_with_json_export",
+            "test_with_markdown_export",
+            "test_invalid_format"
+          ]
+        },
+        {
+          "name": "TestFormatNumber",
+          "description": "Tests for the _format_number helper.",
+          "public_methods": [
+            "test_none_returns_na",
+            "test_integer_no_decimals",
+            "test_decimal_two_places",
+            "test_string_passthrough"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Tests for edge cases and error handling.",
+          "public_methods": [
+            "test_empty_result",
+            "test_result_without_design",
+            "test_special_characters_escaped_in_html",
+            "test_verification_hash_in_exports"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "sample_project_info",
+          "description": "Sample project information."
+        },
+        {
+          "name": "sample_input_section",
+          "description": "Sample input section with geometry and materials."
+        },
+        {
+          "name": "sample_result_section",
+          "description": "Sample result section with flexure and shear."
+        },
+        {
+          "name": "mock_design_result",
+          "description": "Mock design result with all expected attributes.",
+          "params": [
+            "sample_input_section",
+            "sample_result_section"
+          ]
+        }
+      ],
+      "content_hash": "7f08501e1604"
+    },
+    {
+      "name": "test_clause_traceability.py",
+      "type": "python",
+      "size_lines": 489,
+      "last_updated": "2026-01-23",
+      "description": "Tests for IS 456 Traceability Module",
+      "classes": [
+        {
+          "name": "TestClauseDatabaseLoading",
+          "description": "Tests for clause database loading.",
+          "public_methods": [
+            "test_database_exists",
+            "test_database_loads_successfully",
+            "test_database_has_required_keys",
+            "test_database_metadata_valid",
+            "test_clauses_have_required_fields"
+          ]
+        },
+        {
+          "name": "TestClauseDecorator",
+          "description": "Tests for the @clause decorator.",
+          "public_methods": [
+            "test_single_clause_reference",
+            "test_multiple_clause_references",
+            "test_decorator_preserves_function_name",
+            "test_decorator_registers_function",
+            "test_chained_decorators",
+            "test_decorator_with_function_args"
+          ]
+        },
+        {
+          "name": "TestGetClauseRefs",
+          "description": "Tests for get_clause_refs function.",
+          "public_methods": [
+            "test_get_refs_from_function",
+            "test_get_refs_from_string",
+            "test_get_refs_undecorated_function"
+          ]
+        },
+        {
+          "name": "TestGetClauseInfo",
+          "description": "Tests for get_clause_info function.",
+          "public_methods": [
+            "test_get_existing_clause",
+            "test_get_nonexistent_clause",
+            "test_clause_info_has_keywords",
+            "test_clause_info_has_formula"
+          ]
+        },
+        {
+          "name": "TestListClausesByCategory",
+          "description": "Tests for list_clauses_by_category function.",
+          "public_methods": [
+            "test_list_flexure_clauses",
+            "test_list_shear_clauses",
+            "test_list_detailing_clauses",
+            "test_list_unknown_category"
+          ]
+        },
+        {
+          "name": "TestSearchClauses",
+          "description": "Tests for search_clauses function.",
+          "public_methods": [
+            "test_search_by_keyword",
+            "test_search_case_insensitive",
+            "test_search_no_results",
+            "test_search_in_title"
+          ]
+        },
+        {
+          "name": "TestGenerateTraceabilityReport",
+          "description": "Tests for traceability report generation.",
+          "public_methods": [
+            "test_report_structure",
+            "test_report_includes_registered_functions",
+            "test_report_coverage_calculation"
+          ]
+        },
+        {
+          "name": "TestGetDatabaseMetadata",
+          "description": "Tests for database metadata retrieval.",
+          "public_methods": [
+            "test_metadata_returns_dict",
+            "test_metadata_contains_standard",
+            "test_metadata_contains_version"
+          ]
+        },
+        {
+          "name": "TestRealWorldIntegration",
+          "description": "Integration tests with realistic scenarios.",
+          "public_methods": [
+            "test_beam_design_traceability",
+            "test_full_workflow"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Tests for edge cases and error handling.",
+          "public_methods": [
+            "test_empty_clause_list",
+            "test_duplicate_clause_references",
+            "test_clause_with_special_characters",
+            "test_lambda_function_with_clause"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "clear_registry",
+          "description": "Clear the clause registry before and after each test."
+        },
+        {
+          "name": "sample_decorated_function",
+          "description": "Create a sample decorated function for testing."
+        }
+      ],
+      "content_hash": "18e8d70d45a0"
+    },
+    {
+      "name": "test_core.py",
+      "type": "python",
+      "size_lines": 176,
+      "last_updated": "2026-01-23",
+      "description": "Tests for structural_lib.core module.",
+      "classes": [
+        {
+          "name": "TestDesignResult",
+          "description": "Tests for DesignResult dataclass.",
+          "public_methods": [
+            "test_success_result",
+            "test_failure_result_with_warnings"
+          ]
+        },
+        {
+          "name": "TestCodeRegistry",
+          "description": "Tests for CodeRegistry.",
+          "public_methods": [
+            "test_is456_registered",
+            "test_get_is456",
+            "test_list_codes",
+            "test_get_unknown_code_raises"
+          ]
+        },
+        {
+          "name": "TestMaterials",
+          "description": "Tests for material classes.",
+          "public_methods": [
+            "test_concrete_creation",
+            "test_concrete_fcm",
+            "test_steel_creation",
+            "test_steel_design_stress",
+            "test_material_factory_is456",
+            "test_material_factory_aci318",
+            "test_material_factory_ec2"
+          ]
+        },
+        {
+          "name": "TestRectangularSection",
+          "description": "Tests for RectangularSection geometry.",
+          "public_methods": [
+            "test_creation",
+            "test_area",
+            "test_centroid",
+            "test_moment_of_inertia",
+            "test_effective_depth_auto_calculated",
+            "test_effective_depth_explicit"
+          ]
+        },
+        {
+          "name": "TestTSection",
+          "description": "Tests for T-beam geometry.",
+          "public_methods": [
+            "test_creation",
+            "test_area",
+            "test_centroid_above_mid_height"
+          ]
+        },
+        {
+          "name": "TestLSection",
+          "description": "Tests for L-beam geometry.",
+          "public_methods": [
+            "test_creation",
+            "test_area_less_than_tsection"
+          ]
+        }
+      ],
+      "content_hash": "3c775173337c"
+    },
+    {
+      "name": "test_design_from_input.py",
+      "type": "python",
+      "size_lines": 142,
+      "last_updated": "2026-02-10",
+      "description": "Tests for design_from_input API function.",
+      "classes": [
+        {
+          "name": "TestDesignFromInput",
+          "description": "Tests for design_from_input function.",
+          "public_methods": [
+            "test_simple_single_case",
+            "test_design_with_detailing",
+            "test_multi_case_with_detailing",
+            "test_multi_case_without_detailing",
+            "test_with_seismic_detailing",
+            "test_effective_depth_calculation",
+            "test_api_exports_input_classes"
+          ]
+        }
+      ],
+      "content_hash": "3510163d9ca5"
+    },
+    {
+      "name": "test_error_messages.py",
+      "type": "python",
+      "size_lines": 294,
+      "last_updated": "2026-01-23",
+      "description": "Tests for error message templates.",
+      "classes": [
+        {
+          "name": "TestDimensionTemplates",
+          "description": "Tests for dimension error message templates.",
+          "public_methods": [
+            "test_dimension_too_small",
+            "test_dimension_too_small_without_clause",
+            "test_dimension_too_large",
+            "test_dimension_negative",
+            "test_dimension_relationship_invalid"
+          ]
+        },
+        {
+          "name": "TestMaterialTemplates",
+          "description": "Tests for material error message templates.",
+          "public_methods": [
+            "test_material_grade_invalid",
+            "test_material_property_out_of_range_both_bounds",
+            "test_material_property_out_of_range_min_only",
+            "test_material_property_out_of_range_max_only"
+          ]
+        },
+        {
+          "name": "TestDesignConstraintTemplates",
+          "description": "Tests for design constraint error message templates.",
+          "public_methods": [
+            "test_capacity_exceeded",
+            "test_capacity_exceeded_no_suggestions",
+            "test_reinforcement_spacing_insufficient"
+          ]
+        },
+        {
+          "name": "TestComplianceTemplates",
+          "description": "Tests for compliance error message templates.",
+          "public_methods": [
+            "test_minimum_reinforcement_not_met",
+            "test_maximum_reinforcement_exceeded",
+            "test_spacing_limit_exceeded"
+          ]
+        },
+        {
+          "name": "TestCalculationTemplates",
+          "description": "Tests for calculation error message templates.",
+          "public_methods": [
+            "test_convergence_failed",
+            "test_convergence_failed_without_current_error",
+            "test_numerical_instability"
+          ]
+        },
+        {
+          "name": "TestHelperFunctions",
+          "description": "Tests for helper functions.",
+          "public_methods": [
+            "test_format_value_with_unit",
+            "test_format_value_with_unit_default_precision",
+            "test_format_list_empty",
+            "test_format_list_single_item",
+            "test_format_list_two_items",
+            "test_format_list_multiple_items",
+            "test_format_list_with_and"
+          ]
+        },
+        {
+          "name": "TestRealWorldExamples",
+          "description": "Tests demonstrating real-world usage.",
+          "public_methods": [
+            "test_beam_width_validation",
+            "test_concrete_grade_validation",
+            "test_moment_capacity_exceeded",
+            "test_minimum_steel_violation"
+          ]
+        }
+      ],
+      "content_hash": "d80a17806ec5"
+    },
+    {
+      "name": "test_etabs_import_integration.py",
+      "type": "python",
+      "size_lines": 330,
+      "last_updated": "2026-02-10",
+      "description": "Integration tests for etabs_import Pydantic conversion functions.",
+      "classes": [
+        {
+          "name": "TestToBeamGeometry",
+          "description": "Tests for to_beam_geometry conversion function.",
+          "public_methods": [
+            "test_basic_conversion",
+            "test_id_format",
+            "test_coordinates_preserved",
+            "test_length_calculated",
+            "test_section_properties_custom",
+            "test_column_frame_type"
+          ]
+        },
+        {
+          "name": "TestToBeamForces",
+          "description": "Tests for to_beam_forces conversion function.",
+          "public_methods": [
+            "test_basic_conversion",
+            "test_id_format",
+            "test_station_count_preserved",
+            "test_axial_default_zero"
+          ]
+        },
+        {
+          "name": "TestBatchConversion",
+          "description": "Tests for batch conversion functions.",
+          "public_methods": [
+            "test_frames_to_beam_geometries_empty",
+            "test_frames_to_beam_geometries_beam_only",
+            "test_frames_to_beam_geometries_section_map",
+            "test_envelopes_to_beam_forces_empty",
+            "test_envelopes_to_beam_forces_multiple"
+          ]
+        },
+        {
+          "name": "TestRealETABSData",
+          "description": "Integration tests with real ETABS export data.",
+          "public_methods": [
+            "test_load_and_convert_frames",
+            "test_load_and_convert_forces",
+            "test_round_trip_serialization"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "sample_frame_geometry",
+          "description": "Create a sample FrameGeometry dataclass for testing."
+        },
+        {
+          "name": "sample_column_geometry",
+          "description": "Create a sample column FrameGeometry for testing."
+        },
+        {
+          "name": "sample_envelope",
+          "description": "Create a sample ETABSEnvelopeResult dataclass for testing."
+        },
+        {
+          "name": "real_etabs_data_dir",
+          "description": "Path to real ETABS test data, or None if not available."
+        }
+      ],
+      "content_hash": "6da4ea61aebb"
+    },
+    {
+      "name": "test_exception_hierarchy.py",
+      "type": "python",
+      "size_lines": 278,
+      "last_updated": "2026-02-10",
+      "description": "Tests for exception hierarchy in errors module.",
+      "classes": [
+        {
+          "name": "TestExceptionHierarchy",
+          "description": "Tests for exception hierarchy structure.",
+          "public_methods": [
+            "test_base_exception",
+            "test_base_exception_with_all_fields",
+            "test_validation_error",
+            "test_design_constraint_error",
+            "test_compliance_error",
+            "test_configuration_error",
+            "test_calculation_error",
+            "test_dimension_error",
+            "test_material_error",
+            "test_load_error"
+          ]
+        },
+        {
+          "name": "TestExceptionCatching",
+          "description": "Tests for catching exceptions at different levels.",
+          "public_methods": [
+            "test_catch_specific_exception",
+            "test_catch_validation_error",
+            "test_catch_structural_lib_error"
+          ]
+        },
+        {
+          "name": "TestExceptionUsageExamples",
+          "description": "Tests demonstrating proper exception usage.",
+          "public_methods": [
+            "test_dimension_error_example",
+            "test_design_constraint_error_example",
+            "test_compliance_error_example",
+            "test_calculation_error_example"
+          ]
+        },
+        {
+          "name": "TestMultiLevelCatching",
+          "description": "Tests for catching exceptions at multiple levels.",
+          "public_methods": [
+            "test_catch_at_appropriate_level",
+            "test_exception_filtering"
+          ]
+        }
+      ],
+      "content_hash": "fb02e22b1877"
+    },
+    {
+      "name": "test_inputs.py",
+      "type": "python",
+      "size_lines": 442,
+      "last_updated": "2026-02-10",
+      "description": "Tests for the inputs module (TASK-276: Input Flexibility).",
+      "classes": [
+        {
+          "name": "TestBeamGeometryInput",
+          "description": "Tests for BeamGeometryInput dataclass.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_effective_depth_auto_calculation",
+            "test_effective_depth_explicit",
+            "test_span_depth_ratio",
+            "test_validation_negative_width",
+            "test_validation_zero_depth",
+            "test_validation_effective_depth_exceeds_overall",
+            "test_immutability",
+            "test_to_dict",
+            "test_from_dict_canonical"
+          ]
+        },
+        {
+          "name": "TestMaterialsInput",
+          "description": "Tests for MaterialsInput dataclass.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_concrete_grade_property",
+            "test_steel_grade_property",
+            "test_factory_m25_fe500",
+            "test_factory_m30_fe500",
+            "test_factory_m20_fe415",
+            "test_validation_negative_fck",
+            "test_from_dict_legacy_keys"
+          ]
+        },
+        {
+          "name": "TestLoadsInput",
+          "description": "Tests for LoadsInput dataclass.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_with_case_id",
+            "test_validation_negative_moment",
+            "test_from_dict_legacy_keys"
+          ]
+        },
+        {
+          "name": "TestLoadCaseInput",
+          "description": "Tests for LoadCaseInput dataclass.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_validation_empty_case_id"
+          ]
+        },
+        {
+          "name": "TestDetailingConfigInput",
+          "description": "Tests for DetailingConfigInput dataclass.",
+          "public_methods": [
+            "test_default_values",
+            "test_seismic_preset",
+            "test_seismic_zone_4_stricter",
+            "test_gravity_only_preset"
+          ]
+        },
+        {
+          "name": "TestBeamInput",
+          "description": "Tests for BeamInput complete workflow.",
+          "public_methods": [
+            "test_simple_creation",
+            "test_multi_case_creation",
+            "test_validation_no_loads",
+            "test_governing_moment_single_case",
+            "test_to_dict",
+            "test_to_json_and_back",
+            "test_json_file_round_trip",
+            "test_from_dict_flat_format"
+          ]
+        },
+        {
+          "name": "TestConvenienceFunctions",
+          "description": "Tests for module-level convenience functions.",
+          "public_methods": [
+            "test_from_dict_function",
+            "test_from_json_function",
+            "test_from_json_file_function"
+          ]
+        }
+      ],
+      "content_hash": "cc8768fba576"
+    },
+    {
+      "name": "test_multi_objective_optimizer.py",
+      "type": "python",
+      "size_lines": 319,
+      "last_updated": "2026-02-10",
+      "description": "Tests for the multi-objective optimizer module (NSGA-II).",
+      "classes": [
+        {
+          "name": "TestParetoOptimization",
+          "description": "Test suite for Pareto optimization functions.",
+          "public_methods": [
+            "test_optimize_pareto_front_basic",
+            "test_pareto_front_non_dominated",
+            "test_best_by_objectives",
+            "test_candidates_have_governing_clauses"
+          ]
+        },
+        {
+          "name": "TestDesignExplanation",
+          "description": "Test suite for design explanation generation.",
+          "public_methods": [
+            "test_get_design_explanation_format",
+            "test_explanation_includes_key_info"
+          ]
+        },
+        {
+          "name": "TestNonDominatedSorting",
+          "description": "Test suite for fast non-dominated sorting.",
+          "public_methods": [
+            "test_single_candidate",
+            "test_clear_dominance"
+          ]
+        },
+        {
+          "name": "TestCrowdingDistance",
+          "description": "Test suite for crowding distance calculation.",
+          "public_methods": [
+            "test_crowding_distance_extreme_points"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Test edge cases and error handling.",
+          "public_methods": [
+            "test_high_moment_design",
+            "test_minimal_candidates",
+            "test_varied_objectives",
+            "test_utilization_objective"
+          ]
+        }
+      ],
+      "content_hash": "2c69faffb29d"
+    },
+    {
+      "name": "test_reports.py",
+      "type": "python",
+      "size_lines": 418,
+      "last_updated": "2026-01-23",
+      "description": "Tests for the reports module.",
+      "classes": [
+        {
+          "name": "TestReportContext",
+          "description": "Tests for ReportContext dataclass.",
+          "public_methods": [
+            "test_minimal_context",
+            "test_full_context",
+            "test_to_dict"
+          ]
+        },
+        {
+          "name": "TestGetAvailableTemplates",
+          "description": "Tests for get_available_templates function.",
+          "public_methods": [
+            "test_returns_list",
+            "test_default_templates_available"
+          ]
+        },
+        {
+          "name": "TestGenerateHtmlReport",
+          "description": "Tests for generate_html_report function.",
+          "public_methods": [
+            "test_basic_report_generation",
+            "test_summary_template",
+            "test_detailed_template",
+            "test_invalid_template_raises",
+            "test_pass_status_in_report",
+            "test_fail_status_in_report"
+          ]
+        },
+        {
+          "name": "TestGenerateHtmlReportFromDict",
+          "description": "Tests for generate_html_report_from_dict function.",
+          "public_methods": [
+            "test_basic_dict_generation",
+            "test_missing_beam_id_uses_default"
+          ]
+        },
+        {
+          "name": "TestFormatFilters",
+          "description": "Tests for template filters through full report generation.",
+          "public_methods": [
+            "test_number_formatting",
+            "test_handles_missing_values"
+          ]
+        },
+        {
+          "name": "TestJinja2Availability",
+          "description": "Tests for Jinja2 availability handling.",
+          "public_methods": [
+            "test_jinja2_available_flag",
+            "test_flag_consistency"
+          ]
+        },
+        {
+          "name": "TestReportWithRealData",
+          "description": "Integration tests with realistic beam design data.",
+          "public_methods": [
+            "sample_design_result",
+            "sample_project_info",
+            "test_full_report_generation",
+            "test_summary_report_with_real_data",
+            "test_detailed_report_with_real_data"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Tests for edge cases and error handling.",
+          "public_methods": [
+            "test_empty_beam_id",
+            "test_special_characters_in_names",
+            "test_very_large_numbers",
+            "test_negative_numbers",
+            "test_none_values_in_results"
+          ]
+        }
+      ],
+      "content_hash": "8cc3def509cb"
+    },
+    {
+      "name": "test_result_base.py",
+      "type": "python",
+      "size_lines": 217,
+      "last_updated": "2026-02-10",
+      "description": "Tests for result_base module.",
+      "classes": [
+        {
+          "name": "SimpleResult",
+          "description": "Simple test result.",
+          "public_methods": [
+            "summary"
+          ]
+        },
+        {
+          "name": "CalculationTestResult",
+          "description": "Test calculation result with metadata.",
+          "public_methods": [
+            "summary"
+          ]
+        },
+        {
+          "name": "ComplianceTestResult",
+          "description": "Test compliance result.",
+          "public_methods": [
+            "summary"
+          ]
+        },
+        {
+          "name": "TestBaseResult",
+          "description": "Tests for BaseResult base class.",
+          "public_methods": [
+            "test_summary_required",
+            "test_to_dict",
+            "test_validate_default",
+            "test_immutability"
+          ]
+        },
+        {
+          "name": "TestCalculationResult",
+          "description": "Tests for CalculationResult base class.",
+          "public_methods": [
+            "test_with_metadata",
+            "test_empty_metadata",
+            "test_to_dict_with_metadata"
+          ]
+        },
+        {
+          "name": "TestComplianceResult",
+          "description": "Tests for ComplianceResult base class.",
+          "public_methods": [
+            "test_all_checks_passed",
+            "test_some_checks_failed",
+            "test_multiple_checks_failed",
+            "test_validate_method",
+            "test_summary"
+          ]
+        },
+        {
+          "name": "TestNestedResults",
+          "description": "Tests for nested result objects.",
+          "public_methods": [
+            "test_nested_to_dict",
+            "test_nested_summary"
+          ]
+        }
+      ],
+      "content_hash": "c91f8121885a"
+    },
+    {
+      "name": "test_slenderness.py",
+      "type": "python",
+      "size_lines": 360,
+      "last_updated": "2026-01-23",
+      "description": "Unit tests for slenderness module.",
+      "classes": [
+        {
+          "name": "TestGetSlendernessLimit",
+          "description": "Tests for get_slenderness_limit function.",
+          "public_methods": [
+            "test_simply_supported_limit",
+            "test_continuous_limit",
+            "test_cantilever_limit",
+            "test_string_alias_ss",
+            "test_string_alias_cant",
+            "test_string_alias_cont",
+            "test_invalid_beam_type_raises"
+          ]
+        },
+        {
+          "name": "TestCalculateSlendernessRatio",
+          "description": "Tests for calculate_slenderness_ratio function.",
+          "public_methods": [
+            "test_basic_calculation",
+            "test_typical_beam",
+            "test_slender_beam",
+            "test_zero_length_raises",
+            "test_negative_length_raises",
+            "test_zero_width_raises",
+            "test_negative_width_raises"
+          ]
+        },
+        {
+          "name": "TestCheckBeamSlenderness",
+          "description": "Tests for check_beam_slenderness function.",
+          "public_methods": [
+            "test_short_beam_ok",
+            "test_slender_beam_warning",
+            "test_exceeds_slenderness_limit_fails",
+            "test_cantilever_stricter_limit",
+            "test_lateral_restraint_assumption",
+            "test_deep_narrow_beam_warning",
+            "test_very_deep_narrow_beam_fails",
+            "test_invalid_width_returns_error_result",
+            "test_invalid_depth_returns_error_result",
+            "test_invalid_length_returns_error_result"
+          ]
+        },
+        {
+          "name": "TestBeamTypeEnum",
+          "description": "Tests for BeamType enum.",
+          "public_methods": [
+            "test_enum_values",
+            "test_enum_iteration"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Edge case tests for slenderness functions.",
+          "public_methods": [
+            "test_exactly_at_limit",
+            "test_just_over_limit",
+            "test_minimum_practical_dimensions",
+            "test_large_span_beam",
+            "test_laterally_restrained_deep_beam"
+          ]
+        }
+      ],
+      "content_hash": "7c6159c8b209"
+    },
+    {
+      "name": "test_testing_strategies.py",
+      "type": "python",
+      "size_lines": 647,
+      "last_updated": "2026-02-10",
+      "description": "Tests for the testing_strategies module (TASK-279).",
+      "classes": [
+        {
+          "name": "TestToleranceSpec",
+          "description": "Tests for ToleranceSpec class.",
+          "public_methods": [
+            "test_default_values",
+            "test_custom_values",
+            "test_is_close_exact_match",
+            "test_is_close_within_relative",
+            "test_is_close_within_absolute",
+            "test_is_close_combined",
+            "test_assert_close_pass",
+            "test_assert_close_fail"
+          ]
+        },
+        {
+          "name": "TestPredefinedTolerances",
+          "description": "Test predefined tolerance constants.",
+          "public_methods": [
+            "test_area_tolerance",
+            "test_length_tolerance",
+            "test_force_tolerance",
+            "test_stress_tolerance",
+            "test_ratio_tolerance"
+          ]
+        },
+        {
+          "name": "TestBoundaryValueGenerator",
+          "description": "Tests for BoundaryValueGenerator class.",
+          "public_methods": [
+            "test_basic_generation",
+            "test_custom_typical",
+            "test_boundary_values",
+            "test_include_invalid",
+            "test_auto_epsilon"
+          ]
+        },
+        {
+          "name": "TestBeamParameterRanges",
+          "description": "Tests for BeamParameterRanges class.",
+          "public_methods": [
+            "test_default_ranges",
+            "test_get_boundary_generator",
+            "test_get_boundary_generator_fck",
+            "test_unknown_parameter_raises"
+          ]
+        },
+        {
+          "name": "TestPropertyBasedTester",
+          "description": "Tests for PropertyBasedTester class.",
+          "public_methods": [
+            "test_reproducible_with_seed",
+            "test_different_seeds_different_cases",
+            "test_generate_beam_cases_count",
+            "test_generated_cases_have_required_keys",
+            "test_generated_values_within_ranges",
+            "test_reset_with_seed",
+            "test_case_has_expected_properties"
+          ]
+        },
+        {
+          "name": "TestInvariantCheck",
+          "description": "Tests for InvariantCheck class.",
+          "public_methods": [
+            "test_passing_invariant",
+            "test_failing_invariant",
+            "test_invariant_with_exception"
+          ]
+        },
+        {
+          "name": "TestBeamDesignInvariants",
+          "description": "Tests for BeamDesignInvariants class.",
+          "public_methods": [
+            "test_get_all_returns_list",
+            "test_check_all_passing",
+            "test_check_all_failing"
+          ]
+        },
+        {
+          "name": "TestAssertBeamDesignValid",
+          "description": "Tests for assert_beam_design_valid function.",
+          "public_methods": [
+            "test_valid_design_passes",
+            "test_invalid_design_raises"
+          ]
+        },
+        {
+          "name": "TestRegressionBaseline",
+          "description": "Tests for RegressionBaseline class.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_hash_deterministic",
+            "test_to_dict",
+            "test_from_dict"
+          ]
+        },
+        {
+          "name": "TestRegressionTestSuite",
+          "description": "Tests for RegressionTestSuite class.",
+          "public_methods": [
+            "test_add_baseline",
+            "test_save_and_load",
+            "test_compare_matching",
+            "test_compare_failing",
+            "test_compare_missing_output",
+            "test_compare_unknown_baseline_raises"
+          ]
+        },
+        {
+          "name": "TestCreateTestCaseId",
+          "description": "Tests for create_test_case_id function.",
+          "public_methods": [
+            "test_deterministic",
+            "test_format",
+            "test_different_inputs_different_ids"
+          ]
+        },
+        {
+          "name": "TestRandomTestCase",
+          "description": "Tests for RandomTestCase dataclass.",
+          "public_methods": [
+            "test_basic_creation",
+            "test_default_properties"
+          ]
+        }
+      ],
+      "content_hash": "ebe569ea6a27"
+    },
+    {
+      "name": "test_visualization_geometry_3d.py",
+      "type": "python",
+      "size_lines": 765,
+      "last_updated": "2026-01-23",
+      "description": "Tests for visualization.geometry_3d module.",
+      "classes": [
+        {
+          "name": "TestPoint3D",
+          "description": "Tests for Point3D dataclass.",
+          "public_methods": [
+            "test_create_point",
+            "test_point_immutable",
+            "test_to_tuple",
+            "test_to_dict",
+            "test_addition",
+            "test_subtraction",
+            "test_scale",
+            "test_distance_to_same_point",
+            "test_distance_to_other_point",
+            "test_distance_3d"
+          ]
+        },
+        {
+          "name": "TestRebarSegment",
+          "description": "Tests for RebarSegment dataclass.",
+          "public_methods": [
+            "test_create_segment",
+            "test_segment_length",
+            "test_segment_length_angled",
+            "test_segment_to_dict"
+          ]
+        },
+        {
+          "name": "TestRebarPath",
+          "description": "Tests for RebarPath dataclass.",
+          "public_methods": [
+            "test_create_path",
+            "test_total_length_single_segment",
+            "test_total_length_multiple_segments",
+            "test_start_point",
+            "test_end_point",
+            "test_empty_segments_start_point",
+            "test_path_to_dict"
+          ]
+        },
+        {
+          "name": "TestStirrupLoop",
+          "description": "Tests for StirrupLoop dataclass.",
+          "public_methods": [
+            "test_create_stirrup",
+            "test_stirrup_perimeter",
+            "test_stirrup_perimeter_empty",
+            "test_stirrup_to_dict"
+          ]
+        },
+        {
+          "name": "TestBeam3DGeometry",
+          "description": "Tests for Beam3DGeometry dataclass.",
+          "public_methods": [
+            "test_create_geometry",
+            "test_geometry_to_dict"
+          ]
+        },
+        {
+          "name": "TestComputeRebarPositions",
+          "description": "Tests for compute_rebar_positions function.",
+          "public_methods": [
+            "test_bottom_bars_2_count",
+            "test_top_bars_2_count",
+            "test_single_bar_centered",
+            "test_zero_bars",
+            "test_invalid_layers_raises",
+            "test_insufficient_width_raises",
+            "test_4_bars_single_layer",
+            "test_multi_layer"
+          ]
+        },
+        {
+          "name": "TestComputeStirrupPath",
+          "description": "Tests for compute_stirrup_path function.",
+          "public_methods": [
+            "test_stirrup_path_4_corners",
+            "test_stirrup_path_x_position",
+            "test_stirrup_symmetric",
+            "test_stirrup_z_range"
+          ]
+        },
+        {
+          "name": "TestComputeStirrupPositions",
+          "description": "Tests for compute_stirrup_positions function.",
+          "public_methods": [
+            "test_first_stirrup_at_half_spacing",
+            "test_stirrup_count_reasonable",
+            "test_stirrup_positions_increasing",
+            "test_stirrup_positions_within_span",
+            "test_invalid_spacing_raises",
+            "test_invalid_span_raises"
+          ]
+        },
+        {
+          "name": "TestComputeBeamOutline",
+          "description": "Tests for compute_beam_outline function.",
+          "public_methods": [
+            "test_outline_8_corners",
+            "test_outline_bottom_at_z0",
+            "test_outline_top_at_depth",
+            "test_outline_x_range",
+            "test_outline_y_symmetric"
+          ]
+        },
+        {
+          "name": "TestIntegration",
+          "description": "Integration tests for geometry_3d module.",
+          "public_methods": [
+            "test_full_beam_geometry_creation",
+            "test_json_schema_structure"
+          ]
+        }
+      ],
+      "content_hash": "927bc7451355"
+    },
+    {
+      "name": "test_visualization_integration.py",
+      "type": "python",
+      "size_lines": 246,
+      "last_updated": "2026-01-23",
+      "description": "Integration tests for visualization.geometry_3d with detailing module.",
+      "classes": [
+        {
+          "name": "TestBeamTo3DGeometryIntegration",
+          "description": "Integration tests for beam_to_3d_geometry with real BeamDetailingResult.",
+          "public_methods": [
+            "sample_detailing",
+            "test_basic_conversion",
+            "test_concrete_outline",
+            "test_rebars_generated",
+            "test_stirrups_generated",
+            "test_seismic_hook_type",
+            "test_non_seismic_hook_type",
+            "test_metadata_populated",
+            "test_to_dict_produces_valid_json",
+            "test_to_3d_json_method"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Test edge cases and boundary conditions.",
+          "public_methods": [
+            "test_minimal_beam",
+            "test_large_beam"
+          ]
+        }
+      ],
+      "content_hash": "9686467a5ccd"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "data",
+      "path": "data/",
+      "file_count": 4
+    },
+    {
+      "name": "fixtures",
+      "path": "fixtures/",
+      "file_count": 11
+    },
+    {
+      "name": "integration",
+      "path": "integration/",
+      "file_count": 40
+    },
+    {
+      "name": "performance",
+      "path": "performance/",
+      "file_count": 1
+    },
+    {
+      "name": "property",
+      "path": "property/",
+      "file_count": 8,
+      "is_package": true
+    },
+    {
+      "name": "regression",
+      "path": "regression/",
+      "file_count": 8
+    },
+    {
+      "name": "unit",
+      "path": "unit/",
+      "file_count": 26
+    }
+  ],
+  "content_hash": "288aef7c1a4d22c2"
+}

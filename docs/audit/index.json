@@ -1,0 +1,44 @@
+{
+  "folder": "docs/audit",
+  "type": "documentation",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 83,
+      "last_updated": "2026-02-11",
+      "title": "Audit Evidence & Readiness",
+      "description": "This folder contains audit evidence templates, checklists, and generated reports for demonstrating software quality, security posture, and compliance readiness. - NIST SSDF (SP 800-218) — Secure Softw",
+      "content_hash": "b5078fb477ee"
+    },
+    {
+      "name": "audit-readiness.md",
+      "type": "documentation",
+      "size_lines": 135,
+      "last_updated": "2026-02-11",
+      "title": "Audit Readiness Checklist",
+      "description": "This checklist defines the minimum evidence requirements for audit readiness. Each release must satisfy all \"Required\" items before deployment to production. | Requirement | Status | Evidence Location",
+      "content_hash": "e9aa1e3d1555"
+    },
+    {
+      "name": "evidence-bundle-template.md",
+      "type": "documentation",
+      "size_lines": 205,
+      "last_updated": "2026-02-11",
+      "title": "Evidence Bundle Template — Release vX.Y.Z",
+      "description": "| Field | Value | |-------|-------|",
+      "content_hash": "7fe1d5a171aa"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "reports",
+      "path": "reports/",
+      "file_count": 1
+    }
+  ],
+  "content_hash": "b4629660051c6d3d"
+}

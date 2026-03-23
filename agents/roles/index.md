@@ -1,21 +1,25 @@
-# Roles Index
+# Roles
 
-**Last Updated:** 2026-01-21
-**File Count:** 12
+Defines 12 agent roles for the multi-agent collaboration framework.
 
-## Files
+**Type:** Documentation
+**Last Updated:** 2026-03-24
+**Files:** 13
 
-| File | Description | Updated | Lines |
-|------|-------------|---------|-------|
-| [ARCHITECT.md](ARCHITECT.md) | - Layered architecture and dependency direction - Stable public APIs and schema  | 2026-01-11 | 80 |
-| [CLIENT.md](CLIENT.md) | - User Stories and Acceptance Criteria - Workflow validation ("Does this make se | 2026-01-11 | 52 |
-| [DEV.md](DEV.md) | - Clean architecture and proper layering - Library purity (no UI dependencies in | 2026-01-11 | 100 |
-| [DEVOPS.md](DEVOPS.md) | - Repo layout and file organization - VBA module export/import workflows | 2026-01-11 | 141 |
-| [DOCS.md](DOCS.md) | - Keep API/README/CHANGELOG/RELEASES/TASKS in sync with code and scope. - Write  | 2026-01-11 | 32 |
-| [GOVERNANCE.md](GOVERNANCE.md) | > "Keep the project sustainable, clean, and governable. Channel Agent 6 & Agent  | 2026-01-11 | 832 |
-| [INTEGRATION.md](INTEGRATION.md) | - BEAM_INPUT/BEAM_DESIGN schema definitions and versioning. - ETABS/STAAD/CSV ma | 2026-01-11 | 49 |
-| [PM.md](PM.md) | - **Orchestration:** Assigning tasks to the right specialist agent (DEV, UI, CLI | 2026-01-11 | 144 |
-| [RESEARCHER.md](RESEARCHER.md) | - IS Codes (IS 456:2000, IS 13920:2016, SP 16, SP 34) - Algorithms and Numerical | 2026-01-11 | 59 |
-| [SUPPORT.md](SUPPORT.md) | - Maintain docs/reference/troubleshooting.md and docs/reference/known-pitfalls.m | 2026-01-11 | 32 |
-| [TESTER.md](TESTER.md) | - Numerical correctness against hand calculations - Edge case coverage (min/max  | 2026-01-11 | 98 |
-| [UI.md](UI.md) | - Worksheet layout and visual hierarchy - User interaction flow (Input -> Proces | 2026-01-11 | 52 |
+## Documentation Files
+
+| File | Title | Description | Lines |
+|------|-------|-------------|-------|
+| [ARCHITECT.md](ARCHITECT.md) | ARCHITECT Agent — Role Document | - Layered architecture and dependency direction - Stable pub | 80 |
+| [CLIENT.md](CLIENT.md) | CLIENT (Stakeholder) Agent — Role Docume | - User Stories and Acceptance Criteria - Workflow validation | 52 |
+| [DEV.md](DEV.md) | DEV Agent — Role Document | - Clean architecture and proper layering - Library purity (n | 100 |
+| [DEVOPS.md](DEVOPS.md) | DEVOPS Agent — Role Document | - Repo layout and file organization - VBA module export/impo | 141 |
+| [DOCS.md](DOCS.md) | DOCS Agent — Role Document | - Keep API/README/CHANGELOG/RELEASES/TASKS in sync with code | 32 |
+| [GOVERNANCE.md](GOVERNANCE.md) | Agent 9: Governance & Sustainability Age | > "Keep the project sustainable, clean, and governable. Chan | 832 |
+| [INTEGRATION.md](INTEGRATION.md) | INTEGRATION Agent — Role Document | - BEAM_INPUT/BEAM_DESIGN schema definitions and versioning.  | 49 |
+| [PM.md](PM.md) | PM (Product Manager) Agent — Role Docume | - **Orchestration:** Assigning tasks to the right specialist | 144 |
+| [README.md](README.md) | Agent Roles | Defines 12 agent roles for the multi-agent collaboration fra | 23 |
+| [RESEARCHER.md](RESEARCHER.md) | RESEARCHER Agent — Role Document | - IS Codes (IS 456:2000, IS 13920:2016, SP 16, SP 34) - Algo | 59 |
+| [SUPPORT.md](SUPPORT.md) | SUPPORT (Runbook) Agent — Role Document | - Maintain docs/reference/troubleshooting.md and docs/refere | 32 |
+| [TESTER.md](TESTER.md) | TESTER Agent — Role Document | - Numerical correctness against hand calculations - Edge cas | 98 |
+| [UI.md](UI.md) | UI (User Interface) Agent — Role Documen | - Worksheet layout and visual hierarchy - User interaction f | 52 |

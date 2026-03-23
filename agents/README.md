@@ -123,3 +123,15 @@ If unsure, start with PM for triage and assignment.
   ```
   Act as SUPPORT. Add a TROUBLESHOOTING entry for Excel add-in load failures on macOS with probes and fixes.
   ```
+
+---
+
+## Related Docs
+
+| Location | Purpose |
+|----------|---------|
+| `agents/roles/` | Agent role definitions (12 roles) |
+| `docs/agents/guides/` | Detailed agent workflow guides |
+| `docs/agents/sessions/` | Session logs and history |
+| `.github/instructions/` | GitHub Copilot file-type rules |
+| `.claude/rules/` | Claude file-type rules |

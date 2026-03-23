@@ -1,0 +1,203 @@
+{
+  "folder": "fastapi_app",
+  "type": "python-package",
+  "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
+  "last_updated": "2026-03-24",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 49,
+      "last_updated": "2026-03-24",
+      "title": "FastAPI Backend",
+      "description": "REST API + WebSocket bridge between the React frontend and the Python structural_lib. bash",
+      "content_hash": "8429900d345a"
+    },
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 11,
+      "last_updated": "2026-01-24",
+      "description": "FastAPI backend for structural_engineering_lib.",
+      "content_hash": "f86e5af78d92"
+    },
+    {
+      "name": "auth.py",
+      "type": "python",
+      "size_lines": 344,
+      "last_updated": "2026-01-24",
+      "description": "Authentication and Authorization Module.",
+      "classes": [
+        {
+          "name": "TokenData",
+          "description": "JWT token payload data."
+        },
+        {
+          "name": "User",
+          "description": "Authenticated user model."
+        },
+        {
+          "name": "RateLimiter",
+          "description": "Simple in-memory rate limiter using sliding window.",
+          "public_methods": [
+            "is_allowed"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "create_access_token",
+          "description": "Create a JWT access token.",
+          "params": [
+            "data",
+            "expires_delta"
+          ]
+        },
+        {
+          "name": "decode_token",
+          "description": "Decode and validate a JWT token.",
+          "params": [
+            "token"
+          ]
+        },
+        {
+          "name": "get_current_user",
+          "description": "Get current authenticated user from JWT token.",
+          "params": [
+            "credentials"
+          ]
+        },
+        {
+          "name": "require_auth",
+          "description": "Require authentication - raises if not authenticated.",
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "verify_ws_token",
+          "description": "Verify JWT token for WebSocket connections.",
+          "params": [
+            "websocket",
+            "token"
+          ]
+        },
+        {
+          "name": "check_rate_limit",
+          "description": "Dependency to check rate limit.",
+          "params": [
+            "request",
+            "response"
+          ]
+        },
+        {
+          "name": "create_dev_token",
+          "description": "Create a development token for testing.",
+          "params": [
+            "user_id",
+            "email"
+          ]
+        }
+      ],
+      "constants": [
+        "SECRET_KEY",
+        "ALGORITHM",
+        "ACCESS_TOKEN_EXPIRE_MINUTES",
+        "RATE_LIMIT_REQUESTS",
+        "RATE_LIMIT_WINDOW_SECONDS"
+      ],
+      "content_hash": "53ed5416fa66"
+    },
+    {
+      "name": "config.py",
+      "type": "python",
+      "size_lines": 61,
+      "last_updated": "2026-01-24",
+      "description": "Application Configuration.",
+      "classes": [
+        {
+          "name": "Settings",
+          "description": "Application settings loaded from environment variables."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_settings",
+          "description": "Get cached application settings."
+        }
+      ],
+      "content_hash": "fef64e3f6401"
+    },
+    {
+      "name": "main.py",
+      "type": "python",
+      "size_lines": 260,
+      "last_updated": "2026-02-27",
+      "description": "FastAPI Application Entry Point.",
+      "functions": [
+        {
+          "name": "root",
+          "description": "Root endpoint providing API information."
+        },
+        {
+          "name": "startup_event",
+          "description": "Application startup event handler."
+        },
+        {
+          "name": "shutdown_event",
+          "description": "Application shutdown event handler."
+        }
+      ],
+      "constants": [
+        "API_TITLE",
+        "API_DESCRIPTION",
+        "API_TAGS_METADATA",
+        "ALLOWED_ORIGINS",
+        "API_V1_PREFIX"
+      ],
+      "content_hash": "3b28183f0589"
+    },
+    {
+      "name": "openapi_baseline.json",
+      "type": "config",
+      "last_updated": "2026-03-23",
+      "top_level_keys": [
+        "components",
+        "info",
+        "openapi",
+        "paths",
+        "tags"
+      ],
+      "content_hash": "2a028565826a"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "examples",
+      "path": "examples/",
+      "file_count": 2
+    },
+    {
+      "name": "models",
+      "path": "models/",
+      "file_count": 6,
+      "is_package": true
+    },
+    {
+      "name": "routers",
+      "path": "routers/",
+      "file_count": 13,
+      "is_package": true
+    },
+    {
+      "name": "tests",
+      "path": "tests/",
+      "file_count": 10,
+      "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
+      "is_package": true
+    }
+  ],
+  "content_hash": "b1c4adc15208acb3",
+  "has_init": true
+}

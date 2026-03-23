@@ -1,0 +1,157 @@
+{
+  "folder": "Python/structural_lib/visualization",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 45,
+      "last_updated": "2026-01-27",
+      "description": "Visualization Module — 3D Geometry for Reinforced Concrete Elements",
+      "content_hash": "b7b7e35abfe2"
+    },
+    {
+      "name": "geometry_3d.py",
+      "type": "python",
+      "size_lines": 940,
+      "last_updated": "2026-02-10",
+      "description": "3D Geometry Module — Coordinate Computation for Visualization",
+      "classes": [
+        {
+          "name": "Point3D",
+          "description": "Immutable 3D point in millimeters.",
+          "public_methods": [
+            "to_tuple",
+            "to_dict",
+            "scale",
+            "distance_to"
+          ]
+        },
+        {
+          "name": "RebarSegment",
+          "description": "A single straight segment of a reinforcement bar.",
+          "public_methods": [
+            "length",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "RebarPath",
+          "description": "Complete path of a reinforcement bar with multiple segments.",
+          "public_methods": [
+            "total_length",
+            "start_point",
+            "end_point",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "StirrupLoop",
+          "description": "A single stirrup (closed loop) with optional internal ties.",
+          "public_methods": [
+            "perimeter",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "Beam3DGeometry",
+          "description": "Complete 3D geometry for a beam section ready for visualization.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "BuildingBeam3D",
+          "description": "Line representation of a beam in building context.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "Building3DGeometry",
+          "description": "Building-level geometry for multi-beam visualization.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "building_to_3d_geometry",
+          "description": "Build line geometry for a multi-beam building view.",
+          "params": [
+            "beams"
+          ]
+        },
+        {
+          "name": "compute_rebar_positions",
+          "description": "Compute Y-Z positions for main bars in a beam cross-section.",
+          "params": [
+            "beam_width",
+            "beam_depth",
+            "cover",
+            "bar_count",
+            "bar_dia",
+            "stirrup_dia",
+            "is_top",
+            "layers"
+          ]
+        },
+        {
+          "name": "compute_stirrup_path",
+          "description": "Compute the corner points of a stirrup in the Y-Z plane.",
+          "params": [
+            "beam_width",
+            "beam_depth",
+            "cover",
+            "stirrup_dia",
+            "position_x",
+            "legs"
+          ]
+        },
+        {
+          "name": "compute_stirrup_positions",
+          "description": "Compute X positions for stirrups along beam span.",
+          "params": [
+            "span",
+            "stirrup_spacing_start",
+            "stirrup_spacing_mid",
+            "stirrup_spacing_end",
+            "zone_length"
+          ]
+        },
+        {
+          "name": "compute_beam_outline",
+          "description": "Compute 8 corner points of beam bounding box.",
+          "params": [
+            "beam_width",
+            "beam_depth",
+            "span"
+          ]
+        },
+        {
+          "name": "beam_to_3d_geometry",
+          "description": "Convert BeamDetailingResult to complete 3D geometry.",
+          "params": [
+            "detailing",
+            "is_seismic"
+          ]
+        }
+      ],
+      "content_hash": "64e24763fb0f"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "0a80080160dafaea",
+  "has_init": true,
+  "public_api": [
+    "Point3D",
+    "RebarSegment",
+    "RebarPath",
+    "StirrupLoop",
+    "Beam3DGeometry"
+  ]
+}

@@ -60,6 +60,12 @@ show_status() {
         log_warn "pre-push hook: missing or not executable"
     fi
 
+    if [[ -x "$HOOKS_DIR/commit-msg" ]]; then
+        log_ok "commit-msg hook: executable"
+    else
+        log_warn "commit-msg hook: missing or not executable"
+    fi
+
     echo ""
 }
 
@@ -80,6 +86,7 @@ install_hooks() {
     # Make hooks executable
     chmod +x "$HOOKS_DIR/pre-commit" 2>/dev/null || true
     chmod +x "$HOOKS_DIR/pre-push" 2>/dev/null || true
+    chmod +x "$HOOKS_DIR/commit-msg" 2>/dev/null || true
 
     # Set core.hooksPath (local to this repo)
     git config core.hooksPath "$HOOKS_DIR"

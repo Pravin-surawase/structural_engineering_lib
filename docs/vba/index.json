@@ -1,0 +1,36 @@
+{
+  "folder": "docs/vba",
+  "type": "documentation",
+  "description": "Documentation for the VBA/Excel implementation journey and production plans.",
+  "last_updated": "2026-03-24",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 13,
+      "last_updated": "2026-03-24",
+      "title": "VBA Documentation",
+      "description": "Documentation for the VBA/Excel implementation journey and production plans. | Document | Purpose |",
+      "content_hash": "370abead61e5"
+    },
+    {
+      "name": "etabs-export-journey-session-31.md",
+      "type": "documentation",
+      "size_lines": 330,
+      "last_updated": "2026-01-23",
+      "description": "1. Late binding (As Object) doesn't support FrameObj methods → Need ETABS type library reference 2. Unit enum 6 (meters) not handled → Added Case 6",
+      "content_hash": "5f7bddcb2010"
+    },
+    {
+      "name": "etabs-export-production-plan.md",
+      "type": "documentation",
+      "size_lines": 434,
+      "last_updated": "2026-01-23",
+      "description": "- ✅ VBA export working: 364,365 rows - ✅ Columns: Story, Label, Output Case, Station, M3, V2, P",
+      "content_hash": "198a58d0e6fc"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "fcde690f113a18ec"
+}

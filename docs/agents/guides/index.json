@@ -1,124 +1,144 @@
 {
   "folder": "docs/agents/guides",
-  "description": "- agent-8-automation.md - Quick start + script index (start here) - agent-8-git-ops.md - Core protocol (1,320 lines)",
-  "last_updated": "2026-01-21",
+  "type": "documentation",
+  "description": "",
+  "last_updated": "2026-03-24",
   "file_count": 15,
   "files": [
     {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 62,
+      "last_updated": "2026-02-11",
+      "title": "Agent Guides",
+      "description": "- agent-8-automation.md - Quick start + script index (start here) - agent-8-git-ops.md - Core protocol (1,320 lines)",
+      "content_hash": "87cedb3b70bb"
+    },
+    {
       "name": "agent-6-comprehensive-onboarding.md",
-      "title": "Agent 6 Comprehensive Onboarding Guide",
-      "description": "**You are Agent 6, the Streamlit UI Specialist.** Your mission: Build and maintain production-ready Streamlit dashboards for the IS 456 structural engineering library. You own all code in streamlit_ap",
-      "last_updated": "2026-01-21",
+      "type": "documentation",
       "size_lines": 523,
-      "audience": "Agent 6 (Streamlit UI Specialist)",
-      "status": "Production Ready"
+      "last_updated": "2026-02-11",
+      "title": "Agent 6 Comprehensive Onboarding Guide",
+      "description": "Your mission: Build and maintain production-ready Streamlit dashboards for the IS 456 structural engineering library. You own all code in streamlit_app/ (~20,000 lines). bash",
+      "content_hash": "67c834288273"
     },
     {
       "name": "agent-6-quick-start.md",
+      "type": "documentation",
+      "size_lines": 89,
+      "last_updated": "2026-02-11",
       "title": "Agent 6 Quick Start (Streamlit UI Specialist)",
       "description": "You build the **Streamlit web interface** for the structural engineering library. This includes beam design calculators, results visualization, and user-friendly forms.",
-      "last_updated": "2026-01-21",
-      "size_lines": 89
+      "content_hash": "b9285e065cc5"
     },
     {
       "name": "agent-6-streamlit-hub.md",
+      "type": "documentation",
+      "size_lines": 113,
+      "last_updated": "2026-02-11",
       "title": "Agent 6 Streamlit Hub",
       "description": "This is your navigation hub for all Streamlit-related documentation. Start here, find what you need, get back to work.",
-      "last_updated": "2026-01-21",
-      "size_lines": 113,
-      "status": "Active"
+      "content_hash": "37c90d535d96"
     },
     {
       "name": "agent-8-automation.md",
+      "type": "documentation",
+      "size_lines": 329,
+      "last_updated": "2026-02-11",
       "title": "Agent 8 Automation - Scripts & Tools Index",
-      "description": "**Complete reference for all Agent 8 automation scripts.** bash",
-      "last_updated": "2026-01-21",
-      "size_lines": 329
+      "description": "bash ./scripts/agent_start.sh        # Unified setup",
+      "content_hash": "e6aa221f4816"
     },
     {
       "name": "agent-8-git-ops.md",
+      "type": "documentation",
+      "size_lines": 1307,
+      "last_updated": "2026-01-23",
       "title": "Agent 8: GIT OPERATIONS SPECIALIST",
       "description": "- ✅ **Workflow Enforcement** - Single entrypoint, eliminate script confusion - ✅ **Remote Operations** - Handle ALL push/PR/merge operations for background agents",
-      "last_updated": "2026-01-21",
-      "size_lines": 1307,
-      "status": "Active - Protocol Established"
+      "content_hash": "5ad78d9118ac"
     },
     {
       "name": "agent-8-mistakes-prevention-guide.md",
+      "type": "documentation",
+      "size_lines": 1114,
+      "last_updated": "2026-01-23",
       "title": "Agent 8: Mistakes Prevention Guide (Lessons Learned)",
       "description": "<!-- lint-ignore-git --> > ⚠️ **HISTORICAL DOCUMENTATION NOTICE**",
-      "last_updated": "2026-01-21",
-      "size_lines": 1114
+      "content_hash": "f85b2a7d2768"
     },
     {
       "name": "agent-8-multi-agent-coordination.md",
+      "type": "documentation",
+      "size_lines": 327,
+      "last_updated": "2026-01-23",
       "title": "Agent 8 Multi-Agent Coordination",
       "description": "Agent 8 workflow (ai_commit.sh + safe_push.sh) now supports **concurrent multi-agent operations** with automatic worktree detection and branch-aware behavior. ",
-      "last_updated": "2026-01-21",
-      "size_lines": 327,
-      "status": "Active"
+      "content_hash": "86a3aa7bd9dc"
     },
     {
       "name": "agent-8-operations-log-spec.md",
-      "title": "",
-      "description": "",
-      "last_updated": "2026-01-21",
-      "size_lines": 37
+      "type": "documentation",
+      "size_lines": 37,
+      "last_updated": "2026-01-23",
+      "content_hash": "74a08d9598cf"
     },
     {
       "name": "agent-9-governance-hub.md",
+      "type": "documentation",
+      "size_lines": 137,
+      "last_updated": "2026-02-11",
       "title": "Agent 9 Governance Hub",
-      "description": "**Quick access to all Agent 9 governance documentation.** Agent 9 manages **governance, documentation structure, and migration safety** for the project. It ensures sustainable information architecture",
-      "last_updated": "2026-01-21",
-      "size_lines": 137
+      "description": "Agent 9 manages **governance, documentation structure, and migration safety** for the project. It ensures sustainable information architecture through clear rules and validation. This is the canonical",
+      "content_hash": "d18a0eb3e8cb"
     },
     {
       "name": "agent-9-quick-start.md",
+      "type": "documentation",
+      "size_lines": 268,
+      "last_updated": "2026-02-11",
       "title": "Agent 9 Quick Start - Governance & Documentation Structure",
-      "description": "**Get started with Agent 9 in 60 seconds.** Agent 9 is the **governance and documentation structure agent**, ensuring sustainable information architecture, migration safety, and folder organization ru",
-      "last_updated": "2026-01-21",
-      "size_lines": 268
+      "description": "Agent 9 is the **governance and documentation structure agent**, ensuring sustainable information architecture, migration safety, and folder organization rules. bash",
+      "content_hash": "1916317e99ef"
     },
     {
       "name": "agent-automation-system.md",
+      "type": "documentation",
+      "size_lines": 354,
+      "last_updated": "2026-02-11",
       "title": "Agent Automation System v1.1.0",
       "description": "Comprehensive automation system for error-free AI agent workflows. Prevents 99% of common Git errors through automated workflow scripts. - **agent-workflow-master-guide.md** - Complete guide (400+ lin",
-      "last_updated": "2026-01-21",
-      "size_lines": 354,
-      "status": "✅ Production Ready (All tests passing)"
+      "content_hash": "813aadc69e36"
     },
     {
       "name": "agent-bootstrap-complete-review.md",
+      "type": "documentation",
+      "size_lines": 116,
+      "last_updated": "2026-02-11",
       "title": "Agent Bootstrap - Complete Review & Link Analysis",
       "description": "docs/getting-started/agent-bootstrap.md is the 60-second onboarding entrypoint for any agent. This review enumerates every link in that file, explains why it exists, and notes the current startup flow",
-      "last_updated": "2026-01-21",
-      "size_lines": 118,
-      "status": "✅ Updated for agent-bootstrap v2.1.1"
-    },
-    {
-      "name": "agent-coding-standards.md",
-      "title": "AI Agent Coding Standards Guide",
-      "description": "This guide establishes coding standards for AI agents working on this project. Following these rules prevents 90%+ of runtime errors and CI failures. ❌ **NEVER do this:**",
-      "last_updated": "2026-01-21",
-      "size_lines": 410,
-      "audience": "All AI Agents",
-      "status": "Approved"
+      "content_hash": "5deb5fee2e5a"
     },
     {
       "name": "agent-quick-reference.md",
+      "type": "documentation",
+      "size_lines": 334,
+      "last_updated": "2026-02-11",
       "title": "Agent Workflow Quick Reference Card",
       "description": "| Need | Guide | Use When | |------|-------|----------|",
-      "last_updated": "2026-01-21",
-      "size_lines": 309
+      "content_hash": "6bfe71109c10"
     },
     {
       "name": "agent-workflow-master-guide.md",
-      "title": "Agent Workflow Master Guide",
-      "description": "> **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations. > Read this FIRST before any work. Following these rules prevents 99% of errors.",
-      "last_updated": "2026-01-21",
+      "type": "documentation",
       "size_lines": 717,
-      "status": "✅ Production Ready"
+      "last_updated": "2026-02-11",
+      "title": "Agent Workflow Master Guide",
+      "description": "> **Deep reference guide.** Start with agent-bootstrap.md first. > This guide covers decision trees, troubleshooting, and advanced workflow patterns.",
+      "content_hash": "91c92a26a243"
     }
   ],
-  "subfolders": []
+  "subfolders": [],
+  "content_hash": "20215217137cd560"
 }

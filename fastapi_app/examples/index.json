@@ -1,0 +1,54 @@
+{
+  "folder": "fastapi_app/examples",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "test_client.py",
+      "type": "python",
+      "size_lines": 260,
+      "last_updated": "2026-01-24",
+      "description": "Python Test Client for FastAPI Live Design Endpoints.",
+      "functions": [
+        {
+          "name": "test_websocket_design",
+          "description": "Test WebSocket live design endpoint."
+        },
+        {
+          "name": "test_sse_batch_design",
+          "description": "Test SSE batch design endpoint."
+        },
+        {
+          "name": "test_rest_endpoints",
+          "description": "Test basic REST endpoints."
+        },
+        {
+          "name": "main",
+          "description": "Run all tests."
+        }
+      ],
+      "constants": [
+        "BASE_URL",
+        "WS_URL"
+      ],
+      "content_hash": "57ab1e38d2f3"
+    },
+    {
+      "name": "test_client.ts",
+      "type": "typescript",
+      "size_lines": 334,
+      "last_updated": "2026-01-24",
+      "exports": [
+        "StructuralDesignClient",
+        "LiveDesignClient",
+        "BatchDesignClient"
+      ],
+      "description": "TypeScript Test Client for FastAPI Structural Design API.",
+      "content_hash": "9a25a7192f82"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "527b9894b00a0b90"
+}

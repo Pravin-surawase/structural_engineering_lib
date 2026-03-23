@@ -2,8 +2,8 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-02-10",
-  "file_count": 14,
+  "last_updated": "2026-03-24",
+  "file_count": 15,
   "files": [
     {
       "name": "__init__.py",
@@ -25,7 +25,8 @@
             "get_tau_c_max"
           ]
         }
-      ]
+      ],
+      "content_hash": "4e2037751141"
     },
     {
       "name": "clause_cli.py",
@@ -78,7 +79,8 @@
           "name": "main",
           "description": "Main CLI entry point."
         }
-      ]
+      ],
+      "content_hash": "2f040fb1cc5e"
     },
     {
       "name": "clauses.json",
@@ -91,13 +93,14 @@
         "tables",
         "figures",
         "annexures"
-      ]
+      ],
+      "content_hash": "258ad48288bf"
     },
     {
       "name": "compliance.py",
       "type": "python",
       "size_lines": 477,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module: compliance",
       "functions": [
         {
@@ -115,13 +118,14 @@
             "report"
           ]
         }
-      ]
+      ],
+      "content_hash": "96a24e4f8498"
     },
     {
       "name": "detailing.py",
       "type": "python",
-      "size_lines": 1186,
-      "last_updated": "2026-01-23",
+      "size_lines": 1190,
+      "last_updated": "2026-02-10",
       "description": "Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement Detailing",
       "classes": [
         {
@@ -324,13 +328,14 @@
         "BOND_STRESS_DEFORMED",
         "STANDARD_BAR_DIAMETERS",
         "STANDARD_STIRRUP_DIAMETERS"
-      ]
+      ],
+      "content_hash": "ea72fecfbecd"
     },
     {
       "name": "ductile.py",
       "type": "python",
       "size_lines": 182,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module:       ductile",
       "classes": [
         {
@@ -378,13 +383,14 @@
             "min_long_bar_dia"
           ]
         }
-      ]
+      ],
+      "content_hash": "8b023f463a57"
     },
     {
       "name": "flexure.py",
       "type": "python",
       "size_lines": 924,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module:       flexure",
       "functions": [
         {
@@ -463,13 +469,14 @@
             "fy"
           ]
         }
-      ]
+      ],
+      "content_hash": "049467b51233"
     },
     {
       "name": "load_analysis.py",
       "type": "python",
       "size_lines": 453,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module:       load_analysis",
       "functions": [
         {
@@ -523,13 +530,53 @@
       ],
       "constants": [
         "DEFAULT_NUM_POINTS"
-      ]
+      ],
+      "content_hash": "fb44c022df41"
+    },
+    {
+      "name": "materials.py",
+      "type": "python",
+      "size_lines": 118,
+      "last_updated": "2026-02-10",
+      "description": "Module:       materials",
+      "functions": [
+        {
+          "name": "get_xu_max_d",
+          "description": "Get Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)",
+          "params": [
+            "fy"
+          ]
+        },
+        {
+          "name": "get_ec",
+          "description": "Modulus of Elasticity of Concrete (IS 456 Cl. 6.2.3.1)",
+          "params": [
+            "fck"
+          ]
+        },
+        {
+          "name": "get_fcr",
+          "description": "Flexural Strength of Concrete (IS 456 Cl. 6.2.2)",
+          "params": [
+            "fck"
+          ]
+        },
+        {
+          "name": "get_steel_stress",
+          "description": "Calculate stress in steel for a given strain and yield strength.",
+          "params": [
+            "strain",
+            "fy"
+          ]
+        }
+      ],
+      "content_hash": "b5261d453d51"
     },
     {
       "name": "serviceability.py",
       "type": "python",
       "size_lines": 1357,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module: serviceability",
       "functions": [
         {
@@ -588,13 +635,14 @@
           "name": "check_deflection_level_c",
           "description": "Level C deflection check with separate creep and shrinkage."
         }
-      ]
+      ],
+      "content_hash": "8a02a04ab5d8"
     },
     {
       "name": "shear.py",
       "type": "python",
       "size_lines": 369,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module:       shear",
       "functions": [
         {
@@ -643,7 +691,8 @@
       "constants": [
         "STANDARD_STIRRUP_SPACINGS",
         "STANDARD_STIRRUP_DIAMETERS"
-      ]
+      ],
+      "content_hash": "f637247f6050"
     },
     {
       "name": "slenderness.py",
@@ -691,7 +740,8 @@
       ],
       "constants": [
         "_DEPTH_WIDTH_LIMIT_WARNING"
-      ]
+      ],
+      "content_hash": "c2e13b1556ca"
     },
     {
       "name": "tables.py",
@@ -719,13 +769,14 @@
       "constants": [
         "_PT_ROWS",
         "_TC_COLUMNS"
-      ]
+      ],
+      "content_hash": "4996975fad5f"
     },
     {
       "name": "torsion.py",
       "type": "python",
       "size_lines": 534,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-02-10",
       "description": "Module:       torsion",
       "classes": [
         {
@@ -802,7 +853,8 @@
             "fy"
           ]
         }
-      ]
+      ],
+      "content_hash": "9346acf7f39d"
     },
     {
       "name": "traceability.py",
@@ -865,10 +917,12 @@
       ],
       "constants": [
         "F"
-      ]
+      ],
+      "content_hash": "4112e62236cb"
     }
   ],
   "subfolders": [],
+  "content_hash": "9f8efd401e8bcfae",
   "has_init": true,
   "public_api": [
     "IS456Code",

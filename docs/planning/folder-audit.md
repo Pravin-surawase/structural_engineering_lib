@@ -1701,23 +1701,31 @@ For each folder audited, record:
 | Fixed "900+ lines" stale claim | `.github/copilot/instructions.md` |
 | Untracked 73 navigation_study JSON files | `.gitignore` + `git rm --cached` |
 | Untracked 5 ETABS output CSVs | `.gitignore` + `git rm --cached` |
+| Untracked 1760 vendor CHM files (30MB) | `.gitignore` + `git rm --cached` |
 | Removed duplicate colab notebook | `docs/cookbook/colab_workflow.ipynb` |
-| Fixed architecture violation | `streamlit_app/utils/api_wrapper.py` (imports via stubs now) |
+| Fixed ALL architecture violations | `api_wrapper.py`, `rebar_optimization.py`, `rebar_layout.py`, `clause_traceability.py`, test file — all via stubs |
+| Created `traceability.py` backward-compat stub | `Python/structural_lib/traceability.py` |
 | Archived 3 stale _active/ docs | Moved to `docs/_archive/misc/` |
-| Added .gitignore rules | Corrupt VBA patterns, ETABS output, navigation_study |
+| Added .gitignore rules | Corrupt VBA, ETABS output, navigation_study, vendor/ |
 | Added 9 missing READMEs | test dirs (3), docs dirs (4), agents/roles, fastapi_app |
+| Consolidated hook directories | `scripts/hooks/commit-msg` → `scripts/git-hooks/commit-msg` |
+| Generated 42+ folder index files | `index.json` + `index.md` via `generate_enhanced_index.py` |
+| Added agent docs cross-references | `agents/README.md` |
 
 ### Repository Metrics (Post-Audit + Fixes)
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Total tracked files | ~3,719 | ~3,638 |
+| Total tracked files | ~3,719 | ~1,878 |
 | Corrupt files | 2 | 0 |
 | Duplicate notebooks | 1 | 0 |
-| Architecture violations | 2 RED | 1 RED (test file only) |
+| Architecture violations | 2+ RED | 0 RED |
+| Vendor bloat in tracking | 30MB (1760 files) | 0 (gitignored) |
 | Missing test READMEs | 4 | 1 (Python/tests/ already had one) |
 | README coverage | 13/17 top-level | 14/17 top-level |
 | Stale _active/ docs | 3 | 0 |
+| Hook directories | 2 (split) | 1 (consolidated) |
+| Folders with index.json | ~22 | ~42+ |
 
 ---
 
@@ -1736,3 +1744,8 @@ All workflow tooling is green as of Session 91:
 - [ ] Consistent `--json` output across remaining `check_*` scripts
 - [ ] Migrate 38 more scripts to `_lib/` (Phase 4b)
 - [ ] Add `sync_numbers` to GitHub Actions CI
+
+### Deferred Items (Needs Dedicated PR)
+- [ ] **Split `ai_workspace.py`** (5103 lines, ~40 functions) — 7 logical modules: state mgmt, data import, beam design, 3D viz, rebar optimization, dashboard, unified editor
+- [ ] **Git history cleanup** — `git filter-branch` or BFG to purge vendor CHM from history (still 30MB in history even though untracked). Optional: only matters if repo size is a concern
+- [ ] **Blog-drafts → publications** — Consolidate `docs/blog-drafts/` into `docs/publications/blog-posts/` pipeline

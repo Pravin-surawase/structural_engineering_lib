@@ -1,0 +1,956 @@
+{
+  "folder": "Python/structural_lib/core",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 15,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 42,
+      "last_updated": "2026-01-23",
+      "description": "Core module - Code-agnostic base classes and utilities.",
+      "content_hash": "8fde979e76f9"
+    },
+    {
+      "name": "base.py",
+      "type": "python",
+      "size_lines": 139,
+      "last_updated": "2026-01-23",
+      "description": "Abstract base classes for design code implementations.",
+      "classes": [
+        {
+          "name": "DesignResult",
+          "description": "Standard result container for design calculations."
+        },
+        {
+          "name": "DesignCode",
+          "description": "Abstract base class for design codes.",
+          "public_methods": [
+            "code_id",
+            "code_name",
+            "code_version"
+          ]
+        },
+        {
+          "name": "FlexureDesigner",
+          "description": "Abstract base for flexural design calculations.",
+          "public_methods": [
+            "required_steel_area",
+            "moment_capacity"
+          ]
+        },
+        {
+          "name": "ShearDesigner",
+          "description": "Abstract base for shear design calculations.",
+          "public_methods": [
+            "required_shear_reinforcement",
+            "shear_capacity"
+          ]
+        },
+        {
+          "name": "DetailingRules",
+          "description": "Abstract base for reinforcement detailing rules.",
+          "public_methods": [
+            "min_steel_ratio",
+            "max_steel_ratio",
+            "min_cover",
+            "min_bar_spacing"
+          ]
+        }
+      ],
+      "content_hash": "6e16697cfa31"
+    },
+    {
+      "name": "constants.py",
+      "type": "python",
+      "size_lines": 20,
+      "last_updated": "2026-02-10",
+      "description": "Module:       constants",
+      "constants": [
+        "PI",
+        "GAMMA_C",
+        "GAMMA_S",
+        "MIN_ECCENTRICITY_RATIO",
+        "MODULUS_ELASTICITY_STEEL"
+      ],
+      "content_hash": "416a663c8de6"
+    },
+    {
+      "name": "data_types.py",
+      "type": "python",
+      "size_lines": 498,
+      "last_updated": "2026-02-10",
+      "description": "Module:       types",
+      "classes": [
+        {
+          "name": "BarDict",
+          "description": "Bar arrangement dictionary for bottom/top bars."
+        },
+        {
+          "name": "StirrupDict",
+          "description": "Stirrup arrangement dictionary."
+        },
+        {
+          "name": "DeflectionParams",
+          "description": "Parameters for deflection calculation."
+        },
+        {
+          "name": "CrackWidthParams",
+          "description": "Parameters for crack width calculation."
+        },
+        {
+          "name": "OptimizerInputs",
+          "description": "Input parameters for rebar optimizer."
+        },
+        {
+          "name": "OptimizerCandidate",
+          "description": "Candidate solution from rebar optimizer."
+        },
+        {
+          "name": "OptimizerChecks",
+          "description": "Rebar optimizer checks structure."
+        },
+        {
+          "name": "BeamGeometry",
+          "description": "Beam geometry and material properties."
+        },
+        {
+          "name": "LoadCase",
+          "description": "Load case with bending moment and shear force."
+        },
+        {
+          "name": "JobSpec",
+          "description": "Complete job specification for beam design."
+        },
+        {
+          "name": "BeamType"
+        },
+        {
+          "name": "LoadType",
+          "description": "Type of applied load for BMD/SFD analysis."
+        },
+        {
+          "name": "LoadDefinition",
+          "description": "Definition of a single load for BMD/SFD computation."
+        },
+        {
+          "name": "CriticalPoint",
+          "description": "Critical point on BMD/SFD diagram (max, min, zero crossing)."
+        },
+        {
+          "name": "LoadDiagramResult",
+          "description": "Result of BMD/SFD computation for a beam."
+        }
+      ],
+      "content_hash": "c74a849facfd"
+    },
+    {
+      "name": "error_messages.py",
+      "type": "python",
+      "size_lines": 496,
+      "last_updated": "2026-02-10",
+      "description": "Module:       error_messages",
+      "functions": [
+        {
+          "name": "dimension_too_small",
+          "description": "Template for dimension below minimum.",
+          "params": [
+            "dim_name",
+            "actual",
+            "minimum",
+            "clause_ref",
+            "unit"
+          ]
+        },
+        {
+          "name": "dimension_too_large",
+          "description": "Template for dimension above maximum.",
+          "params": [
+            "dim_name",
+            "actual",
+            "maximum",
+            "clause_ref",
+            "unit"
+          ]
+        },
+        {
+          "name": "dimension_negative",
+          "description": "Template for negative dimension.",
+          "params": [
+            "dim_name",
+            "actual",
+            "unit"
+          ]
+        },
+        {
+          "name": "dimension_relationship_invalid",
+          "description": "Template for invalid dimension relationship.",
+          "params": [
+            "dim1_name",
+            "dim1_value",
+            "dim2_name",
+            "dim2_value",
+            "relationship",
+            "unit"
+          ]
+        },
+        {
+          "name": "material_grade_invalid",
+          "description": "Template for invalid material grade.",
+          "params": [
+            "material_name",
+            "actual",
+            "valid_grades",
+            "unit"
+          ]
+        },
+        {
+          "name": "material_property_out_of_range",
+          "description": "Template for material property out of valid range.",
+          "params": [
+            "property_name",
+            "actual",
+            "min_value",
+            "max_value",
+            "unit"
+          ]
+        },
+        {
+          "name": "capacity_exceeded",
+          "description": "Template for load exceeding capacity.",
+          "params": [
+            "load_name",
+            "load_value",
+            "capacity_name",
+            "capacity_value",
+            "suggestions",
+            "clause_ref",
+            "unit"
+          ]
+        },
+        {
+          "name": "reinforcement_spacing_insufficient",
+          "description": "Template for insufficient spacing for reinforcement.",
+          "params": [
+            "available_space",
+            "required_space",
+            "bar_count",
+            "bar_diameter",
+            "clause_ref"
+          ]
+        },
+        {
+          "name": "minimum_reinforcement_not_met",
+          "description": "Template for minimum reinforcement not satisfied.",
+          "params": [
+            "actual",
+            "minimum",
+            "parameter_name",
+            "clause_ref",
+            "unit"
+          ]
+        },
+        {
+          "name": "maximum_reinforcement_exceeded",
+          "description": "Template for maximum reinforcement exceeded.",
+          "params": [
+            "actual",
+            "maximum",
+            "parameter_name",
+            "clause_ref",
+            "unit"
+          ]
+        },
+        {
+          "name": "spacing_limit_exceeded",
+          "description": "Template for spacing exceeding code limits.",
+          "params": [
+            "actual_spacing",
+            "maximum_spacing",
+            "spacing_type",
+            "clause_ref"
+          ]
+        },
+        {
+          "name": "convergence_failed",
+          "description": "Template for iterative calculation convergence failure.",
+          "params": [
+            "algorithm_name",
+            "iterations",
+            "tolerance",
+            "current_error"
+          ]
+        },
+        {
+          "name": "numerical_instability",
+          "description": "Template for numerical instability.",
+          "params": [
+            "operation",
+            "problematic_value",
+            "reason"
+          ]
+        },
+        {
+          "name": "format_value_with_unit",
+          "description": "Format a value with its unit.",
+          "params": [
+            "value",
+            "unit",
+            "precision"
+          ]
+        },
+        {
+          "name": "format_list",
+          "description": "Format a list of items with proper grammar.",
+          "params": [
+            "items",
+            "conjunction"
+          ]
+        }
+      ],
+      "content_hash": "9f3d0d43b527"
+    },
+    {
+      "name": "errors.py",
+      "type": "python",
+      "size_lines": 524,
+      "last_updated": "2026-02-10",
+      "description": "Module:       errors",
+      "classes": [
+        {
+          "name": "StructuralLibError",
+          "description": "Base exception for all structural_lib_is456 errors."
+        },
+        {
+          "name": "ValidationError",
+          "description": "Raised when input validation fails."
+        },
+        {
+          "name": "DesignConstraintError",
+          "description": "Raised when design requirements cannot be satisfied within given constraints."
+        },
+        {
+          "name": "ComplianceError",
+          "description": "Raised when IS 456:2000 code requirements are not met."
+        },
+        {
+          "name": "ConfigurationError",
+          "description": "Raised when library is misconfigured or in invalid state."
+        },
+        {
+          "name": "CalculationError",
+          "description": "Raised when calculation cannot complete due to numerical issues."
+        },
+        {
+          "name": "DimensionError",
+          "description": "Raised when dimensions are invalid or out of range."
+        },
+        {
+          "name": "MaterialError",
+          "description": "Raised when material properties are invalid."
+        },
+        {
+          "name": "LoadError",
+          "description": "Raised when loads are invalid."
+        },
+        {
+          "name": "Severity",
+          "description": "Error severity levels."
+        },
+        {
+          "name": "DesignError",
+          "description": "Structured error dataclass for machine-readable error reporting.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "make_error",
+          "description": "Factory function to create a DesignError.",
+          "params": [
+            "code",
+            "severity",
+            "message",
+            "field",
+            "hint",
+            "clause"
+          ]
+        }
+      ],
+      "constants": [
+        "E_INPUT_001",
+        "E_INPUT_002",
+        "E_INPUT_003",
+        "E_INPUT_004",
+        "E_INPUT_005",
+        "E_INPUT_006",
+        "E_INPUT_007",
+        "E_INPUT_008",
+        "E_INPUT_009",
+        "E_INPUT_010"
+      ],
+      "content_hash": "14083c11abaa"
+    },
+    {
+      "name": "geometry.py",
+      "type": "python",
+      "size_lines": 227,
+      "last_updated": "2026-01-23",
+      "description": "Code-agnostic geometry definitions.",
+      "classes": [
+        {
+          "name": "Section",
+          "description": "Abstract base for cross-section geometry.",
+          "public_methods": [
+            "area",
+            "centroid_y",
+            "moment_of_inertia",
+            "section_modulus_bottom",
+            "section_modulus_top",
+            "overall_depth"
+          ]
+        },
+        {
+          "name": "RectangularSection",
+          "description": "Rectangular beam/column cross-section.",
+          "public_methods": [
+            "area",
+            "centroid_y",
+            "moment_of_inertia",
+            "overall_depth"
+          ]
+        },
+        {
+          "name": "TSection",
+          "description": "T-beam cross-section.",
+          "public_methods": [
+            "area",
+            "centroid_y",
+            "moment_of_inertia",
+            "overall_depth"
+          ]
+        },
+        {
+          "name": "LSection",
+          "description": "L-beam (edge beam) cross-section.",
+          "public_methods": [
+            "area",
+            "centroid_y",
+            "moment_of_inertia",
+            "overall_depth"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "effective_flange_width",
+          "description": "Calculate effective flange width per IS 456 Cl. 23.1.2.",
+          "params": [
+            "span",
+            "bw",
+            "actual_flange",
+            "beam_type"
+          ]
+        }
+      ],
+      "content_hash": "2c4bbf9324ec"
+    },
+    {
+      "name": "inputs.py",
+      "type": "python",
+      "size_lines": 615,
+      "last_updated": "2026-02-10",
+      "description": "Module:       inputs",
+      "classes": [
+        {
+          "name": "BeamGeometryInput",
+          "description": "Beam geometry parameters.",
+          "public_methods": [
+            "effective_depth",
+            "span_depth_ratio",
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "MaterialsInput",
+          "description": "Material properties for beam design.",
+          "public_methods": [
+            "concrete_grade",
+            "steel_grade",
+            "m25_fe500",
+            "m30_fe500",
+            "m20_fe415",
+            "m35_fe500",
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "LoadsInput",
+          "description": "Simple loads input for single-case design.",
+          "public_methods": [
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "LoadCaseInput",
+          "description": "Single load case for multi-case analysis.",
+          "public_methods": [
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "DetailingConfigInput",
+          "description": "Configuration for beam detailing.",
+          "public_methods": [
+            "stirrup_spacing_end",
+            "seismic",
+            "gravity_only",
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "BeamInput",
+          "description": "Complete beam input for design and detailing.",
+          "public_methods": [
+            "has_multiple_cases",
+            "governing_moment",
+            "governing_shear",
+            "to_dict",
+            "to_json",
+            "to_json_file",
+            "from_dict",
+            "from_json",
+            "from_json_file"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "from_dict",
+          "description": "Create BeamInput from dictionary (convenience function).",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "from_json",
+          "description": "Create BeamInput from JSON string (convenience function).",
+          "params": [
+            "json_string"
+          ]
+        },
+        {
+          "name": "from_json_file",
+          "description": "Create BeamInput from JSON file (convenience function).",
+          "params": [
+            "path"
+          ]
+        }
+      ],
+      "content_hash": "9b7694afcf2e"
+    },
+    {
+      "name": "materials.py",
+      "type": "python",
+      "size_lines": 159,
+      "last_updated": "2026-01-23",
+      "description": "Code-agnostic material models.",
+      "classes": [
+        {
+          "name": "Concrete",
+          "description": "Concrete material properties.",
+          "public_methods": [
+            "fcm",
+            "fctm"
+          ]
+        },
+        {
+          "name": "Steel",
+          "description": "Reinforcement steel properties.",
+          "public_methods": [
+            "design_stress",
+            "strain_at_yield"
+          ]
+        },
+        {
+          "name": "MaterialFactory",
+          "description": "Factory for creating material objects with code-specific defaults.",
+          "public_methods": [
+            "concrete",
+            "steel"
+          ]
+        }
+      ],
+      "content_hash": "cd2765f616bf"
+    },
+    {
+      "name": "models.py",
+      "type": "python",
+      "size_lines": 525,
+      "last_updated": "2026-02-10",
+      "description": "Canonical Data Models for Structural Engineering Library.",
+      "classes": [
+        {
+          "name": "FrameType",
+          "description": "Type of structural frame element."
+        },
+        {
+          "name": "DesignStatus",
+          "description": "Design check status."
+        },
+        {
+          "name": "Point3D",
+          "description": "3D coordinate point with explicit units (meters).",
+          "public_methods": [
+            "distance_to"
+          ]
+        },
+        {
+          "name": "SectionProperties",
+          "description": "Beam cross-section properties with explicit units.",
+          "public_methods": [
+            "effective_depth_mm"
+          ]
+        },
+        {
+          "name": "BeamGeometry",
+          "description": "Canonical beam geometry model.",
+          "public_methods": [
+            "length_m",
+            "is_vertical",
+            "validate_length"
+          ]
+        },
+        {
+          "name": "BeamForces",
+          "description": "Canonical beam forces model (envelope values for design)."
+        },
+        {
+          "name": "BeamDesignResult",
+          "description": "Canonical beam design result model.",
+          "public_methods": [
+            "is_acceptable"
+          ]
+        },
+        {
+          "name": "DesignDefaults",
+          "description": "Default design parameters for batch processing."
+        },
+        {
+          "name": "BeamBatchInput",
+          "description": "Complete validated input for batch beam design.",
+          "public_methods": [
+            "get_merged_data",
+            "get_unmatched_beams",
+            "get_unmatched_forces",
+            "validate_matching"
+          ]
+        },
+        {
+          "name": "BeamBatchResult",
+          "description": "Complete batch design results.",
+          "public_methods": [
+            "pass_rate",
+            "from_results"
+          ]
+        },
+        {
+          "name": "BuildingStatistics",
+          "description": "Statistics for a building/project from beam geometry data.",
+          "public_methods": [
+            "from_beams"
+          ]
+        }
+      ],
+      "content_hash": "8cc7a8b1a3bc"
+    },
+    {
+      "name": "registry.py",
+      "type": "python",
+      "size_lines": 98,
+      "last_updated": "2026-02-10",
+      "description": "Design code registry for multi-code support.",
+      "classes": [
+        {
+          "name": "CodeRegistry",
+          "description": "Registry for design code implementations.",
+          "public_methods": [
+            "register",
+            "get",
+            "list_codes",
+            "is_registered",
+            "clear"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "register_code",
+          "description": "Decorator to register a design code class.",
+          "params": [
+            "code_id"
+          ]
+        }
+      ],
+      "content_hash": "d914c3b11dc0"
+    },
+    {
+      "name": "result_base.py",
+      "type": "python",
+      "size_lines": 191,
+      "last_updated": "2026-02-10",
+      "description": "Module:       result_base",
+      "classes": [
+        {
+          "name": "BaseResult",
+          "description": "Abstract base class for all result objects in structural_engineering_lib.",
+          "public_methods": [
+            "summary",
+            "to_dict",
+            "validate"
+          ]
+        },
+        {
+          "name": "CalculationResult",
+          "description": "Base class for calculation results that include metadata."
+        },
+        {
+          "name": "ComplianceResult",
+          "description": "Base class for compliance check results.",
+          "public_methods": [
+            "is_valid",
+            "failed_checks",
+            "validate"
+          ]
+        }
+      ],
+      "content_hash": "50f611ae8929"
+    },
+    {
+      "name": "types.py",
+      "type": "python",
+      "size_lines": 51,
+      "last_updated": "2026-02-10",
+      "description": "Compatibility shim for the renamed data_types module.",
+      "content_hash": "f6fe87009d8e"
+    },
+    {
+      "name": "utilities.py",
+      "type": "python",
+      "size_lines": 212,
+      "last_updated": "2026-02-10",
+      "description": "Module:       utilities",
+      "functions": [
+        {
+          "name": "linear_interp",
+          "description": "Linear Interpolation: y = y1 + (x - x1) * (y2 - y1) / (x2 - x1)",
+          "params": [
+            "x",
+            "x1",
+            "y1",
+            "x2",
+            "y2"
+          ]
+        },
+        {
+          "name": "round_to",
+          "description": "Standard rounding function",
+          "params": [
+            "value",
+            "digits"
+          ]
+        },
+        {
+          "name": "mm_to_m",
+          "description": "Convert millimeters to meters.",
+          "params": [
+            "value_mm"
+          ]
+        },
+        {
+          "name": "m_to_mm",
+          "description": "Convert meters to millimeters.",
+          "params": [
+            "value_m"
+          ]
+        },
+        {
+          "name": "deprecated",
+          "description": "Mark a function or class as deprecated.",
+          "params": [
+            "version",
+            "remove_version",
+            "alternative",
+            "reason"
+          ]
+        },
+        {
+          "name": "deprecated_field",
+          "description": "Emit deprecation warning for a dataclass field.",
+          "params": [
+            "dataclass_name",
+            "field_name",
+            "version",
+            "remove_version",
+            "alternative"
+          ]
+        }
+      ],
+      "constants": [
+        "F"
+      ],
+      "content_hash": "b61e1796e5fb"
+    },
+    {
+      "name": "validation.py",
+      "type": "python",
+      "size_lines": 633,
+      "last_updated": "2026-02-10",
+      "description": "Module:       validation",
+      "functions": [
+        {
+          "name": "validate_dimensions",
+          "description": "Validate beam dimensions (b, d, D).",
+          "params": [
+            "b",
+            "d",
+            "D"
+          ]
+        },
+        {
+          "name": "validate_materials",
+          "description": "Validate material properties (fck, fy).",
+          "params": [
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "validate_positive",
+          "description": "Validate that a value is positive.",
+          "params": [
+            "value",
+            "field_name",
+            "error_map"
+          ]
+        },
+        {
+          "name": "validate_range",
+          "description": "Validate that a value is within a specified range.",
+          "params": [
+            "value",
+            "min_val",
+            "max_val",
+            "field_name",
+            "error"
+          ]
+        },
+        {
+          "name": "validate_geometry_relationship",
+          "description": "Validate beam geometry relationships.",
+          "params": [
+            "d",
+            "D",
+            "cover"
+          ]
+        },
+        {
+          "name": "validate_stirrup_parameters",
+          "description": "Validate stirrup parameters.",
+          "params": [
+            "asv_mm2",
+            "spacing_mm"
+          ]
+        },
+        {
+          "name": "validate_all_positive",
+          "description": "Validate that all provided values are positive."
+        },
+        {
+          "name": "validate_cover",
+          "description": "Validate cover requirements.",
+          "params": [
+            "cover",
+            "D",
+            "min_cover"
+          ]
+        },
+        {
+          "name": "validate_loads",
+          "description": "Validate factored loads (moment, shear).",
+          "params": [
+            "mu",
+            "vu"
+          ]
+        },
+        {
+          "name": "validate_material_grades",
+          "description": "Validate material grades per IS 456 allowed values.",
+          "params": [
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "validate_reinforcement",
+          "description": "Validate reinforcement area against min/max limits.",
+          "params": [
+            "ast",
+            "ast_min",
+            "ast_max"
+          ]
+        },
+        {
+          "name": "validate_span",
+          "description": "Validate beam span.",
+          "params": [
+            "span",
+            "min_span",
+            "max_span"
+          ]
+        },
+        {
+          "name": "validate_beam_inputs",
+          "description": "Validate all common beam design inputs.",
+          "params": [
+            "b",
+            "d",
+            "D",
+            "cover",
+            "fck",
+            "fy",
+            "mu",
+            "vu"
+          ]
+        }
+      ],
+      "content_hash": "58a9c3f356b5"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "282eb4a8268d9f71",
+  "has_init": true,
+  "public_api": [
+    "DesignCode",
+    "FlexureDesigner",
+    "ShearDesigner",
+    "DetailingRules",
+    "Concrete",
+    "Steel",
+    "MaterialFactory",
+    "Section",
+    "RectangularSection",
+    "TSection",
+    "LSection",
+    "CodeRegistry"
+  ]
+}

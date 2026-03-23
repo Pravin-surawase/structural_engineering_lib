@@ -1,0 +1,43 @@
+{
+  "folder": "react_app/src/utils",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "beamStatus.ts",
+      "type": "typescript",
+      "size_lines": 23,
+      "last_updated": "2026-01-28",
+      "exports": [
+        "BeamStatus",
+        "deriveBeamStatus"
+      ],
+      "content_hash": "36d89c5c378c"
+    },
+    {
+      "name": "materialOverrides.ts",
+      "type": "typescript",
+      "size_lines": 23,
+      "last_updated": "2026-01-27",
+      "exports": [
+        "MaterialOverrides",
+        "applyMaterialOverrides"
+      ],
+      "content_hash": "90bf1253c1c2"
+    },
+    {
+      "name": "sampleData.ts",
+      "type": "typescript",
+      "size_lines": 20,
+      "last_updated": "2026-01-27",
+      "exports": [
+        "mapSampleBeamsToRows"
+      ],
+      "content_hash": "767777dfd88f"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "873ceb43805bd7f4"
+}

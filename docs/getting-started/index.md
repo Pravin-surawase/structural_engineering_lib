@@ -1,26 +1,30 @@
-# Getting Started Index
+# Getting Started
 
 Quick onboarding guides for new users of the structural engineering library.
 
-**Last Updated:** 2026-01-21
-**File Count:** 15
+**Type:** Mixed
+**Last Updated:** 2026-03-24
+**Files:** 19
 
-## Files
+## Documentation Files
 
-| File | Description | Updated | Lines |
-|------|-------------|---------|-------|
-| [NEW-DEVELOPER-ONBOARDING.md](NEW-DEVELOPER-ONBOARDING.md) | **Welcome to structural_engineering_lib! 🎓** This guide is for you if: | 2026-01-21 | 368 |
-| [agent-bootstrap.md](agent-bootstrap.md) | > **Read this first.** This is the fastest path to productive work. > **👤 For us | 2026-01-21 | 134 |
-| [ai-context-pack.md](ai-context-pack.md) | Redirects to agent-bootstrap.md (merged) | 2026-02-09 | 4 |
-| [beginners-guide.md](beginners-guide.md) | This guide is written for engineers and students who are new to coding. Follow t | 2026-01-21 | 150 |
-| [colab-workflow.md](colab-workflow.md) | This guide runs the full pipeline in Google Colab: install → generate inputs → d | 2026-01-21 | 515 |
-| [copilot-quick-start.md](copilot-quick-start.md) | > **⚠️ CONSOLIDATED:** This document has been simplified. > | 2026-01-21 | 195 |
-| [cost-optimization-guide.md](cost-optimization-guide.md) | This guide explains how to use the cost optimization features to explore cheaper | 2026-01-21 | 49 |
-| [design-suggestions-guide.md](design-suggestions-guide.md) | The design suggestions engine provides expert recommendations to improve your be | 2026-01-21 | 453 |
-| [excel-quickstart.md](excel-quickstart.md) | This is the easiest path if you prefer Excel and do not want to code. Use one of | 2026-01-21 | 68 |
-| [excel-tutorial.md](excel-tutorial.md) | This tutorial walks you through using the Structural Engineering Library in Exce | 2026-01-21 | 393 |
-| [fix-copilot-terminal.md](fix-copilot-terminal.md) | Copilot Agent's terminal is stuck in git pager mode. Commands open "alternate bu | 2026-01-21 | 148 |
-| [insights-guide.md](insights-guide.md) | > **Stability:** Experimental - API may change before v1.0 Advisory insights pro | 2026-01-21 | 537 |
-| [python-quickstart.md](python-quickstart.md) | This guide shows how to install, run, and verify the Python library with simple, | 2026-01-21 | 173 |
-| [releases.md](releases.md) | This document serves as the **immutable source of truth** for project releases.  | 2026-01-21 | 895 |
-| [user-guide.md](user-guide.md) | This guide walks you through a complete beam design workflow from start to finis | 2026-01-21 | 215 |
+| File | Title | Description | Lines |
+|------|-------|-------------|-------|
+| [NEW-DEVELOPER-ONBOARDING.md](NEW-DEVELOPER-ONBOARDING.md) | Onboarding Guide for New Developers | This guide is for you if: - ✅ You're new to this project | 368 |
+| [README.md](README.md) | Getting Started | Quick onboarding guides for new users of the structural engi | 79 |
+| [agent-bootstrap.md](agent-bootstrap.md) | Agent Bootstrap — structural_engineering | > **This is THE canonical bootstrap for all AI agents.** Ent | 342 |
+| [agent-essentials.md](agent-essentials.md) | Agent Essentials | > **Merged.** This document's content has been consolidated  | 5 |
+| [ai-context-pack.md](ai-context-pack.md) | AI Context Pack | > **Merged.** This document's content has been consolidated  | 5 |
+| [beginners-guide.md](beginners-guide.md) | Beginner's Guide (No Coding Required) | This guide is written for engineers and students who are new | 150 |
+| [colab-workflow.md](colab-workflow.md) | Colab Workflow (End-to-End, No ETABS Nee | This guide runs the full pipeline in Google Colab: install → | 515 |
+| [copilot-quick-start.md](copilot-quick-start.md) | GitHub Copilot Agent Quick Start | > **⚠️ CONSOLIDATED:** This document has been simplified. > | 195 |
+| [cost-optimization-guide.md](cost-optimization-guide.md) | Cost Optimization Guide | This guide explains how to use the cost optimization feature | 49 |
+| [design-suggestions-guide.md](design-suggestions-guide.md) | Design Suggestions Guide | The design suggestions engine provides expert recommendation | 453 |
+| [excel-quickstart.md](excel-quickstart.md) | Excel Quickstart (Step by Step) | This is the easiest path if you prefer Excel and do not want | 68 |
+| [excel-tutorial.md](excel-tutorial.md) | Excel Step-by-Step Tutorial | This tutorial walks you through using the Structural Enginee | 393 |
+| [fix-copilot-terminal.md](fix-copilot-terminal.md) | Fix Copilot Terminal Lockup - Manual Ste | Copilot Agent's terminal is stuck in git pager mode. Command | 148 |
+| [insights-guide.md](insights-guide.md) | Advisory Insights Guide | > **Stability:** Experimental - API may change before v1.0 A | 537 |
+| [installation-notes.md](installation-notes.md) | Installation & Setup Guide | All required packages have been installed successfully: - ** | 80 |
+| [python-quickstart.md](python-quickstart.md) | Python Quickstart (Beginner-Friendly) | This guide shows how to install, run, and verify the Python  | 173 |
+| [releases.md](releases.md) | Release Ledger | This document serves as the **immutable source of truth** fo | 895 |
+| [user-guide.md](user-guide.md) | User Guide — Complete Workflow | This guide walks you through a complete beam design workflow | 215 |

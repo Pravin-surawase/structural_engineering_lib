@@ -1,8 +1,8 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-02-10
-**Files:** 14
+**Last Updated:** 2026-03-24
+**Files:** 15
 
 ## Public API
 
@@ -34,10 +34,11 @@
 | [__init__.py](__init__.py) | IS 456:2000 - Indian Standard for Plain and Reinforced Concr | 1 | 0 | 131 |
 | [clause_cli.py](clause_cli.py) | IS 456 Clause CLI | 0 | 7 | 283 |
 | [compliance.py](compliance.py) | Module: compliance | 0 | 3 | 477 |
-| [detailing.py](detailing.py) | Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement De | 5 | 16 | 1186 |
+| [detailing.py](detailing.py) | Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement De | 5 | 16 | 1190 |
 | [ductile.py](ductile.py) | Module:       ductile | 1 | 5 | 182 |
 | [flexure.py](flexure.py) | Module:       flexure | 0 | 7 | 924 |
 | [load_analysis.py](load_analysis.py) | Module:       load_analysis | 0 | 5 | 453 |
+| [materials.py](materials.py) | Module:       materials | 0 | 4 | 118 |
 | [serviceability.py](serviceability.py) | Module: serviceability | 0 | 14 | 1357 |
 | [shear.py](shear.py) | Module:       shear | 0 | 4 | 369 |
 | [slenderness.py](slenderness.py) | Slenderness Check Module — IS 456:2000 Beam Lateral Stabilit | 2 | 3 | 364 |

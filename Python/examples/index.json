@@ -1,0 +1,311 @@
+{
+  "folder": "Python/examples",
+  "type": "python-package",
+  "description": "> **Purpose:** Example scripts demonstrating library usage",
+  "last_updated": "2026-03-24",
+  "file_count": 17,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 35,
+      "last_updated": "2026-01-23",
+      "title": "Examples - Python Usage Examples",
+      "description": "> **Purpose:** Example scripts demonstrating library usage > **Last Updated:** 2026-01-10",
+      "content_hash": "58e8a7725f7b"
+    },
+    {
+      "name": "bmd_sfd_example.py",
+      "type": "python",
+      "size_lines": 303,
+      "last_updated": "2026-01-23",
+      "description": "BMD/SFD Computation Example",
+      "functions": [
+        {
+          "name": "example_simply_supported_udl",
+          "description": "Example 1: Simply Supported Beam with UDL"
+        },
+        {
+          "name": "example_simply_supported_point_load",
+          "description": "Example 2: Simply Supported Beam with Point Load at Center"
+        },
+        {
+          "name": "example_combined_loads",
+          "description": "Example 3: Simply Supported Beam with Combined Loads"
+        },
+        {
+          "name": "example_cantilever",
+          "description": "Example 4: Cantilever Beam with UDL"
+        },
+        {
+          "name": "example_cantilever_point_load",
+          "description": "Example 5: Cantilever with Point Load at Tip"
+        }
+      ],
+      "content_hash": "3d99cdcd6269"
+    },
+    {
+      "name": "canonical_data_workflow.py",
+      "type": "python",
+      "size_lines": 315,
+      "last_updated": "2026-01-23",
+      "description": "Example: Complete workflow with canonical data format.",
+      "functions": [
+        {
+          "name": "example_manual_input",
+          "description": "Example: Create beam data programmatically."
+        },
+        {
+          "name": "example_batch_processing",
+          "description": "Example: Batch processing with BeamBatchInput."
+        },
+        {
+          "name": "example_json_caching",
+          "description": "Example: JSON serialization for caching.",
+          "params": [
+            "tmp_dir"
+          ]
+        },
+        {
+          "name": "example_design_results",
+          "description": "Example: Creating and aggregating design results."
+        },
+        {
+          "name": "example_schema_generation",
+          "description": "Example: Generate JSON Schemas for documentation.",
+          "params": [
+            "tmp_dir"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Run all examples."
+        }
+      ],
+      "content_hash": "ae053c6c4f46"
+    },
+    {
+      "name": "colab_workflow.py",
+      "type": "python",
+      "size_lines": 207,
+      "last_updated": "2026-01-23",
+      "description": "Colab-friendly full workflow example.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "df1e76150d8e"
+    },
+    {
+      "name": "complete_beam_design.py",
+      "type": "python",
+      "size_lines": 433,
+      "last_updated": "2026-01-23",
+      "description": "Sample: Complete Beam Design Workflow",
+      "classes": [
+        {
+          "name": "BeamDesignOutput",
+          "description": "Complete design output for one beam."
+        }
+      ],
+      "functions": [
+        {
+          "name": "select_bars",
+          "description": "Select practical bar arrangement for required area.",
+          "params": [
+            "area_required",
+            "min_count"
+          ]
+        },
+        {
+          "name": "design_beam",
+          "description": "Complete design of a single beam.",
+          "params": [
+            "row"
+          ]
+        },
+        {
+          "name": "print_schedule",
+          "description": "Print formatted beam schedule.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "save_schedule_csv",
+          "description": "Save results to CSV file.",
+          "params": [
+            "results",
+            "filepath"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "06b6f49f2db6"
+    },
+    {
+      "name": "demo_intelligence.py",
+      "type": "python",
+      "size_lines": 218,
+      "last_updated": "2026-01-23",
+      "description": "Demo: Smart library features (Precheck + Sensitivity)",
+      "functions": [
+        {
+          "name": "format_precheck_report",
+          "description": "Format predictive check for display.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "format_sensitivity_report",
+          "description": "Format sensitivity analysis for display.",
+          "params": [
+            "sensitivities",
+            "robustness"
+          ]
+        },
+        {
+          "name": "demo_predictive_validation",
+          "description": "Demo: Quick heuristic pre-checks."
+        },
+        {
+          "name": "demo_sensitivity_analysis",
+          "description": "Demo: Sensitivity analysis with API design."
+        },
+        {
+          "name": "demo_combined_workflow",
+          "description": "Demo: Combined workflow (precheck -> design -> sensitivity)."
+        }
+      ],
+      "content_hash": "31a58273e112"
+    },
+    {
+      "name": "full_pipeline_synthetic.py",
+      "type": "python",
+      "size_lines": 216,
+      "last_updated": "2026-01-23",
+      "description": "Generate synthetic beam inputs and run the full CLI pipeline.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "FIELDNAMES"
+      ],
+      "content_hash": "d09ae4526ab8"
+    },
+    {
+      "name": "professional_workflow.py",
+      "type": "python",
+      "size_lines": 241,
+      "last_updated": "2026-02-10",
+      "description": "Professional Engineering Workflow Example.",
+      "functions": [
+        {
+          "name": "main",
+          "description": "Run the professional workflow example."
+        }
+      ],
+      "content_hash": "34fff26b9f94"
+    },
+    {
+      "name": "sample_job_is456.json",
+      "type": "config",
+      "last_updated": "2026-01-23",
+      "top_level_keys": [
+        "schema_version",
+        "job_id",
+        "code",
+        "units",
+        "beam",
+        "cases"
+      ],
+      "content_hash": "73321a98d559"
+    },
+    {
+      "name": "sample_job_report.json",
+      "type": "config",
+      "last_updated": "2026-01-23",
+      "top_level_keys": [
+        "schema_version",
+        "code",
+        "units",
+        "job_id",
+        "beam",
+        "cases"
+      ],
+      "content_hash": "11a52e05de58"
+    },
+    {
+      "name": "simple_examples.py",
+      "type": "python",
+      "size_lines": 328,
+      "last_updated": "2026-02-10",
+      "description": "Simple Examples for Beginners",
+      "functions": [
+        {
+          "name": "example_1_basic_flexure",
+          "description": "Example 1: Design a Simply Supported Beam for Bending"
+        },
+        {
+          "name": "example_2_shear_design",
+          "description": "Example 2: Design Stirrups for Shear"
+        },
+        {
+          "name": "example_3_development_length",
+          "description": "Example 3: Calculate Development Length"
+        },
+        {
+          "name": "example_4_lap_length",
+          "description": "Example 4: Calculate Lap Length"
+        },
+        {
+          "name": "example_5_bar_spacing",
+          "description": "Example 5: Check Bar Spacing"
+        },
+        {
+          "name": "example_6_doubly_reinforced",
+          "description": "Example 6: Doubly Reinforced Beam Design"
+        },
+        {
+          "name": "example_7_complete_design",
+          "description": "Example 7: Complete Beam Design Summary"
+        },
+        {
+          "name": "main",
+          "description": "Run all examples."
+        }
+      ],
+      "content_hash": "bfc6515e077a"
+    },
+    {
+      "name": "validate_intelligence.py",
+      "type": "python",
+      "size_lines": 149,
+      "last_updated": "2026-01-23",
+      "description": "Validate insights features against sample vectors.",
+      "functions": [
+        {
+          "name": "format_precheck_report",
+          "description": "Format predictive check for display.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "validate_sample_vectors",
+          "description": "Test insights features against sample vectors."
+        }
+      ],
+      "content_hash": "213725e9b5c5"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "22ce0c44d70a6755"
+}

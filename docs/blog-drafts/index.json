@@ -1,0 +1,56 @@
+{
+  "folder": "docs/blog-drafts",
+  "type": "documentation",
+  "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance.",
+  "last_updated": "2026-03-24",
+  "file_count": 5,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 55,
+      "last_updated": "2026-01-23",
+      "title": "Blog Drafts Index",
+      "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance. | File | Topic | Status |",
+      "content_hash": "29cbe0807f22"
+    },
+    {
+      "name": "is456-compliance-automation.md",
+      "type": "documentation",
+      "size_lines": 228,
+      "last_updated": "2026-01-23",
+      "title": "IS 456 Compliance Automation: How the Library Checks Your Beam Designs",
+      "description": "Picture this: It's 6 PM on a Friday. You have a deadline Monday morning. You've just finished analyzing 200 beams in ETABS. Now comes the \"fun\" part: opening Excel, copying forces row by row, and manu",
+      "content_hash": "c31dfac6aba8"
+    },
+    {
+      "name": "performance-engineering-structural-calcs.md",
+      "type": "documentation",
+      "size_lines": 177,
+      "last_updated": "2026-01-23",
+      "title": "Performance Engineering for Structural Calculations: Speed Up Your Analysis 10x",
+      "description": "Imagine you're running a marathon, but for every step, you have to stop, open a backpack, check a map, and then take the step. That’s what most structural analysis code does: it recalculates constants",
+      "content_hash": "847f22873ff8"
+    },
+    {
+      "name": "smart-design-analysis-deep-dive.md",
+      "type": "documentation",
+      "size_lines": 286,
+      "last_updated": "2026-01-23",
+      "title": "Smart Design Analysis Deep Dive: Unified Dashboard for Intelligent Structural Design",
+      "description": "I still remember my first high-rise project. I spent three days designing the podium beams. Just as I finished, the architect called: *\"We need to increase the duct clearance. Can you reduce the beam ",
+      "content_hash": "51ed63cf7232"
+    },
+    {
+      "name": "type-safety-engineering-software.md",
+      "type": "documentation",
+      "size_lines": 191,
+      "last_updated": "2026-01-23",
+      "title": "Type Safety in Engineering Software: The 10 Lakh Rupee Mistake",
+      "description": "It started with a simple copy-paste. A junior engineer was rushing to finish a beam schedule. He copied a value from column A (**Depth in mm**) into a Python function that expected **Span in meters**.",
+      "content_hash": "df592791dec0"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "d5e7a69fcb19f8b0"
+}

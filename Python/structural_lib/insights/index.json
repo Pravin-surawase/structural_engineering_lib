@@ -1,0 +1,339 @@
+{
+  "folder": "Python/structural_lib/insights",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 10,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 77,
+      "last_updated": "2026-01-27",
+      "description": "Advisory insights (opt-in) for IS 456 beam designs.",
+      "content_hash": "b43e3d634135"
+    },
+    {
+      "name": "comparison.py",
+      "type": "python",
+      "size_lines": 394,
+      "last_updated": "2026-02-10",
+      "description": "Multi-design comparison and cost-aware sensitivity analysis.",
+      "classes": [
+        {
+          "name": "DesignAlternative",
+          "description": "A single design alternative for comparison."
+        },
+        {
+          "name": "ComparisonMetrics",
+          "description": "Metrics for comparing designs."
+        },
+        {
+          "name": "ComparisonResult",
+          "description": "Result of multi-design comparison."
+        },
+        {
+          "name": "CostSensitivityResult",
+          "description": "Sensitivity analysis with cost implications."
+        }
+      ],
+      "functions": [
+        {
+          "name": "compare_designs",
+          "description": "Compare multiple design alternatives.",
+          "params": [
+            "alternatives"
+          ]
+        },
+        {
+          "name": "cost_aware_sensitivity",
+          "description": "Sensitivity analysis with cost implications.",
+          "params": [
+            "design_function",
+            "base_params",
+            "cost_profile",
+            "parameters_to_vary",
+            "perturbation"
+          ]
+        }
+      ],
+      "content_hash": "9126b05dd281"
+    },
+    {
+      "name": "constructability.py",
+      "type": "python",
+      "size_lines": 261,
+      "last_updated": "2026-02-10",
+      "description": "Constructability scoring (advisory only).",
+      "functions": [
+        {
+          "name": "calculate_constructability_score",
+          "description": "Assess construction ease on 0-100 scale (heuristic-based).",
+          "params": [
+            "design_result",
+            "detailing"
+          ]
+        }
+      ],
+      "content_hash": "da32dd0cd3f1"
+    },
+    {
+      "name": "cost_optimization.py",
+      "type": "python",
+      "size_lines": 67,
+      "last_updated": "2026-02-10",
+      "description": "Cost optimization feature for beam design.",
+      "functions": [
+        {
+          "name": "optimize_beam_design",
+          "description": "Find the most cost-effective beam design.",
+          "params": [
+            "span_mm",
+            "mu_knm",
+            "vu_kn",
+            "cost_profile"
+          ]
+        }
+      ],
+      "content_hash": "bb9c4fb00c01"
+    },
+    {
+      "name": "data_types.py",
+      "type": "python",
+      "size_lines": 28,
+      "last_updated": "2026-01-23",
+      "description": "Compatibility shim for the renamed insights types module.",
+      "content_hash": "e8f660b1c370"
+    },
+    {
+      "name": "design_suggestions.py",
+      "type": "python",
+      "size_lines": 686,
+      "last_updated": "2026-02-10",
+      "description": "Design suggestion engine for beam design optimization.",
+      "classes": [
+        {
+          "name": "SuggestionCategory",
+          "description": "Categories of design suggestions."
+        },
+        {
+          "name": "ImpactLevel",
+          "description": "Impact level of a suggestion."
+        },
+        {
+          "name": "DesignSuggestion",
+          "description": "A single design improvement suggestion.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "SuggestionReport",
+          "description": "Complete set of design suggestions.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "suggest_improvements",
+          "description": "Generate design improvement suggestions.",
+          "params": [
+            "design",
+            "detailing",
+            "cost_profile",
+            "span_mm",
+            "mu_knm",
+            "vu_kn"
+          ]
+        }
+      ],
+      "constants": [
+        "_ENGINE_VERSION"
+      ],
+      "content_hash": "856f2929389d"
+    },
+    {
+      "name": "precheck.py",
+      "type": "python",
+      "size_lines": 206,
+      "last_updated": "2026-02-10",
+      "description": "Heuristic pre-checks for quick design guidance (advisory only).",
+      "functions": [
+        {
+          "name": "quick_precheck",
+          "description": "Fast heuristic validation before full design."
+        }
+      ],
+      "constants": [
+        "_HEURISTICS_VERSION"
+      ],
+      "content_hash": "3bd766852968"
+    },
+    {
+      "name": "sensitivity.py",
+      "type": "python",
+      "size_lines": 252,
+      "last_updated": "2026-02-10",
+      "description": "Sensitivity analysis for beam designs (advisory only).",
+      "functions": [
+        {
+          "name": "sensitivity_analysis",
+          "description": "Analyze parameter sensitivity via one-at-a-time perturbation.",
+          "params": [
+            "design_function",
+            "base_params",
+            "parameters_to_vary",
+            "perturbation"
+          ]
+        },
+        {
+          "name": "calculate_robustness",
+          "description": "Calculate design robustness score (0-1) using margin-based method.",
+          "params": [
+            "sensitivities",
+            "base_utilization",
+            "failure_threshold"
+          ]
+        }
+      ],
+      "content_hash": "e20229436ee4"
+    },
+    {
+      "name": "smart_designer.py",
+      "type": "python",
+      "size_lines": 636,
+      "last_updated": "2026-02-10",
+      "description": "Smart Designer — Unified intelligent design analysis dashboard.",
+      "classes": [
+        {
+          "name": "SmartAnalysisSummary",
+          "description": "Summary of smart analysis for quick overview."
+        },
+        {
+          "name": "CostAnalysis",
+          "description": "Cost optimization results."
+        },
+        {
+          "name": "DesignSuggestions",
+          "description": "Design improvement suggestions."
+        },
+        {
+          "name": "SensitivityInsights",
+          "description": "Sensitivity and robustness analysis."
+        },
+        {
+          "name": "ConstructabilityInsights",
+          "description": "Constructability assessment."
+        },
+        {
+          "name": "DashboardReport",
+          "description": "Unified smart design dashboard report.",
+          "public_methods": [
+            "to_dict",
+            "to_json",
+            "summary_text"
+          ]
+        },
+        {
+          "name": "SmartDesigner",
+          "description": "Unified intelligent design analyzer.",
+          "public_methods": [
+            "analyze"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "quick_analysis",
+          "description": "Quick text-based smart analysis (simplified).",
+          "params": [
+            "design",
+            "span_mm",
+            "mu_knm",
+            "vu_kn"
+          ]
+        }
+      ],
+      "content_hash": "7228e2c532b6"
+    },
+    {
+      "name": "types.py",
+      "type": "python",
+      "size_lines": 145,
+      "last_updated": "2026-01-23",
+      "description": "Dataclasses for advisory insights (precheck, sensitivity, constructability).",
+      "classes": [
+        {
+          "name": "HeuristicWarning",
+          "description": "Warning from heuristic pre-check.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "PredictiveCheckResult",
+          "description": "Results from quick heuristic validation.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "SensitivityResult",
+          "description": "Sensitivity of one parameter.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "RobustnessScore",
+          "description": "Overall design robustness assessment.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ConstructabilityFactor",
+          "description": "One factor in constructability assessment.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ConstructabilityScore",
+          "description": "Overall constructability assessment.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "content_hash": "a6316b3d3675"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "162ba4bdc93c95d1",
+  "has_init": true,
+  "public_api": [
+    "calculate_constructability_score",
+    "calculate_robustness",
+    "compare_designs",
+    "cost_aware_sensitivity",
+    "quick_analysis",
+    "quick_precheck",
+    "sensitivity_analysis",
+    "optimize_beam_design",
+    "suggest_improvements",
+    "ComparisonMetrics",
+    "ComparisonResult",
+    "ConstructabilityInsights",
+    "CostAnalysis",
+    "CostProfile",
+    "CostOptimizationResult",
+    "CostSensitivityResult",
+    "ConstructabilityFactor",
+    "ConstructabilityScore",
+    "DashboardReport",
+    "DesignAlternative"
+  ]
+}

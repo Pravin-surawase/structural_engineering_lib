@@ -1,129 +1,193 @@
 {
   "folder": "docs",
-  "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
-  "last_updated": "2026-01-21",
-  "file_count": 2,
+  "type": "documentation",
+  "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
+  "last_updated": "2026-03-24",
+  "file_count": 5,
   "files": [
     {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 264,
+      "last_updated": "2026-02-11",
+      "title": "Docs Index (Start Here)",
+      "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
+      "content_hash": "4db8c6ae9ff8"
+    },
+    {
       "name": "SESSION_LOG.md",
+      "type": "documentation",
+      "size_lines": 10218,
+      "last_updated": "2026-03-23",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. 1. ✅ Refreshed README status and version references to v0.19.0",
-      "last_updated": "2026-01-21",
-      "size_lines": 8649
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. -",
+      "content_hash": "72d9a2f72479"
     },
     {
       "name": "TASKS.md",
+      "type": "documentation",
+      "size_lines": 82,
+      "last_updated": "2026-03-23",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "last_updated": "2026-01-21",
-      "size_lines": 280
+      "content_hash": "0404119da9de"
+    },
+    {
+      "name": "docs-canonical.json",
+      "type": "config",
+      "last_updated": "2026-01-23",
+      "top_level_keys": [
+        "_comment",
+        "_updated",
+        "_usage",
+        "topics",
+        "naming_conventions",
+        "forbidden_patterns"
+      ],
+      "content_hash": "94f00e9ae350"
+    },
+    {
+      "name": "docs-index.json",
+      "type": "config",
+      "last_updated": "2026-01-23",
+      "top_level_keys": [
+        "version",
+        "generated",
+        "total_docs",
+        "docs",
+        "navigation"
+      ],
+      "content_hash": "2b782dc3f0d4"
     }
   ],
   "subfolders": [
     {
       "name": "adr",
       "path": "adr/",
-      "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later. | ADR | Title | Status |"
+      "file_count": 4,
+      "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later."
     },
     {
       "name": "agents",
       "path": "agents/",
-      "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly. > **Start here** → Find your agent → Read Quick Start → Use Hub for details."
+      "file_count": 21,
+      "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly."
     },
     {
       "name": "architecture",
       "path": "architecture/",
-      "description": "Deep dives into project structure, design decisions, and system architecture. "
+      "file_count": 13,
+      "description": "Deep dives into project structure, design decisions, and system architecture."
+    },
+    {
+      "name": "audit",
+      "path": "audit/",
+      "file_count": 4
     },
     {
       "name": "blog-drafts",
       "path": "blog-drafts/",
-      "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance. | File | Topic | Status |"
+      "file_count": 5,
+      "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance."
     },
     {
       "name": "contributing",
       "path": "contributing/",
-      "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |"
+      "file_count": 33,
+      "description": "Guides for developers and maintainers of the structural engineering library."
     },
     {
       "name": "cookbook",
       "path": "cookbook/",
-      "description": "Task-focused recipes and code snippets for common structural engineering workflows. | Recipe | Description | Status |"
+      "file_count": 3,
+      "description": "Task-focused recipes and code snippets for common structural engineering workflows."
     },
     {
       "name": "developers",
       "path": "developers/",
-      "description": "> **For developers building on top of the structural_engineering_lib platform** Welcome to the developer documentation! This section is for developers who want to **build structural automations** usin"
+      "file_count": 5,
+      "description": "> **For developers building on top of the structural_engineering_lib platform**"
     },
     {
       "name": "getting-started",
       "path": "getting-started/",
-      "description": "Quick onboarding guides for new users of the structural engineering library. "
+      "file_count": 21,
+      "description": "Quick onboarding guides for new users of the structural engineering library."
     },
     {
       "name": "git-automation",
       "path": "git-automation/",
-      "description": "bash ./scripts/ai_commit.sh \"your commit message\""
+      "file_count": 7
     },
     {
       "name": "guidelines",
       "path": "guidelines/",
-      "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |"
+      "file_count": 18
     },
     {
       "name": "guides",
       "path": "guides/",
-      "description": ""
+      "file_count": 8,
+      "description": "End-user and developer guides for specific workflows."
     },
     {
       "name": "images",
       "path": "images/",
-      "description": "This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams). | Category | Naming Pattern | Example |"
+      "file_count": 1,
+      "description": "This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams)."
     },
     {
       "name": "learning",
       "path": "learning/",
-      "description": "A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the Python/VBA implementation. | I am... | Start Here |"
+      "file_count": 9,
+      "description": "A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the P"
     },
     {
       "name": "legal",
       "path": "legal/",
-      "description": ""
+      "file_count": 4,
+      "description": "Engineering certification templates and usage guidelines."
     },
     {
       "name": "planning",
       "path": "planning/",
-      "description": "Internal planning documents and research notes. | Document | Purpose |"
+      "file_count": 41
     },
     {
       "name": "publications",
       "path": "publications/",
-      "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineering library. Document and share:"
+      "file_count": 10,
+      "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineeri"
     },
     {
       "name": "reference",
       "path": "reference/",
-      "description": "Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |"
+      "file_count": 1788
     },
     {
       "name": "research",
       "path": "research/",
-      "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings. > Use **Tags** to filter by topic, **Complexity** to gauge reading time."
+      "file_count": 186,
+      "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings."
     },
     {
       "name": "specs",
       "path": "specs/",
-      "description": ""
+      "file_count": 4,
+      "description": "Technical specifications for data formats and schemas."
     },
     {
       "name": "vba",
       "path": "vba/",
-      "description": ""
+      "file_count": 3,
+      "description": "Documentation for the VBA/Excel implementation journey and production plans."
     },
     {
       "name": "verification",
       "path": "verification/",
-      "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |"
+      "file_count": 8,
+      "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
-  ]
+  ],
+  "content_hash": "bfbe2790d66deb01"
 }

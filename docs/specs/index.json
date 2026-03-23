@@ -1,0 +1,47 @@
+{
+  "folder": "docs/specs",
+  "type": "documentation",
+  "description": "Technical specifications for data formats and schemas.",
+  "last_updated": "2026-03-24",
+  "file_count": 4,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 14,
+      "last_updated": "2026-03-24",
+      "title": "Specifications",
+      "description": "Technical specifications for data formats and schemas. | Spec | Description |",
+      "content_hash": "97ed87d97ee9"
+    },
+    {
+      "name": "csv-import-schema.md",
+      "type": "documentation",
+      "size_lines": 317,
+      "last_updated": "2026-01-23",
+      "title": "CSV Import Schema Specification",
+      "description": "This document defines the CSV schemas for importing beam data and geometry from structural analysis software (ETABS, SAFE, and generic formats) into structural_engineering_lib for design and visualiza",
+      "content_hash": "17e38cfcd65c"
+    },
+    {
+      "name": "v0.7-data-mapping.md",
+      "type": "documentation",
+      "size_lines": 307,
+      "last_updated": "2026-01-23",
+      "title": "v0.7 Data Mapping Specification",
+      "description": "This document defines the data flow from Excel tables to DXF generation for beam detailing drawings. ",
+      "content_hash": "f5494fd0a650"
+    },
+    {
+      "name": "v0.9-job-schema.md",
+      "type": "documentation",
+      "size_lines": 127,
+      "last_updated": "2026-01-23",
+      "title": "v0.9 — Job Schema (Draft)",
+      "description": "This schema is intentionally minimal: - Single beam per job",
+      "content_hash": "2c8f82cada01"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "93da6aa6be5d78a6"
+}

@@ -1,11 +1,20 @@
-# Agents Index
+# Agents
 
-Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.
+Use these snippets to quickly engage the right agent with the right context.
 
-**Last Updated:** 2026-01-21
-**File Count:** 0
+**Type:** Documentation
+**Last Updated:** 2026-03-24
+**Files:** 1
+
+## Documentation Files
+
+| File | Title | Description | Lines |
+|------|-------|-------------|-------|
+| [README.md](README.md) | Agent Prompt Cheat Sheet | Use these snippets to quickly engage the right agent with th | 126 |
 
 ## Subfolders
 
-- [agent-9/](agent-9/) - | Document | Purpose | |----------|---------|
-- [roles/](roles/)
+| Folder | Files | Description |
+|--------|-------|-------------|
+| [agent-9/](agent-9/) | 22 |  |
+| [roles/](roles/) | 15 | Defines 12 agent roles for the multi-agent collaboration framework. |

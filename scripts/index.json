@@ -1,275 +1,3335 @@
 {
-  "$schema": "scripts-index-schema",
-  "version": "1.0.0",
-  "updated": "2026-03-23",
-  "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 83,
-  "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
-  "tier0": {
-    "description": "PRIMARY SCRIPTS - Use these 95% of the time",
-    "scripts": {
-      "ai_commit.sh": {
-        "purpose": "Commit and push changes (ALWAYS use this for commits)",
-        "usage": "./scripts/ai_commit.sh \"commit message\"",
-        "category": "git",
-        "priority": "critical"
-      },
-      "agent_start.sh": {
-        "purpose": "Start session (combines setup + preflight + session init)",
-        "usage": "./scripts/agent_start.sh --quick",
-        "category": "session",
-        "priority": "critical"
-      },
-      "should_use_pr.sh": {
-        "purpose": "Decide if PR is needed vs direct commit",
-        "usage": "./scripts/should_use_pr.sh --explain",
-        "category": "git",
-        "priority": "high"
-      },
-      "recover_git_state.sh": {
-        "purpose": "Emergency recovery from git issues",
-        "usage": "./scripts/recover_git_state.sh",
-        "category": "git",
-        "priority": "high"
-      },
-      "session.py": {
-        "purpose": "Unified session management (start, end, handoff, check)",
-        "usage": ".venv/bin/python scripts/session.py end",
-        "category": "session",
-        "priority": "high"
-      }
+  "folder": "scripts",
+  "type": "python-package",
+  "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
+  "last_updated": "2026-03-24",
+  "file_count": 85,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 119,
+      "last_updated": "2026-02-11",
+      "title": "Scripts",
+      "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks > **Owner:** All contributors",
+      "content_hash": "7df24c985321"
+    },
+    {
+      "name": "agent_mistakes_report.sh",
+      "type": "shell-script",
+      "size_lines": 135,
+      "last_updated": "2026-01-23",
+      "description": "Agent Mistakes Report",
+      "content_hash": "b51626bd324f"
+    },
+    {
+      "name": "agent_start.sh",
+      "type": "shell-script",
+      "size_lines": 316,
+      "last_updated": "2026-03-23",
+      "description": "Unified Agent Start Script",
+      "content_hash": "22f25470e238"
+    },
+    {
+      "name": "ai_commit.sh",
+      "type": "shell-script",
+      "size_lines": 185,
+      "last_updated": "2026-03-23",
+      "description": "AI-friendly wrapper for safe commits and pushes",
+      "content_hash": "79ec8dc8ec53"
+    },
+    {
+      "name": "archive_old_files.sh",
+      "type": "shell-script",
+      "size_lines": 181,
+      "last_updated": "2026-01-23",
+      "description": "Auto-archive files older than 90 days from docs/_active/",
+      "content_hash": "758b923d4337"
+    },
+    {
+      "name": "audit_error_handling.py",
+      "type": "python",
+      "size_lines": 286,
+      "last_updated": "2026-03-23",
+      "description": "Audit error handling compliance across structural_lib modules.",
+      "classes": [
+        {
+          "name": "ComplianceIssue",
+          "description": "Represents a compliance issue found during audit."
+        },
+        {
+          "name": "ErrorHandlingVisitor",
+          "description": "AST visitor to detect error handling anti-patterns.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_If"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "analyze_module",
+          "description": "Analyze a single module for compliance issues.",
+          "params": [
+            "module_path"
+          ]
+        },
+        {
+          "name": "get_layer_for_module",
+          "description": "Determine which layer a module belongs to.",
+          "params": [
+            "module_name"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "CORE_MODULES",
+        "VALIDATION_MODULES",
+        "ORCHESTRATION_MODULES",
+        "IO_MODULES",
+        "CLI_MODULES"
+      ],
+      "content_hash": "4d344e245b45"
+    },
+    {
+      "name": "audit_input_validation.py",
+      "type": "python",
+      "size_lines": 393,
+      "last_updated": "2026-03-23",
+      "description": "Audit Input Validation Coverage for structural_lib.",
+      "classes": [
+        {
+          "name": "FunctionInfo",
+          "description": "Information about a function and its validation status.",
+          "public_methods": [
+            "coverage"
+          ]
+        },
+        {
+          "name": "ValidationAuditor",
+          "description": "AST visitor to analyze validation patterns in Python code.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_Call",
+            "visit_Raise"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "audit_file",
+          "description": "Audit a single Python file for validation coverage.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "audit_directory",
+          "description": "Audit all Python files in a directory.",
+          "params": [
+            "directory",
+            "verbose"
+          ]
+        },
+        {
+          "name": "generate_report",
+          "description": "Generate audit report.",
+          "params": [
+            "functions",
+            "verbose"
+          ]
+        },
+        {
+          "name": "print_report",
+          "description": "Print human-readable report.",
+          "params": [
+            "report",
+            "verbose"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "789de215d60d"
+    },
+    {
+      "name": "audit_readiness_report.py",
+      "type": "python",
+      "size_lines": 815,
+      "last_updated": "2026-03-23",
+      "description": "Audit Readiness Report Generator",
+      "classes": [
+        {
+          "name": "EvidenceItem",
+          "description": "A single evidence item for audit purposes."
+        },
+        {
+          "name": "AuditReport",
+          "description": "Complete audit readiness report.",
+          "public_methods": [
+            "add_evidence",
+            "calculate_verdict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "run_script",
+          "description": "Run a Python script and capture output.",
+          "params": [
+            "script_path",
+            "args"
+          ]
+        },
+        {
+          "name": "get_git_info",
+          "description": "Get current git commit info."
+        },
+        {
+          "name": "collect_testing_evidence",
+          "description": "Collect testing-related evidence.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "collect_static_analysis_evidence",
+          "description": "Collect static analysis evidence.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "collect_governance_evidence",
+          "description": "Collect governance and documentation evidence.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "collect_security_evidence",
+          "description": "Collect security-related evidence.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "collect_change_control_evidence",
+          "description": "Collect change control evidence.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "format_markdown",
+          "description": "Format report as Markdown.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "format_json",
+          "description": "Format report as JSON.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "format_console",
+          "description": "Format report for console output.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "9c310de7316f"
+    },
+    {
+      "name": "automation-map.json",
+      "type": "config",
+      "last_updated": "2026-03-23",
+      "top_level_keys": [
+        "_comment",
+        "_updated",
+        "_usage",
+        "_coverage",
+        "tasks",
+        "categories"
+      ],
+      "content_hash": "858391b80e83"
+    },
+    {
+      "name": "batch_migrate_runner.py",
+      "type": "python",
+      "size_lines": 439,
+      "last_updated": "2026-03-23",
+      "description": "Batch migration runner with per-operation rollback logs.",
+      "classes": [
+        {
+          "name": "CommandResult"
+        }
+      ],
+      "functions": [
+        {
+          "name": "run_batch",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "TOOL_SCRIPTS"
+      ],
+      "content_hash": "b47ec10ca29b"
+    },
+    {
+      "name": "benchmark_api.py",
+      "type": "python",
+      "size_lines": 799,
+      "last_updated": "2026-03-23",
+      "description": "API Performance Benchmark Script.",
+      "classes": [
+        {
+          "name": "BenchmarkResult",
+          "description": "Result of a single benchmark run.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "BenchmarkSuite",
+          "description": "Collection of benchmark results.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "DirectBenchmarkConfig",
+          "description": "Configuration for a direct library benchmark test."
+        },
+        {
+          "name": "DirectBenchmarkResult",
+          "description": "Result of a direct library benchmark."
+        }
+      ],
+      "functions": [
+        {
+          "name": "percentile",
+          "description": "Calculate percentile of sorted data.",
+          "params": [
+            "data",
+            "p"
+          ]
+        },
+        {
+          "name": "benchmark_endpoint",
+          "description": "Benchmark a single endpoint.",
+          "params": [
+            "client",
+            "method",
+            "endpoint",
+            "iterations",
+            "json_data",
+            "warmup"
+          ]
+        },
+        {
+          "name": "get_test_cases",
+          "description": "Get list of endpoints to benchmark."
+        },
+        {
+          "name": "get_quick_test_cases",
+          "description": "Get minimal test cases for quick smoke test."
+        },
+        {
+          "name": "run_benchmarks",
+          "description": "Run all FastAPI benchmarks and return results.",
+          "params": [
+            "quick",
+            "threshold_ms",
+            "verbose"
+          ]
+        },
+        {
+          "name": "print_summary",
+          "description": "Print human-readable summary for FastAPI benchmarks.",
+          "params": [
+            "suite"
+          ]
+        },
+        {
+          "name": "run_direct_benchmarks",
+          "description": "Run direct library benchmarks.",
+          "params": [
+            "iterations",
+            "threshold_override",
+            "function_filter",
+            "verbose"
+          ]
+        },
+        {
+          "name": "print_direct_summary",
+          "description": "Print direct benchmark summary.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "PYTHON_DIR",
+        "REPORT_PATH",
+        "V3_THRESHOLDS",
+        "STANDARD_DIRECT_BENCHMARKS"
+      ],
+      "content_hash": "09dcbd9a276f"
+    },
+    {
+      "name": "bump_version.py",
+      "type": "python",
+      "size_lines": 397,
+      "last_updated": "2026-03-23",
+      "description": "Version Bump Script — Single Source of Truth",
+      "functions": [
+        {
+          "name": "read_current_version",
+          "description": "Read current version from pyproject.toml."
+        },
+        {
+          "name": "update_file",
+          "description": "Update version patterns in a file. Returns True if changes made.",
+          "params": [
+            "filepath",
+            "patterns",
+            "format_kwargs",
+            "dry_run"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "VERSION_FILES",
+        "DOC_VERSION_FILES",
+        "DOC_DATE_FILES",
+        "EVERGREEN_NOTES"
+      ],
+      "content_hash": "b7fe7b62ad64"
+    },
+    {
+      "name": "check_api.py",
+      "type": "python",
+      "size_lines": 379,
+      "last_updated": "2026-03-23",
+      "description": "Unified API validation — signatures, docs, and sync checks.",
+      "classes": [
+        {
+          "name": "APISignatureChecker",
+          "description": "AST visitor to check API function calls.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_AsyncFunctionDef",
+            "visit_Call",
+            "visit_Subscript"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_signatures",
+          "description": "Check Streamlit pages for API signature issues.",
+          "params": [
+            "files",
+            "pages_dir",
+            "show_fix"
+          ]
+        },
+        {
+          "name": "check_docs",
+          "description": "Ensure api.__all__ functions are documented in docs/reference/api.md."
+        },
+        {
+          "name": "check_sync",
+          "description": "Validate api.md and api-stability.md mention same symbols."
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "API_SIGNATURES",
+        "RESPONSE_KEY_MAPPINGS",
+        "PARAM_NAME_MAPPINGS",
+        "_API_SYMBOL_RE"
+      ],
+      "content_hash": "8cd5b1a203e1"
+    },
+    {
+      "name": "check_architecture_boundaries.py",
+      "type": "python",
+      "size_lines": 501,
+      "last_updated": "2026-03-23",
+      "description": "Architecture Boundary Linter.",
+      "classes": [
+        {
+          "name": "Violation",
+          "description": "Represents an architecture violation."
+        },
+        {
+          "name": "ImportInfo",
+          "description": "Information about an import statement."
+        },
+        {
+          "name": "ArchitectureReport",
+          "description": "Report of architecture check results.",
+          "public_methods": [
+            "has_errors"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "extract_imports",
+          "description": "Extract all imports from a Python file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "extract_patterns",
+          "description": "Extract suspicious patterns from source code.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "get_layer",
+          "description": "Determine which layer a file belongs to.",
+          "params": [
+            "file_path",
+            "project_root"
+          ]
+        },
+        {
+          "name": "check_imports",
+          "description": "Check imports for layer violations.",
+          "params": [
+            "file_path",
+            "layer",
+            "project_root"
+          ]
+        },
+        {
+          "name": "check_patterns",
+          "description": "Check for bad patterns in code.",
+          "params": [
+            "file_path",
+            "layer"
+          ]
+        },
+        {
+          "name": "scan_architecture",
+          "description": "Scan project for architecture violations.",
+          "params": [
+            "project_root"
+          ]
+        },
+        {
+          "name": "format_console_report",
+          "description": "Format report for console output.",
+          "params": [
+            "report",
+            "show_fix"
+          ]
+        },
+        {
+          "name": "format_json_report",
+          "description": "Format report as JSON.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "LAYERS",
+        "BAD_PATTERNS",
+        "EXCLUDE_PATTERNS"
+      ],
+      "content_hash": "aee711c25ab9"
+    },
+    {
+      "name": "check_bootstrap_freshness.py",
+      "type": "python",
+      "size_lines": 262,
+      "last_updated": "2026-03-23",
+      "description": "Check if bootstrap docs are stale compared to actual codebase.",
+      "functions": [
+        {
+          "name": "check_hooks",
+          "description": "Check React hooks coverage.",
+          "params": [
+            "bootstrap_text",
+            "json_mode"
+          ]
+        },
+        {
+          "name": "check_routers",
+          "description": "Check FastAPI router coverage.",
+          "params": [
+            "bootstrap_text",
+            "json_mode"
+          ]
+        },
+        {
+          "name": "check_components",
+          "description": "Check React component coverage.",
+          "params": [
+            "bootstrap_text",
+            "json_mode"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "BOOTSTRAP_DOC",
+        "COPILOT_INSTRUCTIONS",
+        "CLAUDE_MD"
+      ],
+      "content_hash": "743055c1e35f"
+    },
+    {
+      "name": "check_circular_imports.py",
+      "type": "python",
+      "size_lines": 462,
+      "last_updated": "2026-03-23",
+      "description": "Circular Import Detector for Streamlit Application",
+      "classes": [
+        {
+          "name": "ImportInfo",
+          "description": "Information about a single import."
+        },
+        {
+          "name": "CircularImport",
+          "description": "Represents a detected circular import.",
+          "public_methods": [
+            "to_dict",
+            "format_chain"
+          ]
+        },
+        {
+          "name": "ImportExtractor",
+          "description": "Extract import statements from Python files.",
+          "public_methods": [
+            "visit_Import",
+            "visit_ImportFrom"
+          ]
+        },
+        {
+          "name": "DependencyGraph",
+          "description": "Build and analyze import dependency graph.",
+          "public_methods": [
+            "add_file",
+            "find_cycles",
+            "get_dependency_chain"
+          ]
+        },
+        {
+          "name": "CircularImportChecker",
+          "description": "Main checker class.",
+          "public_methods": [
+            "check_all",
+            "check_file",
+            "get_summary",
+            "print_report",
+            "to_json"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "cf4cc38412f6"
+    },
+    {
+      "name": "check_cli_reference.py",
+      "type": "python",
+      "size_lines": 48,
+      "last_updated": "2026-03-23",
+      "description": "Ensure CLI reference includes required commands.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "CLI_REF",
+        "REQUIRED_COMMANDS",
+        "CMD_RE"
+      ],
+      "content_hash": "2ed4dec8ffb8"
+    },
+    {
+      "name": "check_cost_optimizer_issues.py",
+      "type": "python",
+      "size_lines": 237,
+      "last_updated": "2026-03-23",
+      "description": "Automated detection of common cost optimizer issues.",
+      "classes": [
+        {
+          "name": "IssueDetector",
+          "description": "AST visitor to detect code issues.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_Import",
+            "visit_ImportFrom",
+            "visit_Subscript",
+            "visit_BinOp"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_file",
+          "description": "Check a single file for issues.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "d5c0cc7baff9"
+    },
+    {
+      "name": "check_doc_versions.py",
+      "type": "python",
+      "size_lines": 72,
+      "last_updated": "2026-03-23",
+      "description": "Doc Version Drift Check — Validate no stale *library* version references in docs.",
+      "functions": [
+        {
+          "name": "run_bump_version",
+          "description": "Run bump_version.py with provided args and return exit code.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "BUMP_SCRIPT"
+      ],
+      "content_hash": "114dd1f4961c"
+    },
+    {
+      "name": "check_docker_config.py",
+      "type": "python",
+      "size_lines": 260,
+      "last_updated": "2026-03-23",
+      "description": "Docker Configuration Validator.",
+      "functions": [
+        {
+          "name": "check_dockerfile",
+          "description": "Check Dockerfile for issues.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "check_docker_compose",
+          "description": "Check docker-compose.yml for issues.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "check_dockerignore",
+          "description": "Check .dockerignore for completeness.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "check_env_documentation",
+          "description": "Check if environment variables are documented."
+        },
+        {
+          "name": "print_results",
+          "description": "Print validation results.",
+          "params": [
+            "issues"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "ROOT"
+      ],
+      "content_hash": "c6c483544e9d"
+    },
+    {
+      "name": "check_docs.py",
+      "type": "python",
+      "size_lines": 534,
+      "last_updated": "2026-03-23",
+      "description": "Unified documentation checker — consolidates 4 doc validation scripts.",
+      "functions": [
+        {
+          "name": "check_frontmatter",
+          "description": "Check all docs for YAML front-matter.",
+          "params": [
+            "add_missing",
+            "json_output"
+          ]
+        },
+        {
+          "name": "check_metadata",
+          "description": "Check documentation metadata headers.",
+          "params": [
+            "files",
+            "check_all",
+            "strict",
+            "quiet"
+          ]
+        },
+        {
+          "name": "check_index",
+          "description": "Validate docs/README.md heading structure."
+        },
+        {
+          "name": "check_index_links",
+          "description": "Ensure docs/README.md links resolve to real files/dirs."
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "DOCS_INDEX",
+        "FM_REQUIRED_FIELDS",
+        "FM_OPTIONAL_FIELDS",
+        "FM_VALID_VALUES",
+        "FM_SKIP_DIRS",
+        "FM_SKIP_FILES",
+        "META_EXEMPT_FOLDERS",
+        "META_EXEMPT_FILES",
+        "META_REQUIRED_FIELDS",
+        "META_VALID_VALUES"
+      ],
+      "content_hash": "3cfddb6f63a6"
+    },
+    {
+      "name": "check_fastapi_issues.py",
+      "type": "python",
+      "size_lines": 422,
+      "last_updated": "2026-03-23",
+      "description": "FastAPI Issues AST Scanner.",
+      "classes": [
+        {
+          "name": "Issue",
+          "description": "Represents a detected issue."
+        },
+        {
+          "name": "ScanResult",
+          "description": "Result of scanning a file."
+        },
+        {
+          "name": "FastAPIIssueScanner",
+          "description": "AST visitor that detects FastAPI anti-patterns.",
+          "public_methods": [
+            "add_issue",
+            "visit_FunctionDef",
+            "visit_AsyncFunctionDef",
+            "visit_Call",
+            "visit_Constant"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "scan_file",
+          "description": "Scan a single file for issues.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "scan_directory",
+          "description": "Scan all Python files in a directory.",
+          "params": [
+            "directory"
+          ]
+        },
+        {
+          "name": "print_results",
+          "description": "Print scan results and return summary counts.",
+          "params": [
+            "results",
+            "json_output"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "4f47aa686ec1"
+    },
+    {
+      "name": "check_governance.py",
+      "type": "python",
+      "size_lines": 847,
+      "last_updated": "2026-03-23",
+      "description": "Unified governance checker — folder structure + compliance validation.",
+      "classes": [
+        {
+          "name": "GovernanceIssue"
+        },
+        {
+          "name": "GovernanceReport",
+          "public_methods": [
+            "add_error",
+            "add_warning",
+            "add_info",
+            "add_pass",
+            "success"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "load_governance_rules",
+          "description": "Load governance limits from the shared JSON source-of-truth.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_root_files",
+          "description": "Check project root file count and content.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_docs_root",
+          "description": "Check docs/ root file count.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_agents_root",
+          "description": "Check agents/ root file count and structure.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_category_folders",
+          "description": "Check required category folders exist and have README.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_dated_files",
+          "description": "Check dated files are in allowed locations.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_naming_conventions",
+          "description": "Check file and folder naming conventions.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_python_lib_structure",
+          "description": "Check Python library structure for multi-code architecture.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_root_python_stub_only",
+          "description": "Ensure root structural_lib/*.py files remain compatibility stubs only.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_python_layer_boundaries",
+          "description": "Enforce 4-layer architecture import boundaries for structural_lib.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_docs_agents_structure",
+          "description": "Check docs/agents/ workflow docs are in guides/ subfolder.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_governance_location",
+          "description": "Check GOVERNANCE.md exists in agents/roles/.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "check_redirect_stubs",
+          "description": "Check for redirect stub files (single source rule).",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "run_structure",
+          "description": "Run all structure checks.",
+          "params": [
+            "report",
+            "lib_only"
+          ]
+        },
+        {
+          "name": "run_compliance",
+          "description": "Run all compliance checks.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "print_report",
+          "description": "Print human-readable governance report.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "print_json_report",
+          "description": "Print JSON governance report.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "GOVERNANCE_LIMITS_PATH",
+        "DEFAULT_RULES",
+        "RULES"
+      ],
+      "content_hash": "8f24739aad8a"
+    },
+    {
+      "name": "check_links.py",
+      "type": "python",
+      "size_lines": 327,
+      "last_updated": "2026-03-23",
+      "description": "Check and fix broken internal links in markdown files.",
+      "functions": [
+        {
+          "name": "check_and_fix",
+          "description": "Check all markdown files for broken links. Optionally fix them.",
+          "params": [
+            "fix",
+            "verbose",
+            "link_map",
+            "exclude_archive"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "SKIP_LINK_PATTERNS",
+        "SKIP_DIRECTORIES"
+      ],
+      "content_hash": "91383f089d5a"
+    },
+    {
+      "name": "check_next_session_brief_length.py",
+      "type": "python",
+      "size_lines": 31,
+      "last_updated": "2026-03-23",
+      "description": "Ensure next-session-brief.md stays concise.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "BRIEF_PATH",
+        "MAX_LINES"
+      ],
+      "content_hash": "51735ff605b9"
+    },
+    {
+      "name": "check_not_main.sh",
+      "type": "shell-script",
+      "size_lines": 15,
+      "last_updated": "2026-01-23",
+      "content_hash": "515811cfdcae"
+    },
+    {
+      "name": "check_openapi_snapshot.py",
+      "type": "python",
+      "size_lines": 207,
+      "last_updated": "2026-03-23",
+      "description": "Check OpenAPI spec against baseline snapshot to detect API drift.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "BASELINE_PATH"
+      ],
+      "content_hash": "e709b9a77a56"
+    },
+    {
+      "name": "check_performance_issues.py",
+      "type": "python",
+      "size_lines": 597,
+      "last_updated": "2026-03-23",
+      "description": "Performance Issue Detector for Streamlit Application",
+      "classes": [
+        {
+          "name": "Severity",
+          "description": "Issue severity levels."
+        },
+        {
+          "name": "PerformanceIssue",
+          "description": "Represents a detected performance issue.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "PerformanceVisitor",
+          "description": "AST visitor to detect performance issues.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_AsyncFunctionDef",
+            "visit_For",
+            "visit_While",
+            "visit_ListComp",
+            "visit_Call",
+            "visit_BinOp"
+          ]
+        },
+        {
+          "name": "PerformanceChecker",
+          "description": "Main checker class.",
+          "public_methods": [
+            "check_all",
+            "check_file",
+            "get_summary",
+            "print_report",
+            "to_json"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "6146e4598b07"
+    },
+    {
+      "name": "check_python_version.py",
+      "type": "python",
+      "size_lines": 215,
+      "last_updated": "2026-03-23",
+      "description": "Python Version Consistency Checker",
+      "functions": [
+        {
+          "name": "parse_version",
+          "description": "Parse version string to tuple.",
+          "params": [
+            "version_str"
+          ]
+        },
+        {
+          "name": "check_file",
+          "description": "Check a file for version consistency.",
+          "params": [
+            "filepath",
+            "patterns",
+            "project_root"
+          ]
+        },
+        {
+          "name": "check_all",
+          "description": "Check all configured files.",
+          "params": [
+            "project_root"
+          ]
+        },
+        {
+          "name": "format_report",
+          "description": "Format issues as report.",
+          "params": [
+            "issues"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "MINIMUM_PYTHON_VERSION",
+        "SUPPORTED_VERSIONS",
+        "CHECK_FILES"
+      ],
+      "content_hash": "e4244cd9f454"
+    },
+    {
+      "name": "check_repo_hygiene.py",
+      "type": "python",
+      "size_lines": 44,
+      "last_updated": "2026-03-23",
+      "description": "Fail if tracked hygiene artifacts exist in the repository.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "ARTIFACT_NAMES"
+      ],
+      "content_hash": "31cf63a3c2e7"
+    },
+    {
+      "name": "check_root_file_count.sh",
+      "type": "shell-script",
+      "size_lines": 51,
+      "last_updated": "2026-01-24",
+      "description": "Check Root File Count",
+      "content_hash": "1ed4b46f1779"
+    },
+    {
+      "name": "check_scripts_index.py",
+      "type": "python",
+      "size_lines": 157,
+      "last_updated": "2026-03-23",
+      "description": "Ensure scripts/index.json and automation-map.json match the scripts folder contents.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "SCRIPTS_DIR",
+        "INDEX_PATH",
+        "AUTOMATION_MAP_PATH",
+        "SCRIPT_EXTENSIONS"
+      ],
+      "content_hash": "4a12c842ec27"
+    },
+    {
+      "name": "check_streamlit.py",
+      "type": "python",
+      "size_lines": 2367,
+      "last_updated": "2026-03-23",
+      "description": "Unified Streamlit validation CLI.",
+      "classes": [
+        {
+          "name": "FunctionSignatureRegistry",
+          "description": "Registry of function signatures for API mismatch detection.",
+          "public_methods": [
+            "scan_file",
+            "get_signature",
+            "scan_common_modules"
+          ]
+        },
+        {
+          "name": "IgnoreConfig",
+          "description": "Configuration for ignored issues.",
+          "public_methods": [
+            "should_ignore"
+          ]
+        },
+        {
+          "name": "EnhancedIssueDetector",
+          "description": "Enhanced AST visitor with scope tracking for NameError detection.",
+          "public_methods": [
+            "add_issue",
+            "visit",
+            "enter_scope",
+            "exit_scope",
+            "add_defined_name",
+            "is_defined",
+            "preprocess",
+            "visit_Import",
+            "visit_ImportFrom",
+            "visit_FunctionDef"
+          ]
+        },
+        {
+          "name": "FragmentViolationDetector",
+          "description": "AST visitor that detects Streamlit fragment API violations.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_Attribute",
+            "visit_With"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_file",
+          "description": "Check a single file for issues.",
+          "params": [
+            "filepath",
+            "ignore_config",
+            "sig_registry"
+          ]
+        },
+        {
+          "name": "scan_all_pages",
+          "description": "Scan all Streamlit pages.",
+          "params": [
+            "pages_dir",
+            "ignore_config",
+            "sig_registry"
+          ]
+        },
+        {
+          "name": "print_results",
+          "description": "Print scan results and return exit code.",
+          "params": [
+            "results",
+            "fail_on"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "048cebfed2e4"
+    },
+    {
+      "name": "check_tasks_format.py",
+      "type": "python",
+      "size_lines": 160,
+      "last_updated": "2026-03-23",
+      "description": "Validate docs/TASKS.md structure and WIP rules.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "TASKS_PATH",
+        "TASK_ID_RE",
+        "REQUIRED_HEADINGS"
+      ],
+      "content_hash": "7b7d584e9373"
+    },
+    {
+      "name": "check_type_annotations.py",
+      "type": "python",
+      "size_lines": 542,
+      "last_updated": "2026-03-23",
+      "description": "Type Annotation Checker for Streamlit Application",
+      "classes": [
+        {
+          "name": "AnnotationIssue",
+          "description": "Represents a missing annotation issue.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "FunctionAnnotationStatus",
+          "description": "Tracks annotation status for a function.",
+          "public_methods": [
+            "is_fully_annotated",
+            "missing_params",
+            "annotation_percentage"
+          ]
+        },
+        {
+          "name": "TypeAnnotationVisitor",
+          "description": "AST visitor that checks for type annotations.",
+          "public_methods": [
+            "analyze_file",
+            "visit_FunctionDef",
+            "visit_AsyncFunctionDef"
+          ]
+        },
+        {
+          "name": "TypeAnnotationChecker",
+          "description": "Main checker class that orchestrates the analysis.",
+          "public_methods": [
+            "check_all",
+            "check_file",
+            "get_summary",
+            "print_report",
+            "to_json"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "6de55b6c5601"
+    },
+    {
+      "name": "check_ui_duplication.py",
+      "type": "python",
+      "size_lines": 619,
+      "last_updated": "2026-03-23",
+      "description": "Streamlit UI Duplication Scanner.",
+      "classes": [
+        {
+          "name": "FunctionInfo",
+          "description": "Information about a function definition."
+        },
+        {
+          "name": "DuplicationReport",
+          "description": "Report of duplication findings."
+        }
+      ],
+      "functions": [
+        {
+          "name": "extract_functions",
+          "description": "Extract function definitions from a Python file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "normalize_code",
+          "description": "Normalize code for comparison by removing variable names and whitespace.",
+          "params": [
+            "code"
+          ]
+        },
+        {
+          "name": "levenshtein_distance",
+          "description": "Calculate Levenshtein distance between two strings.",
+          "params": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "name": "code_similarity",
+          "description": "Calculate similarity ratio between two code snippets using line matching.",
+          "params": [
+            "code1",
+            "code2"
+          ]
+        },
+        {
+          "name": "name_similarity",
+          "description": "Calculate similarity between function names.",
+          "params": [
+            "name1",
+            "name2"
+          ]
+        },
+        {
+          "name": "extract_imports",
+          "description": "Extract import statements from a Python file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "scan_directory",
+          "description": "Scan a directory for function definitions.",
+          "params": [
+            "directory"
+          ]
+        },
+        {
+          "name": "find_duplicates",
+          "description": "Find duplicate and similar functions.",
+          "params": [
+            "functions"
+          ]
+        },
+        {
+          "name": "format_console_report",
+          "description": "Format report for console output.",
+          "params": [
+            "report",
+            "show_similar"
+          ]
+        },
+        {
+          "name": "format_json_report",
+          "description": "Format report as JSON.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "MIN_FUNCTION_LINES",
+        "SIMILARITY_THRESHOLD",
+        "SCAN_DIRS",
+        "EXCLUDE_PATTERNS"
+      ],
+      "content_hash": "9ef4417ad22e"
+    },
+    {
+      "name": "check_unfinished_merge.sh",
+      "type": "shell-script",
+      "size_lines": 30,
+      "last_updated": "2026-01-23",
+      "description": "Check for unfinished merge before allowing new commits",
+      "content_hash": "fd614de45b94"
+    },
+    {
+      "name": "check_version_consistency.sh",
+      "type": "shell-script",
+      "size_lines": 66,
+      "last_updated": "2026-01-23",
+      "description": "check_version_consistency.sh - Verify version strings are consistent",
+      "content_hash": "a53b8cf40cc9"
+    },
+    {
+      "name": "check_wip_limits.sh",
+      "type": "shell-script",
+      "size_lines": 77,
+      "last_updated": "2026-01-23",
+      "description": "check_wip_limits.sh - Enforce WIP (Work In Progress) limits",
+      "content_hash": "8503ec531801"
+    },
+    {
+      "name": "ci_local.sh",
+      "type": "shell-script",
+      "size_lines": 41,
+      "last_updated": "2026-01-23",
+      "description": "shellcheck source=/dev/null",
+      "content_hash": "ced9df5e7129"
+    },
+    {
+      "name": "cleanup_stale_branches.py",
+      "type": "python",
+      "size_lines": 187,
+      "last_updated": "2026-03-23",
+      "description": "Cleanup stale remote branches.",
+      "functions": [
+        {
+          "name": "run_git",
+          "description": "Run git command and return output.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "get_remote_branches",
+          "description": "Get list of remote branches (excluding HEAD and main)."
+        },
+        {
+          "name": "is_merged",
+          "description": "Check if branch is merged into main.",
+          "params": [
+            "branch"
+          ]
+        },
+        {
+          "name": "get_branch_age_days",
+          "description": "Get age of last commit on branch in days.",
+          "params": [
+            "branch"
+          ]
+        },
+        {
+          "name": "is_task_branch",
+          "description": "Check if branch matches task pattern.",
+          "params": [
+            "branch"
+          ]
+        },
+        {
+          "name": "cleanup_branches",
+          "description": "Find and optionally delete stale branches.",
+          "params": [
+            "delete",
+            "min_age_days"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "74a55f79671f"
+    },
+    {
+      "name": "collect_diagnostics.py",
+      "type": "python",
+      "size_lines": 122,
+      "last_updated": "2026-03-23",
+      "description": "Collect a compact diagnostics bundle for debugging and support.",
+      "functions": [
+        {
+          "name": "collect",
+          "params": [
+            "lines"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "af5427fd7838"
+    },
+    {
+      "name": "collect_metrics.sh",
+      "type": "shell-script",
+      "size_lines": 275,
+      "last_updated": "2026-01-23",
+      "description": "Metrics Collection Script",
+      "content_hash": "1dc72fa2661b"
+    },
+    {
+      "name": "create_doc.py",
+      "type": "python",
+      "size_lines": 261,
+      "last_updated": "2026-03-23",
+      "description": "Create a new documentation file with proper metadata header.",
+      "functions": [
+        {
+          "name": "get_type_from_path",
+          "description": "Infer document type from file path.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "get_audience_from_type",
+          "description": "Infer audience from document type.",
+          "params": [
+            "doc_type"
+          ]
+        },
+        {
+          "name": "is_session_doc",
+          "description": "Return True if this is a session artifact path.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "check_for_similar_docs",
+          "description": "Run similarity checks to prevent duplicate docs.",
+          "params": [
+            "title"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "TYPE_FOLDER_MAP",
+        "TEMPLATE"
+      ],
+      "content_hash": "2b33224d281a"
+    },
+    {
+      "name": "create_task_pr.sh",
+      "type": "shell-script",
+      "size_lines": 95,
+      "last_updated": "2026-01-23",
+      "description": "Create a PR for completed task work",
+      "content_hash": "ce68c92120fa"
+    },
+    {
+      "name": "create_test_scaffold.py",
+      "type": "python",
+      "size_lines": 423,
+      "last_updated": "2026-03-23",
+      "description": "Test Scaffold Generator (Solution 2)",
+      "functions": [
+        {
+          "name": "generate_test_scaffold",
+          "description": "Generate comprehensive test template based on type.",
+          "params": [
+            "class_name",
+            "module_path",
+            "test_type"
+          ]
+        },
+        {
+          "name": "generate_class_test",
+          "description": "Generate standard class test template.",
+          "params": [
+            "class_name",
+            "module_path"
+          ]
+        },
+        {
+          "name": "generate_streamlit_page_test",
+          "description": "Generate Streamlit page test template.",
+          "params": [
+            "page_name",
+            "page_path"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "6e688e72535e"
+    },
+    {
+      "name": "discover_api_signatures.py",
+      "type": "python",
+      "size_lines": 376,
+      "last_updated": "2026-03-23",
+      "description": "Discover and display structural_lib API function signatures.",
+      "classes": [
+        {
+          "name": "ParameterInfo",
+          "description": "Information about a function parameter."
+        },
+        {
+          "name": "SignatureInfo",
+          "description": "Complete function signature information."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_return_type_attributes",
+          "description": "Extract known attributes from return type annotation.",
+          "params": [
+            "return_annotation"
+          ]
+        },
+        {
+          "name": "discover_signature",
+          "description": "Discover complete signature information for a function.",
+          "params": [
+            "func",
+            "func_name"
+          ]
+        },
+        {
+          "name": "format_signature_text",
+          "description": "Format signature info as readable text.",
+          "params": [
+            "info",
+            "verbose"
+          ]
+        },
+        {
+          "name": "format_signature_json",
+          "description": "Format signature info as JSON-serializable dict.",
+          "params": [
+            "info"
+          ]
+        },
+        {
+          "name": "get_all_api_functions",
+          "description": "Get all public functions from structural_lib.api."
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "adfe3cc51c4b"
+    },
+    {
+      "name": "dxf_render.py",
+      "type": "python",
+      "size_lines": 128,
+      "last_updated": "2026-03-23",
+      "description": "Render DXF drawings to PNG or PDF using ezdxf + matplotlib.",
+      "functions": [
+        {
+          "name": "render_dxf",
+          "params": [
+            "input_path",
+            "output_path",
+            "dpi",
+            "pad_mm"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "ddf14dec7245"
+    },
+    {
+      "name": "external_cli_test.py",
+      "type": "python",
+      "size_lines": 396,
+      "last_updated": "2026-03-23",
+      "description": "External CLI smoke test (S-007).",
+      "classes": [
+        {
+          "name": "CmdResult"
+        }
+      ],
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "SAMPLE_JOB_IS456_JSON",
+        "SAMPLE_BEAM_DESIGN_CSV"
+      ],
+      "content_hash": "d8d2534a4be2"
+    },
+    {
+      "name": "find_automation.py",
+      "type": "python",
+      "size_lines": 174,
+      "last_updated": "2026-03-23",
+      "description": "Find the right automation script for a task.",
+      "functions": [
+        {
+          "name": "load_automation_map",
+          "description": "Load the automation map."
+        },
+        {
+          "name": "find_task",
+          "description": "Find tasks matching the query.",
+          "params": [
+            "query",
+            "automation_map"
+          ]
+        },
+        {
+          "name": "print_task",
+          "description": "Print a task nicely.",
+          "params": [
+            "task_name",
+            "task_info"
+          ]
+        },
+        {
+          "name": "list_category",
+          "description": "List all tasks in a category.",
+          "params": [
+            "category",
+            "automation_map"
+          ]
+        },
+        {
+          "name": "list_all_categories",
+          "description": "List all categories and their tasks.",
+          "params": [
+            "automation_map"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "17a1892fe1e6"
+    },
+    {
+      "name": "finish_task_pr.sh",
+      "type": "shell-script",
+      "size_lines": 292,
+      "last_updated": "2026-02-11",
+      "description": "Finish task work and create PR",
+      "content_hash": "7d27b884c4af"
+    },
+    {
+      "name": "generate_all_indexes.sh",
+      "type": "shell-script",
+      "size_lines": 51,
+      "last_updated": "2026-01-23",
+      "description": "Generate index.json + index.md for all research-relevant folders",
+      "content_hash": "e47c894ef8d9"
+    },
+    {
+      "name": "generate_api_manifest.py",
+      "type": "python",
+      "size_lines": 157,
+      "last_updated": "2026-03-23",
+      "description": "Generate or validate the public API manifest for structural_lib.api.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "DEFAULT_OUT"
+      ],
+      "content_hash": "b4b6437781c7"
+    },
+    {
+      "name": "generate_client_sdks.py",
+      "type": "python",
+      "size_lines": 526,
+      "last_updated": "2026-03-23",
+      "description": "Generate client SDKs from FastAPI OpenAPI specification.",
+      "functions": [
+        {
+          "name": "check_openapi_spec",
+          "description": "Load and validate OpenAPI specification."
+        },
+        {
+          "name": "generate_python_client",
+          "description": "Generate Python client using openapi-python-client.",
+          "params": [
+            "output_dir",
+            "spec_path"
+          ]
+        },
+        {
+          "name": "generate_basic_python_client",
+          "description": "Generate a basic Python client without external tools.",
+          "params": [
+            "output_dir"
+          ]
+        },
+        {
+          "name": "generate_typescript_client",
+          "description": "Generate TypeScript client using openapi-typescript.",
+          "params": [
+            "output_dir",
+            "spec_path"
+          ]
+        },
+        {
+          "name": "generate_basic_typescript_client",
+          "description": "Generate a basic TypeScript client.",
+          "params": [
+            "output_dir"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "ROOT",
+        "FASTAPI_DIR",
+        "OPENAPI_SPEC",
+        "OUTPUT_DIR"
+      ],
+      "content_hash": "1ec2af11d0e8"
+    },
+    {
+      "name": "generate_docs_index.py",
+      "type": "python",
+      "size_lines": 245,
+      "last_updated": "2026-03-23",
+      "description": "Generate machine-readable JSON index of documentation.",
+      "functions": [
+        {
+          "name": "estimate_complexity",
+          "description": "Estimate document complexity from file size.",
+          "params": [
+            "file_size"
+          ]
+        },
+        {
+          "name": "extract_title",
+          "description": "Extract title from markdown content.",
+          "params": [
+            "content",
+            "filepath"
+          ]
+        },
+        {
+          "name": "extract_sections",
+          "description": "Extract H2 sections from markdown.",
+          "params": [
+            "content"
+          ]
+        },
+        {
+          "name": "extract_tags",
+          "description": "Extract tags from front-matter and folder.",
+          "params": [
+            "content",
+            "folder"
+          ]
+        },
+        {
+          "name": "get_doc_type",
+          "description": "Determine document type.",
+          "params": [
+            "filepath",
+            "content"
+          ]
+        },
+        {
+          "name": "scan_docs",
+          "description": "Scan docs directory and build index."
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT",
+        "DOCS_DIR",
+        "OUTPUT_FILE",
+        "SKIP_DIRS",
+        "FOLDER_TAGS"
+      ],
+      "content_hash": "b109d71599c3"
+    },
+    {
+      "name": "generate_enhanced_index.py",
+      "type": "python",
+      "size_lines": 800,
+      "last_updated": "2026-03-23",
+      "description": "Generate enhanced index.json + index.md for ANY folder type.",
+      "functions": [
+        {
+          "name": "analyze_python_file",
+          "description": "Extract metadata from a Python file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "analyze_ts_file",
+          "description": "Extract metadata from a TypeScript/React file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "analyze_md_file",
+          "description": "Extract metadata from a Markdown file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "analyze_config_file",
+          "description": "Extract metadata from config files.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "analyze_file",
+          "description": "Analyze any file and return metadata.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "analyze_shell_file",
+          "description": "Extract metadata from shell scripts.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "scan_folder_enhanced",
+          "description": "Scan folder and generate enhanced index data.",
+          "params": [
+            "folder_path"
+          ]
+        },
+        {
+          "name": "generate_json",
+          "description": "Generate index.json.",
+          "params": [
+            "index",
+            "output_path"
+          ]
+        },
+        {
+          "name": "generate_markdown",
+          "description": "Generate index.md.",
+          "params": [
+            "index",
+            "output_path"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT",
+        "SKIP_DIRS",
+        "KEY_FOLDERS"
+      ],
+      "content_hash": "f45389dc7e4c"
+    },
+    {
+      "name": "generate_streamlit_page.py",
+      "type": "python",
+      "size_lines": 477,
+      "last_updated": "2026-03-23",
+      "description": "Streamlit Page Scaffold Generator",
+      "functions": [
+        {
+          "name": "sanitize_filename",
+          "description": "Convert title to valid filename.",
+          "params": [
+            "title"
+          ]
+        },
+        {
+          "name": "get_next_page_number",
+          "description": "Get the next available page number.",
+          "params": [
+            "pages_dir"
+          ]
+        },
+        {
+          "name": "generate_page",
+          "description": "Generate a new Streamlit page.",
+          "params": [
+            "title",
+            "icon",
+            "output_path",
+            "description"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PAGE_TEMPLATE",
+        "ICON_SUGGESTIONS"
+      ],
+      "content_hash": "9d630ac9af9d"
+    },
+    {
+      "name": "governance_health_score.py",
+      "type": "python",
+      "size_lines": 515,
+      "last_updated": "2026-03-23",
+      "description": "Governance Health Score - TASK-289",
+      "classes": [
+        {
+          "name": "HealthComponent",
+          "description": "Individual health component score."
+        },
+        {
+          "name": "HealthScore",
+          "description": "Complete health score result."
+        },
+        {
+          "name": "GovernanceHealthCalculator",
+          "description": "Calculates governance health score from various metrics.",
+          "public_methods": [
+            "calculate_quality_score",
+            "calculate_velocity_score",
+            "calculate_documentation_score",
+            "calculate_wip_score",
+            "calculate_leading_indicators_score",
+            "calculate_health_score",
+            "generate_report"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "72c62de36a87"
+    },
+    {
+      "name": "install_git_hooks.sh",
+      "type": "shell-script",
+      "size_lines": 150,
+      "last_updated": "2026-01-23",
+      "description": "Install versioned git hooks via core.hooksPath",
+      "content_hash": "bd8c283b56a1"
+    },
+    {
+      "name": "launch_streamlit.sh",
+      "type": "shell-script",
+      "size_lines": 346,
+      "last_updated": "2026-02-11",
+      "description": "=============================================================================",
+      "content_hash": "5b96abc8ea4e"
+    },
+    {
+      "name": "lint_vba.py",
+      "type": "python",
+      "size_lines": 212,
+      "last_updated": "2026-03-23",
+      "description": "VBA Syntax Linter - Pre-import validation",
+      "classes": [
+        {
+          "name": "VBALinter",
+          "public_methods": [
+            "lint",
+            "check_option_explicit",
+            "check_procedure_pairing",
+            "check_undeclared_variables",
+            "check_common_typos",
+            "check_line_continuations",
+            "print_results"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "c61d4f70e40e"
+    },
+    {
+      "name": "migrate_python_module.py",
+      "type": "python",
+      "size_lines": 512,
+      "last_updated": "2026-03-23",
+      "description": "Migrate a Python module to a new location with import updates.",
+      "functions": [
+        {
+          "name": "path_to_module",
+          "description": "Convert file path to Python module path.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "find_python_files",
+          "description": "Find all Python files in the project that might have imports."
+        },
+        {
+          "name": "find_import_references",
+          "description": "Find all files that import from the old module.",
+          "params": [
+            "old_module",
+            "files"
+          ]
+        },
+        {
+          "name": "update_imports",
+          "description": "Update all imports from old_module to new_module.",
+          "params": [
+            "old_module",
+            "new_module",
+            "files",
+            "dry_run"
+          ]
+        },
+        {
+          "name": "create_backward_compat_stub",
+          "description": "Create backward-compat stub at old location that re-exports from new location.",
+          "params": [
+            "old_path",
+            "old_module",
+            "new_module"
+          ]
+        },
+        {
+          "name": "validate_imports",
+          "description": "Quick syntax check - try to compile all affected files.",
+          "params": [
+            "files"
+          ]
+        },
+        {
+          "name": "run_migration",
+          "description": "Execute migration and return (exit_code, structured_result).",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT",
+        "STRUCTURAL_LIB",
+        "SEARCH_DIRS",
+        "SKIP_PATTERNS"
+      ],
+      "content_hash": "c619314ff4f6"
+    },
+    {
+      "name": "migrate_react_component.py",
+      "type": "python",
+      "size_lines": 470,
+      "last_updated": "2026-03-23",
+      "description": "Migrate a React component to a new feature-grouped folder.",
+      "functions": [
+        {
+          "name": "find_react_files",
+          "description": "Find all source files in react_app/src/."
+        },
+        {
+          "name": "compute_relative_import",
+          "description": "Compute the relative import path from one file to another.",
+          "params": [
+            "from_file",
+            "to_file"
+          ]
+        },
+        {
+          "name": "find_import_references",
+          "description": "Find all files that import from old_path.",
+          "params": [
+            "old_path",
+            "files"
+          ]
+        },
+        {
+          "name": "resolve_import",
+          "description": "Resolve a relative import string to an absolute path.",
+          "params": [
+            "from_file",
+            "import_str"
+          ]
+        },
+        {
+          "name": "update_imports",
+          "description": "Update all import paths from old to new location.",
+          "params": [
+            "old_path",
+            "new_path",
+            "references",
+            "dry_run"
+          ]
+        },
+        {
+          "name": "find_colocated_css",
+          "description": "Find co-located CSS file for a component.",
+          "params": [
+            "component_path"
+          ]
+        },
+        {
+          "name": "ensure_barrel_export",
+          "description": "Ensure the target directory has an index.ts with the component exported.",
+          "params": [
+            "directory",
+            "component_name",
+            "dry_run"
+          ]
+        },
+        {
+          "name": "run_migration",
+          "description": "Execute migration and return (exit_code, structured_result).",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT",
+        "REACT_ROOT",
+        "REACT_SRC",
+        "SEARCH_EXTENSIONS",
+        "SKIP_PATTERNS"
+      ],
+      "content_hash": "ee69f34529a0"
+    },
+    {
+      "name": "pre_commit_check.sh",
+      "type": "shell-script",
+      "size_lines": 36,
+      "last_updated": "2026-01-23",
+      "description": "Pre-flight checks before committing",
+      "content_hash": "3d2f4a8c9b58"
+    },
+    {
+      "name": "profile_streamlit_page.py",
+      "type": "python",
+      "size_lines": 633,
+      "last_updated": "2026-03-23",
+      "description": "Streamlit Performance Profiler",
+      "classes": [
+        {
+          "name": "FunctionProfile",
+          "description": "Profile data for a single function.",
+          "public_methods": [
+            "is_slow",
+            "formatted_time"
+          ]
+        },
+        {
+          "name": "PageProfile",
+          "description": "Profile data for a Streamlit page.",
+          "public_methods": [
+            "is_healthy"
+          ]
+        },
+        {
+          "name": "ProfileReport",
+          "description": "Complete profiling report.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "StreamlitCallAnalyzer",
+          "description": "Analyzes Streamlit function calls in source code.",
+          "public_methods": [
+            "visit_Call"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "analyze_streamlit_calls",
+          "description": "Analyze Streamlit calls in a Python file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "profile_import",
+          "description": "Profile importing a module.",
+          "params": [
+            "module_path"
+          ]
+        },
+        {
+          "name": "extract_function_profiles",
+          "description": "Extract function profiles from pstats.",
+          "params": [
+            "stats"
+          ]
+        },
+        {
+          "name": "profile_page",
+          "description": "Profile a single Streamlit page.",
+          "params": [
+            "page_path"
+          ]
+        },
+        {
+          "name": "analyze_page_complexity",
+          "description": "Analyze page complexity using static analysis.",
+          "params": [
+            "page_path"
+          ]
+        },
+        {
+          "name": "format_report",
+          "description": "Format report for console output.",
+          "params": [
+            "report",
+            "verbose"
+          ]
+        },
+        {
+          "name": "format_complexity_report",
+          "description": "Format complexity analysis report.",
+          "params": [
+            "pages"
+          ]
+        },
+        {
+          "name": "find_streamlit_pages",
+          "description": "Find all Streamlit pages in project.",
+          "params": [
+            "project_root"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "5b70c4f58f48"
+    },
+    {
+      "name": "recover_git_state.sh",
+      "type": "shell-script",
+      "size_lines": 162,
+      "last_updated": "2026-01-23",
+      "description": "Recover from common git workflow failure states",
+      "content_hash": "4fda2ded7e8b"
+    },
+    {
+      "name": "release.py",
+      "type": "python",
+      "size_lines": 369,
+      "last_updated": "2026-03-23",
+      "description": "Unified release management CLI.",
+      "functions": [
+        {
+          "name": "cmd_run",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_verify",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_check_docs",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_checklist",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "build_parser"
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "BUMP_SCRIPT",
+        "CHANGELOG",
+        "RELEASES",
+        "CHECKLIST_PATH",
+        "VERSION_RE",
+        "REQUIRED_HEADINGS"
+      ],
+      "content_hash": "7f2214326602"
+    },
+    {
+      "name": "repo_health_check.sh",
+      "type": "shell-script",
+      "size_lines": 31,
+      "last_updated": "2026-01-23",
+      "content_hash": "16279b27ac11"
+    },
+    {
+      "name": "run_vba_smoke_tests.py",
+      "type": "python",
+      "size_lines": 155,
+      "last_updated": "2026-03-23",
+      "description": "Run VBA smoke tests via Excel automation (macOS).",
+      "functions": [
+        {
+          "name": "run_smoke_tests",
+          "params": [
+            "workbook_path",
+            "macros",
+            "excel_app",
+            "log_path",
+            "timeout"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "DEFAULT_WORKBOOK",
+        "DEFAULT_MACROS",
+        "DEFAULT_EXCEL_APP",
+        "DEFAULT_LOG"
+      ],
+      "content_hash": "974f20b13195"
+    },
+    {
+      "name": "safe_file_delete.py",
+      "type": "python",
+      "size_lines": 355,
+      "last_updated": "2026-03-23",
+      "description": "Safe file delete script with reference checking.",
+      "functions": [
+        {
+          "name": "find_references",
+          "description": "Find all references to a file in docs and code.",
+          "params": [
+            "file_path",
+            "project_root"
+          ]
+        },
+        {
+          "name": "check_git_history",
+          "description": "Get git history info for the file.",
+          "params": [
+            "file_path",
+            "project_root"
+          ]
+        },
+        {
+          "name": "create_backup",
+          "description": "Create a backup of the file before deletion.",
+          "params": [
+            "file_path",
+            "project_root"
+          ]
+        },
+        {
+          "name": "run_link_check",
+          "description": "Run the link checker and return (success, output).",
+          "params": [
+            "project_root"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "201644a63245"
+    },
+    {
+      "name": "safe_file_move.py",
+      "type": "python",
+      "size_lines": 484,
+      "last_updated": "2026-03-23",
+      "description": "Safe file move script with automatic link updates.",
+      "functions": [
+        {
+          "name": "find_references",
+          "description": "Find all references to a file in docs and code.",
+          "params": [
+            "file_path",
+            "project_root"
+          ]
+        },
+        {
+          "name": "update_links",
+          "description": "Update all links from old_path to new_path.",
+          "params": [
+            "old_path",
+            "new_path",
+            "project_root",
+            "dry_run"
+          ]
+        },
+        {
+          "name": "create_redirect_stub",
+          "description": "Create a redirect stub at the old location.",
+          "params": [
+            "old_path",
+            "new_path",
+            "project_root"
+          ]
+        },
+        {
+          "name": "get_broken_link_count",
+          "description": "Run link checker and return broken-link count if parsable.",
+          "params": [
+            "project_root"
+          ]
+        },
+        {
+          "name": "run_move",
+          "description": "Execute safe move and return (exit_code, structured_result).",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "e315a53697b9"
+    },
+    {
+      "name": "safe_push.sh",
+      "type": "shell-script",
+      "size_lines": 409,
+      "last_updated": "2026-01-23",
+      "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
+      "content_hash": "5088adbeb2d2"
+    },
+    {
+      "name": "session.py",
+      "type": "python",
+      "size_lines": 1260,
+      "last_updated": "2026-03-23",
+      "description": "Unified session management CLI.",
+      "functions": [
+        {
+          "name": "get_version"
+        },
+        {
+          "name": "get_branch"
+        },
+        {
+          "name": "get_uncommitted_status"
+        },
+        {
+          "name": "check_session_log_entry"
+        },
+        {
+          "name": "add_session_log_entry"
+        },
+        {
+          "name": "get_active_tasks"
+        },
+        {
+          "name": "archive_completed_tasks",
+          "description": "Archive old completed tasks from TASKS.md to tasks-history.md.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "get_key_blocker"
+        },
+        {
+          "name": "run_handoff_check",
+          "params": [
+            "skip_tests"
+          ]
+        },
+        {
+          "name": "cmd_start",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "get_uncommitted_changes"
+        },
+        {
+          "name": "check_session_log_complete"
+        },
+        {
+          "name": "check_doc_links"
+        },
+        {
+          "name": "get_changed_doc_folders"
+        },
+        {
+          "name": "update_folder_readmes",
+          "params": [
+            "folders",
+            "fix"
+          ]
+        },
+        {
+          "name": "get_today_prs"
+        },
+        {
+          "name": "cmd_end",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_handoff",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_check",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_summary",
+          "description": "Auto-generate session summary from git history.",
+          "params": [
+            "args"
+          ]
+        }
+      ],
+      "constants": [
+        "SESSION_LOG",
+        "TASKS_MD",
+        "PYPROJECT",
+        "NEXT_BRIEF",
+        "DATE_RE",
+        "HANDOFF_START",
+        "HANDOFF_END",
+        "HANDOFF_DATE_RE",
+        "COMMIT_HASH_RE",
+        "TASKS_HISTORY"
+      ],
+      "content_hash": "ea742f980da8"
+    },
+    {
+      "name": "should_use_pr.sh",
+      "type": "shell-script",
+      "size_lines": 440,
+      "last_updated": "2026-01-23",
+      "description": "Helper script: Should this change use a Pull Request?",
+      "content_hash": "e744b931f999"
+    },
+    {
+      "name": "sync_numbers.py",
+      "type": "python",
+      "size_lines": 389,
+      "last_updated": "2026-03-23",
+      "description": "Scan codebase and sync stale numbers across documentation files.",
+      "classes": [
+        {
+          "name": "Metrics",
+          "description": "Current codebase metrics from scanning.",
+          "public_methods": [
+            "as_dict"
+          ]
+        },
+        {
+          "name": "Update",
+          "description": "A pending update to a documentation file.",
+          "public_methods": [
+            "file_rel"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "scan_tests",
+          "description": "Count tests via pytest --co (collection only, fast)."
+        },
+        {
+          "name": "scan_scripts",
+          "description": "Count .py and .sh scripts in scripts/ (top-level only)."
+        },
+        {
+          "name": "scan_hooks",
+          "description": "Count exported hooks and hook files. Returns (hook_count, file_count)."
+        },
+        {
+          "name": "scan_endpoints",
+          "description": "Count API endpoints and router files. Returns (endpoint_count, router_count)."
+        },
+        {
+          "name": "scan_api_functions",
+          "description": "Count public and private functions in services/api.py. Returns (public, private)."
+        },
+        {
+          "name": "scan_components",
+          "description": "Count .tsx component files."
+        },
+        {
+          "name": "scan_all",
+          "description": "Run all scanners and return current metrics."
+        },
+        {
+          "name": "get_update_rules",
+          "description": "Define all number-replacement rules across doc files."
+        },
+        {
+          "name": "find_updates",
+          "description": "Compare current metrics against doc files and find needed updates.",
+          "params": [
+            "metrics"
+          ]
+        },
+        {
+          "name": "apply_updates",
+          "description": "Apply pending updates to files. Returns number of files changed.",
+          "params": [
+            "updates"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "DOCS_TO_SYNC"
+      ],
+      "content_hash": "b92645b03135"
+    },
+    {
+      "name": "test_api_parity.py",
+      "type": "python",
+      "size_lines": 444,
+      "last_updated": "2026-03-23",
+      "description": "API Parity Testing Script (V3 Preparation)",
+      "classes": [
+        {
+          "name": "ParityTestCase",
+          "description": "A test case for API parity testing."
+        },
+        {
+          "name": "ParityResult",
+          "description": "Result of a parity test."
+        }
+      ],
+      "functions": [
+        {
+          "name": "load_api",
+          "description": "Load the structural_lib.api module."
+        },
+        {
+          "name": "compare_values",
+          "description": "Compare two values with tolerance for floats.",
+          "params": [
+            "v1",
+            "v2",
+            "precision"
+          ]
+        },
+        {
+          "name": "result_to_dict",
+          "description": "Convert a result object to a dictionary, handling nested dataclasses.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "simulate_api_call",
+          "description": "Simulate a FastAPI call by:",
+          "params": [
+            "api",
+            "function_name",
+            "inputs"
+          ]
+        },
+        {
+          "name": "run_parity_test",
+          "description": "Run a single parity test.",
+          "params": [
+            "api",
+            "test_case"
+          ]
+        },
+        {
+          "name": "run_all_tests",
+          "description": "Run all parity tests.",
+          "params": [
+            "api",
+            "test_cases",
+            "verbose"
+          ]
+        },
+        {
+          "name": "generate_test_cases_file",
+          "description": "Generate a JSON file with test cases for customization."
+        },
+        {
+          "name": "load_custom_test_cases",
+          "description": "Load custom test cases from JSON file if exists."
+        },
+        {
+          "name": "print_summary",
+          "description": "Print test summary.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "SCRIPT_DIR",
+        "PROJECT_ROOT",
+        "PYTHON_DIR",
+        "TEST_CASES_PATH",
+        "STANDARD_TEST_CASES"
+      ],
+      "content_hash": "0fb4378bf7b8"
+    },
+    {
+      "name": "test_import_3d_pipeline.py",
+      "type": "python",
+      "size_lines": 205,
+      "last_updated": "2026-03-23",
+      "description": "Import → Design → 3D Pipeline Test",
+      "functions": [
+        {
+          "name": "main",
+          "description": "Run the complete pipeline test."
+        }
+      ],
+      "content_hash": "e7cf781dc714"
+    },
+    {
+      "name": "test_vba_adapter.py",
+      "type": "python",
+      "size_lines": 171,
+      "last_updated": "2026-03-23",
+      "description": "Test ETABSAdapter with actual VBA ETABS export data.",
+      "functions": [
+        {
+          "name": "main",
+          "description": "Test adapter with VBA export data."
+        }
+      ],
+      "content_hash": "79d9332badef"
+    },
+    {
+      "name": "update_test_stats.py",
+      "type": "python",
+      "size_lines": 211,
+      "last_updated": "2026-03-23",
+      "description": "Update Test Stats — Dynamic test count updater.",
+      "functions": [
+        {
+          "name": "get_test_stats",
+          "description": "Run pytest and extract test statistics."
+        },
+        {
+          "name": "get_coverage_stats",
+          "description": "Run pytest with coverage and extract statistics."
+        },
+        {
+          "name": "generate_badge_json",
+          "description": "Generate shields.io compatible badge JSON.",
+          "params": [
+            "stats"
+          ]
+        },
+        {
+          "name": "write_stats_file",
+          "description": "Write stats to a JSON file for reference.",
+          "params": [
+            "stats"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "TEST_COUNT_PATTERNS"
+      ],
+      "content_hash": "1e37440973c1"
+    },
+    {
+      "name": "validate_api_contracts.py",
+      "type": "python",
+      "size_lines": 608,
+      "last_updated": "2026-03-23",
+      "description": "API Contract Validator.",
+      "classes": [
+        {
+          "name": "APIFunction",
+          "description": "Represents a public API function."
+        },
+        {
+          "name": "SchemaValidationResult",
+          "description": "Result of API schema validation."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_current_openapi_schema",
+          "description": "Get current OpenAPI schema from FastAPI app."
+        },
+        {
+          "name": "extract_contract_signature",
+          "description": "Extract contract-relevant parts of OpenAPI schema.",
+          "params": [
+            "schema"
+          ]
+        },
+        {
+          "name": "compare_contracts",
+          "description": "Compare baseline and current contracts.",
+          "params": [
+            "baseline",
+            "current"
+          ]
+        },
+        {
+          "name": "save_baseline",
+          "description": "Save current schema as baseline.",
+          "params": [
+            "schema"
+          ]
+        },
+        {
+          "name": "load_baseline",
+          "description": "Load baseline schema if exists."
+        },
+        {
+          "name": "print_comparison",
+          "description": "Print comparison results.",
+          "params": [
+            "breaking",
+            "warnings",
+            "info",
+            "verbose"
+          ]
+        },
+        {
+          "name": "validate_contracts",
+          "description": "Main validation logic.",
+          "params": [
+            "save",
+            "diff"
+          ]
+        },
+        {
+          "name": "validate_schema",
+          "description": "Run schema validation (absorbed from validate_fastapi_schema.py).",
+          "params": [
+            "generate",
+            "manifest",
+            "verbose",
+            "output"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "BASELINE_PATH",
+        "MANIFEST_PATH",
+        "PROJECT_ROOT",
+        "PYTHON_DIR"
+      ],
+      "content_hash": "cd1393f8bd77"
+    },
+    {
+      "name": "validate_git_state.sh",
+      "type": "shell-script",
+      "size_lines": 253,
+      "last_updated": "2026-01-23",
+      "description": "Git workflow validator - run before any git operation",
+      "content_hash": "80e260858d56"
+    },
+    {
+      "name": "validate_imports.py",
+      "type": "python",
+      "size_lines": 306,
+      "last_updated": "2026-03-23",
+      "description": "Validate Python imports across the project after migration.",
+      "functions": [
+        {
+          "name": "find_python_files",
+          "description": "Find Python files for the given scope.",
+          "params": [
+            "scope"
+          ]
+        },
+        {
+          "name": "get_top_level_package",
+          "description": "Get the top-level package name from a module string.",
+          "params": [
+            "module_str"
+          ]
+        },
+        {
+          "name": "can_resolve_module",
+          "description": "Check if a module can be resolved.",
+          "params": [
+            "module_str"
+          ]
+        },
+        {
+          "name": "extract_imports",
+          "description": "Extract all import statements from a Python file.",
+          "params": [
+            "file_path"
+          ]
+        },
+        {
+          "name": "find_similar_modules",
+          "description": "Find modules that are similar to the broken import.",
+          "params": [
+            "broken"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT",
+        "SEARCH_DIRS",
+        "EXTERNAL_PACKAGES",
+        "SKIP_PATTERNS"
+      ],
+      "content_hash": "6b035e362f48"
+    },
+    {
+      "name": "validate_schema_snapshots.py",
+      "type": "python",
+      "size_lines": 256,
+      "last_updated": "2026-03-23",
+      "description": "Schema Snapshot Validator.",
+      "functions": [
+        {
+          "name": "get_model_schema",
+          "description": "Extract schema information from a Pydantic model.",
+          "params": [
+            "model_class"
+          ]
+        },
+        {
+          "name": "get_enum_values",
+          "description": "Extract values from an enum.",
+          "params": [
+            "enum_class"
+          ]
+        },
+        {
+          "name": "compare_schemas",
+          "description": "Compare current schema against snapshot, return list of differences.",
+          "params": [
+            "current",
+            "snapshot",
+            "model_name"
+          ]
+        },
+        {
+          "name": "validate_snapshots",
+          "description": "Validate current schemas against snapshots."
+        },
+        {
+          "name": "update_snapshots",
+          "description": "Update snapshot file with current schemas.",
+          "params": [
+            "current_schemas"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "SNAPSHOT_FILE",
+        "MODELS",
+        "ENUMS"
+      ],
+      "content_hash": "7265a99c1b89"
+    },
+    {
+      "name": "validate_session_state.py",
+      "type": "python",
+      "size_lines": 408,
+      "last_updated": "2026-03-23",
+      "description": "Session State Validator (TASK-413)",
+      "classes": [
+        {
+          "name": "SessionStateUsage",
+          "description": "Tracks a single usage of session_state."
+        },
+        {
+          "name": "SessionStateReport",
+          "description": "Summary report for session_state analysis."
+        },
+        {
+          "name": "SessionStateVisitor",
+          "description": "AST visitor to extract session_state usage patterns.",
+          "public_methods": [
+            "visit_FunctionDef",
+            "visit_Compare",
+            "visit_Subscript",
+            "visit_Attribute",
+            "visit_Call"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "analyze_file",
+          "description": "Analyze a single file for session_state usage.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "analyze_codebase",
+          "description": "Analyze entire Streamlit codebase for session_state usage.",
+          "params": [
+            "base_dir",
+            "verbose"
+          ]
+        },
+        {
+          "name": "print_report",
+          "description": "Print session state audit report.",
+          "params": [
+            "report",
+            "verbose"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "c43027da9053"
+    },
+    {
+      "name": "watch_tests.sh",
+      "type": "shell-script",
+      "size_lines": 91,
+      "last_updated": "2026-02-11",
+      "description": "Watch Mode (Solution 5 - Dev Automation)",
+      "content_hash": "e87d92fe2217"
     }
-  },
-  "categories": {
-    "git_workflow": {
-      "description": "Git operations and workflow automation",
-      "scripts": {
-        "ai_commit.sh": "PRIMARY - Commit and push changes",
-        "safe_push.sh": "Core push logic (called by ai_commit.sh)",
-        "should_use_pr.sh": "Decide PR vs direct commit",
-        "create_task_pr.sh": "Create branch for task PR",
-        "finish_task_pr.sh": "Submit PR with --async or --wait",
-        "recover_git_state.sh": "Emergency git recovery",
-        "validate_git_state.sh": "Comprehensive git state check",
-        "check_unfinished_merge.sh": "Detect unfinished merge",
-        "install_git_hooks.sh": "Install hook enforcement",
-        "cleanup_stale_branches.py": "Remove old task branches (dry run + delete)",
-        "check_not_main.sh": "Verify not on main branch"
-      }
+  ],
+  "subfolders": [
+    {
+      "name": "git-hooks",
+      "path": "git-hooks/",
+      "file_count": 2
     },
-    "session_management": {
-      "description": "Session start, end, and handoff",
-      "scripts": {
-        "agent_start.sh": "UNIFIED - Start session (recommended)",
-        "session.py": "Unified session management (start, end, handoff, check, summary, sync)",
-        "sync_numbers.py": "Scan codebase and sync stale numbers across documentation files",
-        "agent_mistakes_report.sh": "Show common mistakes reminder",
-        "collect_diagnostics.py": "Bundle debug context (env, git, logs)",
-        "launch_streamlit.sh": "Launch Streamlit app with env checks"
-      }
-    },
-    "code_validation": {
-      "description": "Code quality, linting, and validation",
-      "scripts": {
-        "check_streamlit.py": "Unified Streamlit validation (AST scanner + fragment checks)",
-        "check_circular_imports.py": "Detect circular import issues",
-        "check_type_annotations.py": "Validate type annotations",
-        "check_python_version.py": "Check Python version compatibility",
-        "validate_session_state.py": "Validate session state usage",
-        "audit_error_handling.py": "Audit error handling patterns",
-        "audit_input_validation.py": "Audit input validation",
-        "check_performance_issues.py": "Detect performance issues",
-        "check_cost_optimizer_issues.py": "Check cost optimizer issues",
-        "check_ui_duplication.py": "Detect code duplication in Streamlit UI",
-        "check_architecture_boundaries.py": "Enforce 3-layer architecture boundaries",
-        "profile_streamlit_page.py": "Profile page performance"
-      }
-    },
-    "documentation": {
-      "description": "Documentation validation and generation",
-      "scripts": {
-        "check_links.py": "Validate + auto-fix markdown links (--fix, --map, --exclude-archive)",
-        "check_doc_versions.py": "Check version consistency in docs",
-        "check_bootstrap_freshness.py": "Detect stale bootstrap docs (new hooks/routes not documented)",
-        "check_docs.py": "Unified docs validation (--index, --index-links, --metadata, --all)",
-        "generate_docs_index.py": "Generate docs-index.json",
-        "generate_all_indexes.sh": "Generate all index files",
-        "create_doc.py": "Create new document with metadata",
-        "find_automation.py": "Search automation scripts by task description",
-        "generate_enhanced_index.py": "Generate enhanced folder index files (JSON + Markdown)"
-      }
-    },
-    "file_operations": {
-      "description": "Safe file move, delete, and archive operations",
-      "scripts": {
-        "safe_file_move.py": "Move file with link updates",
-        "safe_file_delete.py": "Delete file with reference check",
-        "archive_old_files.sh": "Archive files older than 90 days"
-      }
-    },
-    "project_structure": {
-      "description": "Validate project structure and governance",
-      "scripts": {
-        "check_governance.py": "Unified governance checker (--structure, --compliance, --full, --json)",
-        "audit_readiness_report.py": "Generate audit evidence bundle (NIST SSDF aligned)",
-        "check_root_file_count.sh": "Monitor root file count",
-        "check_repo_hygiene.py": "Check repository hygiene",
-        "check_tasks_format.py": "Validate TASKS.md format",
-        "check_wip_limits.sh": "Check WIP limits",
-        "check_cli_reference.py": "Validate CLI reference docs",
-        "repo_health_check.sh": "Overall repository health",
-        "check_scripts_index.py": "Ensure scripts/index.json is in sync"
-      }
-    },
-    "api_validation": {
-      "description": "API documentation and validation",
-      "scripts": {
-        "check_api.py": "Unified API validation (--signatures, --docs, --sync, --all)",
-        "check_openapi_snapshot.py": "Detect OpenAPI spec drift vs baseline (--update, --json)",
-        "generate_api_manifest.py": "Generate API manifest JSON"
-      }
-    },
-    "testing": {
-      "description": "Testing utilities and validation",
-      "scripts": {
-        "create_test_scaffold.py": "Create test file scaffold",
-        "update_test_stats.py": "Update test statistics",
-        "watch_tests.sh": "Watch and run tests on change",
-        "external_cli_test.py": "Test external CLI integration",
-        "run_vba_smoke_tests.py": "Run VBA smoke tests via Excel automation (macOS)",
-        "test_import_3d_pipeline.py": "Integration test for import \u2192 design \u2192 3D pipeline",
-        "test_vba_adapter.py": "Test ETABSAdapter with VBA ETABS export data"
-      }
-    },
-    "release": {
-      "description": "Release and versioning",
-      "scripts": {
-        "release.py": "Unified release management (run, verify, check-docs, checklist)",
-        "bump_version.py": "Bump version number",
-        "check_version_consistency.sh": "Check version consistency"
-      }
-    },
-    "ci_cd": {
-      "description": "CI/CD and automation",
-      "scripts": {
-        "ci_local.sh": "Run CI checks locally",
-        "pre_commit_check.sh": "Pre-commit hook checks",
-        "collect_metrics.sh": "Collect project metrics"
-      }
-    },
-    "code_migration": {
-      "description": "Code migration and refactoring",
-      "scripts": {
-        "batch_migrate_runner.py": "Batch migration plan executor with per-operation rollback logs",
-        "migrate_python_module.py": "Move Python module + update imports + optional compat stub",
-        "migrate_react_component.py": "Move React component + update imports + barrel exports",
-        "validate_imports.py": "Validate import resolution across scopes (--scope structural_lib/all)"
-      }
-    },
-    "streamlit_dev": {
-      "description": "Streamlit development utilities",
-      "scripts": {
-        "generate_streamlit_page.py": "Generate new Streamlit page",
-        "dxf_render.py": "Render DXF exports"
-      }
-    },
-    "vba": {
-      "description": "VBA code utilities",
-      "scripts": {
-        "lint_vba.py": "Lint VBA code"
-      }
-    },
-    "governance": {
-      "description": "Governance, metrics, and compliance",
-      "scripts": {
-        "governance_health_score.py": "Calculate governance health score 0-100 (TASK-289)",
-        "collect_metrics.sh": "Collect project metrics for governance analysis",
-        "check_next_session_brief_length.py": "Check brief length limits"
-      }
-    },
-    "v3_migration": {
-      "description": "V3 React + FastAPI migration automation",
-      "scripts": {
-        "test_api_parity.py": "Test library \u2194 FastAPI serialization parity",
-        "benchmark_api.py": "FastAPI performance benchmarks with p95/p99 latencies (NEW)",
-        "validate_api_contracts.py": "Detect breaking API changes vs OpenAPI baseline (NEW)",
-        "check_fastapi_issues.py": "AST scanner for FastAPI anti-patterns (NEW)",
-        "validate_schema_snapshots.py": "Validate Pydantic schemas against snapshots for contract testing",
-        "discover_api_signatures.py": "Discover API signatures BEFORE implementing wrappers (CRITICAL)",
-        "check_docker_config.py": "Validate Docker configuration (Dockerfile, compose, .dockerignore)",
-        "generate_client_sdks.py": "Generate Python + TypeScript client SDKs from OpenAPI spec"
-      }
+    {
+      "name": "hooks",
+      "path": "hooks/",
+      "file_count": 1
     }
-  },
-  "quick_reference": {
-    "start_session": "./scripts/agent_start.sh --quick",
-    "commit_changes": "./scripts/ai_commit.sh \"message\"",
-    "check_pr_needed": "./scripts/should_use_pr.sh --explain",
-    "create_pr": "./scripts/create_task_pr.sh TASK-XXX \"description\"",
-    "finish_pr": "./scripts/finish_task_pr.sh TASK-XXX \"description\" --async",
-    "end_session": ".venv/bin/python scripts/session.py end",
-    "fix_git_issues": "./scripts/recover_git_state.sh",
-    "validate_links": ".venv/bin/python scripts/check_links.py",
-    "fix_links": ".venv/bin/python scripts/check_links.py --fix",
-    "check_streamlit": ".venv/bin/python scripts/check_streamlit.py --all-pages",
-    "check_fastapi": ".venv/bin/python scripts/check_fastapi_issues.py",
-    "check_docker": ".venv/bin/python scripts/check_docker_config.py",
-    "docker_up": "docker compose up --build",
-    "docker_dev": "docker compose -f docker-compose.dev.yml up --build",
-    "docker_down": "docker compose down",
-    "benchmark_api": ".venv/bin/python scripts/benchmark_api.py --quick",
-    "validate_contracts": ".venv/bin/python scripts/validate_api_contracts.py",
-    "validate_docs": ".venv/bin/python scripts/check_doc_metadata.py",
-    "v3_readiness": ".venv/bin/python scripts/validate_fastapi_schema.py && .venv/bin/python scripts/test_api_parity.py && .venv/bin/python scripts/benchmark_api_latency.py"
-  },
-  "workflows": {
-    "simple_doc_edit": [
-      "./scripts/agent_start.sh --quick",
-      "# Make doc changes",
-      "./scripts/ai_commit.sh \"docs: description\""
-    ],
-    "production_code_change": [
-      "./scripts/agent_start.sh --quick",
-      "./scripts/create_task_pr.sh TASK-XXX \"description\"",
-      "# Make code changes",
-      "./scripts/ai_commit.sh \"feat: description\"",
-      "./scripts/finish_task_pr.sh TASK-XXX \"description\" --async"
-    ],
-    "emergency_recovery": [
-      "./scripts/recover_git_state.sh",
-      "# Follow printed instructions"
-    ]
-  },
-  "deprecated": {
-    "description": "Scripts that should NOT be used directly (archived to scripts/_archive/)",
-    "scripts": {
-      "safe_push.sh": "Use ai_commit.sh instead (internal)"
-    },
-    "archived": {
-      "agent_setup.sh": "Merged into agent_start.sh",
-      "agent_preflight.sh": "Merged into agent_start.sh",
-      "copilot_setup.sh": "One-time setup, no longer needed",
-      "test_setup.py": "Replaced by pytest suite",
-      "vba_validator.py": "Replaced by lint_vba.py",
-      "comprehensive_validator.py": "Replaced by CI pipeline",
-      "validate_streamlit_page.py": "Replaced by check_streamlit.py",
-      "check_api_signatures.py": "Merged into check_api.py",
-      "check_api_doc_signatures.py": "Merged into check_api.py",
-      "check_api_docs_sync.py": "Merged into check_api.py",
-      "validate_folder_structure.py": "Merged into check_governance.py",
-      "check_governance_compliance.py": "Merged into check_governance.py",
-      "fix_broken_links.py": "Merged into check_links.py --fix",
-      "check_docs_index.py": "Merged into check_docs.py --index",
-      "check_docs_index_links.py": "Merged into check_docs.py --index-links",
-      "start_session.py": "Merged into session.py start",
-      "end_session.py": "Merged into session.py end",
-      "update_handoff.py": "Merged into session.py handoff",
-      "check_session_docs.py": "Merged into session.py check",
-      "verify_release.py": "Merged into release.py verify",
-      "check_release_docs.py": "Merged into release.py check-docs",
-      "check_pre_release_checklist.py": "Merged into release.py checklist",
-      "check_streamlit_issues.py": "Renamed to check_streamlit.py",
-      "check_fragment_violations.py": "Merged into check_streamlit.py --fragments"
-    }
-  }
+  ],
+  "content_hash": "654f6c358ed042ee"
 }

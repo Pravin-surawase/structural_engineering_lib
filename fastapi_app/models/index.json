@@ -1,0 +1,268 @@
+{
+  "folder": "fastapi_app/models",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 61,
+      "last_updated": "2026-01-24",
+      "description": "Pydantic Models Package.",
+      "content_hash": "4e67651c641b"
+    },
+    {
+      "name": "analysis.py",
+      "type": "python",
+      "size_lines": 173,
+      "last_updated": "2026-01-24",
+      "description": "Smart Analysis Pydantic Models.",
+      "classes": [
+        {
+          "name": "SmartAnalysisRequest",
+          "description": "Request model for smart design analysis."
+        },
+        {
+          "name": "Suggestion",
+          "description": "Design suggestion with priority."
+        },
+        {
+          "name": "CodeCheck",
+          "description": "Code compliance check result."
+        },
+        {
+          "name": "EfficiencyMetrics",
+          "description": "Design efficiency metrics."
+        },
+        {
+          "name": "CostEstimate",
+          "description": "Rough cost estimate for analysis."
+        },
+        {
+          "name": "SmartAnalysisResponse",
+          "description": "Response model for smart analysis."
+        }
+      ],
+      "content_hash": "6c3a6ffe0c70"
+    },
+    {
+      "name": "beam.py",
+      "type": "python",
+      "size_lines": 320,
+      "last_updated": "2026-02-10",
+      "description": "Beam Design and Detailing Pydantic Models.",
+      "classes": [
+        {
+          "name": "BeamDesignRequest",
+          "description": "Request model for beam design calculation.",
+          "public_methods": [
+            "validate_depth_ratio"
+          ]
+        },
+        {
+          "name": "BeamCheckRequest",
+          "description": "Request model for checking existing beam with provided reinforcement."
+        },
+        {
+          "name": "BeamDetailingRequest",
+          "description": "Request model for beam reinforcement detailing."
+        },
+        {
+          "name": "FlexureResult",
+          "description": "Flexure design result."
+        },
+        {
+          "name": "ShearResult",
+          "description": "Shear design result."
+        },
+        {
+          "name": "BeamDesignResponse",
+          "description": "Response model for beam design calculation."
+        },
+        {
+          "name": "BeamCheckResponse",
+          "description": "Response model for beam adequacy check."
+        },
+        {
+          "name": "BarArrangement",
+          "description": "Reinforcement bar arrangement."
+        },
+        {
+          "name": "StirrupArrangement",
+          "description": "Stirrup arrangement."
+        },
+        {
+          "name": "BeamDetailingResponse",
+          "description": "Response model for beam detailing."
+        }
+      ],
+      "content_hash": "98ef37154d51"
+    },
+    {
+      "name": "common.py",
+      "type": "python",
+      "size_lines": 150,
+      "last_updated": "2026-01-24",
+      "description": "Common Pydantic Models.",
+      "classes": [
+        {
+          "name": "MaterialProperties",
+          "description": "Concrete and steel material properties."
+        },
+        {
+          "name": "BeamSection",
+          "description": "Beam cross-section dimensions."
+        },
+        {
+          "name": "LoadCase",
+          "description": "Applied loads on the beam."
+        },
+        {
+          "name": "DesignBasis",
+          "description": "Design code and assumptions."
+        },
+        {
+          "name": "APIResponse",
+          "description": "Standard API response wrapper."
+        },
+        {
+          "name": "ErrorResponse",
+          "description": "Error response model."
+        }
+      ],
+      "constants": [
+        "T"
+      ],
+      "content_hash": "840c108953f3"
+    },
+    {
+      "name": "geometry.py",
+      "type": "python",
+      "size_lines": 368,
+      "last_updated": "2026-01-28",
+      "description": "3D Geometry Pydantic Models.",
+      "classes": [
+        {
+          "name": "Point3DModel",
+          "description": "3D point in millimeters."
+        },
+        {
+          "name": "RebarSegmentModel",
+          "description": "A single straight segment of a reinforcement bar."
+        },
+        {
+          "name": "RebarPathModel",
+          "description": "Complete path of a reinforcement bar with segments."
+        },
+        {
+          "name": "StirrupLoopModel",
+          "description": "A stirrup closed loop at a specific X position."
+        },
+        {
+          "name": "Beam3DGeometryModel",
+          "description": "Complete 3D geometry for beam visualization (matches library output)."
+        },
+        {
+          "name": "BeamGeometryRequest",
+          "description": "Request model for beam 3D geometry generation using library API."
+        },
+        {
+          "name": "BeamGeometryResponse",
+          "description": "Response model for full beam 3D geometry."
+        },
+        {
+          "name": "BuildingBeamModel",
+          "description": "Single beam in building geometry (line representation)."
+        },
+        {
+          "name": "BuildingGeometryResponse",
+          "description": "Response model for building-level 3D geometry."
+        },
+        {
+          "name": "BuildingGeometryRequest",
+          "description": "Request model for building geometry generation."
+        },
+        {
+          "name": "CrossSectionRequest",
+          "description": "Request model for 2D cross-section geometry."
+        },
+        {
+          "name": "CrossSectionResponse",
+          "description": "Response model for 2D cross-section geometry."
+        },
+        {
+          "name": "Geometry3DRequest",
+          "description": "Request model for 3D geometry generation."
+        },
+        {
+          "name": "MeshData",
+          "description": "3D mesh data in vertices/faces format."
+        },
+        {
+          "name": "BoundingBox",
+          "description": "Axis-aligned bounding box."
+        }
+      ],
+      "content_hash": "ae9898fb758f"
+    },
+    {
+      "name": "optimization.py",
+      "type": "python",
+      "size_lines": 209,
+      "last_updated": "2026-01-27",
+      "description": "Cost Optimization Pydantic Models.",
+      "classes": [
+        {
+          "name": "CostParameters",
+          "description": "Cost parameters for optimization."
+        },
+        {
+          "name": "DesignConstraints",
+          "description": "Design constraints for optimization."
+        },
+        {
+          "name": "CostOptimizationRequest",
+          "description": "Request model for beam cost optimization."
+        },
+        {
+          "name": "CostBreakdown",
+          "description": "Detailed cost breakdown."
+        },
+        {
+          "name": "OptimalDesign",
+          "description": "Single optimal design solution."
+        },
+        {
+          "name": "CostOptimizationResponse",
+          "description": "Response model for cost optimization."
+        }
+      ],
+      "content_hash": "30748125c080"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "3512315f8a57ce7e",
+  "has_init": true,
+  "public_api": [
+    "BeamDesignRequest",
+    "BeamDesignResponse",
+    "BeamCheckRequest",
+    "BeamCheckResponse",
+    "BeamDetailingRequest",
+    "BeamDetailingResponse",
+    "CostOptimizationRequest",
+    "CostOptimizationResponse",
+    "SmartAnalysisRequest",
+    "SmartAnalysisResponse",
+    "Geometry3DRequest",
+    "Geometry3DResponse",
+    "MaterialProperties",
+    "BeamSection",
+    "LoadCase",
+    "DesignBasis",
+    "APIResponse",
+    "ErrorResponse"
+  ]
+}

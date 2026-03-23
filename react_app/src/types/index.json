@@ -1,0 +1,33 @@
+{
+  "folder": "react_app/src/types",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "csv.ts",
+      "type": "typescript",
+      "size_lines": 86,
+      "last_updated": "2026-01-28",
+      "exports": [
+        "Point3D",
+        "BeamCSVRow",
+        "ImportedBeamsState",
+        "parseBeamCSV"
+      ],
+      "description": "CSV Import Types",
+      "content_hash": "eea7c03999cd"
+    },
+    {
+      "name": "index.ts",
+      "type": "typescript",
+      "size_lines": 5,
+      "last_updated": "2026-01-26",
+      "description": "Types barrel export",
+      "content_hash": "1efa1de4d5da"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "8f46988d4ba4a389"
+}

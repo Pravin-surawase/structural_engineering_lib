@@ -1,0 +1,558 @@
+{
+  "folder": "fastapi_app/routers",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 13,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 34,
+      "last_updated": "2026-01-28",
+      "description": "FastAPI Routers Package.",
+      "content_hash": "233df3ef088f"
+    },
+    {
+      "name": "analysis.py",
+      "type": "python",
+      "size_lines": 234,
+      "last_updated": "2026-02-10",
+      "description": "Smart Analysis Router.",
+      "functions": [
+        {
+          "name": "smart_analyze_beam",
+          "description": "Perform smart analysis on a beam design.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "get_code_clauses",
+          "description": "Get IS 456:2000 code clause references."
+        }
+      ],
+      "content_hash": "efbe63c27a5b"
+    },
+    {
+      "name": "design.py",
+      "type": "python",
+      "size_lines": 309,
+      "last_updated": "2026-02-10",
+      "description": "Beam Design Router.",
+      "functions": [
+        {
+          "name": "design_beam",
+          "description": "Design a beam section for flexure and shear.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_beam",
+          "description": "Check adequacy of a beam section with provided reinforcement.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "get_design_limits",
+          "description": "Get IS 456 design limits and typical values."
+        }
+      ],
+      "content_hash": "013ae74dae09"
+    },
+    {
+      "name": "detailing.py",
+      "type": "python",
+      "size_lines": 318,
+      "last_updated": "2026-02-10",
+      "description": "Beam Detailing Router.",
+      "functions": [
+        {
+          "name": "detail_beam",
+          "description": "Generate reinforcement detailing for a beam.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "get_bar_areas",
+          "description": "Get standard reinforcement bar areas."
+        },
+        {
+          "name": "calculate_development_length",
+          "description": "Calculate development length for a bar.",
+          "params": [
+            "bar_diameter",
+            "fck",
+            "fy",
+            "bar_type"
+          ]
+        }
+      ],
+      "content_hash": "acbdfd69b3c4"
+    },
+    {
+      "name": "export.py",
+      "type": "python",
+      "size_lines": 234,
+      "last_updated": "2026-02-27",
+      "description": "Export Router — BBS, DXF, and Report exports.",
+      "classes": [
+        {
+          "name": "ExportBeamRequest",
+          "description": "Beam parameters for generating export artifacts."
+        },
+        {
+          "name": "ExportReportRequest",
+          "description": "Design results for report generation."
+        }
+      ],
+      "functions": [
+        {
+          "name": "export_bbs",
+          "description": "Generate and download a Bar Bending Schedule as CSV.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "export_dxf",
+          "description": "Generate and download a DXF drawing of the beam.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "export_report",
+          "description": "Generate and download a design report.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "f3fa9f55afeb"
+    },
+    {
+      "name": "geometry.py",
+      "type": "python",
+      "size_lines": 626,
+      "last_updated": "2026-02-10",
+      "description": "3D Geometry Router.",
+      "functions": [
+        {
+          "name": "generate_beam_geometry",
+          "description": "Generate 3D geometry for a beam section.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "generate_full_beam_geometry",
+          "description": "Generate complete 3D geometry for beam visualization.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "get_materials",
+          "description": "Get standard material appearances for visualization."
+        },
+        {
+          "name": "generate_building_geometry",
+          "description": "Generate building-level 3D geometry for visualization.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "generate_cross_section_geometry",
+          "description": "Generate 2D cross-section geometry for beam visualization.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "0070a8b992f6"
+    },
+    {
+      "name": "health.py",
+      "type": "python",
+      "size_lines": 171,
+      "last_updated": "2026-01-24",
+      "description": "Health Check Router.",
+      "classes": [
+        {
+          "name": "HealthStatus",
+          "description": "Health check response model."
+        },
+        {
+          "name": "ReadinessStatus",
+          "description": "Readiness check response model."
+        },
+        {
+          "name": "SystemInfo",
+          "description": "System information response model."
+        }
+      ],
+      "functions": [
+        {
+          "name": "health_check",
+          "description": "Perform a basic health check."
+        },
+        {
+          "name": "readiness_check",
+          "description": "Check if the service is ready to handle requests."
+        },
+        {
+          "name": "system_info",
+          "description": "Get detailed system information."
+        }
+      ],
+      "content_hash": "3ff64d893431"
+    },
+    {
+      "name": "imports.py",
+      "type": "python",
+      "size_lines": 750,
+      "last_updated": "2026-02-10",
+      "description": "CSV Import Router.",
+      "classes": [
+        {
+          "name": "Point3D",
+          "description": "3D point for beam geometry."
+        },
+        {
+          "name": "BeamRow",
+          "description": "Individual beam data from CSV import."
+        },
+        {
+          "name": "BeamWith3D",
+          "description": "Beam data with 3D positioning for visualization."
+        },
+        {
+          "name": "SampleDataResponse",
+          "description": "Response from sample data endpoint with 3D geometry."
+        },
+        {
+          "name": "CSVImportResponse",
+          "description": "Response from CSV import endpoint."
+        },
+        {
+          "name": "DualCSVImportResponse",
+          "description": "Response from dual CSV import endpoint."
+        },
+        {
+          "name": "BatchDesignResult",
+          "description": "Result for a single beam in batch design."
+        },
+        {
+          "name": "BatchDesignResponse",
+          "description": "Response from batch design endpoint."
+        }
+      ],
+      "functions": [
+        {
+          "name": "import_csv",
+          "description": "Import beam data from CSV file.",
+          "params": [
+            "file",
+            "format_hint"
+          ]
+        },
+        {
+          "name": "import_dual_csv",
+          "description": "Import beam data from two CSV files (geometry + forces).",
+          "params": [
+            "geometry_file",
+            "forces_file",
+            "format_hint"
+          ]
+        },
+        {
+          "name": "import_csv_text",
+          "description": "Import beam data from CSV text content.",
+          "params": [
+            "csv_text",
+            "format_hint"
+          ]
+        },
+        {
+          "name": "batch_design",
+          "description": "Design multiple beams in batch.",
+          "params": [
+            "beams"
+          ]
+        },
+        {
+          "name": "get_supported_formats",
+          "description": "Get information about supported CSV formats."
+        },
+        {
+          "name": "get_sample_data",
+          "description": "Load sample building data from actual ETABS export CSV files."
+        }
+      ],
+      "content_hash": "31a5241c2807"
+    },
+    {
+      "name": "insights.py",
+      "type": "python",
+      "size_lines": 372,
+      "last_updated": "2026-02-10",
+      "description": "Insights Router.",
+      "classes": [
+        {
+          "name": "BeamResult",
+          "description": "A single beam design result for dashboard aggregation."
+        },
+        {
+          "name": "DashboardRequest",
+          "description": "Request model for dashboard generation."
+        },
+        {
+          "name": "StoryStats",
+          "description": "Per-story statistics."
+        },
+        {
+          "name": "DashboardResponse",
+          "description": "Response model for dashboard with aggregated statistics."
+        },
+        {
+          "name": "BeamParams",
+          "description": "Beam parameters for code checks."
+        },
+        {
+          "name": "RebarParams",
+          "description": "Rebar configuration for code checks."
+        },
+        {
+          "name": "CodeChecksRequest",
+          "description": "Request model for live code checks."
+        },
+        {
+          "name": "CheckDetail",
+          "description": "Individual check result."
+        },
+        {
+          "name": "CodeChecksResponse",
+          "description": "Response model for code checks."
+        },
+        {
+          "name": "RebarSuggestRequest",
+          "description": "Request model for rebar optimization suggestions."
+        },
+        {
+          "name": "SuggestionItem",
+          "description": "A single optimization suggestion."
+        },
+        {
+          "name": "RebarSuggestResponse",
+          "description": "Response model for rebar suggestions."
+        }
+      ],
+      "functions": [
+        {
+          "name": "generate_dashboard",
+          "description": "Generate an aggregated dashboard from beam design results.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "code_checks_live",
+          "description": "Perform live IS 456 code checks on a beam.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "suggest_rebar_options",
+          "description": "Suggest optimized rebar configurations for a beam.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "12a2771f5a7a"
+    },
+    {
+      "name": "optimization.py",
+      "type": "python",
+      "size_lines": 229,
+      "last_updated": "2026-02-10",
+      "description": "Cost Optimization Router.",
+      "functions": [
+        {
+          "name": "optimize_beam_cost",
+          "description": "Optimize beam section for minimum cost.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "get_cost_rates",
+          "description": "Get default cost rates for optimization."
+        }
+      ],
+      "content_hash": "7602ccc3524a"
+    },
+    {
+      "name": "rebar.py",
+      "type": "python",
+      "size_lines": 247,
+      "last_updated": "2026-02-10",
+      "description": "Rebar Validation and Application Router.",
+      "classes": [
+        {
+          "name": "BeamParams",
+          "description": "Beam parameters for rebar validation."
+        },
+        {
+          "name": "RebarConfig",
+          "description": "Rebar configuration to validate or apply."
+        },
+        {
+          "name": "RebarValidateRequest",
+          "description": "Request model for rebar validation."
+        },
+        {
+          "name": "ValidationResult",
+          "description": "Validation result details."
+        },
+        {
+          "name": "RebarValidateResponse",
+          "description": "Response model for rebar validation."
+        },
+        {
+          "name": "RebarApplyRequest",
+          "description": "Request model for rebar apply."
+        },
+        {
+          "name": "RebarApplyResponse",
+          "description": "Response model for rebar apply."
+        }
+      ],
+      "functions": [
+        {
+          "name": "validate_rebar",
+          "description": "Validate rebar configuration against geometry and code requirements.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "apply_rebar",
+          "description": "Apply rebar configuration and generate 3D geometry.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "54188259e83e"
+    },
+    {
+      "name": "streaming.py",
+      "type": "python",
+      "size_lines": 290,
+      "last_updated": "2026-01-27",
+      "description": "Server-Sent Events (SSE) Router for Batch Processing.",
+      "classes": [
+        {
+          "name": "BatchJobManager",
+          "description": "Manages batch job state for progress tracking.",
+          "public_methods": [
+            "create_job",
+            "update_progress",
+            "get_job",
+            "cleanup_old_jobs"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "stream_batch_design",
+          "description": "Stream batch beam design results.",
+          "params": [
+            "request",
+            "beams",
+            "_"
+          ]
+        },
+        {
+          "name": "get_job_status",
+          "description": "Get status of a batch job.",
+          "params": [
+            "job_id",
+            "_"
+          ]
+        }
+      ],
+      "content_hash": "b377cd771c50"
+    },
+    {
+      "name": "websocket.py",
+      "type": "python",
+      "size_lines": 306,
+      "last_updated": "2026-01-24",
+      "description": "WebSocket Router for Live Design Updates.",
+      "classes": [
+        {
+          "name": "DesignConnectionManager",
+          "description": "Manages WebSocket connections for live design updates.",
+          "public_methods": [
+            "connect",
+            "disconnect",
+            "send_json",
+            "broadcast"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_websocket",
+          "description": "WebSocket endpoint for live beam design.",
+          "params": [
+            "websocket",
+            "session_id",
+            "token"
+          ]
+        },
+        {
+          "name": "handle_design_beam",
+          "description": "Handle design_beam message.",
+          "params": [
+            "session_id",
+            "params"
+          ]
+        },
+        {
+          "name": "handle_check_beam",
+          "description": "Handle check_beam message for compliance check.",
+          "params": [
+            "session_id",
+            "params"
+          ]
+        }
+      ],
+      "content_hash": "873228f1cfec"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "e66a691980418141",
+  "has_init": true,
+  "public_api": [
+    "analysis",
+    "design",
+    "detailing",
+    "geometry",
+    "health",
+    "imports",
+    "insights",
+    "optimization",
+    "rebar",
+    "streaming",
+    "websocket"
+  ]
+}

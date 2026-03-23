@@ -136,7 +136,7 @@ class TestPracticalStirrupSpacing:
 
     def test_round_to_practical_spacing_exists(self):
         """round_to_practical_spacing function exists in shear module."""
-        from structural_lib.codes.is456 import shear
+        from structural_lib import shear
 
         assert hasattr(shear, "round_to_practical_spacing"), (
             "round_to_practical_spacing function must exist"
@@ -144,7 +144,7 @@ class TestPracticalStirrupSpacing:
 
     def test_standard_spacings_defined(self):
         """Standard stirrup spacings are defined."""
-        from structural_lib.codes.is456 import shear
+        from structural_lib import shear
 
         assert hasattr(shear, "STANDARD_STIRRUP_SPACINGS"), (
             "STANDARD_STIRRUP_SPACINGS must be defined"
@@ -157,7 +157,7 @@ class TestPracticalStirrupSpacing:
 
     def test_impractical_spacing_rounded_down(self):
         """Impractical spacing (241mm) is rounded down to 225mm."""
-        from structural_lib.codes.is456.shear import round_to_practical_spacing
+        from structural_lib.shear import round_to_practical_spacing
 
         # The original bug: 241mm was returned directly
         result = round_to_practical_spacing(241)
@@ -166,7 +166,7 @@ class TestPracticalStirrupSpacing:
 
     def test_exact_standard_values_preserved(self):
         """Exact standard values are preserved."""
-        from structural_lib.codes.is456.shear import round_to_practical_spacing
+        from structural_lib.shear import round_to_practical_spacing
 
         for spacing in [75, 100, 125, 150, 175, 200, 225, 250, 275, 300]:
             result = round_to_practical_spacing(spacing)
@@ -176,21 +176,21 @@ class TestPracticalStirrupSpacing:
 
     def test_values_below_minimum_return_minimum(self):
         """Values below minimum return minimum standard spacing."""
-        from structural_lib.codes.is456.shear import round_to_practical_spacing
+        from structural_lib.shear import round_to_practical_spacing
 
         result = round_to_practical_spacing(50)
         assert result == 75, f"Value below minimum should return 75mm, got {result}mm"
 
     def test_values_above_maximum_return_maximum(self):
         """Values above maximum return maximum standard spacing."""
-        from structural_lib.codes.is456.shear import round_to_practical_spacing
+        from structural_lib.shear import round_to_practical_spacing
 
         result = round_to_practical_spacing(350)
         assert result == 300, f"Value above maximum should return 300mm, got {result}mm"
 
     def test_round_down_is_conservative(self):
         """Round down is conservative (more stirrups, safer)."""
-        from structural_lib.codes.is456.shear import round_to_practical_spacing
+        from structural_lib.shear import round_to_practical_spacing
 
         # 241mm: next higher is 250, next lower is 225
         # Conservative = round DOWN to 225 (more stirrups)
@@ -203,7 +203,7 @@ class TestPracticalStirrupSpacing:
 
     def test_design_shear_uses_practical_spacing(self):
         """design_shear function returns practical spacing values."""
-        from structural_lib.codes.is456.shear import (
+        from structural_lib.shear import (
             design_shear,
             STANDARD_STIRRUP_SPACINGS,
         )
@@ -383,7 +383,7 @@ class TestFixedWorkflows:
                 spacing = shear.get("spacing_mm", shear.get("stirrup_spacing"))
 
                 if spacing and spacing > 0:
-                    from structural_lib.codes.is456.shear import (
+                    from structural_lib.shear import (
                         STANDARD_STIRRUP_SPACINGS,
                     )
 

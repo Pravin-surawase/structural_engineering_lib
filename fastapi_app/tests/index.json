@@ -1,0 +1,492 @@
+{
+  "folder": "fastapi_app/tests",
+  "type": "python-package",
+  "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
+  "last_updated": "2026-03-24",
+  "file_count": 10,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 33,
+      "last_updated": "2026-03-24",
+      "title": "FastAPI Tests",
+      "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming. | File | Scope |",
+      "content_hash": "1df0bb09bec8"
+    },
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 6,
+      "last_updated": "2026-01-24",
+      "description": "FastAPI Tests Package.",
+      "content_hash": "419d87c58f98"
+    },
+    {
+      "name": "conftest.py",
+      "type": "python",
+      "size_lines": 141,
+      "last_updated": "2026-01-24",
+      "description": "Test Fixtures for FastAPI Tests.",
+      "functions": [
+        {
+          "name": "client",
+          "description": "Create a test client for the FastAPI application."
+        },
+        {
+          "name": "sample_beam_design_request",
+          "description": "Sample beam design request data."
+        },
+        {
+          "name": "sample_beam_check_request",
+          "description": "Sample beam check request data."
+        },
+        {
+          "name": "sample_detailing_request",
+          "description": "Sample beam detailing request data."
+        },
+        {
+          "name": "sample_optimization_request",
+          "description": "Sample cost optimization request data."
+        },
+        {
+          "name": "sample_analysis_request",
+          "description": "Sample smart analysis request data."
+        },
+        {
+          "name": "sample_geometry_request",
+          "description": "Sample 3D geometry request data."
+        }
+      ],
+      "content_hash": "a02d7789729f"
+    },
+    {
+      "name": "test_auth.py",
+      "type": "python",
+      "size_lines": 243,
+      "last_updated": "2026-02-10",
+      "description": "Tests for Authentication and Rate Limiting.",
+      "classes": [
+        {
+          "name": "TestCreateAccessToken",
+          "description": "Tests for create_access_token function.",
+          "public_methods": [
+            "test_create_token_with_user_data",
+            "test_create_token_with_scopes",
+            "test_create_token_with_custom_expiry",
+            "test_create_token_default_expiry"
+          ]
+        },
+        {
+          "name": "TestDecodeToken",
+          "description": "Tests for decode_token function.",
+          "public_methods": [
+            "test_decode_valid_token",
+            "test_decode_expired_token",
+            "test_decode_invalid_token",
+            "test_decode_tampered_token"
+          ]
+        },
+        {
+          "name": "TestRateLimiter",
+          "description": "Tests for RateLimiter class.",
+          "public_methods": [
+            "test_allows_requests_under_limit",
+            "test_blocks_requests_over_limit",
+            "test_uses_forwarded_for_header",
+            "test_separate_limits_per_client"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "test_auth_module_imports",
+          "description": "Auth module should import all required components."
+        },
+        {
+          "name": "test_create_dev_token",
+          "description": "Dev token helper should create valid token."
+        }
+      ],
+      "content_hash": "c503fd50c283"
+    },
+    {
+      "name": "test_endpoints.py",
+      "type": "python",
+      "size_lines": 347,
+      "last_updated": "2026-01-27",
+      "description": "Integration Tests for FastAPI Endpoints.",
+      "classes": [
+        {
+          "name": "TestHealthEndpoints",
+          "description": "Tests for health check endpoints.",
+          "public_methods": [
+            "test_root_endpoint",
+            "test_health_check",
+            "test_readiness_check",
+            "test_system_info"
+          ]
+        },
+        {
+          "name": "TestDesignEndpoints",
+          "description": "Tests for beam design endpoints.",
+          "public_methods": [
+            "test_design_beam_basic",
+            "test_design_beam_validation_error",
+            "test_design_beam_depth_ratio_validation",
+            "test_check_beam",
+            "test_get_design_limits"
+          ]
+        },
+        {
+          "name": "TestDetailingEndpoints",
+          "description": "Tests for beam detailing endpoints.",
+          "public_methods": [
+            "test_detail_beam",
+            "test_get_bar_areas",
+            "test_development_length"
+          ]
+        },
+        {
+          "name": "TestImportEndpoints",
+          "description": "Tests for CSV import endpoints.",
+          "public_methods": [
+            "test_dual_csv_import"
+          ]
+        },
+        {
+          "name": "TestOptimizationEndpoints",
+          "description": "Tests for cost optimization endpoints.",
+          "public_methods": [
+            "test_optimize_beam_cost",
+            "test_get_cost_rates"
+          ]
+        },
+        {
+          "name": "TestAnalysisEndpoints",
+          "description": "Tests for smart analysis endpoints.",
+          "public_methods": [
+            "test_smart_analyze_beam",
+            "test_get_code_clauses"
+          ]
+        },
+        {
+          "name": "TestGeometryEndpoints",
+          "description": "Tests for 3D geometry endpoints.",
+          "public_methods": [
+            "test_generate_beam_geometry",
+            "test_generate_beam_geometry_minimal",
+            "test_get_materials"
+          ]
+        },
+        {
+          "name": "TestOpenAPIDocumentation",
+          "description": "Tests for OpenAPI documentation endpoints.",
+          "public_methods": [
+            "test_openapi_json",
+            "test_swagger_ui",
+            "test_redoc"
+          ]
+        },
+        {
+          "name": "TestCORSHeaders",
+          "description": "Tests for CORS configuration.",
+          "public_methods": [
+            "test_cors_preflight",
+            "test_cors_response_headers"
+          ]
+        }
+      ],
+      "content_hash": "b23c7b138771"
+    },
+    {
+      "name": "test_integration.py",
+      "type": "python",
+      "size_lines": 388,
+      "last_updated": "2026-01-24",
+      "description": "Integration tests for FastAPI structural design endpoints.",
+      "classes": [
+        {
+          "name": "TestDesignWorkflow",
+          "description": "Test complete design workflow from input to output.",
+          "public_methods": [
+            "test_complete_beam_design_workflow",
+            "test_design_with_flexure_consistency",
+            "test_design_validation_chain",
+            "test_design_calculation_consistency"
+          ]
+        },
+        {
+          "name": "TestBatchProcessing",
+          "description": "Test batch processing workflows.",
+          "public_methods": [
+            "test_multiple_beam_designs_sequential",
+            "test_mixed_valid_invalid_batch"
+          ]
+        },
+        {
+          "name": "TestErrorHandling",
+          "description": "Test error handling across the API.",
+          "public_methods": [
+            "test_validation_error_format",
+            "test_missing_required_fields",
+            "test_boundary_values"
+          ]
+        },
+        {
+          "name": "TestHealthStatus",
+          "description": "Test health and status endpoints.",
+          "public_methods": [
+            "test_health_check_complete",
+            "test_api_docs_accessible",
+            "test_health_before_and_after_design"
+          ]
+        },
+        {
+          "name": "TestCrossEndpointConsistency",
+          "description": "Test consistency across different API endpoints.",
+          "public_methods": [
+            "test_design_result_format_consistency"
+          ]
+        },
+        {
+          "name": "TestContentFormats",
+          "description": "Test content type handling.",
+          "public_methods": [
+            "test_json_content_type_required",
+            "test_response_json_format"
+          ]
+        },
+        {
+          "name": "TestRatesAndLimits",
+          "description": "Test API handles rate and load appropriately.",
+          "public_methods": [
+            "test_rapid_sequential_requests",
+            "test_large_payload_handling"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client",
+          "description": "Create test client."
+        }
+      ],
+      "content_hash": "e324d812ed6c"
+    },
+    {
+      "name": "test_load.py",
+      "type": "python",
+      "size_lines": 286,
+      "last_updated": "2026-02-10",
+      "description": "Load Tests for FastAPI Application.",
+      "classes": [
+        {
+          "name": "TestSequentialLoad",
+          "description": "Tests for sequential request load patterns.",
+          "public_methods": [
+            "test_sequential_design_requests",
+            "test_health_endpoint_under_sequential_load"
+          ]
+        },
+        {
+          "name": "TestSustainedLoad",
+          "description": "Tests for sustained load over time.",
+          "public_methods": [
+            "test_sustained_requests_no_degradation"
+          ]
+        },
+        {
+          "name": "TestMixedEndpoints",
+          "description": "Tests for mixed endpoint patterns.",
+          "public_methods": [
+            "test_mixed_endpoint_load"
+          ]
+        },
+        {
+          "name": "TestErrorHandlingUnderLoad",
+          "description": "Tests for error handling under load.",
+          "public_methods": [
+            "test_invalid_requests_under_load"
+          ]
+        },
+        {
+          "name": "TestResourceUsage",
+          "description": "Tests for resource consumption.",
+          "public_methods": [
+            "test_no_connection_leaks"
+          ]
+        },
+        {
+          "name": "TestAsyncConcurrentLoad",
+          "description": "Async load tests for true concurrent testing.",
+          "public_methods": [
+            "test_async_concurrent_requests",
+            "test_async_mixed_endpoints"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client",
+          "description": "Create test client."
+        },
+        {
+          "name": "valid_beam_data",
+          "description": "Standard valid beam data for testing."
+        }
+      ],
+      "constants": [
+        "LOAD_SUCCESS_RATE",
+        "LOAD_P95_MS",
+        "LOAD_HEALTH_MAX_MS",
+        "LOAD_DEGRADATION_PCT",
+        "LOAD_AVG_MS"
+      ],
+      "content_hash": "0a5b61cc6a3f"
+    },
+    {
+      "name": "test_security.py",
+      "type": "python",
+      "size_lines": 407,
+      "last_updated": "2026-01-24",
+      "description": "Security Tests for FastAPI Application.",
+      "classes": [
+        {
+          "name": "TestJWTSecurity",
+          "description": "Tests for JWT token security.",
+          "public_methods": [
+            "test_token_tampering_detected",
+            "test_token_with_wrong_signature",
+            "test_token_without_expiration",
+            "test_token_with_none_algorithm",
+            "test_expired_token_rejected",
+            "test_malformed_token_rejected"
+          ]
+        },
+        {
+          "name": "TestRateLimitingSecurity",
+          "description": "Tests for rate limiting security.",
+          "public_methods": [
+            "test_rate_limit_enforced",
+            "test_rate_limit_per_client",
+            "test_x_forwarded_for_spoofing_protection",
+            "test_rate_limit_headers_present"
+          ]
+        },
+        {
+          "name": "TestAuthBypass",
+          "description": "Tests for authentication bypass prevention.",
+          "public_methods": [
+            "test_no_auth_header_handled",
+            "test_invalid_auth_scheme",
+            "test_empty_bearer_token"
+          ]
+        },
+        {
+          "name": "TestInputValidation",
+          "description": "Tests for input validation and injection prevention.",
+          "public_methods": [
+            "test_oversized_request_rejected",
+            "test_special_characters_in_session_id",
+            "test_negative_values_handled"
+          ]
+        },
+        {
+          "name": "TestSecurityHeaders",
+          "description": "Tests for security-related headers.",
+          "public_methods": [
+            "test_cors_headers_appropriate",
+            "test_no_sensitive_info_in_error_responses"
+          ]
+        },
+        {
+          "name": "TestWebSocketSecurity",
+          "description": "Tests for WebSocket security.",
+          "public_methods": [
+            "test_websocket_without_token",
+            "test_websocket_with_invalid_token"
+          ]
+        },
+        {
+          "name": "TestConfigurationSecurity",
+          "description": "Tests for secure configuration.",
+          "public_methods": [
+            "test_secret_key_not_default_in_ci",
+            "test_debug_mode_disabled"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client",
+          "description": "Create test client."
+        },
+        {
+          "name": "valid_token",
+          "description": "Create a valid JWT token for testing."
+        },
+        {
+          "name": "expired_token",
+          "description": "Create an expired JWT token."
+        }
+      ],
+      "content_hash": "456369527046"
+    },
+    {
+      "name": "test_streaming.py",
+      "type": "python",
+      "size_lines": 175,
+      "last_updated": "2026-02-10",
+      "description": "Tests for SSE Streaming Endpoint.",
+      "classes": [
+        {
+          "name": "TestSSEBatchDesign",
+          "description": "Test SSE batch design endpoint.",
+          "public_methods": [
+            "test_batch_design_single_beam",
+            "test_batch_design_multiple_beams",
+            "test_batch_design_invalid_json",
+            "test_batch_design_empty_array",
+            "test_batch_design_progress_tracking"
+          ]
+        },
+        {
+          "name": "TestJobStatus",
+          "description": "Test job status endpoint.",
+          "public_methods": [
+            "test_get_job_status_not_found",
+            "test_get_job_status_after_batch"
+          ]
+        }
+      ],
+      "content_hash": "67705e129f46"
+    },
+    {
+      "name": "test_websocket.py",
+      "type": "python",
+      "size_lines": 166,
+      "last_updated": "2026-02-10",
+      "description": "Tests for WebSocket Live Design Endpoint.",
+      "classes": [
+        {
+          "name": "TestWebSocketDesign",
+          "description": "Test WebSocket design endpoint.",
+          "public_methods": [
+            "test_websocket_connect_disconnect",
+            "test_websocket_design_beam",
+            "test_websocket_design_beam_latency",
+            "test_websocket_unknown_message_type",
+            "test_websocket_check_beam",
+            "test_websocket_check_beam_no_cases",
+            "test_websocket_multiple_messages"
+          ]
+        }
+      ],
+      "content_hash": "d735719cd182"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "454ec70ba140f005",
+  "has_init": true
+}

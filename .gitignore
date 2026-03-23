@@ -129,6 +129,9 @@ VBA/ETABS_Export_v2/Etabs_output/
 # Research raw data (too large for git)
 docs/research/navigation_study/
 
+# Vendor reference docs (30MB decompiled CHM — keep locally, not in git)
+docs/reference/vendor/
+
 # External user artifacts (local only)
 external_data/
 

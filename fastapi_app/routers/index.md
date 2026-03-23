@@ -1,0 +1,37 @@
+# Routers
+
+**Type:** Python Package
+**Last Updated:** 2026-03-24
+**Files:** 13
+
+## Public API
+
+- `analysis`
+- `design`
+- `detailing`
+- `geometry`
+- `health`
+- `imports`
+- `insights`
+- `optimization`
+- `rebar`
+- `streaming`
+- `websocket`
+
+## Python Files
+
+| File | Description | Classes | Functions | Lines |
+|------|-------------|---------|-----------|-------|
+| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 34 |
+| [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 2 | 234 |
+| [design.py](design.py) | Beam Design Router. | 0 | 3 | 309 |
+| [detailing.py](detailing.py) | Beam Detailing Router. | 0 | 3 | 318 |
+| [export.py](export.py) | Export Router — BBS, DXF, and Report exports. | 2 | 3 | 234 |
+| [geometry.py](geometry.py) | 3D Geometry Router. | 0 | 5 | 626 |
+| [health.py](health.py) | Health Check Router. | 3 | 3 | 171 |
+| [imports.py](imports.py) | CSV Import Router. | 8 | 6 | 750 |
+| [insights.py](insights.py) | Insights Router. | 12 | 3 | 372 |
+| [optimization.py](optimization.py) | Cost Optimization Router. | 0 | 2 | 229 |
+| [rebar.py](rebar.py) | Rebar Validation and Application Router. | 7 | 2 | 247 |
+| [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 1 | 2 | 290 |
+| [websocket.py](websocket.py) | WebSocket Router for Live Design Updates. | 1 | 3 | 306 |

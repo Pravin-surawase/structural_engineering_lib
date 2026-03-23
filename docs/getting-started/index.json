@@ -1,142 +1,173 @@
 {
   "folder": "docs/getting-started",
-  "description": "Quick onboarding guides for new users of the structural engineering library. ",
-  "last_updated": "2026-01-21",
-  "file_count": 15,
+  "type": "mixed",
+  "description": "Quick onboarding guides for new users of the structural engineering library.",
+  "last_updated": "2026-03-24",
+  "file_count": 19,
   "files": [
     {
       "name": "NEW-DEVELOPER-ONBOARDING.md",
+      "type": "documentation",
+      "size_lines": 368,
+      "last_updated": "2026-01-23",
       "title": "Onboarding Guide for New Developers",
-      "description": "**Welcome to structural_engineering_lib! 🎓** This guide is for you if:",
-      "last_updated": "2026-01-21",
-      "size_lines": 368
+      "description": "This guide is for you if: - ✅ You're new to this project",
+      "content_hash": "35003934b162"
+    },
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 79,
+      "last_updated": "2026-02-10",
+      "title": "Getting Started",
+      "description": "Quick onboarding guides for new users of the structural engineering library. ",
+      "content_hash": "82e2a479cacc"
     },
     {
       "name": "agent-bootstrap.md",
-      "title": "Agent Bootstrap",
-      "description": "> **Read this first.** This is the fastest path to productive work. > **👤 For users onboarding a new agent:** See ../contributing/agent-onboarding-message.md for the exact message to send.",
-      "last_updated": "2026-01-21",
-      "size_lines": 134,
-      "audience": "All Agents",
-      "status": "Approved"
+      "type": "documentation",
+      "size_lines": 342,
+      "last_updated": "2026-03-23",
+      "title": "Agent Bootstrap — structural_engineering_lib",
+      "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. Open-source **IS 456 RC beam design library** for structural engineers.",
+      "content_hash": "ae91d4cc6543"
+    },
+    {
+      "name": "agent-essentials.md",
+      "type": "documentation",
+      "size_lines": 5,
+      "last_updated": "2026-02-10",
+      "title": "Agent Essentials",
+      "description": "> **Merged.** This document's content has been consolidated into agent-bootstrap.md. > Please read that document instead — it is the single canonical bootstrap for all AI agents.",
+      "content_hash": "5a23b8861206"
     },
     {
       "name": "ai-context-pack.md",
+      "type": "documentation",
+      "size_lines": 5,
+      "last_updated": "2026-02-10",
       "title": "AI Context Pack",
-      "description": "> **For AI Agents:** Use this as your single entrypoint when working in VS Code. | Metric | Value |",
-      "last_updated": "2026-01-21",
-      "size_lines": 267,
-      "audience": "All Agents",
-      "status": "Approved"
+      "description": "> **Merged.** This document's content has been consolidated into agent-bootstrap.md. > Please read that document instead — it is the single canonical bootstrap for all AI agents.",
+      "content_hash": "1bbf6052dc0f"
     },
     {
       "name": "beginners-guide.md",
+      "type": "documentation",
+      "size_lines": 150,
+      "last_updated": "2026-01-23",
       "title": "Beginner's Guide (No Coding Required)",
       "description": "This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result. You have two ways to use this library:",
-      "last_updated": "2026-01-21",
-      "size_lines": 150,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "ba97fbbc4b37"
     },
     {
       "name": "colab-workflow.md",
+      "type": "documentation",
+      "size_lines": 515,
+      "last_updated": "2026-01-23",
       "title": "Colab Workflow (End-to-End, No ETABS Needed)",
       "description": "This guide runs the full pipeline in Google Colab: install → generate inputs → design → BBS → DXF → reports → critical set.",
-      "last_updated": "2026-01-21",
-      "size_lines": 515,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "c5d138b01b48"
     },
     {
       "name": "copilot-quick-start.md",
+      "type": "documentation",
+      "size_lines": 195,
+      "last_updated": "2026-02-11",
       "title": "GitHub Copilot Agent Quick Start",
       "description": "> **⚠️ CONSOLIDATED:** This document has been simplified. >",
-      "last_updated": "2026-01-21",
-      "size_lines": 195,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "d19fe7fe6903"
     },
     {
       "name": "cost-optimization-guide.md",
+      "type": "documentation",
+      "size_lines": 49,
+      "last_updated": "2026-01-23",
       "title": "Cost Optimization Guide",
       "description": "This guide explains how to use the cost optimization features to explore cheaper beam designs while meeting IS 456 requirements. - Searches common beam sizes and material grades to find a lower-cost d",
-      "last_updated": "2026-01-21",
-      "size_lines": 49,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "c263cabdd8db"
     },
     {
       "name": "design-suggestions-guide.md",
+      "type": "documentation",
+      "size_lines": 453,
+      "last_updated": "2026-01-23",
       "title": "Design Suggestions Guide",
       "description": "The design suggestions engine provides expert recommendations to improve your beam designs beyond basic code compliance. Think of it as having an experienced structural engineer review your work and s",
-      "last_updated": "2026-01-21",
-      "size_lines": 453,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "5cf8714eb2cc"
     },
     {
       "name": "excel-quickstart.md",
+      "type": "documentation",
+      "size_lines": 68,
+      "last_updated": "2026-01-23",
       "title": "Excel Quickstart (Step by Step)",
       "description": "This is the easiest path if you prefer Excel and do not want to code. Use one of these:",
-      "last_updated": "2026-01-21",
-      "size_lines": 68,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "f8ec28860129"
     },
     {
       "name": "excel-tutorial.md",
+      "type": "documentation",
+      "size_lines": 393,
+      "last_updated": "2026-01-23",
       "title": "Excel Step-by-Step Tutorial",
       "description": "This tutorial walks you through using the Structural Engineering Library in Excel, step by step with screenshots descriptions and sample data. - Microsoft Excel 2016 or later (Windows or Mac)",
-      "last_updated": "2026-01-21",
-      "size_lines": 393,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "94e56e5801af"
     },
     {
       "name": "fix-copilot-terminal.md",
+      "type": "documentation",
+      "size_lines": 148,
+      "last_updated": "2026-01-23",
       "title": "Fix Copilot Terminal Lockup - Manual Steps",
       "description": "Copilot Agent's terminal is stuck in git pager mode. Commands open \"alternate buffer\" and nothing works. ",
-      "last_updated": "2026-01-21",
-      "size_lines": 148,
-      "audience": "All Agents",
-      "status": "Approved"
+      "content_hash": "1c9dd91c1fb7"
     },
     {
       "name": "insights-guide.md",
+      "type": "documentation",
+      "size_lines": 537,
+      "last_updated": "2026-01-23",
       "title": "Advisory Insights Guide",
       "description": "> **Stability:** Experimental - API may change before v1.0 Advisory insights provide quick heuristic assessments of beam designs to help engineers make informed decisions early in the design process.",
-      "last_updated": "2026-01-21",
-      "size_lines": 537,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "6dc4092c091b"
+    },
+    {
+      "name": "installation-notes.md",
+      "type": "documentation",
+      "size_lines": 80,
+      "last_updated": "2026-01-23",
+      "title": "Installation & Setup Guide",
+      "description": "All required packages have been installed successfully: - **Core**: plotly 6.5.2, pandas 2.3.3, numpy 2.4.1, scipy 1.17.0",
+      "content_hash": "7556170a5706"
     },
     {
       "name": "python-quickstart.md",
+      "type": "documentation",
+      "size_lines": 173,
+      "last_updated": "2026-01-23",
       "title": "Python Quickstart (Beginner-Friendly)",
       "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See beginners-guide.md for comprehensive",
-      "last_updated": "2026-01-21",
-      "size_lines": 173,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "b3b97fcb70d6"
     },
     {
       "name": "releases.md",
+      "type": "documentation",
+      "size_lines": 895,
+      "last_updated": "2026-02-11",
       "title": "Release Ledger",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "last_updated": "2026-01-21",
-      "size_lines": 895,
-      "audience": "Maintainers",
-      "status": "Approved"
+      "content_hash": "cdbb7141ce57"
     },
     {
       "name": "user-guide.md",
+      "type": "documentation",
+      "size_lines": 215,
+      "last_updated": "2026-01-23",
       "title": "User Guide — Complete Workflow",
       "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
-      "last_updated": "2026-01-21",
-      "size_lines": 215,
-      "audience": "Users",
-      "status": "Approved"
+      "content_hash": "53806e1e5b10"
     }
   ],
-  "subfolders": []
+  "subfolders": [],
+  "content_hash": "6f363bcf9fd667b8"
 }

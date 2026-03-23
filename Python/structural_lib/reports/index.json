@@ -1,0 +1,77 @@
+{
+  "folder": "Python/structural_lib/reports",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-24",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 47,
+      "last_updated": "2026-01-23",
+      "description": "Reports Package — Professional Report Generation with Jinja2",
+      "content_hash": "b9a5933d97e1"
+    },
+    {
+      "name": "generator.py",
+      "type": "python",
+      "size_lines": 348,
+      "last_updated": "2026-02-10",
+      "description": "Report Generator — Jinja2-based HTML report generation.",
+      "classes": [
+        {
+          "name": "ReportContext",
+          "description": "Context data for report generation.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_available_templates",
+          "description": "Return list of available template names."
+        },
+        {
+          "name": "generate_html_report",
+          "description": "Generate HTML report from a design result object.",
+          "params": [
+            "design_result",
+            "template",
+            "project_info",
+            "beam_id"
+          ]
+        },
+        {
+          "name": "generate_html_report_from_dict",
+          "description": "Generate HTML report from a context dictionary.",
+          "params": [
+            "context",
+            "template"
+          ]
+        }
+      ],
+      "constants": [
+        "TEMPLATES_DIR"
+      ],
+      "content_hash": "9fffc50c9640"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "templates",
+      "path": "templates/",
+      "file_count": 3
+    }
+  ],
+  "content_hash": "b6884ca31920dc58",
+  "has_init": true,
+  "public_api": [
+    "generate_html_report",
+    "generate_html_report_from_dict",
+    "get_available_templates",
+    "ReportContext",
+    "JINJA2_AVAILABLE"
+  ]
+}

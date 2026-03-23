@@ -1,19 +1,32 @@
 {
   "folder": "agents",
-  "description": "Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.",
-  "last_updated": "2026-01-21",
-  "file_count": 0,
-  "files": [],
+  "type": "documentation",
+  "description": "Use these snippets to quickly engage the right agent with the right context.",
+  "last_updated": "2026-03-24",
+  "file_count": 1,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 126,
+      "last_updated": "2026-01-23",
+      "title": "Agent Prompt Cheat Sheet",
+      "description": "Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.",
+      "content_hash": "98dd002a6d16"
+    }
+  ],
   "subfolders": [
     {
       "name": "agent-9",
       "path": "agent-9/",
-      "description": "| Document | Purpose | |----------|---------|"
+      "file_count": 22
     },
     {
       "name": "roles",
       "path": "roles/",
-      "description": ""
+      "file_count": 15,
+      "description": "Defines 12 agent roles for the multi-agent collaboration framework."
     }
-  ]
+  ],
+  "content_hash": "e7b12e3e85e97328"
 }

@@ -33,7 +33,7 @@ if str(streamlit_app_dir) not in sys.path:
 
 # Import traceability API
 try:
-    from structural_lib.codes.is456.traceability import (
+    from structural_lib.traceability import (
         get_clause_info,
         list_clauses_by_category,
         search_clauses,
@@ -44,7 +44,7 @@ try:
     )
 
     # Import modules to populate registry at module level
-    from structural_lib.codes.is456 import flexure, shear, detailing
+    from structural_lib import flexure, shear, detailing
 
     TRACEABILITY_AVAILABLE = True
 except ImportError:

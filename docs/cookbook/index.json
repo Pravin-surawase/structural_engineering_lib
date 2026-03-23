@@ -1,0 +1,38 @@
+{
+  "folder": "docs/cookbook",
+  "type": "documentation",
+  "description": "Task-focused recipes and code snippets for common structural engineering workflows.",
+  "last_updated": "2026-03-24",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 94,
+      "last_updated": "2026-01-23",
+      "title": "Cookbook",
+      "description": "Task-focused recipes and code snippets for common structural engineering workflows. | Recipe | Description | Status |",
+      "content_hash": "d74e2d288476"
+    },
+    {
+      "name": "cli-reference.md",
+      "type": "documentation",
+      "size_lines": 470,
+      "last_updated": "2026-01-23",
+      "title": "CLI Reference",
+      "description": "Complete command-line reference for structural_lib. bash",
+      "content_hash": "840b1ea47ef0"
+    },
+    {
+      "name": "python-recipes.md",
+      "type": "documentation",
+      "size_lines": 393,
+      "last_updated": "2026-01-23",
+      "title": "Python Recipes",
+      "description": "Copy-paste snippets for common structural engineering tasks. bash",
+      "content_hash": "35b5220aa7e5"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "01af51099ca9dc10"
+}
