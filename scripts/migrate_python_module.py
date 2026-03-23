@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Migrate a Python module to a new location with import updates.
 
+When to use: When moving a Python module to a new path. Updates all imports automatically.
+
 Safely moves a .py file within structural_lib/ and updates ALL import
 statements across the entire project (Python, tests, FastAPI, scripts).
 

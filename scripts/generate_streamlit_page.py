@@ -2,6 +2,8 @@
 """
 Streamlit Page Scaffold Generator
 
+When to use: When creating a new Streamlit page. Generates a scaffold with proper patterns.
+
 TASK-412: Create consistent, high-quality Streamlit page templates.
 
 Features:

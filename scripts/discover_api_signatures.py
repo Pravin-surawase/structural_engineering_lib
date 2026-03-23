@@ -46,8 +46,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, get_type_hints
 
-# Add Python path for structural_lib
-sys.path.insert(0, str(Path(__file__).parent.parent / "Python"))
+# Add scripts path for _lib, then Python path for structural_lib
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
+sys.path.insert(0, str(REPO_ROOT / "Python"))
 
 
 @dataclass

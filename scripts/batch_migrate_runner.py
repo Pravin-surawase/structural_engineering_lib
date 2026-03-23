@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Batch migration runner with per-operation rollback logs.
 
+When to use: When moving multiple files/modules at once. Orchestrates migrations with rollback logging.
+
 Reads a migration plan and executes operations via the canonical scripts:
 - migrate_python_module.py
 - safe_file_move.py

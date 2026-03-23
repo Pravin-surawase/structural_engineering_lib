@@ -2,6 +2,8 @@
 """
 Test Scaffold Generator (Solution 2)
 
+When to use: When adding a new module. Generates a test file template with fixtures and structure.
+
 Auto-generates test templates with comprehensive structure:
 - Test classes for different aspects (Init, Core, EdgeCases, Errors, Integration)
 - Pytest fixtures and assertions

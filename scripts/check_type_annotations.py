@@ -2,6 +2,8 @@
 """
 Type Annotation Checker for Streamlit Application
 
+When to use: After adding new Streamlit functions. Checks type annotation coverage.
+
 TASK-402: Detects functions and methods missing type annotations.
 
 Features:
@@ -40,6 +42,9 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Union
 from dataclasses import dataclass, asdict
 from collections import defaultdict
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
 
 # =============================================================================
 # DATA STRUCTURES
@@ -495,9 +500,7 @@ def main():
     parser.set_defaults(strictness="normal")
     args = parser.parse_args()
 
-    # Find project root
-    script_path = Path(__file__).resolve()
-    project_root = script_path.parent.parent
+    project_root = REPO_ROOT
 
     # Create checker
     checker = TypeAnnotationChecker(project_root, strictness=args.strictness)

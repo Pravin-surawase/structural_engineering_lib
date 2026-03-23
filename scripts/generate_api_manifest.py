@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Generate or validate the public API manifest for structural_lib.api."""
+"""Generate or validate the public API manifest for structural_lib.api.
+
+When to use: After adding/removing functions from api.py. Generates or validates the public API manifest."""
 
 from __future__ import annotations
 

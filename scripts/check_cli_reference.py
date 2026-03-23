@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Ensure CLI reference includes required commands."""
+"""Ensure CLI reference includes required commands.
+
+When to use: After adding new scripts. Ensures CLI reference docs list all commands."""
 
 from __future__ import annotations
 

@@ -2,6 +2,8 @@
 """
 Render DXF drawings to PNG or PDF using ezdxf + matplotlib.
 
+When to use: After generating DXF files. Renders DXF drawings to PNG or PDF for visual inspection.
+
 Example:
   python scripts/dxf_render.py drawings.dxf -o drawings.png
   python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Fail if tracked hygiene artifacts exist in the repository."""
+"""Fail if tracked hygiene artifacts exist in the repository.
+
+When to use: Runs as pre-commit hook. Catches stale artifacts (merge markers, debug prints)."""
 
 from __future__ import annotations
 

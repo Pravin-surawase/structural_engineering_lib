@@ -2,6 +2,8 @@
 """
 Automated detection of common cost optimizer issues.
 
+When to use: After modifying cost_optimization.py. Catches common optimizer bugs.
+
 This script checks for patterns that cause bugs in the cost optimizer:
 - Direct dict access (use .get() instead)
 - Division without zero checks

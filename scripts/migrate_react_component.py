@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Migrate a React component to a new feature-grouped folder.
 
+When to use: When moving a React component to a new folder. Updates all imports automatically.
+
 Safely moves a .tsx/.ts file within react_app/src/ and updates ALL
 import paths across the React codebase.
 

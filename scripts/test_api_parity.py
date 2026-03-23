@@ -5,6 +5,8 @@
 API Parity Testing Script (V3 Preparation)
 ============================================
 
+When to use: After adding new API versions or V3 endpoints. Verifies old/new API output parity.
+
 Tests that FastAPI endpoints return identical results to direct library calls.
 This ensures the V3 React frontend gets the same results as the current Streamlit UI.
 

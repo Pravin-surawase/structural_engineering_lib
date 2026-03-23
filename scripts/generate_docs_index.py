@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate machine-readable JSON index of documentation.
 
+When to use: After adding/removing docs. Generates machine-readable JSON index of documentation.
+
 Purpose:
     Creates docs-index.json for AI agent efficiency.
     Enables programmatic navigation of documentation.

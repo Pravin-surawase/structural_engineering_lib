@@ -3,6 +3,8 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Schema Snapshot Validator.
 
+When to use: After modifying Pydantic models. Checks schema snapshots haven't drifted.
+
 Compares current Pydantic model schemas against stored snapshots to detect
 unintended breaking changes. This is part of the contract testing strategy
 for V3 migration.

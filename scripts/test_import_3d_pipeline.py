@@ -5,6 +5,8 @@
 Import → Design → 3D Pipeline Test
 ===================================
 
+When to use: After modifying CSV import or 3D geometry code. Tests the full import-design-3D pipeline.
+
 Integration test for the complete workflow:
 1. Load VBA ETABS export data
 2. Design all beams

@@ -2,6 +2,8 @@
 """
 Docker Configuration Validator.
 
+When to use: After modifying Dockerfile or docker-compose files. Validates Docker configuration.
+
 Validates Docker setup for the structural engineering library:
 - Dockerfile syntax and best practices
 - docker-compose.yml schema validation

@@ -2,6 +2,8 @@
 """
 Performance Issue Detector for Streamlit Application
 
+When to use: After modifying Streamlit pages. Detects performance anti-patterns (N+1 queries, heavy loops).
+
 TASK-405: Detects common performance anti-patterns in Streamlit code.
 
 Features:

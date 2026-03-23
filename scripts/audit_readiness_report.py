@@ -2,6 +2,8 @@
 """
 Audit Readiness Report Generator
 
+When to use: Before releases. Generates a full readiness assessment of code quality and test coverage.
+
 Compiles audit evidence from tests, scanners, governance checks, and CI artifacts
 into a unified report for compliance and quality assurance.
 

@@ -2,6 +2,8 @@
 """
 Unified release management CLI.
 
+When to use: At release time. Runs release verification checks and manages the release process.
+
 Consolidates: release.py, verify_release.py, check_release_docs.py, check_pre_release_checklist.py
 
 USAGE:

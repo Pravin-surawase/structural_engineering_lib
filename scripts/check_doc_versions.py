@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Doc Version Drift Check — Validate no stale *library* version references in docs.
 
+When to use: Runs as pre-commit hook. Catches stale library version references in docs.
+
 This is intentionally a thin wrapper around scripts/bump_version.py to ensure:
 - The check is aligned with the project's supported auto-fix path.
 - CI only fails on references that can be synced via `--sync-docs`.

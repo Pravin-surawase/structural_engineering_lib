@@ -2,6 +2,8 @@
 """
 Streamlit Performance Profiler
 
+When to use: After performance complaints. Profiles Streamlit page load and render times.
+
 TASK-414: Runtime performance profiling for Streamlit applications.
 
 Features:

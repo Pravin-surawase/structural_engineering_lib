@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Ensure next-session-brief.md stays concise."""
+"""Ensure next-session-brief.md stays concise.
+
+When to use: Runs as pre-commit hook. Ensures next-session-brief.md stays concise."""
 
 from __future__ import annotations
 

@@ -27,6 +27,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
+
 
 def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str, int]]:
     """Find all references to a file in docs and code.
@@ -227,8 +230,7 @@ def main():
 
     args = parser.parse_args()
 
-    # Determine project root
-    project_root = Path(__file__).parent.parent.resolve()
+    project_root = REPO_ROOT
 
     file_path = Path(args.file)
     if not file_path.is_absolute():

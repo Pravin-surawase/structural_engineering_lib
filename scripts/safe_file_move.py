@@ -30,6 +30,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
+
 
 def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str, int]]:
     """Find all references to a file in docs and code.
@@ -299,8 +302,7 @@ def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         "stub_requested": bool(args.stub),
     }
 
-    # Determine project root
-    project_root = Path(__file__).parent.parent.resolve()
+    project_root = REPO_ROOT
 
     source = Path(args.source)
     if not source.is_absolute():

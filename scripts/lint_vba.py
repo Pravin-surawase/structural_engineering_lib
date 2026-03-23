@@ -3,6 +3,8 @@
 VBA Syntax Linter - Pre-import validation
 Catches common errors before Excel import
 
+When to use: Before importing VBA modules into Excel. Pre-validates VBA syntax.
+
 Usage:
     python scripts/lint_vba.py <file.bas>
     python scripts/lint_vba.py Excel/Templates/*.bas

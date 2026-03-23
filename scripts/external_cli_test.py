@@ -1,5 +1,7 @@
 """External CLI smoke test (S-007).
 
+When to use: As part of CI or before releases. Runs CLI smoke tests against the installed package.
+
 Goal: a cold-start user can install and run the CLI end-to-end without help.
 
 This script is designed to be:

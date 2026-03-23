@@ -2,6 +2,8 @@
 """
 Session State Validator (TASK-413)
 
+When to use: After modifying Streamlit session_state usage. Catches uninitialized keys and type issues.
+
 Audits all session_state usage in Streamlit app to detect:
 - Uninitialized keys (keys accessed without initialization)
 - Unused initializations (keys initialized but never read)

@@ -2,6 +2,8 @@
 """
 Version Bump Script — Single Source of Truth
 
+When to use: At release time. Bumps version in pyproject.toml and all version strings.
+
 This script updates version numbers across the codebase from ONE location.
 
 USAGE:

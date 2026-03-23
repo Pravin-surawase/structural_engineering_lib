@@ -2,6 +2,8 @@
 """
 Audit error handling compliance across structural_lib modules.
 
+When to use: After adding new functions to structural_lib. Checks try/except patterns and error messages.
+
 Checks:
 1. No return statements with error sentinel values (0.0, -1, None) in error conditions
 2. Proper exception handling patterns by layer

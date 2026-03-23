@@ -2,6 +2,8 @@
 """
 Governance Health Score - TASK-289
 
+When to use: Before releases or audits. Computes a governance health score across all quality dimensions.
+
 Calculates a single 0-100 score representing overall governance health.
 Simplifies communication ("governance score: 85/100") vs reviewing 20+ metrics.
 

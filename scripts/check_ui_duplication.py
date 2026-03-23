@@ -3,6 +3,8 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Streamlit UI Duplication Scanner.
 
+When to use: After adding new Streamlit pages or components. Detects copy-pasted UI code.
+
 Detects code duplication and redundancy in the Streamlit application to:
 - Identify repeated utility functions
 - Find similar implementations that could be consolidated

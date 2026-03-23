@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Collect a compact diagnostics bundle for debugging and support."""
+"""Collect a compact diagnostics bundle for debugging and support.
+
+When to use: When debugging issues. Collects a compact diagnostics bundle with versions and configs."""
 
 from __future__ import annotations
 

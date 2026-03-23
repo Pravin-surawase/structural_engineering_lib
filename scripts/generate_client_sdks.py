@@ -2,6 +2,8 @@
 """
 Generate client SDKs from FastAPI OpenAPI specification.
 
+When to use: After changing FastAPI endpoints. Generates TypeScript/Python client SDKs from OpenAPI spec.
+
 This script uses openapi-python-client and openapi-typescript to generate
 type-safe client libraries for consuming the structural design API.
 

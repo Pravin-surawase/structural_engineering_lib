@@ -2,6 +2,8 @@
 """
 API Contract Validator.
 
+When to use: After modifying FastAPI models or endpoints. Validates API contracts match schemas.
+
 Validates FastAPI endpoints against their OpenAPI contracts to detect:
 - Missing endpoints (breaking change)
 - Changed response schemas (breaking change)

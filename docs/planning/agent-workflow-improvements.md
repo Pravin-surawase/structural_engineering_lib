@@ -5,7 +5,7 @@
 **Status:** Approved
 **Importance:** High
 **Created:** 2026-03-23
-**Last Updated:** 2026-03-23 (Session 91 — Phase 2)
+**Last Updated:** 2026-03-23 (Session 91 — Phase 3)
 
 ---
 
@@ -167,9 +167,9 @@ AI agents spend significant time on repetitive documentation tasks every session
 
 ## Scripts Inventory & Consolidation Plan
 
-### Current State: 81 Scripts (52 Python + 29 Shell)
+### Current State: 82 Scripts (53 Python + 29 Shell)
 
-**`_lib/` adoption:** 11 of 52 Python scripts use shared `_lib/` utilities. 41 still have standalone helpers.
+**`_lib/` adoption:** 16 of 53 Python scripts use shared `_lib/` utilities. 37 still have standalone helpers.
 
 ### Tier Classification
 
@@ -299,7 +299,7 @@ AI agents spend significant time on repetitive documentation tasks every session
 
 #### 2. Low `_lib/` Adoption
 
-Only 11/52 Python scripts import from `_lib/`. The remaining 41 duplicate patterns for:
+Only 16/53 Python scripts import from `_lib/`. The remaining 37 duplicate patterns for:
 - Subprocess execution (each re-implements `subprocess.run` wrappers)
 - AST parsing (many re-implement `ast.parse` with try/except)
 - JSON/table output (many re-implement formatting)
@@ -331,24 +331,24 @@ inconsistencies). It is NOT related to session document management. No action ne
 - [x] Fix `sync_numbers.py --json` to include updates list (needed for ai_commit hook)
 - [x] Add `check_scripts_index.py` automation-map coverage check
 - [x] Fix `scripts/index.json` — add missing `sync_numbers.py`
-- [ ] Clarify `dxf_render.py` status (active vs deprecated)
+- [x] Clarified `dxf_render.py` status — active (renders DXF to PNG/PDF via ezdxf+matplotlib)
 
 #### Phase 4b — `_lib/` Migration (v0.20)
 
 Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 
-| Priority | Script | Pattern to Replace |
-|----------|--------|--------------------|
-| 1 | `check_circular_imports.py` | AST parsing, REPO_ROOT |
-| 2 | `check_fastapi_issues.py` | AST parsing, JSON output |
-| 3 | `check_type_annotations.py` | AST parsing, table output |
-| 4 | `check_ui_duplication.py` | AST parsing, table output |
-| 5 | `check_performance_issues.py` | AST parsing, REPO_ROOT |
-| 6 | `check_cost_optimizer_issues.py` | REPO_ROOT, subprocess |
-| 7 | `safe_file_move.py` | REPO_ROOT, subprocess |
-| 8 | `safe_file_delete.py` | REPO_ROOT, subprocess |
-| 9 | `validate_api_contracts.py` | AST, imports, output |
-| 10 | `benchmark_api.py` | REPO_ROOT, JSON output |
+| Priority | Script | Pattern to Replace | Status |
+|----------|--------|--------------------|--------|
+| 1 | `check_circular_imports.py` | AST parsing, REPO_ROOT | ✅ Done |
+| 2 | `check_fastapi_issues.py` | AST parsing, JSON output | — uses `--dir`, no REPO_ROOT needed |
+| 3 | `check_type_annotations.py` | AST parsing, table output | ✅ Done |
+| 4 | `check_ui_duplication.py` | AST parsing, table output | |
+| 5 | `check_performance_issues.py` | AST parsing, REPO_ROOT | |
+| 6 | `check_cost_optimizer_issues.py` | REPO_ROOT, subprocess | |
+| 7 | `safe_file_move.py` | REPO_ROOT, subprocess | ✅ Done |
+| 8 | `safe_file_delete.py` | REPO_ROOT, subprocess | ✅ Done |
+| 9 | `validate_api_contracts.py` | AST, imports, output | |
+| 10 | `discover_api_signatures.py` | REPO_ROOT, Python path | ✅ Done |
 
 #### Phase 4c — Targeted Merges (v0.21)
 
@@ -374,13 +374,15 @@ Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 
 #### Next Up (Session 92+)
 - [x] **Session number auto-detect** — `_get_session_number()` now reads from next-session-brief.md
-- [x] **Add `--when-to-use` to script docstrings** — 15/59 Tier 0-2 scripts standardized + checker in `check_scripts_index.py`
+- [x] **Add `--when-to-use` to script docstrings** — All 59/59 Python scripts now have contextual "When to use:" in docstrings
 - [x] **Bootstrap doc auto-refresh** — `check_bootstrap_freshness.py` detects stale hooks/routes/components
+- [x] **`check_scripts_index.py --json`** — Machine-readable output for CI integration
+- [x] **`_lib/` migration batch 1** — 5 scripts migrated (check_circular_imports, check_type_annotations, safe_file_move, safe_file_delete, discover_api_signatures) → 16/53 use `_lib/`
 - [ ] **`--dry-run` as universal default** — all mutating scripts require `--fix`/`--apply`
-- [ ] **Consistent `--json` output** — extend to all `check_*` scripts
+- [ ] **Consistent `--json` output** — extend to remaining `check_*` scripts
 
 #### Future Sessions
-- [ ] Migrate 10 scripts to `_lib/` (Phase 4b)
-- [ ] Merge 3 audit scripts into `audit.py` (Phase 4c)
+- [ ] Migrate remaining 22 scripts to `_lib/` (Phase 4b — 37 left)
+- [ ] ~~Merge 3 audit scripts into `audit.py`~~ — Evaluated Session 91: 1491 lines total, too different to merge (AST scanner vs release report aggregator)
 - [ ] Add `sync_numbers` to GitHub Actions CI
 - [ ] Script health check in CI (automation-map coverage, docstrings, exit codes)

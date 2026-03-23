@@ -2,6 +2,8 @@
 """
 Audit Input Validation Coverage for structural_lib.
 
+When to use: After adding new public functions. Checks that inputs are validated at boundaries.
+
 This script scans the codebase to identify:
 1. Public API functions that accept user input
 2. Which inputs are validated vs unvalidated

@@ -2,6 +2,8 @@
 """
 API Performance Benchmark Script.
 
+When to use: After performance-sensitive changes. Benchmarks API response times and throughput.
+
 Supports two modes:
     --mode fastapi   Benchmark FastAPI endpoint latencies via TestClient
     --mode direct    Benchmark direct library API calls (no HTTP overhead)

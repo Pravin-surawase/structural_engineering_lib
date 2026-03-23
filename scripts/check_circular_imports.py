@@ -2,6 +2,8 @@
 """
 Circular Import Detector for Streamlit Application
 
+When to use: After restructuring imports in streamlit_app/. Detects circular import chains.
+
 TASK-404: Detects circular imports that can cause runtime failures.
 
 Features:
@@ -35,6 +37,9 @@ from pathlib import Path
 from typing import Dict, List, Set, Tuple, Optional, Any
 from dataclasses import dataclass, asdict, field
 from collections import defaultdict
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib.utils import REPO_ROOT
 
 # =============================================================================
 # DATA STRUCTURES
@@ -426,9 +431,7 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    # Find project root
-    script_path = Path(__file__).resolve()
-    project_root = script_path.parent.parent
+    project_root = REPO_ROOT
 
     # Create checker
     checker = CircularImportChecker(project_root)

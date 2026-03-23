@@ -2,6 +2,8 @@
 """
 Python Version Consistency Checker
 
+When to use: After modifying pyproject.toml or CI configs. Ensures Python version strings are consistent.
+
 TASK-453: Ensure all Python version references are consistent across the codebase.
 
 Checks:

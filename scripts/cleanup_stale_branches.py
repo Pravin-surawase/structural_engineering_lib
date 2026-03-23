@@ -2,6 +2,8 @@
 """
 Cleanup stale remote branches.
 
+When to use: Periodically. Removes merged/stale remote branches to keep the repo clean.
+
 This script identifies and optionally deletes remote branches that:
 1. Have been merged into main
 2. Are older than 30 days

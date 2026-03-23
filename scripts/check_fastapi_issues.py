@@ -2,6 +2,8 @@
 """
 FastAPI Issues AST Scanner.
 
+When to use: After modifying FastAPI routers or models. Catches common FastAPI anti-patterns.
+
 Detects common FastAPI anti-patterns and potential issues:
 - Missing response_model on endpoints
 - Bare exceptions (hiding errors)

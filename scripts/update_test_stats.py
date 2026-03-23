@@ -2,6 +2,8 @@
 """
 Update Test Stats — Dynamic test count updater.
 
+When to use: After test suite changes. Updates test_stats.json with current pass/fail counts.
+
 USAGE:
     python scripts/update_test_stats.py          # Show current stats
     python scripts/update_test_stats.py --sync   # Update docs with current stats

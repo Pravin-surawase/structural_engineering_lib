@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Test ETABSAdapter with actual VBA ETABS export data.
 
+When to use: After modifying ETABSAdapter. Tests VBA adapter with actual ETABS export data.
+
 This script validates that our adapter system correctly handles
 the CSV files exported by our VBA/Excel ETABS integration.
 

@@ -2,6 +2,8 @@
 """
 Run VBA smoke tests via Excel automation (macOS).
 
+When to use: After modifying VBA modules. Runs smoke tests via Excel automation (macOS only).
+
 This script opens an Excel workbook, runs one or more VBA macros,
 and reports success/failure. It is intended for quick smoke validation
 of VBA test suites, not full CI execution.
