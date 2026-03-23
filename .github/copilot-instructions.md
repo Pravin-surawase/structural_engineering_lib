@@ -25,11 +25,13 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes (13 routers)
-grep "^def " Python/structural_lib/services/api.py | head -20   # 29 public library functions
+grep "^def " Python/structural_lib/services/api.py | head -20   # 23 public + 6 private helpers
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names
 ```
 
 Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | adapters → `GenericCSVAdapter` | export → `useExport`.
+
+> `adapters.py` → `services/adapters.py` | `geometry_3d.py` → `visualization/geometry_3d.py`
 
 ## Commands
 

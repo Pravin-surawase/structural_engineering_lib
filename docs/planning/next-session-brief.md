@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-03-23
-- Focus: Session 91 — Bootstrap overhaul (architecture docs updated to 4-layer, API paths corrected, hooks/routes/components tables updated, TASKS.md refreshed, next-session-brief updated)
+- Focus: Session 91 — Bootstrap overhaul + cleanup (4-layer arch, all 35 API endpoints documented, 19 hooks inventoried, TASKS.md trimmed 308→81 lines, old sessions archived)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -29,19 +29,26 @@
 
 ### Completed This Session
 
-**Bootstrap overhaul — all major context docs updated:**
-1. **CLAUDE.md** — Fixed architecture (3→4 layer), fixed `api.py` path stub note, corrected `services/api.py` grep, updated function count (29), added `useExport` / `useDesignWebSocket`, added 13 FastAPI router note
-2. **.github/copilot-instructions.md** — Same fixes applied
+**Bootstrap overhaul — all major context docs updated (2 passes):**
+
+**Pass 1 — Corrected stale info:**
+1. **CLAUDE.md** — Fixed architecture (3→4 layer), fixed `api.py` path stub note, corrected `services/api.py` grep, added `useExport` / `useDesignWebSocket`, added 13 FastAPI router note
+2. **.github/copilot-instructions.md** — Same fixes applied, added adapter path note
 3. **docs/getting-started/agent-bootstrap.md** — Major refresh:
    - Section 3: 3-layer → 4-layer architecture table with correct paths
-   - Section 4 hooks: Added `useExport`, `useDesignWebSocket`, `useInsights` variants, `useCodeChecks`, `useRebarSuggestions`
-   - Section 4 components: Added `DashboardPage`, `ExportPanel`, `CommandPalette`
-   - Section 4 FastAPI: Added all 13 routers (analysis, detailing, insights, optimization, rebar, export, streaming)
-   - Section 4 Library: Fixed paths (`services/api.py`, `services/adapters.py`, `visualization/geometry_3d.py`), corrected function count (29)
-   - Section 4 State stores: Added `useUIStore`
+   - Section 4 hooks, components, FastAPI routes, library, state stores all refreshed
    - Section 9 mistakes: Added wrong-path traps for stub `api.py` and module paths
-4. **docs/TASKS.md** — Updated to Session 91, marked v0.19.1 complete, moved all done items to history, added v0.20 sprint items
+4. **docs/TASKS.md** — Updated to Session 91, marked v0.19.1 complete, added v0.20 sprint items
 5. **docs/planning/next-session-brief.md** — Updated handoff entry
+
+**Pass 2 — Fact-checked and improved:**
+1. Added 2 missing hooks (`useCSVTextImport`, `useRebarApply`) across all docs
+2. Expanded FastAPI endpoint table from 18 → 35 (all actual endpoints with real paths)
+3. Removed phantom `useUIStore` (documented but never existed in codebase)
+4. Clarified function count: "23 public + 6 private" instead of misleading "29 public"
+5. Removed duplicate "REST fallback" item in TASKS.md Up Next
+6. Archived old completed sessions (32–73) from TASKS.md — trimmed 308→81 lines
+7. Added compact milestone summary for archived sessions
 
 ### Session Gap Note (Feb 11 → Mar 23, 2026)
 No sessions logged between Session 90 and Session 91. Codebase state during this gap (from git log):

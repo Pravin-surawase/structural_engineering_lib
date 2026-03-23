@@ -56,7 +56,8 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 | Hook | Purpose | File |
 |------|---------|------|
-| `useCSVFileImport` | CSV import via API adapters (40+ columns) | `useCSVImport.ts` |
+| `useCSVFileImport` | CSV file import via API adapters (40+ columns) | `useCSVImport.ts` |
+| `useCSVTextImport` | CSV text/paste import | `useCSVImport.ts` |
 | `useDualCSVImport` | ETABS geometry+forces import | `useCSVImport.ts` |
 | `useBatchDesign` | Batch design all beams | `useCSVImport.ts` |
 | `useBeamGeometry` | 3D rebar/stirrup geometry from API | `useBeamGeometry.ts` |
@@ -65,6 +66,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `useBuildingGeometry` | Building 3D geometry | `useGeometryAdvanced.ts` |
 | `useCrossSectionGeometry` | Cross-section visualization | `useGeometryAdvanced.ts` |
 | `useRebarValidation` | Rebar edit validation | `useRebarEditor.ts` |
+| `useRebarApply` | Apply rebar configuration | `useRebarEditor.ts` |
 | `useExportBBS` / `useExportDXF` / `useExportReport` | File downloads (BBS CSV, DXF, HTML report) | `useExport.ts` |
 | `useDashboardInsights` | Batch analytics (pass/fail, utilization) | `useInsights.ts` |
 | `useCodeChecks` | Live IS 456 clause check badges | `useInsights.ts` |
@@ -86,32 +88,51 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-| Endpoint | Purpose |
-|----------|---------|
-| `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
-| `POST /api/v1/detailing/beam` | Rebar detailing for a beam |
-| `POST /api/v1/analysis/*` | Bending moment / shear force analysis |
-| `POST /api/v1/import/csv` | CSV parsing with adapters (40+ column mappings) |
-| `POST /api/v1/import/dual-csv` | ETABS dual CSV import |
-| `POST /api/v1/import/batch-design` | Batch design all beams |
-| `GET  /api/v1/import/sample` | Sample data for testing |
-| `POST /api/v1/geometry/beam/full` | 3D rebar/stirrup positions |
-| `POST /api/v1/insights/dashboard` | Batch analytics (pass rate, utilization) |
-| `POST /api/v1/insights/code-checks` | Live IS 456 clause checks |
-| `POST /api/v1/insights/rebar-suggest` | AI rebar suggestions |
-| `POST /api/v1/optimization/*` | Cost-optimized beam cross-sections |
-| `POST /api/v1/rebar/*` | Rebar editing & validation |
-| `POST /api/v1/export/bbs` | BBS CSV download |
-| `POST /api/v1/export/dxf` | DXF drawing download |
-| `POST /api/v1/export/report` | HTML report download |
-| `/ws/design/{session}` | Live WebSocket updates |
-| `GET  /health` | Health check |
+35 endpoints across 12 routers + 1 WebSocket:
+
+| Router | Endpoint | Purpose |
+|--------|----------|---------|
+| **design** | `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
+| | `POST /api/v1/design/beam/check` | Check existing beam design |
+| | `GET  /api/v1/design/limits` | Design parameter limits |
+| **detailing** | `POST /api/v1/detailing/beam` | Rebar detailing |
+| | `GET  /api/v1/detailing/bar-areas` | Standard bar area lookup |
+| | `GET  /api/v1/detailing/development-length/{bar_diameter}` | Development length calc |
+| **analysis** | `POST /api/v1/analysis/beam/smart` | Smart beam analysis |
+| | `GET  /api/v1/analysis/code-clauses` | IS 456 code clauses reference |
+| **imports** | `POST /api/v1/import/csv` | CSV file import (40+ column mappings) |
+| | `POST /api/v1/import/csv/text` | CSV text/paste import |
+| | `POST /api/v1/import/dual-csv` | ETABS dual CSV import |
+| | `POST /api/v1/import/batch-design` | Batch design all beams |
+| | `GET  /api/v1/import/formats` | Supported CSV formats |
+| | `GET  /api/v1/import/sample` | Sample data for testing |
+| **geometry** | `POST /api/v1/geometry/beam/3d` | Basic 3D beam geometry |
+| | `POST /api/v1/geometry/beam/full` | Full 3D rebar/stirrup positions |
+| | `GET  /api/v1/geometry/materials` | Material properties lookup |
+| | `POST /api/v1/geometry/building` | Building 3D geometry |
+| | `POST /api/v1/geometry/cross-section` | Cross-section visualization |
+| **insights** | `POST /api/v1/insights/dashboard` | Batch analytics (pass rate, utilization) |
+| | `POST /api/v1/insights/code-checks` | Live IS 456 clause checks |
+| | `POST /api/v1/insights/rebar-suggest` | AI rebar suggestions |
+| **optimization** | `POST /api/v1/optimization/beam/cost` | Cost-optimized beam design |
+| | `GET  /api/v1/optimization/cost-rates` | Material cost rates |
+| **rebar** | `POST /api/v1/rebar/validate` | Rebar configuration validation |
+| | `POST /api/v1/rebar/apply` | Apply rebar configuration |
+| **export** | `POST /api/v1/export/bbs` | BBS CSV download |
+| | `POST /api/v1/export/dxf` | DXF drawing download |
+| | `POST /api/v1/export/report` | HTML report download |
+| **health** | `GET  /health` | Basic health check |
+| | `GET  /health/ready` | Readiness check |
+| | `GET  /health/info` | Version & dependency info |
+| **streaming** | `GET  /streaming/batch-design` | SSE batch design progress |
+| | `GET  /streaming/job/{job_id}` | SSE job status |
+| **websocket** | `WS  /ws/design/{session_id}` | Live WebSocket design updates |
 
 ### Library (`Python/structural_lib/`)
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 29 public functions — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
+| `services/api.py` | 23 public functions + 6 private helpers — key entry points: `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
@@ -126,7 +147,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 |-------|---------|
 | `useDesignStore` | Single beam design inputs/results |
 | `useImportedBeamsStore` | Imported CSV beams + selection |
-| `useUIStore` | UI state (panels, visibility) |
+
 
 **Quick check before coding:**
 ```bash

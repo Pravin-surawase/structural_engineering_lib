@@ -25,7 +25,7 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (13 routers)
-grep "^def " Python/structural_lib/services/api.py | head -20   # 29 public library functions
+grep "^def " Python/structural_lib/services/api.py | head -20   # 23 public + 6 private helpers
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
 ```
 
@@ -80,6 +80,6 @@ Always use `.venv/bin/python`, never bare `python`.
 
 ## What Exists — Do NOT Reinvent
 
-React hooks: `useCSVFileImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts) | `useBeamGeometry` | `useLiveDesign`, `useAutoDesign` | `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts) | `useExport` (BBS/DXF/report) | `useInsights`, `useCodeChecks`, `useRebarSuggestions` | `useRebarValidation` | `useDesignWebSocket`
+React hooks: `useCSVFileImport`, `useCSVTextImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts) | `useBeamGeometry` | `useLiveDesign`, `useAutoDesign` | `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts) | `useExport` (BBS/DXF/report) | `useInsights`, `useCodeChecks`, `useRebarSuggestions` | `useRebarValidation`, `useRebarApply` | `useDesignWebSocket`
 
-FastAPI routers (13 total): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`, `__init__`
+FastAPI routers (13 total, 35 endpoints): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`, `__init__`
