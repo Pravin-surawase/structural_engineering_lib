@@ -25,10 +25,18 @@ V3 Stack
 - Python structural_lib core (Python/structural_lib/)
 - Docker deployment (docker-compose.yml)
 
-Key API Endpoints (FastAPI)
+Key API Endpoints (FastAPI) — 35 endpoints across 13 routers
 - POST /api/v1/design/beam - Beam design (Mu, Vu, Ast)
+- POST /api/v1/design/beam/check - Check existing design
+- POST /api/v1/detailing/beam - Rebar detailing
 - POST /api/v1/import/csv - CSV import with adapters (40+ columns)
+- POST /api/v1/import/dual-csv - ETABS dual CSV import
 - POST /api/v1/geometry/beam/full - 3D rebar/stirrup positions
+- POST /api/v1/insights/dashboard - Batch analytics
+- POST /api/v1/optimization/beam/cost - Cost optimization
+- POST /api/v1/export/bbs|dxf|report - File downloads
+- WS /ws/design/{session_id} - Live WebSocket updates
+- GET /health - Health check
 - GET /docs - OpenAPI auto-generated documentation
 
 Docs (start here)
@@ -47,4 +55,5 @@ Examples
 
 Notes
 - Units: mm, N/mm^2, kN, kN-m (convert at boundaries)
-- 3-layer architecture: Core (pure math) -> App (orchestration) -> UI/IO (interfaces)
+- 4-layer architecture: Core types -> IS 456 Code (pure math) -> Services (orchestration) -> UI/IO (interfaces)
+- Python/structural_lib/api.py is a backward-compat stub — real code is in services/api.py
