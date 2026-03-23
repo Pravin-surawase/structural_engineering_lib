@@ -2,7 +2,7 @@
 
 **Type:** Planning
 **Audience:** All Agents
-**Status:** In Progress
+**Status:** Complete
 **Importance:** High
 **Created:** 2026-03-23
 **Last Updated:** 2026-03-24 (Session 91)
@@ -31,10 +31,10 @@ Systematic audit of every folder and subfolder in the repository to:
 | 3 | `fastapi_app/` | 35 | No | No | Batch 3 ✅ |
 | 4 | `streamlit_app/` | 249 | Yes | No | Batch 3 ✅ |
 | 5 | `scripts/` | 191 | Yes | Yes | Batch 5 ✅ |
-| 6 | `docs/` | 2504 | Yes | Yes | Batches 7-8 ✅ |
+| 6 | `docs/` | 2504 | Yes | Yes | Batches 7-10 ✅ |
 | 7 | `Excel/` | 12 | Yes | No | Batch 4 ✅ |
 | 8 | `VBA/` | 85 | Yes | No | Batch 4 ✅ |
-| 9 | `agents/` | 39 | Yes | Yes | — |
+| 9 | `agents/` | 39 | Yes | Yes | Batch 11 ✅ |
 | 10 | `clients/` | 5 | No | No | Batch 1 ✅ |
 | 11 | `tests/` | 26 | No | No | Batch 6 ✅ |
 | 12 | `logs/` | 204 | Yes | No | Batch 1 ✅ |
@@ -130,17 +130,20 @@ Realistic plan — one batch per session, prioritized by impact.
 **Goal:** Archive completed research, consolidate findings
 **Completed:** Session 91
 
-### Batch 9: Docs — Archive & Internal
+### Batch 9: Docs — Archive & Internal ✅
 **Scope:** `docs/_archive/`, `docs/_internal/`, `docs/_active/`, `docs/_references/`
 **Goal:** Verify archive is organized, internal docs still relevant
+**Completed:** Session 91
 
-### Batch 10: Docs — Reference (Largest)
+### Batch 10: Docs — Reference (Largest) ✅
 **Scope:** `docs/reference/` (1788 files, 30MB)
 **Goal:** Assess vendor/ CHM files, check reference docs freshness
+**Completed:** Session 91
 
-### Batch 11: Agents & Misc
+### Batch 11: Agents & Misc ✅
 **Scope:** `agents/`, `agents/agent-9/`, `agents/roles/`
 **Goal:** Document agent configuration, check for stale agent data
+**Completed:** Session 91
 
 ---
 
@@ -1339,6 +1342,369 @@ For each folder audited, record:
 
 - **Issues:**
   - [ ] `SESSION_LOG.md` at 10,217 lines — will keep growing. Consider rotation (archive older sessions)
+
+### Batch 9 — Docs Archive & Internal (Session 91)
+
+#### `docs/_archive/` — Archived Documentation
+
+- **Purpose:** Historical docs, completed research, old planning, superseded content
+- **Files:** 253 files (247 .md files) across 14 subdirectories + 12 root files
+- **README:** Yes (155 lines — documents archive structure and conventions)
+- **index.json:** No
+
+**Subdirectories:**
+
+| Directory | Files | Content |
+|-----------|------:|---------|
+| 2026-01/ | 100 | 62 root session docs + agent-9-governance-legacy/ (38 files) |
+| planning/ | 47 | Completed/superseded planning docs |
+| research-completed/ | 32 | Completed research (all root files, no subdirs) |
+| publications/ | 12 | Research summary, blog outlines, claims verification |
+| planning-20260119/ | 8 | Planning snapshot from Jan 19 |
+| research-sessions/ | 8 | Research session records |
+| misc/ | 7 | Miscellaneous (ETABS, Excel FAQ, merge conflict guide) |
+| research-phases/ | 6 | Research phase summaries |
+| research-completed-2026-01/ | 5 | Jan 2026 completed research |
+| research/ | 7 | Archived research docs |
+| agents/ | 3 | Archived agent docs |
+| contributing/ | 2 | Archived contributing docs |
+| 2026-02/ | 1 | Feb archive (1 migration doc) |
+
+**Root-level files (12):**
+
+| File | Lines | Content |
+|------|------:|---------|
+| automation-improvements.md | 1497 | Automation improvement proposals |
+| research-and-findings.md | 1018 | Compiled research findings |
+| backward-compat-automation.md | 690 | Backward compat automation plan |
+| session-log-2025-12-28.md | 640 | Old session log |
+| tasks-2025-12-27.md | 577 | Old task list |
+| TASKS_old_20260119.md | 471 | Old TASKS snapshot |
+| tasks-history.md | 330 | Task tracking history |
+| session-8-automation-review.md | 254 | Session 8 review |
+| VALIDATION_COMPLETE.md | 238 | Validation milestone |
+| v0.8-execution-checklist.md | 193 | v0.8 checklist |
+| README.md | 155 | Archive overview |
+| v0.7-requirements.md | 129 | v0.7 requirements |
+
+- **Issues:**
+  - [ ] 253 files is very large for an archive — some subdirs may contain duplicates across time periods
+  - [ ] Multiple `research-*` subdirs (research/, research-completed/, research-completed-2026-01/, research-phases/, research-sessions/) — fragmented
+  - [ ] `2026-01/` has 100 files — a full month of session docs, could be further compressed
+  - [ ] No index.json — hard to search programmatically
+  - [ ] Root-level files mix different time periods and topics
+- **Actions:**
+  - [ ] Consolidate research archives: merge `research-*` subdirs into single `research/` with date subdirs
+  - [ ] Consider compressing `2026-01/` session docs into a summary + key artifacts only
+  - [ ] Add index.json for programmatic search if needed
+  - [ ] Low priority — archive is functional, just messy
+
+#### `docs/_internal/` — Internal Project Documentation
+
+- **Purpose:** Internal-only docs: copilot task specs, cost optimizer audits, quality assessments, strategic roadmap
+- **Files:** 47 files
+- **README:** Yes (60 lines)
+- **index.json:** Yes (137 lines)
+
+**Content areas:**
+
+| Area | Files | Description |
+|------|------:|-------------|
+| copilot-tasks/ | 13 | VBA/xlwings copilot task specs and workflows |
+| cost-optimizer-* | 8 | Cost optimizer audit, fix plans, prevention system |
+| quality-assessments/ | 9 | 2026-01-04 quality assessment scripts + .gitignore |
+| Root docs | 17 | Strategic roadmap, milestones, agent workflow, git governance |
+
+**Top root files by size:**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| cost-optimizer-issues-round3.md | 1655 | Cost optimizer issues (round 3) |
+| quality-gaps-assessment.md | 1292 | Quality gap assessment |
+| project-milestones.md | 788 | Project milestones |
+| cost-optimizer-complete-audit.md | 742 | Cost optimizer audit |
+| cost-optimizer-fix-plan.md | 691 | Fix plan |
+| cost-optimizer-issues-round2.md | 664 | Round 2 issues |
+
+- **Issues:**
+  - [ ] 8 cost-optimizer docs (3,959 lines total) — extensive debugging history. Consider consolidating into single summary + lessons-learned
+  - [ ] `copilot-tasks/` — 13 files of VBA/xlwings task specs. May be stale if tasks are complete
+  - [ ] `quality-assessments/2026-01-04/scripts/` — 8 Python scripts inside docs (unusual location). Should these be in `scripts/` or `tests/`?
+  - [ ] `SESSION_13_PART_8_SUMMARY.md` — very specific session artifact, should be in _archive
+- **Actions:**
+  - [ ] Consolidate cost-optimizer docs into 1-2 summary docs
+  - [ ] Verify copilot-tasks/ completion status — archive if done
+  - [ ] Move quality assessment scripts to `scripts/` or `tests/` (code shouldn't live in docs)
+
+#### `docs/_active/` — Active Work Items
+
+- **Purpose:** Currently active work context docs
+- **Files:** 5 files
+- **README:** Yes (52 lines)
+
+**Files:**
+
+| File | Lines | Content |
+|------|------:|---------|
+| scripts-consolidation-plan.md | 419 | Scripts consolidation plan |
+| session-30-summary.md | 499 | Session 30 summary |
+| resumption-feb-27-2026.md | 169 | Feb 27 resumption context |
+| next-moves-session-88.md | 115 | Session 88 next moves |
+| README.md | 52 | Overview |
+
+- **Issues:**
+  - [ ] `session-30-summary.md` (499 lines) — session 30 is far in the past (current: 91). Should be archived
+  - [ ] `next-moves-session-88.md` — 3 sessions stale. Superseded by `docs/planning/next-session-brief.md`?
+  - [ ] `resumption-feb-27-2026.md` — ~1 month old, likely stale
+  - [ ] Purpose overlaps with `docs/planning/` — unclear what belongs here vs planning/
+- **Actions:**
+  - [ ] Archive `session-30-summary.md` and `resumption-feb-27-2026.md`
+  - [ ] Clarify _active/ vs planning/ — define which docs go where
+  - [ ] Consider if this dir is even needed given planning/ exists
+
+#### `docs/_references/` — External References
+
+- **Purpose:** External reference materials and links
+- **Files:** 1 file (README.md only — 64 lines)
+- **README:** Yes
+- **Issues:**
+  - [ ] Contains only a README — effectively empty placeholder
+- **Actions:**
+  - [ ] Either populate with actual references or remove the empty dir
+
+#### Docs Archive & Internal Summary
+
+| Directory | Files | README | index.json | Issues |
+|-----------|------:|:------:|:----------:|--------|
+| _archive/ | 253 | ✅ | ❌ | Fragmented research archives, 100 files in 2026-01/ |
+| _internal/ | 47 | ✅ | ✅ | 8 cost-optimizer docs, scripts in docs/ |
+| _active/ | 5 | ✅ | ❌ | 3 of 4 docs are stale, purpose unclear vs planning/ |
+| _references/ | 1 | ✅ | ❌ | Empty placeholder (README only) |
+
+### Batch 10 — Docs Reference (Session 91)
+
+#### `docs/reference/` — Reference Documentation
+
+- **Purpose:** API reference, contracts, vendor documentation, deprecation policies
+- **Files:** 1788 files (28 root files + vendor/ 1760 files)
+- **README:** Yes (86 lines)
+- **index.json:** Yes (212 lines)
+
+**Root-level reference docs (28 files):**
+
+| File | Lines | Topic |
+|------|------:|-------|
+| api.md | 2979 | **Main API reference** (LARGEST reference doc) |
+| automation-catalog.md | 2833 | Automation script catalog |
+| insights-api.md | 984 | Insights API reference |
+| sdk-api-contract-v1.md | 918 | SDK API contract |
+| vba-api-reference.md | 864 | VBA API reference |
+| vba-udt-reference.md | 709 | VBA UDT reference |
+| agent-automation-pitfalls.md | 623 | Agent automation pitfalls |
+| fastapi-rest-api.md | 576 | FastAPI REST API reference |
+| dxf-layer-standards.md | 462 | DXF layer standards |
+| 3d-json-contract.md | 440 | 3D JSON data contract |
+| api-stability.md | 395 | API stability guarantees |
+| streamlit-validation.md | 388 | Streamlit validation reference |
+| deprecation-policy.md | 358 | Deprecation policy |
+| troubleshooting.md | 312 | Troubleshooting guide |
+| error-schema.md | 255 | Error schema reference |
+| is456-formulas.md | 233 | IS 456 formula reference |
+| api-manifest.json | 203 | API manifest (machine-readable) |
+| 3d-visualization-performance.md | 164 | 3D visualization performance notes |
+| deferred-integrations.md | 140 | Deferred integrations list |
+| known-pitfalls.md | 125 | Known pitfalls |
+| bbs-dxf-contract.md | 106 | BBS/DXF data contract |
+| library-contract.md | 92 | Library public contract |
+| repo-health-baseline-2026-01-07.md | 53 | Health baseline (stale) |
+| third-party-licenses.md | 41 | Third-party license list |
+
+**Root reference total:** ~13,500 lines across 28 files — comprehensive and well-organized.
+
+#### `docs/reference/vendor/etabs/etabs-chm/` — ETABS CHM Documentation
+
+- **Purpose:** Decompiled ETABS API CHM (Compiled Help Manual) for offline reference
+- **Files:** 1760 files (1680 .htm, 36 .gif, 19 .css, 7 .png, 2 .js, plus hhk/hhc/ico/meta files)
+- **Size:** 30 MB
+- **Origin:** CSI API ETABS v1.chm decompiled into browsable HTML
+
+**File type breakdown:**
+
+| Extension | Count | Purpose |
+|-----------|------:|---------|
+| .htm | 1680 | API documentation pages |
+| .gif | 36 | Images |
+| .css | 19 | Stylesheets |
+| .png | 7 | Images |
+| .js | 2 | Scripts |
+| Other | 16 | Index (hhk, hhc), favicon, meta |
+
+- **Issues:**
+  - [ ] **30 MB of vendor documentation tracked in git** — this is the single biggest repo size contributor
+  - [ ] 1760 files inflate file counts dramatically (accounts for 47% of all repo files)
+  - [ ] CHM source file (`CSI API ETABS v1.chm`) also exists at `docs/reference/` root — double storage
+  - [ ] This is a static vendor reference — never changes, doesn't need version control
+  - [ ] Git LFS or external hosting would be more appropriate
+- **Actions:**
+  - [ ] **HIGH PRIORITY:** Move vendor CHM to Git LFS or external storage (S3, project wiki, etc.)
+  - [ ] Remove decompiled `etabs-chm/` from git history (rewrite or add to `.gitignore`)
+  - [ ] Keep only `CSI API ETABS v1.chm` as the single reference artifact, or link to CSI's official docs
+  - [ ] This single change would reduce repo from ~3700 files to ~1940 files and save ~30MB
+
+#### Reference Health Summary
+
+| Area | Files | Lines | Status |
+|------|------:|------:|--------|
+| Root reference docs | 28 | ~13,500 | Well-maintained, comprehensive |
+| vendor/etabs/etabs-chm/ | 1760 | N/A | **30 MB bloat — needs LFS or removal** |
+
+**Cross-cutting Issues:**
+- [ ] `api.md` at 2979 lines — very large, but authoritative and frequently referenced. Consider TOC if not present
+- [ ] `automation-catalog.md` (2833 lines) may overlap with `scripts/index.json` and `scripts/automation-map.json`
+- [ ] `repo-health-baseline-2026-01-07.md` — 11 weeks stale, single snapshot never updated
+- **Actions:**
+  - [ ] **Vendor CHM removal is the #1 repo health improvement** — 30MB + 1760 files
+  - [ ] Verify automation-catalog.md vs scripts/ indexes for duplication
+  - [ ] Update or archive stale health baseline
+
+### Batch 11 — Agents (Session 91)
+
+#### `agents/` — Top-Level Agent Configuration
+
+- **Purpose:** Multi-agent collaboration framework — agent roles, workflow configurations, research knowledge bases
+- **Files:** 39 files across 3 areas (root, agent-9/, roles/)
+- **README:** Yes (125 lines)
+- **index.json:** Yes (18 lines — minimal)
+- **index.md:** Yes (11 lines)
+
+#### `agents/agent-9/` — Governance Agent
+
+- **Purpose:** Agent-9 is the automation/governance specialist — research, metrics, session management
+- **Files:** 21 files (10 root docs, 3 archive, 6 research, 1 workflow, plus index.json/index.md)
+- **README:** Yes (407 lines — comprehensive)
+- **index.json:** Yes (87 lines)
+- **index.md:** Yes (25 lines)
+
+**Root docs:**
+
+| File | Lines | Purpose |
+|------|------:|---------|
+| AGENT_9_IMPLEMENTATION_ROADMAP.md | 1158 | Full implementation plan |
+| SESSION_TEMPLATES.md | 974 | Session start/end templates |
+| AUTOMATION.md | 839 | Automation guidelines |
+| RESEARCH_PLAN.md | 810 | Research plan |
+| WORKFLOWS.md | 645 | Workflow definitions |
+| KNOWLEDGE_BASE.md | 630 | Accumulated knowledge |
+| METRICS.md | 597 | Metrics tracking |
+| CHECKLISTS.md | 503 | Quality checklists |
+| README.md | 407 | Agent overview |
+| RESEARCH_QUICK_REF.md | 258 | Quick reference |
+
+**Subdirectories:**
+
+| Directory | Files | Purpose |
+|-----------|------:|---------|
+| research/ | 6 | Research findings, constraints, templates, process docs |
+| _archive/ | 3 | Completed summaries (CURRENT_STATE, RESEARCH_COMPLETE, RESEARCH_PLAN) |
+| workflows/ | 1 | LINK_GOVERNANCE.md (205 lines) |
+
+- **Issues:**
+  - [ ] 10 root docs totaling ~6,821 lines — very heavy for a single agent. Consider if all are current
+  - [ ] `SESSION_TEMPLATES.md` (974 lines) may overlap with `scripts/session.py` automated session management
+  - [ ] `RESEARCH_PLAN.md` and `RESEARCH_QUICK_REF.md` — are these still active or should results be archived?
+  - [ ] `_archive/` has 3 completed summaries — proper use of archive pattern
+- **Actions:**
+  - [ ] Verify which docs are still actionable vs historical reference
+  - [ ] Cross-reference SESSION_TEMPLATES with scripts/session.py to check for duplication
+
+#### `agents/roles/` — Agent Role Definitions
+
+- **Purpose:** Define 12 agent roles with responsibilities and capabilities
+- **Files:** 14 files (12 role definitions + index.json + index.md)
+- **README:** No (roles defined in individual files)
+- **index.json:** Yes (92 lines)
+- **index.md:** Yes (21 lines)
+
+**Roles defined:**
+
+| Role | Lines | Scope |
+|------|------:|-------|
+| GOVERNANCE.md | 831 | Governance specialist (**much larger than others**) |
+| PM.md | 143 | Project management |
+| DEVOPS.md | 140 | DevOps/infrastructure |
+| DEV.md | 99 | Core development |
+| TESTER.md | 97 | Testing |
+| ARCHITECT.md | 79 | Architecture |
+| RESEARCHER.md | 58 | Research |
+| CLIENT.md | 51 | Client/SDK |
+| UI.md | 51 | UI/frontend |
+| INTEGRATION.md | 48 | Integration |
+| DOCS.md | 31 | Documentation |
+| SUPPORT.md | 31 | Support |
+
+- **Issues:**
+  - [ ] `GOVERNANCE.md` at 831 lines is 6x larger than the average role file (~90 lines) — disproportionate
+  - [ ] No top-level README in roles/ — purpose only inferred from file contents
+  - [ ] Role files vary wildly in detail (31 lines for DOCS vs 831 for GOVERNANCE)
+- **Actions:**
+  - [ ] Normalize role file depth — either expand small ones or trim GOVERNANCE
+  - [ ] Add README to roles/ explaining the role framework
+
+#### Agents Health Summary
+
+| Directory | Files | README | index.json | Issues |
+|-----------|------:|:------:|:----------:|--------|
+| agents/ (root) | 3 | ✅ | ✅ | Minimal index |
+| agent-9/ | 21 | ✅ | ✅ | Heavy docs (~7K lines), possible overlap with scripts/ |
+| roles/ | 14 | ❌ | ✅ | No README, GOVERNANCE.md disproportionate |
+
+**Cross-cutting Issues:**
+- [ ] `agents/` vs `docs/agents/` — two separate agent documentation locations. `agents/` has role configs + agent-9 knowledge; `docs/agents/` has workflow guides and session logs. This split may confuse agents
+- [ ] agent-9 has ~7K lines of docs for a single agent role — heavier than some entire modules
+- **Actions:**
+  - [ ] Clarify `agents/` vs `docs/agents/` — consider consolidating or adding clear cross-references
+  - [ ] Trim agent-9 if any docs are superseded by centralized scripts/session tooling
+
+---
+
+## Full Audit Complete — Summary
+
+### All 11 Batches ✅
+
+| Batch | Scope | Key Finding |
+|-------|-------|-------------|
+| 1 | Small folders (7) | `logs/` needs rotation, `tmp/` needs .gitignore |
+| 2 | Python core | 4-layer architecture solid, 2 RED violations, 43 stubs |
+| 3 | UI layers | `ai_workspace.py` 5103 lines, fastapi lacks README |
+| 4 | Excel/VBA | 2 corrupt artifacts, unclear primary workbook |
+| 5 | Scripts | 83 active well-indexed, 2 hook dirs need consolidation |
+| 6 | Tests | 4 dirs / 176 files / 65K lines, zero READMEs, duplication |
+| 7 | Docs active (12 dirs) | 5 missing index.json, duplicate colab notebook, AI docs fragmented |
+| 8 | Docs research | navigation_study 73 raw JSON files, 83 uncategorized research files |
+| 9 | Docs archive/internal | 253 archive files fragmented, 8 cost-optimizer docs, stale _active/ |
+| 10 | Docs reference | **30 MB / 1760 files in vendor CHM — #1 repo health issue** |
+| 11 | Agents | `agents/` vs `docs/agents/` split confusing, agent-9 heavy |
+
+### Top 5 High-Priority Actions
+
+1. **Remove vendor CHM from git** — 30 MB, 1760 files (47% of all files). Move to Git LFS or external storage
+2. **Archive/remove navigation_study raw data** — 73 JSON files of trial data bloating docs/research/
+3. **Fix 2 RED architecture violations** — streamlit imports bypassing services layer
+4. **Split ai_workspace.py** — 5103 lines is unsustainable for maintenance
+5. **Add READMEs to test directories** — 4 test dirs with zero READMEs, 176 files undocumented
+
+### Repository Metrics (Post-Audit)
+
+| Metric | Value |
+|--------|-------|
+| Total files | ~3,719 |
+| Vendor CHM files | 1,760 (47%) |
+| Total Python code lines | ~32,000 (structural_lib) |
+| Total test lines | ~65,500 |
+| Total docs .md files | ~2,500 |
+| Scripts (active) | 83 |
+| README coverage | 13/17 top-level dirs |
+| index.json coverage | 9/17 top-level dirs |
 
 ---
 
