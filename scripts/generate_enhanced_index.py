@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import hashlib
 import json
 import re
 import sys
@@ -448,10 +449,24 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     }
 
     # Analyze files
+    file_hashes = []
     for f in all_files:
         file_info = analyze_file(f)
         if file_info:
+            # Add content hash for staleness detection
+            try:
+                file_bytes = f.read_bytes()
+                file_hash = hashlib.sha256(file_bytes).hexdigest()[:12]
+                file_info["content_hash"] = file_hash
+                file_hashes.append(file_hash)
+            except OSError:
+                pass
             index["files"].append(file_info)
+
+    # Add overall content hash watermark (hash of all file hashes)
+    if file_hashes:
+        combined = "|".join(sorted(file_hashes))
+        index["content_hash"] = hashlib.sha256(combined.encode()).hexdigest()[:16]
 
     # Analyze subfolders
     for d in subfolders:
@@ -664,6 +679,10 @@ def main():
     parser.add_argument(
         "--dry-run", action="store_true", help="Show what would be generated"
     )
+    parser.add_argument(
+        "--check", action="store_true",
+        help="Check if existing indexes are stale (exit 1 if any are)"
+    )
     args = parser.parse_args()
 
     if args.json_only and args.md_only:
@@ -713,6 +732,37 @@ def main():
     print("=" * 60)
     print("📂 Enhanced Folder Index Generator")
     print("=" * 60)
+
+    # Check mode: verify existing index.json hashes
+    if args.check:
+        stale_count = 0
+        checked = 0
+        for folder in folders:
+            rel = folder.relative_to(PROJECT_ROOT)
+            idx_path = folder / "index.json"
+            if not idx_path.exists():
+                continue
+            try:
+                stored = json.loads(idx_path.read_text(encoding="utf-8"))
+                stored_hash = stored.get("content_hash")
+                if not stored_hash:
+                    continue  # No hash watermark, skip
+                # Regenerate hash from current files
+                current = scan_folder_enhanced(folder)
+                current_hash = current.get("content_hash", "")
+                checked += 1
+                if stored_hash != current_hash:
+                    print(f"  ⚠️  STALE: {rel}/index.json (hash mismatch)")
+                    stale_count += 1
+            except Exception:
+                pass
+        if stale_count:
+            print(f"\n{stale_count}/{checked} index(es) are stale — regenerate with --all")
+            sys.exit(1)
+        else:
+            print(f"✓ All {checked} index(es) with hashes are current")
+            sys.exit(0)
+
     print(f"Folders to process: {len(folders)}")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
     print()

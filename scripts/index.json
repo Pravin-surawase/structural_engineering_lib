@@ -1,9 +1,9 @@
 {
   "$schema": "scripts-index-schema",
   "version": "1.0.0",
-  "updated": "2026-02-11",
+  "updated": "2026-03-23",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 80,
+  "total_scripts": 83,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -125,6 +125,7 @@
       "description": "API documentation and validation",
       "scripts": {
         "check_api.py": "Unified API validation (--signatures, --docs, --sync, --all)",
+        "check_openapi_snapshot.py": "Detect OpenAPI spec drift vs baseline (--update, --json)",
         "generate_api_manifest.py": "Generate API manifest JSON"
       }
     },

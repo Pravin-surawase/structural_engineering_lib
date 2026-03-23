@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-03-23",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "82/82 scripts mapped",
+  "_coverage": "83/83 scripts mapped",
 
   "tasks": {
     "commit code": {
@@ -198,6 +198,14 @@
     "validate schema snapshots": {
       "script": ".venv/bin/python scripts/validate_schema_snapshots.py",
       "description": "Validate OpenAPI schema snapshots haven't changed unexpectedly"
+    },
+    "check openapi drift": {
+      "script": ".venv/bin/python scripts/check_openapi_snapshot.py",
+      "description": "Compare live OpenAPI spec against baseline — detect endpoint/schema drift",
+      "options": {
+        "--update": "Update baseline with current spec",
+        "--json": "Machine-readable JSON output"
+      }
     },
     "validate streamlit session state": {
       "script": ".venv/bin/python scripts/validate_session_state.py",
@@ -425,7 +433,7 @@
     ],
     "api_tools": [
       "check api signatures", "discover api function", "generate api manifest",
-      "validate api contracts", "validate schema snapshots",
+      "validate api contracts", "validate schema snapshots", "check openapi drift",
       "benchmark api", "test api parity"
     ],
     "streamlit_tools": [

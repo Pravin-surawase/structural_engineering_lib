@@ -167,6 +167,88 @@ def get_active_tasks() -> list[tuple[str, str, str]]:
         return [("", f"Error reading TASKS.md: {e}", "")]
 
 
+TASKS_HISTORY = REPO_ROOT / "docs" / "_archive" / "tasks-history.md"
+MAX_COMPLETED_ROWS = 10
+
+
+def archive_completed_tasks(fix: bool = False) -> tuple[int, int]:
+    """Archive old completed tasks from TASKS.md to tasks-history.md.
+
+    Moves rows from 'Completed Last Sessions' table when it exceeds
+    MAX_COMPLETED_ROWS, keeping only the most recent ones.
+
+    Returns (total_rows, archived_count).
+    """
+    if not TASKS_MD.exists():
+        return 0, 0
+
+    content = TASKS_MD.read_text(encoding="utf-8")
+    lines = content.split("\n")
+
+    # Find "Completed Last Sessions" table
+    table_start = None
+    header_line = None
+    separator_line = None
+    rows: list[tuple[int, str]] = []  # (line_index, line_text)
+
+    for i, line in enumerate(lines):
+        if "Completed Last Sessions" in line and line.startswith("#"):
+            table_start = i
+            continue
+        if table_start is not None and header_line is None:
+            if line.strip().startswith("|") and "Task" in line:
+                header_line = i
+                continue
+        if table_start is not None and header_line is not None and separator_line is None:
+            if line.strip().startswith("|") and "---" in line:
+                separator_line = i
+                continue
+        if separator_line is not None:
+            if line.strip().startswith("|") and line.strip().endswith("|"):
+                rows.append((i, line))
+            elif line.strip() == "" or line.startswith("#"):
+                break
+
+    if len(rows) <= MAX_COMPLETED_ROWS:
+        return len(rows), 0
+
+    # Split: keep recent, archive old
+    rows_to_archive = rows[:-MAX_COMPLETED_ROWS]
+    rows_to_keep = rows[-MAX_COMPLETED_ROWS:]
+    archived_count = len(rows_to_archive)
+
+    if not fix:
+        return len(rows), archived_count
+
+    # Append to tasks-history.md
+    archive_lines = [row_text for _, row_text in rows_to_archive]
+    if TASKS_HISTORY.exists():
+        hist_content = TASKS_HISTORY.read_text(encoding="utf-8")
+        # Append before the last line (or at end)
+        if hist_content.rstrip().endswith("|"):
+            # Table already exists, just append rows
+            hist_content = hist_content.rstrip() + "\n" + "\n".join(archive_lines) + "\n"
+        else:
+            hist_content += f"\n\n## Archived from Session {_get_session_number()}\n\n"
+            hist_content += "| Task | Status | PR |\n|------|--------|-----|\n"
+            hist_content += "\n".join(archive_lines) + "\n"
+        TASKS_HISTORY.write_text(hist_content, encoding="utf-8")
+    else:
+        TASKS_HISTORY.parent.mkdir(parents=True, exist_ok=True)
+        hist_content = "# Task History (Archived)\n\n"
+        hist_content += f"## Archived from Session {_get_session_number()}\n\n"
+        hist_content += "| Task | Status | PR |\n|------|--------|-----|\n"
+        hist_content += "\n".join(archive_lines) + "\n"
+        TASKS_HISTORY.write_text(hist_content, encoding="utf-8")
+
+    # Remove archived rows from TASKS.md
+    indices_to_remove = {idx for idx, _ in rows_to_archive}
+    new_lines = [line for i, line in enumerate(lines) if i not in indices_to_remove]
+    TASKS_MD.write_text("\n".join(new_lines), encoding="utf-8")
+
+    return len(rows), archived_count
+
+
 def get_key_blocker() -> Optional[str]:
     for task_id, desc, hint in get_active_tasks():
         if "BLOCKER" in hint:
@@ -478,7 +560,19 @@ def cmd_end(args: argparse.Namespace) -> int:
         print("  ✅ No doc folder changes detected")
     print()
 
-    # 7. Governance compliance
+    # 7. TASKS.md auto-archival
+    print("📋 TASKS.md Archival:")
+    total_rows, to_archive = archive_completed_tasks(fix=args.fix)
+    if to_archive > 0:
+        if args.fix:
+            print(f"  ✅ Archived {to_archive} old completed task(s) to tasks-history.md (kept {total_rows - to_archive})")
+        else:
+            print(f"  ℹ️  {to_archive} completed task(s) ready to archive (run with --fix)")
+    else:
+        print(f"  ✅ Completed tasks table is tidy ({total_rows} rows, max {MAX_COMPLETED_ROWS})")
+    print()
+
+    # 8. Governance compliance
     print("📋 Governance Compliance:")
     gov_script = REPO_ROOT / "scripts" / "check_governance.py"
     if gov_script.exists():
@@ -505,7 +599,7 @@ def cmd_end(args: argparse.Namespace) -> int:
         print("  ⏭️  Governance checker not found (skipping)")
     print()
 
-    # 8. Today's activity
+    # 9. Today's activity
     print("📊 Today's Activity:")
     prs = get_today_prs()
     if prs:

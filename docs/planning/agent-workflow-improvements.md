@@ -5,7 +5,7 @@
 **Status:** Approved
 **Importance:** High
 **Created:** 2026-03-23
-**Last Updated:** 2026-03-23 (Session 91 — Phase 3)
+**Last Updated:** 2026-03-23 (Session 91 — Phase 4)
 
 ---
 
@@ -167,9 +167,9 @@ AI agents spend significant time on repetitive documentation tasks every session
 
 ## Scripts Inventory & Consolidation Plan
 
-### Current State: 82 Scripts (53 Python + 29 Shell)
+### Current State: 83 Scripts (54 Python + 29 Shell)
 
-**`_lib/` adoption:** 16 of 53 Python scripts use shared `_lib/` utilities. 37 still have standalone helpers.
+**`_lib/` adoption:** 16 of 54 Python scripts use shared `_lib/` utilities. 38 still have standalone helpers.
 
 ### Tier Classification
 
@@ -326,7 +326,7 @@ inconsistencies). It is NOT related to session document management. No action ne
 
 - [x] Clean phantom references in `agent_start.sh` (7 dead refs → inlined)
 - [x] Verify `sync_numbers.py` covers `agent-bootstrap.md` (added 2 patterns)
-- [x] Complete `automation-map.json` — 20/81 → 81/81 scripts mapped (87 tasks, 16 categories)
+- [x] Complete `automation-map.json` — 20/81 → 83/83 scripts mapped (88 tasks, 16 categories)
 - [x] Add stale-number check to `ai_commit.sh` post-commit (non-blocking warning)
 - [x] Fix `sync_numbers.py --json` to include updates list (needed for ai_commit hook)
 - [x] Add `check_scripts_index.py` automation-map coverage check
@@ -366,7 +366,7 @@ Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 - [x] `session.py sync` — convenience wrapper for sync_numbers
 - [x] Bootstrap docs updated with new session-end workflow
 - [x] Phantom cleanup in `agent_start.sh` — 7 dead refs inlined
-- [x] `automation-map.json` expanded — 20 → 87 tasks, 81/81 scripts covered
+- [x] `automation-map.json` expanded — 20 → 87 tasks, 83/83 scripts covered
 - [x] `ai_commit.sh` post-commit stale-number warning
 - [x] `sync_numbers.py --json` now includes updates list
 - [x] `check_scripts_index.py` now also validates automation-map coverage
@@ -378,6 +378,10 @@ Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 - [x] **Bootstrap doc auto-refresh** — `check_bootstrap_freshness.py` detects stale hooks/routes/components
 - [x] **`check_scripts_index.py --json`** — Machine-readable output for CI integration
 - [x] **`_lib/` migration batch 1** — 5 scripts migrated (check_circular_imports, check_type_annotations, safe_file_move, safe_file_delete, discover_api_signatures) → 16/53 use `_lib/`
+- [x] **`check_openapi_snapshot.py`** — NEW: Detect OpenAPI spec drift vs baseline (35 endpoints, 75 schemas); `--update` refreshes baseline, `--json` for CI
+- [x] **Post-move broken link warning** — `ai_commit.sh` now detects file renames/deletes and warns if `check_links.py` finds broken links
+- [x] **TASKS.md auto-archival** — `session.py end` step 7 auto-archives completed tasks exceeding MAX_COMPLETED_ROWS=10 to `docs/_archive/tasks-history.md`
+- [x] **Index hash watermarks** — `generate_enhanced_index.py` now adds per-file `content_hash` (sha256[:12]) + overall hash; `--check` flag detects stale indexes
 - [ ] **`--dry-run` as universal default** — all mutating scripts require `--fix`/`--apply`
 - [ ] **Consistent `--json` output** — extend to remaining `check_*` scripts
 
