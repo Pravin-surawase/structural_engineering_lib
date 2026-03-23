@@ -61,7 +61,8 @@
       "description": "Session start, end, and handoff",
       "scripts": {
         "agent_start.sh": "UNIFIED - Start session (recommended)",
-        "session.py": "Unified session management (start, end, handoff, check)",
+        "session.py": "Unified session management (start, end, handoff, check, summary, sync)",
+        "sync_numbers.py": "Scan codebase and sync stale numbers across documentation files",
         "agent_mistakes_report.sh": "Show common mistakes reminder",
         "collect_diagnostics.py": "Bundle debug context (env, git, logs)",
         "launch_streamlit.sh": "Launch Streamlit app with env checks"

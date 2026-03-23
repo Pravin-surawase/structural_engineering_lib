@@ -1,310 +1,476 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-01-24",
-  "_usage": "Before doing a task manually, check this file to find an automation script",
+  "_updated": "2026-03-23",
+  "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
+  "_coverage": "81/81 scripts mapped",
 
   "tasks": {
     "commit code": {
       "script": "./scripts/ai_commit.sh \"message\"",
       "description": "Stage, commit, and push with all safety checks",
-      "context_docs": [
-        ".github/copilot-instructions.md",
-        "docs/contributing/git-workflow-ai-agents.md",
-        "docs/git-automation/README.md"
-      ],
+      "context_docs": [".github/copilot-instructions.md", "docs/git-automation/README.md"],
       "never_use": ["git add", "git commit", "git push"]
+    },
+    "push code": {
+      "script": "./scripts/safe_push.sh \"message\"",
+      "description": "Conflict-minimized push with parallel fetch, amend detection, and sync"
     },
     "move file": {
       "script": ".venv/bin/python scripts/safe_file_move.py old.md new.md",
-      "description": "Move file and update all internal links automatically",
-      "context_docs": [
-        "docs/guidelines/file-operations-safety-guide.md"
-      ],
+      "description": "Move file and update all internal links automatically (870+ links preserved)",
       "never_use": ["mv", "git mv"]
     },
     "delete file": {
       "script": ".venv/bin/python scripts/safe_file_delete.py file.md",
       "description": "Delete file after checking for references",
-      "context_docs": [
-        "docs/guidelines/file-operations-safety-guide.md"
-      ],
       "never_use": ["rm", "git rm"]
     },
     "create document": {
       "script": ".venv/bin/python scripts/create_doc.py path/file.md \"Title\"",
-      "description": "Create document with proper metadata headers",
-      "context_docs": [
-        "docs/guidelines/doc-naming-conventions.md",
-        "docs/guidelines/documentation-standard.md",
-        "docs/docs-canonical.json"
-      ],
-      "prereq": ".venv/bin/python scripts/check_doc_similarity.py \"topic\""
+      "description": "Create document with proper metadata headers"
     },
     "fix broken links": {
       "script": ".venv/bin/python scripts/check_links.py --fix",
-      "description": "Find and auto-fix broken internal links (supports --map for migration maps)",
-      "context_docs": [
-        "docs/reference/automation-catalog.md",
-        "docs/guidelines/documentation-standard.md"
-      ]
+      "description": "Find and auto-fix broken internal links in markdown files"
     },
     "check streamlit code": {
       "script": ".venv/bin/python scripts/check_streamlit.py --all-pages",
-      "description": "Detect runtime errors before they happen",
-      "context_docs": [
-        "docs/guidelines/streamlit-fragment-best-practices.md",
-        "docs/reference/streamlit-validation.md"
-      ]
+      "description": "Detect Streamlit runtime errors before they happen (fragments, session_state, imports)",
+      "options": {
+        "--all-pages": "Check every Streamlit page",
+        "--fragments": "Fragment-specific checks only",
+        "--fix": "Auto-fix safe issues"
+      }
     },
     "run tests": {
-      "script": ".venv/bin/python -m pytest Python/tests -q",
-      "description": "Run Python test suite",
-      "context_docs": [
-        "docs/contributing/testing-strategy.md"
-      ]
+      "script": "cd Python && .venv/bin/pytest tests/ -v",
+      "description": "Run Python test suite (85% coverage gate)"
+    },
+    "watch tests": {
+      "script": "./scripts/watch_tests.sh",
+      "description": "Run tests in watch mode — re-runs on file changes"
     },
     "format code": {
       "script": "cd Python && .venv/bin/python -m black . && .venv/bin/python -m ruff check --fix .",
-      "description": "Auto-format Python code"
+      "description": "Auto-format Python code with black + ruff"
     },
     "check folder structure": {
       "script": ".venv/bin/python scripts/check_governance.py --structure",
-      "description": "Validate project organization",
-      "context_docs": [
-        "docs/guidelines/folder-structure-governance.md"
-      ]
+      "description": "Validate project folder organization against governance rules"
+    },
+    "check governance": {
+      "script": ".venv/bin/python scripts/check_governance.py",
+      "description": "Run full governance check (folder structure + compliance)",
+      "options": {
+        "--structure": "Folder structure only",
+        "--compliance": "Compliance only",
+        "--json": "JSON output",
+        "--strict": "Fail on warnings"
+      }
+    },
+    "governance health score": {
+      "script": ".venv/bin/python scripts/governance_health_score.py",
+      "description": "Calculate overall governance health score with breakdown"
     },
     "generate audit report": {
       "script": ".venv/bin/python scripts/audit_readiness_report.py",
       "description": "Generate audit evidence bundle (NIST SSDF aligned)",
-      "context_docs": [
-        "docs/audit/audit-readiness.md",
-        "docs/audit/evidence-bundle-template.md",
-        "docs/research/automation-audit-readiness-research.md"
-      ],
       "options": {
         "--check-only": "Quick pass/fail for CI",
         "--json": "Export as JSON",
         "--export md": "Export as Markdown"
       }
     },
-    "check for duplicates": {
-      "script": ".venv/bin/python scripts/check_doc_similarity.py \"topic\"",
-      "description": "Find similar documents before creating new ones",
-      "context_docs": [
-        "docs/docs-canonical.json",
-        "docs/guidelines/doc-naming-conventions.md"
-      ]
+    "audit error handling": {
+      "script": ".venv/bin/python scripts/audit_error_handling.py",
+      "description": "Audit error handling compliance across structural_lib modules"
+    },
+    "audit input validation": {
+      "script": ".venv/bin/python scripts/audit_input_validation.py",
+      "description": "Audit input validation coverage for structural_lib"
     },
     "start session": {
       "script": "./scripts/agent_start.sh --quick",
-      "description": "Initialize agent environment (6 seconds)",
-      "context_docs": [
-        "docs/getting-started/agent-essentials.md",
-        "docs/getting-started/agent-bootstrap.md",
-        "docs/TASKS.md"
-      ]
+      "description": "Initialize agent environment — git config, venv, preflight, session start (6s)"
     },
     "end session": {
       "script": ".venv/bin/python scripts/session.py end",
-      "description": "Validate handoff and update session docs",
-      "context_docs": [
-        "docs/contributing/handoff.md",
-        "docs/SESSION_LOG.md",
-        "docs/planning/next-session-brief.md"
-      ]
+      "description": "Validate handoff and update session docs"
+    },
+    "session summary": {
+      "script": ".venv/bin/python scripts/session.py summary --write",
+      "description": "Auto-generate session summary from git log — detects new hooks, endpoints, components"
+    },
+    "sync doc numbers": {
+      "script": ".venv/bin/python scripts/sync_numbers.py --fix",
+      "description": "Scan codebase metrics and update stale counts across 5 doc files",
+      "options": {
+        "(no flag)": "Dry run — scan and report only",
+        "--fix": "Apply updates to files",
+        "--json": "Machine-readable output"
+      }
+    },
+    "session handoff": {
+      "script": ".venv/bin/python scripts/session.py handoff",
+      "description": "Write next-session-brief.md for the next agent"
+    },
+    "session check": {
+      "script": ".venv/bin/python scripts/session.py check",
+      "description": "Verify session docs are consistent and complete"
     },
     "check git state": {
-      "script": "./scripts/git_ops.sh --status",
-      "description": "Analyze git state and get recommendations"
+      "script": "./scripts/validate_git_state.sh",
+      "description": "Validate git state before any git operation"
     },
     "recover git": {
       "script": "./scripts/recover_git_state.sh",
-      "description": "Fix common git issues automatically"
+      "description": "Fix common git issues automatically (merge conflicts, detached HEAD, stale locks)"
     },
     "decide pr vs direct": {
       "script": "./scripts/should_use_pr.sh --explain",
-      "description": "Determine if PR is required for changes",
-      "context_docs": [
-        ".github/copilot-instructions.md",
-        "docs/contributing/git-workflow-ai-agents.md"
-      ]
+      "description": "Analyze staged changes and recommend PR vs direct commit"
     },
     "create pr branch": {
       "script": "./scripts/create_task_pr.sh TASK-XXX \"description\"",
-      "description": "Start PR workflow for production code"
+      "description": "Start PR workflow — create task branch and initial commit"
     },
     "finish pr": {
-      "script": "./scripts/finish_task_pr.sh TASK-XXX \"description\" --async",
-      "description": "Submit PR and trigger async merge"
+      "script": "./scripts/finish_task_pr.sh TASK-XXX \"description\"",
+      "description": "Submit PR and trigger merge"
     },
-    "check api docs": {
+    "check api signatures": {
       "script": ".venv/bin/python scripts/check_api.py --all",
-      "description": "Verify API documentation matches code (signatures, docs, sync)",
-      "context_docs": [
-        "docs/reference/api.md",
-        "docs/reference/api-stability.md",
-        "docs/guidelines/api-evolution-standard.md"
-      ]
+      "description": "Verify API documentation matches code (signatures, docs, sync)"
     },
-    "check governance": {
-      "script": ".venv/bin/python scripts/check_governance.py",
-      "description": "Run full governance check (folder structure + compliance)",
-      "context_docs": [
-        "docs/guidelines/folder-structure-governance.md"
-      ],
+    "discover api function": {
+      "script": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
+      "description": "Get exact parameter names and types for any structural_lib function",
       "options": {
-        "--structure": "Folder structure only",
-        "--compliance": "Compliance only",
-        "--full": "Both (default)",
-        "--json": "JSON output",
-        "--strict": "Fail on warnings"
-      }
+        "--all": "Show all API signatures",
+        "--filter <category>": "Filter by category (design, detail, geometry, etc.)"
+      },
+      "never_use": ["guess parameter names", "assume return types"]
     },
     "generate api manifest": {
       "script": ".venv/bin/python scripts/generate_api_manifest.py",
-      "description": "Regenerate API manifest after changes",
-      "context_docs": [
-        "docs/reference/api.md",
-        "docs/reference/api-stability.md",
-        "docs/guidelines/api-evolution-standard.md"
-      ]
+      "description": "Regenerate API manifest (public function inventory)"
     },
-    "validate doc metadata": {
-      "script": ".venv/bin/python scripts/check_doc_metadata.py",
-      "description": "Ensure all docs have proper metadata headers",
-      "context_docs": [
-        "docs/guidelines/documentation-standard.md",
-        "docs/guidelines/doc-naming-conventions.md"
-      ]
+    "check architecture boundaries": {
+      "script": ".venv/bin/python scripts/check_architecture_boundaries.py",
+      "description": "Enforce 4-layer architecture — core cannot import services/UI"
     },
-    "archive old files": {
-      "script": "./scripts/archive_old_files.sh",
-      "description": "Move files older than 90 days to archive",
-      "context_docs": [
-        "docs/guidelines/folder-cleanup-workflow.md",
-        "docs/guidelines/file-operations-safety-guide.md"
-      ]
+    "check circular imports": {
+      "script": ".venv/bin/python scripts/check_circular_imports.py",
+      "description": "Detect circular imports in the Streamlit application"
     },
-    "launch streamlit": {
-      "script": "./scripts/launch_streamlit.sh",
-      "description": "Start the Streamlit development server"
+    "check fastapi issues": {
+      "script": ".venv/bin/python scripts/check_fastapi_issues.py",
+      "description": "AST-scan for common FastAPI issues (missing types, wrong patterns)"
     },
-    "validate fastapi schema": {
-      "script": ".venv/bin/python scripts/validate_fastapi_schema.py",
-      "description": "Check all API functions are FastAPI-compatible for V3",
-      "context_docs": [
-        "docs/research/ai-workspace-expansion-v3.md",
-        "docs/research/v3-automation-foundation-research.md",
-        "docs/reference/api.md"
-      ],
-      "v3_critical": true
+    "check type annotations": {
+      "script": ".venv/bin/python scripts/check_type_annotations.py",
+      "description": "Check type annotation coverage in Streamlit application"
+    },
+    "check ui duplication": {
+      "script": ".venv/bin/python scripts/check_ui_duplication.py",
+      "description": "Scan for duplicated UI code across Streamlit pages"
+    },
+    "check performance issues": {
+      "script": ".venv/bin/python scripts/check_performance_issues.py",
+      "description": "Detect performance anti-patterns in Streamlit application"
+    },
+    "check cost optimizer": {
+      "script": ".venv/bin/python scripts/check_cost_optimizer_issues.py",
+      "description": "Detect common cost optimizer bugs and issues"
+    },
+    "check docs": {
+      "script": ".venv/bin/python scripts/check_docs.py",
+      "description": "Unified doc checker — index, links, metadata validation"
+    },
+    "validate imports": {
+      "script": ".venv/bin/python scripts/validate_imports.py",
+      "description": "Validate Python imports across the project (use after migrations)"
+    },
+    "validate api contracts": {
+      "script": ".venv/bin/python scripts/validate_api_contracts.py",
+      "description": "API contract testing — request/response schemas, status codes"
+    },
+    "validate schema snapshots": {
+      "script": ".venv/bin/python scripts/validate_schema_snapshots.py",
+      "description": "Validate OpenAPI schema snapshots haven't changed unexpectedly"
+    },
+    "validate streamlit session state": {
+      "script": ".venv/bin/python scripts/validate_session_state.py",
+      "description": "Audit st.session_state usage — uninitialized keys, missing defaults, type inconsistencies"
+    },
+    "check docker config": {
+      "script": ".venv/bin/python scripts/check_docker_config.py",
+      "description": "Validate Dockerfile and docker-compose configuration"
+    },
+    "check doc versions": {
+      "script": ".venv/bin/python scripts/check_doc_versions.py",
+      "description": "Detect stale library version references in docs (pre-commit hook)"
+    },
+    "check tasks format": {
+      "script": ".venv/bin/python scripts/check_tasks_format.py",
+      "description": "Validate TASKS.md structure and WIP rules"
+    },
+    "check python version": {
+      "script": ".venv/bin/python scripts/check_python_version.py",
+      "description": "Enforce consistent Python version strings across configs"
+    },
+    "check version consistency": {
+      "script": "./scripts/check_version_consistency.sh",
+      "description": "Verify version strings match across pyproject.toml, setup.cfg, etc."
+    },
+    "check wip limits": {
+      "script": "./scripts/check_wip_limits.sh",
+      "description": "Enforce WIP limits — max items in In Progress"
+    },
+    "check repo hygiene": {
+      "script": ".venv/bin/python scripts/check_repo_hygiene.py",
+      "description": "Fail if tracked hygiene artifacts exist (pre-commit hook)"
+    },
+    "check cli reference": {
+      "script": ".venv/bin/python scripts/check_cli_reference.py",
+      "description": "Ensure CLI reference doc includes all required commands"
+    },
+    "check scripts index": {
+      "script": ".venv/bin/python scripts/check_scripts_index.py",
+      "description": "Ensure scripts/index.json matches actual scripts folder contents"
+    },
+    "check next session brief": {
+      "script": ".venv/bin/python scripts/check_next_session_brief_length.py",
+      "description": "Ensure next-session-brief.md stays concise"
+    },
+    "check root file count": {
+      "script": "./scripts/check_root_file_count.sh",
+      "description": "Warn if too many files in project root (sprawl detection)"
+    },
+    "check merge state": {
+      "script": "./scripts/check_unfinished_merge.sh",
+      "description": "Check for unfinished merge before allowing commits (pre-commit hook)"
+    },
+    "check branch safety": {
+      "script": "./scripts/check_not_main.sh",
+      "description": "Guard — prevent accidental operations on main branch"
+    },
+    "migrate python module": {
+      "script": ".venv/bin/python scripts/migrate_python_module.py <src> <dst> --dry-run",
+      "description": "Move Python module to new location + update all imports automatically",
+      "never_use": ["mv", "manual find-and-replace imports"]
+    },
+    "migrate react component": {
+      "script": ".venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run",
+      "description": "Move React component to new feature-grouped folder + update imports",
+      "never_use": ["mv", "manual find-and-replace imports"]
+    },
+    "batch migration": {
+      "script": ".venv/bin/python scripts/batch_migrate_runner.py",
+      "description": "Run multiple migrations with per-operation rollback logs"
+    },
+    "bump version": {
+      "script": ".venv/bin/python scripts/bump_version.py",
+      "description": "Bump version in pyproject.toml (single source of truth)",
+      "options": {
+        "patch": "0.19.1 → 0.19.2",
+        "minor": "0.19.1 → 0.20.0",
+        "major": "0.19.1 → 1.0.0"
+      }
+    },
+    "release": {
+      "script": ".venv/bin/python scripts/release.py",
+      "description": "Unified release management — verify, tag, publish"
+    },
+    "benchmark api": {
+      "script": ".venv/bin/python scripts/benchmark_api.py",
+      "description": "API performance benchmark with latency measurements"
     },
     "test api parity": {
       "script": ".venv/bin/python scripts/test_api_parity.py",
-      "description": "Verify library and FastAPI return identical results",
-      "context_docs": [
-        "docs/research/ai-workspace-expansion-v3.md",
-        "docs/research/v3-automation-foundation-research.md"
-      ],
-      "v3_critical": true
+      "description": "Verify library and FastAPI return identical results"
     },
-    "benchmark api latency": {
-      "script": ".venv/bin/python scripts/benchmark_api_latency.py",
-      "description": "Benchmark API performance against V3 thresholds (<50ms)",
-      "context_docs": [
-        "docs/research/ai-workspace-expansion-v3.md",
-        "docs/research/v3-automation-foundation-research.md"
-      ],
-      "v3_critical": true
+    "test import 3d pipeline": {
+      "script": ".venv/bin/python scripts/test_import_3d_pipeline.py",
+      "description": "End-to-end test: CSV import → beam design → 3D geometry pipeline"
     },
-    "v3 readiness check": {
-      "script": ".venv/bin/python scripts/validate_fastapi_schema.py && .venv/bin/python scripts/test_api_parity.py && .venv/bin/python scripts/benchmark_api_latency.py",
-      "description": "Run all V3 validation scripts in sequence",
-      "context_docs": [
-        "docs/research/ai-workspace-expansion-v3.md",
-        "docs/research/v3-automation-foundation-research.md"
-      ],
-      "v3_critical": true
+    "test vba adapter": {
+      "script": ".venv/bin/python scripts/test_vba_adapter.py",
+      "description": "Test ETABSAdapter with actual VBA ETABS export data"
     },
-    "implement api wrapper": {
-      "prereq": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
-      "script": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
-      "description": "ALWAYS discover signatures BEFORE implementing API wrappers (FastAPI, etc.)",
-      "context_docs": [
-        "docs/reference/api.md",
-        "docs/research/api-integration-mistakes-analysis.md"
-      ],
-      "never_use": ["guess parameter names", "assume return types", "trial-and-error debugging"],
-      "v3_critical": true
+    "external cli test": {
+      "script": ".venv/bin/python scripts/external_cli_test.py",
+      "description": "External CLI smoke test (solution S-007)"
     },
-    "create fastapi endpoint": {
-      "prereq": ".venv/bin/python scripts/discover_api_signatures.py --filter <category>",
-      "script": ".venv/bin/python scripts/discover_api_signatures.py --all",
-      "description": "Discover ALL API signatures before creating FastAPI routes",
-      "context_docs": [
-        "docs/reference/api.md",
-        "docs/research/api-integration-mistakes-analysis.md"
-      ],
-      "never_use": ["guess parameter names", "assume return types"],
-      "v3_critical": true
+    "create test scaffold": {
+      "script": ".venv/bin/python scripts/create_test_scaffold.py <module>",
+      "description": "Generate test file scaffold for a module"
     },
-    "wrap library function": {
-      "prereq": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
-      "script": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
-      "description": "Discover signature before wrapping structural_lib functions",
-      "context_docs": [
-        "docs/reference/api.md",
-        "docs/research/api-integration-mistakes-analysis.md"
-      ],
-      "never_use": ["guess", "assume"]
+    "update test stats": {
+      "script": ".venv/bin/python scripts/update_test_stats.py",
+      "description": "Update test_stats.json with current test counts"
+    },
+    "generate folder index": {
+      "script": ".venv/bin/python scripts/generate_enhanced_index.py <folder>",
+      "description": "Generate index.json + index.md for any folder (AI context files)",
+      "options": {
+        "--all": "Regenerate all folder indexes"
+      }
+    },
+    "generate all indexes": {
+      "script": "./scripts/generate_all_indexes.sh",
+      "description": "Regenerate index.json + index.md for all research-relevant folders"
+    },
+    "generate docs index": {
+      "script": ".venv/bin/python scripts/generate_docs_index.py",
+      "description": "Generate machine-readable JSON index of documentation"
+    },
+    "generate client sdks": {
+      "script": ".venv/bin/python scripts/generate_client_sdks.py",
+      "description": "Generate TypeScript/Python client SDKs from FastAPI OpenAPI spec"
+    },
+    "generate streamlit page": {
+      "script": ".venv/bin/python scripts/generate_streamlit_page.py",
+      "description": "Scaffold a new Streamlit page with proper imports and patterns"
+    },
+    "launch streamlit": {
+      "script": "./scripts/launch_streamlit.sh",
+      "description": "Start the Streamlit development server with proper configuration"
+    },
+    "profile streamlit page": {
+      "script": ".venv/bin/python scripts/profile_streamlit_page.py",
+      "description": "Profile Streamlit page performance — render times, memory, etc."
+    },
+    "lint vba": {
+      "script": ".venv/bin/python scripts/lint_vba.py",
+      "description": "VBA syntax linting — validate before Excel import"
+    },
+    "run vba smoke tests": {
+      "script": ".venv/bin/python scripts/run_vba_smoke_tests.py",
+      "description": "Run VBA smoke tests via Excel automation (macOS)"
+    },
+    "render dxf": {
+      "script": ".venv/bin/python scripts/dxf_render.py",
+      "description": "Render DXF drawings to PNG or PDF using ezdxf + matplotlib"
+    },
+    "archive old files": {
+      "script": "./scripts/archive_old_files.sh",
+      "description": "Move files older than 90 days from docs/_active/ to _archive/"
+    },
+    "cleanup stale branches": {
+      "script": ".venv/bin/python scripts/cleanup_stale_branches.py",
+      "description": "Clean up stale remote branches that are already merged"
+    },
+    "collect diagnostics": {
+      "script": ".venv/bin/python scripts/collect_diagnostics.py",
+      "description": "Collect compact diagnostics bundle for debugging and support"
+    },
+    "collect metrics": {
+      "script": "./scripts/collect_metrics.sh",
+      "description": "Collect project metrics — test counts, coverage, complexity, sizes"
+    },
+    "install git hooks": {
+      "script": "./scripts/install_git_hooks.sh",
+      "description": "Install versioned git hooks via core.hooksPath"
+    },
+    "pre commit check": {
+      "script": "./scripts/pre_commit_check.sh",
+      "description": "Run pre-flight checks before committing"
+    },
+    "local ci": {
+      "script": "./scripts/ci_local.sh",
+      "description": "Run CI checks locally before pushing"
+    },
+    "repo health check": {
+      "script": "./scripts/repo_health_check.sh",
+      "description": "Quick overall repo health check"
+    },
+    "agent mistakes report": {
+      "script": "./scripts/agent_mistakes_report.sh",
+      "description": "Show common agent mistakes as a reminder at session start"
+    },
+    "find automation": {
+      "script": ".venv/bin/python scripts/find_automation.py \"task\"",
+      "description": "Search this automation-map to find the right script for a task",
+      "options": {
+        "--list": "List all task categories",
+        "--category <name>": "Show all tasks in a category",
+        "--json": "JSON output"
+      }
     }
   },
 
   "categories": {
     "git_workflow": [
-      "commit code",
-      "check git state",
-      "recover git",
-      "decide pr vs direct",
-      "create pr branch",
-      "finish pr"
+      "commit code", "push code", "check git state", "recover git",
+      "decide pr vs direct", "create pr branch", "finish pr",
+      "check merge state", "check branch safety"
     ],
     "file_operations": [
-      "move file",
-      "delete file",
-      "create document"
-    ],
-    "validation": [
-      "check streamlit code",
-      "check folder structure",
-      "check governance",
-      "check for duplicates",
-      "check api docs",
-      "validate doc metadata"
-    ],
-    "development": [
-      "run tests",
-      "format code",
-      "launch streamlit"
+      "move file", "delete file", "create document",
+      "migrate python module", "migrate react component", "batch migration"
     ],
     "session_management": [
-      "start session",
-      "end session"
+      "start session", "end session", "session summary",
+      "session handoff", "session check", "sync doc numbers"
+    ],
+    "code_validation": [
+      "check architecture boundaries", "check circular imports",
+      "check type annotations", "validate imports",
+      "check python version", "check performance issues"
+    ],
+    "api_tools": [
+      "check api signatures", "discover api function", "generate api manifest",
+      "validate api contracts", "validate schema snapshots",
+      "benchmark api", "test api parity"
+    ],
+    "streamlit_tools": [
+      "check streamlit code", "validate streamlit session state",
+      "check ui duplication", "check circular imports",
+      "generate streamlit page", "profile streamlit page", "launch streamlit"
+    ],
+    "fastapi_tools": [
+      "check fastapi issues", "check docker config",
+      "test api parity", "benchmark api"
+    ],
+    "doc_tools": [
+      "fix broken links", "check docs", "check doc versions",
+      "check tasks format", "check next session brief",
+      "check cli reference", "sync doc numbers"
+    ],
+    "governance": [
+      "check folder structure", "check governance", "governance health score",
+      "check repo hygiene", "check root file count",
+      "check wip limits", "check scripts index"
+    ],
+    "audit": [
+      "generate audit report", "audit error handling", "audit input validation"
+    ],
+    "testing": [
+      "run tests", "watch tests", "create test scaffold",
+      "update test stats", "external cli test",
+      "test import 3d pipeline", "test vba adapter"
+    ],
+    "generation": [
+      "generate folder index", "generate all indexes",
+      "generate docs index", "generate client sdks",
+      "generate streamlit page", "generate api manifest"
+    ],
+    "release": [
+      "bump version", "release", "check version consistency"
+    ],
+    "vba_excel": [
+      "lint vba", "run vba smoke tests", "test vba adapter"
     ],
     "maintenance": [
-      "fix broken links",
-      "archive old files",
-      "generate api manifest"
+      "archive old files", "cleanup stale branches",
+      "collect diagnostics", "collect metrics",
+      "install git hooks", "pre commit check", "local ci",
+      "repo health check", "format code"
     ],
-    "v3_migration": [
-      "validate fastapi schema",
-      "test api parity",
-      "benchmark api latency",
-      "v3 readiness check",
-      "implement api wrapper",
-      "create fastapi endpoint",
-      "wrap library function"
+    "discovery": [
+      "find automation", "discover api function",
+      "agent mistakes report", "collect diagnostics"
     ]
   }
 }

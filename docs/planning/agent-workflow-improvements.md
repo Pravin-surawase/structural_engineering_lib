@@ -5,7 +5,7 @@
 **Status:** Approved
 **Importance:** High
 **Created:** 2026-03-23
-**Last Updated:** 2026-03-23
+**Last Updated:** 2026-03-23 (Session 91 — Phase 2)
 
 ---
 
@@ -322,11 +322,16 @@ inconsistencies). It is NOT related to session document management. No action ne
 
 ### Consolidation Roadmap
 
-#### Phase 4a — Quick Wins (do now)
+#### Phase 4a — Quick Wins (done)
 
 - [x] Clean phantom references in `agent_start.sh` (7 dead refs → inlined)
+- [x] Verify `sync_numbers.py` covers `agent-bootstrap.md` (added 2 patterns)
+- [x] Complete `automation-map.json` — 20/81 → 81/81 scripts mapped (87 tasks, 16 categories)
+- [x] Add stale-number check to `ai_commit.sh` post-commit (non-blocking warning)
+- [x] Fix `sync_numbers.py --json` to include updates list (needed for ai_commit hook)
+- [x] Add `check_scripts_index.py` automation-map coverage check
+- [x] Fix `scripts/index.json` — add missing `sync_numbers.py`
 - [ ] Clarify `dxf_render.py` status (active vs deprecated)
-- [ ] Verify `sync_numbers.py` covers `agent-bootstrap.md` too
 
 #### Phase 4b — `_lib/` Migration (v0.20)
 
@@ -356,20 +361,26 @@ Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 ### Next Steps for "Simplify Agent Documentation Work"
 
 #### Already Done (Session 91)
-- [x] `sync_numbers.py` — auto-sync counts across 4 doc files
+- [x] `sync_numbers.py` — auto-sync counts across 5 doc files
 - [x] `session.py summary` — auto-generate session summary from git log
 - [x] `session.py sync` — convenience wrapper for sync_numbers
 - [x] Bootstrap docs updated with new session-end workflow
+- [x] Phantom cleanup in `agent_start.sh` — 7 dead refs inlined
+- [x] `automation-map.json` expanded — 20 → 87 tasks, 81/81 scripts covered
+- [x] `ai_commit.sh` post-commit stale-number warning
+- [x] `sync_numbers.py --json` now includes updates list
+- [x] `check_scripts_index.py` now also validates automation-map coverage
+- [x] `scripts/index.json` updated with sync_numbers.py
 
-#### Next Up (Session 92)
-- [ ] **Phantom cleanup** — remove 7 dead script references from `agent_start.sh`
-- [ ] **`validate_session_state.py` deprecation** — redirect to `session.py check`
-- [ ] **Inventory validation** — verify sync_numbers catches `agent-bootstrap.md` too
+#### Next Up (Session 92+)
 - [ ] **Session number auto-detect** — `summary --write` should pull session # from next-session-brief.md
-- [ ] **Run `sync_numbers.py` at commit time** — add `--quick` mode to ai_commit.sh post-commit hook
+- [ ] **Add `--when-to-use` to script docstrings** — standardize discoverability pattern
+- [ ] **`--dry-run` as universal default** — all mutating scripts require `--fix`/`--apply`
+- [ ] **Consistent `--json` output** — extend to all `check_*` scripts
 
 #### Future Sessions
 - [ ] Migrate 10 scripts to `_lib/` (Phase 4b)
 - [ ] Merge 3 audit scripts into `audit.py` (Phase 4c)
 - [ ] Add `sync_numbers` to GitHub Actions CI
 - [ ] Auto-detect when bootstrap docs need refresh (new hooks/routes added but docs not updated)
+- [ ] Script health check in CI (automation-map coverage, docstrings, exit codes)

@@ -150,6 +150,17 @@ echo -e "${YELLOW}→ Running safe_push.sh workflow...${NC}"
 if [[ $? -eq 0 ]]; then
     echo ""
     echo -e "${GREEN}✓ Successfully committed and pushed!${NC}"
+
+    # Post-commit: check if doc numbers are stale (non-blocking)
+    SYNC_SCRIPT="$PROJECT_ROOT/scripts/sync_numbers.py"
+    VENV_PYTHON="$PROJECT_ROOT/.venv/bin/python"
+    if [[ -f "$SYNC_SCRIPT" && -f "$VENV_PYTHON" ]]; then
+        STALE=$("$VENV_PYTHON" "$SYNC_SCRIPT" --json 2>/dev/null | "$VENV_PYTHON" -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('updates',[])))" 2>/dev/null || echo "0")
+        if [[ "$STALE" -gt 0 ]]; then
+            echo -e "  ${YELLOW}⚠${NC} $STALE doc number(s) are stale — run: .venv/bin/python scripts/sync_numbers.py --fix"
+        fi
+    fi
+
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 else
     echo ""

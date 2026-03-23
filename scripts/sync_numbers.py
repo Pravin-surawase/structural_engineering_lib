@@ -326,15 +326,25 @@ def main() -> int:
         description="Scan codebase and sync stale numbers across documentation files.",
     )
     parser.add_argument("--fix", action="store_true", help="Apply updates to files (default: dry run)")
-    parser.add_argument("--json", action="store_true", help="Output metrics as JSON")
+    parser.add_argument("--json", action="store_true", help="Output metrics and updates as JSON")
     args = parser.parse_args()
 
     # Scan
-    print("🔍 Scanning codebase...")
+    if not args.json:
+        print("🔍 Scanning codebase...")
     metrics = scan_all()
 
     if args.json:
-        print_json(metrics.as_dict())
+        updates = find_updates(metrics)
+        result = {
+            **metrics.as_dict(),
+            "updates": [
+                {"file": u.file_rel, "line": u.line_num, "metric": u.metric,
+                 "old": u.old_text, "new": u.new_text}
+                for u in updates
+            ],
+        }
+        print_json(result)
         return 0
 
     # Report
