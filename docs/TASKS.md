@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-28 (Session 81)
+**Updated:** 2026-03-23 (Session 91)
 
 ---
 
@@ -15,9 +15,9 @@
 
 ## Current Focus
 
-- **Version:** v0.19.0 ✅ RELEASED → v0.20 (V3 Foundation)
-- **Focus:** V3 Parity Complete — Library + FastAPI + React hooks ready
-- **Target:** March 2026 Launch → V3 React migration
+- **Version:** v0.19.1 ✅ Complete → v0.20 (V3 Foundation)
+- **Focus:** V3 React UI — all API + hooks ready, now wiring UX polish + REST fallback
+- **Target:** v0.20 — code-split bundles, SSE batch progress, REST fallback
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
@@ -28,36 +28,37 @@
 |---------|-------|--------|------------------|
 | **v0.18.1** | AI v2 Bugfix | ✅ DONE | PR #393 (CSV import fix) |
 | **v0.19.0** | Phase 4 + Launch | ✅ RELEASED | DXF polish, AI model fix, Streamlit API index |
-| **v0.19.1** | AI Tools + UX | 🚧 IN PROGRESS | DXF/report export fixes, manual export buttons |
-| **v0.20** | V3 Foundation | 📋 NEXT | Library API additions, V3 automation scripts |
+| **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
+| **v0.20** | V3 Foundation | 📋 NEXT | Code-splitting, SSE progress, REST fallback, governance |
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
 
 ---
 
-## Completed This Session (Session 81)
+## Completed Last Sessions (Sessions 81–90)
 
 | Task | Status | PR |
 |------|--------|-----|
-| **TASK-INSIGHTS:** Add insights endpoints + React hooks | ✅ Done | PR #420 |
-| Create dashboard.py (generate_dashboard, code_checks_live, suggest_rebar_options) | ✅ Done | PR #420 |
-| Create fastapi_app/routers/insights.py (3 endpoints) | ✅ Done | PR #420 |
-| Create useInsights.ts (useDashboardInsights, useCodeChecks, useRebarSuggestions) | ✅ Done | PR #420 |
-| Create useGeometryAdvanced.ts (useBuildingGeometry, useCrossSectionGeometry) | ✅ Done | PR #420 |
-| Create useRebarEditor.ts (useRebarValidation, useRebarApply) | ✅ Done | PR #420 |
-| Fix ruff UP035/UP037/I001 errors | ✅ Done | PR #420 |
-| Fix mypy type errors (type: ignore comments) | ✅ Done | PR #420 |
+| Wire dashboard insights into React DashboardPage | ✅ Done | PR #431 |
+| Add live code check badges to DesignView (CodeChecksPanel) | ✅ Done | PR #431 |
+| Add rebar suggestion panels to DesignView (RebarSuggestionsPanel) | ✅ Done | PR #431 |
+| Create ExportPanel (BBS CSV / DXF / HTML report) | ✅ Done | PR #432 |
+| Add 4-layer governance lock + migration gates | ✅ Done | PR #430 |
+| Scripts consolidation Phase 1 + Phase 2 (79 active scripts) | ✅ Done | PR #428, #429 |
+| Create _lib/output.py + _lib/ast_helpers.py (Phase 3) | ✅ Done | `c80f454` |
+| Fix 280+ stale doc references across 45+ files | ✅ Done | `6a5ee84` |
 
 ## Active
 
-- None active (previously cleared)
+- None active
 
-## Up Next
+## Up Next (v0.20 Sprint)
 
-- Wire dashboard insights into React Dashboard component
-- Add live code check badges to DesignView
-- Add rebar suggestion "Apply" buttons
-- Create export panel (BBS/DXF/CSV)
-- Add SSE batch progress UI for batch design
+- **Code-split Three.js + react-three-fiber** — `index.js` chunk is 1.16 MB (above 500 kB advisory)
+- **Add REST fallback when WebSocket unavailable** — `DesignView` currently requires WS
+- **Add SSE batch progress UI** — `streaming.py` router exists, needs React consumer
+- **Test e2e with Docker + React** — verify all 13 routers respond correctly end-to-end
+- **Update OpenAPI snapshot** (`openapi_baseline.json`) to reflect current 13 routers
+- **Scripts Phase 3 completion** — migrate 10 more scripts to use `_lib/utils.py`
 - Add REST fallback when WebSocket is unavailable (DesignView)
 
 ---

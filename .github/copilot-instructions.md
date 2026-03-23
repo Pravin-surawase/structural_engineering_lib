@@ -8,25 +8,28 @@ Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
 Manual git causes 10-30min conflicts. The script handles staging, hooks, pull, and push.
 
-## Architecture (3 layers — never mix)
+## Architecture (4 layers — STRICT, never mix)
 
-- **Core** (`codes/is456/`) — Pure math, NO I/O, explicit units (mm, N/mm2, kN, kNm)
-- **App** (`api.py`, `beam_pipeline.py`) — Orchestration
+- **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
+- **IS 456 Code** (`Python/structural_lib/codes/is456/`) — Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm)
+- **Services** (`Python/structural_lib/services/`) — Orchestration: `api.py`, `adapters.py`, `beam_pipeline.py`
 - **UI/IO** (`react_app/`, `streamlit_app/`, `fastapi_app/`) — Interfaces
 
-Core CANNOT import from App or UI.
+> `Python/structural_lib/api.py` is a **backward-compat stub** — real code is in `services/api.py`.
+
+Core CANNOT import from Services or UI.
 
 ## IMPORTANT: Search before coding
 
 Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
-ls react_app/src/hooks/                                    # React hooks
-grep -r "@router" fastapi_app/routers/ | head -20          # FastAPI routes
-grep -r "^def " Python/structural_lib/api.py | head -20    # Library functions
-.venv/bin/python scripts/discover_api_signatures.py <func> # Exact param names
+ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
+grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes (13 routers)
+grep "^def " Python/structural_lib/services/api.py | head -20   # 29 public library functions
+.venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names
 ```
 
-Key patterns: CSV → `useCSVFileImport`, 3D geometry → `useBeamGeometry`, adapters → `GenericCSVAdapter`.
+Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | adapters → `GenericCSVAdapter` | export → `useExport`.
 
 ## Commands
 
@@ -66,7 +69,7 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 
 - Read targeted file sections (use offset/limit) instead of full large files
 - Use `grep_search` to find relevant lines before reading entire files
-- Large files to read selectively: SESSION_LOG.md (400KB), CHANGELOG.md (52KB), adapters.py (71KB)
+- Large files to read selectively: SESSION_LOG.md (400KB), CHANGELOG.md (52KB), services/adapters.py (71KB)
 
 ## Key References
 

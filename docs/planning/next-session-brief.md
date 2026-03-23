@@ -5,23 +5,57 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-02-11
+**Last Updated:** 2026-03-23
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-02-11
-- Focus: Session 90 — Scripts consolidation Phase 2 complete (PR #429 merged), 280+ stale doc refs fixed across 45+ files, scripts-improvement-research.md updated
+- Date: 2026-03-23
+- Focus: Session 91 — Bootstrap overhaul (architecture docs updated to 4-layer, API paths corrected, hooks/routes/components tables updated, TASKS.md refreshed, next-session-brief updated)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.19.0 | ✅ Released |
-| **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
+| **Current** | v0.19.1 | ✅ Shipped (dashboard insights, ExportPanel, code checks wired) |
+| **Next** | v0.20.0 | 📋 V3 Foundation (code-splitting, SSE progress, REST fallback) |
 
-**Last Session:** Session 90 | **Focus:** Phase 2 doc cleanup + scripts-improvement-research update
+**Last Session:** Session 91 | **Focus:** Bootstrap overhaul — docs brought in sync with actual codebase
+
+---
+
+## ✅ Session 91 Summary (Mar 23, 2026)
+
+### Completed This Session
+
+**Bootstrap overhaul — all major context docs updated:**
+1. **CLAUDE.md** — Fixed architecture (3→4 layer), fixed `api.py` path stub note, corrected `services/api.py` grep, updated function count (29), added `useExport` / `useDesignWebSocket`, added 13 FastAPI router note
+2. **.github/copilot-instructions.md** — Same fixes applied
+3. **docs/getting-started/agent-bootstrap.md** — Major refresh:
+   - Section 3: 3-layer → 4-layer architecture table with correct paths
+   - Section 4 hooks: Added `useExport`, `useDesignWebSocket`, `useInsights` variants, `useCodeChecks`, `useRebarSuggestions`
+   - Section 4 components: Added `DashboardPage`, `ExportPanel`, `CommandPalette`
+   - Section 4 FastAPI: Added all 13 routers (analysis, detailing, insights, optimization, rebar, export, streaming)
+   - Section 4 Library: Fixed paths (`services/api.py`, `services/adapters.py`, `visualization/geometry_3d.py`), corrected function count (29)
+   - Section 4 State stores: Added `useUIStore`
+   - Section 9 mistakes: Added wrong-path traps for stub `api.py` and module paths
+4. **docs/TASKS.md** — Updated to Session 91, marked v0.19.1 complete, moved all done items to history, added v0.20 sprint items
+5. **docs/planning/next-session-brief.md** — Updated handoff entry
+
+### Session Gap Note (Feb 11 → Mar 23, 2026)
+No sessions logged between Session 90 and Session 91. Codebase state during this gap (from git log):
+- `feat(export)`: ExportPanel added with BBS/DXF/report downloads (commit `5a53015`)
+- `feat(react)`: Dashboard insights, code checks, rebar suggestions wired (`a8e2fe6`)
+- `feat`: 4-layer governance lock + migration tests (`c1b487e`, `6b2ebd0`, `dfd53e6`)
+- `refactor`: Scripts _lib/output.py + _lib/ast_helpers.py Phase 3 (`c80f454`)
+
+### Next Priorities (v0.20 Sprint)
+1. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
+2. **REST fallback in DesignView** — when WebSocket is unavailable
+3. **SSE batch progress UI** — streaming.py router exists, needs React consumer
+4. **e2e Docker + React test** — verify all 13 routers end-to-end
+5. **Update openapi_baseline.json** — snapshot now stale
 
 ---
 

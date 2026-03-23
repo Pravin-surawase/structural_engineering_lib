@@ -34,15 +34,19 @@ React 19 + R3F + Tailwind  ──HTTP/WS──>  FastAPI  ──Python──>  s
    react_app/                              fastapi_app/           Python/structural_lib/
 ```
 
-### 3-Layer Rule (never mix)
+### 4-Layer Rule (STRICT, never mix)
 
 | Layer | Location | Rule |
 |-------|----------|------|
-| **Core** | `codes/is456/flexure.py`, `shear.py`, `detailing.py` | Pure math, NO I/O, explicit units (mm, N/mm2, kN, kNm) |
-| **App** | `api.py`, `beam_pipeline.py`, `job_runner.py` | Orchestration, no formatting |
-| **UI/IO** | `react_app/`, `streamlit_app/`, `fastapi_app/`, `dxf_export.py` | External interfaces only |
+| **Core types** | `Python/structural_lib/core/` | Base classes, types, constants — no IS 456 math |
+| **IS 456 Code** | `codes/is456/flexure.py`, `shear.py`, `detailing.py` | Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm) |
+| **Services** | `services/api.py`, `services/adapters.py`, `services/beam_pipeline.py` | Orchestration, no formatting |
+| **UI/IO** | `react_app/`, `streamlit_app/`, `fastapi_app/`, `visualization/` | External interfaces only |
 
-Core CANNOT import from App or UI. Units always explicit.
+> `Python/structural_lib/api.py` is a **backward-compat stub** — real code is in `services/api.py`.
+> `adapters.py` → `services/adapters.py` | `geometry_3d.py` → `visualization/geometry_3d.py`
+
+Core CANNOT import from Services or UI. Services CANNOT import from UI. Units always explicit.
 
 ---
 
@@ -61,6 +65,11 @@ Core CANNOT import from App or UI. Units always explicit.
 | `useBuildingGeometry` | Building 3D geometry | `useGeometryAdvanced.ts` |
 | `useCrossSectionGeometry` | Cross-section visualization | `useGeometryAdvanced.ts` |
 | `useRebarValidation` | Rebar edit validation | `useRebarEditor.ts` |
+| `useExportBBS` / `useExportDXF` / `useExportReport` | File downloads (BBS CSV, DXF, HTML report) | `useExport.ts` |
+| `useDashboardInsights` | Batch analytics (pass/fail, utilization) | `useInsights.ts` |
+| `useCodeChecks` | Live IS 456 clause check badges | `useInsights.ts` |
+| `useRebarSuggestions` | AI rebar suggestion options | `useInsights.ts` |
+| `useDesignWebSocket` | Low-level WebSocket connection | `useDesignWebSocket.ts` |
 
 ### React Components (`react_app/src/components/`)
 
@@ -68,33 +77,48 @@ Core CANNOT import from App or UI. Units always explicit.
 |-----------|---------|
 | `Viewport3D` | 3D beam/building visualization (R3F) |
 | `BuildingEditorPage` | AG Grid beam editor |
-| `DesignView` | Single beam design page |
+| `DesignView` | Single beam design page (live 3D + code checks + rebar suggestions) |
+| `DashboardPage` | Batch design analytics (pass/fail, utilization, stories) |
 | `ImportView` | CSV/JSON import UI |
+| `ExportPanel` | BBS CSV / DXF / HTML report download buttons |
 | `FileDropZone` | Drag-drop CSV upload |
+| `CommandPalette` | Global keyboard-driven command palette |
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
 | Endpoint | Purpose |
 |----------|---------|
+| `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
+| `POST /api/v1/detailing/beam` | Rebar detailing for a beam |
+| `POST /api/v1/analysis/*` | Bending moment / shear force analysis |
 | `POST /api/v1/import/csv` | CSV parsing with adapters (40+ column mappings) |
 | `POST /api/v1/import/dual-csv` | ETABS dual CSV import |
 | `POST /api/v1/import/batch-design` | Batch design all beams |
+| `GET  /api/v1/import/sample` | Sample data for testing |
 | `POST /api/v1/geometry/beam/full` | 3D rebar/stirrup positions |
-| `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
+| `POST /api/v1/insights/dashboard` | Batch analytics (pass rate, utilization) |
+| `POST /api/v1/insights/code-checks` | Live IS 456 clause checks |
+| `POST /api/v1/insights/rebar-suggest` | AI rebar suggestions |
+| `POST /api/v1/optimization/*` | Cost-optimized beam cross-sections |
+| `POST /api/v1/rebar/*` | Rebar editing & validation |
+| `POST /api/v1/export/bbs` | BBS CSV download |
+| `POST /api/v1/export/dxf` | DXF drawing download |
+| `POST /api/v1/export/report` | HTML report download |
 | `/ws/design/{session}` | Live WebSocket updates |
-| `GET /api/v1/import/sample` | Sample data for testing |
+| `GET  /health` | Health check |
 
 ### Library (`Python/structural_lib/`)
 
 | Module | Key Functions |
 |--------|---------------|
-| `api.py` | `design_beam_is456()`, `detail_beam_is456()` — 43 public functions |
-| `adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
-| `geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
-| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py` — IS 456:2000 code |
-| `bbs.py` | Bar bending schedule generation |
-| `dxf_export.py` | DXF drawing export |
-| `insights/` | Smart designer, suggestions, sensitivity analysis |
+| `services/api.py` | 29 public functions — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
+| `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
+| `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
+| `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
+| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py` — IS 456:2000 |
+| `services/bbs.py` | Bar bending schedule generation |
+| `services/dxf_export.py` | DXF drawing export |
+| `insights/` | `smart_designer.py`, `design_suggestions.py`, `sensitivity.py`, `cost_optimization.py` |
 
 ### State Stores (`react_app/src/store/`)
 
@@ -102,12 +126,13 @@ Core CANNOT import from App or UI. Units always explicit.
 |-------|---------|
 | `useDesignStore` | Single beam design inputs/results |
 | `useImportedBeamsStore` | Imported CSV beams + selection |
+| `useUIStore` | UI state (panels, visibility) |
 
 **Quick check before coding:**
 ```bash
-ls react_app/src/hooks/                              # React hooks
-grep -r "@router" fastapi_app/routers/ | head -20    # FastAPI routes
-grep -r "^def " Python/structural_lib/api.py | head -20  # Library functions
+ls react_app/src/hooks/                                         # React hooks
+grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes
+grep "^def " Python/structural_lib/services/api.py | head -20   # Library functions
 ```
 
 ---
@@ -123,7 +148,7 @@ docker compose up --build                            # http://localhost:8000/doc
 docker compose -f docker-compose.dev.yml up          # Dev with hot reload
 
 # React frontend
-cd react_app && npm install && npm run dev           # http://localhost:5173
+cd react_app && npm run dev                          # http://localhost:5173
 
 # Python tests (CI requires 85% branch coverage)
 cd Python && .venv/bin/pytest tests/ -v
@@ -214,10 +239,12 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 | Manual git commands | 10-30min conflicts | `ai_commit.sh` |
 | Duplicate React code | Broken features, bugs | Check `hooks/` and `components/` first |
 | Guess API params (`width` vs `b_mm`) | Failed tests | `discover_api_signatures.py` |
+| Import from stub `api.py` | Stale code path | Use `services/api.py` directly |
+| Wrong module path (`adapters.py`) | Import error | `services/adapters.py` / `visualization/geometry_3d.py` |
 | Manual file move/delete | 870+ broken links | `safe_file_move.py` / `safe_file_delete.py` |
 | Skip validation | Runtime errors | Run tests + `check_*` scripts |
 | Create duplicate docs | Clutter, confusion | Check `docs-canonical.json` first |
-| Mix architecture layers | Import errors | Core cannot import App or UI |
+| Mix architecture layers | Import errors | Core → IS456 → Services → UI (one direction only) |
 | Use `python` directly | Wrong env, missing deps | Always use `.venv/bin/python` |
 | Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
 
