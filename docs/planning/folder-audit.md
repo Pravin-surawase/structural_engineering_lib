@@ -1711,21 +1711,30 @@ For each folder audited, record:
 | Consolidated hook directories | `scripts/hooks/commit-msg` → `scripts/git-hooks/commit-msg` |
 | Generated 42+ folder index files | `index.json` + `index.md` via `generate_enhanced_index.py` |
 | Added agent docs cross-references | `agents/README.md` |
+| Fixed 2 broken links (Viewport3D, worktree_manager) | `next-session-brief.md`, `agent-8-multi-agent-coordination.md` |
+| Filled 3 empty SESSION_LOG entries | `docs/SESSION_LOG.md` — auto-generated via `session.py summary` |
+| Added JWT startup warning for default secrets | `fastapi_app/auth.py` + `docker-compose.yml` comment |
+| Synced React package.json version to 0.19.0 | `react_app/package.json` |
+| Repaired all 13 broken internal links | Via `check_links.py --fix` + manual fixes (now 0 broken) |
 
 ### Repository Metrics (Post-Audit + Fixes)
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Total tracked files | ~3,719 | ~1,878 |
+| Total tracked files | ~5,400 | ~3,638 |
 | Corrupt files | 2 | 0 |
 | Duplicate notebooks | 1 | 0 |
-| Architecture violations | 2+ RED | 0 RED |
+| Architecture violations | 12+ RED | 0 RED |
 | Vendor bloat in tracking | 30MB (1760 files) | 0 (gitignored) |
 | Missing test READMEs | 4 | 1 (Python/tests/ already had one) |
 | README coverage | 13/17 top-level | 14/17 top-level |
 | Stale _active/ docs | 3 | 0 |
 | Hook directories | 2 (split) | 1 (consolidated) |
 | Folders with index.json | ~22 | ~42+ |
+| Broken internal links | 13 | 0 |
+| Empty SESSION_LOG entries | 3 | 0 |
+| JWT startup warning | None | Warns on default secret |
+| React version sync | 0.0.0 (dummy) | 0.19.0 (matches Python) |
 
 ---
 
@@ -1746,6 +1755,8 @@ All workflow tooling is green as of Session 91:
 - [ ] Add `sync_numbers` to GitHub Actions CI
 
 ### Deferred Items (Needs Dedicated PR)
-- [ ] **Split `ai_workspace.py`** (5103 lines, ~40 functions) — 7 logical modules: state mgmt, data import, beam design, 3D viz, rebar optimization, dashboard, unified editor
+- [ ] **Split `ai_workspace.py`** (5103 lines, 39 functions) — 6 modules: `workspace_state.py`, `data_import.py`, `design_engine.py`, `exporters.py`, `ui_panels.py`, `ui_helpers.py`
 - [ ] **Git history cleanup** — `git filter-branch` or BFG to purge vendor CHM from history (still 30MB in history even though untracked). Optional: only matters if repo size is a concern
 - [ ] **Blog-drafts → publications** — Consolidate `docs/blog-drafts/` into `docs/publications/blog-posts/` pipeline
+- [ ] **React test infrastructure** — Zero test files in `react_app/`. Add Vitest + core hook/component tests (~30 files needed for CI parity)
+- [ ] **5 TODO/FIXME items** — Low priority: `beam_design.py:84` (Phase 2), `bbs_generator.py:140,442` (BBS parse/manual), `validation.py:61` (material checks), `ModernAppLayout.tsx:28` (settings panel)

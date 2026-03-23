@@ -4,10 +4,37 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-03-23 — Session
+## 2026-03-24 — Session
 
 ### Summary
--
+**20 commits**, **187 files changed**
+
+**Chores:**
+- update OpenAPI baseline after schema drift
+
+**Documentation:**
+- complete folder audit batches 9-11 — archive, reference, agents (all 11 batches done)
+- folder audit batches 6-8 — tests, active docs, and research
+- folder audit batches 4-5 — Excel/VBA and scripts deep dive
+- folder audit batches 2-3 — Python core and UI layers
+- create folder audit plan with batch 1 results
+- ... and 4 more
+
+**Features:**
+- add OpenAPI snapshot test, post-move link check, TASKS archival, index hash watermarks
+- complete when-to-use docstrings (59/59), add --json to check_scripts_index, migrate 5 scripts to _lib
+- add when-to-use docstrings, session auto-detect, bootstrap freshness checker
+- complete automation-map (81/81 scripts), post-commit stale check, enhanced script index
+- add sync_numbers.py + session.py summary/sync — simplify agent doc workflow
+
+**Bug Fixes:**
+- repair 11 broken links after file moves
+- deep audit — vendor CHM, arch violations, indexes
+- implement audit findings — remove bloat, fix violations, add 9 READMEs
+- ai_commit.sh post-commit link check syntax error
+
+**Refactoring:**
+- clean phantom script refs + expand sync_numbers + scripts plan
 
 ### PRs Merged
 | PR | Summary |
@@ -21,37 +48,19 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 -
 
 
-## 2026-03-21 — Session
+## 2026-03-23 — Session (gap: no summary recorded)
 
-### Summary
--
-
-### PRs Merged
-| PR | Summary |
-|----|---------|
-| #XX | - |
-
-### Key Deliverables
--
-
-### Notes
--
+Work from this date was captured in the 2026-03-24 Session 91 entry above.
 
 
-## 2026-02-10 — Session
+## 2026-03-21 — Session (gap: no summary recorded)
 
-### Summary
--
+No session data captured. Work may be included in adjacent entries.
 
-### PRs Merged
-| PR | Summary |
-|----|---------|
-| #XX | - |
 
-### Key Deliverables
--
+## 2026-02-10 — Session (gap: no summary recorded)
 
-### Notes
+No session data captured. Work may be included in adjacent entries.
 -
 
 

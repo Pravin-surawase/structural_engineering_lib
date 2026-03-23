@@ -12,8 +12,7 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-23
-- Focus: Session 91 — Bootstrap overhaul + cleanup (4-layer arch, all 35 API endpoints documented, 19 hooks inventoried, TASKS.md trimmed 308→81 lines, old sessions archived)
+- Date: 2026-03-24
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -128,7 +127,7 @@ No sessions logged between Session 90 and Session 91. Codebase state during this
 | #422 | 3D viewport centering and camera control fixes | ✅ MERGED (1m 42s CI) |
 
 ### Files Changed
-- `react_app/src/components/Viewport3D.tsx` — Beam centering + camera control fix
+- `react_app/src/components/viewport/Viewport3D.tsx` — Beam centering + camera control fix
 - `react_app/src/components/pages/BuildingEditorPage.tsx` — Cell edit state fix
 - `docs/getting-started/agent-bootstrap.md` — Updated V3 infrastructure table
 - `docs/getting-started/agent-essentials.md` — Enhanced React hooks/components tables
@@ -372,5 +371,5 @@ cd react_app && npm run build
 | Session history | [docs/SESSION_LOG.md](../SESSION_LOG.md) |
 | **V3 Roadmap** | [docs/planning/8-week-development-plan.md](8-week-development-plan.md) |
 | **Agent essentials** | [docs/getting-started/agent-essentials.md](../getting-started/agent-essentials.md) |
-| 3D visualization | [react_app/src/components/Viewport3D.tsx](../../react_app/src/components/Viewport3D.tsx) |
+| 3D visualization | [react_app/src/components/viewport/Viewport3D.tsx](../../react_app/src/components/viewport/Viewport3D.tsx) |
 | API hooks | [react_app/src/hooks/](../../react_app/src/hooks/) |

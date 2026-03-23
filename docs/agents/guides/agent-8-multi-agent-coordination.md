@@ -317,7 +317,7 @@ git log origin/main..HEAD
 ## References
 
 - [Background Agent Guide](../../contributing/background-agent-guide.md)
-- [Worktree Manager](../../../scripts/worktree_manager.sh)
+- [Worktree Manager](../../../scripts/_archive/worktree_manager.sh)
 - [Agent 8 Week 1 Handoff](../../_archive/planning-completed-2026-01/agent8-week1-handoff.md)
 - [Git Workflow for AI Agents](../../contributing/git-workflow-ai-agents.md)
 
