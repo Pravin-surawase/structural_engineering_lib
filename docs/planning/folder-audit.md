@@ -30,10 +30,10 @@ Systematic audit of every folder and subfolder in the repository to:
 | 2 | `react_app/` | 79 | Yes | Partial (3) | Batch 3 ✅ |
 | 3 | `fastapi_app/` | 35 | No | No | Batch 3 ✅ |
 | 4 | `streamlit_app/` | 249 | Yes | No | Batch 3 ✅ |
-| 5 | `scripts/` | 191 | Yes | Yes | — |
+| 5 | `scripts/` | 191 | Yes | Yes | Batch 5 ✅ |
 | 6 | `docs/` | 2504 | Yes | Yes | — |
-| 7 | `Excel/` | 12 | Yes | No | — |
-| 8 | `VBA/` | 85 | Yes | No | — |
+| 7 | `Excel/` | 12 | Yes | No | Batch 4 ✅ |
+| 8 | `VBA/` | 85 | Yes | No | Batch 4 ✅ |
 | 9 | `agents/` | 39 | Yes | Yes | — |
 | 10 | `clients/` | 5 | No | No | Batch 1 ✅ |
 | 11 | `tests/` | 26 | No | No | — |
@@ -105,13 +105,15 @@ Realistic plan — one batch per session, prioritized by impact.
 **Goal:** Component inventory, dead route detection, hook/component coverage
 **Completed:** Session 91
 
-### Batch 4: Excel & VBA
+### Batch 4: Excel & VBA ✅
 **Scope:** `Excel/`, `VBA/` (all subfolders)
 **Goal:** Document workbook/module inventory, check Python parity
+**Completed:** Session 91
 
-### Batch 5: Scripts Deep Dive
+### Batch 5: Scripts Deep Dive ✅
 **Scope:** `scripts/` (tiers, _lib, _archive, git-hooks)
 **Goal:** Verify tier classification, find unused scripts, check _archive relevance
+**Completed:** Session 91
 
 ### Batch 6: Tests
 **Scope:** `Python/tests/`, `tests/`, `fastapi_app/tests/`, `streamlit_app/tests/`
@@ -523,6 +525,214 @@ For each folder audited, record:
   - [ ] 37 utils files is large — some may be consolidatable (e.g., 3 separate plotly-related utils)
   - [ ] `utils/api_wrapper.py` has RED architecture violation (imports codes/is456 directly)
   - [ ] No index.json anywhere in streamlit_app/
+
+### Batch 4 — Excel & VBA (Session 91)
+
+#### `Excel/`
+
+- **Purpose:** Excel-facing deliverables — workbooks, add-in, templates, snapshots
+- **Files:** 12 files (4 workbooks, 1 add-in, 3 docs, 2 templates, 1 snapshot CSV, 1 README)
+- **README:** Yes — clear and accurate
+- **index.json:** No
+- **Owner:** Maintainers
+
+**Workbooks:**
+
+| File | Size | Purpose |
+|------|-----:|---------|
+| BeamDesignApp.xlsm | 100 KB | App-style workbook for beam design flows |
+| StructEngLib.xlam | 85 KB | User-facing add-in (intentionally versioned) |
+| BEAM_IS456_CORE.xlsm | 22 KB | Core macro-enabled prototype |
+| BEAM_IS456_CORE.xlsx | — | Macro-free variant |
+| StructEng_BeamDesign_v0.5.xlsm | 18 KB | v0.5 milestone workbook |
+
+**Subfolders:**
+
+- `Templates/` — 2 files: `BeamDesignSchedule_vba.bas` (618 lines batch design VBA), README. Planned: QuickDesignSheet, ComplianceReport
+- `snapshots/` — 1 file: `baseline_beam_design_v0.9.1.csv` (regression baseline), README
+- `DevTemplate_Instructions.md` — 265-line developer template guide
+
+- **Issues:**
+  - [ ] 3 `.xlsm` workbooks — unclear which is the "current" primary. README lists all but doesn't indicate which to use
+  - [ ] Templates/ has only 1 of 3 planned templates (Phase 1 incomplete)
+  - [ ] No index.json for agent discovery
+  - [ ] Snapshot is v0.9.1 — current version is v0.19.0, snapshot may be very outdated
+
+#### `VBA/`
+
+- **Purpose:** VBA implementation of IS 456:2000 beam design for Excel
+- **Files:** 85 files across 6 subfolders + 2 top-level docs
+- **README:** Yes — comprehensive (131 lines, includes module table, Mac safety guide, testing instructions)
+- **index.json:** No
+- **Owner:** Maintainers
+- **Total VBA code lines:** ~13,400 (modules + ETABS + legacy + tests)
+
+**Modules/ (20 files, ~5,146 lines) — Core calculation modules:**
+
+| Module | Lines | Purpose |
+|--------|------:|---------|
+| M16_DXF.bas | 1329 | DXF drawing export |
+| M15_Detailing.bas | 679 | Reinforcement detailing + anchorage |
+| M06_Flexure.bas | 492 | Flexural design |
+| M18_BBS.bas | 453 | Bar Bending Schedule |
+| M13_Integration.bas | 412 | Integration layer |
+| M09_UDFs.bas | 399 | Excel User Defined Functions |
+| M17_Serviceability.bas | 387 | Deflection, cracking, slenderness |
+| M19_Compliance.bas | 384 | IS 456 compliance checks |
+| M14_Reporting.bas | 273 | Report generation |
+| M11_AppLayer.bas | 243 | Application layer |
+| M99_Setup.bas | 217 | Setup/installation |
+| M02_Types.bas | 213 | User-defined types |
+| M03_Tables.bas | 137 | IS 456 table lookups |
+| M07_Shear.bas | 115 | Shear design |
+| M05_Materials.bas | 114 | Material properties |
+| M10_Ductile.bas | 107 | IS 13920 ductile detailing |
+| M08_API.bas | 68 | Public API functions |
+| M12_UI.bas | 66 | UI helpers |
+| M01_Constants.bas | 29 | Constants |
+| M04_Utilities.bas | 29 | Utility helpers |
+
+**Tests/ (11 files, ~3,010 lines):**
+
+| Test | Lines | Scope |
+|------|------:|-------|
+| Test_DXF.bas | 493 | DXF export |
+| Test_Structural.bas | 484 | Core structural calcs |
+| Test_Parity.bas | 384 | Python-VBA parity checks |
+| Test_Detailing.bas | 304 | Detailing functions |
+| Test_BBS.bas | 297 | Bar Bending Schedule |
+| Test_Compliance.bas | 251 | Compliance checks |
+| Test_RunAll.bas | 245 | Test runner |
+| Test_Flanged.bas | 189 | Flanged beam calcs |
+| Integration_TestHarness.bas | 127 | Integration tests |
+| Test_Serviceability.bas | 125 | Serviceability |
+| Test_Ductile.bas | 111 | Ductile detailing |
+
+**ETABS_Export/ (10 files, ~1,740 lines):** v1 ETABS data export modules
+**ETABS_Export_v2/ (30 files):** v2 ETABS export with production, config, one-click. Includes:
+- 6 active `.bas` files (~2,157 lines)
+- `Etabs_output/` — 5 sample CSV files from Jan 17 export
+- `_archive/` — 15 files: session 31 diagnostics, trials, solutions
+- 4 docs (README, GUIDE, 2 checklists)
+
+**Legacy_2019_2021/ (9 files, ~3,244 lines):** Original 2019-2021 VBA modules. Has README, includes BeamType.bas (958), COLUMNS.bas (752), ShearWall.bas (487)
+
+**Examples/ (2 files):** Example_Usage.bas (61), Installer_ImportAllModules.bas (167)
+
+- **Issues:**
+  - [ ] 2 corrupt artifact files: `VBA/ETABS_Export/.!34470!mod_Types.bas` and `.!35354!mod_Types.bas` — binary corruption residue, should be deleted
+  - [ ] `ETABS_Export_v2/Etabs_output/` — 5 sample CSV files tracked in git. Should be in `.gitignore` or `examples/`
+  - [ ] `ETABS_Export_v2/_archive/` — 15 session-31 debug files. Consider moving to `docs/_archive/vba/`
+  - [ ] `Legacy_2019_2021/` — 3,244 lines of old code. README exists but no clear deprecation plan
+  - [ ] `VBA_CRITICAL_GUIDE.md` (337 lines) at VBA root — significant overlap with README safety section
+  - [ ] No index.json for agent discovery
+  - [ ] Python parity: `Test_Parity.bas` exists (384 lines) — good, but unclear if it covers all 20 modules
+
+### Batch 5 — Scripts Deep Dive (Session 91)
+
+#### `scripts/` — Overview
+
+- **Purpose:** Automation scripts for development, CI/CD, maintenance, and governance
+- **Files:** 83 active scripts (60 Python, 23 Shell) + supporting files
+- **README:** Yes — comprehensive (lists categories, key scripts)
+- **index.json:** Yes — well-structured (tier0, 15 categories, workflows, deprecated)
+- **automation-map.json:** Yes — task→script mapping, 83/83 coverage verified
+- **Owner:** All contributors
+- **Total active code lines:** ~24,500
+
+**Tier 0 — Essential (5 scripts, used 95% of the time):**
+
+| Script | Lines | Purpose |
+|--------|------:|---------|
+| ai_commit.sh | 184 | Commit and push (ALWAYS use this) |
+| agent_start.sh | 315 | Session start |
+| should_use_pr.sh | 439 | PR vs direct commit decision |
+| recover_git_state.sh | 161 | Emergency git recovery |
+| session.py | 1259 | Unified session management |
+
+**Index categories (84 scripts mapped):**
+
+| Category | Count | Key scripts |
+|----------|------:|-------------|
+| code_validation | 12 | check_streamlit (2366), check_governance (846), check_architecture (500) |
+| git_workflow | 11 | ai_commit, safe_push (408), should_use_pr (439) |
+| project_structure | 9 | generate_enhanced_index (799), validate_imports, check_scripts_index |
+| documentation | 9 | check_docs (533), create_doc, generate_docs_index |
+| v3_migration | 8 | migrate_python_module (511), migrate_react (469), batch_migrate (438) |
+| testing | 7 | benchmark_api (798), external_cli_test, test_api_parity |
+| session_management | 6 | session.py (1259), agent_start, validate_session_state |
+| code_migration | 4 | safe_file_move (483), safe_file_delete (354) |
+| api_validation | 3 | validate_api_contracts (607), check_api, check_openapi_snapshot |
+| release | 3 | release, bump_version, check_version_consistency |
+| ci_cd | 3 | ci_local, pre_commit_check, install_git_hooks |
+| governance | 3 | governance_health_score, check_governance, audit_readiness_report |
+| file_operations | 3 | safe_file_move, safe_file_delete, archive_old_files |
+| streamlit_dev | 2 | check_streamlit (2366), profile_streamlit_page (632) |
+| vba | 1 | run_vba_smoke_tests |
+
+**Top 10 largest active scripts:**
+
+| Script | Lines |
+|--------|------:|
+| check_streamlit.py | 2366 |
+| session.py | 1259 |
+| check_governance.py | 846 |
+| audit_readiness_report.py | 814 |
+| generate_enhanced_index.py | 799 |
+| benchmark_api.py | 798 |
+| profile_streamlit_page.py | 632 |
+| check_ui_duplication.py | 618 |
+| validate_api_contracts.py | 607 |
+| check_performance_issues.py | 596 |
+
+#### `scripts/_lib/` — Shared Library
+
+- **Purpose:** Reusable utility modules for scripts
+- **Files:** 4 Python files (722 lines total)
+- `__init__.py` (75) — Package init with common imports
+- `ast_helpers.py` (332) — AST parsing for Python analysis scripts
+- `output.py` (206) — Colored terminal output formatting
+- `utils.py` (109) — Shared file/path utilities
+- **Issues:** None — clean, well-factored. Phase 4b plans to migrate 38 more scripts to use _lib
+
+#### `scripts/_archive/` — Archived Scripts
+
+- **Purpose:** Superseded or obsolete scripts preserved for reference
+- **Files:** 93 files (61 Python, 32 Shell), ~26,447 lines total
+- **Notable:** check_streamlit_issues.py (2204), worktree_manager.sh (454), end_session.py (441)
+- **Issues:**
+  - [ ] 93 archived scripts is a LOT — 26K lines. Consider periodic purge of truly obsolete ones
+  - [ ] Some archived scripts may have been replaced by active versions (e.g., `end_session.py` → `session.py`)
+  - [ ] No INDEX.md in _archive/ to explain what replaced what
+
+#### `scripts/_vba_tools_archive_2025-01-17/`
+
+- **Purpose:** Completed VBA Unicode repair tools (project done Jan 2025)
+- **Files:** 5 files — 3 Python tools + README + INDEX
+- **Status:** Completed project, properly archived with explanation
+- **Issues:** None — well-documented archive
+
+#### `scripts/git-hooks/` and `scripts/hooks/`
+
+- **Purpose:** Git hooks installed by `install_git_hooks.sh`
+- **git-hooks/:** `pre-commit` (72) blocks manual git commit, `pre-push` (69) blocks manual git push
+- **hooks/:** `commit-msg` (111) validates commit message format
+- **Issues:**
+  - [ ] Two separate hook directories (`git-hooks/` and `hooks/`) — confusing. Should consolidate into one
+  - [ ] `install_git_hooks.sh` (149 lines) — verify it installs from both dirs correctly
+
+#### Scripts Health Summary
+
+- **Validation:** `check_scripts_index.py` passes: 83/83 scripts mapped, 60/60 Python scripts have docstrings
+- **automation-map.json:** Covers all 83 active scripts via `tasks` and `categories` entries
+- **Coverage gap:** The unmapped-scripts check flagged 20 scripts — these are mapped via `categories` in `index.json` but not in the `tasks` section of `automation-map.json`. Both indexes agree on 83 total, so this is a cross-reference format difference, not a real gap
+- **README claims 152 total scripts** — this counts active (83) + archived (93) - some overlap. Consider updating to clarify
+
+- **Overall Issues:**
+  - [ ] `check_streamlit.py` at 2366 lines is the largest script — consider splitting
+  - [ ] Two hook directories (`git-hooks/` + `hooks/`) should be consolidated
+  - [ ] `_archive/` at 93 files (26K lines) could use an INDEX explaining replacements
+  - [ ] README says "152 scripts" — should clarify "83 active + 93 archived"
 
 ---
 
