@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Unified governance checker — folder structure + compliance validation.
 
+When to use: After creating/moving folders, adding root-level files, or before PRs.
+Catches naming violations, missing metadata, and structure drift.
+
 Consolidates two former scripts into one with subcommands:
   --structure    Validate folder structure (root limits, naming, Python lib)
   --compliance   Check governance compliance (roles, redirect stubs, metadata)

@@ -2,6 +2,9 @@
 """
 Unified session management CLI.
 
+When to use: At every session start and end. Also use `summary` after completing work
+to auto-generate SESSION_LOG entries, and `sync` to update stale doc numbers.
+
 Consolidates: start_session.py, end_session.py, update_handoff.py, check_session_docs.py
 
 USAGE:
@@ -948,13 +951,28 @@ def _build_session_summary(
 
 
 def _get_session_number() -> int:
-    """Detect the next session number from SESSION_LOG."""
-    if not SESSION_LOG.exists():
-        return 1
-    content = SESSION_LOG.read_text(encoding="utf-8")
-    numbers = re.findall(r"Session\s+(\d+)", content)
-    if numbers:
-        return max(int(n) for n in numbers) + 1
+    """Detect the current session number from next-session-brief.md or SESSION_LOG.
+
+    Priority:
+    1. next-session-brief.md — look for 'Session NN' in the summary header
+    2. SESSION_LOG — find highest session number (that IS the current session)
+    """
+    # Try next-session-brief first (most reliable for current session)
+    brief = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
+    if brief.exists():
+        content = brief.read_text(encoding="utf-8")
+        # Match patterns like "Session 91 Summary" or "Last Session: Session 91"
+        matches = re.findall(r"Session\s+(\d+)", content)
+        if matches:
+            return max(int(n) for n in matches)
+
+    # Fallback: SESSION_LOG — highest number is the current session
+    if SESSION_LOG.exists():
+        content = SESSION_LOG.read_text(encoding="utf-8", errors="replace")
+        numbers = re.findall(r"Session\s+(\d+)", content)
+        if numbers:
+            return max(int(n) for n in numbers)
+
     return 1
 
 

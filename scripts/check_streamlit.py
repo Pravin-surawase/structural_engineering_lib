@@ -2,6 +2,9 @@
 """
 Unified Streamlit validation CLI.
 
+When to use: Before committing any Streamlit page changes. Catches runtime crash
+patterns (NameError, KeyError, fragment violations) that don't show up until page load.
+
 Consolidates: check_streamlit_issues.py + check_fragment_violations.py
 
 Scans ALL Streamlit pages for common issues:

@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-03-23",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "81/81 scripts mapped",
+  "_coverage": "82/82 scripts mapped",
 
   "tasks": {
     "commit code": {
@@ -210,6 +210,10 @@
     "check doc versions": {
       "script": ".venv/bin/python scripts/check_doc_versions.py",
       "description": "Detect stale library version references in docs (pre-commit hook)"
+    },
+    "check bootstrap freshness": {
+      "script": ".venv/bin/python scripts/check_bootstrap_freshness.py",
+      "description": "Detect when bootstrap docs are stale — new hooks/routes/components not documented"
     },
     "check tasks format": {
       "script": ".venv/bin/python scripts/check_tasks_format.py",
@@ -436,7 +440,7 @@
     "doc_tools": [
       "fix broken links", "check docs", "check doc versions",
       "check tasks format", "check next session brief",
-      "check cli reference", "sync doc numbers"
+      "check cli reference", "sync doc numbers", "check bootstrap freshness"
     ],
     "governance": [
       "check folder structure", "check governance", "governance health score",

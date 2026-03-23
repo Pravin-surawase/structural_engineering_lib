@@ -373,8 +373,9 @@ Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 - [x] `scripts/index.json` updated with sync_numbers.py
 
 #### Next Up (Session 92+)
-- [ ] **Session number auto-detect** — `summary --write` should pull session # from next-session-brief.md
-- [ ] **Add `--when-to-use` to script docstrings** — standardize discoverability pattern
+- [x] **Session number auto-detect** — `_get_session_number()` now reads from next-session-brief.md
+- [x] **Add `--when-to-use` to script docstrings** — 15/59 Tier 0-2 scripts standardized + checker in `check_scripts_index.py`
+- [x] **Bootstrap doc auto-refresh** — `check_bootstrap_freshness.py` detects stale hooks/routes/components
 - [ ] **`--dry-run` as universal default** — all mutating scripts require `--fix`/`--apply`
 - [ ] **Consistent `--json` output** — extend to all `check_*` scripts
 
@@ -382,5 +383,4 @@ Migrate 10 more scripts to use `_lib/utils.py` + `_lib/output.py`:
 - [ ] Migrate 10 scripts to `_lib/` (Phase 4b)
 - [ ] Merge 3 audit scripts into `audit.py` (Phase 4c)
 - [ ] Add `sync_numbers` to GitHub Actions CI
-- [ ] Auto-detect when bootstrap docs need refresh (new hooks/routes added but docs not updated)
 - [ ] Script health check in CI (automation-map coverage, docstrings, exit codes)

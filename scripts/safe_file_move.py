@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Safe file move script with automatic link updates.
 
+When to use: When moving or renaming ANY file that other files might link to.
+Never use manual `mv` or `git mv` — this script preserves 870+ internal links.
+
 This script safely moves/renames files by:
 1. Checking for references in docs and code (using fast git grep)
 2. Updating all internal links

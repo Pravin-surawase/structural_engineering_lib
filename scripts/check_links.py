@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Check and fix broken internal links in markdown files.
 
+When to use: After moving/renaming/deleting files, or before committing doc changes.
+Use --fix to auto-repair broken links with fuzzy matching.
+
 Consolidates link checking and fixing into one script:
   - Scan mode (default): find broken links
   - Fix mode (--fix): auto-fix using fuzzy file matching

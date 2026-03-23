@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""Ensure scripts/index.json and automation-map.json match the scripts folder contents."""
+"""Ensure scripts/index.json and automation-map.json match the scripts folder contents.
+
+When to use: After adding or removing scripts from the scripts/ folder.
+Verifies every script is indexed in both index.json and automation-map.json.
+"""
 
 from __future__ import annotations
 
+import ast
 import json
 import os
 from pathlib import Path
@@ -90,6 +95,23 @@ def main() -> int:
             errors += 1
         if not unmapped and not phantom:
             print(f"✓ automation-map.json: {len(mapped_scripts)}/{len(actual)} scripts covered")
+
+    # Check "When to use:" in Python script docstrings
+    py_scripts = sorted(s for s in actual if s.endswith(".py"))
+    missing_when = []
+    for name in py_scripts:
+        path = SCRIPTS_DIR / name
+        try:
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            doc = ast.get_docstring(tree) or ""
+            if "when to use" not in doc.lower():
+                missing_when.append(name)
+        except SyntaxError:
+            pass
+    if missing_when:
+        print(f"INFO: {len(missing_when)}/{len(py_scripts)} Python scripts missing 'When to use:' in docstring")
+    else:
+        print(f"✓ All {len(py_scripts)} Python scripts have 'When to use:' in docstring")
 
     return 1 if errors else 0
 

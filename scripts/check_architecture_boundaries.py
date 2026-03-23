@@ -3,6 +3,9 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Architecture Boundary Linter.
 
+When to use: After adding imports between layers (core / services / UI),
+or before PRs that touch Python/structural_lib/ or streamlit_app/.
+
 Enforces the 3-layer architecture by detecting violations:
 
 1. Core Layer (Python/structural_lib/codes/)

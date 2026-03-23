@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Validate Python imports across the project after migration.
 
+When to use: After migrating Python modules (migrate_python_module.py), restructuring
+packages, or renaming modules. Catches broken imports before they cause runtime errors.
+
 Checks that all `from X import Y` and `import X` statements resolve
 to actual modules. Reports broken imports with suggestions.
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Safe file delete script with reference checking.
 
+When to use: When deleting a file that might be referenced by other docs or code.
+Never use manual `rm` — this script checks all references first and warns about breakage.
+
 This script safely deletes files by:
 1. Checking for all references in docs and code
 2. Showing what would break

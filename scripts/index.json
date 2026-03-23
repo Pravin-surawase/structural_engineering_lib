@@ -90,6 +90,7 @@
       "scripts": {
         "check_links.py": "Validate + auto-fix markdown links (--fix, --map, --exclude-archive)",
         "check_doc_versions.py": "Check version consistency in docs",
+        "check_bootstrap_freshness.py": "Detect stale bootstrap docs (new hooks/routes not documented)",
         "check_docs.py": "Unified docs validation (--index, --index-links, --metadata, --all)",
         "generate_docs_index.py": "Generate docs-index.json",
         "generate_all_indexes.sh": "Generate all index files",

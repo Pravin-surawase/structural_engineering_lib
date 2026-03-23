@@ -2,6 +2,9 @@
 """
 Create a new documentation file with proper metadata header.
 
+When to use: When creating any new .md file under docs/. Adds required metadata
+(Type, Audience, Status, Importance, dates) and ensures consistent structure.
+
 USAGE:
     python scripts/create_doc.py docs/research/my-topic.md "My Topic Research"
     python scripts/create_doc.py docs/planning/task-plan.md "Task Planning" --type=Plan

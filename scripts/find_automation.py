@@ -2,6 +2,9 @@
 """
 Find the right automation script for a task.
 
+When to use: When you need a script but don't know which one. Searches the
+automation-map.json (87 tasks, 16 categories) using fuzzy text matching.
+
 Usage:
     python scripts/find_automation.py "commit code"
     python scripts/find_automation.py "move file"

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Scan codebase and sync stale numbers across documentation files.
 
+When to use: After adding/removing tests, endpoints, hooks, components, or scripts.
+Also runs automatically via ai_commit.sh post-commit hook (non-blocking warning).
+
 Scans actual code to get current counts (tests, scripts, hooks, endpoints,
 etc.) and updates documentation files that reference these numbers.
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Unified API validation — signatures, docs, and sync checks.
 
+When to use: After modifying api.py, adding/removing public functions, updating
+api.md or api-stability.md, or changing Streamlit API call signatures.
+
 Consolidates three former scripts into one with subcommands:
   --signatures   Check Streamlit pages for correct API call signatures
   --docs         Ensure api.__all__ symbols are in docs/reference/api.md

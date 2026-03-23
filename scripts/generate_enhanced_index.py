@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Generate enhanced index.json + index.md for ANY folder type.
 
+When to use: After adding, removing, or restructuring files in key project folders.
+Generates machine-readable (index.json) and human-readable (index.md) indexes
+that enable agents to load folder context quickly without reading every file.
+
 Extends generate_folder_index.py to handle:
 - Python packages (.py files with class/function extraction)
 - React/TypeScript (.ts/.tsx with export detection)

@@ -2,6 +2,9 @@
 """
 Discover and display structural_lib API function signatures.
 
+When to use: Before wrapping ANY structural_lib function in FastAPI endpoints,
+Streamlit pages, or React hooks. Prevents guessing param names (it's `b_mm` not `width`).
+
 CRITICAL: Run this BEFORE implementing any API wrappers (FastAPI endpoints, etc.)
 This prevents guessing parameter names and return types incorrectly.
 
