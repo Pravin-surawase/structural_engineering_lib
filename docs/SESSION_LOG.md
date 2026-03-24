@@ -7,34 +7,34 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ## 2026-03-24 — Session
 
 ### Summary
-**25 commits**, **217 files changed**
+**30 commits**, **220 files changed**
 
 **Chores:**
 - update OpenAPI baseline after schema drift
 
 **Documentation:**
+- add unit conversion comments to shear.py
+- sync script count 83 to 84
+- session 92 final — handoff updated
 - session 92 end — handoff + tasks updated
 - session 92 end — handoff + tasks updated
-- complete folder audit batches 9-11 — archive, reference, agents (all 11 batches done)
-- folder audit batches 6-8 — tests, active docs, and research
-- folder audit batches 4-5 — Excel/VBA and scripts deep dive
-- ... and 6 more
+- ... and 9 more
 
 **Features:**
+- enhance boundary checker with UI-layer import rules
 - add AGENTS.md, prompt files, enrich agent instructions
 - add OpenAPI snapshot test, post-move link check, TASKS archival, index hash watermarks
 - complete when-to-use docstrings (59/59), add --json to check_scripts_index, migrate 5 scripts to _lib
 - add when-to-use docstrings, session auto-detect, bootstrap freshness checker
-- complete automation-map (81/81 scripts), post-commit stale check, enhanced script index
-- ... and 1 more
+- ... and 2 more
 
 **Bug Fixes:**
+- route imports through api facade
 - validate_materials stub, agent session logging rules, audit updates
 - session log gaps, JWT warning, broken links, version sync
 - repair 11 broken links after file moves
 - deep audit — vendor CHM, arch violations, indexes
-- implement audit findings — remove bloat, fix violations, add 9 READMEs
-- ... and 1 more
+- ... and 2 more
 
 **Refactoring:**
 - clean phantom script refs + expand sync_numbers + scripts plan

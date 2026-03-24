@@ -64,7 +64,8 @@
 
 ## Technical Debt (Tracked)
 
-- **Fix 20+ architecture violations in streamlit_app/** — UI layer importing directly from IS 456 code layer (`structural_lib.detailing`, `structural_lib.shear`) instead of going through `services/api.py`. Files: `utils/api_wrapper.py`, `utils/rebar_optimization.py`, `utils/rebar_layout.py`, multiple pages. Needs dedicated PR with test coverage.
+- **~~Fix 20+ architecture violations in streamlit_app/~~** — Corrected to 2 errors + ~15 warnings. 3 direct service submodule imports FIXED (Session 92). Remaining: 2 errors (`rebar_optimizer`, `multi_objective_optimizer` used directly — not yet in api.py), ~13 backward-compat stub imports (`structural_lib.detailing`, `.shear`, `.load_analysis` etc in `api_wrapper.py`, `rebar_optimization.py`, `rebar_layout.py`). Fix path: expand `api.py __all__` to expose missing functions, then update imports.
+- **28 implicit unit conversion warnings in IS 456 code** — `* 1000`/`/ 1000`/`* 1e6`/`/ 1e6` in `flexure.py` (7), `load_analysis.py` (9), `serviceability.py` (2), `shear.py` (5), `torsion.py` (5). Most are self-documenting via `_nmm`/`_knm`/`_mm`/`_m` var names. 3 in shear.py annotated (Session 92). Could suppress remaining via smarter checker pattern matching.
 - **React test infrastructure** — Zero test files. Needs Vitest setup + core component tests.
 - **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
 

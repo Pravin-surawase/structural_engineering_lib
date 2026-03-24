@@ -20,34 +20,27 @@
 | **Current** | v0.19.1 | ✅ Shipped (dashboard insights, ExportPanel, code checks wired) |
 | **Next** | v0.20.0 | 📋 V3 Foundation (code-splitting, SSE progress, REST fallback) |
 
-**Last Session:** Session 92 | **Focus:** AI agent efficiency + git workflow improvements
+**Last Session:** Session 92 (Part 3) | **Focus:** Architecture deep dive + fixes
 
 ---
 
-## ✅ Session 92 (Mar 24, 2026)
+## ✅ Session 92 Part 3 (Mar 24, 2026)
 
-### Completed This Session
+### Completed This Part
 
-**Part 1 — AI Agent Efficiency & Git Workflow Improvements:**
+**Architecture Deep Dive & Fixes:**
 
-1. **Created `AGENTS.md`** — Cross-agent instruction file (Copilot, Claude, Cursor, Windsurf etc.), ~80 lines
-2. **Enriched `.github/instructions/`** — Merged best content from `.claude/rules/` into all 5 existing files (hooks inventory, data flow patterns, fragment API examples, safe patterns)
-3. **Enriched `.claude/rules/`** — Merged best content from `.github/instructions/` into react.md and python-core.md (folder trees, migration scripts)
-4. **Created `.github/instructions/fastapi.instructions.md`** — Was missing (only existed in `.claude/rules/`)
-5. **Created 5 Copilot prompt files** — `.github/prompts/`: session-end, new-feature, bug-fix, add-api-endpoint, code-review
-6. **Improved PR template** — Added task reference, multi-stack testing, architecture checklist
-7. **Created implementation plan** — `docs/planning/ai-agent-efficiency-and-git-workflow-plan.md`
+1. **Full architecture audit** — Scanned all 95 Python files across 4 layers. Found architecture is 95% clean: Core ✅, IS 456 Code ✅, Services ✅, FastAPI ✅.
+2. **Fixed 3 import violations** — `report_export.py` and `input_bridge.py` were importing directly from `services.audit`/`services.calculation_report` instead of `services.api`. Also consolidated `api_wrapper.py` imports. Commit: `268b21b`.
+3. **Enhanced boundary checker** — Added 11 new `forbidden_imports` for UI layer (all IS 456 code modules + service internals). Now catches `services.audit`, `services.calculation_report`, `services.rebar_optimizer`, `services.multi_objective_optimizer` + all `codes.is456.*` modules. Fix hints included. Commit: `4847f95`.
+4. **Added unit conversion annotations** — 3 ambiguous `* 1000`/`/ 1000` lines in `shear.py` now have explicit `# kN → N` comments. Commit: `da17f20`.
+5. **Corrected tech debt tracking** — TASKS.md: "20+ violations" was inaccurate → corrected to "2 errors + ~15 warnings" with specific fix path.
 
-**Part 2 — Post-Audit Deep Improvements:**
-
-8. **Created `scripts/check_instruction_drift.py`** — Detects content divergence between `.github/instructions/` and `.claude/rules/` (all 6 pairs now show ✅)
-9. **Fixed python-core instruction drift** — `.claude/rules/python-core.md` had "3-Layer" (wrong, now 4-Layer) and "43 functions" (wrong, now 23+6)
-10. **Refreshed 4 stale index files** — Python/, react_app/, streamlit_app/, Python/structural_lib/ (Python was 2 months stale with `file_count: 0`)
-11. **Categorized planning docs** — `docs/planning/README.md` now separates Active (7) vs Historical (10) documents
-12. **Tracked architecture violations** — 20+ streamlit imports from IS 456 layer added to TASKS.md Technical Debt section
-13. **Registered drift checker** — Added to `automation-map.json` (now 84/84 scripts mapped)
-
-**Key finding:** Many planned improvements already existed (conventional commit hook, PR template, .gitignore for logs/tmp). Careful research prevented duplicating 2 months of prior work.
+### Key Architecture Findings
+- **Boundary checker state:** 0 errors, 28 warnings (all unit conversion patterns in IS 456 code)
+- **Import health:** 567 total imports, 220 internal, 0 broken, 0 circular dependencies
+- **Remaining 2 UI errors:** `rebar_optimizer` and `multi_objective_optimizer` imported directly — need api.py __all__ expansion first
+- **~13 backward-compat stub imports** in streamlit_app/ — work via stubs but bypass API facade
 
 ### Next Priorities (v0.20 Sprint)
 1. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
@@ -56,8 +49,10 @@
 4. **React test infrastructure** — Zero test files, needs Vitest + core tests
 5. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
 
-### Technical Debt (needs dedicated sessions)
-- **Fix 20+ architecture violations** in streamlit_app/ (imports bypassing services/api.py)
+### Technical Debt (accurate count as of Session 92)
+- **2 architecture errors** — `rebar_optimizer`/`multi_objective_optimizer` bypass api facade (needs api.py expansion)
+- **~13 backward-compat stub imports** in streamlit_app/ — lower priority, functional
+- **28 unit conversion warnings** in IS 456 code — mostly well-documented via var names
 - **React test infrastructure** — zero test files, needs Vitest setup
 - **Split `ai_workspace.py`** — 5103 lines → 6 modules
 
