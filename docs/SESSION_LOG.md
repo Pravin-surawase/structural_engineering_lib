@@ -7,18 +7,19 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ## 2026-03-24 — Session
 
 ### Summary
-**30 commits**, **220 files changed**
+**33 commits**, **267 files changed**
 
 **Chores:**
+- release v0.19.1
 - update OpenAPI baseline after schema drift
 
 **Documentation:**
+- add single-source git workflow doc + Phase 1 improvements
+- session 92 part 3 — architecture audit + handoff
 - add unit conversion comments to shear.py
 - sync script count 83 to 84
 - session 92 final — handoff updated
-- session 92 end — handoff + tasks updated
-- session 92 end — handoff + tasks updated
-- ... and 9 more
+- ... and 8 more
 
 **Features:**
 - enhance boundary checker with UI-layer import rules
@@ -29,15 +30,19 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - ... and 2 more
 
 **Bug Fixes:**
+- resolve Windows test failures, root file limit, coverage threshold
+- resolve 4 git workflow issues (push-only, git_ops ref, tag push, msg length)
 - route imports through api facade
 - validate_materials stub, agent session logging rules, audit updates
 - session log gaps, JWT warning, broken links, version sync
-- repair 11 broken links after file moves
-- deep audit — vendor CHM, arch violations, indexes
-- ... and 2 more
+- ... and 4 more
 
 **Refactoring:**
+- consolidate 5 git docs into single source + practical PR policy
 - clean phantom script refs + expand sync_numbers + scripts plan
+
+**New/Changed Artifacts:**
+- Tests: test_calculation_report, test_design_suggestions
 
 ### PRs Merged
 | PR | Summary |
