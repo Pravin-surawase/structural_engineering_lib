@@ -7,39 +7,36 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ## 2026-03-24 — Session
 
 ### Summary
-**33 commits**, **267 files changed**
+**32 commits**, **262 files changed**
 
 **Chores:**
 - release v0.19.1
 - update OpenAPI baseline after schema drift
 
 **Documentation:**
+- add git workflow audit and session end updates
+- session 92 part 4 end — CI fixes + git workflow consolidation
 - add single-source git workflow doc + Phase 1 improvements
 - session 92 part 3 — architecture audit + handoff
 - add unit conversion comments to shear.py
-- sync script count 83 to 84
-- session 92 final — handoff updated
-- ... and 8 more
+- ... and 9 more
 
 **Features:**
+- unified CLI (run.sh + check_all.py) and onboarding audit fixes (#436)
 - enhance boundary checker with UI-layer import rules
 - add AGENTS.md, prompt files, enrich agent instructions
 - add OpenAPI snapshot test, post-move link check, TASKS archival, index hash watermarks
-- complete when-to-use docstrings (59/59), add --json to check_scripts_index, migrate 5 scripts to _lib
-- add when-to-use docstrings, session auto-detect, bootstrap freshness checker
-- ... and 2 more
 
 **Bug Fixes:**
+- resolve 9 pre-existing check_all.py failures (TASK-501)
+- resolve 7 git workflow issues from audit
 - resolve Windows test failures, root file limit, coverage threshold
 - resolve 4 git workflow issues (push-only, git_ops ref, tag push, msg length)
 - route imports through api facade
-- validate_materials stub, agent session logging rules, audit updates
-- session log gaps, JWT warning, broken links, version sync
-- ... and 4 more
+- ... and 6 more
 
 **Refactoring:**
 - consolidate 5 git docs into single source + practical PR policy
-- clean phantom script refs + expand sync_numbers + scripts plan
 
 **New/Changed Artifacts:**
 - Tests: test_calculation_report, test_design_suggestions

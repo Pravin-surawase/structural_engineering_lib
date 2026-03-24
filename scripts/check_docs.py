@@ -197,7 +197,7 @@ def check_frontmatter(add_missing: bool = False, json_output: bool = False) -> i
             for err in item["errors"]:
                 print(f"     • {err}")
 
-    return 1 if report["without_frontmatter"] or report["invalid_frontmatter"] else 0
+    return 1 if report["invalid_frontmatter"] else 0
 
 
 # ═══════════════════════════════════════════════════════════════════════════

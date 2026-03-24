@@ -223,6 +223,54 @@ dxf_export.generate_beam_dxf(detailing, "beam_detail.dxf")
 dxf_export.generate_multi_beam_dxf(detailing_list, "all_beams.dxf")
 ```
 
+### Load Analysis Types (v0.18+)
+
+```python
+from structural_lib import api
+
+api.LoadType           # Enum: UDL, POINT
+api.LoadDefinition     # Dataclass: load_type, magnitude, position_mm
+api.CriticalPoint      # Dataclass: position_mm, moment_knm, shear_kn
+api.LoadDiagramResult  # Dataclass: positions, bmd, sfd, critical_points
+```
+
+### Torsion Result Type (v0.17+)
+
+```python
+from structural_lib import api
+
+api.TorsionResult  # Dataclass: ve_kn, stirrup_spacing, al_torsion, is_safe
+```
+
+### 3D Visualization (v0.18+)
+
+```python
+from structural_lib import api
+
+# Data classes
+api.Point3D              # Immutable 3D coordinate
+api.RebarSegment         # Single straight bar segment
+api.RebarPath            # Complete bar with multiple segments
+api.StirrupLoop          # Closed stirrup at X position
+api.Beam3DGeometry       # Complete visualization data
+
+# Coordinate computation functions
+api.compute_rebar_positions(beam_width, beam_depth, cover, bar_count, ...)
+api.compute_stirrup_path(beam_width, beam_depth, cover, stirrup_dia, ...)
+api.compute_stirrup_positions(span, stirrup_spacing_start, ...)
+api.compute_beam_outline(beam_width, beam_depth, span)
+api.beam_to_3d_geometry(detailing, is_seismic=False)
+```
+
+### ETABS Integration Types (v0.17.6+)
+
+```python
+from structural_lib import api
+
+api.ETABSForceRow        # Dataclass: beam_id, story, forces
+api.ETABSEnvelopeResult  # Dataclass: beam_id, story, envelope data
+```
+
 ---
 
 ## Stable API (v0.12)
@@ -275,6 +323,23 @@ score = calculate_constructability_score(design_result, detailing)
 **Status:** Preview - API signatures and scoring algorithms may change.
 
 See: [Insights Guide](../getting-started/insights-guide.md), [Insights API Reference](insights-api.md)
+
+### ETABS Integration (v0.17.6+)
+
+```python
+from structural_lib import api
+
+# Validate ETABS CSV export
+is_valid, issues, col_map = api.validate_etabs_csv("ETABS_export.csv")
+
+# Normalize ETABS force envelopes
+envelope = api.normalize_etabs_forces("ETABS_export.csv")
+
+# Create design job from ETABS data
+job = api.create_job_from_etabs(envelope_row, b_mm=300, D_mm=500, ...)
+```
+
+**Status:** Preview - CSV column mapping and normalization may change.
 
 ---
 

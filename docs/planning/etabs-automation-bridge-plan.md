@@ -1,11 +1,13 @@
 ---
-**Type:** Plan
-**Audience:** Developers, Product
-**Status:** Draft
-**Importance:** High
-**Created:** 2026-01-17
-**Last Updated:** 2026-01-17
-**Related Tasks:** TASK-CSV-02, TASK-CSV-03
+owner: ai-agent
+status: draft
+last_updated: "2026-01-17"
+doc_type: guide
+type: "Plan"
+audience: "Developers, Product"
+importance: "High"
+created: "2026-01-17"
+related_tasks: "TASK-CSV-02, TASK-CSV-03"
 ---
 
 # ETABS Automation Bridge — Implementation Plan

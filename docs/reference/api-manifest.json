@@ -1,8 +1,8 @@
 {
-  "generated": "2026-01-15",
+  "generated": "2026-03-24",
   "module": "structural_lib.api",
   "python": "3.11.14",
-  "count": 39,
+  "count": 68,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -13,6 +13,11 @@
       "name": "AuditTrail",
       "kind": "class",
       "signature": "(project_id: 'str', entries: 'list[AuditLogEntry]' = <factory>, created_at: 'str' = <factory>, library_version: 'str' = '') -> None"
+    },
+    {
+      "name": "Beam3DGeometry",
+      "kind": "class",
+      "signature": "(beam_id: 'str', story: 'str', dimensions: 'dict[str, float]', concrete_outline: 'list[Point3D]', rebars: 'list[RebarPath]', stirrups: 'list[StirrupLoop]', metadata: 'dict' = <factory>) -> None"
     },
     {
       "name": "BeamGeometryInput",
@@ -35,9 +40,24 @@
       "signature": "(report_id: 'str', project_info: 'ProjectInfo', beam_id: 'str', story: 'str', inputs: 'InputSection', results: 'ResultSection', code_references: 'list[str]' = <factory>, notes: 'list[str]' = <factory>, verification_hash: 'str' = '', generated_at: 'str' = '') -> None"
     },
     {
+      "name": "CriticalPoint",
+      "kind": "class",
+      "signature": "(position_mm: 'float', point_type: 'str', bm_knm: 'float', sf_kn: 'float') -> None"
+    },
+    {
       "name": "DetailingConfigInput",
       "kind": "class",
       "signature": "(stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float | None' = None, is_seismic: 'bool' = False, preferred_bar_dias: 'tuple[float, ...]' = (12.0, 16.0, 20.0, 25.0), max_bar_layers: 'int' = 2, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0) -> None"
+    },
+    {
+      "name": "ETABSEnvelopeResult",
+      "kind": "class",
+      "signature": "(story: 'str', beam_id: 'str', case_id: 'str', mu_knm: 'float', vu_kn: 'float', station_count: 'int' = 1) -> None"
+    },
+    {
+      "name": "ETABSForceRow",
+      "kind": "class",
+      "signature": "(story: 'str', beam_id: 'str', case_id: 'str', station: 'float', m3: 'float', v2: 'float', unique_name: 'str' = '', p: 'float' = 0.0) -> None"
     },
     {
       "name": "InputSection",
@@ -50,6 +70,21 @@
       "signature": "(case_id: 'str', mu_knm: 'float', vu_kn: 'float', description: 'str' = '') -> None"
     },
     {
+      "name": "LoadDefinition",
+      "kind": "class",
+      "signature": "(load_type: 'LoadType', magnitude: 'float', position_mm: 'float' = 0.0, end_position_mm: 'float | None' = None) -> None"
+    },
+    {
+      "name": "LoadDiagramResult",
+      "kind": "class",
+      "signature": "(positions_mm: 'list[float]', bmd_knm: 'list[float]', sfd_kn: 'list[float]', critical_points: 'list[CriticalPoint]', span_mm: 'float', support_condition: 'str', loads: 'list[LoadDefinition]', max_bm_knm: 'float' = 0.0, min_bm_knm: 'float' = 0.0, max_sf_kn: 'float' = 0.0, min_sf_kn: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "LoadType",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
+    },
+    {
       "name": "LoadsInput",
       "kind": "class",
       "signature": "(mu_knm: 'float', vu_kn: 'float', case_id: 'str' = 'CASE-1') -> None"
@@ -60,14 +95,69 @@
       "signature": "(fck_nmm2: 'float', fy_nmm2: 'float', es_nmm2: 'float' = 200000.0) -> None"
     },
     {
+      "name": "Point3D",
+      "kind": "class",
+      "signature": "(x: 'float', y: 'float', z: 'float') -> None"
+    },
+    {
       "name": "ProjectInfo",
       "kind": "class",
       "signature": "(project_name: 'str' = 'Untitled Project', project_number: 'str' = '', client_name: 'str' = '', engineer_name: 'str' = '', checker_name: 'str' = '', revision: 'str' = 'A', date: 'str' = '') -> None"
     },
     {
+      "name": "RebarPath",
+      "kind": "class",
+      "signature": "(bar_id: 'str', segments: 'list[RebarSegment]', diameter: 'float', bar_type: 'str' = 'bottom', zone: 'str' = 'full') -> None"
+    },
+    {
+      "name": "RebarSegment",
+      "kind": "class",
+      "signature": "(start: 'Point3D', end: 'Point3D', diameter: 'float', segment_type: 'str' = 'straight') -> None"
+    },
+    {
       "name": "ResultSection",
       "kind": "class",
       "signature": "(flexure: 'dict[str, Any]' = <factory>, shear: 'dict[str, Any]' = <factory>, serviceability: 'dict[str, Any]' = <factory>, detailing: 'dict[str, Any]' = <factory>, summary: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "StirrupLoop",
+      "kind": "class",
+      "signature": "(position_x: 'float', path: 'list[Point3D]', diameter: 'float', legs: 'int' = 2, hook_type: 'str' = '90') -> None"
+    },
+    {
+      "name": "TorsionResult",
+      "kind": "class",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', ve_kn: 'float', me_knm: 'float', tv_equiv: 'float', tc: 'float', tc_max: 'float', asv_torsion: 'float', asv_shear: 'float', asv_total: 'float', stirrup_spacing: 'float', al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>) -> None"
+    },
+    {
+      "name": "beam_to_3d_geometry",
+      "kind": "function",
+      "signature": "(detailing: 'BeamDetailingResult', is_seismic: 'bool' = False) -> 'Beam3DGeometry'"
+    },
+    {
+      "name": "calculate_equivalent_moment",
+      "kind": "function",
+      "signature": "(mu_knm: 'float', tu_knm: 'float', d: 'float', b: 'float') -> 'float'"
+    },
+    {
+      "name": "calculate_equivalent_shear",
+      "kind": "function",
+      "signature": "(vu_kn: 'float', tu_knm: 'float', b: 'float') -> 'float'"
+    },
+    {
+      "name": "calculate_longitudinal_torsion_steel",
+      "kind": "function",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', b1: 'float', d1: 'float', fy: 'float', sv: 'float') -> 'float'"
+    },
+    {
+      "name": "calculate_torsion_shear_stress",
+      "kind": "function",
+      "signature": "(ve_kn: 'float', b: 'float', d: 'float') -> 'float'"
+    },
+    {
+      "name": "calculate_torsion_stirrup_area",
+      "kind": "function",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', b: 'float', d: 'float', b1: 'float', d1: 'float', fy: 'float', tc: 'float') -> 'tuple[float, float, float]'"
     },
     {
       "name": "check_beam_ductility",
@@ -105,6 +195,16 @@
       "signature": "(detailing_list: 'list[detailing.BeamDetailingResult]', *, project_name: 'str' = 'Beam BBS') -> 'bbs.BBSDocument'"
     },
     {
+      "name": "compute_beam_outline",
+      "kind": "function",
+      "signature": "(beam_width: 'float', beam_depth: 'float', span: 'float') -> 'list[Point3D]'"
+    },
+    {
+      "name": "compute_bmd_sfd",
+      "kind": "function",
+      "signature": "(span_mm: 'float', support_condition: \"Literal['simply_supported', 'cantilever']\", loads: 'list[LoadDefinition]', num_points: 'int' = 101) -> 'LoadDiagramResult'"
+    },
+    {
       "name": "compute_critical",
       "kind": "function",
       "signature": "(job_out: 'str | Path', *, top: 'int' = 10, format: 'str' = 'csv', job_path: 'str | Path | None' = None, results_path: 'str | Path | None' = None, output_path: 'str | Path | None' = None) -> 'str | Path'"
@@ -125,14 +225,39 @@
       "signature": "(data: 'dict[str, Any]') -> 'str'"
     },
     {
+      "name": "compute_rebar_positions",
+      "kind": "function",
+      "signature": "(beam_width: 'float', beam_depth: 'float', cover: 'float', bar_count: 'int', bar_dia: 'float', stirrup_dia: 'float', is_top: 'bool' = False, layers: 'int' = 1) -> 'list[Point3D]'"
+    },
+    {
       "name": "compute_report",
       "kind": "function",
       "signature": "(source: 'str | Path | dict[str, Any]', *, format: 'str' = 'html', job_path: 'str | Path | None' = None, results_path: 'str | Path | None' = None, output_path: 'str | Path | None' = None, batch_threshold: 'int' = 80) -> 'str | Path | list[Path]'"
     },
     {
+      "name": "compute_stirrup_path",
+      "kind": "function",
+      "signature": "(beam_width: 'float', beam_depth: 'float', cover: 'float', stirrup_dia: 'float', position_x: 'float', legs: 'int' = 2) -> 'list[Point3D]'"
+    },
+    {
+      "name": "compute_stirrup_positions",
+      "kind": "function",
+      "signature": "(span: 'float', stirrup_spacing_start: 'float', stirrup_spacing_mid: 'float', stirrup_spacing_end: 'float', zone_length: 'float | None' = None) -> 'list[float]'"
+    },
+    {
       "name": "create_calculation_certificate",
       "kind": "function",
       "signature": "(inputs: 'dict[str, Any]', outputs: 'dict[str, Any]', project_id: 'str' = '', beam_id: 'str' = '', engineer: 'str' = '') -> 'dict[str, Any]'"
+    },
+    {
+      "name": "create_job_from_etabs",
+      "kind": "function",
+      "signature": "(envelope_data: 'ETABSEnvelopeResult | Sequence[ETABSEnvelopeResult]', *, b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float' = 500.0, d_mm: 'float | None' = None, d_dash_mm: 'float' = 50.0, cover_mm: 'float' = 40.0, stirrup_dia_mm: 'float' = 8.0, bar_dia_mm: 'float' = 20.0, asv_mm2: 'float' = 100.0, job_id: 'str | None' = None) -> 'dict[str, Any]'"
+    },
+    {
+      "name": "create_jobs_from_etabs_csv",
+      "kind": "function",
+      "signature": "(csv_path: 'str | Path', geometry: 'dict[str, dict[str, float]]', *, output_dir: 'str | Path | None' = None, default_fck: 'float' = 25.0, default_fy: 'float' = 500.0, station_multiplier: 'float' = 1.0) -> 'list[dict[str, Any]]'"
     },
     {
       "name": "design_and_detail_beam_is456",
@@ -148,6 +273,11 @@
       "name": "design_from_input",
       "kind": "function",
       "signature": "(beam: 'BeamInput', *, include_detailing: 'bool' = True) -> 'DesignAndDetailResult | ComplianceReport'"
+    },
+    {
+      "name": "design_torsion",
+      "kind": "function",
+      "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', cover: 'float', stirrup_dia: 'float' = 8, pt: 'float' = 1.0) -> 'TorsionResult'"
     },
     {
       "name": "detail_beam_is456",
@@ -170,6 +300,16 @@
       "signature": "() -> 'str'"
     },
     {
+      "name": "load_etabs_csv",
+      "kind": "function",
+      "signature": "(csv_path: 'str | Path', *, station_multiplier: 'float' = 1.0) -> 'list[ETABSForceRow]'"
+    },
+    {
+      "name": "normalize_etabs_forces",
+      "kind": "function",
+      "signature": "(csv_path: 'str | Path', output_path: 'str | Path | None' = None, *, station_multiplier: 'float' = 1.0) -> 'list[ETABSEnvelopeResult]'"
+    },
+    {
       "name": "optimize_beam_cost",
       "kind": "function",
       "signature": "(*, units: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40) -> 'CostOptimizationResult'"
@@ -188,6 +328,11 @@
       "name": "validate_design_results",
       "kind": "function",
       "signature": "(path: 'str | Path') -> 'ValidationReport'"
+    },
+    {
+      "name": "validate_etabs_csv",
+      "kind": "function",
+      "signature": "(csv_path: 'str | Path') -> 'tuple[bool, list[str], dict[str, str]]'"
     },
     {
       "name": "validate_job_spec",

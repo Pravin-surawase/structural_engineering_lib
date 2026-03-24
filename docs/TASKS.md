@@ -6,23 +6,21 @@
 
 ---
 
-## Rules
+## Rules (read first)
 - **WIP = 2** (max 2 active tasks at once)
 - **Done = tests pass + docs updated + scanner passes**
 - **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items
 
 ---
 
-## Current Focus
+## Current Release
 
 - **Version:** v0.19.1 ✅ Complete → v0.20 (V3 Foundation)
 - **Focus:** V3 React UI — all API + hooks ready, now wiring UX polish + REST fallback
 - **Target:** v0.20 — code-split bundles, SSE batch progress, REST fallback
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
----
-
-## Release Roadmap
+### Release Roadmap
 
 | Version | Focus | Status | Key Deliverables |
 |---------|-------|--------|------------------|
@@ -34,50 +32,47 @@
 
 ---
 
-## Completed Last Sessions (Sessions 81–93)
-
-| Task | Status | PR |
-|------|--------|-----|
-| Unified CLI: `run.sh` + `check_all.py` (9 subcommands, 28 checks, parallel) | ✅ Done | PR #436 |
-| Archive 7 Streamlit-era scripts (85→78 active) | ✅ Done | PR #436 |
-| Onboarding audit: fix 46 stale refs → 15, fix broken handoff checks | ✅ Done | PR #436 |
-| Update all agent docs (CLAUDE.md, AGENTS.md, copilot-instructions, bootstrap) | ✅ Done | PR #436 |
-| Phase 4 polish: `--changed`, `--pre-commit`, zsh completions for run.sh | ✅ Done | PR #436 |
-| AI agent efficiency + git workflow improvements (AGENTS.md, prompts, enriched instructions) | ✅ Done | `a9bf35e` |
-| Full repo folder audit (11 batches) + agent logging rules | ✅ Done | Session 91 |
-| Wire dashboard insights into React DashboardPage | ✅ Done | PR #431 |
-| Add live code check badges to DesignView (CodeChecksPanel) | ✅ Done | PR #431 |
-| Add rebar suggestion panels to DesignView (RebarSuggestionsPanel) | ✅ Done | PR #431 |
-| Create ExportPanel (BBS CSV / DXF / HTML report) | ✅ Done | PR #432 |
-| Add 4-layer governance lock + migration gates | ✅ Done | PR #430 |
-| Scripts consolidation Phase 1 + Phase 2 (79 active scripts) | ✅ Done | PR #428, #429 |
-| Create _lib/output.py + _lib/ast_helpers.py (Phase 3) | ✅ Done | `c80f454` |
-| Fix 280+ stale doc references across 45+ files | ✅ Done | `6a5ee84` |
-
 ## Active
 
-(none — TASK-500 merged ✅)
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| TASK-501 | Fix pre-existing check_all.py failures + expand audit | Copilot | 🔄 In Progress |
 
-## Up Next (v0.20 Sprint)
+## Up Next
 
-- **Code-split Three.js + react-three-fiber** — `index.js` chunk is 1.16 MB (above 500 kB advisory)
-- **Add REST fallback when WebSocket unavailable** — `DesignView` currently requires WS
-- **Add SSE batch progress UI** — `streaming.py` router exists, needs React consumer
-- **Test e2e with Docker + React** — verify all 13 routers respond correctly end-to-end
-- **Update OpenAPI snapshot** (`openapi_baseline.json`) to reflect current 13 routers
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| TASK-502 | Code-split Three.js + react-three-fiber (1.16 MB chunk) | — | 1d | High | 📋 |
+| TASK-503 | Add REST fallback when WebSocket unavailable | — | 1d | High | 📋 |
+| TASK-504 | Add SSE batch progress UI (streaming.py → React) | — | 1d | Medium | 📋 |
+| TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | Medium | 📋 |
 
-## Technical Debt (Tracked)
+## Backlog
 
-- **~~Fix 20+ architecture violations in streamlit_app/~~** — Corrected to 2 errors + ~15 warnings. 3 direct service submodule imports FIXED (Session 92). Remaining: 2 errors (`rebar_optimizer`, `multi_objective_optimizer` used directly — not yet in api.py), ~13 backward-compat stub imports (`structural_lib.detailing`, `.shear`, `.load_analysis` etc in `api_wrapper.py`, `rebar_optimization.py`, `rebar_layout.py`). Fix path: expand `api.py __all__` to expose missing functions, then update imports.
-- **28 implicit unit conversion warnings in IS 456 code** — `* 1000`/`/ 1000`/`* 1e6`/`/ 1e6` in `flexure.py` (7), `load_analysis.py` (9), `serviceability.py` (2), `shear.py` (5), `torsion.py` (5). Most are self-documenting via `_nmm`/`_knm`/`_mm`/`_m` var names. 3 in shear.py annotated (Session 92). Could suppress remaining via smarter checker pattern matching.
+- **2 Streamlit architecture violations** — `rebar_optimizer` + `multi_objective_optimizer` imported directly (bypass api facade). Fix: expand `api.py __all__`.
+- **~13 backward-compat stub imports** — `structural_lib.detailing`, `.shear`, `.load_analysis` in Streamlit. Low priority — Streamlit is legacy.
+- **28 unit conversion warnings** — `* 1000`/`/ 1000` in IS 456 code. Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names.
+- **293 broken import paths (Streamlit)** — Legacy `validate_imports.py` failures. Not blocking.
+- **Type annotation gaps** — 49 missing return types, 15 missing param types, 4 missing `__all__`.
 - **React test infrastructure** — Zero test files. Needs Vitest setup + core component tests.
-- **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
+- **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR).
 
----
+## Recently Done
 
-## Archived Sessions
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| TASK-500 | Unified CLI + onboarding audit (run.sh, check_all.py, 28 checks) | Claude | ✅ Done (PR #436) |
+| TASK-499 | AI agent efficiency + git workflow improvements | Claude | ✅ Done (`a9bf35e`) |
+| TASK-498 | Full repo folder audit (11 batches) + agent logging rules | Claude | ✅ Done (Session 91) |
+| TASK-497 | React dashboard insights + code checks + rebar suggestions | Claude | ✅ Done (PR #431) |
+| TASK-496 | ExportPanel (BBS CSV / DXF / HTML report) | Claude | ✅ Done (PR #432) |
+| TASK-495 | 4-layer governance lock + migration gates | Claude | ✅ Done (PR #430) |
+| TASK-494 | Scripts consolidation Phase 1–3 (79 active scripts) | Claude | ✅ Done (PR #428, #429) |
+| TASK-493 | Fix 280+ stale doc references across 45+ files | Claude | ✅ Done (`6a5ee84`) |
 
-Sessions 32–73 and legacy TASK items have been completed. See [tasks-history.md](_archive/tasks-history.md) for details.
+## Archive
+
+Sessions 32–73 and legacy TASK items have been completed. See [docs/_archive/tasks-history.md](_archive/tasks-history.md) for details.
 
 Key milestones from archived sessions:
 - **Session 73** (Jan 24): FastAPI skeleton (20 routes, 31 tests), WebSocket endpoint, `discover_api_signatures.py`
@@ -88,7 +83,5 @@ Key milestones from archived sessions:
 
 ---
 
-## Notes
-
-- **Session logs:** See [SESSION_LOG.md](SESSION_LOG.md) for detailed history
-- **Task history:** See [_archive/tasks-history.md](_archive/tasks-history.md)
+**Session logs:** See [SESSION_LOG.md](SESSION_LOG.md) for detailed history.
+**Task history:** See [_archive/tasks-history.md](_archive/tasks-history.md)
