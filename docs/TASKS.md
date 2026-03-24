@@ -42,6 +42,7 @@
 | Archive 7 Streamlit-era scripts (85→78 active) | ✅ Done | PR #436 |
 | Onboarding audit: fix 46 stale refs → 15, fix broken handoff checks | ✅ Done | PR #436 |
 | Update all agent docs (CLAUDE.md, AGENTS.md, copilot-instructions, bootstrap) | ✅ Done | PR #436 |
+| Phase 4 polish: `--changed`, `--pre-commit`, zsh completions for run.sh | ✅ Done | PR #436 |
 | AI agent efficiency + git workflow improvements (AGENTS.md, prompts, enriched instructions) | ✅ Done | `a9bf35e` |
 | Full repo folder audit (11 batches) + agent logging rules | ✅ Done | Session 91 |
 | Wire dashboard insights into React DashboardPage | ✅ Done | PR #431 |
@@ -64,7 +65,6 @@
 - **Add SSE batch progress UI** — `streaming.py` router exists, needs React consumer
 - **Test e2e with Docker + React** — verify all 13 routers respond correctly end-to-end
 - **Update OpenAPI snapshot** (`openapi_baseline.json`) to reflect current 13 routers
-- **Phase 4 polish for run.sh** — `--pre-commit`, `--changed`, shell completions
 
 ## Technical Debt (Tracked)
 

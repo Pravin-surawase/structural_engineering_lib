@@ -58,11 +58,10 @@
 - Both kept separate for stability
 
 ### Next Priorities
-1. **Phase 4 polish for run.sh** — `--pre-commit`, `--changed` flags, shell completions
-2. **Finish PR #436** — merge TASK-500 to main
-3. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
-2. **REST fallback in DesignView** — when WebSocket is unavailable
-3. **SSE batch progress UI** — streaming.py router exists, needs React consumer
+1. **Finish PR #436** — merge TASK-500 to main (all 4 phases complete)
+2. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
+3. **REST fallback in DesignView** — when WebSocket is unavailable
+4. **SSE batch progress UI** — streaming.py router exists, needs React consumer
 4. **React test infrastructure** — Zero test files, needs Vitest + core tests
 5. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
 
