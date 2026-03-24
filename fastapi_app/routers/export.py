@@ -6,7 +6,6 @@ using StreamingResponse for efficient delivery.
 """
 
 import io
-import json
 
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
