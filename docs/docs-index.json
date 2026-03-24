@@ -3425,7 +3425,7 @@
       ],
       "size_bytes": 15189
     },
-    "docs/git-automation/automation-scripts.md": {
+    "docs/_archive/git-automation-consolidated/automation-scripts.md": {
       "title": "Git Automation Scripts Reference",
       "type": "documentation",
       "complexity": "advanced",
@@ -3443,7 +3443,7 @@
       ],
       "size_bytes": 11587
     },
-    "docs/git-automation/workflow-guide.md": {
+    "docs/_archive/git-automation-consolidated/workflow-guide.md": {
       "title": "Git Workflow Guide",
       "type": "guide",
       "complexity": "advanced",
@@ -3463,7 +3463,7 @@
       ],
       "size_bytes": 8128
     },
-    "docs/git-automation/mistakes-prevention.md": {
+    "docs/_archive/git-automation-consolidated/mistakes-prevention.md": {
       "title": "Git Automation: Mistakes Prevention Guide",
       "type": "documentation",
       "complexity": "advanced",
@@ -3500,7 +3500,7 @@
       ],
       "size_bytes": 6983
     },
-    "docs/git-automation/efficient-agent-usage.md": {
+    "docs/_archive/git-automation-consolidated/efficient-agent-usage.md": {
       "title": "Efficient Agent Usage for Git Automation",
       "type": "documentation",
       "complexity": "advanced",
@@ -3520,7 +3520,7 @@
       ],
       "size_bytes": 8793
     },
-    "docs/git-automation/advanced-coordination.md": {
+    "docs/_archive/git-automation-consolidated/advanced-coordination.md": {
       "title": "Git Automation: Multi-Agent Coordination",
       "type": "documentation",
       "complexity": "intermediate",
@@ -3540,7 +3540,7 @@
       ],
       "size_bytes": 5845
     },
-    "docs/git-automation/research/README.md": {
+    "docs/_archive/git-automation-consolidated/research-README.md": {
       "title": "Git Automation Research Documents",
       "type": "index",
       "complexity": "beginner",
@@ -6638,7 +6638,7 @@
         "docs/research/scanner-improvements.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/ui-layout-best-practices.md",
-        "docs/git-automation/research/README.md"
+        "docs/_archive/git-automation-consolidated/research-README.md"
       ],
       "planning": [
         "docs/research/live-3d-visualization-architecture.md",
@@ -6715,7 +6715,7 @@
         "docs/research/scanner-improvements.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/ui-layout-best-practices.md",
-        "docs/git-automation/research/README.md"
+        "docs/_archive/git-automation-consolidated/research-README.md"
       ],
       "design": [
         "docs/specs/csv-import-schema.md",

@@ -391,22 +391,47 @@ Defined in `.pre-commit-config.yaml`. These run during `git commit` (step 3):
 
 ## 10. Decision Matrix: PR vs Direct
 
-`should_use_pr.sh` analyzes staged changes and recommends workflow:
+`should_use_pr.sh` analyzes staged changes and recommends workflow.
 
-| Change Type | Path Pattern | Lines | PR Required? |
-|-------------|-------------|-------|--------------|
-| Production code | `Python/structural_lib/` | Any | **YES** |
+**Solo-dev philosophy:** CI runs on every push to main, providing the same validation
+as a PR. PRs add audit trail and rollback points for substantial changes. Small fixes
+go direct to avoid overhead that causes agents to use `--force` bypass.
+
+| Change Type | Path Pattern | Condition | PR Required? |
+|-------------|-------------|-----------|--------------|
+| Production code | `Python/structural_lib/` | <50 lines, ≤2 files, no new files | No |
+| Production code | `Python/structural_lib/` | ≥50 lines, >2 files, or new files | **YES** |
 | VBA code | `VBA/` | Any | **YES** |
 | CI workflows | `.github/workflows/` | Any | **YES** |
 | Dependencies | `pyproject.toml`, `requirements*.txt` | Any | **YES** |
-| React code | `react_app/` | Any | **YES** |
-| FastAPI code | `fastapi_app/` | Any | **YES** |
-| Streamlit code | `streamlit_app/` | 20+ lines | **YES** |
-| Docs only | `docs/`, `*.md` | <500 lines | No |
-| Docs only | `docs/`, `*.md` | 500+ lines | **YES** |
+| Streamlit code | `streamlit_app/` | <20 lines, 1 file | No |
+| Streamlit code | `streamlit_app/` | ≥20 lines or >1 file | **YES** |
+| Docs only | `docs/`, `*.md` | Any | No |
 | Tests only | `tests/` | <50 lines | No |
+| Tests only | `tests/` | ≥50 lines | **YES** |
 | Scripts | `scripts/` | <50 lines | No |
-| Multi-file (3+) | Any | — | **YES** |
+| Scripts | `scripts/` | ≥50 lines | **YES** |
+| Docs + Scripts | `docs/` + `scripts/` | <150 lines, ≤4 files | No |
+
+### Why Agents Were Skipping PRs
+
+Agents used `--force` to bypass PR requirements because:
+1. **Every** production code change required PR — even 1-line bug fixes
+2. PR creation → CI wait → merge → cleanup takes 15+ minutes
+3. No human reviewer available (solo-dev), so PRs had no review value for small fixes
+4. Agents prioritized completing tasks over process compliance
+
+**Fix (v0.19.1+):** Small production fixes (<50 lines, ≤2 files, no new files) can go
+direct. CI still validates on push. Reserve PRs for substantial changes where rollback
+capability matters.
+
+### Post-PR Cleanup
+
+After PR merge, branches are cleaned up:
+- **Remote:** `--delete-branch` flag on `gh pr merge` deletes remote branch automatically
+- **Local:** `finish_task_pr.sh` now deletes local task branch after merge
+- **Periodic:** Run `.venv/bin/python scripts/cleanup_stale_branches.py --delete` to clean
+  branches older than 30 days or merged branches older than 7 days
 
 **Override:** Use `--force` to bypass PR check for batching work.
 
@@ -612,13 +637,23 @@ git commit --no-verify  # (bypasses safety checks)
 
 ## Related Documentation
 
-| Document | Purpose | Status |
-|----------|---------|--------|
-| [workflow-guide.md](workflow-guide.md) | Detailed workflow walkthrough | Supplementary |
-| [automation-scripts.md](automation-scripts.md) | All 103 scripts catalog | Supplementary |
-| [mistakes-prevention.md](mistakes-prevention.md) | Historical lessons database | Supplementary |
-| [advanced-coordination.md](advanced-coordination.md) | Worktrees + multi-agent | Supplementary |
-| [efficient-agent-usage.md](efficient-agent-usage.md) | Per-agent time optimization | Supplementary |
+Previous separate guides have been consolidated into this document (v0.19.1).
+Archived originals are in `docs/_archive/git-automation-consolidated/`.
+
+---
+
+## Appendix A: Historical Mistake Database
+
+Lessons from 100+ hours of debugging. These patterns are now prevented by automation.
+
+| # | Mistake | Impact | Root Cause | Prevention |
+|---|---------|--------|------------|------------|
+| 1 | **17 merge commits in one day** | CRITICAL | `git commit --amend` after push rewrites history | `safe_push.sh` enforces pull-first, commit, amend-before-push order |
+| 2 | **Manual git fallback under stress** | HIGH | Script errors → agents bypass to `git add/commit/push` | Pre-push hook blocks manual push unless `AI_COMMIT_ACTIVE` set |
+| 3 | **Terminal stuck in git pager** | HIGH | `git log`/`git diff` opens `less` pager | `agent_start.sh` sets `core.pager=cat` and `pager.status=false` |
+| 4 | **CI scope mismatch** | MEDIUM | Local: `ruff check structural_lib/` vs CI: `ruff check .` | Pre-commit hooks now match CI scope exactly |
+| 5 | **Streamlit runtime crashes** | MEDIUM | Code committed without validation (39 bugs detected) | Scanner in pre-commit hook blocks unsafe patterns |
+| 6 | **`--no-verify` under time pressure** | MEDIUM | Agents skip hooks → CI fails 5 min later | `ai_commit.sh` never uses `--no-verify`; hooks auto-fix issues |
 
 ---
 

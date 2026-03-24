@@ -267,9 +267,9 @@ fi
 
 ## Related Documentation
 
-- [Git Automation Hub](../../../git-automation/research/README.md)
-- [Workflow Guide](../../../git-automation/workflow-guide.md)
-- [Mistakes Prevention](../../../git-automation/mistakes-prevention.md)
+- [Git Automation Hub](../../git-automation-consolidated/research-README.md)
+- [Workflow Guide](../../git-automation-consolidated/workflow-guide.md)
+- [Mistakes Prevention](../../git-automation-consolidated/mistakes-prevention.md)
 
 ---
 

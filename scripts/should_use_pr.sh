@@ -73,12 +73,15 @@ fi
 
 # Thresholds for "minor" changes
 MINOR_LINES_THRESHOLD=50       # <50 lines = potentially minor
-MINOR_FILES_THRESHOLD=2        # <2 files = potentially minor
+MINOR_FILES_THRESHOLD=3        # <3 files = potentially minor
 SUBSTANTIAL_LINES=150          # >150 lines = definitely substantial
 MAJOR_LINES=500                # >500 lines = major change
 STREAMLIT_MINOR_THRESHOLD=20   # <20 lines for streamlit = minor (stricter)
 # Solo-dev thresholds (no reviewers available)
 DOCS_SCRIPTS_MINOR_THRESHOLD=150  # <150 lines for docs+scripts (CI validates)
+# Production code: small fixes can go direct (CI validates on push to main)
+PROD_MINOR_THRESHOLD=50        # <50 lines production code = allow direct commit
+PROD_MINOR_FILES=2             # <2 files production code = allow direct commit
 
 # Analyze files
 DOCS_ONLY=true
@@ -219,15 +222,33 @@ echo ""
 
 # Decision logic - ALWAYS check production code first (highest risk)
 if [[ "$HAS_PRODUCTION_CODE" == "true" ]]; then
+    # Solo-dev: Allow small bug fixes directly (CI still validates on push)
+    # PR required for substantial changes, new APIs, or breaking changes
+    if [[ "$LINES_CHANGED" -lt "$PROD_MINOR_THRESHOLD" ]] && [[ "$FILE_COUNT" -le "$PROD_MINOR_FILES" ]] && [[ "$NEW_FILES" -eq 0 ]]; then
+        echo -e "${GREEN}✅ RECOMMENDATION: Direct commit${NC}"
+        echo -e "${GREEN}   (Small production fix: $LINES_CHANGED lines, $FILE_COUNT file(s))${NC}"
+        if [[ "$EXPLAIN" == "true" ]]; then
+            echo ""
+            echo "Reasoning:"
+            echo "- Python/structural_lib/ files changed"
+            echo "- Small scope ($LINES_CHANGED lines < $PROD_MINOR_THRESHOLD, $FILE_COUNT files ≤ $PROD_MINOR_FILES)"
+            echo "- No new files added"
+            echo "- CI runs on push to main for validation"
+            echo "- Use PR for larger changes (>$PROD_MINOR_THRESHOLD lines or >$PROD_MINOR_FILES files)"
+        fi
+        echo ""
+        echo "Use: ./scripts/safe_push.sh \"fix: <message>\""
+        exit 0
+    fi
     echo -e "${RED}🔀 RECOMMENDATION: Pull Request${NC}"
-    echo -e "${RED}   (Production code changed)${NC}"
+    echo -e "${RED}   (Substantial production code change)${NC}"
     if [[ "$EXPLAIN" == "true" ]]; then
         echo ""
         echo "Reasoning:"
         echo "- Python/structural_lib/ files changed"
-        echo "- User-facing production code"
+        echo "- $LINES_CHANGED lines changed, $FILE_COUNT file(s), $NEW_FILES new file(s)"
+        echo "- Substantial: ≥$PROD_MINOR_THRESHOLD lines, >$PROD_MINOR_FILES files, or new files"
         echo "- CI validation + audit trail REQUIRED"
-        echo "- No exceptions for production code"
     fi
     echo ""
     echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""

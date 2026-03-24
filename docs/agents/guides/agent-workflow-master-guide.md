@@ -507,9 +507,9 @@ cd $PROJECT_ROOT
 
 ### Git Automation Docs (Canonical)
 - [git-automation/README.md](../../git-automation/README.md) - Hub & quick start
-- [git-automation/workflow-guide.md](../../git-automation/workflow-guide.md) - Core workflow
-- [git-automation/automation-scripts.md](../../git-automation/automation-scripts.md) - Scripts reference
-- [git-automation/mistakes-prevention.md](../../git-automation/mistakes-prevention.md) - Troubleshooting
+- [git-automation/workflow-guide.md](../../_archive/git-automation-consolidated/workflow-guide.md) - Core workflow
+- [git-automation/automation-scripts.md](../../_archive/git-automation-consolidated/automation-scripts.md) - Scripts reference
+- [git-automation/mistakes-prevention.md](../../_archive/git-automation-consolidated/mistakes-prevention.md) - Troubleshooting
 
 ### Legacy (Redirects to Canonical)
 - [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md) - → See workflow-guide.md

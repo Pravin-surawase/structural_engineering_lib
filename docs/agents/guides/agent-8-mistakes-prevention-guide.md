@@ -20,7 +20,7 @@
 > - `./scripts/recover_git_state.sh` - For recovery
 > - `./scripts/git_ops.sh --status` - When unsure what to do
 >
-> Manual git is now **blocked by hooks**. See [workflow-guide.md](../../git-automation/workflow-guide.md) for current practices.
+> Manual git is now **blocked by hooks**. See [workflow-guide.md](../../_archive/git-automation-consolidated/workflow-guide.md) for current practices.
 
 ---
 

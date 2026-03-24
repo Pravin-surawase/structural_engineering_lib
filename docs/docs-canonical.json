@@ -12,7 +12,7 @@
     "git-workflow": {
       "canonical": "docs/git-automation/git-workflow-single-source.md",
       "description": "Git automation single source of truth — workflow, scripts, hooks, recovery",
-      "also_see": ["docs/git-automation/workflow-guide.md", "docs/git-automation/automation-scripts.md"]
+      "also_see": ["docs/_archive/git-automation-consolidated/workflow-guide.md", "docs/_archive/git-automation-consolidated/automation-scripts.md"]
     },
     "api-reference": {
       "canonical": "docs/reference/api.md",

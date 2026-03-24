@@ -317,8 +317,8 @@ chmod +x scripts/*.sh
 ## Related Documents
 
 - [README.md](README.md) - Navigation hub
-- [workflow-guide.md](workflow-guide.md) - 7-step workflow details
-- [automation-scripts.md](automation-scripts.md) - All 103 scripts
+- [workflow-guide.md](../_archive/git-automation-consolidated/workflow-guide.md) - 7-step workflow details
+- [automation-scripts.md](../_archive/git-automation-consolidated/automation-scripts.md) - All 103 scripts
 - [mistakes-prevention.md](mistakes-prevention.md) - Lessons learned
 
 ---

@@ -140,8 +140,8 @@ Session 19P8 (Parts 1 & 2) establishes automation governance systems and prevent
 
 **Symptom:**
 - `docs/git-automation/README.md` line 117-119: manual git with ❌ warning
-- `docs/git-automation/mistakes-prevention.md` lines 37-57: manual patterns shown
-- `docs/git-automation/workflow-guide.md` shows manual examples
+- `docs/_archive/git-automation-consolidated/mistakes-prevention.md` lines 37-57: manual patterns shown
+- `docs/_archive/git-automation-consolidated/workflow-guide.md` shows manual examples
 - Warnings present, but examples still visible → cognitive bias
 
 **Why It Matters:**

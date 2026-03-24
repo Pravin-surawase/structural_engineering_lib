@@ -3,203 +3,48 @@
 **Type:** Hub
 **Audience:** All Agents
 **Status:** Production Ready
-**Importance:** Critical
-**Version:** 0.17.0
-**Created:** 2026-01-11
-**Last Updated:** 2026-01-13
+**Version:** 0.19.1
+**Last Updated:** 2026-03-24
 
 ---
 
-## 🚀 Quick Start
+## Single Source of Truth
+
+**→ [git-workflow-single-source.md](git-workflow-single-source.md)** — Complete reference for the entire git workflow system.
+
+---
+
+## Quick Start (3 Commands)
 
 ```bash
-# ONE COMMAND for all git operations:
-./scripts/ai_commit.sh "your commit message"
-
-# That's it! The script handles EVERYTHING:
-# ✅ Staging files
-# ✅ Pre-commit hooks
-# ✅ Hook modifications (auto-amend)
-# ✅ Pulling latest changes
-# ✅ Pushing to remote
-# ✅ Conflict resolution
+./scripts/agent_start.sh --quick              # 1. Session start
+./scripts/ai_commit.sh "scope: description"   # 2. Commit (repeat)
+.venv/bin/python scripts/session.py end       # 3. Session end
 ```
 
----
+## Common Tasks
 
-## 📋 Navigation Map
+| Task | Command |
+|------|---------|
+| Commit changes | `./scripts/ai_commit.sh "message"` |
+| Check if PR needed | `./scripts/should_use_pr.sh --explain` |
+| Create PR | `./scripts/create_task_pr.sh TASK-XXX "desc"` |
+| Finish PR | `./scripts/finish_task_pr.sh TASK-XXX "desc"` |
+| Fix git issues | `./scripts/recover_git_state.sh` |
 
-| Need | File | Description |
-|------|------|-------------|
-| **SINGLE SOURCE OF TRUTH** | [git-workflow-single-source.md](git-workflow-single-source.md) | **Complete reference — start here** |
-| **Learn the workflow** | [workflow-guide.md](workflow-guide.md) | Core 7-step process, decision trees |
-| **Find commands** | [automation-scripts.md](automation-scripts.md) | All 103 scripts organized by use case |
-| **Agent patterns** | [efficient-agent-usage.md](efficient-agent-usage.md) | Per-agent workflows, time optimization |
-| **Avoid mistakes** | [mistakes-prevention.md](mistakes-prevention.md) | Historical lessons, emergency procedures |
-| **Advanced patterns** | [advanced-coordination.md](advanced-coordination.md) | Worktrees, background agents |
-| **Deep research** | [research/](research/) | Comprehensive analysis, performance data |
-
----
-
-## 🎯 Common Tasks
-
-| Task | Command | Time |
-|------|---------|------|
-| **Commit changes** | `./scripts/ai_commit.sh "message"` | 5s |
-| **Check if PR needed** | `./scripts/should_use_pr.sh --explain` | 1s |
-| **Create task PR** | `./scripts/create_task_pr.sh TASK-XXX "description"` | 10s |
-| **Finish task PR** | `./scripts/finish_task_pr.sh TASK-XXX "description" --async` | 15s |
-| **Clean stale branches** | `./scripts/cleanup_stale_branches.sh` | 10s |
-| **Fix git issues** | `./scripts/recover_git_state.sh` | 5s |
-| **Start session** | `./scripts/agent_start.sh --quick` | 6s |
-| **End session** | `.venv/bin/python scripts/session.py end` | 3s |
-
-**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in the same PR and
-record the PR number (not merge hash).
-
----
-
-## 💡 Philosophy
-
-### Core Principles
-
-1. **Single Entry Point:** Always use `ai_commit.sh` - never manual git commands
-2. **Pull-First Strategy:** Sync before committing prevents conflicts
-3. **FF-Only Merges:** Fast-forward only, never rewrite history
-4. **Automation Over Discipline:** Scripts enforce rules, not humans
-
-### Why This Matters
-
-| Metric | Before Automation | After Automation | Improvement |
-|--------|-------------------|------------------|-------------|
-| **Commit time** | 45-60 seconds | 5 seconds | 90-95% faster |
-| **Merge conflicts** | 17 per week | 0 per week | 100% eliminated |
-| **Git errors** | 40+ per session | 1 per session | 97.5% fewer |
-| **Manual steps** | 7 commands | 1 command | 86% fewer |
-
----
-
-## 🔧 Architecture
-
-### Script Categories (103 total)
-
-| Category | Count | Examples |
-|----------|-------|----------|
-| **Git Workflow** | 12 | `ai_commit.sh`, `safe_push.sh`, `should_use_pr.sh` |
-| **PR Management** | 5 | `create_task_pr.sh`, `finish_task_pr.sh` |
-| **Recovery** | 4 | `recover_git_state.sh`, `check_unfinished_merge.sh` |
-| **Session** | 6 | `agent_start.sh`, `session.py end`, `session.py start` |
-| **Validation** | 25+ | `check_links.py`, `check_doc_versions.py` |
-| **Documentation** | 15+ | `safe_file_move.py`, `check_links.py` |
-| **Testing** | 20+ | `run_tests.sh`, verification scripts |
-| **Build/Release** | 10+ | `release.py`, `bump_version.py` |
-
-### Test Coverage
-
-- **Git workflow suites:** 20 (run `./scripts/test_git_workflow.sh`)
-- **Agent automation suites:** run `./scripts/test_agent_automation.sh`
-- **Pre-commit hooks:** run `pre-commit run --all-files`
-- **Internal links:** run `.venv/bin/python scripts/check_links.py`
-
----
-
-## 🆘 Emergency Commands
-
-| Problem | Solution |
-|---------|----------|
-| **Git is broken** | `./scripts/recover_git_state.sh` |
-| **Merge conflict** | `./scripts/check_unfinished_merge.sh` |
-| **Pre-commit failed** | Already handled by `ai_commit.sh` |
-| **Push rejected** | Script auto-retries with rebase |
-| **Don't know what to do** | `./scripts/agent_start.sh` |
-
----
-
-## ⚠️ NEVER Do This
+## The One Rule
 
 ```bash
-# ❌ FORBIDDEN - Manual add/commit/push workflows
-
-# ✅ ALWAYS USE THIS INSTEAD
-./scripts/ai_commit.sh "message"
+# ✅ ALWAYS: ./scripts/ai_commit.sh "message"
+# ❌ NEVER:  git add / git commit / git push
 ```
 
-**Why?** Manual git commands cause:
-- Merge conflicts (wastes 10-30 minutes)
-- Pre-commit hook failures
-- Diverged history
-- Lost work
+## Archived Docs
 
----
+Previous separate guides have been consolidated into the single-source doc:
 
-## ⚠️ Deprecated/Legacy Scripts
-
-The following scripts are **legacy** and should NOT be used. They are retained only for reference or edge-case recovery.
-
-### Tier-0 Scripts (USE THESE ONLY)
-
-| Script | Purpose | Replaces |
-|--------|---------|----------|
-| `ai_commit.sh` | **PRIMARY** - All commits | Manual git, safe_push.sh directly |
-| `agent_start.sh --quick` | Session start | agent_start.sh, agent_start.sh separately |
-| `git_ops.sh --status` | State analysis | Manual git status checking |
-| `recover_git_state.sh` | Emergency recovery | Manual conflict resolution |
-
-### Deprecated Scripts (DO NOT USE)
-
-| Script | Status | Replacement |
-|--------|--------|-------------|
-| Direct `safe_push.sh` | Internal use only | Use `ai_commit.sh` |
-| Manual add/commit/push workflows | Blocked by hooks | Use `ai_commit.sh` |
-| `agent_start.sh` alone | Still works | Prefer `agent_start.sh --quick` |
-| `agent_start.sh` alone | Still works | Prefer `agent_start.sh` (includes this) |
-
-### Why This Matters
-
-Deprecated scripts cause:
-- **Cognitive overload** - 103 scripts is too many to remember
-- **Wrong entry points** - Agents pick internal scripts instead of wrappers
-- **Missed features** - Direct calls skip PR decisions, hook handling
-
-**Rule:** When in doubt, check the Tier-0 table above. Use only those 4 scripts.
-
----
-
-## 📚 Related Documentation
-
-### Core Guides
-- [Workflow Guide](workflow-guide.md) - Core process
-- [Script Reference](automation-scripts.md) - All commands
-- [Mistakes Prevention](mistakes-prevention.md) - Lessons learned
-
-### Entry Points
-- [Agent Workflow Master Guide](../agents/guides/agent-workflow-master-guide.md) - Complete agent guide
-- [Agent Quick Reference](../agents/guides/agent-quick-reference.md) - Cheat sheet
-- [Copilot Instructions](../../.github/copilot-instructions.md) - Primary agent rules
-
-### Research
-- [Research Index](research/README.md) - Links to comprehensive analysis and performance research
-
----
-
-## 📊 Success Metrics
-
-| Metric | Target | Current |
-|--------|--------|---------|
-| **Commit success rate** | 99% | 99.5% |
-| **Merge conflicts** | 0/week | 0/week |
-| **Average commit time** | <10s | 5s |
-| **Script coverage** | 100% | 100% (103 scripts) |
-| **Test coverage** | 95%+ | 86% |
-
----
-
-## 🔄 Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2026-01-11 | Initial professional structure |
-
----
-
-**Remember:** When in doubt, use `./scripts/ai_commit.sh "message"` - it handles everything!
+- [workflow-guide.md](../_archive/git-automation-consolidated/workflow-guide.md) — merged into sections 1, 4, 10
+- [automation-scripts.md](../_archive/git-automation-consolidated/automation-scripts.md) — merged into section 3
+- [efficient-agent-usage.md](../_archive/git-automation-consolidated/efficient-agent-usage.md) — merged into section 1
+- [mistakes-prevention.md](../_archive/git-automation-consolidated/mistakes-prevention.md) — merged into section 14
+- [advanced-coordination.md](../_archive/git-automation-consolidated/advanced-coordination.md) — merged into section 11

@@ -204,10 +204,10 @@ docs/contributing/
 
 | Need | File | Lines |
 |------|------|-------|
-| **Learn workflow** | [workflow-guide.md](../../git-automation/workflow-guide.md) | 300 |
-| **Find commands** | [automation-scripts.md](../../git-automation/automation-scripts.md) | 400 |
-| **Avoid mistakes** | [mistakes-prevention.md](../../git-automation/mistakes-prevention.md) | 600 |
-| **Advanced patterns** | [advanced-coordination.md](../../git-automation/advanced-coordination.md) | 300 |
+| **Learn workflow** | [workflow-guide.md](../git-automation-consolidated/workflow-guide.md) | 300 |
+| **Find commands** | [automation-scripts.md](../git-automation-consolidated/automation-scripts.md) | 400 |
+| **Avoid mistakes** | [mistakes-prevention.md](../git-automation-consolidated/mistakes-prevention.md) | 600 |
+| **Advanced patterns** | [advanced-coordination.md](../git-automation-consolidated/advanced-coordination.md) | 300 |
 | **Deep research** | [research/](../git-automation/research/) | 2,292 |
 
 ## Common Tasks
@@ -228,7 +228,7 @@ docs/contributing/
 
 ## Architecture
 
-Built on 103 automation scripts (see [automation-scripts.md](../../git-automation/automation-scripts.md)):
+Built on 103 automation scripts (see [automation-scripts.md](../git-automation-consolidated/automation-scripts.md)):
 - 59 Python scripts
 - 43 Shell scripts
 - 24/24 git workflow tests passing
@@ -444,9 +444,9 @@ mkdir -p docs/_archive/research/git-workflow/
 
 **Documentation:**
 - [Git Automation Hub](../README.md) - Entry point
-- [Workflow Guide](../../git-automation/workflow-guide.md) - Core process
-- [Script Reference](../../git-automation/automation-scripts.md) - All commands
-- [Mistakes Prevention](../../git-automation/mistakes-prevention.md) - Lessons learned
+- [Workflow Guide](../git-automation-consolidated/workflow-guide.md) - Core process
+- [Script Reference](../git-automation-consolidated/automation-scripts.md) - All commands
+- [Mistakes Prevention](../git-automation-consolidated/mistakes-prevention.md) - Lessons learned
 ```
 
 **2. docs/README.md** (Add git-automation section)

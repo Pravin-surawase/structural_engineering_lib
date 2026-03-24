@@ -37,8 +37,8 @@ This folder contains research documents related to git automation and workflow o
 ## Related Documentation
 
 - [Main Git Automation Hub](../README.md)
-- [Workflow Guide](../workflow-guide.md)
-- [Automation Scripts](../automation-scripts.md)
+- [Workflow Guide](../../_archive/git-automation-consolidated/workflow-guide.md)
+- [Automation Scripts](../../_archive/git-automation-consolidated/automation-scripts.md)
 
 ---
 

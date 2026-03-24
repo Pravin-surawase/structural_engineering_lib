@@ -234,8 +234,8 @@ git checkout -b worktree-AGENT_5-$(date +%Y-%m-%d-%H-%M-%S)
 
 ## 🔗 Related Documentation
 
-- [Workflow Guide](workflow-guide.md) - Core workflow and decision trees
-- [Automation Scripts](automation-scripts.md) - Script reference
+- [Workflow Guide](../_archive/git-automation-consolidated/workflow-guide.md) - Core workflow and decision trees
+- [Automation Scripts](../_archive/git-automation-consolidated/automation-scripts.md) - Script reference
 - [Mistakes Prevention](mistakes-prevention.md) - Historical lessons learned
 
 ---

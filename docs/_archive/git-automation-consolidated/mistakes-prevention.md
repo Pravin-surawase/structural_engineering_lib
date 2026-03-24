@@ -307,9 +307,9 @@ tail -50 logs/ci_monitor.log
 
 ## 🔗 Related Documentation
 
-- [Workflow Guide](workflow-guide.md) - Core workflow and scripts
-- [Automation Scripts](automation-scripts.md) - Script reference
-- [Advanced Coordination](advanced-coordination.md) - Multi-agent patterns
+- [Workflow Guide](../_archive/git-automation-consolidated/workflow-guide.md) - Core workflow and scripts
+- [Automation Scripts](../_archive/git-automation-consolidated/automation-scripts.md) - Script reference
+- [Advanced Coordination](../_archive/git-automation-consolidated/advanced-coordination.md) - Multi-agent patterns
 
 ---
 

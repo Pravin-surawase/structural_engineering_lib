@@ -248,6 +248,13 @@ case "$MODE" in
             git checkout main
             git pull --ff-only 2>/dev/null || true
 
+            # Clean up local task branch
+            local branch_name
+            branch_name=$(git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
+            if [[ -n "$branch_name" ]]; then
+                git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
+            fi
+
             echo ""
             echo -e "${GREEN}✓ PR merged and cleaned up!${NC}"
         else

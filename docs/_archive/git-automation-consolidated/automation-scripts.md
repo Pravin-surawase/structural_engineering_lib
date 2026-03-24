@@ -47,7 +47,7 @@ Reference for core git automation scripts (subset). For the full automation regi
   - Calls `create_task_pr.sh` for PR workflow
   - Logs all operations to `git_operations_log/`
 - **Success Rate:** 100%
-- **See:** [workflow-guide.md](workflow-guide.md) for protocol
+- **See:** [workflow-guide.md](../_archive/git-automation-consolidated/workflow-guide.md) for protocol
 
 **`safe_push.sh`** (13KB) - Core Workflow Engine
 ```bash
@@ -409,7 +409,7 @@ agent_start.sh
 
 ## 🔗 Related Documentation
 
-- [Workflow Guide](workflow-guide.md) - Core workflow and decision trees
+- [Workflow Guide](../_archive/git-automation-consolidated/workflow-guide.md) - Core workflow and decision trees
 - [Mistakes Prevention](mistakes-prevention.md) - Historical lessons learned
 - [Advanced Coordination](advanced-coordination.md) - Multi-agent patterns
 
