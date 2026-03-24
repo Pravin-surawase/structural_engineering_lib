@@ -7,18 +7,18 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ## 2026-03-24 — Session
 
 ### Summary
-**23 commits**, **208 files changed**
+**25 commits**, **217 files changed**
 
 **Chores:**
 - update OpenAPI baseline after schema drift
 
 **Documentation:**
+- session 92 end — handoff + tasks updated
+- session 92 end — handoff + tasks updated
 - complete folder audit batches 9-11 — archive, reference, agents (all 11 batches done)
 - folder audit batches 6-8 — tests, active docs, and research
 - folder audit batches 4-5 — Excel/VBA and scripts deep dive
-- folder audit batches 2-3 — Python core and UI layers
-- create folder audit plan with batch 1 results
-- ... and 4 more
+- ... and 6 more
 
 **Features:**
 - add AGENTS.md, prompt files, enrich agent instructions

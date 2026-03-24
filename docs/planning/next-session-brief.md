@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-23
+**Last Updated:** 2026-03-24
 
 ---
 
@@ -28,7 +28,7 @@
 
 ### Completed This Session
 
-**AI Agent Efficiency & Git Workflow Improvements:**
+**Part 1 — AI Agent Efficiency & Git Workflow Improvements:**
 
 1. **Created `AGENTS.md`** — Cross-agent instruction file (Copilot, Claude, Cursor, Windsurf etc.), ~80 lines
 2. **Enriched `.github/instructions/`** — Merged best content from `.claude/rules/` into all 5 existing files (hooks inventory, data flow patterns, fragment API examples, safe patterns)
@@ -37,6 +37,15 @@
 5. **Created 5 Copilot prompt files** — `.github/prompts/`: session-end, new-feature, bug-fix, add-api-endpoint, code-review
 6. **Improved PR template** — Added task reference, multi-stack testing, architecture checklist
 7. **Created implementation plan** — `docs/planning/ai-agent-efficiency-and-git-workflow-plan.md`
+
+**Part 2 — Post-Audit Deep Improvements:**
+
+8. **Created `scripts/check_instruction_drift.py`** — Detects content divergence between `.github/instructions/` and `.claude/rules/` (all 6 pairs now show ✅)
+9. **Fixed python-core instruction drift** — `.claude/rules/python-core.md` had "3-Layer" (wrong, now 4-Layer) and "43 functions" (wrong, now 23+6)
+10. **Refreshed 4 stale index files** — Python/, react_app/, streamlit_app/, Python/structural_lib/ (Python was 2 months stale with `file_count: 0`)
+11. **Categorized planning docs** — `docs/planning/README.md` now separates Active (7) vs Historical (10) documents
+12. **Tracked architecture violations** — 20+ streamlit imports from IS 456 layer added to TASKS.md Technical Debt section
+13. **Registered drift checker** — Added to `automation-map.json` (now 84/84 scripts mapped)
 
 **Key finding:** Many planned improvements already existed (conventional commit hook, PR template, .gitignore for logs/tmp). Careful research prevented duplicating 2 months of prior work.
 
@@ -47,10 +56,14 @@
 4. **React test infrastructure** — Zero test files, needs Vitest + core tests
 5. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
 
+### Technical Debt (needs dedicated sessions)
+- **Fix 20+ architecture violations** in streamlit_app/ (imports bypassing services/api.py)
+- **React test infrastructure** — zero test files, needs Vitest setup
+- **Split `ai_workspace.py`** — 5103 lines → 6 modules
+
 ### Lower-Priority Agent Infrastructure (from Session 92 plan)
 - P2: SESSION_LOG recent view (auto-truncate to last 10 sessions)
 - P2: Automation-map tags for better discoverability
-- P2: Refresh stale index.json files
 - P3: Copilot hooks (format-on-edit) — still in preview
 - P3: Copilot custom agents (.github/agents/) — experimental
 
