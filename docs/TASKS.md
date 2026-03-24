@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-24 (Session 93)
+**Updated:** 2026-03-25 (Session 93 — PR #436 merged)
 
 ---
 
@@ -56,7 +56,7 @@
 
 ## Active
 
-- **TASK-500** — Unified CLI (`run.sh` + `check_all.py`), onboarding audit, doc updates | PR #436
+(none — TASK-500 merged ✅)
 
 ## Up Next (v0.20 Sprint)
 

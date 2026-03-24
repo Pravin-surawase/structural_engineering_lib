@@ -5,16 +5,16 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-24<br>
+**Last Updated:** 2026-03-25<br>
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-24
-- Session: 93
-- Branch: task/TASK-500 (PR #436)
+- Date: 2026-03-25
+- Session: 93 (continued)
+- Branch: main (PR #436 merged)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -22,7 +22,22 @@
 | **Current** | v0.19.1 | ✅ Shipped (dashboard insights, ExportPanel, code checks wired) |
 | **Next** | v0.20.0 | 📋 V3 Foundation (code-splitting, SSE progress, REST fallback) |
 
-**Last Session:** Session 93 | **Focus:** Unified CLI (`run.sh` + `check_all.py`) + onboarding audit
+**Last Session:** Session 93 | **Focus:** Unified CLI merged + git workflow audit
+
+---
+
+## ✅ Session 93 Completion (Mar 25, 2026)
+
+### PR #436 Merged to Main
+- Fixed 3 CI failures: root file limit, governance config drift, scripts index format mismatch
+- Addressed 4 Copilot review comments (unused param, error handling, misleading description)
+- Removed 7 phantom archived scripts from `automation-map.json`
+- All 6 CI checks green → squash-merged to main
+
+### Git Workflow Audit
+- Full audit document: `docs/audit/git-workflow-audit-pr436.md`
+- 6 issues documented, 4 fixed in this session
+- Top recommendations: governance single source of truth, `check_all.py --baseline` mode
 
 ---
 
@@ -58,12 +73,14 @@
 - Both kept separate for stability
 
 ### Next Priorities
-1. **Finish PR #436** — merge TASK-500 to main (all 4 phases complete)
-2. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
-3. **REST fallback in DesignView** — when WebSocket is unavailable
-4. **SSE batch progress UI** — streaming.py router exists, needs React consumer
-4. **React test infrastructure** — Zero test files, needs Vitest + core tests
-5. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
+1. ~~**Finish PR #436**~~ — ✅ Merged to main
+2. **Governance single source of truth** — make `governance-limits.json` the only config (see audit ISSUE-1)
+3. **`check_all.py --baseline` mode** — distinguish new failures from pre-existing (see audit ISSUE-6)
+4. **Code-split Three.js bundles** — `index.js` chunk is 1.16 MB
+5. **REST fallback in DesignView** — when WebSocket is unavailable
+6. **SSE batch progress UI** — streaming.py router exists, needs React consumer
+7. **React test infrastructure** — Zero test files, needs Vitest + core tests
+8. **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR)
 
 ### Technical Debt (accurate count as of Session 92)
 - **2 architecture errors** — `rebar_optimizer`/`multi_objective_optimizer` bypass api facade (needs api.py expansion)
