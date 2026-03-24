@@ -103,7 +103,7 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
-**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.19.0`).
+**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.19.1`).
 
 ## Quick Start
 

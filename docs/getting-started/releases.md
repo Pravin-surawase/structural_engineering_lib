@@ -883,6 +883,21 @@ Older release notes may reference the historical stub paths that existed at the 
 
 ---
 
+## v0.19.1
+**Date:** 2026-03-24
+**Status:** ✅ Locked & Verified
+**Tag:** `v0.19.1`
+
+**Key Changes:**
+- React 19 frontend with R3F 3D visualization, live design, dual CSV import, export panel
+- FastAPI backend: 35 endpoints across 12 routers (design, geometry, import, export, websocket, etc.)
+- 4-layer architecture enforced: core/IS 456/services/UI with migration scripts and governance tests
+- Scripts consolidated: 163 → 84 active, with shared `_lib/` utilities
+- Developer tooling: AGENTS.md, automation-map (84 scripts), drift checker, sync_numbers
+- 240 commits, 267 lint fixes, 280+ stale references repaired
+
+---
+
 ## v0.19.0
 **Date:** 2026-01-21
 **Status:** ✅ Locked & Verified

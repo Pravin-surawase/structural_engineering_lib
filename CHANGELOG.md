@@ -4,7 +4,59 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.19.0] - 2026-01-21
+## [0.19.1] - 2026-03-24
+
+### Added
+- **React 19 Frontend (V3 Stack)** 🎉
+  - Modern Gen Z UI with BentoGrid layout and Tailwind CSS
+  - 3D beam visualization with React Three Fiber (`Viewport3D`)
+  - Building frame visualization with story-based color coding
+  - Live design via WebSocket (`useLiveDesign`, `useAutoDesign`)
+  - Dual CSV import with auto-column mapping (`useDualCSVImport`)
+  - AG Grid for beam data tables, cmdk command palette
+  - Cross-section view with rebar positions
+  - Export panel with BBS, DXF, and report downloads (`useExport`)
+  - Dashboard insights, code checks, and rebar suggestions wired into UI
+
+- **FastAPI Backend**
+  - 35 endpoints across 12 routers (design, detailing, geometry, import, export, insights, rebar, streaming, websocket, health, optimization, analysis)
+  - WebSocket resilience with reconnection and error handling
+  - Real CSV loading replacing hardcoded sample data
+  - OpenAPI snapshot test for schema drift detection
+
+- **4-Layer Architecture Enforcement**
+  - Migration: 10 core modules to `core/`, 17 service modules to `services/`, 9 root modules relocated
+  - `check_architecture_boundaries.py` enhanced with UI-layer import rules (11 forbidden patterns)
+  - Migration scripts: `migrate_python_module.py`, `migrate_react_component.py`
+  - Governance locking with integration tests
+  - Zero circular imports, zero broken imports (567 total, 220 internal)
+
+- **Developer Tooling**
+  - `AGENTS.md` — Cross-agent instructions for Copilot, Claude, Cursor, Windsurf
+  - 5 Copilot prompt files (session-end, new-feature, bug-fix, add-api-endpoint, code-review)
+  - `automation-map.json` with 84 scripts mapped
+  - `sync_numbers.py` + `session.py` for automated doc sync
+  - `check_instruction_drift.py` for agent instruction file consistency
+  - When-to-use docstrings for all 84 scripts
+  - Post-commit stale-number detection
+
+### Changed
+- **Scripts Consolidation** — 163 → 84 active scripts (Phase 1–3)
+  - Created `_lib/utils.py`, `_lib/output.py`, `_lib/ast_helpers.py` shared utilities
+  - Archived 53 deprecated scripts, consolidated 4 script groups
+- **React Component Organization** — Feature-grouped under `components/design/`, `components/import/`, `components/viewport/`, `components/layout/`, `components/pages/`, `components/ui/`
+- **CSS → Tailwind Migration** — All component styles migrated to Tailwind utility classes
+
+### Fixed
+- Architecture violations: 3 streamlit imports routed through `services.api` facade
+- Unit conversion annotations added to `shear.py` for clarity
+- 11 broken doc links repaired after file moves
+- 280+ stale script references fixed across 45 files
+- Scanner false positives eliminated, `safe_file_delete` 170x speedup
+- React hooks errors, 3D rendering, dual CSV UI issues resolved
+- Critical `ZeroDivisionError` risks in multi-format import fixed
+- NaN handling in editable results table
+- 267 ruff lint errors auto-fixed
 
 ### Added
 - **Industry-Standard DXF Export Improvements**
