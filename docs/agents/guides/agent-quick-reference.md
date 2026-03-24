@@ -28,13 +28,17 @@
 ## ⚡ Essential Commands (Memorize These)
 
 | Command | Purpose |
-|---------|---------|
-| `./scripts/agent_start.sh --quick` | **Start session (NEW - replaces 4 commands)** |
-| `./scripts/ai_commit.sh "msg"` | **Commit changes** |
-| `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
-| `./scripts/git_ops.sh --status` | **Analyze git state & get recommendation** |
-| `./scripts/agent_mistakes_report.sh` | **Common mistakes reminder** |
-| `.venv/bin/python scripts/session.py end` | **End session** |
+|---------|--------|
+| `./run.sh session start` | **Start session** |
+| `./run.sh commit "msg"` | **Commit changes** |
+| `./run.sh check --quick` | **Fast validation (<30s)** |
+| `./run.sh check` | **Full validation (28 checks)** |
+| `./run.sh pr create TASK-XXX "desc"` | **Create PR** |
+| `./run.sh find "topic"` | **Find scripts** |
+| `./run.sh find --api func` | **Get API signatures** |
+| `./run.sh test` | **Run tests** |
+| `./run.sh session end` | **End session** |
+| `./run.sh --help` | **Full command reference** |
 
 ---
 
@@ -104,28 +108,26 @@ Is this >50 lines OR 2+ files?
 # 2. Make changes & commit
 ./scripts/ai_commit.sh "fix: update signatures"
 
-# 3. Submit PR
-./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --async
+# 3. Submit PR (polls CI, auto-merges when green)
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks"
 
-# 4. Check CI status
-./scripts/pr_async_merge.sh status
+# 4. Check CI status manually if needed
+gh pr checks <PR_NUMBER>
 ```
 
 **Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in this PR and log the PR number.
 
-### Pattern 3: Background Agent (Long Tasks)
+### Pattern 3: Long Tasks (Same Branch)
 ```bash
-# 1. Create worktree
-./scripts/worktree_manager.sh create AGENT_5
+# 1. Create branch
+./scripts/create_task_pr.sh TASK-XXX "Long task description"
 
-# 2. Work in worktree
-cd worktree-AGENT_5-*
-# ... make changes ...
-../scripts/ai_commit.sh "feat: module complete"
+# 2. Make changes & commit frequently
+./scripts/ai_commit.sh "feat: step 1 done"
+./scripts/ai_commit.sh "feat: step 2 done"
 
-# 3. Submit when done
-cd $PROJECT_ROOT
-./scripts/worktree_manager.sh submit AGENT_5 "Work description"
+# 3. Submit PR when all work is complete
+./scripts/finish_task_pr.sh TASK-XXX "Long task description"
 ```
 
 ---
@@ -136,8 +138,8 @@ cd $PROJECT_ROOT
 |---------|----------|
 | **Git is broken** | `./scripts/recover_git_state.sh` |
 | **Merge conflict** | `./scripts/check_unfinished_merge.sh` |
-| **Don't know what to do** | `./scripts/git_ops.sh --status` |
-| **Check git health** | `./scripts/git_automation_health.sh` |
+| **Don't know what to do** | `git status && git log --oneline -5` |
+| **Check git health** | `./scripts/validate_git_state.sh` |
 | **CI failed on format** | `cd Python && python -m black . && cd .. && ./scripts/ai_commit.sh "style: format"` |
 | **Version drift** | `.venv/bin/python scripts/check_doc_versions.py --fix` |
 | **Hooks not installed** | `./scripts/install_git_hooks.sh` |
@@ -171,9 +173,9 @@ Keep public signatures stable unless explicitly approved.
 | Before task | *(included in agent_start.sh)* |
 | Simple doc edit | `./scripts/ai_commit.sh "docs: fix typo"` |
 | Production code | `./scripts/create_task_pr.sh → ... → finish_task_pr.sh` |
-| Long background task | `./scripts/worktree_manager.sh create AGENT_N` |
-| Check worktrees | `./scripts/worktree_manager.sh list` |
-| Submit agent work | `./scripts/worktree_manager.sh submit AGENT_N "desc"` |
+| Long multi-step task | `./scripts/create_task_pr.sh TASK-XXX "desc"` |
+| Check PR status | `gh pr checks <PR_NUMBER>` |
+| Submit & merge PR | `./scripts/finish_task_pr.sh TASK-XXX "desc"` |
 | End day | `.venv/bin/python scripts/session.py end` |
 
 ---
@@ -184,8 +186,8 @@ Keep public signatures stable unless explicitly approved.
 - Use ai_commit.sh for ALL commits
 - Run agent_start.sh --quick before starting
 - Check should_use_pr.sh when unsure
-- Use worktrees for parallel work
 - End session with session.py end
+- Use `find_automation.py` when unsure which script to use
 
 ### ❌ DON'T
 - Use `git add/commit/push` manually
@@ -206,8 +208,8 @@ scripts/
 ├── should_use_pr.sh         # Decision helper
 ├── create_task_pr.sh        # Start PR
 ├── finish_task_pr.sh        # Submit PR
-├── worktree_manager.sh      # Agent workspaces
 ├── recover_git_state.sh     # Emergency recovery
+├── find_automation.py       # Find the right script
 └── session.py               # End session
 
 docs/agents/

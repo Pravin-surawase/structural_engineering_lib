@@ -2,8 +2,40 @@
 
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 > **Owner:** All contributors
-> **Last Updated:** 2026-01-24
-> **Total Scripts:** 152
+> **Last Updated:** 2026-03-24
+> **Total Scripts:** 78 active (100 archived)
+
+## 🚀 Unified CLI (`./run.sh`)
+
+All scripts are accessible through `./run.sh` at the repo root — **use this instead of calling scripts directly:**
+
+```bash
+./run.sh session start              # Begin work
+./run.sh commit "type: message"     # Commit safely
+./run.sh check --quick              # Fast validation (8 checks, <30s)
+./run.sh check                      # Full validation (28 checks, parallel)
+./run.sh check --category api       # Run one category only
+./run.sh check --json               # Machine-readable output
+./run.sh test                       # Run pytest suite
+./run.sh pr create TASK-XXX "desc"  # Start a PR
+./run.sh find "topic"               # Discover scripts by task
+./run.sh find --api func_name       # Get API param names
+./run.sh audit                      # Full readiness audit
+./run.sh generate indexes           # Regenerate folder indexes
+./run.sh session end                # Wrap up
+```
+
+Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
+
+### Architecture
+
+`run.sh` is a **thin bash dispatcher** — no logic, just routes to existing scripts:
+- `./run.sh check` → `scripts/check_all.py` (parallel orchestrator, 28 checks across 9 categories)
+- `./run.sh commit` → `scripts/ai_commit.sh`
+- `./run.sh test` → `Python/.venv/bin/pytest` or specialized test scripts
+- `./run.sh find` → `scripts/find_automation.py` / `scripts/discover_api_signatures.py`
+
+Both paths work: `./run.sh check --category git` and `.venv/bin/python scripts/validate_git_state.sh` are equivalent.
 
 ## 🤖 For AI Agents: Quick Discovery
 
@@ -11,7 +43,7 @@
 
 ```python
 # In your context, load this file for full script catalog:
-# scripts/index.json - Contains all 152 scripts organized by category
+# scripts/index.json - Contains all scripts organized by category
 ```
 
 **Key categories in index.json:**
@@ -23,8 +55,8 @@
 
 **Start here:**
 ```bash
-./scripts/agent_start.sh --quick   # Start session
-./scripts/ai_commit.sh "message"   # Commit changes
+./run.sh session start             # Start session
+./run.sh commit "message"          # Commit changes
 ./scripts/recover_git_state.sh     # Fix git issues
 ```
 
@@ -44,9 +76,10 @@
 ### Code Quality & Validation
 | Script | Purpose |
 |--------|---------|
-| `check_links.py` | Validate internal markdown links |
-| `check_links.py` | Auto-fix broken links |
-| `check_folder_structure.py` | Validate multi-code architecture |
+| `check_links.py` | Validate and fix broken internal markdown links |
+| `check_governance.py` | Unified governance — folder structure + compliance (`--structure`, `--compliance`) |
+| `check_docs.py` | Unified doc checker — metadata, frontmatter, index (`--metadata`, `--all`) |
+| `check_api.py` | Unified API checker — signatures, docs sync (`--signatures`, `--sync`) |
 | `check_streamlit.py` | Unified Streamlit validation (AST scanner + fragment checks) |
 | `check_doc_versions.py` | Check version drift in docs |
 | `generate_api_manifest.py` | Generate API manifest JSON |
@@ -57,25 +90,30 @@
 |--------|---------|
 | `safe_file_move.py` | Move files with link updates |
 | `safe_file_delete.py` | Delete files with reference check |
-| `check_folder_readmes.py` | Verify README presence |
-| `find_orphan_files.py` | Find unreferenced docs |
 | `archive_old_files.sh` | Archive old docs (90-day policy) |
-| `archive_old_sessions.sh` | Archive old session docs |
 
 ### Documentation & Indexing
 | Script | Purpose |
 |--------|---------|
 | `generate_docs_index.py` | Generate docs-index.json |
+| `generate_enhanced_index.py` | Generate index.json + index.md for any folder |
+| `generate_all_indexes.sh` | Regenerate all folder indexes |
 | `check_docs.py --index` | Validate docs index structure |
-| `check_governance.py --index-links` | Validate docs index links |
+| `check_docs.py --index-links` | Validate docs index links |
 
 ### Session Management
 | Script | Purpose |
 |--------|---------|
-| `session.py` | Unified session management (start, end, handoff, check) |
-| `agent_start.sh` | Agent environment setup |
-| `agent_start.sh` | Pre-flight checks |
+| `session.py` | Unified session management (start, end, handoff, check, summary, sync) |
+| `agent_start.sh` | Agent environment setup + pre-flight checks |
 | `collect_diagnostics.py` | Bundle debug context (env, git, logs) |
+
+### Script Discovery
+| Script | Purpose |
+|--------|--------|
+| `find_automation.py` | Find the right script for a task (fuzzy search) |
+| `discover_api_signatures.py` | Look up exact API function parameters |
+| `validate_script_refs.py` | Detect stale references to archived scripts |
 
 ### Release & Versioning
 | Script | Purpose |
@@ -103,16 +141,24 @@ When working with scripts:
 
 ```bash
 # Start session
-./scripts/agent_start.sh && ./scripts/agent_start.sh
+./scripts/agent_start.sh --quick
+
+# Find the right script
+.venv/bin/python scripts/find_automation.py "your task"
 
 # Safe file operations
-python scripts/safe_file_move.py old.md new.md --dry-run
-python scripts/safe_file_delete.py file.md --dry-run
+.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
+.venv/bin/python scripts/safe_file_delete.py file.md --dry-run
 
 # Validate before commit
-python scripts/check_links.py
-python scripts/check_folder_structure.py
+.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_governance.py
 
 # Commit changes
 ./scripts/ai_commit.sh "feat: description"
+
+# PR workflow
+./scripts/create_task_pr.sh TASK-XXX "description"
+# ... make changes and commit ...
+./scripts/finish_task_pr.sh TASK-XXX "description"
 ```

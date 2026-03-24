@@ -1,10 +1,26 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-03-23",
+  "_updated": "2026-03-24",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "84/84 scripts mapped",
+  "_coverage": "83/83 scripts mapped",
 
   "tasks": {
+    "run all checks": {
+      "script": ".venv/bin/python scripts/check_all.py",
+      "description": "Run all 28 validation checks across 9 categories in parallel (also: ./run.sh check)",
+      "options": {
+        "--quick": "Run 8 quick checks only (<30s)",
+        "--category X": "Run checks for specific category",
+        "--changed": "Auto-detect categories from git diff",
+        "--fix": "Auto-fix where possible",
+        "--json": "JSON output for CI",
+        "--serial": "Run sequentially (debugging)"
+      }
+    },
+    "validate script references": {
+      "script": ".venv/bin/python scripts/validate_script_refs.py",
+      "description": "Detect stale script references across docs and instruction files"
+    },
     "commit code": {
       "script": "./scripts/ai_commit.sh \"message\"",
       "description": "Stage, commit, and push with all safety checks",
@@ -43,7 +59,7 @@
       }
     },
     "run tests": {
-      "script": "cd Python && .venv/bin/pytest tests/ -v",
+      "script": "./run.sh test",
       "description": "Run Python test suite (85% coverage gate)"
     },
     "watch tests": {
@@ -171,18 +187,6 @@
       "script": ".venv/bin/python scripts/check_type_annotations.py",
       "description": "Check type annotation coverage in Streamlit application"
     },
-    "check ui duplication": {
-      "script": ".venv/bin/python scripts/check_ui_duplication.py",
-      "description": "Scan for duplicated UI code across Streamlit pages"
-    },
-    "check performance issues": {
-      "script": ".venv/bin/python scripts/check_performance_issues.py",
-      "description": "Detect performance anti-patterns in Streamlit application"
-    },
-    "check cost optimizer": {
-      "script": ".venv/bin/python scripts/check_cost_optimizer_issues.py",
-      "description": "Detect common cost optimizer bugs and issues"
-    },
     "check docs": {
       "script": ".venv/bin/python scripts/check_docs.py",
       "description": "Unified doc checker — index, links, metadata validation"
@@ -208,8 +212,8 @@
       }
     },
     "validate streamlit session state": {
-      "script": ".venv/bin/python scripts/validate_session_state.py",
-      "description": "Audit st.session_state usage — uninitialized keys, missing defaults, type inconsistencies"
+      "script": ".venv/bin/python scripts/check_streamlit.py --all-pages",
+      "description": "Audit Streamlit session state and runtime patterns (consolidated into check_streamlit.py)"
     },
     "check docker config": {
       "script": ".venv/bin/python scripts/check_docker_config.py",
@@ -345,18 +349,6 @@
       "script": ".venv/bin/python scripts/generate_client_sdks.py",
       "description": "Generate TypeScript/Python client SDKs from FastAPI OpenAPI spec"
     },
-    "generate streamlit page": {
-      "script": ".venv/bin/python scripts/generate_streamlit_page.py",
-      "description": "Scaffold a new Streamlit page with proper imports and patterns"
-    },
-    "launch streamlit": {
-      "script": "./scripts/launch_streamlit.sh",
-      "description": "Start the Streamlit development server with proper configuration"
-    },
-    "profile streamlit page": {
-      "script": ".venv/bin/python scripts/profile_streamlit_page.py",
-      "description": "Profile Streamlit page performance — render times, memory, etc."
-    },
     "lint vba": {
       "script": ".venv/bin/python scripts/lint_vba.py",
       "description": "VBA syntax linting — validate before Excel import"
@@ -457,7 +449,8 @@
     "governance": [
       "check folder structure", "check governance", "governance health score",
       "check repo hygiene", "check root file count",
-      "check wip limits", "check scripts index"
+      "check wip limits", "check scripts index",
+      "run all checks", "validate script references"
     ],
     "audit": [
       "generate audit report", "audit error handling", "audit input validation"
@@ -470,7 +463,7 @@
     "generation": [
       "generate folder index", "generate all indexes",
       "generate docs index", "generate client sdks",
-      "generate streamlit page", "generate api manifest"
+      "generate api manifest"
     ],
     "release": [
       "bump version", "release", "check version consistency"

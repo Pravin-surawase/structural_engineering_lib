@@ -494,7 +494,7 @@ class TestCostOptimizerComprehensive:
 ### 5. Automated Issue Detection
 
 ```python
-# scripts/check_cost_optimizer_issues.py
+# scripts/_archive/check_cost_optimizer_issues.py
 
 def check_for_common_issues(filepath: str) -> list[str]:
     """Detect common issues automatically."""

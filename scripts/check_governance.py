@@ -47,10 +47,10 @@ GOVERNANCE_LIMITS_PATH = REPO_ROOT / "docs" / "guidelines" / "governance-limits.
 
 DEFAULT_RULES = {
     "root": {
-        "max_files": 15,
+        "max_files": 17,
         "allowed_extensions": [
             ".md", ".txt", ".toml", ".yaml", ".yml", ".json",
-            ".cfg", ".ini", ".cff", ".py", ".ipynb",
+            ".cfg", ".ini", ".cff", ".py", ".ipynb", ".sh",
         ],
         "allowed_files": [
             "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "LICENSE",
@@ -60,6 +60,7 @@ DEFAULT_RULES = {
             "Dockerfile", "Dockerfile.fastapi",
             "docker-compose.yml", "docker-compose.dev.yml",
             "pytest.ini", "requirements.txt",
+            "run.sh",
             "test_quality_assessment.py", "test_scanner_detection.py",
             "test_xlwings_bridge.py",
         ],

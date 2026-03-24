@@ -66,12 +66,7 @@ DOC_VERSION_FILES = {
     "docs/README.md": [
         # Now links to TASKS.md, no version to update
     ],
-    "docs/ai-context-pack.md": [
-        (
-            r"^\|\s*\*\*Current Release\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
-            "| **Current Release** | v{version}",
-        ),
-    ],
+    # docs/ai-context-pack.md removed (file no longer exists)
     "docs/planning/production-roadmap.md": [
         (r"^(> \*\*Current Status:\*\* )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
     ],

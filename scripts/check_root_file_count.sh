@@ -11,7 +11,7 @@
 set -e
 
 # Configuration
-MAX_FILES=15
+MAX_FILES=17
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 

@@ -3,32 +3,32 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-03-24",
-  "file_count": 86,
+  "file_count": 81,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 119,
-      "last_updated": "2026-02-11",
+      "size_lines": 165,
+      "last_updated": "2026-03-24",
       "title": "Scripts",
       "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks > **Owner:** All contributors",
-      "content_hash": "7df24c985321"
+      "content_hash": "9a4b16b64794"
     },
     {
       "name": "agent_mistakes_report.sh",
       "type": "shell-script",
       "size_lines": 135,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "description": "Agent Mistakes Report",
-      "content_hash": "b51626bd324f"
+      "content_hash": "5652d225345a"
     },
     {
       "name": "agent_start.sh",
       "type": "shell-script",
-      "size_lines": 316,
-      "last_updated": "2026-03-23",
+      "size_lines": 321,
+      "last_updated": "2026-03-24",
       "description": "Unified Agent Start Script",
-      "content_hash": "22f25470e238"
+      "content_hash": "ca1f067561c5"
     },
     {
       "name": "ai_commit.sh",
@@ -160,8 +160,8 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 815,
-      "last_updated": "2026-03-23",
+      "size_lines": 814,
+      "last_updated": "2026-03-24",
       "description": "Audit Readiness Report Generator",
       "classes": [
         {
@@ -251,7 +251,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "9c310de7316f"
+      "content_hash": "9b955fdbffde"
     },
     {
       "name": "automation-map.json",
@@ -265,7 +265,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "6511ee07dd8a"
+      "content_hash": "d1178e0a7f1a"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -403,8 +403,8 @@
     {
       "name": "bump_version.py",
       "type": "python",
-      "size_lines": 397,
-      "last_updated": "2026-03-23",
+      "size_lines": 392,
+      "last_updated": "2026-03-24",
       "description": "Version Bump Script — Single Source of Truth",
       "functions": [
         {
@@ -432,7 +432,38 @@
         "DOC_DATE_FILES",
         "EVERGREEN_NOTES"
       ],
-      "content_hash": "b7fe7b62ad64"
+      "content_hash": "e2c9e9096456"
+    },
+    {
+      "name": "check_all.py",
+      "type": "python",
+      "size_lines": 673,
+      "last_updated": "2026-03-24",
+      "description": "Unified check orchestrator — runs all validation scripts in parallel.",
+      "classes": [
+        {
+          "name": "Check",
+          "description": "Definition of a single validation check."
+        },
+        {
+          "name": "Category",
+          "description": "A group of related checks."
+        },
+        {
+          "name": "CheckResult",
+          "description": "Result of running a single check."
+        }
+      ],
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "VENV_PYTHON",
+        "SCRIPTS_DIR"
+      ],
+      "content_hash": "526d654ccddb"
     },
     {
       "name": "check_api.py",
@@ -696,40 +727,6 @@
       "content_hash": "2ed4dec8ffb8"
     },
     {
-      "name": "check_cost_optimizer_issues.py",
-      "type": "python",
-      "size_lines": 237,
-      "last_updated": "2026-03-23",
-      "description": "Automated detection of common cost optimizer issues.",
-      "classes": [
-        {
-          "name": "IssueDetector",
-          "description": "AST visitor to detect code issues.",
-          "public_methods": [
-            "visit_FunctionDef",
-            "visit_Import",
-            "visit_ImportFrom",
-            "visit_Subscript",
-            "visit_BinOp"
-          ]
-        }
-      ],
-      "functions": [
-        {
-          "name": "check_file",
-          "description": "Check a single file for issues.",
-          "params": [
-            "filepath"
-          ]
-        },
-        {
-          "name": "main",
-          "description": "Main entry point."
-        }
-      ],
-      "content_hash": "d5c0cc7baff9"
-    },
-    {
       "name": "check_doc_versions.py",
       "type": "python",
       "size_lines": 72,
@@ -913,8 +910,8 @@
     {
       "name": "check_governance.py",
       "type": "python",
-      "size_lines": 847,
-      "last_updated": "2026-03-23",
+      "size_lines": 848,
+      "last_updated": "2026-03-24",
       "description": "Unified governance checker — folder structure + compliance validation.",
       "classes": [
         {
@@ -1061,7 +1058,7 @@
         "DEFAULT_RULES",
         "RULES"
       ],
-      "content_hash": "8f24739aad8a"
+      "content_hash": "b5ea09542a7c"
     },
     {
       "name": "check_instruction_drift.py",
@@ -1160,56 +1157,6 @@
       "content_hash": "e709b9a77a56"
     },
     {
-      "name": "check_performance_issues.py",
-      "type": "python",
-      "size_lines": 597,
-      "last_updated": "2026-03-23",
-      "description": "Performance Issue Detector for Streamlit Application",
-      "classes": [
-        {
-          "name": "Severity",
-          "description": "Issue severity levels."
-        },
-        {
-          "name": "PerformanceIssue",
-          "description": "Represents a detected performance issue.",
-          "public_methods": [
-            "to_dict"
-          ]
-        },
-        {
-          "name": "PerformanceVisitor",
-          "description": "AST visitor to detect performance issues.",
-          "public_methods": [
-            "visit_FunctionDef",
-            "visit_AsyncFunctionDef",
-            "visit_For",
-            "visit_While",
-            "visit_ListComp",
-            "visit_Call",
-            "visit_BinOp"
-          ]
-        },
-        {
-          "name": "PerformanceChecker",
-          "description": "Main checker class.",
-          "public_methods": [
-            "check_all",
-            "check_file",
-            "get_summary",
-            "print_report",
-            "to_json"
-          ]
-        }
-      ],
-      "functions": [
-        {
-          "name": "main"
-        }
-      ],
-      "content_hash": "6146e4598b07"
-    },
-    {
       "name": "check_python_version.py",
       "type": "python",
       "size_lines": 215,
@@ -1277,9 +1224,9 @@
       "name": "check_root_file_count.sh",
       "type": "shell-script",
       "size_lines": 51,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-24",
       "description": "Check Root File Count",
-      "content_hash": "1ed4b46f1779"
+      "content_hash": "9499f376e927"
     },
     {
       "name": "check_scripts_index.py",
@@ -1452,110 +1399,6 @@
         }
       ],
       "content_hash": "6de55b6c5601"
-    },
-    {
-      "name": "check_ui_duplication.py",
-      "type": "python",
-      "size_lines": 619,
-      "last_updated": "2026-03-23",
-      "description": "Streamlit UI Duplication Scanner.",
-      "classes": [
-        {
-          "name": "FunctionInfo",
-          "description": "Information about a function definition."
-        },
-        {
-          "name": "DuplicationReport",
-          "description": "Report of duplication findings."
-        }
-      ],
-      "functions": [
-        {
-          "name": "extract_functions",
-          "description": "Extract function definitions from a Python file.",
-          "params": [
-            "file_path"
-          ]
-        },
-        {
-          "name": "normalize_code",
-          "description": "Normalize code for comparison by removing variable names and whitespace.",
-          "params": [
-            "code"
-          ]
-        },
-        {
-          "name": "levenshtein_distance",
-          "description": "Calculate Levenshtein distance between two strings.",
-          "params": [
-            "s1",
-            "s2"
-          ]
-        },
-        {
-          "name": "code_similarity",
-          "description": "Calculate similarity ratio between two code snippets using line matching.",
-          "params": [
-            "code1",
-            "code2"
-          ]
-        },
-        {
-          "name": "name_similarity",
-          "description": "Calculate similarity between function names.",
-          "params": [
-            "name1",
-            "name2"
-          ]
-        },
-        {
-          "name": "extract_imports",
-          "description": "Extract import statements from a Python file.",
-          "params": [
-            "file_path"
-          ]
-        },
-        {
-          "name": "scan_directory",
-          "description": "Scan a directory for function definitions.",
-          "params": [
-            "directory"
-          ]
-        },
-        {
-          "name": "find_duplicates",
-          "description": "Find duplicate and similar functions.",
-          "params": [
-            "functions"
-          ]
-        },
-        {
-          "name": "format_console_report",
-          "description": "Format report for console output.",
-          "params": [
-            "report",
-            "show_similar"
-          ]
-        },
-        {
-          "name": "format_json_report",
-          "description": "Format report as JSON.",
-          "params": [
-            "report"
-          ]
-        },
-        {
-          "name": "main",
-          "description": "Main entry point."
-        }
-      ],
-      "constants": [
-        "MIN_FUNCTION_LINES",
-        "SIMILARITY_THRESHOLD",
-        "SCAN_DIRS",
-        "EXCLUDE_PATTERNS"
-      ],
-      "content_hash": "9ef4417ad22e"
     },
     {
       "name": "check_unfinished_merge.sh",
@@ -1918,18 +1761,18 @@
     {
       "name": "finish_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 300,
+      "size_lines": 289,
       "last_updated": "2026-03-24",
       "description": "Finish task work and create PR",
-      "content_hash": "76c7452bed98"
+      "content_hash": "441d02a5dfd8"
     },
     {
       "name": "generate_all_indexes.sh",
       "type": "shell-script",
       "size_lines": 51,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "description": "Generate index.json + index.md for all research-relevant folders",
-      "content_hash": "e47c894ef8d9"
+      "content_hash": "32dbf76b936d"
     },
     {
       "name": "generate_api_manifest.py",
@@ -2147,47 +1990,6 @@
       "content_hash": "f45389dc7e4c"
     },
     {
-      "name": "generate_streamlit_page.py",
-      "type": "python",
-      "size_lines": 477,
-      "last_updated": "2026-03-23",
-      "description": "Streamlit Page Scaffold Generator",
-      "functions": [
-        {
-          "name": "sanitize_filename",
-          "description": "Convert title to valid filename.",
-          "params": [
-            "title"
-          ]
-        },
-        {
-          "name": "get_next_page_number",
-          "description": "Get the next available page number.",
-          "params": [
-            "pages_dir"
-          ]
-        },
-        {
-          "name": "generate_page",
-          "description": "Generate a new Streamlit page.",
-          "params": [
-            "title",
-            "icon",
-            "output_path",
-            "description"
-          ]
-        },
-        {
-          "name": "main"
-        }
-      ],
-      "constants": [
-        "PAGE_TEMPLATE",
-        "ICON_SUGGESTIONS"
-      ],
-      "content_hash": "9d630ac9af9d"
-    },
-    {
       "name": "governance_health_score.py",
       "type": "python",
       "size_lines": 515,
@@ -2231,14 +2033,6 @@
       "last_updated": "2026-03-24",
       "description": "Install versioned git hooks via core.hooksPath",
       "content_hash": "c41580c0127a"
-    },
-    {
-      "name": "launch_streamlit.sh",
-      "type": "shell-script",
-      "size_lines": 346,
-      "last_updated": "2026-02-11",
-      "description": "=============================================================================",
-      "content_hash": "5b96abc8ea4e"
     },
     {
       "name": "lint_vba.py",
@@ -2426,107 +2220,6 @@
       "last_updated": "2026-01-23",
       "description": "Pre-flight checks before committing",
       "content_hash": "3d2f4a8c9b58"
-    },
-    {
-      "name": "profile_streamlit_page.py",
-      "type": "python",
-      "size_lines": 633,
-      "last_updated": "2026-03-23",
-      "description": "Streamlit Performance Profiler",
-      "classes": [
-        {
-          "name": "FunctionProfile",
-          "description": "Profile data for a single function.",
-          "public_methods": [
-            "is_slow",
-            "formatted_time"
-          ]
-        },
-        {
-          "name": "PageProfile",
-          "description": "Profile data for a Streamlit page.",
-          "public_methods": [
-            "is_healthy"
-          ]
-        },
-        {
-          "name": "ProfileReport",
-          "description": "Complete profiling report.",
-          "public_methods": [
-            "to_dict"
-          ]
-        },
-        {
-          "name": "StreamlitCallAnalyzer",
-          "description": "Analyzes Streamlit function calls in source code.",
-          "public_methods": [
-            "visit_Call"
-          ]
-        }
-      ],
-      "functions": [
-        {
-          "name": "analyze_streamlit_calls",
-          "description": "Analyze Streamlit calls in a Python file.",
-          "params": [
-            "filepath"
-          ]
-        },
-        {
-          "name": "profile_import",
-          "description": "Profile importing a module.",
-          "params": [
-            "module_path"
-          ]
-        },
-        {
-          "name": "extract_function_profiles",
-          "description": "Extract function profiles from pstats.",
-          "params": [
-            "stats"
-          ]
-        },
-        {
-          "name": "profile_page",
-          "description": "Profile a single Streamlit page.",
-          "params": [
-            "page_path"
-          ]
-        },
-        {
-          "name": "analyze_page_complexity",
-          "description": "Analyze page complexity using static analysis.",
-          "params": [
-            "page_path"
-          ]
-        },
-        {
-          "name": "format_report",
-          "description": "Format report for console output.",
-          "params": [
-            "report",
-            "verbose"
-          ]
-        },
-        {
-          "name": "format_complexity_report",
-          "description": "Format complexity analysis report.",
-          "params": [
-            "pages"
-          ]
-        },
-        {
-          "name": "find_streamlit_pages",
-          "description": "Find all Streamlit pages in project.",
-          "params": [
-            "project_root"
-          ]
-        },
-        {
-          "name": "main"
-        }
-      ],
-      "content_hash": "5b70c4f58f48"
     },
     {
       "name": "recover_git_state.sh",
@@ -2729,8 +2422,8 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 1260,
-      "last_updated": "2026-03-23",
+      "size_lines": 1288,
+      "last_updated": "2026-03-24",
       "description": "Unified session management CLI.",
       "functions": [
         {
@@ -2763,9 +2456,7 @@
         },
         {
           "name": "run_handoff_check",
-          "params": [
-            "skip_tests"
-          ]
+          "description": "Inline handoff check — validates key session docs exist and are current."
         },
         {
           "name": "cmd_start",
@@ -2833,15 +2524,15 @@
         "COMMIT_HASH_RE",
         "TASKS_HISTORY"
       ],
-      "content_hash": "ea742f980da8"
+      "content_hash": "9e4dcf3da8e5"
     },
     {
       "name": "should_use_pr.sh",
       "type": "shell-script",
-      "size_lines": 440,
-      "last_updated": "2026-01-23",
+      "size_lines": 461,
+      "last_updated": "2026-03-24",
       "description": "Helper script: Should this change use a Pull Request?",
-      "content_hash": "e744b931f999"
+      "content_hash": "008cf37d9e1a"
     },
     {
       "name": "sync_numbers.py",
@@ -3282,70 +2973,52 @@
       "content_hash": "7265a99c1b89"
     },
     {
-      "name": "validate_session_state.py",
+      "name": "validate_script_refs.py",
       "type": "python",
-      "size_lines": 408,
-      "last_updated": "2026-03-23",
-      "description": "Session State Validator (TASK-413)",
-      "classes": [
-        {
-          "name": "SessionStateUsage",
-          "description": "Tracks a single usage of session_state."
-        },
-        {
-          "name": "SessionStateReport",
-          "description": "Summary report for session_state analysis."
-        },
-        {
-          "name": "SessionStateVisitor",
-          "description": "AST visitor to extract session_state usage patterns.",
-          "public_methods": [
-            "visit_FunctionDef",
-            "visit_Compare",
-            "visit_Subscript",
-            "visit_Attribute",
-            "visit_Call"
-          ]
-        }
-      ],
+      "size_lines": 167,
+      "last_updated": "2026-03-24",
+      "description": "Validate that active scripts don't reference archived scripts at runtime.",
       "functions": [
         {
-          "name": "analyze_file",
-          "description": "Analyze a single file for session_state usage.",
+          "name": "get_archived_names",
+          "description": "Get set of archived script filenames that DON'T have active replacements."
+        },
+        {
+          "name": "is_doc_line",
+          "description": "Check if line is documentation, not a runtime reference.",
           "params": [
-            "filepath"
+            "line"
           ]
         },
         {
-          "name": "analyze_codebase",
-          "description": "Analyze entire Streamlit codebase for session_state usage.",
+          "name": "check_file",
+          "description": "Check a single file for stale references to archived scripts.",
           "params": [
-            "base_dir",
-            "verbose"
+            "filepath",
+            "archived_names"
           ]
         },
         {
-          "name": "print_report",
-          "description": "Print session state audit report.",
-          "params": [
-            "report",
-            "verbose"
-          ]
-        },
-        {
-          "name": "main",
-          "description": "Main entry point."
+          "name": "main"
         }
       ],
-      "content_hash": "c43027da9053"
+      "constants": [
+        "REPO_ROOT",
+        "SCRIPTS_DIR",
+        "ARCHIVE_DIR",
+        "DOC_PATTERNS",
+        "RUNTIME_PATTERNS_PY",
+        "RUNTIME_PATTERNS_SH"
+      ],
+      "content_hash": "490356394cb4"
     },
     {
       "name": "watch_tests.sh",
       "type": "shell-script",
       "size_lines": 91,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "description": "Watch Mode (Solution 5 - Dev Automation)",
-      "content_hash": "e87d92fe2217"
+      "content_hash": "8566c68fdfc4"
     }
   ],
   "subfolders": [
@@ -3355,5 +3028,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "36586fded6952f81"
+  "content_hash": "74d9cd487c5eb906"
 }

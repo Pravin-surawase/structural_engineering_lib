@@ -221,7 +221,7 @@ def error_section(section_name: str):
 **Actual Measurements Needed:**
 ```bash
 # Baseline (current state):
-time .venv/bin/python scripts/check_cost_optimizer_issues.py
+time .venv/bin/python scripts/_archive/check_cost_optimizer_issues.py
 # Result: 0.8 seconds
 
 # Projected (all pages):
@@ -579,7 +579,7 @@ SCHEMA = {
 - [STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md](streamlit-comprehensive-prevention-system.md)
 
 ### Related Systems
-- [Cost Optimizer Prevention](../../scripts/check_cost_optimizer_issues.py)
+- [Cost Optimizer Prevention](../../scripts/_archive/check_cost_optimizer_issues.py)
 - [Cost Optimizer Validators](../../streamlit_app/utils/cost_optimizer_validators.py)
 - [Error Boundaries](../../streamlit_app/utils/cost_optimizer_error_boundary.py)
 

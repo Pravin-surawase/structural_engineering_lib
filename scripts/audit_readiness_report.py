@@ -329,10 +329,10 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
             )
         )
 
-    # Check API signatures
-    api_checker = Path("scripts/check_api_signatures.py")
+    # Check API signatures (consolidated into check_api.py)
+    api_checker = Path("scripts/check_api.py")
     if api_checker.exists():
-        code, stdout, stderr = run_script(str(api_checker))
+        code, stdout, stderr = run_script(str(api_checker), ["--signatures"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -349,10 +349,10 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
 def collect_governance_evidence(report: AuditReport) -> None:
     """Collect governance and documentation evidence."""
 
-    # Check folder structure
-    folder_checker = Path("scripts/validate_folder_structure.py")
-    if folder_checker.exists():
-        code, stdout, stderr = run_script(str(folder_checker))
+    # Check folder structure (consolidated into check_governance.py)
+    gov_script = Path("scripts/check_governance.py")
+    if gov_script.exists():
+        code, stdout, stderr = run_script(str(gov_script), ["--structure"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -360,15 +360,14 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 name="Folder Structure",
                 status="PASS" if passed else "FAIL",
                 required=True,
-                source=str(folder_checker),
+                source=str(gov_script),
                 details="Structure compliant with governance spec",
             )
         )
 
-    # Check governance compliance
-    gov_checker = Path("scripts/check_governance_compliance.py")
-    if gov_checker.exists():
-        code, stdout, stderr = run_script(str(gov_checker))
+    # Check governance compliance (consolidated into check_governance.py)
+    if gov_script.exists():
+        code, stdout, stderr = run_script(str(gov_script), ["--compliance"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -376,15 +375,15 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 name="Governance Compliance",
                 status="PASS" if passed else "WARN",
                 required=True,
-                source=str(gov_checker),
+                source=str(gov_script),
                 details="All governance rules satisfied" if passed else "Some governance issues",
             )
         )
 
-    # Check doc metadata
-    doc_checker = Path("scripts/check_doc_metadata.py")
+    # Check doc metadata (consolidated into check_docs.py)
+    doc_checker = Path("scripts/check_docs.py")
     if doc_checker.exists():
-        code, stdout, stderr = run_script(str(doc_checker))
+        code, stdout, stderr = run_script(str(doc_checker), ["--metadata"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -413,10 +412,10 @@ def collect_governance_evidence(report: AuditReport) -> None:
             )
         )
 
-    # Check API docs sync
-    api_docs = Path("scripts/check_api_docs_sync.py")
-    if api_docs.exists():
-        code, stdout, stderr = run_script(str(api_docs))
+    # Check API docs sync (consolidated into check_api.py)
+    api_sync = Path("scripts/check_api.py")
+    if api_sync.exists():
+        code, stdout, stderr = run_script(str(api_sync), ["--sync"])
         passed = code == 0
         report.add_evidence(
             EvidenceItem(
@@ -424,7 +423,7 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 name="API Documentation Sync",
                 status="PASS" if passed else "WARN",
                 required=True,
-                source=str(api_docs),
+                source=str(api_sync),
                 details="API docs match implementation" if passed else "API docs may be outdated",
             )
         )

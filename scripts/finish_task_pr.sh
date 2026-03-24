@@ -219,21 +219,19 @@ echo "  4. Push to update this PR"
 echo ""
 
 if [[ "$FORCE" == "true" && "$MODE" == "prompt" ]]; then
-    MODE="async"
+    MODE="wait"
 fi
 
 if [[ "$MODE" == "prompt" ]]; then
     echo -e "${YELLOW}Options:${NC}"
-    echo "  1. [A]sync - Daemon monitors & auto-merges (recommended - continue working)"
-    echo "  2. [W]ait  - Watch CI now, then merge"
-    echo "  3. [S]kip  - Manual merge later"
+    echo "  1. [W]ait  - Watch CI now, then auto-merge (recommended)"
+    echo "  2. [S]kip  - Manual merge later"
     echo ""
-    read -p "Choice [A/w/s]: " -n 1 -r
+    read -p "Choice [W/s]: " -n 1 -r
     echo
     case "$REPLY" in
-        [Ww]) MODE="wait" ;;
         [Ss]) MODE="skip" ;;
-        *) MODE="async" ;;
+        *) MODE="wait" ;;
     esac
 fi
 
@@ -249,7 +247,6 @@ case "$MODE" in
             git pull --ff-only 2>/dev/null || true
 
             # Clean up local task branch
-            local branch_name
             branch_name=$(git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
             if [[ -n "$branch_name" ]]; then
                 git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
@@ -271,29 +268,14 @@ case "$MODE" in
         ;;
 
     *)
-        # Default: Async monitoring (recommended)
-        echo "→ Setting up async monitoring..."
-
-        # Ensure daemon is running
-        # Note: Capture to variable to avoid SIGPIPE with grep -q
-        daemon_status=$("$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" status 2>/dev/null || true)
-        if ! echo "$daemon_status" | grep -q "running"; then
-            "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" start
-        fi
-
+        # Default: Manual monitoring
         echo ""
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${GREEN}✓ PR #$PR_NUMBER is now monitored by daemon${NC}"
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}✓ PR #$PR_NUMBER created successfully${NC}"
         echo ""
-        echo "What happens next:"
-        echo "  📊 Daemon checks CI every 30s"
-        echo "  ⚠️  You'll be notified on FIRST failure"
-        echo "  ✅ Auto-merge when ALL checks pass"
-        echo ""
-        echo "Commands:"
-        echo "  Status: ./scripts/pr_async_merge.sh status"
-        echo "  Logs:   ./scripts/ci_monitor_daemon.sh logs"
+        echo "Monitor and merge:"
+        echo "  View:   gh pr view $PR_NUMBER --web"
+        echo "  Status: gh pr checks $PR_NUMBER"
+        echo "  Merge:  gh pr merge $PR_NUMBER --squash --delete-branch"
         echo ""
 
         # Return to main

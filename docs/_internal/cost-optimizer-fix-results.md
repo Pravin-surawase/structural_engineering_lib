@@ -34,7 +34,7 @@ Fix critical issues in cost optimizer using the prevention system approach:
 
 ## 🛠️ Prevention System Components
 
-### 1. Issue Detector (`scripts/check_cost_optimizer_issues.py`)
+### 1. Issue Detector (`scripts/_archive/check_cost_optimizer_issues.py`)
 - **Lines:** 201
 - **Technology:** AST-based static analysis
 - **Detection:** 40 issues found with line numbers and severity
@@ -235,7 +235,7 @@ alt_area = alt.get("area", 0)  # Should this be None instead?
 ### Testing Prevention System
 ```bash
 # Run issue detector
-.venv/bin/python scripts/check_cost_optimizer_issues.py
+.venv/bin/python scripts/_archive/check_cost_optimizer_issues.py
 
 # Run validator tests
 .venv/bin/python -m pytest streamlit_app/tests/test_cost_optimizer_validators.py -v

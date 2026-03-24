@@ -166,7 +166,7 @@ When using `finish_task_pr.sh`:
    - Checks: imports, session state, type hints
    - Estimates: 2 hours
 
-2. **`scripts/generate_streamlit_page.py`**
+2. **`scripts/_archive/generate_streamlit_page.py`**
    - Scaffold new pages with boilerplate
    - Includes: imports, error handling, logging
    - Estimates: 2 hours
@@ -176,7 +176,7 @@ When using `finish_task_pr.sh`:
    - Identify N+1 queries, slow functions
    - Estimates: 4 hours
 
-4. **`scripts/validate_session_state.py`**
+4. **`scripts/_archive/validate_session_state.py`**
    - Trace session_state usage
    - Detect uninitialized keys
    - Estimates: 3 hours

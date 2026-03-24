@@ -114,7 +114,7 @@
 
 #### E. Automated Issue Detection Script
 ```python
-# scripts/check_cost_optimizer_issues.py
+# scripts/_archive/check_cost_optimizer_issues.py
 - Detects direct dict access
 - Finds divisions without zero checks
 - Catches imports in functions

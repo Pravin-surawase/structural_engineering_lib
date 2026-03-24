@@ -162,24 +162,28 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Library functi
 
 ```bash
 # Session start
-./scripts/agent_start.sh --quick                     # 6s validation
+./run.sh session start                               # Verify env, read priorities
 
-# FastAPI backend (Docker)
+# Validate codebase
+./run.sh check --quick                               # Fast validation (8 checks, <30s)
+./run.sh check                                       # Full validation (28 checks, parallel)
+./run.sh check --category api                        # One category only
+
+# Run tests
+./run.sh test                                        # Full pytest suite
+./run.sh test -k "test_flexure" -v                   # Specific tests
+./run.sh test --ci                                   # Full local CI
+
+# Build & serve
 docker compose up --build                            # http://localhost:8000/docs
-docker compose -f docker-compose.dev.yml up          # Dev with hot reload
-
-# React frontend
 cd react_app && npm run dev                          # http://localhost:5173
+cd react_app && npm run build                        # Build check
 
-# Python tests (CI requires 85% branch coverage)
-cd Python && .venv/bin/pytest tests/ -v
-
-# React build check
-cd react_app && npm run build
-
-# Streamlit app
-./scripts/launch_streamlit.sh
+# Session end
+./run.sh session end                                 # Wrap up (logs, sync, handoff)
 ```
+
+Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 
 ---
 
@@ -187,7 +191,7 @@ cd react_app && npm run build
 
 ```bash
 # Decision: PR or direct commit?
-./scripts/should_use_pr.sh --explain
+./run.sh pr status
 ```
 
 | Change Type | Strategy |
@@ -198,16 +202,15 @@ cd react_app && npm run build
 
 ```bash
 # Direct commit
-./scripts/ai_commit.sh "docs: update guide"
+./run.sh commit "docs: update guide"
 
 # PR workflow
-./scripts/create_task_pr.sh TASK-XXX "description"
-./scripts/ai_commit.sh "feat: implement X"          # Repeat as needed
-./scripts/finish_task_pr.sh TASK-XXX "description" --async
+./run.sh pr create TASK-XXX "description"
+./run.sh commit "feat: implement X"              # Repeat as needed
+./run.sh pr finish                                # Polls CI, auto-merges
 
 # Emergency recovery
 ./scripts/recover_git_state.sh
-./scripts/git_ops.sh --status
 ```
 
 **Commit format:** `type: description` (subject <=72 chars, no period at end)
@@ -219,20 +222,24 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 ## 7. Key Scripts
 
-| Action | Script |
-|--------|--------|
-| Commit | `./scripts/ai_commit.sh "msg"` |
-| PR decision | `./scripts/should_use_pr.sh --explain` |
-| Move file | `.venv/bin/python scripts/safe_file_move.py old new --dry-run` (then without flag) |
-| Delete file | `.venv/bin/python scripts/safe_file_delete.py file` |
-| Create doc | `.venv/bin/python scripts/create_doc.py path "Title"` |
-| Fix links | `.venv/bin/python scripts/check_links.py --fix` |
-| Find automation | `.venv/bin/python scripts/find_automation.py "task"` |
-| API signatures | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
-| Streamlit check | `.venv/bin/python scripts/check_streamlit.py --all-pages` |
-| Fragment check | `.venv/bin/python scripts/check_streamlit.py --fragments` |
-| Streamlit launch | `./scripts/launch_streamlit.sh` |
-| Session end | `.venv/bin/python scripts/session.py end` |
+**Preferred:** Use `./run.sh` for all common operations (run `./run.sh --help`).
+
+| Action | run.sh | Direct script (fallback) |
+|--------|--------|-------------------------|
+| Session start | `./run.sh session start` | `./scripts/agent_start.sh --quick` |
+| Commit | `./run.sh commit "msg"` | `./scripts/ai_commit.sh "msg"` |
+| Full check | `./run.sh check` | N/A (orchestrator) |
+| Quick check | `./run.sh check --quick` | N/A |
+| Run tests | `./run.sh test` | `cd Python && .venv/bin/pytest tests/ -v` |
+| PR decision | `./run.sh pr status` | `./scripts/should_use_pr.sh --explain` |
+| Find script | `./run.sh find "task"` | `.venv/bin/python scripts/find_automation.py "task"` |
+| API signatures | `./run.sh find --api <func>` | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
+| Move file | N/A | `.venv/bin/python scripts/safe_file_move.py old new` |
+| Delete file | N/A | `.venv/bin/python scripts/safe_file_delete.py file` |
+| Create doc | N/A | `.venv/bin/python scripts/create_doc.py path "Title"` |
+| Fix links | `./run.sh check --category docs --fix` | `.venv/bin/python scripts/check_links.py --fix` |
+| Session end | `./run.sh session end` | `.venv/bin/python scripts/session.py end` |
+| Gen indexes | `./run.sh generate indexes` | `./scripts/generate_all_indexes.sh` |
 
 **Never do manually:** `git add/commit/push`, `rm/mv` docs, create docs without metadata.
 

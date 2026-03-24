@@ -41,7 +41,7 @@ echo ""
 
 # Run initial validation
 echo -e "${GREEN}▶ Initial validation...${NC}"
-python3 scripts/quick_check.sh 2>/dev/null || true
+.venv/bin/pytest Python/tests/ -x -q --tb=short 2>/dev/null || true
 echo ""
 echo -e "${BLUE}👀 Waiting for changes...${NC}"
 

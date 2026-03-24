@@ -33,9 +33,9 @@ for folder in "${FOLDERS[@]}"; do
         echo ""
         echo "📂 Processing: $folder"
         if [ "$folder" == "docs" ]; then
-            .venv/bin/python scripts/generate_folder_index.py --json-only "$folder"
+            .venv/bin/python scripts/generate_enhanced_index.py --json-only "$folder"
         else
-            .venv/bin/python scripts/generate_folder_index.py "$folder"
+            .venv/bin/python scripts/generate_enhanced_index.py "$folder"
         fi
     else
         echo "⚠️  Skipping (not found): $folder"

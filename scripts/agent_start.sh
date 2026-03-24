@@ -254,9 +254,9 @@ fi
 
 # Common guidance
 echo -e "${BOLD}📚 Essential Docs${NC}"
-echo "  • docs/getting-started/agent-essentials.md (V3 stack reference)"
-echo "  • docs/getting-started/agent-bootstrap.md (quick start)"
+echo "  • docs/getting-started/agent-bootstrap.md (THE canonical bootstrap)"
 echo "  • docs/TASKS.md (current work)"
+echo "  • docs/planning/next-session-brief.md (last session handoff)"
 echo "  • .github/copilot-instructions.md (all rules)"
 echo ""
 
@@ -276,7 +276,7 @@ echo "    POST /api/v1/geometry/beam/full → Full 3D geometry"
 echo "    POST /api/v1/design/beam       → Beam design"
 echo ""
 echo "  Library (Python/structural_lib/):"
-echo "    api.py              → 43 public functions"
+echo "    api.py              → API surface: 23 public functions (see services/api.py for internals)"
 echo "    adapters.py         → GenericCSVAdapter, ETABSAdapter"
 echo "    geometry_3d.py      → beam_to_3d_geometry()"
 echo ""
@@ -290,6 +290,11 @@ echo "  1) ./scripts/ai_commit.sh \"message\""
 echo "  2) ./scripts/finish_task_pr.sh TASK-XXX \"description\" [--with-session-docs]"
 echo "  3) git status && git log --oneline -3"
 echo "  Docs: docs/git-automation/README.md"
+echo ""
+echo -e "${BOLD}🔍 Script Discovery${NC}"
+echo "  .venv/bin/python scripts/find_automation.py \"your task\"    # Find the right script"
+echo "  .venv/bin/python scripts/discover_api_signatures.py <func>  # API param names"
+echo "  .venv/bin/python scripts/validate_script_refs.py            # Check for stale refs"
 echo ""
 
 # Docker status check

@@ -24,12 +24,19 @@ def _load_indexed_scripts() -> set[str]:
     data = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
     indexed: set[str] = set()
 
+    # Support old format: {categories: {cat: {scripts: {name: ...}}}}
     for category in data.get("categories", {}).values():
         for name in category.get("scripts", {}):
             indexed.add(name)
 
     for name in data.get("deprecated", {}).get("scripts", {}):
         indexed.add(name)
+
+    # Support new format from generate_enhanced_index.py: {files: [{name: ...}]}
+    for entry in data.get("files", []):
+        name = entry.get("name", "")
+        if any(name.endswith(ext) for ext in SCRIPT_EXTENSIONS):
+            indexed.add(name)
 
     return indexed
 
