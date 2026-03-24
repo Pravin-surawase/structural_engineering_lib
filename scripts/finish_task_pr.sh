@@ -219,21 +219,19 @@ echo "  4. Push to update this PR"
 echo ""
 
 if [[ "$FORCE" == "true" && "$MODE" == "prompt" ]]; then
-    MODE="async"
+    MODE="wait"
 fi
 
 if [[ "$MODE" == "prompt" ]]; then
     echo -e "${YELLOW}Options:${NC}"
-    echo "  1. [A]sync - Daemon monitors & auto-merges (recommended - continue working)"
-    echo "  2. [W]ait  - Watch CI now, then merge"
-    echo "  3. [S]kip  - Manual merge later"
+    echo "  1. [W]ait  - Watch CI now, then auto-merge (recommended)"
+    echo "  2. [S]kip  - Manual merge later"
     echo ""
-    read -p "Choice [A/w/s]: " -n 1 -r
+    read -p "Choice [W/s]: " -n 1 -r
     echo
     case "$REPLY" in
-        [Ww]) MODE="wait" ;;
         [Ss]) MODE="skip" ;;
-        *) MODE="async" ;;
+        *) MODE="wait" ;;
     esac
 fi
 
@@ -249,7 +247,6 @@ case "$MODE" in
             git pull --ff-only 2>/dev/null || true
 
             # Clean up local task branch
-            local branch_name
             branch_name=$(git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
             if [[ -n "$branch_name" ]]; then
                 git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true

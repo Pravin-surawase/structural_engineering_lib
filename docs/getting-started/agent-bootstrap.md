@@ -203,11 +203,10 @@ cd react_app && npm run build
 # PR workflow
 ./scripts/create_task_pr.sh TASK-XXX "description"
 ./scripts/ai_commit.sh "feat: implement X"          # Repeat as needed
-./scripts/finish_task_pr.sh TASK-XXX "description" --async
+./scripts/finish_task_pr.sh TASK-XXX "description"   # Polls CI, auto-merges
 
 # Emergency recovery
 ./scripts/recover_git_state.sh
-./scripts/git_ops.sh --status
 ```
 
 **Commit format:** `type: description` (subject <=72 chars, no period at end)

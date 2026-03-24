@@ -459,7 +459,7 @@ def get_changed_doc_folders() -> list[Path]:
 def update_folder_readmes(folders: list[Path], fix: bool = False) -> int:
     if not fix:
         return 0
-    gen_script = REPO_ROOT / "scripts" / "generate_folder_index.py"
+    gen_script = REPO_ROOT / "scripts" / "generate_enhanced_index.py"
     if not gen_script.exists():
         return 0
     updated = 0
