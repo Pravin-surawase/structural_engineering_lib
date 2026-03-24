@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-25 (Session 93 — PR #436 merged)
+**Updated:** 2026-03-25 (Session 94 — weak points audit)
 
 ---
 
@@ -42,20 +42,24 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-502 | Code-split Three.js + react-three-fiber (1.16 MB chunk) | — | 1d | High | 📋 |
-| TASK-503 | Add REST fallback when WebSocket unavailable | — | 1d | High | 📋 |
+| TASK-506 | React test infra: Vitest + 5 smoke tests (DesignView, useLiveDesign, useCSVFileImport…) | — | 2d | 🔴 Critical | 📋 |
+| TASK-507 | Fix 293 arch violations: 2-line Streamlit stub fix + legacy test imports | — | 0.5d | 🟡 Moderate | 📋 |
+| TASK-502 | Code-split Three.js + react-three-fiber + lazy-load routes (1.16 MB chunk) | — | 1d | 🟠 High | 📋 |
+| TASK-503 | Wire REST fallback in DesignView (useAutoDesign on WS disconnect) | — | 0.5d | 🟠 High | 📋 |
+| TASK-508 | Split ai_workspace.py (5103 lines → 6 modules) | — | 2d | 🟠 High | 📋 |
 | TASK-504 | Add SSE batch progress UI (streaming.py → React) | — | 1d | Medium | 📋 |
 | TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | Medium | 📋 |
+| TASK-509 | Type annotations: Streamlit pages (49 return types + 4 __all__) | — | 1d | 🟢 Low | 📋 |
 
 ## Backlog
 
-- **2 Streamlit architecture violations** — `rebar_optimizer` + `multi_objective_optimizer` imported directly (bypass api facade). Fix: expand `api.py __all__`.
-- **~13 backward-compat stub imports** — `structural_lib.detailing`, `.shear`, `.load_analysis` in Streamlit. Low priority — Streamlit is legacy.
-- **28 unit conversion warnings** — `* 1000`/`/ 1000` in IS 456 code. Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names.
-- **293 broken import paths (Streamlit)** — Legacy `validate_imports.py` failures. Not blocking.
-- **Type annotation gaps** — 49 missing return types, 15 missing param types, 4 missing `__all__`.
-- **React test infrastructure** — Zero test files. Needs Vitest setup + core component tests.
-- **Split `ai_workspace.py`** — 5103 lines → 6 modules (needs dedicated PR).
+| ID | Task | Priority | Notes |
+|----|------|----------|-------|
+| TASK-506 | Set up React test infrastructure (Vitest + 5 smoke tests) | 🔴 Critical | Must exist before TASK-502/503 refactors. See [weak-points-audit.md](planning/weak-points-audit.md#wp-1) |
+| TASK-507 | Fix 293 arch violations: 2-line Streamlit fix + legacy test imports | 🟡 Moderate | Fast win: `02_cost_optimizer.py:42`, `api_wrapper.py:47`. See [weak-points-audit.md](planning/weak-points-audit.md#wp-3) |
+| TASK-508 | Split `ai_workspace.py` (5103 lines → 6 modules) | 🟠 High | Dedicated PR only; do after TASK-506. See [weak-points-audit.md](planning/weak-points-audit.md#wp-4) |
+| TASK-509 | Type annotations: 49 missing return types + 4 missing `__all__` (Streamlit) | 🟢 Low | Core already passes mypy. See [weak-points-audit.md](planning/weak-points-audit.md#wp-6) |
+| — | 28 unit conversion warnings | 🟢 Low | `* 1000`/`/ 1000` in IS 456 code. Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
 
 ## Recently Done
 
