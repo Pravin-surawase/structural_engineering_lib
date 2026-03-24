@@ -26,6 +26,19 @@ if [[ -n "$GIT_HOOKS_BYPASS" ]]; then
     exit 0
 fi
 
+# Allow tag-only pushes (e.g. git push origin v0.19.1)
+# Tags don't need the commit safety checks that branch pushes do
+while read local_ref local_sha remote_ref remote_sha; do
+    if [[ "$local_ref" == refs/tags/* ]]; then
+        continue  # tag push — allowed
+    fi
+    # If any non-tag ref is being pushed, block it
+    BLOCK_PUSH="true"
+done
+if [[ "$BLOCK_PUSH" != "true" ]]; then
+    exit 0  # All refs are tags — allow
+fi
+
 # Block manual push
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
@@ -58,7 +71,8 @@ echo ""
 echo -e "${YELLOW}That's it!${NC} The script handles all push logic automatically"
 echo ""
 echo -e "${YELLOW}Stuck? Try:${NC}"
-echo "   ./scripts/git_ops.sh --status    (shows what's wrong + recovery)"
+echo "   ./scripts/ai_commit.sh --push     (push existing commits)"
+echo "   git status                         (check working tree)"
 echo ""
 echo -e "${YELLOW}Last resort (NOT recommended):${NC}"
 echo "   GIT_HOOKS_BYPASS=1 git push"

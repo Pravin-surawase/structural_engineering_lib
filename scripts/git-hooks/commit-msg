@@ -30,7 +30,7 @@ NC='\033[0m'
 # =============================================================================
 # Configuration
 # =============================================================================
-SUBJECT_MAX_LENGTH=72
+SUBJECT_MAX_LENGTH=100
 BODY_MAX_LENGTH=72
 
 # Valid type prefixes (conventional commits)

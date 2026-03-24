@@ -23,24 +23,29 @@ NC='\033[0m' # No Color
 # Parse flags
 DRY_RUN=false
 FORCE=false
+PUSH_ONLY=false
 COMMIT_MSG=""
 for arg in "$@"; do
     if [[ "$arg" == "--dry-run" ]]; then
         DRY_RUN=true
     elif [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
         FORCE=true
+    elif [[ "$arg" == "--push" || "$arg" == "--push-only" ]]; then
+        PUSH_ONLY=true
     elif [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
-        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force]"
+        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push]"
         echo ""
         echo "Options:"
         echo "  --dry-run  Preview what would happen without committing"
         echo "  --force    Bypass PR requirement check (for batching work)"
+        echo "  --push     Push already-committed changes (no new commit)"
         echo "  --help     Show this help message"
         echo ""
         echo "Examples:"
         echo "  ./scripts/ai_commit.sh \"docs: update guide\""
         echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
         echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
+        echo "  ./scripts/ai_commit.sh --push          # Push existing commits"
         exit 0
     elif [[ -z "$COMMIT_MSG" ]]; then
         COMMIT_MSG="$arg"
@@ -58,9 +63,42 @@ if [[ "$DRY_RUN" == "true" ]]; then
 fi
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+# Push-only mode: push already-committed changes without new commit
+if [[ "$PUSH_ONLY" == "true" ]]; then
+    echo -e "${YELLOW}→ Push-only mode: pushing existing commits...${NC}"
+    # Check if there's anything to push
+    git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null || true
+    LOCAL_HEAD=$(git rev-parse HEAD)
+    REMOTE_HEAD=$(git rev-parse "origin/$CURRENT_BRANCH" 2>/dev/null || echo "none")
+    if [[ "$LOCAL_HEAD" == "$REMOTE_HEAD" ]]; then
+        echo -e "${GREEN}✓ Already synced with remote - nothing to push${NC}"
+        exit 0
+    fi
+    echo "→ Pushing to origin/$CURRENT_BRANCH..."
+    export SAFE_PUSH_ACTIVE=1
+    if git push; then
+        echo -e "${GREEN}✓ Successfully pushed!${NC}"
+        echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
+    else
+        echo -e "${RED}✗ Push failed${NC}"
+        exit 1
+    fi
+    exit 0
+fi
+
 # Check if we have uncommitted changes
 if [[ -z $(git status --porcelain) ]]; then
     echo -e "${GREEN}✓ Working tree clean - nothing to commit${NC}"
+    # Hint about --push if there are un-pushed commits
+    git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null || true
+    LOCAL_HEAD=$(git rev-parse HEAD)
+    REMOTE_HEAD=$(git rev-parse "origin/$CURRENT_BRANCH" 2>/dev/null || echo "none")
+    if [[ "$LOCAL_HEAD" != "$REMOTE_HEAD" && "$REMOTE_HEAD" != "none" ]]; then
+        AHEAD=$(git rev-list --count "origin/$CURRENT_BRANCH"..HEAD 2>/dev/null || echo "0")
+        if [[ "$AHEAD" -gt 0 ]]; then
+            echo -e "${YELLOW}💡 You have $AHEAD unpushed commit(s). Use: ./scripts/ai_commit.sh --push${NC}"
+        fi
+    fi
     exit 0
 fi
 
