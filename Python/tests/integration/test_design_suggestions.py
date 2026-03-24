@@ -559,7 +559,7 @@ class TestPerformance:
         # Should have fewer suggestions than badly designed beam
         # (Exact count depends on utilization, but should be reasonable)
         assert report.suggestions_count >= 0  # At least runs without error
-        assert report.analysis_time_ms > 0
+        assert report.analysis_time_ms >= 0  # Can be 0 on fast CI runners
 
 
 class TestEdgeCases:

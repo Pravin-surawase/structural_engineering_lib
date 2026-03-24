@@ -33,10 +33,10 @@
     {
       "name": "ai_commit.sh",
       "type": "shell-script",
-      "size_lines": 185,
-      "last_updated": "2026-03-23",
+      "size_lines": 253,
+      "last_updated": "2026-03-24",
       "description": "AI-friendly wrapper for safe commits and pushes",
-      "content_hash": "79ec8dc8ec53"
+      "content_hash": "d7f9be33bc13"
     },
     {
       "name": "archive_old_files.sh",
@@ -485,8 +485,8 @@
     {
       "name": "check_architecture_boundaries.py",
       "type": "python",
-      "size_lines": 501,
-      "last_updated": "2026-03-23",
+      "size_lines": 523,
+      "last_updated": "2026-03-24",
       "description": "Architecture Boundary Linter.",
       "classes": [
         {
@@ -577,7 +577,7 @@
         "BAD_PATTERNS",
         "EXCLUDE_PATTERNS"
       ],
-      "content_hash": "aee711c25ab9"
+      "content_hash": "1bb27a45d3cf"
     },
     {
       "name": "check_bootstrap_freshness.py",
@@ -1918,10 +1918,10 @@
     {
       "name": "finish_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 292,
-      "last_updated": "2026-02-11",
+      "size_lines": 300,
+      "last_updated": "2026-03-24",
       "description": "Finish task work and create PR",
-      "content_hash": "7d27b884c4af"
+      "content_hash": "76c7452bed98"
     },
     {
       "name": "generate_all_indexes.sh",
@@ -2722,9 +2722,9 @@
       "name": "safe_push.sh",
       "type": "shell-script",
       "size_lines": 409,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
-      "content_hash": "5088adbeb2d2"
+      "content_hash": "97ec85a6f596"
     },
     {
       "name": "session.py",
@@ -3355,5 +3355,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "3ded37b26266cfdf"
+  "content_hash": "36586fded6952f81"
 }

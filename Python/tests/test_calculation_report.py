@@ -407,7 +407,7 @@ class TestExportFunctions:
             assert result_path.exists()
             assert result_path.suffix == ".md"
 
-            content = result_path.read_text()
+            content = result_path.read_text(encoding="utf-8")
             assert "# Calculation Report:" in content
             assert "Tower A Design" in content
             assert "## 1. Input Data" in content

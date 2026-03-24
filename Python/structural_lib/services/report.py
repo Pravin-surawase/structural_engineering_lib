@@ -1633,7 +1633,7 @@ def export_critical_csv(cases: list[CriticalCase]) -> str:
         "json_path",
     ]
 
-    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
     writer.writeheader()
 
     for case in cases:
