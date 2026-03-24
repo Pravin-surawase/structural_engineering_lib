@@ -10,10 +10,17 @@
 
 set -e
 
-# Configuration
-MAX_FILES=17
+# Configuration — single source of truth: governance-limits.json
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
+
+GOVERNANCE_JSON="$PROJECT_ROOT/docs/guidelines/governance-limits.json"
+if [[ -f "$GOVERNANCE_JSON" ]]; then
+    MAX_FILES=$(python3 -c "import json; print(json.load(open('$GOVERNANCE_JSON'))['root']['max_files'])" 2>/dev/null || echo 17)
+else
+    MAX_FILES=17
+    echo "⚠ governance-limits.json not found, using default MAX_FILES=$MAX_FILES"
+fi
 
 # Count ALL root files (excluding hidden files) - FIXED: matches Python validator
 # Excludes: hidden files (.*), directories

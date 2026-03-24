@@ -170,8 +170,9 @@ else
         echo -e "${GREEN}✅ Archival complete${NC}"
         echo ""
         echo "Next steps:"
-        echo "  1. Update archive index: python scripts/update_archive_index.py"
-        echo "  2. Commit changes: ./scripts/ai_commit.sh \"chore: archive old files\""
+        echo "  1. Regenerate indexes: .venv/bin/python scripts/generate_enhanced_index.py scripts/"
+        echo "  2. Check for phantom entries: .venv/bin/python scripts/check_scripts_index.py"
+        echo "  3. Commit changes: ./scripts/ai_commit.sh \"chore: archive old files\""
     else
         echo -e "${GREEN}✅ No files archived (all up to date)${NC}"
     fi

@@ -323,7 +323,10 @@ fi
 # Step 5: Complete parallel fetch and sync (branch-aware)
 echo -e "${YELLOW}Step 5/7: Completing parallel fetch and syncing...${NC}"
 log_message "INFO" "Step 5: Completing parallel fetch started in Step 1"
-parallel_fetch_complete
+if ! parallel_fetch_complete; then
+    echo -e "${YELLOW}⚠ Fetch failed — continuing with local state${NC}"
+    log_message "WARNING" "Parallel fetch failed, proceeding without remote sync"
+fi
 
 # Cache upstream availability for push behavior
 if has_upstream; then

@@ -257,6 +257,15 @@ case "$MODE" in
         else
             echo -e "${YELLOW}⚠ Checks failed or blocked${NC}"
             echo "Check status: gh pr view $PR_NUMBER --web"
+            echo ""
+            echo -e "${YELLOW}Recovery options:${NC}"
+            echo "  1. Fix issues, commit, push — then re-run: ./scripts/finish_task_pr.sh $TASK_ID '$DESCRIPTION' --wait"
+            echo "  2. Merge manually: gh pr merge $PR_NUMBER --squash --delete-branch"
+            echo "  3. Close PR: gh pr close $PR_NUMBER"
+            echo ""
+            echo "→ Switching back to main..."
+            git checkout main 2>/dev/null || true
+            git pull --ff-only 2>/dev/null || true
             exit 1
         fi
         ;;
