@@ -27,7 +27,7 @@ This checklist defines the minimum evidence requirements for audit readiness. Ea
 | Branch coverage ≥85% | ⬜ | CI artifact: `coverage.xml` | ✅ Yes |
 | AppTest smoke tests pass | ⬜ | CI: `streamlit-validation.yml` | ✅ Yes |
 | Critical journey tests pass | ⬜ | CI: `streamlit-validation.yml` | ✅ Yes |
-| Performance regression check | ⬜ | `scripts/check_performance_issues.py` | ⚠️ Recommended |
+| Performance regression check | ⬜ | `scripts/_archive/check_performance_issues.py` | ⚠️ Recommended |
 
 ---
 

@@ -1750,7 +1750,7 @@ Summary:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_cost_optimizer_issues.py streamlit_app/pages/cost_optimizer.py
+.venv/bin/python scripts/_archive/check_cost_optimizer_issues.py streamlit_app/pages/cost_optimizer.py
 ```
 
 **What It Checks:**
@@ -2703,10 +2703,10 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_ui_duplication.py                    # Full scan
-.venv/bin/python scripts/check_ui_duplication.py --utils-only       # Just utils/
-.venv/bin/python scripts/check_ui_duplication.py --show-similar     # Show code snippets
-.venv/bin/python scripts/check_ui_duplication.py --json             # JSON output
+.venv/bin/python scripts/_archive/check_ui_duplication.py                    # Full scan
+.venv/bin/python scripts/_archive/check_ui_duplication.py --utils-only       # Just utils/
+.venv/bin/python scripts/_archive/check_ui_duplication.py --show-similar     # Show code snippets
+.venv/bin/python scripts/_archive/check_ui_duplication.py --json             # JSON output
 ```
 
 **Related:** Shared utilities in [streamlit_app/utils/](../../streamlit_app/utils/)

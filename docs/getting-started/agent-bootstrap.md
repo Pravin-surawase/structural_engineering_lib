@@ -178,7 +178,7 @@ cd Python && .venv/bin/pytest tests/ -v
 cd react_app && npm run build
 
 # Streamlit app
-./scripts/launch_streamlit.sh
+./scripts/_archive/launch_streamlit.sh
 ```
 
 ---
@@ -230,7 +230,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 | API signatures | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
 | Streamlit check | `.venv/bin/python scripts/check_streamlit.py --all-pages` |
 | Fragment check | `.venv/bin/python scripts/check_streamlit.py --fragments` |
-| Streamlit launch | `./scripts/launch_streamlit.sh` |
+| Streamlit launch | `./scripts/_archive/launch_streamlit.sh` |
 | Session end | `.venv/bin/python scripts/session.py end` |
 
 **Never do manually:** `git add/commit/push`, `rm/mv` docs, create docs without metadata.

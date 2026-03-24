@@ -99,7 +99,7 @@ results = safe_state.get_list("cost_comparison_data", default=[])
 
 ### 1. Automated Issue Detection Script
 
-**Location:** `scripts/check_cost_optimizer_issues.py`
+**Location:** `scripts/_archive/check_cost_optimizer_issues.py`
 
 **What it checks:**
 - ✅ Direct dict access (use `.get()` instead)
@@ -110,7 +110,7 @@ results = safe_state.get_list("cost_comparison_data", default=[])
 
 **Run manually:**
 ```bash
-python scripts/check_cost_optimizer_issues.py
+python scripts/_archive/check_cost_optimizer_issues.py
 ```
 
 **Output example:**
@@ -398,7 +398,7 @@ def run_cost_optimization(inputs: dict) -> dict:
 1. Update `check_cost_optimizer_issues.py`:
    - Add to `IssueDetector` class (AST-based)
    - Or add to regex-based checks in `check_file()`
-2. Test: `python scripts/check_cost_optimizer_issues.py`
+2. Test: `python scripts/_archive/check_cost_optimizer_issues.py`
 3. Commit changes - will automatically run in pre-commit
 
 ### Updating CI Checks

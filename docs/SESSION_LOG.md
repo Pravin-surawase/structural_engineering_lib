@@ -4268,7 +4268,7 @@ User requested comprehensive improvements:
 
 ### Deliverables
 
-#### 1. Streamlit Launch Automation (`scripts/launch_streamlit.sh` - 285 lines)
+#### 1. Streamlit Launch Automation (`scripts/_archive/launch_streamlit.sh` - 285 lines)
 
 **Features:**
 - Environment verification (Python, venv, dependencies)
@@ -4280,9 +4280,9 @@ User requested comprehensive improvements:
 
 **Usage:**
 ```bash
-./scripts/launch_streamlit.sh              # Full launch
-./scripts/launch_streamlit.sh --check      # Verify only
-./scripts/launch_streamlit.sh --bg         # Background
+./scripts/_archive/launch_streamlit.sh              # Full launch
+./scripts/_archive/launch_streamlit.sh --check      # Verify only
+./scripts/_archive/launch_streamlit.sh --bg         # Background
 ```
 
 #### 2. Scanner Fix: Optional Dependency Imports
