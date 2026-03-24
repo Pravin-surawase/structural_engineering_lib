@@ -30,11 +30,15 @@ class ExportBeamRequest(BaseModel):
     width: float = Field(..., gt=0, description="Beam width in mm")
     depth: float = Field(..., gt=0, description="Beam depth in mm")
     span_length: float = Field(default=0, ge=0, description="Span in mm")
-    clear_cover: float = Field(default=40, ge=20, le=75, description="Clear cover in mm")
+    clear_cover: float = Field(
+        default=40, ge=20, le=75, description="Clear cover in mm"
+    )
     fck: float = Field(..., gt=0, description="Concrete grade N/mm²")
     fy: float = Field(..., gt=0, description="Steel grade N/mm²")
     ast_required: float = Field(..., ge=0, description="Required tension steel mm²")
-    asc_required: float = Field(default=0, ge=0, description="Required compression steel mm²")
+    asc_required: float = Field(
+        default=0, ge=0, description="Required compression steel mm²"
+    )
     moment: float = Field(default=0, ge=0, description="Design moment kN·m")
     shear: float = Field(default=0, ge=0, description="Design shear kN")
 
@@ -142,7 +146,9 @@ async def export_bbs(request: ExportBeamRequest):
     return StreamingResponse(
         buf,
         media_type="text/csv",
-        headers={"Content-Disposition": f'attachment; filename="BBS_{request.beam_id}.csv"'},
+        headers={
+            "Content-Disposition": f'attachment; filename="BBS_{request.beam_id}.csv"'
+        },
     )
 
 
@@ -177,7 +183,9 @@ async def export_dxf(request: ExportBeamRequest):
     return StreamingResponse(
         io.BytesIO(dxf_bytes),
         media_type="application/dxf",
-        headers={"Content-Disposition": f'attachment; filename="{request.beam_id}.dxf"'},
+        headers={
+            "Content-Disposition": f'attachment; filename="{request.beam_id}.dxf"'
+        },
     )
 
 
@@ -222,12 +230,16 @@ async def export_report(request: ExportReportRequest):
         return StreamingResponse(
             io.BytesIO(content.encode("utf-8")),
             media_type="text/html",
-            headers={"Content-Disposition": f'attachment; filename="Report_{request.beam_id}.html"'},
+            headers={
+                "Content-Disposition": f'attachment; filename="Report_{request.beam_id}.html"'
+            },
         )
     else:
         content = export_json(report_data)
         return StreamingResponse(
             io.BytesIO(content.encode("utf-8")),
             media_type="application/json",
-            headers={"Content-Disposition": f'attachment; filename="Report_{request.beam_id}.json"'},
+            headers={
+                "Content-Disposition": f'attachment; filename="Report_{request.beam_id}.json"'
+            },
         )

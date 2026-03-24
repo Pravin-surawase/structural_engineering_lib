@@ -41,6 +41,7 @@ from pydantic import BaseModel
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-key-change-in-production")
 if "change" in SECRET_KEY or "dev-secret" in SECRET_KEY:
     import warnings
+
     warnings.warn(
         "JWT_SECRET_KEY is using a default value. "
         "Set a strong secret via environment variable before deploying.",
