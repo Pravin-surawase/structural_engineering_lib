@@ -597,12 +597,12 @@ esac
 4. ✅ Update `docs/agents/guides/agent-quick-reference.md`
 5. Regenerate `scripts/index.json` and `scripts/index.md` (deferred to Phase 4)
 
-### Phase 4: Polish & Extend
-1. Add `./run.sh check --pre-commit` (only checks registered in pre-commit config)
-2. Add `./run.sh check --changed` (only check files changed since last commit)
-3. Add shell completion for run.sh subcommands (zsh/bash)
-4. Add timing output (how long each check took)
-5. Consider Python entry point alternative: `./eng check` via pyproject.toml scripts
+### Phase 4: Polish & Extend ✅ DONE
+1. ~~Add `./run.sh check --pre-commit`~~ ✅ Runs pre-commit hooks
+2. ~~Add `./run.sh check --changed`~~ ✅ Auto-detects categories from git diff
+3. ~~Add shell completion for run.sh~~ ✅ `eval "$(./run.sh --completions)"` for zsh
+4. ~~Add timing output~~ ✅ Already in check_all.py (per-check + per-category + total)
+5. Consider Python entry point alternative: `./eng check` via pyproject.toml scripts (deferred)
 
 ---
 

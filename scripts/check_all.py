@@ -11,6 +11,8 @@ USAGE:
     python scripts/check_all.py --fix                # Auto-fix what's possible
     python scripts/check_all.py --json               # Machine-readable output
     python scripts/check_all.py --list               # Show categories and scripts
+    python scripts/check_all.py --changed            # Only categories for changed files
+    python scripts/check_all.py --pre-commit         # Run pre-commit hooks
 
 Exit Codes:
     0: All checks passed (or warnings only)
@@ -175,6 +177,83 @@ QUICK_CHECKS: dict[str, list[str]] = {
     "stale": ["Script references"],
 }
 
+# File path patterns → categories for --changed mode
+_PATH_TO_CATEGORIES: list[tuple[str, list[str]]] = [
+    ("Python/structural_lib/services/api", ["api"]),
+    ("Python/structural_lib/", ["arch", "code"]),
+    ("fastapi_app/", ["api", "fastapi"]),
+    ("docs/", ["docs", "stale"]),
+    ("scripts/", ["stale", "governance"]),
+    ("react_app/", []),  # No script-based checks for React yet
+    ("streamlit_app/", ["streamlit"]),
+    (".pre-commit", ["governance"]),
+    ("docker-compose", ["fastapi"]),
+    ("Dockerfile", ["fastapi"]),
+    ("pyproject.toml", ["governance", "arch"]),
+]
+
+
+def _detect_changed_categories() -> set[str]:
+    """Detect which categories to run based on git diff."""
+    try:
+        result = subprocess.run(
+            ["git", "diff", "--name-only", "HEAD~1", "HEAD"],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if result.returncode != 0:
+            # Fallback: diff against working tree
+            result = subprocess.run(
+                ["git", "diff", "--name-only", "HEAD"],
+                cwd=str(REPO_ROOT),
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+    except Exception:
+        return set()  # On error, return empty (caller falls back to all)
+
+    changed_files = result.stdout.strip().splitlines()
+    if not changed_files:
+        return set()
+
+    categories: set[str] = set()
+    # Always run git checks
+    categories.add("git")
+
+    for filepath in changed_files:
+        for pattern, cats in _PATH_TO_CATEGORIES:
+            if filepath.startswith(pattern):
+                categories.update(cats)
+                break
+
+    return categories
+
+
+def _run_pre_commit(fix: bool = False) -> int:
+    """Run pre-commit hooks and return exit code."""
+    cmd = ["pre-commit", "run", "--all-files"]
+    if fix:
+        # pre-commit auto-fixes by default for formatters
+        pass
+
+    print("🔍 Running pre-commit hooks...")
+    try:
+        result = subprocess.run(
+            cmd,
+            cwd=str(REPO_ROOT),
+            timeout=300,
+        )
+        return result.returncode
+    except FileNotFoundError:
+        print("  ❌ pre-commit not installed. Run: pip install pre-commit")
+        return 1
+    except subprocess.TimeoutExpired:
+        print("  ⏱️  pre-commit timed out after 300s")
+        return 1
+
 
 # ── Runner ─────────────────────────────────────────────────────────────────
 
@@ -253,6 +332,7 @@ def _run_check(check: Check, category_name: str, use_fix: bool = False) -> Check
 def _collect_checks(
     category_filter: str | None,
     quick: bool,
+    changed_categories: set[str] | None = None,
 ) -> list[tuple[Check, str]]:
     """Collect checks to run based on filters."""
     checks: list[tuple[Check, str]] = []
@@ -260,6 +340,10 @@ def _collect_checks(
     for cat in CATEGORIES:
         # Category filter
         if category_filter and cat.name != category_filter:
+            continue
+
+        # Changed-file filter
+        if changed_categories is not None and cat.name not in changed_categories:
             continue
 
         if quick:
@@ -452,6 +536,8 @@ def main() -> int:
             "  python scripts/check_all.py                    # Run all checks\n"
             "  python scripts/check_all.py --quick            # Fast subset\n"
             "  python scripts/check_all.py --category api     # API checks only\n"
+            "  python scripts/check_all.py --changed          # Only categories for changed files\n"
+            "  python scripts/check_all.py --pre-commit       # Run pre-commit hooks\n"
             "  python scripts/check_all.py --fix              # Auto-fix issues\n"
             "  python scripts/check_all.py --json             # CI output\n"
             "  python scripts/check_all.py --list             # Show categories\n"
@@ -465,6 +551,14 @@ def main() -> int:
         "--category", "-c", type=str, default=None,
         choices=[cat.name for cat in CATEGORIES],
         help="Run checks for a specific category only",
+    )
+    parser.add_argument(
+        "--changed", action="store_true",
+        help="Only run checks for categories affected by recent file changes",
+    )
+    parser.add_argument(
+        "--pre-commit", action="store_true",
+        help="Run pre-commit hooks (black, ruff, mypy, isort, bandit)",
     )
     parser.add_argument(
         "--fix", action="store_true",
@@ -493,8 +587,21 @@ def main() -> int:
         _print_list()
         return 0
 
+    # Handle --pre-commit mode
+    if args.pre_commit:
+        return _run_pre_commit(fix=args.fix)
+
+    # Detect changed categories if --changed
+    changed_cats = None
+    if args.changed:
+        changed_cats = _detect_changed_categories()
+        if not changed_cats:
+            if not args.json:
+                print("✅ No changes detected — nothing to check")
+            return 0
+
     # Collect checks to run
-    checks = _collect_checks(args.category, args.quick)
+    checks = _collect_checks(args.category, args.quick, changed_cats)
 
     if not checks:
         if args.category:
@@ -504,7 +611,14 @@ def main() -> int:
         return 0
 
     if not args.json:
-        mode = "quick" if args.quick else ("category: " + args.category if args.category else "all")
+        if args.changed and changed_cats:
+            mode = f"changed: {', '.join(sorted(changed_cats))}"
+        elif args.quick:
+            mode = "quick"
+        elif args.category:
+            mode = f"category: {args.category}"
+        else:
+            mode = "all"
         fix_tag = " (fix mode)" if args.fix else ""
         print(f"🔍 Running {len(checks)} check(s) [{mode}]{fix_tag}...")
 

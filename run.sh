@@ -75,6 +75,8 @@ Run validation checks across the codebase.
 Options:
   (no args)            Run ALL checks (parallel by category)
   --quick              Fast subset: links, imports, hygiene (<30s)
+  --changed            Only run categories for recently changed files
+  --pre-commit         Run pre-commit hooks (black, ruff, mypy, isort)
   --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code|streamlit
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output
@@ -543,8 +545,70 @@ _dispatch_help() {
     esac
 }
 
+# ── Shell completion ────────────────────────────────────────────────────────
+
+# Source this to enable tab completion: eval "$(./run.sh --completions)"
+_run_sh_completions() {
+    if [[ "${1:-}" == "--completions" ]]; then
+        cat <<'COMP'
+# Zsh completion for ./run.sh
+_run_sh() {
+    local -a commands=(
+        'check:Run validation checks'
+        'commit:Stage, commit, and push'
+        'pr:Manage pull requests'
+        'session:Manage agent sessions'
+        'find:Discover scripts and API'
+        'release:Version bumps'
+        'audit:Readiness audit'
+        'test:Run test suites'
+        'generate:Generate indexes and SDKs'
+    )
+    local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
+    local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code' 'streamlit')
+    local -a pr_subs=('create' 'finish' 'status')
+    local -a session_subs=('start' 'end' 'summary' 'sync' 'check')
+    local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
+    local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
+    local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
+    local -a release_subs=('run' 'verify' 'check-docs' 'checklist')
+
+    if (( CURRENT == 2 )); then
+        _describe 'command' commands
+    elif (( CURRENT == 3 )); then
+        case "${words[2]}" in
+            check) _values 'option' $check_opts ;;
+            pr) _values 'subcommand' $pr_subs ;;
+            session) _values 'subcommand' $session_subs ;;
+            generate) _values 'subcommand' $generate_subs ;;
+            test) _values 'option' $test_opts ;;
+            audit) _values 'option' $audit_opts ;;
+            release) _values 'subcommand' $release_subs ;;
+        esac
+    elif (( CURRENT == 4 )); then
+        case "${words[2]}" in
+            check)
+                if [[ "${words[3]}" == "--category" ]]; then
+                    _values 'category' $categories
+                fi
+                ;;
+        esac
+    fi
+}
+compdef _run_sh ./run.sh
+compdef _run_sh run.sh
+COMP
+        exit 0
+    fi
+}
+
 # Main entry point
 main() {
+    # Handle --completions before anything else
+    if [[ "${1:-}" == "--completions" ]]; then
+        _run_sh_completions "$@"
+    fi
+
     local cmd="${1:-}"
 
     # No command → show usage
