@@ -43,7 +43,6 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | TASK-502 | Code-split Three.js + react-three-fiber + lazy-load routes (1.16 MB chunk) | — | 1d | 🟠 High | 📋 |
-| TASK-503 | Wire REST fallback in DesignView (useAutoDesign on WS disconnect) | — | 0.5d | 🟠 High | 📋 |
 | TASK-508 | Split ai_workspace.py (5103 lines → 6 modules) | — | 2d | 🟠 High | 📋 |
 | TASK-504 | Add SSE batch progress UI (streaming.py → React) | — | 1d | Medium | 📋 |
 | TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | Medium | 📋 |
@@ -61,6 +60,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-503 | Wire REST fallback in DesignView (WS disconnect → REST auto-design) | Copilot | ✅ Done (`cad5e24`) |
 | TASK-506 | React test infra: Vitest + 5 test suites (23 tests) | Copilot | ✅ Done (`ff3a937`) |
 | TASK-507 | Fix arch violations: stub imports in Streamlit + delete dead test | Copilot | ✅ Done (`0e6657e`) |
 | TASK-500 | Unified CLI + onboarding audit (run.sh, check_all.py, 28 checks) | Claude | ✅ Done (PR #436) |
