@@ -2313,7 +2313,7 @@ adapter system from multi-format import page:
 
 ### Files Modified
 
-- [streamlit_app/components/ai_workspace.py](../streamlit_app/components/ai_workspace.py) — UI polish, safety fixes, export
+- `streamlit_app/components/ai_workspace/` — UI polish, safety fixes, export (split into 6 modules in TASK-508)
 - [docs/planning/8-week-development-plan.md](planning/8-week-development-plan.md) — AI v2 marked complete
 - [docs/TASKS.md](TASKS.md) — Updated task status
 

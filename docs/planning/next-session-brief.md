@@ -58,7 +58,6 @@
 - **2 architecture violations** - rebar_optimizer/multi_objective_optimizer bypass api facade
 - **~13 backward-compat stub imports** in streamlit_app/ - functional but messy
 - **28 unit conversion warnings** in IS 456 code - documented via var names
-- **Original ai_workspace.py** renamed to `ai_workspace_ORIGINAL_BACKUP.py` — can be deleted once package is stable
 
 ---
 
