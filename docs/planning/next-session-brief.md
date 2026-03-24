@@ -42,17 +42,23 @@
 
 ## Next Priorities
 
-1. **Code-split Three.js bundles** - index.js chunk is 1.16 MB
-2. **REST fallback in DesignView** - when WebSocket is unavailable
-3. **SSE batch progress UI** - streaming.py router exists, needs React consumer
-4. **React test infrastructure** - Zero test files, needs Vitest + core tests
-5. **Split ai_workspace.py** - 5103 lines to 6 modules (needs dedicated PR)
-6. **Governance single source of truth** - make governance-limits.json the only config
+1. **Code-split Three.js bundles** (TASK-502) - index.js chunk is 1.16 MB
+2. **SSE batch progress UI** (TASK-504) - streaming.py router exists, needs React consumer
+3. **E2E Docker + React test** (TASK-505) - 13 routers need integration tests
+4. **Type annotations** (TASK-509) - 49 missing return types + 4 missing `__all__` in Streamlit
+5. **Governance single source of truth** - make governance-limits.json the only config
+
+### Recently Completed
+- **TASK-508** - Split `ai_workspace.py` (5103→5314 lines, 7 files) — commit `b9b2733`
+- **TASK-503** - REST fallback in DesignView — commit `cad5e24`
+- **TASK-506** - Vitest + 5 test suites (23 tests) — commit `ff3a937`
+- **TASK-507** - Fix arch violations + dead test — commit `0e6657e`
 
 ### Technical Debt
 - **2 architecture violations** - rebar_optimizer/multi_objective_optimizer bypass api facade
 - **~13 backward-compat stub imports** in streamlit_app/ - functional but messy
 - **28 unit conversion warnings** in IS 456 code - documented via var names
+- **Original ai_workspace.py** renamed to `ai_workspace_ORIGINAL_BACKUP.py` — can be deleted once package is stable
 
 ---
 

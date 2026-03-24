@@ -43,7 +43,6 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | TASK-502 | Code-split Three.js + react-three-fiber + lazy-load routes (1.16 MB chunk) | — | 1d | 🟠 High | 📋 |
-| TASK-508 | Split ai_workspace.py (5103 lines → 6 modules) | — | 2d | 🟠 High | 📋 |
 | TASK-504 | Add SSE batch progress UI (streaming.py → React) | — | 1d | Medium | 📋 |
 | TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | Medium | 📋 |
 | TASK-509 | Type annotations: Streamlit pages (49 return types + 4 __all__) | — | 1d | 🟢 Low | 📋 |
@@ -52,7 +51,6 @@
 
 | ID | Task | Priority | Notes |
 |----|------|----------|-------|
-| TASK-508 | Split `ai_workspace.py` (5103 lines → 6 modules) | 🟠 High | Dedicated PR only; do after TASK-506. See [weak-points-audit.md](planning/weak-points-audit.md#wp-4) |
 | TASK-509 | Type annotations: 49 missing return types + 4 missing `__all__` (Streamlit) | 🟢 Low | Core already passes mypy. See [weak-points-audit.md](planning/weak-points-audit.md#wp-6) |
 | — | 28 unit conversion warnings | 🟢 Low | `* 1000`/`/ 1000` in IS 456 code. Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
 
@@ -60,6 +58,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-508 | Split ai_workspace.py into 6 modules (5103→5314 lines, 7 files) | Copilot | ✅ Done (`b9b2733`) |
 | TASK-503 | Wire REST fallback in DesignView (WS disconnect → REST auto-design) | Copilot | ✅ Done (`cad5e24`) |
 | TASK-506 | React test infra: Vitest + 5 test suites (23 tests) | Copilot | ✅ Done (`ff3a937`) |
 | TASK-507 | Fix arch violations: stub imports in Streamlit + delete dead test | Copilot | ✅ Done (`0e6657e`) |
