@@ -268,41 +268,14 @@ case "$MODE" in
         ;;
 
     *)
-        # Default: Async monitoring (recommended)
-        echo "→ Setting up async monitoring..."
-
-        # Check if daemon script exists
-        if [[ ! -f "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" ]]; then
-            echo -e "${YELLOW}⚠ CI monitor daemon not available${NC}"
-            echo ""
-            echo -e "${GREEN}✓ PR #$PR_NUMBER created successfully${NC}"
-            echo ""
-            echo "Monitor manually:"
-            echo "  View:   gh pr view $PR_NUMBER --web"
-            echo "  Status: gh pr checks $PR_NUMBER"
-            echo "  Merge:  gh pr merge $PR_NUMBER --squash --delete-branch"
-        else
-            # Ensure daemon is running
-            # Note: Capture to variable to avoid SIGPIPE with grep -q
-            daemon_status=$("$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" status 2>/dev/null || true)
-            if ! echo "$daemon_status" | grep -q "running"; then
-                "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" start
-            fi
-
-            echo ""
-            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-            echo -e "${GREEN}✓ PR #$PR_NUMBER is now monitored by daemon${NC}"
-            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-            echo ""
-            echo "What happens next:"
-            echo "  📊 Daemon checks CI every 30s"
-            echo "  ⚠️  You'll be notified on FIRST failure"
-            echo "  ✅ Auto-merge when ALL checks pass"
-            echo ""
-            echo "Commands:"
-            echo "  Status: ./scripts/pr_async_merge.sh status"
-            echo "  Logs:   ./scripts/ci_monitor_daemon.sh logs"
-        fi
+        # Default: Manual monitoring
+        echo ""
+        echo -e "${GREEN}✓ PR #$PR_NUMBER created successfully${NC}"
+        echo ""
+        echo "Monitor and merge:"
+        echo "  View:   gh pr view $PR_NUMBER --web"
+        echo "  Status: gh pr checks $PR_NUMBER"
+        echo "  Merge:  gh pr merge $PR_NUMBER --squash --delete-branch"
         echo ""
 
         # Return to main
