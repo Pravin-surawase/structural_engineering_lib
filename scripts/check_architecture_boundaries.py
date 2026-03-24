@@ -104,6 +104,18 @@ LAYERS = {
             # UI should not import core internals directly
             "structural_lib.codes.is456.flexure",
             "structural_lib.codes.is456.shear",
+            "structural_lib.codes.is456.detailing",
+            "structural_lib.codes.is456.torsion",
+            "structural_lib.codes.is456.serviceability",
+            "structural_lib.codes.is456.slenderness",
+            "structural_lib.codes.is456.ductile",
+            "structural_lib.codes.is456.compliance",
+            "structural_lib.codes.is456.load_analysis",
+            # UI should not bypass the api facade to reach service internals
+            "structural_lib.services.audit",
+            "structural_lib.services.calculation_report",
+            "structural_lib.services.rebar_optimizer",
+            "structural_lib.services.multi_objective_optimizer",
             # Should use api.py instead
         ],
     },
@@ -280,6 +292,16 @@ def check_imports(
                     fix_hint = "Use pure Python in core; pandas belongs in application layer"
                 elif layer == "application" and forbidden_pattern == "streamlit":
                     fix_hint = "Use dependency injection to receive UI callbacks"
+                elif layer == "ui" and "services." in forbidden_pattern:
+                    fix_hint = (
+                        f"Import from structural_lib.services.api instead of "
+                        f"'{imp.module}' — use the public API facade"
+                    )
+                elif layer == "ui" and "codes.is456" in forbidden_pattern:
+                    fix_hint = (
+                        "Import from structural_lib.api or structural_lib.services.api "
+                        "instead of accessing IS 456 code layer directly"
+                    )
 
                 yield Violation(
                     file=file_path,
