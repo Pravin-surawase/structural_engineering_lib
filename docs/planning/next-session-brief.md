@@ -12,9 +12,7 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-25
-- Session: 93 (continued)
-- Branch: main (PR #436 merged)
+- Date: 2026-03-24
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -34,8 +32,11 @@
 - Fixed 46 to 15 stale refs, 4 runtime breaks, updated all agent docs
 - Git workflow audit: `docs/audit/git-workflow-audit-pr436.md` (11 issues, 7 fixed)
 
-### TASK-501: Pre-existing check failures
-- 9 of 28 `check_all.py` checks were pre-existing failures - fixed in PR
+### TASK-501: Pre-existing check failures (PR pending)
+- check_all.py improved from 19/28 → 25/28 (6 checks fixed)
+- Fixed: API validation, API stability sync, API manifest, doc front-matter, OpenAPI snapshot, TASKS.md format, broken links, brief trimming
+- Remaining 3 failures are tech debt (documented in TASKS.md Backlog): architecture boundaries (2 Streamlit violations), import validation (293 legacy), type annotations (68 gaps)
+- Branch: `task/TASK-501`, commit: `f40f807`
 
 ---
 
