@@ -18,8 +18,16 @@ NC='\033[0m'
 poll_pr_checks() {
     local pr_number="$1"
     local interval="${2:-10}"
+    local max_attempts="${3:-60}"  # Default: 60 attempts = 10 minutes at 10s interval
+    local attempt=0
 
     while true; do
+        attempt=$((attempt + 1))
+        if [[ "$attempt" -gt "$max_attempts" ]]; then
+            echo -e "${RED}✗ Timeout: CI checks did not complete after $max_attempts attempts${NC}"
+            echo "Check manually: gh pr view $pr_number --web"
+            return 1
+        fi
         local stats
         stats=$(gh pr view "$pr_number" --json state,mergeable,statusCheckRollup --jq '[
             .state,

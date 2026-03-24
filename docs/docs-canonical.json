@@ -10,9 +10,9 @@
       "also_see": ["docs/getting-started/agent-essentials.md", "docs/getting-started/ai-context-pack.md"]
     },
     "git-workflow": {
-      "canonical": "docs/git-automation/workflow-guide.md",
-      "description": "Git automation patterns and scripts",
-      "also_see": ["docs/git-automation/automation-scripts.md"]
+      "canonical": "docs/git-automation/git-workflow-single-source.md",
+      "description": "Git automation single source of truth — workflow, scripts, hooks, recovery",
+      "also_see": ["docs/git-automation/workflow-guide.md", "docs/git-automation/automation-scripts.md"]
     },
     "api-reference": {
       "canonical": "docs/reference/api.md",

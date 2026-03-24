@@ -364,7 +364,7 @@ if [[ "$IS_WORKTREE" == "true" ]]; then
   echo -e "${CYAN}📍 Commit: $(git log -1 --oneline)${NC}"
   echo ""
   echo -e "${BLUE}🌿 Worktree workflow complete${NC}"
-  echo -e "${BLUE}💡 Tip: Use worktree_manager.sh submit when ready${NC}"
+  echo -e "${BLUE}💡 Tip: Push when ready with: ./scripts/ai_commit.sh --push${NC}"
   log_message "SUCCESS" "Worktree commit completed (not pushed): $(git log -1 --oneline)"
   log_message "INFO" "=== Worktree Workflow Completed ==="
 else

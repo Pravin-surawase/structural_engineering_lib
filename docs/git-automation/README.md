@@ -31,6 +31,7 @@
 
 | Need | File | Description |
 |------|------|-------------|
+| **SINGLE SOURCE OF TRUTH** | [git-workflow-single-source.md](git-workflow-single-source.md) | **Complete reference — start here** |
 | **Learn the workflow** | [workflow-guide.md](workflow-guide.md) | Core 7-step process, decision trees |
 | **Find commands** | [automation-scripts.md](automation-scripts.md) | All 103 scripts organized by use case |
 | **Agent patterns** | [efficient-agent-usage.md](efficient-agent-usage.md) | Per-agent workflows, time optimization |

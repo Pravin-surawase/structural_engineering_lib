@@ -24,6 +24,7 @@ NC='\033[0m' # No Color
 DRY_RUN=false
 FORCE=false
 PUSH_ONLY=false
+AMEND=false
 COMMIT_MSG=""
 for arg in "$@"; do
     if [[ "$arg" == "--dry-run" ]]; then
@@ -32,13 +33,16 @@ for arg in "$@"; do
         FORCE=true
     elif [[ "$arg" == "--push" || "$arg" == "--push-only" ]]; then
         PUSH_ONLY=true
+    elif [[ "$arg" == "--amend" ]]; then
+        AMEND=true
     elif [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
-        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push]"
+        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push] [--amend]"
         echo ""
         echo "Options:"
         echo "  --dry-run  Preview what would happen without committing"
         echo "  --force    Bypass PR requirement check (for batching work)"
         echo "  --push     Push already-committed changes (no new commit)"
+        echo "  --amend    Amend the last commit (add staged changes to it)"
         echo "  --help     Show this help message"
         echo ""
         echo "Examples:"
@@ -46,6 +50,7 @@ for arg in "$@"; do
         echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
         echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
         echo "  ./scripts/ai_commit.sh --push          # Push existing commits"
+        echo "  ./scripts/ai_commit.sh --amend          # Amend last commit + push"
         exit 0
     elif [[ -z "$COMMIT_MSG" ]]; then
         COMMIT_MSG="$arg"
@@ -81,6 +86,31 @@ if [[ "$PUSH_ONLY" == "true" ]]; then
         echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
     else
         echo -e "${RED}✗ Push failed${NC}"
+        exit 1
+    fi
+    exit 0
+fi
+
+# Amend mode: add staged changes to the last commit and push
+if [[ "$AMEND" == "true" ]]; then
+    echo -e "${YELLOW}→ Amend mode: updating last commit...${NC}"
+    git add -A
+    if [[ -z $(git status --porcelain) ]] && [[ -z "$COMMIT_MSG" ]]; then
+        echo -e "${GREEN}✓ Nothing to amend${NC}"
+        exit 0
+    fi
+    if [[ -n "$COMMIT_MSG" ]]; then
+        git commit --amend -m "$COMMIT_MSG"
+    else
+        git commit --amend --no-edit
+    fi
+    echo -e "${GREEN}✓ Commit amended: $(git log -1 --oneline)${NC}"
+    echo "→ Pushing amended commit..."
+    export SAFE_PUSH_ACTIVE=1
+    if git push --force-with-lease; then
+        echo -e "${GREEN}✓ Successfully pushed amended commit!${NC}"
+    else
+        echo -e "${RED}✗ Push failed (remote may have new commits)${NC}"
         exit 1
     fi
     exit 0
