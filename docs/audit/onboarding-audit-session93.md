@@ -23,6 +23,7 @@ Fresh-agent onboarding test: followed all documented steps exactly as a new AI a
 |---|-------|------|--------|
 | 1 | `session.py` calls `check_handoff_ready.py` but it was archived to `scripts/_archive/` | [session.py](../../scripts/session.py) L262 | "Doc Freshness" and "Handoff Checks" ALWAYS report "Some checks failed" — both in `agent_start.sh --quick` and `session.py end`. New agents see perpetual warnings with no actionable fix. |
 | 2 | `audit_readiness_report.py` references `scripts/check_doc_metadata.py` which is also archived | [audit_readiness_report.py](../../scripts/audit_readiness_report.py) L385 | Audit report silently skips doc metadata check |
+| 3 | `finish_task_pr.sh` defaults to "Async" mode which calls `ci_monitor_daemon.sh` — also archived | [finish_task_pr.sh](../../scripts/finish_task_pr.sh) L279-281 | PR finalization crashes with "No such file or directory" error after PR is created. Agent left on task branch instead of returning to main. |
 
 ### HIGH — Stale/Non-Existent Doc Paths in Scripts
 
@@ -71,10 +72,10 @@ The onboarding workflow has many strong points worth preserving:
 ## Fixes Applied in This PR
 
 1. ✅ Fix `session.py` stale doc references (L338)
-2. ✅ Fix `session.py` archived script reference — inline basic handoff check
+2. ✅ Fix `session.py` archived script reference — inlined basic handoff check
 3. ✅ Fix `agent_start.sh` API function count (43 → 23 public + 6 private)
 4. ✅ Fix `bump_version.py` stale `ai-context-pack.md` reference
-5. ✅ Fix `check_docs.py` stale comment reference
+5. ✅ Fix `finish_task_pr.sh` crash when `ci_monitor_daemon.sh` is archived — graceful fallback
 
 ---
 
