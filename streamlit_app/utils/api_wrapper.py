@@ -44,7 +44,7 @@ try:
         LoadDefinition,
         LoadType,
     )
-    from structural_lib.services.rebar_optimizer import optimize_bar_arrangement
+    from structural_lib.rebar_optimizer import optimize_bar_arrangement
     from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
     from structural_lib.shear import select_stirrup_diameter
 
