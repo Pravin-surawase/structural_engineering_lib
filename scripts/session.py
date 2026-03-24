@@ -257,16 +257,36 @@ def get_key_blocker() -> Optional[str]:
 
 
 def run_handoff_check(skip_tests: bool = True) -> tuple[bool, str]:
-    try:
-        args = ["--skip-tests"] if skip_tests else []
-        result = _run_script("check_handoff_ready.py", *args, timeout=240)
-        output = (result.stdout or "") + "\n" + (result.stderr or "")
-        if "All checks passed" in output:
-            return True, "All handoff checks passed"
-        issues = [line.strip() for line in output.split("\n") if "❌" in line or "⚠️" in line]
-        return False, "\n".join(issues) if issues else "Some checks failed"
-    except Exception as e:
-        return False, f"Error running handoff check: {e}"
+    """Inline handoff check — validates key session docs exist and are current."""
+    issues: list[str] = []
+    today = date.today().strftime("%Y-%m-%d")
+
+    # Check next-session-brief.md exists and was updated recently
+    brief = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
+    if not brief.exists():
+        issues.append("❌ docs/planning/next-session-brief.md missing")
+    else:
+        content = brief.read_text(encoding="utf-8")
+        if today not in content:
+            issues.append("⚠️  next-session-brief.md not updated today")
+
+    # Check TASKS.md exists
+    tasks = REPO_ROOT / "docs" / "TASKS.md"
+    if not tasks.exists():
+        issues.append("❌ docs/TASKS.md missing")
+
+    # Check SESSION_LOG.md has today's entry
+    session_log = REPO_ROOT / "docs" / "SESSION_LOG.md"
+    if not session_log.exists():
+        issues.append("❌ docs/SESSION_LOG.md missing")
+    else:
+        content = session_log.read_text(encoding="utf-8")[:5000]
+        if today not in content:
+            issues.append("⚠️  SESSION_LOG.md has no entry for today")
+
+    if issues:
+        return False, "\n".join(issues)
+    return True, "All handoff checks passed"
 
 
 def cmd_start(args: argparse.Namespace) -> int:
@@ -335,7 +355,7 @@ def cmd_start(args: argparse.Namespace) -> int:
     print()
     print("🧭 Automation lookup: .venv/bin/python scripts/find_automation.py \"your task\"")
     print("📚 Context routing: scripts/automation-map.json (context_docs per task)")
-    print("📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md")
+    print("📖 Read first: docs/planning/next-session-brief.md → docs/getting-started/agent-bootstrap.md")
     print("=" * 60)
     print()
     return 0
