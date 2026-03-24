@@ -13,6 +13,7 @@ interface ConnectionStatusProps {
   error?: string | null;
   retryCount?: number;
   onReconnect?: () => void;
+  isFallbackActive?: boolean;
   className?: string;
 }
 
@@ -66,17 +67,23 @@ export function ConnectionStatus({
   error,
   retryCount,
   onReconnect,
+  isFallbackActive,
   className = '',
 }: ConnectionStatusProps) {
   const config = STATUS_CONFIG[status];
 
+  // Override display when REST fallback is active
+  const displayLabel = isFallbackActive ? 'REST Mode' : config.label;
+  const displayBg = isFallbackActive ? 'bg-amber-500/10' : config.bgColor;
+  const displayText = isFallbackActive ? 'text-amber-500' : config.textColor;
+
   return (
     <div
-      className={`flex items-center gap-2 px-2.5 py-1.5 rounded-full ${config.bgColor} ${config.textColor} text-xs font-medium ${className}`}
-      title={error || config.label}
+      className={`flex items-center gap-2 px-2.5 py-1.5 rounded-full ${displayBg} ${displayText} text-xs font-medium ${className}`}
+      title={isFallbackActive ? 'WebSocket unavailable — using REST API' : error || config.label}
     >
       <span className={config.animate ? 'animate-spin' : ''}>{config.icon}</span>
-      <span>{config.label}</span>
+      <span>{displayLabel}</span>
       {latency !== null && latency !== undefined && status === 'connected' && (
         <span className="text-zinc-500">({latency}ms)</span>
       )}

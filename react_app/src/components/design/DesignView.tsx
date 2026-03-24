@@ -88,6 +88,7 @@ export function DesignView() {
             latency={state.latency}
             error={state.error}
             onReconnect={actions.reconnect}
+            isFallbackActive={state.isFallbackActive}
           />
         </div>
 
@@ -129,7 +130,7 @@ export function DesignView() {
         <div className="px-3 pb-3 space-y-2">
           <button
             onClick={actions.triggerDesign}
-            disabled={!state.isConnected || state.isDesigning}
+            disabled={state.isDesigning}
             className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
           >
             {state.isDesigning ? (
@@ -144,6 +145,9 @@ export function DesignView() {
               </>
             )}
           </button>
+          {state.isFallbackActive && (
+            <p className="text-[10px] text-amber-400/60 text-center">Using REST API (WebSocket unavailable)</p>
+          )}
           {state.result && (
             <button
               onClick={() => navigate("/design/results")}

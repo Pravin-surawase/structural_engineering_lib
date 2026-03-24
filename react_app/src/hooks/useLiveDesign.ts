@@ -13,6 +13,7 @@ import { useEffect, useCallback, useRef, useMemo } from 'react';
 import { useDesignStore } from '../store/designStore';
 import { useDesignWebSocket } from './useDesignWebSocket';
 import { useBeamGeometry } from './useBeamGeometry';
+import { designBeam } from '../api/client';
 import type { Beam3DGeometry, BeamGeometryRequest } from './useBeamGeometry';
 
 interface LiveDesignOptions {
@@ -43,6 +44,8 @@ interface LiveDesignState {
   error: string | null;
   /** Connection status */
   connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error';
+  /** Whether REST fallback is active (WS unavailable) */
+  isFallbackActive: boolean;
 }
 
 interface LiveDesignActions {
@@ -90,7 +93,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
 
   // Design store
   const store = useDesignStore();
-  const { inputs, length, result, isLoading, setInputs, setLength, reset } = store;
+  const { inputs, length, result, isLoading, setInputs, setLength, setResult, setLoading, setError, reset } = store;
 
   // WebSocket hook
   const ws = useDesignWebSocket(sessionId, enabled);
@@ -98,6 +101,28 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   // Debounce ref for auto-design
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastInputsRef = useRef(inputs);
+  const abortRef = useRef<AbortController | null>(null);
+
+  // REST fallback is active when WS is not connected
+  const isFallbackActive = !ws.isConnected && (ws.status === 'disconnected' || ws.status === 'error');
+
+  // REST fallback design request
+  const runRestDesign = useCallback(async () => {
+    if (abortRef.current) abortRef.current.abort();
+    abortRef.current = new AbortController();
+
+    setLoading(true);
+    try {
+      const res = await designBeam(inputs);
+      setResult(res);
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        setError((err as Error).message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [inputs, setResult, setLoading, setError]);
 
   // Build geometry request from current state
   const geometryParams = useMemo<BeamGeometryRequest | null>(() => {
@@ -130,9 +155,9 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     error: geometryError,
   } = useBeamGeometry(geometryParams, { enabled: Boolean(geometryParams) });
 
-  // Auto-design when inputs change
+  // Auto-design when inputs change (WebSocket or REST fallback)
   useEffect(() => {
-    if (!autoDesign || !enabled || !ws.isConnected) return;
+    if (!autoDesign || !enabled) return;
 
     // Check if inputs actually changed
     const inputsChanged =
@@ -151,21 +176,34 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       clearTimeout(debounceRef.current);
     }
 
-    debounceRef.current = setTimeout(() => {
-      ws.sendDesign();
-    }, debounceMs);
+    if (ws.isConnected) {
+      // WebSocket path: fast 150ms debounce
+      debounceRef.current = setTimeout(() => {
+        ws.sendDesign();
+      }, debounceMs);
+    } else {
+      // REST fallback path: slower 300ms debounce
+      debounceRef.current = setTimeout(() => {
+        runRestDesign();
+      }, 300);
+    }
 
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [inputs, autoDesign, enabled, ws.isConnected, ws.sendDesign, debounceMs]);
+  }, [inputs, autoDesign, enabled, ws.isConnected, ws.sendDesign, debounceMs, runRestDesign]);
 
   // Actions
   const triggerDesign = useCallback(() => {
-    return ws.sendDesign();
-  }, [ws]);
+    if (ws.isConnected) {
+      return ws.sendDesign();
+    }
+    // REST fallback — always available
+    runRestDesign();
+    return true;
+  }, [ws, runRestDesign]);
 
   const updateInputs = useCallback(
     (newInputs: Partial<typeof inputs>) => {
@@ -181,6 +219,13 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     [setLength]
   );
 
+  // Cleanup REST abort controller on unmount
+  useEffect(() => {
+    return () => {
+      if (abortRef.current) abortRef.current.abort();
+    };
+  }, []);
+
   // Combined state
   const state: LiveDesignState = {
     isConnected: ws.isConnected,
@@ -191,6 +236,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     geometry: geometry ?? null,
     error: ws.error || (geometryError as Error | null)?.message || null,
     connectionStatus: ws.status,
+    isFallbackActive,
   };
 
   // Combined actions
