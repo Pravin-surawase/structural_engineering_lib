@@ -1,12 +1,8 @@
 ---
-**Type:** Implementation Plan
-**Audience:** Developers, VBA Implementers
-**Status:** Draft
-**Importance:** High
-**Created:** 2026-01-17
-**Last Updated:** 2026-01-17
-**Related Tasks:** TASK-VBA-01, TASK-VBA-02, TASK-VBA-03
-**Related Docs:** [etabs-vba-export-macro.md](etabs-vba-export-macro.md), [csv-import-schema.md](../specs/csv-import-schema.md), [etabs-automation-bridge-plan.md](../planning/etabs-automation-bridge-plan.md)
+owner: ai-agent
+status: draft
+last_updated: "2026-01-17"
+doc_type: guide
 ---
 
 # ETABS VBA Export — In-Depth Implementation Plan

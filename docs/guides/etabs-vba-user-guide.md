@@ -1,11 +1,13 @@
 ---
-**Type:** User Guide
-**Audience:** Engineers, End Users
-**Status:** Production Ready
-**Importance:** High
-**Created:** 2026-01-17
-**Last Updated:** 2026-01-17
-**Related Docs:** [etabs-vba-implementation-plan.md](../research/etabs-vba-implementation-plan.md), [etabs-vba-export-macro.md](../research/etabs-vba-export-macro.md)
+owner: ai-agent
+status: draft
+last_updated: "2026-01-17"
+doc_type: guide
+type: "User Guide"
+audience: "Engineers, End Users"
+importance: "High"
+created: "2026-01-17"
+related_docs: "[etabs-vba-implementation-plan.md](../research/etabs-vba-implementation-plan.md), [etabs-vba-export-macro.md](../research/etabs-vba-export-macro.md)"
 ---
 
 # ETABS VBA Export Macro - User Setup Guide

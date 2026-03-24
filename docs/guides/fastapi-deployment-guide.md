@@ -1,11 +1,13 @@
 ---
-Type: Guide
-Audience: Developers
-Status: Draft
-Importance: High
-Created: 2026-01-24
-Last Updated: 2026-01-24
-Related Tasks: TASK-CI-V3
+owner: ai-agent
+status: draft
+last_updated: "2026-01-24"
+doc_type: guide
+type: "Guide"
+audience: "Developers"
+importance: "High"
+created: "2026-01-24"
+related_tasks: "TASK-CI-V3"
 ---
 
 # FastAPI Deployment Guide

@@ -1,11 +1,8 @@
 ---
-**Type:** Research
-**Audience:** Developers, Product
-**Status:** Draft
-**Importance:** High
-**Created:** 2026-01-17
-**Last Updated:** 2026-01-17
-**Related Tasks:** TASK-CSV-02, TASK-CSV-03
+owner: ai-agent
+status: draft
+last_updated: "2026-01-17"
+doc_type: reference
 ---
 
 # ETABS Automation Integration — UX-First Options

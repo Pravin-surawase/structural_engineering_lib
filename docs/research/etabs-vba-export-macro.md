@@ -1,10 +1,8 @@
 ---
-**Type:** Research + Recipe
-**Audience:** Developers, Automation
-**Status:** Draft
-**Importance:** Medium
-**Created:** 2026-01-18
-**Last Updated:** 2026-01-18
+owner: ai-agent
+status: draft
+last_updated: "2026-01-18"
+doc_type: reference
 ---
 
 # ETABS VBA Export Macro — Testing Shortcut

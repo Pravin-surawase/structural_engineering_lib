@@ -1,11 +1,13 @@
 ---
-**Type:** Reference
-**Audience:** Developers, AI Agents
-**Status:** Production Ready
-**Importance:** Critical
-**Created:** 2026-01-14
-**Last Updated:** 2026-01-14
-**Related Tasks:** TASK-3D-02, TASK-3D-03
+owner: ai-agent
+status: draft
+last_updated: "2026-01-14"
+doc_type: reference
+type: "Reference"
+audience: "Developers, AI Agents"
+importance: "Critical"
+created: "2026-01-14"
+related_tasks: "TASK-3D-02, TASK-3D-03"
 ---
 
 # 3D JSON Contract — Beam Geometry Data Format

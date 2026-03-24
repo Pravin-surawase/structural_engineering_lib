@@ -999,6 +999,19 @@ class LoadDiagramResult:
 - **Bending Moment**: Positive = sagging (tension at bottom fiber)
 - **Shear Force**: Positive = upward force on left face of section
 
+### 1B.6 API Module Exports
+
+These types are also available as `api.*` exports:
+
+```python
+from structural_lib import api
+
+api.LoadType           # Enum: UDL, POINT
+api.LoadDefinition     # Dataclass: load_type, magnitude, position_mm
+api.CriticalPoint      # Dataclass: position_mm, moment_knm, shear_kn
+api.LoadDiagramResult  # Dataclass: positions, bmd, sfd, critical_points
+```
+
 ---
 
 ## 1C. Beam Pipeline (`beam_pipeline.py`)
@@ -1434,6 +1447,8 @@ print(f"Stirrup spacing: {result.stirrup_spacing:.0f} mm")
 print(f"Longitudinal steel for torsion: {result.al_torsion:.0f} mm²")
 print(f"Safe: {result.is_safe}")
 ```
+
+The result type is also available as `api.TorsionResult`.
 
 ---
 
@@ -2769,6 +2784,8 @@ job = api.create_job_from_etabs(envelope[0], b_mm=300, D_mm=500)
 **Further Reading:**
 - [ETABS Integration Guide](../_archive/misc/etabs-integration.md)
 
+The data types are also available as `api.ETABSForceRow` and `api.ETABSEnvelopeResult`.
+
 ---
 
 ## 15. 3D Visualization Module (`visualization/geometry_3d.py`) — v0.18+
@@ -2977,3 +2994,25 @@ render_beam_3d_from_detailing(detailing, is_seismic=True, height=600)
 **Further Reading:**
 - [3D JSON Contract](3d-json-contract.md) — TypeScript types and schema
 - [3D Technology Research](../research/3d-technology-deep-dive-research.md) — Architecture decisions
+
+### 15.8 API Module Exports
+
+All 3D visualization types and functions are available as `api.*` exports:
+
+```python
+from structural_lib import api
+
+# Data classes
+api.Point3D              # Immutable 3D coordinate
+api.RebarSegment         # Single straight bar segment
+api.RebarPath            # Complete bar with multiple segments
+api.StirrupLoop          # Closed stirrup at X position
+api.Beam3DGeometry       # Complete visualization data
+
+# Coordinate computation functions
+api.compute_rebar_positions(beam_width, beam_depth, cover, bar_count, ...)
+api.compute_stirrup_path(beam_width, beam_depth, cover, stirrup_dia, ...)
+api.compute_stirrup_positions(span, stirrup_spacing_start, ...)
+api.compute_beam_outline(beam_width, beam_depth, span)
+api.beam_to_3d_geometry(detailing, is_seismic=False)
+```

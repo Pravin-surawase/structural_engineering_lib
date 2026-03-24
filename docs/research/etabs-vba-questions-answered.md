@@ -1,11 +1,8 @@
 ---
-**Type:** Q&A / Decision Document
-**Audience:** Developers, Product
-**Status:** Final
-**Importance:** High
-**Created:** 2026-01-17
-**Last Updated:** 2026-01-17
-**Related Docs:** [etabs-vba-implementation-plan.md](etabs-vba-implementation-plan.md), [etabs-vba-export-macro.md](etabs-vba-export-macro.md)
+owner: ai-agent
+status: draft
+last_updated: "2026-01-17"
+doc_type: reference
 ---
 
 # ETABS VBA Export — Questions Answered
