@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-24 (Session 92)
+**Updated:** 2026-03-24 (Session 93)
 
 ---
 
@@ -34,10 +34,14 @@
 
 ---
 
-## Completed Last Sessions (Sessions 81–92)
+## Completed Last Sessions (Sessions 81–93)
 
 | Task | Status | PR |
 |------|--------|-----|
+| Unified CLI: `run.sh` + `check_all.py` (9 subcommands, 28 checks, parallel) | ✅ Done | PR #436 |
+| Archive 7 Streamlit-era scripts (85→78 active) | ✅ Done | PR #436 |
+| Onboarding audit: fix 46 stale refs → 15, fix broken handoff checks | ✅ Done | PR #436 |
+| Update all agent docs (CLAUDE.md, AGENTS.md, copilot-instructions, bootstrap) | ✅ Done | PR #436 |
 | AI agent efficiency + git workflow improvements (AGENTS.md, prompts, enriched instructions) | ✅ Done | `a9bf35e` |
 | Full repo folder audit (11 batches) + agent logging rules | ✅ Done | Session 91 |
 | Wire dashboard insights into React DashboardPage | ✅ Done | PR #431 |
@@ -51,7 +55,7 @@
 
 ## Active
 
-- None active
+- **TASK-500** — Unified CLI (`run.sh` + `check_all.py`), onboarding audit, doc updates | PR #436
 
 ## Up Next (v0.20 Sprint)
 
@@ -60,7 +64,7 @@
 - **Add SSE batch progress UI** — `streaming.py` router exists, needs React consumer
 - **Test e2e with Docker + React** — verify all 13 routers respond correctly end-to-end
 - **Update OpenAPI snapshot** (`openapi_baseline.json`) to reflect current 13 routers
-- **Scripts Phase 3 completion** — migrate 10 more scripts to use `_lib/utils.py`
+- **Phase 4 polish for run.sh** — `--pre-commit`, `--changed`, shell completions
 
 ## Technical Debt (Tracked)
 

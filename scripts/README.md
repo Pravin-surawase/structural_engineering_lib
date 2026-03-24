@@ -3,7 +3,39 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 > **Owner:** All contributors
 > **Last Updated:** 2026-03-24
-> **Total Scripts:** 85 active (93 archived)
+> **Total Scripts:** 78 active (100 archived)
+
+## 🚀 Unified CLI (`./run.sh`)
+
+All scripts are accessible through `./run.sh` at the repo root — **use this instead of calling scripts directly:**
+
+```bash
+./run.sh session start              # Begin work
+./run.sh commit "type: message"     # Commit safely
+./run.sh check --quick              # Fast validation (8 checks, <30s)
+./run.sh check                      # Full validation (28 checks, parallel)
+./run.sh check --category api       # Run one category only
+./run.sh check --json               # Machine-readable output
+./run.sh test                       # Run pytest suite
+./run.sh pr create TASK-XXX "desc"  # Start a PR
+./run.sh find "topic"               # Discover scripts by task
+./run.sh find --api func_name       # Get API param names
+./run.sh audit                      # Full readiness audit
+./run.sh generate indexes           # Regenerate folder indexes
+./run.sh session end                # Wrap up
+```
+
+Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
+
+### Architecture
+
+`run.sh` is a **thin bash dispatcher** — no logic, just routes to existing scripts:
+- `./run.sh check` → `scripts/check_all.py` (parallel orchestrator, 28 checks across 9 categories)
+- `./run.sh commit` → `scripts/ai_commit.sh`
+- `./run.sh test` → `Python/.venv/bin/pytest` or specialized test scripts
+- `./run.sh find` → `scripts/find_automation.py` / `scripts/discover_api_signatures.py`
+
+Both paths work: `./run.sh check --category git` and `.venv/bin/python scripts/validate_git_state.sh` are equivalent.
 
 ## 🤖 For AI Agents: Quick Discovery
 
@@ -11,7 +43,7 @@
 
 ```python
 # In your context, load this file for full script catalog:
-# scripts/index.json - Contains all 152 scripts organized by category
+# scripts/index.json - Contains all scripts organized by category
 ```
 
 **Key categories in index.json:**
@@ -23,8 +55,8 @@
 
 **Start here:**
 ```bash
-./scripts/agent_start.sh --quick   # Start session
-./scripts/ai_commit.sh "message"   # Commit changes
+./run.sh session start             # Start session
+./run.sh commit "message"          # Commit changes
 ./scripts/recover_git_state.sh     # Fix git issues
 ```
 

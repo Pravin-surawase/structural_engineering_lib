@@ -44,15 +44,27 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 .venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (83 mapped)
 ```
 
-## Essential Commands
+## Essential Commands (`./run.sh` — preferred entry point)
 
 ```bash
-./scripts/agent_start.sh --quick                # Session start (6s)
-./scripts/ai_commit.sh "type: message"          # Safe commit + push
-./scripts/should_use_pr.sh --explain            # Check if PR required
-cd Python && .venv/bin/pytest tests/ -v         # Run tests (85% coverage gate)
-cd react_app && npm run build                   # React build check
+./run.sh session start              # Begin work (verify env, read priorities)
+./run.sh commit "type: message"     # Safe commit + push (THE ONE RULE)
+./run.sh check --quick              # Fast validation (<30s, 8 checks)
+./run.sh check                      # Full validation (28 checks, parallel)
+./run.sh test                       # Run pytest suite
+./run.sh pr create TASK-XXX "desc"  # Start a PR
+./run.sh pr finish                  # Ship the PR
+./run.sh find "topic"               # Find the right script
+./run.sh find --api func_name       # Get exact API param names
+./run.sh audit                      # Full readiness audit
+./run.sh generate indexes           # Regenerate folder indexes
+```
+
+Direct scripts (when run.sh doesn't cover it):
+```bash
+.venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
 docker compose up --build                       # Full stack at :8000/docs
+cd react_app && npm run build                   # React build check
 ```
 
 ## Session Workflow (MANDATORY)
@@ -61,14 +73,14 @@ docker compose up --build                       # Full stack at :8000/docs
 # START: Read priorities, verify environment
 docs/planning/next-session-brief.md             # What to work on
 docs/TASKS.md                                   # Task board
-./scripts/agent_start.sh --quick                # Environment check
+./run.sh session start                          # Environment check
 
 # END: Commit, log, handoff (do NOT skip)
-./scripts/ai_commit.sh "type: message"          # Commit work
-.venv/bin/python scripts/session.py summary --write  # Auto-log to SESSION_LOG.md
-.venv/bin/python scripts/session.py sync --fix       # Fix stale doc numbers
+./run.sh commit "type: message"                 # Commit work
+./run.sh session summary                        # Auto-log to SESSION_LOG.md
+./run.sh session sync                           # Fix stale doc numbers
 # Update: docs/planning/next-session-brief.md + docs/TASKS.md
-./scripts/ai_commit.sh "docs: session end"           # Commit doc updates
+./run.sh commit "docs: session end"             # Commit doc updates
 ```
 
 ## Key Patterns — Do NOT Reinvent

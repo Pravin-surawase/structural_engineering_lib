@@ -28,13 +28,17 @@
 ## ⚡ Essential Commands (Memorize These)
 
 | Command | Purpose |
-|---------|---------|
-| `./scripts/agent_start.sh --quick` | **Start session (NEW - replaces 4 commands)** |
-| `./scripts/ai_commit.sh "msg"` | **Commit changes** |
-| `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
-| `git status && git log --oneline -3` | **Check git state** |
-| `./scripts/agent_mistakes_report.sh` | **Common mistakes reminder** |
-| `.venv/bin/python scripts/session.py end` | **End session** |
+|---------|--------|
+| `./run.sh session start` | **Start session** |
+| `./run.sh commit "msg"` | **Commit changes** |
+| `./run.sh check --quick` | **Fast validation (<30s)** |
+| `./run.sh check` | **Full validation (28 checks)** |
+| `./run.sh pr create TASK-XXX "desc"` | **Create PR** |
+| `./run.sh find "topic"` | **Find scripts** |
+| `./run.sh find --api func` | **Get API signatures** |
+| `./run.sh test` | **Run tests** |
+| `./run.sh session end` | **End session** |
+| `./run.sh --help` | **Full command reference** |
 
 ---
 

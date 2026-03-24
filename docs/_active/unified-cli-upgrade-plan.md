@@ -518,22 +518,22 @@ Every active script mapped to exactly one `run.sh` subcommand:
 | `launch_streamlit.sh` | Streamlit launcher |
 | `check_cost_optimizer_issues.py` | Streamlit-specific patterns |
 
-### Pending absorption (2 merges)
-| Source | Absorb Into | Reason |
-|--------|-------------|--------|
-| `check_openapi_snapshot.py` | `validate_api_contracts.py` | Contracts is a superset |
-| `update_test_stats.py` | `sync_numbers.py --test-only` | sync_numbers already counts tests |
+### ~~Pending absorption (2 merges)~~ — SKIPPED (stability decision)
+| Source | Status | Reason for keeping separate |
+|--------|--------|---------------------------|
+| `check_openapi_snapshot.py` | **Kept** | Uses raw JSON baseline, different format from `validate_api_contracts.py` (extracted signatures) |
+| `update_test_stats.py` | **Kept** | Runs full pytest (2min) vs `sync_numbers.py` count-only (5s) — genuinely different purposes |
 
-**Total after cleanup: 85 → 76 scripts** (50 via run.sh + 14 infrastructure + 14 ad-hoc = 78, minus 2 absorptions = 76)
+**Total after cleanup: 85 → 78 scripts** (7 archived, 0 absorbed)
 
 ---
 
 ## 6. Implementation Plan
 
-### Phase 0: Immediate Cleanup (no new code)
-**Impact:** 85 → 76 scripts
+### Phase 0: Immediate Cleanup (no new code) ✅ DONE
+**Impact:** 85 → 78 scripts (7 archived)
 
-1. **Archive 7 Streamlit-era scripts** using `safe_file_move.py`:
+1. **Archive 7 Streamlit-era scripts** using `safe_file_move.py`: ✅
    - `check_performance_issues.py`, `check_ui_duplication.py`, `validate_session_state.py`
    - `generate_streamlit_page.py`, `profile_streamlit_page.py`, `launch_streamlit.sh`
    - `check_cost_optimizer_issues.py`
@@ -546,9 +546,9 @@ Every active script mapped to exactly one `run.sh` subcommand:
    - Add `--test-only` flag that runs pytest + updates test_stats.json
    - Archive `update_test_stats.py`
 
-### Phase 1: Create `./run.sh` (thin dispatcher)
-**Effort:** ~250 lines of shell
-**Impact:** Agents go from remembering 85 scripts to 9 subcommands
+### Phase 1: Create `./run.sh` (thin dispatcher) ✅ DONE
+**Effort:** ~600 lines of shell (commit `669c8d1`)
+**Impact:** Agents go from remembering 78 scripts to 9 subcommands
 
 1. Create `run.sh` at repo root
 2. Dispatch table: each subcommand calls existing scripts via functions
@@ -577,8 +577,8 @@ case "${1:-}" in
 esac
 ```
 
-### Phase 2: Create `scripts/check_all.py` (smart orchestrator)
-**Effort:** ~350 lines of Python
+### Phase 2: Create `scripts/check_all.py` (smart orchestrator) ✅ DONE
+**Effort:** ~340 lines of Python (commit `669c8d1`)
 **Impact:** `./run.sh check` runs 28 checks in parallel with unified report
 
 1. Define category → script mapping in a Python dict
@@ -590,12 +590,12 @@ esac
 7. `--category X` filters to one category
 8. `--quick` runs a curated fast subset (~10 checks, <30s)
 
-### Phase 3: Update Documentation
-1. Update `CLAUDE.md`, `AGENTS.md`, `copilot-instructions.md` — add `./run.sh` as primary interface
-2. Update `scripts/README.md` — document run.sh architecture
-3. Update `automation-map.json` — map tasks → `./run.sh` subcommands
-4. Update `docs/agents/guides/agent-quick-reference.md`
-5. Regenerate `scripts/index.json` and `scripts/index.md`
+### Phase 3: Update Documentation ✅ DONE
+1. ✅ Update `CLAUDE.md`, `AGENTS.md`, `copilot-instructions.md` — add `./run.sh` as primary interface
+2. ✅ Update `scripts/README.md` — document run.sh architecture
+3. Update `automation-map.json` — map tasks → `./run.sh` subcommands (deferred)
+4. ✅ Update `docs/agents/guides/agent-quick-reference.md`
+5. Regenerate `scripts/index.json` and `scripts/index.md` (deferred to Phase 4)
 
 ### Phase 4: Polish & Extend
 1. Add `./run.sh check --pre-commit` (only checks registered in pre-commit config)

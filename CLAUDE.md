@@ -31,26 +31,41 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # 23 public + 6 
 
 Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | adapters → `GenericCSVAdapter` | export → `useExport`.
 
-## Commands
+## Commands (`./run.sh` — preferred entry point)
 
 ```bash
-./scripts/agent_start.sh --quick                # Session start (6s)
-./scripts/ai_commit.sh "type: message"          # Commit (THE ONE RULE)
-./scripts/should_use_pr.sh --explain            # PR vs direct commit
+./run.sh session start              # Begin work (verify env, read priorities)
+./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
+./run.sh check                      # Validate everything (28 checks, parallel)
+./run.sh check --quick              # Fast validation (<30s)
+./run.sh pr create TASK-XXX "desc"  # Start a PR
+./run.sh pr finish                  # Ship the PR
+./run.sh session end                # Wrap up (logs, sync, handoff)
+./run.sh find "topic"               # Find the right script
+./run.sh find --api func_name       # Get API signatures
+./run.sh test                       # Run test suite
+./run.sh test --ci                  # Full local CI
+./run.sh audit                      # Full readiness audit
+./run.sh generate indexes           # Regenerate folder indexes
+```
+
+### Direct scripts (when run.sh doesn't cover it)
+
+```bash
+.venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
+.venv/bin/python scripts/safe_file_delete.py f  # Delete files safely
+.venv/bin/python scripts/create_doc.py path     # Create doc with metadata
 docker compose up --build                       # FastAPI at :8000/docs
 cd react_app && npm run dev                     # React at :5173
-cd Python && .venv/bin/pytest tests/ -v         # Python tests (85% coverage gate)
-.venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
-.venv/bin/python scripts/find_automation.py "x" # Find existing automation
 ```
 
 ## Session End (auto-summary + sync)
 
 ```bash
-.venv/bin/python scripts/session.py summary --write  # Auto-generate summary from git log
-.venv/bin/python scripts/session.py sync --fix       # Sync stale numbers across docs
-.venv/bin/python scripts/session.py end --fix         # Run end-of-session checks
-./scripts/ai_commit.sh "docs: session end"            # Commit doc updates
+./run.sh session summary            # Auto-generate summary from git log
+./run.sh session sync               # Sync stale doc numbers
+./run.sh session end                # Run end-of-session checks
+./run.sh commit "docs: session end" # Commit doc updates
 ```
 
 Or just scan numbers: `.venv/bin/python scripts/sync_numbers.py --fix`
@@ -62,19 +77,19 @@ Every AI agent session MUST follow this workflow. Skipping these steps breaks co
 ### Session Start
 1. Read `docs/planning/next-session-brief.md` to understand current priorities
 2. Read `docs/TASKS.md` for active work items
-3. Run `./scripts/agent_start.sh --quick` to verify environment
+3. Run `./run.sh session start` to verify environment
 
 ### During Session
-- Commit frequently with descriptive conventional messages via `./scripts/ai_commit.sh`
+- Commit frequently with descriptive conventional messages via `./run.sh commit`
 - Track what you changed, what you decided, and what's unfinished
 
 ### Session End (REQUIRED — do NOT skip)
-1. Run `./scripts/ai_commit.sh` for any uncommitted work
-2. Run `.venv/bin/python scripts/session.py summary --write` — auto-generates SESSION_LOG entry
-3. Run `.venv/bin/python scripts/session.py sync --fix` — fixes stale numbers in docs
+1. Run `./run.sh commit` for any uncommitted work
+2. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
+3. Run `./run.sh session sync` — fixes stale numbers in docs
 4. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
 5. Update `docs/TASKS.md` — mark completed items, add new items discovered
-6. Run `./scripts/ai_commit.sh "docs: session end"` — commit all doc updates
+6. Run `./run.sh commit "docs: session end"` — commit all doc updates
 
 ### Why This Matters
 - **SESSION_LOG.md** is the project memory — gaps mean lost context
