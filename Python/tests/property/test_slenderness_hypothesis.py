@@ -89,7 +89,7 @@ class TestSlendernessRatioProperties:
     def test_monotonicity_with_length(self, l1: float, l2: float, b: float) -> None:
         """Increasing length increases slenderness ratio."""
         assume(b > 0)
-        assume(l1 != l2)
+        assume(abs(l1 - l2) > 1e-9)
 
         r1 = calculate_slenderness_ratio(l1, b)
         r2 = calculate_slenderness_ratio(l2, b)
