@@ -137,7 +137,7 @@ def select_stirrup_diameter(
     if b_mm <= 0 or d_mm <= 0:
         return 8  # Default
 
-    tv = (abs(vu_kn) * 1000.0) / (b_mm * d_mm)
+    tv = (abs(vu_kn) * 1000.0) / (b_mm * d_mm)  # kN → N / (mm × mm) = N/mm²
 
     # Minimum stirrup diameter per IS 456 Cl. 26.5.1.8
     # Stirrup diameter should not be less than main_bar / 4
@@ -213,7 +213,7 @@ def calculate_tv(vu_kn: float, b: float, d: float) -> float:
             clause_ref="Cl. 40.1",
         )
 
-    return (abs(vu_kn) * 1000.0) / (b * d)
+    return (abs(vu_kn) * 1000.0) / (b * d)  # kN → N / (mm × mm) = N/mm²
 
 
 @clause("40.1", "40.2", "40.4", "26.5.1.5", "26.5.1.6")
@@ -336,10 +336,10 @@ def design_shear(
         spacing_calc = (0.87 * fy * asv) / (0.4 * b)
     else:
         # Design for shear
-        vus = (vu_n - vc_n) / 1000.0  # kN
+        vus = (vu_n - vc_n) / 1000.0  # N → kN
 
         # sv = (0.87 * fy * Asv * d) / Vus_N
-        spacing_calc = (0.87 * fy * asv * d) / (vus * 1000.0)
+        spacing_calc = (0.87 * fy * asv * d) / (vus * 1000.0)  # kN → N
 
     # 5. Apply Max Spacing Limits (Cl. 26.5.1.5)
     max_spacing_1 = 0.75 * d
