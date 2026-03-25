@@ -213,6 +213,10 @@ _cmd_session() {
             _require_venv
             "$VENV" "$SCRIPTS/session.py" check "$@"
             ;;
+        context)
+            _require_venv
+            "$VENV" "$SCRIPTS/session.py" context "$@"
+            ;;
         *)
             _help_session
             [[ -n "$subcmd" ]] && _error "Unknown session subcommand: $subcmd"
@@ -233,9 +237,11 @@ Subcommands:
   summary    Generate session summary from git log
   sync       Sync stale doc numbers
   check      Check session docs for issues
+  context    Dump compact orientation context (tasks, brief, git status)
 
 Examples:
   ./run.sh session start      # First thing every session
+  ./run.sh session context    # Quick orientation mid-session
   ./run.sh session end        # Last thing every session
   ./run.sh session sync       # Fix stale numbers mid-session
 EOF
@@ -394,6 +400,10 @@ _cmd_test() {
         --ci)
             "$SCRIPTS/ci_local.sh"
             ;;
+        --changed)
+            _require_venv
+            "$VENV" "$SCRIPTS/test_changed.py" "${@:2}"
+            ;;
         --stats)
             _require_venv
             "$VENV" "$SCRIPTS/update_test_stats.py" "${@:2}"
@@ -431,6 +441,7 @@ Options:
   --cli              CLI cold-start smoke test
   --benchmark        API endpoint benchmarks
   --ci               Full local CI (black, ruff, mypy, pytest, coverage)
+  --changed          Run tests only for changed files (smart mapping)
   --stats            Update test_stats.json with current counts
 
 Any other args are passed directly to pytest:
@@ -518,6 +529,7 @@ _print_usage() {
     echo -e "  ${GREEN}audit${NC}       Run readiness/governance audit"
     echo -e "  ${GREEN}test${NC}        Run test suites"
     echo -e "  ${GREEN}generate${NC}    Generate indexes, SDKs, manifests"
+    echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
     echo -e "  ${DIM}./run.sh session start${NC}              # Begin work"
@@ -642,6 +654,7 @@ main() {
         audit)    _cmd_audit "$@" ;;
         test)     _cmd_test "$@" ;;
         generate) _cmd_generate "$@" ;;
+        preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         *)
             _error "Unknown command: $cmd"
             echo ""

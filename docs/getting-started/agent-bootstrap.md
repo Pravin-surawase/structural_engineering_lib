@@ -301,9 +301,9 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 ### Session Workflow Checklist (MANDATORY)
 
 ```
-START:  □ Read docs/planning/next-session-brief.md
-        □ Read docs/TASKS.md
+START:  □ ./run.sh session context              ← quick orientation (brief + tasks + git)
         □ ./run.sh session start
+        □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
 
 END:    □ ./run.sh commit "type: message"        ← commit all work
         □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
@@ -328,6 +328,9 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Full check | `./run.sh check` | N/A (orchestrator) |
 | Quick check | `./run.sh check --quick` | N/A |
 | Run tests | `./run.sh test` | `cd Python && .venv/bin/pytest tests/ -v` |
+| Test changed | `./run.sh test --changed` | `.venv/bin/python scripts/test_changed.py` |
+| Pre-flight | `./run.sh preflight` | `.venv/bin/python scripts/preflight.py` |
+| Session context | `./run.sh session context` | `.venv/bin/python scripts/session.py context` |
 | PR decision | `./run.sh pr status` | `./scripts/should_use_pr.sh --explain` |
 | Find script | `./run.sh find "task"` | `.venv/bin/python scripts/find_automation.py "task"` |
 | API signatures | `./run.sh find --api <func>` | `.venv/bin/python scripts/discover_api_signatures.py <func>` |

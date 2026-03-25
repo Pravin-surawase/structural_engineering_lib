@@ -1225,6 +1225,115 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return result.returncode
 
 
+def cmd_context(args: argparse.Namespace) -> int:
+    """Dump compact session context — one command to get oriented."""
+    NC = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    CYAN = "\033[36m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+
+    print(f"\n{BOLD}{CYAN}━━━ Session Context ━━━{NC}\n")
+
+    # 1. Next session brief (the handoff)
+    brief_path = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
+    if brief_path.exists():
+        text = brief_path.read_text()
+        lines = text.strip().split("\n")
+        content_lines = []
+        skip_metadata = True
+        for line in lines:
+            stripped = line.strip()
+            # Skip title, metadata, separators, empty, HTML comments
+            if stripped.startswith("#") or stripped.startswith("**Type:") or \
+               stripped.startswith("**Audience:") or stripped.startswith("**Status:") or \
+               stripped.startswith("**Importance:") or stripped.startswith("**Created:") or \
+               stripped.startswith("**Last Updated:") or stripped == "---" or \
+               stripped.startswith("<!--") or not stripped:
+                if stripped == "---":
+                    skip_metadata = False
+                continue
+            content_lines.append(stripped)
+            if len(content_lines) >= 10:
+                break
+        if content_lines:
+            print(f"{BOLD}📋 Next Session Brief:{NC}")
+            for cl in content_lines:
+                print(f"  {cl}")
+            print()
+    else:
+        print(f"{YELLOW}⚠ next-session-brief.md not found{NC}\n")
+
+    # 2. Active tasks from TASKS.md
+    tasks_path = REPO_ROOT / "docs" / "TASKS.md"
+    if tasks_path.exists():
+        text = tasks_path.read_text()
+        # Find Active section
+        in_active = False
+        active_lines = []
+        for line in text.split("\n"):
+            if "## Active" in line:
+                in_active = True
+                continue
+            if in_active and line.startswith("## "):
+                break
+            if in_active and line.strip() and not line.startswith("|--"):
+                active_lines.append(line.strip())
+        if active_lines:
+            print(f"{BOLD}📌 Active Tasks:{NC}")
+            for al in active_lines[:6]:
+                print(f"  {al}")
+            print()
+
+    # 3. Git status summary
+    result = subprocess.run(
+        ["git", "status", "--porcelain"], capture_output=True, text=True, cwd=REPO_ROOT
+    )
+    changes = len([l for l in result.stdout.strip().split("\n") if l.strip()])
+    result2 = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True, cwd=REPO_ROOT
+    )
+    branch = result2.stdout.strip()
+    result3 = subprocess.run(
+        ["git", "log", "-1", "--format=%h %s (%cr)"], capture_output=True, text=True, cwd=REPO_ROOT
+    )
+    last_commit = result3.stdout.strip()
+
+    print(f"{BOLD}🔀 Git:{NC}")
+    print(f"  Branch: {GREEN}{branch}{NC}")
+    print(f"  Last commit: {last_commit}")
+    if changes > 0:
+        print(f"  {YELLOW}Uncommitted changes: {changes} file(s){NC}")
+    else:
+        print(f"  Working tree: {DIM}clean{NC}")
+    print()
+
+    # 4. Recent session log entries (last 3)
+    log_path = REPO_ROOT / "docs" / "SESSION_LOG.md"
+    if log_path.exists():
+        text = log_path.read_text()
+        # Find session headers (## YYYY-MM-DD or ## Session N)
+        sessions = []
+        for line in text.split("\n"):
+            if line.startswith("## ") and ("Session" in line or re.match(r"^## \d{4}-\d{2}-\d{2}", line)):
+                sessions.append(line.strip())
+        if sessions:
+            print(f"{BOLD}📝 Recent sessions:{NC}")
+            for s in sessions[-3:]:
+                print(f"  {DIM}{s}{NC}")
+            print()
+
+    # 5. Quick health
+    print(f"{BOLD}💡 Quick commands:{NC}")
+    print(f"  {DIM}./run.sh check --quick{NC}    Validate codebase")
+    print(f"  {DIM}./run.sh preflight{NC}        Pre-flight safety check")
+    print(f"  {DIM}./run.sh test --changed{NC}   Test only changed files")
+    print()
+
+    return 0
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 
@@ -1260,6 +1369,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_sync.add_argument("--fix", action="store_true", help="Apply updates to doc files")
     p_sync.add_argument("--json", dest="json_output", action="store_true", help="Output metrics as JSON")
 
+    # context
+    sub.add_parser("context", help="Dump compact session context for quick orientation")
+
     return parser
 
 
@@ -1278,6 +1390,7 @@ def main() -> int:
         "check": cmd_check,
         "summary": cmd_summary,
         "sync": cmd_sync,
+        "context": cmd_context,
     }
 
     return handlers[args.command](args)
