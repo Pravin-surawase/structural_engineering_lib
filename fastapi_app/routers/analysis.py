@@ -1,12 +1,15 @@
 """
 Smart Analysis Router.
 
-Endpoints for AI-assisted design analysis.
+Endpoints for AI-assisted design analysis and load calculations.
 """
 
 from fastapi import APIRouter, HTTPException, status
 
 from fastapi_app.models.analysis import (
+    LoadAnalysisRequest,
+    LoadAnalysisResponse,
+    CriticalPointResponse,
     SmartAnalysisRequest,
     SmartAnalysisResponse,
     Suggestion,
@@ -19,6 +22,85 @@ router = APIRouter(
     prefix="/analysis",
     tags=["analysis"],
 )
+
+
+# =============================================================================
+# Load Analysis Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/loads/simple",
+    response_model=LoadAnalysisResponse,
+    summary="Simple Load Analysis (BMD/SFD)",
+    description="Compute BMD and SFD for a beam with UDL and/or point loads. "
+    "Returns discretized diagrams + critical points (max moment, max shear).",
+)
+async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
+    """Compute bending moment and shear force diagrams.
+
+    Supports simply supported and cantilever beams with UDL / point loads.
+    Uses principle of superposition for multiple loads.
+    """
+    try:
+        from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
+        from structural_lib.core.data_types import LoadDefinition, LoadType
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+
+    # Map request loads to library LoadDefinition objects
+    load_defs = []
+    for load in request.loads:
+        lt = LoadType.UDL if load.load_type == "udl" else LoadType.POINT
+        load_defs.append(
+            LoadDefinition(
+                load_type=lt,
+                magnitude=load.magnitude,
+                position_mm=load.position_mm,
+            )
+        )
+
+    try:
+        result = compute_bmd_sfd(
+            span_mm=request.span_mm,
+            support_condition=request.support_condition,
+            loads=load_defs,
+            num_points=request.num_points,
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Load analysis failed: {e}",
+        )
+
+    return LoadAnalysisResponse(
+        span_mm=result.span_mm,
+        support_condition=result.support_condition,
+        positions_mm=result.positions_mm,
+        bmd_knm=result.bmd_knm,
+        sfd_kn=result.sfd_kn,
+        max_bm_knm=result.max_bm_knm,
+        min_bm_knm=result.min_bm_knm,
+        max_sf_kn=result.max_sf_kn,
+        min_sf_kn=result.min_sf_kn,
+        critical_points=[
+            CriticalPointResponse(
+                position_mm=cp.position_mm,
+                point_type=cp.point_type,
+                bm_knm=cp.bm_knm,
+                sf_kn=cp.sf_kn,
+            )
+            for cp in result.critical_points
+        ],
+    )
 
 
 # =============================================================================

@@ -30,6 +30,7 @@ export {
   useExportReport,
 } from './useExport';
 export { useTorsionDesign } from './useTorsionDesign';
+export { useLoadAnalysis } from './useLoadAnalysis';
 
 // Type exports
 export type {

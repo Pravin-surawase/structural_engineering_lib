@@ -68,8 +68,8 @@
 
 | # | Task ID | Feature | Python | FastAPI | React | Tests | Status |
 |---|---------|---------|--------|---------|-------|-------|--------|
-| 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | 📋 |
-| 2 | TASK-515 | Load Calculator | — (existing) | new `/analysis/loads/simple` | new `useLoadAnalysis` + panel | 7 | 📋 |
+| 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | ✅ Done |
+| 2 | TASK-515 | Load Calculator | — (existing) | new `/analysis/loads/simple` | new `useLoadAnalysis` + panel | 7 | ✅ Done |
 | 3 | TASK-516 | Triangular + Moment loads | `load_analysis.py` +120 lines | — (extends TASK-515) | — | 6 | 📋 |
 | 4 | TASK-517 | Project BOQ | new `boq.py` ~120 lines | new `/insights/project-boq` | new `useProjectBOQ` + panel | 5 | 📋 |
 | 5 | TASK-518 | Torsion API + React | `api.py` +60 lines | new `/design/beam/torsion` | new `useTorsionDesign` + toggle | 5 | ✅ Done |
@@ -86,7 +86,7 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | TASK-525 | Smart HubPage replacing ModeSelectPage | — | 📋 Next |
-| TASK-515 | Load Calculator (FastAPI + React) | — | 📋 Next |
+| TASK-515 | Load Calculator (FastAPI + React) | Copilot | ✅ Done |
 
 ## Up Next (v0.21 — recommended order)
 
@@ -106,8 +106,8 @@
 
 | ID | Task | Est | Priority | Status |
 |----|------|-----|----------|--------|
-| TASK-514 | PDF Export (WeasyPrint + extend export router + React) | 1–2d | 🔴 High | 📋 |
-| TASK-515 | Load Calculator (FastAPI endpoint + React panel) | 2–3d | 🔴 High | 📋 |
+| TASK-514 | PDF Export (WeasyPrint + extend export router + React) | 1–2d | 🔴 High | ✅ Done |
+| TASK-515 | Load Calculator (FastAPI endpoint + React panel) | 2–3d | 🔴 High | ✅ Done |
 | TASK-516 | Triangular + Moment load stubs in load_analysis.py | 1d | 🟡 Medium | 📋 |
 | TASK-517 | Project BOQ (Python module + FastAPI + React panel) | 3–4d | 🔴 High | 📋 |
 | TASK-518 | Torsion API + React (expose existing Python via FastAPI) | 2–3d | 🟡 Medium | ✅ Done |
@@ -130,6 +130,8 @@
 |----|------|-------|--------|
 | — | TopBar nav + ModeSelect quick links (v0.20 wrap-up) | Copilot | ✅ Done |
 | TASK-518 | Torsion API + React — endpoint + hook + DesignView toggle + 3 API tests | Copilot | ✅ Done |
+| TASK-515 | Load Calculator — endpoint + useLoadAnalysis hook + MiniDiagram + 4 tests | Copilot | ✅ Done |
+| TASK-514 | PDF Export — export_pdf() + extend export router + PDF button + 4 export tests | Copilot | ✅ Done |
 | — | Created WORKLOG.md compact change log + updated agent-bootstrap | Copilot | ✅ Done |
 | TASK-522 | BeamDetailPanel + 3D rebar + redesign + edit rebar in BuildingEditorPage | Copilot | ✅ Done (`a242878`, `a5612b0`) |
 | TASK-523 | Activate FloatingDock + BentoGrid Dashboard | Copilot | ✅ Done (`a242878`) |

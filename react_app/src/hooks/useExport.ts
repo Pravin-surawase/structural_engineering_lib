@@ -38,7 +38,7 @@ export interface ExportReportParams {
   ast_provided?: number;
   utilization?: number;
   is_safe?: boolean;
-  format?: "html" | "json";
+  format?: "html" | "json" | "pdf";
 }
 
 // =============================================================================
@@ -123,7 +123,7 @@ export function useExportReport() {
   return useMutation({
     mutationFn: (params: ExportReportParams) => {
       const fmt = params.format || "html";
-      const ext = fmt === "html" ? "html" : "json";
+      const ext = fmt === "pdf" ? "pdf" : fmt === "html" ? "html" : "json";
       return fetchExport("report", params, `Report_${params.beam_id || "BEAM-1"}.${ext}`);
     },
     mutationKey: ["export-report"],

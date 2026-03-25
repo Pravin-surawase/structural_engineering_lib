@@ -8,6 +8,65 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+
+# =============================================================================
+# Load Analysis Models
+# =============================================================================
+
+
+class LoadItem(BaseModel):
+    """Single load definition."""
+
+    load_type: Literal["udl", "point"] = Field(
+        description="Load type: 'udl' (kN/m) or 'point' (kN)"
+    )
+    magnitude: float = Field(gt=0, description="Load magnitude (kN/m for UDL, kN for point)")
+    position_mm: float = Field(
+        default=0.0,
+        ge=0,
+        description="Position from left support (mm), required for point loads",
+    )
+
+
+class LoadAnalysisRequest(BaseModel):
+    """Request model for simple load analysis (BMD/SFD)."""
+
+    span_mm: float = Field(gt=0, le=30000, description="Beam span (mm)")
+    support_condition: Literal["simply_supported", "cantilever"] = Field(
+        default="simply_supported",
+        description="Support type",
+    )
+    loads: list[LoadItem] = Field(
+        min_length=1,
+        description="List of applied loads",
+    )
+    num_points: int = Field(default=51, ge=11, le=201, description="Discretization points")
+
+
+class CriticalPointResponse(BaseModel):
+    """Critical point on BMD/SFD diagram."""
+
+    position_mm: float
+    point_type: str
+    bm_knm: float
+    sf_kn: float
+
+
+class LoadAnalysisResponse(BaseModel):
+    """Response model for load analysis with BMD/SFD data."""
+
+    span_mm: float
+    support_condition: str
+    positions_mm: list[float]
+    bmd_knm: list[float]
+    sfd_kn: list[float]
+    max_bm_knm: float
+    min_bm_knm: float
+    max_sf_kn: float
+    min_sf_kn: float
+    critical_points: list[CriticalPointResponse]
+
+
 # =============================================================================
 # Request Models
 # =============================================================================

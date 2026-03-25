@@ -20,7 +20,7 @@
 | **Previous** | v0.20.0 | ✅ Done (React migration complete) |
 | **Current** | v0.21.0 | 🔄 React UX Overhaul + Library Expansion |
 
-**Last Session:** Session 99 | **Focus:** TASK-518 Torsion API + React, WORKLOG.md creation
+**Last Session:** Session 99 | **Focus:** TASK-515 Load Calculator, TASK-514 PDF Export, TASK-518 Torsion API
 
 ---
 
@@ -32,16 +32,25 @@
 |------|--------------|--------|
 | **WORKLOG.md** | Created compact append-only work log (one line per change) | — |
 | **agent-bootstrap** | Added WORKLOG.md to session workflow + quick-scan table | — |
-| **TASK-518** | Torsion design — FastAPI endpoint + Pydantic models + React hook + DesignView toggle + results panel + 3 API tests (103 total) | — |
+| **TASK-518** | Torsion design — FastAPI endpoint + Pydantic models + React hook + DesignView toggle + results panel + 3 API tests | — |
+| **TASK-515** | Load Calculator — FastAPI endpoint `POST /api/v1/analysis/loads/simple` + Pydantic models + `useLoadAnalysis` hook + MiniDiagram SVG + DesignView Load Calculator panel + 4 API tests | — |
+| **TASK-514** | PDF Export — `export_pdf()` via WeasyPrint + FastAPI format=pdf + React PDF button + 4 export tests + fix ReportData construction bug | — |
 
 ### Files Changed
 - `docs/WORKLOG.md` (NEW) — compact change log
 - `fastapi_app/models/beam.py` — `TorsionDesignRequest` + `TorsionDesignResponse` models
+- `fastapi_app/models/analysis.py` — `LoadItem`, `LoadAnalysisRequest`, `LoadAnalysisResponse` models
 - `fastapi_app/routers/design.py` — `POST /api/v1/design/beam/torsion` endpoint
-- `react_app/src/api/client.ts` — `TorsionDesignRequest/Response` types + `designBeamTorsion()` function
+- `fastapi_app/routers/analysis.py` — `POST /api/v1/analysis/loads/simple` endpoint
+- `fastapi_app/routers/export.py` — PDF format support + fix ReportData construction
+- `react_app/src/api/client.ts` — Torsion + LoadAnalysis types and API functions
 - `react_app/src/hooks/useTorsionDesign.ts` (NEW) — `useTorsionDesign` mutation hook
-- `react_app/src/components/design/DesignView.tsx` — torsion toggle in Design Forces + TorsionResultsPanel
-- `fastapi_app/tests/test_endpoints.py` — 3 new torsion tests
+- `react_app/src/hooks/useLoadAnalysis.ts` (NEW) — `useLoadAnalysis` mutation hook
+- `react_app/src/hooks/useExport.ts` — PDF format support in export hook
+- `react_app/src/components/design/DesignView.tsx` — torsion toggle, Load Calculator panel with MiniDiagram, PDF export button, DropdownField made generic
+- `Python/structural_lib/services/report.py` — `export_pdf()` function via WeasyPrint
+- `requirements.txt` — Added `weasyprint>=60.0`
+- `fastapi_app/tests/test_endpoints.py` — 4 load analysis + 4 export tests (36 total)
 - `docs/getting-started/agent-bootstrap.md` — WORKLOG reference + torsion endpoint
 - `CLAUDE.md` — Added WORKLOG to session end workflow
 
@@ -49,23 +58,24 @@
 
 ## Next Priorities
 
-### Do first — Library exposes more functions through the app
+### Do first — UX polish + remaining library expansion
 
-1. **TASK-515: Load Calculator** ← START HERE
-   - Python `compute_bmd_sfd()` already exists, needs FastAPI endpoint + React panel
-   - New: `POST /api/v1/analysis/loads/simple`
-   - New: `useLoadAnalysis` hook + `LoadCalculatorPanel.tsx`
-   - Feeds Mu/Vu directly into DesignView
-
-2. **TASK-525: Smart HubPage**
+1. **TASK-525: Smart HubPage** ← START HERE
    - Replace ModeSelectPage with smart hub: quick actions + resume last project
 
-3. **TASK-514: PDF Export**
-   - HTML report → PDF via WeasyPrint
-   - Extend existing export router + `useExportReport` hook
+2. **TASK-517: Project BOQ**
+   - New `boq.py` module — aggregate BBS across beams → project-level quantities
+   - New FastAPI endpoint `POST /api/v1/insights/project-boq`
+   - New `useProjectBOQ` hook + panel
 
-4. **TASK-517: Project BOQ**
-   - Aggregate BBS across beams → project-level quantities
+3. **TASK-519: Alternatives Panel (Pareto)**
+   - Expose existing `multi_objective_optimizer.py` (637 lines) via FastAPI
+   - New `POST /api/v1/optimization/beam/pareto` endpoint
+   - New `useParetoDesign` hook + panel in DesignView
+
+4. **TASK-527: TopBar settings + TASK-528: Breadcrumb**
+   - TopBar settings icon → SettingsPanel slide-over
+   - Workflow breadcrumb for batch flow
 
 ### Design Principles (carry forward)
 - **Editor is the workstation** — manual form only in `/design`

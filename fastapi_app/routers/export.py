@@ -56,7 +56,7 @@ class ExportReportRequest(BaseModel):
     ast_provided: float = Field(default=0, ge=0)
     utilization: float = Field(default=0, ge=0, le=2)
     is_safe: bool = Field(default=True)
-    format: str = Field(default="html", pattern="^(html|json)$")
+    format: str = Field(default="html", pattern="^(html|json|pdf)$")
 
 
 # =============================================================================
@@ -202,7 +202,7 @@ async def export_dxf(request: ExportBeamRequest):
 async def export_report(request: ExportReportRequest):
     """Generate and download a design report."""
     try:
-        from structural_lib.services.report import export_html, export_json
+        from structural_lib.services.report import export_html, export_json, export_pdf
         from structural_lib.services.report import ReportData
     except ImportError:
         raise HTTPException(
@@ -210,21 +210,55 @@ async def export_report(request: ExportReportRequest):
             detail="Report module not available",
         )
 
+    beam_geom = {
+        "b_mm": request.width,
+        "D_mm": request.depth,
+        "d_mm": request.depth - 50.0,
+        "fck_nmm2": request.fck,
+        "fy_nmm2": request.fy,
+    }
+    cases = [
+        {
+            "case_id": "1.5(DL+LL)",
+            "mu_knm": request.moment,
+            "vu_kn": request.shear,
+        }
+    ]
+    results = {
+        "1.5(DL+LL)": {
+            "ast_required_mm2": request.ast_required,
+            "ast_provided_mm2": request.ast_provided,
+            "utilization": request.utilization,
+            "is_ok": request.is_safe,
+        }
+    }
     report_data = ReportData(
-        beam_id=request.beam_id,
-        b_mm=request.width,
-        D_mm=request.depth,
-        fck=request.fck,
-        fy=request.fy,
-        mu_knm=request.moment,
-        vu_kn=request.shear,
-        ast_required=request.ast_required,
-        ast_provided=request.ast_provided,
-        utilization=request.utilization,
-        is_safe=request.is_safe,
+        job_id=request.beam_id,
+        code="IS456",
+        units="SI-mm",
+        beam=beam_geom,
+        cases=cases,
+        results=results,
+        is_ok=request.is_safe,
+        governing_utilization=request.utilization,
     )
 
-    if request.format == "html":
+    if request.format == "pdf":
+        try:
+            pdf_bytes = export_pdf(report_data)
+        except (ImportError, OSError):
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="PDF export requires weasyprint. Install with: pip install weasyprint>=60.0",
+            )
+        return StreamingResponse(
+            io.BytesIO(pdf_bytes),
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="Report_{request.beam_id}.pdf"'
+            },
+        )
+    elif request.format == "html":
         content = export_html(report_data)
         return StreamingResponse(
             io.BytesIO(content.encode("utf-8")),

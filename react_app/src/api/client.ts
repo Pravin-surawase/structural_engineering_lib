@@ -270,10 +270,68 @@ export async function designBeamTorsion(
   return response.json();
 }
 
+// =============================================================================
+// Load Analysis Types
+// =============================================================================
+
+export interface LoadItem {
+  load_type: 'udl' | 'point';
+  magnitude: number;
+  position_mm?: number;
+}
+
+export interface LoadAnalysisRequest {
+  span_mm: number;
+  support_condition: 'simply_supported' | 'cantilever';
+  loads: LoadItem[];
+  num_points?: number;
+}
+
+export interface CriticalPoint {
+  position_mm: number;
+  point_type: string;
+  bm_knm: number;
+  sf_kn: number;
+}
+
+export interface LoadAnalysisResponse {
+  span_mm: number;
+  support_condition: string;
+  positions_mm: number[];
+  bmd_knm: number[];
+  sfd_kn: number[];
+  max_bm_knm: number;
+  min_bm_knm: number;
+  max_sf_kn: number;
+  min_sf_kn: number;
+  critical_points: CriticalPoint[];
+}
+
+/**
+ * Compute BMD/SFD for a beam with given loads.
+ */
+export async function analyzeLoads(
+  params: LoadAnalysisRequest
+): Promise<LoadAnalysisResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/analysis/loads/simple`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(`Load analysis failed: ${error.detail || response.status}`);
+  }
+
+  return response.json();
+}
+
 export default {
   checkHealth,
   designBeam,
   designBeamTorsion,
+  analyzeLoads,
   generateBeamGeometry,
   calculateGeometry,
   loadSampleData,

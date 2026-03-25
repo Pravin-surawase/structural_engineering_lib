@@ -295,6 +295,126 @@ class TestAnalysisEndpoints:
         assert "shear" in data
         assert "detailing" in data
 
+    def test_load_analysis_udl(self, client):
+        """Test simple load analysis with UDL on SS beam."""
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={
+                "span_mm": 6000,
+                "support_condition": "simply_supported",
+                "loads": [{"load_type": "udl", "magnitude": 20.0}],
+                "num_points": 51,
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["span_mm"] == 6000
+        assert len(data["positions_mm"]) == 51
+        assert len(data["bmd_knm"]) == 51
+        assert len(data["sfd_kn"]) == 51
+        # wL²/8 = 20*(6)²/8 = 90 kN·m
+        assert abs(data["max_bm_knm"] - 90.0) < 1.0
+        # wL/2 = 20*6/2 = 60 kN
+        assert abs(data["max_sf_kn"] - 60.0) < 1.0
+        assert len(data["critical_points"]) > 0
+
+    def test_load_analysis_point_load(self, client):
+        """Test load analysis with point load at midspan."""
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={
+                "span_mm": 6000,
+                "support_condition": "simply_supported",
+                "loads": [{"load_type": "point", "magnitude": 50.0, "position_mm": 3000}],
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        # PL/4 = 50*6/4 = 75 kN·m
+        assert abs(data["max_bm_knm"] - 75.0) < 1.0
+        # P/2 = 25 kN
+        assert abs(data["max_sf_kn"] - 25.0) < 1.0
+
+    def test_load_analysis_cantilever(self, client):
+        """Test cantilever beam with UDL."""
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={
+                "span_mm": 3000,
+                "support_condition": "cantilever",
+                "loads": [{"load_type": "udl", "magnitude": 15.0}],
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        # wL²/2 = 15*(3)²/2 = 67.5 kN·m (hogging = negative)
+        assert data["min_bm_knm"] < -60
+
+    def test_load_analysis_validation(self, client):
+        """Test load analysis validation — empty loads."""
+        response = client.post(
+            "/api/v1/analysis/loads/simple",
+            json={"span_mm": 6000, "support_condition": "simply_supported", "loads": []},
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+class TestExportEndpoints:
+    """Tests for export endpoints (BBS, DXF, Report)."""
+
+    def _report_payload(self, fmt="html"):
+        return {
+            "beam_id": "TEST-1",
+            "width": 300,
+            "depth": 500,
+            "fck": 25,
+            "fy": 500,
+            "moment": 120,
+            "shear": 80,
+            "ast_required": 900,
+            "ast_provided": 942,
+            "utilization": 0.85,
+            "is_safe": True,
+            "format": fmt,
+        }
+
+    def test_export_report_html(self, client):
+        """Test HTML report export."""
+        response = client.post(
+            "/api/v1/export/report", json=self._report_payload("html")
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert "text/html" in response.headers["content-type"]
+        assert len(response.content) > 100
+
+    def test_export_report_json(self, client):
+        """Test JSON report export."""
+        response = client.post(
+            "/api/v1/export/report", json=self._report_payload("json")
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert "application/json" in response.headers["content-type"]
+
+    def test_export_report_pdf(self, client):
+        """Test PDF report export (requires weasyprint)."""
+        response = client.post(
+            "/api/v1/export/report", json=self._report_payload("pdf")
+        )
+        # Accepts either 200 (weasyprint installed) or 503 (not installed)
+        if response.status_code == status.HTTP_200_OK:
+            assert "application/pdf" in response.headers["content-type"]
+            # PDF files start with %PDF
+            assert response.content[:5] == b"%PDF-"
+        else:
+            assert response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE
+
+    def test_export_report_invalid_format(self, client):
+        """Test invalid format is rejected."""
+        response = client.post(
+            "/api/v1/export/report", json=self._report_payload("docx")
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
 
 class TestGeometryEndpoints:
     """Tests for 3D geometry endpoints."""

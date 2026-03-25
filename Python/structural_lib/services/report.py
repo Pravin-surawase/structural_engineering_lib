@@ -1245,6 +1245,25 @@ def export_html(data: ReportData) -> str:
     return _wrap_html(f"Beam Design Report - {data.job_id}", body)
 
 
+def export_pdf(data: ReportData) -> bytes:
+    """Export report data as PDF bytes via WeasyPrint.
+
+    Converts the HTML report to PDF for formal submission workflows.
+    Requires weasyprint>=60.0 (optional dependency).
+    """
+    try:
+        import weasyprint  # noqa: F811
+    except ImportError as e:
+        raise ImportError(
+            "weasyprint is required for PDF export. "
+            "Install with: pip install weasyprint>=60.0"
+        ) from e
+
+    html_content = export_html(data)
+    pdf_doc = weasyprint.HTML(string=html_content).write_pdf()
+    return pdf_doc
+
+
 # =============================================================================
 # Design Results Reporting (V08)
 # =============================================================================
