@@ -72,7 +72,7 @@ def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:
         return False, "Invalid depth", errors
 
     ratio = b / D
-    if ratio < 0.3:
+    if ratio < 0.3 - 1e-9:
         errors.append(E_DUCTILE_002)
         return False, f"Width/Depth ratio {ratio:.2f} < 0.3 (IS 13920 Cl 6.1.2)", errors
 

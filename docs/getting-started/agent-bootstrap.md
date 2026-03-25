@@ -50,6 +50,53 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ---
 
+## 3a. Tech Stack Rationale
+
+### Why each technology?
+
+| Technology | Why chosen | What it gives us | Trade-offs |
+|------------|-----------|-------------------|------------|
+| **Python** (core lib) | Standard in structural engineering; NumPy/SciPy ecosystem; readable math | Engineers can read and verify IS 456 formulas directly | Slower than C/Rust for heavy computation (acceptable — single-beam calcs are <10ms) |
+| **FastAPI** | Auto-generates OpenAPI docs; Pydantic validation built-in; async + WebSocket native; fastest Python web framework | Type-safe request/response, interactive `/docs` page, SSE streaming, WebSocket for live design | Smaller ecosystem than Django; no built-in ORM (we don't need one — no database) |
+| **React 19** | Most widely-adopted UI framework; R3F (React Three Fiber) for 3D; massive ecosystem | Component reuse, lazy loading, Suspense for code-splitting, strong TypeScript support | Larger bundle than Svelte/Preact; requires build step |
+| **React Three Fiber (R3F)** | Declarative 3D in React — no imperative WebGL boilerplate | 3D beam visualization, rebar positioning, building models — all as React components | Three.js is ~720KB (unavoidable for 3D); requires GPU |
+| **Tailwind CSS** | Utility-first — no CSS files, no naming debates; co-located with markup | Consistent design tokens, fast prototyping, tree-shakes unused classes | Verbose class strings; learning curve for traditional CSS devs |
+| **AG Grid** | Enterprise-grade data grid; handles 1000+ beams with virtual scrolling | Batch beam editing, sorting, filtering — ETABS-like spreadsheet feel | 858KB chunk (large); free tier sufficient for our needs |
+| **Zustand** | Minimal state management (2KB); no boilerplate vs Redux | Two stores: `useDesignStore` + `useImportedBeamsStore` — simple, fast | No dev tools middleware out-of-box (can add if needed) |
+| **Docker** | Reproducible deployment; eliminates "works on my machine" | One command (`docker compose up`) runs the entire backend with correct Python, deps, env | Adds ~200MB image size; requires Docker installed |
+| **Vite** | Near-instant HMR, fast builds, native ES modules | React dev server in <200ms; production build with code-splitting in ~4s | Less battle-tested than Webpack for edge cases (hasn't been an issue) |
+| **Streamlit** (legacy) | Rapid prototyping for data apps; zero frontend knowledge needed | Quick interactive UI for single-beam design during early development | Not suitable for production multi-page apps; limited layout control; being replaced by React |
+
+### Is it efficient?
+
+- **Python core**: Single beam design = **<10ms**. Batch of 153 beams = **<2s**. Pure math, no I/O overhead.
+- **FastAPI**: Handles **1000+ req/s** on a single core. Pydantic v2 validation is C-compiled.
+- **React bundle**: Code-split into 19 chunks. Initial load = **~67KB** (index). Three.js/AG Grid load on-demand only when needed.
+- **Docker**: Production image is a slim Python 3.11 container. Healthcheck ensures reliability.
+
+### Is it safe?
+
+- **Input validation**: Every API endpoint uses Pydantic models with `Field(ge=0, le=2000)` constraints — invalid data is rejected before reaching the math layer.
+- **CORS**: Configured for development origins; must be locked down for production.
+- **JWT auth**: Available (opt-in) for API authentication. Default dev key triggers a warning.
+- **Rate limiting**: Configurable via `RATE_LIMIT_REQUESTS` / `RATE_LIMIT_WINDOW` env vars.
+- **No database**: No SQL injection surface. Stateless computation only.
+- **Docker isolation**: Backend runs in container — host filesystem not exposed (except VBA volume).
+
+### Future improvements to consider
+
+| Area | Current | Potential improvement |
+|------|---------|----------------------|
+| **3D bundle size** | Three.js = 720KB | Consider lighter alternatives if 3D scope narrows |
+| **AG Grid size** | 858KB | Could switch to TanStack Table if simpler grid is sufficient |
+| **WebAssembly** | Not used | Could compile hot-path IS 456 math to WASM for browser-side calc |
+| **CDN/edge** | Not deployed | Static React bundle could go to CDN; API to edge workers |
+| **Caching** | None | Redis/in-memory cache for repeated design calls with same params |
+| **Database** | None (stateless) | PostgreSQL if we add project save/load, user accounts |
+| **Monitoring** | Health endpoints only | OpenTelemetry + Prometheus for production observability |
+
+---
+
 ## 4. What Exists — DON'T Reinvent
 
 ### React Hooks (`react_app/src/hooks/`)
@@ -158,7 +205,72 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Library functi
 
 ---
 
-## 5. Quick Start
+## 5. Launching the App
+
+### Option A: Full Stack via Docker (recommended for production/testing)
+
+```bash
+docker compose up --build                            # FastAPI at http://localhost:8000/docs
+```
+
+This builds and runs the FastAPI container with all Python dependencies. The `/docs` page auto-generates interactive Swagger UI for all 35 endpoints.
+
+For development with hot-reload (code changes reflect without rebuild):
+```bash
+docker compose -f docker-compose.dev.yml up          # Mounts source as volumes, auto-reloads
+```
+
+### Option B: Local Development (FastAPI + React separately)
+
+```bash
+# Terminal 1 — FastAPI backend
+.venv/bin/uvicorn fastapi_app.main:app --reload --port 8000
+# → http://localhost:8000/docs (Swagger UI)
+# → http://localhost:8000/health (health check)
+
+# Terminal 2 — React frontend
+cd react_app && npm install && npm run dev
+# → http://localhost:5173 (Vite dev server, HMR enabled)
+```
+
+The React app proxies API calls to `:8000`. Both must be running for full functionality.
+
+### Option C: Streamlit (legacy UI)
+
+```bash
+cd streamlit_app && ../.venv/bin/streamlit run app.py --server.port 8501
+# → http://localhost:8501
+```
+
+### Option D: Python library only (no UI)
+
+```bash
+pip install -e Python/                               # Install in dev mode
+python -c "from structural_lib import design_beam_is456; print('OK')"
+```
+
+### Port Map
+
+| Service | Port | URL |
+|---------|------|-----|
+| FastAPI (Docker) | 8000 | http://localhost:8000/docs |
+| FastAPI (local) | 8000 | http://localhost:8000/docs |
+| React (Vite dev) | 5173 | http://localhost:5173 |
+| Streamlit | 8501 | http://localhost:8501 |
+
+### Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| Port 8000 in use | `lsof -i :8000` → kill the process, or use `--port 8001` |
+| React can't reach API | Ensure FastAPI is running on :8000 first |
+| Docker build fails | Check `docker compose logs` — usually missing env vars |
+| `JWT_SECRET_KEY` warning | Safe to ignore in dev; set in `.env` for production |
+| Python import errors | Use `.venv/bin/python`, never bare `python` |
+
+---
+
+## 6. Quick Start (Agent Workflow)
 
 ```bash
 # Session start
@@ -187,7 +299,7 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 
 ---
 
-## 6. Git Workflow
+## 7. Git Workflow
 
 ```bash
 # Decision: PR or direct commit?
@@ -220,7 +332,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 ---
 
-## 7. Key Scripts
+## 8. Key Scripts
 
 **Preferred:** Use `./run.sh` for all common operations (run `./run.sh --help`).
 
@@ -245,7 +357,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 ---
 
-## 8. Golden Rules
+## 9. Golden Rules
 
 1. **Search before coding** — Check hooks, components, routes, API functions first
 2. **Never parse CSV manually** — Use `useCSVFileImport` or `GenericCSVAdapter`
@@ -260,7 +372,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 ---
 
-## 9. Common Mistakes
+## 10. Common Mistakes
 
 | Mistake | Impact | Fix |
 |---------|--------|-----|
@@ -278,7 +390,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 ---
 
-## 10. Scoped Rules (auto-loaded for Claude Code & Copilot)
+## 11. Scoped Rules (auto-loaded for Claude Code & Copilot)
 
 Claude Code and GitHub Copilot load domain-specific rules automatically:
 - `.claude/rules/` — Scoped by file path (Streamlit, React, Python core, VBA, FastAPI, docs)
@@ -286,7 +398,7 @@ Claude Code and GitHub Copilot load domain-specific rules automatically:
 
 If using other tools, the rules below apply. If using Claude Code or Copilot, you get these automatically.
 
-## 11. Streamlit Safety (if working on Streamlit)
+## 12. Streamlit Safety (if working on Streamlit)
 
 - **NEVER** use `st.sidebar` inside `@st.fragment` functions — causes `StreamlitAPIException`
 - Use safe patterns: `data.get('key', default)` not `data['key']`, check `len()` before index access
@@ -297,7 +409,7 @@ If using other tools, the rules below apply. If using Claude Code or Copilot, yo
 
 ---
 
-## 12. VBA Rules (if working on VBA/Excel)
+## 13. VBA Rules (if working on VBA/Excel)
 
 - **Python + VBA parity** — Same formulas, units, edge-case behavior
 - VBA import order matters — see [vba-guide.md](../contributing/vba-guide.md)
@@ -306,7 +418,7 @@ If using other tools, the rules below apply. If using Claude Code or Copilot, yo
 
 ---
 
-## 13. Document Metadata (required for new files)
+## 14. Document Metadata (required for new files)
 
 Use `create_doc.py` which adds this automatically, or add manually:
 ```markdown
@@ -320,7 +432,7 @@ Use `create_doc.py` which adds this automatically, or add manually:
 
 ---
 
-## 14. On-Demand References
+## 15. On-Demand References
 
 Load these only when working on that specific area:
 
