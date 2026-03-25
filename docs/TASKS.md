@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-25 (Session 94 — weak points audit)
+**Updated:** 2026-03-25 (Session 95 — migration focus shift)
 
 ---
 
@@ -10,25 +10,40 @@
 - **WIP = 2** (max 2 active tasks at once)
 - **Done = tests pass + docs updated + scanner passes**
 - **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items
+- **No new Streamlit work** — all new features go to React. Bug fixes only for Streamlit-only features.
 
 ---
 
 ## Current Release
 
 - **Version:** v0.19.1 ✅ Complete → v0.20 (V3 Foundation)
-- **Focus:** V3 React UI — all API + hooks ready, now wiring UX polish + REST fallback
-- **Target:** v0.20 — code-split bundles, SSE batch progress, REST fallback
+- **Focus:** React migration — port remaining Streamlit-only features to React
+- **Target:** v0.20 — batch design UI, compliance checker, cost optimizer in React
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ### Release Roadmap
 
 | Version | Focus | Status | Key Deliverables |
 |---------|-------|--------|------------------|
-| **v0.18.1** | AI v2 Bugfix | ✅ DONE | PR #393 (CSV import fix) |
-| **v0.19.0** | Phase 4 + Launch | ✅ RELEASED | DXF polish, AI model fix, Streamlit API index |
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
-| **v0.20** | V3 Foundation | 📋 NEXT | Code-splitting, SSE progress, REST fallback, governance |
-| **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
+| **v0.20** | V3 Foundation | 🔄 ACTIVE | Batch design React UI, compliance page, cost optimizer page |
+| **v0.21** | Full React | 📋 NEXT | AI assistant port, learning center, Streamlit deprecation |
+
+### Migration Status (React vs Streamlit)
+
+| Feature | Streamlit | React | API Ready | Priority |
+|---------|-----------|-------|-----------|----------|
+| Single beam design | ✅ | ✅ | ✅ | Done |
+| CSV import (40+ cols) | ✅ | ✅ | ✅ | Done |
+| 3D visualization | ✅ | ✅ R3F | ✅ | Done |
+| Export (BBS/DXF/Report) | ✅ | ✅ | ✅ | Done |
+| Dashboard insights | ✅ | ✅ | ✅ | Done |
+| Rebar suggestions | ✅ | ✅ | ✅ | Done |
+| **Batch design UI** | ✅ | -- | ✅ streaming.py | 🔴 High |
+| **Compliance checker** | ✅ | -- | ✅ insights.py | 🔴 High |
+| **Cost optimizer** | ✅ | -- | ✅ optimization.py | 🟡 Medium |
+| **AI Assistant** | ✅ | -- | Partial | 🟡 Medium |
+| Learning center | ✅ | -- | -- | 🟢 Low |
 
 ---
 
@@ -36,27 +51,31 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| — | — | — | — |
+| TASK-510 | React: Batch design page with SSE progress | — | 🔄 Starting |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-504 | Add SSE batch progress UI (streaming.py → React) | — | 1d | Medium | 📋 |
-| TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | Medium | 📋 |
-| TASK-509 | Type annotations: Streamlit pages (49 return types + 4 __all__) | — | 1d | 🟢 Low | 📋 |
+| TASK-510 | React: Batch design page with SSE progress (streaming.py → React) | — | 1-2d | 🔴 High | 📋 |
+| TASK-511 | React: Compliance checker page (insights/code-checks → React) | — | 1d | 🔴 High | 📋 |
+| TASK-512 | React: Cost optimizer page (optimization.py → React) | — | 1-2d | 🟡 Medium | 📋 |
+| TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | 🟡 Medium | 📋 |
 
 ## Backlog
 
 | ID | Task | Priority | Notes |
 |----|------|----------|-------|
-| TASK-509 | Type annotations: 49 missing return types + 4 missing `__all__` (Streamlit) | 🟢 Low | Core already passes mypy. See [weak-points-audit.md](planning/weak-points-audit.md#wp-6) |
-| — | 28 unit conversion warnings | 🟢 Low | `* 1000`/`/ 1000` in IS 456 code. Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
+| TASK-513 | React: AI assistant port | 🟡 Medium | Needs OpenAI/LLM integration design for React |
+| — | 28 unit conversion warnings | 🟢 Low | Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
+| — | 287 legacy import warnings (Streamlit) | 🟢 Low | Won't fix — will go away when Streamlit is deprecated |
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-509 | Type annotations: Streamlit 100% coverage (19 files, PR #438) | Copilot | ✅ Done |
+| — | Phase 1+2 cleanup: delete stale files + Streamlit deprecation markers | Copilot | ✅ Done (`ec62ed0`) |
 | TASK-502 | Code-split React bundle: lazy routes + manual chunks (1,158→67 kB main) | Copilot | ✅ Done |
 | TASK-501 | Fix pre-existing check_all.py failures (19/28 → 25/28) | Copilot | ✅ Done (PR #437) |
 | TASK-508 | Split ai_workspace.py into 6 modules (5103→5314 lines, 7 files) | Copilot | ✅ Done (`b9b2733`) |
@@ -65,12 +84,6 @@
 | TASK-507 | Fix arch violations: stub imports in Streamlit + delete dead test | Copilot | ✅ Done (`0e6657e`) |
 | TASK-500 | Unified CLI + onboarding audit (run.sh, check_all.py, 28 checks) | Claude | ✅ Done (PR #436) |
 | TASK-499 | AI agent efficiency + git workflow improvements | Claude | ✅ Done (`a9bf35e`) |
-| TASK-498 | Full repo folder audit (11 batches) + agent logging rules | Claude | ✅ Done (Session 91) |
-| TASK-497 | React dashboard insights + code checks + rebar suggestions | Claude | ✅ Done (PR #431) |
-| TASK-496 | ExportPanel (BBS CSV / DXF / HTML report) | Claude | ✅ Done (PR #432) |
-| TASK-495 | 4-layer governance lock + migration gates | Claude | ✅ Done (PR #430) |
-| TASK-494 | Scripts consolidation Phase 1–3 (79 active scripts) | Claude | ✅ Done (PR #428, #429) |
-| TASK-493 | Fix 280+ stale doc references across 45+ files | Claude | ✅ Done (`6a5ee84`) |
 
 ## Archive
 
