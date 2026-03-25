@@ -20,6 +20,14 @@ export default defineConfig({
           react: ['react', 'react-dom'],
           // UI framework
           dockview: ['dockview'],
+          // AG Grid — only needed by /editor and /import routes
+          'ag-grid': [
+            '@ag-grid-community/core',
+            '@ag-grid-community/react',
+            '@ag-grid-community/client-side-row-model',
+          ],
+          // Animation library
+          'framer-motion': ['framer-motion'],
         },
       },
     },

@@ -4,6 +4,23 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-03-25 — Session
+
+### Summary
+-
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #XX | - |
+
+### Key Deliverables
+-
+
+### Notes
+-
+
+
 ## 2026-03-24 — Session
 
 ### Summary

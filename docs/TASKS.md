@@ -36,13 +36,12 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-501 | Fix pre-existing check_all.py failures + expand audit | Copilot | 🔄 In Progress |
+| — | — | — | — |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-502 | Code-split Three.js + react-three-fiber + lazy-load routes (1.16 MB chunk) | — | 1d | 🟠 High | 📋 |
 | TASK-504 | Add SSE batch progress UI (streaming.py → React) | — | 1d | Medium | 📋 |
 | TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | Medium | 📋 |
 | TASK-509 | Type annotations: Streamlit pages (49 return types + 4 __all__) | — | 1d | 🟢 Low | 📋 |
@@ -58,6 +57,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-502 | Code-split React bundle: lazy routes + manual chunks (1,158→67 kB main) | Copilot | ✅ Done |
+| TASK-501 | Fix pre-existing check_all.py failures (19/28 → 25/28) | Copilot | ✅ Done (PR #437) |
 | TASK-508 | Split ai_workspace.py into 6 modules (5103→5314 lines, 7 files) | Copilot | ✅ Done (`b9b2733`) |
 | TASK-503 | Wire REST fallback in DesignView (WS disconnect → REST auto-design) | Copilot | ✅ Done (`cad5e24`) |
 | TASK-506 | React test infra: Vitest + 5 test suites (23 tests) | Copilot | ✅ Done (`ff3a937`) |
