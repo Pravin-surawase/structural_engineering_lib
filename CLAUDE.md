@@ -87,11 +87,13 @@ Every AI agent session MUST follow this workflow. Skipping these steps breaks co
 1. Run `./run.sh commit` for any uncommitted work
 2. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
 3. Run `./run.sh session sync` — fixes stale numbers in docs
-4. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
-5. Update `docs/TASKS.md` — mark completed items, add new items discovered
-6. Run `./run.sh commit "docs: session end"` — commit all doc updates
+4. Append to `docs/WORKLOG.md` — one line per change (date | task | what | commit)
+5. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
+6. Update `docs/TASKS.md` — mark completed items, add new items discovered
+7. Run `./run.sh commit "docs: session end"` — commit all doc updates
 
 ### Why This Matters
+- **WORKLOG.md** is the compact change log — one line per item, prevents rework
 - **SESSION_LOG.md** is the project memory — gaps mean lost context
 - **next-session-brief.md** is the handoff — without it, the next agent wastes time rediscovering state
 - **TASKS.md** tracks priorities — unupdated tasks get repeated or lost

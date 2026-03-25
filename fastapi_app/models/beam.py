@@ -317,3 +317,120 @@ class BeamDetailingResponse(BaseModel):
 
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Detailing warnings")
+
+
+# =============================================================================
+# Torsion Models
+# =============================================================================
+
+
+class TorsionDesignRequest(BaseModel):
+    """Request model for torsion design per IS 456 Cl 41."""
+
+    # Section dimensions
+    width: float = Field(
+        gt=0,
+        le=2000.0,
+        description="Beam width b (mm)",
+        examples=[230.0, 300.0, 400.0],
+    )
+    depth: float = Field(
+        gt=0,
+        le=3000.0,
+        description="Overall beam depth D (mm)",
+        examples=[450.0, 600.0, 750.0],
+    )
+
+    # Loading
+    torsion: float = Field(
+        gt=0,
+        description="Factored torsional moment Tu (kN·m)",
+        examples=[5.0, 15.0, 30.0],
+    )
+    moment: float = Field(
+        ge=0,
+        description="Factored bending moment Mu (kN·m)",
+        examples=[100.0, 250.0],
+    )
+    shear: float = Field(
+        default=0.0,
+        ge=0,
+        description="Factored shear force Vu (kN)",
+        examples=[50.0, 150.0],
+    )
+
+    # Material properties
+    fck: float = Field(
+        default=25.0,
+        ge=15.0,
+        le=80.0,
+        description="Characteristic compressive strength of concrete (N/mm²)",
+    )
+    fy: float = Field(
+        default=500.0,
+        ge=250.0,
+        le=600.0,
+        description="Yield strength of reinforcement steel (N/mm²)",
+    )
+
+    # Optional parameters
+    clear_cover: float = Field(
+        default=25.0,
+        ge=20.0,
+        le=75.0,
+        description="Clear cover to reinforcement (mm)",
+    )
+    stirrup_dia: float = Field(
+        default=8.0,
+        ge=6.0,
+        le=16.0,
+        description="Stirrup diameter (mm)",
+    )
+    pt: float = Field(
+        default=1.0,
+        ge=0.1,
+        le=4.0,
+        description="Tension steel percentage (%)",
+    )
+    effective_depth: float | None = Field(
+        default=None,
+        gt=0,
+        description="Effective depth d (mm). Auto-calculated if not provided.",
+    )
+
+
+class TorsionDesignResponse(BaseModel):
+    """Response model for torsion design."""
+
+    success: bool = Field(description="Whether design is safe")
+    message: str = Field(description="Summary message")
+
+    # Applied forces
+    tu_knm: float = Field(description="Applied torsional moment (kN·m)")
+    vu_kn: float = Field(description="Applied shear force (kN)")
+    mu_knm: float = Field(description="Applied bending moment (kN·m)")
+
+    # Equivalent forces (IS 456 Cl 41.3–41.4)
+    ve_kn: float = Field(description="Equivalent shear Ve (kN)")
+    me_knm: float = Field(description="Equivalent moment Me (kN·m)")
+
+    # Stresses
+    tv_equiv: float = Field(description="Equivalent shear stress τve (N/mm²)")
+    tc: float = Field(description="Concrete shear strength τc (N/mm²)")
+    tc_max: float = Field(description="Maximum shear stress limit τc,max (N/mm²)")
+
+    # Reinforcement
+    asv_torsion: float = Field(description="Stirrup area for torsion (mm²/mm)")
+    asv_shear: float = Field(description="Stirrup area for shear (mm²/mm)")
+    asv_total: float = Field(description="Total stirrup area (mm²/mm)")
+    stirrup_spacing: float = Field(description="Designed stirrup spacing (mm)")
+    al_torsion: float = Field(description="Longitudinal steel for torsion (mm²)")
+
+    # Status
+    is_safe: bool = Field(description="Section safe against combined loading")
+    requires_closed_stirrups: bool = Field(
+        default=True, description="Closed stirrups mandatory for torsion"
+    )
+
+    # Warnings
+    warnings: list[str] = Field(default_factory=list, description="Design warnings")

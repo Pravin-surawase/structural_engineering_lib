@@ -211,9 +211,69 @@ export async function loadSampleData(): Promise<SampleDataResponse> {
   return response.json();
 }
 
+// =============================================================================
+// Torsion Design
+// =============================================================================
+
+export interface TorsionDesignRequest {
+  width: number;
+  depth: number;
+  torsion: number;
+  moment: number;
+  shear?: number;
+  fck?: number;
+  fy?: number;
+  clear_cover?: number;
+  stirrup_dia?: number;
+  pt?: number;
+  effective_depth?: number;
+}
+
+export interface TorsionDesignResponse {
+  success: boolean;
+  message: string;
+  tu_knm: number;
+  vu_kn: number;
+  mu_knm: number;
+  ve_kn: number;
+  me_knm: number;
+  tv_equiv: number;
+  tc: number;
+  tc_max: number;
+  asv_torsion: number;
+  asv_shear: number;
+  asv_total: number;
+  stirrup_spacing: number;
+  al_torsion: number;
+  is_safe: boolean;
+  requires_closed_stirrups: boolean;
+  warnings?: string[];
+}
+
+/**
+ * Design beam for combined torsion + shear + bending (IS 456 Cl 41).
+ */
+export async function designBeamTorsion(
+  params: TorsionDesignRequest
+): Promise<TorsionDesignResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/design/beam/torsion`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(`Torsion design failed: ${error.detail || response.status}`);
+  }
+
+  return response.json();
+}
+
 export default {
   checkHealth,
   designBeam,
+  designBeamTorsion,
   generateBeamGeometry,
   calculateGeometry,
   loadSampleData,

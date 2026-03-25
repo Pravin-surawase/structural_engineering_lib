@@ -115,6 +115,58 @@ class TestDesignEndpoints:
         assert "reinforcement" in data
         assert "clear_cover" in data
 
+    def test_torsion_design_basic(self, client):
+        """Test torsion design per IS 456 Cl 41."""
+        request = {
+            "width": 300,
+            "depth": 500,
+            "torsion": 10,
+            "moment": 120,
+            "shear": 80,
+            "fck": 25,
+            "fy": 500,
+        }
+        response = client.post("/api/v1/design/beam/torsion", json=request)
+        assert response.status_code == status.HTTP_200_OK
+
+        data = response.json()
+        assert data["success"] is True
+        assert data["is_safe"] is True
+        assert data["ve_kn"] > 0
+        assert data["me_knm"] > 0
+        assert data["stirrup_spacing"] > 0
+        assert data["al_torsion"] > 0
+        assert data["requires_closed_stirrups"] is True
+
+    def test_torsion_design_unsafe_section(self, client):
+        """Test torsion design with very high torsion → unsafe."""
+        request = {
+            "width": 150,
+            "depth": 300,
+            "torsion": 100,
+            "moment": 200,
+            "shear": 200,
+            "fck": 20,
+            "fy": 415,
+        }
+        response = client.post("/api/v1/design/beam/torsion", json=request)
+        assert response.status_code == status.HTTP_200_OK
+
+        data = response.json()
+        assert data["is_safe"] is False
+        assert data["tv_equiv"] > data["tc_max"]
+
+    def test_torsion_design_validation(self, client):
+        """Test torsion validation — torsion must be > 0."""
+        request = {
+            "width": 300,
+            "depth": 500,
+            "torsion": -5,
+            "moment": 100,
+        }
+        response = client.post("/api/v1/design/beam/torsion", json=request)
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
 
 class TestDetailingEndpoints:
     """Tests for beam detailing endpoints."""

@@ -14,7 +14,8 @@
 | 2 | **Params are `b_mm`, `d_mm`, `fck`** — NOT `width`, `depth`, `grade` | Wrong names = failed tests. Run `./run.sh find --api <func>` to check |
 | 3 | **Never manual git** — always `./scripts/ai_commit.sh "type: msg"` | Manual git causes 10-30 min merge conflicts |
 | 4 | **Search hooks/routes/API before coding** — duplication is the #1 agent mistake | Tables in §4 list everything that exists |
-| 5 | **Session end is MANDATORY** — update SESSION_LOG + next-session-brief | Skipping breaks continuity; next agent wastes hours rediscovering state |
+| 5 | **Session end is MANDATORY** — update SESSION_LOG + next-session-brief + WORKLOG | Skipping breaks continuity; next agent wastes hours rediscovering state |
+| 7 | **Log every change in [WORKLOG.md](../WORKLOG.md)** — one line per item, append-only | Compact history prevents rework — agents check before duplicating |
 | 6 | **Moved modules**: `adapters.py` → `services/adapters.py`, `geometry_3d.py` → `visualization/geometry_3d.py` | Old paths cause import errors |
 
 ---
@@ -77,6 +78,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `useBatchDesign` | Batch design all beams | `useCSVImport.ts` |
 | `useBeamGeometry` | 3D rebar/stirrup geometry from API | `useBeamGeometry.ts` |
 | `useLiveDesign` | WebSocket live design | `useLiveDesign.ts` |
+| `useTorsionDesign` | Torsion design mutation | `useTorsionDesign.ts` |
 | `useAutoDesign` | Auto-trigger on input change | `useAutoDesign.ts` |
 | `useBuildingGeometry` | Building 3D geometry | `useGeometryAdvanced.ts` |
 | `useCrossSectionGeometry` | Cross-section visualization | `useGeometryAdvanced.ts` |
@@ -114,6 +116,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 |--------|----------|---------|
 | **design** | `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
 | | `POST /api/v1/design/beam/check` | Check existing beam design |
+| | `POST /api/v1/design/beam/torsion` | Torsion design (IS 456 Cl 41) |
 | | `GET  /api/v1/design/limits` | Design parameter limits |
 | **detailing** | `POST /api/v1/detailing/beam` | Rebar detailing |
 | | `GET  /api/v1/detailing/bar-areas` | Standard bar area lookup |
@@ -325,6 +328,7 @@ START:  □ ./run.sh session context              ← quick orientation (brief +
 END:    □ ./run.sh commit "type: message"        ← commit all work
         □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
         □ ./run.sh session sync                  ← fix stale doc numbers
+        □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
         □ Update next-session-brief.md           ← what NEXT agent should do
         □ Update TASKS.md                        ← mark done, add new
         □ ./run.sh commit "docs: session end"    ← commit doc updates

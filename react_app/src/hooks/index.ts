@@ -29,6 +29,7 @@ export {
   useExportDXF,
   useExportReport,
 } from './useExport';
+export { useTorsionDesign } from './useTorsionDesign';
 
 // Type exports
 export type {

@@ -20,55 +20,52 @@
 | **Previous** | v0.20.0 | ✅ Done (React migration complete) |
 | **Current** | v0.21.0 | 🔄 React UX Overhaul + Library Expansion |
 
-**Last Session:** Session 98 | **Focus:** React UX overhaul — 6 tasks completed + 3 bugs fixed
+**Last Session:** Session 99 | **Focus:** TASK-518 Torsion API + React, WORKLOG.md creation
 
 ---
 
-## Session 98 Summary
+## Session 99 Summary
 
-### Completed (6 UX tasks + 3 bug fixes)
+### Completed
 
 | Task | What was done | Commit |
 |------|--------------|--------|
-| **TASK-522** | BeamDetailPanel in BuildingEditorPage — beam click → 3D rebar + cross-section + results + redesign button + edit rebar mode + export | `a242878`, `a5612b0` |
-| **TASK-523** | FloatingDock activated in App.tsx (AppDock component, macOS spring dock on all pages except `/`) | `a242878` |
-| **TASK-524** | DesignView dynamic layout — 3D expands when no result, collapse/expand toggle, export dropdown, CompactResultsBar, preset button | `a242878` |
-| **TASK-526** | CrossSectionView annotations — `ascRequired`, `barDia`, `barCount`, `utilization` props, emerald/amber/rose color coding | `a242878`, `a5612b0` |
-| **DashboardPage** | Complete rewrite with BentoGrid layout + export buttons (BBS, Report) in page header | `a242878` |
-| **Backend** | Added `utilization_ratio = Mu/Mu_cap` to `BatchDesignResult` in `imports.py` | `a5612b0` |
+| **WORKLOG.md** | Created compact append-only work log (one line per change) | — |
+| **agent-bootstrap** | Added WORKLOG.md to session workflow + quick-scan table | — |
+| **TASK-518** | Torsion design — FastAPI endpoint + Pydantic models + React hook + DesignView toggle + results panel + 3 API tests (103 total) | — |
 
-### Bugs Fixed
-
-| Bug | Root Cause | Fix |
-|-----|-----------|-----|
-| 3D shows 3 top bars, 2D shows 2 | CrossSectionView used `Math.min(2, ceil(numBars*0.3))` while 3D API uses `select_bar_arrangement(0.25*Ast)` | Added `ascRequired` prop; computes `ceil(ascRequired/barArea)` |
-| Utilization % was wrong | Was `ast_required/(0.04*b*D)` (steel ratio), should be `Mu/Mu_cap` | Added `utilization_ratio` to backend BatchDesignResult |
-| Stirrup 275 not 300 | **Not a bug** — IS 456 Cl 26.5.1.5: `max_sv = min(0.75d, 300)`. For d≈367: 0.75×367=275 governs | Added annotation showing governing limit |
+### Files Changed
+- `docs/WORKLOG.md` (NEW) — compact change log
+- `fastapi_app/models/beam.py` — `TorsionDesignRequest` + `TorsionDesignResponse` models
+- `fastapi_app/routers/design.py` — `POST /api/v1/design/beam/torsion` endpoint
+- `react_app/src/api/client.ts` — `TorsionDesignRequest/Response` types + `designBeamTorsion()` function
+- `react_app/src/hooks/useTorsionDesign.ts` (NEW) — `useTorsionDesign` mutation hook
+- `react_app/src/components/design/DesignView.tsx` — torsion toggle in Design Forces + TorsionResultsPanel
+- `fastapi_app/tests/test_endpoints.py` — 3 new torsion tests
+- `docs/getting-started/agent-bootstrap.md` — WORKLOG reference + torsion endpoint
+- `CLAUDE.md` — Added WORKLOG to session end workflow
 
 ---
 
 ## Next Priorities
 
-### Do first — React UX Phase A (remaining items)
+### Do first — Library exposes more functions through the app
 
-1. **TASK-525: Smart HubPage** ← START HERE
+1. **TASK-515: Load Calculator** ← START HERE
+   - Python `compute_bmd_sfd()` already exists, needs FastAPI endpoint + React panel
+   - New: `POST /api/v1/analysis/loads/simple`
+   - New: `useLoadAnalysis` hook + `LoadCalculatorPanel.tsx`
+   - Feeds Mu/Vu directly into DesignView
+
+2. **TASK-525: Smart HubPage**
    - Replace ModeSelectPage with smart hub: quick actions + resume last project
-   - New file: `components/pages/HubPage.tsx` (~150 lines)
-   - Read `useImportedBeamsStore` for last project context
 
-2. **TASK-527: TopBar context badges + Settings**
-   - Add material/beam count badges to right side of TopBar
-   - Fix settings button (dead link) → slide-over SettingsPanel
+3. **TASK-514: PDF Export**
+   - HTML report → PDF via WeasyPrint
+   - Extend existing export router + `useExportReport` hook
 
-3. **TASK-528: Workflow breadcrumb**
-   - Step indicator on batch flow pages: Import → Editor → Batch → Dashboard
-   - New `WorkflowBreadcrumb.tsx` (~60 lines)
-
-4. **CommandPalette (Ctrl+K)** — already coded, just needs global keybind wiring
-
-### Then — Library Expansion (TASK-514–521)
-See [next-phase-improvements-plan.md](next-phase-improvements-plan.md) Part 2 for full specs.
-- TASK-518 (Torsion) is easiest — Python is FULLY IMPLEMENTED, only needs FastAPI + React
+4. **TASK-517: Project BOQ**
+   - Aggregate BBS across beams → project-level quantities
 
 ### Design Principles (carry forward)
 - **Editor is the workstation** — manual form only in `/design`

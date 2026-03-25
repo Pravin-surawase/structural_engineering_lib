@@ -13,6 +13,8 @@ from fastapi_app.models.beam import (
     BeamCheckResponse,
     FlexureResult,
     ShearResult,
+    TorsionDesignRequest,
+    TorsionDesignResponse,
 )
 
 router = APIRouter(
@@ -306,3 +308,100 @@ async def get_design_limits() -> dict:
             "unit": "N/mm²",
         },
     }
+
+
+# =============================================================================
+# Torsion Design Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/beam/torsion",
+    response_model=TorsionDesignResponse,
+    summary="Design Beam for Torsion",
+    description="Design a beam for combined torsion, shear, and bending per IS 456 Cl 41.",
+)
+async def design_beam_torsion(
+    request: TorsionDesignRequest,
+) -> TorsionDesignResponse:
+    """
+    Design beam for combined torsion + shear + bending.
+
+    Calculates per IS 456:2000 Clause 41:
+    - Equivalent shear Ve and equivalent moment Me
+    - Required closed stirrups for torsion + shear
+    - Longitudinal steel for torsion
+    - Safety check (τve vs τc,max)
+    """
+    try:
+        from structural_lib.codes.is456.torsion import design_torsion
+
+        # Calculate effective depth if not provided
+        d = request.effective_depth
+        if d is None:
+            d = request.depth - request.clear_cover - 25
+
+        result = design_torsion(
+            tu_knm=request.torsion,
+            vu_kn=request.shear,
+            mu_knm=request.moment,
+            b=request.width,
+            D=request.depth,
+            d=d,
+            fck=request.fck,
+            fy=request.fy,
+            cover=request.clear_cover,
+            stirrup_dia=request.stirrup_dia,
+            pt=request.pt,
+        )
+
+        warnings: list[str] = []
+        if not result.is_safe:
+            warnings.append(
+                f"Section unsafe: τve ({result.tv_equiv:.2f}) > τc,max ({result.tc_max:.2f}). "
+                "Increase section size."
+            )
+        if result.requires_closed_stirrups:
+            warnings.append("Closed stirrups mandatory for torsion (IS 456 Cl 41.4.3)")
+        for err in result.errors:
+            warnings.append(str(err))
+
+        return TorsionDesignResponse(
+            success=result.is_safe,
+            message=(
+                f"Torsion design {'safe' if result.is_safe else 'UNSAFE'}: "
+                f"Sv = {result.stirrup_spacing:.0f} mm, Al = {result.al_torsion:.0f} mm²"
+            ),
+            tu_knm=result.tu_knm,
+            vu_kn=result.vu_kn,
+            mu_knm=result.mu_knm,
+            ve_kn=round(result.ve_kn, 2),
+            me_knm=round(result.me_knm, 2),
+            tv_equiv=result.tv_equiv,
+            tc=result.tc,
+            tc_max=result.tc_max,
+            asv_torsion=result.asv_torsion,
+            asv_shear=result.asv_shear,
+            asv_total=result.asv_total,
+            stirrup_spacing=result.stirrup_spacing,
+            al_torsion=result.al_torsion,
+            is_safe=result.is_safe,
+            requires_closed_stirrups=result.requires_closed_stirrups,
+            warnings=warnings,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, AttributeError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Torsion design calculation failed: {e}",
+        )

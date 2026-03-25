@@ -1,0 +1,39 @@
+# Work Log
+
+> **One line per item. Compact. Append-only.**
+> Format: `DATE | TASK-ID | what changed | commit`
+
+**Type:** Reference
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** Critical
+**Created:** 2026-03-25
+**Last Updated:** 2026-03-25
+
+---
+
+## Rules
+
+1. **Every code change gets a line** — no exceptions
+2. **One line** — date, task, change, commit hash
+3. **Agents must append here** at session end (see agent-bootstrap §2)
+4. Don't delete old entries — this is append-only
+
+---
+
+## Log
+
+| Date | Task | Change | Commit |
+|------|------|--------|--------|
+| 2026-03-25 | TASK-522 | BeamDetailPanel — beam click → 3D rebar + results + redesign + edit rebar | `a242878`, `a5612b0` |
+| 2026-03-25 | TASK-523 | FloatingDock + BentoGrid Dashboard activated | `a242878` |
+| 2026-03-25 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `a242878` |
+| 2026-03-25 | TASK-526 | CrossSectionView annotations — utilization color, ascRequired, barDia/barCount | `a242878`, `a5612b0` |
+| 2026-03-25 | BUG | Fix 3D/2D top bar mismatch — CrossSectionView now uses ascRequired prop | `a5612b0` |
+| 2026-03-25 | BUG | Fix utilization formula — BatchDesignResult.utilization_ratio = Mu/Mu_cap | `a5612b0` |
+| 2026-03-25 | FEAT | Single-beam redesign button + editable rebar mode in BeamDetailPanel | `a5612b0` |
+| 2026-03-25 | DOCS | Session 98 — update bootstrap, README, UX plan, TASKS, next-session-brief | `ffd5173` |
+| 2026-03-25 | DOCS | Created WORKLOG.md compact change log + updated agent-bootstrap + CLAUDE.md | — |
+| 2026-03-25 | TASK-518 | Torsion FastAPI endpoint — `POST /api/v1/design/beam/torsion` + Pydantic models | — |
+| 2026-03-25 | TASK-518 | Torsion React — `useTorsionDesign` hook + DesignView toggle + TorsionResultsPanel | — |
+| 2026-03-25 | TASK-518 | 3 new API tests — basic, unsafe section, validation (103 total) | — |
