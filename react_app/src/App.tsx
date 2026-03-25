@@ -18,6 +18,7 @@ const ImportView = lazy(() => import('./components/import/ImportView').then(m =>
 const BuildingEditorPage = lazy(() => import('./components/pages/BuildingEditorPage').then(m => ({ default: m.BuildingEditorPage })));
 const BeamDetailPage = lazy(() => import('./components/pages/BeamDetailPage').then(m => ({ default: m.BeamDetailPage })));
 const DashboardPage = lazy(() => import('./components/pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const BatchDesignPage = lazy(() => import('./components/pages/BatchDesignPage'));
 
 function RouteLoadingFallback() {
   return (
@@ -51,6 +52,7 @@ function App() {
               <Route path="/import" element={<ImportView />} />
               <Route path="/editor" element={<BuildingEditorPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/batch" element={<BatchDesignPage />} />
             </Routes>
           </Suspense>
         </div>
