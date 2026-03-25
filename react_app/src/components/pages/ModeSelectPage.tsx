@@ -3,7 +3,8 @@
  */
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Box, Building2, ArrowLeft } from "lucide-react";
+import { Box, Building2, ArrowLeft, BarChart3, Table } from "lucide-react";
+import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 
 interface ModeCardProps {
   icon: React.ReactNode;
@@ -53,6 +54,7 @@ function ModeCard({ icon, title, subtitle, description, onClick, delay, gradient
 
 export function ModeSelectPage() {
   const navigate = useNavigate();
+  const beamCount = useImportedBeamsStore(s => s.beams.length);
 
   return (
     <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center px-6 pt-14">
@@ -102,6 +104,40 @@ export function ModeSelectPage() {
           gradient="bg-purple-500/10"
         />
       </div>
+
+      {/* Quick access — show when beams are imported */}
+      {beamCount > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex items-center gap-3 mt-8"
+        >
+          <span className="text-xs text-white/30">{beamCount} beams loaded</span>
+          <div className="w-px h-4 bg-white/10" />
+          <button
+            onClick={() => navigate("/editor")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+          >
+            <Table className="w-3.5 h-3.5" />
+            Editor
+          </button>
+          <button
+            onClick={() => navigate("/batch")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            Batch Design
+          </button>
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+          >
+            <BarChart3 className="w-3.5 h-3.5" />
+            Dashboard
+          </button>
+        </motion.div>
+      )}
 
       {/* Quick sample link */}
       <motion.p

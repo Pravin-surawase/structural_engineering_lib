@@ -1,5 +1,5 @@
 /**
- * TopBar - Minimal navigation bar with logo, breadcrumbs, and settings.
+ * TopBar - Compact navigation bar with logo, nav links, breadcrumbs, and settings.
  */
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Settings, ChevronRight } from "lucide-react";
@@ -13,8 +13,17 @@ const routeLabels: Record<string, string> = {
   "/import": "Batch Import",
   "/editor": "Building Editor",
   "/dashboard": "Dashboard",
+  "/batch": "Batch Design",
   "/settings": "Settings",
 };
+
+const navLinks = [
+  { path: "/design", label: "Design" },
+  { path: "/import", label: "Import" },
+  { path: "/batch", label: "Batch" },
+  { path: "/editor", label: "Editor" },
+  { path: "/dashboard", label: "Dashboard" },
+];
 
 export function TopBar() {
   const location = useLocation();
@@ -36,8 +45,8 @@ export function TopBar() {
       animate={{ opacity: 1, y: 0 }}
       className="fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-6 bg-zinc-950/80 backdrop-blur-xl border-b border-white/5"
     >
-      {/* Left: Logo + Breadcrumbs */}
-      <div className="flex items-center gap-3">
+      {/* Left: Logo + Nav links */}
+      <div className="flex items-center gap-4">
         <Link
           to="/"
           className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
@@ -50,25 +59,48 @@ export function TopBar() {
           <span className="text-sm font-semibold hidden sm:block">StructLib</span>
         </Link>
 
-        {breadcrumbs.length > 0 && (
-          <div className="flex items-center gap-1 text-sm">
-            {breadcrumbs.map((crumb, i) => (
-              <div key={crumb.path} className="flex items-center gap-1">
-                <ChevronRight className="w-3.5 h-3.5 text-white/30" />
-                {i === breadcrumbs.length - 1 ? (
-                  <span className="text-white/60">{crumb.label}</span>
-                ) : (
-                  <Link
-                    to={crumb.path}
-                    className="text-white/40 hover:text-white/70 transition-colors"
-                  >
-                    {crumb.label}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Separator */}
+        <div className="hidden md:block w-px h-5 bg-white/10" />
+
+        {/* Nav links */}
+        <nav className="hidden md:flex items-center gap-1">
+          {navLinks.map(link => {
+            const isActive = location.pathname === link.path ||
+              (link.path === "/design" && location.pathname.startsWith("/design"));
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                  isActive
+                    ? "bg-white/10 text-white"
+                    : "text-white/40 hover:text-white/70 hover:bg-white/5"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Mobile: breadcrumbs */}
+        <div className="flex md:hidden items-center gap-1 text-sm">
+          {breadcrumbs.map((crumb, i) => (
+            <div key={crumb.path} className="flex items-center gap-1">
+              <ChevronRight className="w-3.5 h-3.5 text-white/30" />
+              {i === breadcrumbs.length - 1 ? (
+                <span className="text-white/60">{crumb.label}</span>
+              ) : (
+                <Link
+                  to={crumb.path}
+                  className="text-white/40 hover:text-white/70 transition-colors"
+                >
+                  {crumb.label}
+                </Link>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Right: Settings */}

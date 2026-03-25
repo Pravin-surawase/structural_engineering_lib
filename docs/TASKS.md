@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-25 (Session 95 — migration focus shift)
+**Updated:** 2026-03-25 (Session 96 — nav + audit: no new pages needed)
 
 ---
 
@@ -39,9 +39,9 @@
 | Export (BBS/DXF/Report) | ✅ | ✅ | ✅ | Done |
 | Dashboard insights | ✅ | ✅ | ✅ | Done |
 | Rebar suggestions | ✅ | ✅ | ✅ | Done |
-| **Batch design UI** | ✅ | 🔄 PR | ✅ streaming.py | 🔴 High |
-| **Compliance checker** | ✅ | -- | ✅ insights.py | 🔴 High |
-| **Cost optimizer** | ✅ | -- | ✅ optimization.py | 🟡 Medium |
+| **Batch design UI** | ✅ | ✅ | ✅ streaming.py | Done |
+| **Compliance checker** | ✅ | ✅ DesignView panel | ✅ insights.py | Done |
+| **Cost optimizer** | ✅ | ✅ DesignView rebar | ✅ optimization.py | Done |
 | **AI Assistant** | ✅ | -- | Partial | 🟡 Medium |
 | Learning center | ✅ | -- | -- | 🟢 Low |
 
@@ -51,16 +51,14 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-510 | React: Batch design page with SSE progress | Copilot | 🔄 In PR (`task/TASK-510`, `2861429`) |
+| — | TopBar nav + ModeSelect quick links | Copilot | 🔄 In progress |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-510 | React: Batch design page with SSE progress (streaming.py → React) | Copilot | 1-2d | 🔴 High | 🔄 In PR |
-| TASK-511 | React: Compliance checker page (insights/code-checks → React) | — | 1d | 🔴 High | 📋 |
-| TASK-512 | React: Cost optimizer page (optimization.py → React) | — | 1-2d | 🟡 Medium | 📋 |
 | TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | 🟡 Medium | 📋 |
+| — | Wire BuildingEditor Cost tab (placeholder → real data) | — | 0.5d | 🟢 Low | 📋 |
 
 ## Backlog
 
@@ -74,6 +72,9 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-510 | React: Batch design page with SSE progress + `/batch` route | Copilot | ✅ Done (merged to main) |
+| TASK-511 | Compliance checker — **already exists** (useCodeChecks + DesignView panel) | — | ✅ Not needed |
+| TASK-512 | Cost optimizer — **already exists** (useRebarSuggestions + DesignView panel) | — | ✅ Not needed |
 | TASK-509 | Type annotations: Streamlit 100% coverage (19 files, PR #438) | Copilot | ✅ Done |
 | — | Phase 1+2 cleanup: delete stale files + Streamlit deprecation markers | Copilot | ✅ Done (`ec62ed0`) |
 | TASK-502 | Code-split React bundle: lazy routes + manual chunks (1,158→67 kB main) | Copilot | ✅ Done |

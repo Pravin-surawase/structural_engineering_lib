@@ -18,36 +18,34 @@
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.19.1 | Shipped |
-| **Next** | v0.20.0 | React migration (batch design, compliance, cost optimizer) |
+| **Next** | v0.20.0 | React migration — nearly complete |
 
-**Last Session:** Session 95 | **Focus:** React migration — TASK-510 batch design page
+**Last Session:** Session 96 | **Focus:** TASK-510 merged, TopBar nav, feature audit
 
 ---
 
-## Session 95 Summary
+## Session 96 Summary
 
-### TASK-510: React Batch Design Page (In PR)
-- Created `useBatchDesign.ts` SSE hook (EventSource → progress tracking, cancel support)
-- Created `BatchDesignPage.tsx` (beam selection table → live progress bar → results table with utilization badges)
-- Added `/batch` route to App.tsx with lazy loading
+### TASK-510 Merged + Navigation Upgraded
+- Merged TASK-510 (batch design page) to main
+- TopBar: added compact inline nav links (Design, Import, Batch, Editor, Dashboard) — desktop shows nav, mobile shows breadcrumbs
+- ModeSelectPage: added contextual quick-links when beams are loaded (Editor, Batch Design, Dashboard)
 - Build passes (0 TypeScript errors)
-- Branch: `task/TASK-510`, commit: `2861429`
-- **Needs:** Review and merge PR, then manual testing with CSV import → batch design flow
 
-### Strategic Shift
-- Assessed TASK-509 (Streamlit type annotations) as low-value given React migration
-- Rewrote TASKS.md: all new features go to React, Streamlit bug fixes only
-- Added TASK-510/511/512/513 for React migration work
+### Feature Audit: No New Pages Needed
+- **TASK-511 (compliance)** — Already exists: `useCodeChecks()` hook + `CodeChecksPanel` in DesignView + hardcoded checks in BuildingEditor sidebar
+- **TASK-512 (cost optimizer)** — Already exists: `useRebarSuggestions()` hook + panel in DesignView
+- Both marked as "Not needed" in TASKS.md — features already built, no standalone pages required
+- React app is now **feature-complete** relative to Streamlit (except AI assistant)
 
 ---
 
 ## Next Priorities
 
-1. **Finish TASK-510 PR** — merge batch design page, test with `npm run dev`
-2. **TASK-511: Compliance checker React page** (insights/code-checks → React) — 🔴 High
-3. **TASK-512: Cost optimizer React page** (optimization.py → React) — 🟡 Medium
-4. **TASK-505: E2E Docker + React test** — 13 routers need integration tests
-5. **Add navigation link** — add "Batch Design" to TopBar/ModeSelectPage so users can reach `/batch`
+1. **TASK-505: E2E Docker + React test** — 13 routers need integration tests
+2. **Wire BuildingEditor Cost tab** — currently placeholder, wire to real data
+3. **TASK-513: AI assistant port** — needs OpenAI/LLM integration design for React
+4. **Manual testing** — CSV import → batch design → dashboard flow end-to-end
 
 ### Recently Completed
 - **TASK-508** - Split `ai_workspace.py` (5103→5314 lines, 7 files) — commit `b9b2733`
