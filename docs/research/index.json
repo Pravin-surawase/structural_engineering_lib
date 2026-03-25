@@ -2,7 +2,7 @@
   "folder": "docs/research",
   "type": "documentation",
   "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 83,
   "files": [
     {
@@ -341,42 +341,42 @@
     {
       "name": "etabs-addin-integration.md",
       "type": "documentation",
-      "size_lines": 243,
-      "last_updated": "2026-01-23",
+      "size_lines": 240,
+      "last_updated": "2026-03-24",
       "description": "An ETABS add-in can deliver the best in-app UX (one button inside ETABS) but requires confirmation that the ETABS add-in API is supported and stable across",
-      "content_hash": "caec5a2fa047"
+      "content_hash": "ab2eb4e53264"
     },
     {
       "name": "etabs-automation-integration.md",
       "type": "documentation",
-      "size_lines": 277,
-      "last_updated": "2026-01-23",
+      "size_lines": 274,
+      "last_updated": "2026-03-24",
       "description": "Manual export (select table → export → convert → upload) is too slow for first-time users. The best user experience is **one-click connect** to a local ETABS instance,",
-      "content_hash": "9d7c4be1693e"
+      "content_hash": "f398b50587cf"
     },
     {
       "name": "etabs-vba-export-macro.md",
       "type": "documentation",
-      "size_lines": 150,
-      "last_updated": "2026-01-23",
+      "size_lines": 148,
+      "last_updated": "2026-03-24",
       "description": "While the bridge + add-in roadmap matures, a VBA macro gives us the fastest path to test imports, combos, and unit metadata. The macro runs entirely inside the",
-      "content_hash": "b85cafc60bba"
+      "content_hash": "03c6b7d38a73"
     },
     {
       "name": "etabs-vba-implementation-plan.md",
       "type": "documentation",
-      "size_lines": 1210,
-      "last_updated": "2026-01-23",
+      "size_lines": 1206,
+      "last_updated": "2026-03-24",
       "description": "This document provides comprehensive planning for implementing a production-ready VBA macro that exports ETABS data to our CSV schema. Focus areas: 1. **Performance:** Minimize API calls, batch operat",
-      "content_hash": "12eb93d5c586"
+      "content_hash": "eaf8cd8c332f"
     },
     {
       "name": "etabs-vba-questions-answered.md",
       "type": "documentation",
-      "size_lines": 688,
-      "last_updated": "2026-01-23",
+      "size_lines": 685,
+      "last_updated": "2026-03-24",
       "description": "> 1. **Thanks. Please answer these questions, do more planning to make it efficient** > 2. **Find ways to do this faster in VBA, more control, and proper plan for errors, debug and find more points**",
-      "content_hash": "d166e2d3c52a"
+      "content_hash": "794a1bad9ea8"
     },
     {
       "name": "fastapi-week3-review.md",
@@ -634,10 +634,10 @@
       "name": "streamlit-code-quality-research.md",
       "type": "documentation",
       "size_lines": 364,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "Streamlit Code Quality & Automation Research",
       "description": "This research document analyzes code quality, core logic issues, scanner capabilities, and automation gaps in the Streamlit application. The goal is to create a comprehensive improvement plan that wil",
-      "content_hash": "3c833c917132"
+      "content_hash": "0820dc2f40cc"
     },
     {
       "name": "streamlit-modern-patterns-research.md",
@@ -776,5 +776,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "e0a8bf8fe2c2c518"
+  "content_hash": "eae413602ae6ff43"
 }

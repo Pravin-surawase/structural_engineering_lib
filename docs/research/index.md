@@ -3,7 +3,7 @@
 > **For AI Agents:** This index uses semantic tags and complexity ratings.
 
 **Type:** Documentation
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-25
 **Files:** 83
 
 ## Documentation Files
@@ -47,11 +47,11 @@
 | [engineer-workflow-table-editor.md](engineer-workflow-table-editor.md) | Engineer Workflow: Table Editor & 3D Vis | An engineer designing beams thinks in this flow:  | 280 |
 | [engineering-domain-apis.md](engineering-domain-apis.md) | Engineering Domain API Patterns Research | > **Research on domain-specific API patterns for structural  | 1022 |
 | [enterprise-folder-structure-research.md](enterprise-folder-structure-research.md) | Research: Enterprise Folder Structure fo |  structural_engineering_lib/ | 343 |
-| [etabs-addin-integration.md](etabs-addin-integration.md) |  | An ETABS add-in can deliver the best in-app UX (one button i | 243 |
-| [etabs-automation-integration.md](etabs-automation-integration.md) |  | Manual export (select table → export → convert → upload) is  | 277 |
-| [etabs-vba-export-macro.md](etabs-vba-export-macro.md) |  | While the bridge + add-in roadmap matures, a VBA macro gives | 150 |
-| [etabs-vba-implementation-plan.md](etabs-vba-implementation-plan.md) |  | This document provides comprehensive planning for implementi | 1210 |
-| [etabs-vba-questions-answered.md](etabs-vba-questions-answered.md) |  | > 1. **Thanks. Please answer these questions, do more planni | 688 |
+| [etabs-addin-integration.md](etabs-addin-integration.md) |  | An ETABS add-in can deliver the best in-app UX (one button i | 240 |
+| [etabs-automation-integration.md](etabs-automation-integration.md) |  | Manual export (select table → export → convert → upload) is  | 274 |
+| [etabs-vba-export-macro.md](etabs-vba-export-macro.md) |  | While the bridge + add-in roadmap matures, a VBA macro gives | 148 |
+| [etabs-vba-implementation-plan.md](etabs-vba-implementation-plan.md) |  | This document provides comprehensive planning for implementi | 1206 |
+| [etabs-vba-questions-answered.md](etabs-vba-questions-answered.md) |  | > 1. **Thanks. Please answer these questions, do more planni | 685 |
 | [fastapi-week3-review.md](fastapi-week3-review.md) | FastAPI Week 3 Implementation Review | Reviewed Week 3 real-time features (PR #406) covering JWT au | 60 |
 | [file-metadata-standards-research.md](file-metadata-standards-research.md) | Research: File Metadata Standards for AI | | Metric | Current | Target | |--------|---------|--------| | 236 |
 | [folder-cleanup-research.md](folder-cleanup-research.md) | Folder Cleanup & Maintenance Research | > **Status:** Active Research | **Session:** 2026-01-10 Sess | 320 |

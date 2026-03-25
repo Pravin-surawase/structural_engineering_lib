@@ -1,135 +1,158 @@
 {
   "folder": "docs/guidelines",
-  "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |",
-  "last_updated": "2026-01-23",
-  "file_count": 14,
+  "type": "documentation",
+  "description": "",
+  "last_updated": "2026-03-25",
+  "file_count": 16,
   "files": [
     {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 74,
+      "last_updated": "2026-01-23",
+      "title": "Guidelines Index",
+      "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |",
+      "content_hash": "edb33bf981fb"
+    },
+    {
       "name": "api-design-guidelines.md",
+      "type": "documentation",
+      "size_lines": 2617,
+      "last_updated": "2026-01-23",
       "title": "API Design Guidelines",
       "description": "This document consolidates all Phase 1 and Phase 2 API research into a **single, actionable reference** for developing structural_engineering_lib APIs. Use this as the \"north star\" for all API design ",
-      "last_updated": "2026-01-13",
-      "size_lines": 2617,
-      "audience": "Developers",
-      "status": "Approved"
+      "content_hash": "fe3ee38c5157"
     },
     {
       "name": "api-evolution-standard.md",
+      "type": "documentation",
+      "size_lines": 1682,
+      "last_updated": "2026-01-23",
       "title": "API Evolution & Migration Standard",
       "description": "> **Standard for API versioning, deprecation, and backward compatibility** > Part of: API Improvement Research (TASK-207)",
-      "last_updated": "2026-01-13",
-      "size_lines": 1682,
-      "audience": "Developers",
-      "status": "Active"
+      "content_hash": "9804291aa436"
     },
     {
       "name": "blog-writing-guide.md",
-      "title": "Blog Writing Guidelines for Structural Engineering Library",
-      "description": "**Style Guide & Technical Writing Standards** | Audience | Tone | Example |",
-      "last_updated": "2026-01-13",
+      "type": "documentation",
       "size_lines": 851,
-      "audience": "Content Creators",
-      "status": "Active"
-    },
-    {
-      "name": "documentation-standard.md",
-      "title": "API Documentation & Discoverability Standard",
-      "description": "> **Standard for documentation, docstrings, and API discoverability** > Part of: API Improvement Research (TASK-206)",
-      "last_updated": "2026-01-13",
-      "size_lines": 1605,
-      "audience": "Developers",
-      "status": "Active"
+      "last_updated": "2026-01-23",
+      "title": "Blog Writing Guidelines for Structural Engineering Library",
+      "description": "| Audience | Tone | Example | |----------|------|---------|",
+      "content_hash": "325735e21f96"
     },
     {
       "name": "doc-naming-conventions.md",
-      "title": "Document Naming Conventions",
-      "description": "Naming conventions to reduce duplication and improve findability.",
+      "type": "documentation",
+      "size_lines": 83,
       "last_updated": "2026-01-23",
-      "size_lines": 82,
-      "audience": "All Agents",
-      "status": "Draft"
+      "title": "Document Naming Conventions",
+      "description": "Reduce duplication, improve findability, and ensure every topic has a clear canonical home. 1. **One topic = one canonical file.** Check docs/docs-canonical.json first.",
+      "content_hash": "46a428811edd"
+    },
+    {
+      "name": "documentation-standard.md",
+      "type": "documentation",
+      "size_lines": 1605,
+      "last_updated": "2026-01-23",
+      "title": "API Documentation & Discoverability Standard",
+      "description": "> **Standard for documentation, docstrings, and API discoverability** > Part of: API Improvement Research (TASK-206)",
+      "content_hash": "6418e281f763"
     },
     {
       "name": "error-handling-standard.md",
+      "type": "documentation",
+      "size_lines": 1926,
+      "last_updated": "2026-01-23",
       "title": "Error Handling & Exception Design Standard",
       "description": "> **Standard for exception design, error messages, and validation patterns** > Part of: API Improvement Research (TASK-204)",
-      "last_updated": "2026-01-13",
-      "size_lines": 1926,
-      "audience": "Developers",
-      "status": "Active"
+      "content_hash": "df934362458b"
     },
     {
       "name": "file-operations-safety-guide.md",
+      "type": "documentation",
+      "size_lines": 298,
+      "last_updated": "2026-02-11",
       "title": "File Operations Safety Guide",
       "description": "File operations (delete, move, rename) can break: - Internal markdown links",
-      "last_updated": "2026-01-13",
-      "size_lines": 298,
-      "audience": "All Agents",
-      "status": "Active"
+      "content_hash": "bd3bdec763ad"
     },
     {
       "name": "folder-cleanup-workflow.md",
+      "type": "documentation",
+      "size_lines": 279,
+      "last_updated": "2026-01-23",
       "title": "Folder Cleanup Workflow",
       "description": "This workflow provides a systematic approach to cleaning up folders: 1. **Audit** - Identify cleanup candidates",
-      "last_updated": "2026-01-13",
-      "size_lines": 279,
-      "audience": "All Agents",
-      "status": "Active"
+      "content_hash": "3dd8d8be95b1"
     },
     {
       "name": "folder-structure-governance.md",
+      "type": "documentation",
+      "size_lines": 521,
+      "last_updated": "2026-02-27",
       "title": "Folder Structure Governance",
       "description": "1. **Progressive Disclosure** - Short entry docs, detailed content one level down 2. **Clear Ownership** - Every folder has a clear purpose and maintainer",
-      "last_updated": "2026-01-13",
-      "size_lines": 282,
-      "audience": "All Agents",
-      "status": "Production Ready"
+      "content_hash": "e762d9496775"
     },
     {
       "name": "function-signature-standard.md",
+      "type": "documentation",
+      "size_lines": 1343,
+      "last_updated": "2026-01-23",
       "title": "Function Signature Design Standard",
       "description": "This document defines the standard for function signatures in the structural_engineering_lib to ensure: - **Discoverability**: IDE autocomplete and type checkers work effectively",
-      "last_updated": "2026-01-13",
-      "size_lines": 1343,
-      "audience": "Developers",
-      "status": "Draft"
+      "content_hash": "0840fae239af"
+    },
+    {
+      "name": "governance-limits.json",
+      "type": "config",
+      "last_updated": "2026-03-24",
+      "top_level_keys": [
+        "root",
+        "docs_root",
+        "agents_root",
+        "python_lib"
+      ],
+      "content_hash": "d8217354fdfa"
     },
     {
       "name": "migration-preflight-checklist.md",
-      "title": "IS 456 Migration Pre-Flight Checklist",
-      "description": "```bash .venv/bin/python scripts/pre_migration_check.py",
-      "last_updated": "2026-01-13",
+      "type": "documentation",
       "size_lines": 275,
-      "audience": "Developers",
-      "status": "Ready for Use"
+      "last_updated": "2026-01-23",
+      "title": "IS 456 Migration Pre-Flight Checklist",
+      "description": "bash .venv/bin/python scripts/pre_migration_check.py",
+      "content_hash": "ffe971b7b0d7"
     },
     {
       "name": "migration-workflow-guide.md",
-      "title": "IS 456 Module Migration Workflow",
-      "description": "```bash .venv/bin/python scripts/pre_migration_check.py",
-      "last_updated": "2026-01-13",
+      "type": "documentation",
       "size_lines": 450,
-      "audience": "Developers",
-      "status": "Ready for Use"
+      "last_updated": "2026-02-11",
+      "title": "IS 456 Module Migration Workflow",
+      "description": "bash .venv/bin/python scripts/pre_migration_check.py",
+      "content_hash": "9ebda9e24159"
     },
     {
       "name": "result-object-standard.md",
+      "type": "documentation",
+      "size_lines": 1428,
+      "last_updated": "2026-01-23",
       "title": "Result Object Design Standard",
       "description": "This document defines standards for result objects returned by functions in structural_engineering_lib. Result objects replace primitive returns (tuples, dicts) with structured, self-documenting, type",
-      "last_updated": "2026-01-13",
-      "size_lines": 1428,
-      "audience": "Developers",
-      "status": "Draft"
+      "content_hash": "faa022c64a29"
     },
     {
       "name": "streamlit-fragment-best-practices.md",
-      "title": "Streamlit Fragment Best Practices",
-      "description": "This guide establishes best practices for using Streamlit's `@st.fragment` decorator to prevent API violations and runtime errors. ```python",
-      "last_updated": "2026-01-15",
+      "type": "documentation",
       "size_lines": 414,
-      "audience": "All Agents, Developers",
-      "status": "Approved"
+      "last_updated": "2026-03-24",
+      "title": "Streamlit Fragment Best Practices",
+      "description": "This guide establishes best practices for using Streamlit's @st.fragment decorator to prevent API violations and runtime errors. python",
+      "content_hash": "7233ed29bfc0"
     }
   ],
-  "subfolders": []
+  "subfolders": [],
+  "content_hash": "dd095d1899548811"
 }

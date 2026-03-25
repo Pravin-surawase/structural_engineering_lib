@@ -2,7 +2,7 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 19,
   "files": [
     {
@@ -26,11 +26,11 @@
     {
       "name": "agent-bootstrap.md",
       "type": "documentation",
-      "size_lines": 342,
-      "last_updated": "2026-03-23",
+      "size_lines": 461,
+      "last_updated": "2026-03-25",
       "title": "Agent Bootstrap — structural_engineering_lib",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. Open-source **IS 456 RC beam design library** for structural engineers.",
-      "content_hash": "ae91d4cc6543"
+      "content_hash": "7639504d286d"
     },
     {
       "name": "agent-essentials.md",
@@ -54,10 +54,10 @@
       "name": "beginners-guide.md",
       "type": "documentation",
       "size_lines": 150,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "Beginner's Guide (No Coding Required)",
       "description": "This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result. You have two ways to use this library:",
-      "content_hash": "ba97fbbc4b37"
+      "content_hash": "8c4543f49392"
     },
     {
       "name": "colab-workflow.md",
@@ -108,10 +108,10 @@
       "name": "excel-tutorial.md",
       "type": "documentation",
       "size_lines": 393,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "Excel Step-by-Step Tutorial",
       "description": "This tutorial walks you through using the Structural Engineering Library in Excel, step by step with screenshots descriptions and sample data. - Microsoft Excel 2016 or later (Windows or Mac)",
-      "content_hash": "94e56e5801af"
+      "content_hash": "13206556181e"
     },
     {
       "name": "fix-copilot-terminal.md",
@@ -152,22 +152,22 @@
     {
       "name": "releases.md",
       "type": "documentation",
-      "size_lines": 895,
-      "last_updated": "2026-02-11",
+      "size_lines": 910,
+      "last_updated": "2026-03-24",
       "title": "Release Ledger",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "content_hash": "cdbb7141ce57"
+      "content_hash": "dd5efa34ead7"
     },
     {
       "name": "user-guide.md",
       "type": "documentation",
       "size_lines": 215,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "User Guide — Complete Workflow",
       "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
-      "content_hash": "53806e1e5b10"
+      "content_hash": "7ad9c356e6b3"
     }
   ],
   "subfolders": [],
-  "content_hash": "6f363bcf9fd667b8"
+  "content_hash": "e622771b299168a0"
 }

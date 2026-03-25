@@ -2,16 +2,16 @@
   "folder": "docs/reference",
   "type": "mixed",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 26,
   "files": [
     {
       "name": "3d-json-contract.md",
       "type": "documentation",
-      "size_lines": 441,
-      "last_updated": "2026-01-23",
+      "size_lines": 443,
+      "last_updated": "2026-03-24",
       "description": "> **Version:** 1.0.0 > **Purpose:** Defines the JSON schema for exchanging 3D beam geometry between Python (structural_lib) and JavaScript/TypeScript (Three.js viewer).",
-      "content_hash": "a507fb244d10"
+      "content_hash": "804e0fa7267c"
     },
     {
       "name": "3d-visualization-performance.md",
@@ -43,7 +43,7 @@
     {
       "name": "api-manifest.json",
       "type": "config",
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "top_level_keys": [
         "generated",
         "module",
@@ -51,34 +51,34 @@
         "count",
         "symbols"
       ],
-      "content_hash": "e8434850ee3e"
+      "content_hash": "974a4f9488ed"
     },
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 396,
-      "last_updated": "2026-01-23",
+      "size_lines": 461,
+      "last_updated": "2026-03-24",
       "title": "API Stability",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "627bbb82ed91"
+      "content_hash": "eca737c30ca2"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 2980,
-      "last_updated": "2026-01-23",
+      "size_lines": 3019,
+      "last_updated": "2026-03-24",
       "title": "IS 456 RC Beam Design Library — API Reference",
       "description": "Machine-readable signatures live in docs/reference/api-manifest.json. bash",
-      "content_hash": "c6d6515bc0cd"
+      "content_hash": "9bb5949cf1a6"
     },
     {
       "name": "automation-catalog.md",
       "type": "documentation",
       "size_lines": 2834,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "title": "Automation Script Catalog",
       "description": "> **Purpose:** Complete reference of all automation scripts in this project. > **For AI Agents:** Use this to discover available automation before implementing manually.",
-      "content_hash": "d1315fd3e1c0"
+      "content_hash": "281dd3d0053f"
     },
     {
       "name": "bbs-dxf-contract.md",
@@ -241,5 +241,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "a95fc504debb6b58"
+  "content_hash": "0109d6669742e467"
 }

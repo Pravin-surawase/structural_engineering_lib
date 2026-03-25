@@ -1,109 +1,47 @@
 {
-  "category": "developers",
-  "description": "Developer documentation for building applications on top of the library",
+  "folder": "docs/developers",
+  "type": "documentation",
+  "description": "> **For developers building on top of the structural_engineering_lib platform**",
+  "last_updated": "2026-03-25",
+  "file_count": 4,
   "files": [
     {
-      "file": "README.md",
-      "title": "Developer Documentation Hub",
-      "type": "hub",
-      "description": "Central navigation for developers building on the platform",
-      "audience": "Developers",
-      "importance": "Critical",
-      "tags": ["navigation", "hub", "developers"]
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 125,
+      "last_updated": "2026-01-23",
+      "title": "Developer Documentation",
+      "description": "> **For developers building on top of the structural_engineering_lib platform** Welcome to the developer documentation! This section is for developers who want to **build structural automations** usin",
+      "content_hash": "bdc2398186e9"
     },
     {
-      "file": "platform-guide.md",
-      "title": "Build on Platform",
-      "type": "guide",
-      "description": "Comprehensive guide to integrating the library into your applications",
-      "audience": "Developers",
-      "importance": "Critical",
-      "sections": [
-        "Quick Start",
-        "Core Concepts",
-        "Integration Patterns",
-        "Advanced Topics",
-        "Best Practices"
-      ],
-      "tags": ["guide", "integration", "API", "quickstart", "examples"]
+      "name": "extension-guide.md",
+      "type": "documentation",
+      "size_lines": 652,
+      "last_updated": "2026-01-23",
+      "title": "Extension Guide: Adding Features Without Modifying Core",
+      "description": "This guide shows you how to **extend the library** with custom features **without modifying core code**. This ensures: - ✅ Your extensions survive library updates",
+      "content_hash": "3973a103a4ac"
     },
     {
-      "file": "integration-examples.md",
-      "title": "Integration Examples",
-      "type": "examples",
-      "description": "Real-world copy-paste-runnable code samples for common integration scenarios",
-      "audience": "Developers",
-      "importance": "High",
-      "examples": [
-        "PDF Report Generation",
-        "ETABS CSV Batch Processing",
-        "REST API Microservice",
-        "Streamlit Dashboard",
-        "Excel VBA Integration",
-        "Django Integration",
-        "CLI Tool",
-        "JSON API Wrapper"
-      ],
-      "tags": ["examples", "code", "integration", "PDF", "REST API", "batch"]
+      "name": "integration-examples.md",
+      "type": "documentation",
+      "size_lines": 466,
+      "last_updated": "2026-01-23",
+      "title": "Integration Examples: Real-World Code Samples",
+      "description": "This document provides **copy-paste-runnable examples** of integrating structural_engineering_lib into real-world applications. 1. PDF Report Generation",
+      "content_hash": "db36a0665265"
     },
     {
-      "file": "extension-guide.md",
-      "title": "Extension Guide",
-      "type": "guide",
-      "description": "How to extend the library without modifying core code",
-      "audience": "Developers",
-      "importance": "High",
-      "patterns": [
-        "Wrapper Functions",
-        "Custom Design Codes",
-        "Custom Output Formats",
-        "Plugin Architecture"
-      ],
-      "tags": ["extension", "plugins", "customization", "design codes"]
-    },
-    {
-      "file": "api-stability.md",
-      "title": "API Stability & Versioning Policy",
-      "type": "policy",
-      "description": "Versioning scheme, breaking changes policy, and migration guides",
-      "audience": "Developers",
-      "importance": "Critical",
-      "sections": [
-        "Versioning Scheme",
-        "Stability Guarantees",
-        "Public API Surface",
-        "Breaking Change Policy",
-        "Safe Upgrade Practices",
-        "Version History",
-        "Migration Guides"
-      ],
-      "tags": ["versioning", "API", "stability", "migration", "policy"]
+      "name": "platform-guide.md",
+      "type": "documentation",
+      "size_lines": 991,
+      "last_updated": "2026-01-23",
+      "title": "Platform Guide: Build Structural Automations",
+      "description": "1. Introduction 2. Quick Start (15 Minutes)",
+      "content_hash": "fcf5e2ca61fa"
     }
   ],
-  "getting_started": {
-    "recommended_order": [
-      "README.md",
-      "platform-guide.md",
-      "integration-examples.md",
-      "extension-guide.md",
-      "api-stability.md"
-    ],
-    "quick_wins": [
-      "platform-guide.md#quick-start",
-      "integration-examples.md#pdf-report-generation",
-      "extension-guide.md#wrapper-functions"
-    ]
-  },
-  "related_docs": [
-    "../reference/api.md",
-    "../reference/api-stability.md",
-    "../getting-started/python-quickstart.md",
-    "../contributing/development-guide.md"
-  ],
-  "metadata": {
-    "last_updated": "2026-01-15",
-    "version": "1.0.0",
-    "total_files": 5,
-    "total_lines": 3800
-  }
+  "subfolders": [],
+  "content_hash": "e87095aefde888a9"
 }

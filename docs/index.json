@@ -2,7 +2,7 @@
   "folder": "docs",
   "type": "documentation",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 5,
   "files": [
     {
@@ -17,25 +17,25 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 10218,
-      "last_updated": "2026-03-23",
+      "size_lines": 10249,
+      "last_updated": "2026-03-25",
       "title": "Session Log",
       "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. -",
-      "content_hash": "72d9a2f72479"
+      "content_hash": "cfd7101d82eb"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 82,
-      "last_updated": "2026-03-23",
+      "size_lines": 90,
+      "last_updated": "2026-03-25",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "0404119da9de"
+      "content_hash": "e46bbb8e51ae"
     },
     {
       "name": "docs-canonical.json",
       "type": "config",
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -44,12 +44,12 @@
         "naming_conventions",
         "forbidden_patterns"
       ],
-      "content_hash": "94f00e9ae350"
+      "content_hash": "c3d8ef675908"
     },
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "top_level_keys": [
         "version",
         "generated",
@@ -57,20 +57,20 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "2b782dc3f0d4"
+      "content_hash": "c9ff74817023"
     }
   ],
   "subfolders": [
     {
       "name": "adr",
       "path": "adr/",
-      "file_count": 4,
+      "file_count": 6,
       "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later."
     },
     {
       "name": "agents",
       "path": "agents/",
-      "file_count": 21,
+      "file_count": 23,
       "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly."
     },
     {
@@ -82,12 +82,12 @@
     {
       "name": "audit",
       "path": "audit/",
-      "file_count": 4
+      "file_count": 8
     },
     {
       "name": "blog-drafts",
       "path": "blog-drafts/",
-      "file_count": 5,
+      "file_count": 7,
       "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance."
     },
     {
@@ -99,7 +99,7 @@
     {
       "name": "cookbook",
       "path": "cookbook/",
-      "file_count": 3,
+      "file_count": 5,
       "description": "Task-focused recipes and code snippets for common structural engineering workflows."
     },
     {
@@ -117,7 +117,7 @@
     {
       "name": "git-automation",
       "path": "git-automation/",
-      "file_count": 7
+      "file_count": 2
     },
     {
       "name": "guidelines",
@@ -127,7 +127,7 @@
     {
       "name": "guides",
       "path": "guides/",
-      "file_count": 8,
+      "file_count": 10,
       "description": "End-user and developer guides for specific workflows."
     },
     {
@@ -145,13 +145,13 @@
     {
       "name": "legal",
       "path": "legal/",
-      "file_count": 4,
+      "file_count": 6,
       "description": "Engineering certification templates and usage guidelines."
     },
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 41
+      "file_count": 43
     },
     {
       "name": "publications",
@@ -167,19 +167,19 @@
     {
       "name": "research",
       "path": "research/",
-      "file_count": 186,
+      "file_count": 188,
       "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings."
     },
     {
       "name": "specs",
       "path": "specs/",
-      "file_count": 4,
+      "file_count": 6,
       "description": "Technical specifications for data formats and schemas."
     },
     {
       "name": "vba",
       "path": "vba/",
-      "file_count": 3,
+      "file_count": 5,
       "description": "Documentation for the VBA/Excel implementation journey and production plans."
     },
     {
@@ -189,5 +189,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "bfbe2790d66deb01"
+  "content_hash": "3ae40a68548ca98a"
 }

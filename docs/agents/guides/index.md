@@ -1,7 +1,7 @@
 # Guides
 
 **Type:** Documentation
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-25
 **Files:** 15
 
 ## Documentation Files
@@ -21,5 +21,5 @@
 | [agent-9-quick-start.md](agent-9-quick-start.md) | Agent 9 Quick Start - Governance & Docum | Agent 9 is the **governance and documentation structure agen | 268 |
 | [agent-automation-system.md](agent-automation-system.md) | Agent Automation System v1.1.0 | Comprehensive automation system for error-free AI agent work | 354 |
 | [agent-bootstrap-complete-review.md](agent-bootstrap-complete-review.md) | Agent Bootstrap - Complete Review & Link | docs/getting-started/agent-bootstrap.md is the 60-second onb | 116 |
-| [agent-quick-reference.md](agent-quick-reference.md) | Agent Workflow Quick Reference Card | | Need | Guide | Use When | |------|-------|----------| | 334 |
+| [agent-quick-reference.md](agent-quick-reference.md) | Agent Workflow Quick Reference Card | | Need | Guide | Use When | |------|-------|----------| | 336 |
 | [agent-workflow-master-guide.md](agent-workflow-master-guide.md) | Agent Workflow Master Guide | > **Deep reference guide.** Start with agent-bootstrap.md fi | 717 |

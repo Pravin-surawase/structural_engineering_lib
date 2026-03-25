@@ -1,7 +1,7 @@
 # Reference
 
 **Type:** Mixed
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-25
 **Files:** 26
 
 ## Config Files
@@ -12,12 +12,12 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [3d-json-contract.md](3d-json-contract.md) |  | > **Version:** 1.0.0 > **Purpose:** Defines the JSON schema  | 441 |
+| [3d-json-contract.md](3d-json-contract.md) |  | > **Version:** 1.0.0 > **Purpose:** Defines the JSON schema  | 443 |
 | [3d-visualization-performance.md](3d-visualization-performance.md) | 3D Visualization Performance Benchmarks | This document provides performance benchmarks for the 3D bea | 165 |
 | [README.md](README.md) | Reference Documentation | Comprehensive lookup documentation for APIs, formulas, contr | 87 |
 | [agent-automation-pitfalls.md](agent-automation-pitfalls.md) | Agent Automation Pitfalls and Best Pract | <!-- lint-ignore-git --> > ⚠️ **Note:** This document includ | 624 |
-| [api-stability.md](api-stability.md) | API Stability | > This document defines which parts of the library are safe  | 396 |
-| [api.md](api.md) | IS 456 RC Beam Design Library — API Refe | Machine-readable signatures live in docs/reference/api-manif | 2980 |
+| [api-stability.md](api-stability.md) | API Stability | > This document defines which parts of the library are safe  | 461 |
+| [api.md](api.md) | IS 456 RC Beam Design Library — API Refe | Machine-readable signatures live in docs/reference/api-manif | 3019 |
 | [automation-catalog.md](automation-catalog.md) | Automation Script Catalog | > **Purpose:** Complete reference of all automation scripts  | 2834 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) | BBS + DXF Contract (v1.x) | This document defines the stable contracts for Bar Bending S | 107 |
 | [deferred-integrations.md](deferred-integrations.md) | Deferred Integrations Tracker | - Uses conservative default (0.7) in comparison scoring - Fu | 141 |

@@ -1,25 +1,27 @@
-# Agent 9 Index
+# Agent 9
 
-| Document | Purpose | |----------|---------|
+**Type:** Documentation
+**Last Updated:** 2026-03-25
+**Files:** 10
 
-**Last Updated:** 2026-01-21
-**File Count:** 9
+## Documentation Files
 
-## Files
-
-| File | Description | Updated | Lines |
-|------|-------------|---------|-------|
-| [AGENT_9_IMPLEMENTATION_ROADMAP.md](AGENT_9_IMPLEMENTATION_ROADMAP.md) | - **Phase A (v0.17.0):** Critical infrastructure (archive, CI checks, metrics) - | 2026-01-10 | 1159 |
-| [AUTOMATION.md](AUTOMATION.md) | 1. Archive Old Sessions Script 2. Check WIP Limits Script | 2026-01-10 | 840 |
-| [CHECKLISTS.md](CHECKLISTS.md) | 1. Weekly Maintenance Checklist 2. Pre-Release Checklist | 2026-01-10 | 504 |
-| [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md) | 1. Git Workflow Best Practices 2. Pre-Commit Hooks & CI | 2026-01-10 | 631 |
-| [METRICS.md](METRICS.md) | 1. Weekly Metrics Dashboard 2. Monthly Metrics Dashboard | 2026-01-10 | 598 |
-| [RESEARCH_PLAN.md](RESEARCH_PLAN.md) | - ✅ Research complete in 3-5 hours - ✅ Findings documented with citations | 2026-01-10 | 811 |
-| [RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md) | **⚡ Print/Pin This | 1-Page Essentials** Research evidence-based governance for  | 2026-01-13 | 259 |
-| [SESSION_TEMPLATES.md](SESSION_TEMPLATES.md) | 1. Weekly Maintenance Session Template 2. Pre-Release Session Template | 2026-01-10 | 975 |
-| [WORKFLOWS.md](WORKFLOWS.md) | 1. Weekly Maintenance Session 2. Pre-Release Governance | 2026-01-10 | 646 |
+| File | Title | Description | Lines |
+|------|-------|-------------|-------|
+| [AGENT_9_IMPLEMENTATION_ROADMAP.md](AGENT_9_IMPLEMENTATION_ROADMAP.md) | Agent 9 Implementation Roadmap | - **Phase A (v0.17.0):** Critical infrastructure (archive, C | 1159 |
+| [AUTOMATION.md](AUTOMATION.md) | Agent 9: Automation Scripts Specificatio | 1. Archive Old Sessions Script 2. Check WIP Limits Script | 840 |
+| [CHECKLISTS.md](CHECKLISTS.md) | Agent 9: Operational Checklists | 1. Weekly Maintenance Checklist 2. Pre-Release Checklist | 504 |
+| [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md) | Agent 9: Git & CI Governance Knowledge B | 1. Git Workflow Best Practices 2. Pre-Commit Hooks & CI | 631 |
+| [METRICS.md](METRICS.md) | Agent 9: Metrics & Tracking Templates | 1. Weekly Metrics Dashboard 2. Monthly Metrics Dashboard | 598 |
+| [README.md](README.md) | Agent 9: Governance & Sustainability Age | | Document | Purpose | |----------|---------| | 408 |
+| [RESEARCH_PLAN.md](RESEARCH_PLAN.md) | Agent 9 Research Plan | - ✅ Research complete in 3-5 hours - ✅ Findings documented w | 811 |
+| [RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md) | Agent 9 Research Plan - Quick Reference  | Research evidence-based governance for sustainable AI-assist | 259 |
+| [SESSION_TEMPLATES.md](SESSION_TEMPLATES.md) | Agent 9: Session Planning Templates | 1. Weekly Maintenance Session Template 2. Pre-Release Sessio | 975 |
+| [WORKFLOWS.md](WORKFLOWS.md) | Agent 9: Operational Workflows | 1. Weekly Maintenance Session 2. Pre-Release Governance | 646 |
 
 ## Subfolders
 
-- [research/](research/)
-- [workflows/](workflows/)
+| Folder | Files | Description |
+|--------|-------|-------------|
+| [research/](research/) | 6 |  |
+| [workflows/](workflows/) | 1 |  |

@@ -2,7 +2,7 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 81,
   "files": [
     {
@@ -41,10 +41,10 @@
     {
       "name": "archive_old_files.sh",
       "type": "shell-script",
-      "size_lines": 181,
-      "last_updated": "2026-01-23",
+      "size_lines": 182,
+      "last_updated": "2026-03-24",
       "description": "Auto-archive files older than 90 days from docs/_active/",
-      "content_hash": "758b923d4337"
+      "content_hash": "a375223bdd1f"
     },
     {
       "name": "audit_error_handling.py",
@@ -265,7 +265,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "d1178e0a7f1a"
+      "content_hash": "dfd1c2529df9"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -803,7 +803,7 @@
       "name": "check_docs.py",
       "type": "python",
       "size_lines": 534,
-      "last_updated": "2026-03-23",
+      "last_updated": "2026-03-24",
       "description": "Unified documentation checker — consolidates 4 doc validation scripts.",
       "functions": [
         {
@@ -848,7 +848,7 @@
         "META_REQUIRED_FIELDS",
         "META_VALID_VALUES"
       ],
-      "content_hash": "3cfddb6f63a6"
+      "content_hash": "202c0949e9b1"
     },
     {
       "name": "check_fastapi_issues.py",
@@ -1223,16 +1223,16 @@
     {
       "name": "check_root_file_count.sh",
       "type": "shell-script",
-      "size_lines": 51,
+      "size_lines": 58,
       "last_updated": "2026-03-24",
       "description": "Check Root File Count",
-      "content_hash": "9499f376e927"
+      "content_hash": "f47b4c4c9802"
     },
     {
       "name": "check_scripts_index.py",
       "type": "python",
-      "size_lines": 157,
-      "last_updated": "2026-03-23",
+      "size_lines": 164,
+      "last_updated": "2026-03-24",
       "description": "Ensure scripts/index.json and automation-map.json match the scripts folder contents.",
       "functions": [
         {
@@ -1246,7 +1246,7 @@
         "AUTOMATION_MAP_PATH",
         "SCRIPT_EXTENSIONS"
       ],
-      "content_hash": "4a12c842ec27"
+      "content_hash": "7f53780e3577"
     },
     {
       "name": "check_streamlit.py",
@@ -1761,10 +1761,10 @@
     {
       "name": "finish_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 289,
+      "size_lines": 298,
       "last_updated": "2026-03-24",
       "description": "Finish task work and create PR",
-      "content_hash": "441d02a5dfd8"
+      "content_hash": "b80280c93709"
     },
     {
       "name": "generate_all_indexes.sh",
@@ -2414,10 +2414,10 @@
     {
       "name": "safe_push.sh",
       "type": "shell-script",
-      "size_lines": 409,
+      "size_lines": 412,
       "last_updated": "2026-03-24",
       "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
-      "content_hash": "97ec85a6f596"
+      "content_hash": "47fc38597a10"
     },
     {
       "name": "session.py",
@@ -3028,5 +3028,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "74d9cd487c5eb906"
+  "content_hash": "c8b0ad3a9d2ad49c"
 }

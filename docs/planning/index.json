@@ -2,8 +2,8 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-24",
-  "file_count": 36,
+  "last_updated": "2026-03-25",
+  "file_count": 38,
   "files": [
     {
       "name": "3d-visualization-strategic-decision.md",
@@ -26,11 +26,11 @@
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 117,
-      "last_updated": "2026-01-23",
+      "size_lines": 145,
+      "last_updated": "2026-03-24",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "ede4d78a663e"
+      "content_hash": "c1f31e210ac8"
     },
     {
       "name": "agent-workflow-improvements.md",
@@ -40,6 +40,15 @@
       "title": "Agent Workflow Improvements — Roadmap",
       "description": "AI agents spend significant time on repetitive documentation tasks every session: - **3–5 docs** need manual updates at session end (SESSION_LOG, TASKS, next-session-brief, bootstrap files)",
       "content_hash": "7f96f419461d"
+    },
+    {
+      "name": "ai-agent-efficiency-and-git-workflow-plan.md",
+      "type": "documentation",
+      "size_lines": 277,
+      "last_updated": "2026-03-24",
+      "title": "AI Agent Efficiency & Git Workflow Improvement Plan",
+      "description": "This repo already has **best-in-class** AI agent infrastructure — 83 mapped automation scripts, session continuity via SESSION_LOG.md + handoff docs, unified commit workflow (ai_commit.sh), 12 agent r",
+      "content_hash": "cdc83a23e4e9"
     },
     {
       "name": "ai-chat-redesign-plan.md",
@@ -125,19 +134,19 @@
     {
       "name": "etabs-automation-bridge-plan.md",
       "type": "documentation",
-      "size_lines": 136,
-      "last_updated": "2026-01-23",
+      "size_lines": 138,
+      "last_updated": "2026-03-24",
       "description": "- The CSI API ETABS CHM has been extracted under docs/reference/vendor/etabs/etabs-chm/. - Use it as the canonical source for cOAPI, cSapModel, Results, FrameObj, and the",
-      "content_hash": "544928f0ab24"
+      "content_hash": "dd93632ad242"
     },
     {
       "name": "folder-audit.md",
       "type": "documentation",
-      "size_lines": 1739,
+      "size_lines": 1775,
       "last_updated": "2026-03-24",
       "title": "Folder Audit — Repository Health & Documentation",
       "description": "Systematic audit of every folder and subfolder in the repository to: - Document what each folder contains and its purpose",
-      "content_hash": "e52e00a289de"
+      "content_hash": "6b5b673ed923"
     },
     {
       "name": "folder-migration-progress.md",
@@ -214,20 +223,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 377,
-      "last_updated": "2026-03-23",
+      "size_lines": 90,
+      "last_updated": "2026-03-25",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-03-23",
-      "content_hash": "a2a86dd42c92"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-03-24",
+      "content_hash": "901fae98d6c6"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
       "size_lines": 128,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "title": "Pre-Release Checklist",
-      "description": "Version: 0.19.0 (current) Target: Public beta with library-first APIs + DXF/BBS quality gates",
-      "content_hash": "cf70e60d4cf8"
+      "description": "Version: 0.19.1 (current) Target: Public beta with library-first APIs + DXF/BBS quality gates",
+      "content_hash": "533c055f99e5"
     },
     {
       "name": "project-needs-assessment-2026-01-09.md",
@@ -251,10 +260,10 @@
       "name": "research-ai-enhancements.md",
       "type": "documentation",
       "size_lines": 515,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "Research Log — AI/High-Value Enhancements",
       "description": "This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checkin",
-      "content_hash": "8840fa45a5a5"
+      "content_hash": "b48f4df6e2e0"
     },
     {
       "name": "research-detailing.md",
@@ -327,6 +336,15 @@
       "title": "V3 Streamlit Parity + Library Evolution Plan",
       "description": "We already have a strong library core (design, adapters, smart analysis, 3D single-beam geometry). The remaining gaps now sit at the **API + React integration layer**: building-level geometry endpoint",
       "content_hash": "fabd3d3b82df"
+    },
+    {
+      "name": "weak-points-audit.md",
+      "type": "documentation",
+      "size_lines": 251,
+      "last_updated": "2026-03-25",
+      "title": "Weak Points Audit — Deep Analysis",
+      "description": "Deep audit of structural, architectural, and quality weak points across the V3 stack. Six issues identified across React, Streamlit, and Python layers — ranging from critical",
+      "content_hash": "7a5ac5b927b1"
     }
   ],
   "subfolders": [
@@ -349,5 +367,5 @@
       "description": "> **Template version:** 1.0"
     }
   ],
-  "content_hash": "22bbede15733b2fd"
+  "content_hash": "bdaa9723d4f4ba2e"
 }

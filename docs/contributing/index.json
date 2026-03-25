@@ -2,7 +2,7 @@
   "folder": "docs/contributing",
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 31,
   "files": [
     {
@@ -72,10 +72,10 @@
       "name": "development-guide.md",
       "type": "documentation",
       "size_lines": 1512,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "title": "IS 456 RC Beam Design Library — Development Guide",
       "description": "1. Overview 2. Project Structure",
-      "content_hash": "387f9d1091ee"
+      "content_hash": "dce90ce210ba"
     },
     {
       "name": "doc-template.md",
@@ -216,10 +216,10 @@
       "name": "streamlit-comprehensive-prevention-system.md",
       "type": "documentation",
       "size_lines": 504,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "title": "Comprehensive Streamlit App Prevention System",
       "description": "> **Context:** Built prevention system for cost_optimizer.py (PR #301), but discovered > NameError in beam_design.py that wasn't caught. Need app-wide solution.",
-      "content_hash": "c481b72e91c0"
+      "content_hash": "2d618b0367a3"
     },
     {
       "name": "streamlit-issues-catalog.md",
@@ -243,10 +243,10 @@
       "name": "streamlit-prevention-system-review.md",
       "type": "documentation",
       "size_lines": 608,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "title": "Comprehensive Prevention System - Review & Refinements",
       "description": "> **Purpose:** Critical review of the proposed comprehensive prevention system, > identifying gaps, refining approach, and prioritizing implementation.",
-      "content_hash": "c3908c48c263"
+      "content_hash": "3b7822467278"
     },
     {
       "name": "testing-strategy.md",
@@ -270,10 +270,10 @@
       "name": "vba-testing-guide.md",
       "type": "documentation",
       "size_lines": 247,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "VBA Testing Guide",
       "description": "1. **Open** the Excel workbook (Excel/StructEng_BeamDesign_v0.5.xlsm or BeamDesignApp.xlsm) 2. **Press** Alt+F11 to open the VBA Editor",
-      "content_hash": "1814529201bb"
+      "content_hash": "3c19da111774"
     },
     {
       "name": "workflow-professional-review.md",
@@ -286,5 +286,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "b6fc3562d3cbd37f"
+  "content_hash": "f2d88530dd13f89d"
 }

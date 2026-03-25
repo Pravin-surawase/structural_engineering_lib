@@ -2,7 +2,7 @@
   "folder": "docs/agents/guides",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-25",
   "file_count": 15,
   "files": [
     {
@@ -63,19 +63,19 @@
       "name": "agent-8-mistakes-prevention-guide.md",
       "type": "documentation",
       "size_lines": 1114,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "Agent 8: Mistakes Prevention Guide (Lessons Learned)",
       "description": "<!-- lint-ignore-git --> > ⚠️ **HISTORICAL DOCUMENTATION NOTICE**",
-      "content_hash": "f85b2a7d2768"
+      "content_hash": "27fd8add9e41"
     },
     {
       "name": "agent-8-multi-agent-coordination.md",
       "type": "documentation",
       "size_lines": 327,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-24",
       "title": "Agent 8 Multi-Agent Coordination",
       "description": "Agent 8 workflow (ai_commit.sh + safe_push.sh) now supports **concurrent multi-agent operations** with automatic worktree detection and branch-aware behavior. ",
-      "content_hash": "86a3aa7bd9dc"
+      "content_hash": "05efbf93857a"
     },
     {
       "name": "agent-8-operations-log-spec.md",
@@ -123,22 +123,22 @@
     {
       "name": "agent-quick-reference.md",
       "type": "documentation",
-      "size_lines": 334,
-      "last_updated": "2026-02-11",
+      "size_lines": 336,
+      "last_updated": "2026-03-24",
       "title": "Agent Workflow Quick Reference Card",
       "description": "| Need | Guide | Use When | |------|-------|----------|",
-      "content_hash": "6bfe71109c10"
+      "content_hash": "7cfee33bdd51"
     },
     {
       "name": "agent-workflow-master-guide.md",
       "type": "documentation",
       "size_lines": 717,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-24",
       "title": "Agent Workflow Master Guide",
       "description": "> **Deep reference guide.** Start with agent-bootstrap.md first. > This guide covers decision trees, troubleshooting, and advanced workflow patterns.",
-      "content_hash": "91c92a26a243"
+      "content_hash": "51076c73b80c"
     }
   ],
   "subfolders": [],
-  "content_hash": "20215217137cd560"
+  "content_hash": "731d8b03e09ee627"
 }

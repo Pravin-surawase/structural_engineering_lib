@@ -6,6 +6,19 @@
 
 ---
 
+## ⚠ Agent Quick-Scan (read this FIRST)
+
+| # | Critical Warning | Why it matters |
+|---|-----------------|----------------|
+| 1 | **`api.py` is a STUB** — real code is `services/api.py` | Editing the stub wastes time; changes have no effect |
+| 2 | **Params are `b_mm`, `d_mm`, `fck`** — NOT `width`, `depth`, `grade` | Wrong names = failed tests. Run `./run.sh find --api <func>` to check |
+| 3 | **Never manual git** — always `./scripts/ai_commit.sh "type: msg"` | Manual git causes 10-30 min merge conflicts |
+| 4 | **Search hooks/routes/API before coding** — duplication is the #1 agent mistake | Tables in §4 list everything that exists |
+| 5 | **Session end is MANDATORY** — update SESSION_LOG + next-session-brief | Skipping breaks continuity; next agent wastes hours rediscovering state |
+| 6 | **Moved modules**: `adapters.py` → `services/adapters.py`, `geometry_3d.py` → `visualization/geometry_3d.py` | Old paths cause import errors |
+
+---
+
 ## 1. Project Identity
 
 Open-source **IS 456 RC beam design library** for structural engineers.
@@ -48,52 +61,7 @@ React 19 + R3F + Tailwind  ──HTTP/WS──>  FastAPI  ──Python──>  s
 
 Core CANNOT import from Services or UI. Services CANNOT import from UI. Units always explicit.
 
----
-
-## 3a. Tech Stack Rationale
-
-### Why each technology?
-
-| Technology | Why chosen | What it gives us | Trade-offs |
-|------------|-----------|-------------------|------------|
-| **Python** (core lib) | Standard in structural engineering; NumPy/SciPy ecosystem; readable math | Engineers can read and verify IS 456 formulas directly | Slower than C/Rust for heavy computation (acceptable — single-beam calcs are <10ms) |
-| **FastAPI** | Auto-generates OpenAPI docs; Pydantic validation built-in; async + WebSocket native; fastest Python web framework | Type-safe request/response, interactive `/docs` page, SSE streaming, WebSocket for live design | Smaller ecosystem than Django; no built-in ORM (we don't need one — no database) |
-| **React 19** | Most widely-adopted UI framework; R3F (React Three Fiber) for 3D; massive ecosystem | Component reuse, lazy loading, Suspense for code-splitting, strong TypeScript support | Larger bundle than Svelte/Preact; requires build step |
-| **React Three Fiber (R3F)** | Declarative 3D in React — no imperative WebGL boilerplate | 3D beam visualization, rebar positioning, building models — all as React components | Three.js is ~720KB (unavoidable for 3D); requires GPU |
-| **Tailwind CSS** | Utility-first — no CSS files, no naming debates; co-located with markup | Consistent design tokens, fast prototyping, tree-shakes unused classes | Verbose class strings; learning curve for traditional CSS devs |
-| **AG Grid** | Enterprise-grade data grid; handles 1000+ beams with virtual scrolling | Batch beam editing, sorting, filtering — ETABS-like spreadsheet feel | 858KB chunk (large); free tier sufficient for our needs |
-| **Zustand** | Minimal state management (2KB); no boilerplate vs Redux | Two stores: `useDesignStore` + `useImportedBeamsStore` — simple, fast | No dev tools middleware out-of-box (can add if needed) |
-| **Docker** | Reproducible deployment; eliminates "works on my machine" | One command (`docker compose up`) runs the entire backend with correct Python, deps, env | Adds ~200MB image size; requires Docker installed |
-| **Vite** | Near-instant HMR, fast builds, native ES modules | React dev server in <200ms; production build with code-splitting in ~4s | Less battle-tested than Webpack for edge cases (hasn't been an issue) |
-| **Streamlit** (legacy) | Rapid prototyping for data apps; zero frontend knowledge needed | Quick interactive UI for single-beam design during early development | Not suitable for production multi-page apps; limited layout control; being replaced by React |
-
-### Is it efficient?
-
-- **Python core**: Single beam design = **<10ms**. Batch of 153 beams = **<2s**. Pure math, no I/O overhead.
-- **FastAPI**: Handles **1000+ req/s** on a single core. Pydantic v2 validation is C-compiled.
-- **React bundle**: Code-split into 19 chunks. Initial load = **~67KB** (index). Three.js/AG Grid load on-demand only when needed.
-- **Docker**: Production image is a slim Python 3.11 container. Healthcheck ensures reliability.
-
-### Is it safe?
-
-- **Input validation**: Every API endpoint uses Pydantic models with `Field(ge=0, le=2000)` constraints — invalid data is rejected before reaching the math layer.
-- **CORS**: Configured for development origins; must be locked down for production.
-- **JWT auth**: Available (opt-in) for API authentication. Default dev key triggers a warning.
-- **Rate limiting**: Configurable via `RATE_LIMIT_REQUESTS` / `RATE_LIMIT_WINDOW` env vars.
-- **No database**: No SQL injection surface. Stateless computation only.
-- **Docker isolation**: Backend runs in container — host filesystem not exposed (except VBA volume).
-
-### Future improvements to consider
-
-| Area | Current | Potential improvement |
-|------|---------|----------------------|
-| **3D bundle size** | Three.js = 720KB | Consider lighter alternatives if 3D scope narrows |
-| **AG Grid size** | 858KB | Could switch to TanStack Table if simpler grid is sufficient |
-| **WebAssembly** | Not used | Could compile hot-path IS 456 math to WASM for browser-side calc |
-| **CDN/edge** | Not deployed | Static React bundle could go to CDN; API to edge workers |
-| **Caching** | None | Redis/in-memory cache for repeated design calls with same params |
-| **Database** | None (stateless) | PostgreSQL if we add project save/load, user accounts |
-| **Monitoring** | Health endpoints only | OpenTelemetry + Prometheus for production observability |
+> **Tech stack rationale** (why each tech was chosen, efficiency, safety): [tech-stack-rationale.md](../reference/tech-stack-rationale.md)
 
 ---
 
@@ -119,6 +87,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `useCodeChecks` | Live IS 456 clause check badges | `useInsights.ts` |
 | `useRebarSuggestions` | AI rebar suggestion options | `useInsights.ts` |
 | `useDesignWebSocket` | Low-level WebSocket connection | `useDesignWebSocket.ts` |
+| `useBatchProgress` | SSE batch design progress tracking | `useBatchProgress.ts` |
 
 ### React Components (`react_app/src/components/`)
 
@@ -132,6 +101,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `ExportPanel` | BBS CSV / DXF / HTML report download buttons |
 | `FileDropZone` | Drag-drop CSV upload |
 | `CommandPalette` | Global keyboard-driven command palette |
+| `BatchProgressBar` | SSE-driven batch design progress bar |
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
@@ -264,8 +234,6 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 |---------|-----|
 | Port 8000 in use | `lsof -i :8000` → kill the process, or use `--port 8001` |
 | React can't reach API | Ensure FastAPI is running on :8000 first |
-| Docker build fails | Check `docker compose logs` — usually missing env vars |
-| `JWT_SECRET_KEY` warning | Safe to ignore in dev; set in `.env` for production |
 | Python import errors | Use `.venv/bin/python`, never bare `python` |
 
 ---
@@ -330,6 +298,23 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 **Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in same PR. Log the **PR number** (not merge hash). One docs commit at end of session.
 
+### Session Workflow Checklist (MANDATORY)
+
+```
+START:  □ Read docs/planning/next-session-brief.md
+        □ Read docs/TASKS.md
+        □ ./run.sh session start
+
+END:    □ ./run.sh commit "type: message"        ← commit all work
+        □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
+        □ ./run.sh session sync                  ← fix stale doc numbers
+        □ Update next-session-brief.md           ← what NEXT agent should do
+        □ Update TASKS.md                        ← mark done, add new
+        □ ./run.sh commit "docs: session end"    ← commit doc updates
+```
+
+> **Why mandatory?** Skipping session end has caused 10+ hours of wasted rework. SESSION_LOG.md is the project memory — gaps mean lost context.
+
 ---
 
 ## 8. Key Scripts
@@ -390,54 +375,25 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 ---
 
-## 11. Scoped Rules (auto-loaded for Claude Code & Copilot)
+## 11. Domain-Specific Rules (Streamlit, VBA, Docs)
 
-Claude Code and GitHub Copilot load domain-specific rules automatically:
-- `.claude/rules/` — Scoped by file path (Streamlit, React, Python core, VBA, FastAPI, docs)
-- `.github/instructions/` — Scoped by `applyTo` glob patterns
+These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claude Code and Copilot. For other agents:
 
-If using other tools, the rules below apply. If using Claude Code or Copilot, you get these automatically.
-
-## 12. Streamlit Safety (if working on Streamlit)
-
-- **NEVER** use `st.sidebar` inside `@st.fragment` functions — causes `StreamlitAPIException`
-- Use safe patterns: `data.get('key', default)` not `data['key']`, check `len()` before index access
-- Imports at module level only — never `import` inside functions
-- Use `st.session_state.get('key', default)` not `st.session_state.key`
-- Run `check_streamlit.py --fragments` + `check_streamlit.py --all-pages` before committing
-- Full rules: [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md)
+| Domain | Key rule | Full reference |
+|--------|----------|----------------|
+| **Streamlit** | NEVER `st.sidebar` inside `@st.fragment` (crashes). Safe patterns: `data.get()`, `session_state.get()`. Module-level imports only. | `.claude/rules/streamlit.md` |
+| **VBA/Excel** | Python + VBA parity required. Mac safety: `CDbl()` wraps. Always PR. | `.claude/rules/vba.md` |
+| **New docs** | Must have metadata (Type/Audience/Status/Importance/Created). Use `create_doc.py` or add manually. | `.claude/rules/docs.md` |
 
 ---
 
-## 13. VBA Rules (if working on VBA/Excel)
-
-- **Python + VBA parity** — Same formulas, units, edge-case behavior
-- VBA import order matters — see [vba-guide.md](../contributing/vba-guide.md)
-- Mac safety: wrap dimension multiplications in `CDbl()` to prevent overflow
-- VBA changes always require PR
-
----
-
-## 14. Document Metadata (required for new files)
-
-Use `create_doc.py` which adds this automatically, or add manually:
-```markdown
-**Type:** [Guide|Research|Reference|Architecture|Decision]
-**Audience:** [All Agents|Developers|Users]
-**Status:** [Draft|Approved|Deprecated]
-**Importance:** [Critical|High|Medium|Low]
-**Created:** YYYY-MM-DD
-**Last Updated:** YYYY-MM-DD
-```
-
----
-
-## 15. On-Demand References
+## 12. On-Demand References
 
 Load these only when working on that specific area:
 
 | Topic | Document |
 |-------|----------|
+| Tech stack rationale | [tech-stack-rationale.md](../reference/tech-stack-rationale.md) |
 | Command cheat sheet | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) |
 | Deep workflow guide | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) |
 | Current tasks | [TASKS.md](../TASKS.md) |
