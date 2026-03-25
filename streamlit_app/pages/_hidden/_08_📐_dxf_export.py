@@ -89,7 +89,7 @@ dxf_cache = SmartCache(max_size_mb=50, ttl_seconds=900)  # 15-min TTL
 # =============================================================================
 
 
-def initialize_session_state():
+def initialize_session_state() -> None:
     """Initialize session state for DXF export."""
     if "dxf_inputs" not in st.session_state:
         st.session_state.dxf_inputs = {

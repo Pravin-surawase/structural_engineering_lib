@@ -120,7 +120,7 @@ def _is_vba_envelope_format(content: str) -> bool:
     return has_vba and not has_raw
 
 
-def process_etabs_csv(uploaded_file) -> tuple[bool, str, list | None]:
+def process_etabs_csv(uploaded_file: Any) -> tuple[bool, str, list | None]:
     """Process uploaded ETABS CSV file.
 
     Returns:
@@ -262,8 +262,8 @@ def design_beam(
 def process_all_beams(
     envelopes: list,
     beam_sections: dict,
-    progress_bar,
-    status_text,
+    progress_bar: Any,
+    status_text: Any,
 ) -> pd.DataFrame:
     """Design all beams and return results DataFrame."""
     unique_beams = get_unique_beams(envelopes)

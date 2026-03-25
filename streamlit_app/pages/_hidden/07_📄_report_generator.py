@@ -167,7 +167,7 @@ def _transform_design_data_for_pdf(design_result: dict, beam_inputs: dict) -> di
     return pdf_data
 
 
-def render_page():
+def render_page() -> None:
     """Render PDF Report Generator page."""
     st.title("📄 PDF Report Generator")
     st.markdown(

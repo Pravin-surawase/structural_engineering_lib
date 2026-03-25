@@ -43,7 +43,7 @@ def create_auto_refresh_fragment(
     """
 
     @st.fragment(run_every=f"{interval_seconds}s")
-    def wrapper():
+    def wrapper() -> Any:
         return render_func()
 
     return wrapper
@@ -77,7 +77,7 @@ def fragment_input_section(
     """
 
     @st.fragment
-    def input_fragment():
+    def input_fragment() -> dict:
         values = render_inputs()
         if on_change:
             on_change(values)
@@ -112,11 +112,11 @@ class CacheStatsFragment:
         self.viz_cache = viz_cache
         self.refresh_interval = refresh_interval
 
-    def render(self):
+    def render(self) -> None:
         """Render auto-refreshing cache statistics."""
 
         @st.fragment(run_every=f"{self.refresh_interval}s")
-        def _stats_fragment():
+        def _stats_fragment() -> None:
             st.markdown("#### 📊 Cache Statistics")
             st.caption(f"Auto-refreshes every {self.refresh_interval}s")
 
@@ -183,7 +183,7 @@ def create_validation_fragment() -> Callable:
 
     def decorator(validate_func: Callable) -> Callable:
         @st.fragment
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> bool:
             errors = validate_func(*args, **kwargs)
             for error in errors:
                 st.error(f"❌ {error}")
@@ -217,7 +217,7 @@ def export_dialog(
     """
 
     @st.dialog(title)
-    def _dialog():
+    def _dialog() -> None:
         st.markdown("### Export Settings")
 
         format_option = st.selectbox(

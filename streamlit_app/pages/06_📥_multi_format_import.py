@@ -166,8 +166,8 @@ def detect_format(file_content: str, filename: str) -> str:
 
 
 def process_uploaded_files(
-    geometry_file,
-    forces_file,
+    geometry_file: Any,
+    forces_file: Any,
     selected_format: str,
     defaults: dict[str, float],
 ) -> tuple[bool, str, list, list]:
@@ -591,8 +591,8 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
 def design_all_beams(
     beams: list[BeamGeometry],
     forces: list[BeamForces],
-    progress_bar,
-    status_text,
+    progress_bar: Any,
+    status_text: Any,
 ) -> pd.DataFrame:
     """Design all beams and return results DataFrame."""
     results = []

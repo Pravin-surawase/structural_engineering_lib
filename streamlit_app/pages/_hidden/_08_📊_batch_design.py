@@ -21,6 +21,7 @@ import io
 import sys
 from pathlib import Path
 import time
+from typing import Any
 
 import pandas as pd
 import streamlit as st
@@ -93,7 +94,7 @@ def validate_csv_structure(df: pd.DataFrame) -> tuple[bool, str]:
     return True, "Valid"
 
 
-def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
+def process_batch(df: pd.DataFrame, progress_bar: Any, status_text: Any) -> pd.DataFrame:
     """Process batch of designs."""
     results = []
     total = len(df)

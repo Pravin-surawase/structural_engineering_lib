@@ -354,7 +354,7 @@ def create_generic_error(error: Exception) -> ErrorMessage:
 # =============================================================================
 
 
-def display_error_message(error_msg: ErrorMessage):
+def display_error_message(error_msg: ErrorMessage) -> None:
     """
     Display error message in Streamlit UI.
 
@@ -417,7 +417,7 @@ def display_error_message(error_msg: ErrorMessage):
 def handle_errors(
     default_message: str = "An error occurred during processing",
     show_traceback: bool = False,
-):
+) -> Callable:
     """
     Decorator for handling errors in Streamlit functions.
 
@@ -641,7 +641,7 @@ def validate_beam_inputs(
 # =============================================================================
 
 
-def display_success_message(message: str, details: Optional[str] = None):
+def display_success_message(message: str, details: Optional[str] = None) -> None:
     """
     Display success message.
 
@@ -655,7 +655,7 @@ def display_success_message(message: str, details: Optional[str] = None):
         st.success(f"✅ {message}")
 
 
-def display_warning_message(message: str, suggestions: Optional[list[str]] = None):
+def display_warning_message(message: str, suggestions: Optional[list[str]] = None) -> None:
     """
     Display warning message.
 
@@ -674,7 +674,7 @@ def display_warning_message(message: str, suggestions: Optional[list[str]] = Non
     st.warning("\n".join(message_parts))
 
 
-def display_info_message(message: str):
+def display_info_message(message: str) -> None:
     """
     Display informational message.
 
@@ -849,7 +849,7 @@ def handle_visualization_error(e: Exception, chart_type: str) -> ErrorContext:
 
 def display_error_with_recovery(
     e: Exception, severity: ErrorSeverity = ErrorSeverity.ERROR
-):
+) -> None:
     """
     Display error with recovery suggestions.
 
@@ -889,7 +889,7 @@ def error_boundary(
     show_error: bool = True,
     severity: ErrorSeverity = ErrorSeverity.ERROR,
     context: str = "operation",
-):
+) -> Any:
     """
     Context manager for graceful error handling with fallback.
 

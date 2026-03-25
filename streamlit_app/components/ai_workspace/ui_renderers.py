@@ -466,7 +466,7 @@ def _render_editable_results_table(
     st.markdown("#### Live Design Checks")
     check_results = []
 
-    def safe_int(val, default=0):
+    def safe_int(val: Any, default: int = 0) -> int:
         """Safely convert value to int, handling NaN and None."""
         if pd.isna(val) or val is None:
             return default
@@ -1750,7 +1750,7 @@ def render_beam_editor() -> None:
         row = df.iloc[0]
 
     # Safe float conversion helper
-    def safe_float(val, default: float) -> float:
+    def safe_float(val: Any, default: float) -> float:
         try:
             return float(val) if val is not None and not pd.isna(val) else default
         except (ValueError, TypeError):
@@ -2471,7 +2471,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         filtered_df = filtered_df[filtered_df["is_safe"]]
 
     # Extract beam line from beam_id (e.g., "B1" from "B1-1F" or "FB1" from "FB1-2F")
-    def get_beam_line(beam_id):
+    def get_beam_line(beam_id: str) -> str:
         import re
 
         match = re.match(r"^([A-Za-z]+\d+)", str(beam_id))
@@ -2511,7 +2511,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
 
     # Calculate utilization for each beam (Ast provided / Ast required * 100)
     # Must happen AFTER column cleanup to avoid NaN conversion errors
-    def calc_util(row):
+    def calc_util(row: Any) -> float:
         ast_req = float(row.get("ast_req", 500))
         if ast_req <= 0:
             return 100.0
@@ -2610,7 +2610,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     table_height = min(600, max(200, len(display_df) * 35 + 40))
 
     # Track if table was edited (for dynamic refresh)
-    def on_table_change():
+    def on_table_change() -> None:
         st.session_state.ue_table_edited = True
 
     edited_df = st.data_editor(

@@ -85,6 +85,7 @@ from components.report_export import (
     show_dxf_export,
 )
 import hashlib
+from typing import Any
 
 # TODO Phase 2+: Uncomment as needed when implementing those phases
 # from utils.session_manager import SessionStateManager
@@ -111,19 +112,19 @@ if "beam_inputs" not in st.session_state:
 
 
 # Helper function to detect input changes
-def get_input_hash():
+def get_input_hash() -> str:
     """Hash of all inputs to detect changes"""
     inputs_str = f"{st.session_state.beam_inputs['mu_knm']}_{st.session_state.beam_inputs['vu_kn']}_{st.session_state.beam_inputs['b_mm']}_{st.session_state.beam_inputs['D_mm']}_{st.session_state.beam_inputs['d_mm']}_{st.session_state.beam_inputs['concrete_grade']}_{st.session_state.beam_inputs['steel_grade']}_{st.session_state.beam_inputs['span_mm']}_{st.session_state.beam_inputs['exposure']}"
     return hashlib.md5(inputs_str.encode()).hexdigest()
 
 
 # PHASE 1: Cached visualization wrapper for performance
-def create_cached_beam_diagram(**kwargs):
+def create_cached_beam_diagram(**kwargs: Any) -> Any:
     """Cached wrapper for beam diagram generation"""
 
     # Create cache key from all parameters (handle unhashable types)
     # Convert kwargs to JSON-serializable format
-    def make_hashable(obj):
+    def make_hashable(obj: Any) -> Any:
         if isinstance(obj, (list, tuple)):
             return tuple(make_hashable(item) for item in obj)
         elif isinstance(obj, dict):
@@ -185,7 +186,7 @@ col_input, col_preview = st.columns([2, 3], gap="large")
 with col_input:
     # TASK-603.1: Wrap inputs in fragment for 80-90% faster response
     @st.fragment
-    def render_inputs():
+    def render_inputs() -> None:
         """Render input form as an independent fragment."""
         # Compact header (NO theme toggle - it uses st.sidebar which is forbidden in fragments)
         st.subheader("📋 Inputs")
@@ -899,7 +900,7 @@ with col_preview:
 
             # TASK-3D-09: Fragment for live 3D updates
             @st.fragment
-            def render_3d_beam_preview(geom: dict, geom_hash: str):
+            def render_3d_beam_preview(geom: dict, geom_hash: str) -> None:
                 """Render 3D beam preview with caching based on geometry hash.
 
                 Using @st.fragment allows this section to update independently
