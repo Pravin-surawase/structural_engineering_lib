@@ -26,7 +26,7 @@
 ## At a glance
 
 - **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA) with multi-code foundation
-- **Quality:** Contract-tested APIs, 3199 tests, 13 CI workflows, 79 automation scripts
+- **Quality:** Contract-tested APIs, 3199 tests, 13 CI workflows, 81 automation scripts
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
 - **Automation:** Batch-ready CLI + public API wrappers + unified agent onboarding (automation-first workflow)
 - **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
