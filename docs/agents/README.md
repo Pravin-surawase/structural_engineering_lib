@@ -72,7 +72,6 @@ Time-bucketed session logs and summaries by month:
 ## Related Documentation
 
 - [Scripts Directory](../../scripts/) - All automation scripts (shared across agents)
-- [Git Operations Log](../../git_operations_log/) - Operational logs
 - [Research](../research/) - Agent research and analysis
 
 ---
