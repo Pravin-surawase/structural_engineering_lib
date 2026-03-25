@@ -17,46 +17,57 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.19.1 | Shipped |
-| **Next** | v0.20.0 | React migration — nearly complete |
+| **Previous** | v0.20.0 | ✅ Done (React migration complete) |
+| **Current** | v0.21.0 | 🔄 Library Expansion (8 tasks planned) |
 
-**Last Session:** Session 96 | **Focus:** TASK-510 merged, TopBar nav, feature audit
+**Last Session:** Session 97 | **Focus:** Comprehensive v0.21 implementation plan
 
 ---
 
-## Session 96 Summary
+## Session 97 Summary
 
-### TASK-510 Merged + Navigation Upgraded
-- Merged TASK-510 (batch design page) to main
-- TopBar: added compact inline nav links (Design, Import, Batch, Editor, Dashboard) — desktop shows nav, mobile shows breadcrumbs
-- ModeSelectPage: added contextual quick-links when beams are loaded (Editor, Batch Design, Dashboard)
-- Build passes (0 TypeScript errors)
+### v0.20 Declared Complete
+- React migration feature-complete (9/11 features, AI assistant deferred)
+- 86 API integration tests across all 12 routers
+- TopBar nav + ModeSelect quick-links shipped
 
-### Feature Audit: No New Pages Needed
-- **TASK-511 (compliance)** — Already exists: `useCodeChecks()` hook + `CodeChecksPanel` in DesignView + hardcoded checks in BuildingEditor sidebar
-- **TASK-512 (cost optimizer)** — Already exists: `useRebarSuggestions()` hook + panel in DesignView
-- Both marked as "Not needed" in TASKS.md — features already built, no standalone pages required
-- React app is now **feature-complete** relative to Streamlit (except AI assistant)
+### v0.21 Library Expansion Plan Created
+- 8 tasks (TASK-514 → TASK-521) with code-level specs
+- Detailed plan in `docs/planning/next-phase-improvements-plan.md` Part 2
+- Covers: PDF export, load calculator, BOQ, torsion API, Pareto panel, rationalization
+- **Key correction:** Torsion (`codes/is456/torsion.py`) is FULLY IMPLEMENTED (540 lines) — only needs FastAPI endpoint + React UI, not new Python math
+- All function signatures, Pydantic models, React hooks, UI wireframes specified
+- Matches existing patterns: `_mm`/`_knm`/`_nmm2` suffixes, keyword-only args, `useMutation` hooks
 
 ---
 
 ## Next Priorities
 
-1. **TASK-505: E2E Docker + React test** — 13 routers need integration tests
-2. **Wire BuildingEditor Cost tab** — currently placeholder, wire to real data
-3. **TASK-513: AI assistant port** — needs OpenAI/LLM integration design for React
-4. **Manual testing** — CSV import → batch design → dashboard flow end-to-end
+1. **TASK-514: PDF Export** — smallest change, highest demand. Add `export_pdf()` to report.py (15 lines), extend FastAPI format pattern, extend React type
+2. **TASK-515: Load Calculator** — new FastAPI endpoint `/analysis/loads/simple` + React panel with BMD/SFD chart + "Use These Values" button feeding into DesignView
+3. **TASK-516: Triangular + Moment loads** — fill 2 `NotImplementedError` stubs in `load_analysis.py` lines 417, 421
+4. **TASK-517: Project BOQ** — new `services/boq.py` + FastAPI `/insights/project-boq` + React panel
+5. **TASK-518: Torsion API + React** — wrap existing `design_torsion()` in `services/api.py`, add FastAPI endpoint, add torsion toggle in DesignView
+
+### Full plan reference
+See [next-phase-improvements-plan.md](next-phase-improvements-plan.md) Part 2 for:
+- Exact function signatures with unit suffixes
+- Pydantic request/response models
+- React hook interfaces
+- UI wireframes (LoadCalculatorPanel, AlternativesPanel, ProjectBOQPanel)
+- Complete file list (4 new Python, 3 new FastAPI models, 7 new React files)
+- Test specifications per task
 
 ### Recently Completed
-- **TASK-508** - Split `ai_workspace.py` (5103→5314 lines, 7 files) — commit `b9b2733`
-- **TASK-503** - REST fallback in DesignView — commit `cad5e24`
-- **TASK-506** - Vitest + 5 test suites (23 tests) — commit `ff3a937`
-- **TASK-507** - Fix arch violations + dead test — commit `0e6657e`
+- **TASK-505** - API integration tests (86 tests, 12 routers) — commit `a732e62`
+- **TASK-510** - Batch design page (merged to main)
+- **TopBar nav** + ModeSelect quick-links — commit `7710eb9`
 
 ### Technical Debt
 - **2 architecture violations** - rebar_optimizer/multi_objective_optimizer bypass api facade
 - **~13 backward-compat stub imports** in streamlit_app/ - functional but messy
 - **28 unit conversion warnings** in IS 456 code - documented via var names
+- **0 tests** for services/report.py (1700+ lines) — addressed by TASK-520
 
 ---
 

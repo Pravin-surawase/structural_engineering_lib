@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-25 (Session 96 — nav + audit: no new pages needed)
+**Updated:** 2026-03-25 (Session 97 — library + feature expansion plan)
 
 ---
 
@@ -16,18 +16,20 @@
 
 ## Current Release
 
-- **Version:** v0.19.1 ✅ Complete → v0.20 (V3 Foundation)
-- **Focus:** React migration — port remaining Streamlit-only features to React
-- **Target:** v0.20 — batch design UI, compliance checker, cost optimizer in React
+- **Version:** v0.19.1 ✅ Complete → v0.20 (V3 Foundation) → v0.21 (Library Expansion)
+- **Focus:** Library expansion — new Python modules + FastAPI endpoints + React UI
+- **Target:** v0.21 — PDF export, load calculator, BOQ, torsion API, Pareto panel, rationalization
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
+- **Detailed Plan:** [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) — code-level specs for all 8 tasks
 
 ### Release Roadmap
 
 | Version | Focus | Status | Key Deliverables |
 |---------|-------|--------|------------------|
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
-| **v0.20** | V3 Foundation | 🔄 ACTIVE | Batch design React UI, compliance page, cost optimizer page |
-| **v0.21** | Full React | 📋 NEXT | AI assistant port, learning center, Streamlit deprecation |
+| **v0.20** | V3 Foundation | ✅ DONE | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
+| **v0.21** | Library Expansion | 🔄 ACTIVE | PDF export, load calc, BOQ, torsion API, Pareto panel, rationalization |
+| **v0.22** | Full React | 📋 NEXT | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)
 
@@ -45,26 +47,48 @@
 | **AI Assistant** | ✅ | -- | Partial | 🟡 Medium |
 | Learning center | ✅ | -- | -- | 🟢 Low |
 
+### v0.21 Feature Matrix
+
+| # | Task ID | Feature | Python | FastAPI | React | Tests | Status |
+|---|---------|---------|--------|---------|-------|-------|--------|
+| 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | 📋 |
+| 2 | TASK-515 | Load Calculator | — (existing) | new `/analysis/loads/simple` | new `useLoadAnalysis` + panel | 7 | 📋 |
+| 3 | TASK-516 | Triangular + Moment loads | `load_analysis.py` +120 lines | — (extends TASK-515) | — | 6 | 📋 |
+| 4 | TASK-517 | Project BOQ | new `boq.py` ~120 lines | new `/insights/project-boq` | new `useProjectBOQ` + panel | 5 | 📋 |
+| 5 | TASK-518 | Torsion API + React | `api.py` +60 lines | new `/design/beam/torsion` | new `useTorsionDesign` + toggle | 5 | 📋 |
+| 6 | TASK-519 | Alternatives Panel (Pareto) | — (existing) | new `/optimization/beam/pareto` | new `useParetoDesign` + panel | 3 | 📋 |
+| 7 | TASK-520 | Report/3D Test Coverage | — | — | — | ~15 | 📋 |
+| 8 | TASK-521 | Beam Rationalization | new `rationalization.py` ~250 lines | new `/insights/rationalize` | new panel in BuildingEditor | 4 | 📋 |
+
+> Detailed specs (function signatures, Pydantic models, React hooks, UI wireframes) in [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) Part 2.
+
 ---
 
 ## Active
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| — | TopBar nav + ModeSelect quick links | Copilot | 🔄 In progress |
+| — | — | — | No active work — ready to start v0.21 |
 
-## Up Next
+## Up Next (v0.21 — recommended order)
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| TASK-505 | Test e2e with Docker + React (12 routers) | Copilot | 0.5d | 🟡 Medium | ✅ Done |
-| — | Wire BuildingEditor Cost tab (placeholder → real data) | — | 0.5d | 🟢 Low | 📋 |
+| ID | Task | Est | Priority | Status |
+|----|------|-----|----------|--------|
+| TASK-514 | PDF Export (WeasyPrint + extend export router + React) | 1–2d | 🔴 High | 📋 |
+| TASK-515 | Load Calculator (FastAPI endpoint + React panel) | 2–3d | 🔴 High | 📋 |
+| TASK-516 | Triangular + Moment load stubs in load_analysis.py | 1d | 🟡 Medium | 📋 |
+| TASK-517 | Project BOQ (Python module + FastAPI + React panel) | 3–4d | 🔴 High | 📋 |
+| TASK-518 | Torsion API + React (expose existing Python via FastAPI) | 2–3d | 🟡 Medium | 📋 |
+| TASK-519 | Alternatives Panel — Pareto front in DesignView | 3–4d | 🟡 Medium | 📋 |
+| TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | 2–3d | 🟡 Medium | 📋 |
+| TASK-521 | Beam Rationalization (new algo + FastAPI + React) | 1–2w | 🟢 Low | 📋 |
 
 ## Backlog
 
 | ID | Task | Priority | Notes |
 |----|------|----------|-------|
-| TASK-513 | React: AI assistant port | 🟡 Medium | Needs OpenAI/LLM integration design for React |
+| TASK-513 | React: AI assistant port | 🟡 Medium | Deferred to v0.22 — needs LLM API design |
+| — | Wire BuildingEditor Cost tab (placeholder → real data) | 🟢 Low | Use `/optimization/cost-rates` |
 | — | 28 unit conversion warnings | 🟢 Low | Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
 | — | 287 legacy import warnings (Streamlit) | 🟢 Low | Won't fix — will go away when Streamlit is deprecated |
 
@@ -72,6 +96,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| — | TopBar nav + ModeSelect quick links (v0.20 wrap-up) | Copilot | ✅ Done |
 | TASK-505 | React: API integration tests (86 tests, 12 routers, all pass) | Copilot | ✅ Done |
 | TASK-510 | React: Batch design page with SSE progress + `/batch` route | Copilot | ✅ Done (merged to main) |
 | TASK-511 | Compliance checker — **already exists** (useCodeChecks + DesignView panel) | — | ✅ Not needed |
