@@ -4,6 +4,12 @@
 Multi-Format Import Page
 ========================
 
+.. deprecated::
+    This page is superseded by the React ImportView component (react_app/).
+    React equivalent: react_app/src/components/import/ImportView.tsx
+    Hooks: useCSVFileImport, useDualCSVImport (react_app/src/hooks/useCSVImport.ts)
+    Maintained for backward compatibility until full React migration.
+
 Import beam data from multiple structural analysis software formats:
 - ETABS CSV (Connectivity - Frame, Element Forces - Beams)
 - SAFE CSV (strip beam forces)

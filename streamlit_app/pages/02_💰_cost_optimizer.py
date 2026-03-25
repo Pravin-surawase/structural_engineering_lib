@@ -2,6 +2,10 @@
 Cost Optimizer Page
 ====================
 
+.. note:: Active — no React equivalent yet.
+    This page is the only UI for cost optimization. Will be ported to React
+    in a future phase. New features should NOT be added here.
+
 Interactive cost optimization page for beam designs.
 
 Features:

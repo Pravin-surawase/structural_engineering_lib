@@ -2,6 +2,10 @@
 
 **Professional Streamlit dashboard for RC beam design per IS 456:2000**
 
+> **Status: Legacy UI** — The primary frontend is now **React 19 + React Three Fiber** (`react_app/`).
+> Streamlit remains functional and maintained for features not yet ported to React.
+> See [Migration Status](#migration-status) below for details.
+
 ![Version](https://img.shields.io/badge/version-0.19.0-blue)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.53+-red)
@@ -239,6 +243,34 @@ MIT License - see [LICENSE](../LICENSE) for details
 - **structural-lib-is456** - Core design library
 
 ---
+
+## Migration Status
+
+The project is migrating from Streamlit to **React 19 + React Three Fiber + FastAPI**.
+The React app (`react_app/`) is the primary frontend going forward.
+
+### Feature Parity
+
+| Feature | Streamlit | React | Notes |
+|---------|-----------|-------|-------|
+| Single beam design | ✅ | ✅ | **Parity achieved** |
+| CSV import (40+ columns) | ✅ | ✅ | **Parity achieved** |
+| 3D visualization | ✅ Plotly | ✅ R3F | React is superior (WebGL) |
+| Export (BBS/DXF/Report) | ✅ | ✅ | **Parity achieved** |
+| Dashboard insights | ✅ | ✅ | **Parity achieved** |
+| Rebar suggestions | ✅ | ✅ | **Parity achieved** |
+| Cost optimizer | ✅ | -- | Streamlit only |
+| Compliance checker | ✅ | -- | Streamlit only |
+| AI Assistant v2 | ✅ | -- | Streamlit only |
+| Batch design (full UI) | ✅ | -- | API exists, React UI pending |
+| Learning center / Docs | ✅ | -- | Streamlit only |
+
+### What This Means
+
+- **Use React** (`react_app/`) for core beam design, CSV import, 3D visualization, and exports.
+- **Use Streamlit** for cost optimization, compliance checking, and AI assistant until React ports are complete.
+- **New features** should be built in React, not Streamlit.
+- **Bug fixes** in Streamlit are still accepted for features not yet in React.
 
 **Version:** 0.19.0
 **Status:** ✅ Production Ready

@@ -2,6 +2,10 @@
 Compliance Checker Page
 ========================
 
+.. note:: Active — no React equivalent yet.
+    This page is the only UI for IS 456 compliance checking. Will be ported
+    to React in a future phase. New features should NOT be added here.
+
 Check beam designs against IS 456:2000 requirements.
 
 Features:

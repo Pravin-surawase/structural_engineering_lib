@@ -120,6 +120,10 @@ scratch/
 temp/
 tmp/
 
+# Stale operational data (deleted in Phase 1 cleanup, Mar 2026)
+git_operations_log/
+metrics/
+
 # VBA corrupt artifact patterns
 VBA/ETABS_Export/.\!*
 

@@ -3,6 +3,11 @@
 """
 3D Viewer Demo Page — POC for Streamlit Cloud
 
+.. deprecated::
+    Superseded by React Viewport3D component (react_app/src/components/viewport/).
+    React provides native WebGL via React Three Fiber — far superior to iframe approach.
+    Maintained for reference only.
+
 This page demonstrates the 3D beam visualization component.
 It's designed to test the iframe + Three.js approach on Streamlit Cloud.
 """

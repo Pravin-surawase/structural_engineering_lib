@@ -3,6 +3,10 @@
 """
 AI Assistant v2 — Professional Redesign with Dynamic Workspace
 
+.. note:: Active — no React equivalent yet.
+    This is a complex 9-state workflow. Will be evaluated for React port
+    in a future phase. New features should NOT be added here.
+
 Layout: Full page with 35% chat (left) + 65% dynamic workspace (right)
 
 Key Improvements over v1:

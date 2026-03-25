@@ -2,6 +2,11 @@
 Beam Design Page
 ================
 
+.. deprecated::
+    This page is superseded by the React DesignView component (react_app/).
+    React equivalent: react_app/src/components/design/DesignView.tsx
+    Maintained for backward compatibility until full React migration.
+
 Interactive RC beam design per IS 456:2000.
 
 Features:
