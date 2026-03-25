@@ -39,7 +39,7 @@
 | Export (BBS/DXF/Report) | ✅ | ✅ | ✅ | Done |
 | Dashboard insights | ✅ | ✅ | ✅ | Done |
 | Rebar suggestions | ✅ | ✅ | ✅ | Done |
-| **Batch design UI** | ✅ | -- | ✅ streaming.py | 🔴 High |
+| **Batch design UI** | ✅ | 🔄 PR | ✅ streaming.py | 🔴 High |
 | **Compliance checker** | ✅ | -- | ✅ insights.py | 🔴 High |
 | **Cost optimizer** | ✅ | -- | ✅ optimization.py | 🟡 Medium |
 | **AI Assistant** | ✅ | -- | Partial | 🟡 Medium |
@@ -51,13 +51,13 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-510 | React: Batch design page with SSE progress | — | 🔄 Starting |
+| TASK-510 | React: Batch design page with SSE progress | Copilot | 🔄 In PR (`task/TASK-510`, `2861429`) |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-510 | React: Batch design page with SSE progress (streaming.py → React) | — | 1-2d | 🔴 High | 📋 |
+| TASK-510 | React: Batch design page with SSE progress (streaming.py → React) | Copilot | 1-2d | 🔴 High | 🔄 In PR |
 | TASK-511 | React: Compliance checker page (insights/code-checks → React) | — | 1d | 🔴 High | 📋 |
 | TASK-512 | React: Cost optimizer page (optimization.py → React) | — | 1-2d | 🟡 Medium | 📋 |
 | TASK-505 | Test e2e with Docker + React (13 routers) | — | 0.5d | 🟡 Medium | 📋 |

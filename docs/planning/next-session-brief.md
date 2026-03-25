@@ -12,41 +12,42 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-24
+- Date: 2026-03-25
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.19.1 | Shipped |
-| **Next** | v0.20.0 | V3 Foundation (code-splitting, SSE progress, REST fallback) |
+| **Next** | v0.20.0 | React migration (batch design, compliance, cost optimizer) |
 
-**Last Session:** Session 93 | **Focus:** Unified CLI merged + git workflow audit
+**Last Session:** Session 95 | **Focus:** React migration — TASK-510 batch design page
 
 ---
 
-## Session 93 Summary
+## Session 95 Summary
 
-### PR #436 Merged to Main (TASK-500)
-- Created `run.sh` (~600 lines, 9 subcommands) + `check_all.py` (28 checks, 9 categories)
-- Archived 7 Streamlit-era scripts (85 to 78 active)
-- Fixed 46 to 15 stale refs, 4 runtime breaks, updated all agent docs
-- Git workflow audit: `docs/audit/git-workflow-audit-pr436.md` (11 issues, 7 fixed)
+### TASK-510: React Batch Design Page (In PR)
+- Created `useBatchDesign.ts` SSE hook (EventSource → progress tracking, cancel support)
+- Created `BatchDesignPage.tsx` (beam selection table → live progress bar → results table with utilization badges)
+- Added `/batch` route to App.tsx with lazy loading
+- Build passes (0 TypeScript errors)
+- Branch: `task/TASK-510`, commit: `2861429`
+- **Needs:** Review and merge PR, then manual testing with CSV import → batch design flow
 
-### TASK-501: Pre-existing check failures (PR pending)
-- check_all.py improved from 19/28 → 25/28 (6 checks fixed)
-- Fixed: API validation, API stability sync, API manifest, doc front-matter, OpenAPI snapshot, TASKS.md format, broken links, brief trimming
-- Remaining 3 failures are tech debt (documented in TASKS.md Backlog): architecture boundaries (2 Streamlit violations), import validation (293 legacy), type annotations (68 gaps)
-- Branch: `task/TASK-501`, commit: `f40f807`
+### Strategic Shift
+- Assessed TASK-509 (Streamlit type annotations) as low-value given React migration
+- Rewrote TASKS.md: all new features go to React, Streamlit bug fixes only
+- Added TASK-510/511/512/513 for React migration work
 
 ---
 
 ## Next Priorities
 
-1. **Code-split Three.js bundles** (TASK-502) - index.js chunk is 1.16 MB
-2. **SSE batch progress UI** (TASK-504) - streaming.py router exists, needs React consumer
-3. **E2E Docker + React test** (TASK-505) - 13 routers need integration tests
-4. **Type annotations** (TASK-509) - 49 missing return types + 4 missing `__all__` in Streamlit
-5. **Governance single source of truth** - make governance-limits.json the only config
+1. **Finish TASK-510 PR** — merge batch design page, test with `npm run dev`
+2. **TASK-511: Compliance checker React page** (insights/code-checks → React) — 🔴 High
+3. **TASK-512: Cost optimizer React page** (optimization.py → React) — 🟡 Medium
+4. **TASK-505: E2E Docker + React test** — 13 routers need integration tests
+5. **Add navigation link** — add "Batch Design" to TopBar/ModeSelectPage so users can reach `/batch`
 
 ### Recently Completed
 - **TASK-508** - Split `ai_workspace.py` (5103→5314 lines, 7 files) — commit `b9b2733`
