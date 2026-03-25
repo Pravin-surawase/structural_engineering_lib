@@ -12,7 +12,7 @@ Open-source reinforced concrete beam design toolkit for IS 456:2000.
 Use it as a Python package, a CLI, a FastAPI backend, a React app, a Streamlit app, or an Excel/VBA reference implementation.
 
 Current packaged release: `0.19.1`
-Current repo focus: `v0.20` React migration and V3 foundation
+Current repo focus: `v0.21` React UX overhaul and library expansion
 
 </div>
 
@@ -178,7 +178,7 @@ React dev server:
 
 - `http://localhost:5173`
 
-Current top-level routes in the React app include `/design`, `/import`, `/editor`, `/dashboard`, and `/batch`.
+Current top-level routes in the React app include `/design`, `/import`, `/editor`, `/dashboard`, and `/batch`. The editor page is the primary workstation — click any beam to see its full 3D reinforcement, cross-section, and IS 456 code checks inline.
 
 ### 4. Start Streamlit
 
@@ -242,13 +242,14 @@ The current routing setup is assembled in `fastapi_app/main.py`, with REST route
 
 The React app is the primary UI and currently includes:
 
-- single-beam design
+- single-beam design with dynamic layout (3D expands when no result)
 - CSV import flows
 - batch design page
-- dashboard insights
-- building editor
-- 3D visualization and cross-section views
+- dashboard insights with BentoGrid layout and export buttons
+- building editor with inline BeamDetailPanel (click beam → 3D rebar + results + export)
+- 3D visualization and annotated cross-section views (utilization color coding)
 - export actions for BBS, DXF, and reports
+- macOS-style FloatingDock navigation
 
 Reusable frontend integration points are organized in `react_app/src/hooks/`, including hooks for CSV import, beam geometry, live design, exports, insights, and rebar editing.
 

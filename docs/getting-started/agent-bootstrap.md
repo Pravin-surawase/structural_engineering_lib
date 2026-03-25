@@ -93,12 +93,15 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 | Component | Purpose |
 |-----------|---------|
-| `Viewport3D` | 3D beam/building visualization (R3F) |
-| `BuildingEditorPage` | AG Grid beam editor |
-| `DesignView` | Single beam design page (live 3D + code checks + rebar suggestions) |
-| `DashboardPage` | Batch design analytics (pass/fail, utilization, stories) |
+| `Viewport3D` | 3D beam/building visualization (R3F) — supports `overrideDimensions` prop for non-store beams |
+| `BuildingEditorPage` | AG Grid beam editor — click beam → BeamDetailPanel slides in |
+| `BeamDetailPanel` | **NEW** Inline detail panel: 3D rebar + cross-section + results + redesign + export |
+| `DesignView` | Single beam design page — dynamic layout (3D expands when no result), export dropdown |
+| `DashboardPage` | BentoGrid analytics layout + export buttons in header |
 | `ImportView` | CSV/JSON import UI |
 | `ExportPanel` | BBS CSV / DXF / HTML report download buttons |
+| `CrossSectionView` | Annotated SVG — accepts `ascRequired`, `barDia`, `barCount`, `utilization` props |
+| `FloatingDock` | **ACTIVATED** macOS-style spring dock — bottom nav on all pages except `/` |
 | `FileDropZone` | Drag-drop CSV upload |
 | `CommandPalette` | Global keyboard-driven command palette |
 | `BatchProgressBar` | SSE-driven batch design progress bar |
@@ -120,7 +123,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | **imports** | `POST /api/v1/import/csv` | CSV file import (40+ column mappings) |
 | | `POST /api/v1/import/csv/text` | CSV text/paste import |
 | | `POST /api/v1/import/dual-csv` | ETABS dual CSV import |
-| | `POST /api/v1/import/batch-design` | Batch design all beams |
+| | `POST /api/v1/import/batch-design` | Batch design all beams (returns `utilization_ratio = Mu/Mu_cap`) |
 | | `GET  /api/v1/import/formats` | Supported CSV formats |
 | | `GET  /api/v1/import/sample` | Sample data for testing |
 | **geometry** | `POST /api/v1/geometry/beam/3d` | Basic 3D beam geometry |
@@ -164,6 +167,20 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 |-------|---------|
 | `useDesignStore` | Single beam design inputs/results |
 | `useImportedBeamsStore` | Imported CSV beams + selection |
+
+### Recent Bug Fixes & Features (Session 98)
+
+| Fix/Feature | Details |
+|-------------|----------|
+| **3D vs 2D top bar mismatch** | CrossSectionView now uses `ascRequired` prop (matching API's `0.25*Ast` logic) instead of `Math.min(2, ceil(numBars*0.3))` |
+| **Utilization formula corrected** | Backend `BatchDesignResult` now returns `utilization_ratio = Mu/Mu_cap` — not `Ast/Ast_max` |
+| **Stirrup spacing 275 vs 300** | Not a bug — IS 456 Cl 26.5.1.5: `max_sv = min(0.75d, 300mm)`. UI now shows governing limit |
+| **Single-beam redesign** | BeamDetailPanel has "Redesign" button → calls `/api/v1/design/beam` for one beam |
+| **Editable rebar** | BeamDetailPanel has inline edit mode with `useRebarValidation` for live IS 456 checks |
+| **FloatingDock activated** | macOS spring dock in App.tsx — nav on all pages except `/` |
+| **BentoGrid on Dashboard** | DashboardPage rewritten with BentoGrid layout + export buttons in header |
+| **DesignView dynamic layout** | 3D viewport fills 100% when no result; collapses to 55% when result appears |
+| **CrossSectionView annotations** | `utilization` color coding (emerald/amber/rose), actual `barDia`/`barCount` props |
 
 
 **Quick check before coding:**

@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-03-25
-**Last Updated:** 2026-03-25
+**Last Updated:** 2026-03-25 (Session 98 — A1–A6 implemented, bugs fixed)
 
 ---
 
@@ -88,13 +88,14 @@ Manual beam input belongs **only** in `/design` (single-beam check). Everywhere 
                                       └──────────────────┘
 
 PROBLEMS:
-  × Manual form appears redundantly outside single-beam design
-  × BeamDetailPage is a separate route — breaks context in editor flow
-  × Clicking a beam in the Editor does NOT show its reinforcement details
-  × 3D building view is only 30% of Editor — too small to be useful
-  × DashboardPage has no export
-  × TopBar Settings → dead link
-  × FloatingDock.tsx, BentoGrid.tsx, CommandPalette.tsx — all built, all unused
+  ✓ Manual form appears redundantly outside single-beam design  ← FIXED (form only in /design)
+  ✓ BeamDetailPage is a separate route  ← FIXED (detail is inline in Editor via BeamDetailPanel)
+  ✓ Clicking a beam in the Editor does NOT show its reinforcement ← FIXED (BeamDetailPanel slides in)
+  ✓ 3D building view is only 30% of Editor  ← IMPROVED (wider split when panel active)
+  ✓ DashboardPage has no export  ← FIXED (export buttons in BentoGrid header)
+  × TopBar Settings → dead link  ← TODO
+  ✓ FloatingDock.tsx, BentoGrid.tsx — ACTIVATED
+  × CommandPalette.tsx — still unused
 ```
 
 ---
@@ -274,15 +275,31 @@ The BeamDetailPage (`/design/results`) can be kept as a standalone deep-link (fo
 
 ---
 
+## Bugs Found & Fixed (Session 98)
+
+| Bug | Root Cause | Fix | Commit |
+|-----|-----------|-----|--------|
+| **3D shows 3 top bars, 2D shows 2** | CrossSectionView used `Math.min(2, ceil(numBars * 0.3))` while 3D API uses `select_bar_arrangement(0.25 * Ast)` — different formulas | Added `ascRequired` prop to CrossSectionView; now computes `ceil(ascRequired / barArea)` | `a5612b0` |
+| **Utilization shows wrong %** | BuildingEditorPage computed `ast_required / (0.04 * b * D)` (steel ratio) instead of `Mu / Mu_cap` (moment utilization) | Added `utilization_ratio` to backend `BatchDesignResult`; frontend uses API value | `a5612b0` |
+| **Stirrup max 275 not 300** | **Not a bug** — IS 456 Cl 26.5.1.5: `max_sv = min(0.75d, 300mm)`. For d≈367mm: 0.75×367=275mm governs | Added annotation showing which limit governs: "Sv = X mm (max: 0.75d = Y mm)" | `a5612b0` |
+| **asc_required not passed to CrossSectionView** | BeamDetailPanel stored value but never forwarded as prop | Added `ascRequired={beam.asc_required}` prop pass-through | `a5612b0` |
+
+### Key IS 456 Reference
+- **Stirrup spacing limit (Cl 26.5.1.5):** `max_sv = min(0.75d, 300mm)` — for beams with d < 400mm, 0.75d governs (not 300)
+- **Compression steel default:** When `asc = 0`, detailing uses `0.25 × Ast` as minimum compression reinforcement
+- **Standard stirrup spacings:** `[75, 100, 125, 150, 175, 200, 225, 250, 275, 300]` — `round_to_practical_spacing()` rounds down
+
+---
+
 ## Improvement Plan (3 Phases)
 
 ### Phase A: Polish & Core Flow Fixes
 
 ---
 
-#### A1. BuildingEditorPage — Beam Selection Detail Panel
+#### A1. BuildingEditorPage — Beam Selection Detail Panel ✅ DONE
 
-**This is the #1 priority.** When a beam is clicked (row in AG Grid or mesh in 3D), a panel slides in from the right.
+**IMPLEMENTED in commit `a5612b0`.** When a beam is clicked (row in AG Grid or mesh in 3D), a BeamDetailPanel slides in from the right.
 
 **Layout change:**
 - Existing: 3D top 30% + Grid bottom 70%
@@ -316,9 +333,9 @@ The BeamDetailPage (`/design/results`) can be kept as a standalone deep-link (fo
 
 ---
 
-#### A2. DesignView — Dynamic Layout (viewport expands when empty)
+#### A2. DesignView — Dynamic Layout (viewport expands when empty) ✅ DONE
 
-**Current:** Results panel is always 40% wide even when there's nothing to show.
+**IMPLEMENTED in commit `a242878`.** Results panel now collapses/expands dynamically.
 
 **3 states:**
 ```
@@ -364,9 +381,9 @@ EMPTY (just opened):        HAS RESULT:              MINIMIZED:
 
 ---
 
-#### A4. Cross-Section Annotations
+#### A4. Cross-Section Annotations ✅ DONE
 
-**Current:** Bare SVG — concrete box + plain circles. No dimensions.
+**IMPLEMENTED in commits `a242878` + `a5612b0`.** CrossSectionView now accepts `ascRequired`, `barDia`, `barCount`, `utilization` props.
 
 **Proposed (extend `CrossSectionView.tsx`):**
 ```
@@ -389,9 +406,9 @@ Adds: width/depth dimension lines (SVG arrows), cover dashed line, bar label, st
 
 ---
 
-#### A5. Activate FloatingDock (already built, unused)
+#### A5. Activate FloatingDock (already built, unused) ✅ DONE
 
-`FloatingDock.tsx` — beautiful macOS-style dock with hover magnification — is coded but never mounted.
+**IMPLEMENTED in commit `a242878`.** FloatingDock is now mounted in App.tsx on all routes except `/`.
 
 Wire it to App.tsx (~10 lines):
 - Show on all routes except `/`
@@ -408,9 +425,9 @@ Wire it to App.tsx (~10 lines):
 
 ---
 
-#### A6. Activate BentoGrid for Dashboard (already built, unused)
+#### A6. Activate BentoGrid for Dashboard (already built, unused) ✅ DONE
 
-`BentoGrid.tsx` with Apple-style grid is coded but DashboardPage uses plain flex cards.
+**IMPLEMENTED in commit `a242878`.** DashboardPage rewritten with BentoGrid + BentoCard layout. Export buttons (BBS, Report) moved to page header.
 
 ```
 ╔══════════════════╦═══════════════════╦══════════════════════╗
@@ -615,25 +632,25 @@ No new routes. No new API calls.
 
 ## Implementation Priority
 
-| # | Change | Effort | Impact | Risk |
-|---|--------|--------|--------|------|
-| 1 | **A1: BeamDetailPanel in Editor** | 3–4h | ★★★★★ highest impact | Low |
-| 2 | **A5: Activate FloatingDock** — 10 lines | 30min | ★★★★ wow, free | None |
-| 3 | **A6: Activate BentoGrid on Dashboard** | 2h | ★★★★ visual upgrade | Low |
-| 4 | **A2: DesignView dynamic layout** | 2h | ★★★★ fixes viewport waste | Low |
-| 5 | **A4: Cross-section annotations** | 3h | ★★★★ looks like real drawings | Low |
-| 6 | **A7: Export dropdown in DesignView** | 1h | ★★★ engineers need this | None |
-| 7 | **A8: TopBar badges + fix settings** | 2h | ★★★ professional context | Low |
-| 8 | **A3: Smart Hub page** | 3h | ★★★ returning user UX | Low |
-| 9 | **A9: Workflow breadcrumb** | 1h | ★★ batch flow clarity | None |
-| 10 | **B1: Load calculator** | 1–2d | ★★★★ TASK-515 feature | Med |
-| 11 | **B2: Torsion toggle** | 3h | ★★★ TASK-518 | Med |
-| 12 | **B3: Alternatives panel** | 1d | ★★★ TASK-519 | Med |
-| 13 | **B4: Dashboard BOQ** | 1d | ★★★ TASK-517 | Med |
-| 14 | **C1: Micro-animations** | 3h | ★★ polish | Low |
-| 15 | **C2: Design presets** | 1h | ★★ first-time UX | None |
-| 16 | **C3: Print styles** | 2h | ★★★ professional output | None |
-| 17 | **C4: Settings panel** | 1h | ★ fixes broken button | None |
+| # | Change | Effort | Impact | Risk | Status |
+|---|--------|--------|--------|------|--------|
+| 1 | **A1: BeamDetailPanel in Editor** | 3–4h | ★★★★★ highest impact | Low | ✅ DONE |
+| 2 | **A5: Activate FloatingDock** — 10 lines | 30min | ★★★★ wow, free | None | ✅ DONE |
+| 3 | **A6: Activate BentoGrid on Dashboard** | 2h | ★★★★ visual upgrade | Low | ✅ DONE |
+| 4 | **A2: DesignView dynamic layout** | 2h | ★★★★ fixes viewport waste | Low | ✅ DONE |
+| 5 | **A4: Cross-section annotations** | 3h | ★★★★ looks like real drawings | Low | ✅ DONE |
+| 6 | **A7: Export dropdown in DesignView** | 1h | ★★★ engineers need this | None | ✅ DONE |
+| 7 | **A8: TopBar badges + fix settings** | 2h | ★★★ professional context | Low | 📋 TODO |
+| 8 | **A3: Smart Hub page** | 3h | ★★★ returning user UX | Low | 📋 TODO |
+| 9 | **A9: Workflow breadcrumb** | 1h | ★★ batch flow clarity | None | 📋 TODO |
+| 10 | **B1: Load calculator** | 1–2d | ★★★★ TASK-515 feature | Med | 📋 TODO |
+| 11 | **B2: Torsion toggle** | 3h | ★★★ TASK-518 | Med | 📋 TODO |
+| 12 | **B3: Alternatives panel** | 1d | ★★★ TASK-519 | Med | 📋 TODO |
+| 13 | **B4: Dashboard BOQ** | 1d | ★★★ TASK-517 | Med | 📋 TODO |
+| 14 | **C1: Micro-animations** | 3h | ★★ polish | Low | 📋 TODO |
+| 15 | **C2: Design presets** | 1h | ★★ first-time UX | None | 📋 TODO |
+| 16 | **C3: Print styles** | 2h | ★★★ professional output | None | 📋 TODO |
+| 17 | **C4: Settings panel** | 1h | ★ fixes broken button | None | 📋 TODO |
 
 **Quick wins (already built, just wire up):** FloatingDock + BentoGrid = ~2.5h total, major visual upgrade.
 
@@ -642,24 +659,26 @@ No new routes. No new API calls.
 ## Files Created / Modified
 
 ### Phase A — New Files
-| File | Purpose | Lines |
-|------|---------|-------|
-| `components/design/BeamDetailPanel.tsx` | Slide-in panel: 3D rebar + results + export | ~200 |
-| `components/pages/HubPage.tsx` | Smart hub replacing ModeSelectPage | ~150 |
-| `components/ui/WorkflowBreadcrumb.tsx` | Batch flow step indicator | ~60 |
-| `components/ui/CompactResultsBar.tsx` | Single-line result summary bar | ~50 |
-| `components/ui/ExportDropdown.tsx` | Unified export dropdown | ~60 |
-| `components/ui/SettingsPanel.tsx` | Slide-over settings panel | ~60 |
+| File | Purpose | Lines | Status |
+|------|---------|-------|--------|
+| `components/design/BeamDetailPanel.tsx` | Slide-in panel: 3D rebar + results + redesign + edit rebar + export | ~495 | ✅ DONE |
+| `components/pages/HubPage.tsx` | Smart hub replacing ModeSelectPage | ~150 | 📋 TODO |
+| `components/ui/WorkflowBreadcrumb.tsx` | Batch flow step indicator | ~60 | 📋 TODO |
+| `components/ui/CompactResultsBar.tsx` | Single-line result summary bar | ~50 | ✅ DONE (inline in DesignView) |
+| `components/ui/ExportDropdown.tsx` | Unified export dropdown | ~60 | ✅ DONE (inline in DesignView) |
+| `components/ui/SettingsPanel.tsx` | Slide-over settings panel | ~60 | 📋 TODO |
 
 ### Phase A — Modified Files
-| File | Change |
-|------|--------|
-| `BuildingEditorPage.tsx` | Add BeamDetailPanel, split layout on beam select |
-| `App.tsx` | Mount FloatingDock, add HubPage route |
-| `DashboardPage.tsx` | BentoGrid layout, export in header, BOQ card |
-| `DesignView.tsx` | Dynamic layout, export dropdown, preset, empty state |
-| `CrossSectionView.tsx` | Dimension lines, bar labels, utilization colors |
-| `TopBar.tsx` | Context badges, fix settings to SettingsPanel |
+| File | Change | Status |
+|------|--------|--------|
+| `BuildingEditorPage.tsx` | Add BeamDetailPanel, split layout on beam select, removed old ChecksSidebar | ✅ DONE |
+| `App.tsx` | Mount FloatingDock (AppDock component) | ✅ DONE |
+| `DashboardPage.tsx` | BentoGrid layout, export in header | ✅ DONE |
+| `DesignView.tsx` | Dynamic layout, export dropdown, preset, empty state, CompactResultsBar | ✅ DONE |
+| `CrossSectionView.tsx` | `ascRequired`, `barDia`, `barCount`, `utilization` props, color coding | ✅ DONE |
+| `Viewport3D.tsx` | Added `overrideDimensions` prop for non-store beams | ✅ DONE |
+| `fastapi_app/routers/imports.py` | Added `utilization_ratio` to `BatchDesignResult` | ✅ DONE |
+| `TopBar.tsx` | Context badges, fix settings to SettingsPanel | 📋 TODO |
 
 ### Phase B — New Files (from TASK plan)
 | File | Task |

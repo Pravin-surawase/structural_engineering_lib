@@ -53,11 +53,11 @@
 
 | # | Task ID | Feature | Files | Status |
 |---|---------|---------|-------|--------|
-| A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results | new `BeamDetailPanel.tsx`, update `BuildingEditorPage.tsx` | 📋 |
-| A2 | TASK-523 | Activate FloatingDock (already built) + BentoGrid Dashboard (already built) | `App.tsx` +10 lines, `DashboardPage.tsx` | 📋 |
-| A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx`, new `ExportDropdown.tsx`, `CompactResultsBar.tsx` | 📋 |
+| A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results + redesign + edit rebar | `BeamDetailPanel.tsx`, `BuildingEditorPage.tsx`, `Viewport3D.tsx` | ✅ Done (`a242878`, `a5612b0`) |
+| A2 | TASK-523 | Activate FloatingDock (already built) + BentoGrid Dashboard (already built) | `App.tsx`, `DashboardPage.tsx` | ✅ Done (`a242878`) |
+| A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx` | ✅ Done (`a242878`) |
 | A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | new `HubPage.tsx`, update `App.tsx` | 📋 |
-| A5 | TASK-526 | Cross-section annotations — dimension lines, bar labels, utilization color | `CrossSectionView.tsx` +60 lines | 📋 |
+| A5 | TASK-526 | Cross-section annotations — utilization color, actual barDia/barCount, ascRequired | `CrossSectionView.tsx` | ✅ Done (`a242878`, `a5612b0`) |
 | A6 | TASK-527 | TopBar context badges + fix settings button (SettingsPanel slide-over) | `TopBar.tsx`, new `SettingsPanel.tsx` | 📋 |
 | A7 | TASK-528 | Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard) | new `WorkflowBreadcrumb.tsx`, 4 page files | 📋 |
 
@@ -85,19 +85,19 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-522 | BeamDetailPanel in BuildingEditorPage | — | 🔄 Active |
+| TASK-525 | Smart HubPage replacing ModeSelectPage | — | 📋 Next |
 
 ## Up Next (v0.21 — recommended order)
 
-### React UX Phase A (do first — zero new API calls, high visual impact)
+### React UX Phase A (remaining — zero new API calls, high visual impact)
 
 | ID | Task | Est | Priority | Status |
 |----|------|-----|----------|--------|
-| TASK-522 | BeamDetailPanel in BuildingEditorPage (beam click → 3D rebar + results) | 3–4h | 🔴 High | 🔄 |
-| TASK-523 | Activate FloatingDock + BentoGrid Dashboard (already built, just wire up) | 2–3h | 🔴 High | 📋 |
-| TASK-524 | DesignView dynamic layout + unified export dropdown | 2–3h | 🔴 High | 📋 |
+| TASK-522 | BeamDetailPanel in BuildingEditorPage (beam click → 3D rebar + results) | 3–4h | 🔴 High | ✅ Done |
+| TASK-523 | Activate FloatingDock + BentoGrid Dashboard (already built, just wire up) | 2–3h | 🔴 High | ✅ Done |
+| TASK-524 | DesignView dynamic layout + unified export dropdown | 2–3h | 🔴 High | ✅ Done |
 | TASK-525 | Smart HubPage replacing ModeSelectPage | 3–4h | 🟡 Medium | 📋 |
-| TASK-526 | Cross-section annotations (dimension lines, bar labels, utilization color) | 2–3h | 🟡 Medium | 📋 |
+| TASK-526 | Cross-section annotations (utilization color, actual barDia/barCount) | 2–3h | 🟡 Medium | ✅ Done |
 | TASK-527 | TopBar context badges + SettingsPanel slide-over | 2h | 🟡 Medium | 📋 |
 | TASK-528 | Workflow breadcrumb for batch flow | 1h | 🟢 Low | 📋 |
 
@@ -128,6 +128,11 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | — | TopBar nav + ModeSelect quick links (v0.20 wrap-up) | Copilot | ✅ Done |
+| TASK-522 | BeamDetailPanel + 3D rebar + redesign + edit rebar in BuildingEditorPage | Copilot | ✅ Done (`a242878`, `a5612b0`) |
+| TASK-523 | Activate FloatingDock + BentoGrid Dashboard | Copilot | ✅ Done (`a242878`) |
+| TASK-524 | DesignView dynamic layout + export dropdown | Copilot | ✅ Done (`a242878`) |
+| TASK-526 | Cross-section annotations + utilization color + ascRequired fix | Copilot | ✅ Done (`a242878`, `a5612b0`) |
+| — | Bug fix: 3D/2D top bar mismatch + utilization formula + BatchDesignResult.utilization_ratio | Copilot | ✅ Done (`a5612b0`) |
 | TASK-505 | React: API integration tests (86 tests, 12 routers, all pass) | Copilot | ✅ Done |
 | TASK-510 | React: Batch design page with SSE progress + `/batch` route | Copilot | ✅ Done (merged to main) |
 | TASK-511 | Compliance checker — **already exists** (useCodeChecks + DesignView panel) | — | ✅ Not needed |

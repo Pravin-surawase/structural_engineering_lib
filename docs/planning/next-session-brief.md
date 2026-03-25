@@ -20,57 +20,61 @@
 | **Previous** | v0.20.0 | ✅ Done (React migration complete) |
 | **Current** | v0.21.0 | 🔄 React UX Overhaul + Library Expansion |
 
-**Last Session:** Session 98 | **Focus:** React UX overhaul — Editor-centric design, BeamDetailPanel, activate unused components
+**Last Session:** Session 98 | **Focus:** React UX overhaul — 6 tasks completed + 3 bugs fixed
 
 ---
 
 ## Session 98 Summary
 
-### React UX Direction Established
-- **Core insight:** The app was form-centric. It should be data-centric — import a project, navigate in 3D, click a beam, see reinforcement. Manual forms only in `/design`.
-- **7 new UX tasks** (TASK-522 → TASK-528) defined and added to TASKS.md
-- Full UX plan with current/future flowcharts: `docs/planning/react-ux-improvement-plan.md`
+### Completed (6 UX tasks + 3 bug fixes)
 
-### Key Discovery: Already-Built Unused Components
-- `FloatingDock.tsx` — macOS dock with spring magnification — built, not mounted
-- `BentoGrid.tsx` — Apple-style bento layout — built, DashboardPage uses plain cards instead
-- `CommandPalette.tsx` — already built, Ctrl+K not wired globally
-These are quick wins: activate in ~2–3h total.
+| Task | What was done | Commit |
+|------|--------------|--------|
+| **TASK-522** | BeamDetailPanel in BuildingEditorPage — beam click → 3D rebar + cross-section + results + redesign button + edit rebar mode + export | `a242878`, `a5612b0` |
+| **TASK-523** | FloatingDock activated in App.tsx (AppDock component, macOS spring dock on all pages except `/`) | `a242878` |
+| **TASK-524** | DesignView dynamic layout — 3D expands when no result, collapse/expand toggle, export dropdown, CompactResultsBar, preset button | `a242878` |
+| **TASK-526** | CrossSectionView annotations — `ascRequired`, `barDia`, `barCount`, `utilization` props, emerald/amber/rose color coding | `a242878`, `a5612b0` |
+| **DashboardPage** | Complete rewrite with BentoGrid layout + export buttons (BBS, Report) in page header | `a242878` |
+| **Backend** | Added `utilization_ratio = Mu/Mu_cap` to `BatchDesignResult` in `imports.py` | `a5612b0` |
 
-### Session 97 Context (still applies)
-- v0.20 complete: React migration, 86 API tests, TopBar nav
-- v0.21 library expansion (TASK-514–521): PDF export, load calc, BOQ, torsion API, Pareto panel
-- Torsion Python is FULLY IMPLEMENTED (`codes/is456/torsion.py`, 540 lines) — only needs FastAPI + React
+### Bugs Fixed
+
+| Bug | Root Cause | Fix |
+|-----|-----------|-----|
+| 3D shows 3 top bars, 2D shows 2 | CrossSectionView used `Math.min(2, ceil(numBars*0.3))` while 3D API uses `select_bar_arrangement(0.25*Ast)` | Added `ascRequired` prop; computes `ceil(ascRequired/barArea)` |
+| Utilization % was wrong | Was `ast_required/(0.04*b*D)` (steel ratio), should be `Mu/Mu_cap` | Added `utilization_ratio` to backend BatchDesignResult |
+| Stirrup 275 not 300 | **Not a bug** — IS 456 Cl 26.5.1.5: `max_sv = min(0.75d, 300)`. For d≈367: 0.75×367=275 governs | Added annotation showing governing limit |
 
 ---
 
 ## Next Priorities
 
-### Do first — React UX Phase A (no new API calls, high impact)
+### Do first — React UX Phase A (remaining items)
 
-1. **TASK-522: BeamDetailPanel** ← START HERE
-   - `BuildingEditorPage.tsx`: when beam clicked in AG Grid or 3D → panel slides in (right 40%)
-   - Panel shows: `Viewport3D` (single-beam rebar mode) + result bar + annotated cross-section + code checks + export buttons
-   - Editing a cell in AG Grid → `useAutoDesign` → panel updates live
-   - New file: `components/design/BeamDetailPanel.tsx` (~200 lines)
+1. **TASK-525: Smart HubPage** ← START HERE
+   - Replace ModeSelectPage with smart hub: quick actions + resume last project
+   - New file: `components/pages/HubPage.tsx` (~150 lines)
+   - Read `useImportedBeamsStore` for last project context
 
-2. **TASK-523: Activate FloatingDock + BentoGrid**
-   - `App.tsx`: mount `FloatingDock` on all routes except `/` (~10 lines)
-   - `DashboardPage.tsx`: swap plain flex cards → `BentoGrid` + `BentoCard`
-   - Move export buttons to dashboard header (not buried at bottom)
+2. **TASK-527: TopBar context badges + Settings**
+   - Add material/beam count badges to right side of TopBar
+   - Fix settings button (dead link) → slide-over SettingsPanel
 
-3. **TASK-524: DesignView dynamic layout**
-   - No result → 3D takes 100% of right panel (not 60%)
-   - Has result → animate to 3D 55% + results 45%
-   - New `CompactResultsBar` (single-line minimize state)
-   - Export dropdown in DesignView header
+3. **TASK-528: Workflow breadcrumb**
+   - Step indicator on batch flow pages: Import → Editor → Batch → Dashboard
+   - New `WorkflowBreadcrumb.tsx` (~60 lines)
 
-4. **TASK-525: HubPage** — replace ModeSelectPage with smart hub (recent project, quick actions)
-
-5. **TASK-526: Cross-section annotations** — dimension lines, bar labels, utilization color
+4. **CommandPalette (Ctrl+K)** — already coded, just needs global keybind wiring
 
 ### Then — Library Expansion (TASK-514–521)
 See [next-phase-improvements-plan.md](next-phase-improvements-plan.md) Part 2 for full specs.
+- TASK-518 (Torsion) is easiest — Python is FULLY IMPLEMENTED, only needs FastAPI + React
+
+### Design Principles (carry forward)
+- **Editor is the workstation** — manual form only in `/design`
+- **Data-first** — import project → navigate 3D → click beam → see reinforcement
+- **IS 456 accuracy** — top bars match between 3D and 2D views, utilization is Mu/Mu_cap
+- Full UX spec: [react-ux-improvement-plan.md](react-ux-improvement-plan.md)
 
 ### Recently Completed
 - **TASK-505** - API integration tests (86 tests, 12 routers) — commit `a732e62`
