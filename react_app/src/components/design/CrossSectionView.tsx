@@ -5,11 +5,17 @@
  */
 
 interface CrossSectionViewProps {
-  width: number;    // mm
-  depth: number;    // mm
-  cover: number;    // mm
+  width: number;        // mm
+  depth: number;        // mm
+  cover: number;        // mm
   astRequired: number;  // mm² (for bar count calculation)
   stirrupDia?: number;  // mm
+  /** Override calculated bar diameter (mm) — use actual design value when available */
+  barDia?: number;
+  /** Override calculated bar count — use actual design value when available */
+  barCount?: number;
+  /** Utilization ratio (0–1+) — colors bars: ≤0.85 emerald, ≤1.0 amber, >1.0 rose */
+  utilization?: number;
   className?: string;
 }
 
@@ -19,6 +25,9 @@ export function CrossSectionView({
   cover,
   astRequired,
   stirrupDia = 8,
+  barDia: barDiaProp,
+  barCount: barCountProp,
+  utilization,
   className = "",
 }: CrossSectionViewProps) {
   // Scale to fit SVG viewport
@@ -40,11 +49,21 @@ export function CrossSectionView({
   const stW = bW - 2 * coverScaled;
   const stH = bH - 2 * coverScaled;
 
-  // Calculate bar count from Ast (assuming 16mm bars)
-  const barDia = 16;
+  // Bar diameter: use provided value or estimate from Ast
+  const barDia = barDiaProp ?? 16;
   const barArea = Math.PI * (barDia / 2) ** 2;
-  const numBars = Math.max(2, Math.ceil(astRequired / barArea));
+  const numBars = barCountProp ?? Math.max(2, Math.ceil(astRequired / barArea));
   const barR = (barDia / 2) * scale;
+
+  // Bar fill color based on utilization
+  const barFill  = utilization == null ? "#c87533"
+    : utilization > 1.0  ? "#f43f5e"   // rose  — overstressed
+    : utilization > 0.85 ? "#f59e0b"   // amber — near limit
+    : "#10b981";                        // emerald — good
+  const barStroke = utilization == null ? "#e0a060"
+    : utilization > 1.0  ? "#fb7185"
+    : utilization > 0.85 ? "#fbbf24"
+    : "#34d399";
 
   // Position bars along bottom (tension) and possibly top (compression)
   const tensionBars = Math.min(numBars, 6);
@@ -91,16 +110,16 @@ export function CrossSectionView({
           strokeDasharray="none"
         />
 
-        {/* Bottom bars (tension) */}
+        {/* Bottom bars (tension) — colored by utilization */}
         {bottomBars.map((bar, i) => (
           <circle
             key={`bottom-${i}`}
             cx={bar.x} cy={bar.y} r={barR}
-            fill="#c87533" stroke="#e0a060" strokeWidth={1}
+            fill={barFill} stroke={barStroke} strokeWidth={1}
           />
         ))}
 
-        {/* Top bars (compression) */}
+        {/* Top bars (compression) — always copper, not utilization-colored */}
         {topBars.map((bar, i) => (
           <circle
             key={`top-${i}`}
@@ -128,8 +147,8 @@ export function CrossSectionView({
           {cover}mm cover
         </text>
 
-        {/* Bar label */}
-        <text x={bX + bW + 8} y={barY_bottom + 4} fill="#c87533" fontSize={10} fontWeight="bold">
+        {/* Bar labels */}
+        <text x={bX + bW + 8} y={barY_bottom + 4} fill={barFill} fontSize={10} fontWeight="bold">
           {tensionBars}-T{barDia}
         </text>
         {compressionBars > 0 && (
@@ -137,22 +156,42 @@ export function CrossSectionView({
             {compressionBars}-T{barDia}
           </text>
         )}
+
+        {/* Utilization badge (top-right of beam) */}
+        {utilization != null && (
+          <>
+            <rect x={bX + bW - 42} y={bY + 6} width={40} height={16} rx={4}
+              fill={barFill + "33"} stroke={barFill + "88"} strokeWidth={1} />
+            <text x={bX + bW - 22} y={bY + 18} fill={barFill} fontSize={9}
+              textAnchor="middle" fontWeight="bold">
+              {(utilization * 100).toFixed(0)}%
+            </text>
+          </>
+        )}
       </svg>
 
       {/* Legend */}
-      <div className="flex gap-4 mt-4 text-xs text-white/50">
+      <div className="flex flex-wrap gap-4 mt-4 text-xs text-white/50">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: barFill }} />
+          <span>T{barDia} tension</span>
+        </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-full bg-[#c87533]" />
-          <span>Rebar ({barDia}mm)</span>
+          <span>T{barDia} compression</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-1 bg-[#a06020]" />
-          <span>Stirrup ({stirrupDia}mm)</span>
+          <span>Stirrup ⌀{stirrupDia}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-[#2a2a2e] border border-[#555]" />
-          <span>Concrete</span>
-        </div>
+        {utilization != null && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: barFill + "55", border: `1px solid ${barFill}88` }} />
+            <span className="font-medium" style={{ color: barFill }}>
+              {utilization > 1.0 ? "Overstressed" : utilization > 0.85 ? "Near limit" : "OK"}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

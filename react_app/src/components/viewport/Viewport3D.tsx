@@ -824,12 +824,22 @@ export interface RebarPreviewGeometry {
   stirrups: StirrupLoop[];
 }
 
-function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry | null }) {
+interface SceneProps {
+  overrideGeometry?: RebarPreviewGeometry | null;
+  overrideDimensions?: { width: number; depth: number; span: number } | null;
+}
+
+function Scene({ overrideGeometry, overrideDimensions }: SceneProps) {
   const { inputs, length, result } = useDesignStore();
 
+  // Use override dimensions when provided (e.g. from BeamDetailPanel in Editor)
+  const displayWidth = overrideDimensions?.width ?? inputs.width;
+  const displayDepth = overrideDimensions?.depth ?? inputs.depth;
+  const displaySpan  = overrideDimensions?.span  ?? length;
+
   // Calculate beam dimensions for camera positioning
-  const beamL = length * SCALE;  // in meters
-  const beamD = inputs.depth * SCALE;
+  const beamL = displaySpan * SCALE;  // in meters
+  const beamD = displayDepth * SCALE;
 
   // Camera position based on beam size - positioned to see the whole beam
   const cameraDistance = Math.max(beamL * 0.8, 2);
@@ -912,15 +922,15 @@ function Scene({ overrideGeometry }: { overrideGeometry?: RebarPreviewGeometry |
 
       {/* Beam Mesh */}
       <BeamMesh
-        width={inputs.width}
-        depth={inputs.depth}
-        length={length}
-        isDesigned={result !== null}
+        width={displayWidth}
+        depth={displayDepth}
+        length={displaySpan}
+        isDesigned={result !== null || overrideDimensions !== null}
       />
 
       {/* Reinforcement from API geometry - offset by -span/2 to center with beam */}
       {activeGeometry && (
-        <group position={[-(length * SCALE) / 2, 0, 0]}>
+        <group position={[-(displaySpan * SCALE) / 2, 0, 0]}>
           {activeGeometry.rebars.length > 0 && (
             <RebarVisualization rebars={activeGeometry.rebars} />
           )}
@@ -949,6 +959,8 @@ interface Viewport3DProps {
   overrideGeometry?: RebarPreviewGeometry | null;
   /** If true, don't auto-detect mode; use the provided mode exactly */
   forceMode?: boolean;
+  /** Override beam dimensions — used by BeamDetailPanel to render a specific beam */
+  overrideDimensions?: { width: number; depth: number; span: number } | null;
 }
 
 /**
@@ -996,7 +1008,7 @@ class Viewport3DErrorBoundary extends React.Component<
   }
 }
 
-export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode = false }: Viewport3DProps) {
+export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode = false, overrideDimensions = null }: Viewport3DProps) {
   const { beams } = useImportedBeamsStore();
 
   // Use exact mode if forced, otherwise auto-detect for 'design' mode
@@ -1019,7 +1031,7 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
             {effectiveMode === 'building' ? (
               <BuildingFrame key="building-mode" />
             ) : (
-              <Scene key="design-mode" overrideGeometry={overrideGeometry} />
+              <Scene key="design-mode" overrideGeometry={overrideGeometry} overrideDimensions={overrideDimensions} />
             )}
           </Suspense>
         </Canvas>

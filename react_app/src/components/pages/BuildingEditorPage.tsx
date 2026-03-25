@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { Viewport3D } from "../viewport/Viewport3D";
+import { BeamDetailPanel } from "../design/BeamDetailPanel";
 import { useBatchDesign } from "../../hooks";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
@@ -499,10 +500,13 @@ export function BuildingEditorPage() {
           </div>
         </div>
 
-        {/* Right Sidebar */}
-        {showSidebar && (
-          <div className="w-80 border-l border-white/5 bg-zinc-950 overflow-y-auto">
-            <ChecksSidebar beam={selectedBeam} />
+        {/* Beam Detail Panel — slides in when a beam is selected */}
+        {showSidebar && selectedBeam && (
+          <div className="w-[420px] shrink-0 border-l border-white/5 bg-zinc-950 overflow-y-auto">
+            <BeamDetailPanel
+              beam={selectedBeam}
+              onClose={() => { selectBeam(null); setShowSidebar(false); }}
+            />
           </div>
         )}
       </div>
@@ -530,138 +534,6 @@ function MaterialSelect({ label, value, onChange, options, format }: {
   );
 }
 
-/* ---- Sidebar ---- */
-
-function ChecksSidebar({ beam }: { beam?: BeamCSVRow | null }) {
-  const [activeTab, setActiveTab] = useState<"checks" | "detail" | "cost">("checks");
-  const status = beam ? deriveBeamStatus(beam) : "pending";
-
-  if (!beam) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p className="text-white/30 text-sm">Select a beam to see details</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex border-b border-white/5">
-        {(["checks", "detail", "cost"] as const).map((tab) => (
-          <button key={tab} onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2.5 text-xs font-medium transition-colors ${
-              activeTab === tab ? "text-blue-400 border-b-2 border-blue-400" : "text-white/40 hover:text-white/70"
-            }`}>
-            {tab === "checks" ? "Checks" : tab === "detail" ? "Detailing" : "Cost"}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex-1 p-4 space-y-4">
-        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
-          <p className="text-xs text-white/40">{beam.story}</p>
-          <p className="text-sm font-bold text-white">{beam.id}</p>
-          <p className="text-xs text-white/50 mt-1">
-            {beam.b}x{beam.D} mm &middot; {beam.span} mm span
-          </p>
-          <div className="flex gap-3 mt-2 text-[10px] text-white/40">
-            <span>M{beam.fck ?? 25}</span>
-            <span>Fe{beam.fy ?? 500}</span>
-            <span>{beam.cover ?? 40}mm cover</span>
-          </div>
-        </div>
-
-        {activeTab === "checks" && (
-          <>
-            <CheckItem label="Flexure Check" clause="IS 456 Cl. 38.1"
-              status={status === "warning" ? "warning" : status === "fail" ? "fail" : status === "pass" ? "pass" : "pending"}
-              detail={beam.ast_required ? `Ast = ${beam.ast_required.toFixed(0)} mm²` : "Not designed"} />
-            <CheckItem label="Shear Check" clause="IS 456 Cl. 40"
-              status={status === "pass" ? "pass" : status === "fail" ? "fail" : "pending"}
-              detail={beam.stirrup_spacing ? `Sv = ${beam.stirrup_spacing} mm` : "Stirrup spacing pending"} />
-            <CheckItem label="Min Steel" clause="IS 456 Cl. 26.5.1.1"
-              status={beam.status === "pass" ? "pass" : "pending"}
-              detail={`0.${beam.fy === 415 ? "085" : "12"}% for Fe${beam.fy ?? 500}`} />
-            <CheckItem label="Max Steel" clause="IS 456 Cl. 26.5.1.1"
-              status="pass" detail="< 4% of cross section" />
-            <CheckItem label="Deflection (L/d)" clause="IS 456 Cl. 23.2"
-              status={beam.span && beam.D ? (beam.span / beam.D < 20 ? "pass" : "warning") : "pending"}
-              detail={beam.span && beam.D ? `L/d = ${(beam.span / beam.D).toFixed(1)}` : "-"} />
-          </>
-        )}
-
-        {activeTab === "detail" && (
-          <div className="space-y-3">
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
-              <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Tension Reinforcement</p>
-              <p className="text-sm text-white">
-                {beam.ast_required ? `${beam.ast_required.toFixed(0)} mm² required` : "Not designed"}
-              </p>
-              {beam.bar_count && beam.bar_diameter && (
-                <p className="text-xs text-white/60 mt-1">
-                  Provided: {beam.bar_count}-T{beam.bar_diameter} = {beam.ast_provided?.toFixed(0)} mm²
-                </p>
-              )}
-            </div>
-            {beam.stirrup_spacing && (
-              <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
-                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Shear Reinforcement</p>
-                <p className="text-sm text-white">
-                  {beam.stirrup_diameter ?? 8}ø @ {beam.stirrup_spacing} mm c/c
-                </p>
-              </div>
-            )}
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
-              <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Utilization</p>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                  <div className={`h-full rounded-full ${
-                    (beam.utilization ?? 0) > 1 ? "bg-red-500" : (beam.utilization ?? 0) > 0.9 ? "bg-amber-500" : "bg-green-500"
-                  }`} style={{ width: `${Math.min(100, (beam.utilization ?? 0) * 100)}%` }} />
-                </div>
-                <span className="text-xs text-white">{beam.utilization ? `${(beam.utilization * 100).toFixed(0)}%` : "-"}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "cost" && (
-          <div className="text-sm text-white/40 text-center py-8">
-            Cost analysis available after batch design
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function CheckItem({ label, clause, status, detail }: {
-  label: string; clause: string; status: "pass" | "fail" | "warning" | "pending"; detail: string;
-}) {
-  const colors = {
-    pass: "border-green-500/30 bg-green-500/5",
-    fail: "border-red-500/30 bg-red-500/5",
-    warning: "border-amber-500/30 bg-amber-500/5",
-    pending: "border-white/8 bg-white/[0.02]",
-  };
-  const dots = {
-    pass: "bg-green-400",
-    fail: "bg-red-400",
-    warning: "bg-amber-400",
-    pending: "bg-zinc-500",
-  };
-
-  return (
-    <div className={`p-3 rounded-xl border ${colors[status]}`}>
-      <div className="flex items-center gap-2 mb-1">
-        <div className={`w-2 h-2 rounded-full ${dots[status]}`} />
-        <span className="text-xs font-medium text-white/80">{label}</span>
-      </div>
-      <p className="text-[10px] text-white/40 ml-4">{clause}</p>
-      <p className="text-xs text-white/60 ml-4 mt-0.5">{detail}</p>
-    </div>
-  );
-}
 
 /* ---- Cell Renderers ---- */
 

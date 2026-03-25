@@ -1,14 +1,19 @@
 /**
  * DashboardPage — Batch design analytics after CSV import + design.
  *
- * Shows pass/fail overview, utilization distribution, per-story breakdown,
- * critical beams, and material quantities. Powered by useDashboardInsights hook.
+ * Layout: BentoGrid with export buttons in the header.
+ * Cards: Pass rate · Utilization · Pass/Fail bar · Critical beams · Materials · By story
  */
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BarChart3, CheckCircle, AlertCircle, ArrowLeft, Loader2, AlertTriangle } from "lucide-react";
+import {
+  BarChart3, CheckCircle, AlertCircle, ArrowLeft,
+  Loader2, AlertTriangle, Download, FileText, Ruler,
+} from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { useDashboardInsights } from "../../hooks/useInsights";
+import { useExportBBS, useExportDXF, useExportReport } from "../../hooks";
+import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
 import type { DashboardData, StoryStats } from "../../hooks/useInsights";
 
 export function DashboardPage() {
@@ -16,15 +21,19 @@ export function DashboardPage() {
   const { beams } = useImportedBeamsStore();
   const dashboard = useDashboardInsights();
 
+  const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
+  const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
+  const { mutate: exportReport, isPending: reportPending } = useExportReport();
+
   // Auto-fetch dashboard when beams are available
   useEffect(() => {
     if (beams.length === 0) return;
     const results = beams.map((b) => ({
       beam_id: b.id,
       story: b.story ?? "Unknown",
-      is_valid: true,
-      utilization: 0,
-      ast_provided: 0,
+      is_valid: b.is_valid ?? true,
+      utilization: b.utilization ?? 0,
+      ast_provided: b.ast_provided ?? 0,
       b_mm: b.b,
       D_mm: b.D,
       span_mm: b.span,
@@ -34,6 +43,16 @@ export function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [beams]);
 
+  // Derive a representative beam for export params (first designed beam)
+  const designedBeam = beams.find((b) => b.ast_required != null);
+  const exportParams = designedBeam ? {
+    width: designedBeam.b,
+    depth: designedBeam.D,
+    fck: designedBeam.fck ?? 25,
+    fy: designedBeam.fy ?? 500,
+    ast_required: designedBeam.ast_required ?? 0,
+  } : null;
+
   if (beams.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-screen pt-14 gap-4">
@@ -41,7 +60,7 @@ export function DashboardPage() {
         <p className="text-white/30 text-sm">No beams imported. Import CSV first.</p>
         <button
           onClick={() => navigate("/import")}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-lg"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-lg transition-colors"
         >
           Go to Import
         </button>
@@ -51,22 +70,46 @@ export function DashboardPage() {
 
   return (
     <div className="h-screen pt-14 overflow-y-auto bg-zinc-950">
-      <div className="max-w-5xl mx-auto px-6 py-6 space-y-6">
+      <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
+
         {/* Header */}
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 rounded-lg bg-white/5 hover:bg-white/10">
-            <ArrowLeft className="w-4 h-4 text-white/60" />
-          </button>
-          <div>
-            <h1 className="text-lg font-bold text-white">Design Dashboard</h1>
-            <p className="text-xs text-white/40">{beams.length} beams imported</p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate(-1)} className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+              <ArrowLeft className="w-4 h-4 text-white/60" />
+            </button>
+            <div>
+              <h1 className="text-lg font-bold text-white">Design Dashboard</h1>
+              <p className="text-xs text-white/40">{beams.length} beams &middot; IS 456:2000</p>
+            </div>
           </div>
+
+          {/* Export buttons — front and center */}
+          {exportParams && (
+            <div className="flex items-center gap-2">
+              <ExportBtn
+                label="BBS" icon={<Download className="w-3.5 h-3.5" />}
+                loading={bbsPending}
+                onClick={() => exportBBS(exportParams)}
+              />
+              <ExportBtn
+                label="DXF" icon={<Ruler className="w-3.5 h-3.5" />}
+                loading={dxfPending}
+                onClick={() => exportDXF(exportParams)}
+              />
+              <ExportBtn
+                label="Report" icon={<FileText className="w-3.5 h-3.5" />}
+                loading={reportPending}
+                onClick={() => exportReport({ ...exportParams, utilization: designedBeam?.utilization, is_safe: designedBeam?.is_valid })}
+              />
+            </div>
+          )}
         </div>
 
         {dashboard.isPending ? (
           <div className="flex items-center justify-center py-20 gap-3">
             <Loader2 className="w-6 h-6 text-blue-400 animate-spin" />
-            <span className="text-white/40">Generating dashboard...</span>
+            <span className="text-white/40">Generating dashboard…</span>
           </div>
         ) : dashboard.error ? (
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
@@ -82,97 +125,170 @@ export function DashboardPage() {
 }
 
 function DashboardContent({ data }: { data: DashboardData }) {
-  return (
-    <div className="space-y-5">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-4 gap-3">
-        <SummaryCard label="Pass Rate" value={`${data.pass_rate.toFixed(0)}%`} sub={`${data.passed}/${data.total_beams}`} color={data.pass_rate >= 90 ? "green" : data.pass_rate >= 70 ? "yellow" : "red"} />
-        <SummaryCard label="Avg Utilization" value={`${(data.avg_utilization * 100).toFixed(0)}%`} sub={`max ${(data.max_utilization * 100).toFixed(0)}%`} color={data.avg_utilization <= 0.85 ? "green" : "yellow"} />
-        <SummaryCard label="Steel" value={`${data.total_steel_kg.toFixed(0)} kg`} sub="total reinforcement" color="blue" />
-        <SummaryCard label="Concrete" value={`${data.total_concrete_m3.toFixed(1)} m³`} sub="total volume" color="blue" />
-      </div>
+  const passColor = data.pass_rate >= 90 ? "text-emerald-400" : data.pass_rate >= 70 ? "text-amber-400" : "text-rose-400";
+  const utilColor = data.avg_utilization <= 0.85 ? "text-emerald-400" : "text-amber-400";
 
-      {/* Pass / Fail bar */}
-      <div className="p-4 rounded-xl bg-white/[0.03] border border-white/8">
-        <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3">Pass / Fail</h3>
-        <div className="flex h-4 rounded-full overflow-hidden bg-white/5">
+  return (
+    <BentoGrid className="auto-rows-auto">
+
+      {/* Pass Rate */}
+      <BentoCard colSpan={3} variant="default">
+        <BentoCardHeader
+          title="Pass Rate"
+          icon={<CheckCircle className="w-4 h-4" />}
+          badge={data.pass_rate >= 90 ? "Good" : data.pass_rate >= 70 ? "Review" : "Critical"}
+        />
+        <p className={`text-4xl font-bold tabular-nums mt-1 ${passColor}`}>
+          {data.pass_rate.toFixed(0)}%
+        </p>
+        <p className="text-xs text-white/40 mt-1">
+          {data.passed} passed &middot; {data.failed} failed &middot; {data.total_beams} total
+        </p>
+      </BentoCard>
+
+      {/* Avg Utilization */}
+      <BentoCard colSpan={3} variant="default">
+        <BentoCardHeader title="Avg Utilization" icon={<BarChart3 className="w-4 h-4" />} />
+        <p className={`text-4xl font-bold tabular-nums mt-1 ${utilColor}`}>
+          {(data.avg_utilization * 100).toFixed(0)}%
+        </p>
+        <div className="mt-2 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full ${utilColor.replace("text-", "bg-")}`}
+            style={{ width: `${Math.min(data.avg_utilization * 100, 100)}%` }}
+          />
+        </div>
+        <p className="text-[10px] text-white/30 mt-1">max {(data.max_utilization * 100).toFixed(0)}%</p>
+      </BentoCard>
+
+      {/* Pass / Fail visual bar */}
+      <BentoCard colSpan={6} variant="glass">
+        <BentoCardHeader title="Pass / Fail" />
+        <div className="flex h-6 rounded-xl overflow-hidden bg-white/5 mt-2">
           {data.passed > 0 && (
-            <div className="bg-green-500/60 transition-all" style={{ width: `${data.pass_rate}%` }} />
+            <div
+              className="bg-emerald-500/60 flex items-center justify-center text-[10px] text-emerald-300 font-medium transition-all"
+              style={{ width: `${data.pass_rate}%` }}
+            >
+              {data.pass_rate >= 20 && `${data.passed}`}
+            </div>
           )}
           {data.failed > 0 && (
-            <div className="bg-red-500/60 transition-all" style={{ width: `${((data.failed / data.total_beams) * 100)}%` }} />
+            <div
+              className="bg-rose-500/60 flex items-center justify-center text-[10px] text-rose-300 font-medium transition-all"
+              style={{ width: `${(data.failed / data.total_beams) * 100}%` }}
+            >
+              {(data.failed / data.total_beams) >= 0.15 && `${data.failed}`}
+            </div>
           )}
         </div>
         <div className="flex justify-between mt-2 text-[10px] text-white/40">
-          <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-green-400" />{data.passed} passed</span>
-          <span className="flex items-center gap-1"><AlertCircle className="w-3 h-3 text-red-400" />{data.failed} failed</span>
+          <span className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-emerald-500/60" />{data.passed} passed
+          </span>
+          <span className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-rose-500/60" />{data.failed} failed
+          </span>
         </div>
-      </div>
-
-      {/* By Story */}
-      {Object.keys(data.by_story).length > 0 && (
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/8">
-          <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3">By Story</h3>
-          <div className="space-y-2">
-            {Object.entries(data.by_story).map(([story, stats]: [string, StoryStats]) => (
-              <div key={story} className="flex items-center gap-3">
-                <span className="text-xs text-white/60 w-20 truncate">{story}</span>
-                <div className="flex-1 flex h-2.5 rounded-full overflow-hidden bg-white/5">
-                  <div className="bg-green-500/50" style={{ width: `${(stats.passed / stats.total) * 100}%` }} />
-                  <div className="bg-red-500/50" style={{ width: `${(stats.failed / stats.total) * 100}%` }} />
-                </div>
-                <span className="text-[10px] text-white/40 w-14 text-right">{stats.passed}/{stats.total}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+        {data.warnings_count > 0 && (
+          <p className="text-[10px] text-amber-400/60 mt-2">
+            {data.warnings_count} warnings across all beams
+          </p>
+        )}
+      </BentoCard>
 
       {/* Critical Beams */}
       {data.critical_beams.length > 0 && (
-        <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/20">
-          <h3 className="text-xs font-semibold text-red-400/80 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <AlertTriangle className="w-3.5 h-3.5" />
-            Critical Beams ({data.critical_beams.length})
-          </h3>
-          <div className="flex flex-wrap gap-1.5">
+        <BentoCard colSpan={8} variant="elevated" glow>
+          <BentoCardHeader
+            title="Critical Beams"
+            icon={<AlertTriangle className="w-4 h-4 text-rose-400" />}
+            badge={`${data.critical_beams.length}`}
+          />
+          <div className="flex flex-wrap gap-1.5 mt-1">
             {data.critical_beams.map((id) => (
-              <span key={id} className="px-2 py-1 text-[10px] text-red-400/80 bg-red-500/10 rounded-md border border-red-500/20">
+              <span
+                key={id}
+                className="px-2 py-0.5 text-[10px] text-rose-400/80 bg-rose-500/10 rounded-md border border-rose-500/20"
+              >
                 {id}
               </span>
             ))}
           </div>
-        </div>
+        </BentoCard>
       )}
 
-      {/* Warnings */}
-      {data.warnings_count > 0 && (
-        <div className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/20">
-          <span className="text-xs text-yellow-400/80">{data.warnings_count} total warnings across all beams</span>
+      {/* Steel + Concrete totals */}
+      <BentoCard colSpan={data.critical_beams.length > 0 ? 4 : 6} variant="default">
+        <BentoCardHeader title="Materials" icon={<BarChart3 className="w-4 h-4" />} />
+        <div className="grid grid-cols-2 gap-3 mt-1">
+          <div>
+            <p className="text-[9px] text-white/30 uppercase tracking-wider">Steel</p>
+            <p className="text-xl font-bold text-blue-400 tabular-nums">
+              {data.total_steel_kg.toFixed(0)}
+              <span className="text-xs text-white/30 ml-1">kg</span>
+            </p>
+          </div>
+          <div>
+            <p className="text-[9px] text-white/30 uppercase tracking-wider">Concrete</p>
+            <p className="text-xl font-bold text-blue-400 tabular-nums">
+              {data.total_concrete_m3.toFixed(1)}
+              <span className="text-xs text-white/30 ml-1">m³</span>
+            </p>
+          </div>
         </div>
+      </BentoCard>
+
+      {/* By Story */}
+      {Object.keys(data.by_story).length > 0 && (
+        <BentoCard colSpan={12} variant="default">
+          <BentoCardHeader title="By Story" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+            {Object.entries(data.by_story).map(([story, stats]: [string, StoryStats]) => {
+              const pct = (stats.passed / stats.total) * 100;
+              const storyColor = pct >= 90 ? "bg-emerald-500/50" : pct >= 70 ? "bg-amber-500/50" : "bg-rose-500/50";
+              return (
+                <div key={story} className="flex items-center gap-2.5 p-2 rounded-lg bg-white/[0.02]">
+                  <span className="text-xs text-white/60 w-16 truncate font-medium">{story}</span>
+                  <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/5">
+                    <div className={storyColor} style={{ width: `${pct}%`, height: "100%" }} />
+                  </div>
+                  <span className="text-[10px] text-white/35 tabular-nums w-10 text-right shrink-0">
+                    {stats.passed}/{stats.total}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </BentoCard>
       )}
-    </div>
+
+    </BentoGrid>
   );
 }
 
-function SummaryCard({ label, value, sub, color }: { label: string; value: string; sub: string; color: "green" | "yellow" | "red" | "blue" }) {
-  const border = {
-    green: "border-green-500/20",
-    yellow: "border-yellow-500/20",
-    red: "border-red-500/20",
-    blue: "border-blue-500/20",
-  }[color];
-  const text = {
-    green: "text-green-400",
-    yellow: "text-yellow-400",
-    red: "text-red-400",
-    blue: "text-blue-400",
-  }[color];
+function ExportBtn({
+  label, icon, loading, onClick,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  loading: boolean;
+  onClick: () => void;
+}) {
   return (
-    <div className={`p-4 rounded-xl bg-white/[0.03] border ${border}`}>
-      <p className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1">{label}</p>
-      <p className={`text-xl font-bold ${text}`}>{value}</p>
-      <p className="text-[10px] text-white/30 mt-0.5">{sub}</p>
-    </div>
+    <button
+      onClick={onClick}
+      disabled={loading}
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+        bg-white/5 border border-white/8 text-xs text-white/60
+        hover:bg-white/10 hover:text-white/90 hover:border-white/15
+        transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+    >
+      {loading
+        ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" />
+        : icon
+      }
+      {label}
+    </button>
   );
 }

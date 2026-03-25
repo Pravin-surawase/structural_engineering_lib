@@ -2,512 +2,672 @@
 
 **Type:** Architecture
 **Audience:** All Agents
-**Status:** Draft
+**Status:** Active
 **Importance:** High
 **Created:** 2026-03-25
 **Last Updated:** 2026-03-25
 
 ---
 
-## The Engineer's Perspective
+## The Design Philosophy
 
-A structural engineer opens this app. What do they need?
+> "A structural engineer shouldn't have to fill in a form to see their own building."
 
-1. **First 10 seconds:** "Can this tool do what I need?" → Clear capabilities, trust signals
-2. **First 5 minutes:** "Let me try it" → Quick input, instant result, professional output
-3. **Daily use:** "Fast, predictable, no wasted clicks" → Shortcuts, remembered state, batch power
-4. **Deliverables:** "Give me something I can hand to my boss" → PDF report, BBS table, DXF drawing
+The primary workflow is **import-first**: bring in a real project (CSV / ETABS / SAFE), see all beams in 3D, select any beam, see its reinforcement live. Manual input is a secondary tool for quick single-beam checks — it should not appear in the batch workflow at all.
 
-The current app is **technically powerful** but doesn't always communicate that power at a glance. Here's the audit:
+The app should feel like a **structural workstation** — dense, contextual, and precise. Not a form wizard. The 3D view is the anchor; everything else serves it.
 
 ---
 
-## Current State Audit
+## Core Principle: The Editor is the Center
 
-### What's Already Great
-| Aspect | Rating | Why |
-|--------|--------|-----|
-| 3D visualization | ★★★★★ | R3F + Three.js — rebar, stirrups, building frame. Best in class for a web tool |
-| Auto-design (WebSocket) | ★★★★★ | <100ms live updates. Engineers LOVE instant feedback |
-| AG Grid editor | ★★★★☆ | Professional table — sort, edit, filter, 40+ cols |
-| Dark theme | ★★★★☆ | Modern, clean. Correct choice for a CAD-style tool |
-| Code splitting | ★★★★☆ | <70KB initial bundle, lazy routes |
-| Batch design (SSE) | ★★★★☆ | Live progress, per-beam status |
+```
+WRONG mental model:       RIGHT mental model:
+  Form → design → 3D        Import → 3D Editor → select beam → see reinforcement
+  (form-first)              (data-first, visual-first)
+```
 
-### What Needs Work
-| Issue | Impact | Page(s) |
-|-------|--------|---------|
-| **Dead-end pages** — no clear "what next?" | Engineers get stuck | DashboardPage, BeamDetailPage |
-| **No breadcrumb trail in batch flow** | Lose context after 3 clicks | BatchDesign → Dashboard |
-| **ModeSelectPage is a speed bump** | 2-card page with no value for returning users | /start |
-| **No persistent quick-actions** | No way to jump Import → Design → Export without TopBar | All pages |
-| **Results area is 40% of viewport** | Wastes prime screen space when no result yet | DesignView |
-| **No onboarding hints** | New users see empty forms, don't know what to try | DesignView |
-| **Export buttons small, hidden** | Engineers want PDF/BBS front-and-center | DesignView |
-| **Dashboard has no export** | Engineers can't hand this to anyone | DashboardPage |
-| **TopBar settings icon → nothing** | Broken promise | TopBar |
-| **No keyboard shortcuts** | Ctrl+D (design), Ctrl+E (export), Ctrl+I (import) | Global |
-| **Cross-section view lacks annotations** | Bare SVG — no dimension lines, no bar labels | BeamDetailPage |
-| **3D viewport doesn't show loads** | Engineer can't verify what they entered visually | DesignView |
+Manual beam input belongs **only** in `/design` (single-beam check). Everywhere else — Editor, Dashboard, Batch — the engineer works with their actual imported project data, navigated through the 3D view and the AG Grid.
+
+---
+
+## Current State — Navigation Flowchart
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│  CURRENT UI FLOW                                               │
+└────────────────────────────────────────────────────────────────┘
+
+   Browser opens
+        │
+        ▼
+   ┌──────────┐      "Start Engineering" CTA
+   │ HomePage │ ────────────────────────────►  /start
+   │  (/)     │                                   │
+   │  3D hero │                                   ▼
+   └──────────┘                         ┌─────────────────┐
+                                        │ ModeSelectPage  │ ← speed bump
+                                        │ 2 cards         │
+                                        └────────┬────────┘
+                                                 │
+                          ┌──────────────────────┼─────────────────────┐
+                          │                       │                     │
+                          ▼                       ▼              (if beams loaded)
+                  ┌──────────────┐      ┌──────────────┐        Editor / Batch
+                  │  DesignView  │      │  ImportView  │
+                  │  (/design)   │      │  (/import)   │
+                  │              │      │  drag-drop   │
+                  │  340px FORM  │      └──────┬───────┘
+                  │  60% 3D      │             │
+                  │  40% results │             ▼
+                  └──────┬───────┘    ┌──────────────────┐
+                         │            │ BuildingEditorPage│
+                  [Full 3D] button    │  (/editor)        │
+                         │            │                   │
+                         ▼            │  ┌─────────────┐  │
+                  ┌──────────────┐    │  │ 3D building │  │
+                  │ BeamDetail   │    │  │ (top 30%)   │  │
+                  │ (/design/    │    │  ├─────────────┤  │
+                  │  results)    │    │  │ AG Grid     │  │
+                  │ separate page│    │  │ (bottom 70%)│  │
+                  └──────────────┘    │  └─────────────┘  │
+                                      │                   │
+                                      │  ← click beam →   │
+                                      │  nothing happens  │ ← WASTED OPPORTUNITY
+                                      └──────────────────┘
+                                               │
+                                               ▼
+                                      ┌──────────────────┐
+                                      │  BatchDesignPage │
+                                      └──────────────────┘
+                                               │
+                                               ▼
+                                      ┌──────────────────┐
+                                      │  DashboardPage   │
+                                      │  plain cards     │ ← no export
+                                      └──────────────────┘
+
+PROBLEMS:
+  × Manual form appears redundantly outside single-beam design
+  × BeamDetailPage is a separate route — breaks context in editor flow
+  × Clicking a beam in the Editor does NOT show its reinforcement details
+  × 3D building view is only 30% of Editor — too small to be useful
+  × DashboardPage has no export
+  × TopBar Settings → dead link
+  × FloatingDock.tsx, BentoGrid.tsx, CommandPalette.tsx — all built, all unused
+```
+
+---
+
+## Future State — Navigation Flowchart
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│  FUTURE UI FLOW                                                │
+└────────────────────────────────────────────────────────────────┘
+
+   Browser opens
+        │
+        ▼
+   ┌──────────┐
+   │ HomePage │ ─────────────────────────────► /start
+   │  (/)     │                                   │
+   └──────────┘                                   ▼
+                                       ┌─────────────────────┐
+                                       │  HubPage (/start)   │
+                                       │                     │
+                                       │  [New Design]       │  ← replaces ModeSelect
+                                       │  [Import CSV]       │
+                                       │  [Resume project →] │  ← from localStorage
+                                       │  Capabilities bar   │
+                                       └──────┬──────────────┘
+                                              │
+                      ┌───────────────────────┼──────────────────────┐
+                      │                       │                      │
+                      ▼                       ▼                      ▼
+             ┌──────────────┐       ┌──────────────┐        ┌──────────────┐
+             │  DesignView  │       │  ImportView  │        │  Dashboard   │
+             │  (/design)   │       │  (/import)   │        │  (resume)    │
+             │              │       │              │        └──────────────┘
+             │  ONLY place  │       │  drag-drop   │
+             │  with manual │       │  CSV / ETABS │
+             │  beam form   │       └──────┬───────┘
+             │              │              │
+             │  Dynamic:    │    Workflow Breadcrumb:
+             │  no result = │    Import ●── Editor ○── Batch ○── Dashboard
+             │  3D 100%     │              │
+             │  has result= │              ▼
+             │  3D 55%+     │    ┌──────────────────────────────────────────┐
+             │  results 45% │    │  BuildingEditorPage (/editor)  ← THE HUB│
+             │              │    │                                          │
+             │  [Export ▼]  │    │  ┌── 3D building (left, ~50%) ──────┐   │
+             │  in header   │    │  │  Full 3D building frame          │   │
+             │              │    │  │  Floors, selections, highlights  │   │
+             └──────────────┘    │  └─────────────────────┬────────────┘   │
+                                 │                         │                │
+                                 │  AG Grid (bottom half)  │                │
+                                 │  click beam ────────────┘                │
+                                 │           │                               │
+                                 │           ▼                               │
+                                 │  ┌── Beam Detail Panel (right, ~40%) ─┐  │
+                                 │  │ SLIDES IN when beam selected        │  │
+                                 │  │                                     │  │
+                                 │  │  ┌─ 3D Reinforcement View ───────┐  │  │
+                                 │  │  │ Full rebar + stirrups of      │  │  │
+                                 │  │  │ selected beam only            │  │  │
+                                 │  │  │ (same Viewport3D component)   │  │  │
+                                 │  │  └───────────────────────────────┘  │  │
+                                 │  │                                     │  │
+                                 │  │  ✓ SAFE  73%  Ast 850mm² Sv 150c/c │  │
+                                 │  │  [████████░░] utilization bar       │  │
+                                 │  │                                     │  │
+                                 │  │  Cross-section SVG (annotated)      │  │
+                                 │  │                                     │  │
+                                 │  │  IS 456 clause checks ▼             │  │
+                                 │  │  Rebar suggestions ▼                │  │
+                                 │  │                                     │  │
+                                 │  │  [📐 DXF]  [📊 BBS]  [📄 Report]   │  │
+                                 │  └─────────────────────────────────────┘  │
+                                 └──────────────────────────────────────────┘
+                                              │
+                                              ▼
+                                    ┌─────────────────┐
+                                    │ BatchDesignPage  │
+                                    │ SSE progress     │
+                                    │ per-beam status  │
+                                    └────────┬─────────┘
+                                             │
+                                             ▼
+                                    ┌─────────────────────────────────────┐
+                                    │ DashboardPage                       │
+                                    │                                     │
+                                    │ BentoGrid layout (already built!)   │
+                                    │ Pass rate · Utilization · BOQ       │
+                                    │ [Export PDF]  [Export BOQ CSV]      │
+                                    │ in header — not buried at bottom    │
+                                    └─────────────────────────────────────┘
+
+GLOBAL (all pages except /):
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│ TopBar: StructLib  Design | Import | Batch | Editor | Dashboard   [M25] [154b] ⚙ │
+└──────────────────────────────────────────────────────────────────────────────────┘
+
+FloatingDock (already built) — activate on all pages except /:
+         ┌─────────────────────────────────────────┐
+         │  [🏠] [🔧] [📁] [🏗] [⚡] [📊]        │  ← bottom-center, macOS magnify
+         └─────────────────────────────────────────┘
+```
+
+---
+
+## The Central Feature: Beam Selection → Split Detail Panel
+
+This is the single highest-impact change. When an engineer clicks any beam — in the 3D building OR in the AG Grid — the Editor splits to show:
+
+```
+BEFORE (clicking a beam does nothing meaningful):
+┌────────────────────────────────────┐
+│  3D Building (top 30%)             │
+├────────────────────────────────────┤
+│                                    │
+│  AG Grid — all beams               │
+│  click row → row highlights        │
+│  (that's it)                       │
+│                                    │
+└────────────────────────────────────┘
+
+
+AFTER (clicking any beam):
+┌──────────────────────────┬─────────────────────────────────────────┐
+│                          │  B-204 · Floor 2                   [×]  │
+│  3D Building (left 55%)  ├─────────────────────────────────────────┤
+│                          │                                         │
+│  Selected beam glows     │  ┌─ 3D Reinforcement ────────────────┐  │
+│  blue in the building    │  │                                   │  │
+│                          │  │  Full rebar + stirrup 3D model    │  │
+│  Floor isolation still   │  │  Rotate / zoom freely             │  │
+│  works — other beams     │  │  Same Viewport3D, single beam     │  │
+│  fade to 20% opacity     │  │  mode                             │  │
+│                          │  └───────────────────────────────────┘  │
+├──────────────────────────┤                                         │
+│                          │  ✓ SAFE   Ast 850mm²   Sv 8φ@150c/c    │
+│  AG Grid (bottom)        │  [████████░░] 73% utilized              │
+│  selected row = active   │                                         │
+│                          │  Cross-section (annotated SVG)          │
+│  Can keep editing cells  │  ←300mm→                                │
+│  in grid while panel     │  ┌─────────┐ ─┬─                       │
+│  is open → live update   │  │ ⊗  ⊗  ⊗ │  │                       │
+│  in 3D reinforcement     │  │         │ 500mm                     │
+│                          │  │ ○  ○  ○ │  │                       │
+│                          │  └─────────┘ ─┴─                       │
+│                          │  3-20φ (942mm²)  Sv: 8φ@150c/c         │
+│                          │                                         │
+│                          │  IS 456 clause checks (collapsible)     │
+│                          │  Rebar suggestions (collapsible)        │
+│                          │                                         │
+│                          │  [📐 DXF]  [📊 BBS]  [📄 Report]       │
+└──────────────────────────┴─────────────────────────────────────────┘
+
+  Editing a cell in the AG Grid (e.g. depth 500→600):
+  → auto-triggers re-design for that beam
+  → 3D reinforcement updates live (WebSocket or REST)
+  → results panel updates
+  → row color in grid updates (pass/fail/utilization)
+  → building 3D model updates that beam's rendered height
+  All without leaving the page.
+```
+
+---
+
+## What Each Component Does in the New Model
+
+| Component | Role | Manual form? |
+|-----------|------|-------------|
+| `DesignView` | Single-beam quick check & exploration | ✓ Yes — this is its only job |
+| `BuildingEditorPage` | Primary workstation for real projects | ✗ No form — data comes from import |
+| `BeamDetailPage` | **Retired or repurposed** — detail is now inline in Editor | ✗ Removed from batch flow |
+| `DashboardPage` | Post-batch analytics + BOQ + export | ✗ No form |
+| `ImportView` | Entry point for project data | ✗ No beam form |
+| `BatchDesignPage` | SSE progress view | ✗ No form |
+
+The BeamDetailPage (`/design/results`) can be kept as a standalone deep-link (for sharing a specific beam result), but it should no longer be a required step in any workflow.
 
 ---
 
 ## Improvement Plan (3 Phases)
 
-### Phase A: Polish & Flow (No new features — visual only)
-*Goal: Make existing features feel professional. Zero new API calls.*
-
-#### A1. Replace ModeSelectPage → Smart Hub
-**Current:** 2 cards, minimal info, speed bump for returning users.
-**Proposed:** Activity hub that gives context:
-
-```
-┌────────────────────────────────────────────────────────────────┐
-│ 🏗 StructLib                                            [⚙]  │
-├────────────────────────────────────────────────────────────────┤
-│                                                                │
-│  ┌──── Quick Actions ──────────┐  ┌──── Recent ──────────────┐│
-│  │ [🔧 New Beam Design]       │  │ Project: MedPlaza (154b) ││
-│  │ [📁 Import CSV]            │  │ Last: 2 min ago          ││
-│  │ [📊 Open Dashboard]        │  │ Pass: 148/154 (96%)      ││
-│  │                            │  │ [Resume →]               ││
-│  └────────────────────────────┘  └───────────────────────────┘│
-│                                                                │
-│  ┌──── Capabilities ────────────────────────────────────────┐ │
-│  │ ✓ IS 456:2000   ✓ Live 3D    ✓ BBS Export              │ │
-│  │ ✓ 40+ CSV cols  ✓ <100ms WS  ✓ DXF + PDF              │ │
-│  └──────────────────────────────────────────────────────────┘ │
-│                                                                │
-│  "Import from ETABS, SAFE, or STAAD → design all in seconds"  │
-└────────────────────────────────────────────────────────────────┘
-```
-
-**Why:** Returning users skip the mode-select. New users see capabilities. Both get value.
-
-**Implementation:**
-- Rename `ModeSelectPage.tsx` → keep as fallback
-- Create `HubPage.tsx` (~200 lines)
-- Read `useImportedBeamsStore` for recent data
-- Store last project name in `localStorage`
-- No new API calls
-
-#### A2. Add Contextual Navigation Breadcrumbs
-**Current:** TopBar nav links + mobile breadcrumbs.
-**Proposed:** Add a **workflow progress bar** on batch flow pages:
-
-```
-Import ──●── Editor ──●── Batch Design ──○── Dashboard
-                              ↑ you are here
-```
-
-Show on: ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage.
-Clickable — clicking "Editor" from Dashboard takes you back.
-
-**Implementation:**
-- New `WorkflowBreadcrumb.tsx` component (~50 lines)
-- Takes `currentStep: 1|2|3|4` prop
-- Render below TopBar (h-8, transparent)
-- Uses `useNavigate` for click navigation
-
-#### A3. Smart Empty States
-**Current:** Empty forms with "Enter parameters to see results" placeholder.
-**Proposed:** Each empty state suggests an action:
-
-| Page | Current Empty State | Proposed |
-|------|-------------------|----------|
-| DesignView (no result) | Calculator icon + gray text | "Try M25, 300×500, Mu=120kN·m" button → auto-fills |
-| DashboardPage (no beams) | "Import CSV first" | "Load sample building (154 beams — 2 seconds)" |
-| BuildingEditor (no beams) | Redirects to /import | Show sample preview + "Load Sample" CTA |
-| BeamDetailPage (no result) | Crashes or shows nothing | Redirect to /design with toast |
-
-**Implementation:**
-- `SampleDataCTA` component (~30 lines) — reused across 3 pages
-- Calls existing `loadSampleData()` API function
-- "Try Example" button on DesignView — `setInputs` with preset values
-
-#### A4. Design View — Dynamic Layout
-**Current:** Results panel is always 40% of right side even with no result.
-**Proposed:**
-- **No result:** Viewport fills 100% of right side
-- **Has result:** Viewport 55% + results 45% (animated slide-up)
-- **Collapsed:** Result summary bar (1 line: "SAFE 73% | Ast 850mm² | Sv 150mm") — click to expand
-
-```
-BEFORE (no result):          AFTER (has result):
-┌───┬──────────────┐        ┌───┬──────────────┐
-│   │              │        │   │   3D View     │
-│ F │   3D View    │        │ F │   (55%)       │
-│ o │   (100%)     │   →    │ o ├──────────────┤
-│ r │              │        │ r │   Results     │
-│ m │              │        │ m │   (45%)       │
-└───┴──────────────┘        └───┴──────────────┘
-```
-
-**Implementation:**
-- Animate `flex-[3]` ↔ `flex-[5.5]` with `transition-all duration-300`
-- Collapsed summary bar: `CompactResultsBar` component (~40 lines)
-- Click bar → expand; click "minimize" → collapse
-
-#### A5. Export Menu (Unified)
-**Current:** ExportPanel shows 3 small buttons at the bottom — easy to miss.
-**Proposed:** Add an export dropdown to the DesignView header:
-
-```
-[💾 Export ▼]
-├─ 📊 Bar Bending Schedule (CSV)
-├─ 📐 DXF Drawing
-├─ 📄 HTML Report
-└─ 📕 PDF Report  ← NEW (TASK-514)
-```
-
-- Also add Ctrl+Shift+E shortcut
-- Loading state per item (spinner next to text)
-- Disable options when no result available
-
-#### A6. Cross-Section Annotations
-**Current:** Bare SVG — concrete box + colored circles.
-**Proposed:** Add dimension lines and labels:
-
-```
-          ←── 300mm ──→
-         ┌──────────────┐ ─┬─
-         │ ⊗    ⊗   ⊗  │  │
-  cover→ │╌╌╌╌╌╌╌╌╌╌╌╌│  │
-  40mm   │              │  500mm
-         │              │  │
-         │ ○    ○    ○  │  │
-         └──────────────┘ ─┴─
-          3-20φ (942 mm²)
-          Sv: 8φ @ 150 c/c
-```
-
-Add:
-- Width + depth dimension lines (arrow-ended)
-- Cover indicator (dashed line)
-- Bar count + size label below
-- Stirrup spacing text
-- Utilization color on bars (green < 80%, yellow < 100%, red > 100%)
-
-**Implementation:**
-- Extend `CrossSectionView.tsx` (~60 lines of SVG additions)
-- Data already available from design result
-- Pure SVG — no new library
+### Phase A: Polish & Core Flow Fixes
 
 ---
 
-### Phase B: New Feature Panels (Aligned with TASK-514–519)
-*Goal: Integrate v0.21 library features into the React UI.*
+#### A1. BuildingEditorPage — Beam Selection Detail Panel
 
-#### B1. Load Calculator Panel (TASK-515 React part)
+**This is the #1 priority.** When a beam is clicked (row in AG Grid or mesh in 3D), a panel slides in from the right.
 
-Position: **Left sidebar tab** in DesignView — toggle between "Beam" and "Loads" tabs:
+**Layout change:**
+- Existing: 3D top 30% + Grid bottom 70%
+- New when beam selected: 3D left 55% + Grid bottom-left 55% + Detail panel right 45%
+- Panel slides in with `transition-all duration-300`
+- Close button (×) returns to normal layout
+- Panel has its own scroll
+
+**Detail panel sections (top to bottom):**
+1. Beam ID + floor label header
+2. `Viewport3D` in single-beam mode (rebar + stirrups, rotateable, ~220px tall)
+3. Compact result bar: `✓ SAFE  73%  850mm²  150c/c`
+4. Animated utilization bar (count-up)
+5. `CrossSectionView` with annotations (see A4)
+6. IS 456 code checks (collapsible, `useCodeChecks`)
+7. Rebar suggestions (collapsible, `useRebarSuggestions`)
+8. Export row: `[DXF]` `[BBS]` `[Report]`
+
+**Live edit loop:**
+- User changes a cell in AG Grid (e.g. depth 500 → 600)
+- `useAutoDesign` triggers for that beam
+- Result and 3D reinforcement in the panel update live
+- Row color in grid updates
+- 3D building model updates that beam's height
+
+**Implementation:**
+- New `components/design/BeamDetailPanel.tsx` (~200 lines)
+- Embed `Viewport3D` in single-beam mode (already supports this)
+- `useBeamGeometry(selectedBeam)` + `useCodeChecks(selectedBeam)` + `useRebarSuggestions`
+- Pass `onClose`, `beam`, `result` as props
+
+---
+
+#### A2. DesignView — Dynamic Layout (viewport expands when empty)
+
+**Current:** Results panel is always 40% wide even when there's nothing to show.
+
+**3 states:**
+```
+EMPTY (just opened):        HAS RESULT:              MINIMIZED:
+┌──────┬─────────────┐     ┌──────┬────┬────────┐   ┌──────┬────────────────┐
+│      │             │     │      │ 3D │        │   │      │                │
+│ Form │  3D (100%)  │     │ Form │55% │Results │   │ Form │  3D (100%)     │
+│      │             │     │      │    │  45%   │   │      │                │
+│      │  [Try M25   │     │      │    │        │   ├──────┴────────────────┤
+│      │   300×500 →]│     │      │    │        │   │ ✓ SAFE 73% 850mm² [▲]│
+└──────┴─────────────┘     └──────┴────┴────────┘   └────────────────────── ┘
+```
+
+- Animate `flex-[3] ↔ flex-[5.5]` with `transition-all duration-300`
+- Empty state: show preset button "Try: 300×500 M25 Mu=120 kN·m →" that auto-fills and designs
+- Minimized: `CompactResultsBar` single-line (`✓ SAFE  73%  Ast 850mm²  Sv 150c/c`)
+
+---
+
+#### A3. Replace ModeSelectPage → Smart Hub
+
+**Current:** 2 mode cards. Returning users click through it every session — pure friction.
 
 ```
-[Beam] [Loads]          ← tabs at top of left panel
-─────────────
+┌───────────────────────────────────────────────────────────────────┐
+│  StructLib                                                 [⚙]   │
+├───────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│  ┌─── Quick Actions ──────────────┐  ┌─── Last Session ────────┐ │
+│  │  [🔧  New Beam Design    →]    │  │  MedPlaza · 154 beams   │ │
+│  │  [📁  Import CSV / ETABS →]    │  │  96% pass · 2 min ago   │ │
+│  │  [📊  Open Dashboard     →]    │  │  [Resume Project →]     │ │
+│  └────────────────────────────────┘  └─────────────────────────┘ │
+│                                                                   │
+│  ✓ IS 456:2000   ✓ Live 3D   ✓ BBS / DXF   ✓ ETABS / SAFE      │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+- Create `HubPage.tsx` (~150 lines)
+- Read `useImportedBeamsStore` for last project context
+- `localStorage` for project name + last pass rate
+- No new API calls
+
+---
+
+#### A4. Cross-Section Annotations
+
+**Current:** Bare SVG — concrete box + plain circles. No dimensions.
+
+**Proposed (extend `CrossSectionView.tsx`):**
+```
+          ←── 300mm ──→
+         ┌──────────────┐ ─┬─
+         │  ⊗    ⊗    ⊗ │  │
+cover ──►│╌╌╌╌╌╌╌╌╌╌╌╌╌│  │
+  40mm   │              │ 500mm
+         │              │  │
+         │  ○    ○    ○ │  │
+         └──────────────┘ ─┴─
+          3-20φ  (942 mm²)
+          Sv: 8φ @ 150 c/c
+          Utilization: 73% [████████░░]
+
+Bar color: emerald-400 < 75%  |  amber-400 75–90%  |  rose-400 > 90%
+```
+
+Adds: width/depth dimension lines (SVG arrows), cover dashed line, bar label, stirrup label, utilization color. Pure SVG, ~60 lines. Used in both BeamDetailPanel and BeamDetailPage.
+
+---
+
+#### A5. Activate FloatingDock (already built, unused)
+
+`FloatingDock.tsx` — beautiful macOS-style dock with hover magnification — is coded but never mounted.
+
+Wire it to App.tsx (~10 lines):
+- Show on all routes except `/`
+- Replace or supplement TopBar on mobile
+- Badge: imported beam count, last pass rate
+- Active state on current route
+
+```
+         ┌──────────────────────────────────────────────┐
+         │  [🏠] [🔧 Design] [📁 Import] [🏗 Editor] [📊]│
+         └──────────────────────────────────────────────┘
+                    bottom-center, spring magnify on hover
+```
+
+---
+
+#### A6. Activate BentoGrid for Dashboard (already built, unused)
+
+`BentoGrid.tsx` with Apple-style grid is coded but DashboardPage uses plain flex cards.
+
+```
+╔══════════════════╦═══════════════════╦══════════════════════╗
+║ PASS RATE 96%    ║ AVG UTIL 73%      ║  PASS / FAIL         ║
+║ 148 / 154 beams  ║ [████████░░]      ║  148 ██████████████  ║
+╠══════════════════╩═══════════════════╣   6  ██             ║
+║ CRITICAL BEAMS                       ╠══════════════════════╣
+║ B-204  Floor 2  94%  ████████████    ║  STEEL    CONCRETE   ║
+║ B-112  Floor 1  91%  █████████████   ║  4,250kg   12.3m³   ║
+╠═══════════════╦══════════════════════╣  ₹2,55,000  ₹73,800 ║
+║ BY STORY      ║  [📊 Export BBS]     ╚══════════════════════╝
+║ GF  52 beams  ║  [📐 Export DXF]
+║ 1F  48 beams  ║  [📄 Export PDF]
+║ 2F  54 beams  ║
+╚═══════════════╩══════════════════════╝
+```
+
+Export buttons move from buried at the bottom to a visible BentoCard at the top-right.
+
+---
+
+#### A7. Workflow Breadcrumb (batch flow only)
+
+Shown below TopBar on the 4-step batch flow. Clickable.
+
+```
+Import ──●── Editor ──●── Batch Design ──○── Dashboard
+                           ↑ you are here
+```
+
+New `WorkflowBreadcrumb.tsx` (~60 lines). Added to ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage.
+
+---
+
+#### A8. TopBar — Context Badges + Fix Settings
+
+**Context badges (right side, when data exists):**
+```
+StructLib  Design | Import | Batch | Editor | Dashboard   [M25 Fe500] [154b] [96%✓] [⚙]
+```
+
+**Fix settings:** TopBar settings button currently navigates to `/settings` (dead). Replace with a slide-over `SettingsPanel` (~60 lines):
+- API endpoint field
+- Theme + version info
+- No new routes needed
+
+---
+
+### Phase B: New Feature Panels (TASK-514–521)
+
+---
+
+#### B1. Load Calculator — `[Loads]` tab in DesignView (TASK-515)
+
+Second tab in DesignView left panel. Compute Mu/Vu from span + loads, then "Use These Values" fills the Beam tab.
+
+```
+[Beam] [Loads]
+────────────────
 Span: [5000] mm
 Support: [Simply Supported ▼]
 
-Loads:
-#1 UDL  [15] kN/m  ×
-#2 Point [30] kN @ [2500] mm  ×
+#1 UDL   [15] kN/m       ×
+#2 Point [30]kN @[2500]mm ×
 [+ Add Load]
 
 [Compute]
 
-┌── BMD ──────────────┐
-│ /\                  │  ← SVG polyline
-│/  \                 │
-└─────────────────────┘
-┌── SFD ──────────────┐
-│─────\               │
-│      \──────────────│
-└─────────────────────┘
+ BMD: /\   SVG polyline (inline, no chart lib)
+     /  \
+SFD: ─────\
 
-Mu_max = 46.875 kN·m
-Vu_max = 37.500 kN
+Mu_max = 46.9 kN·m
+Vu_max = 37.5 kN
 
-[↗ Use These Values]  ← switches to Beam tab + fills Mu/Vu
-```
-
-**Key UX decisions:**
-- BMD/SFD as inline SVG — no chart library (keeps bundle small)
-- "Use These Values" is the power feature — one click feeds design
-- Span value syncs with the Beam tab span
-- Tab state persists in component state (not URL)
-
-#### B2. Torsion Toggle (TASK-518 React part)
-
-Position: **Inside "Design Forces" accordion** in DesignView:
-
-```
-▼ Design Forces
-  Moment (Mu) [120] kN·m
-  Shear (Vu)  [75]  kN
-  ☐ Include Torsion
-    └─ Torsion (Tu) [8.5] kN·m  ← shown when checked
-```
-
-When torsion is checked:
-- POST to `/api/v1/design/beam/torsion` instead of `/api/v1/design/beam`
-- Results panel shows extra row: "Torsion: Ve=XX kN, Me=XX kN·m, Closed stirrups ✓"
-- 3D view renders closed stirrup loops (already supported)
-
-#### B3. Alternatives Panel (TASK-519 React part)
-
-Position: **Expandable section** below results in DesignView:
-
-```
-▶ See Alternatives (3 Pareto-optimal options)  ← collapsed by default
-
-┌ Design Alternatives ──────────────────────────┐
-│ Sort: [Cost ▼] [Utilization] [Steel]          │
-│                                                │
-│ ● 300×500  3-20φ  78%  ₹1,250/m  ← current  │
-│ ○ 250×600  3-18φ  82%  ₹1,180/m  [Apply]     │
-│ ○ 350×450  4-18φ  71%  ₹1,320/m  [Apply]     │
-│                                                │
-│ [Generate More Options]                        │
-└────────────────────────────────────────────────┘
-```
-
-"Apply" → `updateInputs({ width, depth })` → auto-design triggers → viewport updates live.
-
-#### B4. Dashboard BOQ Section (TASK-517 React part)
-
-Position: **New card** at bottom of DashboardPage:
-
-```
-┌── Bill of Quantities ──────────────────────────────┐
-│  Steel                              Concrete       │
-│  ┌────────────────────┐            ┌─────────────┐│
-│  │ Fe500: 4,250 kg    │            │ M25: 12.3m³ ││
-│  │ ₹2,55,000          │            │ ₹73,800     ││
-│  │                    │            │              ││
-│  │ By diameter:       │            │ Gross volume ││
-│  │ 8φ: 320 kg        │            │ +5-10% waste ││
-│  │ 16φ: 1,890 kg     │            └─────────────┘│
-│  │ 20φ: 2,040 kg     │                           │
-│  └────────────────────┘                           │
-│                                                    │
-│  By Story:                                         │
-│  GF:  Steel 1,200kg  Concrete 3.8m³  ₹1,08,000   │
-│  1F:  Steel 1,050kg  Concrete 3.1m³  ₹94,500     │
-│  2F:  Steel 2,000kg  Concrete 5.4m³  ₹1,52,400   │
-│                                                    │
-│  Grand Total: 4,250 kg + 12.3 m³ = ₹3,28,800     │
-│                                                    │
-│  [📥 Export BOQ as CSV]  [📕 Download PDF]         │
-└────────────────────────────────────────────────────┘
+[↗ Use These Values]
 ```
 
 ---
 
-### Phase C: Professional Polish (Advanced)
-*Goal: Make it look and feel like a ₹50 lakh/year commercial engineering tool.*
+#### B2. Torsion Toggle in DesignView (TASK-518)
 
-#### C1. Keyboard Shortcuts
-| Shortcut | Action | Where |
-|----------|--------|-------|
-| `Ctrl+D` | Trigger design | DesignView |
-| `Ctrl+Shift+E` | Open export menu | DesignView, BeamDetailPage |
-| `Ctrl+I` | Navigate to import | Global |
-| `Ctrl+K` | Open command palette | Global |
-| `Ctrl+/` | Toggle sidebar | BuildingEditorPage |
-| `Escape` | Close expanded panels | Global |
+Inside "Design Forces" accordion, below Vu:
+```
+▼ Design Forces
+  Mu [120] kN·m
+  Vu  [75] kN
+  ☐ Include Torsion
+    └─ Tu [8.5] kN·m
+```
 
-**Implementation:** Global `useKeyboardShortcuts()` hook (~40 lines).
+When checked → POST to `/api/v1/design/beam/torsion`. Results show equivalent forces. 3D renders closed stirrups (already supported).
 
-#### C2. Micro-Animations That Add Professionalism
-| Element | Animation | Effect |
-|---------|-----------|--------|
-| Result cards appearing | `framer-motion` staggered fade-in | Results feel "calculated" |
-| Utilization bar | Count-up from 0% to actual | Draws attention to key metric |
-| Status badge (SAFE/FAIL) | Scale spring with colored glow | Immediate read |
-| 3D viewport load | Fade in + slight camera dolly | Smooth transition |
-| Export download | Button shrinks → checkmark | Confirms action |
-| Tab switches | Slide left/right with spring | Smooth, tactile |
+---
 
-#### C3. Design Input Presets
-Quick presets for common beam types. Dropdown at top of BeamForm:
+#### B3. Alternatives Panel in DesignView (TASK-519)
 
+Collapsible section below results:
+```
+▶ Alternatives (3 Pareto-optimal options)
+
+● 300×500  3-20φ  78%  ₹1,250/m  ← current
+○ 250×600  3-18φ  82%  ₹1,180/m  [Apply]
+○ 350×450  4-18φ  71%  ₹1,320/m  [Apply]
+
+Sort: [Cost ▼]  [Util]  [Steel]
+```
+
+"Apply" → `updateInputs()` → auto-design → live 3D update.
+
+---
+
+#### B4. Dashboard BOQ Card (TASK-517)
+
+Full-width BentoCard at bottom:
+```
+┌─ Bill of Quantities ────────────────────────────────────────┐
+│  Fe500: 4,250 kg  ₹2,55,000    M25: 12.3 m³  ₹73,800       │
+│  By story: GF ████  1F ████  2F ████████████                │
+│  Grand Total: ₹3,28,800                                     │
+│  [📥 Export BOQ CSV]   [📕 Download PDF Summary]           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Phase C: Micro-Polish
+
+---
+
+#### C1. Micro-Animations (Framer Motion — already installed)
+
+| Element | Animation |
+|---------|-----------|
+| BeamDetailPanel slide-in | `x: 400 → 0`, spring, 300ms |
+| Result cards appear | Staggered fade-in (0, 50, 100ms) |
+| Utilization bar | Count-up 0 → actual % |
+| SAFE/FAIL badge | Scale spring + colored glow |
+| Accordion expand | `height: 0 → auto` |
+| Export download | Button → spinner → checkmark |
+
+---
+
+#### C2. Design Input Presets
+
+Dropdown at top of BeamForm (single-beam only):
 ```
 Preset: [Custom ▼]
-├── Plinth beam (230×300, M20, 2m span)
-├── Floor beam (300×500, M25, 5m span)
-├── Lintel beam (230×230, M20, 1.5m span)
-├── Transfer beam (400×800, M30, 8m span)
+├── Plinth beam (230×300, M20, Mu=15)
+├── Floor beam  (300×500, M25, Mu=120)
+├── Transfer    (400×800, M30, Mu=450)
 └── Custom
 ```
 
-One click fills all fields. Engineers iterate much faster.
-
-#### C4. Onboarding Tooltip Tour
-First-time user sees 5 tooltips (one at a time):
-1. "Enter beam dimensions here" → points to form
-2. "Auto-design updates the 3D view live" → points to toggle
-3. "Click for full detail view" → points to viewport
-4. "Export your results" → points to export menu
-5. "Try the Load Calculator" → points to Loads tab
-
-Store `onboarding_completed` in localStorage. Show "Show Tips" in settings to replay.
-
-#### C5. TopBar Context Indicators
-Show active project context in TopBar:
-
-```
-[Logo] Design | Import | Batch | Editor | Dashboard    [M25 Fe500] [154 beams] [96% pass] [⚙]
-```
-
-The `[M25 Fe500]` chip shows active material.
-`[154 beams]` shows import count.
-`[96% pass]` shows latest batch result.
-
-All are clickable — material opens material modal, beam count opens import, pass rate opens dashboard.
-
-#### C6. Professional Print/PDF Styles
-When Ctrl+P or "Print" on BeamDetailPage:
-- Hide TopBar, sidebar, buttons
-- Show clean report layout with:
-  - Header: "StructLib — IS 456:2000 Beam Design Report"
-  - Cross-section SVG (full page width)
-  - Results table (properly formatted)
-  - Clause references
-  - Footer: "Generated by StructLib v3.0 on [date]"
-
-Use Tailwind's `print:` modifier — zero new CSS files.
+One click → fills all fields → auto-design triggers. Helps first-time users and repetitive check scenarios.
 
 ---
 
-## Visual Design System Improvements
+#### C3. Print Styles for BeamDetailPage
 
-### Color Palette Refinement
-Current palette is good but needs more hierarchy signals:
+`Ctrl+P` on BeamDetailPage hides nav/buttons, formats clean report:
+- Header: `StructLib — IS 456:2000 Beam Design Report`
+- Full-width annotated cross-section SVG
+- Results table + IS 456 clause refs
+- Footer: version + date
 
-| Token | Current | Proposed | Purpose |
-|-------|---------|----------|---------|
-| Surface 0 | `zinc-950` (#09090b) | Same | App background |
-| Surface 1 | `zinc-900` | `zinc-900/60` | Card background (more transparent) |
-| Surface 2 | `white/[0.03]` | `white/[0.04]` | Elevated elements (slightly more visible) |
-| Border | `white/8` (`#ffffff14`) | `white/6` (`#ffffff0f`) | Subtler borders |
-| Text primary | `white` | Same | Headings, values |
-| Text secondary | `white/70` | `white/60` | Labels, descriptions |
-| Text tertiary | `white/40` | `white/35` | Helper text, hints |
-| Text muted | `white/20` | `white/15` | Disabled, version strings |
-| Accent | `blue-500 / blue-600` | Same | Primary actions |
-| Success | `green-500` | `emerald-400` | Warmer green, easier to read |
-| Warning | `yellow-500` | `amber-400` | Warmer amber |
-| Danger | `red-500` | `rose-400` | Softer red, less alarming |
+Tailwind `print:` modifier. No new CSS files.
 
-### Typography Scale
-Currently using ad-hoc sizes (`text-xs`, `text-[10px]`, `text-sm`). Propose a strict scale:
+---
 
-| Role | Size | Weight | Class |
-|------|------|--------|-------|
-| Page title | 18px | Bold | `text-lg font-bold` |
-| Section title | 12px | Semibold + uppercase | `text-xs font-semibold uppercase tracking-wider` |
-| Input label | 11px | Regular | `text-[11px] text-white/50` |
-| Value | 13px | Medium | `text-[13px] font-medium` |
-| Large metric | 24px | Bold | `text-2xl font-bold` |
-| Caption | 10px | Regular | `text-[10px] text-white/30` |
+#### C4. Settings Panel (fixes broken TopBar button)
 
-### Spacing Consistency
-Standardize card padding and gap:
+Slide-over panel (~60 lines). Shows:
+- API endpoint (editable, saves to localStorage)
+- App version
+- About / credits
 
-| Element | Inner padding | Gap between |
-|---------|--------------|-------------|
-| Card (small) | `p-3` (12px) | `gap-2` (8px) |
-| Card (medium) | `p-4` (16px) | `gap-3` (12px) |
-| Section | `py-4 px-3` | `space-y-3` (12px) |
-| Page wrapper | `px-6 py-6` | `space-y-6` (24px) |
+No new routes. No new API calls.
+
+---
+
+## Visual System
+
+### Colors (refined)
+| Role | Tailwind | Notes |
+|------|---------|-------|
+| Util low (< 75%) | `emerald-400` | Warmer green than green-500 |
+| Util mid (75–90%) | `amber-400` | More readable than yellow-500 |
+| Util high (> 90%) | `rose-400` | Less alarming than red-500 |
+| Util over (> 100%) | `red-500 font-bold` | FAIL — intentionally alarming |
+| Card border | `white/6` | Subtler than current white/8 |
+| Text secondary | `white/60` | Slightly lower than current white/70 |
+
+### Spacing Standard
+| Element | Padding | Gap |
+|---------|---------|-----|
+| Compact card | `p-3` | `gap-2` |
+| Standard card | `p-4` | `gap-3` |
+| Page wrapper | `px-6 py-6` | `space-y-6` |
 
 ---
 
 ## Implementation Priority
 
-| Priority | Change | Phase | Effort | Impact |
-|----------|--------|-------|--------|--------|
-| 1 | A4: Dynamic results layout | A | 2h | High — fixes wasted viewport space |
-| 2 | A6: Cross-section annotations | A | 3h | High — makes output professional |
-| 3 | A5: Unified export menu | A | 2h | High — engineers need this front-and-center |
-| 4 | A3: Smart empty states | A | 2h | Medium — onboards new users |
-| 5 | B1: Load calculator panel | B | 1-2d | High — new feature (TASK-515) |
-| 6 | A1: Smart Hub page | A | 4h | Medium — returning user experience |
-| 7 | B2: Torsion toggle | B | 3h | Medium — new feature (TASK-518) |
-| 8 | B3: Alternatives panel | B | 1d | Medium — new feature (TASK-519) |
-| 9 | A2: Workflow breadcrumbs | A | 1h | Medium — batch flow clarity |
-| 10 | B4: Dashboard BOQ | B | 1d | High — new feature (TASK-517) |
-| 11 | C1: Keyboard shortcuts | C | 3h | Medium — power user experience |
-| 12 | C2: Micro-animations | C | 4h | Low-Medium — polish |
-| 13 | C3: Design presets | C | 2h | Medium — speed for beginners |
-| 14 | C5: TopBar context | C | 2h | Low — nice to have |
-| 15 | C4: Onboarding tour | C | 4h | Low — first-time only |
+| # | Change | Effort | Impact | Risk |
+|---|--------|--------|--------|------|
+| 1 | **A1: BeamDetailPanel in Editor** | 3–4h | ★★★★★ highest impact | Low |
+| 2 | **A5: Activate FloatingDock** — 10 lines | 30min | ★★★★ wow, free | None |
+| 3 | **A6: Activate BentoGrid on Dashboard** | 2h | ★★★★ visual upgrade | Low |
+| 4 | **A2: DesignView dynamic layout** | 2h | ★★★★ fixes viewport waste | Low |
+| 5 | **A4: Cross-section annotations** | 3h | ★★★★ looks like real drawings | Low |
+| 6 | **A7: Export dropdown in DesignView** | 1h | ★★★ engineers need this | None |
+| 7 | **A8: TopBar badges + fix settings** | 2h | ★★★ professional context | Low |
+| 8 | **A3: Smart Hub page** | 3h | ★★★ returning user UX | Low |
+| 9 | **A9: Workflow breadcrumb** | 1h | ★★ batch flow clarity | None |
+| 10 | **B1: Load calculator** | 1–2d | ★★★★ TASK-515 feature | Med |
+| 11 | **B2: Torsion toggle** | 3h | ★★★ TASK-518 | Med |
+| 12 | **B3: Alternatives panel** | 1d | ★★★ TASK-519 | Med |
+| 13 | **B4: Dashboard BOQ** | 1d | ★★★ TASK-517 | Med |
+| 14 | **C1: Micro-animations** | 3h | ★★ polish | Low |
+| 15 | **C2: Design presets** | 1h | ★★ first-time UX | None |
+| 16 | **C3: Print styles** | 2h | ★★★ professional output | None |
+| 17 | **C4: Settings panel** | 1h | ★ fixes broken button | None |
 
-**Total Phase A:** ~2-3 days (visual polish, no new API)
-**Total Phase B:** Included in TASK-514–519 effort
-**Total Phase C:** ~2-3 days (advanced polish)
-
----
-
-## Engineer Workflow Scenarios
-
-### Scenario 1: Quick Check (2 minutes)
-```
-Hub → "New Beam" → fill W/D/span/Mu/Vu → auto-design → read SAFE 73% → export PDF → done
-```
-**Pain points removed:** No mode-select speed bump, export is in header not bottom, PDF available.
-
-### Scenario 2: Client Revision (5 minutes)
-```
-Hub → "Resume MedPlaza" → Editor → change beam B23 depth 500→600 → auto-redesign →
-see utilization drop 92%→71% → "See Alternatives" → apply cheaper option → export BBS
-```
-**New:** Alternatives panel saves trial-and-error. Resume from Hub saves re-import.
-
-### Scenario 3: Full Project (30 minutes)
-```
-Hub → Import CSV → Editor → review 154 beams → Rationalize (23→4 sections) →
-Batch Design → Dashboard → BOQ (total ₹3.28L) → Export PDF summary → done
-```
-**New:** Rationalization, BOQ with costs, PDF summary — complete deliverable.
-
-### Scenario 4: Load Uncertainty (10 minutes)
-```
-Hub → "New Beam" → Loads tab → add UDL 15kN/m + Point 30kN → Compute BMD/SFD →
-"Use These Values" → auto-design → add torsion Tu=8.5kN·m → re-design →
-"See Alternatives" → pick cheapest safe option → export report
-```
-**New:** Load calculator, torsion, alternatives — all in one flow without page navigation.
+**Quick wins (already built, just wire up):** FloatingDock + BentoGrid = ~2.5h total, major visual upgrade.
 
 ---
 
 ## Files Created / Modified
 
-### Phase A (new files)
-| File | Lines | Purpose |
-|------|-------|---------|
-| `components/pages/HubPage.tsx` | ~200 | Smart hub replacing ModeSelectPage |
-| `components/ui/WorkflowBreadcrumb.tsx` | ~50 | Batch flow progress indicator |
-| `components/ui/SampleDataCTA.tsx` | ~30 | Reusable "try sample" button |
-| `hooks/useKeyboardShortcuts.ts` | ~40 | Global keyboard shortcuts |
+### Phase A — New Files
+| File | Purpose | Lines |
+|------|---------|-------|
+| `components/design/BeamDetailPanel.tsx` | Slide-in panel: 3D rebar + results + export | ~200 |
+| `components/pages/HubPage.tsx` | Smart hub replacing ModeSelectPage | ~150 |
+| `components/ui/WorkflowBreadcrumb.tsx` | Batch flow step indicator | ~60 |
+| `components/ui/CompactResultsBar.tsx` | Single-line result summary bar | ~50 |
+| `components/ui/ExportDropdown.tsx` | Unified export dropdown | ~60 |
+| `components/ui/SettingsPanel.tsx` | Slide-over settings panel | ~60 |
 
-### Phase A (modified files)
+### Phase A — Modified Files
 | File | Change |
 |------|--------|
-| `App.tsx` | Add `/hub` route (or replace `/start`) |
-| `DesignView.tsx` | Dynamic layout, export dropdown, empty state |
-| `BeamDetailPage.tsx` | Better empty handling, print styles |
-| `CrossSectionView.tsx` | Add dimension lines + bar labels |
-| `DashboardPage.tsx` | Add export button, better empty CTA |
-| `TopBar.tsx` | Context indicators (material, beam count) |
+| `BuildingEditorPage.tsx` | Add BeamDetailPanel, split layout on beam select |
+| `App.tsx` | Mount FloatingDock, add HubPage route |
+| `DashboardPage.tsx` | BentoGrid layout, export in header, BOQ card |
+| `DesignView.tsx` | Dynamic layout, export dropdown, preset, empty state |
+| `CrossSectionView.tsx` | Dimension lines, bar labels, utilization colors |
+| `TopBar.tsx` | Context badges, fix settings to SettingsPanel |
 
-### Phase B (new files — from TASK plan)
-| File | Lines | Task |
-|------|-------|------|
-| `components/design/LoadCalculatorPanel.tsx` | ~150 | TASK-515 |
-| `components/design/AlternativesPanel.tsx` | ~120 | TASK-519 |
-| `components/design/ProjectBOQPanel.tsx` | ~100 | TASK-517 |
-| `hooks/useLoadAnalysis.ts` | ~50 | TASK-515 |
-| `hooks/useTorsionDesign.ts` | ~50 | TASK-518 |
-| `hooks/useParetoDesign.ts` | ~50 | TASK-519 |
-| `hooks/useProjectBOQ.ts` | ~50 | TASK-517 |
+### Phase B — New Files (from TASK plan)
+| File | Task |
+|------|------|
+| `components/design/LoadCalculatorPanel.tsx` | TASK-515 |
+| `components/design/AlternativesPanel.tsx` | TASK-519 |
+| `components/design/ProjectBOQPanel.tsx` | TASK-517 |
+| `hooks/useLoadAnalysis.ts` | TASK-515 |
+| `hooks/useTorsionDesign.ts` | TASK-518 |
+| `hooks/useParetoDesign.ts` | TASK-519 |
+| `hooks/useProjectBOQ.ts` | TASK-517 |

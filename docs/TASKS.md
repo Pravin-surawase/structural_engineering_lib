@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-25 (Session 97 — library + feature expansion plan)
+**Updated:** 2026-03-25 (Session 98 — React UX overhaul: Editor-centric, BeamDetailPanel, FloatingDock)
 
 ---
 
@@ -28,7 +28,7 @@
 |---------|-------|--------|------------------|
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
 | **v0.20** | V3 Foundation | ✅ DONE | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
-| **v0.21** | Library Expansion | 🔄 ACTIVE | PDF export, load calc, BOQ, torsion API, Pareto panel, rationalization |
+| **v0.21** | React UX + Library Expansion | 🔄 ACTIVE | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.22** | Full React | 📋 NEXT | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)
@@ -49,6 +49,23 @@
 
 ### v0.21 Feature Matrix
 
+#### React UX Overhaul (new — Phase A quick wins first)
+
+| # | Task ID | Feature | Files | Status |
+|---|---------|---------|-------|--------|
+| A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results | new `BeamDetailPanel.tsx`, update `BuildingEditorPage.tsx` | 📋 |
+| A2 | TASK-523 | Activate FloatingDock (already built) + BentoGrid Dashboard (already built) | `App.tsx` +10 lines, `DashboardPage.tsx` | 📋 |
+| A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx`, new `ExportDropdown.tsx`, `CompactResultsBar.tsx` | 📋 |
+| A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | new `HubPage.tsx`, update `App.tsx` | 📋 |
+| A5 | TASK-526 | Cross-section annotations — dimension lines, bar labels, utilization color | `CrossSectionView.tsx` +60 lines | 📋 |
+| A6 | TASK-527 | TopBar context badges + fix settings button (SettingsPanel slide-over) | `TopBar.tsx`, new `SettingsPanel.tsx` | 📋 |
+| A7 | TASK-528 | Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard) | new `WorkflowBreadcrumb.tsx`, 4 page files | 📋 |
+
+> **Design principle:** Editor is the workstation. Manual beam form lives only in `/design`. No redundant forms in batch flow.
+> Full UX spec: [react-ux-improvement-plan.md](planning/react-ux-improvement-plan.md)
+
+#### Library Expansion (original v0.21 plan)
+
 | # | Task ID | Feature | Python | FastAPI | React | Tests | Status |
 |---|---------|---------|--------|---------|-------|-------|--------|
 | 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | 📋 |
@@ -68,9 +85,23 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| — | — | — | No active work — ready to start v0.21 |
+| TASK-522 | BeamDetailPanel in BuildingEditorPage | — | 🔄 Active |
 
 ## Up Next (v0.21 — recommended order)
+
+### React UX Phase A (do first — zero new API calls, high visual impact)
+
+| ID | Task | Est | Priority | Status |
+|----|------|-----|----------|--------|
+| TASK-522 | BeamDetailPanel in BuildingEditorPage (beam click → 3D rebar + results) | 3–4h | 🔴 High | 🔄 |
+| TASK-523 | Activate FloatingDock + BentoGrid Dashboard (already built, just wire up) | 2–3h | 🔴 High | 📋 |
+| TASK-524 | DesignView dynamic layout + unified export dropdown | 2–3h | 🔴 High | 📋 |
+| TASK-525 | Smart HubPage replacing ModeSelectPage | 3–4h | 🟡 Medium | 📋 |
+| TASK-526 | Cross-section annotations (dimension lines, bar labels, utilization color) | 2–3h | 🟡 Medium | 📋 |
+| TASK-527 | TopBar context badges + SettingsPanel slide-over | 2h | 🟡 Medium | 📋 |
+| TASK-528 | Workflow breadcrumb for batch flow | 1h | 🟢 Low | 📋 |
+
+### Library Expansion (after UX phase)
 
 | ID | Task | Est | Priority | Status |
 |----|------|-----|----------|--------|

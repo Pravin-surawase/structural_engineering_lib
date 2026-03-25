@@ -5,7 +5,8 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight, Shield, Lightbulb } from "lucide-react";
+import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp } from "lucide-react";
+import { useExportBBS, useExportDXF, useExportReport } from "../../hooks";
 import type { BeamDesignResponse } from "../../api/client";
 import { useDesignStore } from "../../store/designStore";
 import { useLiveDesign } from "../../hooks/useLiveDesign";
@@ -35,6 +36,23 @@ export function DesignView() {
   const navigate = useNavigate();
   const { inputs, length } = useDesignStore();
   const [autoDesign, setAutoDesign] = useState(true);
+  const [resultsCollapsed, setResultsCollapsed] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
+  const exportParams = {
+    width: inputs.width,
+    depth: inputs.depth,
+    span_length: length,
+    clear_cover: 40,
+    fck: inputs.fck,
+    fy: inputs.fy,
+    ast_required: 0, // filled below when result exists
+    moment: inputs.moment,
+    shear: inputs.shear ?? 0,
+  };
+  const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
+  const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
+  const { mutate: exportReport, isPending: reportPending } = useExportReport();
 
   const { state, actions } = useLiveDesign({
     autoDesign,
@@ -160,47 +178,139 @@ export function DesignView() {
         </div>
       </div>
 
-      {/* Right: 3D Viewport + Results */}
-      <div className="flex-1 flex flex-col bg-zinc-900/30">
-        {/* 3D Viewport (top 60%) */}
-        <div className="flex-[3] min-h-0 relative">
+      {/* Right: 3D Viewport + Results — dynamic layout */}
+      <div className="flex-1 flex flex-col bg-zinc-900/30 relative">
+
+        {/* Export dropdown (top-right corner, shown when result exists) */}
+        {state.result && (
+          <div className="absolute top-3 right-3 z-10">
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900/80 backdrop-blur border border-white/10 text-xs text-white/60 hover:text-white/90 hover:border-white/20 transition-all"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Export
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showExportMenu && (
+              <div className="absolute right-0 mt-1.5 w-44 rounded-xl bg-zinc-900 border border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
+                {[
+                  { label: "BBS (CSV)", icon: <Download className="w-3.5 h-3.5" />, loading: bbsPending, onClick: () => { exportBBS({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
+                  { label: "DXF Drawing", icon: <Ruler className="w-3.5 h-3.5" />, loading: dxfPending, onClick: () => { exportDXF({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
+                  { label: "HTML Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success }); setShowExportMenu(false); } },
+                ].map((item) => (
+                  <button key={item.label} onClick={item.onClick} disabled={item.loading}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-white/60 hover:bg-white/5 hover:text-white/90 transition-colors disabled:opacity-40">
+                    {item.loading ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" /> : item.icon}
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 3D Viewport — expands to fill when no result */}
+        <div
+          className={`min-h-0 relative transition-all duration-300 ease-in-out ${
+            !state.result ? "flex-[5]" : resultsCollapsed ? "flex-[5]" : "flex-[3]"
+          }`}
+        >
           <Viewport3D mode="design" forceMode />
           {state.isConnected && state.latency !== null && (
-            <div className="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/50 text-[10px] text-white/40 backdrop-blur">
+            <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-black/50 text-[10px] text-white/40 backdrop-blur">
               {state.latency}ms
+            </div>
+          )}
+
+          {/* Empty state preset button — only when no result and not designing */}
+          {!state.result && !state.isDesigning && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+              <button
+                onClick={() => {
+                  actions.updateInputs({ width: 300, depth: 500, fck: 25, fy: 500, moment: 120, shear: 75 });
+                  actions.updateLength(5000);
+                }}
+                className="px-4 py-2 rounded-xl bg-blue-600/20 border border-blue-500/30 text-xs text-blue-300 hover:bg-blue-600/30 hover:border-blue-500/50 backdrop-blur transition-all"
+              >
+                Try: 300×500 · M25 · Mu=120 kN·m →
+              </button>
             </div>
           )}
         </div>
 
-        {/* Results (bottom 40%) */}
-        <div className="flex-[2] min-h-0 overflow-y-auto border-t border-white/5 p-4">
-          {state.result ? (
-            <div className="space-y-3">
-              <CompactResults result={state.result} />
-              <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />
-              <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
-            </div>
-          ) : state.error ? (
-            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
-              <div>
-                <p className="text-red-400 font-medium text-sm">Design Failed</p>
-                <p className="text-xs text-red-400/60">{state.error}</p>
-              </div>
+        {/* Results — collapses to single bar or expands fully */}
+        {state.result ? (
+          resultsCollapsed ? (
+            /* Collapsed: single-line summary bar */
+            <div
+              className="h-10 shrink-0 border-t border-white/5 flex items-center justify-between px-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
+              onClick={() => setResultsCollapsed(false)}
+            >
+              <CompactResultsBar result={state.result} />
+              <ChevronUp className="w-3.5 h-3.5 text-white/30" />
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <Calculator className="w-10 h-10 text-white/10 mb-3" />
-              <p className="text-white/30 text-sm">Enter parameters to see results</p>
+            /* Expanded results panel */
+            <div className="flex-[2] min-h-0 border-t border-white/5 flex flex-col">
+              <button
+                onClick={() => setResultsCollapsed(true)}
+                className="h-7 shrink-0 flex items-center justify-end px-3 hover:bg-white/[0.02] transition-colors"
+              >
+                <ChevronDown className="w-3.5 h-3.5 text-white/20" />
+              </button>
+              <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
+                <CompactResults result={state.result} />
+                <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />
+                <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
+              </div>
             </div>
-          )}
-        </div>
+          )
+        ) : state.error ? (
+          <div className="shrink-0 mx-4 mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            <div>
+              <p className="text-red-400 font-medium text-xs">Design Failed</p>
+              <p className="text-[10px] text-red-400/60">{state.error}</p>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
 }
 
 /** Compact results display */
+/** Single-line summary bar shown when results panel is collapsed */
+function CompactResultsBar({ result }: { result: BeamDesignResponse }) {
+  const pct = Math.round((result.utilization_ratio ?? 0) * 100);
+  const isOk = result.success;
+  const barColor = pct > 100 ? "bg-rose-500" : pct > 90 ? "bg-amber-400" : "bg-emerald-400";
+  return (
+    <div className="flex items-center gap-3 flex-1 min-w-0">
+      <span className={`text-xs font-semibold ${isOk ? "text-emerald-400" : "text-rose-400"}`}>
+        {isOk ? "✓ SAFE" : "✕ FAIL"}
+      </span>
+      <div className="flex items-center gap-1.5 flex-1 min-w-0">
+        <div className="w-20 h-1.5 bg-zinc-800 rounded-full overflow-hidden shrink-0">
+          <div className={`h-full rounded-full ${barColor}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+        </div>
+        <span className="text-xs text-white/40 tabular-nums">{pct}%</span>
+      </div>
+      {result.flexure?.ast_required && (
+        <span className="text-xs text-white/40 tabular-nums shrink-0">
+          Ast {Math.round(result.flexure.ast_required)} mm²
+        </span>
+      )}
+      {result.shear?.stirrup_spacing && (
+        <span className="text-xs text-white/30 tabular-nums shrink-0">
+          Sv {result.shear.stirrup_spacing}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function CompactResults({ result }: { result: BeamDesignResponse }) {
   const isSuccess = result.success;
   return (
