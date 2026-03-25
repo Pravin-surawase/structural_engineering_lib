@@ -5,9 +5,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install curl for healthcheck
-RUN apt-get update && apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/*
+# Install curl for healthcheck + WeasyPrint system dependencies (cairo, pango, fonts)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libgdk-pixbuf-2.0-0 \
+    libffi-dev \
+    libcairo2 \
+    fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install runtime dependencies
 COPY requirements.txt ./requirements.txt

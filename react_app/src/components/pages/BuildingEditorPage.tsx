@@ -24,11 +24,14 @@ import {
   PanelRightClose,
   Layers,
   ChevronDown,
+  FileText,
+  FileSpreadsheet,
+  File,
 } from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { BeamDetailPanel } from "../design/BeamDetailPanel";
-import { useBatchDesign } from "../../hooks";
+import { useBatchDesign, useExportBuildingSummary } from "../../hooks";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 
@@ -76,8 +79,10 @@ export function BuildingEditorPage() {
   const [floorFilter, setFloorFilter] = useState<string>("all");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [autoDesignTriggered, setAutoDesignTriggered] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
   const gridRef = useRef<AgGridReact>(null);
   const { runBatchDesign, isDesigning } = useBatchDesign();
+  const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
 
   // Global material settings
   const [globalFck, setGlobalFck] = useState(25);
@@ -229,6 +234,35 @@ export function BuildingEditorPage() {
     }
   }, [autoDesignTriggered, beams, handleDesignAll]);
 
+  const handleBuildingExport = useCallback(
+    (format: "html" | "pdf" | "csv") => {
+      setShowExportMenu(false);
+      const payload = beams.map((b) => ({
+        beam_id: b.id,
+        story: b.story ?? "",
+        width: b.b,
+        depth: b.D,
+        span_length: b.span ?? 0,
+        fck: b.fck ?? globalFck,
+        fy: b.fy ?? globalFy,
+        moment: getEnvelopeMu(b),
+        shear: getEnvelopeVu(b),
+        ast_required: b.ast_required ?? 0,
+        ast_provided: b.ast_provided ?? 0,
+        asc_required: b.asc_required ?? 0,
+        bar_count: b.bar_count,
+        bar_diameter: b.bar_diameter,
+        stirrup_diameter: b.stirrup_diameter ?? 8,
+        stirrup_spacing: b.stirrup_spacing,
+        utilization: b.utilization ?? 0,
+        is_safe: b.is_valid ?? false,
+        status: deriveBeamStatus(b),
+      }));
+      exportBuilding({ project_name: "Building Project", beams: payload, format });
+    },
+    [beams, globalFck, globalFy, exportBuilding]
+  );
+
   const handleCellValueChanged = useCallback(
     (event: CellValueChangedEvent<BeamCSVRow>) => {
       if (event.data) {
@@ -250,16 +284,18 @@ export function BuildingEditorPage() {
     () => [
       { headerName: "ID", field: "id", width: 120, pinned: "left", cellClass: "font-mono text-white/80" },
       { headerName: "Story", field: "story", width: 80 },
-      { headerName: "b (mm)", field: "b", width: 75, editable: true, type: "numericColumn", cellClass: "bg-blue-500/5" },
-      { headerName: "D (mm)", field: "D", width: 75, editable: true, type: "numericColumn", cellClass: "bg-blue-500/5" },
-      { headerName: "Span", field: "span", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value ? `${p.value}` : "-" },
+      { headerName: "b (mm)", field: "b", width: 80, editable: true, type: "numericColumn", cellClass: "bg-blue-500/5 text-right font-mono",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toLocaleString() : "-" },
+      { headerName: "D (mm)", field: "D", width: 80, editable: true, type: "numericColumn", cellClass: "bg-blue-500/5 text-right font-mono",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toLocaleString() : "-" },
+      { headerName: "Span (mm)", field: "span", width: 95, type: "numericColumn", cellClass: "text-right font-mono",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toLocaleString() : "-" },
       {
         headerName: "Mu (kN\u00b7m)",
-        width: 90,
+        width: 100,
         editable: true,
         type: "numericColumn",
-        cellClass: "bg-blue-500/5",
+        cellClass: "bg-blue-500/5 text-right font-mono",
         valueGetter: (p) => p.data ? getEnvelopeMu(p.data) : 0,
         valueSetter: (p) => {
           if (p.data) {
@@ -272,10 +308,10 @@ export function BuildingEditorPage() {
       },
       {
         headerName: "Vu (kN)",
-        width: 85,
+        width: 90,
         editable: true,
         type: "numericColumn",
-        cellClass: "bg-blue-500/5",
+        cellClass: "bg-blue-500/5 text-right font-mono",
         valueGetter: (p) => p.data ? getEnvelopeVu(p.data) : 0,
         valueSetter: (p) => {
           if (p.data) {
@@ -287,12 +323,12 @@ export function BuildingEditorPage() {
         valueFormatter: (p) => p.value ? Number(p.value).toFixed(1) : "-",
       },
       {
-        headerName: "Ast Req",
+        headerName: "Ast Req (mm\u00b2)",
         field: "ast_required",
-        width: 85,
+        width: 100,
         type: "numericColumn",
-        valueFormatter: (p) => p.value ? Number(p.value).toFixed(0) : "-",
-        cellClass: "text-white/50",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(0) : "-",
+        cellClass: "text-white/50 text-right font-mono",
       },
       {
         headerName: "Bars",
@@ -314,30 +350,30 @@ export function BuildingEditorPage() {
         cellClass: "text-white/70 font-mono",
       },
       // Advanced columns
-      { headerName: "Mu_start", field: "Mu_start", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(1) || "-", hide: !showAdvanced },
-      { headerName: "Mu_mid", field: "Mu_mid", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(1) || "-", hide: !showAdvanced },
-      { headerName: "Mu_end", field: "Mu_end", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(1) || "-", hide: !showAdvanced },
-      { headerName: "Vu_start", field: "Vu_start", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(1) || "-", hide: !showAdvanced },
-      { headerName: "Vu_end", field: "Vu_end", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(1) || "-", hide: !showAdvanced },
-      { headerName: "Ast Prov", field: "ast_provided", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(0) || "-", hide: !showAdvanced },
-      { headerName: "Asc Req", field: "asc_required", width: 85, type: "numericColumn",
-        valueFormatter: (p) => p.value?.toFixed(0) || "-", hide: !showAdvanced },
+      { headerName: "Mu_start", field: "Mu_start", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
+      { headerName: "Mu_mid", field: "Mu_mid", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
+      { headerName: "Mu_end", field: "Mu_end", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
+      { headerName: "Vu_start", field: "Vu_start", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
+      { headerName: "Vu_end", field: "Vu_end", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(1) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
+      { headerName: "Ast Prov", field: "ast_provided", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(0) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
+      { headerName: "Asc Req", field: "asc_required", width: 90, type: "numericColumn",
+        valueFormatter: (p) => p.value != null ? Number(p.value).toFixed(0) : "-", hide: !showAdvanced, cellClass: "text-right font-mono" },
       { headerName: "Bar #", field: "bar_count", width: 65, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5", hide: !showAdvanced },
-      { headerName: "Bar \u00d8", field: "bar_diameter", width: 70, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5",
+        cellClass: "bg-blue-500/5 text-right font-mono", hide: !showAdvanced },
+      { headerName: "Bar \u00d8", field: "bar_diameter", width: 75, editable: true, type: "numericColumn",
+        cellClass: "bg-blue-500/5 text-right font-mono",
         valueFormatter: (p) => p.value ? `${p.value} mm` : "-", hide: !showAdvanced },
-      { headerName: "Str \u00d8", field: "stirrup_diameter", width: 65, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5",
+      { headerName: "Str \u00d8", field: "stirrup_diameter", width: 70, editable: true, type: "numericColumn",
+        cellClass: "bg-blue-500/5 text-right font-mono",
         valueFormatter: (p) => p.value ? `${p.value}` : "8", hide: !showAdvanced },
-      { headerName: "Str Sp", field: "stirrup_spacing", width: 75, editable: true, type: "numericColumn",
-        cellClass: "bg-blue-500/5",
+      { headerName: "Str Sp", field: "stirrup_spacing", width: 80, editable: true, type: "numericColumn",
+        cellClass: "bg-blue-500/5 text-right font-mono",
         valueFormatter: (p) => p.value ? `${p.value}` : "-", hide: !showAdvanced },
       {
         headerName: "Util.",
@@ -411,9 +447,33 @@ export function BuildingEditorPage() {
             }`}>
             {showAdvanced ? "Advanced" : "Simple"}
           </button>
-          <button className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-white/70 transition-colors" title="Export CSV">
-            <Download className="w-4 h-4" />
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              disabled={exportPending}
+              className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-white/70 transition-colors disabled:opacity-40 flex items-center gap-1"
+              title="Export building summary"
+            >
+              <Download className={`w-4 h-4 ${exportPending ? "animate-pulse" : ""}`} />
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showExportMenu && (
+              <div className="absolute right-0 top-full mt-1 w-52 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-50 py-1 overflow-hidden">
+                <button onClick={() => handleBuildingExport("html")}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white transition-colors">
+                  <FileText className="w-3.5 h-3.5 text-blue-400" /> HTML Summary Report
+                </button>
+                <button onClick={() => handleBuildingExport("pdf")}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white transition-colors">
+                  <File className="w-3.5 h-3.5 text-red-400" /> PDF Summary Report
+                </button>
+                <button onClick={() => handleBuildingExport("csv")}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white transition-colors">
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-400" /> CSV Data Export
+                </button>
+              </div>
+            )}
+          </div>
           <button onClick={() => setShowSidebar(!showSidebar)}
             className={`p-1.5 rounded-lg transition-colors ${showSidebar ? "bg-blue-500/20 text-blue-400" : "hover:bg-white/5 text-white/40 hover:text-white/70"}`}
             title="Toggle checks panel">

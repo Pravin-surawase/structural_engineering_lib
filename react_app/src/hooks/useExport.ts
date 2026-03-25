@@ -129,3 +129,54 @@ export function useExportReport() {
     mutationKey: ["export-report"],
   });
 }
+
+
+// =============================================================================
+// Building / Batch Export
+// =============================================================================
+
+export interface BatchBeamRow {
+  beam_id: string;
+  story?: string;
+  width: number;
+  depth: number;
+  span_length?: number;
+  fck?: number;
+  fy?: number;
+  moment?: number;
+  shear?: number;
+  ast_required?: number;
+  ast_provided?: number;
+  asc_required?: number;
+  bar_count?: number;
+  bar_diameter?: number;
+  stirrup_diameter?: number;
+  stirrup_spacing?: number;
+  utilization?: number;
+  is_safe?: boolean;
+  status?: string;
+}
+
+export interface BuildingExportParams {
+  project_name?: string;
+  beams: BatchBeamRow[];
+  format?: "html" | "pdf" | "csv";
+}
+
+/**
+ * Download a building-level summary report (HTML, PDF, or CSV).
+ */
+export function useExportBuildingSummary() {
+  return useMutation({
+    mutationFn: (params: BuildingExportParams) => {
+      const fmt = params.format || "html";
+      const ext = fmt === "pdf" ? "pdf" : fmt === "csv" ? "csv" : "html";
+      return fetchExport(
+        "building-summary",
+        params,
+        `Building_Summary.${ext}`
+      );
+    },
+    mutationKey: ["export-building-summary"],
+  });
+}

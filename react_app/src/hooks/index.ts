@@ -28,6 +28,7 @@ export {
   useExportBBS,
   useExportDXF,
   useExportReport,
+  useExportBuildingSummary,
 } from './useExport';
 export { useTorsionDesign } from './useTorsionDesign';
 export { useLoadAnalysis } from './useLoadAnalysis';
