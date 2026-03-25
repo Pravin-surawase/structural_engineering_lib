@@ -86,7 +86,7 @@ bbs_cache = SmartCache(max_size_mb=20, ttl_seconds=600)
 # =============================================================================
 
 
-def initialize_session_state():
+def initialize_session_state() -> None:
     """Initialize session state for BBS generator."""
     if "bbs_inputs" not in st.session_state:
         st.session_state.bbs_inputs = {

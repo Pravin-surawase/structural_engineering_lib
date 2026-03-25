@@ -38,7 +38,7 @@ def error_boundary(
 
     def decorator(func: F) -> F:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             try:
                 return func(*args, **kwargs)
             except ZeroDivisionError as e:
@@ -100,7 +100,7 @@ def monitor_performance(threshold_seconds: float = 1.0) -> Callable[[F], F]:
 
     def decorator(func: F) -> F:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             import time
 
             start = time.time()
@@ -147,7 +147,7 @@ def require_session_state(*keys: str) -> Callable[[F], F]:
 
     def decorator(func: F) -> F:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             missing = [key for key in keys if key not in st.session_state]
             if missing:
                 error_msg = (
@@ -182,7 +182,7 @@ def validate_inputs(validator_func: Callable) -> Callable[[F], F]:
 
     def decorator(func: F) -> F:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             # Assume first positional arg or 'inputs' kwarg is what needs validation
             inputs = args[0] if args else kwargs.get("inputs")
 
@@ -264,7 +264,7 @@ class SafeSessionState:
             logger.warning(f"Session state key '{key}' is not a float (got {value})")
             return default
 
-    def set(self, key: str, value: Any):
+    def set(self, key: str, value: Any) -> None:
         """Set value in session state."""
         self.state[key] = value
 
@@ -272,7 +272,7 @@ class SafeSessionState:
         """Check if key exists in session state."""
         return key in self.state
 
-    def clear(self, key: str):
+    def clear(self, key: str) -> None:
         """Remove key from session state if it exists."""
         if key in self.state:
             del self.state[key]

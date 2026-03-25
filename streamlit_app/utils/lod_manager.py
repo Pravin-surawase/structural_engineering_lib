@@ -38,6 +38,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Any
+from collections.abc import Iterator
 
 
 class LODLevel(Enum):
@@ -647,7 +648,7 @@ class GeometryCache:
 
         return simplified, self.get_stats()
 
-    def _evict_lru(self):
+    def _evict_lru(self) -> None:
         """Evict least recently used entries."""
         # Sort by access count, then by creation time
         sorted_entries = sorted(
@@ -673,7 +674,7 @@ class GeometryCache:
             "estimated_time_saved_ms": self._hits * 50,  # ~50ms per cache hit
         }
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all cached entries."""
         self._cache.clear()
         self._hits = 0
@@ -744,7 +745,7 @@ class ProgressiveLoader:
         self,
         geometries: list[dict[str, Any]],
         use_cache: bool = True,
-    ):
+    ) -> Iterator[tuple[list, Any]]:
         """Generator that yields batches with progress state.
 
         Args:
@@ -822,7 +823,7 @@ class ProgressiveLoader:
         ordered.extend(i for i in range(total) if i not in priority_set)
         return ordered
 
-    def cancel(self):
+    def cancel(self) -> None:
         """Cancel progressive loading."""
         self._cancelled = True
 

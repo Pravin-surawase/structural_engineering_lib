@@ -84,7 +84,7 @@ setup_page(title="Cost Optimizer - IS 456 Beam Design", icon="💰", layout="wid
 apply_dark_mode_theme()
 
 
-def initialize_session_state():
+def initialize_session_state() -> None:
     """Initialize session state for cost optimizer."""
     safe_state = SafeSessionState()
 
@@ -585,7 +585,7 @@ def run_cost_optimization(inputs: dict) -> dict:
 
 
 # Main page layout
-def main():
+def main() -> None:
     initialize_session_state()
 
     page_header(
@@ -623,7 +623,7 @@ def main():
         with st.sidebar:
 
             @st.fragment
-            def render_manual_inputs():
+            def render_manual_inputs() -> None:
                 """Manual input form wrapped in fragment for better performance."""
                 st.subheader("Manual Input")
 

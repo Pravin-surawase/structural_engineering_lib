@@ -77,7 +77,7 @@ from utils.layout import setup_page, page_header, section_header
 setup_page(title="Clause Traceability | IS 456", icon="📖", layout="wide")
 
 
-def main():
+def main() -> None:
     """Main page function."""
     page_header("IS 456 Clause Traceability", "Browse and search IS 456:2000 clauses")
 

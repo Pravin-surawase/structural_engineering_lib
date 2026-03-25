@@ -140,7 +140,7 @@ and understand code requirements.
 """
 
 
-def init_session_state():
+def init_session_state() -> None:
     """Initialize session state variables."""
     if "ai_messages" not in st.session_state:
         st.session_state.ai_messages = []
@@ -620,7 +620,7 @@ def _handle_quick_action(message: str) -> None:
     st.rerun()
 
 
-def render_chat_panel():
+def render_chat_panel() -> None:
     """Render the chat panel (left side)."""
     st.markdown("### 💬 Chat")
 
@@ -679,7 +679,7 @@ def render_chat_panel():
             st.rerun()
 
 
-def render_workspace_panel():
+def render_workspace_panel() -> None:
     """Render the workspace panel (right side)."""
     st.markdown("### 📊 Workspace")
 
@@ -1097,7 +1097,7 @@ def render_workspace_panel():
             st.info("Run smart analysis to see dashboard. Ask 'Run smart analysis'.")
 
 
-def main():
+def main() -> None:
     """Main function."""
     init_session_state()
 

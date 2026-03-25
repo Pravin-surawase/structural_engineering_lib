@@ -191,8 +191,8 @@ def detect_format_from_content(content: str, filename: str) -> str:
 
 
 def process_with_adapters(
-    geometry_file,
-    forces_file,
+    geometry_file: Any,
+    forces_file: Any,
     defaults: dict[str, float],
 ) -> tuple[bool, str, list, list]:
     """Process files using the adapter system (reuses multi-format import infrastructure).
@@ -311,7 +311,7 @@ def beams_to_dataframe(beams: list, forces: list, defaults: dict) -> pd.DataFram
     return pd.DataFrame(rows)
 
 
-def process_uploaded_file(file) -> tuple[bool, str]:
+def process_uploaded_file(file: Any) -> tuple[bool, str]:
     """Process uploaded CSV with auto-mapping.
 
     Uses adapter system if available, falls back to simple mapping.
@@ -348,7 +348,7 @@ def process_uploaded_file(file) -> tuple[bool, str]:
         return False, f"Error reading file: {e}"
 
 
-def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
+def process_multi_files(geometry_file: Any, forces_file: Any) -> tuple[bool, str]:
     """Process separate geometry and forces files.
 
     Uses adapter system if available (same as multi-format import page).

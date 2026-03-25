@@ -182,7 +182,7 @@ def generate_geometry(
     }
 
 
-def main():
+def main() -> None:
     """Main demo page."""
     st.title("🏗️ 3D Beam Viewer Demo")
     st.markdown("""

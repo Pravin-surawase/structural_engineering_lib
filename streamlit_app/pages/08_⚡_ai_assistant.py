@@ -147,7 +147,7 @@ def get_openai_config() -> dict[str, Any]:
     }
 
 
-def init_chat_state():
+def init_chat_state() -> None:
     """Initialize chat session state."""
     if "ai_messages" not in st.session_state:
         st.session_state.ai_messages = []
@@ -476,7 +476,7 @@ def _render_ai_export_downloads() -> None:
                 st.session_state.pop("ai_report", None)
 
 
-def render_chat_panel():
+def render_chat_panel() -> None:
     """Render the chat panel (left side)."""
     # Chat container with maximum height
     chat_container = st.container(height=500)
@@ -541,7 +541,7 @@ def render_chat_panel():
                 st.rerun()
 
 
-def main():
+def main() -> None:
     """Main function."""
     init_chat_state()
     init_workspace_state()

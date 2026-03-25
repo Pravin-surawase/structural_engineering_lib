@@ -38,7 +38,7 @@ setup_page(title="Compliance Checker - IS 456 Beam Design", icon="✅", layout="
 apply_dark_mode_theme()
 
 
-def initialize_session_state():
+def initialize_session_state() -> None:
     """Initialize session state for compliance checker."""
     if "compliance_results" not in st.session_state:
         st.session_state.compliance_results = None
@@ -352,7 +352,7 @@ def run_compliance_checks(inputs: dict) -> dict:
         return None
 
 
-def display_check_status(check: dict, config: dict):
+def display_check_status(check: dict, config: dict) -> None:
     """
     Display individual check status with expandable details.
 
@@ -441,7 +441,7 @@ Certificate generated on: {st.session_state.get("timestamp", "N/A")}
 
 
 # Main page layout
-def main():
+def main() -> None:
     initialize_session_state()
 
     page_header(
@@ -479,7 +479,7 @@ def main():
         with st.sidebar:
 
             @st.fragment
-            def render_manual_inputs():
+            def render_manual_inputs() -> None:
                 """Manual input form wrapped in fragment for better performance."""
                 st.subheader("Manual Input")
 
