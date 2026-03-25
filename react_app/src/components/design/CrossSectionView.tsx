@@ -14,6 +14,8 @@ interface CrossSectionViewProps {
   barDia?: number;
   /** Override calculated bar count — use actual design value when available */
   barCount?: number;
+  /** Required compression steel mm² — used to compute top bar count matching 3D geometry */
+  ascRequired?: number;
   /** Utilization ratio (0–1+) — colors bars: ≤0.85 emerald, ≤1.0 amber, >1.0 rose */
   utilization?: number;
   className?: string;
@@ -27,6 +29,7 @@ export function CrossSectionView({
   stirrupDia = 8,
   barDia: barDiaProp,
   barCount: barCountProp,
+  ascRequired,
   utilization,
   className = "",
 }: CrossSectionViewProps) {
@@ -67,7 +70,10 @@ export function CrossSectionView({
 
   // Position bars along bottom (tension) and possibly top (compression)
   const tensionBars = Math.min(numBars, 6);
-  const compressionBars = Math.min(2, Math.ceil(numBars * 0.3));
+  // Top bar count: use ascRequired (matches 3D geometry API formula) or fall back to 30% of tension
+  const compressionBars = ascRequired != null && ascRequired > 0
+    ? Math.min(Math.max(2, Math.ceil(ascRequired / barArea)), 6)
+    : Math.min(2, Math.ceil(numBars * 0.3));
 
   const barY_bottom = bY + bH - coverScaled - stirrupR - barR;
   const barY_top = bY + coverScaled + stirrupR + barR;

@@ -105,6 +105,7 @@ class BatchDesignResult(BaseModel):
     asc_required: float = 0.0
     stirrup_spacing: float = 0.0
     is_safe: bool = False
+    utilization_ratio: float = 0.0   # Mu / Mu_cap (moment demand / moment capacity)
     error: str | None = None
 
 
@@ -522,6 +523,9 @@ async def batch_design(
                 if result.shear:
                     is_safe = is_safe and result.shear.is_safe
 
+                mu_cap = result.flexure.mu_lim if result.flexure.mu_lim and result.flexure.mu_lim > 0 else None
+                utilization_ratio = min(beam.mu_knm / mu_cap, 2.0) if mu_cap else 1.0
+
                 results.append(
                     BatchDesignResult(
                         beam_id=beam.id,
@@ -530,6 +534,7 @@ async def batch_design(
                         asc_required=result.flexure.asc_required,
                         stirrup_spacing=result.shear.spacing if result.shear else 0.0,
                         is_safe=is_safe,
+                        utilization_ratio=utilization_ratio,
                     )
                 )
 

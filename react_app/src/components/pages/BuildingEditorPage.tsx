@@ -183,10 +183,12 @@ export function BuildingEditorPage() {
           }
 
           const astReq = result.ast_required ?? beam.ast_required ?? 0;
-          const astMax = 0.04 * beam.b * beam.D;
-          const utilization = astMax > 0 ? astReq / astMax : 0;
           const layout = deriveBarLayout(astReq);
           const isSafe = result.is_safe ?? false;
+          // Prefer Mu/Mu_cap from API; fall back to Ast/Ast_max for legacy responses
+          const utilization = result.utilization_ratio != null && result.utilization_ratio > 0
+            ? result.utilization_ratio
+            : (0.04 * beam.b * beam.D) > 0 ? astReq / (0.04 * beam.b * beam.D) : 0;
 
           return {
             ...beam,
