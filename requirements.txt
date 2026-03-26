@@ -42,7 +42,6 @@ ezdxf>=1.0
 # Rendering & Visualization
 # ===========================================
 matplotlib>=3.5
-plotly>=5.18
 
 # ===========================================
 # Reports (HTML/PDF)
