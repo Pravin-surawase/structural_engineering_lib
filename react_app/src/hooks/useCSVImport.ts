@@ -18,18 +18,15 @@ import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materia
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 export interface ImportedBeam {
-  beam_id: string;
+  id: string;
   story: string;
   width_mm: number;
   depth_mm: number;
   span_mm: number;
   fck_mpa: number;
   fy_mpa: number;
-  moment_start_knm?: number;
-  moment_mid_knm?: number;
-  moment_end_knm?: number;
-  shear_start_kn?: number;
-  shear_end_kn?: number;
+  mu_knm: number;
+  vu_kn: number;
   cover_mm: number;
   unit_source?: string;
 }
@@ -69,7 +66,7 @@ interface CSVImportResponse {
   message: string;
   beam_count: number;
   beams: ImportedBeam[];
-  column_mapping: Record<string, string>;
+  format_detected: string;
   warnings: string[];
 }
 
@@ -84,14 +81,24 @@ interface DualCSVImportResponse {
   unmatched_forces: string[];
 }
 
+interface BatchDesignResult {
+  beam_id: string;
+  success: boolean;
+  ast_required: number;
+  asc_required: number;
+  stirrup_spacing: number;
+  is_safe: boolean;
+  utilization_ratio: number;
+  error: string | null;
+}
+
 interface BatchDesignResponse {
   success: boolean;
   message: string;
   total: number;
-  successful: number;
+  passed: number;
   failed: number;
-  results: DesignedBeam[];
-  warnings: string[];
+  results: BatchDesignResult[];
 }
 
 /**
@@ -222,18 +229,16 @@ export function useCSVFileImport() {
       if (data.success) {
         // Convert to store format
         const beams = data.beams.map((b) => ({
-          id: b.beam_id,
+          id: b.id,
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
           span: b.span_mm,
           fck: b.fck_mpa,
           fy: b.fy_mpa,
-          Mu_start: b.moment_start_knm,
-          Mu_mid: b.moment_mid_knm,
-          Mu_end: b.moment_end_knm,
-          Vu_start: b.shear_start_kn,
-          Vu_end: b.shear_end_kn,
+          Mu_mid: b.mu_knm,
+          Vu_start: b.vu_kn,
+          Vu_end: b.vu_kn,
           cover: b.cover_mm,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
@@ -284,18 +289,16 @@ export function useCSVTextImport() {
       setImporting(false);
       if (data.success) {
         const beams = data.beams.map((b) => ({
-          id: b.beam_id,
+          id: b.id,
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
           span: b.span_mm,
           fck: b.fck_mpa,
           fy: b.fy_mpa,
-          Mu_start: b.moment_start_knm,
-          Mu_mid: b.moment_mid_knm,
-          Mu_end: b.moment_end_knm,
-          Vu_start: b.shear_start_kn,
-          Vu_end: b.shear_end_kn,
+          Mu_mid: b.mu_knm,
+          Vu_start: b.vu_kn,
+          Vu_end: b.vu_kn,
           cover: b.cover_mm,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
@@ -345,16 +348,16 @@ export function useDualCSVImport() {
       setImporting(false);
       if (data.success) {
         const beams = data.beams.map((b) => ({
-          id: b.beam_id,
+          id: b.id,
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
           span: b.span_mm,
           fck: b.fck_mpa,
           fy: b.fy_mpa,
-          Mu_mid: b.moment_mid_knm ?? b.moment_start_knm ?? b.moment_end_knm ?? 0,
-          Vu_start: b.shear_start_kn ?? b.shear_end_kn ?? 0,
-          Vu_end: b.shear_end_kn ?? b.shear_start_kn ?? 0,
+          Mu_mid: b.mu_knm,
+          Vu_start: b.vu_kn,
+          Vu_end: b.vu_kn,
           cover: b.cover_mm,
           point1: b.point1,
           point2: b.point2,

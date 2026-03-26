@@ -309,6 +309,14 @@
       "script": ".venv/bin/python scripts/test_import_3d_pipeline.py",
       "description": "End-to-end test: CSV import → beam design → 3D geometry pipeline"
     },
+    "test import pipeline": {
+      "script": ".venv/bin/python scripts/test_import_pipeline.py",
+      "description": "E2E test: all 4 import endpoints (sample, single CSV, dual CSV, batch design)"
+    },
+    "test sample endpoint": {
+      "script": ".venv/bin/python scripts/test_sample_endpoint.py",
+      "description": "Diagnostic test for /api/v1/import/sample endpoint"
+    },
     "test vba adapter": {
       "script": ".venv/bin/python scripts/test_api_parity.py",
       "description": "(REMOVED) test_vba_adapter.py was removed. Use test_api_parity.py for adapter tests."

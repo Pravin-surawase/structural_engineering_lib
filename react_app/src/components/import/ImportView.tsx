@@ -5,7 +5,7 @@
  * Step 2: Preview imported beams in table
  * Step 3: Navigate to building editor
  */
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileDropZone } from "../ui/FileDropZone";
 import {
@@ -127,7 +127,14 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
   const [importMode, setImportMode] = useState<"single" | "dual">("single");
   const [geometryFile, setGeometryFile] = useState<File | null>(null);
   const [forcesFile, setForcesFile] = useState<File | null>(null);
-  const { importFiles, isImporting: isDualImporting, error: dualError } = useDualCSVImport();
+  const { importFiles, isImporting: isDualImporting, error: dualError, data: dualData } = useDualCSVImport();
+
+  // Transition to preview step when dual import completes successfully
+  React.useEffect(() => {
+    if (dualData?.success && dualData.beam_count > 0) {
+      onFileImported(dualData.beam_count);
+    }
+  }, [dualData, onFileImported]);
 
   const handleDualImport = useCallback(() => {
     if (!geometryFile || !forcesFile) return;

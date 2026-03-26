@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-26",
-  "file_count": 79,
+  "last_updated": "2026-03-27",
+  "file_count": 81,
   "files": [
     {
       "name": "README.md",
@@ -265,7 +265,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "dfd1c2529df9"
+      "content_hash": "28db58148db4"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -2670,6 +2670,112 @@
       "content_hash": "e7cf781dc714"
     },
     {
+      "name": "test_import_pipeline.py",
+      "type": "python",
+      "size_lines": 249,
+      "last_updated": "2026-03-27",
+      "description": "End-to-end test of all import paths.",
+      "functions": [
+        {
+          "name": "test",
+          "params": [
+            "name",
+            "fn"
+          ]
+        },
+        {
+          "name": "api_get",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "api_post_json",
+          "params": [
+            "path",
+            "body"
+          ]
+        },
+        {
+          "name": "api_post_form",
+          "description": "Multipart form POST.",
+          "params": [
+            "path",
+            "fields",
+            "files"
+          ]
+        },
+        {
+          "name": "simulate_store_mapping",
+          "description": "Simulates the onSuccess mapping in useCSVImport.ts / sampleData.ts.",
+          "params": [
+            "beam_from_api",
+            "has_3d"
+          ]
+        },
+        {
+          "name": "test_health"
+        },
+        {
+          "name": "test_sample"
+        },
+        {
+          "name": "test_sample_fields"
+        },
+        {
+          "name": "test_sample_mapping"
+        },
+        {
+          "name": "test_sample_response_shape"
+        },
+        {
+          "name": "test_sample_all_3d"
+        },
+        {
+          "name": "test_sample_all_stories"
+        },
+        {
+          "name": "test_single_csv"
+        },
+        {
+          "name": "test_single_csv_shape"
+        },
+        {
+          "name": "test_single_csv_mapping"
+        },
+        {
+          "name": "test_dual_csv"
+        },
+        {
+          "name": "test_dual_csv_shape"
+        },
+        {
+          "name": "test_dual_csv_3d"
+        },
+        {
+          "name": "test_dual_csv_mapping"
+        },
+        {
+          "name": "test_batch_design"
+        }
+      ],
+      "constants": [
+        "API",
+        "BASE",
+        "PASS",
+        "FAIL"
+      ],
+      "content_hash": "2b115c76164b"
+    },
+    {
+      "name": "test_sample_endpoint.py",
+      "type": "python",
+      "size_lines": 50,
+      "last_updated": "2026-03-27",
+      "description": "Quick test of the sample data endpoint.",
+      "content_hash": "0e76cffe0a7b"
+    },
+    {
       "name": "update_test_stats.py",
       "type": "python",
       "size_lines": 211,
@@ -2966,5 +3072,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "a64985deca2e6498"
+  "content_hash": "294951d8655c5d5d"
 }
