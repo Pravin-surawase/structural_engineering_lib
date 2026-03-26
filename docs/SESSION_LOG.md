@@ -6,19 +6,26 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2026-03-25 — Session
 
+**Focus:** TASK-515 Load Calculator, TASK-514 PDF Export, TASK-518 Torsion API
+
 ### Summary
--
+- TASK-518: Torsion design — FastAPI endpoint + React hook + DesignView toggle
+- TASK-515: Load Calculator — FastAPI endpoint + React panel + MiniDiagram
+- TASK-514: PDF Export — WeasyPrint + extend export router + React PDF button
+- Created WORKLOG.md compact change log
 
 ### PRs Merged
 | PR | Summary |
 |----|---------|
-| #XX | - |
+| — | Direct commits (docs + features) |
 
 ### Key Deliverables
--
+- 3 new FastAPI endpoints (torsion, load calc, PDF export)
+- 3 new React hooks (useTorsionDesign, useLoadAnalysis, useExport PDF)
+- WORKLOG.md established
 
 ### Notes
--
+- Mac Mini setup in progress
 
 
 ## 2026-03-24 — Session

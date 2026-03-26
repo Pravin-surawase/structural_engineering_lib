@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-03-25
-**Files:** 81
+**Last Updated:** 2026-03-26
+**Files:** 79
 
 ## Config Files
 
@@ -44,7 +44,6 @@
 | [check_python_version.py](check_python_version.py) | Python Version Consistency Checker | 0 | 5 | 215 |
 | [check_repo_hygiene.py](check_repo_hygiene.py) | Fail if tracked hygiene artifacts exist in the repository. | 0 | 1 | 44 |
 | [check_scripts_index.py](check_scripts_index.py) | Ensure scripts/index.json and automation-map.json match the  | 0 | 1 | 164 |
-| [check_streamlit.py](check_streamlit.py) | Unified Streamlit validation CLI. | 4 | 4 | 2367 |
 | [check_tasks_format.py](check_tasks_format.py) | Validate docs/TASKS.md structure and WIP rules. | 0 | 1 | 160 |
 | [check_type_annotations.py](check_type_annotations.py) | Type Annotation Checker for Streamlit Application | 4 | 1 | 542 |
 | [cleanup_stale_branches.py](cleanup_stale_branches.py) | Cleanup stale remote branches. | 0 | 7 | 187 |
@@ -60,18 +59,17 @@
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 245 |
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 10 | 800 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
-| [lint_vba.py](lint_vba.py) | VBA Syntax Linter - Pre-import validation | 1 | 1 | 212 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 512 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 470 |
+| [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 204 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 6 | 369 |
-| [run_vba_smoke_tests.py](run_vba_smoke_tests.py) | Run VBA smoke tests via Excel automation (macOS). | 0 | 2 | 155 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 484 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 1288 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 1401 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 389 |
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script (V3 Preparation) | 2 | 10 | 444 |
+| [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 207 |
 | [test_import_3d_pipeline.py](test_import_3d_pipeline.py) | Import → Design → 3D Pipeline Test | 0 | 1 | 205 |
-| [test_vba_adapter.py](test_vba_adapter.py) | Test ETABSAdapter with actual VBA ETABS export data. | 0 | 1 | 171 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 608 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 306 |

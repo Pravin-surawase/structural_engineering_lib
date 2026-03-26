@@ -82,6 +82,13 @@ All notable changes to this project will be documented in this file.
   - Fixed invalid `gpt-5-mini` to `gpt-4o-mini`
   - Updated all occurrences in code and secrets
 
+## [0.19.0] - 2026-01-21
+
+### Changed
+- **DXF Schedule Polish** — Column widths, text sizing, smart truncation
+- **AI Model Name Fix** — Fixed invalid `gpt-5-mini` to `gpt-4o-mini`
+- **Streamlit API Index** — Component reuse index for Streamlit app
+
 ## [0.18.0] - 2026-01-20
 
 ### Added

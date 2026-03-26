@@ -17,6 +17,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!react_app/src/lib/
 lib64/
 parts/
 sdist/

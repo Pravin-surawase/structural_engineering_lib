@@ -101,9 +101,7 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 | `current-state-and-goals.md` | `planning/current-state-and-goals.md` |
 | `deep-project-map.md` | `architecture/deep-project-map.md` |
 | `development-guide.md` | `contributing/development-guide.md` |
-| `excel-addin-guide.md` | `contributing/excel-addin-guide.md` |
 | `excel-quickstart.md` | `getting-started/excel-quickstart.md` |
-| `excel-tutorial.md` | `getting-started/excel-tutorial.md` |
 | `getting-started-python.md` | `getting-started/python-quickstart.md` |
 | `is456-quick-reference.md` | `reference/is456-formulas.md` |
 | `known-pitfalls.md` | `reference/known-pitfalls.md` |
@@ -115,8 +113,6 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 | `research-detailing.md` | `planning/research-detailing.md` |
 | `testing-strategy.md` | `contributing/testing-strategy.md` |
 | `troubleshooting.md` | `reference/troubleshooting.md` |
-| `vba-guide.md` | `contributing/vba-guide.md` |
-| `vba-testing-guide.md` | `contributing/vba-testing-guide.md` |
 | `verification-examples.md` | `verification/examples.md` |
 | `verification-pack.md` | `verification/pack.md` |
 
@@ -151,10 +147,9 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 ## For Most Users (recommended reading order)
 
 1) **Quick start (Python):** [getting-started/python-quickstart.md](getting-started/python-quickstart.md)
-2) **Excel usage tutorial:** [getting-started/excel-tutorial.md](getting-started/excel-tutorial.md)
-3) **Full API surface:** [reference/api.md](reference/api.md)
-4) **IS 456 formula cheat sheet:** [reference/is456-formulas.md](reference/is456-formulas.md)
-5) **Problems & fixes:** [reference/troubleshooting.md](reference/troubleshooting.md)
+2) **Full API surface:** [reference/api.md](reference/api.md)
+3) **IS 456 formula cheat sheet:** [reference/is456-formulas.md](reference/is456-formulas.md)
+4) **Problems & fixes:** [reference/troubleshooting.md](reference/troubleshooting.md)
 
 ---
 
@@ -221,7 +216,6 @@ If you want to understand the concepts and the code step by step, start here:
 - Library contract (stability promises): [reference/library-contract.md](reference/library-contract.md)
 - BBS + DXF contract: [reference/bbs-dxf-contract.md](reference/bbs-dxf-contract.md)
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
-- VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Insights verification pack: [verification/insights-verification-pack.md](verification/insights-verification-pack.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
 - **Git workflow for AI agents:** [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) ⚠️
@@ -229,8 +223,6 @@ If you want to understand the concepts and the code step by step, start here:
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Contributor learning paths: [contributing/learning-paths.md](contributing/learning-paths.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
-- VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)
-- Packaging the add-in (`.xlam`): [contributing/excel-addin-guide.md](contributing/excel-addin-guide.md)
 - Common engineering/coding traps: [reference/known-pitfalls.md](reference/known-pitfalls.md)
 - Git workflow rules: [_internal/git-governance.md](_internal/git-governance.md)
 

@@ -88,32 +88,18 @@
 | TASK-525 | Smart HubPage replacing ModeSelectPage | — | 📋 Next |
 | TASK-515 | Load Calculator (FastAPI + React) | Copilot | ✅ Done |
 
-## Up Next (v0.21 — recommended order)
+## Up Next
 
-### React UX Phase A (remaining — zero new API calls, high visual impact)
-
-| ID | Task | Est | Priority | Status |
-|----|------|-----|----------|--------|
-| TASK-522 | BeamDetailPanel in BuildingEditorPage (beam click → 3D rebar + results) | 3–4h | 🔴 High | ✅ Done |
-| TASK-523 | Activate FloatingDock + BentoGrid Dashboard (already built, just wire up) | 2–3h | 🔴 High | ✅ Done |
-| TASK-524 | DesignView dynamic layout + unified export dropdown | 2–3h | 🔴 High | ✅ Done |
-| TASK-525 | Smart HubPage replacing ModeSelectPage | 3–4h | 🟡 Medium | 📋 |
-| TASK-526 | Cross-section annotations (utilization color, actual barDia/barCount) | 2–3h | 🟡 Medium | ✅ Done |
-| TASK-527 | TopBar context badges + SettingsPanel slide-over | 2h | 🟡 Medium | 📋 |
-| TASK-528 | Workflow breadcrumb for batch flow | 1h | 🟢 Low | 📋 |
-
-### Library Expansion (after UX phase)
-
-| ID | Task | Est | Priority | Status |
-|----|------|-----|----------|--------|
-| TASK-514 | PDF Export (WeasyPrint + extend export router + React) | 1–2d | 🔴 High | ✅ Done |
-| TASK-515 | Load Calculator (FastAPI endpoint + React panel) | 2–3d | 🔴 High | ✅ Done |
-| TASK-516 | Triangular + Moment load stubs in load_analysis.py | 1d | 🟡 Medium | 📋 |
-| TASK-517 | Project BOQ (Python module + FastAPI + React panel) | 3–4d | 🔴 High | 📋 |
-| TASK-518 | Torsion API + React (expose existing Python via FastAPI) | 2–3d | 🟡 Medium | ✅ Done |
-| TASK-519 | Alternatives Panel — Pareto front in DesignView | 3–4d | 🟡 Medium | 📋 |
-| TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | 2–3d | 🟡 Medium | 📋 |
-| TASK-521 | Beam Rationalization (new algo + FastAPI + React) | 1–2w | 🟢 Low | 📋 |
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| TASK-525 | Smart HubPage replacing ModeSelectPage | — | 3–4h | 🟡 Medium | 📋 |
+| TASK-527 | TopBar context badges + SettingsPanel slide-over | — | 2h | 🟡 Medium | 📋 |
+| TASK-528 | Workflow breadcrumb for batch flow | — | 1h | 🟢 Low | 📋 |
+| TASK-516 | Triangular + Moment load stubs in load_analysis.py | — | 1d | 🟡 Medium | 📋 |
+| TASK-517 | Project BOQ (Python module + FastAPI + React panel) | — | 3–4d | 🔴 High | 📋 |
+| TASK-519 | Alternatives Panel — Pareto front in DesignView | — | 3–4d | 🟡 Medium | 📋 |
+| TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
+| TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
 
 ## Backlog
 

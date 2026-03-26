@@ -50,13 +50,8 @@
       "description": "Find and auto-fix broken internal links in markdown files"
     },
     "check streamlit code": {
-      "script": ".venv/bin/python scripts/check_streamlit.py --all-pages",
-      "description": "Detect Streamlit runtime errors before they happen (fragments, session_state, imports)",
-      "options": {
-        "--all-pages": "Check every Streamlit page",
-        "--fragments": "Fragment-specific checks only",
-        "--fix": "Auto-fix safe issues"
-      }
+      "script": ".venv/bin/python scripts/check_fastapi_issues.py",
+      "description": "(REMOVED) check_streamlit.py was removed. Use check_fastapi_issues.py for backend checks."
     },
     "run tests": {
       "script": "./run.sh test",
@@ -212,8 +207,8 @@
       }
     },
     "validate streamlit session state": {
-      "script": ".venv/bin/python scripts/check_streamlit.py --all-pages",
-      "description": "Audit Streamlit session state and runtime patterns (consolidated into check_streamlit.py)"
+      "script": ".venv/bin/python scripts/check_fastapi_issues.py",
+      "description": "(REMOVED) check_streamlit.py was removed. Streamlit validation deprecated."
     },
     "check docker config": {
       "script": ".venv/bin/python scripts/check_docker_config.py",
@@ -315,8 +310,8 @@
       "description": "End-to-end test: CSV import → beam design → 3D geometry pipeline"
     },
     "test vba adapter": {
-      "script": ".venv/bin/python scripts/test_vba_adapter.py",
-      "description": "Test ETABSAdapter with actual VBA ETABS export data"
+      "script": ".venv/bin/python scripts/test_api_parity.py",
+      "description": "(REMOVED) test_vba_adapter.py was removed. Use test_api_parity.py for adapter tests."
     },
     "external cli test": {
       "script": ".venv/bin/python scripts/external_cli_test.py",
@@ -349,13 +344,13 @@
       "script": ".venv/bin/python scripts/generate_client_sdks.py",
       "description": "Generate TypeScript/Python client SDKs from FastAPI OpenAPI spec"
     },
-    "lint vba": {
-      "script": ".venv/bin/python scripts/lint_vba.py",
-      "description": "VBA syntax linting — validate before Excel import"
+    "preflight checks": {
+      "script": ".venv/bin/python scripts/preflight.py",
+      "description": "Pre-flight checks before starting work (branch, venv, ports, conflicts)"
     },
-    "run vba smoke tests": {
-      "script": ".venv/bin/python scripts/run_vba_smoke_tests.py",
-      "description": "Run VBA smoke tests via Excel automation (macOS)"
+    "test changed files": {
+      "script": ".venv/bin/python scripts/test_changed.py",
+      "description": "Run tests only for changed files (auto-detect from git diff)"
     },
     "render dxf": {
       "script": ".venv/bin/python scripts/dxf_render.py",

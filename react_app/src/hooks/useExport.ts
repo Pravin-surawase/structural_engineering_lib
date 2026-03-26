@@ -59,7 +59,7 @@ function downloadBlob(blob: Blob, filename: string) {
 
 async function fetchExport(
   endpoint: string,
-  body: ExportBeamParams | ExportReportParams,
+  body: ExportBeamParams | ExportReportParams | BuildingExportParams,
   filename: string
 ): Promise<string> {
   const response = await fetch(`${API_BASE_URL}/api/v1/export/${endpoint}`, {

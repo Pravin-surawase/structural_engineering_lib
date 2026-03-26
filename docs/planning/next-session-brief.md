@@ -19,6 +19,7 @@
 |---------|---------|--------|
 | **Previous** | v0.20.0 | ✅ Done (React migration complete) |
 | **Current** | v0.21.0 | 🔄 React UX Overhaul + Library Expansion |
+| **Next** | v0.22.0 | 📋 Planned |
 
 **Last Session:** Session 99 | **Focus:** TASK-515 Load Calculator, TASK-514 PDF Export, TASK-518 Torsion API
 
@@ -122,3 +123,8 @@ cd react_app && npm run dev         # React at :5173
 | Git workflow audit | [docs/audit/git-workflow-audit-pr436.md](../audit/git-workflow-audit-pr436.md) |
 | Agent essentials | [docs/getting-started/agent-essentials.md](../getting-started/agent-essentials.md) |
 | API hooks | [react_app/src/hooks/](../../react_app/src/hooks/) |
+
+## Required Reading
+
+- [docs/getting-started/agent-bootstrap.md](../getting-started/agent-bootstrap.md)
+- [docs/TASKS.md](../TASKS.md)
