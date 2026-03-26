@@ -10,7 +10,6 @@ Open-source IS 456 RC beam design library. Full stack:
 - **Python core** (`Python/structural_lib/`) — Pure math, IS 456:2000 code
 - **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (35 endpoints, 12 routers)
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
-- **Streamlit app** (`streamlit_app/`) — Legacy interactive UI
 - **VBA/Excel** (`VBA/`, `Excel/`) — Spreadsheet implementations
 
 ## Git — THE ONE RULE
@@ -27,7 +26,7 @@ Format: `feat|fix|docs|refactor|test|chore|ci(scope): description`
 Core types   → Python/structural_lib/core/           # Base classes, types (no IS 456 math)
 IS 456 Code  → Python/structural_lib/codes/is456/    # Pure math, NO I/O, explicit units
 Services     → Python/structural_lib/services/        # Orchestration: api.py, adapters.py
-UI/IO        → react_app/, streamlit_app/, fastapi_app/
+UI/IO        → react_app/, fastapi_app/
 ```
 
 **Import rule:** Core ← IS 456 ← Services ← UI. Never import upward.

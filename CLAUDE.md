@@ -11,7 +11,7 @@ ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manua
 - **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
 - **IS 456 Code** (`Python/structural_lib/codes/is456/`) — Pure math, NO I/O, explicit units (mm, N/mm²,  kN, kNm)
 - **Services** (`Python/structural_lib/services/`) — Orchestration: `api.py`, `adapters.py`, `beam_pipeline.py` (no formatting)
-- **UI/IO** (`react_app/`, `streamlit_app/`, `fastapi_app/`) — External interfaces only
+- **UI/IO** (`react_app/`, `fastapi_app/`) — External interfaces only
 
 > `Python/structural_lib/api.py` is a **backward-compat stub** — all real code is in `services/api.py`.
 > `adapters.py` → `services/adapters.py` | `geometry_3d.py` → `visualization/geometry_3d.py`

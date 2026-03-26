@@ -13,7 +13,7 @@ Manual git causes 10-30min conflicts. The script handles staging, hooks, pull, a
 - **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
 - **IS 456 Code** (`Python/structural_lib/codes/is456/`) — Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm)
 - **Services** (`Python/structural_lib/services/`) — Orchestration: `api.py`, `adapters.py`, `beam_pipeline.py`
-- **UI/IO** (`react_app/`, `streamlit_app/`, `fastapi_app/`) — Interfaces
+- **UI/IO** (`react_app/`, `fastapi_app/`) — Interfaces
 
 > `Python/structural_lib/api.py` is a **backward-compat stub** — real code is in `services/api.py`.
 
@@ -132,4 +132,4 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 - **API reference:** [api.md](../docs/reference/api.md)
 - **Command cheat sheet:** [agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)
 
-Domain-specific rules (Streamlit, React, VBA, Python core) are in `.github/instructions/` and load automatically per file type.
+Domain-specific rules (React, VBA, Python core) are in `.github/instructions/` and load automatically per file type.
