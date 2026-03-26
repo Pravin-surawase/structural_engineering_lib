@@ -132,4 +132,4 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 - **API reference:** [api.md](../docs/reference/api.md)
 - **Command cheat sheet:** [agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)
 
-Domain-specific rules (React, VBA, Python core) are in `.github/instructions/` and load automatically per file type.
+Domain-specific rules (React, Python core) are in `.github/instructions/` and load automatically per file type.

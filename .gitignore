@@ -60,23 +60,6 @@ htmlcov/
 .ipynb_checkpoints/
 
 # -----------------------------------------------------------------------------
-# Excel / VBA
-# -----------------------------------------------------------------------------
-# Temp files created by Excel
-~$*.xl*
-~$*.xls*
-
-# Excel backup files
-*.xlk
-
-# Excel recovery files
-*.xlsb.recovery
-
-# Lock files
-.~lock.*
-.!*!*  # macOS cloud sync lock files (OneDrive, iCloud, etc.)
-
-# -----------------------------------------------------------------------------
 # macOS
 # -----------------------------------------------------------------------------
 .DS_Store
@@ -98,11 +81,6 @@ Desktop.ini
 # -----------------------------------------------------------------------------
 # Project-specific
 # -----------------------------------------------------------------------------
-# Build artifacts
-*.xlam
-!VBA/Build/*.xlam
-!Excel/StructEngLib.xlam
-
 # Scratch workbooks created by Excel
 Excel/Book*.xlsx
 
@@ -119,12 +97,6 @@ tmp/
 # Stale operational data (deleted in Phase 1 cleanup, Mar 2026)
 git_operations_log/
 metrics/
-
-# VBA corrupt artifact patterns
-VBA/ETABS_Export/.\!*
-
-# VBA ETABS sample output (local only)
-VBA/ETABS_Export_v2/Etabs_output/
 
 # Research raw data (too large for git)
 docs/research/navigation_study/
