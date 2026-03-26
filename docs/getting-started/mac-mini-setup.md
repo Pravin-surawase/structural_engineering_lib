@@ -64,7 +64,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-This installs everything: core library, FastAPI, dev tools, DXF export, PDF generation, 3D CAD.
+`requirements.txt` installs **all** runtime dependencies (FastAPI, pandas, numpy, scipy, etc.).
 
 ### Install the library in editable mode (for development)
 
@@ -73,6 +73,8 @@ cd Python
 pip install -e ".[dev,dxf,render,report,pdf,validation,cad]"
 cd ..
 ```
+
+> **Why both?** `requirements.txt` covers full-stack deps (FastAPI, testing tools, etc.). The editable install (`pip install -e`) registers `structural_lib` as an importable package and adds optional extras (DXF, PDF, CAD). Both are needed.
 
 ### Install pre-commit hooks
 
@@ -150,7 +152,7 @@ cd ..
 ### Option A: Run directly (recommended for development)
 
 ```bash
-cp .env.example .env
+cp .env.example .env   # .env.example exists in repo root
 source .venv/bin/activate
 uvicorn fastapi_app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
@@ -327,6 +329,27 @@ docker compose build --no-cache
 VBA and Excel files are **gitignored** but may exist locally at `VBA/` and `Excel/`.
 These are not needed for the Python/React/FastAPI stack.
 A separate VBA-specific repository is planned for the future.
+
+---
+
+## Reproducible Environment Setup
+
+To replicate your full dev environment on a new machine, export these from your current machine:
+
+```bash
+# On old machine — run once to capture state
+brew bundle dump --file=~/Brewfile          # All Homebrew packages
+code --list-extensions > ~/extensions.txt   # VS Code extensions
+npm list -g --depth=0 > ~/global-npm.txt    # Global npm packages (if any)
+```
+
+Then on the new machine:
+
+```bash
+# Replay
+brew bundle --file=~/Brewfile
+cat ~/extensions.txt | xargs -L 1 code --install-extension
+```
 
 ---
 
