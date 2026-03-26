@@ -44,17 +44,7 @@ Guides for developers and maintainers of the structural engineering library.
 | Guide | Purpose |
 |-------|---------|
 | [Testing Strategy](testing-strategy.md) | Test structure, coverage goals |
-| [VBA Testing Guide](vba-testing-guide.md) | Running VBA test suites |
 | [Docstring Style Guide](docstring-style-guide.md) | Docstring conventions |
-
----
-
-## 📦 VBA & Excel
-
-| Guide | Purpose |
-|-------|---------|
-| [VBA Guide](vba-guide.md) | VBA module conventions |
-| [Excel Add-in Guide](excel-addin-guide.md) | Packaging the .xlam |
 
 ---
 

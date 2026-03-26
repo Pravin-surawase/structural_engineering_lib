@@ -2993,7 +2993,7 @@ render_beam_3d_from_detailing(detailing, is_seismic=True, height=600)
 
 **Further Reading:**
 - [3D JSON Contract](3d-json-contract.md) — TypeScript types and schema
-- [3D Technology Research](../research/3d-technology-deep-dive-research.md) — Architecture decisions
+- [3D Technology Research](../_archive/research/pre-v021/3d-technology-deep-dive-research.md) — Architecture decisions
 
 ### 15.8 API Module Exports
 

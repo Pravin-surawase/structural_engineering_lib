@@ -57,7 +57,7 @@ python -m pytest  # ✅ All pass
 
 This guide implements evidence-based practices from comprehensive research analyzing 12 years of industry data, academic studies, and empirical findings on parallel agent coordination.
 
-**📊 For detailed analysis, see:** [Background Agent Parallel Work Research](../research/background-agent-parallel-work.md) (1,800+ lines, 30+ citations)
+**📊 For detailed analysis, see:** [Background Agent Parallel Work Research](../_archive/research/pre-v021/background-agent-parallel-work.md) (1,800+ lines, 30+ citations)
 
 **Key Research-Backed Findings:**
 1. **WIP Limits:** Optimal WIP=2 (1 MAIN + 1 background) reduces context switching 40% vs. WIP=3+ (Anderson, 2010; Kanban research)

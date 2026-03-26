@@ -725,7 +725,7 @@ Before finalizing, confirm:
 ## 📚 References
 
 - [PR #373](https://github.com/Pravin-surawase/structural_engineering_lib/pull/373) - Three.js POC (completed)
-- [live-3d-visualization-architecture.md](../research/live-3d-visualization-architecture.md) - Full technical analysis (3,297 lines)
+- [live-3d-visualization-architecture.md](../_archive/research/pre-v021/live-3d-visualization-architecture.md) - Full technical analysis (3,297 lines)
 - [8-week-development-plan.md](./8-week-development-plan.md) - Timeline and milestones
 - [Three.js Documentation](https://threejs.org/docs/) - Official API reference
 - [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) - React integration guide

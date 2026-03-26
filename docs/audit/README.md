@@ -67,7 +67,7 @@ This folder contains audit evidence templates, checklists, and generated reports
 
 ## Related Documentation
 
-- [../research/automation-audit-readiness-research.md](../research/automation-audit-readiness-research.md) — Research and standards background
+- [../research/automation-audit-readiness-research.md](../_archive/research/pre-v021/automation-audit-readiness-research.md) — Research and standards background
 - [../reference/automation-catalog.md](../reference/automation-catalog.md) — Script reference
 - [../contributing/testing-strategy.md](../contributing/testing-strategy.md) — Testing requirements
 

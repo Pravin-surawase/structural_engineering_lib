@@ -11,7 +11,7 @@
 
 **Version:** 1.0
 **Owner:** RESEARCHER
-**Related:** [Function Signature Standard](function-signature-standard.md), [Professional API Patterns](../research/professional-api-patterns.md), [UX Patterns](../research/ux-patterns-for-technical-apis.md)
+**Related:** [Function Signature Standard](function-signature-standard.md), [Professional API Patterns](../_archive/research/pre-v021/professional-api-patterns.md), [UX Patterns](../_archive/research/pre-v021/ux-patterns-for-technical-apis.md)
 
 ---
 
@@ -1416,8 +1416,8 @@ print(result.keys())   # Can iterate like dict
 ## References
 
 1. [Function Signature Standard](function-signature-standard.md) - Complementary standard
-2. [Professional API Patterns](../research/professional-api-patterns.md) - SciPy OptimizeResult case study
-3. [UX Patterns](../research/ux-patterns-for-technical-apis.md) - Tuple Mystery problem
+2. [Professional API Patterns](../_archive/research/pre-v021/professional-api-patterns.md) - SciPy OptimizeResult case study
+3. [UX Patterns](../_archive/research/pre-v021/ux-patterns-for-technical-apis.md) - Tuple Mystery problem
 4. Python dataclasses documentation: https://docs.python.org/3/library/dataclasses.html
 5. SciPy OptimizeResult source: https://github.com/scipy/scipy/blob/main/scipy/optimize/_optimize.py
 6. Scikit-learn result conventions: https://scikit-learn.org/stable/glossary.html

@@ -20,7 +20,6 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | Need | Go To |
 |------|-------|
 | Function signatures | [api.md](api.md) |
-| VBA functions | [vba-api-reference.md](vba-api-reference.md) |
 | Formula lookup | [is456-formulas.md](is456-formulas.md) |
 | "Why is output wrong?" | [known-pitfalls.md](known-pitfalls.md) |
 | Error messages | [troubleshooting.md](troubleshooting.md) |
@@ -33,8 +32,6 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | Document | Description |
 |----------|-------------|
 | [api.md](api.md) | Full Python API reference with function signatures |
-| [vba-api-reference.md](vba-api-reference.md) | VBA API reference for Excel integration |
-| [vba-udt-reference.md](vba-udt-reference.md) | VBA User-Defined Types reference |
 | [insights-api.md](insights-api.md) | Insights API for smart analysis features |
 | [api-stability.md](api-stability.md) | API versioning and stability guarantees |
 | [deprecation-policy.md](deprecation-policy.md) | Deprecation timeline and migration paths |
@@ -47,7 +44,6 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) | Bar Bending Schedule and DXF output contract |
 | [dxf-layer-standards.md](dxf-layer-standards.md) | DXF layer naming and standards |
 | [error-schema.md](error-schema.md) | Error object schema and structure |
-| [streamlit-validation.md](streamlit-validation.md) | Streamlit validation rules |
 
 ## IS 456 & Formulas
 

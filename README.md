@@ -9,7 +9,7 @@
 
 Open-source reinforced concrete beam design toolkit for IS 456:2000.
 
-Use it as a Python package, a CLI, a FastAPI backend, a React app, a Streamlit app, or an Excel/VBA reference implementation.
+Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 
 Current packaged release: `0.19.1`
 Current repo focus: `v0.21` React UX overhaul and library expansion
@@ -23,8 +23,6 @@ This repository is broader than the published Python package. It includes:
 - `Python/structural_lib/`: the engineering core and CLI
 - `fastapi_app/`: REST, WebSocket, and SSE interfaces for the frontend
 - `react_app/`: the primary UI, built with React 19, TypeScript, and React Three Fiber
-- `streamlit_app/`: the legacy interactive UI
-- `VBA/` and `Excel/`: spreadsheet-side implementations and artifacts
 - `docs/`: user docs, API reference, architecture notes, and agent bootstrap material
 
 The Python code follows a strict 4-layer architecture:
@@ -32,7 +30,7 @@ The Python code follows a strict 4-layer architecture:
 1. Core types in `Python/structural_lib/core/`
 2. IS 456 math in `Python/structural_lib/codes/is456/`
 3. Orchestration in `Python/structural_lib/services/`
-4. UI and I/O in `react_app/`, `fastapi_app/`, `streamlit_app/`, and `Excel/`
+4. UI and I/O in `react_app/` and `fastapi_app/`
 
 Units are explicit at the API boundary: `mm`, `kN`, `kN*m`, and `N/mm^2`.
 
@@ -180,18 +178,7 @@ React dev server:
 
 Current top-level routes in the React app include `/design`, `/import`, `/editor`, `/dashboard`, and `/batch`. The editor page is the primary workstation — click any beam to see its full 3D reinforcement, cross-section, and IS 456 code checks inline.
 
-### 4. Start Streamlit
-
-```bash
-cd streamlit_app
-../.venv/bin/streamlit run app.py --server.port 8501
-```
-
-Streamlit URL:
-
-- `http://localhost:8501`
-
-### 5. Docker
+### 4. Docker
 
 For a containerized backend:
 
@@ -260,9 +247,6 @@ structural_engineering_lib/
 ├── Python/         # Published Python package and tests
 ├── fastapi_app/    # REST/WebSocket/SSE backend
 ├── react_app/      # Primary frontend
-├── streamlit_app/  # Legacy UI
-├── VBA/            # VBA modules
-├── Excel/          # Excel artifacts
 ├── docs/           # User, developer, and architecture docs
 ├── scripts/        # Repo automation and validation
 └── run.sh          # Unified repo CLI
@@ -278,7 +262,6 @@ Start here, depending on what you need:
 - [docs/getting-started/agent-bootstrap.md](docs/getting-started/agent-bootstrap.md): canonical bootstrap for coding agents
 - [docs/TASKS.md](docs/TASKS.md): current task board
 - [docs/planning/next-session-brief.md](docs/planning/next-session-brief.md): latest handoff and next priorities
-- [streamlit_app/API_INDEX.md](streamlit_app/API_INDEX.md): Streamlit component and function index
 - [llms.txt](llms.txt): compact repo summary for language models
 
 ## Contributing And Repo Workflow

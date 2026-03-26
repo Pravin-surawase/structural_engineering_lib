@@ -32,8 +32,6 @@ What's your background?
 | Guide | Platform | Time |
 |-------|----------|------|
 | [python-quickstart.md](python-quickstart.md) | Python developers | 5 min |
-| [excel-quickstart.md](excel-quickstart.md) | Excel users | 5 min |
-| [excel-tutorial.md](excel-tutorial.md) | Excel users (detailed) | 15 min |
 | [colab-workflow.md](colab-workflow.md) | Google Colab users | 15 min |
 
 ## AI & Copilot Guides

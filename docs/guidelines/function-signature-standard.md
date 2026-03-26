@@ -11,7 +11,7 @@
 
 **Version:** 1.0
 **Owner:** RESEARCHER
-**Related:** [API Design Guidelines](api-design-guidelines.md), [Professional API Patterns](../research/professional-api-patterns.md), [UX Patterns](../research/ux-patterns-for-technical-apis.md)
+**Related:** [API Design Guidelines](api-design-guidelines.md), [Professional API Patterns](../_archive/research/pre-v021/professional-api-patterns.md), [UX Patterns](../_archive/research/pre-v021/ux-patterns-for-technical-apis.md)
 
 ---
 
@@ -1328,8 +1328,8 @@ Use this checklist when reviewing function signature changes:
 
 ## References
 
-1. [Professional API Patterns Research](../research/professional-api-patterns.md) - NumPy, SciPy, Pandas patterns
-2. [UX Patterns for Technical APIs](../research/ux-patterns-for-technical-apis.md) - Cognitive load, discoverability
+1. [Professional API Patterns Research](../_archive/research/pre-v021/professional-api-patterns.md) - NumPy, SciPy, Pandas patterns
+2. [UX Patterns for Technical APIs](../_archive/research/pre-v021/ux-patterns-for-technical-apis.md) - Cognitive load, discoverability
 3. PEP 484 -- Type Hints: https://peps.python.org/pep-0484/
 4. PEP 3102 -- Keyword-Only Arguments: https://peps.python.org/pep-3102/
 5. PEP 570 -- Positional-Only Parameters: https://peps.python.org/pep-0570/

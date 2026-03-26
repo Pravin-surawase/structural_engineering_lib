@@ -44,7 +44,7 @@
 | Document | Purpose |
 |----------|---------|
 | [Planning](../planning/README.md) | Task planning & roadmaps |
-| [Research](../research/README.md) | Research notes |
+| [Research](README.md) | Research notes |
 | [TASKS.md](../TASKS.md) | Active task tracking |
 
 ---

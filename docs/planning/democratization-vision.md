@@ -252,7 +252,7 @@ Every engineer, everywhere, should have access to:
 ## References
 
 - [8-week-development-plan.md](8-week-development-plan.md) — Current roadmap
-- [chat-ui-product-strategy-research.md](../research/chat-ui-product-strategy-research.md) — Prior AI research
-- [3d-visualization-differentiation-strategy.md](../research/3d-visualization-differentiation-strategy.md) — Differentiation strategy
+- [chat-ui-product-strategy-research.md](../_archive/research/pre-v021/chat-ui-product-strategy-research.md) — Prior AI research
+- [3d-visualization-differentiation-strategy.md](../_archive/research/pre-v021/3d-visualization-differentiation-strategy.md) — Differentiation strategy
 - [api.md](../reference/api.md) — Complete API reference
 - [smart_designer.py](../../Python/structural_lib/insights/smart_designer.py) — AI-like insights engine

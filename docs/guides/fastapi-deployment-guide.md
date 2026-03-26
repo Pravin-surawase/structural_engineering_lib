@@ -408,6 +408,6 @@ curl http://localhost:8000/health/info | jq
 
 ## Related Documents
 
-- [Live 3D Visualization Architecture](../research/live-3d-visualization-architecture.md)
+- [Live 3D Visualization Architecture](../_archive/research/pre-v021/live-3d-visualization-architecture.md)
 - [API Reference](../reference/api.md)
 - [Architecture Overview](../architecture/project-overview.md)

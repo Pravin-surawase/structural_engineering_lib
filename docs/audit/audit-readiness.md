@@ -130,5 +130,5 @@ Before each release:
 ## Related Files
 
 - [evidence-bundle-template.md](evidence-bundle-template.md) — Template for release evidence
-- [../research/automation-audit-readiness-research.md](../research/automation-audit-readiness-research.md) — Standards background
+- [../research/automation-audit-readiness-research.md](../_archive/research/pre-v021/automation-audit-readiness-research.md) — Standards background
 - [../reference/automation-catalog.md](../reference/automation-catalog.md) — Script reference

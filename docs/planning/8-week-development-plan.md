@@ -198,7 +198,7 @@ Use `inspect.signature()` BEFORE wrapping library functions.
 
 ### WebSocket Architecture (Hybrid Approach)
 
-Research: [websocket-live-updates-research.md](../research/websocket-live-updates-research.md)
+Research: [websocket-live-updates-research.md](../_archive/research/pre-v021/websocket-live-updates-research.md)
 
 | Use Case | Technology | Reason |
 |----------|------------|--------|
@@ -701,7 +701,7 @@ Build → Test → Polish → Demo → Iterate
 ### For AI Agents
 
 **When starting work on a feature:**
-1. Read this plan + [ai-workspace-expansion-v3.md](../research/ai-workspace-expansion-v3.md)
+1. Read this plan + [ai-workspace-expansion-v3.md](../_archive/research/pre-v021/ai-workspace-expansion-v3.md)
 2. Check current week's priorities
 3. Review related technical docs
 4. Create tasks in `docs/TASKS.md`
@@ -741,7 +741,7 @@ A: No. Use `generate_api_routes.py` to scaffold routes automatically.
 A: Use Tailwind CSS utility classes. No custom CSS files.
 
 **Q: WebSocket vs SSE for feature Y?**
-A: See [websocket-live-updates-research.md](../research/websocket-live-updates-research.md). Interactive = WS, Batch = SSE.
+A: See [websocket-live-updates-research.md](../_archive/research/pre-v021/websocket-live-updates-research.md). Interactive = WS, Batch = SSE.
 
 **Q: This will take longer than estimated. What do I do?**
 A: Document why, provide new estimate, ask for priority adjustment.
@@ -775,8 +775,8 @@ Launch:   March 15, 2026     🚀 V3 Beta
 ## References
 
 ### Core Documentation
-- [ai-workspace-expansion-v3.md](../research/ai-workspace-expansion-v3.md) - V3 architecture
-- [websocket-live-updates-research.md](../research/websocket-live-updates-research.md) - WebSocket details
+- [ai-workspace-expansion-v3.md](../_archive/research/pre-v021/ai-workspace-expansion-v3.md) - V3 architecture
+- [websocket-live-updates-research.md](../_archive/research/pre-v021/websocket-live-updates-research.md) - WebSocket details
 - [automation-foundation-learning-guide.md](../learning/automation-foundation-learning-guide.md) - Sessions 69-72 deep dive
 - [v3-fastapi-learning-guide.md](../learning/v3-fastapi-learning-guide.md) - V3 basics tutorial
 

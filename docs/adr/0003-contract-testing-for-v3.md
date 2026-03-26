@@ -81,5 +81,5 @@ class TestBeamGeometryContract:
 ## Links
 
 - Tasks: TASK-CI-AUDIT
-- Docs: [research/automation-audit-readiness-research.md](../research/automation-audit-readiness-research.md)
+- Docs: [research/automation-audit-readiness-research.md](../_archive/research/pre-v021/automation-audit-readiness-research.md)
 - Code: [Python/tests/integration/test_api_contracts.py](../../Python/tests/integration/test_api_contracts.py)

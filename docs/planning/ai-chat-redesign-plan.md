@@ -513,8 +513,8 @@ def load_sample_data():
 ## Related Documents
 
 - [8-week-development-plan.md](8-week-development-plan.md) - Overall roadmap
-- [live-3d-visualization-architecture.md](../research/live-3d-visualization-architecture.md) - 3D system
-- [ai-effective-usage-patterns.md](../research/ai-effective-usage-patterns.md) - AI model patterns
+- [live-3d-visualization-architecture.md](../_archive/research/pre-v021/live-3d-visualization-architecture.md) - 3D system
+- [ai-effective-usage-patterns.md](../_archive/research/pre-v021/ai-effective-usage-patterns.md) - AI model patterns
 
 ---
 

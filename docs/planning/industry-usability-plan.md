@@ -232,5 +232,5 @@ For v1.0:
 ## References
 
 - [8-week-development-plan.md](../planning/8-week-development-plan.md)
-- [pyvista-evaluation.md](../research/pyvista-evaluation.md)
+- [pyvista-evaluation.md](../_archive/research/pre-v021/pyvista-evaluation.md)
 - [TASKS.md](../TASKS.md)

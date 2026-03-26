@@ -45,7 +45,7 @@ This file is a **catalog** of automation scripts and usage. Research notes, audi
 and roadmaps belong in dedicated research or planning docs.
 
 For automation strategy research, see:
-- [docs/research/ai-agent-effectiveness-research.md](../research/ai-agent-effectiveness-research.md)
+- [docs/research/ai-agent-effectiveness-research.md](../_archive/research/pre-v021/ai-agent-effectiveness-research.md)
 - [docs/TASKS.md](../TASKS.md)
 
 ---
@@ -2748,7 +2748,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 .venv/bin/python scripts/generate_api_routes.py --output api/routes.py  # Generate file
 ```
 
-**Related:** [docs/research/websocket-live-updates-research.md](../research/websocket-live-updates-research.md)
+**Related:** [docs/research/websocket-live-updates-research.md](../_archive/research/pre-v021/websocket-live-updates-research.md)
 
 ---
 
@@ -2824,7 +2824,7 @@ chmod +x scripts/*.sh
 
 - [scripts/index.json](../../scripts/index.json) — full script registry
 - [scripts/automation-map.json](../../scripts/automation-map.json) — task → script routing
-- [automation-audit-readiness-research.md](../research/automation-audit-readiness-research.md) — audit & CI evidence research
+- [automation-audit-readiness-research.md](../_archive/research/pre-v021/automation-audit-readiness-research.md) — audit & CI evidence research
 
 ---
 

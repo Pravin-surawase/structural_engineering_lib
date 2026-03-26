@@ -971,7 +971,7 @@ UI duplication: 0 exact duplicates
 ### Key Accomplishments
 
 1. **Research Refresh**
-   - Updated [ai-agent-effectiveness-research.md](research/ai-agent-effectiveness-research.md)
+   - Updated [ai-agent-effectiveness-research.md](_archive/research/pre-v021/ai-agent-effectiveness-research.md)
    - Added repo reality gaps + external references section
 
 2. **Naming Standards**
@@ -1019,7 +1019,7 @@ UI duplication: 0 exact duplicates
 ### Key Accomplishments
 
 1. **Comprehensive Research Document**
-   - Created [ai-agent-effectiveness-research.md](research/ai-agent-effectiveness-research.md) (677 lines)
+   - Created [ai-agent-effectiveness-research.md](_archive/research/pre-v021/ai-agent-effectiveness-research.md) (677 lines)
    - Analyzed 7 major problem categories with evidence
    - Documented industry best practices (Cursor rules, MCP, RAG patterns)
    - Proposed actionable solutions with implementation roadmap
@@ -1196,7 +1196,7 @@ self.empty_list_assignments: Dict[str, int] = {}  # container → assignment lin
 
 ### Documentation Updated
 
-- [scanner-improvements.md](research/scanner-improvements.md) - Marked Phase 9 complete, updated status
+- [scanner-improvements.md](_archive/research/pre-v021/scanner-improvements.md) - Marked Phase 9 complete, updated status
 
 ### Next Session Tasks
 
@@ -1676,7 +1676,7 @@ Not run (docs-only + UI metadata changes).
 | DXF export bug fix | Fixed column/attribute mismatches in 06_multi_format_import.py |
 | Redundant DXF page | Removed 09_📐_dxf_export.py (integrated in multi-format page) |
 | Duplicate AI assistant | Removed 10_🤖_ai_assistant.py (duplicate of 08_⚡) |
-| Industry research | Created [docs/research/industry-cad-standards-bbs.md](research/industry-cad-standards-bbs.md) |
+| Industry research | Created [docs/research/industry-cad-standards-bbs.md](_archive/research/pre-v021/industry-cad-standards-bbs.md) |
 | Beam grouping | Added `group_similar_beams()` to dxf_export.py |
 | Beam schedule | Added `generate_beam_schedule_table()` and `draw_beam_schedule_table()` |
 | Streamlit integration | Updated batch export to use grouping + show schedule |
@@ -1799,7 +1799,7 @@ Now returns `(figure, lod_stats)` tuple with performance estimates.
 - VTK rendering produces CAD-quality output
 
 **Files Created:**
-- [docs/research/pyvista-evaluation.md](research/pyvista-evaluation.md) - Full comparison
+- [docs/research/pyvista-evaluation.md](_archive/research/pre-v021/pyvista-evaluation.md) - Full comparison
 - [streamlit_app/components/visualization_export.py](../streamlit_app/components/visualization_export.py) - Export module
 
 ### Automation Improvements
@@ -1914,7 +1914,7 @@ Created new `streamlit_app/ai/` module with:
 ### Documentation
 
 Created comprehensive research document:
-- [docs/research/ai-assistant-workspace-integration.md](research/ai-assistant-workspace-integration.md)
+- [docs/research/ai-assistant-workspace-integration.md](_archive/research/pre-v021/ai-assistant-workspace-integration.md)
 - Architecture options analysis (A, B, C)
 - Decision matrix → Hybrid approach recommended
 - 7-day implementation plan
@@ -1981,7 +1981,7 @@ Tools implemented:
 ### Research Conducted
 
 Created comprehensive expansion research document:
-- [docs/research/ai-workspace-expansion-v2.md](research/ai-workspace-expansion-v2.md)
+- [docs/research/ai-workspace-expansion-v2.md](_archive/research/pre-v021/ai-workspace-expansion-v2.md)
 
 **Key Expansion Areas:**
 
@@ -2033,13 +2033,13 @@ Created comprehensive expansion research document:
 
 | Document | Purpose |
 |----------|---------|
-| [ai-workspace-expansion-v2.md](research/ai-workspace-expansion-v2.md) | Detailed expansion research |
+| [ai-workspace-expansion-v2.md](_archive/research/pre-v021/ai-workspace-expansion-v2.md) | Detailed expansion research |
 
 ### Updated Files
 
 | File | Changes |
 |------|---------|
-| [ai-assistant-workspace-integration.md](research/ai-assistant-workspace-integration.md) | Updated Next Steps to reference V2 expansion |
+| [ai-assistant-workspace-integration.md](_archive/research/pre-v021/ai-assistant-workspace-integration.md) | Updated Next Steps to reference V2 expansion |
 
 ### Session Summary
 
@@ -2955,7 +2955,7 @@ We show what ETABS CAN'T: **Actual reinforcement from IS 456 design**
 
 ### Documentation Created
 
-**New:** [3D Visualization Differentiation Strategy](research/3d-visualization-differentiation-strategy.md)
+**New:** [3D Visualization Differentiation Strategy](_archive/research/pre-v021/3d-visualization-differentiation-strategy.md)
 - Analysis of ETABS vs our tool
 - What we already compute (BeamDetailingResult)
 - Feature roadmap for Phase 3 (rebar visualization)
@@ -4456,7 +4456,7 @@ Continuing Session 34 Part 2. User requested:
 
 ### Research Phase ✅
 
-**Research Document:** [docs/research/agent-9-advanced-optimization-research.md](research/agent-9-advanced-optimization-research.md) (450+ lines)
+**Research Document:** [docs/research/agent-9-advanced-optimization-research.md](_archive/research/pre-v021/agent-9-advanced-optimization-research.md) (450+ lines)
 
 **Key Findings:**
 - TASK-286 (Leading Alerts) already done - CI workflow exists at `.github/workflows/leading-indicator-alerts.yml`
@@ -4611,7 +4611,7 @@ Session 34 continuation after completing TASK-145 (BMD/SFD). User requested:
 
 ### TASK-146/147 Research Phase ✅
 
-**Research Document:** [docs/research/task-146-147-research-summary.md](research/task-146-147-research-summary.md) (600+ lines)
+**Research Document:** [docs/research/task-146-147-research-summary.md](_archive/research/pre-v021/task-146-147-research-summary.md) (600+ lines)
 
 **TASK-146 Analysis (DXF Quality Polish):**
 - **Module Size:** 1514 LOC (dxf_export.py), 26 functions

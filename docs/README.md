@@ -15,9 +15,8 @@
 | **AI Agent (working)** | [agent-quick-reference.md](agents/guides/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
 | **AI Agent (coding)** | [ai-agent-coding-guide.md](guides/ai-agent-coding-guide.md) | guide | intermediate | Coding standards, tests, reviews |
 | **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
-| **Excel User** | [excel-tutorial.md](getting-started/excel-tutorial.md) | tutorial | beginner | UDF usage, workbook setup |
 | **Contributor** | [development-guide.md](contributing/development-guide.md) | guide | intermediate | PR process, code style, tests |
-| **Researcher** | [research/README.md](research/README.md) | index | intermediate | Research catalog and findings |
+| **Researcher** | [research/README.md](README.md) | index | intermediate | Research catalog and findings |
 
 ### 📚 By Topic (all docs)
 
@@ -29,7 +28,6 @@
 | **Testing** | [testing-strategy.md](contributing/testing-strategy.md) | guide | intermediate | Test categories, coverage, CI |
 | **Git Workflow** | [git-automation/README.md](git-automation/README.md) | hub | beginner | Git automation hub, scripts, workflow |
 | **Git Workflow (legacy)** | [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) | guide | beginner | Commit, PR, merge rules |
-| **Streamlit API Index** | [../streamlit_app/API_INDEX.md](../streamlit_app/API_INDEX.md) | reference | intermediate | Streamlit components/functions |
 | **Troubleshooting** | [troubleshooting.md](reference/troubleshooting.md) | reference | beginner | Common errors, fixes |
 | **Tasks** | [TASKS.md](TASKS.md) | index | beginner | What to work on next |
 | **Session Log** | [SESSION_LOG.md](SESSION_LOG.md) | log | beginner | Recent work history |
@@ -244,7 +242,7 @@ If you want to understand the concepts and the code step by step, start here:
 - v0.8 implementation playbook: [_archive/2026-01/v0.8-execution-checklist.md](_archive/2026-01/v0.8-execution-checklist.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
 - v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
-- Research index: [research/README.md](research/README.md)
+- Research index: [research/README.md](README.md)
 - High-level production checklist: [planning/production-roadmap.md](_archive/planning/production-roadmap.md)
 
 ---

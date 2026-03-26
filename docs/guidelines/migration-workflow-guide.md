@@ -442,7 +442,7 @@ CLEANUP
 
 - [is456-migration-research.md](../_archive/research-completed/is456-migration-research.md) - Full research
 - [migration-preflight-checklist.md](migration-preflight-checklist.md) - Detailed checklist
-- [enterprise-folder-structure-research.md](../research/enterprise-folder-structure-research.md) - Architecture research
+- [enterprise-folder-structure-research.md](../_archive/research/pre-v021/enterprise-folder-structure-research.md) - Architecture research
 
 ---
 
