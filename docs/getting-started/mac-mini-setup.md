@@ -20,8 +20,13 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 | Homebrew | Latest | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
 | Git | 2.39+ | `brew install git` (or use Xcode CLT) |
 | Python | 3.11.x | `brew install python@3.11` |
-| Node.js | 18+ (recommend 20 LTS) | `brew install node@20` or use `nvm` |
-| Docker Desktop | Latest | `brew install --cask docker` |
+| Node.js | 18+ (v20 LTS or newer) | `brew install node@20` or use `nvm` |
+| Docker + Colima | Latest | `brew install docker docker-compose colima` |
+| VS Code | Latest | `brew install --cask visual-studio-code` |
+
+> **Note:** Node v20+ and v25+ both work. The codebase requires Node 18 minimum.
+>
+> **Why Colima over Docker Desktop?** Colima is lightweight, CLI-based, uses less RAM, and is faster for dev machines. Docker Desktop works too but runs a heavier background VM.
 
 ### System libraries (needed for PDF reports via WeasyPrint)
 
@@ -157,7 +162,15 @@ source .venv/bin/activate
 uvicorn fastapi_app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### Option B: Run via Docker
+### Option B: Run via Docker (Colima)
+
+Start Colima first (if not already running):
+
+```bash
+colima start --cpu 4 --memory 4
+```
+
+Then run the containers:
 
 ```bash
 cp .env.example .env
@@ -168,6 +181,12 @@ For dev with hot-reload:
 
 ```bash
 docker compose -f docker-compose.dev.yml up --build
+```
+
+To stop Colima when done:
+
+```bash
+colima stop
 ```
 
 **API docs:** http://localhost:8000/docs
@@ -320,6 +339,14 @@ The Dockerfile handles system deps automatically. If issues persist:
 
 ```bash
 docker compose build --no-cache
+```
+
+### Colima won't start
+
+```bash
+colima delete    # Remove existing VM
+colima start     # Fresh start
+docker info      # Verify Docker is connected
 ```
 
 ---
