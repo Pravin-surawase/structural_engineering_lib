@@ -22,13 +22,13 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Literal, cast
 
-from structural_lib.core.data_types import OptimizerChecks
 from structural_lib.codes.is456.detailing import (
     STANDARD_BAR_DIAMETERS,
     BarArrangement,
     calculate_bar_spacing,
     check_min_spacing,
 )
+from structural_lib.core.data_types import OptimizerChecks
 
 Objective = Literal["min_area", "min_bar_count", "max_spacing"]
 
