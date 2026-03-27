@@ -92,7 +92,6 @@ DEFAULT_RULES = {
         "allowed_locations": [
             "docs/_active", "docs/_archive", "docs/planning", "docs/_internal",
             "docs/research", "docs/architecture", "docs/reference",
-            "streamlit_app/docs",
         ],
         "pattern": r"-202[0-9]-",
     },

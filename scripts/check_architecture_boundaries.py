@@ -4,7 +4,7 @@
 """Architecture Boundary Linter.
 
 When to use: After adding imports between layers (core / services / UI),
-or before PRs that touch Python/structural_lib/ or streamlit_app/.
+or before PRs that touch Python/structural_lib/ or fastapi_app/.
 
 Enforces the 3-layer architecture by detecting violations:
 
@@ -16,7 +16,7 @@ Enforces the 3-layer architecture by detecting violations:
    - Orchestrates core functions
    - CANNOT import from UI layer
 
-3. UI Layer (streamlit_app/)
+3. UI Layer (react_app/, fastapi_app/)
    - Presentation logic only
    - Can import from any layer
 
@@ -68,7 +68,6 @@ LAYERS = {
             "decimal",
         ],
         "forbidden_imports": [
-            "streamlit",
             "pandas",  # Data processing belongs in application layer
             "structural_lib.api",
             "structural_lib.job_runner",
@@ -90,12 +89,12 @@ LAYERS = {
             "typing",
         ],
         "forbidden_imports": [
-            "streamlit",
         ],
     },
     "ui": {
         "paths": [
-            "streamlit_app",
+            "react_app",
+            "fastapi_app",
         ],
         "allowed_imports": [
             # UI can import anything
@@ -286,12 +285,8 @@ def check_imports(
         for forbidden_pattern in forbidden:
             if imp.module.startswith(forbidden_pattern) or forbidden_pattern in imp.names:
                 fix_hint = ""
-                if layer == "core" and forbidden_pattern == "streamlit":
-                    fix_hint = "Move Streamlit code to streamlit_app/"
-                elif layer == "core" and forbidden_pattern == "pandas":
+                if layer == "core" and forbidden_pattern == "pandas":
                     fix_hint = "Use pure Python in core; pandas belongs in application layer"
-                elif layer == "application" and forbidden_pattern == "streamlit":
-                    fix_hint = "Use dependency injection to receive UI callbacks"
                 elif layer == "ui" and "services." in forbidden_pattern:
                     fix_hint = (
                         f"Import from structural_lib.services.api instead of "

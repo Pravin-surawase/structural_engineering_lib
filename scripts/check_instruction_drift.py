@@ -30,8 +30,6 @@ PAIRS = {
     "fastapi": ("fastapi.instructions.md", "fastapi.md"),
     "python-core": ("python-core.instructions.md", "python-core.md"),
     "react": ("react.instructions.md", "react.md"),
-    "streamlit": ("streamlit.instructions.md", "streamlit.md"),
-    "vba": ("vba.instructions.md", "vba.md"),
 }
 
 

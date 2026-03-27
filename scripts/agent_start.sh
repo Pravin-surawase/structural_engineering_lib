@@ -134,7 +134,6 @@ if [ -z "$QUICK" ]; then
 
     # Check critical dependencies (fail fast if missing)
     "$PROJECT_ROOT/.venv/bin/python" -c "import pydantic" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pydantic"
-    "$PROJECT_ROOT/.venv/bin/python" -c "import streamlit" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS streamlit"
     "$PROJECT_ROOT/.venv/bin/python" -c "import pandas" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pandas"
     "$PROJECT_ROOT/.venv/bin/python" -c "import numpy" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS numpy"
 
@@ -204,13 +203,13 @@ if [ -n "$AGENT" ]; then
     echo ""
     case $AGENT in
         6)
-            echo -e "  ${YELLOW}Focus:${NC} UI/UX, Streamlit app improvements"
+            echo -e "  ${YELLOW}Focus:${NC} UI/UX, React app improvements"
             echo -e "  ${YELLOW}Hub:${NC}   docs/agents/guides/agent-6-quick-start.md"
-            echo -e "  ${YELLOW}Tasks:${NC} Look for UI-* or STREAMLIT-* in TASKS.md"
+            echo -e "  ${YELLOW}Tasks:${NC} Look for UI-* or REACT-* in TASKS.md"
             echo ""
             echo -e "  ${BOLD}Key Commands:${NC}"
-            echo "    .venv/bin/python scripts/check_streamlit.py --all-pages"
-            echo "    .venv/bin/python -m streamlit run streamlit_app/Home.py"
+            echo "    cd react_app && npm run dev"
+            echo "    cd react_app && npm run build"
             ;;
         8)
             echo -e "  ${YELLOW}Focus:${NC} Git workflow, automation, CI/CD"

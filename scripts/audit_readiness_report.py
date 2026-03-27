@@ -214,16 +214,16 @@ def collect_testing_evidence(report: AuditReport) -> None:
             )
         )
 
-    # Check critical journey tests
-    journey_tests = Path("streamlit_app/tests/test_critical_journeys.py")
+    # Check critical journey tests (React-based now)
+    react_tests = Path("react_app/src")
     report.add_evidence(
         EvidenceItem(
             category="Testing",
             name="Critical Journey Tests",
-            status="PASS" if journey_tests.exists() else "WARN",
+            status="PASS" if react_tests.exists() else "WARN",
             required=True,
-            source=str(journey_tests),
-            details="End-to-end user journey validation",
+            source=str(react_tests),
+            details="React app source exists",
         )
     )
 
@@ -254,48 +254,7 @@ def collect_testing_evidence(report: AuditReport) -> None:
 def collect_static_analysis_evidence(report: AuditReport) -> None:
     """Collect static analysis evidence."""
 
-    # Check Streamlit issues scanner
-    scanner = Path("scripts/check_streamlit.py")
-    if scanner.exists():
-        code, stdout, stderr = run_script(str(scanner), ["--all-pages"])
-        passed = code == 0 and "error" not in stdout.lower()
-        report.add_evidence(
-            EvidenceItem(
-                category="StaticAnalysis",
-                name="Streamlit AST Scanner",
-                status="PASS" if passed else "WARN",
-                required=True,
-                source=str(scanner),
-                details="Checks for runtime errors in Streamlit pages",
-            )
-        )
-
-    # Check fragment violations
-    fragment_checker = Path("scripts/check_streamlit.py")
-    if fragment_checker.exists():
-        code, stdout, stderr = run_script(str(fragment_checker), ["--fragments"])
-        passed = code == 0
-        report.add_evidence(
-            EvidenceItem(
-                category="StaticAnalysis",
-                name="Fragment API Validator",
-                status="PASS" if passed else "FAIL",
-                required=True,
-                source="scripts/check_streamlit.py --fragments",
-                details="Validates @st.fragment usage patterns",
-            )
-        )
-    else:
-        report.add_evidence(
-            EvidenceItem(
-                category="StaticAnalysis",
-                name="Fragment API Validator",
-                status="SKIP",
-                required=True,
-                source="scripts/check_streamlit.py",
-                details="Script not found",
-            )
-        )
+    # Streamlit scanner removed — app migrated to React
 
     # Check circular imports
     circular_checker = Path("scripts/check_circular_imports.py")

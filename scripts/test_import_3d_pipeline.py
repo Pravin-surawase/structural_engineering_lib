@@ -29,15 +29,13 @@ from pathlib import Path
 script_dir = Path(__file__).resolve().parent
 project_root = script_dir.parent
 python_dir = project_root / "Python"
-streamlit_dir = project_root / "streamlit_app"
 
 sys.path.insert(0, str(python_dir))
-sys.path.insert(0, str(streamlit_dir))
 
 from structural_lib.adapters import ETABSAdapter
 from structural_lib.models import DesignDefaults
 
-# Import the Streamlit cached design function
+# Import the design function
 try:
     from utils.api_wrapper import cached_design
     DESIGN_AVAILABLE = True

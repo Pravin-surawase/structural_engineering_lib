@@ -133,7 +133,7 @@ def _find_references_python(
     ]
 
     # Search directories
-    search_dirs = ["docs", "agents", "Python", "VBA", "streamlit_app", ".github"]
+    search_dirs = ["docs", "agents", "Python", "VBA", ".github"]
     extensions = [".md", ".py", ".bas", ".txt", ".json", ".yml", ".yaml"]
 
     # Directories to exclude (performance optimization)
@@ -185,7 +185,7 @@ def update_links(
     old_relative = old_path.relative_to(project_root).as_posix()
     new_relative = new_path.relative_to(project_root).as_posix()
 
-    search_dirs = ["docs", "agents", "Python", "streamlit_app"]
+    search_dirs = ["docs", "agents", "Python", "react_app"]
     text_extensions = {".md", ".json", ".yml", ".yaml", ".txt"}
 
     for search_dir in search_dirs:

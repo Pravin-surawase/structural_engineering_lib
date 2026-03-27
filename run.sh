@@ -77,7 +77,7 @@ Options:
   --quick              Fast subset: links, imports, hygiene (<30s)
   --changed            Only run categories for recently changed files
   --pre-commit         Run pre-commit hooks (black, ruff, mypy, isort)
-  --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code|streamlit
+  --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output
   --list               Show available categories and their scripts
@@ -91,7 +91,6 @@ Categories:
   git          Git state, unfinished merges, version consistency
   stale        Stale script refs, instruction drift, bootstrap freshness
   code         Type annotations
-  streamlit    Streamlit issues (until V3 migration complete)
 
 Examples:
   ./run.sh check                      # Run everything
@@ -577,7 +576,7 @@ _run_sh() {
         'generate:Generate indexes and SDKs'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
-    local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code' 'streamlit')
+    local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a pr_subs=('create' 'finish' 'status')
     local -a session_subs=('start' 'end' 'summary' 'sync' 'check')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')

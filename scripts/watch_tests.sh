@@ -65,11 +65,7 @@ while true; do
 
     # Run quick validation
     echo -e "${YELLOW}🔍 Running quick validation...${NC}"
-    if python3 scripts/check_streamlit.py --all-pages --fail-on-critical --quiet 2>/dev/null; then
-        echo -e "${GREEN}  ✓ Scanner passed${NC}"
-    else
-        echo -e "${RED}  ✗ Scanner found issues${NC}"
-    fi
+    echo -e "${GREEN}  ✓ Scanner check skipped (Streamlit removed)${NC}"
 
     echo ""
 

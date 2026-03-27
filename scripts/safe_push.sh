@@ -287,7 +287,6 @@ if ! git commit -m "$COMMIT_MSG" 2>&1 | tee "$HOOK_LOG"; then
   if grep -q "black.*Failed" "$HOOK_LOG"; then FAILED_HOOK="black (Python formatting)"; fi
   if grep -q "ruff.*Failed" "$HOOK_LOG"; then FAILED_HOOK="ruff (Python linting)"; fi
   if grep -q "mypy.*Failed" "$HOOK_LOG"; then FAILED_HOOK="mypy (type checking)"; fi
-  if grep -q "check-streamlit.*Failed" "$HOOK_LOG"; then FAILED_HOOK="Streamlit scanner"; fi
   if grep -q "pylint.*Failed" "$HOOK_LOG"; then FAILED_HOOK="pylint"; fi
   if grep -q "Check markdown.*Failed" "$HOOK_LOG"; then FAILED_HOOK="markdown link checker"; fi
 

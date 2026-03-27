@@ -2,7 +2,7 @@
 """
 Circular Import Detector for Streamlit Application
 
-When to use: After restructuring imports in streamlit_app/. Detects circular import chains.
+When to use: After restructuring imports in Python/structural_lib/. Detects circular import chains.
 
 TASK-404: Detects circular imports that can cause runtime failures.
 
@@ -186,7 +186,6 @@ class DependencyGraph:
         """Check if an import is internal to the project."""
         # Check common project prefixes
         internal_prefixes = [
-            "streamlit_app",
             "structural_lib",
             "Python.structural_lib",
         ]
@@ -263,10 +262,10 @@ class CircularImportChecker:
 
     # Directories to scan
     SCAN_DIRS = [
-        "streamlit_app/pages",
-        "streamlit_app/utils",
-        "streamlit_app/components",
-        "streamlit_app",  # Root streamlit files
+        "Python/structural_lib/codes",
+        "Python/structural_lib/services",
+        "Python/structural_lib/core",
+        "fastapi_app/routers",
     ]
 
     SKIP_PATTERNS = [
