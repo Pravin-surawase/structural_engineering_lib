@@ -5,7 +5,7 @@
 **Status:** Approved
 **Importance:** High
 **Created:** 2026-03-27
-**Last Updated:** 2026-03-27
+**Last Updated:** 2026-03-27 (Session 103 — uvicorn IPv6 fix)
 
 > Tracks every issue found after migrating from the old Mac to the new Mac Mini (M-series, Homebrew, Colima).
 > **Why?** So the next time we set up a machine (or debug a "it worked before" issue), we have instant answers.
@@ -82,8 +82,8 @@ source .venv/bin/activate
 lsof -ti :8000 | xargs kill -9 2>/dev/null
 lsof -ti :5173 | xargs kill -9 2>/dev/null
 
-# 3. Start FastAPI (Terminal 1)
-.venv/bin/uvicorn fastapi_app.main:app --reload --port 8000
+# 3. Start FastAPI (Terminal 1) — use "::" for dual-stack IPv4+IPv6
+.venv/bin/uvicorn fastapi_app.main:app --host "::" --port 8000 --reload
 
 # 4. Start React (Terminal 2)
 cd react_app && npm run dev
@@ -113,6 +113,17 @@ cd react_app && npm run dev
 | **Files changed** | `react_app/src/hooks/useLiveDesign.ts` |
 | **Debug steps tried** | Verified API works via curl, checked CORS preflight, traced `useLiveDesign` → `useDesignWebSocket` → `designStore` data flow, checked WS handler accepts connections (server log shows open→close cycle), identified missing initial trigger and error propagation bug. |
 
+### 9. "Cannot connect to backend" when clicking Sample Building button (Session 103)
+| | |
+|---|---|
+| **Symptom** | Clicking "Sample Building" in Import page → immediate red error: "Cannot connect to backend server. Is FastAPI running on port 8000?" — even though FastAPI is running and `curl http://localhost:8000/health` works fine. |
+| **Root cause** | macOS on Mac Mini resolves `localhost` to **IPv6 `::1` first**. Uvicorn started with `--host 0.0.0.0` only binds IPv4 — browser's fetch to `http://localhost:8000` hits `[::1]:8000` → connection refused → `fetch` throws `TypeError: Failed to fetch` → caught as "Cannot connect" error. `curl` works because it falls back to `127.0.0.1`; browsers don't fall back. |
+| **Why this was missed** | Issue #1 (Vite IPv6) was fixed by binding Vite to `0.0.0.0`. The inverse problem — uvicorn not listening on IPv6 — was overlooked. Both sides need fixing; only one was fixed. |
+| **Why diagnosis took time** | `curl http://localhost:8000/health` returned 200 OK (IPv4 fallback). Health check looked fine. The failure only occurred via browser fetch (IPv6 `::1`). Not obvious without checking IPv6 explicitly: `curl -6 http://localhost:8000/health`. |
+| **Fix** | Start uvicorn with `--host "::"` — dual-stack IPv6 binds **both** `::1` (IPv6) and `0.0.0.0` (IPv4) simultaneously: `.venv/bin/uvicorn fastapi_app.main:app --host "::" --port 8000 --reload` |
+| **Verify** | `curl "http://[::1]:8000/health"` should return `{"status":"healthy"}`. If connection refused, uvicorn is still IPv4-only. |
+| **Files changed** | `docs/getting-started/agent-bootstrap.md`, `docs/getting-started/mac-mini-setup.md`, `docs/planning/github-fix-plan.md` |
+
 ---
 
 ## Validation Results (Session 101)
@@ -139,3 +150,6 @@ cd react_app && npm run dev
 3. **Colima needs explicit start** — unlike Docker Desktop, no background daemon
 4. **Venv activation is per-terminal** — opening a new tab means activating again
 5. **Test the full click path, not just the API** — the sample button bug was a UI wiring issue, not a backend problem
+6. **`curl` lies about localhost connectivity** — `curl` tries IPv4 fallback automatically; browsers do not. Always test with `curl -6` or `curl "http://[::1]:8000"` to simulate browser behavior
+7. **Fix one side of IPv6 mismatch, not just one** — Vite was fixed (issue #1) to bind both IPv4+IPv6. Uvicorn was missed — the same IPv6 mismatch reappeared months later in reverse
+8. **Debug from the browser, not the terminal** — network errors in the React console show the actual failing URL; `curl` from terminal is not equivalent to a browser fetch

@@ -4,6 +4,24 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-03-27 — Session 103 (Mac Mini sync + IPv6 fix)
+
+**Focus:** Post-migration sync, pull PR #440, fix "Cannot connect to backend" on Sample Building
+
+### Summary
+- Pulled PR #440 to Mac Mini (82 files, Streamlit cleanup, TASK-101/102 fixes)
+- Restored `Etabs_CSV/` directory (5 CSV files) via `git checkout HEAD`
+- Verified: 3181 Python tests pass, React builds, FastAPI 43 routes
+- Diagnosed & fixed: "Cannot connect to backend" when clicking Sample Building
+  - Root cause: macOS resolves `localhost` → IPv6 `::1`; uvicorn `--host 0.0.0.0` = IPv4 only
+  - Fix: `uvicorn --host "::"` (dual-stack IPv4+IPv6)
+- Updated docs: agent-bootstrap, mac-mini-setup, mac-mini-migration-issues (#9), github-fix-plan, WORKLOG, next-session-brief
+
+### Key Decision
+`--host "::"` is now the canonical uvicorn start command for this project (not `0.0.0.0`).
+
+---
+
 ## 2026-03-25 — Session
 
 **Focus:** TASK-515 Load Calculator, TASK-514 PDF Export, TASK-518 Torsion API

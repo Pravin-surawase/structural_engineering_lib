@@ -7,6 +7,22 @@
 **Created:** 2026-03-27
 **Last Updated:** 2026-03-27
 
+## Mac Mini Post-Sync Fix (2026-03-27)
+
+### Phase 4: IPv6 localhost fix (applied after pull)
+
+**Problem:** "Cannot connect to backend server" when clicking "Sample Building" in the Import view.
+
+**Root cause:** macOS on Mac Mini resolves `localhost` to IPv6 `::1` first. Uvicorn started with `--host 0.0.0.0` only binds IPv4 — browser fetch to `http://localhost:8000` hits `::1:8000` → connection refused → fetch throws → "Cannot connect" error. `curl` works because it falls back to 127.0.0.1.
+
+**Fix:** Start uvicorn with `--host "::"` (dual-stack IPv6 binds both `::1` and `0.0.0.0`):
+```bash
+.venv/bin/uvicorn fastapi_app.main:app --host "::" --port 8000 --reload
+```
+Updated in: `agent-bootstrap.md` + `mac-mini-setup.md`
+
+---
+
 ## Summary
 
 After the 6-phase repo cleanup (Streamlit removal, VBA/Excel gitignore, research archive, config consolidation), the Mac Mini fresh clone could not import CSVs, load sample building, or build React. This document tracks what was fixed and how.

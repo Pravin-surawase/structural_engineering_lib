@@ -159,7 +159,7 @@ cd ..
 ```bash
 cp .env.example .env   # .env.example exists in repo root
 source .venv/bin/activate
-uvicorn fastapi_app.main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn fastapi_app.main:app --host "::" --port 8000 --reload
 ```
 
 ### Option B: Run via Docker (Colima)

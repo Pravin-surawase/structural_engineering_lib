@@ -12,7 +12,7 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-25
+- Date: 2026-03-27
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,11 +21,31 @@
 | **Current** | v0.21.0 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 99 | **Focus:** TASK-515 Load Calculator, TASK-514 PDF Export, TASK-518 Torsion API
+**Last Session:** Session 103 (Mac Mini) | **Focus:** Post-migration sync, Streamlit cleanup (PR #440), IPv6 uvicorn fix
 
 ---
 
-## Session 99 Summary
+## Session 103 Summary (Mac Mini sync + IPv6 fix)
+
+### Completed
+
+| Task | What was done | Commit/PR |
+|------|--------------|--------|
+| **Git sync** | Pulled PR #440 to Mac Mini — fast-forwarded 82 files, 6 commits | `23c49d9` |
+| **Package reinstall** | `.venv/bin/pip install -e "Python[dev,dxf]"` picked up dependency changes | — |
+| **Verification** | 3181 Python tests pass, React builds (2766 modules), FastAPI 43 routes | — |
+| **Cleanup** | Deleted stale `task/TASK-101` local branch | — |
+| **Etabs_CSV restore** | `git checkout HEAD -- Etabs_CSV/` restored 5 CSV files missing from disk | — |
+| **IPv6 uvicorn fix** | `--host "::"` so browser's `localhost→::1` reaches FastAPI backend | docs only |
+| **Docs updated** | agent-bootstrap, mac-mini-setup, mac-mini-migration-issues (#9), github-fix-plan, WORKLOG | — |
+
+### Root Cause — Why "Cannot connect to backend" Appeared
+
+macOS Mac Mini resolves `localhost` → IPv6 `::1` first in the browser. Uvicorn bound to `--host 0.0.0.0` (IPv4 only). Browser fetch to `http://localhost:8000` → `[::1]:8000` → connection refused → "Cannot connect". `curl` worked (IPv4 fallback). Fix: `--host "::"` (dual-stack).
+
+**Why it took time to find:** `curl` returned 200 OK, health check looked fine. Issue only visible via browser fetch on IPv6 `::1`. Always test IPv6 explicitly: `curl "http://[::1]:8000/health"`.
+
+---
 
 ### Completed
 

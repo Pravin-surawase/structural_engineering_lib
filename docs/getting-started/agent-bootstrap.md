@@ -328,7 +328,7 @@ source .venv/bin/activate
 lsof -ti :8000 | xargs kill -9 2>/dev/null
 
 # 4. Start FastAPI
-.venv/bin/uvicorn fastapi_app.main:app --reload --port 8000
+.venv/bin/uvicorn fastapi_app.main:app --host "::" --port 8000 --reload
 # Running at http://localhost:8000/docs
 # Leave this terminal open — it must keep running
 ```
@@ -383,6 +383,7 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 | `ModuleNotFoundError: structural_lib` | Venv not active or re-install → `source .venv/bin/activate && pip install -e Python/` |
 | React shows blank / "cannot connect" | FastAPI not running — start it first on :8000 |
 | React can't reach API | Ensure FastAPI is running on :8000 first |
+| "Cannot connect to backend" in browser but `curl` works | macOS resolves `localhost` to IPv6 `::1`; uvicorn not bound to IPv6 — use `--host "::"` not `--host 0.0.0.0` |
 | Sample data 404 in Docker | Ensure `Etabs_CSV/` is copied (Dockerfile) or mounted (docker-compose.dev.yml) |
 | Python import errors | Use `.venv/bin/python`, never bare `python` |
 
@@ -544,6 +545,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Use `python` directly | Wrong env, missing deps | Always use `.venv/bin/python` |
 | Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
 | Run `docker` without Colima | "permission denied" errors | Run `colima start` before any `docker` command |
+| `uvicorn --host 0.0.0.0` on Mac Mini | Browser "Cannot connect" but `curl` works | macOS resolves `localhost` to IPv6 `::1`; use `--host "::"` for dual-stack |
 
 ---
 
