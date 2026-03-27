@@ -89,4 +89,12 @@ cd Python && .venv/bin/pytest tests/ -v           # Full suite (85% branch cover
 cd Python && .venv/bin/pytest tests/ -k "test_flexure"  # Specific tests
 ```
 
+## ⚠ DO NOT Over-Explore
+
+**Act on what you know — don't rediscover the project structure every time.**
+
+- Script names, module paths, and API functions are listed in this file — don't `ls` or `grep` to find them again
+- Run ONE targeted command rather than a chain of exploratory searches
+- Use `scripts/discover_api_signatures.py <func>` (not grep chains) to find param names
+
 See [python-core.instructions.md](../instructions/python-core.instructions.md) for full rules.

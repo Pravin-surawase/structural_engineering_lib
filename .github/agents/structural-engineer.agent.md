@@ -85,3 +85,11 @@ cd Python && .venv/bin/pytest tests/unit/test_compliance.py -v
 cd Python && .venv/bin/pytest tests/unit/test_detailing.py -v
 .venv/bin/python scripts/discover_api_signatures.py design_beam_is456
 ```
+
+## ⚠ DO NOT Over-Explore
+
+**Focus on IS 456 compliance — don't run general diagnostics.**
+
+- Run only the tests relevant to the area being checked
+- Don't chain 5+ command explorations to "understand the project" — read this file instead
+- Use `scripts/discover_api_signatures.py <func>` only when you need a specific function's params

@@ -77,6 +77,36 @@ cd react_app && npm run dev                  # React dev server
 - **Session Management** (`/session-management`): Full session start/end automation
 - **Safe File Ops** (`/safe-file-ops`): Safe file move/delete preserving 870+ links
 
+## ⚠ DO NOT Over-Explore
+
+**Act directly — don't run 10 diagnostic commands when you already know what to do.**
+
+❌ BAD (wastes time):
+```bash
+ls scripts/ | grep -i pr
+ls scripts/*.sh | grep -E '(pr|commit)' | head -10
+ls scripts/ | grep -E 'ai_commit|create_task_pr' | head -5
+ls -la run.sh
+git status --short
+git branch --show-current
+git diff --stat
+lsof -ti :5173 2>/dev/null && echo "..."
+./scripts/should_use_pr.sh --explain 2>&1 | head -40
+```
+
+✅ GOOD (just do it):
+```bash
+./scripts/ai_commit.sh "feat: add feature"   # Commit
+./run.sh pr status                            # Check PR requirement (ONE command)
+./run.sh pr create TASK-XXX "desc"            # Create PR if needed
+```
+
+**Rules:**
+- You already know the script names from this file — don't `ls` or `grep` to rediscover them
+- Run ONE diagnostic command max before acting, not a chain of 5-10
+- Don't check port status, git branch, or git diff unless specifically asked
+- Don't `ls -la` files you already know exist
+
 ## Emergency Recovery
 
 ```bash

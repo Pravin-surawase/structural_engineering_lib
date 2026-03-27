@@ -44,6 +44,20 @@ You are a code reviewer for **structural_engineering_lib**. You verify correctne
 - [ ] `cd Python && .venv/bin/pytest tests/ -v` passes
 - [ ] `cd react_app && npm run build` passes (if frontend changed)
 
+## ⚠ DO NOT Over-Explore
+
+**Run checks in priority order. Stop and report when issues emerge — don't run all checks "just to be safe".**
+
+1. Check the specific area changed first (tests for that module)
+2. Architecture boundaries check (if imports changed)
+3. Build check (if frontend touched)
+4. Full `./run.sh check` only if asked or all above pass
+
+**Do NOT:**
+- Run 6+ validation scripts in sequence when only 1-2 areas changed
+- `ls scripts/` or `grep` to find script names — you already know them
+- Run git diagnostic commands unless specifically debugging git issues
+
 ## Validation Commands
 
 ```bash
