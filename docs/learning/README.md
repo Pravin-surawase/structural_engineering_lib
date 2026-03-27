@@ -14,7 +14,6 @@ A guided learning path for engineers new to this codebase. Written for those who
 | **Python developer** | [concepts-map.md](concepts-map.md) then [../architecture/](../architecture/README.md) | 2-3 days |
 | **Structural engineer** | [../getting-started/beginners-guide.md](../getting-started/beginners-guide.md) | 1-2 hours |
 | **Project owner** | [learning-plan.md](learning-plan.md) (follow advanced exercises) | 1 week |
-| **V3 Developer** | [v3-fastapi-learning-guide.md](v3-fastapi-learning-guide.md) | 1-2 days |
 
 ---
 
@@ -34,9 +33,6 @@ A guided learning path for engineers new to this codebase. Written for those who
 
 | # | File | Description | Audience |
 |---|------|-------------|----------|
-| 1 | [docker-fundamentals-guide.md](docker-fundamentals-guide.md) | Docker basics, setup, commands | Developers |
-| 2 | [v3-fastapi-learning-guide.md](v3-fastapi-learning-guide.md) | FastAPI patterns, WebSocket, SSE | V3 Developers |
-| 3 | [automation-foundation-learning-guide.md](automation-foundation-learning-guide.md) | Automation scripts, CI/CD | All Agents |
 
 ---
 

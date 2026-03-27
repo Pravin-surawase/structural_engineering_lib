@@ -39,12 +39,10 @@
 | [research-ai-enhancements.md](research-ai-enhancements.md) | Research Log — AI/High-Value Enhancement | This log captures goals/mindset, a lightweight online-scan s | 515 |
 | [research-detailing.md](research-detailing.md) | IS Code Detailing Research — RESEARCHER  | | Exposure Condition | Minimum Cover (mm) | |--------------- | 288 |
 | [session-30-fragment-crisis-resolution.md](session-30-fragment-crisis-resolution.md) | Session 30 Fragment Crisis Resolution -  | 1. Research analysis (400+ lines) 2. Fix beam_design theme t | 777 |
-| [streamlit-phase-3-implementation-plan.md](streamlit-phase-3-implementation-plan.md) | STREAMLIT PHASE 3 IMPLEMENTATION PLAN | - Attribute mismatches cause runtime failures → **Solution:* | 689 |
 | [structural-automation-platform-phase-0-research-plan.md](structural-automation-platform-phase-0-research-plan.md) | Structural Automation Platform — Phase 0 | We are not building a single automation. We are defining the | 145 |
 | [task-3d-002-implementation-plan.md](task-3d-002-implementation-plan.md) | TASK-3D-002: ETABS 3D Visualization Impl | Transform ETABS batch import page from fake grid visualizati | 271 |
 | [ui-layout-implementation-plan.md](ui-layout-implementation-plan.md) | UI Layout Redesign - Final Decision & Im | - Current sidebar layout wastes 80% of screen space - Indust | 1603 |
 | [v020-stabilization-checklist.md](v020-stabilization-checklist.md) | v0.20.0 Stabilization Checklist | > **Version info:** See TASKS.md for current/next release st | 157 |
-| [v3-streamlit-parity-library-evolution-plan.md](v3-streamlit-parity-library-evolution-plan.md) | V3 Streamlit Parity + Library Evolution  | We already have a strong library core (design, adapters, sma | 313 |
 | [weak-points-audit.md](weak-points-audit.md) | Weak Points Audit — Deep Analysis | Deep audit of structural, architectural, and quality weak po | 251 |
 
 ## Subfolders

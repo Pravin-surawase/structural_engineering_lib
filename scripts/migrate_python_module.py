@@ -42,7 +42,6 @@ SEARCH_DIRS = [
     "Python/tests",
     "fastapi_app",
     "scripts",
-    "streamlit_app",
     "tests",
 ]
 

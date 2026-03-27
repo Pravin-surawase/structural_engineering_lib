@@ -102,6 +102,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastInputsRef = useRef(inputs);
   const abortRef = useRef<AbortController | null>(null);
+  const initialDesignFired = useRef(false);
 
   // REST fallback is active when WS is not connected
   const isFallbackActive = !ws.isConnected && (ws.status === 'disconnected' || ws.status === 'error');
@@ -154,6 +155,13 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     isLoading: isLoadingGeometry,
     error: geometryError,
   } = useBeamGeometry(geometryParams, { enabled: Boolean(geometryParams) });
+
+  // Initial design on mount — fire REST immediately so user sees a result
+  useEffect(() => {
+    if (!autoDesign || !enabled || initialDesignFired.current) return;
+    initialDesignFired.current = true;
+    runRestDesign();
+  }, [autoDesign, enabled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-design when inputs change (WebSocket or REST fallback)
   useEffect(() => {
@@ -234,7 +242,8 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     latency: ws.latency,
     result,
     geometry: geometry ?? null,
-    error: ws.error || (geometryError as Error | null)?.message || null,
+    // Only show WS connection error if there's no successful REST result
+    error: result ? null : (ws.error || (geometryError as Error | null)?.message || null),
     connectionStatus: ws.status,
     isFallbackActive,
   };

@@ -15,8 +15,9 @@
 | 3 | **Never manual git** — always `./scripts/ai_commit.sh "type: msg"` | Manual git causes 10-30 min merge conflicts |
 | 4 | **Search hooks/routes/API before coding** — duplication is the #1 agent mistake | Tables in §4 list everything that exists |
 | 5 | **Session end is MANDATORY** — update SESSION_LOG + next-session-brief + WORKLOG | Skipping breaks continuity; next agent wastes hours rediscovering state |
-| 7 | **Log every change in [WORKLOG.md](../WORKLOG.md)** — one line per item, append-only | Compact history prevents rework — agents check before duplicating |
 | 6 | **Moved modules**: `adapters.py` → `services/adapters.py`, `geometry_3d.py` → `visualization/geometry_3d.py` | Old paths cause import errors |
+| 7 | **Log every change in [WORKLOG.md](../WORKLOG.md)** — one line per item, append-only | Compact history prevents rework — agents check before duplicating |
+| 8 | **NEVER use `--force` to bypass PR checks** — if `pr status` says PR, use PR | Force-pushing to main has caused 10+ hours of rework and broken CI |
 
 ---
 
@@ -197,42 +198,164 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Library functi
 
 ## 5. Launching the App
 
+### Docker Runtime: Colima (not Docker Desktop)
+
+This project uses **Colima** as the Docker runtime on macOS — not Docker Desktop.
+
+**Why Colima?**
+- ~60% less idle RAM than Docker Desktop (~150MB vs ~400MB)
+- No heavy GUI app running in the background
+- CLI-only — perfect for headless Mac Mini / AI agent workflows
+- Open source (MIT), 27K+ GitHub stars, actively maintained
+- Native Apple Silicon support, same `docker` / `docker compose` CLI
+- Free for all use (Docker Desktop requires paid license for companies >250 employees)
+
+**Start Colima before using Docker:**
+```bash
+colima start --cpu 4 --memory 4              # Start the VM (first time downloads ~300MB image)
+colima status                                 # Verify: "colima is running"
+docker info                                   # Should show Colima context
+```
+
+**Stop when done (frees RAM):**
+```bash
+colima stop
+```
+
+> **Install (if missing):** `brew install docker docker-compose colima`
+> **Full setup guide:** [mac-mini-setup.md](mac-mini-setup.md)
+
+---
+
+### Start Fresh — Kill Everything First
+
+Before starting, kill any old processes so ports 8000 and 5173 are free.
+
+**Step 1 — Activate the Python virtual environment (do this once per terminal session):**
+```bash
+cd /Users/pravinsurawase/VS_code_project/structural_engineering_lib
+source .venv/bin/activate
+# Your prompt will change to: (.venv) pravinsurawase@macmini-dev ...
+# Verify: which python  →  should show .venv/bin/python
+```
+
+> **Never skip this.** Without it, `uvicorn` and `python` commands use the system Python (3.9) and won't find the project's packages.
+> **Shortcut:** Instead of `source .venv/bin/activate`, you can always call `.venv/bin/uvicorn` and `.venv/bin/python` directly by full path — same result.
+
+**Step 2 — Kill old FastAPI (port 8000):**
+```bash
+lsof -ti :8000 | xargs kill -9 2>/dev/null; echo "port 8000 cleared"
+```
+
+**Step 3 — Kill old React / Vite (port 5173):**
+```bash
+lsof -ti :5173 | xargs kill -9 2>/dev/null; echo "port 5173 cleared"
+```
+
+**Step 4 — Stop any running Docker containers for this project:**
+```bash
+docker compose down 2>/dev/null; echo "docker stopped"
+```
+
+Now choose how you want to run the stack:
+
+---
+
 ### Option A: Full Stack via Docker (recommended for production/testing)
 
+> **Prerequisite:** Colima must be running (`colima start`). If `docker ps` gives "permission denied" or "cannot connect", start Colima first.
+
 ```bash
+colima start --cpu 4 --memory 4                      # Start Docker runtime (if not already running)
 docker compose up --build                            # FastAPI at http://localhost:8000/docs
 ```
 
-This builds and runs the FastAPI container with all Python dependencies. The `/docs` page auto-generates interactive Swagger UI for all 35 endpoints.
+**Full sequence from scratch (copy-paste ready):**
+```bash
+# 1. Go to project root
+cd /Users/pravinsurawase/VS_code_project/structural_engineering_lib
+
+# 2. Activate venv (needed for any Python commands outside Docker)
+source .venv/bin/activate
+
+# 3. Kill old processes
+lsof -ti :8000 | xargs kill -9 2>/dev/null
+lsof -ti :5173 | xargs kill -9 2>/dev/null
+docker compose down 2>/dev/null
+
+# 4. Start Colima (Docker runtime)
+colima start --cpu 4 --memory 4
+
+# 5. Build and start FastAPI container
+docker compose up --build
+# FastAPI is now at http://localhost:8000/docs
+
+# 6. Open a NEW terminal for React
+cd /Users/pravinsurawase/VS_code_project/structural_engineering_lib/react_app
+npm run dev
+# React is now at http://localhost:5173
+```
+
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 38 endpoints.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash
-docker compose -f docker-compose.dev.yml up          # Mounts source as volumes, auto-reloads
+docker compose -f docker-compose.dev.yml up          # Mounts source + Etabs_CSV as volumes, auto-reloads
 ```
+
+**Docker includes:**
+- FastAPI app + structural_lib + all Python deps
+- `Etabs_CSV/` sample data (beam_forces.csv, frames_geometry.csv, beam_design_data.csv)
+- WeasyPrint system deps (cairo, pango, fonts) for PDF export
+- Non-root user, healthcheck, graceful restart
 
 ### Option B: Local Development (FastAPI + React separately)
 
+No Docker needed. Faster for day-to-day code changes.
+
+**Full sequence from scratch (copy-paste ready):**
+
+**Terminal 1 — FastAPI backend:**
 ```bash
-# Terminal 1 — FastAPI backend
+# 1. Go to project root
+cd /Users/pravinsurawase/VS_code_project/structural_engineering_lib
+
+# 2. Activate venv
+source .venv/bin/activate
+# Prompt changes to: (.venv) pravinsurawase@macmini-dev ...
+
+# 3. Kill old FastAPI if any
+lsof -ti :8000 | xargs kill -9 2>/dev/null
+
+# 4. Start FastAPI
 .venv/bin/uvicorn fastapi_app.main:app --reload --port 8000
-# → http://localhost:8000/docs (Swagger UI)
-# → http://localhost:8000/health (health check)
-
-# Terminal 2 — React frontend
-cd react_app && npm install && npm run dev
-# → http://localhost:5173 (Vite dev server, HMR enabled)
+# Running at http://localhost:8000/docs
+# Leave this terminal open — it must keep running
 ```
 
-The React app proxies API calls to `:8000`. Both must be running for full functionality.
-
-### Option C: Streamlit (legacy UI)
-
+**Terminal 2 — React frontend (open a new terminal tab):**
 ```bash
-cd streamlit_app && ../.venv/bin/streamlit run app.py --server.port 8501
-# → http://localhost:8501
+# 1. Go to react_app folder
+cd /Users/pravinsurawase/VS_code_project/structural_engineering_lib/react_app
+
+# 2. Kill old React if any
+lsof -ti :5173 | xargs kill -9 2>/dev/null
+
+# 3. Start React
+npm run dev
+# Running at http://localhost:5173
+# Leave this terminal open too
 ```
 
-### Option D: Python library only (no UI)
+> No venv needed for React — it uses `node` / `npm`, not Python.
+
+**Check it's working:**
+```bash
+curl http://localhost:8000/health           # Should return {"status":"ok"}
+# Then open http://localhost:5173 in your browser
+```
+
+### Option C: Python library only (no UI)
 
 ```bash
 pip install -e Python/                               # Install in dev mode
@@ -246,14 +369,21 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 | FastAPI (Docker) | 8000 | http://localhost:8000/docs |
 | FastAPI (local) | 8000 | http://localhost:8000/docs |
 | React (Vite dev) | 5173 | http://localhost:5173 |
-| Streamlit | 8501 | http://localhost:8501 |
 
 ### Troubleshooting
 
 | Problem | Fix |
 |---------|-----|
-| Port 8000 in use | `lsof -i :8000` → kill the process, or use `--port 8001` |
+| `docker ps` permission denied | Colima not running → `colima start --cpu 4 --memory 4` |
+| Colima download fails | Network issue → `colima delete -f && colima start` (retries download) |
+| Colima won't start | `colima delete && colima start` (fresh VM) |
+| Port 8000 already in use | `lsof -ti :8000 \| xargs kill -9` |
+| Port 5173 already in use | `lsof -ti :5173 \| xargs kill -9` |
+| `uvicorn: command not found` | Venv not activated → `source .venv/bin/activate` or use `.venv/bin/uvicorn` |
+| `ModuleNotFoundError: structural_lib` | Venv not active or re-install → `source .venv/bin/activate && pip install -e Python/` |
+| React shows blank / "cannot connect" | FastAPI not running — start it first on :8000 |
 | React can't reach API | Ensure FastAPI is running on :8000 first |
+| Sample data 404 in Docker | Ensure `Etabs_CSV/` is copied (Dockerfile) or mounted (docker-compose.dev.yml) |
 | Python import errors | Use `.venv/bin/python`, never bare `python` |
 
 ---
@@ -297,14 +427,30 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 | Change Type | Strategy |
 |-------------|----------|
 | Production code (`Python/structural_lib/`) | PR required |
+| FastAPI code (`fastapi_app/`) | PR required |
+| React code (`react_app/`) | PR required |
 | VBA / CI workflows / Dependencies | PR required |
+| Docker config (`Dockerfile*`, `docker-compose*`) | PR required |
 | Docs / tests / scripts (<=150 lines, <=2 files) | Direct commit OK |
 
+### ⚠ PR Enforcement (STRICT — do NOT bypass)
+
+When `./run.sh pr status` or `should_use_pr.sh` says **"PR required"**, you MUST use a PR.
+
+**NEVER use `--force` to bypass the PR check.** The `--force` flag exists for rare human-approved batching only.
+
+Agents have historically:
+- Used `--force` to skip PR checks and push directly to main
+- Invented reasons like "small change" or "just a fix" to avoid PRs
+- Caused merge conflicts, broken CI, and lost work (10+ hours wasted)
+
+**The rule is simple:** If the script says PR, use PR. No exceptions. No `--force`. No excuses.
+
 ```bash
-# Direct commit
+# Direct commit (only when script confirms it's OK)
 ./run.sh commit "docs: update guide"
 
-# PR workflow
+# PR workflow (ALWAYS for production code)
 ./run.sh pr create TASK-XXX "description"
 ./run.sh commit "feat: implement X"              # Repeat as needed
 ./run.sh pr finish                                # Polls CI, auto-merges
@@ -386,6 +532,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Mistake | Impact | Fix |
 |---------|--------|-----|
 | Manual git commands | 10-30min conflicts | `ai_commit.sh` |
+| Using `--force` to bypass PR | Broken CI, lost work | If script says PR, use PR. Never `--force`. |
 | Duplicate React code | Broken features, bugs | Check `hooks/` and `components/` first |
 | Guess API params (`width` vs `b_mm`) | Failed tests | `discover_api_signatures.py` |
 | Import from stub `api.py` | Stale code path | Use `services/api.py` directly |
@@ -396,6 +543,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Mix architecture layers | Import errors | Core → IS456 → Services → UI (one direction only) |
 | Use `python` directly | Wrong env, missing deps | Always use `.venv/bin/python` |
 | Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
+| Run `docker` without Colima | "permission denied" errors | Run `colima start` before any `docker` command |
 
 ---
 
@@ -424,7 +572,6 @@ Load these only when working on that specific area:
 | Last session context | [next-session-brief.md](../planning/next-session-brief.md) |
 | Git automation details | [git-automation/README.md](../git-automation/README.md) |
 | API reference | [api.md](../reference/api.md) |
-| Streamlit fragment rules | [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md) |
 | Folder structure rules | [folder-structure-governance.md](../guidelines/folder-structure-governance.md) |
 | Architecture overview | [project-overview.md](../architecture/project-overview.md) |
 | Agent roles | [agents/README.md](../../agents/README.md) |

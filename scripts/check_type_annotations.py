@@ -267,10 +267,10 @@ class TypeAnnotationChecker:
     """Main checker class that orchestrates the analysis."""
 
     # Directories to scan
-    STREAMLIT_DIRS = [
-        "streamlit_app/pages",
-        "streamlit_app/utils",
-        "streamlit_app/components",
+    SCAN_DIRS = [
+        "Python/structural_lib/codes",
+        "Python/structural_lib/services",
+        "Python/structural_lib/core",
     ]
 
     # Files/patterns to skip
@@ -290,8 +290,8 @@ class TypeAnnotationChecker:
         self.file_stats: Dict[str, Dict[str, Any]] = {}
 
     def check_all(self) -> int:
-        """Check all Streamlit files. Returns issue count."""
-        for dir_path in self.STREAMLIT_DIRS:
+        """Check all Python files. Returns issue count."""
+        for dir_path in self.SCAN_DIRS:
             full_path = self.project_root / dir_path
             if full_path.exists():
                 self._check_directory(full_path)

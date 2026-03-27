@@ -415,10 +415,7 @@ The layer standards follow Indian Standard drawing practices for reinforced conc
 
 ## See Also
 
-- [VBA API Reference](vba-api-reference.md) - DXF export functions
-- [Excel Tutorial - Part 7](../getting-started/excel-tutorial.md#part-7-export-to-dxf) - Using DXF export
 - [BBS & DXF Contract](bbs-dxf-contract.md) - BBS and DXF specifications
-- [M16_DXF.bas](../../VBA/Modules/M16_DXF.bas) - Source code
 
 ---
 

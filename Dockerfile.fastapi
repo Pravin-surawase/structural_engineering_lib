@@ -21,12 +21,15 @@ COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install structural_lib package (located under Python/)
-COPY Python/pyproject.toml Python/setup.cfg Python/README.md ./Python/
+COPY Python/pyproject.toml Python/README.md ./Python/
 COPY Python/structural_lib ./Python/structural_lib
 RUN pip install --no-cache-dir ./Python
 
 # Copy FastAPI app
 COPY fastapi_app ./fastapi_app
+
+# Copy sample ETABS CSV data for /api/v1/import/sample endpoint
+COPY Etabs_CSV ./Etabs_CSV
 
 # Create non-root user for security
 RUN useradd --create-home --shell /bin/bash appuser && \

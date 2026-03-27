@@ -49,6 +49,10 @@
       "script": ".venv/bin/python scripts/check_links.py --fix",
       "description": "Find and auto-fix broken internal links in markdown files"
     },
+    "fix deleted file links": {
+      "script": ".venv/bin/python scripts/fix_broken_links.py --dry-run",
+      "description": "Remove or convert broken links to deleted streamlit/vba/excel/xlwings files"
+    },
     "check streamlit code": {
       "script": ".venv/bin/python scripts/check_fastapi_issues.py",
       "description": "(REMOVED) check_streamlit.py was removed. Use check_fastapi_issues.py for backend checks."
@@ -308,6 +312,14 @@
     "test import 3d pipeline": {
       "script": ".venv/bin/python scripts/test_import_3d_pipeline.py",
       "description": "End-to-end test: CSV import → beam design → 3D geometry pipeline"
+    },
+    "test import pipeline": {
+      "script": ".venv/bin/python scripts/test_import_pipeline.py",
+      "description": "E2E test: all 4 import endpoints (sample, single CSV, dual CSV, batch design)"
+    },
+    "test sample endpoint": {
+      "script": ".venv/bin/python scripts/test_sample_endpoint.py",
+      "description": "Diagnostic test for /api/v1/import/sample endpoint"
     },
     "test vba adapter": {
       "script": ".venv/bin/python scripts/test_api_parity.py",

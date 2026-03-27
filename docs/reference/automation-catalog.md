@@ -1500,7 +1500,7 @@ Error Handling Audit:
 - Function complexity
 - Code duplication
 
-**Related:** [vba-guide.md](../contributing/vba-guide.md)
+**Related:** vba-guide.md
 
 ---
 
@@ -2649,7 +2649,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 - st.tabs usage inside @st.fragment
 - Other forbidden patterns
 
-**Related:** [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md)
+**Related:** streamlit-fragment-best-practices.md
 
 ---
 
@@ -2709,7 +2709,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 .venv/bin/python scripts/_archive/check_ui_duplication.py --json             # JSON output
 ```
 
-**Related:** Shared utilities in [streamlit_app/utils/](../../streamlit_app/utils/)
+**Related:** Shared utilities in [streamlit_app/utils/](../../scripts/_lib/utils.py)
 
 ---
 

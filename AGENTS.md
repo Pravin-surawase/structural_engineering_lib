@@ -19,6 +19,8 @@ Open-source IS 456 RC beam design library. Full stack:
 
 Format: `feat|fix|docs|refactor|test|chore|ci(scope): description`
 
+**PR Enforcement:** Run `./run.sh pr status` before committing. If it says "PR required", create a PR with `./run.sh pr create`. NEVER use `--force` to bypass the PR check — this has caused 10+ hours of wasted rework.
+
 ## Architecture (4 layers — STRICT)
 
 ```
@@ -61,9 +63,12 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 Direct scripts (when run.sh doesn't cover it):
 ```bash
 .venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
+colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
 docker compose up --build                       # Full stack at :8000/docs
 cd react_app && npm run build                   # React build check
 ```
+
+> **Docker:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Always run `colima start` before `docker compose`. If `docker ps` gives "permission denied", Colima isn't running. See [agent-bootstrap.md](docs/getting-started/agent-bootstrap.md) §5 for details.
 
 ## Session Workflow (MANDATORY)
 

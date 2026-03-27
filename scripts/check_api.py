@@ -168,10 +168,10 @@ def _check_file_signatures(filepath: Path) -> list[dict]:
 
 def check_signatures(
     files: list[str] | None = None,
-    pages_dir: str = "streamlit_app/pages",
+    pages_dir: str = "react_app/src",
     show_fix: bool = False,
 ) -> int:
-    """Check Streamlit pages for API signature issues."""
+    """Check source files for API signature issues."""
     pdir = REPO_ROOT / pages_dir
     if not pdir.exists():
         print(f"❌ Pages directory not found: {pdir}")
@@ -341,7 +341,7 @@ def main() -> int:
 
     sig_group = parser.add_argument_group("Signature options")
     sig_group.add_argument("--fix", action="store_true", help="Show suggested fixes")
-    sig_group.add_argument("--pages-dir", default="streamlit_app/pages", help="Pages directory")
+    sig_group.add_argument("--pages-dir", default="react_app/src", help="Source directory")
     sig_group.add_argument("files", nargs="*", help="Specific files to check (signatures)")
 
     args = parser.parse_args()

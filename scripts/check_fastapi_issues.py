@@ -13,7 +13,7 @@ Detects common FastAPI anti-patterns and potential issues:
 - Missing input validation
 - Unhandled WebSocket disconnections
 
-Similar to check_streamlit.py but for FastAPI code.
+Checks for common FastAPI code issues.
 
 Usage:
     python scripts/check_fastapi_issues.py                    # Scan all

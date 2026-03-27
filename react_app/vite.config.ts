@@ -5,6 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    host: '0.0.0.0',   // Bind to all interfaces (IPv4 + IPv6) so localhost works in browser
+  },
   build: {
     rollupOptions: {
       output: {

@@ -33,7 +33,6 @@ SEARCH_DIRS = {
         "Python/tests",
         "fastapi_app",
         "scripts",
-        "streamlit_app",
         "tests",
     ],
     "structural_lib": ["Python/structural_lib"],
@@ -45,7 +44,7 @@ SEARCH_DIRS = {
 # Known external packages (don't report these as broken)
 EXTERNAL_PACKAGES = {
     "numpy", "scipy", "pandas", "matplotlib", "plotly",
-    "streamlit", "fastapi", "uvicorn", "pydantic",
+    "fastapi", "uvicorn", "pydantic",
     "pytest", "hypothesis", "coverage", "ruff",
     "requests", "httpx", "aiohttp",
     "typing", "typing_extensions", "dataclasses",

@@ -1743,15 +1743,11 @@ def quick_dxf_bytes(
         DXF file contents as bytes
 
     Example:
-        >>> import streamlit as st
         >>> from structural_lib import dxf_export
         >>> dxf_bytes = dxf_export.quick_dxf_bytes(result.detailing)
-        >>> st.download_button(
-        ...     "Download DXF",
-        ...     data=dxf_bytes,
-        ...     file_name="beam_detail.dxf",
-        ...     mime="application/dxf"
-        ... )
+        >>> # Save to file or send via API
+        >>> with open("beam_detail.dxf", "wb") as f:
+        ...     f.write(dxf_bytes)
     """
     import tempfile
 

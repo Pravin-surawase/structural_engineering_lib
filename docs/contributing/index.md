@@ -21,7 +21,6 @@ Guides for developers and maintainers of the structural engineering library.
 | [doc-template.md](doc-template.md) | Documentation Template | Copy this header to new documentation files and fill in the  | 83 |
 | [docstring-style-guide.md](docstring-style-guide.md) | Docstring Style Guide | > **Purpose:** Standard docstring format for all Python modu | 368 |
 | [end-of-session-workflow.md](end-of-session-workflow.md) | End-of-Session Workflow | > **Standard procedure for ALL agents when ending a session. | 490 |
-| [excel-addin-guide.md](excel-addin-guide.md) | How to Create and Use the Excel Add-in ( | This guide explains how to package the VBA library into a re | 381 |
 | [git-workflow-ai-agents.md](git-workflow-ai-agents.md) | Git Workflow for AI Agents (Canonical) | Run: bash | 87 |
 | [git-workflow-testing.md](git-workflow-testing.md) | Git Workflow Testing Strategy | This document explains how we test and validate our git work | 334 |
 | [github-workflow.md](github-workflow.md) | GitHub Workflow Guide | bash ./scripts/should_use_pr.sh --explain | 287 |
@@ -33,11 +32,5 @@ Guides for developers and maintainers of the structural engineering library.
 | [repo-professionalism.md](repo-professionalism.md) | Repo Professionalism Playbook | This doc does not replace existing rules. It links to the ca | 207 |
 | [session-issues.md](session-issues.md) | Session Issues and Fixes | Purpose: capture recurring friction points and the fixes so  | 62 |
 | [solo-maintainer-operating-system.md](solo-maintainer-operating-system.md) | Solo Maintainer Operating System (Public | - Deterministic outputs, explicit units, stable contracts. - | 124 |
-| [streamlit-comprehensive-prevention-system.md](streamlit-comprehensive-prevention-system.md) | Comprehensive Streamlit App Prevention S | > **Context:** Built prevention system for cost_optimizer.py | 504 |
-| [streamlit-issues-catalog.md](streamlit-issues-catalog.md) | Streamlit App Comprehensive Issue Catalo | > **Purpose:** Complete catalog of all issues found across 5 | 317 |
-| [streamlit-maintenance-guide.md](streamlit-maintenance-guide.md) | Streamlit Maintenance Guide | > **Purpose:** Your complete reference for developing, testi | 758 |
-| [streamlit-prevention-system-review.md](streamlit-prevention-system-review.md) | Comprehensive Prevention System - Review | > **Purpose:** Critical review of the proposed comprehensive | 608 |
 | [testing-strategy.md](testing-strategy.md) | Testing Strategy & Setup (Python-first,  | - Location: Python/tests/ - Runner: pytest | 276 |
-| [vba-guide.md](vba-guide.md) | VBA Library Guide | Practical guide to consume, ship, and maintain the VBA side  | 65 |
-| [vba-testing-guide.md](vba-testing-guide.md) | VBA Testing Guide | 1. **Open** the Excel workbook (Excel/StructEng_BeamDesign_v | 247 |
 | [workflow-professional-review.md](workflow-professional-review.md) | Git Workflow Professional Review & Recom | | Feature | Status | Notes | |---------|--------|-------| | 449 |

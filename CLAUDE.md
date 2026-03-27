@@ -6,6 +6,8 @@ Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind �
 
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
 
+**PR Rule:** When `./run.sh pr status` says "PR required", you MUST use a PR. NEVER use `--force` to bypass. No exceptions.
+
 ## Architecture (4 layers — STRICT, never mix)
 
 - **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
@@ -55,9 +57,12 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 .venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
 .venv/bin/python scripts/safe_file_delete.py f  # Delete files safely
 .venv/bin/python scripts/create_doc.py path     # Create doc with metadata
+colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
 docker compose up --build                       # FastAPI at :8000/docs
 cd react_app && npm run dev                     # React at :5173
 ```
+
+> **Docker note:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Start Colima before any `docker` command: `colima start`. If `docker ps` gives "permission denied", Colima isn't running.
 
 ## Session End (auto-summary + sync)
 

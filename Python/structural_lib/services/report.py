@@ -1260,7 +1260,7 @@ def export_pdf(data: ReportData) -> bytes:
         ) from e
 
     html_content = export_html(data)
-    pdf_doc = weasyprint.HTML(string=html_content).write_pdf()
+    pdf_doc: bytes = weasyprint.HTML(string=html_content).write_pdf()
     return pdf_doc
 
 

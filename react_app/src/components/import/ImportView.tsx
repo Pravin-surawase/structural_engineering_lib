@@ -5,8 +5,8 @@
  * Step 2: Preview imported beams in table
  * Step 3: Navigate to building editor
  */
-import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FileDropZone } from "../ui/FileDropZone";
 import {
   FileSpreadsheet,
@@ -28,6 +28,7 @@ type ImportStep = "upload" | "preview";
 
 export function ImportView() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [step, setStep] = useState<ImportStep>("upload");
   const [fck, setFck] = useState(25);
   const [fy, setFy] = useState(500);
@@ -35,6 +36,7 @@ export function ImportView() {
   const { beams, isImporting, error, setBeams, setError, setImporting } =
     useImportedBeamsStore();
   const materialOverrides = { fck, fy, cover };
+  const sampleLoadedRef = useRef(false);
 
   const handleLoadSample = async () => {
     setImporting(true);
@@ -52,13 +54,29 @@ export function ImportView() {
         setError(data.message);
       }
     } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to load sample data";
       setError(
-        err instanceof Error ? err.message : "Failed to load sample data"
+        msg.includes("fetch") || msg.includes("network")
+          ? "Cannot connect to backend server. Is FastAPI running on port 8000?"
+          : msg
       );
     } finally {
       setImporting(false);
     }
   };
+
+  // Auto-load sample data when navigated with ?sample=true
+  // Guard with ref to prevent React StrictMode double-execution
+  useEffect(() => {
+    if (sampleLoadedRef.current) return;
+    if (searchParams.get("sample") === "true") {
+      sampleLoadedRef.current = true;
+      searchParams.delete("sample");
+      setSearchParams(searchParams, { replace: true });
+      handleLoadSample();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFileImported = (count: number) => {
     if (count > 0) setStep("preview");
@@ -127,7 +145,14 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
   const [importMode, setImportMode] = useState<"single" | "dual">("single");
   const [geometryFile, setGeometryFile] = useState<File | null>(null);
   const [forcesFile, setForcesFile] = useState<File | null>(null);
-  const { importFiles, isImporting: isDualImporting, error: dualError } = useDualCSVImport();
+  const { importFiles, isImporting: isDualImporting, error: dualError, data: dualData } = useDualCSVImport();
+
+  // Transition to preview step when dual import completes successfully
+  React.useEffect(() => {
+    if (dualData?.success && dualData.beam_count > 0) {
+      onFileImported(dualData.beam_count);
+    }
+  }, [dualData, onFileImported]);
 
   const handleDualImport = useCallback(() => {
     if (!geometryFile || !forcesFile) return;

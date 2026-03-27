@@ -13,7 +13,7 @@ import math
 from pathlib import Path
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException, UploadFile, File, Query, status
+from fastapi import APIRouter, File, HTTPException, Query, UploadFile, status
 from pydantic import BaseModel, Field
 
 router = APIRouter(
@@ -105,7 +105,7 @@ class BatchDesignResult(BaseModel):
     asc_required: float = 0.0
     stirrup_spacing: float = 0.0
     is_safe: bool = False
-    utilization_ratio: float = 0.0   # Mu / Mu_cap (moment demand / moment capacity)
+    utilization_ratio: float = 0.0  # Mu / Mu_cap (moment demand / moment capacity)
     error: str | None = None
 
 
@@ -157,17 +157,18 @@ async def import_csv(
         text = content.decode("utf-8-sig")
 
         # Import adapters from library
-        from structural_lib.services.adapters import (
-            ETABSAdapter,
-            SAFEAdapter,
-            STAADAdapter,
-            GenericCSVAdapter,
-        )
-        from structural_lib.core.models import DesignDefaults
+        import os
 
         # Create temp file for adapter (adapters expect file paths)
         import tempfile
-        import os
+
+        from structural_lib.core.models import DesignDefaults
+        from structural_lib.services.adapters import (
+            ETABSAdapter,
+            GenericCSVAdapter,
+            SAFEAdapter,
+            STAADAdapter,
+        )
 
         with tempfile.NamedTemporaryFile(
             mode="w", suffix=".csv", delete=False, encoding="utf-8"
@@ -184,89 +185,112 @@ async def import_csv(
                 "generic": GenericCSVAdapter(),
             }
 
-            selected_adapter = None
             detected_format = "Generic"
 
+            adapter_order = [
+                ("ETABS", adapters["etabs"]),
+                ("SAFE", adapters["safe"]),
+                ("STAAD", adapters["staad"]),
+                ("Generic", adapters["generic"]),
+            ]
+
             if format_hint == "auto":
-                # Try each adapter in order of specificity
-                for name, adapter in [
-                    ("ETABS", adapters["etabs"]),
-                    ("SAFE", adapters["safe"]),
-                    ("STAAD", adapters["staad"]),
-                    ("Generic", adapters["generic"]),
-                ]:
-                    if adapter.can_handle(tmp_path):
-                        selected_adapter = adapter
-                        detected_format = name
-                        break
+                # Filter to adapters that claim to handle this file
+                candidates = [
+                    (name, adapter)
+                    for name, adapter in adapter_order
+                    if adapter.can_handle(tmp_path)
+                ]
+                if not candidates:
+                    candidates = [("Generic", adapters["generic"])]
             else:
-                selected_adapter = adapters.get(format_hint.lower())
-                detected_format = format_hint.upper()
+                adapter_obj = adapters.get(format_hint.lower())
+                if adapter_obj:
+                    candidates = [(format_hint.upper(), adapter_obj)]
+                else:
+                    candidates = [("Generic", adapters["generic"])]
 
-            if not selected_adapter:
-                selected_adapter = adapters["generic"]
-                detected_format = "Generic"
-
-            # Load data using adapter
+            # Load data using adapter — try each candidate until one succeeds
             defaults = DesignDefaults()
             warnings: list[str] = []
             beams_out: list[BeamRow] = []
+            last_error: str | None = None
 
-            # Try loading geometry first
-            try:
-                geometry_list = selected_adapter.load_geometry(tmp_path, defaults)
+            for adapter_name, adapter in candidates:
+                detected_format = adapter_name
+                beams_out = []
+                adapter_warnings: list[str] = []
 
-                # Try loading forces
                 try:
-                    forces_list = selected_adapter.load_forces(tmp_path)
-                    forces_map = {f.id: f for f in forces_list}
-                except (ValueError, NotImplementedError):
-                    forces_map = {}
-                    warnings.append("Force data not found in CSV - using geometry only")
+                    geometry_list = adapter.load_geometry(tmp_path, defaults)
 
-                # Combine geometry and forces
-                for geom in geometry_list:
-                    forces = forces_map.get(geom.id)
-                    beams_out.append(
-                        BeamRow(
-                            id=geom.id,
-                            story=geom.story,
-                            width_mm=geom.section.width_mm,
-                            depth_mm=geom.section.depth_mm,
-                            span_mm=geom.length_mm,
-                            mu_knm=forces.mu_knm if forces else 0.0,
-                            vu_kn=forces.vu_kn if forces else 0.0,
-                            fck_mpa=geom.section.fck_mpa,
-                            fy_mpa=geom.section.fy_mpa,
-                            cover_mm=geom.section.cover_mm,
+                    # Try loading forces
+                    try:
+                        forces_list = adapter.load_forces(tmp_path)
+                        forces_map = {f.id: f for f in forces_list}
+                    except (ValueError, NotImplementedError):
+                        forces_map = {}
+                        adapter_warnings.append(
+                            "Force data not found in CSV - using geometry only"
                         )
-                    )
 
-            except (ValueError, NotImplementedError) as e:
-                # Geometry loading failed - try forces only (e.g., envelope file)
-                warnings.append(f"Geometry loading note: {e}")
-                try:
-                    forces_list = selected_adapter.load_forces(tmp_path)
-                    for forces in forces_list:
+                    # Combine geometry and forces
+                    for geom in geometry_list:
+                        forces = forces_map.get(geom.id)
                         beams_out.append(
                             BeamRow(
-                                id=forces.id,
-                                story=None,
-                                width_mm=300.0,  # Default
-                                depth_mm=500.0,  # Default
-                                span_mm=5000.0,
-                                mu_knm=forces.mu_knm,
-                                vu_kn=forces.vu_kn,
-                                fck_mpa=defaults.fck_mpa,
-                                fy_mpa=defaults.fy_mpa,
-                                cover_mm=defaults.cover_mm,
+                                id=geom.id,
+                                story=geom.story,
+                                width_mm=geom.section.width_mm,
+                                depth_mm=geom.section.depth_mm,
+                                span_mm=geom.length_m * 1000,
+                                mu_knm=forces.mu_knm if forces else 0.0,
+                                vu_kn=forces.vu_kn if forces else 0.0,
+                                fck_mpa=geom.section.fck_mpa,
+                                fy_mpa=geom.section.fy_mpa,
+                                cover_mm=geom.section.cover_mm,
                             )
                         )
-                except Exception as force_err:
-                    raise HTTPException(
-                        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                        detail=f"Could not parse CSV: {e}; Forces error: {force_err}",
-                    )
+
+                    if beams_out:
+                        warnings = adapter_warnings
+                        break  # Success — stop trying adapters
+
+                except (ValueError, NotImplementedError, AttributeError) as e:
+                    # Geometry loading failed — try forces only
+                    last_error = str(e)
+                    try:
+                        forces_list = adapter.load_forces(tmp_path)
+                        for forces in forces_list:
+                            beams_out.append(
+                                BeamRow(
+                                    id=forces.id,
+                                    story=None,
+                                    width_mm=300.0,  # Default
+                                    depth_mm=500.0,  # Default
+                                    span_mm=5000.0,
+                                    mu_knm=forces.mu_knm,
+                                    vu_kn=forces.vu_kn,
+                                    fck_mpa=defaults.fck_mpa,
+                                    fy_mpa=defaults.fy_mpa,
+                                    cover_mm=defaults.cover_mm,
+                                )
+                            )
+                        if beams_out:
+                            adapter_warnings.append(f"Geometry loading note: {e}")
+                            warnings = adapter_warnings
+                            break  # Success with forces only
+                    except Exception as force_err:
+                        last_error = f"{last_error}; forces: {force_err}"
+
+                    # This adapter failed completely — try next one
+                    continue
+
+            if not beams_out:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail=f"Could not parse CSV with any adapter. Last error: {last_error}",
+                )
 
             if not beams_out:
                 raise HTTPException(
@@ -457,8 +481,8 @@ async def import_csv_text(
     Same as /import/csv but accepts raw text instead of file upload.
     Useful for frontend paste operations.
     """
-    import tempfile
     import os
+    import tempfile
 
     # Create temp file from text
     with tempfile.NamedTemporaryFile(
@@ -523,7 +547,11 @@ async def batch_design(
                 if result.shear:
                     is_safe = is_safe and result.shear.is_safe
 
-                mu_cap = result.flexure.mu_lim if result.flexure.mu_lim and result.flexure.mu_lim > 0 else None
+                mu_cap = (
+                    result.flexure.mu_lim
+                    if result.flexure.mu_lim and result.flexure.mu_lim > 0
+                    else None
+                )
                 utilization_ratio = min(beam.mu_knm / mu_cap, 2.0) if mu_cap else 1.0
 
                 results.append(
@@ -646,20 +674,30 @@ async def get_sample_data() -> SampleDataResponse:
     - 3D visualization of building frame
     - Understanding expected data format
     """
-    # Path to sample CSV files
+    # Path to sample CSV files — try multiple locations
     base_path = Path(__file__).parent.parent.parent
-    sample_dir = (
-        base_path / "VBA" / "ETABS_Export_v2" / "Etabs_output" / "2026-01-17_222801"
-    )
-    forces_path = sample_dir / "beam_forces.csv"
-    geometry_path = sample_dir / "frames_geometry.csv"
+    candidate_dirs = [
+        base_path / "VBA" / "ETABS_Export_v2" / "Etabs_output" / "2026-01-17_222801",
+        base_path / "Etabs_CSV",
+    ]
+
+    forces_path = None
+    geometry_path = None
+    for sample_dir in candidate_dirs:
+        fp = sample_dir / "beam_forces.csv"
+        gp = sample_dir / "frames_geometry.csv"
+        if fp.exists() and gp.exists():
+            forces_path = fp
+            geometry_path = gp
+            break
 
     warnings_list: list[str] = []
 
-    if not forces_path.exists() or not geometry_path.exists():
+    if not forces_path or not geometry_path:
+        searched = ", ".join(str(d) for d in candidate_dirs)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sample files not found. Expected: {forces_path}",
+            detail=f"Sample files not found. Searched: {searched}",
         )
 
     # Read forces CSV

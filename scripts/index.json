@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-26",
-  "file_count": 79,
+  "last_updated": "2026-03-27",
+  "file_count": 82,
   "files": [
     {
       "name": "README.md",
@@ -256,7 +256,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -265,7 +265,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "dfd1c2529df9"
+      "content_hash": "741529b22e29"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1684,6 +1684,61 @@
       "content_hash": "b80280c93709"
     },
     {
+      "name": "fix_broken_links.py",
+      "type": "python",
+      "size_lines": 251,
+      "last_updated": "2026-03-27",
+      "description": "Fix broken internal links in markdown files.",
+      "functions": [
+        {
+          "name": "is_broken_target",
+          "description": "Check if a link target matches a known deleted file.",
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "is_table_row",
+          "description": "Check if line is a markdown table row.",
+          "params": [
+            "line"
+          ]
+        },
+        {
+          "name": "is_table_separator",
+          "description": "Check if line is a table separator (|---|---|).",
+          "params": [
+            "line"
+          ]
+        },
+        {
+          "name": "is_list_item",
+          "description": "Check if line is a markdown list item.",
+          "params": [
+            "line"
+          ]
+        },
+        {
+          "name": "fix_file",
+          "description": "Fix broken links in a single file. Returns number of fixes.",
+          "params": [
+            "filepath",
+            "dry_run",
+            "verbose"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "DELETED_TARGETS",
+        "LINK_RE"
+      ],
+      "content_hash": "2e9139ae0107"
+    },
+    {
       "name": "generate_all_indexes.sh",
       "type": "shell-script",
       "size_lines": 51,
@@ -2670,6 +2725,112 @@
       "content_hash": "e7cf781dc714"
     },
     {
+      "name": "test_import_pipeline.py",
+      "type": "python",
+      "size_lines": 249,
+      "last_updated": "2026-03-27",
+      "description": "End-to-end test of all import paths.",
+      "functions": [
+        {
+          "name": "test",
+          "params": [
+            "name",
+            "fn"
+          ]
+        },
+        {
+          "name": "api_get",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "api_post_json",
+          "params": [
+            "path",
+            "body"
+          ]
+        },
+        {
+          "name": "api_post_form",
+          "description": "Multipart form POST.",
+          "params": [
+            "path",
+            "fields",
+            "files"
+          ]
+        },
+        {
+          "name": "simulate_store_mapping",
+          "description": "Simulates the onSuccess mapping in useCSVImport.ts / sampleData.ts.",
+          "params": [
+            "beam_from_api",
+            "has_3d"
+          ]
+        },
+        {
+          "name": "test_health"
+        },
+        {
+          "name": "test_sample"
+        },
+        {
+          "name": "test_sample_fields"
+        },
+        {
+          "name": "test_sample_mapping"
+        },
+        {
+          "name": "test_sample_response_shape"
+        },
+        {
+          "name": "test_sample_all_3d"
+        },
+        {
+          "name": "test_sample_all_stories"
+        },
+        {
+          "name": "test_single_csv"
+        },
+        {
+          "name": "test_single_csv_shape"
+        },
+        {
+          "name": "test_single_csv_mapping"
+        },
+        {
+          "name": "test_dual_csv"
+        },
+        {
+          "name": "test_dual_csv_shape"
+        },
+        {
+          "name": "test_dual_csv_3d"
+        },
+        {
+          "name": "test_dual_csv_mapping"
+        },
+        {
+          "name": "test_batch_design"
+        }
+      ],
+      "constants": [
+        "API",
+        "BASE",
+        "PASS",
+        "FAIL"
+      ],
+      "content_hash": "2b115c76164b"
+    },
+    {
+      "name": "test_sample_endpoint.py",
+      "type": "python",
+      "size_lines": 50,
+      "last_updated": "2026-03-27",
+      "description": "Quick test of the sample data endpoint.",
+      "content_hash": "0e76cffe0a7b"
+    },
+    {
       "name": "update_test_stats.py",
       "type": "python",
       "size_lines": 211,
@@ -2966,5 +3127,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "a64985deca2e6498"
+  "content_hash": "b388450ae5cb7733"
 }

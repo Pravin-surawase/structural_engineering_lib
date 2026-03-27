@@ -148,7 +148,7 @@ export function ModeSelectPage() {
       >
         No data?{" "}
         <button
-          onClick={() => navigate("/import")}
+          onClick={() => navigate("/import?sample=true")}
           className="text-blue-400/60 hover:text-blue-400 underline underline-offset-2 transition-colors"
         >
           Try our sample building (154 beams)

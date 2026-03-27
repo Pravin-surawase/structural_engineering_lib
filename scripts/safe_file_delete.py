@@ -130,7 +130,7 @@ def _find_references_python(
     ]
 
     # Search directories
-    search_dirs = ["docs", "agents", "Python", "VBA", "streamlit_app", ".github"]
+    search_dirs = ["docs", "agents", "Python", "VBA", ".github"]
     extensions = [".md", ".py", ".bas", ".txt", ".json", ".yml", ".yaml"]
 
     for search_dir in search_dirs:

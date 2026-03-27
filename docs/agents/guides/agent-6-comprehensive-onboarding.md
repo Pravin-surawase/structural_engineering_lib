@@ -434,12 +434,8 @@ Reference: `docs/TASKS.md` > v0.17.5 section
 3. [agent-workflow-master-guide.md](agent-workflow-master-guide.md) - Git workflow
 
 ### Streamlit Docs
-1. [streamlit-maintenance-guide.md](../../contributing/streamlit-maintenance-guide.md)
-2. [streamlit-comprehensive-prevention-system.md](../../contributing/streamlit-comprehensive-prevention-system.md)
-3. [streamlit-issues-catalog.md](../../contributing/streamlit-issues-catalog.md)
 
 ### Research
-1. [streamlit-code-quality-research.md](../../research/streamlit-code-quality-research.md)
 
 ---
 

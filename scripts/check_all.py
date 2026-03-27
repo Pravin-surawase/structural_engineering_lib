@@ -158,14 +158,6 @@ CATEGORIES: list[Category] = [
             Check("Type annotations", _py("check_type_annotations.py"), timeout=90),
         ],
     ),
-    Category(
-        name="streamlit",
-        label="Streamlit",
-        description="Streamlit issues (until V3 migration complete)",
-        checks=[
-            Check("Streamlit scanner", _py("check_streamlit.py", "--all-pages"), timeout=120),
-        ],
-    ),
 ]
 
 # Quick checks — a curated fast subset
@@ -185,7 +177,6 @@ _PATH_TO_CATEGORIES: list[tuple[str, list[str]]] = [
     ("docs/", ["docs", "stale"]),
     ("scripts/", ["stale", "governance"]),
     ("react_app/", []),  # No script-based checks for React yet
-    ("streamlit_app/", ["streamlit"]),
     (".pre-commit", ["governance"]),
     ("docker-compose", ["fastapi"]),
     ("Dockerfile", ["fastapi"]),

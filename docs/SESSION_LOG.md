@@ -1807,7 +1807,7 @@ Now returns `(figure, lod_stats)` tuple with performance estimates.
 
 **Files Created:**
 - [docs/research/pyvista-evaluation.md](_archive/research/pre-v021/pyvista-evaluation.md) - Full comparison
-- [streamlit_app/components/visualization_export.py](../streamlit_app/components/visualization_export.py) - Export module
+- streamlit_app/components/visualization_export.py - Export module
 
 ### Automation Improvements
 
@@ -3128,8 +3128,8 @@ class BuildingStatistics(BaseModel):
 
 | Issue | Root Cause | Location |
 |-------|------------|----------|
-| Pydantic ValidationError | `width_mm`/`depth_mm` passed to `DesignDefaults` which has `extra="forbid"` | [07_multi_format_import.py](../streamlit_app/pages/06_📥_multi_format_import.py#L160) |
-| Column Not Found | Page 06 uses `etabs_import.py` which expects raw ETABS format, not VBA envelope | [06_etabs_import.py](../streamlit_app/pages/_hidden/_06_📤_etabs_import.py) |
+| Pydantic ValidationError | `width_mm`/`depth_mm` passed to `DesignDefaults` which has `extra="forbid"` | 07_multi_format_import.py |
+| Column Not Found | Page 06 uses `etabs_import.py` which expects raw ETABS format, not VBA envelope | 06_etabs_import.py |
 
 ### Two Import Module Problem
 
@@ -3905,9 +3905,9 @@ Session 36 implemented the complete ETABS VBA export system spanning 2,302 lines
 ### Links
 
 - **PR:** [#379 - Complete ETABS VBA export implementation](https://github.com/Pravin-surawase/structural_engineering_lib/pull/379)
-- **Implementation Plan:** [etabs-vba-implementation-plan.md](research/etabs-vba-implementation-plan.md)
-- **Q&A Document:** [etabs-vba-questions-answered.md](research/etabs-vba-questions-answered.md)
-- **User Guide:** [etabs-vba-user-guide.md](guides/etabs-vba-user-guide.md)
+- **Implementation Plan:** etabs-vba-implementation-plan.md
+- **Q&A Document:** etabs-vba-questions-answered.md
+- **User Guide:** etabs-vba-user-guide.md
 - **CSV Schema:** [csv-import-schema.md](specs/csv-import-schema.md)
 
 ---

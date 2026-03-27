@@ -76,7 +76,6 @@ MINOR_LINES_THRESHOLD=50       # <50 lines = potentially minor
 MINOR_FILES_THRESHOLD=3        # <3 files = potentially minor
 SUBSTANTIAL_LINES=150          # >150 lines = definitely substantial
 MAJOR_LINES=500                # >500 lines = major change
-STREAMLIT_MINOR_THRESHOLD=20   # <20 lines for streamlit = minor (stricter)
 # Solo-dev thresholds (no reviewers available)
 DOCS_SCRIPTS_MINOR_THRESHOLD=150  # <150 lines for docs+scripts (CI validates)
 # Production code: small fixes can go direct (CI validates on push to main)
@@ -92,8 +91,6 @@ HAS_PRODUCTION_CODE=false
 HAS_VBA_CODE=false
 HAS_CI_CODE=false
 HAS_DEPS=false
-HAS_STREAMLIT_CODE=false
-STREAMLIT_ONLY=true
 
 is_docs_like() {
     local file="$1"
@@ -129,21 +126,6 @@ while IFS= read -r file; do
         TESTS_ONLY=false
         SCRIPTS_ONLY=false
         DOCS_OR_SCRIPTS=false
-        STREAMLIT_ONLY=false
-    fi
-
-    # Check if file is Streamlit app code
-    if [[ "$file" =~ ^streamlit_app/.*\.py$ ]]; then
-        HAS_STREAMLIT_CODE=true
-        DOCS_ONLY=false
-        TESTS_ONLY=false
-        SCRIPTS_ONLY=false
-        DOCS_OR_SCRIPTS=false
-    fi
-
-    # Check if NOT streamlit
-    if [[ ! "$file" =~ ^streamlit_app/ ]]; then
-        STREAMLIT_ONLY=false
     fi
 
     # Check if file is VBA
@@ -298,39 +280,6 @@ if [[ "$HAS_DEPS" == "true" ]]; then
     echo ""
     echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""
     exit 1
-fi
-
-# Streamlit code: Allow small fixes, require PR for substantial changes
-# Rationale: No human reviewer, but scanner + CI + pre-commit hooks catch issues
-if [[ "$STREAMLIT_ONLY" == "true" ]] && [[ "$HAS_STREAMLIT_CODE" == "true" ]]; then
-    if [[ "$LINES_CHANGED" -lt "$STREAMLIT_MINOR_THRESHOLD" ]] && [[ "$FILE_COUNT" -eq 1 ]]; then
-        echo -e "${GREEN}✅ RECOMMENDATION: Direct commit${NC}"
-        echo -e "${GREEN}   (Minor Streamlit fix: $LINES_CHANGED lines, $FILE_COUNT file)${NC}"
-        if [[ "$EXPLAIN" == "true" ]]; then
-            echo ""
-            echo "Reasoning:"
-            echo "- Only streamlit_app/ files changed"
-            echo "- Very small scope ($LINES_CHANGED lines < $STREAMLIT_MINOR_THRESHOLD threshold)"
-            echo "- Single file change"
-            echo "- Pre-commit hooks + CI scanner will validate"
-        fi
-        echo ""
-        echo "Use: ./scripts/safe_push.sh \"fix(streamlit): <message>\""
-        exit 0
-    else
-        echo -e "${RED}🔀 RECOMMENDATION: Pull Request${NC}"
-        echo -e "${RED}   (Streamlit changes: $LINES_CHANGED lines, $FILE_COUNT file(s))${NC}"
-        if [[ "$EXPLAIN" == "true" ]]; then
-            echo ""
-            echo "Reasoning:"
-            echo "- Streamlit app code changed"
-            echo "- $LINES_CHANGED lines (≥$STREAMLIT_MINOR_THRESHOLD) or $FILE_COUNT files (>1)"
-            echo "- User-facing code deserves CI validation via PR"
-        fi
-        echo ""
-        echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""
-        exit 1
-    fi
 fi
 
 # Now check docs/tests/scripts with SIZE sophistication

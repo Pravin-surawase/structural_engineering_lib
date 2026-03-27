@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-03-26
-**Files:** 79
+**Last Updated:** 2026-03-27
+**Files:** 82
 
 ## Config Files
 
@@ -54,6 +54,7 @@
 | [dxf_render.py](dxf_render.py) | Render DXF drawings to PNG or PDF using ezdxf + matplotlib. | 0 | 2 | 128 |
 | [external_cli_test.py](external_cli_test.py) | External CLI smoke test (S-007). | 1 | 1 | 396 |
 | [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 6 | 174 |
+| [fix_broken_links.py](fix_broken_links.py) | Fix broken internal links in markdown files. | 0 | 6 | 251 |
 | [generate_api_manifest.py](generate_api_manifest.py) | Generate or validate the public API manifest for structural_ | 0 | 1 | 157 |
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 526 |
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 245 |
@@ -70,6 +71,8 @@
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script (V3 Preparation) | 2 | 10 | 444 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 207 |
 | [test_import_3d_pipeline.py](test_import_3d_pipeline.py) | Import → Design → 3D Pipeline Test | 0 | 1 | 205 |
+| [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 249 |
+| [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 0 | 50 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 608 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 306 |

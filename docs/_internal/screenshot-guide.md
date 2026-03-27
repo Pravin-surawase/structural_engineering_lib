@@ -1,6 +1,6 @@
 # Screenshot Capture Guide for Excel Tutorial
 
-**Purpose:** Instructions for capturing screenshots to add to [excel-tutorial.md](../getting-started/excel-tutorial.md)
+**Purpose:** Instructions for capturing screenshots to add to excel-tutorial.md
 
 **Target:** 8-10 screenshots showing key Excel workflows
 
