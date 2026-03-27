@@ -561,12 +561,104 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 
 ---
 
-## 12. On-Demand References
+## 12. VS Code Copilot Agents & Skills
+
+### 9 Custom Agents (`@agent-name` in Copilot Chat)
+
+| Agent | Role | When to Use |
+|-------|------|-------------|
+| `@orchestrator` | Plan & delegate | Multi-step tasks, unsure where to start |
+| `@frontend` | React 19, R3F, Tailwind | Components, hooks, 3D visualization |
+| `@backend` | Python structural_lib | IS 456 math, services, adapters |
+| `@api-developer` | FastAPI endpoints | New/modified API routes |
+| `@structural-engineer` | IS 456 compliance | Formula validation, code review |
+| `@reviewer` | Code review | Pre-commit quality check |
+| `@ui-designer` | Visual design (read-only) | Layout planning before coding |
+| `@doc-master` | Documentation | Session logs, archives, indexes |
+| `@ops` | Git, CI/CD, Docker | Commits, PRs, environment issues |
+
+### 4 Skills (`/skill-name` in Copilot Chat)
+
+| Skill | Purpose |
+|-------|---------|
+| `/session-management` | Automate session start/end workflow |
+| `/safe-file-ops` | Move/delete files preserving 870+ links |
+| `/api-discovery` | Look up exact API function signatures |
+| `/is456-verification` | Run IS 456 tests by category |
+
+### 8 Prompt Files (`#prompt-name` in Copilot Chat)
+
+| Prompt | Purpose |
+|--------|---------|
+| `#new-feature` | New feature workflow |
+| `#bug-fix` | Bug fix workflow |
+| `#code-review` | Review checklist |
+| `#add-api-endpoint` | FastAPI endpoint workflow |
+| `#session-start` | Session start checklist |
+| `#session-end` | Session end (mandatory) |
+| `#file-move` | Safe file migration |
+| `#is456-verify` | IS 456 formula verification |
+
+### Handoff Chains
+
+```
+New feature:   @orchestrator → @backend → @api-developer → @frontend → @reviewer → @doc-master
+IS 456 change: @orchestrator → @structural-engineer → @backend → @api-developer → @reviewer
+Session end:   any agent → @doc-master → @ops
+```
+
+> **Full usage guide:** [copilot-agents-usage-guide.md](../guides/copilot-agents-usage-guide.md)
+> **Master plan:** [copilot-agent-master-plan.md](../planning/copilot-agent-master-plan.md)
+
+---
+
+## 13. Context Recovery (When LLM Loses Context)
+
+When a conversation gets too long or the LLM loses context mid-session, use this recovery protocol:
+
+### Quick Recovery (paste into new chat)
+
+```
+Read these files to recover session context:
+1. docs/planning/next-session-brief.md  — what I'm working on
+2. docs/TASKS.md (first 60 lines)       — active tasks
+3. .github/copilot-instructions.md      — project rules
+Then continue from where I left off.
+```
+
+### Full Recovery (for complex sessions)
+
+```
+Read these in order:
+1. docs/planning/next-session-brief.md
+2. docs/TASKS.md
+3. docs/getting-started/agent-bootstrap.md (§1-4 only)
+4. git log --oneline -20                    — recent changes this session
+5. git diff --stat                          — uncommitted work
+```
+
+### Mid-Session Checkpoint
+
+Before your context gets large, ask the agent:
+```
+Save a checkpoint: summarize what we've done so far, what's in progress,
+and what's left. Write it to docs/planning/next-session-brief.md
+```
+
+### Key Principle
+
+The **next-session-brief.md** file is the single source of truth for resuming work. Every session end must update it. If context is lost, this file + TASKS.md + recent git log is enough to resume.
+
+---
+
+## 14. On-Demand References
 
 Load these only when working on that specific area:
 
 | Topic | Document |
 |-------|----------|
+| **Copilot agents guide** | [copilot-agents-usage-guide.md](../guides/copilot-agents-usage-guide.md) |
+| **Agent master plan** | [copilot-agent-master-plan.md](../planning/copilot-agent-master-plan.md) |
 | Tech stack rationale | [tech-stack-rationale.md](../reference/tech-stack-rationale.md) |
 | Command cheat sheet | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) |
 | Deep workflow guide | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) |

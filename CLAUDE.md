@@ -128,9 +128,22 @@ Always use `.venv/bin/python`, never bare `python`.
 ## Key References
 
 - **Full bootstrap:** docs/getting-started/agent-bootstrap.md
+- **Copilot agents guide:** docs/guides/copilot-agents-usage-guide.md
 - **Current tasks:** docs/TASKS.md
 - **Last session:** docs/planning/next-session-brief.md
 - **API reference:** docs/reference/api.md
+
+## Context Recovery (When LLM Loses Context)
+
+If context is lost mid-session, start fresh with:
+```
+Read these to recover context:
+1. docs/planning/next-session-brief.md
+2. docs/TASKS.md (first 60 lines)
+3. CLAUDE.md
+4. git log --oneline -20
+Then continue from where I left off.
+```
 
 ## Context Management
 

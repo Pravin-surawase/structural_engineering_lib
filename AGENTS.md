@@ -101,3 +101,48 @@ docs/TASKS.md                                   # Task board
 - Read `index.json` / `index.md` in folders FIRST — machine-readable summaries
 - Large files (read selectively): SESSION_LOG.md (400KB), adapters.py (71KB), CHANGELOG.md (52KB)
 - Always use `.venv/bin/python`, never bare `python`
+
+## VS Code Copilot Agents & Skills
+
+### 9 Custom Agents (`.github/agents/`)
+
+| Agent | Role | Tools |
+|-------|------|-------|
+| `orchestrator` | Planning, delegation | read-only + subagents |
+| `frontend` | React 19, R3F, Tailwind | full edit |
+| `backend` | Python structural_lib, IS 456 | full edit |
+| `api-developer` | FastAPI routers, endpoints | full edit |
+| `ui-designer` | Visual design (design-only) | read-only |
+| `structural-engineer` | IS 456 compliance | read + terminal |
+| `reviewer` | Code review, testing | read + terminal |
+| `doc-master` | Docs, archives, session logs | full edit |
+| `ops` | Git, CI/CD, Docker | full edit |
+
+### 4 Agent Skills (`.github/skills/`)
+
+| Skill | Slash Command | Purpose |
+|-------|--------------|---------|
+| `session-management` | `/session-management` | Session start/end automation |
+| `safe-file-ops` | `/safe-file-ops` | File move/delete preserving 870+ links |
+| `api-discovery` | `/api-discovery` | API function signature lookup |
+| `is456-verification` | `/is456-verification` | IS 456 test runner by category |
+
+### 9 Prompt Files (`.github/prompts/`)
+
+| Prompt | Purpose |
+|--------|--------|
+| `new-feature` | New feature workflow |
+| `bug-fix` | Bug fix workflow |
+| `code-review` | Review checklist |
+| `add-api-endpoint` | FastAPI endpoint workflow |
+| `session-start` | Session start checklist |
+| `session-end` | Session end (mandatory) |
+| `file-move` | Safe file migration |
+| `is456-verify` | IS 456 formula verification |
+| `context-recovery` | Resume after context overflow |
+
+### Handoff Chains
+
+- **New feature:** orchestrator → backend → api-developer → frontend → reviewer → doc-master
+- **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer
+- **Session end:** any agent → doc-master → ops

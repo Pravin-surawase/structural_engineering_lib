@@ -132,9 +132,22 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 ## Key References
 
 - **Full bootstrap:** [agent-bootstrap.md](../docs/getting-started/agent-bootstrap.md)
+- **Copilot agents guide:** [copilot-agents-usage-guide.md](../docs/guides/copilot-agents-usage-guide.md)
 - **Current tasks:** [TASKS.md](../docs/TASKS.md)
 - **Last session:** [next-session-brief.md](../docs/planning/next-session-brief.md)
 - **API reference:** [api.md](../docs/reference/api.md)
 - **Command cheat sheet:** [agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)
+
+## Context Recovery (When LLM Loses Context)
+
+If the conversation gets too long, start a new chat and paste:
+```
+Read these to recover context:
+1. docs/planning/next-session-brief.md
+2. docs/TASKS.md (first 60 lines)
+3. .github/copilot-instructions.md
+4. git log --oneline -20
+Then continue from where I left off.
+```
 
 Domain-specific rules (React, Python core) are in `.github/instructions/` and load automatically per file type.
