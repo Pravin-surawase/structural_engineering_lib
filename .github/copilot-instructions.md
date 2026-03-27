@@ -8,6 +8,8 @@ Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
 Manual git causes 10-30min conflicts. The script handles staging, hooks, pull, and push.
 
+**PR Rule:** Run `./run.sh pr status` before committing. If it says "PR required", use `./run.sh pr create`. NEVER use `--force` to bypass — this has caused 10+ hours of rework.
+
 ## Architecture (4 layers — STRICT, never mix)
 
 - **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
@@ -55,9 +57,12 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 ```bash
 .venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
 .venv/bin/python scripts/safe_file_delete.py f  # Delete files safely
+colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
 docker compose up --build                       # FastAPI at :8000/docs
 cd react_app && npm run dev                     # React at :5173
 ```
+
+> **Docker:** Uses **Colima** on Mac (not Docker Desktop). Run `colima start` before any `docker` command. "Permission denied" on `docker ps` = Colima not running.
 
 ## Session End (auto-summary + sync)
 

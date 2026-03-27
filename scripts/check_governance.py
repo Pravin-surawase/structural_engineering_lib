@@ -354,7 +354,7 @@ def check_naming_conventions(report: GovernanceReport) -> None:
     if not docs_path.exists():
         return
 
-    skip_names = {"README.md", "TASKS.md", "SESSION_LOG.md", "CHANGELOG.md"}
+    skip_names = {"README.md", "TASKS.md", "SESSION_LOG.md", "CHANGELOG.md", "WORKLOG.md"}
     skip_paths = ["_internal", "_archive", "_references", "research/", "getting-started/NEW-DEVELOPER"]
 
     for md_file in docs_path.rglob("*.md"):

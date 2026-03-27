@@ -571,6 +571,5 @@ Generate client SDKs:
 ## Related Documents
 
 - [fastapi-deployment-guide.md](../guides/fastapi-deployment-guide.md) - Deployment guide
-- [docker-fundamentals-guide.md](../learning/docker-fundamentals-guide.md) - Docker basics
 - [api.md](api.md) - Python library API reference
 - [v3-infrastructure-gap-analysis.md](../_archive/research/pre-v021/v3-infrastructure-gap-analysis.md) - Infrastructure audit

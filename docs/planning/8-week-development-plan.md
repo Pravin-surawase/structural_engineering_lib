@@ -777,8 +777,6 @@ Launch:   March 15, 2026     🚀 V3 Beta
 ### Core Documentation
 - [ai-workspace-expansion-v3.md](../_archive/research/pre-v021/ai-workspace-expansion-v3.md) - V3 architecture
 - [websocket-live-updates-research.md](../_archive/research/pre-v021/websocket-live-updates-research.md) - WebSocket details
-- [automation-foundation-learning-guide.md](../learning/automation-foundation-learning-guide.md) - Sessions 69-72 deep dive
-- [v3-fastapi-learning-guide.md](../learning/v3-fastapi-learning-guide.md) - V3 basics tutorial
 
 ### V3 Technology Stack
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)

@@ -28,6 +28,8 @@ Never reimplement core math in FastAPI routers.
 
 ## Test with Docker
 
+> **Prerequisite:** Start Colima first: `colima start --cpu 4 --memory 4`
+
 ```bash
 docker compose up --build                        # Production at :8000/docs
 docker compose -f docker-compose.dev.yml up      # Dev with hot reload

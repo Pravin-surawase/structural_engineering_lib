@@ -12,6 +12,7 @@ export function mapSampleBeamsToRows(beams: SampleBeam[]): BeamCSVRow[] {
     fy: beam.fy_mpa,
     Mu_mid: beam.mu_knm,
     Vu_start: beam.vu_kn,
+    Vu_end: beam.vu_kn,
     cover: beam.cover_mm,
     point1: beam.point1,
     point2: beam.point2,

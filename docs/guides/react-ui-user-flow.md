@@ -13,8 +13,6 @@
 ## Executive Summary
 
 This document is the **single source of truth** for React app UX flows, consolidating research from:
-- [STREAMLIT-RESEARCH-009-USER-JOURNEY.md](../../streamlit_app/docs/research/STREAMLIT-RESEARCH-009-USER-JOURNEY.md) (1,081 lines)
-- [v3-streamlit-parity-library-evolution-plan.md](../planning/v3-streamlit-parity-library-evolution-plan.md)
 - [8-week-development-plan.md](../planning/8-week-development-plan.md)
 
 The React app (`react_app/`) provides a modern workspace UI with 3D visualization, data grid editing, and intelligent design assistance for structural engineers.
@@ -509,8 +507,6 @@ After batch import and design (Flow B), click on a failed beam:
 
 ## Related Documentation
 
-- [Streamlit User Journey Research](../../streamlit_app/docs/research/STREAMLIT-RESEARCH-009-USER-JOURNEY.md) - Original research
-- [V3 Parity Plan](../planning/v3-streamlit-parity-library-evolution-plan.md) - Implementation status
 - [8-Week Development Plan](../planning/8-week-development-plan.md) - Timeline
 - [React Hooks Index](../index.md) - All available hooks
 - [API Reference](../reference/api.md) - Backend endpoints

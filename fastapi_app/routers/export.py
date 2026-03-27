@@ -130,7 +130,9 @@ async def export_bbs(request: ExportBeamRequest):
 
     # Build CSV in memory
     buf = io.StringIO()
-    buf.write("bar_mark,member_id,diameter_mm,shape,cut_length_mm,no_of_bars,total_weight_kg\n")
+    buf.write(
+        "bar_mark,member_id,diameter_mm,shape,cut_length_mm,no_of_bars,total_weight_kg\n"
+    )
     for item in items:
         buf.write(
             f"{item.bar_mark},{item.member_id},{item.diameter_mm},"
@@ -204,8 +206,12 @@ async def export_dxf(request: ExportBeamRequest):
 async def export_report(request: ExportReportRequest):
     """Generate and download a design report."""
     try:
-        from structural_lib.services.report import export_html, export_json, export_pdf
-        from structural_lib.services.report import ReportData
+        from structural_lib.services.report import (
+            ReportData,
+            export_html,
+            export_json,
+            export_pdf,
+        )
     except ImportError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -287,6 +293,7 @@ async def export_report(request: ExportReportRequest):
 
 class BatchBeamRow(BaseModel):
     """One beam in a building-level export."""
+
     beam_id: str = "BEAM-1"
     story: str = ""
     width: float = Field(..., gt=0)
@@ -310,6 +317,7 @@ class BatchBeamRow(BaseModel):
 
 class BatchExportRequest(BaseModel):
     """Request for building-level export."""
+
     project_name: str = Field(default="Building Project")
     beams: list[BatchBeamRow]
     format: str = Field(default="html", pattern="^(html|pdf|csv)$")
@@ -338,7 +346,9 @@ async def export_building_summary(request: BatchExportRequest):
     # Steel quantities (approximate using provided rebar)
     total_ast = sum(b.ast_provided for b in designed if b.ast_provided > 0)
     total_concrete_vol = sum(
-        (b.width / 1000) * (b.depth / 1000) * (b.span_length / 1000 if b.span_length > 0 else b.depth * 12 / 1000)
+        (b.width / 1000)
+        * (b.depth / 1000)
+        * (b.span_length / 1000 if b.span_length > 0 else b.depth * 12 / 1000)
         for b in beams
     )
 
@@ -347,8 +357,14 @@ async def export_building_summary(request: BatchExportRequest):
     for b in beams:
         key = b.story or "Unknown"
         if key not in story_data:
-            story_data[key] = {"beams": 0, "pass": 0, "fail": 0, "pending": 0,
-                               "ast_total": 0.0, "max_util": 0.0}
+            story_data[key] = {
+                "beams": 0,
+                "pass": 0,
+                "fail": 0,
+                "pending": 0,
+                "ast_total": 0.0,
+                "max_util": 0.0,
+            }
         sd = story_data[key]
         sd["beams"] += 1
         if b.ast_required <= 0:
@@ -365,16 +381,28 @@ async def export_building_summary(request: BatchExportRequest):
         buf.write("beam_id,story,b_mm,D_mm,span_mm,Mu_kNm,Vu_kN,")
         buf.write("fck,fy,ast_required,ast_provided,bars,stirrup,utilization,status\n")
         for b in beams:
-            bars = f"{b.bar_count}-T{b.bar_diameter}" if b.bar_count and b.bar_diameter else "-"
-            stirrup = f"{b.stirrup_diameter or 8}@{b.stirrup_spacing}" if b.stirrup_spacing else "-"
-            sts = "Pass" if b.is_safe and b.ast_required > 0 else ("Fail" if b.ast_required > 0 else "Pending")
+            bars = (
+                f"{b.bar_count}-T{b.bar_diameter}"
+                if b.bar_count and b.bar_diameter
+                else "-"
+            )
+            stirrup = (
+                f"{b.stirrup_diameter or 8}@{b.stirrup_spacing}"
+                if b.stirrup_spacing
+                else "-"
+            )
+            sts = (
+                "Pass"
+                if b.is_safe and b.ast_required > 0
+                else ("Fail" if b.ast_required > 0 else "Pending")
+            )
             buf.write(
                 f"{b.beam_id},{b.story},{b.width:.0f},{b.depth:.0f},"
                 f"{b.span_length:.0f},{b.moment:.1f},{b.shear:.1f},"
                 f"{b.fck:.0f},{b.fy:.0f},{b.ast_required:.0f},{b.ast_provided:.0f},"
                 f"{bars},{stirrup},{b.utilization:.2f},{sts}\n"
             )
-        buf.write(f"\nSummary\n")
+        buf.write("\nSummary\n")
         buf.write(f"Total Beams,{len(beams)}\n")
         buf.write(f"Designed,{len(designed)}\n")
         buf.write(f"Pass,{len(passed)}\n")
@@ -382,8 +410,11 @@ async def export_building_summary(request: BatchExportRequest):
         buf.write(f"Pending,{len(pending)}\n")
         buf.seek(0)
         return StreamingResponse(
-            buf, media_type="text/csv",
-            headers={"Content-Disposition": 'attachment; filename="Building_Summary.csv"'},
+            buf,
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": 'attachment; filename="Building_Summary.csv"'
+            },
         )
 
     # HTML report
@@ -403,11 +434,29 @@ async def export_building_summary(request: BatchExportRequest):
 
     beam_rows = ""
     for b in beams:
-        bars = f"{b.bar_count}-T{int(b.bar_diameter)}" if b.bar_count and b.bar_diameter else "-"
-        stirrup = f"{int(b.stirrup_diameter or 8)}\u00d8@{int(b.stirrup_spacing)}" if b.stirrup_spacing else "-"
-        sts_cls = "pass" if b.is_safe and b.ast_required > 0 else ("fail" if b.ast_required > 0 else "")
-        sts_txt = "Pass" if b.is_safe and b.ast_required > 0 else ("Fail" if b.ast_required > 0 else "Pending")
-        util_cls = "fail" if b.utilization > 1 else ("warn" if b.utilization > 0.9 else "pass")
+        bars = (
+            f"{b.bar_count}-T{int(b.bar_diameter)}"
+            if b.bar_count and b.bar_diameter
+            else "-"
+        )
+        stirrup = (
+            f"{int(b.stirrup_diameter or 8)}\u00d8@{int(b.stirrup_spacing)}"
+            if b.stirrup_spacing
+            else "-"
+        )
+        sts_cls = (
+            "pass"
+            if b.is_safe and b.ast_required > 0
+            else ("fail" if b.ast_required > 0 else "")
+        )
+        sts_txt = (
+            "Pass"
+            if b.is_safe and b.ast_required > 0
+            else ("Fail" if b.ast_required > 0 else "Pending")
+        )
+        util_cls = (
+            "fail" if b.utilization > 1 else ("warn" if b.utilization > 0.9 else "pass")
+        )
         beam_rows += (
             f"<tr><td class='mono'>{esc(b.beam_id)}</td><td>{esc(b.story)}</td>"
             f"<td class='num'>{b.width:.0f}</td><td class='num'>{b.depth:.0f}</td>"
@@ -494,7 +543,9 @@ footer {{ margin-top: 24px; font-size: 11px; color: #a0aec0; border-top: 1px sol
         return StreamingResponse(
             io.BytesIO(pdf_bytes),
             media_type="application/pdf",
-            headers={"Content-Disposition": 'attachment; filename="Building_Summary.pdf"'},
+            headers={
+                "Content-Disposition": 'attachment; filename="Building_Summary.pdf"'
+            },
         )
 
     return StreamingResponse(

@@ -45,7 +45,6 @@ The file [screenshot-guide.md](../_internal/screenshot-guide.md) lists target sc
 | Document | Purpose |
 |----------|---------|
 | [Screenshot Guide](../_internal/screenshot-guide.md) | Full screenshot requirements |
-| [Excel Tutorial](../getting-started/excel-tutorial.md) | Uses these screenshots |
 
 ---
 

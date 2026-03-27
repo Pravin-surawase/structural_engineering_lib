@@ -26,4 +26,3 @@
 | [migration-preflight-checklist.md](migration-preflight-checklist.md) | IS 456 Migration Pre-Flight Checklist | bash .venv/bin/python scripts/pre_migration_check.py | 275 |
 | [migration-workflow-guide.md](migration-workflow-guide.md) | IS 456 Module Migration Workflow | bash .venv/bin/python scripts/pre_migration_check.py | 450 |
 | [result-object-standard.md](result-object-standard.md) | Result Object Design Standard | This document defines standards for result objects returned  | 1428 |
-| [streamlit-fragment-best-practices.md](streamlit-fragment-best-practices.md) | Streamlit Fragment Best Practices | This guide establishes best practices for using Streamlit's  | 414 |

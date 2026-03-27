@@ -31,11 +31,8 @@
 | [library-contract.md](library-contract.md) | Library Contract (v1) - Beam-Only IS 456 | This document defines the stability promises for the beam de | 93 |
 | [repo-health-baseline-2026-01-07.md](repo-health-baseline-2026-01-07.md) | Repository Health Baseline (2026-01-07) | - This baseline is a point-in-time snapshot for trend tracki | 54 |
 | [sdk-api-contract-v1.md](sdk-api-contract-v1.md) | Structural SDK API Contract — v1.0 | This document defines the public API contract for the Struct | 919 |
-| [streamlit-validation.md](streamlit-validation.md) | Streamlit Code Validation Reference | > **For AI Agents:** This guide explains the automated valid | 389 |
 | [third-party-licenses.md](third-party-licenses.md) | Third-Party Licenses | This repository is primarily standard-library based. Optiona | 42 |
 | [troubleshooting.md](troubleshooting.md) | Troubleshooting Guide | Use this when reporting bugs or debugging agent failures: ba | 313 |
-| [vba-api-reference.md](vba-api-reference.md) | VBA API Reference | All functions are prefixed with IS456_ and available in any  | 865 |
-| [vba-udt-reference.md](vba-udt-reference.md) | VBA User-Defined Types (UDT) Reference | This document describes all custom data types (UDTs) and enu | 710 |
 
 ## Subfolders
 

@@ -517,7 +517,6 @@ cd $PROJECT_ROOT
 
 ### Testing Docs
 - [testing-strategy.md](../../contributing/testing-strategy.md) - Testing approach
-- [vba-testing-guide.md](../../contributing/vba-testing-guide.md) - VBA testing
 
 ### Architecture Docs
 - [project-overview.md](../../architecture/project-overview.md) - System architecture

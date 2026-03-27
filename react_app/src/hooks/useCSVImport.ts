@@ -110,12 +110,19 @@ async function importCSVFile(
 ): Promise<CSVImportResponse> {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("format", format);
 
-  const response = await fetch(`${API_BASE_URL}/api/v1/import/csv`, {
-    method: "POST",
-    body: formData,
-  });
+  const url = new URL(`${API_BASE_URL}/api/v1/import/csv`);
+  url.searchParams.set("format_hint", format);
+
+  let response: Response;
+  try {
+    response = await fetch(url.toString(), {
+      method: "POST",
+      body: formData,
+    });
+  } catch {
+    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
@@ -132,11 +139,16 @@ async function importCSVText(
   text: string,
   format: string = "auto"
 ): Promise<CSVImportResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/import/csv/text`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, format }),
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/import/csv/text`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, format }),
+    });
+  } catch {
+    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
@@ -162,10 +174,15 @@ async function importDualCSVFiles(
     url.searchParams.set("format_hint", format);
   }
 
-  const response = await fetch(url.toString(), {
-    method: "POST",
-    body: formData,
-  });
+  let response: Response;
+  try {
+    response = await fetch(url.toString(), {
+      method: "POST",
+      body: formData,
+    });
+  } catch {
+    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
@@ -182,11 +199,16 @@ async function importDualCSVFiles(
 async function batchDesign(
   beams: BeamDesignPayload[]
 ): Promise<BatchDesignResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/import/batch-design`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(beams),  // API expects array directly, not wrapped
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/import/batch-design`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(beams),  // API expects array directly, not wrapped
+    });
+  } catch {
+    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
@@ -226,7 +248,7 @@ export function useCSVFileImport() {
     },
     onSuccess: (data, variables) => {
       setImporting(false);
-      if (data.success) {
+      if (data.success && data.beams?.length) {
         // Convert to store format
         const beams = data.beams.map((b) => ({
           id: b.id,
@@ -244,7 +266,7 @@ export function useCSVFileImport() {
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams as any); // Type cast for compatibility
       } else {
-        setError(data.message);
+        setError(data.message || 'No beams found in import response');
       }
     },
     onError: (error: Error) => {
@@ -287,7 +309,7 @@ export function useCSVTextImport() {
     },
     onSuccess: (data, variables) => {
       setImporting(false);
-      if (data.success) {
+      if (data.success && data.beams?.length) {
         const beams = data.beams.map((b) => ({
           id: b.id,
           story: b.story,
@@ -304,7 +326,7 @@ export function useCSVTextImport() {
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams as any);
       } else {
-        setError(data.message);
+        setError(data.message || 'No beams found in import response');
       }
     },
     onError: (error: Error) => {
@@ -346,7 +368,7 @@ export function useDualCSVImport() {
     },
     onSuccess: (data, variables) => {
       setImporting(false);
-      if (data.success) {
+      if (data.success && data.beams?.length) {
         const beams = data.beams.map((b) => ({
           id: b.id,
           story: b.story,
@@ -365,7 +387,7 @@ export function useDualCSVImport() {
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams as any);
       } else {
-        setError(data.message);
+        setError(data.message || 'No beams found in import response');
       }
     },
     onError: (error: Error) => {

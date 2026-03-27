@@ -45,8 +45,6 @@ cd streamlit_app && pytest tests/ -v
 ## Your Workflow
 
 1. **Check current tasks:** [agent-6-tasks-streamlit.md](../../_archive/planning-20260119/agent-6-tasks-streamlit.md)
-2. **Understand prevention system:** [streamlit-comprehensive-prevention-system.md](../../contributing/streamlit-comprehensive-prevention-system.md)
-3. **Review issues catalog:** [streamlit-issues-catalog.md](../../contributing/streamlit-issues-catalog.md)
 
 ---
 
@@ -85,4 +83,4 @@ value = st.session_state.get("key", default_value)
 
 ## Next Step
 
-→ Go to [Agent 6 Streamlit Hub](agent-6-streamlit-hub.md) for detailed docs
+→ Go to Agent 6 Streamlit Hub for detailed docs

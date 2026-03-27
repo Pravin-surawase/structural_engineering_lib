@@ -64,9 +64,6 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 
 | Document | Description |
 |----------|-------------|
-| [vba-guide.md](../contributing/vba-guide.md) | VBA development guide |
-| [vba-api-reference.md](vba-api-reference.md) | VBA function reference |
-| [vba-udt-reference.md](vba-udt-reference.md) | VBA User-Defined Types |
 
 ## Project Health & Automation
 

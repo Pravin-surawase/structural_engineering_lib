@@ -43,5 +43,4 @@
 | [reference/](reference/) | 1788 |  |
 | [research/](research/) | 186 | > **For AI Agents:** This index uses semantic tags and complexity ratings. |
 | [specs/](specs/) | 4 | Technical specifications for data formats and schemas. |
-| [vba/](vba/) | 3 | Documentation for the VBA/Excel implementation journey and production plans. |
 | [verification/](verification/) | 8 | Benchmark examples and verification packs for validating library calculations ag |

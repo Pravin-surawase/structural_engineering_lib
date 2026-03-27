@@ -1260,7 +1260,7 @@ def export_pdf(data: ReportData) -> bytes:
         ) from e
 
     html_content = export_html(data)
-    pdf_doc = weasyprint.HTML(string=html_content).write_pdf()
+    pdf_doc: bytes = weasyprint.HTML(string=html_content).write_pdf()
     return pdf_doc
 
 
@@ -1432,11 +1432,13 @@ def _render_batch_index_table(
         is_ok = bool(beam.get("is_ok", False))
         status = "PASS" if is_ok else "FAIL"
         status_class = "status-pass" if is_ok else "status-fail"
-        rows.append(f"""        <tr>
+        rows.append(
+            f"""        <tr>
             <td><a href="{link_prefix}{slug}{link_suffix}">{label}</a></td>
             <td class="{status_class}">{status}</td>
             <td>{util:.2%}</td>
-        </tr>""")
+        </tr>"""
+        )
 
     rows_joined = "\n".join(rows)
     return f"""<table class="index-table">

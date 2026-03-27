@@ -20,8 +20,6 @@ Quick onboarding guides for new users of the structural engineering library.
 | [copilot-quick-start.md](copilot-quick-start.md) | GitHub Copilot Agent Quick Start | > **⚠️ CONSOLIDATED:** This document has been simplified. > | 195 |
 | [cost-optimization-guide.md](cost-optimization-guide.md) | Cost Optimization Guide | This guide explains how to use the cost optimization feature | 49 |
 | [design-suggestions-guide.md](design-suggestions-guide.md) | Design Suggestions Guide | The design suggestions engine provides expert recommendation | 453 |
-| [excel-quickstart.md](excel-quickstart.md) | Excel Quickstart (Step by Step) | This is the easiest path if you prefer Excel and do not want | 68 |
-| [excel-tutorial.md](excel-tutorial.md) | Excel Step-by-Step Tutorial | This tutorial walks you through using the Structural Enginee | 393 |
 | [fix-copilot-terminal.md](fix-copilot-terminal.md) | Fix Copilot Terminal Lockup - Manual Ste | Copilot Agent's terminal is stuck in git pager mode. Command | 148 |
 | [insights-guide.md](insights-guide.md) | Advisory Insights Guide | > **Stability:** Experimental - API may change before v1.0 A | 537 |
 | [installation-notes.md](installation-notes.md) | Installation & Setup Guide | All required packages have been installed successfully: - ** | 80 |

@@ -210,5 +210,4 @@ cd Python && python -m pytest -q
 ## Next Steps
 
 1. **Validate your workflow** — Run the [verification examples](../verification/examples.md) to confirm library accuracy
-2. **Try Excel integration** — See [Excel Quickstart](excel-quickstart.md) for spreadsheet workflows
 3. **Explore advanced features** — See [Python Recipes](../cookbook/python-recipes.md) for complex scenarios

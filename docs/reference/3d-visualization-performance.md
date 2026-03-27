@@ -160,5 +160,4 @@ def create_beam_3d_figure(b, D, span, ...):
 ## Related Documentation
 
 - [8-week-development-plan.md](../planning/8-week-development-plan.md) - Project timeline
-- [visualizations_3d.py](../../streamlit_app/components/visualizations_3d.py) - Source code
 - [test_visualizations_3d.py](../../tests/test_visualizations_3d.py) - Test suite

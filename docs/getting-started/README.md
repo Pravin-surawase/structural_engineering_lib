@@ -66,7 +66,6 @@ What's your background?
 | Want to see the full workflow | [user-guide.md](user-guide.md) |
 | Never used this library before | [beginners-guide.md](beginners-guide.md) |
 | Are a Python developer | [python-quickstart.md](python-quickstart.md) |
-| Are an Excel user | [excel-quickstart.md](excel-quickstart.md) |
 | Use Google Colab | [colab-workflow.md](colab-workflow.md) |
 | Use GitHub Copilot | [copilot-quick-start.md](copilot-quick-start.md) |
 | Are an AI agent | [agent-bootstrap.md](agent-bootstrap.md) |

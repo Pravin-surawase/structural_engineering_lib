@@ -24,6 +24,8 @@ Routers import from `structural_lib` — they don't duplicate logic.
 
 ## Test with Docker
 
+> **Prerequisite:** Start Colima first: `colima start --cpu 4 --memory 4`
+
 ```bash
 docker compose up --build                        # Production
 docker compose -f docker-compose.dev.yml up      # Dev with hot reload

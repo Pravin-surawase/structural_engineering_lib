@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-03-27",
-  "file_count": 81,
+  "file_count": 82,
   "files": [
     {
       "name": "README.md",
@@ -256,7 +256,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -265,7 +265,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "28db58148db4"
+      "content_hash": "741529b22e29"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1684,6 +1684,61 @@
       "content_hash": "b80280c93709"
     },
     {
+      "name": "fix_broken_links.py",
+      "type": "python",
+      "size_lines": 251,
+      "last_updated": "2026-03-27",
+      "description": "Fix broken internal links in markdown files.",
+      "functions": [
+        {
+          "name": "is_broken_target",
+          "description": "Check if a link target matches a known deleted file.",
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "is_table_row",
+          "description": "Check if line is a markdown table row.",
+          "params": [
+            "line"
+          ]
+        },
+        {
+          "name": "is_table_separator",
+          "description": "Check if line is a table separator (|---|---|).",
+          "params": [
+            "line"
+          ]
+        },
+        {
+          "name": "is_list_item",
+          "description": "Check if line is a markdown list item.",
+          "params": [
+            "line"
+          ]
+        },
+        {
+          "name": "fix_file",
+          "description": "Fix broken links in a single file. Returns number of fixes.",
+          "params": [
+            "filepath",
+            "dry_run",
+            "verbose"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "DELETED_TARGETS",
+        "LINK_RE"
+      ],
+      "content_hash": "2e9139ae0107"
+    },
+    {
       "name": "generate_all_indexes.sh",
       "type": "shell-script",
       "size_lines": 51,
@@ -3072,5 +3127,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "294951d8655c5d5d"
+  "content_hash": "b388450ae5cb7733"
 }

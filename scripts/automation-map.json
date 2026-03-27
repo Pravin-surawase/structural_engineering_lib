@@ -49,6 +49,10 @@
       "script": ".venv/bin/python scripts/check_links.py --fix",
       "description": "Find and auto-fix broken internal links in markdown files"
     },
+    "fix deleted file links": {
+      "script": ".venv/bin/python scripts/fix_broken_links.py --dry-run",
+      "description": "Remove or convert broken links to deleted streamlit/vba/excel/xlwings files"
+    },
     "check streamlit code": {
       "script": ".venv/bin/python scripts/check_fastapi_issues.py",
       "description": "(REMOVED) check_streamlit.py was removed. Use check_fastapi_issues.py for backend checks."

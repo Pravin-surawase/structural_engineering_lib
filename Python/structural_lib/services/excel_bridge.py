@@ -19,7 +19,31 @@ Setup:
 
 from __future__ import annotations
 
-import xlwings as xw
+try:
+    import xlwings as xw
+except ImportError:
+    # Provide no-op stubs so the module can be imported without xlwings
+    from collections.abc import Callable
+    from typing import Any
+
+    class _Stub:
+        @staticmethod
+        def func(fn: Any = None, **kw: Any) -> Any:
+            return fn if fn is not None else (lambda f: f)
+
+        @staticmethod
+        def arg(*a: Any, **kw: Any) -> Callable[..., Any]:
+            return lambda f: f
+
+        @staticmethod
+        def ret(**kw: Any) -> Callable[..., Any]:
+            return lambda f: f
+
+        @staticmethod
+        def sub(fn: Any = None, **kw: Any) -> Any:
+            return fn if fn is not None else (lambda f: f)
+
+    xw = _Stub()
 
 # Import existing Python modules (already tested!)
 from structural_lib import detailing, flexure, shear

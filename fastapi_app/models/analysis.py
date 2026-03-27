@@ -8,7 +8,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 # =============================================================================
 # Load Analysis Models
 # =============================================================================
@@ -20,7 +19,9 @@ class LoadItem(BaseModel):
     load_type: Literal["udl", "point"] = Field(
         description="Load type: 'udl' (kN/m) or 'point' (kN)"
     )
-    magnitude: float = Field(gt=0, description="Load magnitude (kN/m for UDL, kN for point)")
+    magnitude: float = Field(
+        gt=0, description="Load magnitude (kN/m for UDL, kN for point)"
+    )
     position_mm: float = Field(
         default=0.0,
         ge=0,
@@ -40,7 +41,9 @@ class LoadAnalysisRequest(BaseModel):
         min_length=1,
         description="List of applied loads",
     )
-    num_points: int = Field(default=51, ge=11, le=201, description="Discretization points")
+    num_points: int = Field(
+        default=51, ge=11, le=201, description="Discretization points"
+    )
 
 
 class CriticalPointResponse(BaseModel):
