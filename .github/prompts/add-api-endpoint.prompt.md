@@ -39,7 +39,7 @@ Follow this workflow when adding a new API endpoint to `fastapi_app/`.
 2. Check auto-generated docs at `http://localhost:8000/docs`
 3. Run API tests:
    ```bash
-   cd Python && .venv/bin/pytest tests/ -v -k "test_api"
+   .venv/bin/pytest Python/tests/ -v -k "test_api"
    ```
 
 ## Commit

@@ -639,7 +639,7 @@ Tests failed: 0
 
 ### 15. `test_branch_operations.sh`
 
-**Purpose:** Test suite for git branch and worktree operations used by Agent 8.
+**Purpose:** Test suite for git branch and worktree operations used by the ops agent.
 
 **When to Use:**
 - ✅ After modifying branch/worktree logic
@@ -660,7 +660,7 @@ Tests failed: 0
 
 ### 16. `test_merge_conflicts.sh`
 
-**Purpose:** Merge conflict scenario test suite for Agent 8 workflows.
+**Purpose:** Merge conflict scenario test suite for ops agent workflows.
 
 **When to Use:**
 - ✅ After changing merge/rebase logic
@@ -1796,7 +1796,7 @@ Summary:
 ./scripts/generate_dashboard.sh
 ```
 
-**Output:** `agents/agent-9/governance/METRICS_DASHBOARD.md`
+**Output:** Governance metrics dashboard
 
 **Related:** [collect_metrics.sh](#57-collect_metricssh)
 
@@ -1858,7 +1858,7 @@ Summary:
 
 **When to Use:**
 - ✅ When monitoring CI on PRs
-- ✅ During agent 8 optimization workflows
+- ✅ During ops agent optimization workflows
 - ✅ Long-running PR validation
 
 **Usage:**
@@ -2392,9 +2392,9 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **Usage:**
 ```bash
-./scripts/agent_start.sh --quick     # Fast mode (recommended)
-./scripts/agent_start.sh             # Full validation
-./scripts/agent_start.sh --agent 9   # Agent-specific guidance
+./scripts/agent_start.sh --quick          # Fast mode (recommended)
+./scripts/agent_start.sh                   # Full validation
+./scripts/agent_start.sh --agent backend   # Agent-specific context
 ```
 
 **What It Does:**

@@ -411,18 +411,20 @@ export function useDualCSVImport() {
 }
 
 /**
- * useBatchDesign - Hook for running design on all imported beams.
+ * useSimpleBatchDesign - Simple one-shot batch design (fetch, no progress).
+ *
+ * For SSE streaming with live progress, use `useBatchDesign` from `useBatchDesign.ts`.
  *
  * @example
  * ```tsx
- * const { runBatchDesign } = useBatchDesign();
+ * const { runBatchDesign } = useSimpleBatchDesign();
  *
  * const handleDesignAll = () => {
  *   runBatchDesign(beams);
  * };
  * ```
  */
-export function useBatchDesign() {
+export function useSimpleBatchDesign() {
   const mutation = useMutation({
     mutationFn: batchDesign,
   });

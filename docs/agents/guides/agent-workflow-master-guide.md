@@ -31,7 +31,8 @@
 ./scripts/agent_start.sh
 
 # With agent-specific guidance:
-./scripts/agent_start.sh --agent 9 --quick  # For governance agents
+./scripts/agent_start.sh --agent backend --quick    # For backend agents
+./scripts/agent_start.sh --agent governance --quick  # For governance agents
 
 # Legacy commands (still work):
 ./scripts/agent_start.sh --quick

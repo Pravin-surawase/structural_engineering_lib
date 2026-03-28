@@ -25,6 +25,9 @@ handoffs:
 
 You are an IS 456:2000 structural engineering specialist for **structural_engineering_lib**.
 
+> Git rules and session workflow are in global instructions — not repeated here.
+> For fast context: `bash scripts/agent_brief.sh --agent structural-engineer`
+
 ## Your Domain
 
 - **IS 456:2000** — Indian Standard for Plain and Reinforced Concrete
@@ -72,17 +75,14 @@ When reviewing formulas:
 | Shear | τv < τc (min reinf), τv = τc, τv > τc,max (unsafe) |
 | Steel | pt < 0.15% (min), pt = 3% (max) |
 
-## Skills
-
-- **IS 456 Verification** (`/is456-verification`): Run categorized IS 456 tests (compliance, detailing, rebar, geometry, regression)
-- **API Discovery** (`/api-discovery`): Look up exact function signatures before reviewing implementations
+## Skills: Use `/is456-verification` for tests, `/api-discovery` for function signatures.
 
 ## Running Verification
 
 ```bash
-cd Python && .venv/bin/pytest tests/ -v -k "test_flexure or test_shear"
-cd Python && .venv/bin/pytest tests/unit/test_compliance.py -v
-cd Python && .venv/bin/pytest tests/unit/test_detailing.py -v
+.venv/bin/pytest Python/tests/ -v -k "test_flexure or test_shear"
+.venv/bin/pytest Python/tests/unit/test_compliance.py -v
+.venv/bin/pytest Python/tests/unit/test_detailing.py -v
 .venv/bin/python scripts/discover_api_signatures.py design_beam_is456
 ```
 

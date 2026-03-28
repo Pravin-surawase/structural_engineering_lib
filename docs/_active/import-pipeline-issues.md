@@ -64,15 +64,17 @@ All issues are TypeScript interface mismatches and a missing UI state transition
 
 ---
 
-## Issue 4: LOW — Duplicate useBatchDesign Hooks
+## Issue 4: LOW — Duplicate useBatchDesign Hooks — RESOLVED
 
-**Details**: Two different `useBatchDesign` hooks exist:
+**Status:** RESOLVED (2026-03-28)
+
+**Details**: Two different `useBatchDesign` hooks existed:
 1. `useCSVImport.ts` — Simple POST to `/import/batch-design` (exported from barrel `hooks/index.ts`)
 2. `useBatchDesign.ts` — SSE streaming to `/stream/batch-design` (imported directly by `BatchDesignPage.tsx`)
 
-**Impact**: Confusing but not a runtime bug since consumers import the right one.
+**Resolution:** Renamed simple version to `useSimpleBatchDesign` in `useCSVImport.ts`. Updated barrel export in `hooks/index.ts` to export both under distinct names. Updated `BuildingEditorPage.tsx` consumer. TypeScript + build verified passing.
 
-**Fix**: No action needed now. Could rename or consolidate later.
+**Files changed:** `useCSVImport.ts`, `hooks/index.ts`, `BuildingEditorPage.tsx`
 
 ---
 

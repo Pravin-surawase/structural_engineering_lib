@@ -33,7 +33,13 @@ Complete all end-of-session steps. Do NOT skip any.
    - Edit `docs/TASKS.md`
    - Mark completed items, add any new items discovered
 
-6. Commit all doc updates:
+6. Log agent feedback (stale docs, missing info, issues found):
+   ```bash
+   ./run.sh feedback log --agent <name>
+   ```
+   Direct script: `.venv/bin/python scripts/agent_feedback.py log --agent <name> --stale-doc "..." --missing-info "..." --issue "..."`
+
+7. Commit all doc updates:
    ```bash
    ./scripts/ai_commit.sh "docs: session end"
    ```

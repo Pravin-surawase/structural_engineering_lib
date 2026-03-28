@@ -383,3 +383,237 @@ class TestSelectStirrupDiameter:
             vu_kn=400, b_mm=400, d_mm=600, fck=25, main_bar_dia=16
         )
         assert dia_high >= dia_low
+
+
+class TestSelectStirrupDiameterNumLegs:
+    """Tests for num_legs parameter in select_stirrup_diameter.
+
+    Multi-leg stirrups reduce effective shear stress, allowing smaller diameters.
+    Formula: effective_tv = tv * (2.0 / num_legs) when num_legs > 2.
+    """
+
+    def test_num_legs_4_reduces_diameter(self):
+        """With 4 legs, effective_tv halves, allowing smaller diameter."""
+        # High shear case that needs 10mm with 2 legs
+        dia_2legs = shear.select_stirrup_diameter(
+            vu_kn=150, b_mm=400, d_mm=600, fck=30, main_bar_dia=20, num_legs=2
+        )
+        dia_4legs = shear.select_stirrup_diameter(
+            vu_kn=150, b_mm=400, d_mm=600, fck=30, main_bar_dia=20, num_legs=4
+        )
+        # 4 legs should allow smaller diameter
+        assert dia_4legs < dia_2legs
+
+    def test_num_legs_6_reduces_further(self):
+        """With 6 legs, effective_tv is 1/3, reducing diameter further."""
+        dia_2legs = shear.select_stirrup_diameter(
+            vu_kn=650, b_mm=500, d_mm=800, fck=30, main_bar_dia=20, num_legs=2
+        )
+        dia_6legs = shear.select_stirrup_diameter(
+            vu_kn=650, b_mm=500, d_mm=800, fck=30, main_bar_dia=20, num_legs=6
+        )
+        # 6 legs should give smaller diameter than 2 legs
+        assert dia_6legs < dia_2legs
+
+    def test_num_legs_2_is_default(self):
+        """num_legs=2 should match default behavior (no num_legs specified)."""
+        dia_explicit = shear.select_stirrup_diameter(
+            vu_kn=80, b_mm=300, d_mm=450, fck=25, main_bar_dia=16, num_legs=2
+        )
+        dia_default = shear.select_stirrup_diameter(
+            vu_kn=80, b_mm=300, d_mm=450, fck=25, main_bar_dia=16
+        )
+        assert dia_explicit == dia_default
+
+    def test_num_legs_does_not_go_below_min_dia(self):
+        """Even with many legs, diameter respects main_bar_dia/4 minimum."""
+        # main_bar_dia=32 means minimum stirrup diameter = 8mm
+        # Low shear + 6 legs should not go below 8mm
+        dia = shear.select_stirrup_diameter(
+            vu_kn=30, b_mm=200, d_mm=350, fck=25, main_bar_dia=32, num_legs=6
+        )
+        assert dia >= 8  # main_bar_dia/4 = 32/4 = 8
+
+
+class TestDesignShearSteelGrades:
+    """Tests for different steel grades (fy values) in design_shear.
+
+    Higher fy allows larger spacing (fewer stirrups needed).
+    Fe 250: fy=250, Fe 415: fy=415, Fe 500: fy=500.
+    """
+
+    def test_fe250_gives_smaller_spacing(self):
+        """Fe 250 steel (lower fy) needs smaller spacing than Fe 415."""
+        result_fe250 = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=250, asv=157, pt=0.5
+        )
+        result_fe415 = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5
+        )
+        # Lower grade steel needs more closely spaced stirrups
+        assert result_fe250.spacing <= result_fe415.spacing
+
+    def test_fe500_gives_larger_spacing(self):
+        """Fe 500 steel (higher fy) allows larger spacing than Fe 415."""
+        result_fe415 = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5
+        )
+        result_fe500 = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=500, asv=157, pt=0.5
+        )
+        # Higher grade steel allows wider spacing
+        assert result_fe500.spacing >= result_fe415.spacing
+
+    def test_fe250_still_safe(self):
+        """Design with Fe 250 should still be safe."""
+        result = shear.design_shear(
+            vu_kn=80, b=250, d=450, fck=25, fy=250, asv=157, pt=0.5
+        )
+        assert result.is_safe is True
+
+
+class TestDesignShearHandCalculated:
+    """Hand-calculated verification tests for design_shear formulas.
+
+    Validates the spacing calculation logic against manual calculations.
+    """
+
+    def test_spacing_formula_minimum_reinforcement(self):
+        """When tv < tc, spacing uses minimum reinforcement formula.
+
+        Formula: spacing = (0.87 * fy * asv) / (0.4 * b)
+        Limited by min(spacing_calc, 0.75*d, 300)
+        """
+        # Low shear case: tv < tc (minimum reinforcement)
+        # tv = 20000/(250*450) = 0.178 N/mm²
+        # tc for M25, pt=1.0 ≈ 0.62 N/mm² (from IS 456 Table 19)
+        # tv < tc, so minimum reinforcement applies
+        # spacing_calc = (0.87*415*157)/(0.4*250) = 566.6mm
+        # Limited by 0.75*450=337.5mm and 300mm → 300mm
+        result = shear.design_shear(
+            vu_kn=20, b=250, d=450, fck=25, fy=415, asv=157, pt=1.0
+        )
+        # Rounded down to practical spacing
+        assert result.spacing == pytest.approx(300, abs=1)
+        assert result.is_safe is True
+
+    def test_spacing_formula_designed_reinforcement(self):
+        """When tv > tc, spacing uses designed reinforcement formula.
+
+        Formula: spacing = (0.87 * fy * asv * d) / (vus * 1000)
+        where vus = Vu - tc*b*d
+        """
+        # High shear case: tv > tc
+        # tv = 150000/(250*450) = 1.333 N/mm²
+        # tc for M25, pt=0.5% ≈ 0.49 N/mm² (from IS 456 Table 19)
+        # vus = (150000 - 0.49*250*450)/1000 = 94.875 kN
+        # spacing_calc = (0.87*415*157*450)/94875 = 268.98mm
+        # Limited by 0.75*450=337.5mm and 300mm → 268.98mm
+        # Rounded down to 250mm (practical spacing)
+        result = shear.design_shear(
+            vu_kn=150, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5
+        )
+        assert result.spacing == pytest.approx(250, abs=5)
+        assert result.is_safe is True
+
+
+class TestCalculateTvEdgeCases:
+    """Additional edge cases for calculate_tv function."""
+
+    def test_negative_dimensions_b_raises(self):
+        """Negative width b should raise DimensionError."""
+        with pytest.raises(DimensionError, match="beam width b"):
+            shear.calculate_tv(vu_kn=100, b=-100, d=450)
+
+    def test_negative_dimensions_d_raises(self):
+        """Negative depth d should raise DimensionError."""
+        with pytest.raises(DimensionError, match="effective depth d"):
+            shear.calculate_tv(vu_kn=100, b=250, d=-100)
+
+    def test_very_large_section(self):
+        """Very large beam sections should work correctly."""
+        # b=2000mm, d=3000mm, Vu=100kN
+        # tv = 100*1000/(2000*3000) = 0.0167 N/mm²
+        tv = shear.calculate_tv(vu_kn=100, b=2000, d=3000)
+        assert tv == pytest.approx(0.0167, rel=0.01)
+
+    def test_very_small_section(self):
+        """Very small beam sections should work correctly."""
+        # b=100mm, d=150mm, Vu=100kN
+        # tv = 100*1000/(100*150) = 6.667 N/mm²
+        tv = shear.calculate_tv(vu_kn=100, b=100, d=150)
+        assert tv == pytest.approx(6.667, rel=0.01)
+
+
+class TestDesignShearExtremePt:
+    """Tests for extreme steel percentage (pt) values in design_shear.
+
+    pt affects tc (permissible shear stress) from IS 456 Table 19.
+    pt range: 0.15% (minimum) to 3.0% (maximum).
+    """
+
+    def test_very_low_pt(self):
+        """Very low pt (0.15%) should still work."""
+        result = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.15
+        )
+        # Should work, tc will be at minimum from table
+        assert result.spacing > 0
+        assert isinstance(result.is_safe, bool)
+
+    def test_very_high_pt(self):
+        """Very high pt (3.0%) gives higher tc than low pt."""
+        result_low = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.15
+        )
+        result_high = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=3.0
+        )
+        # Higher pt → higher tc → potentially larger spacing
+        assert result_high.spacing >= result_low.spacing
+
+    def test_pt_zero_still_works(self):
+        """pt=0 should return valid result (minimum tc from table)."""
+        result = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.0
+        )
+        # Should use minimum tc value from IS 456 Table 19
+        assert result.spacing > 0
+        assert isinstance(result.is_safe, bool)
+
+
+class TestDesignShearExtremeBeamSizes:
+    """Tests with extreme beam dimensions.
+
+    Validates spacing limits for very deep, very wide, and minimal beams.
+    """
+
+    def test_very_deep_beam(self):
+        """Very deep beam: spacing respects 0.75*d limit but also 300mm max."""
+        # b=250mm, d=2000mm (deep beam)
+        # 0.75*d = 1500mm, but 300mm limit applies first
+        result = shear.design_shear(
+            vu_kn=100, b=250, d=2000, fck=25, fy=415, asv=157, pt=0.5
+        )
+        # Spacing cannot exceed 300mm (IS 456 Cl 26.5.1.5)
+        assert result.spacing <= 300
+
+    def test_very_wide_beam(self):
+        """Very wide beam should have lower tv and be safe."""
+        # b=1000mm, d=450mm (wide beam)
+        result = shear.design_shear(
+            vu_kn=100, b=1000, d=450, fck=25, fy=415, asv=157, pt=0.5
+        )
+        # Wide beam → lower tv → should be safe
+        assert result.is_safe is True
+        assert result.spacing > 0
+
+    def test_minimal_beam(self):
+        """Minimal beam dimensions should still work."""
+        # b=150mm, d=200mm (small beam)
+        result = shear.design_shear(
+            vu_kn=50, b=150, d=200, fck=20, fy=415, asv=100, pt=0.5
+        )
+        # Should return valid result
+        assert result.spacing > 0
+        assert isinstance(result.is_safe, bool)

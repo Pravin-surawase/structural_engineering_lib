@@ -25,9 +25,9 @@
 ./scripts/agent_start.sh --quick
 
 # With agent-specific guidance:
-./scripts/agent_start.sh --agent 9 --quick   # Governance focus
-./scripts/agent_start.sh --agent 8 --quick   # Git/automation focus
-./scripts/agent_start.sh --agent 6 --quick   # UI focus
+./scripts/agent_start.sh --agent governance --quick   # Governance focus
+./scripts/agent_start.sh --agent ops --quick          # Git/automation focus
+./scripts/agent_start.sh --agent frontend --quick     # UI focus
 ```
 
 ---

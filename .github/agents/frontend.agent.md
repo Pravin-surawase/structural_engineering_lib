@@ -7,9 +7,17 @@ handoffs:
     agent: reviewer
     prompt: "Review the frontend changes made above."
     send: false
+  - label: Need API Endpoint
+    agent: api-developer
+    prompt: "The frontend feature above needs a new or modified API endpoint."
+    send: false
   - label: Design First
     agent: ui-designer
     prompt: "Design the UI layout for the feature described above before implementation."
+    send: false
+  - label: Add Tests
+    agent: tester
+    prompt: "Write Vitest tests for the frontend changes made above."
     send: false
   - label: Back to Planning
     agent: orchestrator
@@ -20,6 +28,10 @@ handoffs:
 # Frontend Developer Agent
 
 You are a React 19 frontend specialist for **structural_engineering_lib**.
+
+> For fast context: `bash scripts/agent_brief.sh --agent frontend`
+
+> Architecture, git rules, and session workflow are in global instructions — not repeated here.
 
 ## Tech Stack
 
@@ -77,26 +89,7 @@ ls react_app/src/components/   # All components by feature group
 | `FloatingDock` | macOS spring dock nav |
 | `CrossSectionView` | Annotated SVG |
 
-## Before Starting ANY Task
-
-1. **Read the files you'll modify** — understand current state before changing anything
-2. **Check hooks/components exist** — `ls react_app/src/hooks/` and `ls react_app/src/components/`
-3. **Understand the current behavior** — run the dev server if needed
-4. **Ask orchestrator for clarification** if the task is ambiguous — don't guess
-
-## After Completing Work (MANDATORY Report)
-
-Before handing off to @reviewer, provide:
-
-```
-## Work Complete
-
-**Task:** [what was requested]
-**Files Changed:** [list with brief description of each change]
-**What Was Added/Modified/Removed:** [summary]
-**How to Test:** [specific steps to verify the change works]
-**Build Status:** [did `npm run build` pass?]
-```
+## After Work: Hand off to @reviewer with files changed, what was added/modified, how to test, build status.
 
 ## Rules
 
@@ -105,9 +98,6 @@ Before handing off to @reviewer, provide:
 3. **Check hooks before creating new ones** — duplication is the #1 agent mistake
 4. **Zustand stores:** `useDesignStore` (single beam), `useImportedBeamsStore` (CSV beams)
 5. **Build check:** `cd react_app && npm run build` before committing
-6. **Git commit:** Always `./scripts/ai_commit.sh "type: message"` — NEVER manual git
-7. **PR required** for production React code — run `./run.sh pr status` first
-8. **Always hand off to @reviewer** after completing work — never skip review
 
 ## Architecture
 

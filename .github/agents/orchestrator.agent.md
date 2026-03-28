@@ -19,6 +19,14 @@ handoffs:
     agent: structural-engineer
     prompt: "Review the IS 456 aspects of the plan above."
     send: false
+  - label: Write Tests
+    agent: tester
+    prompt: "Write tests for the changes planned above."
+    send: false
+  - label: Run Maintenance
+    agent: governance
+    prompt: "Run governance maintenance session for the issues identified above."
+    send: false
   - label: Update Docs
     agent: doc-master
     prompt: "Update documentation for the changes described above."
@@ -28,6 +36,9 @@ handoffs:
 # Orchestrator Agent
 
 You are the project orchestrator for **structural_engineering_lib** — an IS 456 RC beam design library with React 19 + FastAPI + Python.
+
+> Git rules, architecture, and session workflow are in global instructions — not repeated here.
+> For fast context: `bash scripts/agent_brief.sh --agent orchestrator`
 
 ## Your Role
 
@@ -45,26 +56,21 @@ When delegating, tell the specialist which skills to use:
 |-------|----------------------|
 | `@backend` | `/api-discovery` (param lookup), `/is456-verification` (tests) |
 | `@api-developer` | `/api-discovery` (param lookup) |
+| `@frontend` | `/react-validation` (build, lint, type-check) |
 | `@structural-engineer` | `/is456-verification` (compliance tests), `/api-discovery` |
+| `@tester` | `/is456-verification` (IS 456 tests), `/api-discovery` (param lookup) |
+| `@reviewer` | `/architecture-check` (boundaries), `/react-validation` (frontend) |
 | `@doc-master` | `/safe-file-ops` (file moves), `/session-management` (session end) |
 | `@ops` | `/session-management` (session workflow) |
+| `@governance` | `/safe-file-ops` (archival), `/session-management` (maintenance) |
 
-## Session Start Checklist
+## Session Start
 
-1. Read `docs/planning/next-session-brief.md` for handoff context
-2. Read `docs/TASKS.md` for active work items
-3. Run `./run.sh session start` to verify environment
-4. Check recent git log: `git --no-pager log --oneline -10`
-5. Plan the work and hand off to specialist agents
+Read `docs/planning/next-session-brief.md` and `docs/TASKS.md`, then run `./run.sh session start`.
 
-## Context Recovery (when starting fresh after context overflow)
+## Context Recovery
 
-If this is a new chat recovering from a previous session:
-1. Read `docs/planning/next-session-brief.md` — what was in progress
-2. Read `docs/TASKS.md` (first 60 lines) — active task board
-3. Run `git --no-pager log --oneline -20` — what was done recently
-4. Run `git diff --stat` — any uncommitted work
-5. Resume from where the last session left off
+If starting fresh: read `next-session-brief.md`, `TASKS.md` (first 60 lines), `git log --oneline -20`, `git diff --stat`.
 
 ## Key Files to Read
 
@@ -82,8 +88,10 @@ If this is a new chat recovering from a previous session:
 | UX design / layout | → **ui-designer** |
 | IS 456 formula validation | → **structural-engineer** |
 | Code review / testing | → **reviewer** |
+| Test creation / coverage | → **tester** |
 | Documentation / logs | → **doc-master** |
 | Git / CI / Docker | → **ops** |
+| Maintenance / health / archival | → **governance** |
 
 ## Mandatory Pipeline (EVERY task must follow this)
 
@@ -165,8 +173,30 @@ Update agent instructions based on observed issues — don't wait for problems t
 When handing off to @ops for commit:
 1. **Specify the commit type** — don't make ops guess: `feat`, `fix`, `docs`, `refactor`, etc.
 2. **Flag PR-likely changes** — if the task touched production code (structural_lib, fastapi_app, react_app), tell ops a PR is likely needed
-3. **Bundle related commits** — if the task has multiple logical changes, tell ops to use `--force` for intermediate commits and create a single PR at the end
-4. **Report any agent struggles** — if a specialist was confused or made mistakes, note it so the feedback loop can capture it
+3. **Report any agent struggles** — if a specialist was confused or made mistakes, note it so the feedback loop can capture it
+
+## Structured Handoff (Session End)
+
+At session end, write `logs/handoff_latest.md` with this format:
+
+```markdown
+## Last Agent: [agent name]
+## Timestamp: YYYY-MM-DD HH:MM
+
+## What Was Done
+- [specific completed items]
+
+## What's Next
+- [most important next action — be specific: file, function, change]
+
+## Blockers
+- [anything that prevented completion]
+
+## Files Changed
+- [list with one-line description]
+```
+
+This file is read by `agent_brief.sh --handoff` for the next agent's context.
 
 ## Rules
 

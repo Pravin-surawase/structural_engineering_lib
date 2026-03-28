@@ -63,5 +63,5 @@ The public API has 23 functions + 6 private helpers. Key entry points:
 
 ## Testing & Quality
 
-- Tests: `cd Python && .venv/bin/pytest tests/ -v` (85% branch coverage required)
+- Tests: `.venv/bin/pytest Python/tests/ -v` (85% branch coverage required)
 - Production code always requires PR: `./scripts/create_task_pr.sh TASK-XXX "desc"`

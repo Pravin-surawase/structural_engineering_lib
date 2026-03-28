@@ -35,7 +35,7 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Python API
 ## 4. Test
 
 ```bash
-cd Python && .venv/bin/pytest tests/ -v         # Python tests
+.venv/bin/pytest Python/tests/ -v         # Python tests
 cd react_app && npm run build                   # React build check
 ```
 

@@ -113,6 +113,7 @@ def select_stirrup_diameter(
     Also considers:
     - Main bar diameter (stirrup should be >= main_bar/4 per IS 456)
     - Beam width (larger beams use larger stirrups)
+    - Number of legs (more legs allow smaller diameter for same demand)
 
     Args:
         vu_kn: Factored shear force (kN).
@@ -139,25 +140,29 @@ def select_stirrup_diameter(
 
     tv = (abs(vu_kn) * 1000.0) / (b_mm * d_mm)  # kN → N / (mm × mm) = N/mm²
 
+    # Adjust effective demand for multi-leg stirrups
+    # More legs means each pair of legs carries less shear, allowing smaller diameter
+    effective_tv = tv * (2.0 / num_legs) if num_legs > 2 else tv
+
     # Minimum stirrup diameter per IS 456 Cl. 26.5.1.8
     # Stirrup diameter should not be less than main_bar / 4
     min_dia_from_main = math.ceil(main_bar_dia / 4)
     min_dia = max(6, min_dia_from_main)
 
     # Selection based on shear stress and beam size
-    if tv < 0.4:
+    if effective_tv < 0.4:
         # Light shear - use minimum practical size
         if b_mm < 200:
             selected = 6
         else:
             selected = 8
-    elif tv < 0.8:
+    elif effective_tv < 0.8:
         # Normal shear - standard 8mm for most cases
         if b_mm >= 400:
             selected = 10
         else:
             selected = 8
-    elif tv < 1.5:
+    elif effective_tv < 1.5:
         # Moderate shear
         if b_mm >= 400 or d_mm >= 600:
             selected = 10

@@ -49,6 +49,13 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh test --ci                  # Full local CI
 ./run.sh audit                      # Full readiness audit
 ./run.sh generate indexes           # Regenerate folder indexes
+./run.sh health                     # Project health scan (0-100 score)
+./run.sh health --fix               # Auto-fix fixable issues
+./run.sh feedback log --agent X     # Log agent feedback (session end)
+./run.sh feedback summary           # Feedback trends & recurring issues
+./run.sh evolve                     # Self-evolution cycle (dry-run)
+./run.sh evolve --fix               # Apply fixes + commit
+./run.sh evolve --review weekly     # Weekly auto-maintenance
 ```
 
 ### Direct scripts (when run.sh doesn't cover it)
@@ -63,6 +70,26 @@ cd react_app && npm run dev                     # React at :5173
 ```
 
 > **Docker note:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Start Colima before any `docker` command: `colima start`. If `docker ps` gives "permission denied", Colima isn't running.
+
+## IMPORTANT: Terminal Path Rules
+
+**All commands assume cwd = workspace root.** Terminal cwd persists between calls — if a previous command did `cd react_app`, the next command is STILL in `react_app/`.
+
+```
+WRONG: cd Python && .venv/bin/pytest tests/ -v     ← .venv is NOT inside Python/
+RIGHT: .venv/bin/pytest Python/tests/ -v           ← run from workspace root
+RIGHT: .venv/bin/python scripts/check_links.py     ← scripts are at workspace root
+
+WRONG: npm run build                               ← only works if already in react_app/
+RIGHT: cd react_app && npm run build               ← explicit cd first
+```
+
+**Key paths (all relative to workspace root):**
+- `.venv/bin/pytest` — pytest binary
+- `.venv/bin/python` — Python binary
+- `Python/tests/` — Python test directory
+- `react_app/` — React app directory
+- `scripts/` — utility scripts
 
 ## Session End (auto-summary + sync)
 
@@ -90,8 +117,9 @@ Every AI agent session MUST follow this workflow. Skipping these steps breaks co
 
 ### Session End (REQUIRED — do NOT skip)
 1. Run `./run.sh commit` for any uncommitted work
-2. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
-3. Run `./run.sh session sync` — fixes stale numbers in docs
+2. Run `./run.sh feedback log --agent <name>` — log stale docs, missing info, issues found
+3. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
+4. Run `./run.sh session sync` — fixes stale numbers in docs
 4. Append to `docs/WORKLOG.md` — one line per change (date | task | what | commit)
 5. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
 6. Update `docs/TASKS.md` — mark completed items, add new items discovered

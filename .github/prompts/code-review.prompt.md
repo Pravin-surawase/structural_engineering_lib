@@ -31,13 +31,7 @@ Use this checklist when reviewing changes to this repository.
 - [ ] No duplicate API routes (check `grep -r "@router" fastapi_app/routers/`)
 - [ ] Tests added/updated for behavior changes
 - [ ] Test coverage maintained (85% branch coverage target for Python)
-- [ ] `cd Python && .venv/bin/pytest tests/ -v` passes
-
-## Streamlit (legacy only)
-
-- [ ] No `st.sidebar` inside `@st.fragment` functions
-- [ ] Safe patterns used: `.get()` instead of direct key access
-- [ ] Scanner passes: `.venv/bin/python scripts/check_streamlit.py --all-pages`
+- [ ] `.venv/bin/pytest Python/tests/ -v` passes
 
 ## Documentation
 

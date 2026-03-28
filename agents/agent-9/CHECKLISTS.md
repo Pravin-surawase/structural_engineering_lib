@@ -169,7 +169,7 @@
 ---
 
 ### Phase 2: Quality Gates (30 min)
-- [ ] Run full test suite: `cd Python && .venv/bin/pytest -q`
+- [ ] Run full test suite: `.venv/bin/pytest Python/ -q`
   - [ ] Verify: 2370+ tests passing
 - [ ] Check code quality:
   - [ ] Ruff: `.venv/bin/python -m ruff check Python/` (target: 0 errors)

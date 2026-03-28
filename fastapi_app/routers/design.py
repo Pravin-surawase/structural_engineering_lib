@@ -334,7 +334,7 @@ async def design_beam_torsion(
     - Safety check (τve vs τc,max)
     """
     try:
-        from structural_lib.codes.is456.torsion import design_torsion
+        from structural_lib.services.api import design_torsion
 
         # Calculate effective depth if not provided
         d = request.effective_depth

@@ -1,4 +1,6 @@
-# Agent Roles
+# Agent Roles (LEGACY)
+
+> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copilot agents). These files are kept for reference only. Do NOT create new roles here — add agents to `.github/agents/` instead.
 
 Defines 12 agent roles for the multi-agent collaboration framework.
 

@@ -146,7 +146,7 @@
       "size_lines": 87,
       "last_updated": "2026-02-11",
       "title": "Handoff Quick Start",
-      "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: ./scripts/agent_start.sh --quick (or with --agent 9 for governance work)",
+      "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: ./scripts/agent_start.sh --quick (or with --agent governance for governance work)",
       "content_hash": "91eca2b2ba63"
     },
     {

@@ -13,6 +13,9 @@ handoffs:
 
 You are the DevOps specialist for **structural_engineering_lib**. You handle git, CI/CD, Docker, and environment management.
 
+> Session workflow is in global instructions — not repeated here.
+> For fast context: `bash scripts/agent_brief.sh --agent ops`
+
 ## THE ONE RULE
 
 ```bash
@@ -137,65 +140,11 @@ After running the fix, commit the changed docs:
 **Issues:** [any failures encountered and how resolved | none]
 ```
 
-## Skills
-
-- **Session Management** (`/session-management`): Full session start/end automation
-- **Safe File Ops** (`/safe-file-ops`): Safe file move/delete preserving 870+ links
-
-## Feedback Loop (Post-Commit)
-
-After every commit, note patterns for continuous improvement:
-
-1. **If commit succeeded** — no action needed, the script logs to `logs/git_workflow.log`
-2. **If commit failed** — report the failure mode in your Commit Complete report:
-   ```
-   **Failure:** [what failed — hook, push, PR creation]
-   **Recovery:** [what you did to fix it]
-   **Prevention:** [should a rule be added to prevent this?]
-   ```
-3. **If you spot a recurring pattern** — suggest an update to the orchestrator:
-   - Same type of failure happening repeatedly → add to Historical Mistakes
-   - Agent repeatedly confused about workflow → update the relevant agent.md
-   - Script needs enhancement → file an issue in TASKS.md
-
-## Advanced Modes
-
-```bash
-./scripts/ai_commit.sh "msg" --dry-run    # Preview without executing
-./scripts/ai_commit.sh "msg" --force      # Bypass PR check (batch commits only)
-./scripts/ai_commit.sh --push             # Push existing commits (no new commit)
-./scripts/ai_commit.sh --amend            # Amend last commit + force-push-with-lease
-```
+## Skills: Use `/session-management` for session workflow, `/safe-file-ops` for file operations.
 
 ## ⚠ DO NOT Over-Explore
 
-**Act directly — don't run 10 diagnostic commands when you already know what to do.**
-
-❌ BAD (wastes time):
-```bash
-ls scripts/ | grep -i pr
-ls scripts/*.sh | grep -E '(pr|commit)' | head -10
-ls scripts/ | grep -E 'ai_commit|create_task_pr' | head -5
-ls -la run.sh
-git status --short
-git branch --show-current
-git diff --stat
-lsof -ti :5173 2>/dev/null && echo "..."
-./scripts/should_use_pr.sh --explain 2>&1 | head -40
-```
-
-✅ GOOD (just do it):
-```bash
-./scripts/ai_commit.sh "feat: add feature"   # Commit
-./run.sh pr status                            # Check PR requirement (ONE command)
-./run.sh pr create TASK-XXX "desc"            # Create PR if needed
-```
-
-**Rules:**
-- You already know the script names from this file — don't `ls` or `grep` to rediscover them
-- Run ONE diagnostic command max before acting, not a chain of 5-10
-- Don't check port status, git branch, or git diff unless specifically asked
-- Don't `ls -la` files you already know exist
+You know the script names from this file — don't `ls` or `grep` to rediscover them. Run ONE diagnostic command max before acting.
 
 ## Emergency Recovery
 
