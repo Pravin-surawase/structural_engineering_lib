@@ -1,0 +1,105 @@
+name: Stale Cleanup
+
+# Automatically cleans up stale branches and old nightly QA issues.
+# Runs weekly on Sunday at 6 AM UTC (11:30 AM IST) — after governance-health.
+# Can also be triggered manually.
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      days_threshold:
+        description: 'Days before a nightly QA issue is considered stale'
+        required: false
+        default: '14'
+      dry_run:
+        description: 'Dry run (true = preview only)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Clean stale branches
+        run: |
+          echo "🌿 Checking for stale branches..."
+          STALE=$(git branch -r --merged origin/main | grep -v 'main$' | grep -v 'HEAD' | sed 's|^ *origin/||' | sort)
+
+          if [ -z "$STALE" ]; then
+            echo "✅ No stale branches found"
+          else
+            COUNT=$(echo "$STALE" | wc -l | tr -d ' ')
+            echo "Found $COUNT stale branches merged into main:"
+            echo "$STALE" | while read -r branch; do
+              [ -z "$branch" ] && continue
+              if [ "${{ inputs.dry_run || 'false' }}" = "true" ]; then
+                echo "  [dry-run] Would delete: $branch"
+              else
+                echo "  Deleting: $branch"
+                git push origin --delete "$branch" 2>/dev/null || echo "  ⚠️ Failed: $branch"
+              fi
+            done
+          fi
+
+      - name: Close old nightly QA issues
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const daysThreshold = parseInt('${{ inputs.days_threshold || '14' }}');
+            const dryRun = '${{ inputs.dry_run || 'false' }}' === 'true';
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - daysThreshold);
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const nightlyIssues = issues.filter(i =>
+              i.title.startsWith('Nightly QA failed') &&
+              new Date(i.created_at) < cutoff
+            );
+
+            if (nightlyIssues.length === 0) {
+              console.log('✅ No stale nightly QA issues');
+              return;
+            }
+
+            console.log(`Found ${nightlyIssues.length} stale nightly QA issues (older than ${daysThreshold} days):`);
+
+            for (const issue of nightlyIssues) {
+              const created = issue.created_at.split('T')[0];
+              if (dryRun) {
+                console.log(`  [dry-run] Would close #${issue.number}: ${issue.title} (created ${created})`);
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `Auto-closed by stale cleanup workflow. Issue was older than ${daysThreshold} days.\n\nIf this is still relevant, please reopen.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                });
+                console.log(`  ✅ Closed #${issue.number}: ${issue.title} (created ${created})`);
+              }
+            }

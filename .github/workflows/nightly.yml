@@ -154,6 +154,43 @@ jobs:
             artifacts/job_out
           if-no-files-found: warn
 
+      - name: Close stale nightly issues on success
+        if: success()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            // On success, close any open "Nightly QA failed" issues older than 3 days
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - 3);
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 50,
+            });
+
+            const staleNightly = issues.filter(i =>
+              i.title.startsWith('Nightly QA failed') &&
+              new Date(i.created_at) < cutoff
+            );
+
+            for (const issue of staleNightly) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `Auto-closed: Nightly QA is now passing (run ${context.runId}).`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+              });
+              console.log(`Closed #${issue.number}: ${issue.title}`);
+            }
+
       - name: Create issue on failure
         if: failure()
         uses: actions/github-script@v8
