@@ -76,3 +76,5 @@
 | 2025-07-16 | TASK-529 | feat(is456): add check_column_slenderness + get_effective_length_factor (Cl 25.1.2, Table 28) | pending |
 | 2025-07-16 | TASK-529 | feat(is456): add get_stress_block_params (Cl 38.1) + get_xu_max_ratio | pending |
 | 2025-07-16 | TASK-529 | test: add 28 column slenderness tests — all passing | pending |
+| 2025-07-16 | TASK-529 | feat(api): wire check_column_slenderness + get_effective_length_factor to services/api.py | pending |
+| 2025-07-16 | TASK-529 | feat(fastapi): add POST /api/v1/design/column/slenderness endpoint | pending |

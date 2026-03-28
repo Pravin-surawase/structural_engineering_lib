@@ -434,3 +434,77 @@ class TorsionDesignResponse(BaseModel):
 
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+
+
+# =============================================================================
+# Column Slenderness Models
+# =============================================================================
+
+
+class ColumnSlendernessRequest(BaseModel):
+    """Request model for column slenderness classification."""
+
+    width: float = Field(
+        gt=0,
+        le=2000.0,
+        description="Column width b — least lateral dimension (mm)",
+        examples=[300.0, 400.0, 500.0],
+    )
+    depth: float = Field(
+        gt=0,
+        le=2000.0,
+        description="Column depth D — other lateral dimension (mm)",
+        examples=[300.0, 400.0, 600.0],
+    )
+    unsupported_length: float = Field(
+        gt=0,
+        le=30000.0,
+        description="Unsupported length of column (mm)",
+        examples=[3000.0, 4000.0, 5000.0],
+    )
+    effective_length_factor: float = Field(
+        default=1.0,
+        gt=0,
+        le=3.0,
+        description="Effective length factor k from IS 456 Table 28",
+        examples=[0.65, 0.80, 1.0, 2.0],
+    )
+    end_condition_top: str | None = Field(
+        default=None,
+        description="End condition at top ('fixed', 'hinged', 'free'). If provided with end_condition_bottom, overrides effective_length_factor.",
+        examples=["fixed", "hinged", "free"],
+    )
+    end_condition_bottom: str | None = Field(
+        default=None,
+        description="End condition at bottom ('fixed', 'hinged', 'free'). Must be used with end_condition_top.",
+        examples=["fixed", "hinged"],
+    )
+
+    @model_validator(mode="after")
+    def validate_end_conditions(self) -> "ColumnSlendernessRequest":
+        """If end conditions are provided, both must be present."""
+        if (self.end_condition_top is None) != (self.end_condition_bottom is None):
+            raise ValueError(
+                "Both end_condition_top and end_condition_bottom must be provided together"
+            )
+        return self
+
+
+class ColumnSlendernessResponse(BaseModel):
+    """Response model for column slenderness classification."""
+
+    success: bool = Field(description="True if classification completed without errors")
+    message: str = Field(description="Summary of classification result")
+    column_type: str = Field(description="'short' or 'long'")
+    is_short: bool = Field(description="True if column is short (le/b ≤ 12 AND le/D ≤ 12)")
+    is_slender: bool = Field(description="True if column is long/slender")
+    slenderness_ratio: float = Field(description="Governing le/dimension ratio")
+    slenderness_limit: float = Field(description="IS 456 limit (12.0)")
+    utilization: float = Field(description="slenderness_ratio / limit")
+    le_by_b: float = Field(description="le/b ratio")
+    le_by_D: float = Field(description="le/D ratio")
+    effective_length_mm: float = Field(description="Effective length le (mm)")
+    effective_length_factor: float = Field(description="Factor k used")
+    depth_to_width_ratio: float = Field(description="D/b ratio")
+    remarks: str = Field(description="IS 456 clause reference and summary")
+    warnings: list[str] = Field(default_factory=list, description="Design warnings")

@@ -931,6 +931,72 @@ def check_beam_slenderness(
     )
 
 
+def check_column_slenderness(
+    b_mm: float,
+    D_mm: float,
+    unsupported_length_mm: float,
+    effective_length_factor: float = 1.0,
+) -> slenderness.ColumnSlendernessResult:
+    """Classify column as short or long per IS 456 Cl 25.1.2.
+
+    A column is SHORT if both le/b <= 12 AND le/D <= 12.
+    Otherwise it is LONG (slender) and additional moment must be considered.
+
+    Args:
+        b_mm: Width (least lateral dimension) in mm.
+        D_mm: Depth (other lateral dimension) in mm.
+        unsupported_length_mm: Unsupported length of column in mm.
+        effective_length_factor: Factor k from IS 456 Table 28 (default 1.0).
+
+    Returns:
+        ColumnSlendernessResult with classification and details.
+
+    Example:
+        >>> result = check_column_slenderness(300, 300, 3000, 1.0)
+        >>> result.is_ok
+        True
+        >>> result.column_type.value
+        'short'
+
+    References:
+        IS 456:2000 Cl 25.1.2: Classification of columns
+    """
+    return slenderness.check_column_slenderness(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        unsupported_length_mm=unsupported_length_mm,
+        effective_length_factor=effective_length_factor,
+    )
+
+
+def get_effective_length_factor(
+    end_condition_top: str,
+    end_condition_bottom: str,
+) -> float:
+    """Get effective length factor from IS 456 Table 28.
+
+    Args:
+        end_condition_top: End condition at top ('fixed', 'hinged', 'free', 'partial').
+        end_condition_bottom: End condition at bottom ('fixed', 'hinged', 'free', 'partial').
+
+    Returns:
+        Effective length factor (k) such that le = k × unsupported_length.
+
+    Example:
+        >>> get_effective_length_factor("fixed", "fixed")
+        0.65
+        >>> get_effective_length_factor("fixed", "hinged")
+        0.80
+
+    References:
+        IS 456:2000 Table 28: Effective length of columns
+    """
+    return slenderness.get_effective_length_factor(
+        end_condition_top=end_condition_top,
+        end_condition_bottom=end_condition_bottom,
+    )
+
+
 def check_anchorage_at_simple_support(
     bar_dia_mm: float,
     fck: float,

@@ -15,6 +15,8 @@ from fastapi_app.models.beam import (
     ShearResult,
     TorsionDesignRequest,
     TorsionDesignResponse,
+    ColumnSlendernessRequest,
+    ColumnSlendernessResponse,
 )
 
 router = APIRouter(
@@ -404,4 +406,83 @@ async def design_beam_torsion(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Torsion design calculation failed: {e}",
+        )
+
+
+# =============================================================================
+# Column Slenderness Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/column/slenderness",
+    response_model=ColumnSlendernessResponse,
+    summary="Check Column Slenderness",
+    description="Classify a column as short or long per IS 456:2000 Cl 25.1.2.",
+)
+async def check_column_slenderness(
+    request: ColumnSlendernessRequest,
+) -> ColumnSlendernessResponse:
+    """
+    Classify column as short or long per IS 456 Cl 25.1.2.
+
+    A column is SHORT if both le/b ≤ 12 AND le/D ≤ 12.
+    Otherwise it is LONG (slender) and additional moment per Cl 39.7.1 applies.
+
+    Optionally provide end conditions (top, bottom) to auto-calculate
+    the effective length factor from IS 456 Table 28.
+    """
+    try:
+        from structural_lib.services.api import (
+            check_column_slenderness as api_check_column,
+            get_effective_length_factor,
+        )
+
+        # Determine effective length factor
+        eff_factor = request.effective_length_factor
+        if request.end_condition_top and request.end_condition_bottom:
+            eff_factor = get_effective_length_factor(
+                end_condition_top=request.end_condition_top,
+                end_condition_bottom=request.end_condition_bottom,
+            )
+
+        result = api_check_column(
+            b_mm=request.width,
+            D_mm=request.depth,
+            unsupported_length_mm=request.unsupported_length,
+            effective_length_factor=eff_factor,
+        )
+
+        return ColumnSlendernessResponse(
+            success=result.is_ok or not result.errors,
+            message=result.remarks,
+            column_type=result.column_type.value,
+            is_short=result.is_ok,
+            is_slender=result.is_slender,
+            slenderness_ratio=result.slenderness_ratio,
+            slenderness_limit=result.slenderness_limit,
+            utilization=result.utilization,
+            le_by_b=result.le_by_b,
+            le_by_D=result.le_by_D,
+            effective_length_mm=result.computed.get("le_mm", 0.0),
+            effective_length_factor=eff_factor,
+            depth_to_width_ratio=result.depth_to_width_ratio,
+            remarks=result.remarks,
+            warnings=result.warnings,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, AttributeError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Column slenderness check failed: {e}",
         )

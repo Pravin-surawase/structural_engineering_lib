@@ -1,27 +1,31 @@
 # Next Session Brief
 
 **Last Updated:** 2025-07-16
-**Last Session:** 108 — Column Slenderness Implementation
+**Last Session:** 108 — Column Slenderness Full Stack
 
 ## What Was Done
-- Added `check_column_slenderness()` and `get_effective_length_factor()` to slenderness.py (IS 456 Cl 25.1.2, Table 28)
+- Added `check_column_slenderness()` + `get_effective_length_factor()` to slenderness.py (IS 456 Cl 25.1.2, Table 28)
 - Added `get_stress_block_params()` to materials.py (IS 456 Cl 38.1)
-- Added `get_xu_max_ratio()` to tables.py (convenience wrapper)
-- Added `ColumnType` enum and `ColumnSlendernessResult` dataclass
-- 28 tests all passing
-- Reviewer approved with 0 issues
+- Added `get_xu_max_ratio()` to tables.py
+- Wired both column functions to services/api.py as public API wrappers
+- Added FastAPI endpoint POST /api/v1/design/column/slenderness with end-condition auto-resolve
+- Added ColumnSlendernessRequest/Response Pydantic models
+- 28 unit tests all passing, reviewer approved
 
 ## Immediate Priorities
-1. **Wire new functions to services/api.py** — add public API wrappers for column slenderness
-2. **Add FastAPI endpoints** — POST /api/v1/design/column/slenderness
-3. **Column Design Phase 1** — `design_short_column()`, `design_long_column()`, P-M interaction curves
-4. **Fix pre-existing `_PT_ROWS` import bug** — backward-compat `Python/structural_lib/tables.py` stub references undefined symbol
+1. **Column Design Phase 1** — `design_short_column()`, `design_long_column()`, P-M interaction curves in codes/is456/
+2. **Wire column design to API + FastAPI** — new endpoints for actual column design
+3. **React column design UI** — form + 3D visualization for columns
+4. **Fix pre-existing `_PT_ROWS` import bug** — backward-compat stub references undefined symbol
 
-## Key Files Modified (This Session)
-- `Python/structural_lib/codes/is456/slenderness.py` — +245 lines (column functions)
-- `Python/structural_lib/codes/is456/materials.py` — +32 lines (stress block params)
-- `Python/structural_lib/codes/is456/tables.py` — +24 lines (xu_max_ratio)
-- `Python/tests/unit/test_slenderness_column.py` — new, 28 tests
+## Files Modified (This Session)
+- `Python/structural_lib/codes/is456/slenderness.py` — column slenderness functions
+- `Python/structural_lib/codes/is456/materials.py` — stress block params
+- `Python/structural_lib/codes/is456/tables.py` — xu_max ratio
+- `Python/structural_lib/services/api.py` — API wrappers
+- `fastapi_app/routers/design.py` — column/slenderness endpoint
+- `fastapi_app/models/beam.py` — Pydantic models
+- `Python/tests/unit/test_slenderness_column.py` — 28 tests
 
 ---
 
