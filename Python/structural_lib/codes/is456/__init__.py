@@ -26,6 +26,7 @@ from __future__ import annotations
 
 # Import migrated modules
 from structural_lib.codes.is456 import (
+    column,
     compliance,
     detailing,
     ductile,

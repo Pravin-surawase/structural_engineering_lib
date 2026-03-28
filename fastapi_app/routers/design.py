@@ -17,6 +17,8 @@ from fastapi_app.models.beam import (
     TorsionDesignResponse,
     ColumnSlendernessRequest,
     ColumnSlendernessResponse,
+    ColumnDesignRequest,
+    ColumnDesignResponse,
 )
 
 router = APIRouter(
@@ -485,4 +487,77 @@ async def check_column_slenderness(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Column slenderness check failed: {e}",
+        )
+
+
+# =============================================================================
+# Column Design Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/column",
+    response_model=ColumnDesignResponse,
+    summary="Design Short Column",
+    description="Design a short RC column for axial load + bending per IS 456 Cl 39.1-39.5.",
+)
+async def design_column(
+    request: ColumnDesignRequest,
+) -> ColumnDesignResponse:
+    """
+    Design a short rectangular column for combined axial load and bending.
+
+    Calculates:
+    - Required longitudinal reinforcement
+    - Axial and moment capacity
+    - P-M interaction check
+    - Minimum eccentricity (Cl 25.4)
+    - Reinforcement limits (Cl 26.5.3.1)
+
+    Per IS 456:2000 Cl 39.1-39.5.
+    """
+    try:
+        from structural_lib.services.api import design_short_column
+
+        result = design_short_column(
+            b_mm=request.width,
+            D_mm=request.depth,
+            Pu_kn=request.axial_load,
+            Mu_knm=request.moment,
+            fck=request.fck,
+            fy=request.fy,
+            cover_mm=request.clear_cover,
+            unsupported_length_mm=request.unsupported_length,
+        )
+
+        return ColumnDesignResponse(
+            success=result.is_safe,
+            message=result.remarks,
+            is_safe=result.is_safe,
+            Pu_capacity_kn=result.Pu_capacity_kn,
+            Mu_capacity_knm=result.Mu_capacity_knm,
+            ast_required_mm2=result.ast_required_mm2,
+            ast_min_mm2=result.ast_min_mm2,
+            ast_max_mm2=result.ast_max_mm2,
+            p_percent=result.p_percent,
+            utilization=result.utilization,
+            e_min_mm=result.e_min_mm,
+            remarks=result.remarks,
+            warnings=result.warnings,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, AttributeError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Column design failed: {e}",
         )

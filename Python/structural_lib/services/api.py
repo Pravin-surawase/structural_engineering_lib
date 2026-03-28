@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from structural_lib.codes.is456 import (
+    column,
     compliance,
     detailing,
     ductile,
@@ -994,6 +995,55 @@ def get_effective_length_factor(
     return slenderness.get_effective_length_factor(
         end_condition_top=end_condition_top,
         end_condition_bottom=end_condition_bottom,
+    )
+
+
+def design_short_column(
+    b_mm: float,
+    D_mm: float,
+    Pu_kn: float,
+    Mu_knm: float,
+    fck: float,
+    fy: float,
+    cover_mm: float = 40.0,
+    unsupported_length_mm: float | None = None,
+) -> column.ColumnDesignResult:
+    """Design a short RC column for axial load + uniaxial bending.
+
+    Determines required longitudinal steel for a short rectangular column
+    subjected to factored axial load Pu and factored moment Mu per
+    IS 456 Cl 39.1-39.5.
+
+    Args:
+        b_mm: Column width (mm).
+        D_mm: Column depth (mm).
+        Pu_kn: Factored axial load (kN).
+        Mu_knm: Factored bending moment (kN·m).
+        fck: Characteristic concrete strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+        cover_mm: Clear cover (mm), default 40.
+        unsupported_length_mm: If provided, used for min eccentricity calc.
+
+    Returns:
+        ColumnDesignResult with capacity, steel requirement, and checks.
+
+    Example:
+        >>> result = design_short_column(300, 300, 1500, 50, 25, 500)
+        >>> result.is_safe
+        True
+
+    References:
+        IS 456:2000 Cl 39.1-39.5: Design of compression members
+    """
+    return column.design_short_column(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        Pu_kn=Pu_kn,
+        Mu_knm=Mu_knm,
+        fck=fck,
+        fy=fy,
+        cover_mm=cover_mm,
+        unsupported_length_mm=unsupported_length_mm,
     )
 
 

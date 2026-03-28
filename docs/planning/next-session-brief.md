@@ -1,30 +1,33 @@
 # Next Session Brief
 
 **Last Updated:** 2025-07-16
-**Last Session:** 108 — Column Slenderness Full Stack
+**Last Session:** 108 — Column Design Full Stack
 
 ## What Was Done
-- Added `check_column_slenderness()` + `get_effective_length_factor()` to slenderness.py (IS 456 Cl 25.1.2, Table 28)
-- Added `get_stress_block_params()` to materials.py (IS 456 Cl 38.1)
-- Added `get_xu_max_ratio()` to tables.py
-- Wired both column functions to services/api.py as public API wrappers
-- Added FastAPI endpoint POST /api/v1/design/column/slenderness with end-condition auto-resolve
-- Added ColumnSlendernessRequest/Response Pydantic models
-- 28 unit tests all passing, reviewer approved
+- Created IS 456 column design module (Cl 39.1-39.5): design_short_column, axial capacity, P-M interaction
+- Column slenderness classification (Cl 25.1.2, Table 28): check_column_slenderness, get_effective_length_factor
+- Stress block parameters (Cl 38.1): get_stress_block_params, get_xu_max_ratio
+- Wired all column functions to services/api.py
+- Added FastAPI endpoints: POST /api/v1/design/column, POST /api/v1/design/column/slenderness
+- 43 total tests (28 slenderness + 15 design) — all passing
+- Reviewer approved all changes
 
 ## Immediate Priorities
-1. **Column Design Phase 1** — `design_short_column()`, `design_long_column()`, P-M interaction curves in codes/is456/
-2. **Wire column design to API + FastAPI** — new endpoints for actual column design
-3. **React column design UI** — form + 3D visualization for columns
-4. **Fix pre-existing `_PT_ROWS` import bug** — backward-compat stub references undefined symbol
+1. **Long column design** — Cl 39.7.1 additional moments, Cl 39.6 biaxial bending
+2. **P-M interaction diagram** — Generate full curve (multiple xu/d ratios), chart endpoint
+3. **Column detailing** — Tie spacing (Cl 26.5.3.2), lap lengths, hook requirements
+4. **React column design UI** — Add column tab to design page, form + results
+5. **Fix `_PT_ROWS` import bug** — backward-compat stub references undefined symbol
 
-## Files Modified (This Session)
-- `Python/structural_lib/codes/is456/slenderness.py` — column slenderness functions
-- `Python/structural_lib/codes/is456/materials.py` — stress block params
-- `Python/structural_lib/codes/is456/tables.py` — xu_max ratio
-- `Python/structural_lib/services/api.py` — API wrappers
-- `fastapi_app/routers/design.py` — column/slenderness endpoint
-- `fastapi_app/models/beam.py` — Pydantic models
+## Key Files (This Session)
+- `Python/structural_lib/codes/is456/column.py` — NEW, 466 lines
+- `Python/structural_lib/codes/is456/slenderness.py` — +245 lines (column functions)
+- `Python/structural_lib/codes/is456/materials.py` — +32 lines
+- `Python/structural_lib/codes/is456/tables.py` — +24 lines
+- `Python/structural_lib/services/api.py` — +3 new wrappers
+- `fastapi_app/routers/design.py` — +2 new endpoints
+- `fastapi_app/models/beam.py` — +4 new Pydantic models
+- `Python/tests/unit/test_column.py` — NEW, 15 tests
 - `Python/tests/unit/test_slenderness_column.py` — 28 tests
 
 ---

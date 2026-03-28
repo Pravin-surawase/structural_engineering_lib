@@ -508,3 +508,71 @@ class ColumnSlendernessResponse(BaseModel):
     depth_to_width_ratio: float = Field(description="D/b ratio")
     remarks: str = Field(description="IS 456 clause reference and summary")
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+
+
+# =============================================================================
+# Column Design Models
+# =============================================================================
+
+
+class ColumnDesignRequest(BaseModel):
+    """Request model for short column design."""
+
+    width: float = Field(
+        gt=0, le=2000.0,
+        description="Column width b (mm)",
+        examples=[300.0, 400.0, 500.0],
+    )
+    depth: float = Field(
+        gt=0, le=2000.0,
+        description="Column depth D (mm)",
+        examples=[300.0, 400.0, 600.0],
+    )
+    axial_load: float = Field(
+        gt=0, le=50000.0,
+        description="Factored axial load Pu (kN)",
+        examples=[1000.0, 1500.0, 2000.0],
+    )
+    moment: float = Field(
+        default=0.0, ge=0,
+        description="Factored bending moment Mu (kN·m)",
+        examples=[50.0, 100.0, 200.0],
+    )
+    fck: float = Field(
+        default=25.0, ge=15.0, le=80.0,
+        description="Concrete strength fck (N/mm²)",
+        examples=[20.0, 25.0, 30.0],
+    )
+    fy: float = Field(
+        default=500.0, ge=250.0, le=600.0,
+        description="Steel yield strength fy (N/mm²)",
+        examples=[415.0, 500.0],
+    )
+    clear_cover: float = Field(
+        default=40.0, ge=25.0, le=75.0,
+        description="Clear cover to reinforcement (mm)",
+        examples=[40.0, 50.0],
+    )
+    unsupported_length: float | None = Field(
+        default=None, gt=0,
+        description="Unsupported length (mm). Used for min eccentricity calc.",
+        examples=[3000.0, 4000.0],
+    )
+
+
+class ColumnDesignResponse(BaseModel):
+    """Response model for short column design."""
+
+    success: bool = Field(description="True if design is safe")
+    message: str = Field(description="Summary of design result")
+    is_safe: bool = Field(description="True if column can resist applied loads")
+    Pu_capacity_kn: float = Field(description="Pure axial capacity (kN)")
+    Mu_capacity_knm: float = Field(description="Moment capacity at given P (kN·m)")
+    ast_required_mm2: float = Field(description="Required longitudinal steel (mm²)")
+    ast_min_mm2: float = Field(description="Minimum steel per IS 456 (mm²)")
+    ast_max_mm2: float = Field(description="Maximum steel per IS 456 (mm²)")
+    p_percent: float = Field(description="Steel percentage")
+    utilization: float = Field(description="Interaction ratio (≤1.0 is safe)")
+    e_min_mm: float = Field(description="Minimum eccentricity per Cl 25.4 (mm)")
+    remarks: str = Field(description="Design summary")
+    warnings: list[str] = Field(default_factory=list)
