@@ -60,3 +60,7 @@
 | 2026-03-27 | DOCS | Add IPv6 rows to agent-bootstrap.md troubleshooting + common mistakes tables | — |
 | 2026-03-27 | DOCS | Update mac-mini-setup.md + github-fix-plan.md with IPv6 root cause & fix | — |
 | 2026-03-25 | BUG | Fix export router ReportData construction — was passing wrong field names | — |
+| 2026-03-28 | Agent maintenance | Added A11y checklist to ui-designer.agent.md | pending |
+| 2026-03-28 | Agent maintenance | Fixed frontend.agent.md hooks table: 9 → 21 hooks | pending |
+| 2026-03-28 | Script audit | Rewrote scripts/_archive/README.md: 6 → 99 scripts documented | pending |
+| 2026-03-28 | Script audit | Added ⚠️ Archived warnings to automation-catalog.md entries 56, 98 | pending |

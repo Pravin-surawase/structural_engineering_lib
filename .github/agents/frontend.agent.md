@@ -35,7 +35,7 @@ You are a React 19 frontend specialist for **structural_engineering_lib**.
 Agents have repeatedly duplicated existing code. **Always check first:**
 
 ```bash
-ls react_app/src/hooks/        # 20 hooks across 14 files
+ls react_app/src/hooks/        # 21 hooks across 11 files
 ls react_app/src/components/   # All components by feature group
 ```
 
@@ -44,14 +44,26 @@ ls react_app/src/components/   # All components by feature group
 | Hook | Purpose | File |
 |------|---------|------|
 | `useCSVFileImport` | CSV file import via API | `useCSVImport.ts` |
+| `useCSVTextImport` | CSV text/paste import | `useCSVImport.ts` |
+| `useDualCSVImport` | ETABS geometry+forces import | `useCSVImport.ts` |
+| `useBatchDesign` | Batch design all beams | `useBatchDesign.ts` |
 | `useBeamGeometry` | 3D rebar/stirrup geometry | `useBeamGeometry.ts` |
 | `useLiveDesign` | WebSocket live design | `useLiveDesign.ts` |
+| `useDesignWebSocket` | Low-level WebSocket connection | `useDesignWebSocket.ts` |
+| `useTorsionDesign` | Torsion design mutation | `useTorsionDesign.ts` |
 | `useAutoDesign` | Auto-trigger on input change | `useAutoDesign.ts` |
+| `useLoadAnalysis` | Load analysis mutation | `useLoadAnalysis.ts` |
 | `useBuildingGeometry` | Building 3D geometry | `useGeometryAdvanced.ts` |
 | `useCrossSectionGeometry` | Cross-section viz | `useGeometryAdvanced.ts` |
-| `useExportBBS/DXF/Report` | File downloads | `useExport.ts` |
+| `useRebarValidation` | Rebar edit validation | `useRebarEditor.ts` |
+| `useRebarApply` | Apply rebar configuration | `useRebarEditor.ts` |
+| `useExportBBS` | BBS CSV download | `useExport.ts` |
+| `useExportDXF` | DXF drawing download | `useExport.ts` |
+| `useExportReport` | HTML report download | `useExport.ts` |
+| `useExportBuildingSummary` | Building summary export | `useExport.ts` |
 | `useDashboardInsights` | Batch analytics | `useInsights.ts` |
 | `useCodeChecks` | IS 456 clause badges | `useInsights.ts` |
+| `useRebarSuggestions` | AI rebar suggestions | `useInsights.ts` |
 
 ### Key Components
 

@@ -1741,6 +1741,8 @@ Summary:
 
 ### 56. `check_cost_optimizer_issues.py`
 
+> ⚠️ **Archived** — This script is in `scripts/_archive/`. It is not actively maintained. Use for reference only.
+
 **Purpose:** Detect common cost-optimizer issues (AST-based).
 
 **When to Use:**
@@ -2693,6 +2695,8 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 ---
 
 ### 98. `check_ui_duplication.py`
+
+> ⚠️ **Archived** — This script is in `scripts/_archive/`. It is not actively maintained. Use for reference only.
 
 **Purpose:** AST-based scanner that detects code duplication in Streamlit UI code.
 
