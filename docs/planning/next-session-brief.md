@@ -5,8 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-28<br>
-Date:** 2026-03-28
+**Last Updated:** 2026-03-28
 
 ---
 
@@ -22,137 +21,74 @@ Date:** 2026-03-28
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 106 (Ops: CI Fixes + GitHub Audit) | **Focus:** Fix PR #441 CI failures, GitHub project health audit
+**Last Session:** Session 106 (Ops: CI Fixes + GitHub Maintenance)
 
 ---
 
 ## Session 106 Summary
 
-**Completed:** CI fix (3 root causes) → all 18 checks green → GitHub audit → documented issues
-
-**CI Fixes Applied (PR #441):**
-1. **Black formatting** — 3 files reformatted (`test_adapter_e2e.py`, `adapters.py`, `test_generic_csv_adapter.py`) → commit `efc0384c`
-2. **Ruff F401** — removed unused `DesignDefaults` import from `test_adapter_e2e.py` → commit `e326776a`
-3. **Circular import false positives** — fixed `check_circular_imports.py` self-edge bug (10 false "direct cycles") → commit `af45e759`
-4. **Scripts index/automation-map** — added 5 missing scripts to `index.json` + `automation-map.json` → commit `efc0384c`
-
-**Result:** All 18 CI checks now SUCCESS on PR #441
-
-**GitHub Audit Findings:**
-- 5 stale "Nightly QA failed" issues (#284, #293, #362, #372, #375) — all from Jan 2026, need closing
-- 20 stale remote branches merged into main — need deletion
-- Dependabot PR #434 — 12 days old, all checks pass, mergeable — needs review+merge
-- PR #441 — all CI green, ready for merge
+- Fixed 3 CI blockers on PR #441 (black, ruff F401, circular import false positives)
+- Merged PR #441 + Dependabot PR #434
+- Closed 5 stale nightly QA issues, deleted 20 stale branches
+- Created `scripts/github_maintenance.sh` + `.github/workflows/stale-cleanup.yml`
+- Added auto-close to `nightly.yml` (closes old QA issues when nightly passes)
 
 **Known Issues:**
-- `gh pr checks --watch` opens alternate buffer that hangs all terminals — use `--json` instead
-- Agent terminal PATH issue still NOT fixed: agents try `cd Python && .venv/bin/pytest` (wrong venv location)
+- `gh pr checks --watch` hangs terminals → use `--json` instead
+- Agent terminal PATH issue NOT fixed (agents try wrong venv location)
+- Security Scan: cyclonedx-py CLI syntax changed
+- Windows-only: `test_smart_designer_metadata` timing failure
+- OpenSSF Scorecard: intermittent artifact upload failures
 
 ---
 
-## Session 105 Summary
+## Next Priorities
 
-**Completed:** Agent testing (8.7/10) → architecture fixes → shear tests → agent infrastructure → committed PR #441
+### Do First — Fix CI on Main
 
-**Files Updated:**
-- `react_app/src/components/design/BeamDetailPanel.tsx` — 3 arch violations fixed
-- `fastapi_app/routers/analysis.py`, `design.py` — import fixes
-- `Python/structural_lib/codes/is456/shear.py` — num_legs bug fixed
-- `Python/tests/unit/test_shear.py` — +234 lines new tests
-- `.github/agents/`, `.github/skills/`, `.github/prompts/`, `scripts/` — self-evolving system
+1. **Fix Security Scan** — cyclonedx-py CLI syntax changed
+2. **Fix Windows test** — `test_smart_designer_metadata`: use `time.perf_counter()`
+3. **Monitor OpenSSF Scorecard** — re-run before fixing
 
-**Key Outcomes:**
-- ✅ All agents scored, audit documented
-- ✅ 3 arch violations + 2 import bugs + 1 num_legs bug fixed
-- ✅ Shear test coverage significantly expanded
-- ✅ Self-evolving infrastructure complete (governance, tester, health, feedback, evolve)
-- ✅ PR #441 open
+### Then — Agent Terminal Fixes + UX
 
-**Known Issues:**
-- Agent terminal PATH issue NOT fixed yet: agents try `cd Python && .venv/bin/pytest` (wrong venv location)
-- Phase 6 (archive planning docs) not started
-- PR #441 CI pending
+1. **FIX AGENT TERMINAL PATHS** ← URGENT
+2. **TASK-525: Smart HubPage**
+3. **Phase 6: Archive stale planning docs** (43 → <10)
+4. **TASK-517: Project BOQ**
+
+### Design Principles
+- Editor is the workstation → manual form only in `/design`
+- Data-first → import → 3D → click beam → reinforcement
+- IS 456 accuracy → top bars match 3D/2D, utilization = Mu/Mu_cap
+
+### Recently Completed
+- GitHub maintenance automation (github_maintenance.sh + stale-cleanup.yml)
+- TASK-505: API integration tests (86 tests, 12 routers)
+- TASK-510: Batch design, TASK-514: PDF export, TASK-515: Load calc, TASK-518: Torsion API
+
+### Technical Debt
+- 2 architecture violations: rebar_optimizer/multi_objective_optimizer bypass api facade
+- ~13 backward-compat stub imports in streamlit_app/
 
 ---
 
-## Session 104 Summary
+## GitHub Maintenance
 
-**Completed:** Git automation audit → knowledge transfer to agents → feedback loop mechanism → pipeline alignment fix → comprehensive prompt quality pass
+```bash
+./run.sh github health              # Full health report
+./run.sh github full-cleanup        # Preview all cleanup
+./run.sh github clean-branches --execute  # Delete stale branches
+```
 
-**Files Updated:**
-- `.github/agents/ops.agent.md` — Git architecture, error recovery, feedback loop
-- `.github/agents/orchestrator.agent.md` — Governance cadence, git awareness
-- `.github/agents/reviewer.agent.md` — Git hygiene checklist, feedback escalation
-- `.github/prompts/master-workflow.prompt.md` — 6-step pipeline + feedback rules
-
-**Key Outcomes:**
-- ✅ Git automation knowledge documented and accessible
-- ✅ Feedback loop: 2x warning → 3x enforcement → 5x redesign
-- ✅ Pipeline audit caught and fixed skipped steps
-- ✅ Comprehensive prompt quality pass: fixed 19 issues across 11 files (endpoint counts 35→38, hook counts 18→20, removed Streamlit refs, standardized commands)
-
-**Known Issues:**
-- `should_use_pr.sh` doesn't check fastapi_app/ or react_app/ paths — verify intentional
-- `commit_template.txt` is empty — consider adding conventional commit examples
-- Consider JSON logging for ai_commit.sh telemetry
+Automated: `stale-cleanup.yml` runs weekly (Sundays 6 AM UTC).
 
 ---
 
 ## Required Reading
 
 - [TASKS.md](../TASKS.md) — Current task tracking
-- [SESSION_LOG.md](../SESSION_LOG.md) — Session history
-- [agent-bootstrap.md](../getting-started/agent-bootstrap.md) — Agent setup
 - [AGENTS.md](../../AGENTS.md) — Cross-agent instructions
-- [CLAUDE.md](../../CLAUDE.md) — Claude-specific instructions
-
----
-
-## Next Priorities
-
-### Do First — GitHub Housekeeping + PR Merge
-
-1. **MERGE PR #441** ← All CI green, ready to merge
-2. **MERGE Dependabot PR #434** ← 12 days old, all checks pass, CI deps bump
-3. **CLOSE 5 stale Nightly QA issues** (#284, #293, #362, #372, #375) — from Jan 2026
-4. **DELETE 20 stale remote branches** — already merged into main:
-   - `codex/4layer-lock-hardening`, `copilot-worktree-2026-01-09T11-52-46`
-   - `feature/task-152-error-handling`, `task/FIX-002`, `task/P8-PHASE2`
-   - `task/TASK-085`, `TASK-090`, `TASK-101`, `TASK-102`, `TASK-3D-002`
-   - `task/TASK-500`, `TASK-510`, `TASK-AI-01`, `TASK-AI-CHAT`, `TASK-AI-V2-POLISH`
-   - `task/TASK-DOCS-SYNC`, `TASK-DUALCSV`, `TASK-V3-PHASE2`, `TASK-V3-PHASE4`, `TASK-V3PARITY`
-   - `dependabot/github_actions/...`
-
-### Then — Agent Terminal Fixes + UX Polish
-
-1. **FIX AGENT TERMINAL PATHS** ← URGENT (prevents wasted tokens each session)
-   - All agents need correct venv path: `.venv/` is at PROJECT ROOT, not in Python/
-   - Correct pytest: from project root = `.venv/bin/pytest Python/tests/ -v`
-   - Correct pytest from Python/ subdir = `../.venv/bin/pytest tests/ -v`
-   - Update all .github/agents/*.agent.md files with a "Terminal Commands" section
-
-2. **TASK-525: Smart HubPage**
-   - Replace ModeSelectPage with smart hub: quick actions + resume last project
-
-3. **Phase 6: Archive stale planning docs** (43 active → target <10)
-4. **TASK-517: Project BOQ** — Aggregate BBS → project quantities
-
-### Design Principles
-- **Editor is the workstation** → manual form only in `/design`
-- **Data-first** → import → navigate 3D → click beam → see reinforcement
-- **IS 456 accuracy** → top bars match between 3D/2D, utilization = Mu/Mu_cap
-
-### Recently Completed
-- TASK-505: API integration tests (86 tests, 12 routers)
-- TASK-510: Batch design page
-- TASK-514: PDF export
-- TASK-515: Load calculator
-- TASK-518: Torsion API
-
-### Technical Debt
-- 2 architecture violations: rebar_optimizer/multi_objective_optimizer bypass api facade
-- ~13 backward-compat stub imports in streamlit_app/
-- 28 unit conversion warnings in IS 456 code (documented)
 
 ---
 
@@ -160,16 +96,10 @@ Date:** 2026-03-28
 
 ```bash
 ./run.sh session start              # Begin work
-./run.sh commit "type: message"     # Safe commit (THE ONE RULE)
-./run.sh check --quick              # Fast validation (<30s)
-./run.sh pr create TASK-XXX "desc"  # Start a PR
+./run.sh commit "type: message"     # Safe commit
+./run.sh check --quick              # Fast validation
+./run.sh github health              # GitHub health
 ./run.sh test                       # Run pytest
 docker compose up --build           # FastAPI at :8000/docs
 cd react_app && npm run dev         # React at :5173
 ```
-
-## Key Files
-
-- Task tracking: [docs/TASKS.md](../TASKS.md)
-- Session history: [docs/SESSION_LOG.md](../SESSION_LOG.md)
-- Agent bootstrap: [docs/getting-started/agent-bootstrap.md](../getting-started/agent-bootstrap.md)

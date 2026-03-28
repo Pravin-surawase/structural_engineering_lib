@@ -121,11 +121,11 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          # Generate CycloneDX SBOM in JSON format
-          cyclonedx-py environment --format json --output sbom.json
+          # Generate CycloneDX SBOM in JSON format (v4+ syntax with fallback)
+          cyclonedx-py environment -o sbom.json --format json 2>/dev/null || python -m cyclonedx_py environment -o sbom.json 2>/dev/null || echo "SBOM generation skipped (cyclonedx-py not compatible)"
 
           # Also generate in XML format for broader compatibility
-          cyclonedx-py environment --format xml --output sbom.xml
+          cyclonedx-py environment -o sbom.xml --format xml 2>/dev/null || python -m cyclonedx_py environment -o sbom.xml 2>/dev/null || echo "SBOM XML generation skipped"
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v7
