@@ -72,3 +72,4 @@
 | 2026-03-28 | INFRA | Add governance/tester agents, architecture-check/react-validation skills, 3 prompts, 5 scripts | ecfede46 |
 | 2026-03-28 | GIT | Commit 61 files to task/TASK-AGENTS, create PR #441 | ecfede46 |
 | 2026-03-28 | Session 107 | Safety gates hardening: FORBIDDEN commands (5 files), CodeQL fix, ops no-script rule | — |
+| 2026-03-28 | AGENTS | Add structural-math agent + new-structural-element skill + add-structural-element prompt + update orchestrator pipeline (8 steps) | — |

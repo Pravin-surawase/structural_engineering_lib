@@ -158,13 +158,14 @@ docs/TASKS.md                                   # Task board
 
 ## VS Code Copilot Agents & Skills
 
-### 11 Custom Agents (`.github/agents/`)
+### 12 Custom Agents (`.github/agents/`)
 
 | Agent | Role | Tools |
 |-------|------|-------|
 | `orchestrator` | Planning, delegation | read-only + subagents |
 | `frontend` | React 19, R3F, Tailwind | full edit |
 | `backend` | Python structural_lib, IS 456 | full edit |
+| `structural-math` | IS 456 pure math modules, core types, new elements | full edit |
 | `api-developer` | FastAPI routers, endpoints | full edit |
 | `ui-designer` | Visual design (design-only) | read-only |
 | `structural-engineer` | IS 456 compliance | read + terminal |
@@ -174,7 +175,7 @@ docs/TASKS.md                                   # Task board
 | `ops` | Git, CI/CD, Docker | full edit |
 | `governance` | Project health, maintenance, metrics | full edit |
 
-### 6 Agent Skills (`.github/skills/`)
+### 7 Agent Skills (`.github/skills/`)
 
 | Skill | Slash Command | Purpose |
 |-------|--------------|---------|
@@ -182,10 +183,11 @@ docs/TASKS.md                                   # Task board
 | `safe-file-ops` | `/safe-file-ops` | File move/delete preserving 870+ links |
 | `api-discovery` | `/api-discovery` | API function signature lookup |
 | `is456-verification` | `/is456-verification` | IS 456 test runner by category |
+| `new-structural-element` | `/new-structural-element` | New element workflow (column, slab, footing) |
 | `react-validation` | `/react-validation` | React build, lint, type-check, tests |
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
 
-### 13 Prompt Files (`.github/prompts/`)
+### 14 Prompt Files (`.github/prompts/`)
 
 | Prompt | Purpose |
 |--------|--------|
@@ -194,6 +196,7 @@ docs/TASKS.md                                   # Task board
 | `code-review` | Review checklist |
 | `add-api-endpoint` | FastAPI endpoint workflow |
 | `add-is456-clause` | IS 456 clause implementation workflow |
+| `add-structural-element` | New structural element (column, slab, footing) workflow |
 | `fix-test-failure` | Test failure diagnosis & fix |
 | `performance-optimization` | Profile, optimize, benchmark |
 | `session-start` | Session start checklist |
@@ -207,6 +210,7 @@ docs/TASKS.md                                   # Task board
 
 - **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
 - **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops
+- **New structural element:** orchestrator → structural-engineer (research) → structural-math (types + math) → tester → backend → api-developer → frontend → reviewer → doc-master → ops
 - **Bug fix:** orchestrator → backend/frontend → tester → reviewer → doc-master → ops
 - **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
 - **Session end:** any agent → doc-master → ops

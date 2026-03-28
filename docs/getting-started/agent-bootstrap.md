@@ -563,13 +563,14 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 
 ## 12. VS Code Copilot Agents & Skills
 
-### 11 Custom Agents (`@agent-name` in Copilot Chat)
+### 12 Custom Agents (`@agent-name` in Copilot Chat)
 
 | Agent | Role | When to Use |
 |-------|------|-------------|
 | `@orchestrator` | Plan & delegate | Multi-step tasks, unsure where to start |
 | `@frontend` | React 19, R3F, Tailwind | Components, hooks, 3D visualization |
 | `@backend` | Python structural_lib | IS 456 math, services, adapters |
+| `@structural-math` | IS 456 pure math, core types | New structural elements (column, slab, footing) |
 | `@api-developer` | FastAPI endpoints | New/modified API routes |
 | `@structural-engineer` | IS 456 compliance | Formula validation, code review |
 | `@reviewer` | Code review | Pre-commit quality check |
@@ -579,7 +580,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `@tester` | Test creation & coverage | Test suites, coverage analysis |
 | `@governance` | Project health & maintenance | Health scans, doc archival |
 
-### 6 Skills (`/skill-name` in Copilot Chat)
+### 7 Skills (`/skill-name` in Copilot Chat)
 
 | Skill | Purpose |
 |-------|---------|
@@ -587,10 +588,11 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `/safe-file-ops` | Move/delete files preserving 870+ links |
 | `/api-discovery` | Look up exact API function signatures |
 | `/is456-verification` | Run IS 456 tests by category |
+| `/new-structural-element` | New structural element workflow (column, slab, footing) |
 | `/architecture-check` | Validate 4-layer architecture boundaries |
 | `/react-validation` | React build, lint, type-check, tests |
 
-### 13 Prompt Files (`#prompt-name` in Copilot Chat)
+### 14 Prompt Files (`#prompt-name` in Copilot Chat)
 
 | Prompt | Purpose |
 |--------|---------|
@@ -603,6 +605,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `#file-move` | Safe file migration |
 | `#is456-verify` | IS 456 formula verification |
 | `#add-is456-clause` | IS 456 clause implementation |
+| `#add-structural-element` | New structural element (column, slab, footing) workflow |
 | `#fix-test-failure` | Test failure diagnosis & fix |
 | `#performance-optimization` | Profile, optimize, benchmark |
 | `#context-recovery` | Resume after context overflow |
@@ -613,6 +616,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 ```
 New feature:   @orchestrator → @backend → @api-developer → @frontend → @reviewer → @doc-master
 IS 456 change: @orchestrator → @structural-engineer → @backend → @api-developer → @reviewer
+New element:   @orchestrator → @structural-engineer → @structural-math → @tester → @backend → @api-developer → @frontend → @reviewer
 Session end:   any agent → @doc-master → @ops
 ```
 

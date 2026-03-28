@@ -11,6 +11,10 @@ handoffs:
     agent: backend
     prompt: "Implement the backend changes planned above."
     send: false
+  - label: Structural Math
+    agent: structural-math
+    prompt: "Implement IS 456 pure math module or core types as planned above."
+    send: false
   - label: API Work
     agent: api-developer
     prompt: "Implement the API changes planned above."
@@ -71,6 +75,7 @@ When delegating, tell the specialist which skills to use:
 | Agent | Skills They Should Use |
 |-------|----------------------|
 | `@backend` | `/api-discovery` (param lookup), `/is456-verification` (tests) |
+| `@structural-math` | `/api-discovery` (param lookup), `/is456-verification` (tests), `/new-structural-element` (new elements) |
 | `@api-developer` | `/api-discovery` (param lookup) |
 | `@frontend` | `/react-validation` (build, lint, type-check) |
 | `@structural-engineer` | `/is456-verification` (compliance tests), `/api-discovery` |
@@ -99,7 +104,8 @@ If starting fresh: read `next-session-brief.md`, `TASKS.md` (first 60 lines), `g
 | Task Type | Hand Off To |
 |-----------|-------------|
 | React/R3F/Tailwind | → **frontend** |
-| Python core / IS 456 math | → **backend** |
+| IS 456 pure math / new structural elements | → **structural-math** |
+| Python services / adapters / pipeline | → **backend** |
 | FastAPI endpoints | → **api-developer** |
 | UX design / layout | → **ui-designer** |
 | IS 456 formula validation | → **structural-engineer** |
@@ -114,12 +120,14 @@ If starting fresh: read `next-session-brief.md`, `TASKS.md` (first 60 lines), `g
 Every task — no exceptions — flows through this pipeline:
 
 ```
-1. PLAN     → Orchestrator scopes work, identifies files/functions
-2. GATHER   → Specialist reads existing code BEFORE changing anything
-3. EXECUTE  → Specialist implements the change
-4. VERIFY   → @reviewer validates (architecture, tests, IS 456)
-5. DOCUMENT → @doc-master updates WORKLOG, TASKS, next-session-brief
-6. COMMIT   → @ops commits via ai_commit.sh
+1. PLAN      → Orchestrator scopes work, identifies files/functions
+2. RESEARCH  → @structural-engineer defines IS 456 clauses, formulas, benchmark values (for structural tasks)
+3. GATHER    → Specialist reads existing code BEFORE changing anything
+4. EXECUTE   → Specialist implements the change
+5. TEST      → @tester writes tests + benchmarks
+6. VERIFY    → @reviewer validates (architecture, tests, IS 456)
+7. DOCUMENT  → @doc-master updates WORKLOG, TASKS, next-session-brief
+8. COMMIT    → @ops commits via ai_commit.sh
 ```
 
 **No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
