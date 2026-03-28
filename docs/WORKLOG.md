@@ -25,6 +25,11 @@
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-03-28 | PROMPTS | Comprehensive quality pass: fixed 7 issues across 11 files (agents, prompts, instructions) | 8fb7aeb2 |
+| 2026-03-28 | PROMPTS | Fixed endpoint count 35→38 in AGENTS.md, CLAUDE.md, fastapi.instructions.md | 8fb7aeb2 |
+| 2026-03-28 | PROMPTS | Removed streamlit_app/ references from active instructions (5 files) | 8fb7aeb2 |
+| 2026-03-28 | PROMPTS | Standardized session commands to ./run.sh format in session-end.prompt.md, doc-master.agent.md | 8fb7aeb2 |
+| 2026-03-28 | PROMPTS | Updated hook count 18→20 in frontend.agent.md, added PR check to new-feature.prompt.md | 8fb7aeb2 |
 | 2026-03-28 | AGENTS | Added git system architecture, error recovery, historical mistakes, feedback loop to ops.agent.md | b28d8b04 |
 | 2026-03-28 | AGENTS | Added governance cadence and git awareness to orchestrator.agent.md | b28d8b04 |
 | 2026-03-28 | AGENTS | Added git hygiene checklist and feedback-to-orchestrator to reviewer.agent.md | b28d8b04 |

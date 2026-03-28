@@ -24,7 +24,6 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Python API
 | REST endpoint | `fastapi_app/routers/` |
 | React UI component | `react_app/src/components/` |
 | React data hook | `react_app/src/hooks/` |
-| Streamlit page | `streamlit_app/pages/` |
 
 ## 3. Implement
 

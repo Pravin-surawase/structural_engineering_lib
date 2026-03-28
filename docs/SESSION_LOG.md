@@ -16,6 +16,8 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Updated master-workflow.prompt.md: 5→6 step pipeline, feedback loop with escalation rules
 - Fixed: duplicate sections in ops.agent.md, consolidated error recovery tables
 - Pipeline audit: caught skipped review/doc steps, completed full 6-step pipeline
+- Comprehensive prompt quality pass: fixed endpoint count (35→38), hook count (18→20), removed Streamlit refs, standardized commands across 11 files
+- Full pipeline audit: caught and corrected skipped review/doc steps
 
 ### Issues Found
 - should_use_pr.sh doesn't check fastapi_app/ or react_app/ paths (potential gap)
