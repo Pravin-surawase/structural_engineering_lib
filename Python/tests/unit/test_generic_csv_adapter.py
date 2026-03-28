@@ -337,15 +337,27 @@ class TestGenericCSVAdapterLoadGeometry:
         b2 = next(b for b in beams if b.source_id == "B2")
         assert b2.length_m == pytest.approx(4.2, abs=0.01)
 
-    def test_etabs_vba_column_aliases(
-        self, adapter: GenericCSVAdapter, tmp_path: Path
-    ):
+    def test_etabs_vba_column_aliases(self, adapter: GenericCSVAdapter, tmp_path: Path):
         """Verify ETABS VBA export column names are recognized."""
         csv_path = tmp_path / "vba_export.csv"
         with open(csv_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["Label", "Story", "Width_mm", "Depth_mm", "Span_m", "Mu_max_kNm", "Vu_max_kN", "fck", "fy"])
-            writer.writerow(["B1", "Ground", "230", "450", "2.75", "7.526", "13.088", "25", "500"])
+            writer.writerow(
+                [
+                    "Label",
+                    "Story",
+                    "Width_mm",
+                    "Depth_mm",
+                    "Span_m",
+                    "Mu_max_kNm",
+                    "Vu_max_kN",
+                    "fck",
+                    "fy",
+                ]
+            )
+            writer.writerow(
+                ["B1", "Ground", "230", "450", "2.75", "7.526", "13.088", "25", "500"]
+            )
 
         # Should load forces
         forces = adapter.load_forces(csv_path)

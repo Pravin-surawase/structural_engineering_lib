@@ -1537,7 +1537,18 @@ class GenericCSVAdapter(InputAdapter):
         ],
         "story": ["Story", "Floor", "Level", "story"],
         "label": ["Label", "Name", "Description"],
-        "span_mm": ["Span (mm)", "span_mm", "Span", "Length", "L (mm)", "Span_m", "Span (m)", "span_m", "L (m)", "Length_m"],
+        "span_mm": [
+            "Span (mm)",
+            "span_mm",
+            "Span",
+            "Length",
+            "L (mm)",
+            "Span_m",
+            "Span (m)",
+            "span_m",
+            "L (m)",
+            "Length_m",
+        ],
         "width_mm": [
             "b (mm)",
             "b_mm",
@@ -1587,7 +1598,18 @@ class GenericCSVAdapter(InputAdapter):
             "MuMax",
             "Mu max",
         ],
-        "vu_kn": ["Vu (kN)", "vu_kn", "Vu", "Shear", "Shear Force", "V (kN)", "Vu_max_kN", "Vu_max", "VuMax", "Vu max"],
+        "vu_kn": [
+            "Vu (kN)",
+            "vu_kn",
+            "Vu",
+            "Shear",
+            "Shear Force",
+            "V (kN)",
+            "Vu_max_kN",
+            "Vu_max",
+            "VuMax",
+            "Vu max",
+        ],
         "pu_kn": ["Pu (kN)", "pu_kn", "Pu", "Axial", "Axial Force", "P (kN)"],
         "load_case": ["Load Case", "Combo", "Case", "LoadCase", "LC"],
         # Section properties may also appear in forces file
@@ -1765,7 +1787,9 @@ class GenericCSVAdapter(InputAdapter):
                                 span_mm = float(span_val)
                                 # Convert from meters to mm if column name indicates meters
                                 span_col_lower = span_col.lower()
-                                if ("_m" in span_col_lower or "(m)" in span_col_lower) and "_mm" not in span_col_lower:
+                                if (
+                                    "_m" in span_col_lower or "(m)" in span_col_lower
+                                ) and "_mm" not in span_col_lower:
                                     span_mm = span_mm * 1000.0
                             except ValueError:
                                 pass

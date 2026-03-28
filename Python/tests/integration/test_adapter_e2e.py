@@ -58,12 +58,16 @@ def test_single_csv_import_beam_design_data():
     - Should load 153 beams
     - First beam: Label=82, Width=230, Depth=450, fck=25, fy=500
     """
-    assert BEAM_DESIGN_DATA_CSV.exists(), f"Sample data not found: {BEAM_DESIGN_DATA_CSV}"
+    assert (
+        BEAM_DESIGN_DATA_CSV.exists()
+    ), f"Sample data not found: {BEAM_DESIGN_DATA_CSV}"
 
     adapter = GenericCSVAdapter()
 
     # Verify adapter can handle this file
-    assert adapter.can_handle(BEAM_DESIGN_DATA_CSV), "GenericCSVAdapter should handle generic CSV"
+    assert adapter.can_handle(
+        BEAM_DESIGN_DATA_CSV
+    ), "GenericCSVAdapter should handle generic CSV"
 
     # Load forces from the CSV
     # GenericCSVAdapter now includes aliases for ETABS VBA export columns:
@@ -76,9 +80,15 @@ def test_single_csv_import_beam_design_data():
     # Check first beam (Label=82, Story=Ground → ID=82_Ground)
     first_force = forces_list[0]
     # BeamForces model has 'id' not 'beam_id'
-    assert first_force.id == "82_Ground", f"Expected id='82_Ground', got '{first_force.id}'"
-    assert first_force.mu_knm == pytest.approx(7.526, abs=0.01), f"Expected Mu=7.526, got {first_force.mu_knm}"
-    assert first_force.vu_kn == pytest.approx(13.088, abs=0.01), f"Expected Vu=13.088, got {first_force.vu_kn}"
+    assert (
+        first_force.id == "82_Ground"
+    ), f"Expected id='82_Ground', got '{first_force.id}'"
+    assert first_force.mu_knm == pytest.approx(
+        7.526, abs=0.01
+    ), f"Expected Mu=7.526, got {first_force.mu_knm}"
+    assert first_force.vu_kn == pytest.approx(
+        13.088, abs=0.01
+    ), f"Expected Vu=13.088, got {first_force.vu_kn}"
 
 
 # =============================================================================
@@ -107,7 +117,9 @@ def test_single_csv_import_beam_forces():
     can_handle_etabs = etabs_adapter.can_handle(BEAM_FORCES_CSV)
     can_handle_generic = generic_adapter.can_handle(BEAM_FORCES_CSV)
 
-    assert can_handle_etabs or can_handle_generic, "At least one adapter should handle beam_forces.csv"
+    assert (
+        can_handle_etabs or can_handle_generic
+    ), "At least one adapter should handle beam_forces.csv"
 
     # Use whichever adapter can handle it
     adapter = etabs_adapter if can_handle_etabs else generic_adapter
@@ -121,7 +133,9 @@ def test_single_csv_import_beam_forces():
     # BeamForces model has 'id' not 'beam_id'
     assert first.id is not None, "id should not be None"
     # Check for moment values (mu_knm or mu_min_knm)
-    has_moment = (first.mu_knm is not None and first.mu_knm != 0) or (first.mu_min_knm is not None and first.mu_min_knm != 0)
+    has_moment = (first.mu_knm is not None and first.mu_knm != 0) or (
+        first.mu_min_knm is not None and first.mu_min_knm != 0
+    )
     assert has_moment, "Should have moment values"
     assert first.vu_kn > 0, "Should have shear force"
 
@@ -162,16 +176,20 @@ def test_dual_csv_import_with_geometry():
         if beam.frame_type == FrameType.BEAM:
             beam_count += 1
             # Check if coordinates are not all zeros
-            if not all([
-                beam.point1.x == 0,
-                beam.point1.y == 0,
-                beam.point1.z == 0,
-                beam.point2.x == 0,
-                beam.point2.y == 0,
-                beam.point2.z == 0,
-            ]):
+            if not all(
+                [
+                    beam.point1.x == 0,
+                    beam.point1.y == 0,
+                    beam.point1.z == 0,
+                    beam.point2.x == 0,
+                    beam.point2.y == 0,
+                    beam.point2.z == 0,
+                ]
+            ):
                 has_real_coords = True
-                print(f"\n✅ Found beam with real coords: {beam.id} - P1({beam.point1.x:.2f}, {beam.point1.y:.2f}, {beam.point1.z:.2f})")
+                print(
+                    f"\n✅ Found beam with real coords: {beam.id} - P1({beam.point1.x:.2f}, {beam.point1.y:.2f}, {beam.point1.z:.2f})"
+                )
                 break
 
     if beam_count == 0:
@@ -179,8 +197,12 @@ def test_dual_csv_import_with_geometry():
 
     # REAL ISSUE FOUND: Dual CSV import may not preserve 3D coordinates correctly
     if not has_real_coords:
-        print(f"\n⚠️  ISSUE FOUND: {beam_count} beams loaded but all have zero coordinates")
-        print("    This indicates parse_dual_csv() may not be merging geometry correctly")
+        print(
+            f"\n⚠️  ISSUE FOUND: {beam_count} beams loaded but all have zero coordinates"
+        )
+        print(
+            "    This indicates parse_dual_csv() may not be merging geometry correctly"
+        )
         pytest.skip("3D coordinates not preserved - needs adapter investigation")
 
     # Check warnings
@@ -204,13 +226,17 @@ def test_full_pipeline_import_design():
     - All designs should complete without exceptions
     - Design results should have valid data (ast_required > 0, is_safe is bool)
     """
-    assert BEAM_DESIGN_DATA_CSV.exists(), f"Sample data not found: {BEAM_DESIGN_DATA_CSV}"
+    assert (
+        BEAM_DESIGN_DATA_CSV.exists()
+    ), f"Sample data not found: {BEAM_DESIGN_DATA_CSV}"
 
     adapter = GenericCSVAdapter()
     try:
         forces_list = adapter.load_forces(BEAM_DESIGN_DATA_CSV)
     except ValueError as e:
-        pytest.skip(f"GenericCSVAdapter doesn't recognize Mu_max_kNm/Vu_max_kN columns: {e}")
+        pytest.skip(
+            f"GenericCSVAdapter doesn't recognize Mu_max_kNm/Vu_max_kN columns: {e}"
+        )
 
     # Take first 5 beams
     test_beams = forces_list[:5]
@@ -219,17 +245,35 @@ def test_full_pipeline_import_design():
     for force in test_beams:
         # Extract design parameters
         # Note: beam_design_data.csv has Width_mm and Depth_mm columns
-        b_mm = float(force.width_mm) if hasattr(force, 'width_mm') and force.width_mm else 230.0
-        D_mm = float(force.depth_mm) if hasattr(force, 'depth_mm') and force.depth_mm else 450.0
+        b_mm = (
+            float(force.width_mm)
+            if hasattr(force, "width_mm") and force.width_mm
+            else 230.0
+        )
+        D_mm = (
+            float(force.depth_mm)
+            if hasattr(force, "depth_mm") and force.depth_mm
+            else 450.0
+        )
 
         # Estimate effective depth: d = D - cover - stirrup_dia/2 - main_bar_dia/2
         # Assume cover=40mm, stirrup=8mm, main_bar=25mm
         d_mm = D_mm - 40.0 - 8.0 - 12.5  # Conservative estimate
 
-        fck_nmm2 = float(force.fck_mpa) if hasattr(force, 'fck_mpa') and force.fck_mpa else 25.0
-        fy_nmm2 = float(force.fy_mpa) if hasattr(force, 'fy_mpa') and force.fy_mpa else 500.0
+        fck_nmm2 = (
+            float(force.fck_mpa)
+            if hasattr(force, "fck_mpa") and force.fck_mpa
+            else 25.0
+        )
+        fy_nmm2 = (
+            float(force.fy_mpa) if hasattr(force, "fy_mpa") and force.fy_mpa else 500.0
+        )
 
-        mu_knm = max(abs(force.mu_knm), abs(force.mu_min_knm)) if hasattr(force, 'mu_min_knm') else abs(force.mu_knm)
+        mu_knm = (
+            max(abs(force.mu_knm), abs(force.mu_min_knm))
+            if hasattr(force, "mu_min_knm")
+            else abs(force.mu_knm)
+        )
         vu_kn = abs(force.vu_kn)
 
         try:
@@ -245,12 +289,14 @@ def test_full_pipeline_import_design():
                 vu_kn=vu_kn,
             )
 
-            design_results.append({
-                "beam_id": force.id,
-                "result": result,
-                "ast_required": result.flexure.ast_required,
-                "is_safe": result.flexure.is_safe,
-            })
+            design_results.append(
+                {
+                    "beam_id": force.id,
+                    "result": result,
+                    "ast_required": result.flexure.ast_required,
+                    "is_safe": result.flexure.is_safe,
+                }
+            )
 
         except Exception as e:
             pytest.fail(f"Design failed for beam {force.id}: {e}")
@@ -263,14 +309,18 @@ def test_full_pipeline_import_design():
         result = result_data["result"]
 
         # Check flexure results
-        assert result.flexure.ast_required >= 0, f"ast_required should be >= 0, got {result.flexure.ast_required}"
+        assert (
+            result.flexure.ast_required >= 0
+        ), f"ast_required should be >= 0, got {result.flexure.ast_required}"
         assert isinstance(result.flexure.is_safe, bool), "is_safe should be boolean"
 
         # Check shear results
         assert result.shear.tv >= 0, f"tv should be >= 0, got {result.shear.tv}"
         assert isinstance(result.shear.is_safe, bool), "is_safe should be boolean"
 
-        print(f"\n✅ Beam {result_data['beam_id']}: Ast={result.flexure.ast_required:.2f} mm², Safe={result.flexure.is_safe}")
+        print(
+            f"\n✅ Beam {result_data['beam_id']}: Ast={result.flexure.ast_required:.2f} mm², Safe={result.flexure.is_safe}"
+        )
 
 
 # =============================================================================
@@ -288,13 +338,17 @@ def test_batch_design_flow():
     - Utilization ratio (Mu / Mu_capacity) should be reasonable (0 < ratio < 5)
     - No exceptions during batch processing
     """
-    assert BEAM_DESIGN_DATA_CSV.exists(), f"Sample data not found: {BEAM_DESIGN_DATA_CSV}"
+    assert (
+        BEAM_DESIGN_DATA_CSV.exists()
+    ), f"Sample data not found: {BEAM_DESIGN_DATA_CSV}"
 
     adapter = GenericCSVAdapter()
     try:
         forces_list = adapter.load_forces(BEAM_DESIGN_DATA_CSV)
     except ValueError as e:
-        pytest.skip(f"GenericCSVAdapter doesn't recognize Mu_max_kNm/Vu_max_kN columns: {e}")
+        pytest.skip(
+            f"GenericCSVAdapter doesn't recognize Mu_max_kNm/Vu_max_kN columns: {e}"
+        )
 
     # Take first 10 beams
     test_beams = forces_list[:10]
@@ -303,14 +357,32 @@ def test_batch_design_flow():
 
     for force in test_beams:
         # Extract design parameters
-        b_mm = float(force.width_mm) if hasattr(force, 'width_mm') and force.width_mm else 230.0
-        D_mm = float(force.depth_mm) if hasattr(force, 'depth_mm') and force.depth_mm else 450.0
+        b_mm = (
+            float(force.width_mm)
+            if hasattr(force, "width_mm") and force.width_mm
+            else 230.0
+        )
+        D_mm = (
+            float(force.depth_mm)
+            if hasattr(force, "depth_mm") and force.depth_mm
+            else 450.0
+        )
         d_mm = D_mm - 40.0 - 8.0 - 12.5  # Conservative estimate
 
-        fck_nmm2 = float(force.fck_mpa) if hasattr(force, 'fck_mpa') and force.fck_mpa else 25.0
-        fy_nmm2 = float(force.fy_mpa) if hasattr(force, 'fy_mpa') and force.fy_mpa else 500.0
+        fck_nmm2 = (
+            float(force.fck_mpa)
+            if hasattr(force, "fck_mpa") and force.fck_mpa
+            else 25.0
+        )
+        fy_nmm2 = (
+            float(force.fy_mpa) if hasattr(force, "fy_mpa") and force.fy_mpa else 500.0
+        )
 
-        mu_knm = max(abs(force.mu_knm), abs(force.mu_min_knm)) if hasattr(force, 'mu_min_knm') else abs(force.mu_knm)
+        mu_knm = (
+            max(abs(force.mu_knm), abs(force.mu_min_knm))
+            if hasattr(force, "mu_min_knm")
+            else abs(force.mu_knm)
+        )
         vu_kn = abs(force.vu_kn)
 
         try:
@@ -327,15 +399,19 @@ def test_batch_design_flow():
             )
 
             # Calculate utilization ratio: Mu / Mu_lim
-            utilization = mu_knm / result.flexure.mu_lim if result.flexure.mu_lim > 0 else 0
+            utilization = (
+                mu_knm / result.flexure.mu_lim if result.flexure.mu_lim > 0 else 0
+            )
 
-            batch_results.append({
-                "beam_id": force.id,
-                "mu_knm": mu_knm,
-                "mu_lim": result.flexure.mu_lim,
-                "utilization": utilization,
-                "is_safe": result.flexure.is_safe,
-            })
+            batch_results.append(
+                {
+                    "beam_id": force.id,
+                    "mu_knm": mu_knm,
+                    "mu_lim": result.flexure.mu_lim,
+                    "utilization": utilization,
+                    "is_safe": result.flexure.is_safe,
+                }
+            )
 
         except Exception as e:
             pytest.fail(f"Batch design failed for beam {force.id}: {e}")
@@ -384,4 +460,3 @@ def test_summary():
         print(f"{exists} {name}: {path}")
 
     print("=" * 70)
-

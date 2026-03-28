@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-27",
-  "file_count": 82,
+  "last_updated": "2026-03-28",
+  "file_count": 87,
   "files": [
     {
       "name": "README.md",
@@ -13,6 +13,158 @@
       "title": "Scripts",
       "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks > **Owner:** All contributors",
       "content_hash": "9a4b16b64794"
+    },
+    {
+      "name": "agent_brief.sh",
+      "type": "shell-script",
+      "size_lines": 217,
+      "last_updated": "2026-03-28",
+      "description": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+      "content_hash": "20ab2f7458b4"
+    },
+    {
+      "name": "agent_context.py",
+      "type": "python",
+      "size_lines": 590,
+      "last_updated": "2026-03-28",
+      "description": "Agent Context Loader — gives each agent its tailored startup context.",
+      "functions": [
+        {
+          "name": "agent",
+          "description": "Decorator to register an agent context function.",
+          "params": [
+            "name",
+            "description"
+          ]
+        },
+        {
+          "name": "run",
+          "description": "Run a shell command and return stdout (stripped). Returns '' on error.",
+          "params": [
+            "cmd",
+            "cwd",
+            "timeout"
+          ]
+        },
+        {
+          "name": "head",
+          "description": "Read first n lines of a file relative to ROOT.",
+          "params": [
+            "filepath",
+            "n"
+          ]
+        },
+        {
+          "name": "section",
+          "description": "Print a section header.",
+          "params": [
+            "title"
+          ]
+        },
+        {
+          "name": "bullet",
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "print_status",
+          "description": "Print common project status: git, tasks, session brief."
+        },
+        {
+          "name": "ctx_orchestrator"
+        },
+        {
+          "name": "ctx_backend"
+        },
+        {
+          "name": "ctx_frontend"
+        },
+        {
+          "name": "ctx_api_developer"
+        },
+        {
+          "name": "ctx_structural_engineer"
+        },
+        {
+          "name": "ctx_reviewer"
+        },
+        {
+          "name": "ctx_tester"
+        },
+        {
+          "name": "ctx_doc_master"
+        },
+        {
+          "name": "ctx_ops"
+        },
+        {
+          "name": "ctx_governance"
+        },
+        {
+          "name": "ctx_ui_designer"
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "ROOT"
+      ],
+      "content_hash": "c2b129fa5a96"
+    },
+    {
+      "name": "agent_feedback.py",
+      "type": "python",
+      "size_lines": 380,
+      "last_updated": "2026-03-28",
+      "description": "Agent feedback collection and analysis.",
+      "functions": [
+        {
+          "name": "cmd_log",
+          "description": "Log feedback items from current session.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_summary",
+          "description": "Show feedback summary and trends.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_pending",
+          "description": "List pending (unresolved) feedback items.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_resolve",
+          "description": "Mark a feedback item as resolved.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_stats",
+          "description": "Show aggregate feedback statistics.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "FEEDBACK_DIR",
+        "VALID_AGENTS",
+        "FEEDBACK_CATEGORIES"
+      ],
+      "content_hash": "dd1a1a8dc1e5"
     },
     {
       "name": "agent_mistakes_report.sh",
@@ -25,10 +177,10 @@
     {
       "name": "agent_start.sh",
       "type": "shell-script",
-      "size_lines": 321,
-      "last_updated": "2026-03-26",
+      "size_lines": 274,
+      "last_updated": "2026-03-28",
       "description": "Unified Agent Start Script",
-      "content_hash": "ca1f067561c5"
+      "content_hash": "eb85a91af327"
     },
     {
       "name": "ai_commit.sh",
@@ -160,8 +312,8 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 814,
-      "last_updated": "2026-03-26",
+      "size_lines": 773,
+      "last_updated": "2026-03-27",
       "description": "Audit Readiness Report Generator",
       "classes": [
         {
@@ -251,7 +403,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "9b955fdbffde"
+      "content_hash": "c8f0cccbbce1"
     },
     {
       "name": "automation-map.json",
@@ -437,8 +589,8 @@
     {
       "name": "check_all.py",
       "type": "python",
-      "size_lines": 673,
-      "last_updated": "2026-03-26",
+      "size_lines": 664,
+      "last_updated": "2026-03-27",
       "description": "Unified check orchestrator — runs all validation scripts in parallel.",
       "classes": [
         {
@@ -463,13 +615,13 @@
         "VENV_PYTHON",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "526d654ccddb"
+      "content_hash": "02c8a1ffbf18"
     },
     {
       "name": "check_api.py",
       "type": "python",
       "size_lines": 379,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "description": "Unified API validation — signatures, docs, and sync checks.",
       "classes": [
         {
@@ -486,7 +638,7 @@
       "functions": [
         {
           "name": "check_signatures",
-          "description": "Check Streamlit pages for API signature issues.",
+          "description": "Check source files for API signature issues.",
           "params": [
             "files",
             "pages_dir",
@@ -511,13 +663,13 @@
         "PARAM_NAME_MAPPINGS",
         "_API_SYMBOL_RE"
       ],
-      "content_hash": "8cd5b1a203e1"
+      "content_hash": "11fce0f2d73b"
     },
     {
       "name": "check_architecture_boundaries.py",
       "type": "python",
-      "size_lines": 523,
-      "last_updated": "2026-03-26",
+      "size_lines": 518,
+      "last_updated": "2026-03-27",
       "description": "Architecture Boundary Linter.",
       "classes": [
         {
@@ -608,7 +760,7 @@
         "BAD_PATTERNS",
         "EXCLUDE_PATTERNS"
       ],
-      "content_hash": "1bb27a45d3cf"
+      "content_hash": "c72a8fa7591e"
     },
     {
       "name": "check_bootstrap_freshness.py",
@@ -656,8 +808,8 @@
     {
       "name": "check_circular_imports.py",
       "type": "python",
-      "size_lines": 462,
-      "last_updated": "2026-03-26",
+      "size_lines": 461,
+      "last_updated": "2026-03-27",
       "description": "Circular Import Detector for Streamlit Application",
       "classes": [
         {
@@ -706,7 +858,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "cf4cc38412f6"
+      "content_hash": "58f91d8ae2e2"
     },
     {
       "name": "check_cli_reference.py",
@@ -854,7 +1006,7 @@
       "name": "check_fastapi_issues.py",
       "type": "python",
       "size_lines": 422,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "description": "FastAPI Issues AST Scanner.",
       "classes": [
         {
@@ -905,13 +1057,13 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "4f47aa686ec1"
+      "content_hash": "5b763b85c1b9"
     },
     {
       "name": "check_governance.py",
       "type": "python",
-      "size_lines": 848,
-      "last_updated": "2026-03-26",
+      "size_lines": 847,
+      "last_updated": "2026-03-27",
       "description": "Unified governance checker — folder structure + compliance validation.",
       "classes": [
         {
@@ -1058,13 +1210,13 @@
         "DEFAULT_RULES",
         "RULES"
       ],
-      "content_hash": "b5ea09542a7c"
+      "content_hash": "a17ff45fe405"
     },
     {
       "name": "check_instruction_drift.py",
       "type": "python",
-      "size_lines": 212,
-      "last_updated": "2026-03-26",
+      "size_lines": 210,
+      "last_updated": "2026-03-27",
       "description": "Check for content drift between .github/instructions/ and .claude/rules/.",
       "functions": [
         {
@@ -1087,7 +1239,7 @@
         "CLAUDE_DIR",
         "PAIRS"
       ],
-      "content_hash": "4f36f17336c3"
+      "content_hash": "b9a181155c7a"
     },
     {
       "name": "check_links.py",
@@ -1270,7 +1422,7 @@
       "name": "check_type_annotations.py",
       "type": "python",
       "size_lines": 542,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "description": "Type Annotation Checker for Streamlit Application",
       "classes": [
         {
@@ -1315,7 +1467,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "6de55b6c5601"
+      "content_hash": "d3676e7cb0bb"
     },
     {
       "name": "check_unfinished_merge.sh",
@@ -1489,8 +1641,8 @@
     {
       "name": "create_test_scaffold.py",
       "type": "python",
-      "size_lines": 423,
-      "last_updated": "2026-03-26",
+      "size_lines": 236,
+      "last_updated": "2026-03-27",
       "description": "Test Scaffold Generator (Solution 2)",
       "functions": [
         {
@@ -1511,19 +1663,11 @@
           ]
         },
         {
-          "name": "generate_streamlit_page_test",
-          "description": "Generate Streamlit page test template.",
-          "params": [
-            "page_name",
-            "page_path"
-          ]
-        },
-        {
           "name": "main",
           "description": "Main entry point."
         }
       ],
-      "content_hash": "6e688e72535e"
+      "content_hash": "3620935b3e2d"
     },
     {
       "name": "discover_api_signatures.py",
@@ -1604,6 +1748,98 @@
         }
       ],
       "content_hash": "ddf14dec7245"
+    },
+    {
+      "name": "evolve.py",
+      "type": "python",
+      "size_lines": 543,
+      "last_updated": "2026-03-28",
+      "description": "Self-evolution engine — orchestrates project health, feedback, and auto-fixes.",
+      "functions": [
+        {
+          "name": "step_health_scan",
+          "description": "Step 1: Run project health scan.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "step_sync_numbers",
+          "description": "Step 2: Sync stale numbers in docs.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "step_regenerate_indexes",
+          "description": "Step 3: Check if indexes need regeneration.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "step_process_feedback",
+          "description": "Step 4: Analyze feedback patterns."
+        },
+        {
+          "name": "step_check_instruction_drift",
+          "description": "Step 5: Check agent instruction drift."
+        },
+        {
+          "name": "step_archive_stale_docs",
+          "description": "Step 6: Archive old docs from _active/.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "step_generate_todo_items",
+          "description": "Step 7: Generate TODO items from evolution findings.",
+          "params": [
+            "evolution_data"
+          ]
+        },
+        {
+          "name": "review_weekly",
+          "description": "Quick weekly review: numbers, links, feedback trends.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "review_monthly",
+          "description": "Comprehensive monthly review: all categories + archive.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "run_evolution",
+          "description": "Run full evolution cycle.",
+          "params": [
+            "fix",
+            "report_only"
+          ]
+        },
+        {
+          "name": "cmd_status",
+          "description": "Show last evolution run and status.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "VENV_PYTHON",
+        "EVOLUTION_DIR",
+        "FEEDBACK_DIR",
+        "AI_COMMIT",
+        "TASKS_MD"
+      ],
+      "content_hash": "ebe10b1153db"
     },
     {
       "name": "external_cli_test.py",
@@ -2009,8 +2245,8 @@
     {
       "name": "migrate_python_module.py",
       "type": "python",
-      "size_lines": 512,
-      "last_updated": "2026-03-26",
+      "size_lines": 511,
+      "last_updated": "2026-03-28",
       "description": "Migrate a Python module to a new location with import updates.",
       "functions": [
         {
@@ -2075,7 +2311,7 @@
         "SEARCH_DIRS",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "c619314ff4f6"
+      "content_hash": "48b5e4909f80"
     },
     {
       "name": "migrate_react_component.py",
@@ -2225,6 +2461,107 @@
       "content_hash": "d1d7612e080e"
     },
     {
+      "name": "project_health.py",
+      "type": "python",
+      "size_lines": 741,
+      "last_updated": "2026-03-28",
+      "description": "Unified project health scanner with auto-fix capability.",
+      "classes": [
+        {
+          "name": "Issue",
+          "description": "A single health issue."
+        },
+        {
+          "name": "CategoryResult",
+          "description": "Health result for one category.",
+          "public_methods": [
+            "checks_failed"
+          ]
+        },
+        {
+          "name": "HealthReport",
+          "description": "Complete health report."
+        }
+      ],
+      "functions": [
+        {
+          "name": "scan_docs",
+          "description": "Scan documentation health.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "scan_code",
+          "description": "Scan code architecture health.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "scan_agents",
+          "description": "Scan agent instruction health.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "scan_infra",
+          "description": "Scan infrastructure health.",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "scan_feedback",
+          "description": "Scan feedback health (pending items, recurring issues).",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "run_health_scan",
+          "description": "Run full or partial health scan.",
+          "params": [
+            "categories",
+            "fix",
+            "quick"
+          ]
+        },
+        {
+          "name": "print_report",
+          "description": "Print health report.",
+          "params": [
+            "report",
+            "json_output",
+            "score_only"
+          ]
+        },
+        {
+          "name": "save_report",
+          "description": "Save report to logs/evolution/ for trend tracking.",
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "STALENESS_DAYS",
+        "AGENT_DIR",
+        "SKILLS_DIR",
+        "PROMPTS_DIR",
+        "FEEDBACK_DIR",
+        "EVOLUTION_DIR",
+        "VENV_PYTHON",
+        "WEIGHTS",
+        "SCANNERS"
+      ],
+      "content_hash": "2a0abbb34d8a"
+    },
+    {
       "name": "recover_git_state.sh",
       "type": "shell-script",
       "size_lines": 162,
@@ -2291,7 +2628,7 @@
       "name": "safe_file_delete.py",
       "type": "python",
       "size_lines": 355,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "description": "Safe file delete script with reference checking.",
       "functions": [
         {
@@ -2329,13 +2666,13 @@
           "name": "main"
         }
       ],
-      "content_hash": "201644a63245"
+      "content_hash": "4b43a8eb8e46"
     },
     {
       "name": "safe_file_move.py",
       "type": "python",
       "size_lines": 484,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-27",
       "description": "Safe file move script with automatic link updates.",
       "functions": [
         {
@@ -2383,15 +2720,15 @@
           "name": "main"
         }
       ],
-      "content_hash": "e315a53697b9"
+      "content_hash": "7e082e271dcd"
     },
     {
       "name": "safe_push.sh",
       "type": "shell-script",
-      "size_lines": 412,
-      "last_updated": "2026-03-26",
+      "size_lines": 411,
+      "last_updated": "2026-03-27",
       "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
-      "content_hash": "47fc38597a10"
+      "content_hash": "8efa9b80cef6"
     },
     {
       "name": "session.py",
@@ -2503,10 +2840,10 @@
     {
       "name": "should_use_pr.sh",
       "type": "shell-script",
-      "size_lines": 461,
-      "last_updated": "2026-03-26",
+      "size_lines": 410,
+      "last_updated": "2026-03-27",
       "description": "Helper script: Should this change use a Pull Request?",
-      "content_hash": "008cf37d9e1a"
+      "content_hash": "9c29b1c7d42b"
     },
     {
       "name": "sync_numbers.py",
@@ -2713,8 +3050,8 @@
     {
       "name": "test_import_3d_pipeline.py",
       "type": "python",
-      "size_lines": 205,
-      "last_updated": "2026-03-26",
+      "size_lines": 203,
+      "last_updated": "2026-03-27",
       "description": "Import → Design → 3D Pipeline Test",
       "functions": [
         {
@@ -2722,7 +3059,7 @@
           "description": "Run the complete pipeline test."
         }
       ],
-      "content_hash": "e7cf781dc714"
+      "content_hash": "5da05aa1f6b3"
     },
     {
       "name": "test_import_pipeline.py",
@@ -2968,8 +3305,8 @@
     {
       "name": "validate_imports.py",
       "type": "python",
-      "size_lines": 306,
-      "last_updated": "2026-03-26",
+      "size_lines": 305,
+      "last_updated": "2026-03-27",
       "description": "Validate Python imports across the project after migration.",
       "functions": [
         {
@@ -3017,7 +3354,7 @@
         "EXTERNAL_PACKAGES",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "6b035e362f48"
+      "content_hash": "18513ba3ed99"
     },
     {
       "name": "validate_schema_snapshots.py",
@@ -3114,10 +3451,10 @@
     {
       "name": "watch_tests.sh",
       "type": "shell-script",
-      "size_lines": 91,
-      "last_updated": "2026-03-26",
+      "size_lines": 87,
+      "last_updated": "2026-03-27",
       "description": "Watch Mode (Solution 5 - Dev Automation)",
-      "content_hash": "8566c68fdfc4"
+      "content_hash": "2de61ff23fb0"
     }
   ],
   "subfolders": [
@@ -3127,5 +3464,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "b388450ae5cb7733"
+  "content_hash": "58b2a72b3fa3249c"
 }
