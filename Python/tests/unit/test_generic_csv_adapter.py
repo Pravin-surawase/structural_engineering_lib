@@ -316,6 +316,50 @@ class TestGenericCSVAdapterLoadGeometry:
         with pytest.raises(ValueError, match="Missing beam identifier"):
             adapter.load_geometry(csv_path)
 
+    def test_span_meter_to_mm_conversion(
+        self, adapter: GenericCSVAdapter, tmp_path: Path
+    ):
+        """Verify Span_m column is auto-converted from meters to mm."""
+        csv_path = tmp_path / "span_meters.csv"
+        with open(csv_path, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["BeamID", "Span_m", "b_mm", "D_mm", "fck"])
+            writer.writerow(["B1", "6.5", "300", "500", "25"])
+            writer.writerow(["B2", "4.2", "300", "450", "25"])
+
+        beams = adapter.load_geometry(csv_path)
+
+        assert len(beams) == 2
+        # Span_m=6.5 → span_mm=6500 → length_m=6.5
+        b1 = next(b for b in beams if b.source_id == "B1")
+        assert b1.length_m == pytest.approx(6.5, abs=0.01)
+        # Span_m=4.2 → span_mm=4200 → length_m=4.2
+        b2 = next(b for b in beams if b.source_id == "B2")
+        assert b2.length_m == pytest.approx(4.2, abs=0.01)
+
+    def test_etabs_vba_column_aliases(
+        self, adapter: GenericCSVAdapter, tmp_path: Path
+    ):
+        """Verify ETABS VBA export column names are recognized."""
+        csv_path = tmp_path / "vba_export.csv"
+        with open(csv_path, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Label", "Story", "Width_mm", "Depth_mm", "Span_m", "Mu_max_kNm", "Vu_max_kN", "fck", "fy"])
+            writer.writerow(["B1", "Ground", "230", "450", "2.75", "7.526", "13.088", "25", "500"])
+
+        # Should load forces
+        forces = adapter.load_forces(csv_path)
+        assert len(forces) == 1
+        assert forces[0].mu_knm == pytest.approx(7.526)
+        assert forces[0].vu_kn == pytest.approx(13.088)
+
+        # Should load geometry with correct span conversion
+        beams = adapter.load_geometry(csv_path)
+        assert len(beams) == 1
+        assert beams[0].section.width_mm == pytest.approx(230.0)
+        assert beams[0].section.depth_mm == pytest.approx(450.0)
+        assert beams[0].length_m == pytest.approx(2.75, abs=0.01)
+
 
 class TestGenericCSVAdapterLoadCombined:
     """Test load_combined for loading both geometry and forces."""
