@@ -7,7 +7,7 @@ Description:  Data tables from IS 456:2000 (Table 19, Table 20, etc.)
 
 from structural_lib import utilities
 
-__all__ = ["get_tc_value", "get_tc_max_value"]
+__all__ = ["get_tc_value", "get_tc_max_value", "get_xu_max_ratio"]
 
 # ------------------------------------------------------------------------------
 # Table 19: Design Shear Strength of Concrete (Tc)
@@ -94,3 +94,27 @@ def get_tc_max_value(fck: float) -> float:
             x1, y1, x2, y2 = 35, 3.7, 40, 4.0
 
         return utilities.linear_interp(fck, float(x1), y1, float(x2), y2)
+
+
+def get_xu_max_ratio(fy: float) -> float:
+    """Get xu_max/d ratio for given steel grade (IS 456 Cl. 38.1).
+
+    This is a convenience re-export of materials.get_xu_max_d().
+    Placed in tables.py for discoverability alongside other table-based lookups.
+
+    Args:
+        fy: Characteristic yield strength of steel in N/mm².
+
+    Returns:
+        xu_max/d ratio (dimensionless).
+
+    Raises:
+        ValueError: If fy <= 0.
+
+    Example:
+        >>> get_xu_max_ratio(415)
+        0.48
+    """
+    from structural_lib.codes.is456.materials import get_xu_max_d
+
+    return get_xu_max_d(fy)

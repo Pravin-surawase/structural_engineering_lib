@@ -73,3 +73,6 @@
 | 2026-03-28 | GIT | Commit 61 files to task/TASK-AGENTS, create PR #441 | ecfede46 |
 | 2026-03-28 | Session 107 | Safety gates hardening: FORBIDDEN commands (5 files), CodeQL fix, ops no-script rule | — |
 | 2026-03-28 | AGENTS | Add structural-math agent + new-structural-element skill + add-structural-element prompt + update orchestrator pipeline (8 steps) | — |
+| 2025-07-16 | TASK-529 | feat(is456): add check_column_slenderness + get_effective_length_factor (Cl 25.1.2, Table 28) | pending |
+| 2025-07-16 | TASK-529 | feat(is456): add get_stress_block_params (Cl 38.1) + get_xu_max_ratio | pending |
+| 2025-07-16 | TASK-529 | test: add 28 column slenderness tests — all passing | pending |

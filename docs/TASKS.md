@@ -53,6 +53,7 @@
 
 | # | Task ID | Feature | Files | Status |
 |---|---------|---------|-------|--------|
+| -- | TASK-529 | Column slenderness — `check_column_slenderness`, `get_effective_length_factor`, `get_stress_block_params`, `get_xu_max_ratio` + 28 tests | `slenderness.py`, `materials.py`, `tables.py`, `test_slenderness_column.py` | ✅ Done |
 | A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results + redesign + edit rebar | `BeamDetailPanel.tsx`, `BuildingEditorPage.tsx`, `Viewport3D.tsx` | ✅ Done (`a242878`, `a5612b0`) |
 | A2 | TASK-523 | Activate FloatingDock (already built) + BentoGrid Dashboard (already built) | `App.tsx`, `DashboardPage.tsx` | ✅ Done (`a242878`) |
 | A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx` | ✅ Done (`a242878`) |

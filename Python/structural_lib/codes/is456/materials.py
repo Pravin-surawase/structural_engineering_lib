@@ -115,3 +115,35 @@ def get_steel_stress(strain: float, fy: float) -> float:
 
     # 3. Yield plateau (strain > last point)
     return points[-1][1]
+
+
+def get_stress_block_params(fck: float) -> dict:
+    """Get IS 456 rectangular stress block parameters (Cl. 38.1).
+
+    The stress block parameters are constants defined by IS 456:
+    - Average stress factor: 0.36 (Cu = 0.36 × fck × b × xu)
+    - Depth factor: 0.42 (centroid at 0.42 × xu from compression face)
+    - Force factor: 0.36 (same as average stress factor)
+
+    Args:
+        fck: Characteristic compressive strength of concrete in N/mm².
+
+    Returns:
+        Dict with keys: average_stress, depth_factor, force_factor, fck.
+
+    Raises:
+        ValueError: If fck is not positive.
+
+    Example:
+        >>> get_stress_block_params(25)
+        {'average_stress': 0.36, 'depth_factor': 0.42, 'force_factor': 0.36, 'fck': 25}
+    """
+    if fck <= 0:
+        raise ValueError(f"fck must be positive, got {fck}")
+
+    return {
+        "average_stress": 0.36,
+        "depth_factor": 0.42,
+        "force_factor": 0.36,
+        "fck": fck,
+    }

@@ -1,28 +1,27 @@
-# Next Session Briefing
+# Next Session Brief
 
-**Type:** Handoff
-**Audience:** All Agents
-**Status:** Active
-**Importance:** Critical
-**Created:** 2025-01-01
-**Last Updated:** 2026-03-28<br>
-Date:** 2026-03-28
+**Last Updated:** 2025-07-16
+**Last Session:** 108 — Column Slenderness Implementation
 
----
+## What Was Done
+- Added `check_column_slenderness()` and `get_effective_length_factor()` to slenderness.py (IS 456 Cl 25.1.2, Table 28)
+- Added `get_stress_block_params()` to materials.py (IS 456 Cl 38.1)
+- Added `get_xu_max_ratio()` to tables.py (convenience wrapper)
+- Added `ColumnType` enum and `ColumnSlendernessResult` dataclass
+- 28 tests all passing
+- Reviewer approved with 0 issues
 
-## Latest Handoff (auto)
+## Immediate Priorities
+1. **Wire new functions to services/api.py** — add public API wrappers for column slenderness
+2. **Add FastAPI endpoints** — POST /api/v1/design/column/slenderness
+3. **Column Design Phase 1** — `design_short_column()`, `design_long_column()`, P-M interaction curves
+4. **Fix pre-existing `_PT_ROWS` import bug** — backward-compat `Python/structural_lib/tables.py` stub references undefined symbol
 
-<!-- HANDOFF:START -->
-- Date: 2026-03-28
-<!-- HANDOFF:END -->
-
-| Release | Version | Status |
-|---------|---------|--------|
-| **Previous** | v0.20.0 | ✅ Done (React migration complete) |
-| **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
-| **Next** | v0.22.0 | 📋 Planned |
-
-**Last Session:** Session 108 (Agent Infrastructure Expansion — structural-math agent + library expansion planning)
+## Key Files Modified (This Session)
+- `Python/structural_lib/codes/is456/slenderness.py` — +245 lines (column functions)
+- `Python/structural_lib/codes/is456/materials.py` — +32 lines (stress block params)
+- `Python/structural_lib/codes/is456/tables.py` — +24 lines (xu_max_ratio)
+- `Python/tests/unit/test_slenderness_column.py` — new, 28 tests
 
 ---
 
