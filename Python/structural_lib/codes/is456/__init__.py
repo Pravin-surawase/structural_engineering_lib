@@ -24,7 +24,7 @@ Migration Status (Session 5-6):
 
 from __future__ import annotations
 
-# Import migrated modules
+# Import migrated modules (stubs re-export from element subfolders)
 from structural_lib.codes.is456 import (
     column,
     compliance,
@@ -37,6 +37,12 @@ from structural_lib.codes.is456 import (
     tables,
     torsion,
     traceability,
+)
+
+# Import element subpackages
+from structural_lib.codes.is456 import (  # noqa: F811
+    beam,
+    common,
 )
 
 # Import traceability API for convenience
