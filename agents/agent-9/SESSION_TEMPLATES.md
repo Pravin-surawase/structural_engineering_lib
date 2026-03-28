@@ -254,7 +254,7 @@ git commit -m "chore(governance): weekly maintenance $(date +%Y-%m-%d)
 ## Phase 2: Quality Gates (30 min)
 
 ### Test Suite
-- [ ] Run full tests: `cd Python && .venv/bin/pytest -q`
+- [ ] Run full tests: `.venv/bin/pytest Python/ -q`
 - **Result:** XXXX tests passed, X failed
 - **Status:** ✅ Pass / ❌ Fail
 

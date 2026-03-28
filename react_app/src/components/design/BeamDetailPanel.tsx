@@ -35,7 +35,7 @@ interface SingleDesignResult {
   ast_total: number;
   asc_total: number;
   utilization_ratio: number;
-  shear?: { stirrup_spacing: number };
+  shear?: { stirrup_spacing: number; sv_max: number };
   flexure?: { ast_required: number; asc_required: number };
 }
 
@@ -63,6 +63,9 @@ async function designSingleBeam(beam: BeamCSVRow): Promise<SingleDesignResult> {
 }
 
 // ── Bar layout helper (mirrors deriveBarLayout in BuildingEditorPage) ─────────
+// NOTE: This function does basic geometry (area = π × r²) to estimate bar count.
+// It's pragmatic bar selection, NOT IS 456 code logic. A future `/rebar/suggest-layout`
+// API endpoint would eliminate this client-side estimation entirely.
 
 function deriveBarLayout(astRequired: number): { count: number; dia: number } {
   for (const dia of [12, 16, 20, 25, 32]) {
@@ -79,21 +82,47 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   const status = deriveBeamStatus(beam);
   const utilPct = beam.utilization != null ? Math.round(beam.utilization * 100) : null;
 
+  // Track backend-computed sv_max from design response
+  const [designSvMax, setDesignSvMax] = useState<number | null>(null);
+
   // ── Redesign ────────────────────────────────────────────────────────────
   const { mutate: redesign, isPending: redesigning } = useMutation({
     mutationFn: () => designSingleBeam(beam),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (!data.success) return;
       const astReq = data.flexure?.ast_required ?? data.ast_total;
       const ascReq = data.flexure?.asc_required ?? data.asc_total;
       const layout = deriveBarLayout(astReq);
+
+      // Get ast_provided from backend instead of calculating locally
+      let astProvided = 0;
+      try {
+        const rebarRes = await fetch(`${API_BASE}/api/v1/rebar/apply`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            beam: { width: beam.b, depth: beam.D, cover: beam.cover ?? 40 },
+            config: { bar_count: layout.count, bar_dia: layout.dia },
+          }),
+        });
+        if (rebarRes.ok) {
+          const rebarData = await rebarRes.json();
+          astProvided = rebarData.ast_provided_mm2 ?? 0;
+        }
+      } catch {
+        // Fallback: use 0 if API fails
+      }
+
+      // Store sv_max from design response for display
+      if (data.shear?.sv_max) setDesignSvMax(data.shear.sv_max);
+
       const currentBeams = useImportedBeamsStore.getState().beams;
       setBeams(currentBeams.map((b) =>
         b.id !== beam.id ? b : {
           ...b,
           ast_required: astReq,
           asc_required: ascReq,
-          ast_provided: layout.count * Math.PI * (layout.dia / 2) ** 2,
+          ast_provided: astProvided,
           bar_count: layout.count,
           bar_diameter: layout.dia,
           stirrup_spacing: data.shear?.stirrup_spacing ?? b.stirrup_spacing,
@@ -132,7 +161,8 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   };
 
   const handleApplyRebar = () => {
-    const astProv = editBarCount * Math.PI * (editBarDia / 2) ** 2;
+    // Get ast_provided from backend validation result instead of local calculation
+    const astProv = validationResult?.validation?.details?.ast_provided_mm2 ?? 0;
     const currentBeams = useImportedBeamsStore.getState().beams;
     setBeams(currentBeams.map((b) =>
       b.id !== beam.id ? b : {
@@ -193,11 +223,11 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
     utilPct > 75         ? "bg-amber-400/70"  :
                            "bg-emerald-400";
 
-  // Stirrup limit info
-  const d = beam.D - (beam.cover ?? 40) - 25;
-  const sv75d = Math.round(0.75 * d);
-  const svGoverning = sv75d < 300 ? `0.75d = ${sv75d} mm` : "300 mm";
-  const svMax = Math.min(sv75d, 300);
+  // Stirrup limit info — use backend-computed sv_max when available
+  const svMax = designSvMax ?? (beam.D ? Math.min(Math.round(0.75 * (beam.D - (beam.cover ?? 40) - 25)), 300) : 300);
+  const svGoverning = designSvMax != null
+    ? `${designSvMax} mm (IS 456 Cl. 40)`
+    : `≈ ${svMax} mm (estimate)`;
 
   return (
     <div className="flex flex-col h-full bg-zinc-950 border-l border-white/5 overflow-y-auto">

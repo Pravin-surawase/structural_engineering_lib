@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-03-24",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "83/83 scripts mapped",
+  "_coverage": "88/88 scripts mapped",
 
   "tasks": {
     "run all checks": {
@@ -412,6 +412,41 @@
         "--category <name>": "Show all tasks in a category",
         "--json": "JSON output"
       }
+    },
+    "agent brief": {
+      "script": "./scripts/agent_brief.sh --agent <name>",
+      "description": "Fast 20-line actionable brief for AI agent session start"
+    },
+    "agent context": {
+      "script": ".venv/bin/python scripts/agent_context.py <agent_name>",
+      "description": "Load tailored startup context for a specific agent",
+      "options": {
+        "--list": "List available agents"
+      }
+    },
+    "agent feedback": {
+      "script": ".venv/bin/python scripts/agent_feedback.py log --agent <name>",
+      "description": "Log agent feedback (stale docs, issues) for systemic improvement",
+      "options": {
+        "log": "Log a feedback entry",
+        "summary": "Show feedback trends and recurring issues"
+      }
+    },
+    "self evolve": {
+      "script": ".venv/bin/python scripts/evolve.py",
+      "description": "Self-evolution cycle: health scan + feedback analysis + auto-fixes",
+      "options": {
+        "--fix": "Apply fixes and commit",
+        "--review weekly": "Weekly auto-maintenance review"
+      }
+    },
+    "project health": {
+      "script": ".venv/bin/python scripts/project_health.py",
+      "description": "Unified project health scanner across 5 categories (0-100 score)",
+      "options": {
+        "--fix": "Auto-fix fixable issues",
+        "--category <name>": "Scan specific category only"
+      }
     }
   },
 
@@ -486,7 +521,11 @@
     ],
     "discovery": [
       "find automation", "discover api function",
-      "agent mistakes report", "collect diagnostics"
+      "agent mistakes report", "collect diagnostics",
+      "agent brief", "agent context"
+    ],
+    "agent_infrastructure": [
+      "agent feedback", "self evolve", "project health"
     ]
   }
 }

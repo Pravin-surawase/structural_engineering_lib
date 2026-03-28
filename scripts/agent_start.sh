@@ -3,22 +3,26 @@
 # One command to onboard any agent and start a session
 #
 # Usage:
-#   ./scripts/agent_start.sh              # Default (full checks)
-#   ./scripts/agent_start.sh --quick      # Skip detailed checks
-#   ./scripts/agent_start.sh --agent 6    # Agent 6 (UI focus)
-#   ./scripts/agent_start.sh --agent 8    # Agent 8 (Git/Automation)
-#   ./scripts/agent_start.sh --agent 9    # Agent 9 (Governance)
-#   ./scripts/agent_start.sh --worktree AGENT_5  # Background agent worktree
-#   ./scripts/agent_start.sh --skip-preflight    # Skip preflight (for recovery)
+#   ./scripts/agent_start.sh                         # Default (full checks)
+#   ./scripts/agent_start.sh --quick                 # Skip detailed checks
+#   ./scripts/agent_start.sh --agent backend         # Agent-specific context
+#   ./scripts/agent_start.sh --agent frontend        # Agent-specific context
+#   ./scripts/agent_start.sh --worktree AGENT_5      # Background agent worktree
+#   ./scripts/agent_start.sh --skip-preflight        # Skip preflight (for recovery)
+#
+# Available agents (11):
+#   orchestrator, backend, frontend, api-developer, structural-engineer,
+#   reviewer, tester, doc-master, ops, governance, ui-designer
 #
 # This script handles (all-in-one):
-#   1. Git pager config (prevents terminal lock)
+#   1. Git hooks + pager config (prevents terminal lock)
 #   2. Environment setup (venv, dependencies)
 #   3. Pre-flight checks (git state, imports)
 #   4. Session start via session.py
+#   5. Agent-specific context via agent_context.py
 #
 # Created: 2026-01-11 (Session 13 Part 5)
-# Updated: 2026-01-11 (Session 13 Part 7) - v2.1: Fixed full mode, worktree passthrough
+# Updated: 2026-03-28 — v3.0: Named agents via agent_context.py, removed legacy numbered agents
 
 set -e
 
@@ -60,16 +64,20 @@ while [[ $# -gt 0 ]]; do
             echo "Usage: ./scripts/agent_start.sh [OPTIONS]"
             echo ""
             echo "Options:"
-            echo "  --agent N         Agent-specific configuration (6, 8, or 9)"
+            echo "  --agent NAME      Load agent-specific context (see agents below)"
             echo "  --quick           Skip detailed checks, faster startup"
             echo "  --worktree NAME   Create/use a worktree for background agent"
             echo "  --skip-preflight  Skip pre-flight checks (for recovery)"
             echo ""
+            echo "Agents: orchestrator, backend, frontend, api-developer,"
+            echo "  structural-engineer, reviewer, tester, doc-master, ops, governance, ui-designer"
+            echo ""
             echo "Examples:"
-            echo "  ./scripts/agent_start.sh              # Full checks"
-            echo "  ./scripts/agent_start.sh --quick      # Fast mode"
-            echo "  ./scripts/agent_start.sh --agent 8    # Agent 8 focus"
-            echo "  ./scripts/agent_start.sh --worktree AGENT_5  # Background agent"
+            echo "  ./scripts/agent_start.sh                      # Full checks"
+            echo "  ./scripts/agent_start.sh --quick              # Fast mode"
+            echo "  ./scripts/agent_start.sh --agent backend      # Backend agent context"
+            echo "  ./scripts/agent_start.sh --agent frontend     # Frontend agent context"
+            echo "  ./scripts/agent_start.sh --worktree AGENT_5   # Background agent"
             exit 0
             ;;
         *)
@@ -83,7 +91,7 @@ cd "$PROJECT_ROOT"
 
 echo ""
 echo -e "${BOLD}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v2.2         ║${NC}"
+echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v3.0         ║${NC}"
 echo -e "${BOLD}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
@@ -127,9 +135,8 @@ fi
 # Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
 echo -e "${BLUE}[3/6]${NC} Running pre-flight checks..."
 
-# Step 2.5: Dependency Verification (quick check for critical packages)
+# Dependency verification (skip in quick mode)
 if [ -z "$QUICK" ]; then
-    echo -e "${BLUE}[2.5/6]${NC} Verifying critical dependencies..."
     MISSING_DEPS=""
 
     # Check critical dependencies (fail fast if missing)
@@ -196,46 +203,17 @@ echo -e "${BLUE}[5/6]${NC} Ready!"
 echo ""
 echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-# Agent-specific guidance
+# Agent-specific guidance via agent_context.py
 if [ -n "$AGENT" ]; then
     echo ""
-    echo -e "${BOLD}🎯 Agent $AGENT Quick Start${NC}"
-    echo ""
-    case $AGENT in
-        6)
-            echo -e "  ${YELLOW}Focus:${NC} UI/UX, React app improvements"
-            echo -e "  ${YELLOW}Hub:${NC}   docs/agents/guides/agent-6-quick-start.md"
-            echo -e "  ${YELLOW}Tasks:${NC} Look for UI-* or REACT-* in TASKS.md"
-            echo ""
-            echo -e "  ${BOLD}Key Commands:${NC}"
-            echo "    cd react_app && npm run dev"
-            echo "    cd react_app && npm run build"
-            ;;
-        8)
-            echo -e "  ${YELLOW}Focus:${NC} Git workflow, automation, CI/CD"
-            echo -e "  ${YELLOW}Hub:${NC}   docs/agents/guides/agent-8-automation.md"
-            echo -e "  ${YELLOW}Tasks:${NC} Look for AUTOMATION-* or GIT-* in TASKS.md"
-            echo ""
-            echo -e "  ${BOLD}Key Commands:${NC}"
-            echo "    ./scripts/ai_commit.sh \"message\"   # All commits"
-            echo "    ./scripts/safe_push.sh \"message\"   # Direct push"
-            echo "    git worktree list                  # Check worktrees"
-            ;;
-        9)
-            echo -e "  ${YELLOW}Focus:${NC} Governance, folder structure, documentation"
-            echo -e "  ${YELLOW}Hub:${NC}   docs/agents/guides/agent-9-governance-hub.md"
-            echo -e "  ${YELLOW}Tasks:${NC} Look for GOV-* or DOC-* in TASKS.md"
-            echo ""
-            echo -e "  ${BOLD}Key Commands:${NC}"
-            echo "    .venv/bin/python scripts/check_governance.py --structure"
-            echo "    .venv/bin/python scripts/check_governance.py --compliance"
-            echo "    .venv/bin/python scripts/check_links.py"
-            ;;
-        *)
-            echo -e "  ${YELLOW}Unknown agent $AGENT${NC}"
-            echo -e "  Available agents: 6, 8, 9"
-            ;;
-    esac
+    if [ -f "$SCRIPT_DIR/agent_context.py" ]; then
+        "$PROJECT_ROOT/.venv/bin/python" "$SCRIPT_DIR/agent_context.py" "$AGENT" 2>&1 || {
+            echo -e "  ${RED}Unknown agent '$AGENT'${NC}"
+            echo -e "  Run: .venv/bin/python scripts/agent_context.py --list"
+        }
+    else
+        echo -e "  ${RED}✗${NC} agent_context.py not found at $SCRIPT_DIR/agent_context.py"
+    fi
     echo ""
 fi
 
@@ -251,61 +229,37 @@ if [ -n "$WORKTREE" ]; then
     echo ""
 fi
 
-# Common guidance
+# Essential guidance (concise — agent_context.py provides per-agent details)
 echo -e "${BOLD}📚 Essential Docs${NC}"
-echo "  • docs/getting-started/agent-bootstrap.md (THE canonical bootstrap)"
 echo "  • docs/TASKS.md (current work)"
 echo "  • docs/planning/next-session-brief.md (last session handoff)"
 echo "  • .github/copilot-instructions.md (all rules)"
-echo ""
-
-# V3 Stack Overview - CRITICAL TO PREVENT DUPLICATE CODE
-echo -e "${BOLD}🏗️ V3 Stack — DON'T REINVENT!${NC}"
-echo ""
-echo -e "  ${YELLOW}Before writing code, check what exists:${NC}"
-echo ""
-echo "  React Hooks (react_app/src/hooks/):"
-echo "    useBeamGeometry     → 3D rebar/stirrup positions from API"
-echo "    useCSVFileImport    → CSV import via library adapters (40+ columns)"
-echo "    useBatchDesign      → Batch design all imported beams"
-echo ""
-echo "  FastAPI Endpoints (http://localhost:8000/docs):"
-echo "    POST /api/v1/import/csv        → CSV file import"
-echo "    POST /api/v1/geometry/beam/full → Full 3D geometry"
-echo "    POST /api/v1/design/beam       → Beam design"
-echo ""
-echo "  Library (Python/structural_lib/):"
-echo "    api.py              → API surface: 23 public functions (see services/api.py for internals)"
-echo "    adapters.py         → GenericCSVAdapter, ETABSAdapter"
-echo "    geometry_3d.py      → beam_to_3d_geometry()"
 echo ""
 
 echo -e "${BOLD}⚡ THE ONE RULE${NC}"
 echo -e "  ${RED}NEVER use manual git commands!${NC}"
 echo "  ALWAYS use: ./scripts/ai_commit.sh \"message\""
 echo ""
-echo -e "${BOLD}🧭 Git Workflow Quick Reference${NC}"
-echo "  1) ./scripts/ai_commit.sh \"message\""
-echo "  2) ./scripts/finish_task_pr.sh TASK-XXX \"description\" [--with-session-docs]"
-echo "  3) git status && git log --oneline -3"
-echo "  Docs: docs/git-automation/README.md"
-echo ""
-echo -e "${BOLD}🔍 Script Discovery${NC}"
-echo "  .venv/bin/python scripts/find_automation.py \"your task\"    # Find the right script"
-echo "  .venv/bin/python scripts/discover_api_signatures.py <func>  # API param names"
-echo "  .venv/bin/python scripts/validate_script_refs.py            # Check for stale refs"
+
+echo -e "${BOLD}🔍 Key Commands${NC}"
+echo "  ./scripts/ai_commit.sh \"message\"                        # Commit (THE ONE RULE)"
+echo "  .venv/bin/python scripts/agent_context.py <agent>       # Agent-specific context"
+echo "  .venv/bin/python scripts/find_automation.py \"task\"      # Find the right script"
+echo "  .venv/bin/python scripts/discover_api_signatures.py fn  # API param names"
 echo ""
 
 # Docker status check
-echo -e "${BOLD}🐳 Docker (FastAPI Backend)${NC}"
-if command -v docker &> /dev/null && docker info &> /dev/null; then
+echo -e "${BOLD}🐳 Docker (Colima on Mac)${NC}"
+if command -v colima &> /dev/null; then
+    if colima status &> /dev/null; then
+        echo -e "  ${GREEN}✓${NC} Colima running"
+    else
+        echo -e "  ${YELLOW}⊘${NC} Colima not running → colima start --cpu 4 --memory 4"
+    fi
+elif command -v docker &> /dev/null && docker info &> /dev/null; then
     echo -e "  ${GREEN}✓${NC} Docker available"
-    echo "  docker compose up --build          # Production"
-    echo "  docker compose -f docker-compose.dev.yml up  # Dev (hot reload)"
-    echo "  API: http://localhost:8000/docs"
 else
     echo -e "  ${YELLOW}⊘${NC} Docker not running (optional for local dev)"
-    echo "  Start Docker Desktop or: brew install --cask docker"
 fi
 echo ""
 

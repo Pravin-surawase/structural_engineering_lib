@@ -13,6 +13,9 @@ handoffs:
 
 You are the DevOps specialist for **structural_engineering_lib**. You handle git, CI/CD, Docker, and environment management.
 
+> Session workflow is in global instructions — not repeated here.
+> For fast context: `bash scripts/agent_brief.sh --agent ops`
+
 ## THE ONE RULE
 
 ```bash
@@ -50,6 +53,40 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 ./run.sh pr finish                           # CI check + auto-merge
 ```
 
+### Git System Architecture
+
+```
+ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflow)
+                                                  ↓
+                                                  Steps: stash → fetch(bg) → stage → commit+hooks → amend → sync → safety → push
+```
+
+**Log location**: `logs/git_workflow.log` — check here when debugging failures.
+**Pre-commit hooks**: 28 hooks in `.pre-commit-config.yaml` (black, ruff, mypy, isort, bandit, etc.)
+
+### Error Recovery
+
+| Situation | Command | Notes |
+|-----------|---------|-------|
+| Push rejected (non-fast-forward) | `./scripts/recover_git_state.sh` | safe_push.sh handles most cases |
+| Stuck in merge/rebase | `./scripts/recover_git_state.sh` | Auto-resolves safe doc conflicts (TASKS.md, SESSION_LOG.md) |
+| Detached HEAD | `git checkout main` | Always work on named branches |
+| CI fails on formatting | `.venv/bin/python -m black Python/ && .venv/bin/python -m ruff check --fix Python/` | Pre-commit hooks auto-fix |
+| Hook blocks commit | Check `logs/hook_output_*.log` for details | Fix the specific issue, don't use --no-verify |
+| Terminal stuck in git pager | `q` to exit, or agent_start.sh sets `core.pager=cat` | Already configured by setup |
+| Network failure on push | `./scripts/ai_commit.sh --push` | Re-run push step only (W1) |
+| CI polling hangs (>10min) | Check GitHub manually | finish_task_pr.sh polling limitation (W3) |
+| Commit subject >100 chars | Rewrite message to be concise | Keep messages under 72 chars (W5) |
+| Unrelated mypy failure blocks commit | Fix the mypy issue in that file | Don't bypass with --no-verify (W9) |
+
+### Historical Mistakes (NEVER Repeat)
+
+1. **17 merge commits in one day** — caused by `git commit --amend` after push. safe_push.sh enforces amend-before-push
+2. **Manual git fallback under stress** — agents used `git add/commit/push` when scripts failed. Pre-push hook now blocks this
+3. **`--no-verify` under pressure** — agents skipped hooks, CI failed minutes later. ai_commit.sh never uses --no-verify
+4. **`--force` PR bypass** — caused 10+ hours of rework. NEVER bypass PR checks
+5. **Ignoring stale-version warnings post-commit** — hooks print `WOULD UPDATE: next-session-brief.md` but agent just reported it and moved on. Fix it immediately: `.venv/bin/python scripts/check_doc_versions.py --fix` then commit the result
+
 ## Docker (Colima, not Docker Desktop)
 
 ```bash
@@ -72,45 +109,47 @@ cd react_app && npm run dev                  # React dev server
 
 ⚠️ Use `--host "::"` not `--host 0.0.0.0` (IPv6 dual-stack for Mac)
 
-## Skills
+## After Committing (MANDATORY)
 
-- **Session Management** (`/session-management`): Full session start/end automation
-- **Safe File Ops** (`/safe-file-ops`): Safe file move/delete preserving 870+ links
+### 1. Fix any post-commit warnings BEFORE reporting
+
+The commit output may show warnings. **Do not skip these — fix them now:**
+
+| Warning | Fix command | Notes |
+|---------|-------------|-------|
+| `WOULD UPDATE: docs/planning/next-session-brief.md` (stale version) | `.venv/bin/python scripts/check_doc_versions.py --fix` | Then commit the updated files |
+| `Found N doc file(s) with stale version references` | `.venv/bin/python scripts/check_doc_versions.py --fix` | Fixes all at once |
+| Broken links detected | `.venv/bin/python scripts/check_links.py --fix` | Then commit |
+| `⚠️ Consider adding: **Last Updated:**` | Update the metadata in that file | Optional, not blocking |
+
+After running the fix, commit the changed docs:
+```bash
+./scripts/ai_commit.sh "docs: fix stale version references post-commit"
+```
+
+### 2. Mandatory Report
+
+```
+## Commit Complete
+
+**Commit:** [hash] [message]
+**Branch:** [branch name]
+**PR Status:** [direct commit | PR created | PR updated]
+**Pipeline Step:** 6/6 — COMMIT complete
+**Post-commit fixes:** [stale docs fixed | broken links fixed | none needed]
+**Issues:** [any failures encountered and how resolved | none]
+```
+
+## Skills: Use `/session-management` for session workflow, `/safe-file-ops` for file operations.
 
 ## ⚠ DO NOT Over-Explore
 
-**Act directly — don't run 10 diagnostic commands when you already know what to do.**
-
-❌ BAD (wastes time):
-```bash
-ls scripts/ | grep -i pr
-ls scripts/*.sh | grep -E '(pr|commit)' | head -10
-ls scripts/ | grep -E 'ai_commit|create_task_pr' | head -5
-ls -la run.sh
-git status --short
-git branch --show-current
-git diff --stat
-lsof -ti :5173 2>/dev/null && echo "..."
-./scripts/should_use_pr.sh --explain 2>&1 | head -40
-```
-
-✅ GOOD (just do it):
-```bash
-./scripts/ai_commit.sh "feat: add feature"   # Commit
-./run.sh pr status                            # Check PR requirement (ONE command)
-./run.sh pr create TASK-XXX "desc"            # Create PR if needed
-```
-
-**Rules:**
-- You already know the script names from this file — don't `ls` or `grep` to rediscover them
-- Run ONE diagnostic command max before acting, not a chain of 5-10
-- Don't check port status, git branch, or git diff unless specifically asked
-- Don't `ls -la` files you already know exist
+You know the script names from this file — don't `ls` or `grep` to rediscover them. Run ONE diagnostic command max before acting.
 
 ## Emergency Recovery
 
 ```bash
-./scripts/recover_git_state.sh               # Fix git state
+./scripts/recover_git_state.sh               # Fix git state (auto-resolves merge/rebase/detached)
 lsof -ti :8000 | xargs kill -9 2>/dev/null   # Free port 8000
 lsof -ti :5173 | xargs kill -9 2>/dev/null   # Free port 5173
 ```

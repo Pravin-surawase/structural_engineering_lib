@@ -456,7 +456,7 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         print("✨ Migration complete!")
         print()
         print("Next steps:")
-        print("  1. Run tests: cd Python && .venv/bin/pytest tests/ -v")
+        print("  1. Run tests: .venv/bin/pytest Python/tests/ -v")
         print("  2. Run FastAPI tests: .venv/bin/pytest fastapi_app/tests/ -v")
         print("  3. Commit: ./scripts/ai_commit.sh 'refactor: move module'")
     print("=" * 60)

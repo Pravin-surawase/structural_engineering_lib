@@ -8,7 +8,7 @@
 
 Open-source IS 456 RC beam design library. Full stack:
 - **Python core** (`Python/structural_lib/`) — Pure math, IS 456:2000 code
-- **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (35 endpoints, 12 routers)
+- **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (38 endpoints, 12 routers)
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
 ## Git — THE ONE RULE
@@ -58,17 +58,59 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 ./run.sh find --api func_name       # Get exact API param names
 ./run.sh audit                      # Full readiness audit
 ./run.sh generate indexes           # Regenerate folder indexes
+./run.sh health                     # Project health scan (0-100 score)
+./run.sh health --fix               # Auto-fix fixable issues
+./run.sh feedback log --agent X     # Log agent feedback (session end)
+./run.sh feedback summary           # Feedback trends & recurring issues
+./run.sh evolve                     # Self-evolution cycle (dry-run)
+./run.sh evolve --fix               # Apply fixes + commit
+./run.sh evolve --review weekly     # Weekly auto-maintenance
 ```
 
 Direct scripts (when run.sh doesn't cover it):
 ```bash
-.venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
-colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
-docker compose up --build                       # Full stack at :8000/docs
-cd react_app && npm run build                   # React build check
+.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 11 agents)
+.venv/bin/python scripts/agent_context.py --list # List available agents
+.venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
+colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
+docker compose up --build                        # Full stack at :8000/docs
+cd react_app && npm run build                    # React build check
 ```
 
 > **Docker:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Always run `colima start` before `docker compose`. If `docker ps` gives "permission denied", Colima isn't running. See [agent-bootstrap.md](docs/getting-started/agent-bootstrap.md) §5 for details.
+
+## IMPORTANT: Terminal Path Rules
+
+**All commands assume cwd = workspace root.** Terminal cwd persists between calls — if a previous command did `cd react_app`, the next command is STILL in `react_app/`.
+
+```
+WRONG: cd Python && .venv/bin/pytest tests/ -v     ← .venv is NOT inside Python/
+RIGHT: .venv/bin/pytest Python/tests/ -v           ← run from workspace root
+RIGHT: .venv/bin/python scripts/check_links.py     ← scripts are at workspace root
+
+WRONG: npm run build                               ← only works if already in react_app/
+RIGHT: cd react_app && npm run build               ← explicit cd first
+```
+
+**Key paths (all relative to workspace root):**
+- `.venv/bin/pytest` — pytest binary
+- `.venv/bin/python` — Python binary
+- `Python/tests/` — Python test directory
+- `react_app/` — React app directory
+- `scripts/` — utility scripts
+
+### run.sh Fallback Chain
+If `./run.sh` produces no output or fails, try these in order:
+1. `bash run.sh <command>` — explicit bash invocation
+2. Direct script (e.g., `./scripts/ai_commit.sh` instead of `./run.sh commit`)
+3. Direct CLI command (e.g., `gh pr create` instead of `./run.sh pr create`)
+
+See `.github/instructions/terminal-rules.instructions.md` for the full fallback table.
+
+### MANDATORY: Document Terminal Issues
+When you encounter terminal problems (commands failing, wrong directory, scripts not found), include in your handoff:
+`⚠️ TERMINAL ISSUE: [what happened] → [what worked instead]`
+This feeds the improvement loop — recurring issues get fixed in agent instructions.
 
 ## Session Workflow (MANDATORY)
 
@@ -80,6 +122,7 @@ docs/TASKS.md                                   # Task board
 
 # END: Commit, log, handoff (do NOT skip)
 ./run.sh commit "type: message"                 # Commit work
+./run.sh feedback log --agent <name>             # Log stale docs, issues found
 ./run.sh session summary                        # Auto-log to SESSION_LOG.md
 ./run.sh session sync                           # Fix stale doc numbers
 # Update: docs/planning/next-session-brief.md + docs/TASKS.md
@@ -104,7 +147,7 @@ docs/TASKS.md                                   # Task board
 
 ## VS Code Copilot Agents & Skills
 
-### 9 Custom Agents (`.github/agents/`)
+### 11 Custom Agents (`.github/agents/`)
 
 | Agent | Role | Tools |
 |-------|------|-------|
@@ -115,10 +158,12 @@ docs/TASKS.md                                   # Task board
 | `ui-designer` | Visual design (design-only) | read-only |
 | `structural-engineer` | IS 456 compliance | read + terminal |
 | `reviewer` | Code review, testing | read + terminal |
+| `tester` | Test creation, coverage, benchmarks | full edit |
 | `doc-master` | Docs, archives, session logs | full edit |
 | `ops` | Git, CI/CD, Docker | full edit |
+| `governance` | Project health, maintenance, metrics | full edit |
 
-### 4 Agent Skills (`.github/skills/`)
+### 6 Agent Skills (`.github/skills/`)
 
 | Skill | Slash Command | Purpose |
 |-------|--------------|---------|
@@ -126,8 +171,10 @@ docs/TASKS.md                                   # Task board
 | `safe-file-ops` | `/safe-file-ops` | File move/delete preserving 870+ links |
 | `api-discovery` | `/api-discovery` | API function signature lookup |
 | `is456-verification` | `/is456-verification` | IS 456 test runner by category |
+| `react-validation` | `/react-validation` | React build, lint, type-check, tests |
+| `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
 
-### 9 Prompt Files (`.github/prompts/`)
+### 13 Prompt Files (`.github/prompts/`)
 
 | Prompt | Purpose |
 |--------|--------|
@@ -135,14 +182,21 @@ docs/TASKS.md                                   # Task board
 | `bug-fix` | Bug fix workflow |
 | `code-review` | Review checklist |
 | `add-api-endpoint` | FastAPI endpoint workflow |
+| `add-is456-clause` | IS 456 clause implementation workflow |
+| `fix-test-failure` | Test failure diagnosis & fix |
+| `performance-optimization` | Profile, optimize, benchmark |
 | `session-start` | Session start checklist |
 | `session-end` | Session end (mandatory) |
 | `file-move` | Safe file migration |
 | `is456-verify` | IS 456 formula verification |
 | `context-recovery` | Resume after context overflow |
+| `master-workflow` | Master workflow orchestration |
 
 ### Handoff Chains
 
-- **New feature:** orchestrator → backend → api-developer → frontend → reviewer → doc-master
-- **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer
+- **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
+- **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops
+- **Bug fix:** orchestrator → backend/frontend → tester → reviewer → doc-master → ops
+- **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
 - **Session end:** any agent → doc-master → ops
+- **Maintenance:** orchestrator → governance → doc-master → ops

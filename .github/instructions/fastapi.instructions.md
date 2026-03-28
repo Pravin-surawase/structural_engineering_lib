@@ -10,7 +10,7 @@ applyTo: "**/fastapi_app/**"
 grep -r "@router" fastapi_app/routers/ | head -30
 ```
 
-Key existing routes (12 routers, 35 endpoints):
+Key existing routes (12 routers, 38 endpoints):
 - `POST /api/v1/design/beam` — Beam design
 - `POST /api/v1/import/csv` — CSV import with adapters
 - `POST /api/v1/geometry/beam/full` — 3D rebar/stirrup positions

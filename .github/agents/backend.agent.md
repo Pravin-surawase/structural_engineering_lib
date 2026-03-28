@@ -25,16 +25,8 @@ handoffs:
 
 You are a Python backend specialist for **structural_engineering_lib** — an IS 456:2000 RC beam design library.
 
-## 4-Layer Architecture (STRICT — never mix)
-
-| Layer | Location | Rule |
-|-------|----------|------|
-| **Core types** | `Python/structural_lib/core/` | Base classes, types — NO IS 456 math |
-| **IS 456 Code** | `Python/structural_lib/codes/is456/` | Pure math, NO I/O, explicit units |
-| **Services** | `Python/structural_lib/services/` | Orchestration — `api.py`, `adapters.py`, `beam_pipeline.py` |
-| **UI/IO** | `react_app/`, `fastapi_app/` | External interfaces only |
-
-**Import direction:** Core ← IS456 ← Services ← UI. **Never import upward.**
+> Architecture, git rules, and session workflow are in global instructions — not repeated here.
+> For fast context: `bash scripts/agent_brief.sh --agent backend`
 
 ## CRITICAL Warnings
 
@@ -72,29 +64,17 @@ grep "^def " Python/structural_lib/services/api.py | head -20
 .venv/bin/python scripts/validate_imports.py --scope structural_lib
 ```
 
-## Git & PR
-
-- **Git commit:** Always `./scripts/ai_commit.sh "type: message"` — NEVER manual git
-- **PR required** for production Python code — run `./run.sh pr status` first
-
-## Skills
-
-- **API Discovery** (`/api-discovery`): Use BEFORE wrapping any API function — get exact param names
-- **IS 456 Verification** (`/is456-verification`): Run after changing any code in `codes/is456/`
+## After Work: Hand off to @reviewer with files changed, layer modified, tests run, how to verify.
 
 ## Testing
 
 ```bash
-cd Python && .venv/bin/pytest tests/ -v           # Full suite (85% branch coverage required)
-cd Python && .venv/bin/pytest tests/ -k "test_flexure"  # Specific tests
+.venv/bin/pytest Python/tests/ -v           # Full suite (85% branch coverage required)
+.venv/bin/pytest Python/tests/ -k "test_flexure"  # Specific tests
 ```
 
 ## ⚠ DO NOT Over-Explore
 
 **Act on what you know — don't rediscover the project structure every time.**
-
-- Script names, module paths, and API functions are listed in this file — don't `ls` or `grep` to find them again
-- Run ONE targeted command rather than a chain of exploratory searches
-- Use `scripts/discover_api_signatures.py <func>` (not grep chains) to find param names
 
 See [python-core.instructions.md](../instructions/python-core.instructions.md) for full rules.

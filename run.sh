@@ -216,6 +216,9 @@ _cmd_session() {
             _require_venv
             "$VENV" "$SCRIPTS/session.py" context "$@"
             ;;
+        brief)
+            bash "$SCRIPTS/agent_brief.sh" "$@"
+            ;;
         *)
             _help_session
             [[ -n "$subcmd" ]] && _error "Unknown session subcommand: $subcmd"
@@ -237,6 +240,7 @@ Subcommands:
   sync       Sync stale doc numbers
   check      Check session docs for issues
   context    Dump compact orientation context (tasks, brief, git status)
+  brief      Fast 20-line agent brief (--agent <name> | --handoff)
 
 Examples:
   ./run.sh session start      # First thing every session
@@ -511,6 +515,90 @@ Examples:
 EOF
 }
 
+# ── Self-Evolving System ───────────────────────────────────────────────────
+
+_cmd_health() {
+    _require_venv
+    _header "Project Health"
+    "$VENV" "$SCRIPTS/project_health.py" "$@"
+}
+
+_help_health() {
+    cat <<'EOF'
+Usage: ./run.sh health [options]
+
+Unified project health scanner (docs, code, agents, infra, feedback).
+
+Options:
+  --fix              Auto-fix fixable issues
+  --score            Print health score only (0-100)
+  --quick            Quick scan (docs numbers + links only)
+  --category <name>  Scan specific category (docs|code|agents|infra|feedback)
+  --json             Machine-readable JSON output
+
+Examples:
+  ./run.sh health                     # Full scan
+  ./run.sh health --fix               # Auto-fix everything fixable
+  ./run.sh health --score             # Just the score
+  ./run.sh health --category agents   # Scan agent instructions only
+EOF
+}
+
+_cmd_feedback() {
+    _require_venv
+    "$VENV" "$SCRIPTS/agent_feedback.py" "$@"
+}
+
+_help_feedback() {
+    cat <<'EOF'
+Usage: ./run.sh feedback <subcommand> [options]
+
+Agent feedback collection and analysis.
+
+Subcommands:
+  log                Log feedback from current session
+  summary            Show feedback trends and recurring issues
+  pending            List unresolved items
+  resolve <id>       Mark a feedback item as resolved
+  stats              Aggregate statistics
+
+Examples:
+  ./run.sh feedback log --agent backend --stale-doc "api.md wrong params"
+  ./run.sh feedback log --agent frontend --missing "No hook docs"
+  ./run.sh feedback summary
+  ./run.sh feedback pending --brief
+  ./run.sh feedback resolve abc123
+EOF
+}
+
+_cmd_evolve() {
+    _require_venv
+    _header "Self-Evolution"
+    "$VENV" "$SCRIPTS/evolve.py" "$@"
+}
+
+_help_evolve() {
+    cat <<'EOF'
+Usage: ./run.sh evolve [options]
+
+Self-evolution engine — scans, fixes, and evolves the project.
+
+Options:
+  --fix                Apply auto-fixes and commit
+  --review weekly      Quick weekly review (numbers, links, feedback)
+  --review monthly     Full monthly review (all checks + archive)
+  --status             Show last evolution run + recommendations
+  --report             Generate report without fixes
+  --json               JSON output
+
+Examples:
+  ./run.sh evolve                       # Full dry-run scan
+  ./run.sh evolve --fix                  # Apply fixes + commit
+  ./run.sh evolve --review weekly --fix  # Weekly auto-maintenance
+  ./run.sh evolve --status               # When was last run?
+EOF
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -528,6 +616,9 @@ _print_usage() {
     echo -e "  ${GREEN}audit${NC}       Run readiness/governance audit"
     echo -e "  ${GREEN}test${NC}        Run test suites"
     echo -e "  ${GREEN}generate${NC}    Generate indexes, SDKs, manifests"
+    echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
+    echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
+    echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -552,6 +643,9 @@ _dispatch_help() {
         audit)    _help_audit ;;
         test)     _help_test ;;
         generate) _help_generate ;;
+        health)   _help_health ;;
+        feedback) _help_feedback ;;
+        evolve)   _help_evolve ;;
         *)        _print_usage ;;
     esac
 }
@@ -574,12 +668,18 @@ _run_sh() {
         'audit:Readiness audit'
         'test:Run test suites'
         'generate:Generate indexes and SDKs'
+        'health:Project health scan'
+        'feedback:Agent feedback collection'
+        'evolve:Self-evolution engine'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a pr_subs=('create' 'finish' 'status')
     local -a session_subs=('start' 'end' 'summary' 'sync' 'check')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
+    local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
+    local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
+    local -a evolve_opts=('--fix' '--review' '--status' '--report' '--json')
     local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('run' 'verify' 'check-docs' 'checklist')
@@ -592,6 +692,9 @@ _run_sh() {
             pr) _values 'subcommand' $pr_subs ;;
             session) _values 'subcommand' $session_subs ;;
             generate) _values 'subcommand' $generate_subs ;;
+            health) _values 'option' $health_opts ;;
+            feedback) _values 'subcommand' $feedback_subs ;;
+            evolve) _values 'option' $evolve_opts ;;
             test) _values 'option' $test_opts ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
@@ -653,6 +756,9 @@ main() {
         audit)    _cmd_audit "$@" ;;
         test)     _cmd_test "$@" ;;
         generate) _cmd_generate "$@" ;;
+        health)   _cmd_health "$@" ;;
+        feedback) _cmd_feedback "$@" ;;
+        evolve)   _cmd_evolve "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         *)
             _error "Unknown command: $cmd"

@@ -30,13 +30,8 @@ Use this checklist when reviewing changes to this repository.
 - [ ] No duplicate hooks/components (check `react_app/src/hooks/`, `react_app/src/components/`)
 - [ ] No duplicate API routes (check `grep -r "@router" fastapi_app/routers/`)
 - [ ] Tests added/updated for behavior changes
-- [ ] `cd Python && .venv/bin/pytest tests/ -v` passes
-
-## Streamlit (if applicable)
-
-- [ ] No `st.sidebar` inside `@st.fragment` functions
-- [ ] Safe patterns used: `.get()` instead of direct key access
-- [ ] Scanner passes: `.venv/bin/python scripts/check_streamlit.py --all-pages`
+- [ ] Test coverage maintained (85% branch coverage target for Python)
+- [ ] `.venv/bin/pytest Python/tests/ -v` passes
 
 ## Documentation
 

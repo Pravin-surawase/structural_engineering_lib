@@ -10,7 +10,7 @@ globs: Python/structural_lib/**
 - Core types (`core/`) → base classes, constants — no IS 456 math
 - IS 456 Code (`codes/is456/`) → pure math, NO I/O, explicit units (mm, N/mm², kN, kNm)
 - Services (`services/`) → orchestration: api.py, adapters.py, beam_pipeline.py
-- UI/IO → react_app/, streamlit_app/, fastapi_app/
+- UI/IO → react_app/, fastapi_app/
 
 **Import rule:** Core CANNOT import from Services or UI. Services CANNOT import from UI.
 **Units rule:** Always explicit — no hidden conversions.
@@ -64,5 +64,5 @@ The public API has 23 functions + 6 private helpers. Key entry points:
 
 ## Testing & Quality
 
-- Tests: `cd Python && .venv/bin/pytest tests/ -v` (85% branch coverage required)
+- Tests: `.venv/bin/pytest Python/tests/ -v` (85% branch coverage required)
 - Production code always requires PR: `./scripts/create_task_pr.sh TASK-XXX "desc"`

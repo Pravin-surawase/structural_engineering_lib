@@ -31,7 +31,7 @@ import {
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { BeamDetailPanel } from "../design/BeamDetailPanel";
-import { useBatchDesign, useExportBuildingSummary } from "../../hooks";
+import { useSimpleBatchDesign, useExportBuildingSummary } from "../../hooks";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 
@@ -81,7 +81,7 @@ export function BuildingEditorPage() {
   const [autoDesignTriggered, setAutoDesignTriggered] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const gridRef = useRef<AgGridReact>(null);
-  const { runBatchDesign, isDesigning } = useBatchDesign();
+  const { runBatchDesign, isDesigning } = useSimpleBatchDesign();
   const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
 
   // Global material settings

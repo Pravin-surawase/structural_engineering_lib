@@ -156,7 +156,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 23 public functions + 6 private helpers — key entry points: `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
+| `services/api.py` | 29 functions (public + private) — key entry points: `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
@@ -495,7 +495,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Commit | `./run.sh commit "msg"` | `./scripts/ai_commit.sh "msg"` |
 | Full check | `./run.sh check` | N/A (orchestrator) |
 | Quick check | `./run.sh check --quick` | N/A |
-| Run tests | `./run.sh test` | `cd Python && .venv/bin/pytest tests/ -v` |
+| Run tests | `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` |
 | Test changed | `./run.sh test --changed` | `.venv/bin/python scripts/test_changed.py` |
 | Pre-flight | `./run.sh preflight` | `.venv/bin/python scripts/preflight.py` |
 | Session context | `./run.sh session context` | `.venv/bin/python scripts/session.py context` |
@@ -563,7 +563,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 
 ## 12. VS Code Copilot Agents & Skills
 
-### 9 Custom Agents (`@agent-name` in Copilot Chat)
+### 11 Custom Agents (`@agent-name` in Copilot Chat)
 
 | Agent | Role | When to Use |
 |-------|------|-------------|
@@ -576,8 +576,10 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `@ui-designer` | Visual design (read-only) | Layout planning before coding |
 | `@doc-master` | Documentation | Session logs, archives, indexes |
 | `@ops` | Git, CI/CD, Docker | Commits, PRs, environment issues |
+| `@tester` | Test creation & coverage | Test suites, coverage analysis |
+| `@governance` | Project health & maintenance | Health scans, doc archival |
 
-### 4 Skills (`/skill-name` in Copilot Chat)
+### 6 Skills (`/skill-name` in Copilot Chat)
 
 | Skill | Purpose |
 |-------|---------|
@@ -585,8 +587,10 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `/safe-file-ops` | Move/delete files preserving 870+ links |
 | `/api-discovery` | Look up exact API function signatures |
 | `/is456-verification` | Run IS 456 tests by category |
+| `/architecture-check` | Validate 4-layer architecture boundaries |
+| `/react-validation` | React build, lint, type-check, tests |
 
-### 8 Prompt Files (`#prompt-name` in Copilot Chat)
+### 13 Prompt Files (`#prompt-name` in Copilot Chat)
 
 | Prompt | Purpose |
 |--------|---------|
@@ -598,6 +602,11 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `#session-end` | Session end (mandatory) |
 | `#file-move` | Safe file migration |
 | `#is456-verify` | IS 456 formula verification |
+| `#add-is456-clause` | IS 456 clause implementation |
+| `#fix-test-failure` | Test failure diagnosis & fix |
+| `#performance-optimization` | Profile, optimize, benchmark |
+| `#context-recovery` | Resume after context overflow |
+| `#master-workflow` | Master workflow orchestration |
 
 ### Handoff Chains
 

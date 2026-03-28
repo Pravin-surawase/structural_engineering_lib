@@ -5,7 +5,7 @@ Goal: enable the next agent to resume in under 2 minutes.
 ---
 
 ## Resume (next agent)
-1. Run: `./scripts/agent_start.sh --quick` (or with `--agent 9` for governance work)
+1. Run: `./scripts/agent_start.sh --quick` (or with `--agent governance` for governance work)
 2. Read:
    - `docs/planning/next-session-brief.md` (what changed + blockers)
    - `docs/TASKS.md` (active + up next)

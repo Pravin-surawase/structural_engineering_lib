@@ -15,13 +15,15 @@ Complete all end-of-session steps. Do NOT skip any.
 
 2. Auto-generate SESSION_LOG entry from git history:
    ```bash
-   .venv/bin/python scripts/session.py summary --write
+   ./run.sh session summary
    ```
+   Direct script: `.venv/bin/python scripts/session.py summary --write`
 
 3. Sync stale doc numbers across reference files:
    ```bash
-   .venv/bin/python scripts/session.py sync --fix
+   ./run.sh session sync
    ```
+   Direct script: `.venv/bin/python scripts/sync_numbers.py --fix`
 
 4. Update the handoff document for the next agent:
    - Edit `docs/planning/next-session-brief.md`
@@ -31,7 +33,13 @@ Complete all end-of-session steps. Do NOT skip any.
    - Edit `docs/TASKS.md`
    - Mark completed items, add any new items discovered
 
-6. Commit all doc updates:
+6. Log agent feedback (stale docs, missing info, issues found):
+   ```bash
+   ./run.sh feedback log --agent <name>
+   ```
+   Direct script: `.venv/bin/python scripts/agent_feedback.py log --agent <name> --stale-doc "..." --missing-info "..." --issue "..."`
+
+7. Commit all doc updates:
    ```bash
    ./scripts/ai_commit.sh "docs: session end"
    ```

@@ -1,5 +1,7 @@
 # Agent Prompt Cheat Sheet
 
+> **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier framework. For new work, use the `.github/agents/` definitions.
+
 Use these snippets to quickly engage the right agent with the right context.
 
 ---

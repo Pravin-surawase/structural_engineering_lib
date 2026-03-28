@@ -391,7 +391,7 @@ Delegates to `ai_commit.sh` with all its existing safety:
 ### 4.9 Command: `./run.sh test`
 
 ```bash
-./run.sh test                   # → cd Python && .venv/bin/pytest tests/ -v
+./run.sh test                   # → .venv/bin/pytest Python/tests/ -v
 ./run.sh test --parity          # → test_api_parity.py
 ./run.sh test --pipeline        # → test_import_3d_pipeline.py
 ./run.sh test --vba             # → run_vba_smoke_tests.py + test_vba_adapter.py

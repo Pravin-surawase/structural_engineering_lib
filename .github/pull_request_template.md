@@ -12,7 +12,7 @@
 
 ## Testing
 
-- [ ] Python: `cd Python && .venv/bin/pytest tests/ -v`
+- [ ] Python: `.venv/bin/pytest Python/tests/ -v`
 - [ ] React: `cd react_app && npm run build`
 - [ ] Docker: `docker compose up --build` (if FastAPI changed)
 - [ ] VBA: ran relevant tests in `VBA/Tests/` (manual, if VBA changed)

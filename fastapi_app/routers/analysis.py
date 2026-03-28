@@ -43,7 +43,7 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
     Uses principle of superposition for multiple loads.
     """
     try:
-        from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
+        from structural_lib.services.api import compute_bmd_sfd
         from structural_lib.core.data_types import LoadDefinition, LoadType
     except ImportError as e:
         raise HTTPException(

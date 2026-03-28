@@ -9,8 +9,15 @@ export {
   useCSVFileImport,
   useCSVTextImport,
   useDualCSVImport,
-  useBatchDesign,
+  useSimpleBatchDesign,
 } from './useCSVImport';
+export { useBatchDesign } from './useBatchDesign';
+export type {
+  BatchProgress,
+  BatchResult,
+  BatchStatus,
+  BatchDesignState,
+} from './useBatchDesign';
 export {
   useBuildingGeometry,
   useCrossSectionGeometry,

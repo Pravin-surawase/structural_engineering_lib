@@ -24,7 +24,6 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Python API
 | REST endpoint | `fastapi_app/routers/` |
 | React UI component | `react_app/src/components/` |
 | React data hook | `react_app/src/hooks/` |
-| Streamlit page | `streamlit_app/pages/` |
 
 ## 3. Implement
 
@@ -36,13 +35,15 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Python API
 ## 4. Test
 
 ```bash
-cd Python && .venv/bin/pytest tests/ -v         # Python tests
+.venv/bin/pytest Python/tests/ -v         # Python tests
 cd react_app && npm run build                   # React build check
 ```
 
 ## 5. Commit
 
+Check PR requirement first: `./run.sh pr status`
+
 ```bash
-./scripts/should_use_pr.sh --explain            # Check PR requirement
+./scripts/should_use_pr.sh --explain            # Detailed PR explanation
 ./scripts/ai_commit.sh "feat(scope): description"
 ```

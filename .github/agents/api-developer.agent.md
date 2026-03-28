@@ -25,6 +25,33 @@ handoffs:
 
 You are a FastAPI specialist for **structural_engineering_lib**.
 
+> Architecture, git rules, and session workflow are in global instructions — not repeated here.
+> For fast context: `bash scripts/agent_brief.sh --agent api-developer`
+
+## Terminal Commands
+
+```bash
+# Check existing routes before adding
+grep -r "@router" fastapi_app/routers/ | head -30
+
+# Run API tests
+.venv/bin/pytest fastapi_app/tests/ -v
+.venv/bin/pytest fastapi_app/tests/ -v -k "test_design"  # Specific router
+
+# Get exact API function signatures (NEVER guess param names)
+.venv/bin/python scripts/discover_api_signatures.py <function_name>
+
+# Docker testing (start Colima FIRST on Mac)
+colima start --cpu 4 --memory 4
+docker compose up --build                              # Production at :8000/docs
+docker compose -f docker-compose.dev.yml up            # Dev with hot reload
+
+# Quick validation
+./run.sh check --quick                                 # Or: bash run.sh check --quick
+```
+
+> See terminal-rules.instructions.md for fallback chain when commands fail.
+
 ## Check Existing Routes First
 
 ```bash
@@ -50,6 +77,8 @@ grep -r "@router" fastapi_app/routers/ | head -30
 | **streaming** | `GET /batch-design`, `/job/{job_id}` |
 | **websocket** | `WS /ws/design/{session_id}` |
 
+## After Work: Hand off to @reviewer with files changed, endpoints added/modified, Pydantic models, curl example.
+
 ## Rules
 
 1. **Routers import from `structural_lib`** — never duplicate math logic
@@ -57,16 +86,6 @@ grep -r "@router" fastapi_app/routers/ | head -30
 3. **Check existing before adding** — avoid route duplication
 4. **Test with Docker:** `docker compose up --build` (start Colima first)
 5. **API docs auto-generated** at `http://localhost:8000/docs`
-6. **Git commit:** Always `./scripts/ai_commit.sh "type: message"` — NEVER manual git
-7. **PR required** for production FastAPI code — run `./run.sh pr status` first
-
-## Skills
-
-- **API Discovery** (`/api-discovery`): Use BEFORE creating endpoints — verify `structural_lib` function params
-
-## 4-Layer Architecture
-
-Routers live in the **UI/IO layer**. They call **Services** (`structural_lib`), never Core or IS 456 code directly.
 
 ## Architecture
 

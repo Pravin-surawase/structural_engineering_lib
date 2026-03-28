@@ -4,6 +4,62 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-03-28 — Session 105
+
+**Focus:** Agent testing + architecture fixes + shear tests + agent infrastructure
+
+### What Was Done
+- Tested all 11 custom agents against real project tasks — overall score 8.7/10 (up from 8.2)
+- Created agent-testing-audit-2026-03-28.md (237 lines) documenting all results
+- Fixed BeamDetailPanel.tsx: 3 architecture violations (moved rebar/stirrup/ast calcs to API calls, added sv_max from design response)
+- Fixed FastAPI router imports: analysis.py + design.py (codes.is456 → services.api)
+- Fixed shear.py: num_legs stirrup spacing bug (effective_tv = tv * 2.0/num_legs)
+- Fixed stale doc numbers in agent-bootstrap.md (4 counts: agents 9→11, skills 4→6, prompts 8→13, API 23+6→29)
+- Added 234 lines of new shear tests (3 test classes: TestSelectStirrupDiameterNumLegs, TestDesignShearSteelGrades, TestDesignShearHandCalculated)
+- Implemented self-evolving system infrastructure (prior sessions): governance/tester agents, architecture-check/react-validation skills, 3 new prompts, 5 new scripts
+- Committed 61 files (ecfede46), created PR #441
+
+### Issues Found
+- Agent terminal path confusion: agents try `cd Python && .venv/bin/pytest` (wrong) — venv is at project root
+- Correct pytest command: from project root, use `../.venv/bin/pytest` inside Python/ dir OR `.venv/bin/pytest Python/tests/` from root
+- should_use_pr.sh path coverage gap persists (from Session 104)
+- Phase 6 (archive 43→<10 active planning docs) not started yet
+
+### Next Session
+- TASK-525: Smart HubPage — START HERE (replace ModeSelectPage)
+- Fix agent terminal path instructions in all agent .md files (add WORKING DIRECTORY + correct venv path)
+- Phase 6: Archive stale planning docs (43 active → target <10)
+- Monitor PR #441 for CI results
+
+---
+
+## 2026-03-28 — Session 104
+
+**Focus:** Git automation knowledge transfer + agent feedback loop
+
+### What Was Done
+- Audited git automation scripts: ai_commit.sh, should_use_pr.sh, safe_push.sh
+- Updated ops.agent.md: git system architecture, error recovery table, historical mistakes, feedback loop, advanced modes
+- Updated orchestrator.agent.md: governance cadence (session/weekly/monthly), git awareness for handoffs
+- Updated reviewer.agent.md: git hygiene checklist, feedback-to-orchestrator pattern
+- Updated master-workflow.prompt.md: 5→6 step pipeline, feedback loop with escalation rules
+- Fixed: duplicate sections in ops.agent.md, consolidated error recovery tables
+- Pipeline audit: caught skipped review/doc steps, completed full 6-step pipeline
+- Comprehensive prompt quality pass: fixed endpoint count (35→38), hook count (18→20), removed Streamlit refs, standardized commands across 11 files
+- Full pipeline audit: caught and corrected skipped review/doc steps
+
+### Issues Found
+- should_use_pr.sh doesn't check fastapi_app/ or react_app/ paths (potential gap)
+- commit_template.txt is empty (unused)
+- Pipeline was initially not followed — review and doc steps were skipped, then corrected
+
+### Next Session
+- Monitor feedback loop effectiveness
+- Consider structured JSON logging for ai_commit.sh
+- Verify should_use_pr.sh path coverage
+
+---
+
 ## 2026-03-27 — Session 103 (Mac Mini sync + IPv6 fix)
 
 **Focus:** Post-migration sync, pull PR #440, fix "Cannot connect to backend" on Sample Building
