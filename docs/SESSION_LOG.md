@@ -4,6 +4,31 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-03-28 — Session 104
+
+**Focus:** Git automation knowledge transfer + agent feedback loop
+
+### What Was Done
+- Audited git automation scripts: ai_commit.sh, should_use_pr.sh, safe_push.sh
+- Updated ops.agent.md: git system architecture, error recovery table, historical mistakes, feedback loop, advanced modes
+- Updated orchestrator.agent.md: governance cadence (session/weekly/monthly), git awareness for handoffs
+- Updated reviewer.agent.md: git hygiene checklist, feedback-to-orchestrator pattern
+- Updated master-workflow.prompt.md: 5→6 step pipeline, feedback loop with escalation rules
+- Fixed: duplicate sections in ops.agent.md, consolidated error recovery tables
+- Pipeline audit: caught skipped review/doc steps, completed full 6-step pipeline
+
+### Issues Found
+- should_use_pr.sh doesn't check fastapi_app/ or react_app/ paths (potential gap)
+- commit_template.txt is empty (unused)
+- Pipeline was initially not followed — review and doc steps were skipped, then corrected
+
+### Next Session
+- Monitor feedback loop effectiveness
+- Consider structured JSON logging for ai_commit.sh
+- Verify should_use_pr.sh path coverage
+
+---
+
 ## 2026-03-27 — Session 103 (Mac Mini sync + IPv6 fix)
 
 **Focus:** Post-migration sync, pull PR #440, fix "Cannot connect to backend" on Sample Building

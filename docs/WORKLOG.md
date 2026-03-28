@@ -25,6 +25,11 @@
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-03-28 | AGENTS | Added git system architecture, error recovery, historical mistakes, feedback loop to ops.agent.md | b28d8b04 |
+| 2026-03-28 | AGENTS | Added governance cadence and git awareness to orchestrator.agent.md | b28d8b04 |
+| 2026-03-28 | AGENTS | Added git hygiene checklist and feedback-to-orchestrator to reviewer.agent.md | b28d8b04 |
+| 2026-03-28 | AGENTS | Updated master-workflow.prompt.md: 5→6 step pipeline, added feedback loop with escalation rules | b28d8b04 |
+| 2026-03-28 | AGENTS | Fixed duplicates in ops.agent.md, consolidated error recovery tables, aligned pipeline counts | — |
 | 2026-03-25 | TASK-522 | BeamDetailPanel — beam click → 3D rebar + results + redesign + edit rebar | `a242878`, `a5612b0` |
 | 2026-03-25 | TASK-523 | FloatingDock + BentoGrid Dashboard activated | `a242878` |
 | 2026-03-25 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `a242878` |

@@ -66,11 +66,15 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 | Situation | Command | Notes |
 |-----------|---------|-------|
 | Push rejected (non-fast-forward) | `./scripts/recover_git_state.sh` | safe_push.sh handles most cases |
-| Stuck in merge/rebase | `./scripts/recover_git_state.sh` | Auto-resolves safe doc conflicts |
+| Stuck in merge/rebase | `./scripts/recover_git_state.sh` | Auto-resolves safe doc conflicts (TASKS.md, SESSION_LOG.md) |
 | Detached HEAD | `git checkout main` | Always work on named branches |
 | CI fails on formatting | `.venv/bin/python -m black Python/ && .venv/bin/python -m ruff check --fix Python/` | Pre-commit hooks auto-fix |
-| Hook blocks commit | Check `logs/hook_output_*.log` | Fix the issue, don't use --no-verify |
-| Network failure on push | `./scripts/ai_commit.sh --push` | Re-run push step only |
+| Hook blocks commit | Check `logs/hook_output_*.log` for details | Fix the specific issue, don't use --no-verify |
+| Terminal stuck in git pager | `q` to exit, or agent_start.sh sets `core.pager=cat` | Already configured by setup |
+| Network failure on push | `./scripts/ai_commit.sh --push` | Re-run push step only (W1) |
+| CI polling hangs (>10min) | Check GitHub manually | finish_task_pr.sh polling limitation (W3) |
+| Commit subject >100 chars | Rewrite message to be concise | Keep messages under 72 chars (W5) |
+| Unrelated mypy failure blocks commit | Fix the mypy issue in that file | Don't bypass with --no-verify (W9) |
 
 ### Historical Mistakes (NEVER Repeat)
 
@@ -183,39 +187,3 @@ lsof -ti :5173 2>/dev/null && echo "..."
 lsof -ti :8000 | xargs kill -9 2>/dev/null   # Free port 8000
 lsof -ti :5173 | xargs kill -9 2>/dev/null   # Free port 5173
 ```
-
-## Git Troubleshooting (from historical mistake database)
-
-| Problem | Fix | Prevention |
-|---------|-----|------------|
-| Push rejected (non-fast-forward) | `./scripts/recover_git_state.sh` | safe_push.sh handles this automatically |
-| Stuck in merge/rebase | `./scripts/recover_git_state.sh` | Auto-resolves safe doc conflicts (TASKS.md, SESSION_LOG.md) |
-| Detached HEAD | `git checkout main` | Always work on named branches |
-| CI fails on formatting | `.venv/bin/python -m black Python/ && .venv/bin/python -m ruff check --fix Python/` | Pre-commit hooks auto-fix |
-| Hook blocks commit | Check `logs/hook_output_*.log` for details | Fix the specific issue, don't use --no-verify |
-| Terminal stuck in git pager | `q` to exit, or agent_start.sh sets `core.pager=cat` | Already configured by setup |
-
-### Historical Mistakes (NEVER repeat these)
-
-1. **17 merge commits in one day** — caused by `git commit --amend` after push. safe_push.sh now enforces amend-before-push
-2. **Manual git fallback under stress** — script errors led agents to `git add/commit/push`. Pre-push hook now blocks this
-3. **`--no-verify` under time pressure** — agents skipped hooks, CI failed 5 min later. ai_commit.sh never uses --no-verify
-4. **`--force` PR bypass** — agents used it to skip PR creation. Has caused 10+ hours of rework
-
-### Known Weaknesses to Watch For
-
-- **W1**: No retry on push failure — if step 7 fails (network), re-run `./scripts/ai_commit.sh --push`
-- **W3**: `finish_task_pr.sh` polling can hang — if CI takes >10min, check GitHub manually
-- **W5**: Commit subject >100 chars rejected — keep messages concise
-- **W9**: Unrelated mypy failure blocks commit — fix the mypy issue rather than bypassing
-
-## Git System Architecture (reference)
-
-```
-ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflow)
-                                                  ↓
-                                                  Steps: stash → fetch(bg) → stage → commit+hooks → amend → sync → safety → push
-```
-
-**Log location**: `logs/git_workflow.log` — check here when things go wrong.
-**Pre-commit hooks**: 28 hooks in `.pre-commit-config.yaml` (black, ruff, mypy, isort, bandit, whitespace, API contracts, doc versions)

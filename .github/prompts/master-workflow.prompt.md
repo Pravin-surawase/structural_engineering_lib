@@ -4,16 +4,17 @@ description: "Quality-gated pipeline for all code changes — ensures review, do
 
 # Master Workflow — Quality-Gated Pipeline
 
-Every code change in this project MUST follow this 5-step pipeline. No exceptions.
+Every code change in this project MUST follow this 6-step pipeline. No exceptions.
 
 ## The Pipeline
 
 ```
 Step 1: @orchestrator  → Plan & scope the work
-Step 2: @specialist    → Execute (frontend/backend/api-developer)
-Step 3: @reviewer      → Verify (architecture, tests, IS 456)
-Step 4: @doc-master    → Update WORKLOG, TASKS, next-session-brief
-Step 5: @ops           → Commit via ai_commit.sh
+Step 2: @specialist    → Gather context (read existing code BEFORE changing anything)
+Step 3: @specialist    → Execute the change
+Step 4: @reviewer      → Verify (architecture, tests, IS 456, git hygiene)
+Step 5: @doc-master    → Update WORKLOG, TASKS, next-session-brief
+Step 6: @ops           → Commit via ai_commit.sh
 ```
 
 ## Step 1: Orchestrator Plans
@@ -107,7 +108,8 @@ The orchestrator updates:
 | Step | Agent | Key Output |
 |------|-------|------------|
 | 1. Plan | @orchestrator | Task scope + file list + specialist assignment |
-| 2. Execute | @frontend/@backend/@api-developer | Code changes + work report |
-| 3. Verify | @reviewer | APPROVED / NEEDS CHANGES + specific issues |
-| 4. Document | @doc-master | WORKLOG + TASKS updated |
-| 5. Commit | @ops | Commit hash + branch + PR status |
+| 2. Gather | @frontend/@backend/@api-developer | Context acquired (existing patterns, functions, hooks) |
+| 3. Execute | @frontend/@backend/@api-developer | Code changes + work report |
+| 4. Verify | @reviewer | APPROVED / NEEDS CHANGES + specific issues |
+| 5. Document | @doc-master | WORKLOG + TASKS updated |
+| 6. Commit | @ops | Commit hash + branch + PR status |
