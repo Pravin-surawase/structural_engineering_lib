@@ -67,13 +67,24 @@ docker compose up --build                            # Production at :8000/docs
 docker compose -f docker-compose.dev.yml up           # Dev with hot reload
 ```
 
-### Git (via scripts only)
+### Git — NEVER Manual (ALL agents)
 ```bash
-./scripts/ai_commit.sh "type(scope): message"         # Commit + push
-git status --short                                    # Check state
-git branch --show-current                             # Current branch
-git log --oneline -10                                 # Recent history
+./scripts/ai_commit.sh "type(scope): message"         # Commit + push (THE ONE RULE)
+git status --short                                    # Check state (read-only OK)
+git branch --show-current                             # Current branch (read-only OK)
+git log --online -10                                 # Recent history (read-only OK)
 ```
+
+**FORBIDDEN (causes merge conflicts, rework, and lost changes):**
+```
+NEVER: git add / git commit / git push / git pull     ← use ai_commit.sh instead
+NEVER: rm file.md                                     ← use .venv/bin/python scripts/safe_file_delete.py
+NEVER: mv old.md new.md                               ← use .venv/bin/python scripts/safe_file_move.py
+NEVER: git commit --amend                             ← use ./scripts/ai_commit.sh --amend
+NEVER: --no-verify or --force                         ← has caused 10+ hours of rework
+```
+
+**Read-only git commands are OK:** `git status`, `git log`, `git diff`, `git branch`, `git show`.
 
 ## MANDATORY: Document Terminal Issues
 
