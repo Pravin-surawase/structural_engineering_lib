@@ -146,7 +146,7 @@ jobs:
           "
 
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-cyclonedx
           path: Python/sbom.json
@@ -215,7 +215,7 @@ jobs:
           "
 
       - name: Upload SPDX artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-spdx
           path: Python/sbom-spdx.json
