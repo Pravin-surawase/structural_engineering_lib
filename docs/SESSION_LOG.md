@@ -4,6 +4,35 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-03-28 — Session 105
+
+**Focus:** Agent testing + architecture fixes + shear tests + agent infrastructure
+
+### What Was Done
+- Tested all 11 custom agents against real project tasks — overall score 8.7/10 (up from 8.2)
+- Created agent-testing-audit-2026-03-28.md (237 lines) documenting all results
+- Fixed BeamDetailPanel.tsx: 3 architecture violations (moved rebar/stirrup/ast calcs to API calls, added sv_max from design response)
+- Fixed FastAPI router imports: analysis.py + design.py (codes.is456 → services.api)
+- Fixed shear.py: num_legs stirrup spacing bug (effective_tv = tv * 2.0/num_legs)
+- Fixed stale doc numbers in agent-bootstrap.md (4 counts: agents 9→11, skills 4→6, prompts 8→13, API 23+6→29)
+- Added 234 lines of new shear tests (3 test classes: TestSelectStirrupDiameterNumLegs, TestDesignShearSteelGrades, TestDesignShearHandCalculated)
+- Implemented self-evolving system infrastructure (prior sessions): governance/tester agents, architecture-check/react-validation skills, 3 new prompts, 5 new scripts
+- Committed 61 files (ecfede46), created PR #441
+
+### Issues Found
+- Agent terminal path confusion: agents try `cd Python && .venv/bin/pytest` (wrong) — venv is at project root
+- Correct pytest command: from project root, use `../.venv/bin/pytest` inside Python/ dir OR `.venv/bin/pytest Python/tests/` from root
+- should_use_pr.sh path coverage gap persists (from Session 104)
+- Phase 6 (archive 43→<10 active planning docs) not started yet
+
+### Next Session
+- TASK-525: Smart HubPage — START HERE (replace ModeSelectPage)
+- Fix agent terminal path instructions in all agent .md files (add WORKING DIRECTORY + correct venv path)
+- Phase 6: Archive stale planning docs (43 active → target <10)
+- Monitor PR #441 for CI results
+
+---
+
 ## 2026-03-28 — Session 104
 
 **Focus:** Git automation knowledge transfer + agent feedback loop

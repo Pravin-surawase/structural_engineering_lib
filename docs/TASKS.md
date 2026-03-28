@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-25 (Session 98 — React UX overhaul: Editor-centric, BeamDetailPanel, FloatingDock)
+**Updated:** 2026-03-28 (Session 105 — Agent testing + architecture fixes + shear tests)
 
 ---
 

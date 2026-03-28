@@ -64,3 +64,10 @@
 | 2026-03-28 | Agent maintenance | Fixed frontend.agent.md hooks table: 9 → 21 hooks | pending |
 | 2026-03-28 | Script audit | Rewrote scripts/_archive/README.md: 6 → 99 scripts documented | pending |
 | 2026-03-28 | Script audit | Added ⚠️ Archived warnings to automation-catalog.md entries 56, 98 | pending |
+| 2026-03-28 | TASK-AGENTS | Agent testing audit: all 11 agents tested, scored 8.7/10, identified 7 fix phases | ecfede46 |
+| 2026-03-28 | PHASE-1-2 | Fix BeamDetailPanel arch violations (3), FastAPI router imports (2 files analysis+design) | ecfede46 |
+| 2026-03-28 | PHASE-3 | Fix num_legs stirrup scaling bug in shear.py (effective_tv = tv * 2.0/num_legs) | ecfede46 |
+| 2026-03-28 | PHASE-4 | Fix stale doc numbers in agent-bootstrap.md (agents 9→11, skills 4→6, prompts 8→13) | ecfede46 |
+| 2026-03-28 | PHASE-7 | Add 234 lines shear tests: TestSelectStirrupDiameterNumLegs + 2 more classes | ecfede46 |
+| 2026-03-28 | INFRA | Add governance/tester agents, architecture-check/react-validation skills, 3 prompts, 5 scripts | ecfede46 |
+| 2026-03-28 | GIT | Commit 61 files to task/TASK-AGENTS, create PR #441 | ecfede46 |

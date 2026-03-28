@@ -22,7 +22,32 @@ Date:** 2026-03-28
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 104 (Git Automation Knowledge Transfer) | **Focus:** Git automation audit + agent feedback loop
+**Last Session:** Session 105 (Agent Testing + Architecture Fixes) | **Focus:** Agent testing, architecture fixes, shear tests, commit PR #441
+
+---
+
+## Session 105 Summary
+
+**Completed:** Agent testing (8.7/10) → architecture fixes → shear tests → agent infrastructure → committed PR #441
+
+**Files Updated:**
+- `react_app/src/components/design/BeamDetailPanel.tsx` — 3 arch violations fixed
+- `fastapi_app/routers/analysis.py`, `design.py` — import fixes
+- `Python/structural_lib/codes/is456/shear.py` — num_legs bug fixed
+- `Python/tests/unit/test_shear.py` — +234 lines new tests
+- `.github/agents/`, `.github/skills/`, `.github/prompts/`, `scripts/` — self-evolving system
+
+**Key Outcomes:**
+- ✅ All agents scored, audit documented
+- ✅ 3 arch violations + 2 import bugs + 1 num_legs bug fixed
+- ✅ Shear test coverage significantly expanded
+- ✅ Self-evolving infrastructure complete (governance, tester, health, feedback, evolve)
+- ✅ PR #441 open
+
+**Known Issues:**
+- Agent terminal PATH issue NOT fixed yet: agents try `cd Python && .venv/bin/pytest` (wrong venv location)
+- Phase 6 (archive planning docs) not started
+- PR #441 CI pending
 
 ---
 
@@ -61,14 +86,19 @@ Date:** 2026-03-28
 
 ## Next Priorities
 
-### Do First — UX Polish + Library Expansion
+### Do First — Agent Terminal Fixes + UX Polish
 
-1. **TASK-525: Smart HubPage** ← START HERE
+1. **FIX AGENT TERMINAL PATHS** ← URGENT (prevents wasted tokens each session)
+   - All agents need correct venv path: `.venv/` is at PROJECT ROOT, not in Python/
+   - Correct pytest: from project root = `.venv/bin/pytest Python/tests/ -v`
+   - Correct pytest from Python/ subdir = `../.venv/bin/pytest tests/ -v`
+   - Update all .github/agents/*.agent.md files with a "Terminal Commands" section
+
+2. **TASK-525: Smart HubPage**
    - Replace ModeSelectPage with smart hub: quick actions + resume last project
 
-2. **TASK-517: Project BOQ** — Aggregate BBS → project quantities
-3. **TASK-519: Alternatives Panel (Pareto)** — Expose multi_objective_optimizer.py
-4. **TASK-527: TopBar settings + TASK-528: Breadcrumb** — Settings panel + workflow navigation
+3. **Phase 6: Archive stale planning docs** (43 active → target <10)
+4. **TASK-517: Project BOQ** — Aggregate BBS → project quantities
 
 ### Design Principles
 - **Editor is the workstation** → manual form only in `/design`
