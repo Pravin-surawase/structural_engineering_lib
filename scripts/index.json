@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-03-28",
-  "file_count": 87,
+  "file_count": 88,
   "files": [
     {
       "name": "README.md",
@@ -408,7 +408,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-27",
+      "last_updated": "2026-03-28",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -417,7 +417,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "741529b22e29"
+      "content_hash": "81c44cb6f336"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -808,8 +808,8 @@
     {
       "name": "check_circular_imports.py",
       "type": "python",
-      "size_lines": 461,
-      "last_updated": "2026-03-27",
+      "size_lines": 464,
+      "last_updated": "2026-03-28",
       "description": "Circular Import Detector for Streamlit Application",
       "classes": [
         {
@@ -858,7 +858,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "58f91d8ae2e2"
+      "content_hash": "3d4aa89ded47"
     },
     {
       "name": "check_cli_reference.py",
@@ -2198,6 +2198,14 @@
       "content_hash": "f45389dc7e4c"
     },
     {
+      "name": "github_maintenance.sh",
+      "type": "shell-script",
+      "size_lines": 546,
+      "last_updated": "2026-03-28",
+      "description": "GitHub Maintenance Automation",
+      "content_hash": "110cf753e656"
+    },
+    {
       "name": "governance_health_score.py",
       "type": "python",
       "size_lines": 515,
@@ -3464,5 +3472,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "58b2a72b3fa3249c"
+  "content_hash": "4b1b27f8b79eaf3d"
 }

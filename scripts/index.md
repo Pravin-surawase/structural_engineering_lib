@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-03-28
-**Files:** 87
+**Files:** 88
 
 ## Config Files
 
@@ -32,7 +32,7 @@
 | [check_api.py](check_api.py) | Unified API validation — signatures, docs, and sync checks. | 1 | 4 | 379 |
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 518 |
 | [check_bootstrap_freshness.py](check_bootstrap_freshness.py) | Check if bootstrap docs are stale compared to actual codebas | 0 | 4 | 262 |
-| [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for Streamlit Application | 5 | 1 | 461 |
+| [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for Streamlit Application | 5 | 1 | 464 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 260 |
@@ -100,6 +100,7 @@
 - [create_task_pr.sh](create_task_pr.sh) — Create a PR for completed task work
 - [finish_task_pr.sh](finish_task_pr.sh) — Finish task work and create PR
 - [generate_all_indexes.sh](generate_all_indexes.sh) — Generate index.json + index.md for all research-relevant folders
+- [github_maintenance.sh](github_maintenance.sh) — GitHub Maintenance Automation
 - [install_git_hooks.sh](install_git_hooks.sh) — Install versioned git hooks via core.hooksPath
 - [pre_commit_check.sh](pre_commit_check.sh) — Pre-flight checks before committing
 - [recover_git_state.sh](recover_git_state.sh) — Recover from common git workflow failure states
