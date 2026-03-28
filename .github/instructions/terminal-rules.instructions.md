@@ -72,7 +72,7 @@ docker compose -f docker-compose.dev.yml up           # Dev with hot reload
 ./scripts/ai_commit.sh "type(scope): message"         # Commit + push (THE ONE RULE)
 git status --short                                    # Check state (read-only OK)
 git branch --show-current                             # Current branch (read-only OK)
-git log --online -10                                 # Recent history (read-only OK)
+git log --oneline -10                                 # Recent history (read-only OK)
 ```
 
 **FORBIDDEN (causes merge conflicts, rework, and lost changes):**
