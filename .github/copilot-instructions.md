@@ -91,6 +91,19 @@ RIGHT: cd react_app && npm run build               ← explicit cd first
 - `react_app/` — React app directory
 - `scripts/` — utility scripts
 
+### run.sh Fallback Chain
+If `./run.sh` produces no output or fails, try these in order:
+1. `bash run.sh <command>` — explicit bash invocation
+2. Direct script (e.g., `./scripts/ai_commit.sh` instead of `./run.sh commit`)
+3. Direct CLI command (e.g., `gh pr create` instead of `./run.sh pr create`)
+
+See `.github/instructions/terminal-rules.instructions.md` for the full fallback table.
+
+### MANDATORY: Document Terminal Issues
+When you encounter terminal problems (commands failing, wrong directory, scripts not found), include in your handoff:
+`⚠️ TERMINAL ISSUE: [what happened] → [what worked instead]`
+This feeds the improvement loop — recurring issues get fixed in agent instructions.
+
 ## Session End (auto-summary + sync)
 
 ```bash
