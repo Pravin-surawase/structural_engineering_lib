@@ -35,6 +35,26 @@ You are a code reviewer for **structural_engineering_lib**. You verify correctne
 
 **You are a MANDATORY gate in the pipeline.** Every code change must pass through you before going to @doc-master and @ops. If you are not invoked, the pipeline is broken.
 
+## Terminal Commands
+
+```bash
+# Run tests before approving
+.venv/bin/pytest Python/tests/ -v                     # Python tests
+.venv/bin/pytest Python/tests/ -v -k "test_shear"     # Specific area
+.venv/bin/pytest fastapi_app/tests/ -v                # API tests
+cd react_app && npx vitest run                         # React tests
+cd react_app && npm run build                          # Build check
+
+# Architecture validation
+.venv/bin/python scripts/validate_imports.py --scope structural_lib
+.venv/bin/python scripts/check_architecture_boundaries.py
+
+# Quick validation
+./run.sh check --quick                                 # Or: bash run.sh check --quick
+```
+
+> See terminal-rules.instructions.md for fallback chain when commands fail.
+
 ## Review Output Format (MANDATORY)
 
 After every review, report in this format:

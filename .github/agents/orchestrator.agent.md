@@ -40,6 +40,22 @@ You are the project orchestrator for **structural_engineering_lib** — an IS 45
 > Git rules, architecture, and session workflow are in global instructions — not repeated here.
 > For fast context: `bash scripts/agent_brief.sh --agent orchestrator`
 
+## Terminal Quick Reference
+
+```bash
+# Verify environment
+./run.sh session start              # Or: bash run.sh session start
+git branch --show-current           # Current branch
+git status --short                  # Uncommitted changes
+
+# Delegation support
+.venv/bin/python scripts/discover_api_signatures.py <func>  # Check API before assigning
+ls react_app/src/hooks/             # Check hooks before assigning frontend work
+grep -r "@router" fastapi_app/routers/ | head -20  # Check routes before assigning API work
+```
+
+> See terminal-rules.instructions.md for fallback chain when commands fail.
+
 ## Your Role
 
 - **Plan** work by reading priorities from `docs/TASKS.md` and `docs/planning/next-session-brief.md`

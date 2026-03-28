@@ -28,6 +28,30 @@ You are a FastAPI specialist for **structural_engineering_lib**.
 > Architecture, git rules, and session workflow are in global instructions — not repeated here.
 > For fast context: `bash scripts/agent_brief.sh --agent api-developer`
 
+## Terminal Commands
+
+```bash
+# Check existing routes before adding
+grep -r "@router" fastapi_app/routers/ | head -30
+
+# Run API tests
+.venv/bin/pytest fastapi_app/tests/ -v
+.venv/bin/pytest fastapi_app/tests/ -v -k "test_design"  # Specific router
+
+# Get exact API function signatures (NEVER guess param names)
+.venv/bin/python scripts/discover_api_signatures.py <function_name>
+
+# Docker testing (start Colima FIRST on Mac)
+colima start --cpu 4 --memory 4
+docker compose up --build                              # Production at :8000/docs
+docker compose -f docker-compose.dev.yml up            # Dev with hot reload
+
+# Quick validation
+./run.sh check --quick                                 # Or: bash run.sh check --quick
+```
+
+> See terminal-rules.instructions.md for fallback chain when commands fail.
+
 ## Check Existing Routes First
 
 ```bash

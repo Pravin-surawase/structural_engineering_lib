@@ -77,6 +77,24 @@ ls react_app/src/components/   # All components by feature group
 | `useCodeChecks` | IS 456 clause badges | `useInsights.ts` |
 | `useRebarSuggestions` | AI rebar suggestions | `useInsights.ts` |
 
+## Terminal Commands
+
+```bash
+# ALWAYS cd to react_app first for npm/vitest commands
+cd react_app && npm run build                          # Build check (REQUIRED before commit)
+cd react_app && npm run dev                            # Dev server at :5173
+cd react_app && npx vitest run                         # All tests
+cd react_app && npx vitest run --reporter=verbose      # Verbose tests
+cd react_app && npx tsc --noEmit                       # Type check only
+
+# From project root (for Python-related checks)
+.venv/bin/python scripts/check_architecture_boundaries.py  # Verify no arch violations
+```
+
+> ⚠️ cwd persists between commands. After `cd react_app`, you are STILL in react_app/ for subsequent commands. Use full paths from project root or start each command with explicit cd.
+
+> See terminal-rules.instructions.md for fallback chain when commands fail.
+
 ### Key Components
 
 | Component | Purpose |
