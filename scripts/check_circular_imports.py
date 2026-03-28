@@ -27,6 +27,7 @@ Exit Codes:
 
 Created: 2026-01-12 (Session 18, TASK-404)
 """
+
 from __future__ import annotations
 
 import ast
@@ -175,9 +176,11 @@ class DependencyGraph:
 
         self.imports_by_file[str(filepath)] = extractor.imports
 
-        # Add edges to graph (only for internal imports)
+        # Add edges to graph (only for internal imports, skip self-edges)
         for imp in extractor.imports:
-            if self._is_internal_import(imp.module, project_root):
+            if imp.module != module and self._is_internal_import(
+                imp.module, project_root
+            ):
                 self.graph[module].add(imp.module)
 
         return extractor.imports
