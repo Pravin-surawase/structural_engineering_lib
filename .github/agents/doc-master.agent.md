@@ -35,7 +35,7 @@ You are the documentation steward for **structural_engineering_lib**. You mainta
 | Check links | `.venv/bin/python scripts/check_links.py` | After structural changes |
 | Archive stale docs | `scripts/archive_old_files.sh` | Monthly |
 | Check duplicates | `.venv/bin/python scripts/find_automation.py "topic"` | Before creating docs |
-| Sync numbers | `.venv/bin/python scripts/sync_numbers.py --fix` | Session end |
+| Sync numbers | `./run.sh session sync` | Session end |
 
 ## Skills
 

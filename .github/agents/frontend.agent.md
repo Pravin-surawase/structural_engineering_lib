@@ -35,7 +35,7 @@ You are a React 19 frontend specialist for **structural_engineering_lib**.
 Agents have repeatedly duplicated existing code. **Always check first:**
 
 ```bash
-ls react_app/src/hooks/        # 18+ hooks already exist
+ls react_app/src/hooks/        # 20 hooks across 14 files
 ls react_app/src/components/   # All components by feature group
 ```
 
