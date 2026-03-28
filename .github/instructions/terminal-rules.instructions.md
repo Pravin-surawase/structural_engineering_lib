@@ -86,6 +86,16 @@ NEVER: --no-verify or --force                         ← has caused 10+ hours o
 
 **Read-only git commands are OK:** `git status`, `git log`, `git diff`, `git branch`, `git show`.
 
+**FORBIDDEN GitHub operations (all agents):**
+```
+NEVER: gh pr merge --admin            ← bypasses required CI checks
+NEVER: gh issue close (without user approval) ← destructive, ask first
+NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
+```
+
+Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+
 ## MANDATORY: Document Terminal Issues
 
 When you encounter ANY of these, document them in your handoff message:

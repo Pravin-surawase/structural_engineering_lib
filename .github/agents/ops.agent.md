@@ -79,6 +79,32 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 | Commit subject >100 chars | Rewrite message to be concise | Keep messages under 72 chars (W5) |
 | Unrelated mypy failure blocks commit | Fix the mypy issue in that file | Don't bypass with --no-verify (W9) |
 
+### FORBIDDEN Commands (NEVER Use)
+
+These commands bypass safety gates. Using them has caused 10+ hours of rework historically.
+
+```
+NEVER: gh pr merge --admin            ← bypasses required CI checks
+NEVER: gh issue close (without user approval) ← destructive, ask first
+NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
+NEVER: --no-verify / --force          ← breaks CI, causes rework
+```
+
+**Destructive GitHub operations require user confirmation.** Before closing issues, deleting branches, or merging PRs, you MUST:
+1. List exactly what will be affected
+2. Ask the user for explicit approval
+3. Use `./scripts/github_maintenance.sh` with `--dry-run` first, then `--execute` only after approval
+
+For PR merges, always use `./run.sh pr finish` — never direct `gh pr merge`.
+
+### DO NOT Create Scripts
+
+You **execute** scripts, you do not **write** them. If a new script is needed:
+- Delegate Python scripts to **@backend**
+- Delegate bash/CI scripts to **@backend** or the relevant specialist
+- You can modify CI workflow YAML files (`.github/workflows/`) but not create new utility scripts
+
 ### Historical Mistakes (NEVER Repeat)
 
 1. **17 merge commits in one day** — caused by `git commit --amend` after push. safe_push.sh enforces amend-before-push
@@ -86,6 +112,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 3. **`--no-verify` under pressure** — agents skipped hooks, CI failed minutes later. ai_commit.sh never uses --no-verify
 4. **`--force` PR bypass** — caused 10+ hours of rework. NEVER bypass PR checks
 5. **Ignoring stale-version warnings post-commit** — hooks print `WOULD UPDATE: next-session-brief.md` but agent just reported it and moved on. Fix it immediately: `.venv/bin/python scripts/check_doc_versions.py --fix` then commit the result
+6. **Session 106: Destructive ops without approval** — agent closed 5 issues, deleted 20 branches, used `--admin` and `GIT_HOOKS_BYPASS=1` without asking user. All destructive ops now require explicit user confirmation
 
 ## Docker (Colima, not Docker Desktop)
 

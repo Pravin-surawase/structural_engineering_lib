@@ -21,6 +21,17 @@ Format: `feat|fix|docs|refactor|test|chore|ci(scope): description`
 
 **PR Enforcement:** Run `./run.sh pr status` before committing. If it says "PR required", create a PR with `./run.sh pr create`. NEVER use `--force` to bypass the PR check — this has caused 10+ hours of wasted rework.
 
+**FORBIDDEN commands (all agents):**
+```
+NEVER: gh pr merge --admin            ← bypasses required CI checks
+NEVER: gh issue close (without user approval) ← destructive, ask first
+NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
+NEVER: --no-verify / --force          ← breaks CI, causes rework
+```
+
+Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+
 ## Architecture (4 layers — STRICT)
 
 ```

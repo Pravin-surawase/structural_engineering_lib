@@ -8,6 +8,17 @@ ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manua
 
 **PR Rule:** When `./run.sh pr status` says "PR required", you MUST use a PR. NEVER use `--force` to bypass. No exceptions.
 
+**FORBIDDEN commands (all agents):**
+```
+NEVER: gh pr merge --admin            ← bypasses required CI checks
+NEVER: gh issue close (without user approval) ← destructive, ask first
+NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
+NEVER: --no-verify / --force          ← breaks CI, causes rework
+```
+
+Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+
 ## Architecture (4 layers — STRICT, never mix)
 
 - **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)
