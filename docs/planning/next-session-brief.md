@@ -22,7 +22,31 @@ Date:** 2026-03-28
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 105 (Agent Testing + Architecture Fixes) | **Focus:** Agent testing, architecture fixes, shear tests, commit PR #441
+**Last Session:** Session 106 (Ops: CI Fixes + GitHub Audit) | **Focus:** Fix PR #441 CI failures, GitHub project health audit
+
+---
+
+## Session 106 Summary
+
+**Completed:** CI fix (3 root causes) → all 18 checks green → GitHub audit → documented issues
+
+**CI Fixes Applied (PR #441):**
+1. **Black formatting** — 3 files reformatted (`test_adapter_e2e.py`, `adapters.py`, `test_generic_csv_adapter.py`) → commit `efc0384c`
+2. **Ruff F401** — removed unused `DesignDefaults` import from `test_adapter_e2e.py` → commit `e326776a`
+3. **Circular import false positives** — fixed `check_circular_imports.py` self-edge bug (10 false "direct cycles") → commit `af45e759`
+4. **Scripts index/automation-map** — added 5 missing scripts to `index.json` + `automation-map.json` → commit `efc0384c`
+
+**Result:** All 18 CI checks now SUCCESS on PR #441
+
+**GitHub Audit Findings:**
+- 5 stale "Nightly QA failed" issues (#284, #293, #362, #372, #375) — all from Jan 2026, need closing
+- 20 stale remote branches merged into main — need deletion
+- Dependabot PR #434 — 12 days old, all checks pass, mergeable — needs review+merge
+- PR #441 — all CI green, ready for merge
+
+**Known Issues:**
+- `gh pr checks --watch` opens alternate buffer that hangs all terminals — use `--json` instead
+- Agent terminal PATH issue still NOT fixed: agents try `cd Python && .venv/bin/pytest` (wrong venv location)
 
 ---
 
@@ -86,7 +110,20 @@ Date:** 2026-03-28
 
 ## Next Priorities
 
-### Do First — Agent Terminal Fixes + UX Polish
+### Do First — GitHub Housekeeping + PR Merge
+
+1. **MERGE PR #441** ← All CI green, ready to merge
+2. **MERGE Dependabot PR #434** ← 12 days old, all checks pass, CI deps bump
+3. **CLOSE 5 stale Nightly QA issues** (#284, #293, #362, #372, #375) — from Jan 2026
+4. **DELETE 20 stale remote branches** — already merged into main:
+   - `codex/4layer-lock-hardening`, `copilot-worktree-2026-01-09T11-52-46`
+   - `feature/task-152-error-handling`, `task/FIX-002`, `task/P8-PHASE2`
+   - `task/TASK-085`, `TASK-090`, `TASK-101`, `TASK-102`, `TASK-3D-002`
+   - `task/TASK-500`, `TASK-510`, `TASK-AI-01`, `TASK-AI-CHAT`, `TASK-AI-V2-POLISH`
+   - `task/TASK-DOCS-SYNC`, `TASK-DUALCSV`, `TASK-V3-PHASE2`, `TASK-V3-PHASE4`, `TASK-V3PARITY`
+   - `dependabot/github_actions/...`
+
+### Then — Agent Terminal Fixes + UX Polish
 
 1. **FIX AGENT TERMINAL PATHS** ← URGENT (prevents wasted tokens each session)
    - All agents need correct venv path: `.venv/` is at PROJECT ROOT, not in Python/
