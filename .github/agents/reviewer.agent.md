@@ -59,6 +59,13 @@ After every review, report in this format:
 - [ ] Tests added/updated for behavior changes
 - [ ] No security issues (OWASP Top 10)
 
+### Git Hygiene
+- [ ] Commit message follows conventional format (`type(scope): description`)
+- [ ] Commit type matches the actual change (not `docs:` for a code change)
+- [ ] No `--force` PR bypass in the commit history
+- [ ] Changes that touch production code have PR (check with `./run.sh pr status`)
+- [ ] No manual `git add/commit/push` was used (check for automation markers)
+
 ### Testing
 - [ ] `cd Python && .venv/bin/pytest tests/ -v` passes
 - [ ] `cd react_app && npm run build` passes (if frontend changed)
@@ -94,6 +101,19 @@ cd react_app && npm run build
 
 # Full check
 ./run.sh check --quick
+```
+
+## Feedback to Orchestrator
+
+When reviewing, note patterns that should improve future work:
+- **Recurring mistake** → suggest adding it to the relevant agent's instructions
+- **Missing test coverage** → flag specific untested paths
+- **Architecture violation** → note which layer boundary was crossed
+- **Git hygiene issue** → report to @ops for historical mistakes log
+
+Report format (append to your Review Result):
+```
+**Improvement Notes:** [patterns noticed | agent guidance needed | none]
 ```
 
 ## Rules

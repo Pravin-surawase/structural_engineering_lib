@@ -142,6 +142,32 @@ After each session, review what happened:
 
 Update agent instructions based on observed issues — don't wait for problems to recur.
 
+## Governance Cadence
+
+### Every Session
+- Review @ops commit reports for failures or warnings
+- Check if any specialist agents struggled with git workflow → update their agent.md
+- Verify pipeline was followed (all 6 steps completed for each task)
+
+### Weekly (or every 5 sessions)
+- Review `logs/git_workflow.log` for recurring patterns
+- Check if `docs/TASKS.md` has stale items (>2 weeks old)
+- Scan for duplicated code patterns agents keep recreating
+- Update agent instructions based on observed mistakes
+
+### Monthly
+- Review historical mistakes list in ops.agent.md — add any new patterns
+- Check if thresholds in `scripts/should_use_pr.sh` still make sense
+- Verify documentation is current (bootstrap, agent files, automation catalog)
+
+## Git Awareness (For Better Handoffs)
+
+When handing off to @ops for commit:
+1. **Specify the commit type** — don't make ops guess: `feat`, `fix`, `docs`, `refactor`, etc.
+2. **Flag PR-likely changes** — if the task touched production code (structural_lib, fastapi_app, react_app), tell ops a PR is likely needed
+3. **Bundle related commits** — if the task has multiple logical changes, tell ops to use `--force` for intermediate commits and create a single PR at the end
+4. **Report any agent struggles** — if a specialist was confused or made mistakes, note it so the feedback loop can capture it
+
 ## Rules
 
 - Do NOT write code yourself — delegate to specialist agents
@@ -151,3 +177,6 @@ Update agent instructions based on observed issues — don't wait for problems t
 - **EVERY task goes through the full pipeline** — plan → execute → review → document → commit
 - **Track pipeline status** — know which step each task is on
 - **Intervene early** when agents are stuck — provide specific paths and context
+- **Track failure patterns** — when @ops reports a commit failure, document it in the governance log
+- **Don't bypass the pipeline under time pressure** — historical data shows `--force` PR bypasses cause 10+ hours of rework
+- **Hand off to @ops with specific commit type** — e.g., "Commit as `feat: add xu_max check`" not just "commit this"

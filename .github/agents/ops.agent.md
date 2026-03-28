@@ -50,6 +50,35 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 ./run.sh pr finish                           # CI check + auto-merge
 ```
 
+### Git System Architecture
+
+```
+ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflow)
+                                                  ↓
+                                                  Steps: stash → fetch(bg) → stage → commit+hooks → amend → sync → safety → push
+```
+
+**Log location**: `logs/git_workflow.log` — check here when debugging failures.
+**Pre-commit hooks**: 28 hooks in `.pre-commit-config.yaml` (black, ruff, mypy, isort, bandit, etc.)
+
+### Error Recovery
+
+| Situation | Command | Notes |
+|-----------|---------|-------|
+| Push rejected (non-fast-forward) | `./scripts/recover_git_state.sh` | safe_push.sh handles most cases |
+| Stuck in merge/rebase | `./scripts/recover_git_state.sh` | Auto-resolves safe doc conflicts |
+| Detached HEAD | `git checkout main` | Always work on named branches |
+| CI fails on formatting | `.venv/bin/python -m black Python/ && .venv/bin/python -m ruff check --fix Python/` | Pre-commit hooks auto-fix |
+| Hook blocks commit | Check `logs/hook_output_*.log` | Fix the issue, don't use --no-verify |
+| Network failure on push | `./scripts/ai_commit.sh --push` | Re-run push step only |
+
+### Historical Mistakes (NEVER Repeat)
+
+1. **17 merge commits in one day** — caused by `git commit --amend` after push. safe_push.sh enforces amend-before-push
+2. **Manual git fallback under stress** — agents used `git add/commit/push` when scripts failed. Pre-push hook now blocks this
+3. **`--no-verify` under pressure** — agents skipped hooks, CI failed minutes later. ai_commit.sh never uses --no-verify
+4. **`--force` PR bypass** — caused 10+ hours of rework. NEVER bypass PR checks
+
 ## Docker (Colima, not Docker Desktop)
 
 ```bash
@@ -80,13 +109,42 @@ cd react_app && npm run dev                  # React dev server
 **Commit:** [hash] [message]
 **Branch:** [branch name]
 **PR Status:** [direct commit | PR created | PR updated]
-**Pipeline Complete:** [yes — all steps done | no — what's missing]
+**Pipeline Step:** 6/6 — COMMIT complete
+**Warnings:** [stale doc numbers | broken links | none]
+**Issues:** [any failures encountered and how resolved | none]
 ```
+
+If any post-commit warnings appeared (stale docs, broken links), report them so @doc-master can fix.
 
 ## Skills
 
 - **Session Management** (`/session-management`): Full session start/end automation
 - **Safe File Ops** (`/safe-file-ops`): Safe file move/delete preserving 870+ links
+
+## Feedback Loop (Post-Commit)
+
+After every commit, note patterns for continuous improvement:
+
+1. **If commit succeeded** — no action needed, the script logs to `logs/git_workflow.log`
+2. **If commit failed** — report the failure mode in your Commit Complete report:
+   ```
+   **Failure:** [what failed — hook, push, PR creation]
+   **Recovery:** [what you did to fix it]
+   **Prevention:** [should a rule be added to prevent this?]
+   ```
+3. **If you spot a recurring pattern** — suggest an update to the orchestrator:
+   - Same type of failure happening repeatedly → add to Historical Mistakes
+   - Agent repeatedly confused about workflow → update the relevant agent.md
+   - Script needs enhancement → file an issue in TASKS.md
+
+## Advanced Modes
+
+```bash
+./scripts/ai_commit.sh "msg" --dry-run    # Preview without executing
+./scripts/ai_commit.sh "msg" --force      # Bypass PR check (batch commits only)
+./scripts/ai_commit.sh --push             # Push existing commits (no new commit)
+./scripts/ai_commit.sh --amend            # Amend last commit + force-push-with-lease
+```
 
 ## ⚠ DO NOT Over-Explore
 

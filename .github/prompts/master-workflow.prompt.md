@@ -69,13 +69,38 @@ Reports verdict: **APPROVED** → @doc-master | **NEEDS CHANGES** → back to sp
 
 Reports: commit hash, branch, PR status, pipeline complete.
 
-## Post-Task Review (Continuous Improvement)
+## Feedback Loop (Continuous Improvement)
 
-After each completed task, the orchestrator should note:
-1. Did the specialist need extra guidance? → Update their agent file
-2. Did the reviewer catch something that should have been prevented? → Add a rule
-3. Did anything get duplicated? → Add to "DO NOT recreate" lists
-4. Was the handoff clear enough? → Improve the template
+Every completed task feeds back into the system. This is how agents get smarter over time.
+
+### After Each Task
+The orchestrator reviews:
+1. **Did the specialist need extra guidance?** → Update their `.agent.md` with specific instructions
+2. **Did the reviewer catch preventable issues?** → Add a rule to the specialist's checklist
+3. **Did anything get duplicated?** → Add to "DO NOT recreate" lists in the relevant agent
+4. **Did @ops report any git issues?** → Add to Historical Mistakes in ops.agent.md
+5. **Was the handoff clear enough?** → Improve the delegation template
+
+### After Each Session
+The orchestrator updates:
+- `docs/TASKS.md` — mark completed, add discovered items
+- `docs/planning/next-session-brief.md` — specific handoff for next agent
+- Agent files — incorporate lessons learned during the session
+
+### Feedback Data Flow
+
+```
+@specialist reports → @reviewer catches → @orchestrator logs
+       ↓                    ↓                    ↓
+  Work quality          Issue patterns       Agent updates
+       ↓                    ↓                    ↓
+  Updated agent.md     New checklist items   Governance log
+```
+
+### Escalation Rules
+- Same mistake 2x → Add warning to agent file
+- Same mistake 3x → Add enforcement check (script or pre-commit hook)
+- Same mistake 5x → Redesign the workflow to prevent it structurally
 
 ## Quick Reference
 
