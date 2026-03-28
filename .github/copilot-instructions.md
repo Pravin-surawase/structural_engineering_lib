@@ -10,6 +10,17 @@ Manual git causes 10-30min conflicts. The script handles staging, hooks, pull, a
 
 **PR Rule:** Run `./run.sh pr status` before committing. If it says "PR required", use `./run.sh pr create`. NEVER use `--force` to bypass — this has caused 10+ hours of rework.
 
+**FORBIDDEN commands (all agents):**
+```
+NEVER: gh pr merge --admin            ← bypasses required CI checks
+NEVER: gh issue close (without user approval) ← destructive, ask first
+NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
+NEVER: --no-verify / --force          ← breaks CI, causes rework
+```
+
+Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+
 ## Architecture (4 layers — STRICT, never mix)
 
 - **Core types** (`Python/structural_lib/core/`) — Base classes, types, constants (no IS 456 math)

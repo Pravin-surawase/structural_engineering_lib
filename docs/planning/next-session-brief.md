@@ -22,7 +22,18 @@ Date:** 2026-03-28
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 106 (Ops: CI Fixes + GitHub Audit) | **Focus:** Fix PR #441 CI failures, GitHub project health audit
+**Last Session:** Session 107 (Safety Gates Hardening — post-mortem fixes)
+
+---
+
+## Session 107 Summary
+
+- Post-mortem of Session 106 safety gate violations
+- Added FORBIDDEN commands block to 5 instruction files (all agents, not just ops)
+- Added "DO NOT Create Scripts" rule to ops.agent.md
+- Fixed CodeQL "clear-text logging" alert in check_docker_config.py
+- Reviewed by @reviewer — approved with fixes applied
+- **All 3221 tests pass, 0 failures**
 
 ---
 

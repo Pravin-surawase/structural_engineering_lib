@@ -115,14 +115,18 @@ def check_docker_compose(path: Path) -> list[str]:
         if not re.search(port_pattern, content):
             issues.append("⚠️ Port mapping format may be incorrect")
 
-    # Check for hardcoded secrets
+    # Check for hardcoded secrets (only detect presence, never log values)
     secret_patterns = ["password:", "secret:", "api_key:"]
+    content_lower = content.lower()
     for pattern in secret_patterns:
-        if pattern in content.lower():
-            # Check if it's using environment variable syntax
-            line_idx = content.lower().find(pattern)
-            context = content[line_idx:line_idx+100]
-            if "${" not in context and ":-" not in context:
+        pattern_idx = content_lower.find(pattern)
+        if pattern_idx != -1:
+            # Check if the value uses environment variable syntax
+            # by scanning for ${ or :- within 100 chars after the pattern
+            end_idx = min(pattern_idx + len(pattern) + 100, len(content_lower))
+            nearby_text = content_lower[pattern_idx + len(pattern):end_idx]
+            uses_env_var = "${" in nearby_text or ":-" in nearby_text
+            if not uses_env_var:
                 issues.append(f"⚠️ Possible hardcoded secret near '{pattern}' - use environment variables")
 
     return issues

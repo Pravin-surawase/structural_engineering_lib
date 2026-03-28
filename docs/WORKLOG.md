@@ -71,3 +71,4 @@
 | 2026-03-28 | PHASE-7 | Add 234 lines shear tests: TestSelectStirrupDiameterNumLegs + 2 more classes | ecfede46 |
 | 2026-03-28 | INFRA | Add governance/tester agents, architecture-check/react-validation skills, 3 prompts, 5 scripts | ecfede46 |
 | 2026-03-28 | GIT | Commit 61 files to task/TASK-AGENTS, create PR #441 | ecfede46 |
+| 2026-03-28 | Session 107 | Safety gates hardening: FORBIDDEN commands (5 files), CodeQL fix, ops no-script rule | — |

@@ -114,6 +114,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| — | Session 107: Safety gates hardening — FORBIDDEN commands in 5 files, CodeQL fix, ops role scoping | Copilot | ✅ Done |
 | — | TopBar nav + ModeSelect quick links (v0.20 wrap-up) | Copilot | ✅ Done |
 | TASK-518 | Torsion API + React — endpoint + hook + DesignView toggle + 3 API tests | Copilot | ✅ Done |
 | TASK-515 | Load Calculator — endpoint + useLoadAnalysis hook + MiniDiagram + 4 tests | Copilot | ✅ Done |
