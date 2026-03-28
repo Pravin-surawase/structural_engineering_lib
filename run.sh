@@ -571,6 +571,39 @@ Examples:
 EOF
 }
 
+_cmd_github() {
+    "$SCRIPTS/github_maintenance.sh" "$@"
+}
+
+_help_github() {
+    cat <<'EOF'
+Usage: ./run.sh github <subcommand> [options]
+
+GitHub maintenance and health checks.
+
+Subcommands:
+  health              Full GitHub health report
+  stale-branches      List stale branches (merged but not deleted)
+  clean-branches      Delete stale branches (--dry-run default)
+  stale-issues [N]    List issues older than N days (default: 30)
+  close-stale-issues [N]  Close stale issues (--dry-run default)
+  pr-status           Show all open PRs with CI status
+  dependabot          Show Dependabot PRs ready to merge
+  full-cleanup        Run all cleanup steps (--dry-run default)
+
+Global Flags:
+  --dry-run           Preview changes (default for destructive ops)
+  --execute           Actually apply destructive changes
+  --days N            Override staleness threshold (default: 30)
+
+Examples:
+  ./run.sh github health
+  ./run.sh github clean-branches --execute
+  ./run.sh github stale-issues --days 60
+  ./run.sh github full-cleanup --days 45 --execute
+EOF
+}
+
 _cmd_evolve() {
     _require_venv
     _header "Self-Evolution"
@@ -619,6 +652,7 @@ _print_usage() {
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
+    echo -e "  ${GREEN}github${NC}      GitHub maintenance & health checks"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -646,6 +680,7 @@ _dispatch_help() {
         health)   _help_health ;;
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
+        github)   _help_github ;;
         *)        _print_usage ;;
     esac
 }
@@ -671,6 +706,7 @@ _run_sh() {
         'health:Project health scan'
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
+        'github:GitHub maintenance'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -680,6 +716,8 @@ _run_sh() {
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
     local -a evolve_opts=('--fix' '--review' '--status' '--report' '--json')
+    local -a github_subs=('health' 'stale-branches' 'clean-branches' 'stale-issues' 'close-stale-issues' 'pr-status' 'dependabot' 'full-cleanup')
+    local -a github_opts=('--dry-run' '--execute' '--days')
     local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('run' 'verify' 'check-docs' 'checklist')
@@ -695,6 +733,7 @@ _run_sh() {
             health) _values 'option' $health_opts ;;
             feedback) _values 'subcommand' $feedback_subs ;;
             evolve) _values 'option' $evolve_opts ;;
+            github) _values 'subcommand' $github_subs ;;
             test) _values 'option' $test_opts ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
@@ -759,6 +798,7 @@ main() {
         health)   _cmd_health "$@" ;;
         feedback) _cmd_feedback "$@" ;;
         evolve)   _cmd_evolve "$@" ;;
+        github)   _cmd_github "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         *)
             _error "Unknown command: $cmd"

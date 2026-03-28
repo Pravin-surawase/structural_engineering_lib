@@ -1,8 +1,8 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-03-24",
+  "_updated": "2026-03-28",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "88/88 scripts mapped",
+  "_coverage": "89/89 scripts mapped",
 
   "tasks": {
     "run all checks": {
@@ -30,6 +30,21 @@
     "push code": {
       "script": "./scripts/safe_push.sh \"message\"",
       "description": "Conflict-minimized push with parallel fetch, amend detection, and sync"
+    },
+    "maintain github": {
+      "script": "./scripts/github_maintenance.sh <subcommand>",
+      "description": "GitHub housekeeping: check health, clean stale branches, close old issues, monitor PRs",
+      "options": {
+        "health": "Full GitHub health report (issues, PRs, branches, dependabot)",
+        "stale-branches": "List branches merged into main but not deleted",
+        "clean-branches --execute": "Delete stale branches (default: dry-run)",
+        "stale-issues [N]": "List issues older than N days (default 30)",
+        "close-stale-issues N --execute": "Close stale issues",
+        "pr-status": "Show all open PRs with CI status",
+        "dependabot": "Show Dependabot PRs ready to merge",
+        "full-cleanup --execute": "Run all cleanup steps"
+      },
+      "context_docs": ["./run.sh github --help"]
     },
     "move file": {
       "script": ".venv/bin/python scripts/safe_file_move.py old.md new.md",
@@ -454,7 +469,7 @@
     "git_workflow": [
       "commit code", "push code", "check git state", "recover git",
       "decide pr vs direct", "create pr branch", "finish pr",
-      "check merge state", "check branch safety"
+      "check merge state", "check branch safety", "maintain github"
     ],
     "file_operations": [
       "move file", "delete file", "create document",
