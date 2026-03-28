@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.core.models import DesignDefaults, FrameType
+from structural_lib.core.models import FrameType
 from structural_lib.services.adapters import ETABSAdapter, GenericCSVAdapter
 from structural_lib.services.api import design_beam_is456
 from structural_lib.services.imports import parse_dual_csv
