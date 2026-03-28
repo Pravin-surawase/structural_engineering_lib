@@ -65,6 +65,27 @@ ls react_app/src/components/   # All components by feature group
 | `FloatingDock` | macOS spring dock nav |
 | `CrossSectionView` | Annotated SVG |
 
+## Before Starting ANY Task
+
+1. **Read the files you'll modify** — understand current state before changing anything
+2. **Check hooks/components exist** — `ls react_app/src/hooks/` and `ls react_app/src/components/`
+3. **Understand the current behavior** — run the dev server if needed
+4. **Ask orchestrator for clarification** if the task is ambiguous — don't guess
+
+## After Completing Work (MANDATORY Report)
+
+Before handing off to @reviewer, provide:
+
+```
+## Work Complete
+
+**Task:** [what was requested]
+**Files Changed:** [list with brief description of each change]
+**What Was Added/Modified/Removed:** [summary]
+**How to Test:** [specific steps to verify the change works]
+**Build Status:** [did `npm run build` pass?]
+```
+
 ## Rules
 
 1. **Tailwind only** — never create `.css` files for components
@@ -74,6 +95,7 @@ ls react_app/src/components/   # All components by feature group
 5. **Build check:** `cd react_app && npm run build` before committing
 6. **Git commit:** Always `./scripts/ai_commit.sh "type: message"` — NEVER manual git
 7. **PR required** for production React code — run `./run.sh pr status` first
+8. **Always hand off to @reviewer** after completing work — never skip review
 
 ## Architecture
 

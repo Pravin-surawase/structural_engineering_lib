@@ -72,6 +72,29 @@ grep "^def " Python/structural_lib/services/api.py | head -20
 .venv/bin/python scripts/validate_imports.py --scope structural_lib
 ```
 
+## Before Starting ANY Task
+
+1. **Read the files you'll modify** — understand current state before changing anything
+2. **Run `discover_api_signatures.py`** for any function you'll wrap or call
+3. **Check the 4-layer architecture** — confirm your change belongs in the right layer
+4. **Ask orchestrator for clarification** if the task is ambiguous — don't guess
+
+## After Completing Work (MANDATORY Report)
+
+Before handing off to @reviewer, provide:
+
+```
+## Work Complete
+
+**Task:** [what was requested]
+**Files Changed:** [list with brief description of each change]
+**Layer:** [Core | IS 456 | Services — which layer was modified]
+**Tests:** [which tests pass, any new tests added]
+**How to Verify:** [specific steps to validate the change]
+```
+
+Always hand off to @reviewer after completing work — never skip review.
+
 ## Git & PR
 
 - **Git commit:** Always `./scripts/ai_commit.sh "type: message"` — NEVER manual git

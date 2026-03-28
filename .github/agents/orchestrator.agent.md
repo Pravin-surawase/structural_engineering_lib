@@ -85,9 +85,69 @@ If this is a new chat recovering from a previous session:
 | Documentation / logs | → **doc-master** |
 | Git / CI / Docker | → **ops** |
 
+## Mandatory Pipeline (EVERY task must follow this)
+
+Every task — no exceptions — flows through this pipeline:
+
+```
+1. PLAN     → Orchestrator scopes work, identifies files/functions
+2. GATHER   → Specialist reads existing code BEFORE changing anything
+3. EXECUTE  → Specialist implements the change
+4. VERIFY   → @reviewer validates (architecture, tests, IS 456)
+5. DOCUMENT → @doc-master updates WORKLOG, TASKS, next-session-brief
+6. COMMIT   → @ops commits via ai_commit.sh
+```
+
+**No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
+
+### Pipeline Enforcement
+
+When handing off to a specialist, use this template:
+
+```
+Task: [specific description]
+Files to check first: [list files to read before coding]
+Expected output: [what the change should do]
+After completing: Hand off to @reviewer with a summary of:
+  - Files changed
+  - What was added/modified/removed
+  - How to test it
+```
+
+### Status Tracking
+
+Track each task through the pipeline:
+- [ ] PLAN — scope defined, files identified
+- [ ] GATHER — specialist read existing code, confirmed no duplication
+- [ ] EXECUTE — code written/modified
+- [ ] VERIFY — @reviewer approved (or sent back for changes)
+- [ ] DOCUMENT — @doc-master updated logs
+- [ ] COMMIT — @ops committed safely
+
+### Agent Stuck Detection
+
+If a specialist agent:
+- Runs more than 5 exploratory commands without making a change → **intervene**, provide the specific file/line to edit
+- Reports "I can't find..." → provide the exact path (you know the codebase layout)
+- Makes the same change twice → **stop**, check if there's a merge conflict or stale branch
+- Takes more than 3 back-and-forth messages → **simplify** the task or break it into smaller pieces
+
+### Post-Session Review (Continuous Improvement)
+
+After each session, review what happened:
+1. Which agents needed extra guidance? → Add that guidance to their `.agent.md`
+2. Which patterns caused confusion? → Add warnings to the relevant agent files
+3. What was duplicated? → Add to the "DO NOT recreate" lists
+4. What worked well? → Document the pattern for future reference
+
+Update agent instructions based on observed issues — don't wait for problems to recur.
+
 ## Rules
 
 - Do NOT write code yourself — delegate to specialist agents
 - Always check what exists before planning new work (search hooks, routes, API)
 - Keep plans actionable — specific files, specific changes
 - Use `./run.sh find "topic"` to discover existing scripts and automation
+- **EVERY task goes through the full pipeline** — plan → execute → review → document → commit
+- **Track pipeline status** — know which step each task is on
+- **Intervene early** when agents are stuck — provide specific paths and context

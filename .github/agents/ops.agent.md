@@ -72,6 +72,17 @@ cd react_app && npm run dev                  # React dev server
 
 ⚠️ Use `--host "::"` not `--host 0.0.0.0` (IPv6 dual-stack for Mac)
 
+## After Committing (MANDATORY Report)
+
+```
+## Commit Complete
+
+**Commit:** [hash] [message]
+**Branch:** [branch name]
+**PR Status:** [direct commit | PR created | PR updated]
+**Pipeline Complete:** [yes — all steps done | no — what's missing]
+```
+
 ## Skills
 
 - **Session Management** (`/session-management`): Full session start/end automation

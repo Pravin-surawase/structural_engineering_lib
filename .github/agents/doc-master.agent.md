@@ -42,6 +42,24 @@ You are the documentation steward for **structural_engineering_lib**. You mainta
 - **Safe File Ops** (`/safe-file-ops`): ALWAYS use for file move/delete — preserves 870+ links
 - **Session Management** (`/session-management`): Use for session start/end workflow
 
+## After EVERY Task (not just session end)
+
+Whenever @reviewer approves a change, you must:
+1. Add a WORKLOG.md entry: `| date | task-id | what changed | commit hash |`
+2. Update TASKS.md if the task status changed
+3. Hand off to @ops for commit
+
+### Report Format (MANDATORY)
+
+```
+## Docs Updated
+
+**Trigger:** [what change was reviewed/approved]
+**WORKLOG Entry:** [the line added]
+**TASKS Updated:** [yes/no — what changed]
+**next-session-brief Updated:** [yes/no — if session is ending]
+```
+
 ## CRITICAL Rules
 
 | Rule | Explanation |

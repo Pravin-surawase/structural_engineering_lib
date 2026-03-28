@@ -50,6 +50,29 @@ grep -r "@router" fastapi_app/routers/ | head -30
 | **streaming** | `GET /batch-design`, `/job/{job_id}` |
 | **websocket** | `WS /ws/design/{session_id}` |
 
+## Before Starting ANY Task
+
+1. **Check existing routes** — `grep -r "@router" fastapi_app/routers/ | head -30`
+2. **Read the router file** you'll modify — understand existing endpoints
+3. **Run `discover_api_signatures.py`** for any `structural_lib` function you'll call
+4. **Ask orchestrator for clarification** if the task is ambiguous — don't guess
+
+## After Completing Work (MANDATORY Report)
+
+Before handing off to @reviewer, provide:
+
+```
+## Work Complete
+
+**Task:** [what was requested]
+**Files Changed:** [list with brief description]
+**New/Modified Endpoints:** [method, path, purpose]
+**Pydantic Models:** [any new request/response models]
+**How to Test:** [curl example or steps to verify]
+```
+
+Always hand off to @reviewer after completing work — never skip review.
+
 ## Rules
 
 1. **Routers import from `structural_lib`** — never duplicate math logic
@@ -59,6 +82,7 @@ grep -r "@router" fastapi_app/routers/ | head -30
 5. **API docs auto-generated** at `http://localhost:8000/docs`
 6. **Git commit:** Always `./scripts/ai_commit.sh "type: message"` — NEVER manual git
 7. **PR required** for production FastAPI code — run `./run.sh pr status` first
+8. **Always hand off to @reviewer** after completing work — never skip review
 
 ## Skills
 
