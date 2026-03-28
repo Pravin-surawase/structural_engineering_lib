@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-28
+**Last Updated:** 2026-03-28<br>
 Date:** 2026-03-28
 
 ---
@@ -19,7 +19,7 @@ Date:** 2026-03-28
 | Release | Version | Status |
 |---------|---------|--------|
 | **Previous** | v0.20.0 | ✅ Done (React migration complete) |
-| **Current** | v0.21.0 | 🔄 React UX Overhaul + Library Expansion |
+| **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
 **Last Session:** Session 104 (Git Automation Knowledge Transfer) | **Focus:** Git automation audit + agent feedback loop

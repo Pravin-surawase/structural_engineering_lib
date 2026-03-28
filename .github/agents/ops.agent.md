@@ -82,6 +82,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 2. **Manual git fallback under stress** — agents used `git add/commit/push` when scripts failed. Pre-push hook now blocks this
 3. **`--no-verify` under pressure** — agents skipped hooks, CI failed minutes later. ai_commit.sh never uses --no-verify
 4. **`--force` PR bypass** — caused 10+ hours of rework. NEVER bypass PR checks
+5. **Ignoring stale-version warnings post-commit** — hooks print `WOULD UPDATE: next-session-brief.md` but agent just reported it and moved on. Fix it immediately: `.venv/bin/python scripts/check_doc_versions.py --fix` then commit the result
 
 ## Docker (Colima, not Docker Desktop)
 
@@ -105,7 +106,25 @@ cd react_app && npm run dev                  # React dev server
 
 ⚠️ Use `--host "::"` not `--host 0.0.0.0` (IPv6 dual-stack for Mac)
 
-## After Committing (MANDATORY Report)
+## After Committing (MANDATORY)
+
+### 1. Fix any post-commit warnings BEFORE reporting
+
+The commit output may show warnings. **Do not skip these — fix them now:**
+
+| Warning | Fix command | Notes |
+|---------|-------------|-------|
+| `WOULD UPDATE: docs/planning/next-session-brief.md` (stale version) | `.venv/bin/python scripts/check_doc_versions.py --fix` | Then commit the updated files |
+| `Found N doc file(s) with stale version references` | `.venv/bin/python scripts/check_doc_versions.py --fix` | Fixes all at once |
+| Broken links detected | `.venv/bin/python scripts/check_links.py --fix` | Then commit |
+| `⚠️ Consider adding: **Last Updated:**` | Update the metadata in that file | Optional, not blocking |
+
+After running the fix, commit the changed docs:
+```bash
+./scripts/ai_commit.sh "docs: fix stale version references post-commit"
+```
+
+### 2. Mandatory Report
 
 ```
 ## Commit Complete
@@ -114,11 +133,9 @@ cd react_app && npm run dev                  # React dev server
 **Branch:** [branch name]
 **PR Status:** [direct commit | PR created | PR updated]
 **Pipeline Step:** 6/6 — COMMIT complete
-**Warnings:** [stale doc numbers | broken links | none]
+**Post-commit fixes:** [stale docs fixed | broken links fixed | none needed]
 **Issues:** [any failures encountered and how resolved | none]
 ```
-
-If any post-commit warnings appeared (stale docs, broken links), report them so @doc-master can fix.
 
 ## Skills
 
