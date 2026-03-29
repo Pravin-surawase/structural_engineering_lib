@@ -86,7 +86,7 @@ These commands bypass safety gates. Using them has caused 10+ hours of rework hi
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
 NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 ```
@@ -94,7 +94,7 @@ NEVER: --no-verify / --force          ← breaks CI, causes rework
 **Destructive GitHub operations require user confirmation.** Before closing issues, deleting branches, or merging PRs, you MUST:
 1. List exactly what will be affected
 2. Ask the user for explicit approval
-3. Use `./scripts/github_maintenance.sh` with `--dry-run` first, then `--execute` only after approval
+3. Use `.venv/bin/python scripts/cleanup_stale_branches.py` with `--dry-run` first, then `--execute` only after approval
 
 For PR merges, always use `./run.sh pr finish` — never direct `gh pr merge`.
 

@@ -49,6 +49,7 @@ from structural_lib.core.inputs import (
     LoadsInput,
     MaterialsInput,
 )
+from structural_lib.core.models import BeamGeometry, DesignDefaults, FrameType
 from structural_lib.insights import cost_optimization, design_suggestions
 from structural_lib.services import bbs, job_runner, report
 from structural_lib.services.calculation_report import (
@@ -172,6 +173,9 @@ __all__ = [
     "LoadDiagramResult",
     # 3D Visualization (TASK-3D-03)
     "Point3D",
+    "BeamGeometry",
+    "FrameType",
+    "DesignDefaults",
     "RebarSegment",
     "RebarPath",
     "StirrupLoop",
