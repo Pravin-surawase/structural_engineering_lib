@@ -60,6 +60,7 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Safe commit + push (THE ONE RULE)
+./run.sh dev                        # Launch full development stack (FastAPI + React)
 ./run.sh check --quick              # Fast validation (<30s, 8 checks)
 ./run.sh check                      # Full validation (28 checks, parallel)
 ./run.sh test                       # Run pytest suite
@@ -85,8 +86,8 @@ Direct scripts (when run.sh doesn't cover it):
 .venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 11 agents)
 .venv/bin/python scripts/agent_context.py --list # List available agents
 .venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
+bash scripts/launch_stack.sh --help              # Launch script usage (flags: --docker, --local, --kill-only, etc.)
 colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
-docker compose up --build                        # Full stack at :8000/docs
 cd react_app && npm run build                    # React build check
 ```
 

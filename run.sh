@@ -547,6 +547,43 @@ Examples:
 EOF
 }
 
+# ── Command: dev ───────────────────────────────────────────────────────────
+
+_cmd_dev() {
+    _header "Development Stack"
+    bash "$SCRIPTS/launch_stack.sh" "$@"
+}
+
+_help_dev() {
+    cat <<'EOF'
+Usage: ./run.sh dev [options]
+
+Launch the full development stack (FastAPI + React). Kills existing services,
+runs pre-flight checks, fixes prerequisites, and launches everything.
+
+Modes:
+  --local          Local mode: uvicorn + npm run dev (default)
+  --docker         Docker mode: docker compose up
+  --docker-dev     Docker dev mode: docker compose -f docker-compose.dev.yml up
+
+Options:
+  --kill-only      Kill existing services and exit
+  --check-only     Run pre-flight checks only
+  --no-react       Skip React frontend
+  --no-fastapi     Skip FastAPI backend
+  --open           Open browser after launch
+  --verbose        Show detailed output
+
+Examples:
+  ./run.sh dev                        # Launch full stack (local mode)
+  ./run.sh dev --docker               # Launch with Docker
+  ./run.sh dev --kill-only            # Stop all services
+  ./run.sh dev --check-only           # Pre-flight checks only
+  ./run.sh dev --no-react             # Backend only
+  ./run.sh dev --open                 # Launch + open browser
+EOF
+}
+
 # ── Self-Evolving System ───────────────────────────────────────────────────
 
 _cmd_health() {
@@ -652,6 +689,7 @@ _print_usage() {
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
     echo -e "  ${GREEN}info${NC}        Library metadata, API, architecture, elements"
+    echo -e "  ${GREEN}dev${NC}         Launch full development stack (FastAPI + React)"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -680,6 +718,7 @@ _dispatch_help() {
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
         info)     _help_info ;;
+        dev)      _help_dev ;;
         *)        _print_usage ;;
     esac
 }
@@ -706,6 +745,7 @@ _run_sh() {
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
         'info:Library metadata and API'
+        'dev:Launch full development stack'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -718,6 +758,7 @@ _run_sh() {
     local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('run' 'verify' 'check-docs' 'checklist')
+    local -a dev_opts=('--local' '--docker' '--docker-dev' '--kill-only' '--check-only' '--no-react' '--no-fastapi' '--open' '--verbose')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -734,6 +775,7 @@ _run_sh() {
             test) _values 'option' $test_opts ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
+            dev) _values 'option' $dev_opts ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -796,6 +838,7 @@ main() {
         feedback) _cmd_feedback "$@" ;;
         evolve)   _cmd_evolve "$@" ;;
         info)     _cmd_info "$@" ;;
+        dev)      _cmd_dev "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         *)
             _error "Unknown command: $cmd"

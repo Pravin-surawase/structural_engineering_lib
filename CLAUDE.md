@@ -49,6 +49,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
+./run.sh dev                        # Launch full development stack (FastAPI + React)
 ./run.sh check                      # Validate everything (28 checks, parallel)
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
@@ -77,9 +78,8 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 .venv/bin/python scripts/safe_file_move.py a b  # Move files (preserves 870+ links)
 .venv/bin/python scripts/safe_file_delete.py f  # Delete files safely
 .venv/bin/python scripts/create_doc.py path     # Create doc with metadata
+bash scripts/launch_stack.sh --help              # Launch script usage (flags: --docker, --local, --kill-only, etc.)
 colima start --cpu 4 --memory 4                 # Start Docker runtime (Colima, not Docker Desktop)
-docker compose up --build                       # FastAPI at :8000/docs
-cd react_app && npm run dev                     # React at :5173
 ```
 
 > **Docker note:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Start Colima before any `docker` command: `colima start`. If `docker ps` gives "permission denied", Colima isn't running.

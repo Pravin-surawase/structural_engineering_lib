@@ -259,6 +259,8 @@ lsof -ti :5173 | xargs kill -9 2>/dev/null; echo "port 5173 cleared"
 docker compose down 2>/dev/null; echo "docker stopped"
 ```
 
+> **NEW: Unified launch command** — Use `./run.sh dev` for the easiest way to launch the full stack. It supports `--docker` (production mode), `--docker-dev` (hot reload), `--local` (no Docker), `--kill-only` (stop all services), `--no-react` (backend only), `--no-fastapi` (frontend only), `--open` (launch + open browser), and `--check-only` (pre-flight checks). Run `./run.sh dev --help` for all options.
+
 Now choose how you want to run the stack:
 
 ---
