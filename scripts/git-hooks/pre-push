@@ -32,6 +32,14 @@ while read local_ref local_sha remote_ref remote_sha; do
     if [[ "$local_ref" == refs/tags/* ]]; then
         continue  # tag push — allowed
     fi
+    # Allow branch deletion (local_sha is all zeros for --delete operations)
+    if [[ "$local_sha" == "0000000000000000000000000000000000000000" ]]; then
+        if [[ "$remote_ref" == refs/heads/task/* ]] || [[ "$remote_ref" == refs/heads/worktree-* ]]; then
+            continue  # Allow deletion of task/worktree branches
+        fi
+        BLOCK_PUSH="true"  # Block deletion of main, develop, release branches
+        continue
+    fi
     # If any non-tag ref is being pushed, block it
     BLOCK_PUSH="true"
 done
