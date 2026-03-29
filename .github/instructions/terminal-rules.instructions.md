@@ -90,7 +90,7 @@ NEVER: --no-verify or --force                         ← has caused 10+ hours o
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use github_maintenance.sh --dry-run
+NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
 NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 ```
 

@@ -162,7 +162,7 @@ async def import_csv(
         # Create temp file for adapter (adapters expect file paths)
         import tempfile
 
-        from structural_lib.core.models import DesignDefaults
+        from structural_lib.services.api import DesignDefaults
         from structural_lib.services.adapters import (
             ETABSAdapter,
             GenericCSVAdapter,
