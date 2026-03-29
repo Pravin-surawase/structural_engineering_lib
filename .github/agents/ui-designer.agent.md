@@ -1,7 +1,7 @@
 ---
 description: "Visual design, UX flow, component layout, accessibility — read-only, designs but doesn't code"
 tools: ['search', 'readFile', 'listFiles', 'web']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Implement Design
     agent: frontend

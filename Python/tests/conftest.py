@@ -55,3 +55,62 @@ settings.register_profile(
 
 # Load default profile
 settings.load_profile("default")
+
+
+# =============================================================================
+# COMMON MATERIAL FIXTURES
+# =============================================================================
+
+import pytest  # noqa: E402
+
+
+@pytest.fixture()
+def m25_fe415() -> dict:
+    """Standard M25 concrete + Fe415 steel combination.
+
+    Most common grade in Indian construction practice.
+    """
+    return {"fck": 25.0, "fy": 415.0}
+
+
+@pytest.fixture()
+def m30_fe500() -> dict:
+    """M30 concrete + Fe500 steel combination.
+
+    Common for higher-grade construction.
+    """
+    return {"fck": 30.0, "fy": 500.0}
+
+
+@pytest.fixture()
+def m20_fe415() -> dict:
+    """M20 concrete + Fe415 steel — minimum grade for RCC (IS 456 Cl. 6.1.2)."""
+    return {"fck": 20.0, "fy": 415.0}
+
+
+@pytest.fixture()
+def standard_beam_230x500(m25_fe415: dict) -> dict:
+    """Standard 230x500mm beam with M25/Fe415 — common residential beam.
+
+    Returns dict with b_mm, D_mm, d_mm, fck, fy, cover_mm.
+    """
+    return {
+        "b_mm": 230.0,
+        "D_mm": 500.0,
+        "d_mm": 450.0,
+        "cover_mm": 25.0,
+        **m25_fe415,
+    }
+
+
+@pytest.fixture()
+def standard_beam_300x600(m30_fe500: dict) -> dict:
+    """Standard 300x600mm beam with M30/Fe500 — common commercial beam."""
+    return {
+        "b_mm": 300.0,
+        "D_mm": 600.0,
+        "d_mm": 550.0,
+        "cover_mm": 25.0,
+        **m30_fe500,
+    }
+

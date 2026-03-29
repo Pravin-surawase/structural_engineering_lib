@@ -1,7 +1,7 @@
 ---
 description: "Git workflow, CI/CD, Docker, environment management, commits, PRs"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Back to Planning
     agent: orchestrator
@@ -20,6 +20,9 @@ You are the DevOps specialist for **structural_engineering_lib**. You handle git
 
 ```bash
 ./scripts/ai_commit.sh "type: message"    # ALL commits — NEVER manual git
+./scripts/ai_commit.sh "msg" --preview     # Preview changes before committing
+./scripts/ai_commit.sh --undo              # Undo last unpushed commit
+./scripts/ai_commit.sh "msg" --signoff     # DCO sign-off
 ```
 
 **NEVER** use `git add`, `git commit`, `git push`, `git pull` manually.
@@ -78,6 +81,9 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 | CI polling hangs (>10min) | Check GitHub manually | finish_task_pr.sh polling limitation (W3) |
 | Commit subject >100 chars | Rewrite message to be concise | Keep messages under 72 chars (W5) |
 | Unrelated mypy failure blocks commit | Fix the mypy issue in that file | Don't bypass with --no-verify (W9) |
+| Undo last commit (not pushed) | `./scripts/ai_commit.sh --undo` | Soft reset — keeps changes staged |
+| Preview before committing | `./scripts/ai_commit.sh "msg" --preview` | Shows diff + stat, no commit |
+| DCO sign-off required | `./scripts/ai_commit.sh "msg" --signoff` | Adds Signed-off-by line |
 
 ### FORBIDDEN Commands (NEVER Use)
 

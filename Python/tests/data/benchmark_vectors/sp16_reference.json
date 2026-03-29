@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "description": "SP:16 Design Aids benchmark vectors for IS 456 regression tests",
+    "source": "SP:16:1980 — Design Aids for Reinforced Concrete to IS 456:1978",
+    "tolerance": "±0.1% relative",
+    "created": "2026-03-29"
+  },
+  "flexure": {
+    "description": "Moment capacity benchmarks from SP:16 Charts 1-26",
+    "vectors": []
+  },
+  "shear": {
+    "description": "Shear strength benchmarks from SP:16 Table 19",
+    "vectors": []
+  },
+  "column": {
+    "description": "Column design benchmarks from SP:16 Charts 27-62",
+    "vectors": []
+  },
+  "slab": {
+    "description": "Slab design benchmarks from SP:16",
+    "vectors": []
+  }
+}

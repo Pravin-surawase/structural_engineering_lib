@@ -16,8 +16,12 @@ API Docs:
     - OpenAPI JSON: http://localhost:8000/openapi.json
 """
 
-from fastapi import FastAPI
+import uuid
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from fastapi_app import __version__
 from fastapi_app.routers import (
@@ -153,6 +157,126 @@ app.add_middleware(
     expose_headers=["X-Request-ID", "X-Process-Time"],
     max_age=600,  # Cache preflight requests for 10 minutes
 )
+
+# =============================================================================
+# Request ID Middleware
+# =============================================================================
+
+
+class RequestIDMiddleware(BaseHTTPMiddleware):
+    """Attach a unique X-Request-ID header to every request/response."""
+
+    async def dispatch(self, request: Request, call_next):
+        request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+        request.state.request_id = request_id
+        response = await call_next(request)
+        response.headers["X-Request-ID"] = request_id
+        return response
+
+
+app.add_middleware(RequestIDMiddleware)
+
+# =============================================================================
+# Global Exception Handlers for structural_lib errors
+# =============================================================================
+
+try:
+    from structural_lib.core.errors import (
+        CalculationError,
+        ComplianceError,
+        ConfigurationError,
+        DesignConstraintError,
+        StructuralLibError,
+        ValidationError,
+    )
+
+    @app.exception_handler(ValidationError)
+    async def validation_error_handler(request: Request, exc: ValidationError):
+        """Handle input validation errors from structural_lib."""
+        return JSONResponse(
+            status_code=422,
+            content={
+                "error_code": "VALIDATION_ERROR",
+                "message": exc.message,
+                "suggestion": exc.suggestion,
+                "clause_ref": exc.clause_ref,
+                "details": exc.details,
+            },
+        )
+
+    @app.exception_handler(DesignConstraintError)
+    async def design_constraint_handler(request: Request, exc: DesignConstraintError):
+        """Handle infeasible design errors from structural_lib."""
+        return JSONResponse(
+            status_code=422,
+            content={
+                "error_code": "DESIGN_CONSTRAINT_ERROR",
+                "message": exc.message,
+                "suggestion": exc.suggestion,
+                "clause_ref": exc.clause_ref,
+                "details": exc.details,
+            },
+        )
+
+    @app.exception_handler(ComplianceError)
+    async def compliance_error_handler(request: Request, exc: ComplianceError):
+        """Handle IS 456 compliance violations from structural_lib."""
+        return JSONResponse(
+            status_code=422,
+            content={
+                "error_code": "COMPLIANCE_ERROR",
+                "message": exc.message,
+                "suggestion": exc.suggestion,
+                "clause_ref": exc.clause_ref,
+                "details": exc.details,
+            },
+        )
+
+    @app.exception_handler(ConfigurationError)
+    async def config_error_handler(request: Request, exc: ConfigurationError):
+        """Handle library misconfiguration errors."""
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error_code": "CONFIGURATION_ERROR",
+                "message": exc.message,
+                "suggestion": exc.suggestion,
+                "details": exc.details,
+            },
+        )
+
+    @app.exception_handler(CalculationError)
+    async def calculation_error_handler(request: Request, exc: CalculationError):
+        """Handle numerical/calculation errors from structural_lib."""
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error_code": "CALCULATION_ERROR",
+                "message": exc.message,
+                "suggestion": exc.suggestion,
+                "details": exc.details,
+            },
+        )
+
+    @app.exception_handler(StructuralLibError)
+    async def structural_lib_error_handler(
+        request: Request, exc: StructuralLibError
+    ):
+        """Catch-all for any StructuralLibError not handled above."""
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error_code": "STRUCTURAL_LIB_ERROR",
+                "message": exc.message,
+                "suggestion": exc.suggestion,
+                "clause_ref": exc.clause_ref,
+                "details": exc.details,
+            },
+        )
+
+except ImportError:
+    # structural_lib not installed — handlers will not be registered
+    pass
 
 # =============================================================================
 # Router Registration

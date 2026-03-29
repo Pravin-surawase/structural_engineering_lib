@@ -25,6 +25,9 @@ DRY_RUN=false
 FORCE=false
 PUSH_ONLY=false
 AMEND=false
+PREVIEW=false
+UNDO=false
+SIGNOFF=false
 COMMIT_MSG=""
 for arg in "$@"; do
     if [[ "$arg" == "--dry-run" ]]; then
@@ -35,15 +38,24 @@ for arg in "$@"; do
         PUSH_ONLY=true
     elif [[ "$arg" == "--amend" ]]; then
         AMEND=true
+    elif [[ "$arg" == "--preview" ]]; then
+        PREVIEW=true
+    elif [[ "$arg" == "--undo" ]]; then
+        UNDO=true
+    elif [[ "$arg" == "--signoff" || "$arg" == "-s" ]]; then
+        SIGNOFF=true
     elif [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
-        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push] [--amend]"
+        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push] [--amend] [--preview] [--undo] [--signoff]"
         echo ""
         echo "Options:"
-        echo "  --dry-run  Preview what would happen without committing"
-        echo "  --force    Bypass PR requirement check (for batching work)"
-        echo "  --push     Push already-committed changes (no new commit)"
-        echo "  --amend    Amend the last commit (add staged changes to it)"
-        echo "  --help     Show this help message"
+        echo "  --dry-run    Preview what would happen without committing"
+        echo "  --force      Bypass PR requirement check (for batching work)"
+        echo "  --push       Push already-committed changes (no new commit)"
+        echo "  --amend      Amend the last commit (add staged changes to it)"
+        echo "  --preview    Show staged changes diff without committing"
+        echo "  --undo       Undo last commit (soft reset, keeps changes staged)"
+        echo "  --signoff    Add Signed-off-by line (DCO compliance)"
+        echo "  --help       Show this help message"
         echo ""
         echo "Examples:"
         echo "  ./scripts/ai_commit.sh \"docs: update guide\""
@@ -51,6 +63,9 @@ for arg in "$@"; do
         echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
         echo "  ./scripts/ai_commit.sh --push          # Push existing commits"
         echo "  ./scripts/ai_commit.sh --amend          # Amend last commit + push"
+        echo "  ./scripts/ai_commit.sh \"msg\" --preview  # Preview changes only"
+        echo "  ./scripts/ai_commit.sh --undo           # Undo last commit"
+        echo "  ./scripts/ai_commit.sh \"msg\" --signoff  # Add DCO sign-off"
         exit 0
     elif [[ -z "$COMMIT_MSG" ]]; then
         COMMIT_MSG="$arg"
@@ -88,6 +103,28 @@ if [[ "$PUSH_ONLY" == "true" ]]; then
         echo -e "${RED}✗ Push failed${NC}"
         exit 1
     fi
+    exit 0
+fi
+
+# Undo mode: soft-reset the last commit (keeps changes staged)
+if [[ "$UNDO" == "true" ]]; then
+    echo -e "${YELLOW}→ Undo mode: soft-resetting last commit...${NC}"
+    # Safety: refuse if already pushed
+    git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null || true
+    LOCAL_HEAD=$(git rev-parse HEAD)
+    REMOTE_HEAD=$(git rev-parse "origin/$CURRENT_BRANCH" 2>/dev/null || echo "none")
+    if [[ "$REMOTE_HEAD" != "none" ]]; then
+        # Check if HEAD is reachable from remote
+        if git merge-base --is-ancestor HEAD "origin/$CURRENT_BRANCH" 2>/dev/null; then
+            echo -e "${RED}✗ Cannot undo — this commit is already pushed to remote${NC}"
+            echo -e "${YELLOW}💡 Use --amend instead to modify the pushed commit${NC}"
+            exit 1
+        fi
+    fi
+    LAST_MSG=$(git log -1 --format="%s")
+    git reset --soft HEAD~1
+    echo -e "${GREEN}✓ Undid commit: $LAST_MSG${NC}"
+    echo -e "${GREEN}  Changes are back in your working tree (staged)${NC}"
     exit 0
 fi
 
@@ -176,6 +213,23 @@ echo "Files to commit:"
 git status --short
 echo ""
 
+# Preview mode: show staged diff without committing
+if [[ "$PREVIEW" == "true" ]]; then
+    echo ""
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${BLUE}PREVIEW — Changes to be committed:${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    git diff --cached --stat
+    echo ""
+    git diff --cached --color
+    echo ""
+    echo -e "${GREEN}✓ Preview complete — no commit made${NC}"
+    echo -e "${YELLOW}💡 Remove --preview to commit these changes${NC}"
+    git reset HEAD >/dev/null 2>&1
+    exit 0
+fi
+
 # Dry run mode: show what would happen and exit
 if [[ "$DRY_RUN" == "true" ]]; then
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
@@ -212,12 +266,21 @@ chmod +x "$SAFE_PUSH_SCRIPT"
 
 # Call safe_push.sh with the commit message
 echo -e "${YELLOW}→ Running safe_push.sh workflow...${NC}"
-"$SAFE_PUSH_SCRIPT" "$COMMIT_MSG"
+if [[ "$SIGNOFF" == "true" ]]; then
+    "$SAFE_PUSH_SCRIPT" "$COMMIT_MSG" --signoff
+else
+    "$SAFE_PUSH_SCRIPT" "$COMMIT_MSG"
+fi
 
 # Check exit code
 if [[ $? -eq 0 ]]; then
     echo ""
     echo -e "${GREEN}✓ Successfully committed and pushed!${NC}"
+
+    # Show commit statistics
+    echo ""
+    echo -e "${BLUE}📊 Commit Statistics:${NC}"
+    git diff --stat HEAD~1 HEAD 2>/dev/null || true
 
     # Post-commit: check if doc numbers are stale (non-blocking)
     SYNC_SCRIPT="$PROJECT_ROOT/scripts/sync_numbers.py"
