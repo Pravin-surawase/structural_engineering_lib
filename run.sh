@@ -515,6 +515,38 @@ Examples:
 EOF
 }
 
+# ── Command: info ──────────────────────────────────────────────────────────
+
+_cmd_info() {
+    _require_venv
+    _header "Library Info"
+    "$VENV" "$SCRIPTS/library_info.py" "$@"
+}
+
+_help_info() {
+    cat <<'EOF'
+Usage: ./run.sh info [options]
+
+Library metadata, API surface, architecture, element support, and tooling.
+
+Options:
+  --api              Public API functions (26 functions, line numbers)
+  --architecture     4-layer architecture rules
+  --elements         IS 456 element support map
+  --cli              CLI commands (python -m structural_lib)
+  --scripts          Scripts & automation inventory
+  --agents           Agents, skills & prompts inventory
+  --json             Machine-readable JSON output
+  --all              Show everything
+
+Examples:
+  ./run.sh info                       # Quick overview
+  ./run.sh info --api                 # List public API functions
+  ./run.sh info --elements            # Check element support
+  ./run.sh info --json                # JSON for programmatic use
+EOF
+}
+
 # ── Self-Evolving System ───────────────────────────────────────────────────
 
 _cmd_health() {
@@ -619,6 +651,7 @@ _print_usage() {
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
+    echo -e "  ${GREEN}info${NC}        Library metadata, API, architecture, elements"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -646,6 +679,7 @@ _dispatch_help() {
         health)   _help_health ;;
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
+        info)     _help_info ;;
         *)        _print_usage ;;
     esac
 }
@@ -671,6 +705,7 @@ _run_sh() {
         'health:Project health scan'
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
+        'info:Library metadata and API'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -695,6 +730,7 @@ _run_sh() {
             health) _values 'option' $health_opts ;;
             feedback) _values 'subcommand' $feedback_subs ;;
             evolve) _values 'option' $evolve_opts ;;
+            info) _values 'option' '--api' '--architecture' '--elements' '--cli' '--scripts' '--agents' '--json' '--all' ;;
             test) _values 'option' $test_opts ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
@@ -759,6 +795,7 @@ main() {
         health)   _cmd_health "$@" ;;
         feedback) _cmd_feedback "$@" ;;
         evolve)   _cmd_evolve "$@" ;;
+        info)     _cmd_info "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         *)
             _error "Unknown command: $cmd"

@@ -54,7 +54,7 @@ React 19 + R3F + Tailwind  ──HTTP/WS──>  FastAPI  ──Python──>  s
 | Layer | Location | Rule |
 |-------|----------|------|
 | **Core types** | `Python/structural_lib/core/` | Base classes, types, constants — no IS 456 math |
-| **IS 456 Code** | `codes/is456/flexure.py`, `shear.py`, `detailing.py` | Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm) |
+| **IS 456 Code** | `codes/is456/beam/`, `column/`, `common/` | Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm) |
 | **Services** | `services/api.py`, `services/adapters.py`, `services/beam_pipeline.py` | Orchestration, no formatting |
 | **UI/IO** | `react_app/`, `streamlit_app/`, `fastapi_app/`, `visualization/` | External interfaces only |
 
@@ -160,7 +160,9 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
-| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py` — IS 456:2000 |
+| `codes/is456/beam/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py`, `ductile.py`, `slenderness.py` |
+| `codes/is456/column/` | `design.py`, `slenderness.py` |
+| `codes/is456/common/` | `materials.py`, `tables.py`, `load_analysis.py` |
 | `services/bbs.py` | Bar bending schedule generation |
 | `services/dxf_export.py` | DXF drawing export |
 | `insights/` | `smart_designer.py`, `design_suggestions.py`, `sensitivity.py`, `cost_optimization.py` |
@@ -580,10 +582,10 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `@tester` | Test creation & coverage | Test suites, coverage analysis |
 | `@governance` | Project health & maintenance | Health scans, doc archival |
 
-### 7 Skills (`/skill-name` in Copilot Chat)
+### 8 Skills (`/skill-name` in Copilot Chat)
 
 | Skill | Purpose |
-|-------|---------|
+|-------|--------|
 | `/session-management` | Automate session start/end workflow |
 | `/safe-file-ops` | Move/delete files preserving 870+ links |
 | `/api-discovery` | Look up exact API function signatures |
@@ -591,6 +593,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `/new-structural-element` | New structural element workflow (column, slab, footing) |
 | `/architecture-check` | Validate 4-layer architecture boundaries |
 | `/react-validation` | React build, lint, type-check, tests |
+| `/library-info` | Library metadata, API surface, elements, architecture, tooling |
 
 ### 14 Prompt Files (`#prompt-name` in Copilot Chat)
 

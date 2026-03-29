@@ -39,11 +39,15 @@ You are an IS 456:2000 structural engineering specialist for **structural_engine
 
 | File | IS 456 Coverage |
 |------|----------------|
-| `codes/is456/flexure.py` | Cl 38 — Flexural design (singly/doubly reinforced) |
-| `codes/is456/shear.py` | Cl 40 — Shear design, τc tables, minimum stirrups |
-| `codes/is456/detailing.py` | Cl 26 — Development length, spacing, cover |
-| `codes/is456/torsion.py` | Cl 41 — Torsion design |
-| `codes/is456/serviceability.py` | Cl 43 — Deflection, crack width |
+| `codes/is456/beam/flexure.py` | Cl 38 — Flexural design (singly/doubly reinforced) |
+| `codes/is456/beam/shear.py` | Cl 40 — Shear design, τc tables, minimum stirrups |
+| `codes/is456/beam/detailing.py` | Cl 26 — Development length, spacing, cover |
+| `codes/is456/beam/torsion.py` | Cl 41 — Torsion design |
+| `codes/is456/beam/serviceability.py` | Cl 43 — Deflection, crack width |
+| `codes/is456/column/design.py` | Cl 39 — Axial + bending, P-M interaction |
+| `codes/is456/column/slenderness.py` | Cl 25.1 — Short/long classification |
+| `codes/is456/common/materials.py` | Annex G — Stress-strain, xu_max |
+| `codes/is456/common/tables.py` | Table 19, 20 — τc, τc_max |
 
 ## Units (non-negotiable)
 

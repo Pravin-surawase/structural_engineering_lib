@@ -38,7 +38,7 @@
 - Added `/new-structural-element` skill — step-by-step workflow for column/slab/footing
 - Added `#add-structural-element` prompt — template for new element implementation
 - Updated orchestrator pipeline: 6→8 steps (added RESEARCH + TEST phases)
-- Updated AGENTS.md: 12 agents, 7 skills, 14 prompts
+- Updated AGENTS.md: 12 agents, 8 skills, 14 prompts
 - Updated agent-bootstrap.md with new agent/skill/prompt entries
 - **Library expansion planning:** identified 6 missing structural elements (column, slab, footing, staircase, shear wall)
 

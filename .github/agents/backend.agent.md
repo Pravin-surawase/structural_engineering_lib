@@ -51,11 +51,16 @@ You are a Python backend specialist for **structural_engineering_lib** — an IS
 | `services/api.py` | 23 public + 6 private — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` |
-| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py` |
+| `codes/is456/beam/` | `flexure.py`, `shear.py`, `torsion.py`, `detailing.py`, `serviceability.py`, `ductile.py`, `slenderness.py` |
+| `codes/is456/column/` | `design.py`, `slenderness.py` |
+| `codes/is456/common/` | `materials.py`, `tables.py`, `load_analysis.py` |
 
 ## Before Coding
 
 ```bash
+# Quick project context
+.venv/bin/python scripts/library_info.py               # Overview + element status
+.venv/bin/python scripts/library_info.py --elements     # What's implemented vs placeholder
 # Check what exists
 grep "^def " Python/structural_lib/services/api.py | head -20
 # Get exact param names

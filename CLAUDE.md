@@ -62,6 +62,8 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh generate indexes           # Regenerate folder indexes
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
+./run.sh info                       # Library metadata, API, elements, architecture
+./run.sh info --json                # Machine-readable project metadata
 ./run.sh feedback log --agent X     # Log agent feedback (session end)
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)

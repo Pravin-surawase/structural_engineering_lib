@@ -51,7 +51,7 @@ You are the **structural engineering math specialist** for **structural_engineer
 | ⚠️ Pure math ONLY | `codes/is456/` has NO I/O, NO print, NO file access, NO HTTP |
 | ⚠️ Units always explicit | mm, N/mm², kN, kNm — no bare numbers, no hidden conversions |
 | ⚠️ Always cite clause | Every formula gets `@clause("XX.X")` decorator or `# IS 456 Cl XX.X` comment |
-| ⚠️ Use existing patterns | Study `flexure.py` and `shear.py` before writing — match their style exactly |
+| ⚠️ Use existing patterns | Study `beam/flexure.py` and `beam/shear.py` before writing — match their style exactly |
 | ⚠️ Always `.venv/bin/python` | Never bare `python` |
 
 ## Module Pattern (follow exactly)
@@ -107,29 +107,53 @@ def calculate_<quantity>(b: float, d: float, fck: float, fy: float, ...) -> floa
 
 ## Existing Modules (KNOW THESE — do not duplicate)
 
+All modules live under `codes/is456/` organized by element type:
+
+### Beam modules (`codes/is456/beam/`)
+
 | Module | IS 456 Clause | Functions | Status |
 |--------|---------------|-----------|--------|
-| `flexure.py` | Cl 38 | `calculate_mu_lim`, `design_singly_reinforced`, `design_doubly_reinforced`, `design_flanged_beam`, `calculate_ast_required`, `calculate_effective_flange_width`, `calculate_mu_lim_flanged` | ✅ Complete |
-| `shear.py` | Cl 40 | `calculate_tv`, `design_shear`, `round_to_practical_spacing`, `select_stirrup_diameter` | ✅ Complete |
-| `torsion.py` | Cl 41 | `design_torsion`, `calculate_equivalent_shear`, `calculate_equivalent_moment`, `calculate_torsion_shear_stress`, `calculate_torsion_stirrup_area`, `calculate_longitudinal_torsion_steel` | ✅ Complete |
-| `detailing.py` | Cl 26, SP 34 | Development length, lap length, anchorage, bar spacing, curtailment | ✅ Complete |
-| `serviceability.py` | Cl 43 | Deflection (Level B & C), crack width (Annex F) | ✅ Complete |
-| `ductile.py` | IS 13920 | Ductile detailing, confinement checks | ✅ Complete |
-| `slenderness.py` | Cl 25 | Beam slenderness only — column slenderness is TODO | ⚠️ Beam only |
-| `tables.py` | Various | IS 456 design tables (τc, xu_max/d, etc.) | ✅ Complete |
-| `compliance.py` | Various | Main compliance checking logic | ✅ Complete |
-| `materials.py` | Annex G | Stress-strain models | ✅ Complete |
+| `beam/flexure.py` | Cl 38 | `calculate_mu_lim`, `design_singly_reinforced`, `design_doubly_reinforced`, `design_flanged_beam`, `calculate_ast_required`, `calculate_effective_flange_width`, `calculate_mu_lim_flanged` | ✅ Complete |
+| `beam/shear.py` | Cl 40 | `calculate_tv`, `design_shear`, `round_to_practical_spacing`, `select_stirrup_diameter` | ✅ Complete |
+| `beam/torsion.py` | Cl 41 | `design_torsion`, `calculate_equivalent_shear`, `calculate_equivalent_moment`, `calculate_torsion_shear_stress`, `calculate_torsion_stirrup_area`, `calculate_longitudinal_torsion_steel` | ✅ Complete |
+| `beam/detailing.py` | Cl 26, SP 34 | Development length, lap length, anchorage, bar spacing, curtailment | ✅ Complete |
+| `beam/serviceability.py` | Cl 43 | Deflection (Level B & C), crack width (Annex F) | ✅ Complete |
+| `beam/ductile.py` | IS 13920 | Ductile detailing, confinement checks | ✅ Complete |
+| `beam/slenderness.py` | Cl 23.3 | Beam lateral stability checks | ✅ Complete |
+
+### Column modules (`codes/is456/column/`)
+
+| Module | IS 456 Clause | Functions | Status |
+|--------|---------------|-----------|--------|
+| `column/design.py` | Cl 39 | `design_short_column` — axial + uniaxial bending | ✅ Done |
+| `column/slenderness.py` | Cl 25.1 | `check_column_slenderness`, `get_effective_length_factor` (Table 28) | ✅ Done |
+
+### Common modules (`codes/is456/common/`)
+
+| Module | IS 456 Clause | Functions | Status |
+|--------|---------------|-----------|--------|
+| `common/materials.py` | Annex G | `get_xu_max_d`, `get_ec`, `get_fcr`, stress-strain models | ✅ Complete |
+| `common/tables.py` | Various | IS 456 design tables (τc, xu_max/d, etc.) | ✅ Complete |
+| `common/load_analysis.py` | — | `compute_bmd_sfd` — BMD/SFD computation | ✅ Complete |
+
+### Other (`codes/is456/`)
+
+| Module | Purpose | Status |
+|--------|---------|--------|
+| `compliance.py` | Multi-element compliance orchestration | ✅ Complete |
+| `traceability.py` | `@clause` decorator, clause DB | ✅ Complete |
 
 ## Planned Modules (YOUR ROADMAP)
 
 | Module | IS 456 Clauses | Priority | Key Functions Needed |
 |--------|----------------|----------|---------------------|
-| `column.py` | Cl 25, 26, 39 | 🔴 P1 | `design_short_column`, `design_long_column`, `pm_interaction_curve`, `biaxial_bending_check` |
-| `slab_oneway.py` | Cl 24, 26 | 🟡 P2 | `design_oneway_slab`, `calculate_distribution_steel` |
-| `slab_twoway.py` | Cl 24, Annex D | 🟡 P2 | `design_twoway_slab`, `moment_coefficients` |
-| `footing.py` | Cl 34 | 🟡 P3 | `design_isolated_footing`, `punching_shear_check`, `one_way_shear_check` |
-| `staircase.py` | — | 🟢 P4 | `design_waist_slab_staircase`, `design_dog_legged` |
-| `shear_wall.py` | Cl 32 | 🟢 P4 | `design_shear_wall`, `interaction_check` |
+| `column/biaxial.py` | Cl 39.6 | 🔴 P1 | `biaxial_bending_check` (Bresler) |
+| `column/detailing.py` | Cl 26.5.3 | 🔴 P1 | Ties, spacing, lap lengths |
+| `slab/one_way.py` | Cl 22.2 | 🟡 P2 | `design_oneway_slab`, `calculate_distribution_steel` |
+| `slab/two_way.py` | Cl 24.4, Table 26 | 🟡 P2 | `design_twoway_slab`, `moment_coefficients` |
+| `footing/isolated.py` | Cl 34 | 🟡 P3 | `design_isolated_footing`, `punching_shear_check` |
+| `staircase/design.py` | Cl 33 | 🟢 P4 | `design_waist_slab_staircase` |
+| `wall/design.py` | Cl 32 | 🟢 P4 | `design_shear_wall`, `interaction_check` |
 
 ## Core Type Patterns (match these)
 

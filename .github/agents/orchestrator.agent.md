@@ -74,11 +74,11 @@ When delegating, tell the specialist which skills to use:
 
 | Agent | Skills They Should Use |
 |-------|----------------------|
-| `@backend` | `/api-discovery` (param lookup), `/is456-verification` (tests) |
-| `@structural-math` | `/api-discovery` (param lookup), `/is456-verification` (tests), `/new-structural-element` (new elements) |
-| `@api-developer` | `/api-discovery` (param lookup) |
-| `@frontend` | `/react-validation` (build, lint, type-check) |
-| `@structural-engineer` | `/is456-verification` (compliance tests), `/api-discovery` |
+| `@backend` | `/api-discovery` (param lookup), `/is456-verification` (tests), `/library-info` (project context) |
+| `@structural-math` | `/api-discovery` (param lookup), `/is456-verification` (tests), `/new-structural-element` (new elements), `/library-info` (project context) |
+| `@api-developer` | `/api-discovery` (param lookup), `/library-info` (project context) |
+| `@frontend` | `/react-validation` (build, lint, type-check), `/library-info` (project context) |
+| `@structural-engineer` | `/is456-verification` (compliance tests), `/api-discovery`, `/library-info` (element support) |
 | `@tester` | `/is456-verification` (IS 456 tests), `/api-discovery` (param lookup) |
 | `@reviewer` | `/architecture-check` (boundaries), `/react-validation` (frontend) |
 | `@doc-master` | `/safe-file-ops` (file moves), `/session-management` (session end) |

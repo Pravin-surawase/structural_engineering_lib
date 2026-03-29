@@ -71,6 +71,8 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 ./run.sh generate indexes           # Regenerate folder indexes
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
+./run.sh info                       # Library metadata, API, elements, architecture
+./run.sh info --json                # Machine-readable project metadata
 ./run.sh feedback log --agent X     # Log agent feedback (session end)
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
@@ -175,7 +177,7 @@ docs/TASKS.md                                   # Task board
 | `ops` | Git, CI/CD, Docker | full edit |
 | `governance` | Project health, maintenance, metrics | full edit |
 
-### 7 Agent Skills (`.github/skills/`)
+### 8 Agent Skills (`.github/skills/`)
 
 | Skill | Slash Command | Purpose |
 |-------|--------------|---------|
@@ -186,6 +188,7 @@ docs/TASKS.md                                   # Task board
 | `new-structural-element` | `/new-structural-element` | New element workflow (column, slab, footing) |
 | `react-validation` | `/react-validation` | React build, lint, type-check, tests |
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
+| `library-info` | `/library-info` | Library metadata, API surface, elements, architecture, tooling |
 
 ### 14 Prompt Files (`.github/prompts/`)
 
