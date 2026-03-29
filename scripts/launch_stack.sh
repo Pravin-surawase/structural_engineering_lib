@@ -423,9 +423,9 @@ run_preflight_checks() {
         check_node_modules || true  # Non-fatal, we can fix
     fi
 
-    # Check Docker for docker modes
+    # Check Docker for docker modes (non-fatal — Phase 2 can start Colima)
     if [[ "$MODE" == "docker"* ]]; then
-        check_docker || checks_passed=1
+        check_docker || true  # Non-fatal, Phase 2 will fix
     fi
 
     # Check netcat (required for wait_for_port)
@@ -485,6 +485,13 @@ fix_prerequisites() {
                 return 1
             fi
         fi
+
+        # Verify Docker is accessible after Colima start
+        if ! docker info &>/dev/null; then
+            error "Docker still not accessible after starting Colima"
+            return 1
+        fi
+        success "Docker accessible"
     fi
 
     success "Prerequisites ready"
@@ -549,7 +556,7 @@ launch_fastapi_local() {
 
     # Launch FastAPI in background, redirect output to log
     .venv/bin/uvicorn fastapi_app.main:app \
-        --host "::" \
+        --host 0.0.0.0 \
         --port "$FASTAPI_PORT" \
         --reload \
         >> "$LOG_FILE" 2>&1 &
@@ -567,7 +574,7 @@ launch_fastapi_local() {
     fi
 
     # Wait for health check
-    if ! wait_for_health "http://localhost:$FASTAPI_PORT/health" "$HEALTH_CHECK_TIMEOUT_LOCAL" "FastAPI"; then
+    if ! wait_for_health "http://127.0.0.1:$FASTAPI_PORT/health" "$HEALTH_CHECK_TIMEOUT_LOCAL" "FastAPI"; then
         error "FastAPI failed to start"
         if [[ -n "$FASTAPI_PID" ]] && kill -0 "$FASTAPI_PID" 2>/dev/null; then
             error "Last 20 lines from FastAPI log:"

@@ -9,7 +9,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useDesignStore } from '../store/designStore';
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+const WS_URL = import.meta.env.VITE_WS_URL || `ws://${window.location.host}`;
 
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error';
 

@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materialOverrides";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 export interface ImportedBeam {
   id: string;
