@@ -43,7 +43,11 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
     Uses principle of superposition for multiple loads.
     """
     try:
-        from structural_lib.services.api import compute_bmd_sfd, LoadDefinition, LoadType
+        from structural_lib.services.api import (
+            compute_bmd_sfd,
+            LoadDefinition,
+            LoadType,
+        )
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
