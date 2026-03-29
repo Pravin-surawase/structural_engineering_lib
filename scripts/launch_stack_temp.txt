@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-# launch_stack.sh — Full-stack development launcher for structural_engineering_lib
