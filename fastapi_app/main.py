@@ -259,9 +259,7 @@ try:
         )
 
     @app.exception_handler(StructuralLibError)
-    async def structural_lib_error_handler(
-        request: Request, exc: StructuralLibError
-    ):
+    async def structural_lib_error_handler(request: Request, exc: StructuralLibError):
         """Catch-all for any StructuralLibError not handled above."""
         return JSONResponse(
             status_code=500,

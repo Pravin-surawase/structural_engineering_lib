@@ -113,4 +113,3 @@ def standard_beam_300x600(m30_fe500: dict) -> dict:
         "cover_mm": 25.0,
         **m30_fe500,
     }
-

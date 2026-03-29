@@ -92,7 +92,9 @@ def generate_markdown(codes: list[DesignError]) -> str:
             hint = c.hint or "—"
             clause = c.clause or "—"
             msg = c.message.replace("|", "\\|")
-            lines.append(f"| `{c.code}` | {sev} | {msg} | {field} | {hint} | {clause} |")
+            lines.append(
+                f"| `{c.code}` | {sev} | {msg} | {field} | {hint} | {clause} |"
+            )
         lines.append("")
 
     return "\n".join(lines)
@@ -114,15 +116,21 @@ def main() -> int:
 
     if args.check:
         if output_path.exists() and output_path.read_text() == content:
-            print(f"✅ {output_path.relative_to(PROJECT_ROOT)} is up-to-date ({len(codes)} codes)")
+            print(
+                f"✅ {output_path.relative_to(PROJECT_ROOT)} is up-to-date ({len(codes)} codes)"
+            )
             return 0
         else:
-            print(f"❌ {output_path.relative_to(PROJECT_ROOT)} is stale. Run: .venv/bin/python scripts/generate_error_docs.py")
+            print(
+                f"❌ {output_path.relative_to(PROJECT_ROOT)} is stale. Run: .venv/bin/python scripts/generate_error_docs.py"
+            )
             return 1
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(content)
-    print(f"✅ Generated {output_path.relative_to(PROJECT_ROOT)} with {len(codes)} error codes")
+    print(
+        f"✅ Generated {output_path.relative_to(PROJECT_ROOT)} with {len(codes)} error codes"
+    )
     return 0
 
 

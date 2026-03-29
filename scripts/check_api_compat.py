@@ -22,7 +22,9 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-MANIFEST_PATH = PROJECT_ROOT / "Python" / "structural_lib" / "services" / "api_manifest.json"
+MANIFEST_PATH = (
+    PROJECT_ROOT / "Python" / "structural_lib" / "services" / "api_manifest.json"
+)
 sys.path.insert(0, str(PROJECT_ROOT / "Python"))
 
 
@@ -41,7 +43,10 @@ def get_current_api() -> dict:
                 if param.default is not inspect.Parameter.empty:
                     p["has_default"] = True
                 params.append(p)
-            entry: dict = {"params": [p["name"] for p in params], "param_details": params}
+            entry: dict = {
+                "params": [p["name"] for p in params],
+                "param_details": params,
+            }
             ret = sig.return_annotation
             if ret is not inspect.Parameter.empty:
                 entry["returns"] = str(ret)
@@ -108,7 +113,9 @@ def main() -> int:
     if args.update:
         MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
         MANIFEST_PATH.write_text(json.dumps(current, indent=2, sort_keys=True) + "\n")
-        print(f"✅ Updated {MANIFEST_PATH.relative_to(PROJECT_ROOT)} ({len(current)} functions)")
+        print(
+            f"✅ Updated {MANIFEST_PATH.relative_to(PROJECT_ROOT)} ({len(current)} functions)"
+        )
         return 0
 
     if not MANIFEST_PATH.exists():
@@ -131,7 +138,9 @@ def main() -> int:
         print(f"\n❌ {len(issues)} breaking change(s) detected:")
         for issue in issues:
             print(f"   {issue}")
-        print("\n   If intentional, bump the version and run: .venv/bin/python scripts/check_api_compat.py --update")
+        print(
+            "\n   If intentional, bump the version and run: .venv/bin/python scripts/check_api_compat.py --update"
+        )
         return 1
 
     print(f"✅ API compatible ({len(current)} functions, {len(new_funcs)} new)")

@@ -258,6 +258,14 @@
       "script": ".venv/bin/python scripts/check_scripts_index.py",
       "description": "Ensure scripts/index.json matches actual scripts folder contents"
     },
+    "check api compat": {
+      "script": ".venv/bin/python scripts/check_api_compat.py",
+      "description": "Check API backward compatibility against manifest"
+    },
+    "generate error docs": {
+      "script": ".venv/bin/python scripts/generate_error_docs.py",
+      "description": "Generate error code documentation from source"
+    },
     "check next session brief": {
       "script": ".venv/bin/python scripts/check_next_session_brief_length.py",
       "description": "Ensure next-session-brief.md stays concise"

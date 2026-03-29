@@ -90,9 +90,9 @@ def assert_clause_compliance(result, clause: str, *, field: str = "clause_ref") 
         actual = getattr(result, field, None)
 
     assert actual is not None, f"Result has no '{field}' attribute/key"
-    assert clause in str(actual), (
-        f"Expected clause '{clause}' in {field}, got '{actual}'"
-    )
+    assert clause in str(
+        actual
+    ), f"Expected clause '{clause}' in {field}, got '{actual}'"
 
 
 def assert_capacity_monotonic(
@@ -166,11 +166,16 @@ def assert_no_design_errors(result, *, allow_warnings: bool = True) -> None:
     """
     errors = getattr(result, "errors", []) or []
     if allow_warnings:
-        critical = [e for e in errors if hasattr(e, "severity") and e.severity.value == "error"]
+        critical = [
+            e for e in errors if hasattr(e, "severity") and e.severity.value == "error"
+        ]
     else:
-        critical = [e for e in errors if hasattr(e, "severity") and e.severity.value in ("error", "warning")]
+        critical = [
+            e
+            for e in errors
+            if hasattr(e, "severity") and e.severity.value in ("error", "warning")
+        ]
 
-    assert not critical, (
-        f"Design produced {len(critical)} error(s): "
-        + "; ".join(f"[{e.code}] {e.message}" for e in critical)
+    assert not critical, f"Design produced {len(critical)} error(s): " + "; ".join(
+        f"[{e.code}] {e.message}" for e in critical
     )
