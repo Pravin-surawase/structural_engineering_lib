@@ -252,6 +252,27 @@ if [[ "$DRY_RUN" == "true" ]]; then
     exit 0
 fi
 
+# Pre-flight: auto-format Python files to prevent CI failures
+# This eliminates the #1 source of CI rework (black/ruff formatting)
+STAGED_PY=$(git diff --cached --name-only --diff-filter=d | grep '\.py$' || true)
+if [[ -n "$STAGED_PY" ]]; then
+    echo -e "${YELLOW}→ Pre-flight: formatting Python files...${NC}"
+    if [[ -f "$PROJECT_ROOT/.venv/bin/python" ]]; then
+        echo "$STAGED_PY" | xargs "$PROJECT_ROOT/.venv/bin/python" -m black --quiet 2>&1 || echo -e "  ${YELLOW}⚠ black formatting had issues (non-fatal)${NC}"
+        echo "$STAGED_PY" | xargs "$PROJECT_ROOT/.venv/bin/python" -m ruff check --fix --quiet 2>&1 || echo -e "  ${YELLOW}⚠ ruff fix had issues (non-fatal)${NC}"
+        # Re-stage only the formatted files (not git add -A which sweeps in everything)
+        echo "$STAGED_PY" | xargs git add
+        echo -e "${GREEN}  ✓ Python files formatted${NC}"
+    else
+        echo -e "  ${YELLOW}⚠ .venv not found — skipping pre-flight formatting${NC}"
+    fi
+fi
+
+# Pre-commit hooks verification
+if [[ ! -f "$PROJECT_ROOT/.git/hooks/pre-commit" ]]; then
+    echo -e "${YELLOW}⚠ pre-commit hooks not installed — run: pre-commit install${NC}"
+fi
+
 # Use the safe_push.sh script
 SAFE_PUSH_SCRIPT="$PROJECT_ROOT/scripts/safe_push.sh"
 
@@ -305,6 +326,20 @@ if [[ $? -eq 0 ]]; then
                 echo -e "  ${YELLOW}⚠${NC} $BROKEN broken link(s) detected after file move — run: .venv/bin/python scripts/check_links.py --fix"
             fi
         fi
+    fi
+
+    # Task branch reminder
+    if [[ "$CURRENT_BRANCH" =~ ^task/ ]]; then
+        TASK_ID="${CURRENT_BRANCH#task/}"
+        echo ""
+        echo -e "${YELLOW}💡 On task branch — when done, finish the PR:${NC}"
+        echo "  ./scripts/finish_task_pr.sh $TASK_ID 'description' --wait"
+    fi
+
+    # Stale stash warning
+    STALE_STASH_COUNT=$(git stash list 2>/dev/null | grep -c "auto-stash" || true)
+    if [[ "$STALE_STASH_COUNT" -gt 3 ]]; then
+        echo -e "  ${YELLOW}⚠${NC} $STALE_STASH_COUNT stale auto-stash entries found — review with: git stash list"
     fi
 
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

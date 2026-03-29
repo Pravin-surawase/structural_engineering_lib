@@ -56,12 +56,19 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 ./run.sh pr finish                           # CI check + auto-merge
 ```
 
+**MANDATORY: Always finish PRs.** After the LAST commit on a task branch:
+1. Run `./scripts/finish_task_pr.sh TASK-XXX "description" --wait`
+2. Verify the PR was merged (check `gh pr view <number> --json state`)
+3. Return to main: the script auto-checks out main and cleans up
+
+**Never leave a PR open without merging.** Open unmerged PRs cause branch drift and confusion for the next session.
+
 ### Git System Architecture
 
 ```
 ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflow)
                                                   ↓
-                                                  Steps: stash → fetch(bg) → stage → commit+hooks → amend → sync → safety → push
+                                                  Steps: stash → fetch(bg) → stage → pre-flight fmt → commit+hooks → amend → sync → safety → push
 ```
 
 **Log location**: `logs/git_workflow.log` — check here when debugging failures.
@@ -84,6 +91,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 | Undo last commit (not pushed) | `./scripts/ai_commit.sh --undo` | Soft reset — keeps changes staged |
 | Preview before committing | `./scripts/ai_commit.sh "msg" --preview` | Shows diff + stat, no commit |
 | DCO sign-off required | `./scripts/ai_commit.sh "msg" --signoff` | Adds Signed-off-by line |
+| PR left open (forgot to merge) | `./scripts/finish_task_pr.sh TASK-XXX "desc" --wait` | Always finish PRs before ending session |
 
 ### FORBIDDEN Commands (NEVER Use)
 
@@ -119,6 +127,7 @@ You **execute** scripts, you do not **write** them. If a new script is needed:
 4. **`--force` PR bypass** — caused 10+ hours of rework. NEVER bypass PR checks
 5. **Ignoring stale-version warnings post-commit** — hooks print `WOULD UPDATE: next-session-brief.md` but agent just reported it and moved on. Fix it immediately: `.venv/bin/python scripts/check_doc_versions.py --fix` then commit the result
 6. **Session 106: Destructive ops without approval** — agent closed 5 issues, deleted 20 branches, used `--admin` and `GIT_HOOKS_BYPASS=1` without asking user. All destructive ops now require explicit user confirmation
+7. **Forgot to finish PR** — agent committed to task branch, CI passed, but never called `finish_task_pr.sh`. PR #445 was left open and unmerged. Always run `finish_task_pr.sh` after the last commit on a task branch
 
 ## Docker (Colima, not Docker Desktop)
 
