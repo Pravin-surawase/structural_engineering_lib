@@ -3,7 +3,7 @@
 This document describes the test taxonomy and structure for the structural_engineering_lib test suite.
 
 **Type:** Python Package
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-29
 **Files:** 20
 
 ## Documentation Files
@@ -16,7 +16,7 @@ This document describes the test taxonomy and structure for the structural_engin
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [conftest.py](conftest.py) | Pytest configuration and Hypothesis profiles for the test su | 0 | 0 | 58 |
+| [conftest.py](conftest.py) | Pytest configuration and Hypothesis profiles for the test su | 0 | 5 | 116 |
 | [test_api_results.py](test_api_results.py) | Tests for API result dataclasses. | 3 | 0 | 394 |
 | [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 468 |
 | [test_calculation_report.py](test_calculation_report.py) | Tests for the calculation_report module (TASK-277). | 8 | 4 | 612 |
@@ -39,9 +39,10 @@ This document describes the test taxonomy and structure for the structural_engin
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [data/](data/) | 4 |  |
+| [data/](data/) | 5 |  |
 | [fixtures/](fixtures/) | 11 |  |
-| [integration/](integration/) | 40 |  |
+| [helpers/](helpers/) 📦 | 2 |  |
+| [integration/](integration/) | 41 |  |
 | [performance/](performance/) | 1 |  |
 | [property/](property/) 📦 | 8 |  |
 | [regression/](regression/) | 8 |  |

@@ -2,24 +2,31 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 13,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 34,
-      "last_updated": "2026-01-28",
+      "last_updated": "2026-03-26",
       "description": "FastAPI Routers Package.",
       "content_hash": "233df3ef088f"
     },
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 234,
-      "last_updated": "2026-02-10",
+      "size_lines": 319,
+      "last_updated": "2026-03-29",
       "description": "Smart Analysis Router.",
       "functions": [
+        {
+          "name": "analyze_loads",
+          "description": "Compute bending moment and shear force diagrams.",
+          "params": [
+            "request"
+          ]
+        },
         {
           "name": "smart_analyze_beam",
           "description": "Perform smart analysis on a beam design.",
@@ -32,13 +39,13 @@
           "description": "Get IS 456:2000 code clause references."
         }
       ],
-      "content_hash": "efbe63c27a5b"
+      "content_hash": "bcda1c6b5eec"
     },
     {
       "name": "design.py",
       "type": "python",
-      "size_lines": 309,
-      "last_updated": "2026-02-10",
+      "size_lines": 408,
+      "last_updated": "2026-03-29",
       "description": "Beam Design Router.",
       "functions": [
         {
@@ -58,15 +65,22 @@
         {
           "name": "get_design_limits",
           "description": "Get IS 456 design limits and typical values."
+        },
+        {
+          "name": "design_beam_torsion",
+          "description": "Design beam for combined torsion + shear + bending.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "013ae74dae09"
+      "content_hash": "c40416bf6957"
     },
     {
       "name": "detailing.py",
       "type": "python",
       "size_lines": 318,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Beam Detailing Router.",
       "functions": [
         {
@@ -96,8 +110,8 @@
     {
       "name": "export.py",
       "type": "python",
-      "size_lines": 234,
-      "last_updated": "2026-02-27",
+      "size_lines": 556,
+      "last_updated": "2026-03-27",
       "description": "Export Router — BBS, DXF, and Report exports.",
       "classes": [
         {
@@ -107,6 +121,14 @@
         {
           "name": "ExportReportRequest",
           "description": "Design results for report generation."
+        },
+        {
+          "name": "BatchBeamRow",
+          "description": "One beam in a building-level export."
+        },
+        {
+          "name": "BatchExportRequest",
+          "description": "Request for building-level export."
         }
       ],
       "functions": [
@@ -130,15 +152,22 @@
           "params": [
             "request"
           ]
+        },
+        {
+          "name": "export_building_summary",
+          "description": "Generate and download a building-level summary report.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "f3fa9f55afeb"
+      "content_hash": "a010a3eb82cb"
     },
     {
       "name": "geometry.py",
       "type": "python",
       "size_lines": 626,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "3D Geometry Router.",
       "functions": [
         {
@@ -174,13 +203,13 @@
           ]
         }
       ],
-      "content_hash": "0070a8b992f6"
+      "content_hash": "653931fd3de9"
     },
     {
       "name": "health.py",
       "type": "python",
       "size_lines": 171,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-26",
       "description": "Health Check Router.",
       "classes": [
         {
@@ -215,8 +244,8 @@
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 750,
-      "last_updated": "2026-02-10",
+      "size_lines": 793,
+      "last_updated": "2026-03-29",
       "description": "CSV Import Router.",
       "classes": [
         {
@@ -294,13 +323,13 @@
           "description": "Load sample building data from actual ETABS export CSV files."
         }
       ],
-      "content_hash": "31a5241c2807"
+      "content_hash": "6410975c0c83"
     },
     {
       "name": "insights.py",
       "type": "python",
       "size_lines": 372,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Insights Router.",
       "classes": [
         {
@@ -381,7 +410,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 229,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Cost Optimization Router.",
       "functions": [
         {
@@ -402,7 +431,7 @@
       "name": "rebar.py",
       "type": "python",
       "size_lines": 247,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Rebar Validation and Application Router.",
       "classes": [
         {
@@ -456,7 +485,7 @@
       "name": "streaming.py",
       "type": "python",
       "size_lines": 290,
-      "last_updated": "2026-01-27",
+      "last_updated": "2026-03-26",
       "description": "Server-Sent Events (SSE) Router for Batch Processing.",
       "classes": [
         {
@@ -495,7 +524,7 @@
       "name": "websocket.py",
       "type": "python",
       "size_lines": 306,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-26",
       "description": "WebSocket Router for Live Design Updates.",
       "classes": [
         {
@@ -540,7 +569,7 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e66a691980418141",
+  "content_hash": "01c339b5bf51572a",
   "has_init": true,
   "public_api": [
     "analysis",

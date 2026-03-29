@@ -1,8 +1,8 @@
 # Core
 
 **Type:** Python Package
-**Last Updated:** 2026-03-24
-**Files:** 15
+**Last Updated:** 2026-03-29
+**Files:** 16
 
 ## Public API
 
@@ -31,6 +31,7 @@
 | [errors.py](errors.py) | Module:       errors | 11 | 1 | 524 |
 | [geometry.py](geometry.py) | Code-agnostic geometry definitions. | 4 | 1 | 227 |
 | [inputs.py](inputs.py) | Module:       inputs | 6 | 3 | 615 |
+| [logging_config.py](logging_config.py) | Module:       logging_config | 0 | 1 | 66 |
 | [materials.py](materials.py) | Code-agnostic material models. | 3 | 0 | 159 |
 | [models.py](models.py) | Canonical Data Models for Structural Engineering Library. | 11 | 0 | 525 |
 | [registry.py](registry.py) | Design code registry for multi-code support. | 1 | 1 | 98 |

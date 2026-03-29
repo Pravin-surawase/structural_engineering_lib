@@ -3,7 +3,7 @@
 > **Purpose:** Example scripts demonstrating library usage
 
 **Type:** Python Package
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-29
 **Files:** 17
 
 ## Config Files

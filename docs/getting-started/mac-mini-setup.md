@@ -5,7 +5,7 @@
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-26
-**Last Updated:** 2026-03-26
+**Last Updated:** 2026-03-29
 
 Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon).
 This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.

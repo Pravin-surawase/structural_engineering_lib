@@ -2,43 +2,43 @@
   "folder": "react_app/src",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 5,
   "files": [
     {
       "name": "App.css",
       "type": "stylesheet",
       "size_lines": 6,
-      "last_updated": "2026-01-25",
+      "last_updated": "2026-03-26",
       "content_hash": "61df29c88f46"
     },
     {
       "name": "App.tsx",
       "type": "react-component",
-      "size_lines": 49,
-      "last_updated": "2026-02-27",
+      "size_lines": 147,
+      "last_updated": "2026-03-26",
       "description": "Structural Engineering App",
-      "content_hash": "4c296eb87aea"
+      "content_hash": "14dee778674b"
     },
     {
       "name": "index.css",
       "type": "stylesheet",
       "size_lines": 47,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "content_hash": "5215da23f9bf"
     },
     {
       "name": "main.tsx",
       "type": "react-component",
       "size_lines": 11,
-      "last_updated": "2026-01-25",
+      "last_updated": "2026-03-26",
       "content_hash": "6e9e5807fcbd"
     },
     {
       "name": "vite-env.d.ts",
       "type": "typescript",
       "size_lines": 11,
-      "last_updated": "2026-01-25",
+      "last_updated": "2026-03-26",
       "content_hash": "8141849c8465"
     }
   ],
@@ -46,7 +46,7 @@
     {
       "name": "api",
       "path": "api/",
-      "file_count": 1
+      "file_count": 2
     },
     {
       "name": "assets",
@@ -56,12 +56,12 @@
     {
       "name": "components",
       "path": "components/",
-      "file_count": 39
+      "file_count": 42
     },
     {
       "name": "hooks",
       "path": "hooks/",
-      "file_count": 10
+      "file_count": 20
     },
     {
       "name": "lib",
@@ -71,18 +71,23 @@
     {
       "name": "store",
       "path": "store/",
+      "file_count": 6
+    },
+    {
+      "name": "test",
+      "path": "test/",
       "file_count": 2
     },
     {
       "name": "types",
       "path": "types/",
-      "file_count": 2
+      "file_count": 4
     },
     {
       "name": "utils",
       "path": "utils/",
-      "file_count": 3
+      "file_count": 5
     }
   ],
-  "content_hash": "8dd38fbe600b5e87"
+  "content_hash": "084932f624c12bbf"
 }

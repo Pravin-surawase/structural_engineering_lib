@@ -6,7 +6,7 @@
 **Importance:** High
 **Version:** 2.0.0
 **Created:** 2026-01-08
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-03-29
 
 ---
 
@@ -191,4 +191,4 @@ git br      # Same as: git branch --list
 
 ---
 
-**Last Updated:** 2026-01-10
+**Last Updated:** 2026-03-29

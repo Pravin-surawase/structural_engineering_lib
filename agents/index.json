@@ -1,18 +1,18 @@
 {
   "folder": "agents",
   "type": "documentation",
-  "description": "Use these snippets to quickly engage the right agent with the right context.",
-  "last_updated": "2026-03-25",
+  "description": "> **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlie",
+  "last_updated": "2026-03-29",
   "file_count": 1,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 138,
-      "last_updated": "2026-03-24",
+      "size_lines": 140,
+      "last_updated": "2026-03-28",
       "title": "Agent Prompt Cheat Sheet",
-      "description": "Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.",
-      "content_hash": "46acee0527ae"
+      "description": "> **⚠️ NOTE:** The authoritative agent system is in .github/agents/ (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier ",
+      "content_hash": "71c04d88fb0e"
     }
   ],
   "subfolders": [
@@ -25,8 +25,8 @@
       "name": "roles",
       "path": "roles/",
       "file_count": 15,
-      "description": "Defines 12 agent roles for the multi-agent collaboration framework."
+      "description": "> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copi"
     }
   ],
-  "content_hash": "7438d168fd7165ca"
+  "content_hash": "bdf06d631f129431"
 }

@@ -2,40 +2,49 @@
   "folder": "docs",
   "type": "documentation",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
-  "last_updated": "2026-03-25",
-  "file_count": 5,
+  "last_updated": "2026-03-29",
+  "file_count": 6,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 264,
-      "last_updated": "2026-02-11",
+      "size_lines": 254,
+      "last_updated": "2026-03-26",
       "title": "Docs Index (Start Here)",
       "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
-      "content_hash": "4db8c6ae9ff8"
+      "content_hash": "6ae88763c863"
     },
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 10249,
-      "last_updated": "2026-03-25",
+      "size_lines": 10330,
+      "last_updated": "2026-03-28",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. -",
-      "content_hash": "cfd7101d82eb"
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Tested all 11 custom agents against real project tasks — overall score 8.7/10 (up from 8.2)",
+      "content_hash": "78c987f1c885"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 90,
-      "last_updated": "2026-03-25",
+      "size_lines": 158,
+      "last_updated": "2026-03-29",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "e46bbb8e51ae"
+      "content_hash": "09b9b970deb3"
+    },
+    {
+      "name": "WORKLOG.md",
+      "type": "documentation",
+      "size_lines": 76,
+      "last_updated": "2026-03-29",
+      "title": "Work Log",
+      "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
+      "content_hash": "5582e7fcf5a7"
     },
     {
       "name": "docs-canonical.json",
       "type": "config",
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -49,7 +58,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "top_level_keys": [
         "version",
         "generated",
@@ -70,13 +79,13 @@
     {
       "name": "agents",
       "path": "agents/",
-      "file_count": 23,
+      "file_count": 22,
       "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly."
     },
     {
       "name": "architecture",
       "path": "architecture/",
-      "file_count": 13,
+      "file_count": 14,
       "description": "Deep dives into project structure, design decisions, and system architecture."
     },
     {
@@ -93,7 +102,7 @@
     {
       "name": "contributing",
       "path": "contributing/",
-      "file_count": 33,
+      "file_count": 26,
       "description": "Guides for developers and maintainers of the structural engineering library."
     },
     {
@@ -105,13 +114,13 @@
     {
       "name": "developers",
       "path": "developers/",
-      "file_count": 5,
+      "file_count": 6,
       "description": "> **For developers building on top of the structural_engineering_lib platform**"
     },
     {
       "name": "getting-started",
       "path": "getting-started/",
-      "file_count": 21,
+      "file_count": 20,
       "description": "Quick onboarding guides for new users of the structural engineering library."
     },
     {
@@ -122,12 +131,12 @@
     {
       "name": "guidelines",
       "path": "guidelines/",
-      "file_count": 18
+      "file_count": 17
     },
     {
       "name": "guides",
       "path": "guides/",
-      "file_count": 10,
+      "file_count": 11,
       "description": "End-user and developer guides for specific workflows."
     },
     {
@@ -139,7 +148,7 @@
     {
       "name": "learning",
       "path": "learning/",
-      "file_count": 9,
+      "file_count": 6,
       "description": "A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the P"
     },
     {
@@ -151,7 +160,7 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 43
+      "file_count": 48
     },
     {
       "name": "publications",
@@ -162,13 +171,12 @@
     {
       "name": "reference",
       "path": "reference/",
-      "file_count": 1788
+      "file_count": 1790
     },
     {
       "name": "research",
       "path": "research/",
-      "file_count": 188,
-      "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings."
+      "file_count": 2
     },
     {
       "name": "specs",
@@ -177,17 +185,11 @@
       "description": "Technical specifications for data formats and schemas."
     },
     {
-      "name": "vba",
-      "path": "vba/",
-      "file_count": 5,
-      "description": "Documentation for the VBA/Excel implementation journey and production plans."
-    },
-    {
       "name": "verification",
       "path": "verification/",
       "file_count": 8,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "3ae40a68548ca98a"
+  "content_hash": "ef9ebe6dbcccb1c8"
 }

@@ -1,0 +1,1961 @@
+{
+  "folder": "Python/structural_lib/services",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-03-29",
+  "file_count": 28,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 2,
+      "last_updated": "2026-03-26",
+      "description": "structural_lib.services — Auto-generated package.",
+      "content_hash": "7eccc38783bb"
+    },
+    {
+      "name": "adapters.py",
+      "type": "python",
+      "size_lines": 2006,
+      "last_updated": "2026-03-28",
+      "description": "Adapters for converting various input formats to canonical models.",
+      "classes": [
+        {
+          "name": "InputAdapter",
+          "description": "Base class for input format adapters.",
+          "public_methods": [
+            "can_handle",
+            "load_geometry",
+            "load_forces"
+          ]
+        },
+        {
+          "name": "ETABSAdapter",
+          "description": "Adapter for ETABS CSV exports.",
+          "public_methods": [
+            "can_handle",
+            "load_geometry",
+            "load_forces"
+          ]
+        },
+        {
+          "name": "ManualInputAdapter",
+          "description": "Adapter for manual/programmatic input.",
+          "public_methods": [
+            "can_handle",
+            "load_geometry",
+            "load_forces",
+            "geometry_from_dict",
+            "forces_from_dict"
+          ]
+        },
+        {
+          "name": "SAFEAdapter",
+          "description": "Adapter for CSI SAFE slab strip forces CSV exports.",
+          "public_methods": [
+            "can_handle",
+            "load_geometry",
+            "load_forces"
+          ]
+        },
+        {
+          "name": "STAADAdapter",
+          "description": "Adapter for STAAD.Pro beam data imports.",
+          "public_methods": [
+            "can_handle",
+            "load_geometry",
+            "load_forces"
+          ]
+        },
+        {
+          "name": "GenericCSVAdapter",
+          "description": "Adapter for generic/manual CSV input (Excel templates, user-created files).",
+          "public_methods": [
+            "can_handle",
+            "load_geometry",
+            "load_forces",
+            "load_combined"
+          ]
+        }
+      ],
+      "content_hash": "79e46de2c3c0"
+    },
+    {
+      "name": "api.py",
+      "type": "python",
+      "size_lines": 1985,
+      "last_updated": "2026-03-29",
+      "description": "Module:       api",
+      "functions": [
+        {
+          "name": "get_library_version",
+          "description": "Return the installed package version."
+        },
+        {
+          "name": "validate_job_spec",
+          "description": "Validate a job.json specification file.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "validate_design_results",
+          "description": "Validate a design results JSON file (single or multi-beam).",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "compute_detailing",
+          "description": "Compute beam detailing results from design results JSON dict.",
+          "params": [
+            "design_results"
+          ]
+        },
+        {
+          "name": "compute_bbs",
+          "description": "Generate a bar bending schedule (BBS) document from detailing results.",
+          "params": [
+            "detailing_list"
+          ]
+        },
+        {
+          "name": "export_bbs",
+          "description": "Export a BBS document to CSV or JSON.",
+          "params": [
+            "bbs_doc",
+            "path"
+          ]
+        },
+        {
+          "name": "compute_dxf",
+          "description": "Generate DXF CAD drawings from detailing results.",
+          "params": [
+            "detailing_list",
+            "output"
+          ]
+        },
+        {
+          "name": "compute_report",
+          "description": "Generate design report from job outputs or design results.",
+          "params": [
+            "source"
+          ]
+        },
+        {
+          "name": "compute_critical",
+          "description": "Generate critical set export from job outputs.",
+          "params": [
+            "job_out"
+          ]
+        },
+        {
+          "name": "check_beam_ductility",
+          "description": "Run IS 13920 beam ductility checks for a single section.",
+          "params": [
+            "b",
+            "D",
+            "d",
+            "fck",
+            "fy",
+            "min_long_bar_dia"
+          ]
+        },
+        {
+          "name": "check_beam_slenderness",
+          "description": "Check beam slenderness for lateral stability per IS 456 Cl 23.3.",
+          "params": [
+            "b_mm",
+            "d_mm",
+            "l_eff_mm",
+            "beam_type",
+            "has_lateral_restraint"
+          ]
+        },
+        {
+          "name": "check_anchorage_at_simple_support",
+          "description": "Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.",
+          "params": [
+            "bar_dia_mm",
+            "fck",
+            "fy",
+            "vu_kn",
+            "support_width_mm",
+            "cover_mm",
+            "bar_type",
+            "has_standard_bend"
+          ]
+        },
+        {
+          "name": "check_deflection_span_depth",
+          "description": "Check deflection using span/depth ratio (Level A).",
+          "params": [
+            "span_mm",
+            "d_mm",
+            "support_condition",
+            "base_allowable_ld",
+            "mf_tension_steel",
+            "mf_compression_steel",
+            "mf_flanged"
+          ]
+        },
+        {
+          "name": "check_crack_width",
+          "description": "Check crack width using an Annex-F-style estimate.",
+          "params": [
+            "exposure_class",
+            "limit_mm",
+            "acr_mm",
+            "cmin_mm",
+            "h_mm",
+            "x_mm",
+            "epsilon_m",
+            "fs_service_nmm2"
+          ]
+        },
+        {
+          "name": "check_compliance_report",
+          "description": "Run a multi-case IS 456 compliance report.",
+          "params": [
+            "cases",
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "d_dash_mm",
+            "asv_mm2"
+          ]
+        },
+        {
+          "name": "design_beam_is456",
+          "description": "Design/check a single IS 456 beam case (strength + optional serviceability)."
+        },
+        {
+          "name": "check_beam_is456",
+          "description": "Run an IS 456 compliance report across multiple cases."
+        },
+        {
+          "name": "detail_beam_is456",
+          "description": "Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups."
+        },
+        {
+          "name": "design_and_detail_beam_is456",
+          "description": "Design AND detail a beam in one call (IS 456:2000)."
+        },
+        {
+          "name": "optimize_beam_cost",
+          "description": "Find the most cost-effective beam design meeting IS 456:2000."
+        }
+      ],
+      "content_hash": "9bdab4c307fc"
+    },
+    {
+      "name": "api_manifest.json",
+      "type": "config",
+      "last_updated": "2026-03-29",
+      "top_level_keys": [
+        "beam_to_3d_geometry",
+        "calculate_equivalent_moment",
+        "calculate_equivalent_shear",
+        "calculate_longitudinal_torsion_steel",
+        "calculate_torsion_shear_stress",
+        "calculate_torsion_stirrup_area",
+        "check_anchorage_at_simple_support",
+        "check_beam_ductility",
+        "check_beam_is456",
+        "check_beam_slenderness"
+      ],
+      "content_hash": "6791967b2604"
+    },
+    {
+      "name": "api_results.py",
+      "type": "python",
+      "size_lines": 439,
+      "last_updated": "2026-03-26",
+      "description": "Module:       api_results",
+      "classes": [
+        {
+          "name": "DesignAndDetailResult",
+          "description": "Combined result from design_and_detail_beam_is456().",
+          "public_methods": [
+            "summary",
+            "to_dict",
+            "to_json",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "CostBreakdown",
+          "description": "Cost breakdown for a beam design."
+        },
+        {
+          "name": "OptimalDesign",
+          "description": "Optimal beam design candidate."
+        },
+        {
+          "name": "CostOptimizationResult",
+          "description": "Result from optimize_beam_cost().",
+          "public_methods": [
+            "summary"
+          ]
+        },
+        {
+          "name": "Suggestion",
+          "description": "Single design improvement suggestion."
+        },
+        {
+          "name": "DesignSuggestionsResult",
+          "description": "Result from suggest_beam_design_improvements().",
+          "public_methods": [
+            "summary",
+            "high_impact_suggestions",
+            "by_category"
+          ]
+        },
+        {
+          "name": "SmartAnalysisResult",
+          "description": "Result from smart_analyze_design().",
+          "public_methods": [
+            "summary",
+            "to_json",
+            "to_text"
+          ]
+        }
+      ],
+      "content_hash": "c0577435b384"
+    },
+    {
+      "name": "audit.py",
+      "type": "python",
+      "size_lines": 595,
+      "last_updated": "2026-03-26",
+      "description": "Module:       audit",
+      "classes": [
+        {
+          "name": "CalculationHash",
+          "description": "Immutable hash of calculation inputs and outputs.",
+          "public_methods": [
+            "from_calculation",
+            "verify_inputs",
+            "verify_outputs",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "AuditLogEntry",
+          "description": "Single entry in the audit log.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "AuditTrail",
+          "description": "Manages immutable audit trail for design calculations.",
+          "public_methods": [
+            "log_design",
+            "log_verification",
+            "get_entry_by_id",
+            "get_entries_for_beam",
+            "verify_entry",
+            "to_dict",
+            "to_json",
+            "export_log",
+            "from_json_file"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "compute_hash",
+          "description": "Compute SHA-256 hash of data dictionary.",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "create_calculation_certificate",
+          "description": "Create a calculation certificate for verification.",
+          "params": [
+            "inputs",
+            "outputs",
+            "project_id",
+            "beam_id",
+            "engineer"
+          ]
+        },
+        {
+          "name": "verify_calculation",
+          "description": "Verify a calculation against a certificate.",
+          "params": [
+            "inputs",
+            "outputs",
+            "certificate"
+          ]
+        }
+      ],
+      "content_hash": "fa0469c4fc9c"
+    },
+    {
+      "name": "batch.py",
+      "type": "python",
+      "size_lines": 169,
+      "last_updated": "2026-03-26",
+      "description": "Batch design helpers for streaming and bulk execution.",
+      "functions": [
+        {
+          "name": "design_beams_iter",
+          "description": "Yield design results for each beam input.",
+          "params": [
+            "beams"
+          ]
+        },
+        {
+          "name": "design_beams",
+          "description": "Design a batch of beams and return results + summary.",
+          "params": [
+            "beams"
+          ]
+        }
+      ],
+      "content_hash": "30ecd81fb4bc"
+    },
+    {
+      "name": "bbs.py",
+      "type": "python",
+      "size_lines": 1135,
+      "last_updated": "2026-03-26",
+      "description": "Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:1987",
+      "classes": [
+        {
+          "name": "BBSLineItem",
+          "description": "Single line item in a Bar Bending Schedule."
+        },
+        {
+          "name": "BBSummary",
+          "description": "Summary of Bar Bending Schedule for a beam or project."
+        },
+        {
+          "name": "BBSDocument",
+          "description": "Complete Bar Bending Schedule document."
+        }
+      ],
+      "functions": [
+        {
+          "name": "calculate_bar_weight",
+          "description": "Calculate weight of a single bar.",
+          "params": [
+            "diameter_mm",
+            "length_mm",
+            "round_weight"
+          ]
+        },
+        {
+          "name": "calculate_unit_weight_per_meter",
+          "description": "Calculate unit weight per meter for a bar diameter.",
+          "params": [
+            "diameter_mm"
+          ]
+        },
+        {
+          "name": "calculate_hook_length",
+          "description": "Calculate hook length per IS 456 Cl 26.2.2.1.",
+          "params": [
+            "diameter_mm",
+            "hook_angle"
+          ]
+        },
+        {
+          "name": "calculate_bend_deduction",
+          "description": "Calculate length deduction at bends per IS 2502 / SP 34.",
+          "params": [
+            "diameter_mm",
+            "bend_angle"
+          ]
+        },
+        {
+          "name": "calculate_straight_bar_length",
+          "description": "Calculate cut length for straight main bars.",
+          "params": [
+            "span_mm",
+            "cover_mm",
+            "ld_mm",
+            "location",
+            "zone"
+          ]
+        },
+        {
+          "name": "calculate_stirrup_cut_length",
+          "description": "Calculate cut length for closed stirrups.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "cover_mm",
+            "stirrup_dia_mm",
+            "hook_length_mm"
+          ]
+        },
+        {
+          "name": "parse_bar_mark",
+          "description": "Parse a bar mark into its components, or return None if invalid.",
+          "params": [
+            "mark"
+          ]
+        },
+        {
+          "name": "extract_bar_marks_from_text",
+          "description": "Extract bar marks from a free-text string.",
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "extract_bar_marks_from_items",
+          "description": "Collect bar marks from BBS items, grouped by beam.",
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "extract_bar_marks_from_bbs_csv",
+          "description": "Load bar marks from a BBS CSV file, grouped by beam.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "assign_bar_marks",
+          "description": "Assign deterministic, project-unique bar marks in-place.",
+          "params": [
+            "items"
+          ]
+        },
+        {
+          "name": "generate_bbs_from_detailing",
+          "description": "Generate BBS line items from a BeamDetailingResult.",
+          "params": [
+            "detailing"
+          ]
+        },
+        {
+          "name": "calculate_bbs_summary",
+          "description": "Calculate summary statistics for BBS items.",
+          "params": [
+            "items",
+            "member_id"
+          ]
+        },
+        {
+          "name": "generate_bbs_document",
+          "description": "Generate a complete BBS document from multiple beams.",
+          "params": [
+            "detailing_list",
+            "project_name"
+          ]
+        },
+        {
+          "name": "optimize_cutting_stock",
+          "description": "First-fit-decreasing bin packing for rebar cutting optimization.",
+          "params": [
+            "line_items",
+            "stock_lengths",
+            "kerf"
+          ]
+        },
+        {
+          "name": "export_bbs_to_csv",
+          "description": "Export BBS items to CSV file.",
+          "params": [
+            "items",
+            "output_path",
+            "include_summary"
+          ]
+        },
+        {
+          "name": "export_bbs_to_json",
+          "description": "Export BBS document to JSON file.",
+          "params": [
+            "document",
+            "output_path"
+          ]
+        },
+        {
+          "name": "export_bom_summary_csv",
+          "description": "Export Bill of Materials summary to CSV.",
+          "params": [
+            "summary",
+            "output_path"
+          ]
+        },
+        {
+          "name": "generate_summary_table",
+          "description": "Generate a human-readable summary table from BBS items.",
+          "params": [
+            "items",
+            "member_id",
+            "format_type"
+          ]
+        }
+      ],
+      "constants": [
+        "STEEL_DENSITY_KG_M3",
+        "STANDARD_STOCK_LENGTHS_MM",
+        "BAR_SHAPES",
+        "LENGTH_ROUND_MM",
+        "WEIGHT_ROUND_KG",
+        "WEIGHT_ROUND_DECIMALS",
+        "UNIT_WEIGHTS_KG_M",
+        "BAR_MARK_PATTERN"
+      ],
+      "content_hash": "353ef834be1b"
+    },
+    {
+      "name": "beam_pipeline.py",
+      "type": "python",
+      "size_lines": 586,
+      "last_updated": "2026-03-26",
+      "description": "beam_pipeline — Unified application-layer pipeline for beam design.",
+      "classes": [
+        {
+          "name": "UnitsValidationError",
+          "description": "Raised when units parameter is invalid or missing."
+        },
+        {
+          "name": "BeamGeometry",
+          "description": "Beam geometry in canonical units (mm)."
+        },
+        {
+          "name": "BeamMaterials",
+          "description": "Material properties in canonical units (N/mm²)."
+        },
+        {
+          "name": "BeamLoads",
+          "description": "Load case in canonical units (kN, kN·m)."
+        },
+        {
+          "name": "FlexureOutput",
+          "description": "Flexure design output."
+        },
+        {
+          "name": "ShearOutput",
+          "description": "Shear design output."
+        },
+        {
+          "name": "ServiceabilityOutput",
+          "description": "Serviceability check output (optional)."
+        },
+        {
+          "name": "DetailingOutput",
+          "description": "Detailing output (optional)."
+        },
+        {
+          "name": "BeamDesignOutput",
+          "description": "Canonical output schema for a single beam design.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "MultiBeamOutput",
+          "description": "Output for multiple beams.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "validate_units",
+          "description": "Validate units string at application boundary.",
+          "params": [
+            "units"
+          ]
+        },
+        {
+          "name": "design_single_beam",
+          "description": "Run complete beam design pipeline for a single beam/case."
+        },
+        {
+          "name": "design_multiple_beams",
+          "description": "Design multiple beams and return unified output."
+        }
+      ],
+      "constants": [
+        "SCHEMA_VERSION",
+        "IS456_UNITS",
+        "_VALID_UNIT_NORMALIZED"
+      ],
+      "content_hash": "44aab8d0c666"
+    },
+    {
+      "name": "calculation_report.py",
+      "type": "python",
+      "size_lines": 681,
+      "last_updated": "2026-03-26",
+      "description": "Module:       calculation_report",
+      "classes": [
+        {
+          "name": "ProjectInfo",
+          "description": "Project and engineer information for reports."
+        },
+        {
+          "name": "InputSection",
+          "description": "Input parameters section of the report."
+        },
+        {
+          "name": "ResultSection",
+          "description": "Calculation results section of the report."
+        },
+        {
+          "name": "CalculationReport",
+          "description": "Professional calculation report container.",
+          "public_methods": [
+            "from_design_result",
+            "to_dict",
+            "to_json",
+            "export_json",
+            "export_html",
+            "export_markdown"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "generate_calculation_report",
+          "description": "Generate a calculation report from design result.",
+          "params": [
+            "result",
+            "beam_id",
+            "story",
+            "project_info",
+            "output_path",
+            "output_format"
+          ]
+        }
+      ],
+      "content_hash": "93073c34c1c9"
+    },
+    {
+      "name": "costing.py",
+      "type": "python",
+      "size_lines": 376,
+      "last_updated": "2026-03-26",
+      "description": "Cost calculation utilities for structural elements.",
+      "classes": [
+        {
+          "name": "CostProfile",
+          "description": "Regional cost data for materials and labor."
+        },
+        {
+          "name": "CostBreakdown",
+          "description": "Detailed cost breakdown for a beam design.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "calculate_concrete_volume",
+          "description": "Calculate concrete volume in m^3.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "span_mm"
+          ]
+        },
+        {
+          "name": "calculate_steel_weight",
+          "description": "Calculate steel weight in kg.",
+          "params": [
+            "ast_mm2",
+            "span_mm"
+          ]
+        },
+        {
+          "name": "calculate_formwork_area",
+          "description": "Calculate formwork surface area in m^2.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "span_mm"
+          ]
+        },
+        {
+          "name": "calculate_beam_cost",
+          "description": "Calculate total cost for a beam design.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "span_mm",
+            "ast_mm2",
+            "fck_nmm2",
+            "steel_percentage",
+            "cost_profile"
+          ]
+        },
+        {
+          "name": "calculate_concrete_cost",
+          "description": "Calculate concrete cost including wastage.",
+          "params": [
+            "volume_m3",
+            "grade",
+            "cost_profile"
+          ]
+        },
+        {
+          "name": "calculate_steel_cost",
+          "description": "Calculate steel reinforcement cost including wastage.",
+          "params": [
+            "weight_kg",
+            "grade",
+            "cost_profile"
+          ]
+        },
+        {
+          "name": "calculate_formwork_cost",
+          "description": "Calculate formwork cost.",
+          "params": [
+            "area_m2",
+            "cost_profile"
+          ]
+        },
+        {
+          "name": "calculate_total_beam_cost",
+          "description": "Calculate total cost for an RC beam with congestion penalty.",
+          "params": [
+            "beam_data",
+            "cost_profile"
+          ]
+        }
+      ],
+      "constants": [
+        "STEEL_DENSITY_KG_PER_M3",
+        "DEFAULT_CONCRETE_GRADE"
+      ],
+      "content_hash": "f0a888681b3b"
+    },
+    {
+      "name": "dashboard.py",
+      "type": "python",
+      "size_lines": 508,
+      "last_updated": "2026-03-26",
+      "description": "Insights module for dashboard aggregation and live code checks.",
+      "classes": [
+        {
+          "name": "DashboardSummary",
+          "description": "Aggregated summary for a batch of design results.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "CodeCheckResult",
+          "description": "Result of a fast IS 456 code check.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "RebarSuggestion",
+          "description": "A single rebar optimization suggestion.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "RebarSuggestionsResult",
+          "description": "Collection of rebar suggestions for a beam.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "generate_dashboard",
+          "description": "Generate an aggregated dashboard summary from multiple design results.",
+          "params": [
+            "design_results"
+          ]
+        },
+        {
+          "name": "code_checks_live",
+          "description": "Perform fast IS 456 code checks on a beam with optional rebar config.",
+          "params": [
+            "beam",
+            "config"
+          ]
+        },
+        {
+          "name": "suggest_rebar_options",
+          "description": "Suggest optimized rebar configurations for a beam.",
+          "params": [
+            "beam",
+            "targets"
+          ]
+        }
+      ],
+      "content_hash": "4e82af92e8d9"
+    },
+    {
+      "name": "dxf_export.py",
+      "type": "python",
+      "size_lines": 1817,
+      "last_updated": "2026-03-27",
+      "description": "DXF Export Module — Beam Detail Drawing Generation",
+      "functions": [
+        {
+          "name": "check_ezdxf",
+          "description": "Raise error if ezdxf is not available."
+        },
+        {
+          "name": "setup_layers",
+          "description": "Create standard layers in the DXF document.",
+          "params": [
+            "doc"
+          ]
+        },
+        {
+          "name": "draw_rectangle",
+          "description": "Draw a rectangle using 4 lines.",
+          "params": [
+            "msp",
+            "x1",
+            "y1",
+            "x2",
+            "y2",
+            "layer"
+          ]
+        },
+        {
+          "name": "group_similar_beams",
+          "description": "Group beams by type (size + span + reinforcement).",
+          "params": [
+            "detailings"
+          ]
+        },
+        {
+          "name": "generate_beam_schedule_table",
+          "description": "Generate a beam schedule in industry-standard format.",
+          "params": [
+            "detailings"
+          ]
+        },
+        {
+          "name": "draw_beam_schedule_table",
+          "description": "Draw a beam schedule table on the DXF drawing.",
+          "params": [
+            "msp",
+            "detailings",
+            "origin",
+            "scale"
+          ]
+        },
+        {
+          "name": "extract_bar_marks_from_dxf",
+          "description": "Extract bar marks from a DXF file, grouped by beam.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "compare_bbs_dxf_marks",
+          "description": "Compare bar marks in a BBS CSV against a DXF file.",
+          "params": [
+            "bbs_csv_path",
+            "dxf_path"
+          ]
+        },
+        {
+          "name": "draw_stirrup",
+          "description": "Draw a single stirrup (U-shape with hooks).",
+          "params": [
+            "msp",
+            "x",
+            "y_bottom",
+            "width",
+            "height",
+            "cover",
+            "layer"
+          ]
+        },
+        {
+          "name": "draw_beam_elevation",
+          "description": "Draw beam elevation view (longitudinal section).",
+          "params": [
+            "msp",
+            "span",
+            "D",
+            "b",
+            "cover",
+            "top_bars",
+            "bottom_bars",
+            "stirrups"
+          ]
+        },
+        {
+          "name": "draw_dimensions",
+          "description": "Add dimension annotations.",
+          "params": [
+            "msp",
+            "span",
+            "D",
+            "origin"
+          ]
+        },
+        {
+          "name": "draw_annotations",
+          "description": "Add text annotations for reinforcement callouts.",
+          "params": [
+            "msp",
+            "span",
+            "D",
+            "beam_id",
+            "story",
+            "b",
+            "top_bars",
+            "bottom_bars"
+          ]
+        },
+        {
+          "name": "draw_section_cut",
+          "description": "Draw a cross-section view of the beam.",
+          "params": [
+            "msp",
+            "b",
+            "D",
+            "cover",
+            "top_bars",
+            "bottom_bars",
+            "stirrup",
+            "origin"
+          ]
+        },
+        {
+          "name": "generate_beam_dxf",
+          "description": "Generate a DXF file from beam detailing result.",
+          "params": [
+            "detailing",
+            "output_path",
+            "include_dimensions",
+            "include_annotations",
+            "include_section_cuts",
+            "include_title_block",
+            "title_block",
+            "sheet_margin_mm"
+          ]
+        },
+        {
+          "name": "generate_multi_beam_dxf",
+          "description": "Generate a single DXF file containing multiple beam details in a grid layout.",
+          "params": [
+            "detailings",
+            "output_path",
+            "columns",
+            "row_spacing",
+            "col_spacing",
+            "include_dimensions",
+            "include_annotations",
+            "include_section_cuts"
+          ]
+        },
+        {
+          "name": "quick_dxf",
+          "description": "One-liner DXF generation with sensible defaults.",
+          "params": [
+            "detailing",
+            "output_path",
+            "include_title_block",
+            "project_name"
+          ]
+        },
+        {
+          "name": "quick_dxf_bytes",
+          "description": "Generate DXF as bytes for in-memory use (e.g., Streamlit download).",
+          "params": [
+            "detailing",
+            "include_title_block",
+            "project_name"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Command-line interface for DXF generation."
+        }
+      ],
+      "constants": [
+        "EZDXF_AVAILABLE",
+        "LAYERS",
+        "TEXT_HEIGHT",
+        "DIM_OFFSET",
+        "REBAR_OFFSET",
+        "DEFAULT_SHEET_MARGIN",
+        "DEFAULT_TITLE_BLOCK_WIDTH",
+        "DEFAULT_TITLE_BLOCK_HEIGHT",
+        "REBAR_UNIT_WEIGHT"
+      ],
+      "content_hash": "f7018c59fa14"
+    },
+    {
+      "name": "etabs_import.py",
+      "type": "python",
+      "size_lines": 1015,
+      "last_updated": "2026-03-26",
+      "description": "ETABS CSV Import Module.",
+      "classes": [
+        {
+          "name": "ETABSForceRow",
+          "description": "Parsed row from ETABS beam forces export."
+        },
+        {
+          "name": "FrameGeometry",
+          "description": "Frame element geometry from ETABS frames_geometry export.",
+          "public_methods": [
+            "length_m",
+            "is_vertical"
+          ]
+        },
+        {
+          "name": "ETABSEnvelopeResult",
+          "description": "Envelope result for a beam across all stations."
+        }
+      ],
+      "functions": [
+        {
+          "name": "validate_etabs_csv",
+          "description": "Validate ETABS CSV file structure.",
+          "params": [
+            "csv_path"
+          ]
+        },
+        {
+          "name": "load_etabs_csv",
+          "description": "Load ETABS beam forces CSV file.",
+          "params": [
+            "csv_path"
+          ]
+        },
+        {
+          "name": "normalize_etabs_forces",
+          "description": "Normalize ETABS beam forces export to envelope format.",
+          "params": [
+            "csv_path",
+            "output_path"
+          ]
+        },
+        {
+          "name": "export_normalized_csv",
+          "description": "Export normalized envelope data to CSV.",
+          "params": [
+            "envelopes",
+            "output_path"
+          ]
+        },
+        {
+          "name": "create_job_from_etabs",
+          "description": "Create a job.json dict from ETABS envelope data.",
+          "params": [
+            "envelope_data"
+          ]
+        },
+        {
+          "name": "create_jobs_from_etabs_csv",
+          "description": "Create job.json files for all beams in ETABS export.",
+          "params": [
+            "csv_path",
+            "geometry"
+          ]
+        },
+        {
+          "name": "load_frames_geometry",
+          "description": "Load frame geometry from ETABS frames_geometry.csv export.",
+          "params": [
+            "csv_path"
+          ]
+        },
+        {
+          "name": "merge_forces_and_geometry",
+          "description": "Merge force envelopes with frame geometry by UniqueName.",
+          "params": [
+            "envelopes",
+            "frames"
+          ]
+        },
+        {
+          "name": "to_beam_geometry",
+          "description": "Convert FrameGeometry dataclass to Pydantic BeamGeometry model.",
+          "params": [
+            "frame"
+          ]
+        },
+        {
+          "name": "to_beam_forces",
+          "description": "Convert ETABSEnvelopeResult dataclass to Pydantic BeamForces model.",
+          "params": [
+            "envelope"
+          ]
+        },
+        {
+          "name": "frames_to_beam_geometries",
+          "description": "Convert list of FrameGeometry to list of BeamGeometry models.",
+          "params": [
+            "frames",
+            "section_map"
+          ]
+        },
+        {
+          "name": "envelopes_to_beam_forces",
+          "description": "Convert list of ETABSEnvelopeResult to list of BeamForces models.",
+          "params": [
+            "envelopes"
+          ]
+        }
+      ],
+      "content_hash": "e7b76ebf2308"
+    },
+    {
+      "name": "excel_bridge.py",
+      "type": "python",
+      "size_lines": 305,
+      "last_updated": "2026-03-27",
+      "description": "Excel UDF Bridge - Exposes structural_lib functions to Excel via xlwings",
+      "functions": [
+        {
+          "name": "IS456_MuLim",
+          "description": "Calculate limiting moment of resistance for singly reinforced beam.",
+          "params": [
+            "b",
+            "d",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "IS456_AstRequired",
+          "description": "Calculate required tension steel area for flexure.",
+          "params": [
+            "b",
+            "d",
+            "mu",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "IS456_ShearSpacing",
+          "description": "Calculate required stirrup spacing for shear.",
+          "params": [
+            "vu",
+            "b",
+            "d",
+            "fck",
+            "fy",
+            "dia_stirrup",
+            "pt"
+          ]
+        },
+        {
+          "name": "IS456_BarCallout",
+          "description": "Generate bar callout string.",
+          "params": [
+            "num_bars",
+            "dia"
+          ]
+        },
+        {
+          "name": "IS456_StirrupCallout",
+          "description": "Generate stirrup callout string.",
+          "params": [
+            "legs",
+            "dia",
+            "spacing"
+          ]
+        },
+        {
+          "name": "IS456_Ld",
+          "description": "Calculate development length (IS 456:2000 Cl 26.2.1).",
+          "params": [
+            "dia",
+            "fck",
+            "fy"
+          ]
+        },
+        {
+          "name": "create_design_sheet",
+          "description": "Create a Design sheet with headers and formulas."
+        }
+      ],
+      "content_hash": "3be83d3f24bf"
+    },
+    {
+      "name": "excel_integration.py",
+      "type": "python",
+      "size_lines": 489,
+      "last_updated": "2026-03-26",
+      "description": "Excel Integration Module — Bridge between Excel data and Detailing/DXF",
+      "classes": [
+        {
+          "name": "BeamDesignData",
+          "description": "Represents a row from tbl_BeamDesign.",
+          "public_methods": [
+            "from_dict"
+          ]
+        },
+        {
+          "name": "ProcessingResult",
+          "description": "Result of processing a beam for DXF generation."
+        }
+      ],
+      "functions": [
+        {
+          "name": "load_beam_data_from_csv",
+          "description": "Load beam design data from a CSV file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "load_beam_data_from_json",
+          "description": "Load beam design data from a JSON file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "export_beam_data_to_json",
+          "description": "Export beam data to JSON file.",
+          "params": [
+            "beams",
+            "filepath"
+          ]
+        },
+        {
+          "name": "process_single_beam",
+          "description": "Process a single beam: create detailing and optionally generate DXF.",
+          "params": [
+            "beam",
+            "output_folder",
+            "is_seismic",
+            "generate_dxf"
+          ]
+        },
+        {
+          "name": "batch_generate_dxf",
+          "description": "Batch process multiple beams from a CSV or JSON file.",
+          "params": [
+            "input_file",
+            "output_folder",
+            "is_seismic"
+          ]
+        },
+        {
+          "name": "generate_summary_report",
+          "description": "Generate a text summary of batch processing results.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "generate_detailing_schedule",
+          "description": "Generate a detailing schedule from processing results.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "export_schedule_to_csv",
+          "description": "Export detailing schedule to CSV file.",
+          "params": [
+            "schedule",
+            "filepath"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Command-line interface for batch DXF generation."
+        }
+      ],
+      "content_hash": "09c46219c841"
+    },
+    {
+      "name": "imports.py",
+      "type": "python",
+      "size_lines": 175,
+      "last_updated": "2026-03-26",
+      "description": "Import helpers for multi-format CSV ingestion.",
+      "classes": [
+        {
+          "name": "ImportWarnings",
+          "description": "Warnings produced during import parsing/merge."
+        }
+      ],
+      "functions": [
+        {
+          "name": "parse_dual_csv",
+          "description": "Parse dual CSV inputs (geometry + forces) into canonical models.",
+          "params": [
+            "geometry_csv",
+            "forces_csv"
+          ]
+        },
+        {
+          "name": "merge_geometry_forces",
+          "description": "Merge geometry and forces by beam ID.",
+          "params": [
+            "geometry_list",
+            "forces_list"
+          ]
+        },
+        {
+          "name": "validate_import",
+          "description": "Validate import results and surface warnings/errors.",
+          "params": [
+            "batch"
+          ]
+        }
+      ],
+      "content_hash": "2538d6ffcdc1"
+    },
+    {
+      "name": "intelligence.py",
+      "type": "python",
+      "size_lines": 36,
+      "last_updated": "2026-03-26",
+      "description": "Compatibility shim for legacy imports.",
+      "content_hash": "dbe6a54d2800"
+    },
+    {
+      "name": "job_cli.py",
+      "type": "python",
+      "size_lines": 203,
+      "last_updated": "2026-03-26",
+      "description": "job_cli",
+      "functions": [
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "content_hash": "c30a654eeea6"
+    },
+    {
+      "name": "job_runner.py",
+      "type": "python",
+      "size_lines": 317,
+      "last_updated": "2026-03-26",
+      "description": "job_runner",
+      "functions": [
+        {
+          "name": "load_job_json",
+          "description": "Load a job file (JSON).",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "load_job_spec",
+          "description": "Load and validate a job spec file, returning the beam geometry and metadata.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "run_job_is456",
+          "description": "Run a single-beam IS456 job and write outputs."
+        },
+        {
+          "name": "run_job",
+          "description": "Dispatch job runner based on job['code']."
+        }
+      ],
+      "content_hash": "c32dcd937702"
+    },
+    {
+      "name": "multi_objective_optimizer.py",
+      "type": "python",
+      "size_lines": 638,
+      "last_updated": "2026-03-26",
+      "description": "Multi-Objective Optimization Module",
+      "classes": [
+        {
+          "name": "ParetoCandidate",
+          "description": "A candidate beam design on the Pareto front.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ParetoOptimizationResult",
+          "description": "Result of Pareto multi-objective optimization.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "optimize_pareto_front",
+          "description": "Find Pareto-optimal beam designs using NSGA-II inspired algorithm.",
+          "params": [
+            "span_mm",
+            "mu_knm",
+            "vu_kn",
+            "objectives",
+            "cost_profile",
+            "cover_mm",
+            "max_candidates",
+            "random_seed"
+          ]
+        },
+        {
+          "name": "get_design_explanation",
+          "description": "Generate human-readable explanation of why this design was chosen.",
+          "params": [
+            "candidate"
+          ]
+        }
+      ],
+      "constants": [
+        "GOVERNING_CLAUSES"
+      ],
+      "content_hash": "89c4b6caca46"
+    },
+    {
+      "name": "optimization.py",
+      "type": "python",
+      "size_lines": 309,
+      "last_updated": "2026-03-26",
+      "description": "Optimization algorithms for structural design.",
+      "classes": [
+        {
+          "name": "OptimizationCandidate",
+          "description": "A candidate beam design with cost."
+        },
+        {
+          "name": "CostOptimizationResult",
+          "description": "Result of cost optimization."
+        }
+      ],
+      "functions": [
+        {
+          "name": "optimize_beam_cost",
+          "description": "Find cheapest beam design meeting IS 456:2000.",
+          "params": [
+            "span_mm",
+            "mu_knm",
+            "vu_kn",
+            "cost_profile",
+            "cover_mm"
+          ]
+        }
+      ],
+      "content_hash": "6d3d8505ae95"
+    },
+    {
+      "name": "rebar.py",
+      "type": "python",
+      "size_lines": 251,
+      "last_updated": "2026-03-26",
+      "description": "Rebar configuration validation and application helpers.",
+      "functions": [
+        {
+          "name": "validate_rebar_config",
+          "description": "Validate a rebar configuration against basic geometry checks.",
+          "params": [
+            "beam",
+            "config"
+          ]
+        },
+        {
+          "name": "apply_rebar_config",
+          "description": "Apply a rebar configuration and return geometry + validation.",
+          "params": [
+            "beam",
+            "config"
+          ]
+        }
+      ],
+      "content_hash": "2090bfd4781c"
+    },
+    {
+      "name": "rebar_optimizer.py",
+      "type": "python",
+      "size_lines": 322,
+      "last_updated": "2026-03-27",
+      "description": "Rebar arrangement optimizer (deterministic).",
+      "classes": [
+        {
+          "name": "RebarOptimizerResult"
+        }
+      ],
+      "functions": [
+        {
+          "name": "optimize_bar_arrangement",
+          "description": "Find a feasible bar arrangement."
+        }
+      ],
+      "content_hash": "61f776d5f96a"
+    },
+    {
+      "name": "report.py",
+      "type": "python",
+      "size_lines": 1755,
+      "last_updated": "2026-03-27",
+      "description": "Report generation module for beam design results.",
+      "classes": [
+        {
+          "name": "ReportData",
+          "description": "Container for report input data."
+        },
+        {
+          "name": "CriticalCase",
+          "description": "A single case entry for critical set output."
+        },
+        {
+          "name": "SanityCheck",
+          "description": "A single input sanity check result."
+        },
+        {
+          "name": "ScorecardItem",
+          "description": "A single stability scorecard item."
+        },
+        {
+          "name": "UnitsAlert",
+          "description": "A single units sentinel alert."
+        }
+      ],
+      "functions": [
+        {
+          "name": "load_report_data",
+          "description": "Load report data from job output folder.",
+          "params": [
+            "output_dir"
+          ]
+        },
+        {
+          "name": "get_input_sanity",
+          "description": "Evaluate input sanity checks for geometry/material inputs.",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "get_stability_scorecard",
+          "description": "Generate stability scorecard flags from governing case results.",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "get_units_sentinel",
+          "description": "Flag likely unit mismatches based on magnitude heuristics.",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "export_json",
+          "description": "Export report data as JSON string.",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "export_html",
+          "description": "Export report data as HTML string (Phase 1 visuals).",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "export_pdf",
+          "description": "Export report data as PDF bytes via WeasyPrint.",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "load_design_results",
+          "description": "Load design results JSON (multi-beam output).",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "export_design_json",
+          "description": "Export report JSON for multi-beam design results.",
+          "params": [
+            "design_results"
+          ]
+        },
+        {
+          "name": "render_design_report_single",
+          "description": "Render a single HTML report for multi-beam results.",
+          "params": [
+            "design_results"
+          ]
+        },
+        {
+          "name": "write_design_report_package",
+          "description": "Write HTML report package for multi-beam results.",
+          "params": [
+            "design_results"
+          ]
+        },
+        {
+          "name": "get_critical_set",
+          "description": "Extract cases sorted by utilization (highest first).",
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "export_critical_csv",
+          "description": "Export critical set as CSV string.",
+          "params": [
+            "cases"
+          ]
+        },
+        {
+          "name": "export_critical_html",
+          "description": "Export critical set as HTML table with utilization bars.",
+          "params": [
+            "cases"
+          ]
+        }
+      ],
+      "constants": [
+        "_REPORT_CSS"
+      ],
+      "content_hash": "94546ad4635e"
+    },
+    {
+      "name": "report_svg.py",
+      "type": "python",
+      "size_lines": 279,
+      "last_updated": "2026-03-26",
+      "description": "SVG helpers for report visuals (stdlib only).",
+      "functions": [
+        {
+          "name": "render_section_svg",
+          "description": "Render a simple rectangular beam cross-section as SVG."
+        },
+        {
+          "name": "render_section_svg_from_beam",
+          "description": "Render SVG from a beam dict (job spec fields).",
+          "params": [
+            "beam"
+          ]
+        }
+      ],
+      "content_hash": "6b6877d2e201"
+    },
+    {
+      "name": "serialization.py",
+      "type": "python",
+      "size_lines": 449,
+      "last_updated": "2026-03-26",
+      "description": "JSON serialization utilities for canonical data models.",
+      "functions": [
+        {
+          "name": "save_geometry",
+          "description": "Save beam geometry to JSON file.",
+          "params": [
+            "beams",
+            "filepath"
+          ]
+        },
+        {
+          "name": "load_geometry",
+          "description": "Load beam geometry from JSON file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "save_forces",
+          "description": "Save beam forces to JSON file.",
+          "params": [
+            "forces",
+            "filepath"
+          ]
+        },
+        {
+          "name": "load_forces",
+          "description": "Load beam forces from JSON file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "save_batch_input",
+          "description": "Save batch input to JSON file.",
+          "params": [
+            "batch",
+            "filepath"
+          ]
+        },
+        {
+          "name": "load_batch_input",
+          "description": "Load batch input from JSON file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "save_batch_result",
+          "description": "Save batch result to JSON file.",
+          "params": [
+            "result",
+            "filepath"
+          ]
+        },
+        {
+          "name": "load_batch_result",
+          "description": "Load batch result from JSON file.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "generate_schema",
+          "description": "Generate JSON Schema for a model class.",
+          "params": [
+            "model_class"
+          ]
+        },
+        {
+          "name": "generate_all_schemas",
+          "description": "Generate JSON Schemas for all canonical models.",
+          "params": [
+            "output_dir"
+          ]
+        },
+        {
+          "name": "cache_exists",
+          "description": "Check if a cache file exists.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "get_cache_metadata",
+          "description": "Get metadata from a cache file without loading all data.",
+          "params": [
+            "filepath"
+          ]
+        }
+      ],
+      "constants": [
+        "T"
+      ],
+      "content_hash": "b4c2f663abd6"
+    },
+    {
+      "name": "testing_strategies.py",
+      "type": "python",
+      "size_lines": 655,
+      "last_updated": "2026-03-26",
+      "description": "Module:       testing_strategies",
+      "classes": [
+        {
+          "name": "ToleranceSpec",
+          "description": "Specification for numerical tolerance comparison.",
+          "public_methods": [
+            "is_close",
+            "assert_close"
+          ]
+        },
+        {
+          "name": "BoundaryValueGenerator",
+          "description": "Generate boundary values for testing.",
+          "public_methods": [
+            "generate"
+          ]
+        },
+        {
+          "name": "BeamParameterRanges",
+          "description": "Standard parameter ranges for IS 456 beam design.",
+          "public_methods": [
+            "get_boundary_generator"
+          ]
+        },
+        {
+          "name": "RandomTestCase",
+          "description": "Container for randomly generated test case."
+        },
+        {
+          "name": "PropertyBasedTester",
+          "description": "Property-based testing using stdlib random.",
+          "public_methods": [
+            "reset",
+            "generate_beam_cases"
+          ]
+        },
+        {
+          "name": "InvariantCheck",
+          "description": "Engineering invariant that must always hold.",
+          "public_methods": [
+            "check"
+          ]
+        },
+        {
+          "name": "BeamDesignInvariants",
+          "description": "Standard invariants for beam design results.",
+          "public_methods": [
+            "get_all",
+            "check_all"
+          ]
+        },
+        {
+          "name": "RegressionBaseline",
+          "description": "Baseline data for regression testing.",
+          "public_methods": [
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "RegressionTestSuite",
+          "description": "Manage regression test baselines.",
+          "public_methods": [
+            "add_baseline",
+            "save",
+            "compare"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "assert_beam_design_valid",
+          "description": "Assert that a beam design result satisfies all invariants.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "create_test_case_id",
+          "description": "Create a deterministic test case ID from inputs.",
+          "params": [
+            "inputs"
+          ]
+        }
+      ],
+      "constants": [
+        "T",
+        "AREA_TOLERANCE",
+        "LENGTH_TOLERANCE",
+        "FORCE_TOLERANCE",
+        "STRESS_TOLERANCE",
+        "RATIO_TOLERANCE"
+      ],
+      "content_hash": "884be28d2acc"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "c7176d99554506a8",
+  "has_init": true
+}

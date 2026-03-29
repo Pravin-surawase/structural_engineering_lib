@@ -3,14 +3,14 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-03-25
-**Files:** 31
+**Last Updated:** 2026-03-29
+**Files:** 24
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Contributing | Guides for developers and maintainers of the structural engi | 110 |
+| [README.md](README.md) | Contributing | Guides for developers and maintainers of the structural engi | 100 |
 | [agent-coding-standards.md](agent-coding-standards.md) | Agent Coding Standards for structural_li | This guide ensures AI agents write code that is: - ✅ Compati | 744 |
 | [agent-collaboration-framework.md](agent-collaboration-framework.md) | Agent Collaboration Framework | This project uses **agent-driven maintenance** where special | 666 |
 | [agent-onboarding-message.md](agent-onboarding-message.md) | First Message for New Agents | > **Copy-paste this exact message to any new agent starting  | 45 |

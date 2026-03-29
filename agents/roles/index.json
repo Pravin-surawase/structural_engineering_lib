@@ -1,15 +1,15 @@
 {
   "folder": "agents/roles",
   "type": "documentation",
-  "description": "Defines 12 agent roles for the multi-agent collaboration framework.",
-  "last_updated": "2026-03-25",
+  "description": "> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copilot agents). These files are kept for reference on",
+  "last_updated": "2026-03-29",
   "file_count": 13,
   "files": [
     {
       "name": "ARCHITECT.md",
       "type": "documentation",
       "size_lines": 80,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "ARCHITECT Agent — Role Document",
       "description": "- Layered architecture and dependency direction - Stable public APIs and schema contracts",
       "content_hash": "cad8b79d8511"
@@ -18,7 +18,7 @@
       "name": "CLIENT.md",
       "type": "documentation",
       "size_lines": 52,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "CLIENT (Stakeholder) Agent — Role Document",
       "description": "- User Stories and Acceptance Criteria - Workflow validation (\"Does this make sense for an engineer?\")",
       "content_hash": "7ab68c69b86e"
@@ -27,7 +27,7 @@
       "name": "DEV.md",
       "type": "documentation",
       "size_lines": 100,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "DEV Agent — Role Document",
       "description": "- Clean architecture and proper layering - Library purity (no UI dependencies in core)",
       "content_hash": "ebb00c3333e3"
@@ -36,7 +36,7 @@
       "name": "DEVOPS.md",
       "type": "documentation",
       "size_lines": 141,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "DEVOPS Agent — Role Document",
       "description": "- Repo layout and file organization - VBA module export/import workflows",
       "content_hash": "4bbb43b6ad52"
@@ -45,7 +45,7 @@
       "name": "DOCS.md",
       "type": "documentation",
       "size_lines": 32,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "DOCS Agent — Role Document",
       "description": "- Keep API/README/CHANGELOG/RELEASES/TASKS in sync with code and scope. - Write release notes and append-only ledger updates (respect immutability rules).",
       "content_hash": "44b754cee498"
@@ -54,7 +54,7 @@
       "name": "GOVERNANCE.md",
       "type": "documentation",
       "size_lines": 832,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Agent 9: Governance & Sustainability Agent",
       "description": "> \"Keep the project sustainable, clean, and governable. Channel Agent 6 & Agent 8's exceptional velocity into predictable long-term gains through strategic governance.\" AI agents amplify existing disc",
       "content_hash": "082618aca505"
@@ -63,7 +63,7 @@
       "name": "INTEGRATION.md",
       "type": "documentation",
       "size_lines": 49,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "INTEGRATION Agent — Role Document",
       "description": "- BEAM_INPUT/BEAM_DESIGN schema definitions and versioning. - ETABS/STAAD/CSV mapping rules and validation at import.",
       "content_hash": "c366c074c705"
@@ -72,7 +72,7 @@
       "name": "PM.md",
       "type": "documentation",
       "size_lines": 144,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "PM (Product Manager) Agent — Role Document",
       "description": "- **Orchestration:** Assigning tasks to the right specialist agent (DEV, UI, CLIENT, etc.). - **Governance:** Enforcing version control rules and immutable history.",
       "content_hash": "745b59e833c2"
@@ -80,17 +80,17 @@
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 23,
-      "last_updated": "2026-03-24",
-      "title": "Agent Roles",
-      "description": "Defines 12 agent roles for the multi-agent collaboration framework. | Role | File | Scope |",
-      "content_hash": "6e5699426ac0"
+      "size_lines": 25,
+      "last_updated": "2026-03-28",
+      "title": "Agent Roles (LEGACY)",
+      "description": "> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in .github/agents/ (11 Copilot agents). These files are kept for reference only",
+      "content_hash": "bcf9b51b8c85"
     },
     {
       "name": "RESEARCHER.md",
       "type": "documentation",
       "size_lines": 59,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "RESEARCHER Agent — Role Document",
       "description": "- IS Codes (IS 456:2000, IS 13920:2016, SP 16, SP 34) - Algorithms and Numerical Methods (e.g., Bisection method for NA)",
       "content_hash": "18edf48c1209"
@@ -99,7 +99,7 @@
       "name": "SUPPORT.md",
       "type": "documentation",
       "size_lines": 32,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "SUPPORT (Runbook) Agent — Role Document",
       "description": "- Maintain docs/reference/troubleshooting.md and docs/reference/known-pitfalls.md. - Capture repro steps, probes, and fixes for recurrent issues (e.g., Mac VBA overflow).",
       "content_hash": "95ca57da3cc2"
@@ -108,7 +108,7 @@
       "name": "TESTER.md",
       "type": "documentation",
       "size_lines": 98,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "TESTER Agent — Role Document",
       "description": "- Numerical correctness against hand calculations - Edge case coverage (min/max values, boundary conditions)",
       "content_hash": "c2b0ddfbd5de"
@@ -117,12 +117,12 @@
       "name": "UI.md",
       "type": "documentation",
       "size_lines": 52,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "UI (User Interface) Agent — Role Document",
       "description": "- Worksheet layout and visual hierarchy - User interaction flow (Input -> Process -> Output)",
       "content_hash": "7e87896c8b84"
     }
   ],
   "subfolders": [],
-  "content_hash": "f529362d579a7aac"
+  "content_hash": "612c073266b6f44a"
 }

@@ -3,16 +3,16 @@
 Quick onboarding guides for new users of the structural engineering library.
 
 **Type:** Mixed
-**Last Updated:** 2026-03-25
-**Files:** 19
+**Last Updated:** 2026-03-29
+**Files:** 18
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [NEW-DEVELOPER-ONBOARDING.md](NEW-DEVELOPER-ONBOARDING.md) | Onboarding Guide for New Developers | This guide is for you if: - ✅ You're new to this project | 368 |
-| [README.md](README.md) | Getting Started | Quick onboarding guides for new users of the structural engi | 79 |
-| [agent-bootstrap.md](agent-bootstrap.md) | Agent Bootstrap — structural_engineering | > **This is THE canonical bootstrap for all AI agents.** Ent | 461 |
+| [README.md](README.md) | Getting Started | Quick onboarding guides for new users of the structural engi | 76 |
+| [agent-bootstrap.md](agent-bootstrap.md) | Agent Bootstrap — structural_engineering | > **This is THE canonical bootstrap for all AI agents.** Ent | 695 |
 | [agent-essentials.md](agent-essentials.md) | Agent Essentials | > **Merged.** This document's content has been consolidated  | 5 |
 | [ai-context-pack.md](ai-context-pack.md) | AI Context Pack | > **Merged.** This document's content has been consolidated  | 5 |
 | [beginners-guide.md](beginners-guide.md) | Beginner's Guide (No Coding Required) | This guide is written for engineers and students who are new | 150 |
@@ -23,6 +23,7 @@ Quick onboarding guides for new users of the structural engineering library.
 | [fix-copilot-terminal.md](fix-copilot-terminal.md) | Fix Copilot Terminal Lockup - Manual Ste | Copilot Agent's terminal is stuck in git pager mode. Command | 148 |
 | [insights-guide.md](insights-guide.md) | Advisory Insights Guide | > **Stability:** Experimental - API may change before v1.0 A | 537 |
 | [installation-notes.md](installation-notes.md) | Installation & Setup Guide | All required packages have been installed successfully: - ** | 80 |
-| [python-quickstart.md](python-quickstart.md) | Python Quickstart (Beginner-Friendly) | This guide shows how to install, run, and verify the Python  | 173 |
+| [mac-mini-setup.md](mac-mini-setup.md) | Mac Mini Setup Guide | Complete instructions to clone and run the full stack on a f | 389 |
+| [python-quickstart.md](python-quickstart.md) | Python Quickstart (Beginner-Friendly) | This guide shows how to install, run, and verify the Python  | 172 |
 | [releases.md](releases.md) | Release Ledger | This document serves as the **immutable source of truth** fo | 910 |
-| [user-guide.md](user-guide.md) | User Guide — Complete Workflow | This guide walks you through a complete beam design workflow | 215 |
+| [user-guide.md](user-guide.md) | User Guide — Complete Workflow | This guide walks you through a complete beam design workflow | 214 |

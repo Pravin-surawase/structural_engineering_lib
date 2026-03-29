@@ -1,16 +1,16 @@
 # Guides
 
 **Type:** Documentation
-**Last Updated:** 2026-03-25
-**Files:** 15
+**Last Updated:** 2026-03-29
+**Files:** 14
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Agent Guides | - agent-8-automation.md - Quick start + script index (start  | 62 |
-| [agent-6-comprehensive-onboarding.md](agent-6-comprehensive-onboarding.md) | Agent 6 Comprehensive Onboarding Guide | Your mission: Build and maintain production-ready Streamlit  | 523 |
-| [agent-6-quick-start.md](agent-6-quick-start.md) | Agent 6 Quick Start (Streamlit UI Specia | You build the **Streamlit web interface** for the structural | 89 |
+| [agent-6-comprehensive-onboarding.md](agent-6-comprehensive-onboarding.md) | Agent 6 Comprehensive Onboarding Guide | Your mission: Build and maintain production-ready Streamlit  | 519 |
+| [agent-6-quick-start.md](agent-6-quick-start.md) | Agent 6 Quick Start (Streamlit UI Specia | You build the **Streamlit web interface** for the structural | 87 |
 | [agent-8-automation.md](agent-8-automation.md) | Agent 8 Automation - Scripts & Tools Ind | bash ./scripts/agent_start.sh        # Unified setup | 329 |
 | [agent-8-git-ops.md](agent-8-git-ops.md) | Agent 8: GIT OPERATIONS SPECIALIST | - ✅ **Workflow Enforcement** - Single entrypoint, eliminate  | 1307 |
 | [agent-8-mistakes-prevention-guide.md](agent-8-mistakes-prevention-guide.md) | Agent 8: Mistakes Prevention Guide (Less | <!-- lint-ignore-git --> > ⚠️ **HISTORICAL DOCUMENTATION NOT | 1114 |

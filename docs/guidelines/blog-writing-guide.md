@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Medium
 **Created:** 2026-01-07
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-03-29
 
 ---
 
@@ -846,5 +846,5 @@ Key principles:
 ---
 
 **Guidelines Version:** 1.0
-**Last Updated:** 2026-01-07
+**Last Updated:** 2026-03-29
 **Feedback/Improvements:** Suggestions welcome via GitHub Issues

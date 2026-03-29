@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 3.0
 **Created:** 2025-12-01
-**Last Updated:** 2026-02-11
+**Last Updated:** 2026-03-29
 **Enforcement:** Automated validators + pre-commit hooks
 
 ---
@@ -401,7 +401,7 @@ agents/
 
 **Type:** [Guide | Reference | Research | Archive]
 **Audience:** [All | Users | Developers | Maintainers]
-**Last Updated:** YYYY-MM-DD
+**Last Updated:** 2026-03-29
 **Status:** [Active | Obsolete | Superseded | In Progress]
 **Importance:** [Critical | High | Medium | Low]
 **Version:** [Original | v2 | Supersedes: doc-name.md]
@@ -465,7 +465,7 @@ agents/
 
 ## XI. Current Status
 
-**Last Updated:** 2026-02-10 (Session 89 — Folder Structure Migration v2 complete)
+**Last Updated:** 2026-03-29 (Session 89 — Folder Structure Migration v2 complete)
 
 | Aspect | Status | Notes |
 |--------|--------|-------|

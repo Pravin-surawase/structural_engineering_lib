@@ -6,7 +6,7 @@
 **Importance:** Medium
 **Version:** 1.0.0
 **Created:** 2025-12-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-03-29
 
 This document defines naming standards for files, modules, and symbols in this
 repository.
@@ -55,7 +55,7 @@ Use consistent headers for documents:
 # Title
 
 **Status:** Draft | In Review | Active
-**Last Updated:** YYYY-MM-DD
+**Last Updated:** 2026-03-29
 **Owner:** <role or person>
 ```
 

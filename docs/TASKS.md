@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-29 (Session 105 — Agent testing + architecture fixes + shear tests)
+**Updated:** 2026-03-29 (Session 109 — Documentation maintenance)
 
 ---
 

@@ -2,32 +2,32 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-25",
-  "file_count": 38,
+  "last_updated": "2026-03-29",
+  "file_count": 43,
   "files": [
     {
       "name": "3d-visualization-strategic-decision.md",
       "type": "documentation",
       "size_lines": 752,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "3D Visualization Strategic Decision - Long-Term Excellence",
       "description": "> NOTE: Three.js source of truth is docs/research/threejs-visualization-source-of-truth.md. > This decision record is retained for context; update decisions in the source of truth if they change.",
-      "content_hash": "6c8eadf03f3e"
+      "content_hash": "98f17d2295ce"
     },
     {
       "name": "8-week-development-plan.md",
       "type": "documentation",
-      "size_lines": 826,
-      "last_updated": "2026-01-27",
+      "size_lines": 824,
+      "last_updated": "2026-03-27",
       "title": "V3 React Migration Roadmap (7-Week Plan)",
       "description": "| Component | Technology | Purpose | |-----------|------------|---------|",
-      "content_hash": "739e927b462d"
+      "content_hash": "12f9dfe49701"
     },
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 145,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
       "content_hash": "c1f31e210ac8"
@@ -36,7 +36,7 @@
       "name": "agent-workflow-improvements.md",
       "type": "documentation",
       "size_lines": 393,
-      "last_updated": "2026-03-23",
+      "last_updated": "2026-03-26",
       "title": "Agent Workflow Improvements — Roadmap",
       "description": "AI agents spend significant time on repetitive documentation tasks every session: - **3–5 docs** need manual updates at session end (SESSION_LOG, TASKS, next-session-brief, bootstrap files)",
       "content_hash": "7f96f419461d"
@@ -45,7 +45,7 @@
       "name": "ai-agent-efficiency-and-git-workflow-plan.md",
       "type": "documentation",
       "size_lines": 277,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "title": "AI Agent Efficiency & Git Workflow Improvement Plan",
       "description": "This repo already has **best-in-class** AI agent infrastructure — 83 mapped automation scripts, session continuity via SESSION_LOG.md + handoff docs, unified commit workflow (ai_commit.sh), 12 agent r",
       "content_hash": "cdc83a23e4e9"
@@ -54,16 +54,16 @@
       "name": "ai-chat-redesign-plan.md",
       "type": "documentation",
       "size_lines": 562,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "AI Chat Page Redesign Plan",
       "description": "Complete redesign of the AI Assistant page (10_🤖_ai_assistant.py) to create a professional, modern engineering tool that: - Uses **100% of screen space** (no wasted header area)",
-      "content_hash": "8fc457eedea1"
+      "content_hash": "0ec8408e4841"
     },
     {
       "name": "api-improvement-research-specs.md",
       "type": "documentation",
       "size_lines": 765,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "API Improvement Research Specifications",
       "description": "This document specifies research tasks for improving the library's API design to match professional standards. Each task will be executed by agents to gather comprehensive information, which will then",
       "content_hash": "f8f0474e6a7e"
@@ -72,7 +72,7 @@
       "name": "automation-platform-phase-0-research.md",
       "type": "documentation",
       "size_lines": 285,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Automation Platform Phase 0 - Research & Mapping",
       "description": "Phase 0 isn't just about \"digitizing calculations\" - it's about moving structural engineering from **static spreadsheets** to **live intelligence**. - **Legacy Tools (ETABS, SAP2000):** Powerful but b",
       "content_hash": "ba687bcfe5b9"
@@ -81,7 +81,7 @@
       "name": "automation-platform-vision.md",
       "type": "documentation",
       "size_lines": 459,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Automation Platform Vision - Structural Engineering + AI",
       "description": "Instead of shipping a single \"Beam Designer,\" we ship the **SDK (Structural Development Kit)** that lets any engineer build a compliant Beam Designer in 10 minutes. *   **From:** \"We build apps for yo",
       "content_hash": "f33760704997"
@@ -90,7 +90,7 @@
       "name": "bbs-dxf-improvement-plan.md",
       "type": "documentation",
       "size_lines": 147,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "BBS + DXF Improvement Plan (Beam-Only)",
       "description": "Goal: make BBS and DXF outputs fabrication-ready, deterministic, and consistent with each other, without changing the current 3-layer architecture.",
       "content_hash": "52a287fa90a1"
@@ -99,16 +99,25 @@
       "name": "brainstorming-platform-pivot.md",
       "type": "documentation",
       "size_lines": 530,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Brainstorming: Structural Automation Platform",
       "description": "Every structural engineering firm has the **same problem**: - Engineers spend 60-70% of time on repetitive tasks (ETABS post-processing, report generation, compliance checks)",
       "content_hash": "fb85d6ceb905"
     },
     {
+      "name": "copilot-agent-master-plan.md",
+      "type": "documentation",
+      "size_lines": 710,
+      "last_updated": "2026-03-27",
+      "title": "Copilot Agent Master Plan — structural_engineering_lib",
+      "description": "1. Executive Summary 2. Current State Audit",
+      "content_hash": "bbe120d98c57"
+    },
+    {
       "name": "data-model-compatibility-checklist.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
       "description": "- [ ] span_mm aligns with design_beam_is456(span_mm=...) semantics. - [ ] b_mm, D_mm, d_mm match BeamDesignOutput.geometry fields (if present).",
       "content_hash": "70de85045d47"
@@ -117,16 +126,16 @@
       "name": "democratization-vision.md",
       "type": "documentation",
       "size_lines": 259,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Democratizing Structural Engineering",
       "description": "> **\"What was not possible few years back, or only possible for big firms — now everyone can use them free.\"** This project is not just about building a structural engineering library. It's about **de",
-      "content_hash": "6fcb8ca487e0"
+      "content_hash": "8bf3f6f19c30"
     },
     {
       "name": "documentation-structure.md",
       "type": "documentation",
       "size_lines": 463,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Professional Documentation Structure",
       "description": "This document defines the target documentation structure for the Structural SDK. Professional documentation is critical for adoption and trust. 1. **Discoverable** — Engineers find what they need quic",
       "content_hash": "2d8857ad61f8"
@@ -135,7 +144,7 @@
       "name": "etabs-automation-bridge-plan.md",
       "type": "documentation",
       "size_lines": 138,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "description": "- The CSI API ETABS CHM has been extracted under docs/reference/vendor/etabs/etabs-chm/. - Use it as the canonical source for cOAPI, cSapModel, Results, FrameObj, and the",
       "content_hash": "dd93632ad242"
     },
@@ -143,7 +152,7 @@
       "name": "folder-audit.md",
       "type": "documentation",
       "size_lines": 1775,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "title": "Folder Audit — Repository Health & Documentation",
       "description": "Systematic audit of every folder and subfolder in the repository to: - Document what each folder contains and its purpose",
       "content_hash": "6b5b673ed923"
@@ -152,16 +161,25 @@
       "name": "folder-migration-progress.md",
       "type": "documentation",
       "size_lines": 227,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-26",
       "title": "Folder Structure Migration - Progress Tracker",
       "description": "| Metric | Status | Target | |--------|--------|--------|",
       "content_hash": "d52ac9457dd9"
     },
     {
+      "name": "github-fix-plan.md",
+      "type": "documentation",
+      "size_lines": 138,
+      "last_updated": "2026-03-27",
+      "title": "GitHub Fix Plan — Post-Cleanup Issues",
+      "description": "bash .venv/bin/uvicorn fastapi_app.main:app --host \"::\" --port 8000 --reload",
+      "content_hash": "192165bdc6c4"
+    },
+    {
       "name": "hygiene-suggestions-2026-01-07.md",
       "type": "documentation",
       "size_lines": 1001,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Repository Hygiene Audit Report - 2026-01-07",
       "description": "<!-- lint-ignore-git --> Comprehensive hygiene audit of the structural_engineering_lib repository identified **61 actionable items** across 5 priority categories:",
       "content_hash": "a8a7fdbe3d46"
@@ -170,7 +188,7 @@
       "name": "icloud-to-local-move-analysis.md",
       "type": "documentation",
       "size_lines": 389,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "iCloud to Local Move Analysis",
       "description": "The project has been successfully moved from iCloud to local storage. Performance improved from 9+ minutes to **0.46 seconds** for file operations (20x improvement). ",
       "content_hash": "ad3de175cf15"
@@ -179,34 +197,52 @@
       "name": "industry-usability-plan.md",
       "type": "documentation",
       "size_lines": 237,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Industry Usability Plan",
       "description": "This document outlines the roadmap to make structural_engineering_lib production-ready for industry use. The focus is on reliability, integration, and professional-grade output. - **Accurate calculati",
-      "content_hash": "1b481aebbba1"
+      "content_hash": "3292a141c542"
     },
     {
       "name": "library-api-expansion.md",
       "type": "documentation",
       "size_lines": 238,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Library API Expansion Plan (Beam-Only)",
       "description": "Goal: make the library easy to embed by exposing stable, composable functions and thin CLI wrappers. This is library-first, not product-first.",
       "content_hash": "c737ba4c6be9"
     },
     {
+      "name": "library-expansion-blueprint.md",
+      "type": "documentation",
+      "size_lines": 1502,
+      "last_updated": "2026-03-29",
+      "title": "Library Expansion Master Blueprint v2.0",
+      "description": "> Single source of truth for expanding structural_engineering_lib from beam-only to a full IS 456 structural design suite. Transform the current beam-only IS 456 library into a **production-grade, mul",
+      "content_hash": "6817c9cadc97"
+    },
+    {
       "name": "library-improvement-master-plan.md",
       "type": "documentation",
       "size_lines": 695,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Library Improvement Master Plan — v1.0",
       "description": "This document outlines a systematic plan to upgrade the structural engineering library from a solid IS 456 beam design tool to a **professional-grade, multi-code platform** with world-class 3D visuali",
       "content_hash": "daf352d69ba8"
     },
     {
+      "name": "mac-mini-migration-issues.md",
+      "type": "documentation",
+      "size_lines": 156,
+      "last_updated": "2026-03-27",
+      "title": "Mac Mini Migration — Issues & Solutions",
+      "description": "> Tracks every issue found after migrating from the old Mac to the new Mac Mini (M-series, Homebrew, Colima). > **Why?** So the next time we set up a machine (or debug a \"it worked before\" issue), we ",
+      "content_hash": "be444b097cef"
+    },
+    {
       "name": "memory.md",
       "type": "documentation",
       "size_lines": 276,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Project Memory - Persistent Context",
       "description": "- **v0.15.0** released (2026-01-07) - Focus: Code Quality Excellence",
       "content_hash": "d86ef097bf02"
@@ -215,25 +251,42 @@
       "name": "multi-code-architecture.md",
       "type": "documentation",
       "size_lines": 708,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Multi-Code Architecture Design",
       "description": "This document defines the architecture for supporting multiple design codes (IS 456, ACI 318, EC2) in a unified, extensible manner. 1. **Single API, Multiple Codes** — Users call sk.engine.design_beam",
       "content_hash": "9724b68b6031"
     },
     {
+      "name": "next-phase-improvements-plan.md",
+      "type": "documentation",
+      "size_lines": 1436,
+      "last_updated": "2026-03-26",
+      "description": "> This document is a result of a full audit of the beam library, FastAPI layer, and React app. > Nothing here assumes — it traces every suggestion back to what already exists and what is missing.",
+      "content_hash": "27251bbe5f31"
+    },
+    {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 90,
-      "last_updated": "2026-03-25",
+      "size_lines": 198,
+      "last_updated": "2026-03-29",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-03-24",
-      "content_hash": "901fae98d6c6"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-03-28",
+      "content_hash": "31b03d8a4fdc"
+    },
+    {
+      "name": "post-cleanup-issues.md",
+      "type": "documentation",
+      "size_lines": 447,
+      "last_updated": "2026-03-27",
+      "title": "Post-Cleanup Issues & Fixes",
+      "description": "After removing Streamlit, VBA/Excel from git tracking, and archiving research docs, several issues remain. This document catalogs every known issue, its root cause,",
+      "content_hash": "04f30f4753db"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
       "size_lines": 128,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "title": "Pre-Release Checklist",
       "description": "Version: 0.19.1 (current) Target: Public beta with library-first APIs + DXF/BBS quality gates",
       "content_hash": "533c055f99e5"
@@ -241,35 +294,44 @@
     {
       "name": "project-needs-assessment-2026-01-09.md",
       "type": "documentation",
-      "size_lines": 1090,
-      "last_updated": "2026-01-23",
+      "size_lines": 1087,
+      "last_updated": "2026-03-27",
       "title": "Project Needs Assessment & Strategic Action Plan",
       "description": "The structural_engineering_lib project is at a critical inflection point. The Python library core is 99.8% functional (539/540 tests), benchmarks are perfect (13/13), and Week 1-2 git workflow optimiz",
-      "content_hash": "8a3fa5b4d7d4"
+      "content_hash": "a50627b17ddf"
     },
     {
       "name": "project-status-deep-dive.md",
       "type": "documentation",
       "size_lines": 260,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "IS 456 RC Beam Design Library — Deep Dive",
       "description": "*Detailed architecture, module maps, and research directions* 1. Audience",
       "content_hash": "5ef63b27d52b"
     },
     {
+      "name": "react-ux-improvement-plan.md",
+      "type": "documentation",
+      "size_lines": 693,
+      "last_updated": "2026-03-26",
+      "title": "React App — UX & Visual Improvement Plan",
+      "description": "> \"A structural engineer shouldn't have to fill in a form to see their own building.\" The primary workflow is **import-first**: bring in a real project (CSV / ETABS / SAFE), see all beams in 3D, selec",
+      "content_hash": "d2837c684f84"
+    },
+    {
       "name": "research-ai-enhancements.md",
       "type": "documentation",
       "size_lines": 515,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-28",
       "title": "Research Log — AI/High-Value Enhancements",
       "description": "This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checkin",
-      "content_hash": "b48f4df6e2e0"
+      "content_hash": "a977ebd50b34"
     },
     {
       "name": "research-detailing.md",
       "type": "documentation",
       "size_lines": 288,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "IS Code Detailing Research — RESEARCHER Agent",
       "description": "| Exposure Condition | Minimum Cover (mm) | |-------------------|-------------------|",
       "content_hash": "1ac4018fb165"
@@ -278,25 +340,16 @@
       "name": "session-30-fragment-crisis-resolution.md",
       "type": "documentation",
       "size_lines": 777,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-26",
       "title": "Session 30 Fragment Crisis Resolution - Complete Analysis",
       "description": "1. Research analysis (400+ lines) 2. Fix beam_design theme toggle",
       "content_hash": "9f7b4b3b35fe"
     },
     {
-      "name": "streamlit-phase-3-implementation-plan.md",
-      "type": "documentation",
-      "size_lines": 689,
-      "last_updated": "2026-01-23",
-      "title": "STREAMLIT PHASE 3 IMPLEMENTATION PLAN",
-      "description": "- Attribute mismatches cause runtime failures → **Solution:** Comprehensive integration tests BEFORE implementation - Design system changes break layouts → **Solution:** Test-driven development with l",
-      "content_hash": "1271392b57c1"
-    },
-    {
       "name": "structural-automation-platform-phase-0-research-plan.md",
       "type": "documentation",
       "size_lines": 145,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Structural Automation Platform — Phase 0 Research Plan",
       "description": "We are not building a single automation. We are defining the **platform** that enables many engineers (and firms) to build and share their own automations safely. This plan is intentionally “small ste",
       "content_hash": "7e6abea62605"
@@ -304,17 +357,17 @@
     {
       "name": "task-3d-002-implementation-plan.md",
       "type": "documentation",
-      "size_lines": 271,
-      "last_updated": "2026-01-23",
+      "size_lines": 270,
+      "last_updated": "2026-03-27",
       "title": "TASK-3D-002: ETABS 3D Visualization Implementation Plan",
       "description": "Transform ETABS batch import page from fake grid visualization to true 3D building model using real coordinates from frames_geometry.csv. - Added FrameGeometry dataclass to Python/structural_lib/etabs",
-      "content_hash": "b0bdce33371b"
+      "content_hash": "be592489631e"
     },
     {
       "name": "ui-layout-implementation-plan.md",
       "type": "documentation",
       "size_lines": 1603,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "UI Layout Redesign - Final Decision & Implementation Plan",
       "description": "- Current sidebar layout wastes 80% of screen space - Industry standard pattern (ETABS, ClearCalcs, AutoCAD)",
       "content_hash": "097038294673"
@@ -323,25 +376,16 @@
       "name": "v020-stabilization-checklist.md",
       "type": "documentation",
       "size_lines": 157,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "v0.20.0 Stabilization Checklist",
       "description": "> **Version info:** See TASKS.md for current/next release status. - Tests: Run .venv/bin/python scripts/update_test_stats.py for current count",
       "content_hash": "8ab99e73df96"
     },
     {
-      "name": "v3-streamlit-parity-library-evolution-plan.md",
-      "type": "documentation",
-      "size_lines": 313,
-      "last_updated": "2026-01-28",
-      "title": "V3 Streamlit Parity + Library Evolution Plan",
-      "description": "We already have a strong library core (design, adapters, smart analysis, 3D single-beam geometry). The remaining gaps now sit at the **API + React integration layer**: building-level geometry endpoint",
-      "content_hash": "fabd3d3b82df"
-    },
-    {
       "name": "weak-points-audit.md",
       "type": "documentation",
       "size_lines": 251,
-      "last_updated": "2026-03-25",
+      "last_updated": "2026-03-26",
       "title": "Weak Points Audit — Deep Analysis",
       "description": "Deep audit of structural, architectural, and quality weak points across the V3 stack. Six issues identified across React, Streamlit, and Python layers — ranging from critical",
       "content_hash": "7a5ac5b927b1"
@@ -367,5 +411,5 @@
       "description": "> **Template version:** 1.0"
     }
   ],
-  "content_hash": "bdaa9723d4f4ba2e"
+  "content_hash": "f54fba27a17a1af3"
 }
