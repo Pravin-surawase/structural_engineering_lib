@@ -156,8 +156,8 @@ if [[ -n "$CONTINUE_PR" ]]; then
         git checkout main
         git pull --ff-only 2>/dev/null || true
 
-        # Clean up local task branch
-        branch_name=$(git branch --show-current 2>/dev/null || git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
+        # Clean up local task branch (query PR for its branch name)
+        branch_name=$(gh pr view "$CONTINUE_PR" --json headRefName -q .headRefName 2>/dev/null || true)
         if [[ -n "$branch_name" ]]; then
             git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
         fi
@@ -243,11 +243,17 @@ fi
 echo "→ Pushing branch to remote..."
 git push -u origin "$CURRENT_BRANCH"
 
-# Create PR
-echo "→ Creating pull request..."
-PR_BODY_FILE=$(mktemp)
-trap 'rm -f "$PR_BODY_FILE"' EXIT
-cat > "$PR_BODY_FILE" <<EOF
+# Check if PR already exists for this branch
+EXISTING_PR=$(gh pr list --head "$CURRENT_BRANCH" --json number --jq '.[0].number' 2>/dev/null || true)
+if [[ -n "$EXISTING_PR" ]]; then
+    echo -e "${YELLOW}⚠ Found existing PR #$EXISTING_PR for branch $CURRENT_BRANCH — reusing it${NC}"
+    PR_NUMBER="$EXISTING_PR"
+else
+    # Create PR
+    echo "→ Creating pull request..."
+    PR_BODY_FILE=$(mktemp)
+    trap 'rm -f "$PR_BODY_FILE"' EXIT
+    cat > "$PR_BODY_FILE" <<EOF
 ## $TASK_ID: $DESCRIPTION
 
 ### Changes
@@ -266,12 +272,14 @@ cat > "$PR_BODY_FILE" <<EOF
 *Created via finish_task_pr.sh*
 EOF
 
-gh pr create \
-    --title "$TASK_ID: $DESCRIPTION" \
-    --body-file "$PR_BODY_FILE" \
-    --base main
+    gh pr create \
+        --title "$TASK_ID: $DESCRIPTION" \
+        --body-file "$PR_BODY_FILE" \
+        --base main
 
-PR_NUMBER=$(gh pr view --json number -q .number)
+    PR_NUMBER=$(gh pr view --json number -q .number)
+    rm -f "$PR_BODY_FILE" 2>/dev/null || true
+fi
 
 echo ""
 echo -e "${GREEN}✓ Pull request created: #$PR_NUMBER${NC}"
