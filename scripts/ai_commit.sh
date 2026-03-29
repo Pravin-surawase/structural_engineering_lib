@@ -264,10 +264,13 @@ if [[ "$FORCE" == "true" ]]; then
     echo ""
     echo -e "${YELLOW}→ --force flag: Bypassing PR requirement check${NC}"
     echo "  (Use this for batching multiple commits, PR at end)"
+elif [[ "$CURRENT_BRANCH" =~ ^task/ ]]; then
+    echo ""
+    echo -e "${GREEN}→ On task branch — PR workflow already in progress${NC}"
 elif [[ -f "$SHOULD_USE_PR_SCRIPT" ]]; then
     echo ""
     echo "→ Checking whether a PR is required..."
-    if ! "$SHOULD_USE_PR_SCRIPT" --explain; then
+    if ! "$SHOULD_USE_PR_SCRIPT" --explain --staged-only; then
         if [[ "$CURRENT_BRANCH" == "main" ]]; then
             echo ""
             echo -e "${RED}✗ PR required. Create a task branch first:${NC}"

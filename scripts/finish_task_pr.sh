@@ -7,6 +7,7 @@
 #   ./scripts/finish_task_pr.sh TASK-162 "Brief description" --with-session-docs
 
 set -e
+set -o pipefail
 
 # Deprecation notice — use ai_commit.sh --finish instead
 echo -e "\033[1;33m⚠ TIP: You can also use: ./scripts/ai_commit.sh --finish \"description\"\033[0m" >&2
@@ -61,6 +62,18 @@ poll_pr_checks() {
         if [[ "$mergeable" == "CONFLICTING" ]]; then
             echo -e "${RED}✗ PR has conflicts${NC}"
             return 1
+        fi
+
+        # Wait for CI checks to register (GitHub Actions takes 10-30s to start)
+        if [[ "$total" -eq 0 ]]; then
+            if [[ "$attempt" -le 5 ]]; then
+                echo -e "${YELLOW}⏳ Waiting for CI checks to register... (attempt $attempt/5)${NC}"
+                sleep "$interval"
+                continue
+            else
+                echo -e "${YELLOW}⚠ No CI checks found after $attempt attempts — proceeding${NC}"
+                return 0
+            fi
         fi
 
         if [[ "$failed" -gt 0 ]]; then
@@ -144,7 +157,7 @@ if [[ -n "$CONTINUE_PR" ]]; then
         git pull --ff-only 2>/dev/null || true
 
         # Clean up local task branch
-        branch_name=$(git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
+        branch_name=$(git branch --show-current 2>/dev/null || git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
         if [[ -n "$branch_name" ]]; then
             git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
         fi
@@ -298,8 +311,8 @@ case "$MODE" in
             git checkout main
             git pull --ff-only 2>/dev/null || true
 
-            # Clean up local task branch
-            branch_name=$(git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
+            # Clean up local task branch (specific to this task)
+            branch_name="task/${TASK_ID}"
             if [[ -n "$branch_name" ]]; then
                 git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
             fi

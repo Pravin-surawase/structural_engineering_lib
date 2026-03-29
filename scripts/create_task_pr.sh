@@ -3,6 +3,7 @@
 # Usage: ./scripts/create_task_pr.sh TASK-162 "Brief description"
 
 set -e
+set -o pipefail
 
 # Deprecation notice — use ai_commit.sh --branch instead
 echo -e "\033[1;33m⚠ TIP: You can also use: ./scripts/ai_commit.sh --branch $1 \"$2\"\033[0m" >&2
@@ -49,8 +50,8 @@ restore_stash() {
     if [[ "$AUTO_STASHED" == "true" && "$RESTORED" == "false" && -n "$STASH_REF" ]]; then
         RESTORED="true"
         echo -e "${YELLOW}→ Restoring auto-stashed changes...${NC}"
-        if git stash list --format=%H | grep -q "$STASH_REF"; then
-            if ! git stash pop "$STASH_REF" >/dev/null; then
+        if git stash list --format='%H' | grep -q "$STASH_REF"; then
+            if ! git stash pop >/dev/null; then
                 echo -e "${RED}✗ Auto-stash restore failed${NC}"
                 echo "Resolve stash conflicts, then re-run create_task_pr.sh"
                 return 1
@@ -65,9 +66,9 @@ trap 'restore_stash' EXIT
 if [[ -n $(git status --porcelain) ]]; then
     echo -e "${YELLOW}⚠ Working tree has uncommitted changes${NC}"
     echo "→ Auto-stashing local changes before branch creation..."
-    PRE_STASH_REF=$(git stash list --format='%gd' | head -1)
+    PRE_STASH_REF=$(git stash list --format='%H' | head -1)
     git stash push -u -m "create_task_pr auto-stash" >/dev/null
-    POST_STASH_REF=$(git stash list --format='%gd' | head -1)
+    POST_STASH_REF=$(git stash list --format='%H' | head -1)
     if [[ -n "$POST_STASH_REF" && "$POST_STASH_REF" != "$PRE_STASH_REF" ]]; then
         AUTO_STASHED="true"
         STASH_REF="$POST_STASH_REF"
