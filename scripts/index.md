@@ -107,7 +107,7 @@
 - [recover_git_state.sh](recover_git_state.sh) — Recover from common git workflow failure states
 - [repo_health_check.sh](repo_health_check.sh)
 - [safe_push.sh](safe_push.sh) — Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS
-- [should_use_pr.sh](should_use_pr.sh) — Helper script: Should this change use a Pull Request?
+- [should_use_pr.sh](should_use_pr.sh) — Deprecation notice — use ai_commit.sh --pr-check instead
 - [validate_git_state.sh](validate_git_state.sh) — Git workflow validator - run before any git operation
 - [watch_tests.sh](watch_tests.sh) — Watch Mode (Solution 5 - Dev Automation)
 

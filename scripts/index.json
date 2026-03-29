@@ -185,10 +185,10 @@
     {
       "name": "ai_commit.sh",
       "type": "shell-script",
-      "size_lines": 316,
+      "size_lines": 431,
       "last_updated": "2026-03-29",
       "description": "AI-friendly wrapper for safe commits and pushes",
-      "content_hash": "d7253570d79c"
+      "content_hash": "eccd34fb374c"
     },
     {
       "name": "archive_old_files.sh",
@@ -408,7 +408,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-28",
+      "last_updated": "2026-03-29",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -417,7 +417,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "466a39419aab"
+      "content_hash": "ffaf4d7235ee"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1662,10 +1662,10 @@
     {
       "name": "create_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 95,
-      "last_updated": "2026-03-26",
+      "size_lines": 99,
+      "last_updated": "2026-03-29",
       "description": "Create a PR for completed task work",
-      "content_hash": "ce68c92120fa"
+      "content_hash": "4d620f6e4931"
     },
     {
       "name": "create_test_scaffold.py",
@@ -1943,10 +1943,10 @@
     {
       "name": "finish_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 298,
-      "last_updated": "2026-03-26",
+      "size_lines": 369,
+      "last_updated": "2026-03-29",
       "description": "Finish task work and create PR",
-      "content_hash": "b80280c93709"
+      "content_hash": "9903c2e26690"
     },
     {
       "name": "fix_broken_links.py",
@@ -2903,10 +2903,10 @@
     {
       "name": "should_use_pr.sh",
       "type": "shell-script",
-      "size_lines": 410,
-      "last_updated": "2026-03-27",
-      "description": "Helper script: Should this change use a Pull Request?",
-      "content_hash": "9c29b1c7d42b"
+      "size_lines": 412,
+      "last_updated": "2026-03-29",
+      "description": "Deprecation notice — use ai_commit.sh --pr-check instead",
+      "content_hash": "365ea3298455"
     },
     {
       "name": "sync_numbers.py",
@@ -3527,5 +3527,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "791a2ed245c51359"
+  "content_hash": "27dac4b415f05100"
 }

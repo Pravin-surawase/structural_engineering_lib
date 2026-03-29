@@ -685,7 +685,7 @@ After Phase 1, the commands section of all instruction files becomes:
 
 ## 11. Relationship to Existing Plans
 
-This plan **supersedes** `docs/_active/scripts-consolidation-plan.md` (2026-02-10) for the "what's next" portion. The consolidation plan's Phase 1 (archive ~40 scripts) is **mostly done** — 93 scripts already archived. This plan picks up where consolidation left off:
+This plan **supersedes** `docs/_archive/2026-03/scripts-consolidation-plan.md` (2026-02-10) for the "what's next" portion. The consolidation plan's Phase 1 (archive ~40 scripts) is **mostly done** — 93 scripts already archived. This plan picks up where consolidation left off:
 
 - Consolidation Plan handled **reducing 163 → 85** (archiving dead scripts)
 - This plan handles **making 76 scripts usable** (unified CLI + smart orchestration)

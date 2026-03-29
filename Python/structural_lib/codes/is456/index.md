@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-03-29
 **Files:** 15
 
 ## Public API
@@ -40,8 +40,16 @@
 | [load_analysis.py](load_analysis.py) | Module:       load_analysis | 0 | 5 | 453 |
 | [materials.py](materials.py) | Module:       materials | 0 | 4 | 118 |
 | [serviceability.py](serviceability.py) | Module: serviceability | 0 | 14 | 1357 |
-| [shear.py](shear.py) | Module:       shear | 0 | 4 | 369 |
+| [shear.py](shear.py) | Module:       shear | 0 | 4 | 374 |
 | [slenderness.py](slenderness.py) | Slenderness Check Module — IS 456:2000 Beam Lateral Stabilit | 2 | 3 | 364 |
 | [tables.py](tables.py) | Module:       tables | 0 | 2 | 97 |
 | [torsion.py](torsion.py) | Module:       torsion | 1 | 6 | 534 |
 | [traceability.py](traceability.py) | IS 456 Traceability Module | 0 | 9 | 367 |
+
+## Subfolders
+
+| Folder | Files | Description |
+|--------|-------|-------------|
+| [beam/](beam/) | 0 |  |
+| [column/](column/) | 0 |  |
+| [common/](common/) | 0 |  |

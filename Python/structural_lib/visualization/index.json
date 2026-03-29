@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/visualization",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 2,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 45,
-      "last_updated": "2026-01-27",
+      "last_updated": "2026-03-26",
       "description": "Visualization Module — 3D Geometry for Reinforced Concrete Elements",
       "content_hash": "b7b7e35abfe2"
     },
@@ -17,7 +17,7 @@
       "name": "geometry_3d.py",
       "type": "python",
       "size_lines": 940,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "3D Geometry Module — Coordinate Computation for Visualization",
       "classes": [
         {

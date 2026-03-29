@@ -2,14 +2,14 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 20,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 394,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Test Suite Organization",
       "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite. - test_detailing.py - Reinforcement detailing calculations",
       "content_hash": "706b48faeda0"
@@ -17,16 +17,44 @@
     {
       "name": "conftest.py",
       "type": "python",
-      "size_lines": 58,
-      "last_updated": "2026-01-23",
+      "size_lines": 116,
+      "last_updated": "2026-03-29",
       "description": "Pytest configuration and Hypothesis profiles for the test suite.",
-      "content_hash": "442e06a4dc4b"
+      "functions": [
+        {
+          "name": "m25_fe415",
+          "description": "Standard M25 concrete + Fe415 steel combination."
+        },
+        {
+          "name": "m30_fe500",
+          "description": "M30 concrete + Fe500 steel combination."
+        },
+        {
+          "name": "m20_fe415",
+          "description": "M20 concrete + Fe415 steel — minimum grade for RCC (IS 456 Cl. 6.1.2)."
+        },
+        {
+          "name": "standard_beam_230x500",
+          "description": "Standard 230x500mm beam with M25/Fe415 — common residential beam.",
+          "params": [
+            "m25_fe415"
+          ]
+        },
+        {
+          "name": "standard_beam_300x600",
+          "description": "Standard 300x600mm beam with M30/Fe500 — common commercial beam.",
+          "params": [
+            "m30_fe500"
+          ]
+        }
+      ],
+      "content_hash": "1b40a8034c5c"
     },
     {
       "name": "test_api_results.py",
       "type": "python",
       "size_lines": 394,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for API result dataclasses.",
       "classes": [
         {
@@ -66,7 +94,7 @@
       "name": "test_audit.py",
       "type": "python",
       "size_lines": 468,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for audit module (TASK-278).",
       "classes": [
         {
@@ -140,7 +168,7 @@
       "name": "test_calculation_report.py",
       "type": "python",
       "size_lines": 612,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for the calculation_report module (TASK-277).",
       "classes": [
         {
@@ -253,13 +281,13 @@
           ]
         }
       ],
-      "content_hash": "7f08501e1604"
+      "content_hash": "0cc4ab9a4261"
     },
     {
       "name": "test_clause_traceability.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Tests for IS 456 Traceability Module",
       "classes": [
         {
@@ -377,7 +405,7 @@
       "name": "test_core.py",
       "type": "python",
       "size_lines": 176,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Tests for structural_lib.core module.",
       "classes": [
         {
@@ -447,7 +475,7 @@
       "name": "test_design_from_input.py",
       "type": "python",
       "size_lines": 142,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for design_from_input API function.",
       "classes": [
         {
@@ -470,7 +498,7 @@
       "name": "test_error_messages.py",
       "type": "python",
       "size_lines": 294,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Tests for error message templates.",
       "classes": [
         {
@@ -551,7 +579,7 @@
       "name": "test_etabs_import_integration.py",
       "type": "python",
       "size_lines": 330,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Integration tests for etabs_import Pydantic conversion functions.",
       "classes": [
         {
@@ -621,7 +649,7 @@
       "name": "test_exception_hierarchy.py",
       "type": "python",
       "size_lines": 278,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for exception hierarchy in errors module.",
       "classes": [
         {
@@ -674,7 +702,7 @@
       "name": "test_inputs.py",
       "type": "python",
       "size_lines": 442,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for the inputs module (TASK-276: Input Flexibility).",
       "classes": [
         {
@@ -765,7 +793,7 @@
       "name": "test_multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 319,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for the multi-objective optimizer module (NSGA-II).",
       "classes": [
         {
@@ -818,7 +846,7 @@
       "name": "test_reports.py",
       "type": "python",
       "size_lines": 418,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Tests for the reports module.",
       "classes": [
         {
@@ -903,7 +931,7 @@
       "name": "test_result_base.py",
       "type": "python",
       "size_lines": 217,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for result_base module.",
       "classes": [
         {
@@ -972,7 +1000,7 @@
       "name": "test_slenderness.py",
       "type": "python",
       "size_lines": 360,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Unit tests for slenderness module.",
       "classes": [
         {
@@ -1043,7 +1071,7 @@
       "name": "test_testing_strategies.py",
       "type": "python",
       "size_lines": 647,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for the testing_strategies module (TASK-279).",
       "classes": [
         {
@@ -1177,7 +1205,7 @@
       "name": "test_visualization_geometry_3d.py",
       "type": "python",
       "size_lines": 765,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Tests for visualization.geometry_3d module.",
       "classes": [
         {
@@ -1299,7 +1327,7 @@
       "name": "test_visualization_integration.py",
       "type": "python",
       "size_lines": 246,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Integration tests for visualization.geometry_3d with detailing module.",
       "classes": [
         {
@@ -1334,7 +1362,7 @@
     {
       "name": "data",
       "path": "data/",
-      "file_count": 4
+      "file_count": 5
     },
     {
       "name": "fixtures",
@@ -1342,9 +1370,15 @@
       "file_count": 11
     },
     {
+      "name": "helpers",
+      "path": "helpers/",
+      "file_count": 2,
+      "is_package": true
+    },
+    {
       "name": "integration",
       "path": "integration/",
-      "file_count": 40
+      "file_count": 41
     },
     {
       "name": "performance",
@@ -1368,5 +1402,5 @@
       "file_count": 26
     }
   ],
-  "content_hash": "288aef7c1a4d22c2"
+  "content_hash": "235f19e84d29d2a3"
 }

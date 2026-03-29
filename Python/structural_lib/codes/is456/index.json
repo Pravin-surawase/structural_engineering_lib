@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 15,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 131,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-29",
       "description": "IS 456:2000 - Indian Standard for Plain and Reinforced Concrete.",
       "classes": [
         {
@@ -32,7 +32,7 @@
       "name": "clause_cli.py",
       "type": "python",
       "size_lines": 283,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "IS 456 Clause CLI",
       "functions": [
         {
@@ -85,7 +85,7 @@
     {
       "name": "clauses.json",
       "type": "config",
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "top_level_keys": [
         "$schema",
         "metadata",
@@ -100,7 +100,7 @@
       "name": "compliance.py",
       "type": "python",
       "size_lines": 477,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Module: compliance",
       "functions": [
         {
@@ -125,7 +125,7 @@
       "name": "detailing.py",
       "type": "python",
       "size_lines": 1190,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement Detailing",
       "classes": [
         {
@@ -335,7 +335,7 @@
       "name": "ductile.py",
       "type": "python",
       "size_lines": 182,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Module:       ductile",
       "classes": [
         {
@@ -384,13 +384,13 @@
           ]
         }
       ],
-      "content_hash": "8b023f463a57"
+      "content_hash": "487daf4819fd"
     },
     {
       "name": "flexure.py",
       "type": "python",
       "size_lines": 924,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Module:       flexure",
       "functions": [
         {
@@ -476,7 +476,7 @@
       "name": "load_analysis.py",
       "type": "python",
       "size_lines": 453,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Module:       load_analysis",
       "functions": [
         {
@@ -537,7 +537,7 @@
       "name": "materials.py",
       "type": "python",
       "size_lines": 118,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Module:       materials",
       "functions": [
         {
@@ -576,7 +576,7 @@
       "name": "serviceability.py",
       "type": "python",
       "size_lines": 1357,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Module: serviceability",
       "functions": [
         {
@@ -641,8 +641,8 @@
     {
       "name": "shear.py",
       "type": "python",
-      "size_lines": 369,
-      "last_updated": "2026-02-10",
+      "size_lines": 374,
+      "last_updated": "2026-03-29",
       "description": "Module:       shear",
       "functions": [
         {
@@ -692,13 +692,13 @@
         "STANDARD_STIRRUP_SPACINGS",
         "STANDARD_STIRRUP_DIAMETERS"
       ],
-      "content_hash": "f637247f6050"
+      "content_hash": "d73d417cca7d"
     },
     {
       "name": "slenderness.py",
       "type": "python",
       "size_lines": 364,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-29",
       "description": "Slenderness Check Module — IS 456:2000 Beam Lateral Stability",
       "classes": [
         {
@@ -747,7 +747,7 @@
       "name": "tables.py",
       "type": "python",
       "size_lines": 97,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-29",
       "description": "Module:       tables",
       "functions": [
         {
@@ -776,7 +776,7 @@
       "name": "torsion.py",
       "type": "python",
       "size_lines": 534,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-29",
       "description": "Module:       torsion",
       "classes": [
         {
@@ -860,7 +860,7 @@
       "name": "traceability.py",
       "type": "python",
       "size_lines": 367,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "IS 456 Traceability Module",
       "functions": [
         {
@@ -921,8 +921,24 @@
       "content_hash": "4112e62236cb"
     }
   ],
-  "subfolders": [],
-  "content_hash": "9f8efd401e8bcfae",
+  "subfolders": [
+    {
+      "name": "beam",
+      "path": "beam/",
+      "file_count": 0
+    },
+    {
+      "name": "column",
+      "path": "column/",
+      "file_count": 0
+    },
+    {
+      "name": "common",
+      "path": "common/",
+      "file_count": 0
+    }
+  ],
+  "content_hash": "8e3700dcb78d0ae8",
   "has_init": true,
   "public_api": [
     "IS456Code",

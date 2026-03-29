@@ -2,14 +2,14 @@
   "folder": "docs/architecture",
   "type": "mixed",
   "description": "Deep dives into project structure, design decisions, and system architecture.",
-  "last_updated": "2026-03-25",
-  "file_count": 10,
+  "last_updated": "2026-03-29",
+  "file_count": 11,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 79,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Architecture",
       "description": "Deep dives into project structure, design decisions, and system architecture. ",
       "content_hash": "ff710b928951"
@@ -18,7 +18,7 @@
       "name": "architecture-review-2025-12-27.md",
       "type": "documentation",
       "size_lines": 81,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Architecture Review — 2025-12-27",
       "description": "Act as ARCHITECT. Use docs/architecture/project-overview.md and docs/architecture/deep-project-map.md. Review the current architecture for:",
       "content_hash": "82fb20012d74"
@@ -27,7 +27,7 @@
       "name": "canonical-data-format.md",
       "type": "documentation",
       "size_lines": 361,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Canonical Data Format Architecture",
       "description": "This document defines the canonical data format architecture for the structural_engineering_lib project. The goal is to create a stable, efficient, AI-agent-friendly internal data representation that ",
       "content_hash": "33451f50197e"
@@ -36,7 +36,7 @@
       "name": "data-flow-diagrams.md",
       "type": "documentation",
       "size_lines": 140,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Pipeline Data Flow Diagrams",
       "description": "Focused pipeline diagrams for the two most complex execution paths. For layer and module overview, see:",
       "content_hash": "83b63ecddb04"
@@ -45,7 +45,7 @@
       "name": "deep-project-map.md",
       "type": "documentation",
       "size_lines": 271,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Deep Project Map (Python + VBA parity)",
       "description": "- Python/ — Python package (structural_lib) + tests + examples + packaging config. - VBA/ — VBA modules (core calc + Excel app layer + integration + detailing + DXF) + optional VBA tests.",
       "content_hash": "13d41602996f"
@@ -54,7 +54,7 @@
       "name": "dependencies.md",
       "type": "documentation",
       "size_lines": 28,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Python Module Dependency Graph",
       "description": "This graph shows direct imports between structural_lib modules. !Python module dependency graph",
       "content_hash": "0b4486d96f23"
@@ -63,7 +63,7 @@
       "name": "mission-and-principles.md",
       "type": "documentation",
       "size_lines": 292,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "StructEng Automation – Mission, Vision & Principles",
       "description": "Structural engineering today, especially in everyday practice (beams, slabs, columns, walls), has a few recurring problems: *   Critical calculations are scattered across messy Excel sheets, half-reme",
       "content_hash": "64fb5b9ad2e4"
@@ -72,16 +72,24 @@
       "name": "project-overview.md",
       "type": "documentation",
       "size_lines": 159,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "IS 456 RC Beam Design Library — Project Overview",
       "description": "- mission-and-principles.md for the deeper \"why\" and product philosophy. - docs/_internal/git-governance.md for version control and contribution rules.",
       "content_hash": "6c20d0704b11"
     },
     {
+      "name": "self-evolving-system.md",
+      "type": "documentation",
+      "size_lines": 188,
+      "last_updated": "2026-03-28",
+      "description": "As the project evolves, **information entropy increases**: | Issue | Impact | Example |",
+      "content_hash": "08c8b239e77d"
+    },
+    {
       "name": "visual-architecture.md",
       "type": "documentation",
       "size_lines": 146,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Visual Architecture Diagrams",
       "description": "Quick diagrams for layers, module groupings, and data flow. For detailed narrative, see: - deep-project-map.md",
       "content_hash": "a6172ce4acd9"
@@ -94,5 +102,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "ec63301ea30f5e64"
+  "content_hash": "06c03ff85a56e7d2"
 }

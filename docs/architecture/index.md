@@ -3,8 +3,8 @@
 Deep dives into project structure, design decisions, and system architecture.
 
 **Type:** Mixed
-**Last Updated:** 2026-03-25
-**Files:** 10
+**Last Updated:** 2026-03-29
+**Files:** 11
 
 ## Documentation Files
 
@@ -18,6 +18,7 @@ Deep dives into project structure, design decisions, and system architecture.
 | [dependencies.md](dependencies.md) | Python Module Dependency Graph | This graph shows direct imports between structural_lib modul | 28 |
 | [mission-and-principles.md](mission-and-principles.md) | StructEng Automation – Mission, Vision & | Structural engineering today, especially in everyday practic | 292 |
 | [project-overview.md](project-overview.md) | IS 456 RC Beam Design Library — Project  | - mission-and-principles.md for the deeper "why" and product | 159 |
+| [self-evolving-system.md](self-evolving-system.md) |  | As the project evolves, **information entropy increases**: | | 188 |
 | [visual-architecture.md](visual-architecture.md) | Visual Architecture Diagrams | Quick diagrams for layers, module groupings, and data flow.  | 146 |
 
 ## Subfolders

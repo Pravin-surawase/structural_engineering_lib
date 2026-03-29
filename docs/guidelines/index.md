@@ -1,7 +1,7 @@
 # Guidelines
 
 **Type:** Documentation
-**Last Updated:** 2026-03-25
+**Last Updated:** 2026-03-29
 **Files:** 16
 
 ## Config Files

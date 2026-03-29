@@ -6,7 +6,7 @@
 **Importance:** Medium
 **Version:** 1.0.0
 **Created:** 2025-12-28
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-03-29
 
 ---
 
@@ -532,5 +532,5 @@ See [insights-api.md](../reference/insights-api.md) for detailed API documentati
 
 ---
 
-**Last updated:** 2025-12-31
+**Last updated:** 2026-03-29
 **Version: 0.14.0 (preview)

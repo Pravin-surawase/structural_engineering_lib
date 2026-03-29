@@ -2,14 +2,14 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 10,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 33,
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-03-26",
       "title": "FastAPI Tests",
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming. | File | Scope |",
       "content_hash": "1df0bb09bec8"
@@ -18,7 +18,7 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 6,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-26",
       "description": "FastAPI Tests Package.",
       "content_hash": "419d87c58f98"
     },
@@ -26,7 +26,7 @@
       "name": "conftest.py",
       "type": "python",
       "size_lines": 141,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-26",
       "description": "Test Fixtures for FastAPI Tests.",
       "functions": [
         {
@@ -64,7 +64,7 @@
       "name": "test_auth.py",
       "type": "python",
       "size_lines": 243,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for Authentication and Rate Limiting.",
       "classes": [
         {
@@ -113,8 +113,8 @@
     {
       "name": "test_endpoints.py",
       "type": "python",
-      "size_lines": 347,
-      "last_updated": "2026-01-27",
+      "size_lines": 761,
+      "last_updated": "2026-03-27",
       "description": "Integration Tests for FastAPI Endpoints.",
       "classes": [
         {
@@ -135,7 +135,10 @@
             "test_design_beam_validation_error",
             "test_design_beam_depth_ratio_validation",
             "test_check_beam",
-            "test_get_design_limits"
+            "test_get_design_limits",
+            "test_torsion_design_basic",
+            "test_torsion_design_unsafe_section",
+            "test_torsion_design_validation"
           ]
         },
         {
@@ -151,7 +154,16 @@
           "name": "TestImportEndpoints",
           "description": "Tests for CSV import endpoints.",
           "public_methods": [
-            "test_dual_csv_import"
+            "test_dual_csv_import",
+            "test_dual_csv_response_shape",
+            "test_single_csv_import",
+            "test_single_csv_response_shape",
+            "test_single_csv_beam_fields",
+            "test_sample_data_endpoint",
+            "test_sample_data_response_shape",
+            "test_sample_data_beam_has_3d",
+            "test_batch_design",
+            "test_batch_design_response_shape"
           ]
         },
         {
@@ -167,7 +179,21 @@
           "description": "Tests for smart analysis endpoints.",
           "public_methods": [
             "test_smart_analyze_beam",
-            "test_get_code_clauses"
+            "test_get_code_clauses",
+            "test_load_analysis_udl",
+            "test_load_analysis_point_load",
+            "test_load_analysis_cantilever",
+            "test_load_analysis_validation"
+          ]
+        },
+        {
+          "name": "TestExportEndpoints",
+          "description": "Tests for export endpoints (BBS, DXF, Report).",
+          "public_methods": [
+            "test_export_report_html",
+            "test_export_report_json",
+            "test_export_report_pdf",
+            "test_export_report_invalid_format"
           ]
         },
         {
@@ -197,13 +223,13 @@
           ]
         }
       ],
-      "content_hash": "b23c7b138771"
+      "content_hash": "f2bd478f4415"
     },
     {
       "name": "test_integration.py",
       "type": "python",
       "size_lines": 388,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-26",
       "description": "Integration tests for FastAPI structural design endpoints.",
       "classes": [
         {
@@ -278,7 +304,7 @@
       "name": "test_load.py",
       "type": "python",
       "size_lines": 286,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Load Tests for FastAPI Application.",
       "classes": [
         {
@@ -349,7 +375,7 @@
       "name": "test_security.py",
       "type": "python",
       "size_lines": 407,
-      "last_updated": "2026-01-24",
+      "last_updated": "2026-03-26",
       "description": "Security Tests for FastAPI Application.",
       "classes": [
         {
@@ -437,7 +463,7 @@
       "name": "test_streaming.py",
       "type": "python",
       "size_lines": 175,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for SSE Streaming Endpoint.",
       "classes": [
         {
@@ -466,7 +492,7 @@
       "name": "test_websocket.py",
       "type": "python",
       "size_lines": 166,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Tests for WebSocket Live Design Endpoint.",
       "classes": [
         {
@@ -487,6 +513,6 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "454ec70ba140f005",
+  "content_hash": "d740cbf6b358340f",
   "has_init": true
 }

@@ -1,9 +1,9 @@
 # Roles
 
-Defines 12 agent roles for the multi-agent collaboration framework.
+> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copilot agents). These files are kept for reference on
 
 **Type:** Documentation
-**Last Updated:** 2026-03-25
+**Last Updated:** 2026-03-29
 **Files:** 13
 
 ## Documentation Files
@@ -18,7 +18,7 @@ Defines 12 agent roles for the multi-agent collaboration framework.
 | [GOVERNANCE.md](GOVERNANCE.md) | Agent 9: Governance & Sustainability Age | > "Keep the project sustainable, clean, and governable. Chan | 832 |
 | [INTEGRATION.md](INTEGRATION.md) | INTEGRATION Agent — Role Document | - BEAM_INPUT/BEAM_DESIGN schema definitions and versioning.  | 49 |
 | [PM.md](PM.md) | PM (Product Manager) Agent — Role Docume | - **Orchestration:** Assigning tasks to the right specialist | 144 |
-| [README.md](README.md) | Agent Roles | Defines 12 agent roles for the multi-agent collaboration fra | 23 |
+| [README.md](README.md) | Agent Roles (LEGACY) | > **⚠️ LEGACY:** These role definitions are from an earlier  | 25 |
 | [RESEARCHER.md](RESEARCHER.md) | RESEARCHER Agent — Role Document | - IS Codes (IS 456:2000, IS 13920:2016, SP 16, SP 34) - Algo | 59 |
 | [SUPPORT.md](SUPPORT.md) | SUPPORT (Runbook) Agent — Role Document | - Maintain docs/reference/troubleshooting.md and docs/refere | 32 |
 | [TESTER.md](TESTER.md) | TESTER Agent — Role Document | - Numerical correctness against hand calculations - Edge cas | 98 |

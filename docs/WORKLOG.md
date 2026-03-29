@@ -8,7 +8,7 @@
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-03-25
+**Last Updated:** 2026-03-29
 
 ---
 
@@ -73,3 +73,8 @@
 | 2026-03-28 | GIT | Commit 61 files to task/TASK-AGENTS, create PR #441 | ecfede46 |
 | 2026-03-28 | Session 107 | Safety gates hardening: FORBIDDEN commands (5 files), CodeQL fix, ops no-script rule | — |
 | 2026-03-28 | AGENTS | Add structural-math agent + new-structural-element skill + add-structural-element prompt + update orchestrator pipeline (8 steps) | — |
+| 2026-03-28 | Session 105 | Agent testing audit (8.7/10), BeamDetailPanel fixes, shear tests (+234 lines), FastAPI import fixes, PR #441 | ecfede46 |
+| 2026-03-28 | Session 106 | CI fix (3 root causes): Black formatting 3 files, Ruff F401 fix, circular import false positives fix | efc0384c |
+| 2026-03-28 | Session 107 | Post-mortem Session 106 safety gates: FORBIDDEN commands in 5 files, CodeQL fix, ops no-script rule | — |
+| 2026-03-28 | Session 108 | Agent infrastructure expansion: @structural-math agent, /new-structural-element skill, #add-structural-element prompt, orchestrator 6→8 steps | — |
+| 2026-03-29 | Session 109 | Doc maintenance: batch metadata updates (53 docs), WORKLOG backfill S105-108, indexes regenerated, 2 docs archived | — |

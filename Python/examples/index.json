@@ -2,14 +2,14 @@
   "folder": "Python/examples",
   "type": "python-package",
   "description": "> **Purpose:** Example scripts demonstrating library usage",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 17,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 35,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "title": "Examples - Python Usage Examples",
       "description": "> **Purpose:** Example scripts demonstrating library usage > **Last Updated:** 2026-01-10",
       "content_hash": "58e8a7725f7b"
@@ -18,7 +18,7 @@
       "name": "bmd_sfd_example.py",
       "type": "python",
       "size_lines": 303,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "BMD/SFD Computation Example",
       "functions": [
         {
@@ -48,7 +48,7 @@
       "name": "canonical_data_workflow.py",
       "type": "python",
       "size_lines": 315,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Example: Complete workflow with canonical data format.",
       "functions": [
         {
@@ -88,7 +88,7 @@
       "name": "colab_workflow.py",
       "type": "python",
       "size_lines": 207,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Colab-friendly full workflow example.",
       "functions": [
         {
@@ -101,7 +101,7 @@
       "name": "complete_beam_design.py",
       "type": "python",
       "size_lines": 433,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Sample: Complete Beam Design Workflow",
       "classes": [
         {
@@ -151,7 +151,7 @@
       "name": "demo_intelligence.py",
       "type": "python",
       "size_lines": 218,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Demo: Smart library features (Precheck + Sensitivity)",
       "functions": [
         {
@@ -188,7 +188,7 @@
       "name": "full_pipeline_synthetic.py",
       "type": "python",
       "size_lines": 216,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Generate synthetic beam inputs and run the full CLI pipeline.",
       "functions": [
         {
@@ -204,7 +204,7 @@
       "name": "professional_workflow.py",
       "type": "python",
       "size_lines": 241,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Professional Engineering Workflow Example.",
       "functions": [
         {
@@ -217,7 +217,7 @@
     {
       "name": "sample_job_is456.json",
       "type": "config",
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "top_level_keys": [
         "schema_version",
         "job_id",
@@ -231,7 +231,7 @@
     {
       "name": "sample_job_report.json",
       "type": "config",
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "top_level_keys": [
         "schema_version",
         "code",
@@ -246,7 +246,7 @@
       "name": "simple_examples.py",
       "type": "python",
       "size_lines": 328,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "description": "Simple Examples for Beginners",
       "functions": [
         {
@@ -288,7 +288,7 @@
       "name": "validate_intelligence.py",
       "type": "python",
       "size_lines": 149,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-26",
       "description": "Validate insights features against sample vectors.",
       "functions": [
         {

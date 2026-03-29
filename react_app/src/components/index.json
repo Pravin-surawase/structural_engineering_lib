@@ -2,14 +2,14 @@
   "folder": "react_app/src/components",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-03-24",
+  "last_updated": "2026-03-29",
   "file_count": 2,
   "files": [
     {
       "name": "CommandPalette.tsx",
       "type": "react-component",
       "size_lines": 272,
-      "last_updated": "2026-01-26",
+      "last_updated": "2026-03-26",
       "exports": [
         "CommandItem",
         "CommandPalette",
@@ -23,7 +23,7 @@
       "name": "index.ts",
       "type": "typescript",
       "size_lines": 13,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "exports": [
         "BeamForm",
         "Viewport3D",
@@ -42,7 +42,7 @@
     {
       "name": "design",
       "path": "design/",
-      "file_count": 8
+      "file_count": 9
     },
     {
       "name": "import",
@@ -57,7 +57,7 @@
     {
       "name": "pages",
       "path": "pages/",
-      "file_count": 5
+      "file_count": 6
     },
     {
       "name": "ui",
