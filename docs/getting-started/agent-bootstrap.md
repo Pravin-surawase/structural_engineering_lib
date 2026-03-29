@@ -400,6 +400,7 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 ./run.sh session start                               # Verify env, read priorities
 
 # Validate codebase
+./run.sh git-check                                   # Quick git/PR/CI health check
 ./run.sh check --quick                               # Fast validation (8 checks, <30s)
 ./run.sh check                                       # Full validation (28 checks, parallel)
 ./run.sh check --category api                        # One category only
@@ -425,6 +426,10 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 ## 7. Git Workflow
 
 ```bash
+# Check git/PR/CI health (optional but recommended)
+./run.sh git-check                 # Quick health check
+./run.sh git-check --fix           # Auto-fix issues (stash, sync, cleanup)
+
 # Decision: PR or direct commit?
 ./run.sh pr status
 ```

@@ -24,6 +24,15 @@ You are the DevOps specialist for **structural_engineering_lib**. You handle git
 
 **NEVER** use `git add`, `git commit`, `git push`, `git pull` manually.
 
+## Before Every Task (MANDATORY)
+
+Run `./run.sh git-check` before starting ANY work. This catches:
+- Uncommitted changes from previous sessions
+- Pending merge conflicts
+- Failed CI checks
+- Stale branches that need cleanup
+- PRs that need attention
+
 ## Git Workflow
 
 ### Commit Format
@@ -45,13 +54,37 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 **NEVER use `--force` to bypass PR checks.** This has caused 10+ hours of rework historically.
 
-### PR Workflow
+### Full PR Lifecycle
+
+Every PR follows this lifecycle — don't skip steps:
 
 ```bash
-./run.sh pr create TASK-XXX "description"    # Start PR
-./run.sh commit "feat: implement X"          # Commit to PR branch
-./run.sh pr finish                           # CI check + auto-merge
+# Step 1: Health check before starting
+./run.sh git-check                           # Verify clean state
+
+# Step 2: Create PR
+./run.sh pr create TASK-XXX "description"    # Creates branch + PR
+
+# Step 3: Work on the PR
+./run.sh commit "feat: implement X"          # Commit changes to PR branch
+
+# Step 4: Finish PR (CI wait + merge + cleanup)
+./run.sh pr finish                           # Polls CI → auto-merge → delete branch
 ```
+
+### What `pr finish` does automatically:
+1. Checks CI status (polls every 10s, max 10 minutes)
+2. Waits for all checks to pass
+3. Squash-merges the PR
+4. Deletes the remote branch
+5. If CI fails → reports which checks failed (does NOT merge)
+
+### Post-merge checklist (MANDATORY):
+After `pr finish` succeeds:
+- [ ] `./run.sh git-check` — verify clean state
+- [ ] Switch to main: `git checkout main && git pull`
+- [ ] Fix stale docs: `.venv/bin/python scripts/check_doc_versions.py --fix`
+- [ ] Commit doc fixes: `./scripts/ai_commit.sh "docs: fix stale version references"`
 
 ### Git System Architecture
 

@@ -120,6 +120,7 @@ If starting fresh: read `next-session-brief.md`, `TASKS.md` (first 60 lines), `g
 Every task — no exceptions — flows through this pipeline:
 
 ```
+0. GIT-CHECK → Orchestrator runs `./run.sh git-check` — verify clean tree, PR status, CI health
 1. PLAN      → Orchestrator scopes work, identifies files/functions
 2. RESEARCH  → @structural-engineer defines IS 456 clauses, formulas, benchmark values (for structural tasks)
 3. GATHER    → Specialist reads existing code BEFORE changing anything
@@ -127,7 +128,7 @@ Every task — no exceptions — flows through this pipeline:
 5. TEST      → @tester writes tests + benchmarks
 6. VERIFY    → @reviewer validates (architecture, tests, IS 456)
 7. DOCUMENT  → @doc-master updates WORKLOG, TASKS, next-session-brief
-8. COMMIT    → @ops commits via ai_commit.sh
+8. COMMIT    → @ops commits via ai_commit.sh + full PR lifecycle
 ```
 
 **No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
@@ -149,6 +150,7 @@ After completing: Hand off to @reviewer with a summary of:
 ### Status Tracking
 
 Track each task through the pipeline:
+- [ ] GIT-CHECK — clean tree, no conflicts, CI passing
 - [ ] PLAN — scope defined, files identified
 - [ ] GATHER — specialist read existing code, confirmed no duplication
 - [ ] EXECUTE — code written/modified

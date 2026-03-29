@@ -584,6 +584,31 @@ Examples:
 EOF
 }
 
+_cmd_git_check() {
+    _header "Git Health Check"
+    bash "$SCRIPTS/git_health_check.sh" "$@"
+}
+
+_help_git_check() {
+    cat <<'EOF'
+Usage: ./run.sh git-check [options]
+
+Comprehensive git/PR/CI health check. Verifies clean working tree,
+PR status, CI checks, stale branches, and remote connectivity.
+
+Options:
+  --fix          Auto-fix what can be fixed (stash changes, sync remote)
+  --json         Machine-readable JSON output
+  --verbose      Show extra details
+
+Examples:
+  ./run.sh git-check                  # Quick health check
+  ./run.sh git-check --verbose        # Detailed output
+  ./run.sh git-check --fix            # Auto-fix issues
+  ./run.sh git-check --json           # For automation
+EOF
+}
+
 # ── Self-Evolving System ───────────────────────────────────────────────────
 
 _cmd_health() {
@@ -690,6 +715,7 @@ _print_usage() {
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
     echo -e "  ${GREEN}info${NC}        Library metadata, API, architecture, elements"
     echo -e "  ${GREEN}dev${NC}         Launch full development stack (FastAPI + React)"
+    echo -e "  ${GREEN}git-check${NC}   Comprehensive git/PR/CI health check"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -719,6 +745,7 @@ _dispatch_help() {
         evolve)   _help_evolve ;;
         info)     _help_info ;;
         dev)      _help_dev ;;
+        git-check) _help_git_check ;;
         *)        _print_usage ;;
     esac
 }
@@ -746,6 +773,7 @@ _run_sh() {
         'evolve:Self-evolution engine'
         'info:Library metadata and API'
         'dev:Launch full development stack'
+        'git-check:Git/PR/CI health check'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -759,6 +787,7 @@ _run_sh() {
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('run' 'verify' 'check-docs' 'checklist')
     local -a dev_opts=('--local' '--docker' '--docker-dev' '--kill-only' '--check-only' '--no-react' '--no-fastapi' '--open' '--verbose')
+    local -a git_check_opts=('--fix' '--json' '--verbose')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -776,6 +805,7 @@ _run_sh() {
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
             dev) _values 'option' $dev_opts ;;
+            git-check) _values 'option' $git_check_opts ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -839,6 +869,7 @@ main() {
         evolve)   _cmd_evolve "$@" ;;
         info)     _cmd_info "$@" ;;
         dev)      _cmd_dev "$@" ;;
+        git-check) _cmd_git_check "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         *)
             _error "Unknown command: $cmd"

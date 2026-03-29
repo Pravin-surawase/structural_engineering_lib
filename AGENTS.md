@@ -60,6 +60,7 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Safe commit + push (THE ONE RULE)
+./run.sh git-check                  # Comprehensive git/PR/CI health check
 ./run.sh dev                        # Launch full development stack (FastAPI + React)
 ./run.sh check --quick              # Fast validation (<30s, 8 checks)
 ./run.sh check                      # Full validation (28 checks, parallel)

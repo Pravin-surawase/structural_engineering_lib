@@ -51,6 +51,7 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
+./run.sh git-check                  # Comprehensive git/PR/CI health check
 ./run.sh dev                        # Launch full development stack (FastAPI + React)
 ./run.sh check                      # Validate everything (28 checks, parallel)
 ./run.sh check --quick              # Fast validation (<30s)
