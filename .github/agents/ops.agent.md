@@ -101,6 +101,8 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 | Terminal stuck in git pager | `q` to exit, or agent_start.sh sets `core.pager=cat` | Already configured by setup |
 | Network failure on push | `./scripts/ai_commit.sh --push` | Re-run push step only (W1) |
 | CI polling hangs (>10min) | Check GitHub manually | finish_task_pr.sh polling limitation (W3) |
+| `--branch` fails (script error) | Report to orchestrator | NEVER fall back to manual git — the script failure IS the bug to fix |
+| `--finish` fails (PR exists) | `./scripts/finish_task_pr.sh --continue PR_NUM` | Script now auto-detects existing PRs |
 | Commit subject >100 chars | Rewrite message to be concise | Keep messages under 72 chars (W5) |
 | Unrelated mypy failure blocks commit | Fix the mypy issue in that file | Don't bypass with --no-verify (W9) |
 | Undo last commit (not pushed) | `./scripts/ai_commit.sh --undo` | Soft reset — keeps changes staged |
@@ -143,6 +145,7 @@ You **execute** scripts, you do not **write** them. If a new script is needed:
 5. **Ignoring stale-version warnings post-commit** — hooks print `WOULD UPDATE: next-session-brief.md` but agent just reported it and moved on. Fix it immediately: `.venv/bin/python scripts/check_doc_versions.py --fix` then commit the result
 6. **Session 106: Destructive ops without approval** — agent closed 5 issues, deleted 20 branches, used `--admin` and `GIT_HOOKS_BYPASS=1` without asking user. All destructive ops now require explicit user confirmation
 7. **Forgot to finish PR** — agent committed to task branch, CI passed, but never called `finish_task_pr.sh`. PR #445 was left open and unmerged. Always run `finish_task_pr.sh` after the last commit on a task branch
+8. **SIGPIPE from pipefail + head/grep -q** — `set -o pipefail` combined with `| head -1` or `| grep -q` exits non-zero (141) due to SIGPIPE. Guard value-capture pipes with `|| true`. For conditionals, use `grep` (without `-q`) and redirect to `/dev/null` instead.
 
 ## Docker (Colima, not Docker Desktop)
 
