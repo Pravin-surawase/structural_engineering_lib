@@ -5,6 +5,7 @@ Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind â
 ## IMPORTANT: Git
 
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
+New flags: `--preview` (show diff before commit), `--undo` (undo last unpushed commit), `--signoff` (DCO sign-off).
 
 **PR Rule:** When `./run.sh pr status` says "PR required", you MUST use a PR. NEVER use `--force` to bypass. No exceptions.
 
