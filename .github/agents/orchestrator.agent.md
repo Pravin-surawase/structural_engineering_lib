@@ -1,7 +1,7 @@
 ---
 description: "Plan, triage, and delegate tasks. Start every session here."
 tools: ['search', 'readFile', 'listFiles', 'web', 'agent']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Frontend Work
     agent: frontend
@@ -84,6 +84,8 @@ When delegating, tell the specialist which skills to use:
 | `@doc-master` | `/safe-file-ops` (file moves), `/session-management` (session end) |
 | `@ops` | `/session-management` (session workflow) |
 | `@governance` | `/safe-file-ops` (archival), `/session-management` (maintenance) |
+| `@security` | Security auditing (OWASP, dependency scanning, input validation review) |
+| `@library-expert` | Library domain expertise (IS 456 knowledge, professional standards, usage guidance) |
 
 ## Session Start
 
@@ -114,6 +116,8 @@ If starting fresh: read `next-session-brief.md`, `TASKS.md` (first 60 lines), `g
 | Documentation / logs | → **doc-master** |
 | Git / CI / Docker | → **ops** |
 | Maintenance / health / archival | → **governance** |
+| Security audit / OWASP / dependency scan | → **security** |
+| Library usage guidance / professional standards | → **library-expert** |
 
 ## Mandatory Pipeline (EVERY task must follow this)
 

@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-03-28
-**Files:** 87
+**Last Updated:** 2026-03-29
+**Files:** 89
 
 ## Config Files
 
@@ -30,12 +30,13 @@
 | [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 392 |
 | [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 664 |
 | [check_api.py](check_api.py) | Unified API validation — signatures, docs, and sync checks. | 1 | 4 | 379 |
+| [check_api_compat.py](check_api_compat.py) | Check API backward compatibility. | 0 | 3 | 152 |
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 518 |
 | [check_bootstrap_freshness.py](check_bootstrap_freshness.py) | Check if bootstrap docs are stale compared to actual codebas | 0 | 4 | 262 |
-| [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for Streamlit Application | 5 | 1 | 461 |
+| [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for Streamlit Application | 5 | 1 | 464 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
-| [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 260 |
+| [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 282 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 5 | 534 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 422 |
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 18 | 847 |
@@ -62,6 +63,7 @@
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 526 |
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 245 |
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 10 | 800 |
+| [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 511 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 470 |

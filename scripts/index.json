@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-28",
-  "file_count": 87,
+  "last_updated": "2026-03-29",
+  "file_count": 89,
   "files": [
     {
       "name": "README.md",
@@ -185,10 +185,10 @@
     {
       "name": "ai_commit.sh",
       "type": "shell-script",
-      "size_lines": 253,
-      "last_updated": "2026-03-26",
+      "size_lines": 316,
+      "last_updated": "2026-03-29",
       "description": "AI-friendly wrapper for safe commits and pushes",
-      "content_hash": "d7f9be33bc13"
+      "content_hash": "d7253570d79c"
     },
     {
       "name": "archive_old_files.sh",
@@ -408,7 +408,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-27",
+      "last_updated": "2026-03-28",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -417,7 +417,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "741529b22e29"
+      "content_hash": "466a39419aab"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -666,6 +666,35 @@
       "content_hash": "11fce0f2d73b"
     },
     {
+      "name": "check_api_compat.py",
+      "type": "python",
+      "size_lines": 152,
+      "last_updated": "2026-03-29",
+      "description": "Check API backward compatibility.",
+      "functions": [
+        {
+          "name": "get_current_api",
+          "description": "Introspect the current public API surface."
+        },
+        {
+          "name": "check_compat",
+          "description": "Compare saved manifest against current API. Return list of breaking changes.",
+          "params": [
+            "saved",
+            "current"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT",
+        "MANIFEST_PATH"
+      ],
+      "content_hash": "ff818dab6241"
+    },
+    {
       "name": "check_architecture_boundaries.py",
       "type": "python",
       "size_lines": 518,
@@ -808,8 +837,8 @@
     {
       "name": "check_circular_imports.py",
       "type": "python",
-      "size_lines": 461,
-      "last_updated": "2026-03-27",
+      "size_lines": 464,
+      "last_updated": "2026-03-28",
       "description": "Circular Import Detector for Streamlit Application",
       "classes": [
         {
@@ -858,7 +887,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "58f91d8ae2e2"
+      "content_hash": "3d4aa89ded47"
     },
     {
       "name": "check_cli_reference.py",
@@ -905,8 +934,8 @@
     {
       "name": "check_docker_config.py",
       "type": "python",
-      "size_lines": 260,
-      "last_updated": "2026-03-26",
+      "size_lines": 282,
+      "last_updated": "2026-03-28",
       "description": "Docker Configuration Validator.",
       "functions": [
         {
@@ -949,7 +978,7 @@
       "constants": [
         "ROOT"
       ],
-      "content_hash": "c6c483544e9d"
+      "content_hash": "cf4bd4ea9bad"
     },
     {
       "name": "check_docs.py",
@@ -2198,6 +2227,40 @@
       "content_hash": "f45389dc7e4c"
     },
     {
+      "name": "generate_error_docs.py",
+      "type": "python",
+      "size_lines": 139,
+      "last_updated": "2026-03-29",
+      "description": "Generate docs/reference/error-codes.md from core/errors.py.",
+      "functions": [
+        {
+          "name": "collect_error_codes",
+          "description": "Import core.errors and collect all E_* DesignError constants."
+        },
+        {
+          "name": "group_by_category",
+          "description": "Group error codes by their category prefix (INPUT, FLEXURE, etc.).",
+          "params": [
+            "codes"
+          ]
+        },
+        {
+          "name": "generate_markdown",
+          "description": "Generate the full markdown document.",
+          "params": [
+            "codes"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "PROJECT_ROOT"
+      ],
+      "content_hash": "47a4073cd002"
+    },
+    {
       "name": "governance_health_score.py",
       "type": "python",
       "size_lines": 515,
@@ -2725,10 +2788,10 @@
     {
       "name": "safe_push.sh",
       "type": "shell-script",
-      "size_lines": 411,
-      "last_updated": "2026-03-27",
+      "size_lines": 493,
+      "last_updated": "2026-03-29",
       "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
-      "content_hash": "8efa9b80cef6"
+      "content_hash": "0a9eb5978da0"
     },
     {
       "name": "session.py",
@@ -3464,5 +3527,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "58b2a72b3fa3249c"
+  "content_hash": "791a2ed245c51359"
 }

@@ -81,7 +81,7 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 
 Direct scripts (when run.sh doesn't cover it):
 ```bash
-.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 11 agents)
+.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 14 agents)
 .venv/bin/python scripts/agent_context.py --list # List available agents
 .venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
 colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
@@ -159,7 +159,7 @@ docs/TASKS.md                                   # Task board
 
 ## VS Code Copilot Agents & Skills
 
-### 12 Custom Agents (`.github/agents/`)
+### 14 Custom Agents (`.github/agents/`)
 
 | Agent | Role | Tools |
 |-------|------|-------|
@@ -175,6 +175,8 @@ docs/TASKS.md                                   # Task board
 | `doc-master` | Docs, archives, session logs | full edit |
 | `ops` | Git, CI/CD, Docker | full edit |
 | `governance` | Project health, maintenance, metrics | full edit |
+| `security` | Security auditing, OWASP, dependency scanning | read + terminal |
+| `library-expert` | Library domain expert, IS 456 knowledge, professional standards | read + terminal + web |
 
 ### 7 Agent Skills (`.github/skills/`)
 
@@ -216,3 +218,5 @@ docs/TASKS.md                                   # Task board
 - **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
 - **Session end:** any agent → doc-master → ops
 - **Maintenance:** orchestrator → governance → doc-master → ops
+- **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
+- **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops

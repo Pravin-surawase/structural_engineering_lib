@@ -31,6 +31,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Logging configuration
@@ -53,6 +54,23 @@ WORKFLOW_START_TIME=$(date +%s)
 log_message "INFO" "=== Safe Push Workflow Started ==="
 log_message "INFO" "User: $(whoami)"
 log_message "INFO" "Branch: $(git branch --show-current 2>/dev/null || echo 'unknown')"
+
+# Check for stale lock files
+if [[ -f .git/index.lock ]]; then
+    LOCK_AGE=$(( $(date +%s) - $(stat -f %m .git/index.lock 2>/dev/null || stat -c %Y .git/index.lock 2>/dev/null || echo "0") ))
+    if [[ "$LOCK_AGE" -gt 300 ]]; then
+        echo -e "${YELLOW}⚠️  Stale .git/index.lock detected (${LOCK_AGE}s old)${NC}"
+        echo -e "${YELLOW}   Removing stale lock file...${NC}"
+        rm -f .git/index.lock
+        log_message "WARNING" "Removed stale .git/index.lock (${LOCK_AGE}s old)"
+    else
+        echo -e "${RED}ERROR: .git/index.lock exists (another git process may be running)${NC}"
+        echo -e "${YELLOW}If no other git process is running, remove it:${NC}"
+        echo "  rm .git/index.lock"
+        log_message "ERROR" ".git/index.lock exists (${LOCK_AGE}s old)"
+        exit 1
+    fi
+fi
 
 CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
 DEFAULT_BRANCH="main"
@@ -198,6 +216,15 @@ fi
 
 COMMIT_MSG="$1"
 FILES="${3:-}"  # Optional files argument
+
+# Parse additional flags
+SIGNOFF=""
+for arg in "$@"; do
+    if [[ "$arg" == "--signoff" ]]; then
+        SIGNOFF="-s"
+    fi
+done
+
 log_message "INFO" "Commit message: ${COMMIT_MSG:0:100}..." # Log first 100 chars
 
 echo -e "${GREEN}=== Safe Push Workflow (Conflict-Minimized) ===${NC}"
@@ -225,12 +252,32 @@ parallel_fetch_start
 echo -e "${GREEN}→ Fetch running in background (PID: $FETCH_PID)${NC}"
 log_message "INFO" "Will complete fetch before commit"
 
+# Branch staleness check
+if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
+  BEHIND_COUNT=$(git rev-list --count HEAD.."$REMOTE_NAME/$DEFAULT_BRANCH" 2>/dev/null || echo "0")
+  if [[ "$BEHIND_COUNT" -gt 50 ]]; then
+    echo -e "${YELLOW}⚠️  Branch is $BEHIND_COUNT commits behind $DEFAULT_BRANCH${NC}"
+    echo -e "${YELLOW}   Consider rebasing: git rebase $REMOTE_NAME/$DEFAULT_BRANCH${NC}"
+    log_message "WARNING" "Branch $CURRENT_BRANCH is $BEHIND_COUNT commits behind $DEFAULT_BRANCH"
+  fi
+fi
+
 # Restore auto-stashed changes after sync
 if [[ "$AUTO_STASHED" == "true" ]]; then
   echo -e "${YELLOW}Restoring stashed changes...${NC}"
-  if ! git stash pop >/dev/null; then
-    echo -e "${RED}ERROR: Auto-stash restore failed${NC}"
-    echo "Resolve stash conflicts, then re-run safe_push.sh"
+  # Save stash ref for recovery
+  STASH_REF=$(git stash list --format="%H" | head -1)
+  if ! git stash pop >/dev/null 2>&1; then
+    echo -e "${RED}ERROR: Auto-stash restore failed (conflicts with remote changes)${NC}"
+    echo -e "${YELLOW}Your stashed changes are safe. Recovery options:${NC}"
+    echo "  1. View conflicts:  git diff"
+    echo "  2. View stash:      git stash show -p"
+    echo "  3. Manual restore:  git stash pop  (then resolve conflicts)"
+    echo "  4. Drop stash:      git stash drop (discard stashed changes)"
+    if [[ -n "$STASH_REF" ]]; then
+      echo "  5. Stash ref:       $STASH_REF"
+    fi
+    log_message "ERROR" "Stash pop failed - stash preserved for manual recovery"
     exit 1
   fi
 fi
@@ -277,7 +324,7 @@ log_message "INFO" "Step 3: Creating commit"
 
 # Capture hook output to identify which hook failed (GITDOC-06)
 HOOK_LOG="$LOG_DIR/hook_output_$(date +%Y%m%d_%H%M%S).log"
-if ! git commit -m "$COMMIT_MSG" 2>&1 | tee "$HOOK_LOG"; then
+if ! git commit $SIGNOFF -m "$COMMIT_MSG" 2>&1 | tee "$HOOK_LOG"; then
   echo -e "${RED}ERROR: Commit failed (pre-commit hooks reported errors)${NC}"
   echo ""
 
@@ -370,17 +417,52 @@ if [[ "$IS_WORKTREE" == "true" ]]; then
   log_message "SUCCESS" "Worktree commit completed (not pushed): $(git log -1 --oneline)"
   log_message "INFO" "=== Worktree Workflow Completed ==="
 else
-  # Main agent mode: commit and push
+  # Main agent mode: commit and push with retry
   echo -e "${YELLOW}Step 7/7: Pushing to remote...${NC}"
   log_message "INFO" "Step 7: Pushing to remote"
+
+  # Pre-push network check
+  echo -e "${YELLOW}   Verifying remote connectivity...${NC}"
+  if ! git ls-remote --exit-code "$REMOTE_NAME" >/dev/null 2>&1; then
+      echo -e "${RED}ERROR: Cannot reach remote '$REMOTE_NAME'${NC}"
+      echo -e "${YELLOW}💡 Your commit is saved locally. Push later with:${NC}"
+      echo "  ./scripts/ai_commit.sh --push"
+      log_message "ERROR" "Remote connectivity check failed"
+      exit 1
+  fi
+
   if [[ "$PUSH_HAS_UPSTREAM" == "true" ]]; then
     PUSH_CMD=(git push)
   else
     PUSH_CMD=(git push -u "$REMOTE_NAME" "$CURRENT_BRANCH")
   fi
 
-  if "${PUSH_CMD[@]}"; then
-    # Calculate and display timing metrics
+  # Retry logic for transient failures
+  MAX_RETRIES=3
+  RETRY_DELAYS=(2 5 10)
+  PUSH_SUCCESS=false
+
+  for ((attempt=1; attempt<=MAX_RETRIES; attempt++)); do
+    PUSH_OUTPUT=$("${PUSH_CMD[@]}" 2>&1) && { PUSH_SUCCESS=true; echo "$PUSH_OUTPUT"; break; }
+    PUSH_EXIT=$?
+    PUSH_ERROR="$PUSH_OUTPUT"
+    # Check if error is retryable (transient network issues)
+    if echo "$PUSH_ERROR" | grep -qiE "rejected|denied|forbidden|protected|non-fast-forward"; then
+      # Non-retryable: auth failure, branch protection, or diverged history
+      echo -e "${RED}ERROR: Push rejected (non-retryable)${NC}"
+      log_message "ERROR" "Push rejected (non-retryable): $PUSH_ERROR"
+      break
+    fi
+
+    if [[ $attempt -lt $MAX_RETRIES ]]; then
+      DELAY=${RETRY_DELAYS[$((attempt-1))]}
+      echo -e "${YELLOW}⚠ Push attempt $attempt failed. Retrying in ${DELAY}s...${NC}"
+      log_message "WARNING" "Push attempt $attempt failed, retrying in ${DELAY}s"
+      sleep "$DELAY"
+    fi
+  done
+
+  if [[ "$PUSH_SUCCESS" == "true" ]]; then
     WORKFLOW_END_TIME=$(date +%s)
     TOTAL_DURATION=$((WORKFLOW_END_TIME - WORKFLOW_START_TIME))
     echo -e "${GREEN}✅ Successfully pushed!${NC}"
@@ -388,23 +470,23 @@ else
     echo ""
     echo -e "${BLUE}Workflow succeeded${NC}"
     echo -e "⏱️  Total time: ${TOTAL_DURATION}s"
-    log_message "SUCCESS" "Push completed successfully: $(git log -1 --oneline)"
+    if [[ $attempt -gt 1 ]]; then
+      echo -e "${YELLOW}   (succeeded on attempt $attempt of $MAX_RETRIES)${NC}"
+      log_message "SUCCESS" "Push completed on attempt $attempt: $(git log -1 --oneline)"
+    else
+      log_message "SUCCESS" "Push completed successfully: $(git log -1 --oneline)"
+    fi
     log_message "TIMING" "Total workflow duration: ${TOTAL_DURATION}s"
     log_message "INFO" "=== Workflow Completed Successfully ==="
   else
-    echo -e "${RED}ERROR: Push failed${NC}"
-    echo "This shouldn't happen after all safety checks. Investigating..."
+    echo -e "${RED}ERROR: Push failed after $MAX_RETRIES attempts${NC}"
+    echo -e "${YELLOW}💡 Your commit is saved locally. Push later with:${NC}"
+    echo "  ./scripts/ai_commit.sh --push"
     echo ""
     echo "Current branch status:"
     git status
-    echo ""
-    echo "Recent commits:"
-    git log --oneline -5
-    echo ""
-    echo "Divergence check:"
-    git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD
-    log_message "ERROR" "Push failed after all safety checks"
-    log_message "ERROR" "Divergence: $(git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD | wc -l | tr -d ' ') commits ahead"
+    log_message "ERROR" "Push failed after $MAX_RETRIES attempts"
+    log_message "INFO" "=== Workflow Failed ==="
     exit 1
   fi
 fi

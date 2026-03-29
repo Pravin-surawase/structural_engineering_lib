@@ -34,7 +34,7 @@ If `./run.sh <cmd>` produces no output or fails:
 
 | run.sh Command | Direct Script Fallback | CLI Fallback |
 |----------------|----------------------|--------------|
-| `./run.sh commit "msg"` | `./scripts/ai_commit.sh "msg"` | — |
+| `./run.sh commit "msg"` | `./scripts/ai_commit.sh "msg"` | Flags: `--preview`, `--undo`, `--signoff` |
 | `./run.sh pr status` | `./scripts/should_use_pr.sh` | `gh pr list --head $(git branch --show-current)` |
 | `./run.sh pr create ID "desc"` | `./scripts/create_task_pr.sh ID "desc"` | `gh pr create --title "..." --base main` |
 | `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` | — |
@@ -70,6 +70,9 @@ docker compose -f docker-compose.dev.yml up           # Dev with hot reload
 ### Git — NEVER Manual (ALL agents)
 ```bash
 ./scripts/ai_commit.sh "type(scope): message"         # Commit + push (THE ONE RULE)
+./scripts/ai_commit.sh "msg" --preview                # Preview changes before committing
+./scripts/ai_commit.sh --undo                         # Undo last unpushed commit
+./scripts/ai_commit.sh "msg" --signoff                # DCO sign-off
 git status --short                                    # Check state (read-only OK)
 git branch --show-current                             # Current branch (read-only OK)
 git log --oneline -10                                 # Recent history (read-only OK)

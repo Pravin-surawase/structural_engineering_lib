@@ -1,0 +1,1524 @@
+{
+  "beam_to_3d_geometry": {
+    "param_details": [
+      {
+        "name": "detailing"
+      },
+      {
+        "has_default": true,
+        "name": "is_seismic"
+      }
+    ],
+    "params": [
+      "detailing",
+      "is_seismic"
+    ],
+    "returns": "Beam3DGeometry"
+  },
+  "calculate_equivalent_moment": {
+    "param_details": [
+      {
+        "name": "mu_knm"
+      },
+      {
+        "name": "tu_knm"
+      },
+      {
+        "name": "d"
+      },
+      {
+        "name": "b"
+      }
+    ],
+    "params": [
+      "mu_knm",
+      "tu_knm",
+      "d",
+      "b"
+    ],
+    "returns": "float"
+  },
+  "calculate_equivalent_shear": {
+    "param_details": [
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "tu_knm"
+      },
+      {
+        "name": "b"
+      }
+    ],
+    "params": [
+      "vu_kn",
+      "tu_knm",
+      "b"
+    ],
+    "returns": "float"
+  },
+  "calculate_longitudinal_torsion_steel": {
+    "param_details": [
+      {
+        "name": "tu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "b1"
+      },
+      {
+        "name": "d1"
+      },
+      {
+        "name": "fy"
+      },
+      {
+        "name": "sv"
+      }
+    ],
+    "params": [
+      "tu_knm",
+      "vu_kn",
+      "b1",
+      "d1",
+      "fy",
+      "sv"
+    ],
+    "returns": "float"
+  },
+  "calculate_torsion_shear_stress": {
+    "param_details": [
+      {
+        "name": "ve_kn"
+      },
+      {
+        "name": "b"
+      },
+      {
+        "name": "d"
+      }
+    ],
+    "params": [
+      "ve_kn",
+      "b",
+      "d"
+    ],
+    "returns": "float"
+  },
+  "calculate_torsion_stirrup_area": {
+    "param_details": [
+      {
+        "name": "tu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "b"
+      },
+      {
+        "name": "d"
+      },
+      {
+        "name": "b1"
+      },
+      {
+        "name": "d1"
+      },
+      {
+        "name": "fy"
+      },
+      {
+        "name": "tc"
+      }
+    ],
+    "params": [
+      "tu_knm",
+      "vu_kn",
+      "b",
+      "d",
+      "b1",
+      "d1",
+      "fy",
+      "tc"
+    ],
+    "returns": "tuple[float, float, float]"
+  },
+  "check_anchorage_at_simple_support": {
+    "param_details": [
+      {
+        "name": "bar_dia_mm"
+      },
+      {
+        "name": "fck"
+      },
+      {
+        "name": "fy"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "support_width_mm"
+      },
+      {
+        "has_default": true,
+        "name": "cover_mm"
+      },
+      {
+        "has_default": true,
+        "name": "bar_type"
+      },
+      {
+        "has_default": true,
+        "name": "has_standard_bend"
+      }
+    ],
+    "params": [
+      "bar_dia_mm",
+      "fck",
+      "fy",
+      "vu_kn",
+      "support_width_mm",
+      "cover_mm",
+      "bar_type",
+      "has_standard_bend"
+    ],
+    "returns": "detailing.AnchorageCheckResult"
+  },
+  "check_beam_ductility": {
+    "param_details": [
+      {
+        "name": "b"
+      },
+      {
+        "name": "D"
+      },
+      {
+        "name": "d"
+      },
+      {
+        "name": "fck"
+      },
+      {
+        "name": "fy"
+      },
+      {
+        "name": "min_long_bar_dia"
+      }
+    ],
+    "params": [
+      "b",
+      "D",
+      "d",
+      "fck",
+      "fy",
+      "min_long_bar_dia"
+    ],
+    "returns": "ductile.DuctileBeamResult"
+  },
+  "check_beam_is456": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "name": "cases"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "name": "d_mm"
+      },
+      {
+        "name": "fck_nmm2"
+      },
+      {
+        "name": "fy_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "d_dash_mm"
+      },
+      {
+        "has_default": true,
+        "name": "asv_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "pt_percent"
+      },
+      {
+        "has_default": true,
+        "name": "deflection_defaults"
+      },
+      {
+        "has_default": true,
+        "name": "crack_width_defaults"
+      }
+    ],
+    "params": [
+      "units",
+      "cases",
+      "b_mm",
+      "D_mm",
+      "d_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "d_dash_mm",
+      "asv_mm2",
+      "pt_percent",
+      "deflection_defaults",
+      "crack_width_defaults"
+    ],
+    "returns": "ComplianceReport"
+  },
+  "check_beam_slenderness": {
+    "param_details": [
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "d_mm"
+      },
+      {
+        "name": "l_eff_mm"
+      },
+      {
+        "has_default": true,
+        "name": "beam_type"
+      },
+      {
+        "has_default": true,
+        "name": "has_lateral_restraint"
+      }
+    ],
+    "params": [
+      "b_mm",
+      "d_mm",
+      "l_eff_mm",
+      "beam_type",
+      "has_lateral_restraint"
+    ],
+    "returns": "slenderness.SlendernessResult"
+  },
+  "check_compliance_report": {
+    "param_details": [
+      {
+        "name": "cases"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "name": "d_mm"
+      },
+      {
+        "name": "fck_nmm2"
+      },
+      {
+        "name": "fy_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "d_dash_mm"
+      },
+      {
+        "has_default": true,
+        "name": "asv_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "pt_percent"
+      },
+      {
+        "has_default": true,
+        "name": "deflection_defaults"
+      },
+      {
+        "has_default": true,
+        "name": "crack_width_defaults"
+      }
+    ],
+    "params": [
+      "cases",
+      "b_mm",
+      "D_mm",
+      "d_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "d_dash_mm",
+      "asv_mm2",
+      "pt_percent",
+      "deflection_defaults",
+      "crack_width_defaults"
+    ],
+    "returns": "ComplianceReport"
+  },
+  "check_crack_width": {
+    "param_details": [
+      {
+        "has_default": true,
+        "name": "exposure_class"
+      },
+      {
+        "has_default": true,
+        "name": "limit_mm"
+      },
+      {
+        "has_default": true,
+        "name": "acr_mm"
+      },
+      {
+        "has_default": true,
+        "name": "cmin_mm"
+      },
+      {
+        "has_default": true,
+        "name": "h_mm"
+      },
+      {
+        "has_default": true,
+        "name": "x_mm"
+      },
+      {
+        "has_default": true,
+        "name": "epsilon_m"
+      },
+      {
+        "has_default": true,
+        "name": "fs_service_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "es_nmm2"
+      }
+    ],
+    "params": [
+      "exposure_class",
+      "limit_mm",
+      "acr_mm",
+      "cmin_mm",
+      "h_mm",
+      "x_mm",
+      "epsilon_m",
+      "fs_service_nmm2",
+      "es_nmm2"
+    ],
+    "returns": "serviceability.CrackWidthResult"
+  },
+  "check_deflection_span_depth": {
+    "param_details": [
+      {
+        "name": "span_mm"
+      },
+      {
+        "name": "d_mm"
+      },
+      {
+        "has_default": true,
+        "name": "support_condition"
+      },
+      {
+        "has_default": true,
+        "name": "base_allowable_ld"
+      },
+      {
+        "has_default": true,
+        "name": "mf_tension_steel"
+      },
+      {
+        "has_default": true,
+        "name": "mf_compression_steel"
+      },
+      {
+        "has_default": true,
+        "name": "mf_flanged"
+      }
+    ],
+    "params": [
+      "span_mm",
+      "d_mm",
+      "support_condition",
+      "base_allowable_ld",
+      "mf_tension_steel",
+      "mf_compression_steel",
+      "mf_flanged"
+    ],
+    "returns": "serviceability.DeflectionResult"
+  },
+  "compute_bbs": {
+    "param_details": [
+      {
+        "name": "detailing_list"
+      },
+      {
+        "has_default": true,
+        "name": "project_name"
+      }
+    ],
+    "params": [
+      "detailing_list",
+      "project_name"
+    ],
+    "returns": "bbs.BBSDocument"
+  },
+  "compute_beam_outline": {
+    "param_details": [
+      {
+        "name": "beam_width"
+      },
+      {
+        "name": "beam_depth"
+      },
+      {
+        "name": "span"
+      }
+    ],
+    "params": [
+      "beam_width",
+      "beam_depth",
+      "span"
+    ],
+    "returns": "list[Point3D]"
+  },
+  "compute_bmd_sfd": {
+    "param_details": [
+      {
+        "name": "span_mm"
+      },
+      {
+        "name": "support_condition"
+      },
+      {
+        "name": "loads"
+      },
+      {
+        "has_default": true,
+        "name": "num_points"
+      }
+    ],
+    "params": [
+      "span_mm",
+      "support_condition",
+      "loads",
+      "num_points"
+    ],
+    "returns": "LoadDiagramResult"
+  },
+  "compute_critical": {
+    "param_details": [
+      {
+        "name": "job_out"
+      },
+      {
+        "has_default": true,
+        "name": "top"
+      },
+      {
+        "has_default": true,
+        "name": "format"
+      },
+      {
+        "has_default": true,
+        "name": "job_path"
+      },
+      {
+        "has_default": true,
+        "name": "results_path"
+      },
+      {
+        "has_default": true,
+        "name": "output_path"
+      }
+    ],
+    "params": [
+      "job_out",
+      "top",
+      "format",
+      "job_path",
+      "results_path",
+      "output_path"
+    ],
+    "returns": "str | Path"
+  },
+  "compute_detailing": {
+    "param_details": [
+      {
+        "name": "design_results"
+      },
+      {
+        "has_default": true,
+        "name": "config"
+      }
+    ],
+    "params": [
+      "design_results",
+      "config"
+    ],
+    "returns": "list[detailing.BeamDetailingResult]"
+  },
+  "compute_dxf": {
+    "param_details": [
+      {
+        "name": "detailing_list"
+      },
+      {
+        "name": "output"
+      },
+      {
+        "has_default": true,
+        "name": "multi"
+      },
+      {
+        "has_default": true,
+        "name": "include_title_block"
+      },
+      {
+        "has_default": true,
+        "name": "title_block"
+      },
+      {
+        "has_default": true,
+        "name": "sheet_margin_mm"
+      },
+      {
+        "has_default": true,
+        "name": "title_block_width_mm"
+      },
+      {
+        "has_default": true,
+        "name": "title_block_height_mm"
+      }
+    ],
+    "params": [
+      "detailing_list",
+      "output",
+      "multi",
+      "include_title_block",
+      "title_block",
+      "sheet_margin_mm",
+      "title_block_width_mm",
+      "title_block_height_mm"
+    ],
+    "returns": "Path"
+  },
+  "compute_hash": {
+    "param_details": [
+      {
+        "name": "data"
+      }
+    ],
+    "params": [
+      "data"
+    ],
+    "returns": "str"
+  },
+  "compute_rebar_positions": {
+    "param_details": [
+      {
+        "name": "beam_width"
+      },
+      {
+        "name": "beam_depth"
+      },
+      {
+        "name": "cover"
+      },
+      {
+        "name": "bar_count"
+      },
+      {
+        "name": "bar_dia"
+      },
+      {
+        "name": "stirrup_dia"
+      },
+      {
+        "has_default": true,
+        "name": "is_top"
+      },
+      {
+        "has_default": true,
+        "name": "layers"
+      }
+    ],
+    "params": [
+      "beam_width",
+      "beam_depth",
+      "cover",
+      "bar_count",
+      "bar_dia",
+      "stirrup_dia",
+      "is_top",
+      "layers"
+    ],
+    "returns": "list[Point3D]"
+  },
+  "compute_report": {
+    "param_details": [
+      {
+        "name": "source"
+      },
+      {
+        "has_default": true,
+        "name": "format"
+      },
+      {
+        "has_default": true,
+        "name": "job_path"
+      },
+      {
+        "has_default": true,
+        "name": "results_path"
+      },
+      {
+        "has_default": true,
+        "name": "output_path"
+      },
+      {
+        "has_default": true,
+        "name": "batch_threshold"
+      }
+    ],
+    "params": [
+      "source",
+      "format",
+      "job_path",
+      "results_path",
+      "output_path",
+      "batch_threshold"
+    ],
+    "returns": "str | Path | list[Path]"
+  },
+  "compute_stirrup_path": {
+    "param_details": [
+      {
+        "name": "beam_width"
+      },
+      {
+        "name": "beam_depth"
+      },
+      {
+        "name": "cover"
+      },
+      {
+        "name": "stirrup_dia"
+      },
+      {
+        "name": "position_x"
+      },
+      {
+        "has_default": true,
+        "name": "legs"
+      }
+    ],
+    "params": [
+      "beam_width",
+      "beam_depth",
+      "cover",
+      "stirrup_dia",
+      "position_x",
+      "legs"
+    ],
+    "returns": "list[Point3D]"
+  },
+  "compute_stirrup_positions": {
+    "param_details": [
+      {
+        "name": "span"
+      },
+      {
+        "name": "stirrup_spacing_start"
+      },
+      {
+        "name": "stirrup_spacing_mid"
+      },
+      {
+        "name": "stirrup_spacing_end"
+      },
+      {
+        "has_default": true,
+        "name": "zone_length"
+      }
+    ],
+    "params": [
+      "span",
+      "stirrup_spacing_start",
+      "stirrup_spacing_mid",
+      "stirrup_spacing_end",
+      "zone_length"
+    ],
+    "returns": "list[float]"
+  },
+  "create_calculation_certificate": {
+    "param_details": [
+      {
+        "name": "inputs"
+      },
+      {
+        "name": "outputs"
+      },
+      {
+        "has_default": true,
+        "name": "project_id"
+      },
+      {
+        "has_default": true,
+        "name": "beam_id"
+      },
+      {
+        "has_default": true,
+        "name": "engineer"
+      }
+    ],
+    "params": [
+      "inputs",
+      "outputs",
+      "project_id",
+      "beam_id",
+      "engineer"
+    ],
+    "returns": "dict[str, Any]"
+  },
+  "create_job_from_etabs": {
+    "param_details": [
+      {
+        "name": "envelope_data"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "name": "fck_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "fy_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "d_mm"
+      },
+      {
+        "has_default": true,
+        "name": "d_dash_mm"
+      },
+      {
+        "has_default": true,
+        "name": "cover_mm"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_dia_mm"
+      },
+      {
+        "has_default": true,
+        "name": "bar_dia_mm"
+      },
+      {
+        "has_default": true,
+        "name": "asv_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "job_id"
+      }
+    ],
+    "params": [
+      "envelope_data",
+      "b_mm",
+      "D_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "d_mm",
+      "d_dash_mm",
+      "cover_mm",
+      "stirrup_dia_mm",
+      "bar_dia_mm",
+      "asv_mm2",
+      "job_id"
+    ],
+    "returns": "dict[str, Any]"
+  },
+  "create_jobs_from_etabs_csv": {
+    "param_details": [
+      {
+        "name": "csv_path"
+      },
+      {
+        "name": "geometry"
+      },
+      {
+        "has_default": true,
+        "name": "output_dir"
+      },
+      {
+        "has_default": true,
+        "name": "default_fck"
+      },
+      {
+        "has_default": true,
+        "name": "default_fy"
+      },
+      {
+        "has_default": true,
+        "name": "station_multiplier"
+      }
+    ],
+    "params": [
+      "csv_path",
+      "geometry",
+      "output_dir",
+      "default_fck",
+      "default_fy",
+      "station_multiplier"
+    ],
+    "returns": "list[dict[str, Any]]"
+  },
+  "design_and_detail_beam_is456": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "name": "beam_id"
+      },
+      {
+        "name": "story"
+      },
+      {
+        "name": "span_mm"
+      },
+      {
+        "name": "mu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "has_default": true,
+        "name": "d_mm"
+      },
+      {
+        "has_default": true,
+        "name": "cover_mm"
+      },
+      {
+        "has_default": true,
+        "name": "fck_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "fy_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "d_dash_mm"
+      },
+      {
+        "has_default": true,
+        "name": "asv_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_dia_mm"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_spacing_support_mm"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_spacing_mid_mm"
+      },
+      {
+        "has_default": true,
+        "name": "is_seismic"
+      }
+    ],
+    "params": [
+      "units",
+      "beam_id",
+      "story",
+      "span_mm",
+      "mu_knm",
+      "vu_kn",
+      "b_mm",
+      "D_mm",
+      "d_mm",
+      "cover_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "d_dash_mm",
+      "asv_mm2",
+      "stirrup_dia_mm",
+      "stirrup_spacing_support_mm",
+      "stirrup_spacing_mid_mm",
+      "is_seismic"
+    ],
+    "returns": "DesignAndDetailResult"
+  },
+  "design_beam_is456": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "has_default": true,
+        "name": "case_id"
+      },
+      {
+        "name": "mu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "name": "d_mm"
+      },
+      {
+        "name": "fck_nmm2"
+      },
+      {
+        "name": "fy_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "d_dash_mm"
+      },
+      {
+        "has_default": true,
+        "name": "asv_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "pt_percent"
+      },
+      {
+        "has_default": true,
+        "name": "ast_mm2_for_shear"
+      },
+      {
+        "has_default": true,
+        "name": "deflection_params"
+      },
+      {
+        "has_default": true,
+        "name": "crack_width_params"
+      }
+    ],
+    "params": [
+      "units",
+      "case_id",
+      "mu_knm",
+      "vu_kn",
+      "b_mm",
+      "D_mm",
+      "d_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "d_dash_mm",
+      "asv_mm2",
+      "pt_percent",
+      "ast_mm2_for_shear",
+      "deflection_params",
+      "crack_width_params"
+    ],
+    "returns": "ComplianceCaseResult"
+  },
+  "design_from_input": {
+    "param_details": [
+      {
+        "name": "beam"
+      },
+      {
+        "has_default": true,
+        "name": "include_detailing"
+      }
+    ],
+    "params": [
+      "beam",
+      "include_detailing"
+    ],
+    "returns": "DesignAndDetailResult | ComplianceReport"
+  },
+  "design_torsion": {
+    "param_details": [
+      {
+        "name": "tu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "mu_knm"
+      },
+      {
+        "name": "b"
+      },
+      {
+        "name": "D"
+      },
+      {
+        "name": "d"
+      },
+      {
+        "name": "fck"
+      },
+      {
+        "name": "fy"
+      },
+      {
+        "name": "cover"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_dia"
+      },
+      {
+        "has_default": true,
+        "name": "pt"
+      }
+    ],
+    "params": [
+      "tu_knm",
+      "vu_kn",
+      "mu_knm",
+      "b",
+      "D",
+      "d",
+      "fck",
+      "fy",
+      "cover",
+      "stirrup_dia",
+      "pt"
+    ],
+    "returns": "TorsionResult"
+  },
+  "detail_beam_is456": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "name": "beam_id"
+      },
+      {
+        "name": "story"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "name": "span_mm"
+      },
+      {
+        "name": "cover_mm"
+      },
+      {
+        "name": "fck_nmm2"
+      },
+      {
+        "name": "fy_nmm2"
+      },
+      {
+        "name": "ast_start_mm2"
+      },
+      {
+        "name": "ast_mid_mm2"
+      },
+      {
+        "name": "ast_end_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "asc_start_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "asc_mid_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "asc_end_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_dia_mm"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_spacing_start_mm"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_spacing_mid_mm"
+      },
+      {
+        "has_default": true,
+        "name": "stirrup_spacing_end_mm"
+      },
+      {
+        "has_default": true,
+        "name": "is_seismic"
+      }
+    ],
+    "params": [
+      "units",
+      "beam_id",
+      "story",
+      "b_mm",
+      "D_mm",
+      "span_mm",
+      "cover_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "ast_start_mm2",
+      "ast_mid_mm2",
+      "ast_end_mm2",
+      "asc_start_mm2",
+      "asc_mid_mm2",
+      "asc_end_mm2",
+      "stirrup_dia_mm",
+      "stirrup_spacing_start_mm",
+      "stirrup_spacing_mid_mm",
+      "stirrup_spacing_end_mm",
+      "is_seismic"
+    ],
+    "returns": "detailing.BeamDetailingResult"
+  },
+  "export_bbs": {
+    "param_details": [
+      {
+        "name": "bbs_doc"
+      },
+      {
+        "name": "path"
+      },
+      {
+        "has_default": true,
+        "name": "fmt"
+      }
+    ],
+    "params": [
+      "bbs_doc",
+      "path",
+      "fmt"
+    ],
+    "returns": "Path"
+  },
+  "generate_calculation_report": {
+    "param_details": [
+      {
+        "name": "result"
+      },
+      {
+        "has_default": true,
+        "name": "beam_id"
+      },
+      {
+        "has_default": true,
+        "name": "story"
+      },
+      {
+        "has_default": true,
+        "name": "project_info"
+      },
+      {
+        "has_default": true,
+        "name": "output_path"
+      },
+      {
+        "has_default": true,
+        "name": "output_format"
+      }
+    ],
+    "params": [
+      "result",
+      "beam_id",
+      "story",
+      "project_info",
+      "output_path",
+      "output_format"
+    ],
+    "returns": "CalculationReport"
+  },
+  "get_library_version": {
+    "param_details": [],
+    "params": [],
+    "returns": "str"
+  },
+  "load_etabs_csv": {
+    "param_details": [
+      {
+        "name": "csv_path"
+      },
+      {
+        "has_default": true,
+        "name": "station_multiplier"
+      }
+    ],
+    "params": [
+      "csv_path",
+      "station_multiplier"
+    ],
+    "returns": "list[ETABSForceRow]"
+  },
+  "normalize_etabs_forces": {
+    "param_details": [
+      {
+        "name": "csv_path"
+      },
+      {
+        "has_default": true,
+        "name": "output_path"
+      },
+      {
+        "has_default": true,
+        "name": "station_multiplier"
+      }
+    ],
+    "params": [
+      "csv_path",
+      "output_path",
+      "station_multiplier"
+    ],
+    "returns": "list[ETABSEnvelopeResult]"
+  },
+  "optimize_beam_cost": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "name": "span_mm"
+      },
+      {
+        "name": "mu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "has_default": true,
+        "name": "cost_profile"
+      },
+      {
+        "has_default": true,
+        "name": "cover_mm"
+      }
+    ],
+    "params": [
+      "units",
+      "span_mm",
+      "mu_knm",
+      "vu_kn",
+      "cost_profile",
+      "cover_mm"
+    ],
+    "returns": "CostOptimizationResult"
+  },
+  "smart_analyze_design": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "name": "span_mm"
+      },
+      {
+        "name": "mu_knm"
+      },
+      {
+        "name": "vu_kn"
+      },
+      {
+        "name": "b_mm"
+      },
+      {
+        "name": "D_mm"
+      },
+      {
+        "name": "d_mm"
+      },
+      {
+        "name": "fck_nmm2"
+      },
+      {
+        "name": "fy_nmm2"
+      },
+      {
+        "has_default": true,
+        "name": "d_dash_mm"
+      },
+      {
+        "has_default": true,
+        "name": "asv_mm2"
+      },
+      {
+        "has_default": true,
+        "name": "include_cost"
+      },
+      {
+        "has_default": true,
+        "name": "include_suggestions"
+      },
+      {
+        "has_default": true,
+        "name": "include_sensitivity"
+      },
+      {
+        "has_default": true,
+        "name": "include_constructability"
+      },
+      {
+        "has_default": true,
+        "name": "cost_profile"
+      },
+      {
+        "has_default": true,
+        "name": "weights"
+      }
+    ],
+    "params": [
+      "units",
+      "span_mm",
+      "mu_knm",
+      "vu_kn",
+      "b_mm",
+      "D_mm",
+      "d_mm",
+      "fck_nmm2",
+      "fy_nmm2",
+      "d_dash_mm",
+      "asv_mm2",
+      "include_cost",
+      "include_suggestions",
+      "include_sensitivity",
+      "include_constructability",
+      "cost_profile",
+      "weights"
+    ],
+    "returns": "SmartAnalysisResult"
+  },
+  "suggest_beam_design_improvements": {
+    "param_details": [
+      {
+        "name": "units"
+      },
+      {
+        "name": "design"
+      },
+      {
+        "has_default": true,
+        "name": "span_mm"
+      },
+      {
+        "has_default": true,
+        "name": "mu_knm"
+      },
+      {
+        "has_default": true,
+        "name": "vu_kn"
+      }
+    ],
+    "params": [
+      "units",
+      "design",
+      "span_mm",
+      "mu_knm",
+      "vu_kn"
+    ],
+    "returns": "DesignSuggestionsResult"
+  },
+  "validate_design_results": {
+    "param_details": [
+      {
+        "name": "path"
+      }
+    ],
+    "params": [
+      "path"
+    ],
+    "returns": "ValidationReport"
+  },
+  "validate_etabs_csv": {
+    "param_details": [
+      {
+        "name": "csv_path"
+      }
+    ],
+    "params": [
+      "csv_path"
+    ],
+    "returns": "tuple[bool, list[str], dict[str, str]]"
+  },
+  "validate_job_spec": {
+    "param_details": [
+      {
+        "name": "path"
+      }
+    ],
+    "params": [
+      "path"
+    ],
+    "returns": "ValidationReport"
+  },
+  "verify_calculation": {
+    "param_details": [
+      {
+        "name": "inputs"
+      },
+      {
+        "name": "outputs"
+      },
+      {
+        "name": "certificate"
+      }
+    ],
+    "params": [
+      "inputs",
+      "outputs",
+      "certificate"
+    ],
+    "returns": "tuple[bool, str]"
+  },
+  "version": {
+    "param_details": [
+      {
+        "name": "distribution_name"
+      }
+    ],
+    "params": [
+      "distribution_name"
+    ]
+  }
+}
