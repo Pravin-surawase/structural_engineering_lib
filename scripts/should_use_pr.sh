@@ -1,4 +1,6 @@
 #!/bin/bash
+# Deprecation notice — use ai_commit.sh --pr-check instead
+echo -e "\033[1;33m⚠ TIP: You can also use: ./scripts/ai_commit.sh --pr-check\033[0m" >&2
 # Helper script: Should this change use a Pull Request?
 # Analyzes staged files and recommends workflow based on:
 # - File type (production code vs docs/tests)

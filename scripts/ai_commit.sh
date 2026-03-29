@@ -28,48 +28,76 @@ AMEND=false
 PREVIEW=false
 UNDO=false
 SIGNOFF=false
+STATUS=false
+BRANCH_MODE=false
+BRANCH_TASK_ID=""
+BRANCH_DESCRIPTION=""
+FINISH_MODE=false
+FINISH_DESCRIPTION=""
+PR_CHECK=false
 COMMIT_MSG=""
-for arg in "$@"; do
-    if [[ "$arg" == "--dry-run" ]]; then
-        DRY_RUN=true
-    elif [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
-        FORCE=true
-    elif [[ "$arg" == "--push" || "$arg" == "--push-only" ]]; then
-        PUSH_ONLY=true
-    elif [[ "$arg" == "--amend" ]]; then
-        AMEND=true
-    elif [[ "$arg" == "--preview" ]]; then
-        PREVIEW=true
-    elif [[ "$arg" == "--undo" ]]; then
-        UNDO=true
-    elif [[ "$arg" == "--signoff" || "$arg" == "-s" ]]; then
-        SIGNOFF=true
-    elif [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
-        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push] [--amend] [--preview] [--undo] [--signoff]"
-        echo ""
-        echo "Options:"
-        echo "  --dry-run    Preview what would happen without committing"
-        echo "  --force      Bypass PR requirement check (for batching work)"
-        echo "  --push       Push already-committed changes (no new commit)"
-        echo "  --amend      Amend the last commit (add staged changes to it)"
-        echo "  --preview    Show staged changes diff without committing"
-        echo "  --undo       Undo last commit (soft reset, keeps changes staged)"
-        echo "  --signoff    Add Signed-off-by line (DCO compliance)"
-        echo "  --help       Show this help message"
-        echo ""
-        echo "Examples:"
-        echo "  ./scripts/ai_commit.sh \"docs: update guide\""
-        echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
-        echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
-        echo "  ./scripts/ai_commit.sh --push          # Push existing commits"
-        echo "  ./scripts/ai_commit.sh --amend          # Amend last commit + push"
-        echo "  ./scripts/ai_commit.sh \"msg\" --preview  # Preview changes only"
-        echo "  ./scripts/ai_commit.sh --undo           # Undo last commit"
-        echo "  ./scripts/ai_commit.sh \"msg\" --signoff  # Add DCO sign-off"
-        exit 0
-    elif [[ -z "$COMMIT_MSG" ]]; then
-        COMMIT_MSG="$arg"
-    fi
+
+i=0
+args=("$@")
+while [[ $i -lt ${#args[@]} ]]; do
+    arg="${args[$i]}"
+    case "$arg" in
+        --status) STATUS=true ;;
+        --branch)
+            BRANCH_MODE=true
+            i=$((i+1)); BRANCH_TASK_ID="${args[$i]:-}"
+            i=$((i+1)); BRANCH_DESCRIPTION="${args[$i]:-}"
+            ;;
+        --finish)
+            FINISH_MODE=true
+            # Optional: next arg is description (if it doesn't start with --)
+            if [[ $((i+1)) -lt ${#args[@]} && ! "${args[$((i+1))]}" == --* ]]; then
+                i=$((i+1)); FINISH_DESCRIPTION="${args[$i]}"
+            fi
+            ;;
+        --pr-check) PR_CHECK=true ;;
+        --dry-run) DRY_RUN=true ;;
+        --force|-f) FORCE=true ;;
+        --push|--push-only) PUSH_ONLY=true ;;
+        --amend) AMEND=true ;;
+        --preview) PREVIEW=true ;;
+        --undo) UNDO=true ;;
+        --signoff|-s) SIGNOFF=true ;;
+        --help|-h)
+            echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force] [--push] [--amend] [--preview] [--undo] [--signoff]"
+            echo ""
+            echo "Options:"
+            echo "  --dry-run    Preview what would happen without committing"
+            echo "  --force      Bypass PR requirement check (for batching work)"
+            echo "  --push       Push already-committed changes (no new commit)"
+            echo "  --amend      Amend the last commit (add staged changes to it)"
+            echo "  --preview    Show staged changes diff without committing"
+            echo "  --undo       Undo last commit (soft reset, keeps changes staged)"
+            echo "  --signoff    Add Signed-off-by line (DCO compliance)"
+            echo "  --status     Show project status (branch, files, PRs, stashes)"
+            echo "  --branch TASK-XXX \"desc\"  Create task branch for PR workflow"
+            echo "  --finish [\"desc\"]  Finish current PR: CI poll + merge + cleanup"
+            echo "  --pr-check   Check if PR is required for current changes"
+            echo "  --help       Show this help message"
+            echo ""
+            echo "Examples:"
+            echo "  ./scripts/ai_commit.sh \"docs: update guide\""
+            echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
+            echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
+            echo "  ./scripts/ai_commit.sh --push          # Push existing commits"
+            echo "  ./scripts/ai_commit.sh --amend          # Amend last commit + push"
+            echo "  ./scripts/ai_commit.sh \"msg\" --preview  # Preview changes only"
+            echo "  ./scripts/ai_commit.sh --undo           # Undo last commit"
+            echo "  ./scripts/ai_commit.sh \"msg\" --signoff  # Add DCO sign-off"
+            echo "  ./scripts/ai_commit.sh --status         # Project status overview"
+            echo "  ./scripts/ai_commit.sh --branch TASK-123 \"add feature\"  # Create task branch"
+            echo "  ./scripts/ai_commit.sh --finish         # Finish current PR"
+            echo "  ./scripts/ai_commit.sh --pr-check       # Check if PR required"
+            exit 0
+            ;;
+        *) [[ -z "$COMMIT_MSG" ]] && COMMIT_MSG="$arg" ;;
+    esac
+    i=$((i+1))
 done
 
 # Get the project root (where .git is)
@@ -151,6 +179,55 @@ if [[ "$AMEND" == "true" ]]; then
         exit 1
     fi
     exit 0
+fi
+
+# Status mode: show full project state and exit
+if [[ "$STATUS" == "true" ]]; then
+    echo -e "${BLUE}📊 Project Status${NC}"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo -e "Branch:    ${GREEN}$(git branch --show-current)${NC}"
+    DIRTY=$(git status --porcelain | wc -l | tr -d ' ')
+    echo -e "Dirty files: $DIRTY"
+    AHEAD=$(git rev-list --count origin/$(git branch --show-current)..HEAD 2>/dev/null || echo "?")
+    echo -e "Unpushed:  $AHEAD commit(s)"
+    STASH_COUNT=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
+    echo -e "Stashes:   $STASH_COUNT"
+    if command -v gh &>/dev/null; then
+        echo ""
+        echo "Open PRs:"
+        gh pr list --author @me --limit 5 2>/dev/null || echo "  (unable to fetch)"
+    fi
+    exit 0
+fi
+
+# Branch mode: create task branch, delegate to create_task_pr.sh
+if [[ "$BRANCH_MODE" == "true" ]]; then
+    TASK_ID="$BRANCH_TASK_ID"
+    BRANCH_DESC="$BRANCH_DESCRIPTION"
+    if [[ -z "$TASK_ID" || -z "$BRANCH_DESC" ]]; then
+        echo -e "${RED}✗ Usage: ai_commit.sh --branch TASK-XXX \"description\"${NC}"
+        exit 1
+    fi
+    exec "$PROJECT_ROOT/scripts/create_task_pr.sh" "$TASK_ID" "$BRANCH_DESC"
+fi
+
+# Finish mode: auto-detect task ID from branch, delegate to finish_task_pr.sh
+if [[ "$FINISH_MODE" == "true" ]]; then
+    CURRENT_BRANCH=$(git branch --show-current)
+    if [[ "$CURRENT_BRANCH" =~ ^task/(.+)$ ]]; then
+        TASK_ID="${BASH_REMATCH[1]}"
+    else
+        echo -e "${RED}✗ Not on a task/* branch. Current: $CURRENT_BRANCH${NC}"
+        echo "Create one first: ./scripts/ai_commit.sh --branch TASK-XXX \"description\""
+        exit 1
+    fi
+    FINISH_DESC="${FINISH_DESCRIPTION:-$TASK_ID}"
+    exec "$PROJECT_ROOT/scripts/finish_task_pr.sh" "$TASK_ID" "$FINISH_DESC" --wait --force
+fi
+
+# PR check mode: check if PR is required
+if [[ "$PR_CHECK" == "true" ]]; then
+    exec "$PROJECT_ROOT/scripts/should_use_pr.sh" --explain
 fi
 
 # Check if we have uncommitted changes

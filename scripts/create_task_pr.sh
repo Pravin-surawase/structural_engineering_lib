@@ -4,6 +4,9 @@
 
 set -e
 
+# Deprecation notice — use ai_commit.sh --branch instead
+echo -e "\033[1;33m⚠ TIP: You can also use: ./scripts/ai_commit.sh --branch $1 \"$2\"\033[0m" >&2
+
 # Colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'

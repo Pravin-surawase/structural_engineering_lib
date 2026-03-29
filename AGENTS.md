@@ -16,7 +16,15 @@ Open-source IS 456 RC beam design library. Full stack:
 ```bash
 ./scripts/ai_commit.sh "type: message"    # ALWAYS use this. NEVER manual git.
 ```
-New flags: `--preview` (show diff before commit), `--undo` (undo last unpushed commit), `--signoff` (DCO sign-off).
+New flags: `--preview`, `--undo`, `--signoff`, `--status`, `--branch TASK-XXX "desc"`, `--finish`, `--pr-check`.
+
+Full PR lifecycle:
+```bash
+./scripts/ai_commit.sh --status               # Check state first
+./scripts/ai_commit.sh --branch TASK-XXX "d"  # Create task branch + PR
+./scripts/ai_commit.sh "type: message"        # Commit on task branch
+./scripts/ai_commit.sh --finish "description" # CI poll + merge + cleanup
+```
 
 Format: `feat|fix|docs|refactor|test|chore|ci(scope): description`
 
