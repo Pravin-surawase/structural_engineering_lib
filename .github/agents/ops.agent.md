@@ -19,13 +19,28 @@ You are the DevOps specialist for **structural_engineering_lib**. You handle git
 ## THE ONE RULE
 
 ```bash
-./scripts/ai_commit.sh "type: message"    # ALL commits — NEVER manual git
-./scripts/ai_commit.sh "msg" --preview     # Preview changes before committing
-./scripts/ai_commit.sh --undo              # Undo last unpushed commit
-./scripts/ai_commit.sh "msg" --signoff     # DCO sign-off
+# ALL git operations go through ai_commit.sh — NEVER manual git
+
+# Commit + push
+./scripts/ai_commit.sh "type: message"
+
+# PR lifecycle (complete workflow)
+./scripts/ai_commit.sh --status               # Check state first
+./scripts/ai_commit.sh --pr-check             # Check if PR required
+./scripts/ai_commit.sh --branch TASK-XXX "d"  # Create task branch
+./scripts/ai_commit.sh "type: message"        # Commit on task branch
+./scripts/ai_commit.sh --finish "description" # CI poll + merge + cleanup
+
+# Utilities
+./scripts/ai_commit.sh --preview              # Preview staged changes
+./scripts/ai_commit.sh --undo                 # Undo last unpushed commit
+./scripts/ai_commit.sh --signoff              # DCO sign-off
+./scripts/ai_commit.sh --push                 # Push only (no new commit)
+./scripts/ai_commit.sh --amend                # Amend + push
 ```
 
-**NEVER** use `git add`, `git commit`, `git push`, `git pull` manually.
+**NEVER** use `git add`, `git commit`, `git push`, `git pull`, `git checkout`, `git stash` manually.
+All of these are handled by the ai_commit.sh subcommands.
 
 ## Git Workflow
 

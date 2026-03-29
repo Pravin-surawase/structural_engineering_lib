@@ -6,7 +6,8 @@ Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 ## IMPORTANT: Git
 
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
-New flags: `--preview` (show diff), `--undo` (undo last unpushed commit), `--signoff` (DCO).
+Flags: `--preview`, `--undo`, `--signoff`, `--status`, `--branch TASK-XXX "desc"`, `--finish "desc"`, `--pr-check`.
+Full PR lifecycle: `--status` → `--branch` → commit → `--finish`.
 Manual git causes 10-30min conflicts. The script handles staging, hooks, pull, and push.
 
 **PR Rule:** Run `./run.sh pr status` before committing. If it says "PR required", use `./run.sh pr create`. NEVER use `--force` to bypass — this has caused 10+ hours of rework.

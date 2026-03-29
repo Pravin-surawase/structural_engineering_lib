@@ -73,6 +73,10 @@ docker compose -f docker-compose.dev.yml up           # Dev with hot reload
 ./scripts/ai_commit.sh "msg" --preview                # Preview changes before committing
 ./scripts/ai_commit.sh --undo                         # Undo last unpushed commit
 ./scripts/ai_commit.sh "msg" --signoff                # DCO sign-off
+./scripts/ai_commit.sh --status                        # Check project state
+./scripts/ai_commit.sh --branch TASK-XXX "desc"        # Create task branch
+./scripts/ai_commit.sh --finish "description"          # CI poll + merge PR
+./scripts/ai_commit.sh --pr-check                     # Check if PR required
 git status --short                                    # Check state (read-only OK)
 git branch --show-current                             # Current branch (read-only OK)
 git log --oneline -10                                 # Recent history (read-only OK)

@@ -8,6 +8,9 @@
 
 set -e
 
+# Deprecation notice — use ai_commit.sh --finish instead
+echo -e "\033[1;33m⚠ TIP: You can also use: ./scripts/ai_commit.sh --finish \"description\"\033[0m" >&2
+
 # Colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -17,8 +20,8 @@ NC='\033[0m'
 # Poll PR checks without TUI (avoids alternate buffer issues).
 poll_pr_checks() {
     local pr_number="$1"
-    local interval="${2:-10}"
-    local max_attempts="${3:-60}"  # Default: 60 attempts = 10 minutes at 10s interval
+    local interval="${2:-15}"
+    local max_attempts="${3:-80}"  # Default: 80 attempts = ~20 minutes at 15s interval
     local attempt=0
 
     while true; do
@@ -65,7 +68,12 @@ poll_pr_checks() {
             return 1
         fi
         if [[ "$pending" -gt 0 ]]; then
+            local pending_names
+            pending_names=$(gh pr view "$pr_number" --json statusCheckRollup --jq '[.statusCheckRollup[] | select(.status != "COMPLETED") | .name] | join(", ")' 2>/dev/null || echo "")
             echo -e "${YELLOW}⏳ $pending pending${NC} (${passed}/${total} passed)"
+            if [[ -n "$pending_names" ]]; then
+                echo -e "   Waiting on: $pending_names"
+            fi
             sleep "$interval"
             continue
         fi
@@ -81,6 +89,7 @@ DESCRIPTION=""
 FORCE=false
 MODE="prompt"
 SESSION_DOCS=false
+CONTINUE_PR=""
 
 # Mark as automation to bypass pre-push hook enforcement.
 export SAFE_PUSH_ACTIVE=1
@@ -103,6 +112,11 @@ while [[ $# -gt 0 ]]; do
             SESSION_DOCS=true
             shift
             ;;
+        --continue)
+            shift
+            CONTINUE_PR="$1"
+            shift
+            ;;
         *)
             if [[ -z "$TASK_ID" ]]; then
                 TASK_ID="$1"
@@ -114,15 +128,53 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# --continue mode: skip PR creation, go straight to polling + merge
+if [[ -n "$CONTINUE_PR" ]]; then
+    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+    cd "$PROJECT_ROOT"
+    echo -e "${YELLOW}📋 Resuming CI watch for PR #$CONTINUE_PR${NC}"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "→ Watching CI checks (polling)..."
+    if poll_pr_checks "$CONTINUE_PR" 15; then
+        echo "→ Merging PR..."
+        gh pr merge "$CONTINUE_PR" --squash --delete-branch
+
+        echo "→ Switching back to main..."
+        git checkout main
+        git pull --ff-only 2>/dev/null || true
+
+        # Clean up local task branch
+        branch_name=$(git branch --list "task/*" | grep -v '^\*' | tr -d ' ' | head -1)
+        if [[ -n "$branch_name" ]]; then
+            git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
+        fi
+
+        echo ""
+        echo -e "${GREEN}✓ PR #$CONTINUE_PR merged and cleaned up!${NC}"
+    else
+        echo -e "${YELLOW}⚠ Checks failed or blocked${NC}"
+        echo "Check status: gh pr view $CONTINUE_PR --web"
+        echo ""
+        echo -e "${YELLOW}Recovery options:${NC}"
+        echo "  1. Fix issues, commit, push — then re-run: ./scripts/finish_task_pr.sh --continue $CONTINUE_PR"
+        echo "  2. Merge manually: gh pr merge $CONTINUE_PR --squash --delete-branch"
+        echo "  3. Close PR: gh pr close $CONTINUE_PR"
+        exit 1
+    fi
+    exit 0
+fi
+
 if [[ -z "$TASK_ID" ]]; then
     echo -e "${RED}Error: Task ID required${NC}"
     echo "Usage: ./scripts/finish_task_pr.sh TASK-162 'Brief description' [--force] [--async|--wait] [--with-session-docs]"
+    echo "       ./scripts/finish_task_pr.sh --continue PR_NUMBER"
     exit 1
 fi
 
 if [[ -z "$DESCRIPTION" ]]; then
     echo -e "${RED}Error: Description required${NC}"
     echo "Usage: ./scripts/finish_task_pr.sh TASK-162 'Brief description' [--force] [--async|--wait] [--with-session-docs]"
+    echo "       ./scripts/finish_task_pr.sh --continue PR_NUMBER"
     exit 1
 fi
 
@@ -238,7 +290,7 @@ fi
 case "$MODE" in
     wait)
         echo "→ Watching CI checks (polling)..."
-        if poll_pr_checks "$PR_NUMBER" 10; then
+        if poll_pr_checks "$PR_NUMBER" 15; then
             echo "→ Merging PR..."
             gh pr merge "$PR_NUMBER" --squash --delete-branch
 
@@ -259,13 +311,11 @@ case "$MODE" in
             echo "Check status: gh pr view $PR_NUMBER --web"
             echo ""
             echo -e "${YELLOW}Recovery options:${NC}"
-            echo "  1. Fix issues, commit, push — then re-run: ./scripts/finish_task_pr.sh $TASK_ID '$DESCRIPTION' --wait"
+            echo "  1. Fix issues, commit, push — then re-run: ./scripts/finish_task_pr.sh --continue $PR_NUMBER"
             echo "  2. Merge manually: gh pr merge $PR_NUMBER --squash --delete-branch"
             echo "  3. Close PR: gh pr close $PR_NUMBER"
             echo ""
-            echo "→ Switching back to main..."
-            git checkout main 2>/dev/null || true
-            git pull --ff-only 2>/dev/null || true
+            echo -e "${YELLOW}Staying on current branch so you can fix issues.${NC}"
             exit 1
         fi
         ;;
