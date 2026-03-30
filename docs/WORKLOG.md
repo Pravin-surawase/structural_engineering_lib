@@ -89,3 +89,9 @@ tags: []
 | 2026-03-29 | Session 109 | Doc maintenance: batch metadata updates (53 docs), WORKLOG backfill S105-108, indexes regenerated, 2 docs archived | — |
 | 2026-03-30 | SESSION-110 | Doc system overhaul: audit, tool research (MkDocs Material), Phase 1 implementation (budget check, CODEOWNERS, append-first policy, archive extension, SESSION_LOG rotation) | pending |
 | 2026-03-30 | SESSION-110-P2 | MkDocs Material setup + frontmatter backfill (182 docs) + lychee CI workflow | pending |
+| 2026-03-30 | TASK-525 | Created HubPage.tsx replacing ModeSelectPage — smart landing with quick actions + last session | Session 111 |
+| 2026-03-30 | TASK-517 | Created services/boq.py — project BOQ aggregation from BBS data | Session 111 |
+| 2026-03-30 | TASK-517 | Created FastAPI POST /api/v1/insights/project-boq endpoint | Session 111 |
+| 2026-03-30 | TASK-517 | Created useProjectBOQ hook + ProjectBOQPanel + DashboardPage integration | Session 111 |
+| 2026-03-30 | CI | Created deploy-docs.yml for MkDocs GitHub Pages auto-deploy | Session 111 |
+| 2026-03-30 | CI | Expanded API docs to 15 modules, set link-check fail:true | Session 111 |

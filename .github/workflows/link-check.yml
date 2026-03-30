@@ -34,10 +34,14 @@ jobs:
             --exclude '127.0.0.1'
             --exclude 'example.com'
             --exclude 'unpkg.com/katex'
+            --timeout 30
+            --retry-wait-time 5
+            --max-retries 3
+            --exclude-path 'docs/_archive'
             --suggest
             'docs/**/*.md'
             '*.md'
-          fail: false  # Don't fail CI, just report
+          fail: true
 
       - name: Upload report
         if: always()
