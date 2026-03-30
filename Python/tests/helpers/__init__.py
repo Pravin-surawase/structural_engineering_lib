@@ -179,3 +179,76 @@ def assert_no_design_errors(result, *, allow_warnings: bool = True) -> None:
     assert not critical, f"Design produced {len(critical)} error(s): " + "; ".join(
         f"[{e.code}] {e.message}" for e in critical
     )
+
+
+def assert_capacity_exceeds_demand(
+    capacity: float,
+    demand: float,
+    *,
+    label: str = "",
+) -> None:
+    """Assert that structural capacity >= demand (fundamental design check).
+
+    Args:
+        capacity: Design capacity (e.g., Mu_lim in kNm).
+        demand: Design demand (e.g., Mu in kNm).
+        label: Optional context label for error messages.
+
+    Raises:
+        AssertionError: If capacity < demand.
+    """
+    if capacity < demand:
+        ctx = f" [{label}]" if label else ""
+        raise AssertionError(
+            f"Capacity ({capacity:.2f}) < Demand ({demand:.2f}){ctx}. "
+            f"Utilization ratio = {demand/capacity:.3f} > 1.0"
+        )
+
+
+def assert_spacing_valid(
+    spacing_mm: float,
+    d_mm: float,
+    *,
+    label: str = "",
+) -> None:
+    """Assert stirrup spacing complies with IS 456 Cl. 26.5.1.5.
+
+    Max spacing = min(0.75*d, 300 mm).
+
+    Args:
+        spacing_mm: Actual stirrup spacing (mm).
+        d_mm: Effective depth (mm).
+        label: Optional context label.
+
+    Raises:
+        AssertionError: If spacing exceeds IS 456 limits.
+    """
+    max_spacing = min(0.75 * d_mm, 300.0)
+    if spacing_mm > max_spacing:
+        ctx = f" [{label}]" if label else ""
+        raise AssertionError(
+            f"Spacing {spacing_mm:.0f}mm > max {max_spacing:.0f}mm "
+            f"(IS 456 Cl. 26.5.1.5: min(0.75d={0.75*d_mm:.0f}, 300)){ctx}"
+        )
+    if spacing_mm <= 0:
+        raise AssertionError(
+            f"Spacing must be > 0, got {spacing_mm}{' [' + label + ']' if label else ''}"
+        )
+
+
+def assert_dimensions_positive(**dims: float) -> None:
+    """Assert all named dimensions are positive.
+
+    Usage::
+
+        assert_dimensions_positive(b=300, d=450, D=500)
+
+    Args:
+        **dims: Keyword arguments of dimension name → value.
+
+    Raises:
+        AssertionError: If any dimension is <= 0.
+    """
+    for name, value in dims.items():
+        if value <= 0:
+            raise AssertionError(f"Dimension '{name}' must be > 0, got {value}")
