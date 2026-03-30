@@ -25,11 +25,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+
 BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 CHANGELOG = REPO_ROOT / "CHANGELOG.md"
 RELEASES = REPO_ROOT / "docs" / "getting-started" / "releases.md"
 CHECKLIST_PATH = REPO_ROOT / "docs" / "planning" / "pre-release-checklist.md"
 VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+)\b")
+
+
+def _semver_tuple(v: str) -> tuple[int, int, int]:
+    """Parse version string to comparable tuple."""
+    parts = v.split(".")
+    if len(parts) != 3:
+        return (0, 0, 0)
+    return (int(parts[0]), int(parts[1]), int(parts[2]))
 
 
 # ─── Run (bump + checklist) ─────────────────────────────────────────────────
@@ -58,22 +67,25 @@ def _print_checklist(version: str) -> None:
     print(f"Version: v{version}")
     print()
     print("Automated (done by this script):")
-    print("  ✓ Version bumped in pyproject.toml, api.py, M08_API.bas")
+    print("  ✓ Version bumped in pyproject.toml, package.json, CITATION.cff")
     print("  ✓ Doc version references synced")
     print("  ✓ Doc dates updated to today")
     print()
     print("Manual steps (you must do these):")
-    print("  [ ] 1. Edit CHANGELOG.md — Add release notes")
-    print("  [ ] 2. Edit docs/releases.md — Add release entry")
+    print(
+        "  [ ] 1. Edit CHANGELOG.md — Add release notes under [Unreleased] → [{version}]"
+    )
+    print("  [ ] 2. Edit docs/getting-started/releases.md — Add release entry")
     print("  [ ] 3. Review changes: git diff")
-    print(f"  [ ] 4. Commit: git add -A && git commit -m 'chore: release v{version}'")
-    print("  [ ] 5. Create PR and merge to main")
-    print(f"  [ ] 6. Tag: git tag v{version} && git push origin v{version}")
-    print("  [ ] 7. GitHub Release will trigger PyPI publish")
+    print(f"  [ ] 4. Commit: ./scripts/ai_commit.sh 'chore: release v{version}'")
+    print(f"  [ ] 5. Tag and push: git tag v{version} && git push origin v{version}")
+    print("  [ ] 6. Monitor GitHub Actions → Publish to PyPI workflow")
     print()
     print("Verification:")
     print(f"  [ ] Check PyPI: pip install structural-lib-is456=={version}")
-    print(f"  [ ] Clean-venv verify: python scripts/release.py verify --version {version} --source pypi")
+    print(
+        f"  [ ] Clean-venv verify: python scripts/release.py verify --version {version} --source pypi"
+    )
     print("  [ ] Check GitHub Release page")
     print()
 
@@ -90,7 +102,8 @@ def cmd_run(args: argparse.Namespace) -> int:
     if not args.version:
         result = subprocess.run(
             [sys.executable, str(BUMP_SCRIPT), "--current"],
-            capture_output=True, text=True,
+            capture_output=True,
+            text=True,
         )
         print(result.stdout.strip())
         print("\nUsage: python scripts/release.py run <new_version>")
@@ -104,6 +117,110 @@ def cmd_run(args: argparse.Namespace) -> int:
     print("=" * 60)
     print(f"{'[DRY-RUN] ' if dry_run else ''}RELEASE v{version}")
     print("=" * 60)
+    print()
+
+    # Pre-flight checks
+    print("Pre-flight checks...")
+
+    # Check git working tree is clean
+    result = subprocess.run(
+        ["git", "status", "--porcelain"], capture_output=True, text=True, cwd=REPO_ROOT
+    )
+    if result.stdout.strip():
+        print("  ERROR: Git working tree is not clean. Commit or stash changes first.")
+        print(f"  Dirty files:\n{result.stdout}")
+        if not dry_run:
+            return 1
+        print("  (continuing in dry-run mode)")
+    else:
+        print("  ✓ Git working tree is clean")
+
+    # Check branch
+    result = subprocess.run(
+        ["git", "branch", "--show-current"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+    branch = result.stdout.strip()
+    if (
+        branch != "main"
+        and not branch.startswith("release/")
+        and not branch.startswith("task/")
+    ):
+        print(
+            f"  WARNING: On branch '{branch}', expected 'main' or release/task branch"
+        )
+    else:
+        print(f"  ✓ Branch: {branch}")
+
+    # Check version ordering
+    result = subprocess.run(
+        [sys.executable, str(BUMP_SCRIPT), "--current"],
+        capture_output=True,
+        text=True,
+    )
+    current_version = (
+        result.stdout.strip().split(": ")[-1] if result.returncode == 0 else "unknown"
+    )
+
+    try:
+        if _semver_tuple(version) <= _semver_tuple(current_version):
+            print(
+                f"  ERROR: New version {version} must be higher than current {current_version}"
+            )
+            return 1
+        print(f"  ✓ Version: {current_version} → {version}")
+    except (ValueError, IndexError):
+        print(f"  WARNING: Could not compare versions ({current_version} → {version})")
+
+    # Run tests
+    print("\n  Running Python tests...")
+    test_result = subprocess.run(
+        [sys.executable, "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+    if test_result.returncode != 0:
+        print("  ERROR: Tests failed! Fix failures before releasing.")
+        print(
+            test_result.stdout[-500:]
+            if len(test_result.stdout) > 500
+            else test_result.stdout
+        )
+        if not dry_run:
+            return 1
+        print("  (continuing in dry-run mode)")
+    else:
+        # Extract test count from output
+        lines = test_result.stdout.strip().split("\n")
+        summary = lines[-1] if lines else "tests passed"
+        print(f"  ✓ Tests: {summary}")
+
+    # Check React build
+    react_dir = REPO_ROOT / "react_app"
+    if react_dir.exists():
+        print("  Checking React build...")
+        react_result = subprocess.run(
+            ["npm", "run", "build"],
+            capture_output=True,
+            text=True,
+            cwd=react_dir,
+        )
+        if react_result.returncode != 0:
+            print("  ERROR: React build failed!")
+            print(
+                react_result.stderr[-500:]
+                if len(react_result.stderr) > 500
+                else react_result.stderr
+            )
+            if not dry_run:
+                return 1
+            print("  (continuing in dry-run mode)")
+        else:
+            print("  ✓ React build succeeds")
+
     print()
 
     print("Step 1: Bumping version...")
@@ -146,7 +263,11 @@ def _run_check(cmd: list[str], *, cwd: Path | None = None) -> None:
 
 
 def _find_wheel(wheel_dir: Path, version: str | None) -> Path:
-    pattern = f"structural_lib_is456-{version}*.whl" if version else "structural_lib_is456-*.whl"
+    pattern = (
+        f"structural_lib_is456-{version}*.whl"
+        if version
+        else "structural_lib_is456-*.whl"
+    )
     wheels = sorted(wheel_dir.glob(pattern))
     if not wheels:
         raise FileNotFoundError(f"No wheel found in {wheel_dir} (pattern: {pattern})")
@@ -175,16 +296,72 @@ def cmd_verify(args: argparse.Namespace) -> int:
                 return 2
             _run_check([str(pip), "install", f"structural-lib-is456=={args.version}"])
 
-        _run_check([str(python), "-c", "from structural_lib import api; print(api.get_library_version())"])
+        _run_check(
+            [
+                str(python),
+                "-c",
+                "from structural_lib import api; print(api.get_library_version())",
+            ]
+        )
+
+        # Run core tests
+        print("\nRunning core tests in clean venv...")
+        _run_check([str(pip), "install", "pytest"])
+        _run_check(
+            [
+                str(python),
+                "-m",
+                "pytest",
+                str(REPO_ROOT / "Python" / "tests"),
+                "-v",
+                "--tb=short",
+                "-q",
+                "-x",  # Stop on first failure
+            ]
+        )
 
         if not args.skip_cli:
             if not job_path.exists():
                 print(f"error: job file not found: {job_path}")
                 return 2
             out_dir = Path(tmp) / "job_out"
-            _run_check([str(python), "-m", "structural_lib", "job", str(job_path), "-o", str(out_dir)])
-            _run_check([str(python), "-m", "structural_lib", "critical", str(out_dir), "--top", "1", "--format", "csv"])
-            _run_check([str(python), "-m", "structural_lib", "report", str(out_dir), "--format", "html", "-o", str(out_dir / "report.html")])
+            _run_check(
+                [
+                    str(python),
+                    "-m",
+                    "structural_lib",
+                    "job",
+                    str(job_path),
+                    "-o",
+                    str(out_dir),
+                ]
+            )
+            _run_check(
+                [
+                    str(python),
+                    "-m",
+                    "structural_lib",
+                    "critical",
+                    str(out_dir),
+                    "--top",
+                    "1",
+                    "--format",
+                    "csv",
+                ]
+            )
+            _run_check(
+                [
+                    str(python),
+                    "-m",
+                    "structural_lib",
+                    "report",
+                    str(out_dir),
+                    "--format",
+                    "html",
+                    "-o",
+                    str(out_dir / "report.html"),
+                ]
+            )
 
         print("Release verification OK.")
     return 0
@@ -200,13 +377,6 @@ def _parse_versions(path: Path) -> list[str]:
         if match:
             versions.append(match.group(1))
     return versions
-
-
-def _semver_key(version: str) -> tuple[int, int, int]:
-    parts = version.split(".")
-    if len(parts) != 3:
-        return (0, 0, 0)
-    return tuple(int(p) for p in parts)  # type: ignore[return-value]
 
 
 def cmd_check_docs(args: argparse.Namespace) -> int:
@@ -227,8 +397,12 @@ def cmd_check_docs(args: argparse.Namespace) -> int:
         print("ERROR: No versions found in docs/getting-started/releases.md")
         return 1
 
-    missing_in_releases = sorted(set(changelog_versions) - set(releases_versions), key=_semver_key)
-    missing_in_changelog = sorted(set(releases_versions) - set(changelog_versions), key=_semver_key)
+    missing_in_releases = sorted(
+        set(changelog_versions) - set(releases_versions), key=_semver_tuple
+    )
+    missing_in_changelog = sorted(
+        set(releases_versions) - set(changelog_versions), key=_semver_tuple
+    )
 
     if missing_in_releases:
         print("ERROR: Versions in CHANGELOG missing from RELEASES:")
@@ -242,10 +416,12 @@ def cmd_check_docs(args: argparse.Namespace) -> int:
             print(f"  - {v}")
         return 1
 
-    latest_changelog = max(changelog_versions, key=_semver_key)
-    latest_releases = max(releases_versions, key=_semver_key)
+    latest_changelog = max(changelog_versions, key=_semver_tuple)
+    latest_releases = max(releases_versions, key=_semver_tuple)
     if latest_changelog != latest_releases:
-        print(f"ERROR: Latest versions do not match: CHANGELOG={latest_changelog}, RELEASES={latest_releases}")
+        print(
+            f"ERROR: Latest versions do not match: CHANGELOG={latest_changelog}, RELEASES={latest_releases}"
+        )
         return 1
 
     return 0
@@ -313,6 +489,167 @@ def cmd_checklist(args: argparse.Namespace) -> int:
     return 0
 
 
+# ─── Preflight ───────────────────────────────────────────────────────────────
+
+
+def cmd_preflight(args: argparse.Namespace) -> int:
+    """Run all pre-release validation checks without making changes."""
+    print("=" * 60)
+    print("PRE-RELEASE VALIDATION")
+    print("=" * 60)
+    print()
+
+    errors = 0
+    warnings = 0
+
+    # 1. Git state
+    print("1. Git State")
+    result = subprocess.run(
+        ["git", "status", "--porcelain"], capture_output=True, text=True, cwd=REPO_ROOT
+    )
+    if result.stdout.strip():
+        print("  ✗ Working tree is dirty")
+        errors += 1
+    else:
+        print("  ✓ Working tree is clean")
+
+    result = subprocess.run(
+        ["git", "branch", "--show-current"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+    branch = result.stdout.strip()
+    print(f"  → Branch: {branch}")
+
+    # 2. Version
+    print("\n2. Version")
+    result = subprocess.run(
+        [sys.executable, str(BUMP_SCRIPT), "--current"],
+        capture_output=True,
+        text=True,
+    )
+    current = (
+        result.stdout.strip().split(": ")[-1] if result.returncode == 0 else "unknown"
+    )
+    print(f"  → Current: {current}")
+
+    if args.version:
+        if not re.match(r"^\d+\.\d+\.\d+$", args.version):
+            print(f"  ✗ Invalid version format: {args.version}")
+            errors += 1
+        else:
+            try:
+                if _semver_tuple(args.version) <= _semver_tuple(current):
+                    print(f"  ✗ Target {args.version} is not higher than {current}")
+                    errors += 1
+                else:
+                    print(f"  ✓ Target: {args.version} (valid upgrade)")
+            except (ValueError, IndexError):
+                print("  ⚠ Could not compare versions")
+                warnings += 1
+
+    # 3. Tests
+    print("\n3. Python Tests")
+    test_result = subprocess.run(
+        [sys.executable, "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+    if test_result.returncode != 0:
+        print("  ✗ Tests FAILED")
+        # Show last few lines
+        lines = test_result.stdout.strip().split("\n")
+        for line in lines[-5:]:
+            print(f"    {line}")
+        errors += 1
+    else:
+        lines = test_result.stdout.strip().split("\n")
+        summary = lines[-1] if lines else "passed"
+        print(f"  ✓ {summary}")
+
+    # 4. React build
+    print("\n4. React Build")
+    react_dir = REPO_ROOT / "react_app"
+    if react_dir.exists():
+        react_result = subprocess.run(
+            ["npm", "run", "build"],
+            capture_output=True,
+            text=True,
+            cwd=react_dir,
+        )
+        if react_result.returncode != 0:
+            print("  ✗ Build FAILED")
+            errors += 1
+        else:
+            print("  ✓ Build succeeds")
+    else:
+        print("  ⚠ react_app/ not found")
+        warnings += 1
+
+    # 5. Doc version sync
+    print("\n5. Doc Version Sync")
+    sync_result = subprocess.run(
+        [sys.executable, str(BUMP_SCRIPT), "--check-docs"],
+        capture_output=True,
+        text=True,
+    )
+    if sync_result.returncode != 0:
+        print("  ✗ Doc versions are stale")
+        warnings += 1
+    else:
+        print("  ✓ Doc versions are synced")
+
+    # 6. CHANGELOG check
+    print("\n6. Release Docs")
+    docs_result = cmd_check_docs(argparse.Namespace())
+    if docs_result != 0:
+        print("  ⚠ CHANGELOG ↔ releases.md mismatch (expected before new release)")
+        warnings += 1
+    else:
+        print("  ✓ CHANGELOG ↔ releases.md in sync")
+
+    # 7. Version files exist
+    print("\n7. Version Files")
+    version_files_check = subprocess.run(
+        [sys.executable, str(BUMP_SCRIPT), "--report"],
+        capture_output=True,
+        text=True,
+    )
+    if version_files_check.returncode == 0:
+        # Parse core version pins from report output
+        in_core = False
+        for line in version_files_check.stdout.strip().split("\n"):
+            if "Core version pins:" in line:
+                in_core = True
+                continue
+            if in_core and line.strip().startswith("- "):
+                rel_path = line.strip().lstrip("- ").strip()
+                filepath = REPO_ROOT / rel_path
+                if filepath.exists():
+                    print(f"  ✓ {rel_path}")
+                else:
+                    print(f"  ✗ {rel_path} — NOT FOUND")
+                    errors += 1
+            elif in_core and not line.strip().startswith("- "):
+                in_core = False
+    else:
+        print("  ⚠ Could not check version files")
+        warnings += 1
+
+    # Summary
+    print()
+    print("=" * 60)
+    if errors == 0:
+        print(f"✓ READY TO RELEASE ({warnings} warnings)")
+    else:
+        print(f"✗ NOT READY — {errors} error(s), {warnings} warning(s)")
+    print("=" * 60)
+
+    return 1 if errors > 0 else 0
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 
@@ -327,21 +664,35 @@ def build_parser() -> argparse.ArgumentParser:
     p_run = sub.add_parser("run", help="Bump version + release flow")
     p_run.add_argument("version", nargs="?", help="New version (e.g., 0.9.7)")
     p_run.add_argument("--dry-run", action="store_true", help="Preview without changes")
-    p_run.add_argument("--no-open", action="store_true", help="Don't open files in editor")
+    p_run.add_argument(
+        "--no-open", action="store_true", help="Don't open files in editor"
+    )
 
     # verify
     p_verify = sub.add_parser("verify", help="Verify release in clean venv")
     p_verify.add_argument("--version", help="Version to verify (e.g., 0.11.0)")
-    p_verify.add_argument("--source", choices=["wheel", "pypi"], default="wheel", help="Install source")
+    p_verify.add_argument(
+        "--source", choices=["wheel", "pypi"], default="wheel", help="Install source"
+    )
     p_verify.add_argument("--wheel-dir", default="Python/dist", help="Wheel directory")
-    p_verify.add_argument("--job", default="Python/examples/sample_job_is456.json", help="Job spec for smoke test")
-    p_verify.add_argument("--skip-cli", action="store_true", help="Skip CLI smoke checks")
+    p_verify.add_argument(
+        "--job",
+        default="Python/examples/sample_job_is456.json",
+        help="Job spec for smoke test",
+    )
+    p_verify.add_argument(
+        "--skip-cli", action="store_true", help="Skip CLI smoke checks"
+    )
 
     # check-docs
     sub.add_parser("check-docs", help="Validate CHANGELOG ↔ releases.md versions")
 
     # checklist
     sub.add_parser("checklist", help="Validate pre-release checklist structure")
+
+    # preflight
+    p_preflight = sub.add_parser("preflight", help="Run pre-release validation checks")
+    p_preflight.add_argument("version", nargs="?", help="Target version to validate")
 
     return parser
 
@@ -359,6 +710,7 @@ def main() -> int:
         "verify": cmd_verify,
         "check-docs": cmd_check_docs,
         "checklist": cmd_checklist,
+        "preflight": cmd_preflight,
     }
 
     return handlers[args.command](args)

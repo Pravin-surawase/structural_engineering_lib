@@ -187,6 +187,7 @@ See [library-expansion-blueprint-v4.md](planning/library-expansion-blueprint-v4.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| — | Release infrastructure overhaul — preflight, semver validation, CI tests, rollback, 37 tests | Copilot | ✅ Done |
 | — | Session 107: Safety gates hardening — FORBIDDEN commands in 5 files, CodeQL fix, ops role scoping | Copilot | ✅ Done |
 | — | TopBar nav + ModeSelect quick links (v0.20 wrap-up) | Copilot | ✅ Done |
 | TASK-518 | Torsion API + React — endpoint + hook + DesignView toggle + 3 API tests | Copilot | ✅ Done |

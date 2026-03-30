@@ -29,31 +29,50 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ### For maintainers: How to publish a new release
 
-1. **Update version** in 3 files:
-   - `Python/pyproject.toml` → `version = "X.Y.Z"`
-   - `Python/structural_lib/api.py` → `__version__ = "X.Y.Z"`
-   - `VBA/Modules/M08_API.bas` → `VERSION = "X.Y.Z"`
-
-2. **Update CHANGELOG.md** with release notes
-
-3. **Create and push tag:**
-   - Create an annotated tag `vX.Y.Z`
-   - Push the tag to origin (maintainer-only, use the release workflow checklist)
-
-4. **Automatic publishing:**
-   - GitHub Actions builds wheel + sdist
-   - Publishes to PyPI via Trusted Publishing
-   - Creates GitHub Release with assets
-
-5. **Verify installation:**
+1. **Run preflight checks:**
    ```bash
-   pip install structural-lib-is456==X.Y.Z
-   python -c "from structural_lib import api; print(api.get_library_version())"
+   .venv/bin/python scripts/release.py preflight 0.X.Y
+   ```
+   Validates semver format, checks pyproject.toml/package.json/CITATION.cff consistency,
+   runs pytest, and ensures no uncommitted changes.
+
+2. **Create release branch:**
+   ```bash
+   ./scripts/ai_commit.sh --branch TASK-RELEASE "Release v0.X.Y"
    ```
 
-6. **Recommended: clean-venv verification**
+3. **Bump version (automated):**
    ```bash
-   .venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi
+   .venv/bin/python scripts/release.py run 0.X.Y --no-open
+   ```
+   This updates `pyproject.toml`, `package.json`, `CITATION.cff`, and all docs
+   with the new version. Includes semver validation, rollback on failure, and
+   pattern warnings for stale references.
+
+4. **Edit CHANGELOG.md** with release notes
+
+5. **Edit docs/getting-started/releases.md** with release entry
+
+6. **Commit:**
+   ```bash
+   ./scripts/ai_commit.sh "chore: release v0.X.Y"
+   ```
+
+7. **Finish PR:**
+   ```bash
+   ./scripts/ai_commit.sh --finish "Release v0.X.Y"
+   ```
+
+8. **Tag and push** (triggers `publish.yml` → validate → build → publish to PyPI):
+   ```bash
+   git tag v0.X.Y && git push origin v0.X.Y
+   ```
+   The CI pipeline runs a `validate` job (tests + tag-version check) before
+   building and publishing.
+
+9. **Verify published package:**
+   ```bash
+   .venv/bin/python scripts/release.py verify --version 0.X.Y --source pypi --skip-cli
    ```
 
 ### TestPyPI (for testing before release)
