@@ -4,7 +4,7 @@ Tests for deprecation utilities.
 
 import warnings
 
-from structural_lib.core.utilities import deprecated, deprecated_field
+from structural_lib.core.deprecation import deprecated, deprecated_field
 
 
 class TestDeprecatedDecorator:
@@ -219,6 +219,49 @@ class TestDeprecatedField:
             assert len(w) == 1
             # stacklevel=3 means warning points to caller of simulate_post_init
             # This simulates: user code → __post_init__ → deprecated_field
+
+
+class TestDeprecationImportPaths:
+    """Tests for backward-compatible import paths of deprecation utilities."""
+
+    def test_import_from_canonical_path(self):
+        """deprecated is importable from core.deprecation (canonical path)."""
+        from structural_lib.core.deprecation import deprecated as dep_canonical
+
+        assert callable(dep_canonical)
+
+    def test_import_from_core_utilities(self):
+        """deprecated is importable from core.utilities (backward-compat)."""
+        from structural_lib.core.utilities import deprecated as dep_utilities
+
+        assert callable(dep_utilities)
+
+    def test_canonical_and_utilities_are_same_object(self):
+        """Both import paths return the exact same function object."""
+        from structural_lib.core.deprecation import deprecated as dep_canonical
+        from structural_lib.core.utilities import deprecated as dep_utilities
+
+        assert dep_canonical is dep_utilities
+
+    def test_three_hop_backward_compat_chain(self):
+        """3-hop chain: structural_lib.utilities → core.utilities → core.deprecation."""
+        from structural_lib.core.deprecation import deprecated as dep_canonical
+        from structural_lib.core.utilities import deprecated as dep_core_util
+        from structural_lib.utilities import deprecated as dep_root_util
+
+        # All three should be the exact same function object
+        assert dep_canonical is dep_core_util
+        assert dep_core_util is dep_root_util
+        assert dep_canonical is dep_root_util
+
+    def test_deprecated_field_three_hop_chain(self):
+        """3-hop chain also works for deprecated_field."""
+        from structural_lib.core.deprecation import deprecated_field as df_canonical
+        from structural_lib.core.utilities import deprecated_field as df_core_util
+        from structural_lib.utilities import deprecated_field as df_root_util
+
+        assert df_canonical is df_core_util
+        assert df_core_util is df_root_util
 
 
 class TestDeprecationIntegration:

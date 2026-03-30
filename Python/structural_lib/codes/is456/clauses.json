@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-03-30",
-    "total_clauses": 92,
+    "total_clauses": 119,
     "includes_references": [
       "IS 13920:2016"
     ]
@@ -189,6 +189,42 @@
         "clear span"
       ]
     },
+    "24.2": {
+      "title": "Slabs Continuous Over Supports",
+      "section": "24 - Solid Slabs",
+      "text": "Where the slab is continuous over supports, the bending moments at the midspan and at the support shall be computed using elastic analysis or coefficients from Table 12 and Table 13.",
+      "category": "slabs",
+      "tables": [
+        "Table 12",
+        "Table 13"
+      ],
+      "keywords": [
+        "continuous slab",
+        "support moments",
+        "midspan",
+        "BM coefficients"
+      ]
+    },
+    "24.3": {
+      "title": "Slabs Spanning in Two Directions at Right Angles",
+      "section": "24 - Solid Slabs",
+      "text": "When the ratio of the longer to shorter span (ly/lx) does not exceed 2, the slab shall be designed as spanning in two directions. Maximum moments: Mx = αx·w·lx² and My = αy·w·lx², where coefficients from Table 26 (restrained) or Table 27 (simply supported).",
+      "category": "slabs",
+      "formula": "Mx = αx * w * lx²; My = αy * w * lx²",
+      "limits": {
+        "two_way_ratio_limit": 2.0
+      },
+      "tables": [
+        "Table 26",
+        "Table 27"
+      ],
+      "keywords": [
+        "two-way slab",
+        "moment coefficients",
+        "ly/lx",
+        "spanning"
+      ]
+    },
     "24.3.1": {
       "title": "Reinforcement in Slabs — Minimum",
       "section": "24 - Solid Slabs",
@@ -229,6 +265,21 @@
         "slab reinforcement",
         "main bars",
         "distribution bars"
+      ]
+    },
+    "25.1": {
+      "title": "General — Compression Members",
+      "section": "25 - Requirements Governing Reinforcement and Detailing",
+      "text": "A compression member may be considered as short when both lex/D < 12 and ley/b < 12. Otherwise the compression member shall be designed as slender.",
+      "category": "columns",
+      "limits": {
+        "short_column_ratio_threshold": 12
+      },
+      "keywords": [
+        "compression member",
+        "short column",
+        "slender column",
+        "classification"
       ]
     },
     "25.1.1": {
@@ -590,6 +641,94 @@
         "beta_c"
       ]
     },
+    "32.1": {
+      "title": "Empirical Design Method for Walls",
+      "section": "32 - Walls",
+      "text": "Braced walls subjected to vertical loads may be designed by: Puw = 0.3*(t - 1.2*e - 2*ea)*fck per unit length, where t = wall thickness, e = eccentricity, ea = Hwe²/(2500*t) additional eccentricity due to slenderness.",
+      "category": "walls",
+      "formula": "Puw = 0.3 * (t - 1.2*e - 2*ea) * fck; ea = Hwe² / (2500*t)",
+      "limits": {
+        "coefficient": 0.3,
+        "eccentricity_factor": 1.2,
+        "slenderness_denominator": 2500
+      },
+      "keywords": [
+        "wall design",
+        "empirical",
+        "braced wall",
+        "Puw",
+        "eccentricity"
+      ]
+    },
+    "32.2": {
+      "title": "Design of Reinforced Concrete Walls",
+      "section": "32 - Walls",
+      "text": "RC walls shall be designed per 32.2.1-32.2.5 or as compression members per Section 39. Minimum thickness not less than Hwe/30 and not less than 100 mm.",
+      "category": "walls",
+      "limits": {
+        "min_thickness_ratio_denominator": 30,
+        "absolute_min_thickness_mm": 100
+      },
+      "keywords": [
+        "RC wall",
+        "minimum thickness",
+        "load-bearing",
+        "design"
+      ]
+    },
+    "32.3": {
+      "title": "Eccentricity of Vertical Load on Walls",
+      "section": "32 - Walls",
+      "text": "Resultant eccentricity includes actual eccentricity plus additional eccentricity ea = Hwe²/(2500*t). For empirical method, e/t shall not exceed 1/6.",
+      "category": "walls",
+      "formula": "e_total = e_applied + ea; ea = Hwe² / (2500*t)",
+      "limits": {
+        "max_eccentricity_ratio_empirical": 0.167
+      },
+      "keywords": [
+        "eccentricity",
+        "wall",
+        "lateral deflection",
+        "e/t ratio"
+      ]
+    },
+    "32.4": {
+      "title": "Reinforcement in Walls",
+      "section": "32 - Walls",
+      "text": "Minimum reinforcement: Vertical 0.12% Ag (HSD) or 0.15% (MS); Horizontal 0.20% (HSD) or 0.25% (MS). Max spacing: 3t or 450mm. Two layers when t > 200mm.",
+      "category": "walls",
+      "limits": {
+        "min_vertical_hsd_pct": 0.12,
+        "min_vertical_ms_pct": 0.15,
+        "min_horizontal_hsd_pct": 0.2,
+        "min_horizontal_ms_pct": 0.25,
+        "max_spacing_factor": 3,
+        "max_spacing_mm": 450,
+        "two_layer_threshold_mm": 200
+      },
+      "keywords": [
+        "wall reinforcement",
+        "vertical",
+        "horizontal",
+        "minimum",
+        "spacing"
+      ]
+    },
+    "32.5": {
+      "title": "Maximum Axial Load Capacity of Wall",
+      "section": "32 - Walls",
+      "text": "Maximum allowable axial load per unit length: Puw = 0.3*(t - 1.2*e - 2*ea)*fck per 32.1. For walls as compression members, provisions of Cl 39 apply. Slenderness ratio Hwe/t shall not exceed 30.",
+      "category": "walls",
+      "formula": "Puw_max = 0.3 * (t - 1.2*e - 2*ea) * fck",
+      "limits": {
+        "max_slenderness_ratio": 30
+      },
+      "keywords": [
+        "wall capacity",
+        "maximum load",
+        "slenderness limit"
+      ]
+    },
     "33.1": {
       "title": "Effective Span of Stairs",
       "section": "33 - Stairs",
@@ -602,7 +741,7 @@
         "going"
       ]
     },
-    "33.3": {
+    "33.2": {
       "title": "Distribution of Loading on Stairs",
       "section": "33 - Stairs",
       "text": "Where flights or landings are built into walls for at least 110 mm, a 150 mm strip may be deducted from the loaded area.",
@@ -618,6 +757,19 @@
         "wall support"
       ]
     },
+    "33.3": {
+      "title": "Depth of Section",
+      "section": "33 - Stairs",
+      "text": "The depth of section shall be taken as the minimum thickness perpendicular to the soffit of the staircase slab.",
+      "category": "slabs",
+      "keywords": [
+        "stairs",
+        "depth",
+        "section",
+        "soffit",
+        "thickness perpendicular"
+      ]
+    },
     "34.1": {
       "title": "General Requirements for Footings",
       "section": "34 - Footings",
@@ -631,6 +783,47 @@
         "foundation",
         "bearing capacity",
         "minimum thickness"
+      ]
+    },
+    "34.2": {
+      "title": "Moments and Forces",
+      "section": "34 - Footings",
+      "text": "Bending moment at any section shall be determined by passing through the section a vertical plane extending across the footing, computing moment of forces on one side of the plane. Critical sections per 34.2.3 and 34.2.4.",
+      "category": "footings",
+      "keywords": [
+        "moments",
+        "forces",
+        "critical section",
+        "footing design"
+      ]
+    },
+    "34.2.1": {
+      "title": "General — Footing Moment Computation",
+      "section": "34 - Footings",
+      "text": "The thickness at the edge of a footing on soil shall not be less than 150 mm. For footings on piles, edge thickness not less than 300 mm above pile tops.",
+      "category": "footings",
+      "limits": {
+        "min_edge_thickness_soil_mm": 150,
+        "min_edge_thickness_piles_mm": 300
+      },
+      "keywords": [
+        "footing thickness",
+        "edge thickness",
+        "minimum depth",
+        "pile cap"
+      ]
+    },
+    "34.2.2": {
+      "title": "Critical Sections for Bending Moment in Footings",
+      "section": "34 - Footings",
+      "text": "Critical section for bending at: (a) face of column for concrete columns, (b) halfway between centre-line and wall edge for masonry walls, (c) halfway between column face and gusseted base edge, (d) halfway between column face and base plate edge.",
+      "category": "footings",
+      "keywords": [
+        "critical section",
+        "bending moment",
+        "face of column",
+        "masonry wall",
+        "base plate"
       ]
     },
     "34.2.3": {
@@ -865,10 +1058,12 @@
       "section": "39 - Compression Members",
       "text": "Bresler's formula: (Mux/Mux1)^alpha_n + (Muy/Muy1)^alpha_n <= 1.0. alpha_n varies from 1.0 to 2.0 based on Pu/Puz.",
       "category": "columns",
-      "formula": "(Mux/Mux1)^alpha_n + (Muy/Muy1)^alpha_n <= 1.0",
+      "formula": "(Mux/Mux1)^alpha_n + (Muy/Muy1)^alpha_n <= 1.0; Puz = 0.45*fck*Ac + 0.75*fy*Asc",
       "values": {
         "alpha_n_at_pu_puz_0.2": 1.0,
-        "alpha_n_at_pu_puz_0.8": 2.0
+        "alpha_n_at_pu_puz_0.8": 2.0,
+        "puz_fck_coefficient": 0.45,
+        "puz_fy_coefficient": 0.75
       },
       "keywords": [
         "biaxial bending",
@@ -1131,6 +1326,145 @@
         "reinforcement ratio"
       ]
     },
+    "AnnexD-1": {
+      "title": "Restrained Slabs — Moment Coefficients",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "For restrained slabs, max moments per unit width: Mx = αx·w·lx², My = αy·w·lx², using coefficients from Table 26 based on ly/lx ratio and edge conditions (9 cases).",
+      "category": "slabs",
+      "formula": "Mx = αx * w * lx²; My = αy * w * lx²",
+      "tables": [
+        "Table 26"
+      ],
+      "keywords": [
+        "restrained slab",
+        "Annex D",
+        "moment coefficients",
+        "two-way"
+      ]
+    },
+    "AnnexD-1.1": {
+      "title": "Conditions for Table 26 Coefficients",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "Coefficients apply when: (a) loaded area is rectangular, (b) loading is uniformly distributed, (c) slab is provided with torsion reinforcement at discontinuous edges.",
+      "category": "slabs",
+      "keywords": [
+        "conditions",
+        "coefficients",
+        "rectangular",
+        "uniform load"
+      ]
+    },
+    "AnnexD-1.2": {
+      "title": "Division into Middle and Edge Strips",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "Slab divided into middle strips (3/4 of span width) and edge strips (1/8 of span width each side).",
+      "category": "slabs",
+      "limits": {
+        "middle_strip_fraction": 0.75,
+        "edge_strip_fraction": 0.125
+      },
+      "keywords": [
+        "middle strip",
+        "edge strip",
+        "strip width"
+      ]
+    },
+    "AnnexD-1.3": {
+      "title": "Maximum Moments in Middle Strip",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "Design moments from Table 26 coefficients apply only to middle strips, taken as zero at panel edges.",
+      "category": "slabs",
+      "keywords": [
+        "middle strip",
+        "maximum moment",
+        "edge panel"
+      ]
+    },
+    "AnnexD-1.4": {
+      "title": "Moments in Edge Strips",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "Reinforcement in edge strips parallel to the edge governed by minimum reinforcement requirements per 26.5.2.1.",
+      "category": "slabs",
+      "keywords": [
+        "edge strip",
+        "minimum reinforcement",
+        "parallel"
+      ]
+    },
+    "AnnexD-1.5": {
+      "title": "Negative Moments at Continuous Edge",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "Negative moment at a continuous edge shall be the maximum from Table 26 considering panels on either side.",
+      "category": "slabs",
+      "keywords": [
+        "negative moment",
+        "continuous edge",
+        "adjacent panels"
+      ]
+    },
+    "AnnexD-1.6": {
+      "title": "Negative Moments at Discontinuous Edge",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "At a discontinuous edge, negative moment = 0.5 × midspan moment in same direction. Reinforcement extends at least 0.1*l into span.",
+      "category": "slabs",
+      "formula": "M_neg_disc = 0.5 * M_midspan",
+      "limits": {
+        "neg_moment_factor": 0.5,
+        "extension_into_span_fraction": 0.1
+      },
+      "keywords": [
+        "discontinuous edge",
+        "negative moment",
+        "half midspan"
+      ]
+    },
+    "AnnexD-1.7": {
+      "title": "Torsion Reinforcement — Two Discontinuous Edges",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "At corners where two discontinuous edges meet, provide torsion reinforcement top and bottom, each layer = 0.75 × max midspan reinforcement, extending 0.2*lx from corner.",
+      "category": "slabs",
+      "formula": "As_torsion = 0.75 * As_max_midspan",
+      "limits": {
+        "torsion_steel_fraction": 0.75,
+        "extent_fraction": 0.2
+      },
+      "keywords": [
+        "torsion reinforcement",
+        "corner",
+        "two discontinuous edges"
+      ]
+    },
+    "AnnexD-1.8": {
+      "title": "Torsion Reinforcement — One Discontinuous Edge",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "At corners with one discontinuous edge, torsion reinforcement = 0.375 × max midspan reinforcement, extending 0.2*lx from corner.",
+      "category": "slabs",
+      "formula": "As_torsion = 0.375 * As_max_midspan",
+      "limits": {
+        "torsion_steel_fraction": 0.375,
+        "extent_fraction": 0.2
+      },
+      "keywords": [
+        "torsion reinforcement",
+        "corner",
+        "one discontinuous edge"
+      ]
+    },
+    "AnnexD-2": {
+      "title": "Simply Supported Slabs Spanning in Two Directions",
+      "section": "Annex D - Slabs Spanning in Two Directions",
+      "text": "For simply supported two-way slabs: Mx = αx·w·lx², My = αy·w·lx², using coefficients from Table 27. Torsion reinforcement not required but provision for torsion at free corners.",
+      "category": "slabs",
+      "formula": "Mx = αx * w * lx²; My = αy * w * lx²",
+      "tables": [
+        "Table 27"
+      ],
+      "keywords": [
+        "simply supported",
+        "two-way slab",
+        "Table 27"
+      ]
+    },
     "IS13920_5.1": {
       "title": "General Requirements — IS 13920",
       "section": "IS 13920:2016 - General",
@@ -1202,6 +1536,24 @@
         "confinement"
       ]
     },
+    "IS13920_6.3": {
+      "title": "Lap Splices in Flexural Members",
+      "section": "IS 13920:2016 - Beams",
+      "text": "Lap splices not permitted within 2d from joint face (plastic hinge zone). Max 50% bars spliced at one section. Lap length >= Ld per IS 456 Cl 26.2.1. Hoops at splice at spacing <= 150mm or d/4.",
+      "category": "seismic",
+      "limits": {
+        "no_splice_zone_factor": 2,
+        "max_bars_spliced_pct": 50,
+        "max_hoop_spacing_at_splice_mm": 150
+      },
+      "keywords": [
+        "lap splice",
+        "beam",
+        "seismic",
+        "plastic hinge",
+        "confinement"
+      ]
+    },
     "IS13920_7.1": {
       "title": "Columns — General Requirements",
       "section": "IS 13920:2016 - Columns",
@@ -1266,6 +1618,33 @@
         "seismic column"
       ]
     },
+    "IS13920_7.4.1": {
+      "title": "Area of Special Confining Reinforcement",
+      "section": "IS 13920:2016 - Columns",
+      "text": "Area of bar forming hoops: Ash >= 0.18*S*h*(Ag/Ak - 1.0)*(fck/fy), where S = hoop spacing, h = longer hoop dimension (outer face), Ag = gross area, Ak = confined core area.",
+      "category": "seismic",
+      "formula": "Ash >= 0.18 * S * h * (Ag/Ak - 1.0) * (fck/fy)",
+      "keywords": [
+        "confining reinforcement",
+        "Ash",
+        "special confinement",
+        "hoop area"
+      ]
+    },
+    "IS13920_8.1": {
+      "title": "Beam-Column Joint Requirements",
+      "section": "IS 13920:2016 - Joints of Frames",
+      "text": "Special confining reinforcement at column end shall continue through the beam-column joint unless beams frame into all four faces with width >= 3/4 of column face width.",
+      "category": "seismic",
+      "limits": {
+        "beam_width_ratio_for_confinement": 0.75
+      },
+      "keywords": [
+        "beam-column joint",
+        "joint confinement",
+        "transverse reinforcement"
+      ]
+    },
     "IS13920_9.1": {
       "title": "Shear Walls — General",
       "section": "IS 13920:2016 - Shear Walls",
@@ -1280,6 +1659,42 @@
         "minimum thickness",
         "two curtains",
         "seismic"
+      ]
+    },
+    "IS13920_9.2": {
+      "title": "Design Shear Strength of Walls",
+      "section": "IS 13920:2016 - Shear Walls",
+      "text": "Nominal shear stress: τv = Vu/(tw*dw), where dw = 0.8*lw. Design shear strength τc per IS 456 Table 19. When τv > τc, provide shear reinforcement. Max shear stress per IS 456 Table 20.",
+      "category": "seismic",
+      "formula": "τv = Vu / (tw * dw); dw = 0.8 * lw",
+      "limits": {
+        "effective_depth_factor": 0.8
+      },
+      "tables": [
+        "IS 456 Table 19",
+        "IS 456 Table 20"
+      ],
+      "keywords": [
+        "shear wall",
+        "shear stress",
+        "nominal shear",
+        "wall shear design"
+      ]
+    },
+    "IS13920_9.3": {
+      "title": "Boundary Elements in Shear Walls",
+      "section": "IS 13920:2016 - Shear Walls",
+      "text": "Boundary elements required when extreme fibre compressive stress > 0.2*fck. May be discontinued when stress < 0.15*fck. Confining reinforcement per Cl 7.4.",
+      "category": "seismic",
+      "limits": {
+        "boundary_element_trigger_stress_ratio": 0.2,
+        "boundary_element_discontinue_ratio": 0.15
+      },
+      "keywords": [
+        "boundary element",
+        "shear wall",
+        "compressive stress",
+        "confinement"
       ]
     },
     "IS13920_9.4": {
