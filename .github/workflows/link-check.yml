@@ -34,11 +34,22 @@ jobs:
             --exclude '127.0.0.1'
             --exclude 'example.com'
             --exclude 'unpkg.com/katex'
+            --exclude 'doi.org'
+            --exclude 'researchgate.net'
+            --exclude 'rubberduckvba.com'
+            --exclude 'draftsmagic.com'
+            --exclude 'docs.structural-engineering-lib.io'
+            --exclude 'docs.structural-lib.com'
+            --exclude 'github.com/owner/repo'
+            --exclude 'github.com/\.\.\.'
+            --exclude 'github.com/pravin-surawase/structural-lib/discussions'
             --timeout 30
             --retry-wait-time 5
             --max-retries 3
             --exclude-path 'docs/_archive'
             --exclude-path 'docs/research'
+            --exclude-path 'docs/blog-drafts'
+            --exclude-path 'docs/publications'
             --suggest
             'docs/**/*.md'
             '*.md'

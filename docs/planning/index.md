@@ -52,10 +52,4 @@
 | [v020-stabilization-checklist.md](../_archive/planning-completed-2026-03/v020-stabilization-checklist.md) | v0.20.0 Stabilization Checklist | > **Version info:** See TASKS.md for current/next release st | 157 |
 | [weak-points-audit.md](../_archive/planning-completed-2026-03/weak-points-audit.md) | Weak Points Audit — Deep Analysis | Deep audit of structural, architectural, and quality weak po | 251 |
 
-## Subfolders
 
-| Folder | Files | Description |
-|--------|-------|-------------|
-| [research-findings-validation/](research-findings-validation/) | 1 | > **Template version:** 1.0 |
-| [research-platform/](research-platform/) | 1 | > **Template version:** 1.0 |
-| [research-visual-design/](research-visual-design/) | 1 | > **Template version:** 1.0 |
