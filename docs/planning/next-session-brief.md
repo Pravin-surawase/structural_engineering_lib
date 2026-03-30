@@ -36,10 +36,11 @@ tags: []
 
 ## What's Next
 
-1. **Phase 1 Foundation** — Start with TASK-611 (`core/numerics.py`), TASK-612 (shared math extraction), TASK-613 (safety factor constants)
-2. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
-3. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
-4. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+1. ~~**Phase 1 Foundation (611-613)**~~ — ✅ Done: TASK-611 (`core/numerics.py`), TASK-612 (shared math extraction), TASK-613 (safety factor constants)
+2. **Phase 1 Foundation (continued)** — TASK-614 (`@deprecated` decorator), TASK-615 (clauses.json subclauses), TASK-617 (test assertion helpers)
+3. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
+4. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
+5. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
 
 ---
 
@@ -61,10 +62,11 @@ tags: []
 - Updated `docs/TASKS.md` with Phase 0-3 tasks (TASK-600 through TASK-656)
 
 **What's next (Priority Order):**
-1. **Phase 1 Foundation** — Start with TASK-611 (`core/numerics.py`), TASK-612 (shared math extraction), TASK-613 (safety factor constants)
-2. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
-3. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
-4. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+1. ~~**Phase 1 Foundation (611-613)**~~ — ✅ Done
+2. **Phase 1 Foundation (continued)** — TASK-614 (`@deprecated` decorator), TASK-615 (clauses.json subclauses), TASK-617 (test assertion helpers)
+3. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
+4. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
+5. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
 
 **Key Decision:** Library expansion now follows slow-but-accurate approach. Every function goes through 9-step pipeline.
 

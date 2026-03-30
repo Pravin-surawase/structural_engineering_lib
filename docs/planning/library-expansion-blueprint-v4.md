@@ -97,9 +97,9 @@ Each function must pass the full pipeline before the next one starts.
 
 | # | Task | Files | Status | Priority |
 |---|------|-------|--------|----------|
-| 1.1 | Create `core/numerics.py` | `safe_divide()`, `approx_equal()`, `clamp()`, epsilon constants | 📋 TODO | 🔴 P0 |
-| 1.2 | Extract shared math | `codes/is456/common/stress_blocks.py`, `reinforcement.py`, `minimums.py` | 📋 TODO | 🔴 P0 |
-| 1.3 | Hardcode safety factors | `codes/is456/common/constants.py` — γc=1.5, γs=1.15 | 📋 TODO | 🔴 P0 |
+| 1.1 | Create `core/numerics.py` | `safe_divide()`, `approx_equal()`, `clamp()`, epsilon constants | ✅ Done | 🔴 P0 |
+| 1.2 | Extract shared math | `codes/is456/common/stress_blocks.py`, `reinforcement.py`, `minimums.py` | ✅ Done | 🔴 P0 |
+| 1.3 | Hardcode safety factors | `codes/is456/common/constants.py` — γc=1.5, γs=1.15 | ✅ Done | 🔴 P0 |
 | 1.4 | Create `@deprecated` decorator | `core/deprecation.py` | 📋 TODO | 🔴 High |
 | 1.5 | Populate clauses.json | Add ~66 subclauses for column, footing, slab | 📋 TODO | 🔴 High |
 | 1.6 | Add IS 13920 references | `clauses.json` (~15 entries) | 📋 TODO | 🔴 High |
