@@ -24,10 +24,10 @@ jobs:
         working-directory: Python
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -59,10 +59,10 @@ jobs:
         working-directory: Python  # Build from Python/ subdirectory
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -73,7 +73,7 @@ jobs:
         run: python -m build
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v8
+        uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
           path: Python/dist/
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
@@ -118,7 +118,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
@@ -137,7 +137,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
