@@ -218,6 +218,19 @@
       "script": ".venv/bin/python scripts/check_docker_config.py",
       "description": "Validate Dockerfile and docker-compose configuration"
     },
+    "launch dev stack": {
+      "script": "bash scripts/launch_stack.sh",
+      "description": "Launch full-stack dev environment (FastAPI + React) with auto-detection of free ports",
+      "options": {
+        "--local": "Local mode (default): FastAPI + React processes",
+        "--docker": "Docker mode via Colima",
+        "--docker-dev": "Docker dev mode with hot reload",
+        "--kill-only": "Kill all dev services",
+        "--no-react": "FastAPI only",
+        "--no-fastapi": "React only",
+        "--open": "Open browser after launch"
+      }
+    },
     "check doc versions": {
       "script": ".venv/bin/python scripts/check_doc_versions.py",
       "description": "Detect stale library version references in docs (pre-commit hook)"
@@ -489,7 +502,7 @@
     ],
     "fastapi_tools": [
       "check fastapi issues", "check docker config",
-      "test api parity", "benchmark api"
+      "test api parity", "benchmark api", "launch dev stack"
     ],
     "doc_tools": [
       "fix broken links", "check docs", "check doc versions",

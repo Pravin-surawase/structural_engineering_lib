@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-03-29
-**Files:** 89
+**Last Updated:** 2026-03-30
+**Files:** 90
 
 ## Config Files
 
@@ -37,7 +37,7 @@
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 282 |
-| [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 5 | 534 |
+| [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 653 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 422 |
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 18 | 847 |
 | [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 210 |
@@ -103,6 +103,7 @@
 - [finish_task_pr.sh](finish_task_pr.sh) — Finish task work and create PR
 - [generate_all_indexes.sh](generate_all_indexes.sh) — Generate index.json + index.md for all research-relevant folders
 - [install_git_hooks.sh](install_git_hooks.sh) — Install versioned git hooks via core.hooksPath
+- [launch_stack.sh](launch_stack.sh) — launch_stack.sh — Full-stack development launcher for structural_engineering_lib
 - [pre_commit_check.sh](pre_commit_check.sh) — Pre-flight checks before committing
 - [recover_git_state.sh](recover_git_state.sh) — Recover from common git workflow failure states
 - [repo_health_check.sh](repo_health_check.sh)
