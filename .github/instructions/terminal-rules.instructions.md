@@ -42,6 +42,9 @@ If `./run.sh <cmd>` produces no output or fails:
 | `./run.sh find --api func` | `.venv/bin/python scripts/discover_api_signatures.py func` | — |
 | `./run.sh session summary` | `.venv/bin/python scripts/session_summary.py` | — |
 | `./run.sh generate indexes` | `.venv/bin/python scripts/generate_enhanced_index.py --all` | — |
+| `./run.sh dev` | `bash scripts/launch_stack.sh` | `colima start && docker compose up --build` |
+| `./run.sh dev --docker` | `bash scripts/launch_stack.sh --docker` | `colima start && docker compose up --build` |
+| `./run.sh dev --kill-only` | `bash scripts/launch_stack.sh --kill-only` | `lsof -ti :8000 \| xargs kill -9` |
 
 ## Common Commands Quick Reference
 
@@ -60,7 +63,19 @@ cd react_app && npm run dev                           # Dev server :5173
 cd react_app && npx vitest run                        # Tests
 ```
 
-### FastAPI / Docker
+### Full-Stack Dev Launcher (PREFERRED)
+```bash
+./run.sh dev                                          # Local: FastAPI + React (default)
+./run.sh dev --docker                                 # Docker mode (needs Colima running)
+./run.sh dev --docker-dev                             # Docker dev mode (hot reload)
+./run.sh dev --kill-only                              # Kill all dev services
+./run.sh dev --no-react                               # FastAPI only
+./run.sh dev --no-fastapi                             # React only
+./run.sh dev --open                                   # Launch + open browser automatically
+```
+Fallback: `bash scripts/launch_stack.sh [--local|--docker|--docker-dev] [options]`
+
+### FastAPI / Docker (manual)
 ```bash
 colima start --cpu 4 --memory 4                       # Start Docker runtime FIRST
 docker compose up --build                            # Production at :8000/docs

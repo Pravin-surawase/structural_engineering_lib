@@ -9,7 +9,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useDesignStore } from '../store/designStore';
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+import { WS_BASE_URL } from '../config';
 
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error';
 
@@ -52,7 +52,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
       setState((s) => ({ ...s, status: 'connecting', error: null }));
 
       const ws = new ReconnectingWebSocket(
-        `${WS_URL}/ws/design/${sessionId}`,
+        `${WS_BASE_URL}/ws/design/${sessionId}`,
         [],
         RWS_OPTIONS
       );

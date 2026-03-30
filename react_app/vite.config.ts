@@ -7,6 +7,32 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     host: '0.0.0.0',   // Bind to all interfaces (IPv4 + IPv6) so localhost works in browser
+    proxy: (() => {
+      const backendUrl = process.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
+      const wsBackendUrl = backendUrl.replace(/^http/, 'ws');
+      return {
+        '/api': {
+          target: backendUrl,
+          changeOrigin: true,
+        },
+        '/health': {
+          target: backendUrl,
+          changeOrigin: true,
+        },
+        '/docs': {
+          target: backendUrl,
+          changeOrigin: true,
+        },
+        '/openapi.json': {
+          target: backendUrl,
+          changeOrigin: true,
+        },
+        '/ws': {
+          target: wsBackendUrl,
+          ws: true,
+        },
+      };
+    })(),
   },
   build: {
     rollupOptions: {

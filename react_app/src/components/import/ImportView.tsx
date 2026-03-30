@@ -57,7 +57,7 @@ export function ImportView() {
       const msg = err instanceof Error ? err.message : "Failed to load sample data";
       setError(
         msg.includes("fetch") || msg.includes("network")
-          ? "Cannot connect to backend server. Is FastAPI running on port 8000?"
+          ? "Cannot connect to backend server. Start it with: ./run.sh dev"
           : msg
       );
     } finally {
