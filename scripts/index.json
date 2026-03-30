@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-29",
-  "file_count": 89,
+  "last_updated": "2026-03-30",
+  "file_count": 90,
   "files": [
     {
       "name": "README.md",
@@ -193,10 +193,10 @@
     {
       "name": "archive_old_files.sh",
       "type": "shell-script",
-      "size_lines": 182,
-      "last_updated": "2026-03-26",
+      "size_lines": 210,
+      "last_updated": "2026-03-30",
       "description": "Auto-archive files older than 90 days from docs/_active/",
-      "content_hash": "a375223bdd1f"
+      "content_hash": "d07cbfa70835"
     },
     {
       "name": "audit_error_handling.py",
@@ -408,7 +408,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-29",
+      "last_updated": "2026-03-30",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -417,7 +417,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "ffaf4d7235ee"
+      "content_hash": "58990e08fd4d"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -983,8 +983,8 @@
     {
       "name": "check_docs.py",
       "type": "python",
-      "size_lines": 534,
-      "last_updated": "2026-03-26",
+      "size_lines": 653,
+      "last_updated": "2026-03-30",
       "description": "Unified documentation checker — consolidates 4 doc validation scripts.",
       "functions": [
         {
@@ -1014,6 +1014,10 @@
           "description": "Ensure docs/README.md links resolve to real files/dirs."
         },
         {
+          "name": "check_doc_budget",
+          "description": "Check that non-archived markdown files stay within budget."
+        },
+        {
           "name": "main"
         }
       ],
@@ -1029,7 +1033,7 @@
         "META_REQUIRED_FIELDS",
         "META_VALID_VALUES"
       ],
-      "content_hash": "202c0949e9b1"
+      "content_hash": "7e349d643984"
     },
     {
       "name": "check_fastapi_issues.py",
@@ -2306,6 +2310,14 @@
       "content_hash": "c41580c0127a"
     },
     {
+      "name": "launch_stack.sh",
+      "type": "shell-script",
+      "size_lines": 839,
+      "last_updated": "2026-03-30",
+      "description": "launch_stack.sh — Full-stack development launcher for structural_engineering_lib",
+      "content_hash": "d819a53192ce"
+    },
+    {
       "name": "migrate_python_module.py",
       "type": "python",
       "size_lines": 511,
@@ -3527,5 +3539,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "27dac4b415f05100"
+  "content_hash": "d073f529e2b8ef2b"
 }

@@ -89,7 +89,15 @@ When delegating, tell the specialist which skills to use:
 
 ## Session Start
 
-Read `docs/planning/next-session-brief.md` and `docs/TASKS.md`, then run `./run.sh session start`.
+1. **Verify clean git state first** — delegate to @ops for Session Start Checklist, or run:
+   ```bash
+   git status --short && git branch --show-current && git branch --no-merged main
+   ```
+   If dirty state, stale branches, or open PRs → resolve before starting work.
+
+2. Read `docs/planning/next-session-brief.md` and `docs/TASKS.md` for priorities.
+
+3. Run `./run.sh session start` to verify environment.
 
 ## Context Recovery
 
@@ -143,12 +151,15 @@ When handing off to a specialist, use this template:
 ```
 Task: [specific description]
 Files to check first: [list files to read before coding]
+Agent instructions: Read your agent file first: .github/agents/<agent-name>.agent.md
 Expected output: [what the change should do]
 After completing: Hand off to @reviewer with a summary of:
   - Files changed
   - What was added/modified/removed
   - How to test it
 ```
+
+**IMPORTANT:** Always tell agents to read their `.agent.md` file at the start of every task. Agents lose context across conversations — their agent file contains critical rules, patterns to avoid, and historical mistakes they must not repeat.
 
 ### Status Tracking
 

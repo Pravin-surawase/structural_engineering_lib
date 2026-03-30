@@ -69,6 +69,9 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
 ./run.sh evolve --fix               # Apply fixes + commit
 ./run.sh evolve --review weekly     # Weekly auto-maintenance
+./run.sh dev                        # Launch full dev stack (FastAPI + React)
+./run.sh dev --docker               # Launch with Docker (needs Colima)
+./run.sh dev --kill-only            # Kill all dev services
 ```
 
 ### Direct scripts (when run.sh doesn't cover it)

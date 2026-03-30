@@ -21,7 +21,7 @@ import { Viewport3D } from "../viewport/Viewport3D";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from '../../config';
 
 interface BeamDetailPanelProps {
   beam: BeamCSVRow;
@@ -48,7 +48,7 @@ async function designSingleBeam(beam: BeamCSVRow): Promise<SingleDesignResult> {
     Math.abs(beam.Vu_start ?? 0), Math.abs(beam.Vu_end ?? 0),
     Math.abs(beam.vu_envelope ?? 0)
   );
-  const res = await fetch(`${API_BASE}/api/v1/design/beam`, {
+  const res = await fetch(`${API_BASE_URL}/api/v1/design/beam`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -97,7 +97,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
       // Get ast_provided from backend instead of calculating locally
       let astProvided = 0;
       try {
-        const rebarRes = await fetch(`${API_BASE}/api/v1/rebar/apply`, {
+        const rebarRes = await fetch(`${API_BASE_URL}/api/v1/rebar/apply`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

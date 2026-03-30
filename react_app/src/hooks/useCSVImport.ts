@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materialOverrides";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from '../config';
 
 export interface ImportedBeam {
   id: string;
@@ -121,7 +121,7 @@ async function importCSVFile(
       body: formData,
     });
   } catch {
-    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+    throw new Error("Cannot connect to backend server. Start it with: ./run.sh dev");
   }
 
   if (!response.ok) {
@@ -147,7 +147,7 @@ async function importCSVText(
       body: JSON.stringify({ text, format }),
     });
   } catch {
-    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+    throw new Error("Cannot connect to backend server. Start it with: ./run.sh dev");
   }
 
   if (!response.ok) {
@@ -181,7 +181,7 @@ async function importDualCSVFiles(
       body: formData,
     });
   } catch {
-    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+    throw new Error("Cannot connect to backend server. Start it with: ./run.sh dev");
   }
 
   if (!response.ok) {
@@ -207,7 +207,7 @@ async function batchDesign(
       body: JSON.stringify(beams),  // API expects array directly, not wrapped
     });
   } catch {
-    throw new Error("Cannot connect to backend server. Is FastAPI running on port 8000?");
+    throw new Error("Cannot connect to backend server. Start it with: ./run.sh dev");
   }
 
   if (!response.ok) {
