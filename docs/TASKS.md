@@ -125,9 +125,9 @@
 
 | ID | Task | Priority | Status |
 |----|------|----------|--------|
-| TASK-611 | Create `core/numerics.py` — safe_divide(), approx_equal(), clamp() | 🔴 P0 | 📋 |
-| TASK-612 | Extract shared math to `codes/is456/common/` (stress_blocks, reinforcement, minimums) | 🔴 P0 | 📋 |
-| TASK-613 | Hardcode safety factors in `codes/is456/common/constants.py` | 🔴 P0 | 📋 |
+| TASK-611 | Create `core/numerics.py` — safe_divide(), approx_equal(), clamp() | 🔴 P0 | ✅ Done |
+| TASK-612 | Extract shared math to `codes/is456/common/` (stress_blocks, reinforcement, minimums) | 🔴 P0 | ✅ Done |
+| TASK-613 | Hardcode safety factors in `codes/is456/common/constants.py` | 🔴 P0 | ✅ Done |
 | TASK-614 | Create `@deprecated` decorator in `core/deprecation.py` | 🔴 High | 📋 |
 | TASK-615 | Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39) | 🔴 High | 📋 |
 | TASK-616 | Add IS 13920 references to clauses.json (~15 entries) | 🔴 High | 📋 |
