@@ -30,7 +30,9 @@ export {
   useDashboardInsights,
   useCodeChecks,
   useRebarSuggestions,
+  useProjectBOQ,
 } from './useInsights';
+export type { ProjectBOQResponse } from './useInsights';
 export {
   useExportBBS,
   useExportDXF,

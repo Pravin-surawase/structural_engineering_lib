@@ -105,8 +105,6 @@ Internal planning documents and research notes.
 
 | Topic | Status | Location |
 |-------|--------|----------|
-| [Visual Layer](research-visual-design/) | In Review | `research-visual-design/` |
-| [Platform Access](research-platform/) | Decided (post-v1.0) | `research-platform/` |
 | [AI Enhancements](../_archive/planning-completed-2026-03/research-ai-enhancements.md) | Draft | Single file |
 | [Detailing](../_archive/planning-completed-2026-03/research-detailing.md) | Draft | Single file |
 

@@ -8,18 +8,20 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart3, CheckCircle, AlertCircle, ArrowLeft,
-  Loader2, AlertTriangle, Download, FileText, Ruler,
+  Loader2, AlertTriangle, Download, FileText, Ruler, Package,
 } from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
-import { useDashboardInsights } from "../../hooks/useInsights";
+import { useDashboardInsights, useProjectBOQ } from "../../hooks/useInsights";
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks";
 import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
+import { ProjectBOQPanel } from "../design/ProjectBOQPanel";
 import type { DashboardData, StoryStats } from "../../hooks/useInsights";
 
 export function DashboardPage() {
   const navigate = useNavigate();
   const { beams } = useImportedBeamsStore();
   const dashboard = useDashboardInsights();
+  const boq = useProjectBOQ();
 
   const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
   const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
@@ -40,6 +42,18 @@ export function DashboardPage() {
       warnings: [],
     }));
     dashboard.mutate({ results });
+
+    // Trigger BOQ calculation
+    const boqBeams = beams.map((b) => ({
+      beam_id: b.id,
+      story: b.story ?? "Unknown",
+      b_mm: b.b,
+      D_mm: b.D,
+      span_mm: b.span,
+      fck: b.fck ?? 25,
+      steel_weight_kg: b.ast_provided ? b.ast_provided * 7850 / 1e6 : 0,
+    }));
+    boq.mutate({ beams: boqBeams });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [beams]);
 
@@ -119,6 +133,22 @@ export function DashboardPage() {
         ) : dashboard.data ? (
           <DashboardContent data={dashboard.data} />
         ) : null}
+
+        {/* Project BOQ Panel */}
+        <BentoGrid className="auto-rows-auto">
+          <BentoCard colSpan={12} variant="default">
+            <BentoCardHeader
+              title="Project BOQ"
+              icon={<Package className="w-4 h-4" />}
+              badge={boq.data ? `${boq.data.total_beams} beams` : undefined}
+            />
+            <ProjectBOQPanel
+              data={boq.data ?? null}
+              isLoading={boq.isPending}
+              error={boq.error?.message ?? null}
+            />
+          </BentoCard>
+        </BentoGrid>
       </div>
     </div>
   );

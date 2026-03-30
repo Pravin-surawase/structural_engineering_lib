@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-30 (Session 110 — Documentation system overhaul)
+**Updated:** 2026-03-30 (Session 111 — HubPage + Project BOQ + deploy-docs CI)
 
 ---
 
@@ -56,7 +56,7 @@
 | A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results + redesign + edit rebar | `BeamDetailPanel.tsx`, `BuildingEditorPage.tsx`, `Viewport3D.tsx` | ✅ Done (`a242878`, `a5612b0`) |
 | A2 | TASK-523 | Activate FloatingDock (already built) + BentoGrid Dashboard (already built) | `App.tsx`, `DashboardPage.tsx` | ✅ Done (`a242878`) |
 | A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx` | ✅ Done (`a242878`) |
-| A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | new `HubPage.tsx`, update `App.tsx` | 📋 |
+| A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | new `HubPage.tsx`, update `App.tsx` | ✅ Done |
 | A5 | TASK-526 | Cross-section annotations — utilization color, actual barDia/barCount, ascRequired | `CrossSectionView.tsx` | ✅ Done (`a242878`, `a5612b0`) |
 | A6 | TASK-527 | TopBar context badges + fix settings button (SettingsPanel slide-over) | `TopBar.tsx`, new `SettingsPanel.tsx` | 📋 |
 | A7 | TASK-528 | Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard) | new `WorkflowBreadcrumb.tsx`, 4 page files | 📋 |
@@ -71,7 +71,7 @@
 | 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | ✅ Done |
 | 2 | TASK-515 | Load Calculator | — (existing) | new `/analysis/loads/simple` | new `useLoadAnalysis` + panel | 7 | ✅ Done |
 | 3 | TASK-516 | Triangular + Moment loads | `load_analysis.py` +120 lines | — (extends TASK-515) | — | 6 | 📋 |
-| 4 | TASK-517 | Project BOQ | new `boq.py` ~120 lines | new `/insights/project-boq` | new `useProjectBOQ` + panel | 5 | 📋 |
+| 4 | TASK-517 | Project BOQ | new `boq.py` ~120 lines | new `/insights/project-boq` | new `useProjectBOQ` + panel | 5 | ✅ Done |
 | 5 | TASK-518 | Torsion API + React | `api.py` +60 lines | new `/design/beam/torsion` | new `useTorsionDesign` + toggle | 5 | ✅ Done |
 | 6 | TASK-519 | Alternatives Panel (Pareto) | — (existing) | new `/optimization/beam/pareto` | new `useParetoDesign` + panel | 3 | 📋 |
 | 7 | TASK-520 | Report/3D Test Coverage | — | — | — | ~15 | 📋 |
@@ -85,18 +85,16 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-525 | Smart HubPage replacing ModeSelectPage | — | 📋 Next |
+| TASK-525 | Smart HubPage replacing ModeSelectPage | Copilot | ✅ Done |
 | TASK-515 | Load Calculator (FastAPI + React) | Copilot | ✅ Done |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-525 | Smart HubPage replacing ModeSelectPage | — | 3–4h | 🟡 Medium | 📋 |
 | TASK-527 | TopBar context badges + SettingsPanel slide-over | — | 2h | 🟡 Medium | 📋 |
 | TASK-528 | Workflow breadcrumb for batch flow | — | 1h | 🟢 Low | 📋 |
 | TASK-516 | Triangular + Moment load stubs in load_analysis.py | — | 1d | 🟡 Medium | 📋 |
-| TASK-517 | Project BOQ (Python module + FastAPI + React panel) | — | 3–4d | 🔴 High | 📋 |
 | TASK-519 | Alternatives Panel — Pareto front in DesignView | — | 3–4d | 🟡 Medium | 📋 |
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
@@ -124,6 +122,8 @@
 | TASK-523 | Activate FloatingDock + BentoGrid Dashboard | Copilot | ✅ Done (`a242878`) |
 | TASK-524 | DesignView dynamic layout + export dropdown | Copilot | ✅ Done (`a242878`) |
 | TASK-526 | Cross-section annotations + utilization color + ascRequired fix | Copilot | ✅ Done (`a242878`, `a5612b0`) |
+| TASK-525 | Smart HubPage replacing ModeSelectPage — quick actions + last session context | Copilot | ✅ Done |
+| TASK-517 | Project BOQ — services/boq.py + FastAPI endpoint + useProjectBOQ hook + DashboardPage | Copilot | ✅ Done |
 | — | Bug fix: 3D/2D top bar mismatch + utilization formula + BatchDesignResult.utilization_ratio | Copilot | ✅ Done (`a5612b0`) |
 | TASK-505 | React: API integration tests (86 tests, 12 routers, all pass) | Copilot | ✅ Done |
 | TASK-510 | React: Batch design page with SSE progress + `/batch` route | Copilot | ✅ Done (merged to main) |

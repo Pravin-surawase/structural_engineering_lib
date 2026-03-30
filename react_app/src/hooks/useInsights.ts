@@ -239,3 +239,84 @@ export function useRebarSuggestions() {
     mutationKey: ["rebar-suggestions"],
   });
 }
+
+// =============================================================================
+// Project BOQ Hook
+// =============================================================================
+
+export interface ProjectBOQSteelEntry {
+  grade: string;
+  total_weight_kg: number;
+  cost_inr: number;
+}
+
+export interface ProjectBOQConcreteEntry {
+  grade: string;
+  total_volume_m3: number;
+  cost_inr: number;
+}
+
+export interface ProjectBOQStoryEntry {
+  story: string;
+  beam_count: number;
+  steel_kg: number;
+  concrete_m3: number;
+  cost_inr: number;
+}
+
+export interface ProjectBOQResponse {
+  success: boolean;
+  project_name: string;
+  total_beams: number;
+  steel: ProjectBOQSteelEntry[];
+  concrete: ProjectBOQConcreteEntry[];
+  by_story: ProjectBOQStoryEntry[];
+  grand_total_steel_kg: number;
+  grand_total_concrete_m3: number;
+  grand_total_cost_inr: number;
+}
+
+interface ProjectBOQBeam {
+  beam_id: string;
+  story: string;
+  b_mm: number;
+  D_mm: number;
+  span_mm: number;
+  fck: number;
+  steel_weight_kg: number;
+}
+
+interface ProjectBOQRequest {
+  beams: ProjectBOQBeam[];
+}
+
+async function fetchProjectBOQ(
+  request: ProjectBOQRequest
+): Promise<ProjectBOQResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/insights/project-boq`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.detail || "Project BOQ generation failed");
+  }
+
+  return response.json();
+}
+
+/**
+ * Hook for generating project-level Bill of Quantities.
+ *
+ * @example
+ * const { mutate, data, isPending } = useProjectBOQ();
+ * mutate({ beams: mappedBeams });
+ */
+export function useProjectBOQ() {
+  return useMutation({
+    mutationFn: fetchProjectBOQ,
+    mutationKey: ["project-boq"],
+  });
+}

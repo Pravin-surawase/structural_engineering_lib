@@ -30,16 +30,33 @@ tags: []
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 110 Phase 2 (MkDocs Material setup, frontmatter backfill, lychee CI)
+**Last Session:** Session 111 (v0.21 features: HubPage, Project BOQ full-stack, deploy-docs CI, API docs expansion)
 
 ---
 
 ## What's Next
 
-- Deploy MkDocs to GitHub Pages (`mkdocs gh-deploy`)
-- Refine auto-generated API docs (add more modules to api-reference/index.md)
-- Set `fail: true` in link-check.yml once link report is clean
-- Continue v0.21 feature work (TASK-525 Smart HubPage, TASK-517 BOQ, etc.)
+- Deploy MkDocs via `mkdocs gh-deploy` or enable GitHub Pages in repo settings (gh-pages branch)
+- Run Python tests to verify BOQ module: `.venv/bin/pytest Python/tests/ -v -k "boq"`
+- Run React build to verify HubPage + BOQ panel: `cd react_app && npm run build`
+- Continue v0.21: TASK-516 (Triangular loads), TASK-519 (Pareto panel), TASK-527 (TopBar badges), TASK-528 (Workflow breadcrumb)
+- TASK-520 (Report/3D test coverage), TASK-521 (Beam rationalization)
+
+---
+
+## Session 111 Summary
+
+### Phase 1 — Documentation Infrastructure
+- Created `.github/workflows/deploy-docs.yml` — MkDocs Material auto-deploy to GitHub Pages (gh-pages branch)
+- Expanded `docs/api-reference/index.md` from 5 → 15 modules (torsion, serviceability, materials, BBS, costing, optimization, smart_designer, cost_optimization, geometry_3d, core types)
+- Updated `.github/workflows/link-check.yml` — set `fail: true`, added retry args, excluded `_archive/`
+
+### Phase 2 — v0.21 Features
+- TASK-525: Created `HubPage.tsx` replacing `ModeSelectPage` on `/start` route — smart landing with Quick Actions + Last Session context
+- TASK-517: Full-stack Project BOQ implementation:
+  - Python: `services/boq.py` — aggregation module with `aggregate_project_boq()`, dataclasses
+  - FastAPI: `models/boq.py` + `POST /api/v1/insights/project-boq` endpoint
+  - React: `useProjectBOQ` hook + `ProjectBOQPanel.tsx` + DashboardPage integration
 
 ---
 

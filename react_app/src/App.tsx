@@ -14,7 +14,7 @@ import './App.css';
 
 // Lazy-load route components for code splitting
 const HomePage = lazy(() => import('./components/pages/HomePage').then(m => ({ default: m.HomePage })));
-const ModeSelectPage = lazy(() => import('./components/pages/ModeSelectPage').then(m => ({ default: m.ModeSelectPage })));
+const HubPage = lazy(() => import('./components/pages/HubPage').then(m => ({ default: m.HubPage })));
 const DesignView = lazy(() => import('./components/design/DesignView').then(m => ({ default: m.DesignView })));
 const ImportView = lazy(() => import('./components/import/ImportView').then(m => ({ default: m.ImportView })));
 const BuildingEditorPage = lazy(() => import('./components/pages/BuildingEditorPage').then(m => ({ default: m.BuildingEditorPage })));
@@ -127,7 +127,7 @@ function App() {
           <Suspense fallback={<RouteLoadingFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/start" element={<ModeSelectPage />} />
+              <Route path="/start" element={<HubPage />} />
               <Route path="/design" element={<DesignView />} />
               <Route path="/design/results" element={<BeamDetailPage />} />
               <Route path="/import" element={<ImportView />} />
