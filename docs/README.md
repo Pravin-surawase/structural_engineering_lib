@@ -233,7 +233,7 @@ If you want to understand the concepts and the code step by step, start here:
 - What to do next this session: [planning/next-session-brief.md](planning/next-session-brief.md)
 - v0.8 implementation playbook: [_archive/2026-01/v0.8-execution-checklist.md](_archive/2026-01/v0.8-execution-checklist.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
-- v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
+- v0.8+ research log: [planning/research-ai-enhancements.md](_archive/planning-completed-2026-03/research-ai-enhancements.md)
 - Research index: [research/README.md](README.md)
 - High-level production checklist: [planning/production-roadmap.md](_archive/planning/production-roadmap.md)
 

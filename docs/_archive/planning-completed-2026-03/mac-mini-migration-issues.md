@@ -122,7 +122,7 @@ cd react_app && npm run dev
 | **Why diagnosis took time** | `curl http://localhost:8000/health` returned 200 OK (IPv4 fallback). Health check looked fine. The failure only occurred via browser fetch (IPv6 `::1`). Not obvious without checking IPv6 explicitly: `curl -6 http://localhost:8000/health`. |
 | **Fix** | Start uvicorn with `--host "::"` — dual-stack IPv6 binds **both** `::1` (IPv6) and `0.0.0.0` (IPv4) simultaneously: `.venv/bin/uvicorn fastapi_app.main:app --host "::" --port 8000 --reload` |
 | **Verify** | `curl "http://[::1]:8000/health"` should return `{"status":"healthy"}`. If connection refused, uvicorn is still IPv4-only. |
-| **Files changed** | `docs/getting-started/agent-bootstrap.md`, `docs/getting-started/mac-mini-setup.md`, `docs/planning/github-fix-plan.md` |
+| **Files changed** | `docs/getting-started/agent-bootstrap.md`, `docs/getting-started/mac-mini-setup.md`, `docs/_archive/planning-completed-2026-03/github-fix-plan.md` |
 
 ---
 

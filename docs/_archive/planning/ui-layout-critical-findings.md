@@ -33,9 +33,9 @@ Future Duration class (OPTIONAL - for migration):
 
 ## Related Documents
 - **Step-by-Step Guide:** [UI-IMPLEMENTATION-AGENT-GUIDE.md](UI-IMPLEMENTATION-AGENT-GUIDE.md)
-- **Original Plan:** [ui-layout-implementation-plan.md](../../planning/ui-layout-implementation-plan.md)
+- **Original Plan:** [ui-layout-implementation-plan.md](../planning-completed-2026-03/ui-layout-implementation-plan.md)
 - **Research:** [ui-layout-best-practices.md](../../research/ui-layout-best-practices.md)
-- **Data Model:** [data-model-compatibility-checklist.md](../../planning/data-model-compatibility-checklist.md)
+- **Data Model:** [data-model-compatibility-checklist.md](../planning-completed-2026-03/data-model-compatibility-checklist.md)
 
 ---
 
@@ -51,7 +51,7 @@ visual-first direction (professional, interactive, and clearly “smart tech” 
 - **Engineering context:** Units, limits, and clause references visible by default.
 - **Interactive feel:** Live preview, hover details, click-to-edit hooks.
 - **3D readiness:** 3D view is optional, performance-gated, and backed by 2D.
-- Compatibility checklist: `docs/planning/data-model-compatibility-checklist.md`
+- Compatibility checklist: `docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md`
 
 ### Innovative UI Signature (First-Glance Cues)
 These elements make the UI read as professional + smart tech in the first 3 seconds.

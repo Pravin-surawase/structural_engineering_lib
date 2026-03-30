@@ -507,9 +507,9 @@ git worktree prune
 ./docs/learning/README.md (learning resources)
 ./docs/publications/README.md (publications list)
 ./docs/_references/README.md (references index)
-./docs/planning/research-visual-design/README.md (research sub-project)
-./docs/planning/research-findings-validation/README.md (research sub-project)
-./docs/planning/research-platform/README.md (research sub-project)
+./docs/_archive/planning-completed-2026-03/research-visual-design-README.md (research sub-project)
+./docs/_archive/planning-completed-2026-03/research-findings-validation-README.md (research sub-project)
+./docs/_archive/planning-completed-2026-03/research-platform-README.md (research sub-project)
 ./docs/verification/README.md (verification docs)
 ```
 

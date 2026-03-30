@@ -9,7 +9,7 @@ Reviewed surfaces:
 - `Python/structural_lib/beam_pipeline.py`
 - `docs/reference/api.md`
 - `docs/reference/api-stability.md`
-- `docs/planning/library-api-expansion.md`
+- `docs/_archive/planning-completed-2026-03/library-api-expansion.md`
 
 ---
 

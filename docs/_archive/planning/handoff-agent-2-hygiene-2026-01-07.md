@@ -37,7 +37,7 @@ Completed comprehensive repository hygiene audit covering all active HYGIENE tas
 ## Deliverables
 
 ### 1. Main Audit Report
-**File:** `docs/planning/hygiene-suggestions-2026-01-07.md` (971 lines)
+**File:** `docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md` (971 lines)
 
 **Structure:**
 - Executive Summary
@@ -318,7 +318,7 @@ Each issue includes:
 ## Files Changed Summary
 
 **Created:**
-- ✅ `docs/planning/hygiene-suggestions-2026-01-07.md` (971 lines)
+- ✅ `docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md` (971 lines)
 
 **Branch:**
 - ✅ `audit/hygiene-2026-01-07` (1 commit, not pushed)
@@ -339,10 +339,10 @@ Each issue includes:
 git checkout audit/hygiene-2026-01-07
 
 # Read full report
-cat docs/planning/hygiene-suggestions-2026-01-07.md
+cat docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md
 
 # Or open in editor
-code docs/planning/hygiene-suggestions-2026-01-07.md
+code docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md
 ```
 
 ### Step 2: Make Decisions

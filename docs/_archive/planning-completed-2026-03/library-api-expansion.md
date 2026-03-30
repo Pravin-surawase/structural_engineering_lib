@@ -103,7 +103,7 @@ All functions live in `structural_lib.api` and must require explicit units.
 - These functions do **not** replace core math; they expose structured data.
 - Any new dataclasses should live in `structural_lib/types.py` (or similar).
 - Keep results deterministic and testable; no caching or side effects.
-- Compatibility checklist: `docs/planning/data-model-compatibility-checklist.md`
+- Compatibility checklist: `docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md`
 
 ---
 

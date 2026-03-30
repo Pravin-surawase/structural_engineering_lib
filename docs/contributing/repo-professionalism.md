@@ -193,7 +193,7 @@ If any check modifies files, re-stage and re-commit.
 - External CLI test done (S-007)
 - `docs/releases.md` and `CHANGELOG.md` updated
 
-Full checklist: `docs/planning/pre-release-checklist.md`.
+Full checklist: `docs/_archive/planning-completed-2026-03/pre-release-checklist.md`.
 
 ---
 
@@ -202,5 +202,5 @@ Full checklist: `docs/planning/pre-release-checklist.md`.
 - Git governance: `docs/_internal/git-governance.md`
 - Development guide: `docs/contributing/development-guide.md`
 - Testing strategy: `docs/contributing/testing-strategy.md`
-- Pre-release checklist: `docs/planning/pre-release-checklist.md`
+- Pre-release checklist: `docs/_archive/planning-completed-2026-03/pre-release-checklist.md`
 - Agent workflow: `docs/_internal/agent-workflow.md`

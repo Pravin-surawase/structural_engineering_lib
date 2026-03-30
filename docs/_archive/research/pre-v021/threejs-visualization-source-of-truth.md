@@ -132,6 +132,6 @@ Other documents should link here and avoid duplicating details.
 
 - `docs/research/3d-technology-deep-dive-research.md`
 - `docs/research/live-3d-visualization-architecture.md`
-- `docs/planning/3d-visualization-strategic-decision.md`
+- `docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md`
 - `docs/research/chat-ui-product-strategy-research.md` (3D section)
 - `docs/TASKS.md`

@@ -158,7 +158,7 @@ cat /tmp/dated_files.txt
 # Expected ~18 files:
 # docs/PROJECT-NEEDS-ASSESSMENT-2026-01-09.md
 # docs/planning/WORK-DIVISION-MAIN-AGENT6-2026-01-09.md
-# docs/planning/hygiene-suggestions-2026-01-07.md
+# docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md
 # ... etc
 ```
 
@@ -181,7 +181,7 @@ cat /tmp/dated_files.txt
 # Active work files (recent, relevant)
 mv docs/PROJECT-NEEDS-ASSESSMENT-2026-01-09.md docs/_active/2026-01/
 mv docs/planning/WORK-DIVISION-MAIN-AGENT6-2026-01-09.md docs/_active/2026-01/
-mv docs/planning/hygiene-suggestions-2026-01-07.md docs/_active/2026-01/
+mv docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md docs/_active/2026-01/
 mv docs/planning/handoff-agent-2-hygiene-2026-01-07.md docs/_active/2026-01/
 # ... repeat for all active files
 
@@ -205,7 +205,7 @@ This folder contains work-in-progress documents, temporary research, and drafts.
 
 - [Project Needs Assessment](../../project-needs-assessment-2026-01-09.md)
 - [Work Division Main Agent 6](../../../planning/work-division-main-agent6-2026-01-09.md)
-- [Hygiene Suggestions](../../../../planning/hygiene-suggestions-2026-01-07.md)
+- [Hygiene Suggestions](../../../planning-completed-2026-03/hygiene-suggestions-2026-01-07.md)
 
 ## How to Use
 

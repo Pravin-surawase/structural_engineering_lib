@@ -38,9 +38,9 @@ kept. No redundant files were found.
 | `docs/images/README.md` | Image attribution | Keep |
 | `docs/learning/README.md` | Learning index | Keep |
 | `docs/planning/README.md` | Planning index | Keep |
-| `docs/planning/research-findings-validation/README.md` | Subproject index | Keep |
-| `docs/planning/research-platform/README.md` | Subproject index | Keep |
-| `docs/planning/research-visual-design/README.md` | Subproject index | Keep |
+| `docs/_archive/planning-completed-2026-03/research-findings-validation-README.md` | Subproject index | Keep |
+| `docs/_archive/planning-completed-2026-03/research-platform-README.md` | Subproject index | Keep |
+| `docs/_archive/planning-completed-2026-03/research-visual-design-README.md` | Subproject index | Keep |
 | `docs/publications/README.md` | Publications index | Keep |
 | `docs/reference/README.md` | Reference index | Keep |
 | `docs/research/README.md` | Research index | Keep |

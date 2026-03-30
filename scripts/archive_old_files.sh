@@ -2,9 +2,10 @@
 # Auto-archive files older than 90 days from docs/_active/
 #
 # Usage:
-#   ./scripts/archive_old_files.sh           # Execute archival
-#   ./scripts/archive_old_files.sh --dry-run # Preview only
-#   ./scripts/archive_old_files.sh --help    # Show help
+#   ./scripts/archive_old_files.sh              # Execute archival (docs/_active/ only)
+#   ./scripts/archive_old_files.sh --dry-run    # Preview only
+#   ./scripts/archive_old_files.sh --scan-all   # Scan all of docs/ (skip _archive/)
+#   ./scripts/archive_old_files.sh --help       # Show help
 #
 # Runs monthly via CI cron job (defined in .github/workflows/monthly-maintenance.yml)
 
@@ -16,6 +17,7 @@ ARCHIVE_DIR="docs/_archive"
 RETENTION_DAYS=90
 DRY_RUN=false
 VERBOSE=false
+SCAN_ALL=false
 
 # Colors for output
 RED='\033[0;31m'
@@ -35,14 +37,19 @@ while [[ $# -gt 0 ]]; do
             VERBOSE=true
             shift
             ;;
+        --scan-all)
+            SCAN_ALL=true
+            shift
+            ;;
         --help|-h)
             echo "Usage: $0 [OPTIONS]"
             echo ""
-            echo "Archive files older than $RETENTION_DAYS days from $ACTIVE_DIR/ to $ARCHIVE_DIR/"
+            echo "Archive files older than $RETENTION_DAYS days from $ACTIVE_DIR/ (or all docs/) to $ARCHIVE_DIR/"
             echo ""
             echo "Options:"
             echo "  --dry-run    Preview changes without executing"
             echo "  --verbose    Show detailed output"
+            echo "  --scan-all   Scan all of docs/ (not just docs/_active/)"
             echo "  --help       Show this help message"
             exit 0
             ;;
@@ -61,9 +68,16 @@ if [ ! -f "pyproject.toml" ]; then
 fi
 
 # Check if directories exist
-if [ ! -d "$ACTIVE_DIR" ]; then
-    echo -e "${RED}❌ Error: $ACTIVE_DIR/ not found${NC}"
-    exit 1
+if [ "$SCAN_ALL" = true ]; then
+    if [ ! -d "docs" ]; then
+        echo -e "${RED}❌ Error: docs/ not found${NC}"
+        exit 1
+    fi
+else
+    if [ ! -d "$ACTIVE_DIR" ]; then
+        echo -e "${RED}❌ Error: $ACTIVE_DIR/ not found${NC}"
+        exit 1
+    fi
 fi
 
 # Create archive directory if needed
@@ -77,7 +91,14 @@ echo -e "${BLUE}🗂️  Auto-Archival System${NC}"
 echo -e "${BLUE}════════════════════════${NC}"
 echo ""
 echo "Configuration:"
-echo "  • Active directory:  $ACTIVE_DIR/"
+# Determine search directory
+if [ "$SCAN_ALL" = true ]; then
+    SEARCH_DIR="docs"
+else
+    SEARCH_DIR="$ACTIVE_DIR"
+fi
+
+echo "  • Search directory:  $SEARCH_DIR/"
 echo "  • Archive directory: $ARCHIVE_DIR/"
 echo "  • Retention period:  $RETENTION_DAYS days"
 echo "  • Mode:              $([ "$DRY_RUN" = true ] && echo "DRY RUN" || echo "LIVE")"
@@ -91,12 +112,19 @@ skipped_count=0
 
 # Find all markdown files in _active/ older than RETENTION_DAYS
 # Note: BSD find (macOS) uses different syntax than GNU find (Linux)
-if [ "$(uname)" = "Darwin" ]; then
-    # macOS (BSD find)
-    OLD_FILES=$(find "$ACTIVE_DIR" -type f -name "*.md" -mtime +${RETENTION_DAYS} 2>/dev/null || true)
+if [ "$SCAN_ALL" = true ]; then
+    # Scan all docs/ but skip _archive/ directory
+    if [ "$(uname)" = "Darwin" ]; then
+        OLD_FILES=$(find "$SEARCH_DIR" -path "$ARCHIVE_DIR" -prune -o -type f -name "*.md" -mtime +${RETENTION_DAYS} -print 2>/dev/null || true)
+    else
+        OLD_FILES=$(find "$SEARCH_DIR" -path "$ARCHIVE_DIR" -prune -o -type f -name "*.md" -mtime +${RETENTION_DAYS} -print 2>/dev/null || true)
+    fi
 else
-    # Linux (GNU find)
-    OLD_FILES=$(find "$ACTIVE_DIR" -type f -name "*.md" -mtime +${RETENTION_DAYS} 2>/dev/null || true)
+    if [ "$(uname)" = "Darwin" ]; then
+        OLD_FILES=$(find "$SEARCH_DIR" -type f -name "*.md" -mtime +${RETENTION_DAYS} 2>/dev/null || true)
+    else
+        OLD_FILES=$(find "$SEARCH_DIR" -type f -name "*.md" -mtime +${RETENTION_DAYS} 2>/dev/null || true)
+    fi
 fi
 
 if [ -z "$OLD_FILES" ]; then

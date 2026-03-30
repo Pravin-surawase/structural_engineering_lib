@@ -143,9 +143,9 @@ As the MAIN agent, you handle:
 ## 📖 Research Resources to Reuse (Avoid Duplication)
 
 **Existing Research (read these first):**
-- [research-ai-enhancements.md](../../planning/research-ai-enhancements.md) - ML/AI for design analysis
+- [research-ai-enhancements.md](../planning-completed-2026-03/research-ai-enhancements.md) - ML/AI for design analysis
 - [background-agent-parallel-work.md](../../research/background-agent-parallel-work.md) - Multi-agent coordination
-- [research-detailing.md](../../planning/research-detailing.md) - IS 456 detailing rules
+- [research-detailing.md](../planning-completed-2026-03/research-detailing.md) - IS 456 detailing rules
 
 **API Documentation:**
 - [api.md](../../reference/api.md) - Complete API reference

@@ -621,7 +621,7 @@ Session end:   any agent → @doc-master → @ops
 ```
 
 > **Full usage guide:** [copilot-agents-usage-guide.md](../guides/copilot-agents-usage-guide.md)
-> **Master plan:** [copilot-agent-master-plan.md](../planning/copilot-agent-master-plan.md)
+> **Master plan:** [copilot-agent-master-plan.md](../_archive/planning-completed-2026-03/copilot-agent-master-plan.md)
 
 ---
 
@@ -671,7 +671,7 @@ Load these only when working on that specific area:
 | Topic | Document |
 |-------|----------|
 | **Copilot agents guide** | [copilot-agents-usage-guide.md](../guides/copilot-agents-usage-guide.md) |
-| **Agent master plan** | [copilot-agent-master-plan.md](../planning/copilot-agent-master-plan.md) |
+| **Agent master plan** | [copilot-agent-master-plan.md](../_archive/planning-completed-2026-03/copilot-agent-master-plan.md) |
 | Tech stack rationale | [tech-stack-rationale.md](../reference/tech-stack-rationale.md) |
 | Command cheat sheet | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) |
 | Deep workflow guide | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) |

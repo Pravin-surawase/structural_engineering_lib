@@ -1326,7 +1326,7 @@
       ],
       "size_bytes": 1718
     },
-    "docs/planning/automation-platform-vision.md": {
+    "docs/_archive/planning-completed-2026-03/automation-platform-vision.md": {
       "title": "Automation Platform Vision - Structural Engineering + AI",
       "type": "documentation",
       "complexity": "advanced",
@@ -1372,7 +1372,7 @@
       ],
       "size_bytes": 8212
     },
-    "docs/planning/data-model-compatibility-checklist.md": {
+    "docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
       "type": "documentation",
       "complexity": "intermediate",
@@ -1387,7 +1387,7 @@
       ],
       "size_bytes": 2263
     },
-    "docs/planning/icloud-to-local-move-analysis.md": {
+    "docs/_archive/planning-completed-2026-03/icloud-to-local-move-analysis.md": {
       "title": "iCloud to Local Move Analysis",
       "type": "documentation",
       "complexity": "advanced",
@@ -1410,7 +1410,7 @@
       ],
       "size_bytes": 12933
     },
-    "docs/planning/3d-visualization-strategic-decision.md": {
+    "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md": {
       "title": "3D Visualization Strategic Decision - Long-Term Excellence",
       "type": "documentation",
       "complexity": "advanced",
@@ -1433,7 +1433,7 @@
       ],
       "size_bytes": 24879
     },
-    "docs/planning/folder-migration-progress.md": {
+    "docs/_archive/planning-completed-2026-03/folder-migration-progress.md": {
       "title": "Folder Structure Migration - Progress Tracker",
       "type": "documentation",
       "complexity": "advanced",
@@ -1455,7 +1455,7 @@
       ],
       "size_bytes": 8044
     },
-    "docs/planning/automation-platform-phase-0-research.md": {
+    "docs/_archive/planning-completed-2026-03/automation-platform-phase-0-research.md": {
       "title": "Automation Platform Phase 0 - Research & Mapping",
       "type": "research",
       "complexity": "advanced",
@@ -1476,7 +1476,7 @@
       ],
       "size_bytes": 12284
     },
-    "docs/planning/industry-usability-plan.md": {
+    "docs/_archive/planning-completed-2026-03/industry-usability-plan.md": {
       "title": "Industry Usability Plan",
       "type": "documentation",
       "complexity": "intermediate",
@@ -1498,7 +1498,7 @@
       ],
       "size_bytes": 7286
     },
-    "docs/planning/multi-code-architecture.md": {
+    "docs/_archive/planning-completed-2026-03/multi-code-architecture.md": {
       "title": "Multi-Code Architecture Design",
       "type": "documentation",
       "complexity": "advanced",
@@ -1521,7 +1521,7 @@
       ],
       "size_bytes": 19608
     },
-    "docs/planning/ai-chat-redesign-plan.md": {
+    "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md": {
       "title": "AI Chat Page Redesign Plan",
       "type": "documentation",
       "complexity": "advanced",
@@ -1544,7 +1544,7 @@
       ],
       "size_bytes": 19349
     },
-    "docs/planning/api-improvement-research-specs.md": {
+    "docs/_archive/planning-completed-2026-03/api-improvement-research-specs.md": {
       "title": "API Improvement Research Specifications",
       "type": "research",
       "complexity": "advanced",
@@ -1590,7 +1590,7 @@
       ],
       "size_bytes": 54339
     },
-    "docs/planning/documentation-structure.md": {
+    "docs/_archive/planning-completed-2026-03/documentation-structure.md": {
       "title": "Professional Documentation Structure",
       "type": "documentation",
       "complexity": "advanced",
@@ -1613,7 +1613,7 @@
       ],
       "size_bytes": 11464
     },
-    "docs/planning/mac-mini-migration-issues.md": {
+    "docs/_archive/planning-completed-2026-03/mac-mini-migration-issues.md": {
       "title": "Mac Mini Migration \u2014 Issues & Solutions",
       "type": "documentation",
       "complexity": "advanced",
@@ -1630,7 +1630,7 @@
       ],
       "size_bytes": 11688
     },
-    "docs/planning/post-cleanup-issues.md": {
+    "docs/_archive/planning-completed-2026-03/post-cleanup-issues.md": {
       "title": "Post-Cleanup Issues & Fixes",
       "type": "documentation",
       "complexity": "advanced",
@@ -1653,7 +1653,7 @@
       ],
       "size_bytes": 13348
     },
-    "docs/planning/ui-layout-implementation-plan.md": {
+    "docs/_archive/planning-completed-2026-03/ui-layout-implementation-plan.md": {
       "title": "UI Layout Redesign - Final Decision & Implementation Plan",
       "type": "documentation",
       "complexity": "advanced",
@@ -1676,7 +1676,7 @@
       ],
       "size_bytes": 46468
     },
-    "docs/planning/library-api-expansion.md": {
+    "docs/_archive/planning-completed-2026-03/library-api-expansion.md": {
       "title": "Library API Expansion Plan (Beam-Only)",
       "type": "documentation",
       "complexity": "advanced",
@@ -1698,7 +1698,7 @@
       ],
       "size_bytes": 8492
     },
-    "docs/planning/folder-audit.md": {
+    "docs/_archive/planning-completed-2026-03/folder-audit.md": {
       "title": "Folder Audit \u2014 Repository Health & Documentation",
       "type": "documentation",
       "complexity": "advanced",
@@ -1718,7 +1718,7 @@
       ],
       "size_bytes": 80538
     },
-    "docs/planning/library-expansion-blueprint.md": {
+    "docs/_archive/planning-completed-2026-03/library-expansion-blueprint.md": {
       "title": "Library Expansion Master Blueprint v2.0",
       "type": "documentation",
       "complexity": "advanced",
@@ -1741,7 +1741,7 @@
       ],
       "size_bytes": 63088
     },
-    "docs/planning/github-fix-plan.md": {
+    "docs/_archive/planning-completed-2026-03/github-fix-plan.md": {
       "title": "GitHub Fix Plan \u2014 Post-Cleanup Issues",
       "type": "documentation",
       "complexity": "intermediate",
@@ -1760,7 +1760,7 @@
       ],
       "size_bytes": 6700
     },
-    "docs/planning/pre-release-checklist.md": {
+    "docs/_archive/planning-completed-2026-03/pre-release-checklist.md": {
       "title": "Pre-Release Checklist",
       "type": "documentation",
       "complexity": "intermediate",
@@ -1778,7 +1778,7 @@
       ],
       "size_bytes": 3593
     },
-    "docs/planning/brainstorming-platform-pivot.md": {
+    "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md": {
       "title": "Brainstorming: Structural Automation Platform",
       "type": "documentation",
       "complexity": "advanced",
@@ -1801,7 +1801,7 @@
       ],
       "size_bytes": 17141
     },
-    "docs/planning/weak-points-audit.md": {
+    "docs/_archive/planning-completed-2026-03/weak-points-audit.md": {
       "title": "Weak Points Audit \u2014 Deep Analysis",
       "type": "documentation",
       "complexity": "advanced",
@@ -1843,7 +1843,7 @@
       ],
       "size_bytes": 6257
     },
-    "docs/planning/project-status-deep-dive.md": {
+    "docs/_archive/planning-completed-2026-03/project-status-deep-dive.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Deep Dive",
       "type": "documentation",
       "complexity": "advanced",
@@ -1866,7 +1866,7 @@
       ],
       "size_bytes": 8239
     },
-    "docs/planning/research-detailing.md": {
+    "docs/_archive/planning-completed-2026-03/research-detailing.md": {
       "title": "IS Code Detailing Research \u2014 RESEARCHER Agent",
       "type": "research",
       "complexity": "intermediate",
@@ -1927,7 +1927,7 @@
       ],
       "size_bytes": 7936
     },
-    "docs/planning/copilot-agent-master-plan.md": {
+    "docs/_archive/planning-completed-2026-03/copilot-agent-master-plan.md": {
       "title": "Copilot Agent Master Plan \u2014 structural_engineering_lib",
       "type": "documentation",
       "complexity": "advanced",
@@ -1950,7 +1950,7 @@
       ],
       "size_bytes": 31416
     },
-    "docs/planning/etabs-automation-bridge-plan.md": {
+    "docs/_archive/planning-completed-2026-03/etabs-automation-bridge-plan.md": {
       "title": "ETABS Automation Bridge \u2014 Implementation Plan",
       "type": "documentation",
       "complexity": "intermediate",
@@ -1971,7 +1971,7 @@
       ],
       "size_bytes": 4944
     },
-    "docs/planning/8-week-development-plan.md": {
+    "docs/_archive/planning-completed-2026-03/8-week-development-plan.md": {
       "title": "V3 React Migration Roadmap (7-Week Plan)",
       "type": "documentation",
       "complexity": "advanced",
@@ -1994,7 +1994,7 @@
       ],
       "size_bytes": 35128
     },
-    "docs/planning/v020-stabilization-checklist.md": {
+    "docs/_archive/planning-completed-2026-03/v020-stabilization-checklist.md": {
       "title": "v0.20.0 Stabilization Checklist",
       "type": "documentation",
       "complexity": "intermediate",
@@ -2037,7 +2037,7 @@
       ],
       "size_bytes": 38152
     },
-    "docs/planning/structural-automation-platform-phase-0-research-plan.md": {
+    "docs/_archive/planning-completed-2026-03/structural-automation-platform-phase-0-research-plan.md": {
       "title": "Structural Automation Platform \u2014 Phase 0 Research Plan",
       "type": "research",
       "complexity": "intermediate",
@@ -2055,7 +2055,7 @@
       ],
       "size_bytes": 6341
     },
-    "docs/planning/research-ai-enhancements.md": {
+    "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md": {
       "title": "Research Log \u2014 AI/High-Value Enhancements",
       "type": "research",
       "complexity": "advanced",
@@ -2078,7 +2078,7 @@
       ],
       "size_bytes": 30680
     },
-    "docs/planning/agent-workflow-improvements.md": {
+    "docs/_archive/planning-completed-2026-03/agent-workflow-improvements.md": {
       "title": "Agent Workflow Improvements \u2014 Roadmap",
       "type": "documentation",
       "complexity": "advanced",
@@ -2097,7 +2097,7 @@
       ],
       "size_bytes": 19450
     },
-    "docs/planning/hygiene-suggestions-2026-01-07.md": {
+    "docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md": {
       "title": "Repository Hygiene Audit Report - 2026-01-07",
       "type": "documentation",
       "complexity": "advanced",
@@ -2120,7 +2120,7 @@
       ],
       "size_bytes": 27747
     },
-    "docs/planning/session-30-fragment-crisis-resolution.md": {
+    "docs/_archive/planning-completed-2026-03/session-30-fragment-crisis-resolution.md": {
       "title": "Session 30 Fragment Crisis Resolution - Complete Analysis",
       "type": "documentation",
       "complexity": "advanced",
@@ -2143,7 +2143,7 @@
       ],
       "size_bytes": 24023
     },
-    "docs/planning/bbs-dxf-improvement-plan.md": {
+    "docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md": {
       "title": "BBS + DXF Improvement Plan (Beam-Only)",
       "type": "documentation",
       "complexity": "intermediate",
@@ -2162,7 +2162,7 @@
       ],
       "size_bytes": 4560
     },
-    "docs/planning/ai-agent-efficiency-and-git-workflow-plan.md": {
+    "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md": {
       "title": "AI Agent Efficiency & Git Workflow Improvement Plan",
       "type": "documentation",
       "complexity": "advanced",
@@ -2203,7 +2203,7 @@
       ],
       "size_bytes": 8949
     },
-    "docs/planning/library-improvement-master-plan.md": {
+    "docs/_archive/planning-completed-2026-03/library-improvement-master-plan.md": {
       "title": "Library Improvement Master Plan \u2014 v1.0",
       "type": "documentation",
       "complexity": "advanced",
@@ -2226,7 +2226,7 @@
       ],
       "size_bytes": 22061
     },
-    "docs/planning/task-3d-002-implementation-plan.md": {
+    "docs/_archive/planning-completed-2026-03/task-3d-002-implementation-plan.md": {
       "title": "TASK-3D-002: ETABS 3D Visualization Implementation Plan",
       "type": "tracking",
       "complexity": "intermediate",
@@ -2247,7 +2247,7 @@
       ],
       "size_bytes": 7848
     },
-    "docs/planning/project-needs-assessment-2026-01-09.md": {
+    "docs/_archive/planning-completed-2026-03/project-needs-assessment-2026-01-09.md": {
       "title": "Project Needs Assessment & Strategic Action Plan",
       "type": "documentation",
       "complexity": "advanced",
@@ -2270,7 +2270,7 @@
       ],
       "size_bytes": 38777
     },
-    "docs/planning/research-visual-design/README.md": {
+    "docs/_archive/planning-completed-2026-03/research-visual-design-README.md": {
       "title": "Research: Visual Layer for Beam Design",
       "type": "index",
       "complexity": "advanced",
@@ -2290,7 +2290,7 @@
       ],
       "size_bytes": 60096
     },
-    "docs/planning/research-findings-validation/README.md": {
+    "docs/_archive/planning-completed-2026-03/research-findings-validation-README.md": {
       "title": "Research: Findings Validation & Evidence Strengthening",
       "type": "index",
       "complexity": "intermediate",
@@ -2310,7 +2310,7 @@
       ],
       "size_bytes": 4075
     },
-    "docs/planning/research-platform/README.md": {
+    "docs/_archive/planning-completed-2026-03/research-platform-README.md": {
       "title": "Research: Platform Access",
       "type": "index",
       "complexity": "advanced",
@@ -4663,12 +4663,12 @@
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/learning/glossary.md",
         "docs/git-automation/README.md",
-        "docs/planning/automation-platform-vision.md",
-        "docs/planning/ai-chat-redesign-plan.md",
-        "docs/planning/brainstorming-platform-pivot.md",
-        "docs/planning/research-detailing.md",
-        "docs/planning/research-ai-enhancements.md",
-        "docs/planning/ai-agent-efficiency-and-git-workflow-plan.md",
+        "docs/_archive/planning-completed-2026-03/automation-platform-vision.md",
+        "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md",
+        "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md",
+        "docs/_archive/planning-completed-2026-03/research-detailing.md",
+        "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md",
+        "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md",
         "docs/agents/README.md",
         "docs/agents/index.md",
         "docs/getting-started/ai-context-pack.md",
@@ -4683,7 +4683,7 @@
         "docs/getting-started/python-quickstart.md"
       ],
       "excel_user": [
-        "docs/planning/3d-visualization-strategic-decision.md"
+        "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md"
       ],
       "contributor": [
         "docs/contributing/lesson-incomplete-implementation.md",
@@ -4816,96 +4816,96 @@
         "docs/learning/learning-plan.md"
       ],
       "roadmap": [
-        "docs/planning/automation-platform-vision.md",
+        "docs/_archive/planning-completed-2026-03/automation-platform-vision.md",
         "docs/planning/next-session-brief.md",
-        "docs/planning/data-model-compatibility-checklist.md",
-        "docs/planning/icloud-to-local-move-analysis.md",
-        "docs/planning/3d-visualization-strategic-decision.md",
-        "docs/planning/folder-migration-progress.md",
-        "docs/planning/automation-platform-phase-0-research.md",
-        "docs/planning/industry-usability-plan.md",
-        "docs/planning/multi-code-architecture.md",
-        "docs/planning/ai-chat-redesign-plan.md",
-        "docs/planning/api-improvement-research-specs.md",
+        "docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md",
+        "docs/_archive/planning-completed-2026-03/icloud-to-local-move-analysis.md",
+        "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md",
+        "docs/_archive/planning-completed-2026-03/folder-migration-progress.md",
+        "docs/_archive/planning-completed-2026-03/automation-platform-phase-0-research.md",
+        "docs/_archive/planning-completed-2026-03/industry-usability-plan.md",
+        "docs/_archive/planning-completed-2026-03/multi-code-architecture.md",
+        "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md",
+        "docs/_archive/planning-completed-2026-03/api-improvement-research-specs.md",
         "docs/planning/next-phase-improvements-plan.md",
-        "docs/planning/documentation-structure.md",
-        "docs/planning/mac-mini-migration-issues.md",
-        "docs/planning/post-cleanup-issues.md",
-        "docs/planning/ui-layout-implementation-plan.md",
-        "docs/planning/library-api-expansion.md",
-        "docs/planning/folder-audit.md",
-        "docs/planning/library-expansion-blueprint.md",
-        "docs/planning/github-fix-plan.md",
-        "docs/planning/pre-release-checklist.md",
-        "docs/planning/brainstorming-platform-pivot.md",
-        "docs/planning/weak-points-audit.md",
+        "docs/_archive/planning-completed-2026-03/documentation-structure.md",
+        "docs/_archive/planning-completed-2026-03/mac-mini-migration-issues.md",
+        "docs/_archive/planning-completed-2026-03/post-cleanup-issues.md",
+        "docs/_archive/planning-completed-2026-03/ui-layout-implementation-plan.md",
+        "docs/_archive/planning-completed-2026-03/library-api-expansion.md",
+        "docs/_archive/planning-completed-2026-03/folder-audit.md",
+        "docs/_archive/planning-completed-2026-03/library-expansion-blueprint.md",
+        "docs/_archive/planning-completed-2026-03/github-fix-plan.md",
+        "docs/_archive/planning-completed-2026-03/pre-release-checklist.md",
+        "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md",
+        "docs/_archive/planning-completed-2026-03/weak-points-audit.md",
         "docs/planning/README.md",
-        "docs/planning/project-status-deep-dive.md",
-        "docs/planning/research-detailing.md",
+        "docs/_archive/planning-completed-2026-03/project-status-deep-dive.md",
+        "docs/_archive/planning-completed-2026-03/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/index.md",
-        "docs/planning/copilot-agent-master-plan.md",
-        "docs/planning/etabs-automation-bridge-plan.md",
-        "docs/planning/8-week-development-plan.md",
-        "docs/planning/v020-stabilization-checklist.md",
+        "docs/_archive/planning-completed-2026-03/copilot-agent-master-plan.md",
+        "docs/_archive/planning-completed-2026-03/etabs-automation-bridge-plan.md",
+        "docs/_archive/planning-completed-2026-03/8-week-development-plan.md",
+        "docs/_archive/planning-completed-2026-03/v020-stabilization-checklist.md",
         "docs/planning/react-ux-improvement-plan.md",
-        "docs/planning/structural-automation-platform-phase-0-research-plan.md",
-        "docs/planning/research-ai-enhancements.md",
-        "docs/planning/agent-workflow-improvements.md",
-        "docs/planning/hygiene-suggestions-2026-01-07.md",
-        "docs/planning/session-30-fragment-crisis-resolution.md",
-        "docs/planning/bbs-dxf-improvement-plan.md",
-        "docs/planning/ai-agent-efficiency-and-git-workflow-plan.md",
+        "docs/_archive/planning-completed-2026-03/structural-automation-platform-phase-0-research-plan.md",
+        "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md",
+        "docs/_archive/planning-completed-2026-03/agent-workflow-improvements.md",
+        "docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md",
+        "docs/_archive/planning-completed-2026-03/session-30-fragment-crisis-resolution.md",
+        "docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md",
+        "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md",
         "docs/planning/democratization-vision.md",
-        "docs/planning/library-improvement-master-plan.md",
-        "docs/planning/task-3d-002-implementation-plan.md",
-        "docs/planning/project-needs-assessment-2026-01-09.md"
+        "docs/_archive/planning-completed-2026-03/library-improvement-master-plan.md",
+        "docs/_archive/planning-completed-2026-03/task-3d-002-implementation-plan.md",
+        "docs/_archive/planning-completed-2026-03/project-needs-assessment-2026-01-09.md"
       ],
       "tasks": [
-        "docs/planning/automation-platform-vision.md",
+        "docs/_archive/planning-completed-2026-03/automation-platform-vision.md",
         "docs/planning/next-session-brief.md",
-        "docs/planning/data-model-compatibility-checklist.md",
-        "docs/planning/icloud-to-local-move-analysis.md",
-        "docs/planning/3d-visualization-strategic-decision.md",
-        "docs/planning/folder-migration-progress.md",
-        "docs/planning/automation-platform-phase-0-research.md",
-        "docs/planning/industry-usability-plan.md",
-        "docs/planning/multi-code-architecture.md",
-        "docs/planning/ai-chat-redesign-plan.md",
-        "docs/planning/api-improvement-research-specs.md",
+        "docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md",
+        "docs/_archive/planning-completed-2026-03/icloud-to-local-move-analysis.md",
+        "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md",
+        "docs/_archive/planning-completed-2026-03/folder-migration-progress.md",
+        "docs/_archive/planning-completed-2026-03/automation-platform-phase-0-research.md",
+        "docs/_archive/planning-completed-2026-03/industry-usability-plan.md",
+        "docs/_archive/planning-completed-2026-03/multi-code-architecture.md",
+        "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md",
+        "docs/_archive/planning-completed-2026-03/api-improvement-research-specs.md",
         "docs/planning/next-phase-improvements-plan.md",
-        "docs/planning/documentation-structure.md",
-        "docs/planning/mac-mini-migration-issues.md",
-        "docs/planning/post-cleanup-issues.md",
-        "docs/planning/ui-layout-implementation-plan.md",
-        "docs/planning/library-api-expansion.md",
-        "docs/planning/folder-audit.md",
-        "docs/planning/library-expansion-blueprint.md",
-        "docs/planning/github-fix-plan.md",
-        "docs/planning/pre-release-checklist.md",
-        "docs/planning/brainstorming-platform-pivot.md",
-        "docs/planning/weak-points-audit.md",
+        "docs/_archive/planning-completed-2026-03/documentation-structure.md",
+        "docs/_archive/planning-completed-2026-03/mac-mini-migration-issues.md",
+        "docs/_archive/planning-completed-2026-03/post-cleanup-issues.md",
+        "docs/_archive/planning-completed-2026-03/ui-layout-implementation-plan.md",
+        "docs/_archive/planning-completed-2026-03/library-api-expansion.md",
+        "docs/_archive/planning-completed-2026-03/folder-audit.md",
+        "docs/_archive/planning-completed-2026-03/library-expansion-blueprint.md",
+        "docs/_archive/planning-completed-2026-03/github-fix-plan.md",
+        "docs/_archive/planning-completed-2026-03/pre-release-checklist.md",
+        "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md",
+        "docs/_archive/planning-completed-2026-03/weak-points-audit.md",
         "docs/planning/README.md",
-        "docs/planning/project-status-deep-dive.md",
-        "docs/planning/research-detailing.md",
+        "docs/_archive/planning-completed-2026-03/project-status-deep-dive.md",
+        "docs/_archive/planning-completed-2026-03/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/index.md",
-        "docs/planning/copilot-agent-master-plan.md",
-        "docs/planning/etabs-automation-bridge-plan.md",
-        "docs/planning/8-week-development-plan.md",
-        "docs/planning/v020-stabilization-checklist.md",
+        "docs/_archive/planning-completed-2026-03/copilot-agent-master-plan.md",
+        "docs/_archive/planning-completed-2026-03/etabs-automation-bridge-plan.md",
+        "docs/_archive/planning-completed-2026-03/8-week-development-plan.md",
+        "docs/_archive/planning-completed-2026-03/v020-stabilization-checklist.md",
         "docs/planning/react-ux-improvement-plan.md",
-        "docs/planning/structural-automation-platform-phase-0-research-plan.md",
-        "docs/planning/research-ai-enhancements.md",
-        "docs/planning/agent-workflow-improvements.md",
-        "docs/planning/hygiene-suggestions-2026-01-07.md",
-        "docs/planning/session-30-fragment-crisis-resolution.md",
-        "docs/planning/bbs-dxf-improvement-plan.md",
-        "docs/planning/ai-agent-efficiency-and-git-workflow-plan.md",
+        "docs/_archive/planning-completed-2026-03/structural-automation-platform-phase-0-research-plan.md",
+        "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md",
+        "docs/_archive/planning-completed-2026-03/agent-workflow-improvements.md",
+        "docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md",
+        "docs/_archive/planning-completed-2026-03/session-30-fragment-crisis-resolution.md",
+        "docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md",
+        "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md",
         "docs/planning/democratization-vision.md",
-        "docs/planning/library-improvement-master-plan.md",
-        "docs/planning/task-3d-002-implementation-plan.md",
-        "docs/planning/project-needs-assessment-2026-01-09.md"
+        "docs/_archive/planning-completed-2026-03/library-improvement-master-plan.md",
+        "docs/_archive/planning-completed-2026-03/task-3d-002-implementation-plan.md",
+        "docs/_archive/planning-completed-2026-03/project-needs-assessment-2026-01-09.md"
       ],
       "ai": [
         "docs/agents/README.md",

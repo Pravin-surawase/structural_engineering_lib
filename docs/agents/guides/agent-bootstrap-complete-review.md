@@ -30,7 +30,7 @@
 | 14 | docs/contributing/session-issues.md | Quick reference | P3 | Recurring issues and fixes |
 | 15 | docs/agents/README.md | Quick reference | P3 | Agent roles and prompts |
 | 16 | docs/_archive/planning/project-status.md | Quick reference | P3 | Historical status (archived) |
-| 17 | docs/planning/project-status-deep-dive.md | Quick reference | P3 | Detailed status history |
+| 17 | docs/_archive/planning-completed-2026-03/project-status-deep-dive.md | Quick reference | P3 | Detailed status history |
 
 ---
 
@@ -78,7 +78,7 @@
 
 ### Historical status
 - docs/_archive/planning/project-status.md
-- docs/planning/project-status-deep-dive.md
+- docs/_archive/planning-completed-2026-03/project-status-deep-dive.md
 
 ---
 

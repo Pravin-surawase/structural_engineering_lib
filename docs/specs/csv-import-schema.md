@@ -301,7 +301,7 @@ if uploaded:
 ## References
 
 - [ETABS Import Module](../../Python/structural_lib/etabs_import.py)
-- [8-Week Development Plan](../planning/8-week-development-plan.md)
+- [8-Week Development Plan](../_archive/planning-completed-2026-03/8-week-development-plan.md)
 - [API Documentation](../reference/api.md)
 - ETABS User Manual: Table Export Format
 - SAFE User Manual: Strip/Band Force Export

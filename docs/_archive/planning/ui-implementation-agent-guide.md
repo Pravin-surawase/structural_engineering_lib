@@ -1154,9 +1154,9 @@ git reset --hard origin/main
 | Document | Purpose |
 |----------|---------|
 | [UI-LAYOUT-CRITICAL-FINDINGS.md](UI-LAYOUT-CRITICAL-FINDINGS.md) | Token architecture details |
-| [ui-layout-implementation-plan.md](../../planning/ui-layout-implementation-plan.md) | Original plan (reference) |
+| [ui-layout-implementation-plan.md](../planning-completed-2026-03/ui-layout-implementation-plan.md) | Original plan (reference) |
 | [ui-layout-best-practices.md](../../research/ui-layout-best-practices.md) | Research findings |
-| [data-model-compatibility-checklist.md](../../planning/data-model-compatibility-checklist.md) | Data model alignment |
+| [data-model-compatibility-checklist.md](../planning-completed-2026-03/data-model-compatibility-checklist.md) | Data model alignment |
 
 ---
 

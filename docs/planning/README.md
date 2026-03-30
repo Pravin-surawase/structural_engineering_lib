@@ -19,8 +19,8 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
-| [Folder Audit](folder-audit.md) | Complete repo audit (Session 91) |
-| [AI Agent Efficiency Plan](ai-agent-efficiency-and-git-workflow-plan.md) | Agent infra improvements (Session 92) |
+| [Folder Audit](../_archive/planning-completed-2026-03/folder-audit.md) | Complete repo audit (Session 91) |
+| [AI Agent Efficiency Plan](../_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md) | Agent infra improvements (Session 92) |
 
 ## Document Status
 
@@ -107,8 +107,8 @@ Internal planning documents and research notes.
 |-------|--------|----------|
 | [Visual Layer](research-visual-design/) | In Review | `research-visual-design/` |
 | [Platform Access](research-platform/) | Decided (post-v1.0) | `research-platform/` |
-| [AI Enhancements](research-ai-enhancements.md) | Draft | Single file |
-| [Detailing](research-detailing.md) | Draft | Single file |
+| [AI Enhancements](../_archive/planning-completed-2026-03/research-ai-enhancements.md) | Draft | Single file |
+| [Detailing](../_archive/planning-completed-2026-03/research-detailing.md) | Draft | Single file |
 
 ---
 
@@ -117,12 +117,12 @@ Internal planning documents and research notes.
 | Document | Purpose |
 |----------|---------|
 | [Project Status](../_archive/planning/project-status.md) | Current state summary |
-| [Project Status Deep Dive](project-status-deep-dive.md) | Module maps, contracts |
-| [Pre-Release Checklist](pre-release-checklist.md) | v1.0 gates |
-| [v0.20 Stabilization](v020-stabilization-checklist.md) | Next milestone checklist |
+| [Project Status Deep Dive](../_archive/planning-completed-2026-03/project-status-deep-dive.md) | Module maps, contracts |
+| [Pre-Release Checklist](../_archive/planning-completed-2026-03/pre-release-checklist.md) | v1.0 gates |
+| [v0.20 Stabilization](../_archive/planning-completed-2026-03/v020-stabilization-checklist.md) | Next milestone checklist |
 | [v0.12 Plan](../_archive/planning/v0.12-plan.md) | v0.12 scope + milestones |
-| [BBS + DXF Improvement Plan](bbs-dxf-improvement-plan.md) | Output contract + DXF/BBS quality plan |
-| [Library API Expansion](library-api-expansion.md) | Library-first APIs + CLI helpers |
+| [BBS + DXF Improvement Plan](../_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md) | Output contract + DXF/BBS quality plan |
+| [Library API Expansion](../_archive/planning-completed-2026-03/library-api-expansion.md) | Library-first APIs + CLI helpers |
 | [Public API Maintenance Review](../_archive/2026-01/public-api-maintenance-review.md) | Public API risks + fixes |
 
 ---

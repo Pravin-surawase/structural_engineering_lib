@@ -29,6 +29,7 @@ Exit Codes:
     0: All checks pass
     1: One or more checks failed
 """
+
 from __future__ import annotations
 
 import argparse
@@ -42,6 +43,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT, DOCS_DIR
+
 DOCS_INDEX = DOCS_DIR / "README.md"
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -169,7 +171,9 @@ def check_frontmatter(add_missing: bool = False, json_output: bool = False) -> i
             errors = _validate_frontmatter_fields(fm)
             if errors:
                 report["invalid_frontmatter"] += 1
-                report["files_invalid"].append({"file": str(rel_path), "errors": errors})
+                report["files_invalid"].append(
+                    {"file": str(rel_path), "errors": errors}
+                )
 
     if json_output:
         print(json.dumps(report, indent=2))
@@ -205,31 +209,72 @@ def check_frontmatter(add_missing: bool = False, json_output: bool = False) -> i
 # ═══════════════════════════════════════════════════════════════════════════
 
 META_EXEMPT_FOLDERS = [
-    "_archive", "_internal", "_references", "research/",
-    "getting-started/NEW-DEVELOPER", "learning-materials",
-    "external_data", "htmlcov", "build",
-    "structural_lib_is456.egg-info", "UNKNOWN.egg-info",
+    "_archive",
+    "_internal",
+    "_references",
+    "research/",
+    "getting-started/NEW-DEVELOPER",
+    "learning-materials",
+    "external_data",
+    "htmlcov",
+    "build",
+    "structural_lib_is456.egg-info",
+    "UNKNOWN.egg-info",
 ]
 META_EXEMPT_FILES = [
-    "README.md", "index.md", "CHANGELOG.md", "CONTRIBUTING.md",
-    "CODE_OF_CONDUCT.md", "AUTHORS.md", "SECURITY.md", "LICENSE.md",
-    "LICENSE_ENGINEERING.md", "llms.txt", "CITATION.cff",
-    "SESSION_LOG.md", "TASKS.md", "next-session-brief.md", "handoff.md",
+    "README.md",
+    "index.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "AUTHORS.md",
+    "SECURITY.md",
+    "LICENSE.md",
+    "LICENSE_ENGINEERING.md",
+    "llms.txt",
+    "CITATION.cff",
+    "SESSION_LOG.md",
+    "TASKS.md",
+    "next-session-brief.md",
+    "handoff.md",
 ]
 META_REQUIRED_FIELDS = ["Type", "Audience", "Status"]
 META_VALID_VALUES = {
     "Type": [
-        "Guide", "Research", "Reference", "Architecture", "Decision",
-        "Implementation", "Plan", "Index", "Hub", "Session", "Catalog",
-        "Specification", "Blog", "Lesson",
+        "Guide",
+        "Research",
+        "Reference",
+        "Architecture",
+        "Decision",
+        "Implementation",
+        "Plan",
+        "Index",
+        "Hub",
+        "Session",
+        "Catalog",
+        "Specification",
+        "Blog",
+        "Lesson",
     ],
     "Audience": [
-        "All Agents", "Developers", "Users", "Maintainers",
-        "Architects", "Implementation Agents", "Support Agents",
+        "All Agents",
+        "Developers",
+        "Users",
+        "Maintainers",
+        "Architects",
+        "Implementation Agents",
+        "Support Agents",
     ],
     "Status": [
-        "Draft", "In Progress", "Review", "Approved", "Complete",
-        "Deprecated", "Production Ready", "Phase 1 Complete", "Phase 2 Complete",
+        "Draft",
+        "In Progress",
+        "Review",
+        "Approved",
+        "Complete",
+        "Deprecated",
+        "Production Ready",
+        "Phase 1 Complete",
+        "Phase 2 Complete",
     ],
     "Importance": ["Critical", "High", "Medium", "Low"],
 }
@@ -291,17 +336,19 @@ def check_metadata(
     elif check_all:
         md_files = []
         for pattern in ("docs/**/*.md", "agents/**/*.md"):
-            md_files.extend(
-                f.relative_to(REPO_ROOT) for f in REPO_ROOT.glob(pattern)
-            )
+            md_files.extend(f.relative_to(REPO_ROOT) for f in REPO_ROOT.glob(pattern))
     else:
         # Staged files
         try:
             result = subprocess.run(
                 ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
-                capture_output=True, text=True, cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+                cwd=REPO_ROOT,
             )
-            md_files = [Path(l) for l in result.stdout.strip().split("\n") if l.endswith(".md")]
+            md_files = [
+                Path(l) for l in result.stdout.strip().split("\n") if l.endswith(".md")
+            ]
         except Exception:
             md_files = []
 
@@ -444,6 +491,43 @@ def check_index_links() -> int:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+# CHECK 5: DOC BUDGET — Prevent documentation sprawl
+# ═══════════════════════════════════════════════════════════════════════════
+
+DOC_BUDGET_WARN = 350
+DOC_BUDGET_FAIL = 400
+
+
+def check_doc_budget() -> int:
+    """Check that non-archived markdown files stay within budget.
+
+    Warns if count > 350, fails if > 400.
+    Returns exit code: 0 pass, 1 fail.
+    """
+    if not DOCS_DIR.exists():
+        print(f"❌ docs directory not found: {DOCS_DIR}")
+        return 1
+
+    archive_dir = DOCS_DIR / "_archive"
+    count = sum(
+        1
+        for md_file in DOCS_DIR.rglob("*.md")
+        if not md_file.is_relative_to(archive_dir)
+    )
+
+    print(f"   Non-archived markdown files: {count}")
+    if count > DOC_BUDGET_FAIL:
+        print(f"❌ Doc budget EXCEEDED: {count} > {DOC_BUDGET_FAIL} (hard limit)")
+        return 1
+    elif count > DOC_BUDGET_WARN:
+        print(f"⚠️  Doc budget WARNING: {count} > {DOC_BUDGET_WARN} (soft limit)")
+        return 0
+    else:
+        print(f"✅ Doc budget OK ({count} ≤ {DOC_BUDGET_WARN})")
+        return 0
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 # CLI
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -465,31 +549,59 @@ def main() -> int:
 
     # Subcommand selectors
     group = parser.add_argument_group("Check selectors (default: --all)")
-    group.add_argument("--metadata", action="store_true", help="Check doc metadata headers")
-    group.add_argument("--frontmatter", action="store_true", help="Check YAML front-matter")
-    group.add_argument("--index", action="store_true", help="Check docs/README.md headings")
-    group.add_argument("--index-links", action="store_true", help="Check docs/README.md links")
+    group.add_argument(
+        "--metadata", action="store_true", help="Check doc metadata headers"
+    )
+    group.add_argument(
+        "--frontmatter", action="store_true", help="Check YAML front-matter"
+    )
+    group.add_argument(
+        "--index", action="store_true", help="Check docs/README.md headings"
+    )
+    group.add_argument(
+        "--index-links", action="store_true", help="Check docs/README.md links"
+    )
+    group.add_argument(
+        "--budget",
+        action="store_true",
+        help="Check doc budget (non-archived file count)",
+    )
     group.add_argument("--all", action="store_true", help="Run all checks (default)")
 
     # Metadata options
     meta_group = parser.add_argument_group("Metadata options")
-    meta_group.add_argument("--strict", action="store_true", help="Fail on missing metadata")
-    meta_group.add_argument("--quiet", action="store_true", help="Only show errors, not warnings")
-    meta_group.add_argument("files", nargs="*", help="Specific files to check (metadata)")
     meta_group.add_argument(
-        "--check-all-files", action="store_true",
+        "--strict", action="store_true", help="Fail on missing metadata"
+    )
+    meta_group.add_argument(
+        "--quiet", action="store_true", help="Only show errors, not warnings"
+    )
+    meta_group.add_argument(
+        "files", nargs="*", help="Specific files to check (metadata)"
+    )
+    meta_group.add_argument(
+        "--check-all-files",
+        action="store_true",
         help="Check all markdown files (metadata), not just staged",
     )
 
     # Frontmatter options
     fm_group = parser.add_argument_group("Frontmatter options")
-    fm_group.add_argument("--add", action="store_true", help="Add front-matter template to files without it")
-    fm_group.add_argument("--json", action="store_true", help="Output JSON report (frontmatter)")
+    fm_group.add_argument(
+        "--add",
+        action="store_true",
+        help="Add front-matter template to files without it",
+    )
+    fm_group.add_argument(
+        "--json", action="store_true", help="Output JSON report (frontmatter)"
+    )
 
     args = parser.parse_args()
 
     # Default to --all when no selector given
-    run_all = args.all or not any([args.metadata, args.frontmatter, args.index, args.index_links])
+    run_all = args.all or not any(
+        [args.metadata, args.frontmatter, args.index, args.index_links, args.budget]
+    )
 
     results: list[int] = []
 
@@ -518,10 +630,17 @@ def main() -> int:
         rc = check_index_links()
         results.append(rc)
 
+    if run_all or args.budget:
+        print("📊 Checking documentation budget...")
+        rc = check_doc_budget()
+        results.append(rc)
+
     # Overall exit code: 0 if all pass, 1 if any fail
     if any(rc != 0 for rc in results):
         print(f"\n{'='*40}")
-        print(f"❌ {sum(1 for rc in results if rc != 0)}/{len(results)} check(s) failed")
+        print(
+            f"❌ {sum(1 for rc in results if rc != 0)}/{len(results)} check(s) failed"
+        )
         return 1
     else:
         print(f"\n{'='*40}")
