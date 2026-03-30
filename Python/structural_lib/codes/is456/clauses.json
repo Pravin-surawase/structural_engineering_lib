@@ -5,8 +5,11 @@
     "title": "Plain and Reinforced Concrete - Code of Practice",
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
-    "last_updated": "2026-01-11",
-    "total_clauses": 67
+    "last_updated": "2026-03-30",
+    "total_clauses": 92,
+    "includes_references": [
+      "IS 13920:2016"
+    ]
   },
   "clauses": {
     "5.1": {
@@ -14,50 +17,90 @@
       "section": "5 - Materials",
       "text": "Cement used shall comply with the requirements of relevant Indian Standards.",
       "category": "materials",
-      "keywords": ["cement", "OPC", "PPC", "PSC"]
+      "keywords": [
+        "cement",
+        "OPC",
+        "PPC",
+        "PSC"
+      ]
     },
     "5.2": {
       "title": "Mineral Admixtures",
       "section": "5 - Materials",
       "text": "Mineral admixtures such as fly ash, ground granulated blast-furnace slag shall conform to relevant standards.",
       "category": "materials",
-      "keywords": ["fly ash", "GGBS", "silica fume", "admixtures"]
+      "keywords": [
+        "fly ash",
+        "GGBS",
+        "silica fume",
+        "admixtures"
+      ]
     },
     "5.3": {
       "title": "Aggregates",
       "section": "5 - Materials",
       "text": "Aggregates shall comply with IS 383.",
       "category": "materials",
-      "keywords": ["aggregates", "coarse", "fine", "grading"]
+      "keywords": [
+        "aggregates",
+        "coarse",
+        "fine",
+        "grading"
+      ]
     },
     "5.4": {
       "title": "Water",
       "section": "5 - Materials",
       "text": "Water used for mixing and curing shall be clean and free from injurious amounts of oils, acids, alkalis, salts, sugar, organic materials.",
       "category": "materials",
-      "keywords": ["water", "mixing", "curing", "quality"]
+      "keywords": [
+        "water",
+        "mixing",
+        "curing",
+        "quality"
+      ]
     },
     "5.6": {
       "title": "Reinforcement",
       "section": "5 - Materials",
       "text": "Steel reinforcement shall conform to the requirements of relevant Indian Standards.",
       "category": "materials",
-      "keywords": ["steel", "reinforcement", "bars", "TMT"]
+      "keywords": [
+        "steel",
+        "reinforcement",
+        "bars",
+        "TMT"
+      ]
     },
     "6.1": {
       "title": "Grades of Concrete",
       "section": "6 - Concrete",
       "text": "Concrete shall be designated by its characteristic compressive strength at 28 days.",
       "category": "materials",
-      "keywords": ["grade", "M20", "M25", "M30", "fck", "strength"]
+      "keywords": [
+        "grade",
+        "M20",
+        "M25",
+        "M30",
+        "fck",
+        "strength"
+      ]
     },
     "6.2": {
       "title": "Properties of Concrete",
       "section": "6 - Concrete",
       "text": "Characteristic strength, modulus of elasticity, and other properties shall be determined as per relevant standards.",
       "category": "materials",
-      "keywords": ["fck", "Ec", "modulus", "compressive strength"],
-      "tables": ["Table 2 - Grades of Concrete", "Table 6 - Modulus of Elasticity"]
+      "keywords": [
+        "fck",
+        "Ec",
+        "modulus",
+        "compressive strength"
+      ],
+      "tables": [
+        "Table 2 - Grades of Concrete",
+        "Table 6 - Modulus of Elasticity"
+      ]
     },
     "6.2.2": {
       "title": "Modulus of Elasticity",
@@ -65,43 +108,212 @@
       "text": "Modulus of elasticity Ec = 5000 * sqrt(fck) N/mm²",
       "category": "materials",
       "formula": "Ec = 5000 * sqrt(fck)",
-      "keywords": ["modulus", "elasticity", "Ec", "stiffness"]
+      "keywords": [
+        "modulus",
+        "elasticity",
+        "Ec",
+        "stiffness"
+      ]
     },
     "21.1": {
       "title": "Cover to Reinforcement",
       "section": "21 - Durability",
       "text": "Minimum cover shall be provided as per Table 16 and 16A depending on exposure conditions.",
       "category": "durability",
-      "keywords": ["cover", "exposure", "durability", "protection"],
-      "tables": ["Table 16 - Minimum Cover", "Table 16A - Minimum Cover for Specified Exposure"]
+      "keywords": [
+        "cover",
+        "exposure",
+        "durability",
+        "protection"
+      ],
+      "tables": [
+        "Table 16 - Minimum Cover",
+        "Table 16A - Minimum Cover for Specified Exposure"
+      ]
     },
     "23.1": {
       "title": "Effective Span",
       "section": "23 - Structural Members",
       "text": "The effective span of a member shall be calculated as specified in Clause 23.1.1 and 23.1.2.",
       "category": "analysis",
-      "keywords": ["span", "effective span", "simply supported", "continuous"]
+      "keywords": [
+        "span",
+        "effective span",
+        "simply supported",
+        "continuous"
+      ]
     },
     "23.1.1": {
       "title": "Effective Span - Simply Supported",
       "section": "23 - Structural Members",
       "text": "For simply supported beam or slab, effective span = clear span + effective depth OR c/c of supports, whichever is less.",
       "category": "analysis",
-      "keywords": ["simply supported", "effective span", "clear span"]
+      "keywords": [
+        "simply supported",
+        "effective span",
+        "clear span"
+      ]
     },
     "23.1.2": {
       "title": "Effective Span - Continuous",
       "section": "23 - Structural Members",
       "text": "For continuous beam or slab, effective span = clear span between supports for interior spans.",
       "category": "analysis",
-      "keywords": ["continuous", "effective span", "interior span"]
+      "keywords": [
+        "continuous",
+        "effective span",
+        "interior span"
+      ]
     },
     "23.2.1": {
       "title": "Slenderness Limits - Beams",
       "section": "23 - Structural Members",
       "text": "A simply supported or continuous beam shall be so proportioned that clear distance between lateral restraints does not exceed 60*b or 250*b²/d, whichever is less.",
       "category": "design_limits",
-      "keywords": ["slenderness", "lateral restraint", "buckling", "stability"]
+      "keywords": [
+        "slenderness",
+        "lateral restraint",
+        "buckling",
+        "stability"
+      ]
+    },
+    "24.1": {
+      "title": "Effective Span of Slabs",
+      "section": "24 - Solid Slabs",
+      "text": "The effective span of a simply supported slab shall be the lesser of (a) clear span plus effective depth, or (b) centre-to-centre distance between supports.",
+      "category": "slabs",
+      "keywords": [
+        "effective span",
+        "slab",
+        "simply supported",
+        "clear span"
+      ]
+    },
+    "24.3.1": {
+      "title": "Reinforcement in Slabs — Minimum",
+      "section": "24 - Solid Slabs",
+      "text": "Minimum reinforcement as per 26.5.2.1. Distribution steel in one-way slabs per 26.5.2.1.",
+      "category": "slabs",
+      "keywords": [
+        "minimum reinforcement",
+        "slab",
+        "distribution steel"
+      ]
+    },
+    "24.3.2": {
+      "title": "Maximum Diameter of Bars in Slabs",
+      "section": "24 - Solid Slabs",
+      "text": "Diameter of reinforcement bars shall not exceed one-eighth of the total thickness of the slab.",
+      "category": "slabs",
+      "formula": "max_bar_dia <= D/8",
+      "keywords": [
+        "maximum diameter",
+        "slab",
+        "bar size",
+        "D/8"
+      ]
+    },
+    "24.4": {
+      "title": "Spacing of Reinforcement in Slabs",
+      "section": "24 - Solid Slabs",
+      "text": "Main reinforcement spacing <= min(3d, 300mm). Distribution reinforcement spacing <= min(5d, 450mm).",
+      "category": "slabs",
+      "limits": {
+        "main_spacing_factor": 3,
+        "main_spacing_max_mm": 300,
+        "dist_spacing_factor": 5,
+        "dist_spacing_max_mm": 450
+      },
+      "keywords": [
+        "spacing",
+        "slab reinforcement",
+        "main bars",
+        "distribution bars"
+      ]
+    },
+    "25.1.1": {
+      "title": "Unsupported Length",
+      "section": "25 - Compression Members",
+      "text": "The unsupported length l of a compression member shall be taken as the clear distance between end restraints.",
+      "category": "columns",
+      "keywords": [
+        "unsupported length",
+        "column",
+        "clear distance",
+        "compression member"
+      ]
+    },
+    "25.1.2": {
+      "title": "Slenderness Limits for Columns",
+      "section": "25 - Compression Members",
+      "text": "The unsupported length between end restraints shall not exceed 60 times the least lateral dimension of a compression member.",
+      "category": "columns",
+      "formula": "l / b <= 60",
+      "limits": {
+        "max_slenderness_ratio": 60
+      },
+      "keywords": [
+        "slenderness",
+        "column",
+        "lateral dimension",
+        "limit"
+      ]
+    },
+    "25.2": {
+      "title": "Effective Length of Compression Members",
+      "section": "25 - Compression Members",
+      "text": "The effective length of a compression member shall be obtained from Table 28 based on end conditions.",
+      "category": "columns",
+      "tables": [
+        "Table 28"
+      ],
+      "values": {
+        "both_ends_fixed": 0.65,
+        "one_fixed_one_hinged": 0.8,
+        "both_rotation_fixed": 1.0,
+        "one_fixed_one_free": 2.0,
+        "both_hinged": 1.0,
+        "cantilever": 2.0
+      },
+      "keywords": [
+        "effective length",
+        "column",
+        "buckling",
+        "end conditions",
+        "Table 28"
+      ]
+    },
+    "25.3": {
+      "title": "Short and Long Column Classification",
+      "section": "25 - Compression Members",
+      "text": "A compression member is short when both lex/D and ley/b are less than 12. Otherwise it is a slender (long) column.",
+      "category": "columns",
+      "formula": "Short: lex/D < 12 AND ley/b < 12",
+      "limits": {
+        "short_column_threshold": 12
+      },
+      "keywords": [
+        "short column",
+        "slender column",
+        "classification",
+        "lex/D",
+        "ley/b"
+      ]
+    },
+    "25.4": {
+      "title": "Minimum Eccentricity",
+      "section": "25 - Compression Members",
+      "text": "All columns shall be designed for minimum eccentricity e_min = max(l/500 + D/30, 20 mm) about each axis.",
+      "category": "columns",
+      "formula": "e_min = max(l/500 + D/30, 20) mm",
+      "limits": {
+        "absolute_minimum_mm": 20
+      },
+      "keywords": [
+        "minimum eccentricity",
+        "e_min",
+        "column"
+      ]
     },
     "26.2.1": {
       "title": "Development Length of Bars",
@@ -109,23 +321,41 @@
       "text": "Development length Ld = (φ * σs) / (4 * τbd), where τbd is design bond stress.",
       "category": "detailing",
       "formula": "Ld = (φ * σs) / (4 * τbd)",
-      "keywords": ["development length", "anchorage", "bond stress", "Ld"],
-      "tables": ["Table 21 - Design Bond Stress"]
+      "keywords": [
+        "development length",
+        "anchorage",
+        "bond stress",
+        "Ld"
+      ],
+      "tables": [
+        "Table 21 - Design Bond Stress"
+      ]
     },
     "26.2.1.1": {
       "title": "Design Bond Stress",
       "section": "26 - Detailing",
       "text": "Design bond stress τbd for deformed bars may be increased by 60% over values given in Table 21.",
       "category": "detailing",
-      "keywords": ["bond stress", "deformed bars", "τbd"],
-      "tables": ["Table 21 - Design Bond Stress"]
+      "keywords": [
+        "bond stress",
+        "deformed bars",
+        "τbd"
+      ],
+      "tables": [
+        "Table 21 - Design Bond Stress"
+      ]
     },
     "26.2.2": {
       "title": "Anchoring Reinforcement",
       "section": "26 - Detailing",
       "text": "Anchorage of reinforcement shall be provided through development length, hooks, bends, or mechanical devices.",
       "category": "detailing",
-      "keywords": ["anchorage", "hooks", "bends", "development length"]
+      "keywords": [
+        "anchorage",
+        "hooks",
+        "bends",
+        "development length"
+      ]
     },
     "26.2.2.1": {
       "title": "Minimum Bend Radius",
@@ -133,21 +363,35 @@
       "text": "Minimum internal radius of bend for bars shall be 2φ for bars ≤ 25mm and 3φ for bars > 25mm (deformed bars).",
       "category": "detailing",
       "formula": "r = 2φ (≤25mm) or 3φ (>25mm)",
-      "keywords": ["bend radius", "internal radius", "hooks"]
+      "keywords": [
+        "bend radius",
+        "internal radius",
+        "hooks"
+      ]
     },
     "26.2.2.2": {
       "title": "Stirrup Anchorage",
       "section": "26 - Detailing",
       "text": "Stirrups and ties shall be anchored with hooks. For seismic zones, 135° hooks with 6d ≥ 75mm extension required.",
       "category": "detailing",
-      "keywords": ["stirrup", "anchorage", "hook", "seismic"]
+      "keywords": [
+        "stirrup",
+        "anchorage",
+        "hook",
+        "seismic"
+      ]
     },
     "26.2.3": {
       "title": "Standard Hooks and Bends",
       "section": "26 - Detailing",
       "text": "Standard hooks and bends shall conform to the requirements of IS 2502.",
       "category": "detailing",
-      "keywords": ["hooks", "bends", "anchorage", "standard"]
+      "keywords": [
+        "hooks",
+        "bends",
+        "anchorage",
+        "standard"
+      ]
     },
     "26.2.3.3": {
       "title": "Anchorage at Simple Supports",
@@ -155,7 +399,13 @@
       "text": "At simple supports, the positive moment tension reinforcement shall be limited to a diameter such that Ld does not exceed M1/V + Lo, where Lo is the sum of anchorage beyond the center of support.",
       "category": "detailing",
       "formula": "Ld ≤ (M1/V) + Lo",
-      "keywords": ["anchorage", "simple support", "bottom bars", "development length", "Lo"]
+      "keywords": [
+        "anchorage",
+        "simple support",
+        "bottom bars",
+        "development length",
+        "Lo"
+      ]
     },
     "26.2.5": {
       "title": "Lap Splices",
@@ -163,7 +413,11 @@
       "text": "Lap length for bars in tension/compression shall be calculated based on development length and location factors.",
       "category": "detailing",
       "formula": "Lap length = k * Ld (k = 1.0 to 2.0 based on location)",
-      "keywords": ["lap splice", "tension lap", "compression lap"]
+      "keywords": [
+        "lap splice",
+        "tension lap",
+        "compression lap"
+      ]
     },
     "26.3.2": {
       "title": "Minimum Spacing of Reinforcement",
@@ -171,7 +425,12 @@
       "text": "Horizontal distance between two parallel main bars shall not be less than max(bar diameter, aggregate size + 5mm, 20mm).",
       "category": "detailing",
       "formula": "min_spacing = max(dia, agg_size + 5, 20)",
-      "keywords": ["spacing", "clear spacing", "minimum spacing", "bars"]
+      "keywords": [
+        "spacing",
+        "clear spacing",
+        "minimum spacing",
+        "bars"
+      ]
     },
     "26.3.3": {
       "title": "Maximum Spacing of Reinforcement",
@@ -179,7 +438,11 @@
       "text": "Maximum distance between parallel main bars shall not exceed 3*d or 300mm, whichever is smaller.",
       "category": "detailing",
       "formula": "max_spacing = min(3*d, 300)",
-      "keywords": ["spacing", "maximum spacing", "bars"]
+      "keywords": [
+        "spacing",
+        "maximum spacing",
+        "bars"
+      ]
     },
     "26.5.1.1": {
       "title": "Minimum Shear Reinforcement",
@@ -187,7 +450,11 @@
       "text": "Minimum shear reinforcement shall be provided even when τv < τc. Asv_min = 0.4*b*sv / (0.87*fy).",
       "category": "shear",
       "formula": "Asv_min = 0.4*b*sv / (0.87*fy)",
-      "keywords": ["minimum stirrups", "shear reinforcement", "Asv"]
+      "keywords": [
+        "minimum stirrups",
+        "shear reinforcement",
+        "Asv"
+      ]
     },
     "26.5.1.2": {
       "title": "Stirrup Spacing",
@@ -195,7 +462,11 @@
       "text": "Spacing of stirrups shall not exceed 0.75*d or 300mm, whichever is less, for vertical stirrups.",
       "category": "shear",
       "formula": "sv_max = min(0.75*d, 300)",
-      "keywords": ["stirrup spacing", "sv", "shear links"]
+      "keywords": [
+        "stirrup spacing",
+        "sv",
+        "shear links"
+      ]
     },
     "26.5.1.3": {
       "title": "Side Face Reinforcement",
@@ -203,28 +474,231 @@
       "text": "Where depth of web in beam exceeds 750mm, side face reinforcement shall be provided along each face. Total area >= 0.1% of web area.",
       "category": "detailing",
       "formula": "Asf = 0.001 * b * D (for D > 750mm)",
-      "keywords": ["side face", "skin reinforcement", "deep beams"]
+      "keywords": [
+        "side face",
+        "skin reinforcement",
+        "deep beams"
+      ]
     },
     "26.5.1.5": {
       "title": "Stirrup Legs",
       "section": "26 - Detailing",
       "text": "For beams with width > 450mm, additional stirrup legs should be provided to ensure no compression bar is more than 150mm from a restrained bar.",
       "category": "shear",
-      "keywords": ["stirrup legs", "wide beams", "compression bars"]
+      "keywords": [
+        "stirrup legs",
+        "wide beams",
+        "compression bars"
+      ]
     },
     "26.5.1.6": {
       "title": "Bent-up Bars",
       "section": "26 - Detailing",
       "text": "Bent-up bars should not carry more than half the shear force. Angle of bend typically 45° or 60°.",
       "category": "shear",
-      "keywords": ["bent-up bars", "inclined bars", "shear resistance"]
+      "keywords": [
+        "bent-up bars",
+        "inclined bars",
+        "shear resistance"
+      ]
+    },
+    "26.5.3.1": {
+      "title": "Longitudinal Reinforcement in Columns",
+      "section": "26 - Detailing",
+      "text": "Longitudinal steel: not less than 0.8% nor more than 6% of gross cross-section. Min 4 bars in rectangular, 6 in circular. Min diameter 12 mm. Max spacing 300 mm.",
+      "category": "columns",
+      "limits": {
+        "min_steel_percent": 0.8,
+        "max_steel_percent": 6.0,
+        "min_bars_rectangular": 4,
+        "min_bars_circular": 6,
+        "min_bar_diameter_mm": 12,
+        "max_spacing_mm": 300
+      },
+      "keywords": [
+        "longitudinal reinforcement",
+        "column steel",
+        "percentage"
+      ]
+    },
+    "26.5.3.2": {
+      "title": "Transverse Reinforcement in Columns",
+      "section": "26 - Detailing",
+      "text": "Tie diameter >= max(main_bar/4, 6mm). Pitch <= min(least dimension, 16*smallest bar dia, 300mm).",
+      "category": "columns",
+      "formula": "tie_dia >= max(main_bar_dia/4, 6); pitch <= min(D, 16*dia, 300)",
+      "limits": {
+        "min_tie_dia_mm": 6,
+        "tie_dia_fraction": 0.25,
+        "max_pitch_factor": 16,
+        "max_pitch_mm": 300
+      },
+      "keywords": [
+        "ties",
+        "transverse reinforcement",
+        "pitch",
+        "lateral ties"
+      ]
+    },
+    "31.6": {
+      "title": "Two-Way Shear (Punching Shear)",
+      "section": "31 - Limit State of Collapse: Shear",
+      "text": "For slabs and footings, two-way shear (punching) shall be checked at a critical section d/2 from the face of the concentrated load or column.",
+      "category": "footings",
+      "keywords": [
+        "punching shear",
+        "two-way shear",
+        "critical section",
+        "footing"
+      ]
+    },
+    "31.6.1": {
+      "title": "Critical Section for Punching Shear",
+      "section": "31 - Limit State of Collapse: Shear",
+      "text": "The critical section shall be at a distance d/2 from the periphery of the concentrated load or reaction.",
+      "category": "footings",
+      "formula": "Perimeter at d/2 from column face",
+      "keywords": [
+        "critical perimeter",
+        "punching shear",
+        "d/2"
+      ]
+    },
+    "31.6.2": {
+      "title": "Nominal Shear Stress in Punching",
+      "section": "31 - Limit State of Collapse: Shear",
+      "text": "tv = Vu / (bo * d), where bo is perimeter of critical section and d is effective depth.",
+      "category": "footings",
+      "formula": "tv = Vu / (bo * d)",
+      "keywords": [
+        "nominal shear stress",
+        "punching",
+        "perimeter",
+        "bo"
+      ]
+    },
+    "31.6.3": {
+      "title": "Permissible Punching Shear Stress",
+      "section": "31 - Limit State of Collapse: Shear",
+      "text": "Permissible punching shear stress tc = ks * 0.25 * sqrt(fck), where ks = 0.5 + beta_c but not greater than 1.0, beta_c = short/long side of column.",
+      "category": "footings",
+      "formula": "tc = ks * 0.25 * sqrt(fck); ks = min(0.5 + beta_c, 1.0)",
+      "keywords": [
+        "permissible shear",
+        "punching",
+        "ks",
+        "beta_c"
+      ]
+    },
+    "33.1": {
+      "title": "Effective Span of Stairs",
+      "section": "33 - Stairs",
+      "text": "The effective span of each step shall be taken as the going of the step. For staircase slabs, effective span per Table 24.",
+      "category": "slabs",
+      "keywords": [
+        "stairs",
+        "staircase",
+        "effective span",
+        "going"
+      ]
+    },
+    "33.3": {
+      "title": "Distribution of Loading on Stairs",
+      "section": "33 - Stairs",
+      "text": "Where flights or landings are built into walls for at least 110 mm, a 150 mm strip may be deducted from the loaded area.",
+      "category": "slabs",
+      "limits": {
+        "min_embedment_mm": 110,
+        "deduction_strip_mm": 150
+      },
+      "keywords": [
+        "stairs",
+        "loading",
+        "landing",
+        "wall support"
+      ]
+    },
+    "34.1": {
+      "title": "General Requirements for Footings",
+      "section": "34 - Footings",
+      "text": "Footings shall be designed to sustain the applied loads and induced reactions without exceeding safe bearing capacity of soil. Thickness at edge shall not be less than 150 mm for footings on soil.",
+      "category": "footings",
+      "limits": {
+        "min_edge_thickness_mm": 150
+      },
+      "keywords": [
+        "footing",
+        "foundation",
+        "bearing capacity",
+        "minimum thickness"
+      ]
+    },
+    "34.2.3": {
+      "title": "Bending Moment in Footings",
+      "section": "34 - Footings",
+      "text": "The critical section for bending shall be taken at the face of the column for a footing supporting a concrete column.",
+      "category": "footings",
+      "keywords": [
+        "bending moment",
+        "footing",
+        "critical section",
+        "face of column"
+      ]
+    },
+    "34.2.4": {
+      "title": "Shear in Footings",
+      "section": "34 - Footings",
+      "text": "One-way shear in footings shall be checked at a section d from the face of the column. Two-way shear per 31.6.",
+      "category": "footings",
+      "formula": "Critical section at d from column face (one-way)",
+      "keywords": [
+        "shear",
+        "footing",
+        "one-way shear",
+        "critical section"
+      ]
+    },
+    "34.3": {
+      "title": "Tensile Reinforcement in Footings",
+      "section": "34 - Footings",
+      "text": "Total reinforcement in the long direction shall be distributed uniformly. In short direction: central band width = width of footing, with fraction = 2/(beta+1) in the central band, where beta = long/short side.",
+      "category": "footings",
+      "formula": "Central band fraction = 2 / (beta + 1); beta = L/B",
+      "keywords": [
+        "footing reinforcement",
+        "central band",
+        "beta",
+        "distribution"
+      ]
+    },
+    "34.4": {
+      "title": "Transfer of Load at Base of Column",
+      "section": "34 - Footings",
+      "text": "Bearing stress at column base shall not exceed 0.45*fck. May be enhanced by sqrt(A1/A2) up to 2.0, where A1 is supporting area and A2 is loaded area.",
+      "category": "footings",
+      "formula": "fbr = 0.45 * fck * sqrt(A1/A2) <= 0.45 * fck * 2.0",
+      "limits": {
+        "bearing_stress_factor": 0.45,
+        "max_enhancement": 2.0
+      },
+      "keywords": [
+        "bearing pressure",
+        "column base",
+        "load transfer",
+        "dowel bars"
+      ]
     },
     "36.1": {
       "title": "Limit State of Collapse - Flexure",
       "section": "36 - Limit State Design",
       "text": "Design for limit state of collapse in flexure shall be based on equilibrium and compatibility of strains.",
       "category": "flexure",
-      "keywords": ["flexure", "bending", "limit state", "collapse"]
+      "keywords": [
+        "flexure",
+        "bending",
+        "limit state",
+        "collapse"
+      ]
     },
     "36.4.2": {
       "title": "Effective Width of Flange",
@@ -232,14 +706,24 @@
       "text": "Effective flange width bf = lo/6 + bw + 6*Df (T-beam) or lo/12 + bw + 3*Df (L-beam), not exceeding actual width.",
       "category": "flexure",
       "formula": "bf = lo/6 + bw + 6*Df (T-beam)",
-      "keywords": ["flange width", "T-beam", "L-beam", "effective width"]
+      "keywords": [
+        "flange width",
+        "T-beam",
+        "L-beam",
+        "effective width"
+      ]
     },
     "38.1": {
       "title": "Assumptions in Design",
       "section": "38 - Limit State of Collapse: Flexure",
       "text": "Design assumptions include: plane sections remain plane, maximum strain in concrete = 0.0035, stress-strain relationship as per IS 456, tensile strength of concrete ignored.",
       "category": "flexure",
-      "keywords": ["assumptions", "strain", "stress block", "design assumptions"],
+      "keywords": [
+        "assumptions",
+        "strain",
+        "stress block",
+        "design assumptions"
+      ],
       "formulas": {
         "xu_max_d": {
           "Fe250": 0.53,
@@ -256,7 +740,12 @@
       "text": "Maximum depth of neutral axis xu_max = k*d, where k depends on grade of steel.",
       "category": "flexure",
       "formula": "xu_max = k * d",
-      "keywords": ["neutral axis", "xu", "balanced section", "depth ratio"],
+      "keywords": [
+        "neutral axis",
+        "xu",
+        "balanced section",
+        "depth ratio"
+      ],
       "values": {
         "k_Fe250": 0.53,
         "k_Fe415": 0.48,
@@ -273,7 +762,11 @@
         "depth_of_block": "0.42 * xu",
         "compression_force": "0.36 * fck * b * xu"
       },
-      "keywords": ["stress block", "compression", "rectangular block"]
+      "keywords": [
+        "stress block",
+        "compression",
+        "rectangular block"
+      ]
     },
     "38.2": {
       "title": "Singly Reinforced Sections",
@@ -281,7 +774,11 @@
       "text": "For singly reinforced sections, tension steel area Ast = Mu / (0.87*fy*(d - 0.42*xu)).",
       "category": "flexure",
       "formula": "Ast = Mu / (0.87 * fy * (d - 0.42*xu))",
-      "keywords": ["singly reinforced", "Ast", "tension steel"]
+      "keywords": [
+        "singly reinforced",
+        "Ast",
+        "tension steel"
+      ]
     },
     "38.3": {
       "title": "Doubly Reinforced Sections",
@@ -289,14 +786,122 @@
       "text": "When Mu > Mu_lim, compression reinforcement is required. Asc = (Mu - Mu_lim) / (fsc * (d - d')).",
       "category": "flexure",
       "formula": "Asc = (Mu - Mu_lim) / (fsc * (d - d'))",
-      "keywords": ["doubly reinforced", "compression steel", "Asc", "Ast2"]
+      "keywords": [
+        "doubly reinforced",
+        "compression steel",
+        "Asc",
+        "Ast2"
+      ]
     },
     "38.4": {
       "title": "Flanged Beams",
       "section": "38 - Limit State of Collapse: Flexure",
       "text": "For T-beams and L-beams, if NA falls within flange (xu < Df), design as rectangular section with width bf.",
       "category": "flexure",
-      "keywords": ["T-beam", "L-beam", "flanged section", "neutral axis"]
+      "keywords": [
+        "T-beam",
+        "L-beam",
+        "flanged section",
+        "neutral axis"
+      ]
+    },
+    "39.1": {
+      "title": "Minimum Eccentricity for Column Design",
+      "section": "39 - Compression Members",
+      "text": "All columns shall be designed for minimum eccentricity as specified in 25.4. Where e_min/D <= 0.05, the member may be designed by the relevant equations in 39.3.",
+      "category": "columns",
+      "formula": "e_min = max(l_unsupported/500 + D/30, 20 mm)",
+      "limits": {
+        "e_min_threshold": 0.05
+      },
+      "keywords": [
+        "minimum eccentricity",
+        "column design",
+        "nominal eccentricity"
+      ]
+    },
+    "39.3": {
+      "title": "Short Axially Loaded Members in Compression",
+      "section": "39 - Compression Members",
+      "text": "Pu = 0.4*fck*Ac + 0.67*fy*Asc. This applies when eccentricity does not exceed 0.05D.",
+      "category": "columns",
+      "formula": "Pu = 0.4*fck*Ac + 0.67*fy*Asc",
+      "keywords": [
+        "axial load",
+        "short column",
+        "compression capacity",
+        "Pu"
+      ]
+    },
+    "39.4": {
+      "title": "Compression Members with Helical Reinforcement",
+      "section": "39 - Compression Members",
+      "text": "Strength of helically reinforced column = 1.05 times that with ties, provided Vhs >= 0.36*(Ag/Ac - 1)*fck/fy.",
+      "category": "columns",
+      "formula": "Pu = 1.05*(0.4*fck*Ac + 0.67*fy*Asc)",
+      "limits": {
+        "helical_strength_factor": 1.05
+      },
+      "keywords": [
+        "helical reinforcement",
+        "spiral column",
+        "strength factor"
+      ]
+    },
+    "39.5": {
+      "title": "Members Subjected to Combined Axial Load and Uniaxial Bending",
+      "section": "39 - Compression Members",
+      "text": "Design using P-M interaction curve per assumption of 38.1. Use IS 456 charts from SP:16, or compute from first principles using strain compatibility.",
+      "category": "columns",
+      "keywords": [
+        "uniaxial bending",
+        "interaction diagram",
+        "P-M curve",
+        "combined loading"
+      ]
+    },
+    "39.6": {
+      "title": "Members Subjected to Combined Axial Load and Biaxial Bending",
+      "section": "39 - Compression Members",
+      "text": "Bresler's formula: (Mux/Mux1)^alpha_n + (Muy/Muy1)^alpha_n <= 1.0. alpha_n varies from 1.0 to 2.0 based on Pu/Puz.",
+      "category": "columns",
+      "formula": "(Mux/Mux1)^alpha_n + (Muy/Muy1)^alpha_n <= 1.0",
+      "values": {
+        "alpha_n_at_pu_puz_0.2": 1.0,
+        "alpha_n_at_pu_puz_0.8": 2.0
+      },
+      "keywords": [
+        "biaxial bending",
+        "Bresler",
+        "interaction",
+        "alpha_n",
+        "Puz"
+      ]
+    },
+    "39.7": {
+      "title": "Slender Compression Members",
+      "section": "39 - Compression Members",
+      "text": "A slender column shall be designed for additional moment caused by its lateral deflection. The additional moment is calculated using 39.7.1.",
+      "category": "columns",
+      "keywords": [
+        "slender column",
+        "long column",
+        "additional moment",
+        "P-delta"
+      ]
+    },
+    "39.7.1": {
+      "title": "Additional Moment in Slender Columns",
+      "section": "39 - Compression Members",
+      "text": "Max = Pu * D * (lex/D)^2 / 2000 and May = Pu * b * (ley/b)^2 / 2000.",
+      "category": "columns",
+      "formula": "Ma = Pu * D * (le/D)^2 / 2000",
+      "keywords": [
+        "additional moment",
+        "slender column",
+        "P-delta",
+        "Ma"
+      ]
     },
     "40.1": {
       "title": "Limit State of Collapse: Shear",
@@ -304,16 +909,30 @@
       "text": "Nominal shear stress τv = Vu / (b*d). Design shear strength τc depends on concrete grade and steel percentage.",
       "category": "shear",
       "formula": "τv = Vu / (b * d)",
-      "keywords": ["shear stress", "τv", "nominal shear", "design shear"],
-      "tables": ["Table 19 - Design Shear Strength"]
+      "keywords": [
+        "shear stress",
+        "τv",
+        "nominal shear",
+        "design shear"
+      ],
+      "tables": [
+        "Table 19 - Design Shear Strength"
+      ]
     },
     "40.2": {
       "title": "Design Shear Strength of Concrete",
       "section": "40 - Limit State of Collapse: Shear",
       "text": "Design shear strength τc is obtained from Table 19 based on percentage of tension steel and concrete grade.",
       "category": "shear",
-      "keywords": ["τc", "shear strength", "concrete shear", "pt"],
-      "tables": ["Table 19 - Design Shear Strength"]
+      "keywords": [
+        "τc",
+        "shear strength",
+        "concrete shear",
+        "pt"
+      ],
+      "tables": [
+        "Table 19 - Design Shear Strength"
+      ]
     },
     "40.3": {
       "title": "Enhanced Shear Strength Near Supports",
@@ -321,7 +940,11 @@
       "text": "For sections within 2d from support face, enhanced shear strength = 2*d*τc/av may be used.",
       "category": "shear",
       "formula": "τc_enhanced = 2 * d * τc / av",
-      "keywords": ["enhanced shear", "near support", "critical section"]
+      "keywords": [
+        "enhanced shear",
+        "near support",
+        "critical section"
+      ]
     },
     "40.4": {
       "title": "Shear Reinforcement Design",
@@ -332,29 +955,49 @@
         "Vus": "(τv - τc) * b * d",
         "Asv_sv": "Vus / (0.87 * fy * d)"
       },
-      "keywords": ["shear reinforcement", "stirrups", "Vus", "Asv"]
+      "keywords": [
+        "shear reinforcement",
+        "stirrups",
+        "Vus",
+        "Asv"
+      ]
     },
     "40.5.1": {
       "title": "Maximum Shear Stress",
       "section": "40 - Limit State of Collapse: Shear",
       "text": "Maximum shear stress τc_max shall not exceed values in Table 20.",
       "category": "shear",
-      "keywords": ["maximum shear", "τc_max", "shear limit"],
-      "tables": ["Table 20 - Maximum Shear Stress"]
+      "keywords": [
+        "maximum shear",
+        "τc_max",
+        "shear limit"
+      ],
+      "tables": [
+        "Table 20 - Maximum Shear Stress"
+      ]
     },
     "41.1": {
       "title": "General - Design for Torsion",
       "section": "41 - Limit State of Collapse: Torsion",
       "text": "In structures where torsion is required for equilibrium, members shall be designed for torsion. Where torsion is due to compatibility, redistribution of loads may occur with cracking.",
       "category": "torsion",
-      "keywords": ["torsion", "equilibrium", "compatibility", "redistribution"]
+      "keywords": [
+        "torsion",
+        "equilibrium",
+        "compatibility",
+        "redistribution"
+      ]
     },
     "41.3": {
       "title": "Critical Section for Torsion",
       "section": "41 - Limit State of Collapse: Torsion",
       "text": "Sections located at less than a distance d from face of support may be designed for torsion at distance d.",
       "category": "torsion",
-      "keywords": ["torsion", "critical section", "support face"]
+      "keywords": [
+        "torsion",
+        "critical section",
+        "support face"
+      ]
     },
     "41.3.1": {
       "title": "Equivalent Shear",
@@ -362,14 +1005,23 @@
       "text": "Equivalent shear Ve = Vu + 1.6(Tu/b). This equivalent shear is used to check against maximum shear stress.",
       "category": "torsion",
       "formula": "Ve = Vu + 1.6 * Tu / b",
-      "keywords": ["equivalent shear", "Ve", "torsion shear interaction"]
+      "keywords": [
+        "equivalent shear",
+        "Ve",
+        "torsion shear interaction"
+      ]
     },
     "41.4": {
       "title": "Reinforcement for Torsion",
       "section": "41 - Limit State of Collapse: Torsion",
       "text": "When τve exceeds τc, both transverse and longitudinal reinforcement shall be provided.",
       "category": "torsion",
-      "keywords": ["torsion reinforcement", "transverse", "longitudinal", "stirrups"]
+      "keywords": [
+        "torsion reinforcement",
+        "transverse",
+        "longitudinal",
+        "stirrups"
+      ]
     },
     "41.4.2": {
       "title": "Longitudinal Reinforcement for Torsion",
@@ -380,7 +1032,12 @@
         "Mt": "Tu * (1 + D/b) / 1.7",
         "Me": "Mu + Mt"
       },
-      "keywords": ["equivalent moment", "Me", "Mt", "longitudinal steel"]
+      "keywords": [
+        "equivalent moment",
+        "Me",
+        "Mt",
+        "longitudinal steel"
+      ]
     },
     "41.4.3": {
       "title": "Transverse Reinforcement for Torsion",
@@ -388,7 +1045,12 @@
       "text": "Closed stirrups required. Asv/sv = Tu/(b1*d1*0.87*fy) + Vus/(2.5*d1*0.87*fy). Spacing ≤ (x1+y1)/4 or 300mm.",
       "category": "torsion",
       "formula": "Asv/sv = Tu/(b1*d1*0.87*fy) + Vus/(2.5*d1*0.87*fy)",
-      "keywords": ["closed stirrups", "torsion stirrups", "transverse reinforcement", "spacing"]
+      "keywords": [
+        "closed stirrups",
+        "torsion stirrups",
+        "transverse reinforcement",
+        "spacing"
+      ]
     },
     "43.1": {
       "title": "Limit State of Serviceability: Deflection",
@@ -399,7 +1061,12 @@
         "total_deflection": "span/250",
         "post_partition": "span/350 or 20mm"
       },
-      "keywords": ["deflection", "span/250", "serviceability", "limits"]
+      "keywords": [
+        "deflection",
+        "span/250",
+        "serviceability",
+        "limits"
+      ]
     },
     "43.2": {
       "title": "Control of Deflection - Span/Depth Ratios",
@@ -411,16 +1078,30 @@
         "simply_supported": 20,
         "continuous": 26
       },
-      "keywords": ["span/depth", "L/d", "deflection control"],
-      "tables": ["Table 23 - Basic Span/Depth Ratios"]
+      "keywords": [
+        "span/depth",
+        "L/d",
+        "deflection control"
+      ],
+      "tables": [
+        "Table 23 - Basic Span/Depth Ratios"
+      ]
     },
     "43.2.1": {
       "title": "Modification Factors",
       "section": "43 - Limit State of Serviceability",
       "text": "Basic span/depth ratios are modified by factors for tension reinforcement (kt), compression reinforcement (kc), and flange (kf).",
       "category": "serviceability",
-      "keywords": ["modification factor", "kt", "kc", "kf"],
-      "tables": ["Figure 4 - kt", "Figure 5 - kc"]
+      "keywords": [
+        "modification factor",
+        "kt",
+        "kc",
+        "kf"
+      ],
+      "tables": [
+        "Figure 4 - kt",
+        "Figure 5 - kc"
+      ]
     },
     "43.3": {
       "title": "Crack Control",
@@ -431,7 +1112,12 @@
         "normal_exposure": "0.3mm",
         "severe_exposure": "0.1mm"
       },
-      "keywords": ["crack width", "crack control", "serviceability", "exposure"]
+      "keywords": [
+        "crack width",
+        "crack control",
+        "serviceability",
+        "exposure"
+      ]
     },
     "43.4": {
       "title": "Minimum Reinforcement",
@@ -439,7 +1125,189 @@
       "text": "Minimum tension reinforcement shall be not less than As_min = 0.85*b*d/fy.",
       "category": "detailing",
       "formula": "As_min = 0.85 * b * d / fy",
-      "keywords": ["minimum steel", "As_min", "reinforcement ratio"]
+      "keywords": [
+        "minimum steel",
+        "As_min",
+        "reinforcement ratio"
+      ]
+    },
+    "IS13920_5.1": {
+      "title": "General Requirements — IS 13920",
+      "section": "IS 13920:2016 - General",
+      "text": "Concrete grade not less than M20. Steel grade Fe415 or Fe500 (no Fe 250 for main reinforcement).",
+      "category": "seismic",
+      "limits": {
+        "min_fck": 20,
+        "allowed_fy": [
+          415,
+          500
+        ]
+      },
+      "keywords": [
+        "seismic",
+        "IS 13920",
+        "concrete grade",
+        "steel grade",
+        "ductility"
+      ]
+    },
+    "IS13920_6.1.1": {
+      "title": "Flexural Members — Dimensional Limits",
+      "section": "IS 13920:2016 - Beams",
+      "text": "Width >= 200mm, b/D >= 0.3, span/D <= 25, b <= width of supporting member + 0.75*D each side.",
+      "category": "seismic",
+      "limits": {
+        "min_width_mm": 200,
+        "min_b_D_ratio": 0.3,
+        "max_span_D_ratio": 25
+      },
+      "keywords": [
+        "seismic beam",
+        "dimensional limits",
+        "beam width"
+      ]
+    },
+    "IS13920_6.1.2": {
+      "title": "Flexural Members — Longitudinal Reinforcement",
+      "section": "IS 13920:2016 - Beams",
+      "text": "Min 2 bars continuous top and bottom. Min steel ratio 0.24*sqrt(fck)/fy. Max steel ratio 2.5%. At joint face: compression steel >= 50% of tension steel.",
+      "category": "seismic",
+      "limits": {
+        "min_continuous_bars": 2,
+        "max_steel_pct": 2.5,
+        "compression_to_tension_min": 0.5
+      },
+      "keywords": [
+        "seismic beam",
+        "longitudinal steel",
+        "ductility",
+        "compression steel"
+      ]
+    },
+    "IS13920_6.2.1": {
+      "title": "Flexural Members — Shear Reinforcement",
+      "section": "IS 13920:2016 - Beams",
+      "text": "Spacing of hoops <= d/4 for 2d from joint face, then d/2. First hoop within 50mm from joint face. Min hoop diameter 8mm.",
+      "category": "seismic",
+      "limits": {
+        "max_hoop_spacing_near_joint_factor": 0.25,
+        "max_hoop_spacing_factor": 0.5,
+        "first_hoop_max_mm": 50,
+        "min_hoop_dia_mm": 8
+      },
+      "keywords": [
+        "seismic beam",
+        "shear reinforcement",
+        "hoop spacing",
+        "confinement"
+      ]
+    },
+    "IS13920_7.1": {
+      "title": "Columns — General Requirements",
+      "section": "IS 13920:2016 - Columns",
+      "text": "Minimum dimension >= 300mm (or 15*longest bar dia). Shortest dimension/perpendicular >= 0.4.",
+      "category": "seismic",
+      "limits": {
+        "min_dimension_mm": 300,
+        "min_aspect_ratio": 0.4
+      },
+      "keywords": [
+        "seismic column",
+        "minimum dimension",
+        "ductility"
+      ]
+    },
+    "IS13920_7.2": {
+      "title": "Columns — Longitudinal Reinforcement",
+      "section": "IS 13920:2016 - Columns",
+      "text": "Lap splices only in central half. Hoops at spacing <= 150mm over splice length. Steel ratio between 1% and 4%.",
+      "category": "seismic",
+      "limits": {
+        "min_steel_percent": 1.0,
+        "max_steel_percent": 4.0,
+        "max_splice_hoop_spacing_mm": 150
+      },
+      "keywords": [
+        "seismic column",
+        "longitudinal steel",
+        "lap splice",
+        "steel ratio"
+      ]
+    },
+    "IS13920_7.3": {
+      "title": "Columns — Transverse Reinforcement",
+      "section": "IS 13920:2016 - Columns",
+      "text": "Special confining reinforcement over a length lo from each joint face. lo = max(D, clear_span/6, 450mm). Hoop spacing <= min(D/4, 100mm).",
+      "category": "seismic",
+      "limits": {
+        "lo_min_mm": 450,
+        "lo_span_fraction": 6,
+        "max_hoop_spacing_factor": 0.25,
+        "max_hoop_spacing_mm": 100
+      },
+      "keywords": [
+        "seismic column",
+        "confinement",
+        "special confining",
+        "hoop spacing",
+        "lo"
+      ]
+    },
+    "IS13920_7.4": {
+      "title": "Columns — Special Confining Reinforcement Area",
+      "section": "IS 13920:2016 - Columns",
+      "text": "Area of cross section of bar forming hoop: Ash >= 0.18*s*hk*(fck/fy)*(Ag/Ak - 1.0). Ash_min = 0.024*s*D*fck/fy for circular hoops.",
+      "category": "seismic",
+      "formula": "Ash >= 0.18*s*hk*(fck/fy)*(Ag/Ak - 1.0)",
+      "keywords": [
+        "confining reinforcement",
+        "Ash",
+        "hoop area",
+        "seismic column"
+      ]
+    },
+    "IS13920_9.1": {
+      "title": "Shear Walls — General",
+      "section": "IS 13920:2016 - Shear Walls",
+      "text": "Minimum thickness 150mm. Reinforcement in two curtains when wall thickness > 200mm.",
+      "category": "seismic",
+      "limits": {
+        "min_thickness_mm": 150,
+        "two_curtain_threshold_mm": 200
+      },
+      "keywords": [
+        "shear wall",
+        "minimum thickness",
+        "two curtains",
+        "seismic"
+      ]
+    },
+    "IS13920_9.4": {
+      "title": "Shear Walls — Boundary Elements",
+      "section": "IS 13920:2016 - Shear Walls",
+      "text": "Boundary elements required when extreme fibre compressive stress > 0.2*fck. Confinement as per 7.3 and 7.4.",
+      "category": "seismic",
+      "limits": {
+        "boundary_element_stress_threshold_factor": 0.2
+      },
+      "keywords": [
+        "shear wall",
+        "boundary element",
+        "confinement",
+        "compressive stress"
+      ]
+    },
+    "IS13920_10.1": {
+      "title": "Foundation — General",
+      "section": "IS 13920:2016 - Foundations",
+      "text": "Foundation designed for forces and moments from capacity design. Tie beams to be provided between footings.",
+      "category": "seismic",
+      "keywords": [
+        "foundation",
+        "seismic",
+        "capacity design",
+        "tie beams"
+      ]
     }
   },
   "tables": {
@@ -461,39 +1329,54 @@
     "Table 19": {
       "title": "Design Shear Strength of Concrete",
       "description": "τc values based on pt% and fck",
-      "referenced_in": ["40.2"]
+      "referenced_in": [
+        "40.2"
+      ]
     },
     "Table 20": {
       "title": "Maximum Shear Stress",
       "description": "τc_max values for different concrete grades",
-      "referenced_in": ["40.5.1"]
+      "referenced_in": [
+        "40.5.1"
+      ]
     },
     "Table 21": {
       "title": "Design Bond Stress",
       "description": "τbd values for different concrete grades",
-      "referenced_in": ["26.2.1", "26.2.1.1"]
+      "referenced_in": [
+        "26.2.1",
+        "26.2.1.1"
+      ]
     },
     "Table 23": {
       "title": "Basic Span to Effective Depth Ratios",
       "description": "L/d ratios for beams and slabs",
-      "referenced_in": ["43.2"]
+      "referenced_in": [
+        "43.2"
+      ]
     }
   },
   "figures": {
     "Figure 3": {
       "title": "Stress-Strain Curve for Concrete",
       "description": "Parabolic-rectangular stress block for design",
-      "referenced_in": ["38.1"]
+      "referenced_in": [
+        "38.1"
+      ]
     },
     "Figure 4": {
       "title": "Modification Factor for Tension Reinforcement",
       "description": "kt factor based on service stress and pt%",
-      "referenced_in": ["43.2.1"]
+      "referenced_in": [
+        "43.2.1"
+      ]
     },
     "Figure 5": {
       "title": "Modification Factor for Compression Reinforcement",
       "description": "kc factor based on pc%",
-      "referenced_in": ["43.2.1"]
+      "referenced_in": [
+        "43.2.1"
+      ]
     }
   },
   "annexures": {
@@ -510,7 +1393,12 @@
       "section": "Annex G - Moment of Resistance",
       "text": "For doubly reinforced sections, the moment of resistance is Mu = Mu_lim + Mu2, where Mu2 = fsc × Asc × (d - d')",
       "category": "flexure",
-      "keywords": ["doubly reinforced", "compression steel", "Mu2", "Asc"],
+      "keywords": [
+        "doubly reinforced",
+        "compression steel",
+        "Mu2",
+        "Asc"
+      ],
       "formulas": [
         "Mu = Mu_lim + Mu2",
         "Mu2 = fsc × Asc × (d - d')",
@@ -522,7 +1410,13 @@
       "section": "Annex G - Moment of Resistance",
       "text": "For T-beams and L-beams with neutral axis in web, moment of resistance comprises flange contribution and web contribution.",
       "category": "flexure",
-      "keywords": ["flanged beam", "T-beam", "L-beam", "neutral axis in web", "flange contribution"],
+      "keywords": [
+        "flanged beam",
+        "T-beam",
+        "L-beam",
+        "neutral axis in web",
+        "flange contribution"
+      ],
       "formulas": [
         "Mu = Muf + Muw",
         "Muf = 0.36 × fck × (bf - bw) × yf × (d - yf/2)",
