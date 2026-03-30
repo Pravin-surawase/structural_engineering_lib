@@ -73,6 +73,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh dev --docker               # Launch with Docker (needs Colima)
 ./run.sh dev --kill-only            # Kill all dev services
 ./run.sh release preflight 0.X.Y   # Pre-release validation
+./run.sh release preflight --docker # Run preflight in Docker (2GB memory limit)
 ./run.sh release run 0.X.Y         # Bump version + release flow
 ```
 

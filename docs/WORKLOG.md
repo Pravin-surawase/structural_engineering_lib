@@ -102,3 +102,4 @@ tags: []
 | 2026-03-30 | TASK-615 | Populate clauses.json: 22 new IS 456 subclauses (92→119), fix 33.2/33.3 numbering | 8716c02c |
 | 2026-03-30 | TASK-616 | Add 5 IS 13920 entries (6.3, 7.4.1, 8.1, 9.2, 9.3), total 11→16 | 8716c02c |
 | 2026-03-30 | — | Add 41 new tests: clauses.json schema (36) + deprecation import paths (5) | 8716c02c |
+| 2026-03-31 | TASK-PREFLIGHT | fix: release preflight memory safety — timeouts, RAM check, NODE_OPTIONS, --docker flag, process group cleanup | — |

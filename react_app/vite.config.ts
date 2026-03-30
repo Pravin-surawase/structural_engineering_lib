@@ -36,6 +36,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      maxParallelFileOps: 2,
       output: {
         manualChunks: {
           // Split Three.js into separate chunk (~600KB gzipped)

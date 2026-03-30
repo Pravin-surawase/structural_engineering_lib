@@ -11,7 +11,7 @@ Open-source reinforced concrete beam design toolkit for IS 456:2000.
 
 Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 
-Current packaged release: `0.19.1`
+Current packaged release: `0.20.0`
 Current repo focus: `v0.21` React UX overhaul and library expansion
 
 </div>

@@ -22,13 +22,12 @@ Exit Codes:
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import subprocess
 import sys
 import time
-from concurrent.futures import ProcessPoolExecutor, as_completed
-from dataclasses import dataclass, field
+from concurrent.futures import as_completed
+from dataclasses import dataclass
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -38,11 +37,16 @@ from _lib.output import StatusLine, print_json
 VENV_PYTHON = str(REPO_ROOT / ".venv" / "bin" / "python")
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 
+# Detect sensible default workers based on system
+_default_workers = min(4, max(1, (os.cpu_count() or 2)))
+
 # ── Check Registry ─────────────────────────────────────────────────────────
+
 
 @dataclass
 class Check:
     """Definition of a single validation check."""
+
     name: str
     cmd: list[str]
     timeout: int = 60
@@ -52,6 +56,7 @@ class Check:
 @dataclass
 class Category:
     """A group of related checks."""
+
     name: str
     label: str
     checks: list[Check]
@@ -78,7 +83,9 @@ CATEGORIES: list[Category] = [
         checks=[
             Check("API validation", _py("check_api.py", "--all")),
             Check("API contracts", _py("validate_api_contracts.py")),
-            Check("API manifest", _py("generate_api_manifest.py", "--check"), timeout=30),
+            Check(
+                "API manifest", _py("generate_api_manifest.py", "--check"), timeout=30
+            ),
         ],
     ),
     Category(
@@ -104,7 +111,11 @@ CATEGORIES: list[Category] = [
         label="Architecture",
         description="Layer boundaries, circular imports, import validation",
         checks=[
-            Check("Architecture boundaries", _py("check_architecture_boundaries.py"), timeout=90),
+            Check(
+                "Architecture boundaries",
+                _py("check_architecture_boundaries.py"),
+                timeout=90,
+            ),
             Check("Circular imports", _py("check_circular_imports.py"), timeout=90),
             Check("Import validation", _py("validate_imports.py")),
         ],
@@ -248,9 +259,11 @@ def _run_pre_commit(fix: bool = False) -> int:
 
 # ── Runner ─────────────────────────────────────────────────────────────────
 
+
 @dataclass
 class CheckResult:
     """Result of running a single check."""
+
     name: str
     category: str
     passed: bool
@@ -354,6 +367,7 @@ def _collect_checks(
 
 # ── Output ─────────────────────────────────────────────────────────────────
 
+
 def _format_duration(seconds: float) -> str:
     """Format seconds into human-readable duration."""
     if seconds < 1:
@@ -415,9 +429,13 @@ def _print_results_table(results: list[CheckResult]) -> None:
     total_time = sum(r.duration for r in results)
 
     if total_failed == 0:
-        print(f"  ✅ Total: {total_passed}/{total} passed  ({_format_duration(total_time)})")
+        print(
+            f"  ✅ Total: {total_passed}/{total} passed  ({_format_duration(total_time)})"
+        )
     else:
-        print(f"  ❌ Total: {total_passed}/{total} passed, {total_failed} failed  ({_format_duration(total_time)})")
+        print(
+            f"  ❌ Total: {total_passed}/{total} passed, {total_failed} failed  ({_format_duration(total_time)})"
+        )
 
     # Count fixable checks
     for cat in CATEGORIES:
@@ -479,15 +497,17 @@ def _print_json_results(results: list[CheckResult]) -> None:
             cat["failed"] += 1
         cat["duration"] = round(cat["duration"] + r.duration, 2)
 
-        output["checks"].append({
-            "name": r.name,
-            "category": r.category,
-            "passed": r.passed,
-            "exit_code": r.exit_code,
-            "duration": round(r.duration, 2),
-            "timed_out": r.timed_out,
-            "error": r.error or None,
-        })
+        output["checks"].append(
+            {
+                "name": r.name,
+                "category": r.category,
+                "passed": r.passed,
+                "exit_code": r.exit_code,
+                "duration": round(r.duration, 2),
+                "timed_out": r.timed_out,
+                "error": r.error or None,
+            }
+        )
 
     print_json(output)
 
@@ -517,6 +537,7 @@ def _print_list() -> None:
 
 # ── Main ───────────────────────────────────────────────────────────────────
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="check_all.py",
@@ -535,41 +556,54 @@ def main() -> int:
         ),
     )
     parser.add_argument(
-        "--quick", action="store_true",
+        "--quick",
+        action="store_true",
         help="Run fast subset of checks (<30s)",
     )
     parser.add_argument(
-        "--category", "-c", type=str, default=None,
+        "--category",
+        "-c",
+        type=str,
+        default=None,
         choices=[cat.name for cat in CATEGORIES],
         help="Run checks for a specific category only",
     )
     parser.add_argument(
-        "--changed", action="store_true",
+        "--changed",
+        action="store_true",
         help="Only run checks for categories affected by recent file changes",
     )
     parser.add_argument(
-        "--pre-commit", action="store_true",
+        "--pre-commit",
+        action="store_true",
         help="Run pre-commit hooks (black, ruff, mypy, isort, bandit)",
     )
     parser.add_argument(
-        "--fix", action="store_true",
+        "--fix",
+        action="store_true",
         help="Auto-fix issues where possible",
     )
     parser.add_argument(
-        "--json", action="store_true",
+        "--json",
+        action="store_true",
         help="Machine-readable JSON output",
     )
     parser.add_argument(
-        "--list", action="store_true",
+        "--list",
+        action="store_true",
         help="Show available categories and checks",
     )
     parser.add_argument(
-        "--serial", action="store_true",
+        "--serial",
+        action="store_true",
         help="Run checks serially instead of in parallel (for debugging)",
     )
     parser.add_argument(
-        "--workers", "-w", type=int, default=4,
-        help="Number of parallel workers (default: 4)",
+        "--workers",
+        "-w",
+        type=int,
+        default=_default_workers,
+        help=f"Number of parallel workers (default: {_default_workers})",
     )
 
     args = parser.parse_args()
@@ -628,21 +662,36 @@ def main() -> int:
                 icon = "✅" if result.passed else ("⏱️ " if result.timed_out else "❌")
                 print(f" {icon} ({_format_duration(result.duration)})")
     else:
-        # Parallel execution with ProcessPoolExecutor
-        # Use ThreadPoolExecutor since subprocess handles the parallelism
+        # Parallel execution with ThreadPoolExecutor
         from concurrent.futures import ThreadPoolExecutor
+
         with ThreadPoolExecutor(max_workers=args.workers) as executor:
             futures = {}
             for check, cat_name in checks:
                 future = executor.submit(_run_check, check, cat_name, args.fix)
                 futures[future] = (check, cat_name)
 
-            for future in as_completed(futures):
-                result = future.result()
-                results.append(result)
+            aggregate_timeout = min(sum(c.timeout for c, _ in checks), 900)
+            try:
+                for future in as_completed(futures, timeout=aggregate_timeout):
+                    result = future.result()
+                    results.append(result)
+                    if not args.json:
+                        icon = (
+                            "✅"
+                            if result.passed
+                            else ("⏱️ " if result.timed_out else "❌")
+                        )
+                        print(
+                            f"  {icon} {result.name} ({_format_duration(result.duration)})"
+                        )
+            except TimeoutError:
                 if not args.json:
-                    icon = "✅" if result.passed else ("⏱️ " if result.timed_out else "❌")
-                    print(f"  {icon} {result.name} ({_format_duration(result.duration)})")
+                    print(
+                        f"  ⏱️  Aggregate timeout reached ({aggregate_timeout}s) — cancelling remaining checks"
+                    )
+                for future in futures:
+                    future.cancel()
 
     # Sort results by category order
     cat_order = {cat.name: i for i, cat in enumerate(CATEGORIES)}

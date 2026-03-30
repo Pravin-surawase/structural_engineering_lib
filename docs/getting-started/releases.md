@@ -911,6 +911,26 @@ Older release notes may reference the historical stub paths that existed at the 
 
 ---
 
+## v0.20.0
+**Date:** 2026-03-30
+**Status:** ✅ Released
+**Tag:** `v0.20.0`
+
+**Key Changes:**
+- V3 Foundation release — full-stack maturity milestone
+- Batch design React UI with SSE streaming progress
+- Compliance checker and cost optimizer wired to React
+- 86 API integration tests across 12 FastAPI routers (Vitest)
+- React UX overhaul: BeamDetailPanel, CrossSectionView annotations, HomePage rewrite, code-split bundle
+- Library expansion: PDF export, load calculator, project BOQ, torsion API
+- Phase 1 foundation cleanup: `core/numerics.py`, `codes/is456/common/`, deprecation decorator, `clauses.json` (119 entries), 41 new tests
+- Quality infrastructure: function-quality-pipeline, 14 agents, 8 skills, 15 prompts
+- Developer tooling: release infrastructure overhaul, `ai_commit.sh` upgrades, `run.sh` unified CLI, `launch_stack.sh`, MkDocs Material
+- Legacy Streamlit app removed, VBA/Excel extracted to separate repo
+- 90+ commits across sessions 92–113
+
+---
+
 ## v0.19.1
 **Date:** 2026-03-24
 **Status:** ✅ Locked & Verified

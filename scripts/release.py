@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import signal
 import subprocess
 import sys
 import tempfile
@@ -48,7 +49,7 @@ def _run_command(cmd: list, dry_run: bool = False) -> bool:
     if dry_run:
         print(f"  [DRY-RUN] Would run: {' '.join(str(c) for c in cmd)}")
         return True
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
     if result.returncode != 0:
         print(f"  ERROR: {result.stderr}")
         return False
@@ -56,6 +57,80 @@ def _run_command(cmd: list, dry_run: bool = False) -> bool:
         for line in result.stdout.strip().split("\n"):
             print(f"  {line}")
     return True
+
+
+def _run_with_timeout(
+    cmd: list, timeout: int = 600, cwd: Path | None = None, env: dict | None = None
+) -> subprocess.CompletedProcess:
+    """Run subprocess with timeout and guaranteed cleanup on interrupt."""
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        cwd=cwd or REPO_ROOT,
+        env=env,
+        start_new_session=True,
+    )
+    try:
+        stdout, stderr = proc.communicate(timeout=timeout)
+        return subprocess.CompletedProcess(cmd, proc.returncode, stdout, stderr)
+    except subprocess.TimeoutExpired:
+        os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            proc.wait(timeout=5)
+        raise
+    except KeyboardInterrupt:
+        os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            proc.wait(timeout=5)
+        raise
+
+
+def _check_available_ram(min_gb: float = 2.0) -> bool:
+    """Check if enough RAM is available for heavy operations."""
+    try:
+        result = subprocess.run(["vm_stat"], capture_output=True, text=True, timeout=5)
+        if result.returncode == 0:
+            lines = result.stdout.splitlines()
+            free_pages = 0
+            for line in lines:
+                if "Pages free" in line or "Pages speculative" in line:
+                    parts = line.split(":")
+                    if len(parts) == 2:
+                        free_pages += int(parts[1].strip().rstrip("."))
+            # macOS page size is 16384 on ARM, 4096 on Intel
+            page_size_result = subprocess.run(
+                ["sysctl", "-n", "hw.pagesize"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            page_size = (
+                int(page_size_result.stdout.strip())
+                if page_size_result.returncode == 0
+                else 16384
+            )
+            available_gb = (free_pages * page_size) / (1024**3)
+            if available_gb < min_gb:
+                print(
+                    f"  ⚠ Low RAM: {available_gb:.1f}GB available (recommend {min_gb}GB)"
+                )
+                print(
+                    "    Close other apps or use: ./run.sh release preflight --docker"
+                )
+                return False
+            print(f"  ✓ Available RAM: {available_gb:.1f}GB")
+            return True
+    except Exception:
+        pass
+    return True  # Can't check, proceed optimistically
 
 
 def _print_checklist(version: str) -> None:
@@ -176,13 +251,21 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     # Run tests
     print("\n  Running Python tests...")
-    test_result = subprocess.run(
-        [sys.executable, "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q"],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
-    if test_result.returncode != 0:
+    try:
+        test_result = _run_with_timeout(
+            [sys.executable, "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q"],
+            timeout=600,
+        )
+    except subprocess.TimeoutExpired:
+        print("  ERROR: Tests TIMED OUT (>600s)")
+        if not dry_run:
+            return 1
+        print("  (continuing in dry-run mode)")
+        test_result = None
+
+    if test_result is None:
+        pass
+    elif test_result.returncode != 0:
         print("  ERROR: Tests failed! Fix failures before releasing.")
         print(
             test_result.stdout[-500:]
@@ -202,13 +285,23 @@ def cmd_run(args: argparse.Namespace) -> int:
     react_dir = REPO_ROOT / "react_app"
     if react_dir.exists():
         print("  Checking React build...")
-        react_result = subprocess.run(
-            ["npm", "run", "build"],
-            capture_output=True,
-            text=True,
-            cwd=react_dir,
-        )
-        if react_result.returncode != 0:
+        try:
+            react_result = _run_with_timeout(
+                ["npm", "run", "build"],
+                timeout=300,
+                cwd=react_dir,
+                env={**os.environ, "NODE_OPTIONS": "--max-old-space-size=1536"},
+            )
+        except subprocess.TimeoutExpired:
+            print("  ERROR: React build TIMED OUT (>300s)")
+            if not dry_run:
+                return 1
+            print("  (continuing in dry-run mode)")
+            react_result = None
+
+        if react_result is None:
+            pass
+        elif react_result.returncode != 0:
             print("  ERROR: React build failed!")
             print(
                 react_result.stderr[-500:]
@@ -257,9 +350,9 @@ def _bin_path(venv_dir: Path, name: str) -> Path:
     return venv_dir / "bin" / name
 
 
-def _run_check(cmd: list[str], *, cwd: Path | None = None) -> None:
+def _run_check(cmd: list[str], *, cwd: Path | None = None, timeout: int = 600) -> None:
     print(f"+ {' '.join(str(c) for c in cmd)}")
-    subprocess.run(cmd, check=True, cwd=cwd)
+    subprocess.run(cmd, check=True, cwd=cwd, timeout=timeout)
 
 
 def _find_wheel(wheel_dir: Path, version: str | None) -> Path:
@@ -502,6 +595,12 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     errors = 0
     warnings = 0
 
+    # 0. RAM check
+    print("0. System Resources")
+    if not _check_available_ram(min_gb=2.0):
+        errors += 1
+        print("  ✗ Insufficient RAM for preflight (need 2GB free)")
+
     # 1. Git state
     print("1. Git State")
     result = subprocess.run(
@@ -549,44 +648,124 @@ def cmd_preflight(args: argparse.Namespace) -> int:
                 print("  ⚠ Could not compare versions")
                 warnings += 1
 
-    # 3. Tests
-    print("\n3. Python Tests")
-    test_result = subprocess.run(
-        [sys.executable, "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q"],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
-    if test_result.returncode != 0:
-        print("  ✗ Tests FAILED")
-        # Show last few lines
-        lines = test_result.stdout.strip().split("\n")
-        for line in lines[-5:]:
-            print(f"    {line}")
-        errors += 1
-    else:
-        lines = test_result.stdout.strip().split("\n")
-        summary = lines[-1] if lines else "passed"
-        print(f"  ✓ {summary}")
+    if getattr(args, "docker", False):
+        # Run heavy operations in Docker with memory limits
+        print("\n3. Python Tests (Docker, 2GB limit)")
+        try:
+            test_result = _run_with_timeout(
+                [
+                    "docker",
+                    "compose",
+                    "-f",
+                    "docker-compose.preflight.yml",
+                    "run",
+                    "--rm",
+                    "test-python",
+                ],
+                timeout=600,
+            )
+            if test_result.returncode != 0:
+                print("  ✗ Tests FAILED (in Docker)")
+                errors += 1
+            else:
+                print("  ✓ Tests passed (in Docker)")
+        except subprocess.TimeoutExpired:
+            print("  ✗ Tests TIMED OUT (>600s)")
+            errors += 1
+        except FileNotFoundError:
+            print(
+                "  ✗ Docker not available — start Colima: colima start --cpu 4 --memory 4"
+            )
+            errors += 1
 
-    # 4. React build
-    print("\n4. React Build")
-    react_dir = REPO_ROOT / "react_app"
-    if react_dir.exists():
-        react_result = subprocess.run(
-            ["npm", "run", "build"],
-            capture_output=True,
-            text=True,
-            cwd=react_dir,
-        )
-        if react_result.returncode != 0:
-            print("  ✗ Build FAILED")
+        print("\n4. React Build (Docker, 2GB limit)")
+        try:
+            react_result = _run_with_timeout(
+                [
+                    "docker",
+                    "compose",
+                    "-f",
+                    "docker-compose.preflight.yml",
+                    "run",
+                    "--rm",
+                    "build-react",
+                ],
+                timeout=300,
+            )
+            if react_result.returncode != 0:
+                print("  ✗ Build FAILED (in Docker)")
+                errors += 1
+            else:
+                print("  ✓ Build succeeds (in Docker)")
+        except subprocess.TimeoutExpired:
+            print("  ✗ Build TIMED OUT (>300s)")
+            errors += 1
+        except FileNotFoundError:
+            print(
+                "  ✗ Docker not available — start Colima: colima start --cpu 4 --memory 4"
+            )
+            errors += 1
+    else:
+        # 3. Tests (local)
+        print("\n3. Python Tests")
+        try:
+            test_result = _run_with_timeout(
+                [
+                    sys.executable,
+                    "-m",
+                    "pytest",
+                    "Python/tests/",
+                    "-v",
+                    "--tb=short",
+                    "-q",
+                ],
+                timeout=600,
+            )
+        except subprocess.TimeoutExpired:
+            print("  ✗ Tests TIMED OUT (>600s)")
+            errors += 1
+            test_result = None
+
+        if test_result is None:
+            pass
+        elif test_result.returncode != 0:
+            print("  ✗ Tests FAILED")
+            # Show last few lines
+            lines = test_result.stdout.strip().split("\n")
+            for line in lines[-5:]:
+                print(f"    {line}")
             errors += 1
         else:
-            print("  ✓ Build succeeds")
-    else:
-        print("  ⚠ react_app/ not found")
-        warnings += 1
+            lines = test_result.stdout.strip().split("\n")
+            summary = lines[-1] if lines else "passed"
+            print(f"  ✓ {summary}")
+
+        # 4. React build (local)
+        print("\n4. React Build")
+        react_dir = REPO_ROOT / "react_app"
+        if react_dir.exists():
+            try:
+                react_result = _run_with_timeout(
+                    ["npm", "run", "build"],
+                    timeout=300,
+                    cwd=react_dir,
+                    env={**os.environ, "NODE_OPTIONS": "--max-old-space-size=1536"},
+                )
+            except subprocess.TimeoutExpired:
+                print("  ✗ React build TIMED OUT (>300s)")
+                errors += 1
+                react_result = None
+
+            if react_result is None:
+                pass
+            elif react_result.returncode != 0:
+                print("  ✗ Build FAILED")
+                errors += 1
+            else:
+                print("  ✓ Build succeeds")
+        else:
+            print("  ⚠ react_app/ not found")
+            warnings += 1
 
     # 5. Doc version sync
     print("\n5. Doc Version Sync")
@@ -693,6 +872,11 @@ def build_parser() -> argparse.ArgumentParser:
     # preflight
     p_preflight = sub.add_parser("preflight", help="Run pre-release validation checks")
     p_preflight.add_argument("version", nargs="?", help="Target version to validate")
+    p_preflight.add_argument(
+        "--docker",
+        action="store_true",
+        help="Run heavy checks (pytest, npm build) inside Docker containers with memory limits",
+    )
 
     return parser
 

@@ -419,6 +419,10 @@ docker compose up --build                            # http://localhost:8000/doc
 cd react_app && npm run dev                          # http://localhost:5173
 cd react_app && npm run build                        # Build check
 
+# Release preflight
+./run.sh release preflight 0.X.Y                     # Pre-release validation
+./run.sh release preflight --docker                  # Run preflight in Docker (2GB memory limit)
+
 # Session end
 ./run.sh session end                                 # Wrap up (logs, sync, handoff)
 ```
