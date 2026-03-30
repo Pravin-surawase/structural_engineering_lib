@@ -1,7 +1,7 @@
 ---
 description: "Structural math specialist — IS 456 pure math modules, core types, new structural elements (columns, slabs, footings)"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Wire into API
     agent: backend
@@ -280,6 +280,145 @@ grep -r "class.*Input" Python/structural_lib/core/inputs.py | head -20
 - `/api-discovery` — check existing function signatures before creating new ones
 - `/is456-verification` — run compliance tests after implementation
 - `/architecture-check` — validate layer boundaries
+- `/function-quality-pipeline` — MANDATORY workflow for every new function (9-step pipeline)
+- `/new-structural-element` — step-by-step workflow for new elements (column, slab, footing)
+- `/is456-verification` — run IS 456 compliance tests
+
+## ⚠️ MANDATORY: Function Quality Pipeline
+
+**Every new function MUST go through the 9-step quality pipeline.** Use `/function-quality-pipeline` skill.
+
+Before writing ANY code:
+1. Document the IS 456 clause, formula, parameters, and benchmark source
+2. Get @structural-engineer to verify the formula independently
+3. Only then proceed to implementation
+
+### 12-Point Quality Checklist (EVERY function must pass)
+
+```
+✅ 1.  @clause("XX.X") decorator present with correct IS 456 clause
+✅ 2.  Frozen dataclass return type with is_safe(), to_dict(), summary()
+✅ 3.  Docstring: IS 456 clause, formula, args, returns, raises, references
+✅ 4.  Every formula preceded by # IS 456 Cl XX.X: [symbolic form] comment
+✅ 5.  No float == comparisons — use abs(a-b) < TOLERANCE
+✅ 6.  Division uses safe_divide() from core/numerics.py (when available)
+✅ 7.  Output checked for NaN/Inf before return
+✅ 8.  Intermediate variables used (not one-line complex expressions)
+✅ 9.  Units explicit in parameter names (_mm, _kNm, _kN)
+✅ 10. No I/O, no file reads, no env vars, no network calls
+✅ 11. validate_*() called before calculation
+✅ 12. Errors accumulated as tuple[DesignError, ...], not raised individually
+```
+
+### Numerical Stability Rules (NON-NEGOTIABLE)
+
+```
+✅ NEVER compare floats with ==. Use abs(a - b) < TOLERANCE
+✅ NEVER divide without checking denominator — check > 0 or use safe_divide()
+✅ ALWAYS use intermediate variables for complex expressions
+✅ ALWAYS check outputs: if math.isnan(result) or math.isinf(result): raise CalculationError
+✅ CLAMP interpolation inputs to table bounds (never extrapolate IS 456 tables)
+✅ PREFER multiplication over division where algebraically equivalent
+✅ GUARD against catastrophic cancellation (a - b where a ≈ b)
+```
+
+### IS 456 Formula Annotation (MANDATORY for every formula)
+
+Every formula computation MUST have a comment showing clause + symbolic form:
+
+```python
+# IS 456 Cl 38.1: xu_max/d from Table 21.1 (based on fy)
+xu_max_d = materials.get_xu_max_d(fy)
+
+# IS 456 Cl 38.1: Mu_lim = 0.36 × (xu_max/d) × [1 - 0.42 × (xu_max/d)] × b × d² × fck
+k = 0.36 * xu_max_d * (1 - 0.42 * xu_max_d)
+mu_lim_nmm = k * fck * b * d * d
+```
+
+### Safety Factor Lockdown (ABSOLUTE RULE)
+
+```
+❌ NEVER accept γc or γs as function parameters
+❌ NEVER allow users to change safety factors
+✅ ALWAYS use hardcoded: γc = 1.5 (concrete), γs = 1.15 (steel)
+✅ These are in codes/is456/common/constants.py (when created)
+```
+
+### Result Type Requirements (EVERY design function)
+
+All design functions MUST return frozen dataclasses:
+
+```python
+@dataclass(frozen=True)
+class ColumnResult:
+    """Column design result — immutable, thread-safe."""
+    Pu_capacity_kN: float
+    Mu_capacity_kNm: float
+    Ast_required_mm2: float
+    reinforcement_percent: float
+    is_ok: bool
+    governing_check: str
+    clause_ref: str
+    errors: tuple[DesignError, ...] = ()
+    warnings: tuple[str, ...] = ()
+
+    def is_safe(self) -> bool: ...
+    def to_dict(self) -> dict: ...
+    def summary(self) -> str: ...
+```
+
+**Rules:**
+- Use `tuple` not `list` (immutable collections in frozen dataclass)
+- Include `errors` and `warnings` as tuples
+- Include `governing_check` (what controls the design)
+- Include `clause_ref` (IS 456 clause that governs)
+
+### Shared Math (codes/is456/common/) — Extract Before Duplicating
+
+Functions used by 2+ elements MUST be extracted to `codes/is456/common/`:
+
+| Function | Used By | Extract To |
+|----------|---------|-----------|
+| `calculate_xu_max(fck, fy)` | beam, column, slab | `common/stress_blocks.py` |
+| `stress_block_depth(xu, fck)` | beam, column, slab | `common/stress_blocks.py` |
+| `bar_spacing_limits(bar_dia, agg_size)` | all elements | `common/reinforcement.py` |
+| `min_reinforcement(element_type, fck, fy)` | all elements | `common/minimums.py` |
+
+**Rule:** NEVER duplicate beam math in column.py. Extract to `common/` first.
+
+### Incremental Complexity Rule
+
+When implementing a new structural element, follow this order:
+
+1. **Simplest case first** — e.g., short column, pure axial load
+2. **Verify against SP:16** — must pass benchmark before proceeding
+3. **Add next level** — e.g., short column with uniaxial bending
+4. **Verify again** — new benchmarks + all previous tests still pass
+5. **Continue** — biaxial → slender → helical reinforcement
+
+**NEVER jump to the complex case.** Each level builds on verified foundation.
+
+### Red Flags — STOP and Investigate
+
+| Red Flag | Action |
+|----------|--------|
+| Utilization > 0.95 on benchmark | Verify formula — may be off by factor |
+| Negative reinforcement area | Calculation error — never valid |
+| SP:16 mismatch > tolerance | DO NOT proceed — fix first |
+| Monotonicity violated (↑fck → ↓capacity) | Fundamental error — escalate to @library-expert |
+| Safety factor is a parameter | FORBIDDEN — hardcoded only |
+
+### Handoff Pipeline (FOLLOW THIS ORDER)
+
+After implementing a function:
+1. ✅ Self-check: 12-point quality checklist
+2. → @tester: Write tests (unit + benchmark + degenerate + monotonicity)
+3. → @structural-engineer: Verify math against IS 456 + SP:16
+4. → @reviewer: Architecture + code quality review
+5. → @backend: Wire into services/api.py
+6. → @api-developer: Create FastAPI endpoint
+7. → @doc-master: Update documentation
+8. → @ops: Safe commit
 
 ## ⚠ DO NOT
 

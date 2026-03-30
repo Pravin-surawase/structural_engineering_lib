@@ -1,7 +1,7 @@
 ---
 description: "Code review, architecture validation, testing, security checks"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Approved — Update Docs
     agent: doc-master
@@ -105,6 +105,54 @@ After every review, report in this format:
 ### Testing
 - [ ] `.venv/bin/pytest Python/tests/ -v` passes
 - [ ] `cd react_app && npm run build` passes (if frontend changed)
+
+### IS 456 Function Quality (for structural math changes)
+
+When reviewing changes to `codes/is456/` or `core/`, apply the 12-point function quality checklist:
+
+**12-Point Checklist (EVERY function must pass):**
+- [ ] `@clause("XX.X")` decorator present with correct IS 456 clause
+- [ ] Frozen dataclass return type with `is_safe()`, `to_dict()`, `summary()`
+- [ ] Docstring includes: IS 456 clause, formula, args, returns, raises
+- [ ] Every formula preceded by `# IS 456 Cl XX.X: [symbolic form]` comment
+- [ ] No `float ==` comparisons — uses `abs(a-b) < TOLERANCE`
+- [ ] Division guarded (checked > 0 or uses `safe_divide()`)
+- [ ] Output checked for NaN/Inf before return
+- [ ] Intermediate variables used (not one-line complex expressions)
+- [ ] Units explicit in parameter names (`_mm`, `_kNm`, `_kN`)
+- [ ] No I/O, no file reads, no env vars, no network calls
+- [ ] `validate_*()` called before calculation
+- [ ] Errors accumulated as `tuple[DesignError, ...]`, not raised individually
+
+**Numerical Stability Red Flags (REJECT immediately):**
+- `if result == 0.0:` → WRONG. Must use `if abs(result) < EPSILON:`
+- Division without checking denominator → DANGEROUS
+- `gamma_c` or `gamma_s` as function parameters → FORBIDDEN (hardcoded only)
+- Extrapolating beyond IS 456 table bounds → FORBIDDEN
+
+**Result Type Verification:**
+- [ ] Return type is `@dataclass(frozen=True)` (not mutable dict or raw float)
+- [ ] Has `is_safe()` method
+- [ ] Has `to_dict()` method
+- [ ] Has `summary()` method
+- [ ] Uses `tuple` not `list` for collections (immutable)
+- [ ] Includes `governing_check` and `clause_ref` fields
+
+**Two-Pass Review (for IS 456 math changes):**
+
+| Pass | Focus | Reviewer |
+|------|-------|----------|
+| Pass 1 — Math | Formula matches IS 456 text, benchmarks pass, edge cases correct, safety factors locked | @structural-engineer (or self) |
+| Pass 2 — Code | 12-point checklist, architecture, no duplication, tests exist, security | @reviewer (you) |
+
+Both passes must be APPROVED before handing off to @doc-master.
+
+**Benchmark Validation (for SP:16 tests):**
+- [ ] Golden tests exist for SP:16 benchmark values
+- [ ] Tolerance is ±0.1% for SP:16 charts
+- [ ] Tolerance is ±1% for textbook examples
+- [ ] Degenerate case tests exist (Mu=0, Vu=0, pt=0)
+- [ ] Monotonicity tests exist (↑fck → ↑capacity)
 
 ## Skills: Use `/architecture-check` for boundaries, `/react-validation` for frontend changes.
 

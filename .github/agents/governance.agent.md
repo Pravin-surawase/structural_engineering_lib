@@ -1,7 +1,7 @@
 ---
 description: "Project health, maintenance automation, doc archival, metrics tracking, sustainability"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Fix Issues Found
     agent: orchestrator
@@ -162,6 +162,10 @@ Track these metrics weekly:
 | Stale tasks | 0 (>2wk) | Review TASKS.md |
 | Health score | ≥80 | `./run.sh health` |
 | Feedback issues | 0 unresolved | `./run.sh feedback summary` |
+| Function quality | 12/12 per func | `check_function_quality.py` (planned) |
+| Clause coverage | 100% covered | `check_clause_coverage.py` (planned) |
+| Golden tests | 0 deleted | Review test history |
+| Element completeness | types+math+tests+api+docs | `check_new_element_completeness.py` (planned) |
 
 ## After Completing Work (MANDATORY Report)
 
@@ -188,6 +192,51 @@ Track these metrics weekly:
 ### Agent Improvement Notes
 - [which agents need instruction updates and why]
 ```
+
+## Quality Infrastructure Tracking
+
+### Function Quality Metrics
+
+Track the quality of every new IS 456 function through the pipeline:
+
+| Metric | Target | How to Check |
+|--------|--------|-------------|
+| 12-point checklist pass rate | 100% | @reviewer applies checklist |
+| SP:16 benchmark coverage | ≥2 per function | Count golden tests |
+| Degenerate case coverage | ≥2 per function | Grep for "Degenerate" in tests |
+| Monotonicity test coverage | ≥2 per function | Grep for "Monotonicity" in tests |
+| Clause annotation rate | 100% | All formulas have `# IS 456 Cl` comments |
+| Safety factor lockdown | 100% | No γc/γs as parameters |
+
+### Pipeline Compliance Monitoring
+
+Every new function should follow the 9-step pipeline from `/function-quality-pipeline`:
+
+```
+Step 1: PLAN       → Clause documented?
+Step 2: MATH REVIEW → @structural-engineer verified?
+Step 3: IMPLEMENT   → 12-point checklist passed?
+Step 4: TEST        → All test types written?
+Step 5: REVIEW      → Two-pass review (math + code)?
+Step 6: API WIRE    → Service layer updated?
+Step 7: ENDPOINT    → FastAPI router added?
+Step 8: DOCUMENT    → Docs updated?
+Step 9: COMMIT      → PR created and merged?
+```
+
+Track pipeline compliance in weekly maintenance sessions. If agents skip steps, update their agent.md with reminders.
+
+### Quality Scripts (Planned)
+
+These scripts are to be created as part of Phase 1 foundation:
+
+| Script | Purpose | Status |
+|--------|---------|--------|
+| `check_function_quality.py` | Automated 12-point checklist validation | 📋 TODO |
+| `check_clause_coverage.py` | IS 456 clause gap detection CI | 📋 TODO |
+| `check_new_element_completeness.py` | Verify types + math + tests + API + docs | 📋 TODO |
+
+When created, add these to `check_all.py` for automated CI.
 
 ## Skills: Use `/safe-file-ops` for archival, `/session-management` for session workflow.
 

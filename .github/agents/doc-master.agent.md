@@ -1,7 +1,7 @@
 ---
 description: "Documentation maintenance — session logs, archives, indexes, WORKLOG, TASKS"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Commit Docs
     agent: ops
@@ -125,3 +125,63 @@ docs/
 
 Content here...
 ```
+
+## Documentation Requirements for New Structural Elements
+
+When a new structural element is added (column, footing, slab), update these docs:
+
+### Per-Element Documentation Checklist
+
+- [ ] **API Reference** (`docs/reference/api.md`) — add function signature, parameters, return type
+- [ ] **Clause Coverage** (`clauses.json`) — add new IS 456 clause entries
+- [ ] **Example Script** (`Python/examples/<element>_design.py`) — minimal + professional workflow
+- [ ] **CHANGELOG.md** — add entry under `## [Unreleased]`
+- [ ] **WORKLOG.md** — one line per function added
+- [ ] **README.md** — update library capabilities list
+- [ ] **TASKS.md** — mark element tasks as done
+- [ ] **next-session-brief.md** — update current status
+
+### Function Documentation Template
+
+Every new function's docstring should follow this format:
+
+```python
+"""
+Calculate <what> per IS 456 Cl. XX.X.
+
+Computes <detailed description> using the IS 456:2000 stress block
+approach for <element type>.
+
+Args:
+    b_mm: Section width (mm). Must be ≥ 150mm.
+    d_mm: Effective depth (mm). Must be > 0.
+    fck: Characteristic compressive strength of concrete (N/mm²).
+         Valid range: 15–80 N/mm².
+    fy: Characteristic yield strength of steel (N/mm²).
+        Standard values: 250, 415, 500 N/mm².
+
+Returns:
+    <ResultType>: Frozen dataclass with:
+        - ``is_safe()``: True if design is adequate
+        - ``to_dict()``: Dictionary representation
+        - ``summary()``: Human-readable summary string
+
+Raises:
+    DimensionError: If dimensions are invalid (b < 150mm, d ≤ 0).
+    MaterialError: If material properties are out of range.
+
+References:
+    IS 456:2000, Cl. XX.X
+    SP:16:1980, Chart YY
+    Pillai & Menon, 8th Ed., Example Z.Z, p.123
+
+Example:
+    >>> result = calculate_something(b_mm=300, d_mm=450, fck=25, fy=415)
+    >>> result.is_safe()
+    True
+"""
+```
+
+### Quality Pipeline Documentation (Step 8)
+
+When executing Step 8 of `/function-quality-pipeline`, verify ALL items in the per-element checklist above are complete before handing off to @ops.

@@ -75,12 +75,12 @@ When delegating, tell the specialist which skills to use:
 | Agent | Skills They Should Use |
 |-------|----------------------|
 | `@backend` | `/api-discovery` (param lookup), `/is456-verification` (tests) |
-| `@structural-math` | `/api-discovery` (param lookup), `/is456-verification` (tests), `/new-structural-element` (new elements) |
+| `@structural-math` | `/api-discovery`, `/is456-verification`, `/new-structural-element`, `/function-quality-pipeline` |
 | `@api-developer` | `/api-discovery` (param lookup) |
 | `@frontend` | `/react-validation` (build, lint, type-check) |
 | `@structural-engineer` | `/is456-verification` (compliance tests), `/api-discovery` |
-| `@tester` | `/is456-verification` (IS 456 tests), `/api-discovery` (param lookup) |
-| `@reviewer` | `/architecture-check` (boundaries), `/react-validation` (frontend) |
+| `@tester` | `/is456-verification`, `/api-discovery`, `/function-quality-pipeline` |
+| `@reviewer` | `/architecture-check`, `/react-validation`, `/function-quality-pipeline` |
 | `@doc-master` | `/safe-file-ops` (file moves), `/session-management` (session end) |
 | `@ops` | `/session-management` (session workflow) |
 | `@governance` | `/safe-file-ops` (archival), `/session-management` (maintenance) |
@@ -143,6 +143,31 @@ Every task — no exceptions — flows through this pipeline:
 ```
 
 **No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
+
+### IS 456 Function Pipeline (ADDITIONAL — for structural math tasks)
+
+When the task involves adding/modifying IS 456 functions (`codes/is456/`), enforce the extended 9-step pipeline from `/function-quality-pipeline`:
+
+```
+1. PLAN          → Orchestrator identifies clause + formula + benchmark
+2. MATH REVIEW   → @structural-engineer verifies formula independently
+3. IMPLEMENT     → @structural-math writes code (12-point checklist)
+4. TEST          → @tester writes 6 test types (unit, edge, degenerate, SP:16, textbook, Hypothesis)
+5. REVIEW        → Two-pass: @structural-engineer (math) + @reviewer (code)
+6. API WIRE      → @backend adds to services/api.py
+7. ENDPOINT      → @api-developer creates FastAPI route
+8. DOCUMENT      → @doc-master updates all docs
+9. COMMIT        → @ops commits via ai_commit.sh
+```
+
+**Quality Gates:**
+- Step 2 → 3: Formula approved by @structural-engineer
+- Step 4 → 5: All tests pass (SP:16 ±0.1%)
+- Step 5 → 6: Both reviews APPROVED
+
+**Incremental Complexity:** For new elements, start with simplest function, verify against SP:16, then add complexity. Never jump to complex case.
+
+**Reference:** [Blueprint v4.0](../../docs/planning/library-expansion-blueprint-v4.md)
 
 ### Pipeline Enforcement
 

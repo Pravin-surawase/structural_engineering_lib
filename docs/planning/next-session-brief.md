@@ -30,17 +30,43 @@ tags: []
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 111 (v0.21 features: HubPage, Project BOQ full-stack, deploy-docs CI, API docs expansion)
+**Last Session:** Session 112 (Quality-First Development System — quality pipeline skill, quality gate prompt, 8 agent updates, library expansion blueprint v4)
 
 ---
 
 ## What's Next
 
-- Deploy MkDocs via `mkdocs gh-deploy` or enable GitHub Pages in repo settings (gh-pages branch)
-- Run Python tests to verify BOQ module: `.venv/bin/pytest Python/tests/ -v -k "boq"`
-- Run React build to verify HubPage + BOQ panel: `cd react_app && npm run build`
-- Continue v0.21: TASK-516 (Triangular loads), TASK-519 (Pareto panel), TASK-527 (TopBar badges), TASK-528 (Workflow breadcrumb)
-- TASK-520 (Report/3D test coverage), TASK-521 (Beam rationalization)
+1. **Phase 1 Foundation** — Start with TASK-611 (`core/numerics.py`), TASK-612 (shared math extraction), TASK-613 (safety factor constants)
+2. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
+3. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
+4. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+
+---
+
+## Session 112 Summary — Quality-First Development System
+
+**What was done:**
+- Created `/function-quality-pipeline` skill — 9-step mandatory pipeline for every new IS 456 function
+- Created `/function-quality-gate` prompt — quick invocation of the quality pipeline
+- Updated 8 agent files with quality enforcement:
+  - `structural-math` — 12-point checklist, numerical stability rules, safety factor lockdown
+  - `tester` — SP:16 benchmarks, degenerate/monotonicity tests, golden test rule
+  - `reviewer` — two-pass review (math + code), IS 456 function quality checks
+  - `api-developer` — endpoint quality checklist, unit plausibility guards
+  - `structural-engineer` — peer math verification protocol, degenerate case review
+  - `governance` — quality metrics (function quality, clause coverage, golden tests)
+  - `doc-master` — per-element documentation checklist, function docstring template
+  - `library-expert` — quality enforcement, incremental complexity, shared math extraction
+- Created `docs/planning/library-expansion-blueprint-v4.md` — updated master plan with quality pipeline
+- Updated `docs/TASKS.md` with Phase 0-3 tasks (TASK-600 through TASK-656)
+
+**What's next (Priority Order):**
+1. **Phase 1 Foundation** — Start with TASK-611 (`core/numerics.py`), TASK-612 (shared math extraction), TASK-613 (safety factor constants)
+2. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
+3. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
+4. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+
+**Key Decision:** Library expansion now follows slow-but-accurate approach. Every function goes through 9-step pipeline.
 
 ---
 

@@ -99,6 +99,81 @@
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
 
+## Library Expansion — Quality-First Development
+
+> **New in v4.0:** Every function goes through a 9-step quality pipeline.
+> See [library-expansion-blueprint-v4.md](planning/library-expansion-blueprint-v4.md) for full plan.
+> Use `/function-quality-pipeline` skill for every new function.
+
+### Phase 0: Quality Infrastructure ✅ Done
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-600 | Create function-quality-pipeline skill | ✅ Done |
+| TASK-601 | Create function-quality-gate prompt | ✅ Done |
+| TASK-602 | Update structural-math agent (12-point checklist, numerical rules) | ✅ Done |
+| TASK-603 | Update tester agent (benchmark, degenerate, monotonicity tests) | ✅ Done |
+| TASK-604 | Update reviewer agent (two-pass review, IS 456 quality checks) | ✅ Done |
+| TASK-605 | Update api-developer agent (endpoint quality, plausibility guards) | ✅ Done |
+| TASK-606 | Update structural-engineer agent (math verification protocol) | ✅ Done |
+| TASK-607 | Update governance agent (quality metrics tracking) | ✅ Done |
+| TASK-608 | Update doc-master agent (element doc checklist) | ✅ Done |
+| TASK-609 | Update library-expert agent (quality enforcement rules) | ✅ Done |
+| TASK-610 | Create blueprint v4.0 with quality pipeline | ✅ Done |
+
+### Phase 1: Foundation Cleanup (Before Column Work)
+
+| ID | Task | Priority | Status |
+|----|------|----------|--------|
+| TASK-611 | Create `core/numerics.py` — safe_divide(), approx_equal(), clamp() | 🔴 P0 | 📋 |
+| TASK-612 | Extract shared math to `codes/is456/common/` (stress_blocks, reinforcement, minimums) | 🔴 P0 | 📋 |
+| TASK-613 | Hardcode safety factors in `codes/is456/common/constants.py` | 🔴 P0 | 📋 |
+| TASK-614 | Create `@deprecated` decorator in `core/deprecation.py` | 🔴 High | 📋 |
+| TASK-615 | Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39) | 🔴 High | 📋 |
+| TASK-616 | Add IS 13920 references to clauses.json (~15 entries) | 🔴 High | 📋 |
+| TASK-617 | Create test assertion helpers `tests/helpers/is456_assertions.py` | 🟡 Medium | 📋 |
+| TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | 📋 |
+| TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | 📋 |
+| TASK-620 | Stack trace sanitization (security) in `fastapi_app/main.py` | 🟡 Medium | 📋 |
+| TASK-621 | Add `recovery` field to `DesignError` in `core/errors.py` | 🟡 Medium | 📋 |
+| TASK-622 | Create `check_function_quality.py` script (12-point checklist CI) | 🟡 Medium | 📋 |
+| TASK-623 | Create `check_clause_coverage.py` script (clause gap detection) | 🟡 Medium | 📋 |
+| TASK-624 | Create `check_new_element_completeness.py` script | 🟡 Medium | 📋 |
+| TASK-625 | Create maintenance playbook `docs/governance/maintenance-playbook.md` | 🟢 Low | 📋 |
+
+### Phase 2: Column Design (After Phase 1)
+
+| ID | Task | Function | IS 456 Clause | Priority | Status |
+|----|------|----------|---------------|----------|--------|
+| TASK-630 | Column types (ColumnGeometryInput, ColumnResult, errors) | Types | — | 🔴 P0 | 📋 |
+| TASK-631 | Minimum eccentricity | `calculate_min_eccentricity` | Cl 39.1 | 🔴 P0 | 📋 |
+| TASK-632 | Short column axial | `design_short_column_axial` | Cl 39.3 | 🔴 P0 | 📋 |
+| TASK-633 | Short column uniaxial | `design_short_column_uniaxial` | Cl 39.5 | 🔴 High | 📋 |
+| TASK-634 | P-M interaction curve | `pm_interaction_curve` | Cl 39.5, Annex G | 🔴 High | 📋 |
+| TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | 📋 |
+| TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | 📋 |
+| TASK-637 | Additional moment | `calculate_additional_moment` | Cl 39.7.1 | 🟡 Medium | 📋 |
+| TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | 📋 |
+| TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.8 | 🟢 Low | 📋 |
+| TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | 📋 |
+| TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | 📋 |
+
+### Phase 3: Footing Design (After Phase 2)
+
+| ID | Task | Function | IS 456 Clause | Status |
+|----|------|----------|---------------|--------|
+| TASK-650 | Footing types + errors | Types | — | 📋 |
+| TASK-651 | Isolated footing design | `design_isolated_footing` | Cl 34 | 📋 |
+| TASK-652 | Punching shear check | `punching_shear_check` | Cl 31.6 | 📋 |
+| TASK-653 | One-way shear check | `one_way_shear_check` | Cl 34.2.4 | 📋 |
+| TASK-654 | Bearing pressure | `calculate_bearing_pressure` | Cl 34.4 | 📋 |
+| TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
+| TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
+
+### Phase 4-6: Slab, Staircase, Shear Wall (Future)
+
+See [library-expansion-blueprint-v4.md](planning/library-expansion-blueprint-v4.md) for details.
+
 ## Backlog
 
 | ID | Task | Priority | Notes |

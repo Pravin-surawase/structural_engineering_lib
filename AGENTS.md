@@ -189,7 +189,7 @@ docs/TASKS.md                                   # Task board
 | `security` | Security auditing, OWASP, dependency scanning | read + terminal |
 | `library-expert` | Library domain expert, IS 456 knowledge, professional standards | read + terminal + web |
 
-### 7 Agent Skills (`.github/skills/`)
+### 8 Agent Skills (`.github/skills/`)
 
 | Skill | Slash Command | Purpose |
 |-------|--------------|---------|
@@ -200,8 +200,9 @@ docs/TASKS.md                                   # Task board
 | `new-structural-element` | `/new-structural-element` | New element workflow (column, slab, footing) |
 | `react-validation` | `/react-validation` | React build, lint, type-check, tests |
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
+| `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
 
-### 14 Prompt Files (`.github/prompts/`)
+### 15 Prompt Files (`.github/prompts/`)
 
 | Prompt | Purpose |
 |--------|--------|
@@ -211,6 +212,7 @@ docs/TASKS.md                                   # Task board
 | `add-api-endpoint` | FastAPI endpoint workflow |
 | `add-is456-clause` | IS 456 clause implementation workflow |
 | `add-structural-element` | New structural element (column, slab, footing) workflow |
+| `function-quality-gate` | IS 456 function quality gate (9-step pipeline) |
 | `fix-test-failure` | Test failure diagnosis & fix |
 | `performance-optimization` | Profile, optimize, benchmark |
 | `session-start` | Session start checklist |

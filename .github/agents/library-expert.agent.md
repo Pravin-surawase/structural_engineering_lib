@@ -90,6 +90,9 @@ Key entry points:
 | Column | Cl 25, 39 | 📋 Planned (Phase 2) |
 | Footing | Cl 34, 31.6 | 📋 Planned (Phase 3) |
 | Slab | Cl 24, Annex D | 📋 Planned (Phase 4) |
+| Staircase | Cl 33 | 📋 Planned (Phase 5) |
+| Shear Wall | Cl 32, IS 13920 Cl 9 | 📋 Planned (Phase 5) |
+| Shared Math | Common stress blocks, reinforcement | 📋 Planned (Phase 1) |
 
 ## Professional Standards Enforcement
 
@@ -255,3 +258,9 @@ When guiding benchmark creation:
 - **Check degenerate cases** — ask "what happens with Mu=0?" for every new function
 - **Verify monotonicity** — increasing fck should never decrease capacity
 - **Demand benchmark sources** — no function accepted without SP:16 or textbook validation reference
+- **Enforce the quality pipeline** — every new function must follow `/function-quality-pipeline` (9 steps)
+- **Verify incremental complexity** — simplest case first; never jump to complex without verifying simple
+- **Check shared math extraction** — if a function exists in beam, don't let column duplicate it → extract to `common/`
+- **Validate error recovery guidance** — every DesignError should tell the user what to do next
+- **Review calculation traceability** — every result must be reconstructable into a step-by-step calc sheet
+- **Enforce golden test permanence** — SP:16 benchmark tests can never be deleted or have values changed
