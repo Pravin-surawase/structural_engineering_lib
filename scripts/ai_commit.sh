@@ -19,6 +19,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+DIM='\033[2m'
 
 # Parse flags
 DRY_RUN=false
@@ -416,10 +417,12 @@ if [[ $? -eq 0 ]]; then
         echo "  ./scripts/finish_task_pr.sh $TASK_ID 'description' --wait"
     fi
 
-    # Stale stash warning
+    # Stale auto-stash check (warn + offer cleanup)
     STALE_STASH_COUNT=$(git stash list 2>/dev/null | grep -c "auto-stash" || true)
     if [[ "$STALE_STASH_COUNT" -gt 3 ]]; then
-        echo -e "  ${YELLOW}⚠${NC} $STALE_STASH_COUNT stale auto-stash entries found — review with: git stash list"
+        echo -e "  ${YELLOW}⚠${NC} $STALE_STASH_COUNT stale auto-stash entries"
+        echo -e "  ${DIM}Review: git stash list${NC}"
+        echo -e "  ${DIM}Cleanup old ones: git stash drop stash@{N}${NC}"
     fi
 
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
