@@ -100,9 +100,9 @@ Each function must pass the full pipeline before the next one starts.
 | 1.1 | Create `core/numerics.py` | `safe_divide()`, `approx_equal()`, `clamp()`, epsilon constants | ✅ Done | 🔴 P0 |
 | 1.2 | Extract shared math | `codes/is456/common/stress_blocks.py`, `reinforcement.py`, `minimums.py` | ✅ Done | 🔴 P0 |
 | 1.3 | Hardcode safety factors | `codes/is456/common/constants.py` — γc=1.5, γs=1.15 | ✅ Done | 🔴 P0 |
-| 1.4 | Create `@deprecated` decorator | `core/deprecation.py` | 📋 TODO | 🔴 High |
-| 1.5 | Populate clauses.json | Add ~66 subclauses for column, footing, slab | 📋 TODO | 🔴 High |
-| 1.6 | Add IS 13920 references | `clauses.json` (~15 entries) | 📋 TODO | 🔴 High |
+| 1.4 | Create `@deprecated` decorator | `core/deprecation.py` | ✅ Done | 🔴 High |
+| 1.5 | Populate clauses.json | Add 22 subclauses (92→119 total) | ✅ Done | 🔴 High |
+| 1.6 | Add IS 13920 references | `clauses.json` (11→16 entries) | ✅ Done | 🔴 High |
 | 1.7 | Create test assertion helpers | `tests/helpers/is456_assertions.py` | 📋 TODO | 🟡 Medium |
 | 1.8 | Top-level `__init__.py` exports | `structural_lib/__init__.py` | 📋 TODO | 🟡 Medium |
 | 1.9 | Unit plausibility guards | `services/api.py` — range checks | 📋 TODO | 🟡 Medium |

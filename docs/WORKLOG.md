@@ -98,3 +98,7 @@ tags: []
 | 2026-03-30 | TASK-611 | Created core/numerics.py — safe_divide(), approx_equal(), clamp() | — |
 | 2026-03-30 | TASK-612 | Created codes/is456/common/ — stress_blocks.py, reinforcement.py, validation.py | — |
 | 2026-03-30 | TASK-613 | Created codes/is456/common/constants.py — 22 IS 456 named constants | — |
+| 2026-03-30 | TASK-614 | Extract @deprecated to core/deprecation.py + backward-compat re-exports | 8716c02c |
+| 2026-03-30 | TASK-615 | Populate clauses.json: 22 new IS 456 subclauses (92→119), fix 33.2/33.3 numbering | 8716c02c |
+| 2026-03-30 | TASK-616 | Add 5 IS 13920 entries (6.3, 7.4.1, 8.1, 9.2, 9.3), total 11→16 | 8716c02c |
+| 2026-03-30 | — | Add 41 new tests: clauses.json schema (36) + deprecation import paths (5) | 8716c02c |

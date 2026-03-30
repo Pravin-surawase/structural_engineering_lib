@@ -30,17 +30,29 @@ tags: []
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 112 (Quality-First Development System — quality pipeline skill, quality gate prompt, 8 agent updates, library expansion blueprint v4)
+**Last Session:** Session 113 (Phase 1 Batch 3 — TASK-614 deprecation module, TASK-615 clauses.json +22 IS 456, TASK-616 +5 IS 13920, 41 new tests, PR #458)
 
 ---
 
 ## What's Next
 
-1. ~~**Phase 1 Foundation (611-613)**~~ — ✅ Done: TASK-611 (`core/numerics.py`), TASK-612 (shared math extraction), TASK-613 (safety factor constants)
-2. **Phase 1 Foundation (continued)** — TASK-614 (`@deprecated` decorator), TASK-615 (clauses.json subclauses), TASK-617 (test assertion helpers)
-3. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
-4. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
-5. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+1. ~~**Phase 1 Batch 1 (611-613)**~~ — ✅ Done: `core/numerics.py`, shared math extraction, safety factor constants
+2. ~~**Phase 1 Batch 3 (614-616)**~~ — ✅ Done: `core/deprecation.py`, clauses.json 92→119 IS 456 + 11→16 IS 13920, 41 new tests
+3. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards)
+4. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
+5. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
+6. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+
+---
+
+## Session 113 Summary — Phase 1 Batch 3 Complete
+
+**What was done:**
+- **TASK-614:** Created `core/deprecation.py` — canonical location for `@deprecated` decorator and `deprecated_field()`. Updated `core/utilities.py` with backward-compat re-exports. Updated `ductile.py` and `test_deprecation.py` import paths. Added 5 import-path tests.
+- **TASK-615:** Populated `clauses.json` with 22 new IS 456:2000 clauses (92→119 total): Cl 24.2-24.3 (slabs), 25.1 (columns), 32.1-32.5 (walls), 33.2 fix + 33.3 (stairs), 34.2-34.2.2 (footings), AnnexD-1 through AnnexD-2 (10 two-way slab entries). Fixed staircase clause numbering (33.3→33.2 rename).
+- **TASK-616:** Added 5 IS 13920:2016 entries: 6.3 (beam lap splices), 7.4.1 (confining reinforcement area), 8.1 (beam-column joints), 9.2-9.3 (shear wall design). Total IS 13920: 11→16 entries.
+- **Tests:** 41 new tests (36 clauses.json schema + 5 deprecation import), 3367 total passing, CI 17/17 green.
+- **PR #458** merged, commit `8716c02c`.
 
 ---
 
@@ -62,11 +74,12 @@ tags: []
 - Updated `docs/TASKS.md` with Phase 0-3 tasks (TASK-600 through TASK-656)
 
 **What's next (Priority Order):**
-1. ~~**Phase 1 Foundation (611-613)**~~ — ✅ Done
-2. **Phase 1 Foundation (continued)** — TASK-614 (`@deprecated` decorator), TASK-615 (clauses.json subclauses), TASK-617 (test assertion helpers)
-3. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
-4. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
-5. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+1. ~~**Phase 1 Batch 1 (611-613)**~~ — ✅ Done
+2. ~~**Phase 1 Batch 3 (614-616)**~~ — ✅ Done (PR #458, 41 new tests, 3367 total passing)
+3. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards)
+4. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
+5. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
+6. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
 
 **Key Decision:** Library expansion now follows slow-but-accurate approach. Every function goes through 9-step pipeline.
 

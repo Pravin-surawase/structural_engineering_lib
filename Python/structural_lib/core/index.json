@@ -2,8 +2,8 @@
   "folder": "Python/structural_lib/core",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-29",
-  "file_count": 16,
+  "last_updated": "2026-03-30",
+  "file_count": 18,
   "files": [
     {
       "name": "__init__.py",
@@ -145,6 +145,40 @@
         }
       ],
       "content_hash": "c74a849facfd"
+    },
+    {
+      "name": "deprecation.py",
+      "type": "python",
+      "size_lines": 156,
+      "last_updated": "2026-03-30",
+      "description": "Module:       deprecation",
+      "functions": [
+        {
+          "name": "deprecated",
+          "description": "Mark a function or class as deprecated.",
+          "params": [
+            "version",
+            "remove_version",
+            "alternative",
+            "reason"
+          ]
+        },
+        {
+          "name": "deprecated_field",
+          "description": "Emit deprecation warning for a dataclass field.",
+          "params": [
+            "dataclass_name",
+            "field_name",
+            "version",
+            "remove_version",
+            "alternative"
+          ]
+        }
+      ],
+      "constants": [
+        "F"
+      ],
+      "content_hash": "57a79d71f7b2"
     },
     {
       "name": "error_messages.py",
@@ -695,6 +729,44 @@
       "content_hash": "8cc7a8b1a3bc"
     },
     {
+      "name": "numerics.py",
+      "type": "python",
+      "size_lines": 78,
+      "last_updated": "2026-03-30",
+      "description": "Numeric safety utilities for structural calculations.",
+      "functions": [
+        {
+          "name": "safe_divide",
+          "description": "Safely divide two numbers, returning default if denominator is near zero.",
+          "params": [
+            "numerator",
+            "denominator",
+            "default"
+          ]
+        },
+        {
+          "name": "approx_equal",
+          "description": "Check whether two floats are approximately equal.",
+          "params": [
+            "a",
+            "b",
+            "rel_tol",
+            "abs_tol"
+          ]
+        },
+        {
+          "name": "clamp",
+          "description": "Clamp *value* to the inclusive range [min_val, max_val].",
+          "params": [
+            "value",
+            "min_val",
+            "max_val"
+          ]
+        }
+      ],
+      "content_hash": "c368fb451b76"
+    },
+    {
       "name": "registry.py",
       "type": "python",
       "size_lines": 98,
@@ -767,8 +839,8 @@
     {
       "name": "utilities.py",
       "type": "python",
-      "size_lines": 212,
-      "last_updated": "2026-03-26",
+      "size_lines": 70,
+      "last_updated": "2026-03-30",
       "description": "Module:       utilities",
       "functions": [
         {
@@ -803,33 +875,9 @@
           "params": [
             "value_m"
           ]
-        },
-        {
-          "name": "deprecated",
-          "description": "Mark a function or class as deprecated.",
-          "params": [
-            "version",
-            "remove_version",
-            "alternative",
-            "reason"
-          ]
-        },
-        {
-          "name": "deprecated_field",
-          "description": "Emit deprecation warning for a dataclass field.",
-          "params": [
-            "dataclass_name",
-            "field_name",
-            "version",
-            "remove_version",
-            "alternative"
-          ]
         }
       ],
-      "constants": [
-        "F"
-      ],
-      "content_hash": "b61e1796e5fb"
+      "content_hash": "c29150bc31da"
     },
     {
       "name": "validation.py",
@@ -958,7 +1006,7 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "81fb9e3e33ffddd8",
+  "content_hash": "bd96eb48b2a245d8",
   "has_init": true,
   "public_api": [
     "DesignCode",
