@@ -32,13 +32,14 @@ VERSION_FILES = {
     "Python/pyproject.toml": [
         (r'^version = "[^"]+"', 'version = "{version}"'),
     ],
-    # Python fallback for dev mode (when package not installed)
-    "Python/structural_lib/api.py": [
-        (r'return "[0-9]+\.[0-9]+\.[0-9]+"', 'return "{version}"'),
+    # React app (keep in sync)
+    "react_app/package.json": [
+        (r'"version": "[^"]+"', '"version": "{version}"'),
     ],
-    # VBA runtime (VBA can't read external files)
-    "VBA/Modules/M08_API.bas": [
-        (r'Get_Library_Version = "[^"]+"', 'Get_Library_Version = "{version}"'),
+    # Academic citation
+    "CITATION.cff": [
+        (r"^version: [0-9]+\.[0-9]+\.[0-9]+", "version: {version}"),
+        (r"^date-released: .+", "date-released: {date}"),
     ],
 }
 
@@ -169,8 +170,8 @@ DOC_DATE_FILES = {
 EVERGREEN_NOTES = """
 Version is managed in these files:
   - Python/pyproject.toml (source of truth)
-  - Python/api.py (dev mode fallback)
-  - VBA/M08_API.bas (VBA runtime)
+  - react_app/package.json (React app)
+  - CITATION.cff (academic citation)
 
 Doc references are synced via: python scripts/bump_version.py --sync-docs
 """
@@ -196,10 +197,18 @@ def update_file(
 
     content = filepath.read_text()
     original = content
+    unmatched_patterns = []
 
     for pattern, replacement in patterns:
+        if not re.search(pattern, content, re.MULTILINE):
+            unmatched_patterns.append(pattern)
+            continue
         replacement_str = replacement.format(**format_kwargs)
         content = re.sub(pattern, replacement_str, content, flags=re.MULTILINE)
+
+    if unmatched_patterns:
+        for p in unmatched_patterns:
+            print(f"  ⚠ WARNING: Pattern not found in {filepath}: {p}")
 
     if content != original:
         if dry_run:
@@ -209,7 +218,8 @@ def update_file(
             print(f"  UPDATED: {filepath}")
         return True
     else:
-        print(f"  (no change): {filepath}")
+        if not unmatched_patterns:
+            print(f"  (no change): {filepath}")
         return False
 
 
@@ -218,6 +228,9 @@ def main():
     parser.add_argument("version", nargs="?", help="New version (e.g., 0.9.2)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would change")
     parser.add_argument("--current", action="store_true", help="Show current version")
+    parser.add_argument(
+        "--force", action="store_true", help="Skip version ordering check"
+    )
     parser.add_argument(
         "--sync-docs",
         action="store_true",
@@ -343,32 +356,90 @@ def main():
         print("Expected: X.Y.Z (e.g., 0.9.2, 1.0.0)")
         return 1
 
+    # Validate version is higher than current
+    def _semver_tuple(v: str) -> tuple[int, int, int]:
+        parts = v.split(".")
+        return (int(parts[0]), int(parts[1]), int(parts[2]))
+
+    if not args.force:
+        if _semver_tuple(new_version) <= _semver_tuple(current):
+            print(
+                f"ERROR: New version {new_version} must be higher than current {current}"
+            )
+            print("Use --force to override (e.g., for pre-release corrections)")
+            return 1
+
     print(
         f"{'[DRY RUN] ' if args.dry_run else ''}Bumping version: {current} → {new_version}"
     )
     print()
 
+    # Backup files before modifying
+    backups: dict[Path, str] = {}
+
     changes = 0
     for rel_path, patterns in VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
-        if update_file(
-            filepath, patterns, {"version": new_version, "date": today}, args.dry_run
-        ):
-            changes += 1
+        if filepath.exists():
+            backups.setdefault(filepath, filepath.read_text())
+        try:
+            if update_file(
+                filepath,
+                patterns,
+                {"version": new_version, "date": today},
+                args.dry_run,
+            ):
+                changes += 1
+        except Exception as e:
+            print(f"  ERROR updating {filepath}: {e}")
+            if not args.dry_run:
+                print("  Rolling back changes...")
+                for path, content in backups.items():
+                    path.write_text(content)
+                    print(f"  RESTORED: {path}")
+            return 1
 
     doc_changes = 0
     for rel_path, patterns in DOC_VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
-        if update_file(
-            filepath, patterns, {"version": new_version, "date": today}, args.dry_run
-        ):
-            doc_changes += 1
+        if filepath.exists():
+            backups.setdefault(filepath, filepath.read_text())
+        try:
+            if update_file(
+                filepath,
+                patterns,
+                {"version": new_version, "date": today},
+                args.dry_run,
+            ):
+                doc_changes += 1
+        except Exception as e:
+            print(f"  ERROR updating {filepath}: {e}")
+            if not args.dry_run:
+                print("  Rolling back changes...")
+                for path, content in backups.items():
+                    path.write_text(content)
+                    print(f"  RESTORED: {path}")
+            return 1
     for rel_path, patterns in DOC_DATE_FILES.items():
         filepath = REPO_ROOT / rel_path
-        if update_file(
-            filepath, patterns, {"version": new_version, "date": today}, args.dry_run
-        ):
-            doc_changes += 1
+        if filepath.exists():
+            backups.setdefault(filepath, filepath.read_text())
+        try:
+            if update_file(
+                filepath,
+                patterns,
+                {"version": new_version, "date": today},
+                args.dry_run,
+            ):
+                doc_changes += 1
+        except Exception as e:
+            print(f"  ERROR updating {filepath}: {e}")
+            if not args.dry_run:
+                print("  Rolling back changes...")
+                for path, content in backups.items():
+                    path.write_text(content)
+                    print(f"  RESTORED: {path}")
+            return 1
 
     print()
     if args.dry_run:

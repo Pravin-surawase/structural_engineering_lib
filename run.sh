@@ -308,15 +308,17 @@ Usage: ./run.sh release <subcommand>
 Version bumps and release management.
 
 Subcommands:
-  run patch|minor|major    Bump version and update all files
+  preflight [version]      Run pre-release validation checks
+  run <version>            Bump version and update all files
   verify                   Verify installed package in clean venv
   check-docs               Check docs have correct version
   checklist                Print release checklist
 
 Examples:
-  ./run.sh release run patch        # Bump patch version
-  ./run.sh release verify           # Verify release
-  ./run.sh release check-docs       # Check version in docs
+  ./run.sh release preflight 0.20.0  # Validate before releasing
+  ./run.sh release run 0.20.0        # Bump to 0.20.0
+  ./run.sh release verify            # Verify release
+  ./run.sh release check-docs        # Check version in docs
 EOF
 }
 
@@ -718,7 +720,7 @@ _run_sh() {
     local -a evolve_opts=('--fix' '--review' '--status' '--report' '--json')
     local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
-    local -a release_subs=('run' 'verify' 'check-docs' 'checklist')
+    local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands

@@ -32,6 +32,8 @@ tags: []
 
 **Last Session:** Session 113 (Phase 1 Batch 3 — TASK-614 deprecation module, TASK-615 clauses.json +22 IS 456, TASK-616 +5 IS 13920, 41 new tests, PR #458)
 
+**Release Infrastructure (latest):** Overhauled release tooling — `bump_version.py` now syncs pyproject.toml/package.json/CITATION.cff with semver validation + rollback; `release.py` gained `preflight` subcommand + pytest-based `verify`; `publish.yml` added `validate` job (tests + tag-version check before publish); `ops.agent.md` updated with release procedure; 37 new tests in `test_release_scripts.py`.
+
 ---
 
 ## What's Next

@@ -192,6 +192,48 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 7. **SIGPIPE from pipefail** → Guard pipes with `|| true`
 8. **Stale branches accumulated (11 in Session 112)** → agent_start.sh now checks at session start, finish_task_pr.sh auto-cleans after merge
 
+## Release Procedure
+
+### Pre-Release Checks
+```bash
+.venv/bin/python scripts/release.py preflight 0.X.Y    # Full validation (git, tests, React build, docs)
+```
+
+### Release Flow (Step by Step)
+
+| Step | Command | What it does |
+|------|---------|-------------|
+| 1. Preflight | `.venv/bin/python scripts/release.py preflight 0.X.Y` | Validates git state, tests, React build, doc sync |
+| 2. Branch | `./scripts/ai_commit.sh --branch TASK-RELEASE "Release v0.X.Y"` | Create release branch + PR |
+| 3. Bump | `.venv/bin/python scripts/release.py run 0.X.Y --no-open` | Bumps version in pyproject.toml, package.json, CITATION.cff + all docs |
+| 4. CHANGELOG | Edit CHANGELOG.md + docs/getting-started/releases.md | Add release notes |
+| 5. Commit | `./scripts/ai_commit.sh "chore: release v0.X.Y"` | Commit all release changes |
+| 6. Finish PR | `./scripts/ai_commit.sh --finish "Release v0.X.Y"` | CI + merge to main |
+| 7. Tag | `git tag v0.X.Y && git push origin v0.X.Y` | Triggers PyPI publish via GitHub Actions |
+| 8. Verify | `.venv/bin/python scripts/release.py verify --version 0.X.Y --source pypi --skip-cli` | Verify on PyPI |
+
+### Version Decision
+- **Patch** (0.19.1 → 0.19.2): Bug fixes only, no new features
+- **Minor** (0.19.1 → 0.20.0): New features, backward compatible
+- **Major** (0.19.1 → 1.0.0): Breaking changes (requires user code changes)
+
+### Post-Release
+- Check [PyPI package page](https://pypi.org/p/structural-lib-is456)
+- Check [GitHub Releases](https://github.com/Pravin-surawase/structural_engineering_lib/releases)
+- Verify: `pip install structural-lib-is456==0.X.Y && python -c "from structural_lib import api; print(api.get_library_version())"`
+
+### Rollback (if broken release ships)
+1. **PyPI yank:** `pip install twine && twine yank structural-lib-is456 0.X.Y` (requires PyPI credentials)
+2. **Git tag delete:** `git tag -d v0.X.Y && git push origin :refs/tags/v0.X.Y` (requires user approval)
+3. **Fix forward preferred:** Release 0.X.Z with the fix rather than yanking
+
+### Release Anti-Patterns (NEVER do these)
+- NEVER tag without tests passing
+- NEVER publish from a non-main branch
+- NEVER bump version without updating CHANGELOG
+- NEVER skip `preflight` checks
+- NEVER manually edit pyproject.toml version (use bump_version.py)
+
 ## Rules
 
 - **Execute scripts, don't create them** — delegate script creation to @backend
