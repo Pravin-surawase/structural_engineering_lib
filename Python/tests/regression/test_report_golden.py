@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from structural_lib import report
+from structural_lib.services import report
 
 # Path to tests/fixtures/ (two levels up from tests/regression/)
 FIXTURES = Path(__file__).parent.parent / "fixtures" / "report"

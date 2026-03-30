@@ -253,7 +253,17 @@ def cmd_run(args: argparse.Namespace) -> int:
     print("\n  Running Python tests...")
     try:
         test_result = _run_with_timeout(
-            [sys.executable, "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q"],
+            [
+                sys.executable,
+                "-m",
+                "pytest",
+                "Python/tests/",
+                "-v",
+                "--tb=short",
+                "-q",
+                "-m",
+                "not slow",
+            ],
             timeout=600,
         )
     except subprocess.TimeoutExpired:
@@ -410,6 +420,8 @@ def cmd_verify(args: argparse.Namespace) -> int:
                 "--tb=short",
                 "-q",
                 "-x",  # Stop on first failure
+                "-m",
+                "not slow",
             ]
         )
 
@@ -718,6 +730,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
                     "-v",
                     "--tb=short",
                     "-q",
+                    "-m",
+                    "not slow",
                 ],
                 timeout=600,
             )

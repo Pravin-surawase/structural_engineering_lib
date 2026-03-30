@@ -180,7 +180,7 @@ def test_compute_critical_html_to_file(sample_job_output_dir, tmp_path):
 
 
 def test_compute_dxf_raises_when_ezdxf_missing(sample_detailing_list, monkeypatch):
-    from structural_lib import dxf_export
+    from structural_lib.services import dxf_export
 
     monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", False)
     with pytest.raises(RuntimeError, match="ezdxf"):

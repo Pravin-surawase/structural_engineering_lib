@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib import report_svg
+from structural_lib.services import report_svg
 from structural_lib.services.report import (
     export_critical_csv,
     export_critical_html,

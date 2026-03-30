@@ -15,7 +15,8 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib import bbs, detailing, flexure, serviceability, shear
+from structural_lib import detailing, flexure, serviceability, shear
+from structural_lib.services import bbs
 
 # =============================================================================
 # Load Test Vectors

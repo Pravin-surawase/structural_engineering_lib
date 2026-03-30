@@ -3,7 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib import api, job_runner
+from structural_lib import api
+from structural_lib.services import job_runner
 
 
 def _write_job(path: Path, job: dict) -> None:

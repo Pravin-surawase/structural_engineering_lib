@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from structural_lib import job_cli
+from structural_lib.services import job_cli
 
 
 def test_job_cli_main_run_invokes_runner(monkeypatch, tmp_path):

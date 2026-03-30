@@ -657,7 +657,7 @@ def test_dxf_missing_input(tmp_path):
 def test_dxf_generation(sample_design_results_file, tmp_path):
     """Test dxf command with valid input."""
     # Import to check if ezdxf is available
-    from structural_lib import dxf_export
+    from structural_lib.services import dxf_export
 
     if not dxf_export.EZDXF_AVAILABLE:
         pytest.skip("ezdxf not installed")
@@ -673,7 +673,7 @@ def test_dxf_generation(sample_design_results_file, tmp_path):
 
 def test_dxf_title_block(sample_design_results_file, tmp_path):
     """Title block option should create BORDER layer and title text."""
-    from structural_lib import dxf_export
+    from structural_lib.services import dxf_export
 
     if not dxf_export.EZDXF_AVAILABLE:
         pytest.skip("ezdxf not installed")
@@ -704,7 +704,7 @@ def test_dxf_title_block(sample_design_results_file, tmp_path):
 
 def test_dxf_without_ezdxf(sample_design_results_file, tmp_path, monkeypatch):
     """Test dxf command when ezdxf is not available."""
-    from structural_lib import dxf_export
+    from structural_lib.services import dxf_export
 
     # Mock ezdxf as unavailable
     monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", False)
@@ -1083,7 +1083,7 @@ def test_full_workflow_csv_to_bbs(sample_csv_file, tmp_path):
 
 def test_full_workflow_csv_to_dxf(sample_csv_file, tmp_path):
     """Test full workflow: CSV -> design -> DXF."""
-    from structural_lib import dxf_export
+    from structural_lib.services import dxf_export
 
     if not dxf_export.EZDXF_AVAILABLE:
         pytest.skip("ezdxf not installed")

@@ -13,7 +13,7 @@ tags: []
 **Audience:** Users
 **Status:** Approved
 **Importance:** High
-**Version:** 0.19.1
+**Version:** 0.20.0
 **Created:** 2025-12-15
 **Last Updated:** 2026-03-29
 

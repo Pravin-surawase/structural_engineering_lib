@@ -28,8 +28,6 @@ from . import (
     api,
     audit,
     batch,
-    bbs,
-    calculation_report,
     compliance,
     costing,
     detailing,
@@ -50,7 +48,7 @@ from . import (
 # DXF export is optional (requires ezdxf)
 dxf_export: _ModuleType | None
 try:
-    dxf_export = importlib.import_module(f"{__name__}.dxf_export")
+    dxf_export = importlib.import_module(f"{__name__}.services.dxf_export")
 except ImportError:
     dxf_export = None
 
@@ -67,8 +65,6 @@ __all__ = [
     "api",
     "audit",
     "batch",
-    "bbs",
-    "calculation_report",
     "compliance",
     "costing",
     "detailing",

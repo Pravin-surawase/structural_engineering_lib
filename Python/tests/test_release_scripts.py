@@ -24,13 +24,16 @@ VERSION_TRACKED_FILES = [
 ]
 
 
-def run_script(script: Path, *args: str) -> subprocess.CompletedProcess:
+def run_script(
+    script: Path, *args: str, timeout: int = 120
+) -> subprocess.CompletedProcess:
     """Run a script and return the result."""
     return subprocess.run(
         [PYTHON, str(script), *args],
         capture_output=True,
         text=True,
         cwd=REPO_ROOT,
+        timeout=timeout,
     )
 
 

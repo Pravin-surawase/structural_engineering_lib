@@ -8,7 +8,6 @@ Description:  IS 13920:2016 Ductile Detailing checks for Beams
 import math
 from dataclasses import dataclass, field
 
-from structural_lib.core.deprecation import deprecated_field
 from structural_lib.core.errors import (
     E_DUCTILE_001,
     E_DUCTILE_002,
@@ -38,16 +37,6 @@ class DuctileBeamResult:
     confinement_spacing: float
     remarks: str = ""  # Deprecated: Use errors list instead
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
-
-    def __post_init__(self) -> None:
-        if self.remarks:
-            deprecated_field(
-                "DuctileBeamResult",
-                "remarks",
-                "0.14.0",
-                "1.0.0",
-                alternative="errors",
-            )
 
 
 def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:

@@ -14,7 +14,7 @@ tags: []
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-30
+**Last Updated:** 2026-03-31<br>
 
 ---
 
@@ -27,7 +27,7 @@ tags: []
 | Release | Version | Status |
 |---------|---------|--------|
 | **Previous** | v0.20.0 | ✅ Done (React migration complete) |
-| **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
+| **Current** | v0.20.0 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
 **Last Session:** Session 113 (Phase 1 Batch 3 — TASK-614 deprecation module, TASK-615 clauses.json +22 IS 456, TASK-616 +5 IS 13920, 41 new tests, PR #458)
