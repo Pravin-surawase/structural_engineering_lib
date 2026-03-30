@@ -78,6 +78,10 @@ poll_pr_checks() {
 
         if [[ "$failed" -gt 0 ]]; then
             echo -e "${RED}✗ $failed checks failed${NC}"
+            # Show which checks failed
+            gh pr checks "$pr_number" --json name,conclusion --jq '.[] | select(.conclusion=="FAILURE") | .name' 2>/dev/null | while read -r name; do
+                echo -e "  ${RED}✗${NC} Failed: $name"
+            done
             return 1
         fi
         if [[ "$pending" -gt 0 ]]; then
@@ -149,18 +153,43 @@ if [[ -n "$CONTINUE_PR" ]]; then
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "→ Watching CI checks (polling)..."
     if poll_pr_checks "$CONTINUE_PR" 15; then
+        # Pre-merge: verify no conflicts appeared after CI passed
+        MERGE_STATE=$(gh pr view "$CONTINUE_PR" --json mergeable -q .mergeable 2>/dev/null || echo "UNKNOWN")
+        if [[ "$MERGE_STATE" == "CONFLICTING" ]]; then
+            echo -e "${RED}✗ PR has merge conflicts — cannot merge${NC}"
+            echo "  Resolve conflicts, push, then re-run with: --continue $CONTINUE_PR"
+            exit 1
+        fi
+
         echo "→ Merging PR..."
-        gh pr merge "$CONTINUE_PR" --squash --delete-branch
+        if ! gh pr merge "$CONTINUE_PR" --squash --delete-branch 2>&1; then
+            echo "  Merge failed — retrying in 5s..."
+            sleep 5
+            gh pr merge "$CONTINUE_PR" --squash --delete-branch 2>&1 || {
+                echo -e "${RED}✗ Merge failed after retry${NC}"
+                echo "  Manual merge: gh pr merge $CONTINUE_PR --squash --delete-branch"
+                exit 1
+            }
+        fi
 
         echo "→ Switching back to main..."
         git checkout main
         git pull --ff-only 2>/dev/null || true
+        git fetch --prune --quiet 2>/dev/null || true
 
         # Clean up local task branch (query PR for its branch name)
         branch_name=$(gh pr view "$CONTINUE_PR" --json headRefName -q .headRefName 2>/dev/null || true)
         if [[ -n "$branch_name" ]]; then
             git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
         fi
+
+        # Clean up any other local branches already merged into main
+        while IFS= read -r merged_branch; do
+            merged_branch=$(echo "$merged_branch" | tr -d ' *')
+            if [[ -n "$merged_branch" && "$merged_branch" != "main" ]]; then
+                git branch -d "$merged_branch" 2>/dev/null && echo "  → Cleaned up merged branch: $merged_branch" || true
+            fi
+        done < <(git branch --merged main 2>/dev/null)
 
         echo ""
         echo -e "${GREEN}✓ PR #$CONTINUE_PR merged and cleaned up!${NC}"
@@ -312,18 +341,43 @@ case "$MODE" in
     wait)
         echo "→ Watching CI checks (polling)..."
         if poll_pr_checks "$PR_NUMBER" 15; then
+            # Pre-merge: verify no conflicts appeared after CI passed
+            MERGE_STATE=$(gh pr view "$PR_NUMBER" --json mergeable -q .mergeable 2>/dev/null || echo "UNKNOWN")
+            if [[ "$MERGE_STATE" == "CONFLICTING" ]]; then
+                echo -e "${RED}✗ PR has merge conflicts — cannot merge${NC}"
+                echo "  Resolve conflicts, push, then re-run with: --continue $PR_NUMBER"
+                exit 1
+            fi
+
             echo "→ Merging PR..."
-            gh pr merge "$PR_NUMBER" --squash --delete-branch
+            if ! gh pr merge "$PR_NUMBER" --squash --delete-branch 2>&1; then
+                echo "  Merge failed — retrying in 5s..."
+                sleep 5
+                gh pr merge "$PR_NUMBER" --squash --delete-branch 2>&1 || {
+                    echo -e "${RED}✗ Merge failed after retry${NC}"
+                    echo "  Manual merge: gh pr merge $PR_NUMBER --squash --delete-branch"
+                    exit 1
+                }
+            fi
 
             echo "→ Switching back to main..."
             git checkout main
             git pull --ff-only 2>/dev/null || true
+            git fetch --prune --quiet 2>/dev/null || true
 
             # Clean up local task branch (specific to this task)
             branch_name="task/${TASK_ID}"
             if [[ -n "$branch_name" ]]; then
                 git branch -D "$branch_name" 2>/dev/null && echo "→ Deleted local branch: $branch_name" || true
             fi
+
+            # Clean up any other local branches already merged into main
+            while IFS= read -r merged_branch; do
+                merged_branch=$(echo "$merged_branch" | tr -d ' *')
+                if [[ -n "$merged_branch" && "$merged_branch" != "main" ]]; then
+                    git branch -d "$merged_branch" 2>/dev/null && echo "  → Cleaned up merged branch: $merged_branch" || true
+                fi
+            done < <(git branch --merged main 2>/dev/null)
 
             echo ""
             echo -e "${GREEN}✓ PR merged and cleaned up!${NC}"

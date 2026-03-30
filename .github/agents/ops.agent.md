@@ -169,6 +169,9 @@ Destructive GitHub operations require **explicit user confirmation**.
 | Hook blocks commit | Check `logs/hook_output_*.log` — fix the issue, don't bypass |
 | Network failure on push | `./scripts/ai_commit.sh --push` |
 | PR left open (forgot to merge) | `./scripts/ai_commit.sh --finish "description"` |
+| Merge fails (conflicts after CI passed) | Automatic — finish_task_pr.sh now checks mergeable state before merge |
+| Stale remote tracking refs | Automatic — agent_start.sh + finish_task_pr.sh prune on every run |
+| Stale merged branches accumulate | Automatic — finish_task_pr.sh cleans up merged branches after every PR merge |
 
 ### Git System Architecture (for debugging only)
 
@@ -187,6 +190,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 5. **Forgot to finish PR** → Always call `--finish` after last commit on task branch
 6. **Ignoring stale-version warnings** → Fix immediately with `check_doc_versions.py --fix`
 7. **SIGPIPE from pipefail** → Guard pipes with `|| true`
+8. **Stale branches accumulated (11 in Session 112)** → agent_start.sh now checks at session start, finish_task_pr.sh auto-cleans after merge
 
 ## Rules
 

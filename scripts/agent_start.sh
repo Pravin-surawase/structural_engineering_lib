@@ -36,6 +36,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 BOLD='\033[1m'
+DIM='\033[2m'
 
 # Parse arguments
 AGENT=""
@@ -88,6 +89,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 cd "$PROJECT_ROOT"
+
+# Ensure all scripts are executable
+chmod +x "$SCRIPT_DIR"/*.sh 2>/dev/null || true
 
 echo ""
 echo -e "${BOLD}╔════════════════════════════════════════════════════════════╗${NC}"
@@ -183,6 +187,51 @@ else
         exit 1
     else
         echo -e "  ${GREEN}✓${NC} Pre-flight checks passed"
+    fi
+fi
+
+# Step 3b: Git hygiene (non-blocking)
+if [ -z "$QUICK" ] && [ -z "$SKIP_PREFLIGHT" ]; then
+    echo -e "${BLUE}[3b/6]${NC} Git hygiene..."
+
+    # Prune stale remote tracking refs (silent network call)
+    BEFORE_PRUNE=$(git branch -r 2>/dev/null | wc -l | tr -d ' ')
+    git fetch --prune --quiet 2>/dev/null || true
+    AFTER_PRUNE=$(git branch -r 2>/dev/null | wc -l | tr -d ' ')
+    PRUNED=$((BEFORE_PRUNE - AFTER_PRUNE))
+    [ "$PRUNED" -gt 0 ] && echo -e "  ${GREEN}✓${NC} Pruned $PRUNED stale remote tracking ref(s)"
+
+    # Check for stale local branches (merged into main)
+    STALE_MERGED=$(git branch --merged main 2>/dev/null | grep -v '^\*\|main$' | wc -l | tr -d ' ')
+    if [ "$STALE_MERGED" -gt 0 ]; then
+        echo -e "  ${YELLOW}⚠${NC} $STALE_MERGED local branch(es) already merged into main"
+        git branch --merged main 2>/dev/null | grep -v '^\*\|main$' | head -5
+        echo -e "  ${DIM}Cleanup: .venv/bin/python scripts/cleanup_stale_branches.py --delete${NC}"
+    fi
+
+    # Check for unmerged branches
+    STALE_UNMERGED=$(git branch --no-merged main 2>/dev/null | grep -v '^\*' | wc -l | tr -d ' ')
+    if [ "$STALE_UNMERGED" -gt 0 ]; then
+        echo -e "  ${YELLOW}⚠${NC} $STALE_UNMERGED local branch(es) NOT merged into main"
+        git branch --no-merged main 2>/dev/null | grep -v '^\*' | head -5
+    fi
+
+    # Check stale auto-stashes (warn only, no auto-drop)
+    STASH_COUNT=$(git stash list 2>/dev/null | grep -c "auto-stash" || echo "0")
+    if [ "$STASH_COUNT" -gt 2 ]; then
+        echo -e "  ${YELLOW}⚠${NC} $STASH_COUNT auto-stash entries — review: git stash list"
+    fi
+
+    # Check for open PRs
+    OPEN_PRS=$(gh pr list --state open --limit 5 --json number,title 2>/dev/null || echo "")
+    if [ -n "$OPEN_PRS" ] && [ "$OPEN_PRS" != "[]" ]; then
+        PR_COUNT=$(echo "$OPEN_PRS" | grep -c '"number"' || echo "0")
+        echo -e "  ${YELLOW}⚠${NC} $PR_COUNT open PR(s):"
+        echo "$OPEN_PRS" | grep '"title"' | sed 's/.*"title": *"//;s/".*/  /' | head -3
+    fi
+
+    if [ "$PRUNED" -eq 0 ] && [ "$STALE_MERGED" -eq 0 ] && [ "$STALE_UNMERGED" -eq 0 ] && [ "$STASH_COUNT" -le 2 ]; then
+        echo -e "  ${GREEN}✓${NC} Git state clean"
     fi
 fi
 
