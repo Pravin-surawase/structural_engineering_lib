@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Architecture Review — 2025-12-27
 
 **Type:** Architecture

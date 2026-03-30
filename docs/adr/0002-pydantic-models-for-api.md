@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # ADR 0002: Pydantic Models for API Contracts
 
 **Date:** 2026-01-24

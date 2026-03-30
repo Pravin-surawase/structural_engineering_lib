@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Why We Chose Classical Methods Over Machine Learning for Structural Design
 
 **TL;DR:** We built intelligent features (sensitivity analysis, predictive validation) for a structural engineering library without using machine learning. Classical methods were faster, more accurate, and actually *better* for our use case. Here's why ML isn't always the answer.

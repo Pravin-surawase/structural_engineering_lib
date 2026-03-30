@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Agent 9 Quick Start - Governance & Documentation Structure
 
 **Get started with Agent 9 in 60 seconds.**

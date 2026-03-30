@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Agent Bootstrap - Complete Review & Link Analysis
 **Date:** 2026-01-19
 **Status:** ✅ Updated for agent-bootstrap v2.1.1

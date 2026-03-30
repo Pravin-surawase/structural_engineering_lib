@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Agent Automation System v1.1.0
 
 **Status:** ✅ Production Ready (All tests passing)

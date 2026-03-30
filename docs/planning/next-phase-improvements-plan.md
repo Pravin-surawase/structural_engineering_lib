@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 **Type:** Plan
 **Audience:** All Agents, Pravin
 **Status:** Draft — Awaiting Review

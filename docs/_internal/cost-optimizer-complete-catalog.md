@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Cost Optimizer - Complete Issue Catalog (Rounds 1-3)
 **Date:** 2026-01-09
 **Final Status:** 49 Total Issues Discovered

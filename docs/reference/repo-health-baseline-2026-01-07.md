@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: reference
+complexity: intermediate
+tags: []
+---
+
 # Repository Health Baseline (2026-01-07)
 
 **Type:** Report

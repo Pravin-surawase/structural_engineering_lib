@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Sensitivity Analysis for Reinforced Concrete Beam Design: A Practical Guide
 
 **TL;DR:** When a beam design fails, which parameter should you modify—depth, width, concrete grade, or steel grade? Sensitivity analysis quantifies the impact of each parameter, helping engineers optimize efficiently instead of guessing. This guide shows how to implement perturbation-based sensitivity analysis for RC beams per IS 456, with code, validation, and real examples.

@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Screenshot Capture Guide for Excel Tutorial
 
 **Purpose:** Instructions for capturing screenshots to add to excel-tutorial.md

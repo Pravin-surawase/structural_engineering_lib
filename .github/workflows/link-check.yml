@@ -1,0 +1,48 @@
+name: Link Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/link-check.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '*.md'
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly on Monday 6am UTC
+
+permissions:
+  contents: read
+
+jobs:
+  link-check:
+    name: Check Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --exclude-mail
+            --exclude 'localhost'
+            --exclude '127.0.0.1'
+            --exclude 'example.com'
+            --exclude 'unpkg.com/katex'
+            --suggest
+            'docs/**/*.md'
+            '*.md'
+          fail: false  # Don't fail CI, just report
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-check-report
+          path: lychee/out.md
+          retention-days: 30

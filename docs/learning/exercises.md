@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Exercises (Hands-On, Beginner Friendly)
 
 These exercises are small and safe. They build confidence without heavy math.

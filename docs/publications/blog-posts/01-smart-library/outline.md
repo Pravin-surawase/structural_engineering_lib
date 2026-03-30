@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Blog Post 01: Making Structural Design Intelligent (Without Machine Learning)
 
 **Target:** Dev.to + Medium

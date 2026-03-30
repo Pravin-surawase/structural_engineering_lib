@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # External CLI Test (S-007)
 
 Purpose: capture a repeatable, human-run CLI test from a fresh user.

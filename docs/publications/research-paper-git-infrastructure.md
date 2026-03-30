@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned
 
 **Type:** Research

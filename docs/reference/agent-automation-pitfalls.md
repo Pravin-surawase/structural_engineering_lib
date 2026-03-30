@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: reference
+complexity: intermediate
+tags: []
+---
+
 # Agent Automation Pitfalls and Best Practices
 <!-- lint-ignore-git -->
 
