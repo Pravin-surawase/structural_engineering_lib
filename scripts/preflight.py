@@ -35,9 +35,7 @@ failed = 0
 
 def _run(cmd: list[str], cwd: str | None = None) -> tuple[int, str]:
     """Run command, return (returncode, stdout)."""
-    result = subprocess.run(
-        cmd, capture_output=True, text=True, cwd=cwd or REPO_ROOT
-    )
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd or REPO_ROOT)
     return result.returncode, result.stdout.strip()
 
 
@@ -86,7 +84,10 @@ def check_venv() -> None:
     """Ensure .venv exists and Python is correct."""
     venv_python = os.path.join(REPO_ROOT, ".venv", "bin", "python")
     if not os.path.isfile(venv_python):
-        _fail(".venv/bin/python not found", "python3 -m venv .venv && .venv/bin/pip install -e Python/")
+        _fail(
+            ".venv/bin/python not found",
+            "python3 -m venv .venv && .venv/bin/pip install -e Python/",
+        )
         return
 
     rc, version = _run([venv_python, "--version"])
@@ -98,20 +99,15 @@ def check_venv() -> None:
 
 def check_merge_conflicts() -> None:
     """Detect unresolved merge conflicts."""
-    rc, _ = _run(["git", "merge", "HEAD", "--no-commit", "--no-ff"], cwd=REPO_ROOT)
-    # Instead check for conflict markers
-    rc2, output = _run(
-        ["git", "diff", "--check"],
-    )
+    merge_head = os.path.join(REPO_ROOT, ".git", "MERGE_HEAD")
+    if os.path.exists(merge_head):
+        _fail("Unfinished merge in progress", "./scripts/recover_git_state.sh")
+        return
+    rc, output = _run(["git", "diff", "--check"])
     if output and "conflict" in output.lower():
         _fail("Merge conflicts detected", "./scripts/recover_git_state.sh")
     else:
-        # Also check for MERGE_HEAD
-        merge_head = os.path.join(REPO_ROOT, ".git", "MERGE_HEAD")
-        if os.path.exists(merge_head):
-            _fail("Unfinished merge in progress", "./scripts/recover_git_state.sh")
-        else:
-            _pass("No merge conflicts")
+        _pass("No merge conflicts")
 
 
 def check_key_files() -> None:
@@ -163,7 +159,7 @@ def check_stub_not_modified() -> None:
         if "second" in log or "minute" in log or "hour" in log:
             _warn(
                 f"Stub api.py was modified {log} — is this intentional?",
-                "Real code is in services/api.py"
+                "Real code is in services/api.py",
             )
         else:
             _pass("Stub api.py not recently modified")

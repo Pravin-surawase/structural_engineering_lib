@@ -27,7 +27,7 @@
 | Version | Focus | Status | Key Deliverables |
 |---------|-------|--------|------------------|
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
-| **v0.20** | V3 Foundation | ✅ DONE | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
+| **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | 🔄 ACTIVE | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.22** | Full React | 📋 NEXT | AI assistant port, learning center, Streamlit deprecation |
 

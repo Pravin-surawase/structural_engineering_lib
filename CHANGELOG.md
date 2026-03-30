@@ -4,6 +4,75 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-03-30
+
+V3 Foundation release — everything built since v0.19.1. Full-stack maturity milestone: React 19 + FastAPI + Python structural_lib with comprehensive quality infrastructure.
+
+### Added
+- **Batch Design React UI** — SSE streaming progress for multi-beam design (`TASK-510`)
+- **Compliance Checker** — IS 456 compliance wired into React DesignView panel
+- **Cost Optimizer** — Pareto-optimal beam design exposed in React UI
+- **86 API Integration Tests** — Vitest test suites across all 12 FastAPI routers (`TASK-505`)
+- **React UX Overhaul**
+  - `BeamDetailPanel` with correct utilization, top bars, redesign button, edit rebar mode (`TASK-522`)
+  - `CrossSectionView` annotations — utilization color, actual barDia/barCount, badge (`TASK-526`)
+  - `HomePage` rewrite — minimal landing with continuous beam rotation
+  - TopBar nav links, ModeSelect quick access
+  - Code-split React bundle with lazy routes and manual chunks (`TASK-502`)
+  - WebSocket REST fallback when connection drops (`TASK-503`)
+  - React test infrastructure — Vitest + 5 smoke test suites, 23 tests (`TASK-506`)
+- **Library Expansion**
+  - PDF export via `compute_bmd_sfd` FastAPI endpoint (`TASK-514/515`)
+  - Load calculator hook `useLoadCalculator` (`TASK-515`)
+  - Project BOQ full-stack implementation (`TASK-517`)
+  - Torsion API + `useTorsionDesign` React hook (`TASK-518`)
+- **Phase 1 Foundation Cleanup**
+  - `core/numerics.py` — centralized numerical utilities (`TASK-611`)
+  - `codes/is456/common/` — IS 456 constants and shared math (`TASK-612/613`)
+  - Deprecation decorator module (`TASK-614`)
+  - `clauses.json` expansion to 119 entries (`TASK-615`)
+  - Test assertion helpers for IS 456 compliance (`TASK-616/617`)
+  - 41 new tests for Phase 1 foundations
+- **Quality Infrastructure**
+  - Function-quality-pipeline skill (9-step mandatory gate for IS 456 functions)
+  - 14 Copilot agents, 8 skills, 15 prompt files
+  - `structural-math` agent + `new-structural-element` skill
+  - Self-evolving agent system with architecture fixes
+  - Security agent with FORBIDDEN command gates
+- **Developer Tooling**
+  - Release infrastructure overhaul — preflight checks, CI publish workflow, release docs (`#460`)
+  - `ai_commit.sh` upgrades — `--preview`, `--undo`, `--signoff`, `--status`, `--branch`, `--finish`, `--pr-check`
+  - `run.sh` unified CLI + `check_all.py` validation (28 checks)
+  - `launch_stack.sh` full-stack dev launcher (FastAPI + React)
+  - Centralized React API config with Vite proxy
+  - Git hygiene — stale branch detection, pre-merge conflict check, tracking ref cleanup
+  - MkDocs Material documentation site with lychee CI link checking
+  - ETABS VBA column aliases and E2E integration tests for adapters
+
+### Changed
+- **Streamlit Removal** — Legacy Streamlit app and all related files deleted; VBA/Excel extracted to separate repo
+- **Scripts Cleanup** — Stale files deleted, deprecation markers added, phase 1+2 cleanup
+- **Agent Upgrades** — All agents upgraded to Opus 4.6, professional `ai_commit.sh` with retry and stash recovery
+- **Doc System Overhaul** — Budget checks, CODEOWNERS, append-first policy, doc metadata backfill
+- **Git Workflow** — Consolidated 5 git docs into single source, practical PR policy, push-only mode
+
+### Fixed
+- Architecture violations — stub imports in Streamlit, dead test deletion (`TASK-507`)
+- `check_all.py` — 19/28 → 25/28 passing (API validation, manifest, OpenAPI snapshot, links) (`TASK-501`)
+- Git workflow — SIGPIPE under pipefail, duplicate PR creation, stash loss, CI polling race
+- Slenderness monotonicity test flaky float precision edge case
+- Single CSV import crash and adapter auto-detection fallback
+- React build errors, pre-commit fixes, IPv6 uvicorn binding
+- CodeQL taint flow in `check_docker_config.py`
+- 21 scripts cleaned of Streamlit remnants, 4 orphaned tests deleted
+
+### Developer
+- 90+ commits since v0.19.1
+- Sessions 92–113 logged
+- Benchmark configs consolidated, `.gitignore` updated
+- 178 research files archived to `docs/_archive/research/pre-v021`
+- Comprehensive maintenance: indexes, stale dates, archival (session 109)
+
 ## [0.19.1] - 2026-03-24
 
 ### Added

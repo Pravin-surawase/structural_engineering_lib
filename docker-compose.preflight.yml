@@ -1,0 +1,45 @@
+# docker-compose.preflight.yml
+# Memory-safe preflight validation — runs pytest and npm build in containers
+# with resource limits to prevent OOM crashes on host.
+#
+# Usage:
+#   colima start --cpu 4 --memory 4     # Start Docker runtime (Colima, not Docker Desktop)
+#   docker compose -f docker-compose.preflight.yml run --rm test-python
+#   docker compose -f docker-compose.preflight.yml run --rm build-react
+#   docker compose -f docker-compose.preflight.yml up    # Run both
+
+services:
+  test-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    command: ["python", "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q", "-x"]
+    working_dir: /app
+    volumes:
+      - ./Python:/app/Python:ro
+      - ./Etabs_CSV:/app/Etabs_CSV:ro
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2"
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+    profiles: ["test", "all"]
+
+  build-react:
+    image: node:20-alpine
+    command: ["sh", "-c", "npm ci && npm run build"]
+    working_dir: /app
+    volumes:
+      - ./react_app:/app
+      # Don't mount node_modules from host
+      - /app/node_modules
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2"
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=1536
+    profiles: ["build", "all"]
