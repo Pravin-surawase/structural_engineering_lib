@@ -53,6 +53,10 @@ report = ["jinja2>=3.1"]  # Optional HTML templating for reports
 pdf = ["reportlab>=4.0"]  # PDF report generation (Streamlit app)
 validation = ["jsonschema>=4.21"]  # Optional input/output schema validation
 cad = ["pyvista>=0.43", "stpyvista>=0.1.4"]  # CAD-quality 3D export (STL, screenshots)
+docs = [
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.25",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]

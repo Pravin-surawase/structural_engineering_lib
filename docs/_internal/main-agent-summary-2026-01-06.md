@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Main Agent Summary - 2026-01-06
 
 **Agent:** Claude (Main Coordinator)

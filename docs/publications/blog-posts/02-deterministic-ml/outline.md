@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Blog Post 02: Deterministic ML — When Classical Methods Beat Neural Networks
 
 **Target:** Dev.to (primary), HackerNews (via submission)

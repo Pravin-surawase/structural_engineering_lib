@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Cost Optimizer - Round 2 Issues Analysis
 **Date:** 2026-01-08
 **Status:** Code Review Phase

@@ -1,0 +1,15 @@
+# Local development URLs
+http://localhost
+http://127.0.0.1
+https://localhost
+
+# Example/placeholder URLs
+example\.com
+your-domain\.com
+
+# GitHub rate-limited URLs (checked separately)
+https://github\.com/.*/commit/
+https://github\.com/.*/compare/
+
+# CDN resources (version-pinned, checked by build)
+unpkg\.com/katex

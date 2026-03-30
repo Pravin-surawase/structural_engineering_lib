@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Learning Plan (Beginner Friendly)
 
 Audience: Structural engineer with 2 years experience, basic to medium Python/VBA.

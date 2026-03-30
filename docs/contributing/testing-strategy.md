@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Testing Strategy & Setup (Python-first, VBA parity aware)
 
 **Type:** Guide

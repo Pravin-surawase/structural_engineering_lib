@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Evidence Credibility Framework
 
 **Purpose:** Classify all research claims by evidence strength to maintain credibility in blog posts and publications.

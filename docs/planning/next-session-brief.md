@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Next Session Briefing
 
 **Type:** Handoff
@@ -21,7 +30,16 @@
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 110 (Documentation System Overhaul — audit, tool research, Phase 1 implementation)
+**Last Session:** Session 110 Phase 2 (MkDocs Material setup, frontmatter backfill, lychee CI)
+
+---
+
+## What's Next
+
+- Deploy MkDocs to GitHub Pages (`mkdocs gh-deploy`)
+- Refine auto-generated API docs (add more modules to api-reference/index.md)
+- Set `fail: true` in link-check.yml once link report is clean
+- Continue v0.21 feature work (TASK-525 Smart HubPage, TASK-517 BOQ, etc.)
 
 ---
 
@@ -36,6 +54,12 @@
   - Append-first policy enforced in doc rules
   - Archive extension (`archive_old_files.sh` updated)
   - SESSION_LOG quarterly rotation (10,329 → 81 lines, archived Sessions 1-100)
+- Phase 2 implementation:
+  - MkDocs Material setup (mkdocs.yml, api-reference/, docs/index.md home page)
+  - Frontmatter backfill (182 docs got YAML frontmatter templates)
+  - Lychee link checker CI workflow (.github/workflows/link-check.yml)
+  - Added mkdocs-material + mkdocstrings to requirements.txt and pyproject.toml
+  - Reviewer caught 2 issues (wrong function name, deprecated mermaid handler) — both fixed
 
 ---
 

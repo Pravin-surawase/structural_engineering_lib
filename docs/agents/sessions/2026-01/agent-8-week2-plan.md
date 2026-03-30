@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Agent 8 Week 2 Implementation Plan
 <!-- lint-ignore-git -->
 **Version:** 0.16.0

@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: reference
+complexity: intermediate
+tags: []
+---
+
 # Structural SDK API Contract — v1.0
 
 **Type:** Reference

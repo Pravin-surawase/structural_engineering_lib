@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: reference
+complexity: intermediate
+tags: []
+---
+
 # IS 456:2000 Quick Reference — RC Beam Design Formulas
 
 **Type:** Reference

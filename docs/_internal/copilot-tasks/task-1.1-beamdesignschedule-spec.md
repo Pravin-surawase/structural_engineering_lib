@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: spec
+complexity: intermediate
+tags: []
+---
+
 # Task 1.1: Create BeamDesignSchedule.xlsm Template
 
 **For:** GitHub Copilot Execution

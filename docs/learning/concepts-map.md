@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Concepts Map (Concept -> Code -> Tests -> Docs)
 
 This map links engineering concepts to the exact files in the repo.

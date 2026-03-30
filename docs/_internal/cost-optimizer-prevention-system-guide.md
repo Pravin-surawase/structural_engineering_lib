@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Cost Optimizer Prevention System - Usage Guide
 **Version:** 0.16.6
 **Date:** 2026-01-09

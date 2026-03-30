@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Verification Pack
 
 This repo’s unit tests validate correctness and edge cases, but they don’t always answer the question: **“did the numerical design outputs change?”**

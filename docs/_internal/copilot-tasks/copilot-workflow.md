@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # GitHub Copilot Workflow Guide
 
 **Purpose:** Instructions for using GitHub Copilot to execute task specifications efficiently

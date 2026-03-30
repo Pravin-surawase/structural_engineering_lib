@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Multi-Agent Repository Review — 2025-12-28
 
 **Version Reviewed:** v0.10.2 → **Updated to v0.10.3**

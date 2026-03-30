@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Cost Optimizer - Round 3 Deep-Dive Issues Analysis
 **Date:** 2026-01-09
 **Analyst:** Main Agent (Deep Multi-Dimensional Analysis)

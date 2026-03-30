@@ -1,0 +1,105 @@
+site_name: structural_engineering_lib
+site_description: IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export
+site_url: https://pravin-surawase.github.io/structural_engineering_lib/
+repo_url: https://github.com/Pravin-surawase/structural_engineering_lib
+repo_name: Pravin-surawase/structural_engineering_lib
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - tags
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [Python]
+          options:
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+            docstring_style: google
+            show_signature_annotations: true
+            separate_signature: true
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.mark
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: getting-started/agent-bootstrap.md
+    - Quick Start (Python): getting-started/python-quickstart.md
+    - Beginner's Guide: getting-started/beginners-guide.md
+    - Mac Setup: getting-started/mac-mini-setup.md
+  - Guides:
+    - Copilot Agents: guides/copilot-agents-usage-guide.md
+    - Cost Optimization: getting-started/cost-optimization-guide.md
+    - Design Suggestions: getting-started/design-suggestions-guide.md
+    - Insights: getting-started/insights-guide.md
+  - Reference:
+    - API Reference: reference/api.md
+    - IS 456 Formulas: reference/is456-formulas.md
+    - Error Codes: reference/error-codes.md
+    - Troubleshooting: reference/troubleshooting.md
+  - Architecture:
+    - Overview: architecture/project-overview.md
+    - Data Flow: architecture/data-flow-diagrams.md
+    - Dependencies: architecture/dependencies.md
+  - Contributing:
+    - Development Guide: contributing/development-guide.md
+    - Testing Strategy: contributing/testing-strategy.md
+    - Code Standards: contributing/agent-coding-standards.md
+  - API Docs:
+    - structural_lib: api-reference/index.md

@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Making Structural Design Intelligent (Without Machine Learning)
 
 **TL;DR:** We added three "smart" features to a structural engineering library—sensitivity analysis, predictive validation, and constructability scoring—using classical methods instead of machine learning. All features achieved 100% match against IS 456 golden test vectors (sample-only validation) and are fully deterministic and traceable. Here's how we did it, and why classical methods often beat ML.

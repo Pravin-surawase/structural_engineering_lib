@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Comprehensive Testing Plan for Issue Discovery
 **Date:** 2026-01-09
 **Purpose:** Systematic testing to find remaining issues in Cost Optimizer and Beam Design flow

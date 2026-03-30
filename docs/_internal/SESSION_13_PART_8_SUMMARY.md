@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: guide
+complexity: intermediate
+tags: []
+---
+
 # Session 13 Part 8 - v0.16.6 Release Summary
 
 **Date:** 2026-01-11

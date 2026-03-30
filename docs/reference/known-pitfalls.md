@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-03-30
+doc_type: reference
+complexity: intermediate
+tags: []
+---
+
 # IS 456 RC Beam Design Library — Known Pitfalls and Traps
 
 **Type:** Reference
