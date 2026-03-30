@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-30 (Session 111 — HubPage + Project BOQ + deploy-docs CI)
+**Updated:** 2026-03-30 (Session 113 — Phase 1 Batch 3: deprecation module + clauses.json expansion + 41 tests)
 
 ---
 
@@ -128,9 +128,9 @@
 | TASK-611 | Create `core/numerics.py` — safe_divide(), approx_equal(), clamp() | 🔴 P0 | ✅ Done |
 | TASK-612 | Extract shared math to `codes/is456/common/` (stress_blocks, reinforcement, minimums) | 🔴 P0 | ✅ Done |
 | TASK-613 | Hardcode safety factors in `codes/is456/common/constants.py` | 🔴 P0 | ✅ Done |
-| TASK-614 | Create `@deprecated` decorator in `core/deprecation.py` | 🔴 High | 📋 |
-| TASK-615 | Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39) | 🔴 High | 📋 |
-| TASK-616 | Add IS 13920 references to clauses.json (~15 entries) | 🔴 High | 📋 |
+| TASK-614 | Create `@deprecated` decorator in `core/deprecation.py` | 🔴 High | ✅ Done |
+| TASK-615 | Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39) | 🔴 High | ✅ Done |
+| TASK-616 | Add IS 13920 references to clauses.json (~15 entries) | 🔴 High | ✅ Done |
 | TASK-617 | Create test assertion helpers `tests/helpers/is456_assertions.py` | 🟡 Medium | 📋 |
 | TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | 📋 |
 | TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | 📋 |
