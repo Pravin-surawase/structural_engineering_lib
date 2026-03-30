@@ -38,6 +38,7 @@ jobs:
             --retry-wait-time 5
             --max-retries 3
             --exclude-path 'docs/_archive'
+            --exclude-path 'docs/research'
             --suggest
             'docs/**/*.md'
             '*.md'

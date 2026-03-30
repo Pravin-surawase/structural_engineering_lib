@@ -115,7 +115,7 @@ def aggregate_project_boq(
         lambda: {"beam_count": 0, "steel_kg": 0.0, "concrete_m3": 0.0}
     )
 
-    for bbs_doc, meta in zip(bbs_documents, beam_metadata):
+    for bbs_doc, meta in zip(bbs_documents, beam_metadata, strict=False):
         story = meta.get("story", "Unknown")
         b_mm = float(meta.get("b_mm", 0))
         d_mm = float(meta.get("D_mm", 0))
