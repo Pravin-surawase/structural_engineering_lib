@@ -43,8 +43,8 @@ If this folder feels “too big”, you’re right — most people only need a h
 | [production-roadmap.md](../planning/production-roadmap.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
 | [project-overview.md](../../architecture/project-overview.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
 | [releases.md](../../getting-started/releases.md) | This document serves as the **immutable source of truth** for project releases.  | 2026-01-10 | 726 |
-| [research-ai-enhancements.md](../../planning/research-ai-enhancements.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
-| [research-detailing.md](../../planning/research-detailing.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
+| [research-ai-enhancements.md](../planning-completed-2026-03/research-ai-enhancements.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
+| [research-detailing.md](../planning-completed-2026-03/research-detailing.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
 | [streamlit-maintenance-guide.md](../../contributing/streamlit-maintenance-guide.md) | > **Purpose:** Your complete reference for developing, testing, validating, and  | 2026-01-09 | 755 |
 | [testing-strategy.md](../../contributing/testing-strategy.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
 | [troubleshooting.md](../../reference/troubleshooting.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |

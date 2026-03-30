@@ -169,7 +169,7 @@ B5 High Shear: τv=2.705 (exp: 2.705), safe=True ✓
 For more detailed verification examples with hand calculations and textbook references, see:
 
 - [Verification Examples Pack](examples.md) — Full derivations with IS 456 clause references
-- [Pre-release Checklist](../planning/pre-release-checklist.md) — Beta validation status
+- [Pre-release Checklist](../_archive/planning-completed-2026-03/pre-release-checklist.md) — Beta validation status
 
 ---
 

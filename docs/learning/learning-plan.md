@@ -104,7 +104,7 @@ Checkpoint:
 Goal: Ship stable updates without drift.
 
 Read:
-- docs/planning/pre-release-checklist.md
+- docs/_archive/planning-completed-2026-03/pre-release-checklist.md
 - docs/planning/v0.20-stabilization-checklist.md
 
 Do:

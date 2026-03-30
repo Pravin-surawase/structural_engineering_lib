@@ -551,7 +551,7 @@ Use workflow_dispatch with `testpypi` target:
   - CLI: `python -m structural_lib.excel_integration`
 - Documentation:
   - `docs/specs/v0.7-data-mapping.md`
-  - `docs/planning/research-detailing.md`
+  - `docs/_archive/planning-completed-2026-03/research-detailing.md`
   - `docs/agent-workflow.md`
 - Tests: 1958 passing (31 detailing + 15 integration + 21 original)
 

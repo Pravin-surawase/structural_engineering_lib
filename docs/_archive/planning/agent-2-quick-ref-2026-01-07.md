@@ -10,7 +10,7 @@
 ## 📂 Deliverables
 
 1. **Full Audit Report** (971 lines)
-   - File: `docs/planning/hygiene-suggestions-2026-01-07.md`
+   - File: `docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md`
    - Contains: 13 issues, 61 action items, copy-paste commands
 
 2. **Handoff Document** (409 lines)
@@ -47,7 +47,7 @@
 ### Review Reports
 ```bash
 git checkout audit/hygiene-2026-01-07
-cat docs/planning/hygiene-suggestions-2026-01-07.md
+cat docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md
 cat docs/planning/handoff-agent-2-hygiene-2026-01-07.md
 ```
 

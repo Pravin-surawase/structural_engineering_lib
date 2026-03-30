@@ -259,7 +259,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ## Planned (BBS + DXF Improvement Program)
 
-**Plan doc:** `docs/planning/bbs-dxf-improvement-plan.md`
+**Plan doc:** `docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md`
 
 | ID | Task | Agent | Est. | Priority | Bundle |
 |----|------|-------|------|----------|--------|

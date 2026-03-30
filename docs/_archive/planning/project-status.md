@@ -39,7 +39,7 @@ Professional-grade RC beam design library for IS 456:2000:
 | Tasks & blockers | [TASKS.md](../../TASKS.md) |
 | Architecture | [project-overview.md](../../architecture/project-overview.md) |
 | API reference | [api.md](../../reference/api.md) |
-| Module details | [project-status-deep-dive.md](../../planning/project-status-deep-dive.md) |
+| Module details | [project-status-deep-dive.md](../planning-completed-2026-03/project-status-deep-dive.md) |
 | Known issues | [known-pitfalls.md](../../reference/known-pitfalls.md) |
 
 ## Quick Layer Reference
@@ -59,4 +59,4 @@ Professional-grade RC beam design library for IS 456:2000:
 
 ---
 
-*For detailed module maps, research directions, and release artifacts, see [project-status-deep-dive.md](../../planning/project-status-deep-dive.md).*
+*For detailed module maps, research directions, and release artifacts, see [project-status-deep-dive.md](../planning-completed-2026-03/project-status-deep-dive.md).*

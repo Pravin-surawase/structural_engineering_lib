@@ -190,7 +190,7 @@ st.info(f"""
 
 **Update files:**
 - [docs/specs/csv-import-schema.md](../specs/csv-import-schema.md) - Add frames_geometry schema
-- [docs/planning/8-week-development-plan.md](8-week-development-plan.md) - Mark Week 3-4 as in-progress
+- [docs/_archive/planning-completed-2026-03/8-week-development-plan.md](../_archive/planning-completed-2026-03/8-week-development-plan.md) - Mark Week 3-4 as in-progress
 
 ---
 
@@ -250,7 +250,7 @@ st.info(f"""
 **Updated (planned):**
 - `docs/specs/csv-import-schema.md`
 - `docs/guides/etabs-vba-user-guide.md`
-- `docs/planning/8-week-development-plan.md`
+- `docs/_archive/planning-completed-2026-03/8-week-development-plan.md`
 
 ---
 

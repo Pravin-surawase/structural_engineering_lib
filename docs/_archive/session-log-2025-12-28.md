@@ -246,7 +246,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
    - 5 textbook examples: all within 0.5% tolerance ✅
 
 3. **Documentation:**
-   - Pre-release checklist (`docs/planning/pre-release-checklist.md`)
+   - Pre-release checklist (`docs/_archive/planning-completed-2026-03/pre-release-checklist.md`)
    - API docs UX plan (`docs/planning/api-docs-ux-plan.md`)
    - Git governance updated with current protection rules
 

@@ -251,7 +251,7 @@ Every engineer, everywhere, should have access to:
 
 ## References
 
-- [8-week-development-plan.md](8-week-development-plan.md) — Current roadmap
+- [8-week-development-plan.md](../_archive/planning-completed-2026-03/8-week-development-plan.md) — Current roadmap
 - [chat-ui-product-strategy-research.md](../_archive/research/pre-v021/chat-ui-product-strategy-research.md) — Prior AI research
 - [3d-visualization-differentiation-strategy.md](../_archive/research/pre-v021/3d-visualization-differentiation-strategy.md) — Differentiation strategy
 - [api.md](../reference/api.md) — Complete API reference

@@ -1,7 +1,7 @@
 # This document has been reorganized
 
 **Quick summary:** [project-status.md](../planning/project-status.md)
-**Detailed reference:** [project-status-deep-dive.md](../../planning/project-status-deep-dive.md)
+**Detailed reference:** [project-status-deep-dive.md](../planning-completed-2026-03/project-status-deep-dive.md)
 
 The original 259-line document has been split for faster agent onboarding:
 - **project-status.md** (~60 lines) — Current state, stats, success criteria

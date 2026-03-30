@@ -105,7 +105,7 @@ Before writing ANY code, you MUST:
 □ Read the relevant research docs in docs/research/
 □ Read docs/guides/testing-and-cicd-strategy.md
 □ Read docs/guides/code-reuse-and-library-structure.md
-□ Check docs/planning/8-week-development-plan.md for current phase
+□ Check docs/_archive/planning-completed-2026-03/8-week-development-plan.md for current phase
 □ Search existing code for similar functionality
 □ Review docs/adr/ for architectural decisions
 □ Understand the full file you're modifying (not just the function)
@@ -978,7 +978,7 @@ rg -n "function_name\\(" --glob="*.py" .
 | Purpose | Location |
 | --- | --- |
 | Research docs | `docs/research/` |
-| Development plan | `docs/planning/8-week-development-plan.md` |
+| Development plan | `docs/_archive/planning-completed-2026-03/8-week-development-plan.md` |
 | Coding guide | `docs/guides/ai-agent-coding-guide.md` |
 | Testing strategy | `docs/guides/testing-and-cicd-strategy.md` |
 | Session log | `docs/SESSION_LOG.md` |

@@ -13,7 +13,7 @@
 ## Executive Summary
 
 This document is the **single source of truth** for React app UX flows, consolidating research from:
-- [8-week-development-plan.md](../planning/8-week-development-plan.md)
+- [8-week-development-plan.md](../_archive/planning-completed-2026-03/8-week-development-plan.md)
 
 The React app (`react_app/`) provides a modern workspace UI with 3D visualization, data grid editing, and intelligent design assistance for structural engineers.
 
@@ -507,7 +507,7 @@ After batch import and design (Flow B), click on a failed beam:
 
 ## Related Documentation
 
-- [8-Week Development Plan](../planning/8-week-development-plan.md) - Timeline
+- [8-Week Development Plan](../_archive/planning-completed-2026-03/8-week-development-plan.md) - Timeline
 - [React Hooks Index](../index.md) - All available hooks
 - [API Reference](../reference/api.md) - Backend endpoints
 

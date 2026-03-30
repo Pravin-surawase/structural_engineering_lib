@@ -25,7 +25,7 @@ This is the canonical governance specification for all folder structure rules, n
 - **[Folder Structure Rules](../../guidelines/folder-structure-governance.md)** - All naming and placement rules
 
 ### Active Documents
-- **[Migration Progress](../../planning/folder-migration-progress.md)** - Current progress tracker
+- **[Migration Progress](../../_archive/planning-completed-2026-03/folder-migration-progress.md)** - Current progress tracker
 - **[Migration Workflow Guide](../../guidelines/migration-workflow-guide.md)** - How to do migrations
 - **[Folder Cleanup Workflow](../../guidelines/folder-cleanup-workflow.md)** - Cleanup procedures
 - **[Automation Catalog](../../reference/automation-catalog.md)** - All validation checks
@@ -119,7 +119,7 @@ rg "old/path.md" docs/ agents/
 
 1. **Quick questions:** Check [Agent 9 Quick Start](agent-9-quick-start.md)
 2. **Detailed rules:** See [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
-3. **Progress tracking:** See [folder-migration-progress.md](../../planning/folder-migration-progress.md)
+3. **Progress tracking:** See [folder-migration-progress.md](../../_archive/planning-completed-2026-03/folder-migration-progress.md)
 4. **Historical docs:** Browse [Archive](../../_archive/2026-01/agent-9-governance-legacy/)
 
 ---

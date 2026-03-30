@@ -33,6 +33,31 @@ Use `create_doc.py` or add manually:
 ```
 Check `docs/docs-canonical.json` for existing canonical docs on the topic.
 
+## Append-first policy (MANDATORY)
+
+ALWAYS try updating an existing doc before creating a new one:
+1. Search `docs-canonical.json` — if topic has a canonical doc, update that one
+2. Search docs/ for existing docs on the same topic
+3. Only create a new doc if NO existing doc covers the topic
+4. Use `create_doc.py` for ALL new doc creation (enforces similarity check)
+
+## Doc lifecycle
+
+Every doc should have a clear status:
+- **Draft** — Work in progress (max 7 days, then promote or delete)
+- **Active** — Current and maintained
+- **Deprecated** — Superseded, will be archived
+- **Archived** — Historical record in `_archive/`
+
+Multi-session WIP docs go to `docs/_active/` first, then move to permanent location when complete.
+
+## Doc budget
+
+Non-archived docs must stay under 400 files. Check with:
+```bash
+.venv/bin/python scripts/check_docs.py --budget
+```
+
 ## After structural changes
 
 Update indexes: `./scripts/generate_all_indexes.sh`

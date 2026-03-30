@@ -5,14 +5,14 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-03-30
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-28
+- Date: 2026-03-30
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,21 @@
 | **Current** | v0.19.1 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 109 (Documentation Maintenance — metadata updates, WORKLOG backfill, index regeneration)
+**Last Session:** Session 110 (Documentation System Overhaul — audit, tool research, Phase 1 implementation)
+
+---
+
+## Session 110 Summary
+
+- Comprehensive doc audit: 350+ active docs, 200+ archived — identified structural issues
+- Tool research: evaluated MkDocs Material, Docusaurus, Sphinx — recommended MkDocs Material
+- Reviewer + governance approved documentation overhaul plan
+- Phase 1 implementation:
+  - Doc budget check script (`check_docs.py --budget`)
+  - CODEOWNERS file for doc ownership
+  - Append-first policy enforced in doc rules
+  - Archive extension (`archive_old_files.sh` updated)
+  - SESSION_LOG quarterly rotation (10,329 → 81 lines, archived Sessions 1-100)
 
 ---
 
@@ -143,7 +157,14 @@
 
 ## Next Priorities
 
-### Do First — GitHub Housekeeping + PR Merge
+### Do First — Phase 2: MkDocs Setup + Frontmatter Backfill (2-3 hours)
+
+1. **MkDocs Material setup** — `mkdocs.yml`, `pip install mkdocs-material`, basic nav structure
+2. **Frontmatter backfill** — add/fix metadata in docs missing Type/Audience/Status fields
+3. **Nav structure** — organize docs into MkDocs sections matching current folder layout
+4. **Local preview** — `mkdocs serve` working with all existing docs
+
+### Then — GitHub Housekeeping + PR Merge
 
 1. **MERGE PR #441** ← All CI green, ready to merge
 2. **MERGE Dependabot PR #434** ← 12 days old, all checks pass, CI deps bump

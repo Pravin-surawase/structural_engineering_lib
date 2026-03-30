@@ -209,7 +209,7 @@ Optional paid tiers can be considered later, but not now.
 - Complete Step 1 and Step 2 research
 - List top workflows and Excel patterns
 - Lock top 5 automation targets
-- Phase 0 outputs doc: [automation-platform-phase-0-research.md](automation-platform-phase-0-research.md)
+- Phase 0 outputs doc: [automation-platform-phase-0-research.md](../_archive/planning-completed-2026-03/automation-platform-phase-0-research.md)
 
 ### Phase A: Foundation (Now)
 - Tool registry + versioned APIs
@@ -238,7 +238,7 @@ Optional paid tiers can be considered later, but not now.
 **Phase 0 (Research)**
 - Deliverable: workflow map + tooling gap report
 - Output: top 5 automation shortlist
-- Reference: [automation-platform-phase-0-research.md](automation-platform-phase-0-research.md)
+- Reference: [automation-platform-phase-0-research.md](../_archive/planning-completed-2026-03/automation-platform-phase-0-research.md)
 
 **Phase 1 (Core Automations)**
 - Deliverable: 3-5 production templates

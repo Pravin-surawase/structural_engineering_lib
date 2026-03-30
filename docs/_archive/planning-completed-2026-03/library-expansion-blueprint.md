@@ -1,13 +1,13 @@
-# Library Expansion Master Blueprint v2.0
+# Library Expansion Master Blueprint v3.0
 
 **Type:** Planning
 **Audience:** All Agents
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-29
-**Last Updated:** 2026-03-29
-**Version:** 2.0
-**Review Round:** 1 (structural-engineer, reviewer, governance — all approved with enhancements)
+**Last Updated:** 2026-03-30
+**Version:** 3.0
+**Review Round:** 4 (library-expert, structural-engineer, reviewer — quality systems approved)
 
 > Single source of truth for expanding structural_engineering_lib from beam-only to a full IS 456 structural design suite.
 
@@ -163,6 +163,94 @@ Example: services/workflows/column_footing.py
   → NEVER merge IS 456 math across elements in one file
 ```
 
+### 3.5 Function Writing Standards (mandatory for all agents)
+
+Every function in `codes/is456/` MUST follow these rules. The `@library-expert` agent enforces these during review.
+
+#### Pure Function Requirements
+```
+✅ MUST be stateless — same inputs → same outputs, always
+✅ MUST NOT read files, env vars, databases, or network
+✅ MUST NOT modify any global or module-level state
+✅ MUST raise exceptions for invalid inputs (no silent None returns)
+✅ MUST return typed result objects (frozen dataclass), never raw floats or dicts
+✅ MAY call get_active_trace() for tracing (read-only check, no side effects when disabled)
+```
+
+#### Input/Output Contract Template
+
+Every public function in `codes/is456/` must follow this docstring format:
+
+```python
+@clause("XX.X")
+def calculate_something(
+    b_mm: float,      # Always: explicit name with unit suffix
+    d_mm: float,      # b_mm → mm; fck → N/mm²; Mu_kNm → kN·m
+    fck: float,
+    fy: float,
+) -> SomeResult:      # Always return a typed result, never a raw float
+    """One-line description per IS 456 clause.
+
+    IS 456 Cl XX.X:
+        Formula: Mu_lim = 0.36 × (xu_max/d) × [1 - 0.42 × (xu_max/d)] × b × d² × fck
+
+    Args:
+        b_mm: Width (mm). Must be > 0.
+        d_mm: Effective depth (mm). Must be > 0.
+        fck: Concrete strength (N/mm²). Standard grades: 15-80.
+        fy: Steel yield strength (N/mm²). Standard: 250, 415, 500.
+
+    Returns:
+        SomeResult with fields: [list key fields]
+
+    Raises:
+        DimensionError: If b or d ≤ 0
+        MaterialError: If fck or fy ≤ 0 or out of IS 456 range
+
+    References:
+        IS 456:2000 Cl XX.X
+        SP:16, Table YY (validation source)
+    """
+```
+
+#### Numerical Stability Rules
+```
+✅ NEVER compare floats with ==. Use abs(a - b) < TOLERANCE
+✅ NEVER divide without checking denominator — use safe_divide() from core/numerics.py
+✅ ALWAYS use intermediate variables for complex expressions (aids tracing and debugging)
+✅ ALWAYS compute in consistent units internally, convert at boundaries only
+✅ CLAMP interpolation inputs to table bounds (never extrapolate IS 456 tables)
+✅ PREFER multiplication over division where algebraically equivalent
+✅ GUARD against catastrophic cancellation (a - b where a ≈ b)
+✅ CHECK every output: if math.isnan(result) or math.isinf(result) → raise CalculationError
+```
+
+#### IS 456 Formula Annotation Standard
+
+Every formula computation MUST be preceded by a comment showing the clause reference and symbolic form:
+
+```python
+# IS 456 Cl 38.1: xu_max/d from Table 21.1 (based on fy)
+xu_max_d = materials.get_xu_max_d(fy)
+
+# IS 456 Cl 38.1: Mu_lim = 0.36 × (xu_max/d) × [1 - 0.42 × (xu_max/d)] × b × d² × fck
+k = 0.36 * xu_max_d * (1 - 0.42 * xu_max_d)
+mu_lim_nmm = k * fck * b * d * d
+
+# Convert N·mm → kN·m
+mu_lim_knm = mu_lim_nmm / 1e6
+```
+
+#### Red-Flag Detection (post-design sanity checks)
+
+All result types should include a `safety_flags` property that catches:
+- Utilization > 0.95 → `NEAR_CAPACITY` warning
+- Ast > 4% bD → `HIGH_STEEL` constructability concern
+- Negative reinforcement area → `CALCULATION_ERROR`
+- Slenderness > 60 → `SECTION_INADEQUATE` per Cl 25.3.1
+
+These are NOT clause checks — they're sanity checks that catch calculation errors individual clause checks might miss.
+
 ---
 
 ## 4. Phased Implementation Plan
@@ -175,12 +263,21 @@ Must complete before writing the first column function.
 |---|------|---------|--------|
 | 1.1 | Create `@deprecated` decorator | `core/deprecation.py` | 📋 TODO |
 | 1.2 | Create test assertion helpers | `tests/helpers/is456_assertions.py` | 📋 TODO |
-| 1.3 | Add Request ID middleware | `fastapi_app/main.py` | 📋 TODO |
+| 1.3 | Stack trace sanitization (security — P0) | `fastapi_app/main.py` catch-all handler | 📋 TODO |
 | 1.4 | Extract shared math | `codes/is456/common/` (5 files) | 📋 TODO |
 | 1.5 | Populate clauses.json | Cl 24, 25, 31.6, 32, 33, 34, 39 (~66 subclauses) | 📋 TODO |
 | 1.6 | Add IS 13920 references | `clauses.json` (~15 entries) | 📋 TODO |
 | 1.7 | Top-level `__init__.py` exports | `structural_lib/__init__.py` | 📋 TODO |
 | 1.8 | Create maintenance playbook | `docs/governance/maintenance-playbook.md` | 📋 TODO |
+| 1.9 | Create `core/numerics.py` — numerical precision utilities | `safe_divide()`, `approx_equal()`, `clamp()`, epsilon constants | 📋 TODO |
+| 1.10 | Add `recovery` field to `DesignError` | `core/errors.py` — non-breaking (optional field) | 📋 TODO |
+| 1.11 | Create `scripts/check_clause_coverage.py` | IS 456 clause gap detection CI script | 📋 TODO |
+| 1.12 | Create `scripts/check_new_element_completeness.py` | Verify new modules have all required artifacts | 📋 TODO |
+| 1.13 | Add `X-Process-Time` middleware | `fastapi_app/main.py` — CORS already declares it | 📋 TODO |
+| 1.14 | Consolidate existing `_clamp`/division guards | Migrate from `utilities.py`, `report_svg.py` → `core/numerics.py` | 📋 TODO |
+| 1.15 | Hardcode partial safety factors | `codes/is456/common/constants.py` — γc=1.5, γs=1.15 as immutable constants | 📋 TODO |
+| 1.16 | Unit plausibility guards at API boundary | `services/api.py` — `assert_unit_mm()`, `assert_unit_mpa()`, `assert_unit_kn()` | 📋 TODO |
+| 1.17 | Add `formula_signatures` to `clauses.json` | Cross-reference validation data per clause | 📋 TODO |
 
 ### Phase 2: Column Design (Priority 1)
 
@@ -325,11 +422,86 @@ def design_column_is456(
 
 ### Phase 6: Cross-Cutting Quality Infrastructure
 
-#### 6.1 Debug & Trace Infrastructure
-- `DesignTrace` context manager — records intermediate calculation steps
-- `--trace` CLI flag for step-by-step output
-- Structured JSON logging mode: `get_logger(name, json_format=True)`
-- `scripts/profile_design.py` for performance profiling
+#### 6.1 Debug, Trace & Quality Infrastructure
+
+##### Build NOW (Phase 1)
+
+| System | File(s) | Description |
+|--------|---------|-------------|
+| `core/numerics.py` | New file | `safe_divide()`, `approx_equal()`, `clamp()`, epsilon constants. Consolidate existing `_clamp` from `report_svg.py` and division guard from `utilities.py` |
+| `recovery` field on `DesignError` | `core/errors.py` | Non-breaking optional field: machine-actionable recovery hints (e.g., `"USE_DOUBLY_REINFORCED"`, `"INCREASE_SECTION"`) |
+| Stack trace sanitization | `fastapi_app/main.py` | Catch-all `@app.exception_handler(Exception)` — never leak internal paths to clients (OWASP security fix) |
+| `X-Process-Time` middleware | `fastapi_app/main.py` | Already declared in CORS `expose_headers` but not computed. Add `time.perf_counter()` middleware |
+| Unit plausibility guards | `services/api.py` | `assert_unit_mm()`, `assert_unit_mpa()`, `assert_unit_kn()` — catch #1 user mistake (passing meters instead of mm) |
+| Hardcoded safety factors | `codes/is456/common/constants.py` | `GAMMA_CONCRETE = 1.5`, `GAMMA_STEEL = 1.15` — NEVER user-configurable parameters |
+| Clause coverage CI | `scripts/check_clause_coverage.py` | Verify all required IS 456 clauses have implementing functions. Exit 1 on gaps |
+| Element completeness CI | `scripts/check_new_element_completeness.py` | Verify new modules have types + math + tests + API + docs |
+
+##### Build with Column (Phase 2 — pulled by need, not pushed)
+
+| System | File(s) | Trigger |
+|--------|---------|---------|
+| `DesignTrace` context manager | `core/trace.py` | Column P-M iteration needs step-by-step logging |
+| `IterationLog` for convergent methods | `core/trace.py` | Slender column Ma iteration needs convergence monitoring |
+| Design context propagation | `core/context.py` | Batch column processing needs beam_id/story tracking |
+| Structured JSON logging | `core/logging_config.py` | Production debugging of batch API calls |
+
+##### DesignTrace Pattern (Phase 2 implementation reference)
+
+```python
+# core/trace.py — build when column P-M iteration needs it
+@dataclass
+class CalcStep:
+    function: str        # e.g. "calculate_mu_lim"
+    clause: str          # e.g. "38.1"
+    label: str           # e.g. "Limiting moment capacity"
+    expression: str      # e.g. "Mu_lim = 0.36 × (xu_max/d) × [1 - 0.42×(xu_max/d)] × b×d²×fck"
+    variables: dict      # e.g. {"xu_max_d": 0.48, "fck": 25, "b": 300, "d": 450}
+    result: float        # e.g. 165.68
+    unit: str = ""       # e.g. "kN·m"
+
+@dataclass
+class DesignTrace:
+    steps: list[CalcStep] = field(default_factory=list)
+    timings: dict[str, float] = field(default_factory=dict)
+
+    def to_report(self) -> str:
+        """Human-readable calculation sheet (like ETABS/RISA output)."""
+        ...
+
+    def to_dict(self) -> list[dict]:
+        """Machine-readable for JSON export."""
+        ...
+
+# Thread-local storage: zero overhead when tracing disabled
+@contextmanager
+def trace_design():
+    """Usage:
+        with trace_design() as trace:
+            result = design_beam_is456(...)
+        print(trace.to_report())
+    """
+```
+
+**Why tracing matters professionally:** When a government reviewer asks "show me how you got Mu_lim = 165.5 kN·m," the engineer exports a calculation sheet that mirrors IS 456 Cl 38.1 worked examples in SP:16. ETABS, RISA, and SAFE all provide this capability.
+
+##### IterationLog Pattern (Phase 2 implementation reference)
+
+```python
+@dataclass
+class IterationLog:
+    method: str                   # e.g. "slender_column_ma_iteration"
+    max_iterations: int = 20
+    tolerance: float = 0.001      # 0.1% relative change
+    records: list[IterationRecord] = field(default_factory=list)
+
+    @property
+    def converged(self) -> bool: ...
+    @property
+    def iterations_used(self) -> int: ...
+```
+
+Critical for column P-M interaction diagrams and slender column Ma iteration. Non-convergence must use the **last (largest) value** as the conservative default — never silently return an unconverged underestimate.
 
 #### 6.2 User-Facing Deliverables
 - One example per element: minimal → professional → batch
@@ -912,6 +1084,13 @@ For each module in `codes/is456/`:
 | D13 | 12 agents constant, specialization via prompts | Prompts are cheap, agents are expensive to maintain | 2026-03-29 |
 | D14 | All results frozen=True with is_safe(), to_dict(), summary() | Immutable, thread-safe, consistent API | 2026-03-29 |
 | D15 | Element-specific benchmark tolerances | Biaxial ±1%, yield line ±5% — not blanket ±0.1% | 2026-03-29 |
+| D17 | Partial safety factors hardcoded (γc=1.5, γs=1.15) | Safety-critical — never user-configurable. Future multi-code via `DesignCode` object, not function params | 2026-03-30 |
+| D18 | Build quality infrastructure on-demand, not in advance | DesignTrace, CAUTION severity, contextvars — wait for column P-M to pull them | 2026-03-30 |
+| D19 | No `@finite_result` decorator — use inline NaN/Inf checks per §23 | Decorator hides control flow; inline checks are more visible and already mandated | 2026-03-30 |
+| D20 | No new `CAUTION` severity level — use WARNING with subcategory field instead | CAUTION would break existing API consumers parsing severity values | 2026-03-30 |
+| D21 | Unit plausibility guards at Services boundary only, not in core math | Core layer shouldn't know plausible ranges; validation is Services responsibility | 2026-03-30 |
+| D22 | Invariant tests merge into existing `tests/property/`, no new directory | Avoid test directory proliferation; `@pytest.mark.invariant` → `@pytest.mark.property` | 2026-03-30 |
+| D23 | Recovery field on DesignError is additive (non-breaking), build now | Machine-actionable hints enable auto-fix in smart_analyze_design() and batch pipeline | 2026-03-30 |
 
 ---
 
@@ -1005,6 +1184,14 @@ An element is **complete** only when ALL are checked:
 - [ ] `check_new_element_completeness.py` passes
 - [ ] WORKLOG.md entry appended
 - [ ] IS 13920 checks included (if `seismic_zone` parameter needed)
+- [ ] All functions pass numerical precision checks (no NaN/Inf outputs)
+- [ ] Unit plausibility guards in `services/api.py` cover new parameters
+- [ ] `scripts/check_clause_coverage.py` reports green for new element
+- [ ] `scripts/check_new_element_completeness.py` passes
+- [ ] Safety flags in result type catch red-flag conditions
+- [ ] Degenerate case tests included (zero loads, minimum materials)
+- [ ] Monotonicity property tests confirm capacity increases with strength
+- [ ] Equilibrium invariant confirmed (C = T for flexure, sum forces = 0)
 
 ---
 
@@ -1477,6 +1664,7 @@ Adapters Layer (services/adapters.py)
 | 1 | 2026-03-29 | @structural-engineer (7/10), @reviewer (approved w/ enhancements), @governance (governance-incomplete) | Approved with 26 enhancements | Added §3, §5-6, §11-16; reordered elements; element-specific tolerances |
 | 2 | 2026-03-29 | @structural-engineer (9/10), @reviewer (10/10), @governance (9.5/10) | All APPROVED | All Round 1 concerns addressed |
 | 3 | 2026-03-29 | @structural-engineer (6.5/10 depth), @reviewer (7/10 DevOps), @governance (7.5/10 community), @tester (7.2/10 test depth) | NEEDS ADDITIONS | Added §23-32: precision, liability, deferred provisions, extension architecture, caching, test enhancements, observability, community, accessibility, partner ecosystem |
+| 4 | 2026-03-30 | @library-expert (comprehensive), @structural-engineer (engineering verification), @reviewer (architecture + maintainability) | **Approved with adjustments** | Added §3.5 (function writing standards), enhanced §6.1 (debug/trace/quality), expanded Phase 1 (1.9-1.17), added D17-D23, structural invariant tests, numerical precision guards, safety factor hardcoding, stack trace sanitization, unit plausibility guards, clause coverage CI, element completeness CI. Deferred: DesignTrace/IterationLog/CAUTION severity/contextvars (to Phase 2). Dropped: `@finite_result` decorator (redundant with §23). Merged: invariant tests into tests/property/ |
 
 ### Round 3 Key Additions
 - **@structural-engineer:** Numerical precision policy, crack width/fire/creep deferred, load combinations stub
@@ -1499,3 +1687,18 @@ Adapters Layer (services/adapters.py)
 - [ ] Set up codecov.io badge
 - [ ] Add CITATION.cff badge to README
 - [ ] Create `scripts/generate_metrics_dashboard.py`
+
+### Open Items from Review Round 4
+- [ ] Create `core/numerics.py` with `safe_divide()`, `approx_equal()`, `clamp()` (backend)
+- [ ] Add `recovery` field to `DesignError` frozen dataclass (backend)
+- [ ] Add catch-all exception handler to `fastapi_app/main.py` — no stack trace leaks (api-developer)
+- [ ] Add `X-Process-Time` middleware to `fastapi_app/main.py` (api-developer)
+- [ ] Create `scripts/check_clause_coverage.py` with `REQUIRED_CLAUSES` per element (tester)
+- [ ] Create `scripts/check_new_element_completeness.py` (ops)
+- [ ] Add unit plausibility guards to `services/api.py` entry points (backend)
+- [ ] Add `formula_signatures` to `clauses.json` for cross-reference validation (doc-master)
+- [ ] Consolidate `_clamp` from `report_svg.py` and division guard from `utilities.py` into `core/numerics.py` (backend)
+- [ ] Add `GAMMA_CONCRETE`, `GAMMA_STEEL` to `codes/is456/common/constants.py` (structural-math)
+- [ ] Add structural invariant tests to `tests/property/` — equilibrium, monotonicity, bounds (tester)
+- [ ] Add degenerate case parametrized tests for beam (Mu=0, Vu=0, fck=minimum) (tester)
+- [ ] Update library-expert agent with function writing standards enforcement (orchestrator) ✅

@@ -1,1 +1,10 @@
 * @Pravin-surawase
+
+# Documentation ownership
+docs/reference/          @Pravin-surawase
+docs/architecture/       @Pravin-surawase
+docs/getting-started/    @Pravin-surawase
+docs/planning/           @Pravin-surawase
+docs/contributing/       @Pravin-surawase
+.github/agents/          @Pravin-surawase
+.github/instructions/    @Pravin-surawase
