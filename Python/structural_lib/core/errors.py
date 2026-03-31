@@ -466,6 +466,15 @@ E_SHEAR_004 = DesignError(
     clause="Table 19",
 )
 
+E_SHEAR_005 = DesignError(
+    code="E_SHEAR_005",
+    severity=Severity.ERROR,
+    message="av_mm must be > 0",
+    field="av_mm",
+    hint="Provide distance from face of support to nearest edge of concentrated load.",
+    clause="Cl. 40.3",
+)
+
 # Ductile Detailing Errors
 E_DUCTILE_001 = DesignError(
     code="E_DUCTILE_001",

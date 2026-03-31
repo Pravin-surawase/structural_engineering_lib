@@ -434,3 +434,52 @@ class TorsionDesignResponse(BaseModel):
 
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+
+
+# =============================================================================
+# Enhanced Shear Models (IS 456 Cl 40.3)
+# =============================================================================
+
+
+class EnhancedShearRequest(BaseModel):
+    """Request model for enhanced shear strength near supports (IS 456 Cl 40.3)."""
+
+    fck: float = Field(
+        ...,
+        ge=15.0,
+        le=80.0,
+        description="Characteristic compressive strength of concrete (N/mm²)",
+        examples=[20.0, 25.0, 30.0, 40.0],
+    )
+    pt_percent: float = Field(
+        ...,
+        ge=0.0,
+        le=6.0,
+        description="Tension steel percentage (%)",
+        examples=[0.5, 1.0, 1.5],
+    )
+    d_mm: float = Field(
+        ...,
+        gt=0,
+        le=3000.0,
+        description="Effective depth (mm)",
+        examples=[400.0, 450.0, 600.0],
+    )
+    av_mm: float = Field(
+        ...,
+        gt=0,
+        le=10000.0,
+        description="Distance from face of support to nearest edge of concentrated load (mm)",
+        examples=[200.0, 300.0, 500.0],
+    )
+
+
+class EnhancedShearResponse(BaseModel):
+    """Response model for enhanced shear strength calculation."""
+
+    tau_c_enhanced: float = Field(description="Enhanced shear strength τc' (N/mm²)")
+    tau_c_base: float = Field(description="Base shear strength τc (N/mm²)")
+    enhancement_factor: float = Field(description="Enhancement factor 2d/av")
+    tau_c_max: float = Field(description="Maximum shear stress τc,max (N/mm²)")
+    is_capped: bool = Field(description="Whether τc' was capped at τc,max")
+    clause: str = Field(default="IS 456 Cl 40.3", description="Governing clause")

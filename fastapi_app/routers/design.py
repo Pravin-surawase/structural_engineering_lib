@@ -11,6 +11,8 @@ from fastapi_app.models.beam import (
     BeamDesignResponse,
     BeamCheckRequest,
     BeamCheckResponse,
+    EnhancedShearRequest,
+    EnhancedShearResponse,
     FlexureResult,
     ShearResult,
     TorsionDesignRequest,
@@ -404,4 +406,81 @@ async def design_beam_torsion(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Torsion design calculation failed: {e}",
+        )
+
+
+# =============================================================================
+# Enhanced Shear Strength Endpoint (IS 456 Cl 40.3)
+# =============================================================================
+
+
+@router.post(
+    "/beam/enhanced-shear",
+    response_model=EnhancedShearResponse,
+    summary="Enhanced Shear Strength Near Supports",
+    description=(
+        "Calculate enhanced design shear strength τc' for sections close to supports "
+        "per IS 456:2000 Cl 40.3. Applies when a concentrated load acts within 2d "
+        "of the face of support."
+    ),
+)
+async def enhanced_shear(
+    request: EnhancedShearRequest,
+) -> EnhancedShearResponse:
+    """
+    Enhanced shear strength for sections near supports.
+
+    When a concentrated load acts within 2d of a support face,
+    IS 456 Cl 40.3 allows enhancing τc to τc' = (2d/av) × τc,
+    capped at τc,max (Table 20).
+
+    NOTE: Enhancement applies ONLY to concentrated loads, NOT distributed loads.
+    """
+    try:
+        from structural_lib.codes.is456.beam import tables
+        from structural_lib.services.api import enhanced_shear_strength_is456
+
+        # Call the API function
+        tau_c_enhanced = enhanced_shear_strength_is456(
+            fck_nmm2=request.fck,
+            pt_percent=request.pt_percent,
+            d_mm=request.d_mm,
+            av_mm=request.av_mm,
+        )
+
+        # Get base values for the response
+        tau_c_base = tables.get_tc_value(request.fck, request.pt_percent)
+        tau_c_max = tables.get_tc_max_value(request.fck)
+
+        # Compute enhancement factor
+        if request.av_mm >= 2.0 * request.d_mm:
+            enhancement_factor = 1.0
+        else:
+            enhancement_factor = (2.0 * request.d_mm) / request.av_mm
+
+        is_capped = (enhancement_factor * tau_c_base) > tau_c_max
+
+        return EnhancedShearResponse(
+            tau_c_enhanced=round(tau_c_enhanced, 4),
+            tau_c_base=round(tau_c_base, 4),
+            enhancement_factor=round(enhancement_factor, 4),
+            tau_c_max=round(tau_c_max, 4),
+            is_capped=is_capped,
+            clause="IS 456 Cl 40.3",
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, AttributeError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Enhanced shear calculation failed: {e}",
         )

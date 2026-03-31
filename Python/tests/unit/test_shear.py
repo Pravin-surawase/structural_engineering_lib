@@ -4,6 +4,7 @@ Dedicated unit tests for shear module.
 Tests cover:
 - calculate_tv: nominal shear stress calculation
 - design_shear: full shear design per IS 456
+- enhanced_shear_strength: IS 456 Cl 40.3 near supports
 
 Reference: IS 456:2000 Clause 40
 """
@@ -11,6 +12,7 @@ Reference: IS 456:2000 Clause 40
 import pytest
 
 from structural_lib import shear
+from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
 from structural_lib.core.errors import DimensionError
 
 
@@ -617,3 +619,111 @@ class TestDesignShearExtremeBeamSizes:
         # Should return valid result
         assert result.spacing > 0
         assert isinstance(result.is_safe, bool)
+
+
+class TestEnhancedShearStrength:
+    """Tests for enhanced_shear_strength (IS 456 Cl 40.3).
+
+    When a concentrated load acts within 2d of a support face,
+    τc may be enhanced: τc' = (2d/av) × τc, capped at τc,max.
+    """
+
+    # ── Benchmark cases (hand-verified) ──────────────────────────
+
+    def test_case1_m25(self):
+        """IS 456 Cl 40.3: M25, pt=0.50%, d=450mm, av=300mm.
+        τc(M25, 0.50%) = 0.49, factor=2×450/300=3.0, τc'=1.47.
+        """
+        tc_prime = enhanced_shear_strength(fck=25, pt=0.50, d_mm=450, av_mm=300)
+        assert tc_prime == pytest.approx(1.47, abs=0.02)
+
+    def test_case2_m30(self):
+        """IS 456 Cl 40.3: M30, pt=1.00%, d=500mm, av=400mm.
+        τc(M30, 1.00%) = 0.66, factor=2×500/400=2.5, τc'=1.65.
+        """
+        tc_prime = enhanced_shear_strength(fck=30, pt=1.00, d_mm=500, av_mm=400)
+        assert tc_prime == pytest.approx(1.65, abs=0.02)
+
+    def test_case3_m20(self):
+        """IS 456 Cl 40.3: M20, pt=0.25%, d=400mm, av=200mm.
+        τc(M20, 0.25%) = 0.36, factor=2×400/200=4.0, τc'=1.44.
+        """
+        tc_prime = enhanced_shear_strength(fck=20, pt=0.25, d_mm=400, av_mm=200)
+        assert tc_prime == pytest.approx(1.44, abs=0.02)
+
+    def test_case4_m15(self):
+        """IS 456 Cl 40.3: M15, pt=0.15%, d=300mm, av=100mm.
+        τc(M15, 0.15%) = 0.28, factor=2×300/100=6.0, τc'=1.68.
+        """
+        tc_prime = enhanced_shear_strength(fck=15, pt=0.15, d_mm=300, av_mm=100)
+        assert tc_prime == pytest.approx(1.68, abs=0.02)
+
+    def test_case5_capped(self):
+        """IS 456 Cl 40.3: M15, pt=2.00%, d=300mm, av=80mm — capped at τc,max.
+        τc(M15, 2.00%) = 0.71, factor=2×300/80=7.5, τc'=5.325 → capped at 2.5.
+        """
+        tc_prime = enhanced_shear_strength(fck=15, pt=2.00, d_mm=300, av_mm=80)
+        assert tc_prime == pytest.approx(2.50, abs=0.02)
+
+    # ── Boundary cases ───────────────────────────────────────────
+
+    def test_av_equals_2d(self):
+        """av = 2d → factor = 1.0, returns base τc (no enhancement)."""
+        tc_prime = enhanced_shear_strength(fck=25, pt=0.50, d_mm=450, av_mm=900)
+        # Base τc for M25, pt=0.50% = 0.49
+        assert tc_prime == pytest.approx(0.49, abs=0.02)
+
+    def test_av_greater_than_2d(self):
+        """av > 2d → no enhancement, returns base τc."""
+        tc_prime = enhanced_shear_strength(fck=25, pt=0.50, d_mm=450, av_mm=1350)
+        assert tc_prime == pytest.approx(0.49, abs=0.02)
+
+    def test_av_equals_d(self):
+        """av = d → factor = 2.0, returns 2×τc."""
+        tc_prime = enhanced_shear_strength(fck=25, pt=0.50, d_mm=450, av_mm=450)
+        # 2 × 0.49 = 0.98
+        assert tc_prime == pytest.approx(0.98, abs=0.02)
+
+    # ── Error cases ──────────────────────────────────────────────
+
+    def test_av_zero_raises(self):
+        """av_mm = 0 should raise DimensionError."""
+        with pytest.raises(DimensionError):
+            enhanced_shear_strength(fck=25, pt=0.50, d_mm=450, av_mm=0)
+
+    def test_av_negative_raises(self):
+        """av_mm < 0 should raise DimensionError."""
+        with pytest.raises(DimensionError):
+            enhanced_shear_strength(fck=25, pt=0.50, d_mm=450, av_mm=-100)
+
+    def test_d_zero_raises(self):
+        """d_mm = 0 should raise DimensionError."""
+        with pytest.raises(DimensionError):
+            enhanced_shear_strength(fck=25, pt=0.50, d_mm=0, av_mm=300)
+
+    def test_d_negative_raises(self):
+        """d_mm < 0 should raise DimensionError."""
+        with pytest.raises(DimensionError):
+            enhanced_shear_strength(fck=25, pt=0.50, d_mm=-450, av_mm=300)
+
+    # ── Integration with design_shear ────────────────────────────
+
+    def test_design_shear_without_av(self):
+        """Existing design_shear call without av_mm works unchanged."""
+        result = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5
+        )
+        assert result.is_safe is True
+        assert result.tc == pytest.approx(0.49, rel=0.05)
+
+    def test_design_shear_with_av(self):
+        """Passing av_mm enhances τc, which should increase spacing or keep safe."""
+        result_no_av = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5
+        )
+        result_with_av = shear.design_shear(
+            vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5, av_mm=300
+        )
+        # Enhanced τc means concrete carries more shear → less stirrup demand
+        assert result_with_av.tc > result_no_av.tc
+        assert result_with_av.spacing >= result_no_av.spacing
