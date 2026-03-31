@@ -143,12 +143,27 @@ class BeamDetailingResult:
         """
         Serialize this detailing result into 3D visualization JSON.
 
+        .. deprecated::
+            Use ``beam_to_3d_geometry(result, is_seismic).to_dict()``
+            from ``structural_lib.visualization.geometry_3d`` instead.
+            This convenience method will be removed in v1.0.0.
+
         Args:
             is_seismic: True to use 135° stirrup hooks.
 
         Returns:
             Dict matching the BeamGeometry3D schema.
         """
+        import warnings
+
+        warnings.warn(
+            "BeamDetailingResult.to_3d_json() is deprecated. "
+            "Use beam_to_3d_geometry(result, is_seismic).to_dict() "
+            "from structural_lib.visualization.geometry_3d instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         from structural_lib.visualization.geometry_3d import beam_to_3d_geometry
 
         return beam_to_3d_geometry(self, is_seismic=is_seismic).to_dict()

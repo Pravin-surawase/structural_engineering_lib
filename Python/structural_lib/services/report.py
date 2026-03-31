@@ -38,7 +38,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from structural_lib.codes.is456 import ductile
+from structural_lib.codes.is13920 import beam as ductile
 from structural_lib.core.data_types import BeamGeometry, LoadCase
 
 from . import report_svg

@@ -33,7 +33,7 @@ Internal project documentation including audits, workflows, and strategies.
 
 | File | Description |
 |------|-------------|
-| [strategic-roadmap.md](strategic-roadmap.md) | Strategic roadmap |
+| [strategic-roadmap.md](../_archive/planning-completed-2026-03/strategic-roadmap.md) | Strategic roadmap |
 | [version-strategy.md](version-strategy.md) | Version strategy |
 | [project-milestones.md](project-milestones.md) | Project milestones |
 | [foundation-status.md](foundation-status.md) | Foundation status |
