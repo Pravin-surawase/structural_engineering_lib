@@ -29,8 +29,8 @@ from structural_lib.codes.is456.beam.serviceability import (  # noqa: F401, E402
 )
 
 try:
-    from structural_lib.codes.is456.beam.serviceability import (
-        __all__,
-    )  # noqa: F401, E402
+    from structural_lib.codes.is456.beam.serviceability import (  # noqa: E402
+        __all__ as __all__,  # noqa: F401
+    )
 except ImportError:
     pass
