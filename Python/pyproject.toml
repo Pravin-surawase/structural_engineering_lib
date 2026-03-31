@@ -103,6 +103,10 @@ ignore-names = [
   "baseline_D", "label_D",  # Variables containing depth values
   "require_d_less_than_D",  # Boolean flag (d < D check)
   "DEPTH_THRESHOLD", "PERCENTAGE_WEB_AREA", "MAX_SPACING",  # Local constants in functions
+  "Ag", "Ag_mm2", "Asc_mm2", "Ac_mm2",  # Column gross/steel/concrete area
+  "Pu_N", "Pu_kN", "expected_Pu_kN",  # Column axial capacity
+  "D1",  # Column dimension variant
+  "concrete_contribution_N", "steel_contribution_N",  # Column force components
 ]
 
 # classmethod decorators use cls
@@ -123,7 +127,7 @@ classmethod-decorators = ["classmethod"]
 "tests/integration/test_tables_and_materials_additional.py" = ["N802"]  # test_*_D pattern
 "tests/unit/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
 "tests/unit/test_serviceability.py" = ["E402"]  # Import after section header comment
-"tests/codes/is456/column/test_axial.py" = ["N806"]  # Structural engineering variables (Ag, Asc, Ac, D)
+"tests/codes/is456/column/test_axial.py" = ["N802", "N803", "N806", "E741"]  # Structural engineering naming (Ag, Asc, Pu, l)
 
 [tool.mypy]
 python_version = "3.11"
