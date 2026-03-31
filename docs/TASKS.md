@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-31 (Session 114 — Post v0.20.0 maintenance: WS1 stale refs, WS3 version sync, WS5 docs infra, WS6 empty dirs)
+**Updated:** 2026-03-31 (Phase 0 complete — TASK-709, TASK-710 done via PR #467, ductile.py→is13920, upward import fix)
 
 ---
 
@@ -156,8 +156,8 @@
 | TASK-706 | Update `compliance.py` imports: `from .beam import flexure, shear, serviceability` | 🔴 P0 | ✅ PR #466 |
 | TASK-707 | Update `codes/is456/__init__.py` — re-export beam modules for backward compat | 🔴 P0 | ✅ PR #466 |
 | TASK-708 | Generate backward-compat shims at old locations (5 files) | 🔴 P0 | ✅ PR #466 |
-| TASK-709 | Move `ductile.py` → `codes/is13920/beam.py` + shim | 🟡 Medium | 📋 |
-| TASK-710 | Fix upward import in `detailing.py` line 152 (codes → visualization) | 🔴 P0 | 📋 |
+| TASK-709 | Move `ductile.py` → `codes/is13920/beam.py` + shim | 🟡 Medium | ✅ Done (`32f49571`, PR #467) |
+| TASK-710 | Fix upward import in `detailing.py` line 152 (codes → visualization) | 🔴 P0 | ✅ Done (`32f49571`, PR #467) |
 | TASK-711 | Run full test suite — zero failures gate | 🔴 P0 | ✅ PR #466 |
 | TASK-712 | Implement enhanced shear near supports (Cl 40.3) — currently unconservative | 🔴 HIGH | 📋 |
 
