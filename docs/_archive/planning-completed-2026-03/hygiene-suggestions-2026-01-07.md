@@ -258,7 +258,7 @@ docs/_internal/version-strategy.md
 docs/_internal/quality-gaps-assessment.md
 docs/_internal/agent-workflow.md
 docs/_internal/foundation-status.md
-docs/_internal/strategic-roadmap.md
+docs/_archive/planning-completed-2026-03/strategic-roadmap.md
 docs/_internal/git-governance.md
 docs/_internal/multi-agent-review-2025-12-28.md
 docs/_internal/project-milestones.md
