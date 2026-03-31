@@ -1129,6 +1129,14 @@ Default design parameters for batch processing. Applied when individual beams do
 | `max_bar_dia_mm` | `float` | Maximum bar diameter (mm) |
 | `stirrup_dia_mm` | `float` | Stirrup diameter (mm) |
 
+**Access via API:**
+```python
+from structural_lib import api
+frame = api.FrameType.BEAM
+geom = api.BeamGeometry(...)
+defaults = api.DesignDefaults(fck_mpa=25, fy_mpa=415)
+```
+
 ### 1B.1 Units Validation
 
 ```python
@@ -1366,6 +1374,11 @@ Enhanced design shear strength for sections close to supports.
 **Returns:** `float` — Enhanced shear strength τc' (N/mm²)
 
 **Reference:** IS 456 Cl 40.3 — `τc' = (2d/av) × τc`, subject to `τc' ≤ τc,max`
+
+**Usage:**
+```python
+tc_enhanced = api.enhanced_shear_strength_is456(fck_nmm2=25, pt_percent=1.0, d_mm=450, av_mm=200)
+```
 
 ---
 
@@ -3122,3 +3135,12 @@ Calculate axial load capacity for a short column under pure axial load.
 **Returns:** `dict` with keys: `Pu_kN`, `Ac_mm2`, `steel_ratio_pct`, `is_valid`
 
 **Reference:** IS 456 Cl 39.3 — `Pu = 0.4·fck·Ac + 0.67·fy·Asc`
+
+**Usage:**
+```python
+from structural_lib import api
+
+classification = api.classify_column_is456(le_mm=3000, D_mm=400)
+e_min = api.min_eccentricity_is456(l_unsupported_mm=3000, D_mm=400)
+result = api.design_column_axial_is456(fck=25, fy=415, Ag_mm2=160000, Asc_mm2=3200)
+```

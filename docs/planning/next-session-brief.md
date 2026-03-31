@@ -55,6 +55,14 @@ tags: []
 
 ---
 
+## Required Reading
+
+1. [TASKS.md](../TASKS.md) — current task board & priorities
+2. [agent-bootstrap.md](../getting-started/agent-bootstrap.md) — full project reference
+3. [api.md](../reference/api.md) — API reference (29 public functions)
+
+---
+
 ## Quick Commands
 
 ```bash

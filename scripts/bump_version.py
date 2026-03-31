@@ -149,7 +149,7 @@ Doc references are synced via: python scripts/bump_version.py --sync-docs
 def read_current_version() -> str:
     """Read current version from pyproject.toml."""
     pyproject = REPO_ROOT / "Python" / "pyproject.toml"
-    content = pyproject.read_text()
+    content = pyproject.read_text(encoding="utf-8")
     match = re.search(r'^version = "([^"]+)"', content, re.MULTILINE)
     if match:
         return match.group(1)
@@ -164,7 +164,7 @@ def update_file(
         print(f"  SKIP (not found): {filepath}")
         return False
 
-    content = filepath.read_text()
+    content = filepath.read_text(encoding="utf-8")
     original = content
     unmatched_patterns = []
 
@@ -183,7 +183,7 @@ def update_file(
         if dry_run:
             print(f"  WOULD UPDATE: {filepath}")
         else:
-            filepath.write_text(content)
+            filepath.write_text(content, encoding="utf-8")
             print(f"  UPDATED: {filepath}")
         return True
     else:
@@ -350,7 +350,7 @@ def main():
     for rel_path, patterns in VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
         if filepath.exists():
-            backups.setdefault(filepath, filepath.read_text())
+            backups.setdefault(filepath, filepath.read_text(encoding="utf-8"))
         try:
             if update_file(
                 filepath,
@@ -358,13 +358,13 @@ def main():
                 {"version": new_version, "date": today},
                 args.dry_run,
             ):
-                changes += 1
+                doc_changes += 1
         except Exception as e:
             print(f"  ERROR updating {filepath}: {e}")
             if not args.dry_run:
                 print("  Rolling back changes...")
                 for path, content in backups.items():
-                    path.write_text(content)
+                    path.write_text(content, encoding="utf-8")
                     print(f"  RESTORED: {path}")
             return 1
 
@@ -372,7 +372,7 @@ def main():
     for rel_path, patterns in DOC_VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
         if filepath.exists():
-            backups.setdefault(filepath, filepath.read_text())
+            backups.setdefault(filepath, filepath.read_text(encoding="utf-8"))
         try:
             if update_file(
                 filepath,
@@ -386,13 +386,13 @@ def main():
             if not args.dry_run:
                 print("  Rolling back changes...")
                 for path, content in backups.items():
-                    path.write_text(content)
+                    path.write_text(content, encoding="utf-8")
                     print(f"  RESTORED: {path}")
             return 1
     for rel_path, patterns in DOC_DATE_FILES.items():
         filepath = REPO_ROOT / rel_path
         if filepath.exists():
-            backups.setdefault(filepath, filepath.read_text())
+            backups.setdefault(filepath, filepath.read_text(encoding="utf-8"))
         try:
             if update_file(
                 filepath,
@@ -406,7 +406,7 @@ def main():
             if not args.dry_run:
                 print("  Rolling back changes...")
                 for path, content in backups.items():
-                    path.write_text(content)
+                    path.write_text(content, encoding="utf-8")
                     print(f"  RESTORED: {path}")
             return 1
 
