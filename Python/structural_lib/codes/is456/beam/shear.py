@@ -17,6 +17,7 @@ from structural_lib.core.errors import (
     E_SHEAR_001,
     E_SHEAR_003,
     E_SHEAR_004,
+    E_SHEAR_005,
     DimensionError,
 )
 
@@ -26,6 +27,7 @@ from ..traceability import clause
 __all__ = [
     "calculate_tv",
     "design_shear",
+    "enhanced_shear_strength",
     "round_to_practical_spacing",
     "select_stirrup_diameter",
     "STANDARD_STIRRUP_DIAMETERS",
@@ -221,9 +223,77 @@ def calculate_tv(vu_kn: float, b: float, d: float) -> float:
     return (abs(vu_kn) * 1000.0) / (b * d)  # kN → N / (mm × mm) = N/mm²
 
 
+@clause("40.3")
+def enhanced_shear_strength(
+    fck: float,
+    pt: float,
+    d_mm: float,
+    av_mm: float,
+) -> float:
+    """Enhanced design shear strength for sections close to supports (IS 456 Cl 40.3).
+
+    When a concentrated load is applied within 2d of the face of a support,
+    the design shear strength τc may be enhanced to τc' = (2d/av) × τc,
+    subject to τc' ≤ τc,max.
+
+    NOTE: This enhancement applies ONLY to concentrated loads, NOT distributed loads.
+    The caller is responsible for determining load type.
+
+    Args:
+        fck: Characteristic concrete strength (N/mm²).
+        pt: Tension steel percentage (%).
+        d_mm: Effective depth (mm). Must be > 0.
+        av_mm: Distance from face of support to nearest edge of
+            concentrated load (mm). Must be > 0.
+
+    Returns:
+        Enhanced shear strength τc' (N/mm²). If av ≥ 2d, returns base τc.
+
+    Raises:
+        DimensionError: If d_mm ≤ 0 or av_mm ≤ 0.
+    """
+    # Validate inputs
+    if d_mm <= 0:
+        raise DimensionError(
+            dimension_too_small("effective depth d", d_mm, 0, "Cl. 40.3"),
+            details={"d_mm": d_mm, "minimum": 0},
+            clause_ref="Cl. 40.3",
+        )
+    if av_mm <= 0:
+        raise DimensionError(
+            E_SHEAR_005.message,
+            details={"av_mm": av_mm, "minimum": 0},
+            clause_ref="Cl. 40.3",
+        )
+
+    # IS 456 Cl 40.3 Table 19: base design shear strength τc
+    tc = tables.get_tc_value(fck, pt)
+
+    # IS 456 Cl 40.3 Table 20: maximum shear stress τc,max
+    tc_max = tables.get_tc_max_value(fck)
+
+    # If av >= 2d, no enhancement applies — return base τc
+    if av_mm >= 2.0 * d_mm:
+        return tc
+
+    # IS 456 Cl 40.3: τc' = (2d / av) × τc
+    enhancement_factor = (2.0 * d_mm) / av_mm
+    tc_prime = enhancement_factor * tc
+
+    # IS 456 Cl 40.3: τc' shall not exceed τc,max (Table 20)
+    return min(tc_prime, tc_max)
+
+
 @clause("40.1", "40.2", "40.4", "26.5.1.5", "26.5.1.6")
 def design_shear(
-    vu_kn: float, b: float, d: float, fck: float, fy: float, asv: float, pt: float
+    vu_kn: float,
+    b: float,
+    d: float,
+    fck: float,
+    fy: float,
+    asv: float,
+    pt: float,
+    av_mm: float | None = None,
 ) -> ShearResult:
     """
     Main Shear Design Function
@@ -236,6 +306,9 @@ def design_shear(
         fy: Steel yield strength (N/mm^2)
         asv: Area of shear reinforcement legs (mm^2)
         pt: Tension steel percentage for Table 19 lookup (%)
+        av_mm: Distance from face of support to nearest edge of
+            concentrated load (mm). If provided and < 2d, enhanced
+            shear strength per IS 456 Cl. 40.3 is used. Optional.
 
     Returns:
         ShearResult with nominal stress, design spacing, and pass/fail status.
@@ -244,6 +317,7 @@ def design_shear(
         - Uses IS 456 Table 19/20 values for tc and tc_max via lookup helpers.
         - Returns structured errors instead of raising for validation failures.
         - Applies max spacing limits per Cl. 26.5.1.5.
+        - When av_mm is provided, enhanced shear strength Cl. 40.3 is applied.
     """
     # Input validation with structured errors
     input_errors = []
@@ -324,8 +398,12 @@ def design_shear(
             errors=warning_errors + [E_SHEAR_001],
         )
 
-    # 3. Get Tc
+    # 3. Get Tc (with optional Cl. 40.3 enhancement)
     tc = tables.get_tc_value(fck, pt)
+
+    if av_mm is not None and av_mm > 0 and av_mm < 2 * d:
+        # IS 456 Cl 40.3: Enhanced shear strength near supports
+        tc = enhanced_shear_strength(fck, pt, d, av_mm)
 
     # 4. Calculate Vus and Spacing
     vu_n = abs(vu_kn) * 1000.0

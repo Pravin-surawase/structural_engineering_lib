@@ -20,6 +20,7 @@ from structural_lib.codes.is456 import (
     serviceability,
     slenderness,
 )
+from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
 from structural_lib.codes.is456.beam.torsion import (
     TorsionResult,
     calculate_equivalent_moment,
@@ -145,6 +146,8 @@ __all__ = [
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
+    # Shear (IS 456 Clause 40)
+    "enhanced_shear_strength_is456",
     # Smart features
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
@@ -1115,6 +1118,55 @@ def check_compliance_report(
         pt_percent=pt_percent,
         deflection_defaults=deflection_defaults,
         crack_width_defaults=crack_width_defaults,
+    )
+
+
+def enhanced_shear_strength_is456(
+    fck_nmm2: float,
+    pt_percent: float,
+    d_mm: float,
+    av_mm: float,
+) -> float:
+    """Enhanced design shear strength for sections close to supports (IS 456 Cl 40.3).
+
+    When a concentrated load is applied within 2d of the face of a support,
+    the design shear strength τc may be enhanced to τc' = (2d/av) × τc,
+    subject to τc' ≤ τc,max.
+
+    NOTE: This enhancement applies ONLY to concentrated loads, NOT distributed loads.
+    The caller is responsible for determining load type.
+
+    Args:
+        fck_nmm2: Characteristic concrete strength (N/mm²).
+        pt_percent: Tension steel percentage (%).
+        d_mm: Effective depth (mm). Must be > 0.
+        av_mm: Distance from face of support to nearest edge of
+            concentrated load (mm). Must be > 0.
+
+    Returns:
+        Enhanced shear strength τc' (N/mm²). If av ≥ 2d, returns base τc.
+
+    Raises:
+        DimensionError: If d_mm ≤ 0 or av_mm ≤ 0.
+
+    References:
+        IS 456:2000, Cl. 40.3
+
+    Examples:
+        >>> tau_c_enhanced = enhanced_shear_strength_is456(
+        ...     fck_nmm2=25.0,
+        ...     pt_percent=0.5,
+        ...     d_mm=450.0,
+        ...     av_mm=300.0
+        ... )
+        >>> print(f"Enhanced τc: {tau_c_enhanced:.3f} N/mm²")
+        Enhanced τc: 0.880 N/mm²
+    """
+    return enhanced_shear_strength(
+        fck=fck_nmm2,
+        pt=pt_percent,
+        d_mm=d_mm,
+        av_mm=av_mm,
     )
 
 
