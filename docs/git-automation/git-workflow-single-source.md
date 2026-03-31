@@ -410,11 +410,11 @@ go direct to avoid overhead that causes agents to use `--force` bypass.
 |-------------|-------------|-----------|--------------|
 | Production code | `Python/structural_lib/` | <50 lines, ≤2 files, no new files | No |
 | Production code | `Python/structural_lib/` | ≥50 lines, >2 files, or new files | **YES** |
-| VBA code | `VBA/` | Any | **YES** |
 | CI workflows | `.github/workflows/` | Any | **YES** |
 | Dependencies | `pyproject.toml`, `requirements*.txt` | Any | **YES** |
-| Streamlit code | `streamlit_app/` | <20 lines, 1 file | No |
-| Streamlit code | `streamlit_app/` | ≥20 lines or >1 file | **YES** |
+| React code | `react_app/` | <20 lines, 1 file | No |
+| React code | `react_app/` | ≥20 lines or >1 file | **YES** |
+| FastAPI code | `fastapi_app/` | Any | **YES** |
 | Docs only | `docs/`, `*.md` | Any | No |
 | Tests only | `tests/` | <50 lines | No |
 | Tests only | `tests/` | ≥50 lines | **YES** |
@@ -661,7 +661,7 @@ Lessons from 100+ hours of debugging. These patterns are now prevented by automa
 | 2 | **Manual git fallback under stress** | HIGH | Script errors → agents bypass to `git add/commit/push` | Pre-push hook blocks manual push unless `AI_COMMIT_ACTIVE` set |
 | 3 | **Terminal stuck in git pager** | HIGH | `git log`/`git diff` opens `less` pager | `agent_start.sh` sets `core.pager=cat` and `pager.status=false` |
 | 4 | **CI scope mismatch** | MEDIUM | Local: `ruff check structural_lib/` vs CI: `ruff check .` | Pre-commit hooks now match CI scope exactly |
-| 5 | **Streamlit runtime crashes** | MEDIUM | Code committed without validation (39 bugs detected) | Scanner in pre-commit hook blocks unsafe patterns |
+| 5 | **Runtime crashes from unvalidated code** | MEDIUM | Code committed without validation | Scanner in pre-commit hook blocks unsafe patterns |
 | 6 | **`--no-verify` under time pressure** | MEDIUM | Agents skip hooks → CI fails 5 min later | `ai_commit.sh` never uses `--no-verify`; hooks auto-fix issues |
 
 ---

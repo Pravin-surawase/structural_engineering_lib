@@ -11,7 +11,7 @@ Welcome to the developer documentation! This section is for developers who want 
 - **External Developers:** Building custom structural analysis tools
 - **Integration Engineers:** Connecting this library to other systems
 - **Plugin Authors:** Creating extensions and add-ons
-- **API Users:** Consuming the library in Python/VBA applications
+- **API Users:** Consuming the library in Python applications
 
 **Not what you're looking for?**
 - Want to **contribute** to the library core? → See [docs/contributing/](../contributing/)
@@ -55,7 +55,6 @@ Welcome to the developer documentation! This section is for developers who want 
 **By Use Case:**
 - **Custom reports:** [Integration Examples → PDF Generation](integration-examples.md#pdf-reports)
 - **Web integration:** [Integration Examples → REST API](integration-examples.md#rest-api)
-- **Excel integration:** [Platform Guide → Excel VBA](platform-guide.md#excel-vba)
 - **Custom design codes:** [Extension Guide → Code Modules](extension-guide.md#custom-codes)
 
 ---
@@ -66,7 +65,7 @@ Using this library as a foundation, developers have built:
 
 - **Custom Analysis Tools:** ACI 318 beam designer, Eurocode validators
 - **Report Generators:** PDF/HTML reports with company branding
-- **Web Applications:** Online structural calculators (Streamlit, Flask, Django)
+- **Web Applications:** Online structural calculators (React, Flask, Django)
 - **Excel Add-ins:** Custom ribbon tools for structural engineering
 - **Batch Processors:** Analyze 100s of beams from ETABS/SAP2000 CSV
 - **QA Tools:** Validate designs against multiple codes automatically

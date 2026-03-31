@@ -23,13 +23,13 @@ The structural_engineering_lib codebase needs a clear separation between calcula
 
 ## Decision
 
-Adopt a strict **3-layer architecture**:
+Adopt a strict **3-layer architecture** (now expanded to 4 layers in V3):
 
 | Layer | Location | Rules |
 |-------|----------|-------|
-| **Core** | `Python/structural_lib/codes/` | Pure calculation functions. NO I/O, NO Streamlit, NO pandas imports. Units always explicit. |
-| **Application** | `api.py`, `job_runner.py`, `adapters.py` | Orchestrates core functions. Can use pandas. NO Streamlit. |
-| **UI** | `streamlit_app/` | Presentation only. Can import from any layer. Should NOT import core internals directly. |
+| **Core** | `Python/structural_lib/codes/` | Pure calculation functions. NO I/O, NO UI imports. Units always explicit. |
+| **Application** | `services/api.py`, `services/adapters.py`, `services/beam_pipeline.py` | Orchestrates core functions. Can use pandas. NO UI imports. |
+| **UI** | `react_app/`, `fastapi_app/` | Presentation and API layer. React 19 + FastAPI (V3 stack). |
 
 ## Options Considered
 
@@ -53,17 +53,11 @@ Adopt a strict **3-layer architecture**:
 - Developers must understand layer rules
 - Refactoring existing code takes time
 
-## Parity Impact (Python ↔ VBA)
-
-- VBA has similar structure but simpler (no "application layer")
-- Core calculations must match exactly
-- UI layer in VBA is Excel-native, no overlap
-
 ## Test Plan
 
 - Architecture linter (`scripts/check_architecture_boundaries.py`) runs in CI
 - Violations block merge
-- Core layer tests run without Streamlit installed
+- Core layer tests run without UI dependencies installed
 
 ## Links
 

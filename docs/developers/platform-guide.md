@@ -34,12 +34,12 @@ tags: []
 
 ### What is structural_engineering_lib?
 
-A **Python/VBA library for structural engineering calculations** following IS 456:2000 (Indian Standard Code). It provides:
+A **Python library for structural engineering calculations** following IS 456:2000 (Indian Standard Code). It provides:
 
 - ✅ **29 public functions** for beam design, analysis, and detailing
 - ✅ **Type-safe API** with comprehensive validation
 - ✅ **Production-ready** (2700+ tests, 84%+ coverage)
-- ✅ **Multiple interfaces** (Python API, Excel VBA, Streamlit UI, CLI)
+- ✅ **Multiple interfaces** (Python API, React UI, FastAPI REST, CLI)
 - ✅ **Extensible architecture** for custom modules
 
 ### What Can You Build?
@@ -50,7 +50,7 @@ A **Python/VBA library for structural engineering calculations** following IS 45
 |-----------------|----------|
 | **Custom Analysis Tools** | ACI 318 designer, Eurocode validator |
 | **Report Generators** | PDF/HTML reports with company branding |
-| **Web Applications** | Online calculators (Streamlit/Flask/Django) |
+| **Web Applications** | Online calculators (React/Flask/Django) |
 | **Excel Add-ins** | Custom ribbon tools for structural teams |
 | **Batch Processors** | Analyze 100s of beams from ETABS/SAP2000 |
 | **QA Tools** | Multi-code compliance checkers |
@@ -64,7 +64,7 @@ A **Python/VBA library for structural engineering calculations** following IS 45
 | **Production-Ready** | 2700+ tests, proven in real projects |
 | **Well-Documented** | Every function has examples + docs |
 | **Extensible** | Add features without modifying core |
-| **Multi-Interface** | Python API, VBA, Streamlit, CLI |
+| **Multi-Interface** | Python API, React UI, FastAPI, CLI |
 
 ---
 
@@ -394,108 +394,45 @@ results = process_etabs_export("etabs_forces.csv", "design_summary.csv")
 print(f"Processed {len(results)} beams")
 ```
 
-### Pattern 3: Web Application (Streamlit)
+### Pattern 3: Web Application (React + FastAPI)
 
-**Use case:** Online calculator
+**Use case:** Online beam design calculator with 3D visualization
 
-```python
-# streamlit_app.py
-import streamlit as st
-from structural_lib.api import design_beam_is456
-
-st.title("Beam Design Calculator")
-
-# Inputs
-col1, col2 = st.columns(2)
-with col1:
-    span = st.number_input("Span (mm)", value=5000)
-    b = st.number_input("Width (mm)", value=300)
-    D = st.number_input("Depth (mm)", value=500)
-
-with col2:
-    mu = st.number_input("Moment (kN·m)", value=120.0)
-    vu = st.number_input("Shear (kN)", value=80.0)
-    fck = st.selectbox("Concrete Grade", [20, 25, 30, 35, 40])
-
-if st.button("Design Beam"):
-    result = design_beam_is456(
-        beam_id="B1",
-        story="Ground Floor",
-        span_mm=span,
-        b_mm=b,
-        D_mm=D,
-        cover_mm=25,
-        fck_nmm2=float(fck),
-        fy_nmm2=500.0,
-        mu_knm=mu,
-        vu_kn=vu,
-    )
-
-    if result.ok:
-        st.success("✓ Design successful!")
-        st.write(f"**Bottom Steel:** {result.bars_bottom_start.callout()}")
-        st.write(f"**Top Steel:** {result.bars_top_start.callout()}")
-        st.write(f"**Stirrups:** {result.stirrups_start.callout()}")
-    else:
-        st.error("✗ Design failed")
-        for error in result.errors:
-            st.warning(error.error_message)
-```
-
-**Run:** `streamlit run streamlit_app.py`
-
-### Pattern 4: Excel VBA Integration
-
-**Use case:** Custom Excel add-in
-
-```vba
-' Excel VBA Module
-Private Declare PtrSafe Function DesignBeamIS456 Lib "structural_lib.dll" _
-    (ByVal span As Double, ByVal b As Double, ByVal D As Double, _
-     ByVal mu As Double, ByVal vu As Double) As String
-
-Function BEAM_DESIGN(span As Double, b As Double, D As Double, _
-                      mu As Double, vu As Double) As String
-    ' Wrapper function for Excel formula
-    ' Usage: =BEAM_DESIGN(5000, 300, 500, 120, 80)
-
-    Dim result As String
-    result = DesignBeamIS456(span, b, D, mu, vu)
-
-    BEAM_DESIGN = result  ' Returns "4-T20 + T8@150"
-End Function
-```
-
-**Or use Python-Excel bridge (xlwings):**
+The V3 stack uses React 19 + React Three Fiber for the frontend and FastAPI for the backend:
 
 ```python
-# excel_functions.py
-import xlwings as xw
-from structural_lib.api import design_beam_is456
+# fastapi_app/routers/design.py (already implemented)
+from fastapi import APIRouter
+from structural_lib.services.api import design_beam_is456
 
-@xw.func
-def beam_design_xl(span, b, D, mu, vu):
-    """Excel function: =beam_design_xl(5000, 300, 500, 120, 80)"""
+router = APIRouter(prefix="/api/v1/design")
+
+@router.post("/beam")
+async def design_beam(request: BeamDesignRequest):
     result = design_beam_is456(
-        beam_id="B1",
-        story="GF",
-        span_mm=span,
-        b_mm=b,
-        D_mm=D,
-        cover_mm=25,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-        mu_knm=mu,
-        vu_kn=vu,
+        beam_id=request.beam_id,
+        story=request.story,
+        span_mm=request.span_mm,
+        b_mm=request.b_mm,
+        D_mm=request.D_mm,
+        cover_mm=request.cover_mm,
+        fck_nmm2=request.fck_nmm2,
+        fy_nmm2=request.fy_nmm2,
+        mu_knm=request.mu_knm,
+        vu_kn=request.vu_kn,
     )
-
-    if result.ok:
-        return f"{result.bars_bottom_start.callout()} + {result.stirrups_start.callout()}"
-    else:
-        return "ERROR"
+    return result.to_dict()
 ```
 
-### Pattern 5: REST API (Flask)
+```typescript
+// react_app/src/hooks/useLiveDesign.ts (already implemented)
+// React frontend calls FastAPI backend
+const { result, isLoading } = useLiveDesign(beamParams);
+```
+
+**Run:** `./run.sh dev` (launches both FastAPI at :8000 and React at :5173)
+
+### Pattern 4: REST API (Flask)
 
 **Use case:** Microservice for design calculations
 
@@ -973,7 +910,7 @@ def design_with_logging(beam_id, **kwargs):
 **Choose a starter project:**
 
 1. **Simple:** Command-line batch processor for 50 beams
-2. **Medium:** Streamlit web app with custom branding
+2. **Medium:** React + FastAPI web app with 3D visualization
 3. **Advanced:** REST API with database integration
 4. **Expert:** Custom design code (ACI/Eurocode) implementation
 

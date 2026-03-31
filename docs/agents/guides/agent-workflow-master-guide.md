@@ -86,7 +86,7 @@ tags: []
 
 # Results tell you:
 # → Direct commit (docs/tests/scripts)
-# → PR required (production code/VBA/CI)
+# → PR required (production code/CI)
 ```
 
 ### Rule 3: Use Worktrees for Long-Running Work
@@ -147,7 +147,6 @@ tags: []
 START
   │
   ├─ Making production code changes? ──YES→ PR Workflow
-  ├─ Changing VBA files? ──YES→ PR Workflow
   ├─ Changing CI workflows? ──YES→ PR Workflow
   ├─ Updating dependencies? ──YES→ PR Workflow
   │
@@ -424,19 +423,6 @@ cd $PROJECT_ROOT
 # - No unfinished merges
 # - Branch up to date
 # - Tests passing (optional)
-```
-
-### Streamlit Validation (Automatic in CI/Pre-commit)
-```bash
-# AST Scanner - detects runtime errors before they happen
-.venv/bin/python scripts/check_streamlit.py --all-pages
-
-# Pylint - code quality checks
-.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
-
-# Both run automatically on commit and in CI
-# CRITICAL issues block the commit/PR
-# HIGH issues are warnings only
 ```
 
 **Scanner Intelligence (Zero False Positives):**

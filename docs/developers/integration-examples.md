@@ -31,13 +31,12 @@ This document provides **copy-paste-runnable examples** of integrating `structur
 1. [PDF Report Generation](#example-1-pdf-report-generation)
 2. [ETABS CSV Batch Processing](#example-2-etabs-csv-batch-processing)
 3. [REST API Microservice](#example-3-rest-api-microservice)
-4. [Streamlit Web Calculator](#example-4-streamlit-web-calculator)
-5. [Excel VBA Integration (xlwings)](#example-5-excel-vba-integration-xlwings)
-6. [Cost Comparison Dashboard](#example-6-cost-comparison-dashboard)
-7. [Automated QA Checker](#example-7-automated-qa-checker)
-8. [Django Web Application](#example-8-django-web-application)
-9. [CLI Tool](#example-9-cli-tool)
-10. [JSON API Bridge](#example-10-json-api-bridge)
+4. [React + FastAPI Web App](#example-4-react-fastapi-web-app)
+5. [Cost Comparison Dashboard](#example-5-cost-comparison-dashboard)
+6. [Automated QA Checker](#example-6-automated-qa-checker)
+7. [Django Web Application](#example-7-django-web-application)
+8. [CLI Tool](#example-8-cli-tool)
+9. [JSON API Bridge](#example-9-json-api-bridge)
 
 ---
 

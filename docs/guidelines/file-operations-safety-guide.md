@@ -25,7 +25,6 @@ tags: []
 File operations (delete, move, rename) can break:
 - Internal markdown links
 - Python imports
-- VBA references
 - Documentation references
 - CI/CD workflows
 
@@ -128,15 +127,12 @@ File operations (delete, move, rename) can break:
 .venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md --dry-run
 
 # Step 2: Archive by pattern
-.venv/bin/python scripts/batch_archive.py --pattern "streamlit_app/AGENT*.md" --dry-run
+.venv/bin/python scripts/batch_archive.py --pattern "docs/_archive/AGENT*.md" --dry-run
 
-# Step 3: Use built-in streamlit cleanup
-.venv/bin/python scripts/batch_archive.py --streamlit-cleanup --dry-run
+# Step 3: Execute (after reviewing dry-run)
+.venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md
 
-# Step 4: Execute (after reviewing dry-run)
-.venv/bin/python scripts/batch_archive.py --streamlit-cleanup
-
-# Step 5: Commit
+# Step 4: Commit
 ./scripts/ai_commit.sh "chore: archive agent completion docs"
 ```
 
@@ -237,7 +233,6 @@ git restore path/to/original/file.md
 | `docs/getting-started/` | User onboarding |
 | `docs/architecture/` | System design |
 | `Python/structural_lib/` | Core code |
-| `VBA/Modules/` | Core VBA code |
 
 ### Archive-Safe Folders
 

@@ -24,10 +24,25 @@
       "description": "Code style and quality standards",
       "also_see": []
     },
-    "streamlit-patterns": {
-      "canonical": "docs/guidelines/streamlit-fragment-best-practices.md",
-      "description": "Streamlit UI patterns and fragment rules",
-      "also_see": ["docs/research/scanner-improvements.md"]
+    "torsion": {
+      "canonical": "docs/research/torsion-design-research.md",
+      "description": "Torsion design implementation and IS 456 compliance",
+      "also_see": []
+    },
+    "boq": {
+      "canonical": "docs/reference/boq-export.md",
+      "description": "Bill of Quantities export and material estimation",
+      "also_see": []
+    },
+    "load-calculator": {
+      "canonical": "docs/reference/load-calculator.md",
+      "description": "Load calculation and combination utilities",
+      "also_see": []
+    },
+    "sse-streaming": {
+      "canonical": "docs/reference/sse-streaming.md",
+      "description": "Server-Sent Events streaming for real-time design updates",
+      "also_see": []
     },
     "folder-structure": {
       "canonical": "docs/guidelines/folder-structure-governance.md",

@@ -36,7 +36,6 @@ Open-source **IS 456 RC beam design library** for structural engineers.
 - **Python core** (`Python/structural_lib/`) — Design, detailing, optimization, BBS, DXF export
 - **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API
 - **React 19 frontend** (`react_app/`) — 3D visualization with React Three Fiber
-- **Streamlit app** (`streamlit_app/`) — Legacy UI (maintained, not primary)
 - **Current focus:** See [TASKS.md](../TASKS.md) for active work
 
 ---
@@ -65,7 +64,7 @@ React 19 + R3F + Tailwind  ──HTTP/WS──>  FastAPI  ──Python──>  s
 | **Core types** | `Python/structural_lib/core/` | Base classes, types, constants — no IS 456 math |
 | **IS 456 Code** | `codes/is456/flexure.py`, `shear.py`, `detailing.py` | Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm) |
 | **Services** | `services/api.py`, `services/adapters.py`, `services/beam_pipeline.py` | Orchestration, no formatting |
-| **UI/IO** | `react_app/`, `streamlit_app/`, `fastapi_app/`, `visualization/` | External interfaces only |
+| **UI/IO** | `react_app/`, `fastapi_app/`, `visualization/` | External interfaces only |
 
 > `Python/structural_lib/api.py` is a **backward-compat stub** — real code is in `services/api.py`.
 > `adapters.py` → `services/adapters.py` | `geometry_3d.py` → `visualization/geometry_3d.py`
@@ -443,7 +442,7 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 | Production code (`Python/structural_lib/`) | PR required |
 | FastAPI code (`fastapi_app/`) | PR required |
 | React code (`react_app/`) | PR required |
-| VBA / CI workflows / Dependencies | PR required |
+| CI workflows / Dependencies | PR required |
 | Docker config (`Dockerfile*`, `docker-compose*`) | PR required |
 | Docs / tests / scripts (<=150 lines, <=2 files) | Direct commit OK |
 
@@ -562,14 +561,12 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 
 ---
 
-## 11. Domain-Specific Rules (Streamlit, VBA, Docs)
+## 11. Domain-Specific Rules (Docs)
 
 These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claude Code and Copilot. For other agents:
 
 | Domain | Key rule | Full reference |
 |--------|----------|----------------|
-| **Streamlit** | NEVER `st.sidebar` inside `@st.fragment` (crashes). Safe patterns: `data.get()`, `session_state.get()`. Module-level imports only. | `.claude/rules/streamlit.md` |
-| **VBA/Excel** | Python + VBA parity required. Mac safety: `CDbl()` wraps. Always PR. | `.claude/rules/vba.md` |
 | **New docs** | Must have metadata (Type/Audience/Status/Importance/Created). Use `create_doc.py` or add manually. | `.claude/rules/docs.md` |
 
 ---

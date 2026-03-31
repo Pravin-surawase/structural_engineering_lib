@@ -21,7 +21,7 @@ tags: []
 
 ## Overview
 
-This document provides performance benchmarks for the 3D beam visualization module (`streamlit_app/components/visualizations_3d.py`). These benchmarks ensure the visualization meets the <100ms latency target for live preview functionality.
+This document provides performance benchmarks for the 3D beam visualization module (`react_app/src/components/viewport/Viewport3D.tsx`). These benchmarks ensure the visualization meets the <100ms latency target for live preview functionality.
 
 ## Performance Targets
 
