@@ -102,7 +102,7 @@ class TestDecodeToken:
             decode_token(token)
 
         assert exc_info.value.status_code == 401
-        assert "Invalid token" in exc_info.value.detail
+        assert "Invalid or expired authentication token" in exc_info.value.detail
 
     def test_decode_invalid_token(self):
         """Should reject invalid token."""
