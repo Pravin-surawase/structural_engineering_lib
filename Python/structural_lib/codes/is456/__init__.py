@@ -13,29 +13,41 @@ This package acts as a namespace for IS 456-specific code.
 
 Migration Status (Session 5-6):
 - tables.py: ✅ Migrated
-- shear.py: ✅ Migrated
-- flexure.py: ✅ Migrated
-- detailing.py: ✅ Migrated
-- serviceability.py: ✅ Migrated
+- shear.py: ✅ Migrated → beam/shear.py (Phase 1.5)
+- flexure.py: ✅ Migrated → beam/flexure.py (Phase 1.5)
+- detailing.py: ✅ Migrated → beam/detailing.py (Phase 1.5)
+- serviceability.py: ✅ Migrated → beam/serviceability.py (Phase 1.5)
+- torsion.py: ✅ Migrated → beam/torsion.py (Phase 1.5)
 - compliance.py: ✅ Migrated
 - ductile.py: ✅ Migrated
 - traceability.py: ✅ Added (TASK-272)
+
+Beam subpackage (Phase 1.5 — TASK-700):
+- beam/flexure.py: Flexural design per Cl. 38.1
+- beam/shear.py: Shear design per Cl. 40
+- beam/detailing.py: Reinforcement detailing per Cl. 26
+- beam/serviceability.py: Deflection/crack width per Cl. 42/43
+- beam/torsion.py: Torsion design per Cl. 41
 """
 
 from __future__ import annotations
 
-# Import migrated modules
+# Import beam subpackage (canonical location)
+# Import non-beam modules
 from structural_lib.codes.is456 import (
+    beam,  # noqa: F401
     compliance,
-    detailing,
     ductile,
+    slenderness,
+    tables,
+    traceability,
+)
+from structural_lib.codes.is456.beam import (
+    detailing,
     flexure,
     serviceability,
     shear,
-    slenderness,
-    tables,
     torsion,
-    traceability,
 )
 
 # Import traceability API for convenience
@@ -110,6 +122,8 @@ class IS456Code(DesignCode):
 # Convenience exports
 __all__ = [
     "IS456Code",
+    # Subpackages
+    "beam",
     # Modules
     "tables",
     "shear",

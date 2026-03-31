@@ -37,7 +37,7 @@ from structural_lib.core.data_types import (
 )
 from structural_lib.core.errors import Severity
 
-from . import flexure, serviceability, shear
+from .beam import flexure, serviceability, shear
 
 _logger = logging.getLogger(__name__)
 

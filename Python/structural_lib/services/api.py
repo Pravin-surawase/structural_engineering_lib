@@ -20,8 +20,7 @@ from structural_lib.codes.is456 import (
     serviceability,
     slenderness,
 )
-from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
-from structural_lib.codes.is456.torsion import (
+from structural_lib.codes.is456.beam.torsion import (
     TorsionResult,
     calculate_equivalent_moment,
     calculate_equivalent_shear,
@@ -30,6 +29,7 @@ from structural_lib.codes.is456.torsion import (
     calculate_torsion_stirrup_area,
     design_torsion,
 )
+from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,

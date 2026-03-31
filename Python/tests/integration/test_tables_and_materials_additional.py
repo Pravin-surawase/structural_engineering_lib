@@ -162,9 +162,9 @@ def test_detailing_get_bond_stress_for_fck_above_max_grade_hits_no_break_path():
 def test_flexure_calculate_ast_required_clamps_term2(monkeypatch):
     # Cover the safety clamp term2>1.0 branch by stubbing Mu_lim high enough
     # so the over-reinforced early return doesn't trigger.
-    # Note: After migration to codes/is456, we patch at the source location
+    # Note: After migration to codes/is456/beam/, we patch the actual source module
     from structural_lib import flexure
-    from structural_lib.codes.is456 import flexure as flexure_source
+    from structural_lib.codes.is456.beam import flexure as flexure_source
 
     monkeypatch.setattr(
         flexure_source, "calculate_mu_lim", lambda *_args, **_kwargs: 1e12
