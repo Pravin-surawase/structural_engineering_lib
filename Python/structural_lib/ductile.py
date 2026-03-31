@@ -14,9 +14,9 @@ Migration date: 2026-03-31 (TASK-709)
 
 from __future__ import annotations
 
-import warnings as _warnings
+import warnings
 
-_warnings.warn(
+warnings.warn(
     "structural_lib.ductile has moved to "
     "structural_lib.codes.is13920.beam. "
     "Update imports to suppress this warning.",

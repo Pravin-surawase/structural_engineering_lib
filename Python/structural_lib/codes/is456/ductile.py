@@ -11,9 +11,9 @@ Migration: Phase 0 restructure (TASK-709).
 
 from __future__ import annotations
 
-import warnings as _warnings
+import warnings
 
-_warnings.warn(
+warnings.warn(
     "structural_lib.codes.is456.ductile has moved to "
     "structural_lib.codes.is13920.beam. "
     "Update imports to suppress this warning.",
