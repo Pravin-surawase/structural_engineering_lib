@@ -36,6 +36,7 @@ BRANCH_DESCRIPTION=""
 FINISH_MODE=false
 FINISH_DESCRIPTION=""
 PR_CHECK=false
+CONTINUE_PR=""
 COMMIT_MSG=""
 
 i=0
@@ -57,6 +58,9 @@ while [[ $i -lt ${#args[@]} ]]; do
             fi
             ;;
         --pr-check) PR_CHECK=true ;;
+        --continue)
+            i=$((i+1)); CONTINUE_PR="${args[$i]:-}"
+            ;;
         --dry-run) DRY_RUN=true ;;
         --force|-f) FORCE=true ;;
         --push|--push-only) PUSH_ONLY=true ;;
@@ -78,6 +82,7 @@ while [[ $i -lt ${#args[@]} ]]; do
             echo "  --status     Show project status (branch, files, PRs, stashes)"
             echo "  --branch TASK-XXX \"desc\"  Create task branch for PR workflow"
             echo "  --finish [\"desc\"]  Finish current PR: CI poll + merge + cleanup"
+            echo "  --continue PR_NUM  Resume interrupted --finish for existing PR"
             echo "  --pr-check   Check if PR is required for current changes"
             echo "  --help       Show this help message"
             echo ""
@@ -224,6 +229,15 @@ if [[ "$FINISH_MODE" == "true" ]]; then
     fi
     FINISH_DESC="${FINISH_DESCRIPTION:-$TASK_ID}"
     exec "$PROJECT_ROOT/scripts/finish_task_pr.sh" "$TASK_ID" "$FINISH_DESC" --wait --force
+fi
+
+# Continue mode: resume CI polling + merge for existing PR
+if [[ -n "$CONTINUE_PR" ]]; then
+    if [[ ! "$CONTINUE_PR" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}✗ Usage: ai_commit.sh --continue PR_NUMBER${NC}"
+        exit 1
+    fi
+    exec "$PROJECT_ROOT/scripts/finish_task_pr.sh" --continue "$CONTINUE_PR"
 fi
 
 # PR check mode: check if PR is required
