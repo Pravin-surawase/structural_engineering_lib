@@ -1162,6 +1162,17 @@ def enhanced_shear_strength_is456(
         >>> print(f"Enhanced τc: {tau_c_enhanced:.3f} N/mm²")
         Enhanced τc: 0.880 N/mm²
     """
+    # Unit plausibility guards (catch common mistakes)
+    if fck_nmm2 > 120:
+        raise ValueError(
+            f"fck_nmm2={fck_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 25), not Pa or kPa."
+        )
+    if d_mm > 5000:
+        raise ValueError(
+            f"d_mm={d_mm} seems too large. " "Expected mm (e.g., 450), not μm or m."
+        )
+
     return enhanced_shear_strength(
         fck=fck_nmm2,
         pt=pt_percent,
@@ -1236,6 +1247,26 @@ def design_beam_is456(
     """
 
     _require_is456_units(units)
+
+    # Unit plausibility guards (catch common mistakes)
+    if fck_nmm2 > 120:
+        raise ValueError(
+            f"fck_nmm2={fck_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 25), not Pa or kPa."
+        )
+    if fy_nmm2 > 700:
+        raise ValueError(
+            f"fy_nmm2={fy_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 415), not Pa or kPa."
+        )
+    if b_mm > 5000:
+        raise ValueError(
+            f"b_mm={b_mm} seems too large. " "Expected mm (e.g., 300), not μm or m."
+        )
+    if d_mm > 5000:
+        raise ValueError(
+            f"d_mm={d_mm} seems too large. " "Expected mm (e.g., 450), not μm or m."
+        )
 
     return compliance.check_compliance_case(
         case_id=case_id,
@@ -1379,6 +1410,26 @@ def detail_beam_is456(
     """
 
     _require_is456_units(units)
+
+    # Unit plausibility guards (catch common mistakes)
+    if fck_nmm2 > 120:
+        raise ValueError(
+            f"fck_nmm2={fck_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 25), not Pa or kPa."
+        )
+    if fy_nmm2 > 700:
+        raise ValueError(
+            f"fy_nmm2={fy_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 415), not Pa or kPa."
+        )
+    if b_mm > 5000:
+        raise ValueError(
+            f"b_mm={b_mm} seems too large. " "Expected mm (e.g., 300), not μm or m."
+        )
+    if D_mm > 5000:
+        raise ValueError(
+            f"D_mm={D_mm} seems too large. " "Expected mm (e.g., 500), not μm or m."
+        )
 
     return detailing.create_beam_detailing(
         beam_id=beam_id,
