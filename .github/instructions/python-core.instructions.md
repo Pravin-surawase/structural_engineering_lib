@@ -65,3 +65,17 @@ The public API has 23 functions + 6 private helpers. Key entry points:
 
 - Tests: `.venv/bin/pytest Python/tests/ -v` (85% branch coverage required)
 - Production code always requires PR: `./scripts/create_task_pr.sh TASK-XXX "desc"`
+
+## Cross-Platform File I/O
+
+Always use `encoding="utf-8"` with `Path.read_text()` and `Path.write_text()`. Windows defaults to cp1252, causing `UnicodeDecodeError` in CI.
+
+```python
+# WRONG — fails on Windows CI
+content = filepath.read_text()
+filepath.write_text(content)
+
+# RIGHT — works everywhere
+content = filepath.read_text(encoding="utf-8")
+filepath.write_text(content, encoding="utf-8")
+```

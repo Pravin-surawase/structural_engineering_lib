@@ -558,6 +558,9 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
 | Run `docker` without Colima | "permission denied" errors | Run `colima start` before any `docker` command |
 | `uvicorn --host 0.0.0.0` on Mac Mini | Browser "Cannot connect" but `curl` works | macOS resolves `localhost` to IPv6 `::1`; use `--host "::"` for dual-stack |
+| `Path.read_text()` without encoding | Windows CI fails with UnicodeDecodeError | Always use `encoding="utf-8"` with `.read_text()` / `.write_text()` |
+| Remove Required Reading from next-session-brief | Session check fails in CI | Keep `## Required Reading` section — validated by `scripts/session.py` |
+| Add symbol to `api.__all__` without docs | API doc check fails in CI | Add `api.SYMBOL_NAME` usage example in `docs/reference/api.md` |
 
 ---
 

@@ -214,6 +214,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 7. **SIGPIPE from pipefail** → Guard pipes with `|| true`
 8. **Stale branches accumulated (11 in Session 112)** → agent_start.sh now checks at session start, finish_task_pr.sh auto-cleans after merge
 9. **Ran `--finish` but didn't wait for completion** → PR left open, branch not merged, next session found stale PR. Always wait for full output and verify `git branch --show-current` shows `main`.
+10. **Missing `encoding="utf-8"` on Windows CI (Session 115)** → All `Path.read_text()`/`.write_text()` in scripts must use `encoding="utf-8"`. Windows defaults to cp1252.
 
 ## Release Procedure
 
