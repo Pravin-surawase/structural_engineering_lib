@@ -15,7 +15,7 @@ All required packages have been installed successfully:
 
 ### Installed Packages
 - **Core**: plotly 6.5.2, pandas 2.3.3, numpy 2.4.1, scipy 1.17.0
-- **Structural Design**: structural-lib-is456 0.19.0
+- **Structural Design**: structural-lib-is456 0.20.0
 - **DXF/CAD**: ezdxf 1.4.3
 - **PDF/Reports**: reportlab 4.4.9, jinja2 3.1.6
 - **Validation**: jsonschema 4.26.0, pydantic 2.12.5

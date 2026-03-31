@@ -15,7 +15,7 @@ tags: []
 **Importance:** Critical
 **Created:** 2026-03-24
 **Last Updated:** 2026-03-24
-**Version:** 0.19.1
+**Version:** 0.20.0
 
 > This is the **SINGLE SOURCE** for the entire git workflow system.
 > All other git docs (`workflow-guide.md`, `automation-scripts.md`, etc.) are supplementary.

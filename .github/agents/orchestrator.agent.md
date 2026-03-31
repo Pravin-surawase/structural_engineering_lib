@@ -1,6 +1,6 @@
 ---
 description: "Plan, triage, and delegate tasks. Start every session here."
-tools: ['search', 'readFile', 'listFiles', 'web', 'agent']
+tools: ['read/readFile', 'search', 'web', 'agent']
 model: Claude Opus 4.6 (copilot)
 handoffs:
   - label: Frontend Work

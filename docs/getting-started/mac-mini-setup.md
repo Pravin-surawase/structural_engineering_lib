@@ -100,7 +100,7 @@ pre-commit install
 
 ```bash
 .venv/bin/python -c "import structural_lib; print(structural_lib.__version__)"
-# Should print: 0.19.1 (or current version)
+# Should print: 0.20.0 (or current version)
 ```
 
 ---
