@@ -147,18 +147,18 @@
 
 | ID | Task | Priority | Status |
 |----|------|----------|--------|
-| TASK-700 | Create `codes/is456/beam/` directory + `__init__.py` | 🔴 P0 | 📋 |
-| TASK-701 | Move `flexure.py` → `beam/flexure.py` | 🔴 P0 | 📋 |
-| TASK-702 | Move `shear.py` → `beam/shear.py` | 🔴 P0 | 📋 |
-| TASK-703 | Move `detailing.py` → `beam/detailing.py` | 🔴 P0 | 📋 |
-| TASK-704 | Move `serviceability.py` → `beam/serviceability.py` | 🔴 P0 | 📋 |
-| TASK-705 | Move `torsion.py` → `beam/torsion.py` | 🔴 P0 | 📋 |
-| TASK-706 | Update `compliance.py` imports: `from .beam import flexure, shear, serviceability` | 🔴 P0 | 📋 |
-| TASK-707 | Update `codes/is456/__init__.py` — re-export beam modules for backward compat | 🔴 P0 | 📋 |
-| TASK-708 | Generate backward-compat shims at old locations (5 files) | 🔴 P0 | 📋 |
+| TASK-700 | Create `codes/is456/beam/` directory + `__init__.py` | 🔴 P0 | ✅ PR #466 |
+| TASK-701 | Move `flexure.py` → `beam/flexure.py` | 🔴 P0 | ✅ PR #466 |
+| TASK-702 | Move `shear.py` → `beam/shear.py` | 🔴 P0 | ✅ PR #466 |
+| TASK-703 | Move `detailing.py` → `beam/detailing.py` | 🔴 P0 | ✅ PR #466 |
+| TASK-704 | Move `serviceability.py` → `beam/serviceability.py` | 🔴 P0 | ✅ PR #466 |
+| TASK-705 | Move `torsion.py` → `beam/torsion.py` | 🔴 P0 | ✅ PR #466 |
+| TASK-706 | Update `compliance.py` imports: `from .beam import flexure, shear, serviceability` | 🔴 P0 | ✅ PR #466 |
+| TASK-707 | Update `codes/is456/__init__.py` — re-export beam modules for backward compat | 🔴 P0 | ✅ PR #466 |
+| TASK-708 | Generate backward-compat shims at old locations (5 files) | 🔴 P0 | ✅ PR #466 |
 | TASK-709 | Move `ductile.py` → `codes/is13920/beam.py` + shim | 🟡 Medium | 📋 |
 | TASK-710 | Fix upward import in `detailing.py` line 152 (codes → visualization) | 🔴 P0 | 📋 |
-| TASK-711 | Run full test suite — zero failures gate | 🔴 P0 | 📋 |
+| TASK-711 | Run full test suite — zero failures gate | 🔴 P0 | ✅ PR #466 |
 | TASK-712 | Implement enhanced shear near supports (Cl 40.3) — currently unconservative | 🔴 HIGH | 📋 |
 
 ### Phase 2: Column Design (After Phase 1.5)

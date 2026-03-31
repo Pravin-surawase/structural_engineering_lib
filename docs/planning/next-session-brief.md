@@ -30,7 +30,7 @@ tags: []
 | **Current** | v0.20.0 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Session 113 (Phase 1 Batch 3 — TASK-614 deprecation module, TASK-615 clauses.json +22 IS 456, TASK-616 +5 IS 13920, 41 new tests, PR #458)
+**Last Session:** Session 114 (Phase 1.5 beam restructure — TASK-700 to TASK-708, TASK-711 complete via PR #466. Moved 5 beam modules to `codes/is456/beam/`, backward-compat shims, 3470 tests passing.)
 
 **Release Infrastructure (latest):** Overhauled release tooling — `bump_version.py` now syncs pyproject.toml/package.json/CITATION.cff with semver validation + rollback; `release.py` gained `preflight` subcommand + pytest-based `verify`; `publish.yml` added `validate` job (tests + tag-version check before publish); `ops.agent.md` updated with release procedure; 37 new tests in `test_release_scripts.py`.
 
@@ -42,10 +42,11 @@ tags: []
 
 1. ~~**Phase 1 Batch 1 (611-613)**~~ — ✅ Done: `core/numerics.py`, shared math extraction, safety factor constants
 2. ~~**Phase 1 Batch 3 (614-616)**~~ — ✅ Done: `core/deprecation.py`, clauses.json 92→119 IS 456 + 11→16 IS 13920, 41 new tests
-3. **🔴 Phase 1.5: IS 456 Beam Restructure** — TASK-700 to TASK-712: Move beam modules into `codes/is456/beam/` subfolder, generate backward-compat shims, migrate `ductile.py` to `is13920/`, fix architectural import violations
-4. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards)
-5. **Phase 2 Column** — Start only after Phase 1.5 complete (TASK-630+)
-6. **Phase 2.5: Multi-Code Infrastructure** — Activate CodeRegistry, DesignEnvelope result types, code-specific input dataclasses, `core/units.py`
+3. ~~**Phase 1.5: IS 456 Beam Restructure (700-708, 711)**~~ — ✅ Done via PR #466: 5 beam modules moved to `codes/is456/beam/`, shims at old locations, compliance.py updated, governance check updated
+4. **🔴 Phase 1.5 Remaining** — TASK-709 (ductile.py → is13920), TASK-710 (fix upward import), TASK-712 (enhanced shear Cl 40.3)
+5. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards)
+6. **Phase 2 Column** — Start only after Phase 1.5 complete (TASK-630+)
+7. **Phase 2.5: Multi-Code Infrastructure** — Activate CodeRegistry, DesignEnvelope result types, code-specific input dataclasses, `core/units.py`
 
 ---
 
