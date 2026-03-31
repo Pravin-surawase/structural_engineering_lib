@@ -1,86 +1,80 @@
-# IS 456 RC Beam Design Library
+<a id="readme-top"></a>
 
 <div align="center">
 
+# IS 456 RC Design Library
+
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
+[![Downloads](https://img.shields.io/pypi/dm/structural-lib-is456)](https://pypi.org/project/structural-lib-is456/)
 [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Open-source reinforced concrete beam design toolkit for IS 456:2000.
-
+**Open-source reinforced concrete design toolkit for IS 456:2000.**
 Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 
-Current packaged release: `0.20.0`
-Current repo focus: `v0.21` React UX overhaul and library expansion
+[Documentation](docs/README.md) · [PyPI Package](https://pypi.org/project/structural-lib-is456/) · [Report Bug](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new) · [Request Feature](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new)
 
 </div>
 
-## What This Repository Contains
+---
 
-This repository is broader than the published Python package. It includes:
+<details>
+<summary>Table of Contents</summary>
 
-- `Python/structural_lib/`: the engineering core and CLI
-- `fastapi_app/`: REST, WebSocket, and SSE interfaces for the frontend
-- `react_app/`: the primary UI, built with React 19, TypeScript, and React Three Fiber
-- `docs/`: user docs, API reference, architecture notes, and agent bootstrap material
+- [Features](#features)
+- [Quick Start: Python Package](#quick-start-python-package)
+- [Quick Start: Run From Source](#quick-start-run-from-source)
+- [Architecture](#architecture)
+- [Built With](#built-with)
+- [API Surface](#api-surface)
+- [Repository Layout](#repository-layout)
+- [Documentation](#documentation)
+- [Roadmap](#roadmap)
+- [Engineering Disclaimer](#engineering-disclaimer)
+- [Contributing](#contributing)
+- [License](#license)
+- [References](#references)
 
-The Python code follows a strict 4-layer architecture:
+</details>
 
-1. Core types in `Python/structural_lib/core/`
-2. IS 456 math in `Python/structural_lib/codes/is456/`
-3. Orchestration in `Python/structural_lib/services/`
-4. UI and I/O in `react_app/` and `fastapi_app/`
+---
 
-Units are explicit at the API boundary: `mm`, `kN`, `kN*m`, and `N/mm^2`.
+## Features
 
-## What You Can Do With It
+- 🏗️ **Beam Design** — Design and check RC beams to IS 456:2000 (flexure, shear, torsion)
+- 🏛️ **Column Classification** — Classify columns and compute axial capacity per IS 456
+- 📋 **Bar Bending Schedules** — Auto-generate BBS from design results
+- 📐 **DXF Export** — CAD-ready reinforcement drawings
+- 📊 **Batch Processing** — Design hundreds of beams from CSV/JSON inputs
+- 🌐 **REST & WebSocket API** — 43 endpoints via FastAPI
+- 🎨 **3D Visualization** — Interactive rebar geometry in React Three Fiber
+- 📑 **HTML & PDF Reports** — Comprehensive design reports
+- ⚡ **CLI Pipeline** — From input to design → detail → BBS → DXF in one flow
 
-- Design and check reinforced concrete beams to IS 456:2000
-- Classify columns and compute axial load capacity per IS 456:2000
-- Generate detailing outputs, bar bending schedules, and DXF drawings
-- Run batch workflows from CSV or JSON inputs
-- Import beam data through API adapters and frontend upload flows
-- Visualize beams and rebar geometry in React and Streamlit
-- Expose the design engine through FastAPI for web applications and automation
-
-Core Python entry points live behind `structural_lib.api` for users and in `Python/structural_lib/services/api.py` for contributors.
-
-## Engineering Disclaimer
-
-This software is a design aid for qualified engineers. It does not replace professional judgment, independent verification, or project-specific code compliance review.
-
-Before using output for construction:
-
-- review the design independently
-- confirm local code amendments and authority requirements
-- verify critical cases with hand calculations or trusted reference software
-
-See [LICENSE_ENGINEERING.md](LICENSE_ENGINEERING.md) and [docs/legal/verification-checklist.md](docs/legal/verification-checklist.md).
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Quick Start: Python Package
 
 ### Install from PyPI
 
 ```bash
-python3 -m pip install --upgrade pip
-python3 -m pip install structural-lib-is456
+pip install structural-lib-is456
 ```
 
-Optional extras:
+<details>
+<summary>Optional extras</summary>
 
 ```bash
-python3 -m pip install "structural-lib-is456[dxf]"
-python3 -m pip install "structural-lib-is456[report]"
-python3 -m pip install "structural-lib-is456[validation]"
-python3 -m pip install "structural-lib-is456[render]"
+pip install "structural-lib-is456[dxf]"       # DXF drawing export
+pip install "structural-lib-is456[report]"     # HTML/PDF report generation
+pip install "structural-lib-is456[validation]" # Input validation
+pip install "structural-lib-is456[render]"     # DXF render to image
 ```
 
-Package naming:
+Package naming: install `structural-lib-is456`, import `structural_lib`, CLI `python3 -m structural_lib`.
 
-- install: `structural-lib-is456`
-- import: `structural_lib`
-- CLI: `python3 -m structural_lib`
+</details>
 
 ### First API Call
 
@@ -102,39 +96,25 @@ print(result.summary())
 print(result.is_ok)
 ```
 
-The high-level API uses explicit engineering parameter names such as `b_mm`, `D_mm`, `mu_knm`, and `fck_nmm2`.
+The API uses explicit engineering parameter names: `b_mm`, `D_mm`, `mu_knm`, `fck_nmm2`.
 
 ### CLI Pipeline
-
-The unified CLI can take you from input data to design, detailing, schedules, and drawings:
 
 ```bash
 python3 -m structural_lib design Python/examples/sample_beam_design.csv -o results.json
 python3 -m structural_lib detail results.json -o detailing.json
 python3 -m structural_lib bbs results.json -o schedule.csv
 python3 -m structural_lib dxf results.json -o drawings.dxf
-```
-
-Optional outputs:
-
-```bash
 python3 -m structural_lib report results.json --format=html -o report/
-python3 -m structural_lib validate results.json
 ```
 
-Typical artifacts:
+More examples in [Python/examples/README.md](Python/examples/README.md) and [docs/getting-started/python-quickstart.md](docs/getting-started/python-quickstart.md).
 
-- `results.json`: design and compliance output
-- `detailing.json`: bar and stirrup detailing
-- `schedule.csv`: bar bending schedule
-- `drawings.dxf`: CAD-ready reinforcement drawing
-- `report/`: HTML report output
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-More examples live in [Python/examples/README.md](Python/examples/README.md) and [docs/getting-started/python-quickstart.md](docs/getting-started/python-quickstart.md).
+## Quick Start: Run From Source
 
-## Quick Start: Run The Apps From Source
-
-### 1. Clone and set up Python
+### Clone & Setup
 
 ```bash
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
@@ -143,103 +123,76 @@ cd structural_engineering_lib
 python3.11 -m venv .venv
 source .venv/bin/activate
 
-python -m pip install --upgrade pip
+pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e Python/
 ```
 
-For contributor workflows, the repo standard entry point is:
-
-```bash
-./run.sh session start
-```
-
-### 2. Start FastAPI
+### Start Backend
 
 ```bash
 .venv/bin/uvicorn fastapi_app.main:app --reload --port 8000
 ```
 
-Useful URLs:
+- Swagger UI: http://localhost:8000/docs
+- Health check: http://localhost:8000/health
 
-- Swagger UI: `http://localhost:8000/docs`
-- Health check: `http://localhost:8000/health`
-
-### 3. Start React
+### Start Frontend
 
 ```bash
-cd react_app
-npm install
-npm run dev
+cd react_app && npm install && npm run dev
 ```
 
-React dev server:
+- React dev server: http://localhost:5173
 
-- `http://localhost:5173`
+Routes include `/design`, `/import`, `/editor`, `/dashboard`, and `/batch`. The editor is the primary workstation — click any beam for full 3D reinforcement, cross-section, and IS 456 code checks.
 
-Current top-level routes in the React app include `/design`, `/import`, `/editor`, `/dashboard`, and `/batch`. The editor page is the primary workstation — click any beam to see its full 3D reinforcement, cross-section, and IS 456 code checks inline.
-
-### 4. Docker
-
-For a containerized backend:
+### Docker
 
 ```bash
-docker compose up --build
+docker compose up --build    # FastAPI on port 8000
 ```
 
-This currently brings up the FastAPI service on port `8000`.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## API And App Surface
+## Architecture
 
-### Python library
+```
+React 19 + R3F ──HTTP/WS──▶ FastAPI ──Python──▶ structural_lib
+(react_app/)               (fastapi_app/)       (Python/structural_lib/)
+```
 
-Representative public functions exposed through `structural_lib.api` include:
+The Python code follows a strict 4-layer architecture:
 
-- `design_beam_is456`
-- `check_beam_is456`
-- `detail_beam_is456`
-- `design_and_detail_beam_is456`
-- `optimize_beam_cost`
-- `smart_analyze_design`
-- `compute_bbs`
-- `compute_dxf`
-- `compute_report`
+| Layer | Location | Responsibility |
+|-------|----------|----------------|
+| **Core types** | `Python/structural_lib/core/` | Base classes, types, constants — no IS 456 math |
+| **IS 456 Code** | `Python/structural_lib/codes/is456/` | Pure math, NO I/O, explicit units (mm, N/mm², kN, kNm) |
+| **Services** | `Python/structural_lib/services/` | Orchestration: `api.py`, `adapters.py`, `beam_pipeline.py` |
+| **UI / IO** | `react_app/`, `fastapi_app/` | Interfaces — React frontend and FastAPI backend |
 
-The real implementation lives in `Python/structural_lib/services/api.py`. The top-level `Python/structural_lib/api.py` module exists for backward compatibility.
+Units are explicit at the API boundary: `mm`, `kN`, `kN·m`, and `N/mm²`.
 
-### FastAPI
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-The backend groups endpoints by responsibility, including:
+## Built With
 
-- design
-- detailing
-- analysis
-- geometry
-- imports
-- insights
-- optimization
-- rebar
-- export
-- streaming
-- websocket
-- health
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Three.js](https://img.shields.io/badge/Three.js-R3F-000000?logo=threedotjs&logoColor=white)](https://docs.pmnd.rs/react-three-fiber)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-The current routing setup is assembled in `fastapi_app/main.py`, with REST routers mounted under `/api/v1`, the WebSocket endpoint under `/ws/design/{session_id}`, and SSE endpoints under `/stream/...`.
+## API Surface
 
-### React
+The Python library exposes 27 public functions through `structural_lib.api`. The FastAPI backend provides 43 REST/WebSocket/SSE endpoints across 13 routers.
 
-The React app is the primary UI and currently includes:
+- [Python API Reference](docs/reference/api.md)
+- [FastAPI Swagger UI](http://localhost:8000/docs) (when running locally)
+- [Full endpoint list](docs/getting-started/agent-bootstrap.md)
 
-- single-beam design with dynamic layout (3D expands when no result)
-- CSV import flows
-- batch design page
-- dashboard insights with BentoGrid layout and export buttons
-- building editor with inline BeamDetailPanel (click beam → 3D rebar + results + export)
-- 3D visualization and annotated cross-section views (utilization color coding)
-- export actions for BBS, DXF, and reports
-- macOS-style FloatingDock navigation
-
-Reusable frontend integration points are organized in `react_app/src/hooks/`, including hooks for CSV import, beam geometry, live design, exports, insights, and rebar editing.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Repository Layout
 
@@ -253,45 +206,58 @@ structural_engineering_lib/
 └── run.sh          # Unified repo CLI
 ```
 
-## Documentation Map
+## Documentation
 
-Start here, depending on what you need:
+- [docs/README.md](docs/README.md) — top-level documentation index
+- [docs/getting-started/python-quickstart.md](docs/getting-started/python-quickstart.md) — Python install and usage
+- [docs/reference/api.md](docs/reference/api.md) — public API reference
+- [docs/getting-started/agent-bootstrap.md](docs/getting-started/agent-bootstrap.md) — canonical bootstrap for coding agents
+- [docs/TASKS.md](docs/TASKS.md) — current task board
+- [llms.txt](llms.txt) — compact repo summary for language models
+- [CHANGELOG.md](CHANGELOG.md) — release history
+- [CITATION.cff](CITATION.cff) — cite this project
 
-- [docs/README.md](docs/README.md): top-level documentation index
-- [docs/getting-started/python-quickstart.md](docs/getting-started/python-quickstart.md): Python install and usage
-- [docs/reference/api.md](docs/reference/api.md): public API reference
-- [docs/getting-started/agent-bootstrap.md](docs/getting-started/agent-bootstrap.md): canonical bootstrap for coding agents
-- [docs/TASKS.md](docs/TASKS.md): current task board
-- [docs/planning/next-session-brief.md](docs/planning/next-session-brief.md): latest handoff and next priorities
-- [llms.txt](llms.txt): compact repo summary for language models
+## Roadmap
 
-## Contributing And Repo Workflow
+- [x] Beam flexure, shear, and torsion design (IS 456)
+- [x] Column classification and short-column axial capacity (IS 456 Cl 39.3)
+- [x] PDF export, load calculator, project BOQ
+- [ ] Column biaxial bending and P-M interaction (IS 456 Cl 39.5–39.6)
+- [ ] Slab design module
+- [ ] Footing design module
 
-This repo has strong automation around validation, task handoff, and git workflow.
+See [docs/TASKS.md](docs/TASKS.md) for the full task board.
 
-Useful commands:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Engineering Disclaimer
+
+This software is a design aid for qualified engineers. It does not replace professional judgment, independent verification, or project-specific code compliance review.
+
+Before using output for construction:
+
+- review the design independently
+- confirm local code amendments and authority requirements
+- verify critical cases with hand calculations or trusted reference software
+
+See [LICENSE_ENGINEERING.md](LICENSE_ENGINEERING.md) and [docs/legal/verification-checklist.md](docs/legal/verification-checklist.md).
+
+## Contributing
+
+Contributions are welcome! This repo has strong automation around validation, task handoff, and git workflow.
 
 ```bash
-./run.sh session start
-./run.sh check --quick
-./run.sh check
-./run.sh test
-./run.sh find --api design_beam_is456
-./run.sh commit "docs: update readme"
+./run.sh session start               # Begin work
+./run.sh check --quick               # Fast validation
+./run.sh test                        # Run test suite
+./run.sh commit "type: description"  # Safe commit + push
 ```
-
-Important conventions:
-
-- use `.venv/bin/python`, not bare `python`, for repo scripts
-- use `./run.sh commit` or `./scripts/ai_commit.sh`, not manual git commit flows
-- read folder `index.md` or `index.json` files before diving into large areas
-- treat `Python/structural_lib/api.py` as a compatibility layer, not the primary implementation target
-
-Contributor docs:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [docs/contributing/development-guide.md](docs/contributing/development-guide.md)
 - [docs/contributing/testing-strategy.md](docs/contributing/testing-strategy.md)
+
+[![Contributors](https://contrib.rocks/image?repo=Pravin-surawase/structural_engineering_lib)](https://github.com/Pravin-surawase/structural_engineering_lib/graphs/contributors)
 
 ## License
 
@@ -299,6 +265,8 @@ MIT for the software. See [LICENSE](LICENSE) and [LICENSE_ENGINEERING.md](LICENS
 
 ## References
 
-- IS 456:2000, Plain and Reinforced Concrete - Code of Practice
+- IS 456:2000, Plain and Reinforced Concrete — Code of Practice
 - SP:16, Design Aids for Reinforced Concrete to IS 456
-- IS 13920, ductile detailing requirements used by the detailing layer
+- IS 13920:2016, ductile detailing requirements used by the detailing layer
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
