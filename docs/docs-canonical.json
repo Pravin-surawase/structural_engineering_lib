@@ -79,6 +79,11 @@
       "description": "Active work items and backlog",
       "also_see": []
     },
+    "library-expansion": {
+      "canonical": "docs/planning/library-expansion-blueprint-v5.md",
+      "description": "Multi-code multi-element expansion master plan (IS 456 + ACI 318 + EC2)",
+      "also_see": ["docs/_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md"]
+    },
     "commit-conventions": {
       "canonical": "docs/contributing/commit-message-conventions.md",
       "description": "Commit message format and types",

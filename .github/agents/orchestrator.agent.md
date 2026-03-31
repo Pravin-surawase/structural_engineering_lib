@@ -167,7 +167,7 @@ When the task involves adding/modifying IS 456 functions (`codes/is456/`), enfor
 
 **Incremental Complexity:** For new elements, start with simplest function, verify against SP:16, then add complexity. Never jump to complex case.
 
-**Reference:** [Blueprint v4.0](../../docs/planning/library-expansion-blueprint-v4.md)
+**Reference:** [Blueprint v5.0](../../docs/planning/library-expansion-blueprint-v5.md)
 
 ### Pipeline Enforcement
 

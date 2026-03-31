@@ -38,12 +38,14 @@ tags: []
 
 ## What's Next
 
+> **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md) — Multi-code (IS 456 + ACI 318 + EC2), multi-element expansion.
+
 1. ~~**Phase 1 Batch 1 (611-613)**~~ — ✅ Done: `core/numerics.py`, shared math extraction, safety factor constants
 2. ~~**Phase 1 Batch 3 (614-616)**~~ — ✅ Done: `core/deprecation.py`, clauses.json 92→119 IS 456 + 11→16 IS 13920, 41 new tests
-3. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards)
-4. **Create quality scripts** — TASK-622 (`check_function_quality.py`), TASK-623 (`check_clause_coverage.py`), TASK-624 (`check_new_element_completeness.py`)
-5. **Remaining v0.21 tasks** — TASK-527, TASK-528, TASK-516, TASK-519
-6. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+3. **🔴 Phase 1.5: IS 456 Beam Restructure** — TASK-700 to TASK-712: Move beam modules into `codes/is456/beam/` subfolder, generate backward-compat shims, migrate `ductile.py` to `is13920/`, fix architectural import violations
+4. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards)
+5. **Phase 2 Column** — Start only after Phase 1.5 complete (TASK-630+)
+6. **Phase 2.5: Multi-Code Infrastructure** — Activate CodeRegistry, DesignEnvelope result types, code-specific input dataclasses, `core/units.py`
 
 ---
 
@@ -72,7 +74,7 @@ tags: []
   - `governance` — quality metrics (function quality, clause coverage, golden tests)
   - `doc-master` — per-element documentation checklist, function docstring template
   - `library-expert` — quality enforcement, incremental complexity, shared math extraction
-- Created `docs/planning/library-expansion-blueprint-v4.md` — updated master plan with quality pipeline
+- Created `docs/_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md` — updated master plan with quality pipeline
 - Updated `docs/TASKS.md` with Phase 0-3 tasks (TASK-600 through TASK-656)
 
 **What's next (Priority Order):**
