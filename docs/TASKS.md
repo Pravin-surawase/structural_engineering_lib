@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-30 (Session 113 — Phase 1 Batch 3: deprecation module + clauses.json expansion + 41 tests)
+**Updated:** 2026-03-31 (Session 114 — Post v0.20.0 maintenance: WS1 stale refs, WS3 version sync, WS5 docs infra, WS6 empty dirs)
 
 ---
 

@@ -1,6 +1,6 @@
 {
   "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
-  "_updated": "2026-01-23",
+  "_updated": "2026-03-31",
   "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
 
   "topics": {
