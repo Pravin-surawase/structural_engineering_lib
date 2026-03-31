@@ -26,6 +26,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi_app import __version__
 from fastapi_app.routers import (
     analysis,
+    column,
     design,
     detailing,
     export,
@@ -81,6 +82,10 @@ API_TAGS_METADATA = [
     {
         "name": "design",
         "description": "Beam design calculations for flexure, shear, and combined loading.",
+    },
+    {
+        "name": "column",
+        "description": "Column design: classification, eccentricity, and axial capacity per IS 456.",
     },
     {
         "name": "detailing",
@@ -288,6 +293,10 @@ API_V1_PREFIX = "/api/v1"
 
 app.include_router(
     design.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    column.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

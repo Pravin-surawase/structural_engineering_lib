@@ -495,3 +495,46 @@ class CuttingPlan:
     total_stock_used: int  # number of bars
     total_waste: float  # mm
     waste_percentage: float  # %
+
+
+# =============================================================================
+# Column Design Types — IS 456 Cl. 25, 39
+# =============================================================================
+
+
+class ColumnClassification(Enum):
+    """Column classification per IS 456 Cl 25.1.2."""
+
+    SHORT = auto()
+    SLENDER = auto()
+
+
+@dataclass
+class ColumnAxialResult:
+    """Result of short column axial capacity check per IS 456 Cl 39.3.
+
+    Attributes:
+        Pu_kN: Axial capacity (kN)
+        fck: Concrete grade used (N/mm²)
+        fy: Steel grade used (N/mm²)
+        Ag_mm2: Gross area (mm²)
+        Asc_mm2: Steel area (mm²)
+        Ac_mm2: Concrete area = Ag - Asc (mm²)
+        steel_ratio: Asc/Ag
+        classification: Column classification (short or slender)
+        is_safe: True if capacity >= applied load (when load provided)
+        warnings: List of design warnings
+        errors: List of structured design errors
+    """
+
+    Pu_kN: float
+    fck: float
+    fy: float
+    Ag_mm2: float
+    Asc_mm2: float
+    Ac_mm2: float
+    steel_ratio: float
+    classification: ColumnClassification
+    is_safe: bool
+    warnings: list[str] = field(default_factory=list)
+    errors: list[DesignError] = field(default_factory=list)

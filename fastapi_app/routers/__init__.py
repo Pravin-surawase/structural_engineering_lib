@@ -6,6 +6,7 @@ Exports all router modules for mounting in main.py.
 
 from fastapi_app.routers import (
     analysis,
+    column,
     design,
     detailing,
     geometry,
@@ -20,6 +21,7 @@ from fastapi_app.routers import (
 
 __all__ = [
     "analysis",
+    "column",
     "design",
     "detailing",
     "geometry",

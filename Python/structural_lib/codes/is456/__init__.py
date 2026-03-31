@@ -36,6 +36,7 @@ from __future__ import annotations
 # Import non-beam modules
 from structural_lib.codes.is456 import (
     beam,  # noqa: F401
+    column,  # noqa: F401
     compliance,
     ductile,
     slenderness,
@@ -124,6 +125,7 @@ __all__ = [
     "IS456Code",
     # Subpackages
     "beam",
+    "column",
     # Modules
     "tables",
     "shear",

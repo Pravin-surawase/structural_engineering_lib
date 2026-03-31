@@ -512,6 +512,52 @@ E_TORSION_001 = DesignError(
     clause="Cl. 41.3",
 )
 
+# Column Errors --- IS 456 Cl. 25, 39
+E_COLUMN_001 = DesignError(
+    code="E_COLUMN_001",
+    severity=Severity.ERROR,
+    message="Column dimension must be positive",
+    field="D_mm",
+    hint="Provide positive column dimensions.",
+    clause="Cl. 25",
+)
+
+E_COLUMN_002 = DesignError(
+    code="E_COLUMN_002",
+    severity=Severity.WARNING,
+    message="Steel ratio below minimum 0.8% per Cl 26.5.3.1",
+    field="Asc_mm2",
+    hint="Increase longitudinal reinforcement to at least 0.8% of Ag.",
+    clause="Cl. 26.5.3.1",
+)
+
+E_COLUMN_003 = DesignError(
+    code="E_COLUMN_003",
+    severity=Severity.WARNING,
+    message="Steel ratio exceeds maximum 4% per Cl 26.5.3.1",
+    field="Asc_mm2",
+    hint="Reduce longitudinal reinforcement or increase section.",
+    clause="Cl. 26.5.3.1",
+)
+
+E_COLUMN_004 = DesignError(
+    code="E_COLUMN_004",
+    severity=Severity.WARNING,
+    message="Slenderness ratio exceeds 60 per Cl 25.3.1",
+    field="le_mm",
+    hint="Reduce unsupported length or increase column dimensions.",
+    clause="Cl. 25.3.1",
+)
+
+E_COLUMN_005 = DesignError(
+    code="E_COLUMN_005",
+    severity=Severity.INFO,
+    message="Cl 39.3 axial formula only applicable when e_min <= 0.05*D",
+    field="e_min",
+    hint="Use P-M interaction design for larger eccentricities.",
+    clause="Cl. 39.3",
+)
+
 
 def make_error(
     code: str,

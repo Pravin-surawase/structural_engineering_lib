@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-31 (TASK-712 done — enhanced shear near supports Cl 40.3, 14 tests, API endpoint)
+**Updated:** 2026-03-31 (TASK-630/631/632 done — column types, classify, min eccentricity, short axial capacity, 75 tests)
 
 ---
 
@@ -92,9 +92,16 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-630 | Column types (ColumnGeometryInput, ColumnResult, errors) | — | 📋 Up Next |
-| TASK-631 | Minimum eccentricity (Cl 25.4) | — | 📋 Up Next |
-| TASK-632 | Short column axial (Cl 39.3) | — | 📋 Up Next |
+| TASK-633 | Short column uniaxial (Cl 39.5) | — | 📋 Up Next |
+| TASK-634 | P-M interaction curve (Cl 39.5, Annex G) | — | 📋 Up Next |
+
+## Recently Done
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Copilot | ✅ Done |
+| TASK-631 | classify_column (Cl 25.1.2) + min_eccentricity (Cl 25.4) | Copilot | ✅ Done |
+| TASK-632 | short_axial_capacity (Cl 39.3) + API + FastAPI + 75 tests | Copilot | ✅ Done |
 
 ## Up Next
 
@@ -173,9 +180,9 @@
 
 | ID | Task | Function | IS 456 Clause | Priority | Status |
 |----|------|----------|---------------|----------|--------|
-| TASK-630 | Column types (ColumnGeometryInput, ColumnResult, errors) | Types | — | 🔴 P0 | 📋 |
-| TASK-631 | Minimum eccentricity | `calculate_min_eccentricity` | Cl 39.1 | 🔴 P0 | 📋 |
-| TASK-632 | Short column axial | `design_short_column_axial` | Cl 39.3 | 🔴 P0 | 📋 |
+| TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Types | — | 🔴 P0 | ✅ Done |
+| TASK-631 | classify_column + min_eccentricity | `classify_column`, `min_eccentricity` | Cl 25.1.2, 25.4 | 🔴 P0 | ✅ Done |
+| TASK-632 | Short column axial | `short_axial_capacity` | Cl 39.3 | 🔴 P0 | ✅ Done |
 | TASK-633 | Short column uniaxial | `design_short_column_uniaxial` | Cl 39.5 | 🔴 High | 📋 |
 | TASK-634 | P-M interaction curve | `pm_interaction_curve` | Cl 39.5, Annex G | 🔴 High | 📋 |
 | TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | 📋 |

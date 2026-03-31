@@ -237,7 +237,7 @@ class DesignEnvelope:
 
 | Element | Clauses | Priority |
 |---------|---------|----------|
-| Column | Cl 25, 39, Annex E/G | P0 (before multi-code) |
+| Column | Cl 25, 39, Annex E/G | P0 (before multi-code) — classify, min_ecc, axial ✅ (75 tests) |
 | One-way slab | Cl 24.1–24.2 | P1 |
 | Two-way slab | Cl 24.3, Annex D, Table 26 | P1 |
 | Footing | Cl 34, 31.6 | P1 |
@@ -327,9 +327,9 @@ warnings.warn(
 
 | # | Function | IS 456 Reference | Complexity |
 |---|----------|-----------------|------------|
-| 1 | `classify_column()` | Cl 25.1–25.3 | Low |
-| 2 | `min_eccentricity()` | Cl 25.4 | Low |
-| 3 | `short_axial_capacity()` | Cl 39.3 | Low |
+| 1 | `classify_column()` | Cl 25.1–25.3 | ✅ Done |
+| 2 | `min_eccentricity()` | Cl 25.4 | ✅ Done |
+| 3 | `short_axial_capacity()` | Cl 39.3 | ✅ Done |
 | 4 | `helical_capacity()` | Cl 39.4 | Low |
 | 5 | `uniaxial_capacity()` | Cl 39.5, Annex G | Medium-High |
 | 6 | `biaxial_capacity()` | Cl 39.6 (Bresler) | High |

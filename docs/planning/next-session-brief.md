@@ -22,10 +22,10 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-03-31
-- Session: Progress audit + Column work planning
-- Next: TASK-630 Column types + TASK-631 Minimum eccentricity + TASK-632 Short axial capacity
-- Blueprint v5.0 §3.2 corrected (deprecated decorator, test count)
-- Phase 0 checkboxes marked complete in §4.4
+- Session: Phase 2 Column Design — axial functions complete
+- Done: TASK-630/631/632 — 3 IS 456 column functions (classify_column, min_eccentricity, short_axial_capacity), ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 errors, 7 constants, 3 API wrappers in services/api.py, column FastAPI router with 3 POST endpoints, 75 tests passing, dual review approved
+- Next: Column uniaxial bending (TASK-633 P-M interaction, Cl 39.5), wire E_COLUMN_* error codes into axial.py (reviewer obs), remove logging from pure math module (reviewer obs), frontend column design form
+- State: main branch, clean worktree
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -34,7 +34,7 @@ tags: []
 | **Current** | v0.20.0 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** Phase 1 Batch 4 complete (TASK-617/618/619) — test assertion helpers (`tests/helpers/is456_assertions.py`), top-level `__init__.py` exports for all public API functions, unit plausibility guards in `services/api.py`. Reviewer approved, 3485 tests passing. Phase 1 Foundation Cleanup is now COMPLETE.
+**Last Session:** Phase 2 Column Design started — TASK-630/631/632 delivered 3 axial capacity functions (classify_column, min_eccentricity, short_axial_capacity), full data types, error codes, constants, API wrappers, FastAPI endpoints, and 75 tests. Dual review approved (structural-engineer + reviewer).
 
 **Release Infrastructure (latest):** Overhauled release tooling — `bump_version.py` now syncs pyproject.toml/package.json/CITATION.cff with semver validation + rollback; `release.py` gained `preflight` subcommand + pytest-based `verify`; `publish.yml` added `validate` job (tests + tag-version check before publish); `ops.agent.md` updated with release procedure; 37 new tests in `test_release_scripts.py`.
 
@@ -50,8 +50,9 @@ tags: []
 4. ~~**Phase 1.5 Remaining (709-710)**~~ — ✅ Done via PR #467 (`32f49571`): ductile.py → is13920, upward import fix, strategic-roadmap archived. **Phase 0 complete.**
 5. ~~**TASK-712**~~ — ✅ Done: Enhanced shear near supports (Cl 40.3) — `enhanced_shear_strength()` + 14 tests + API endpoint (PR #468)
 6. ~~**Phase 1 Batch 4 (617-619)**~~ — ✅ Done: test assertion helpers, top-level `__init__.py` exports, unit plausibility guards. **Phase 1 Foundation Cleanup COMPLETE.**
-7. **Phase 2 Column Design (TASK-630+)** ← **START HERE**
-8. **Phase 2.5: Multi-Code Infrastructure** — Activate CodeRegistry, DesignEnvelope result types, code-specific input dataclasses, `core/units.py`
+7. ~~**Phase 2 Column Design (TASK-630–632)**~~ — ✅ Done: classify_column (Cl 25.1.2), min_eccentricity (Cl 25.4), short_axial_capacity (Cl 39.3), column types, error codes, API wrappers, FastAPI router, 75 tests
+8. **Phase 2 Column Design (TASK-633+)** ← **START HERE** — uniaxial bending (Cl 39.5), P-M interaction, biaxial bending
+9. **Phase 2.5: Multi-Code Infrastructure** — Activate CodeRegistry, DesignEnvelope result types, code-specific input dataclasses, `core/units.py`
 
 ---
 

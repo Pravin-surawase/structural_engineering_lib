@@ -30,6 +30,11 @@ from structural_lib.codes.is456.beam.torsion import (
     calculate_torsion_stirrup_area,
     design_torsion,
 )
+from structural_lib.codes.is456.column.axial import (
+    classify_column,
+    min_eccentricity,
+    short_axial_capacity,
+)
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
@@ -146,6 +151,10 @@ __all__ = [
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
+    # Column Design (IS 456 Clause 39)
+    "classify_column_is456",
+    "min_eccentricity_is456",
+    "design_column_axial_is456",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
@@ -1631,6 +1640,152 @@ def design_and_detail_beam_is456(
         is_ok=is_ok,
         remarks="; ".join(remarks_parts) if remarks_parts else "",
     )
+
+
+# ============================================================================
+# Column Design Functions (IS 456:2000 Clause 39)
+# ============================================================================
+
+
+def classify_column_is456(
+    le_mm: float,
+    D_mm: float,
+) -> str:
+    """Classify column as SHORT or SLENDER based on slenderness ratio (IS 456 Cl 25.1.2).
+
+    A column is considered SHORT if both:
+    - le/D < 12 for a rectangular column
+    - le/d < 12 for a circular column (d = diameter)
+
+    where le = effective length based on end restraints.
+
+    Args:
+        le_mm: Effective length (mm). Must be > 0.
+        D_mm: Least lateral dimension (mm). For rectangular: smaller of b or D.
+              For circular: diameter. Must be > 0.
+
+    Returns:
+        "SHORT" if slenderness ratio < 12, "SLENDER" otherwise.
+
+    Raises:
+        E_COLUMN_001: If le_mm ≤ 0 or D_mm ≤ 0.
+
+    References:
+        IS 456:2000, Cl. 25.1.2, Table 28
+
+    Examples:
+        >>> classify_column_is456(le_mm=3000, D_mm=300)
+        'SHORT'
+        >>> classify_column_is456(le_mm=4800, D_mm=300)
+        'SLENDER'
+    """
+
+    result = classify_column(le_mm=le_mm, D_mm=D_mm)
+    return result.name  # Return "SHORT" or "SLENDER" string
+
+
+def min_eccentricity_is456(
+    l_unsupported_mm: float,
+    D_mm: float,
+) -> float:
+    """Calculate minimum design eccentricity for a column (IS 456 Cl 25.4).
+
+    Per IS 456:2000 Cl 25.4, all columns must be designed for minimum eccentricity:
+        e_min = greater of (l_unsupported/500 + D/30) or 20mm
+
+    where:
+    - l_unsupported = unsupported length of the column
+    - D = lateral dimension in the plane of bending
+
+    Args:
+        l_unsupported_mm: Unsupported length of column (mm). Must be > 0.
+        D_mm: Lateral dimension in the plane of bending (mm). Must be > 0.
+
+    Returns:
+        Minimum eccentricity e_min (mm). Always ≥ 20mm.
+
+    Raises:
+        E_COLUMN_002: If l_unsupported_mm ≤ 0 or D_mm ≤ 0.
+
+    References:
+        IS 456:2000, Cl. 25.4
+
+    Examples:
+        >>> min_eccentricity_is456(l_unsupported_mm=3000, D_mm=300)
+        26.0
+        >>> min_eccentricity_is456(l_unsupported_mm=2000, D_mm=200)
+        20.67
+    """
+    return min_eccentricity(l_unsupported_mm=l_unsupported_mm, D_mm=D_mm)
+
+
+def design_column_axial_is456(
+    fck: float,
+    fy: float,
+    Ag_mm2: float,
+    Asc_mm2: float,
+) -> dict[str, Any]:
+    """Calculate axial load capacity for a short column (IS 456 Cl 39.3).
+
+    For a short column under pure axial load (or minimum eccentricity),
+    the design strength is:
+
+        Pu = 0.4·fck·Ac + 0.67·fy·Asc
+
+    where:
+    - Ac = Ag - Asc (net concrete area)
+    - Asc = area of longitudinal steel (must be 0.8% to 6% of Ag)
+
+    NOTE: This applies ONLY to SHORT columns with minimum eccentricity.
+    For slender columns or significant eccentricity, use interaction diagrams.
+
+    Args:
+        fck: Characteristic concrete strength (N/mm²). Must be > 0.
+        fy: Yield strength of steel (N/mm²). Must be > 0.
+        Ag_mm2: Gross cross-sectional area (mm²). Must be > 0.
+        Asc_mm2: Area of longitudinal reinforcement (mm²). Must be ≥ 0.
+
+    Returns:
+        Dictionary with:
+            - Pu_kN: Axial load capacity (kN)
+            - steel_ratio: Asc/Ag (percentage)
+            - warnings: List of warnings (e.g., steel ratio out of code limits)
+
+    Raises:
+        E_COLUMN_003: If fck ≤ 0, fy ≤ 0, or Ag_mm2 ≤ 0.
+        E_COLUMN_004: If Asc_mm2 < 0.
+        E_COLUMN_005: If Asc_mm2 > Ag_mm2.
+
+    References:
+        IS 456:2000, Cl. 39.3
+        IS 456:2000, Cl. 26.5.3.1 (steel ratio limits)
+
+    Examples:
+        >>> result = design_column_axial_is456(
+        ...     fck=25.0,
+        ...     fy=415.0,
+        ...     Ag_mm2=90000.0,
+        ...     Asc_mm2=1800.0
+        ... )
+        >>> result['Pu_kN']
+        1380.62
+        >>> result['steel_ratio']
+        0.02
+    """
+    from structural_lib.core.data_types import ColumnAxialResult
+
+    result: ColumnAxialResult = short_axial_capacity(
+        fck=fck,
+        fy=fy,
+        Ag_mm2=Ag_mm2,
+        Asc_mm2=Asc_mm2,
+    )
+
+    return {
+        "Pu_kN": result.Pu_kN,
+        "steel_ratio": result.steel_ratio,
+        "warnings": result.warnings,
+    }
 
 
 def optimize_beam_cost(
