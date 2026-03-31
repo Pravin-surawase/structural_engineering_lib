@@ -86,7 +86,7 @@ class TestJWTSecurity:
             decode_token(token)
 
         assert exc_info.value.status_code == 401
-        assert "Invalid token" in exc_info.value.detail
+        assert "Invalid or expired authentication token" in exc_info.value.detail
 
     def test_token_without_expiration(self):
         """Tokens without expiration should still work but with risks."""
@@ -126,7 +126,7 @@ class TestJWTSecurity:
             decode_token(expired_token)
 
         assert exc_info.value.status_code == 401
-        assert "Invalid token" in exc_info.value.detail
+        assert "Invalid or expired authentication token" in exc_info.value.detail
 
     def test_malformed_token_rejected(self):
         """Malformed tokens should be rejected gracefully."""
