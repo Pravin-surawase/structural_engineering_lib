@@ -11,9 +11,9 @@ Migration date: 2026-01-10 (Session 5)
 from __future__ import annotations
 
 # Re-export private functions that tests depend on
-# Re-export everything from the new location
-from structural_lib.codes.is456.serviceability import *  # noqa: F401, F403
-from structural_lib.codes.is456.serviceability import (  # noqa: F401
+# Re-export everything from the canonical location
+from structural_lib.codes.is456.beam.serviceability import *  # noqa: F401, F403
+from structural_lib.codes.is456.beam.serviceability import (  # noqa: F401
     _as_dict,
     _normalize_exposure_class,
     _normalize_support_condition,
@@ -31,6 +31,6 @@ from structural_lib.core.data_types import (  # noqa: F401
 
 # Re-export __all__ if defined
 try:
-    from structural_lib.codes.is456.serviceability import __all__  # noqa: F401
+    from structural_lib.codes.is456.beam.serviceability import __all__  # noqa: F401
 except ImportError:
     pass  # Module may not define __all__

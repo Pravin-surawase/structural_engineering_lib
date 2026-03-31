@@ -10,11 +10,11 @@ Migration date: 2026-01-XX (Session X)
 
 from __future__ import annotations
 
-# Re-export everything from the new location
-from structural_lib.codes.is456.shear import *  # noqa: F401, F403
+# Re-export everything from the canonical location
+from structural_lib.codes.is456.beam.shear import *  # noqa: F401, F403
 
 # Re-export __all__ if defined
 try:
-    from structural_lib.codes.is456.shear import __all__  # noqa: F401
+    from structural_lib.codes.is456.beam.shear import __all__  # noqa: F401
 except ImportError:
     pass  # Module may not define __all__

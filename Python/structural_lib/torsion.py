@@ -12,11 +12,11 @@ Migration date: 2026-01-15 (Session 33)
 
 from __future__ import annotations
 
-# Re-export everything from the new location
-from structural_lib.codes.is456.torsion import *  # noqa: F401, F403
+# Re-export everything from the canonical location
+from structural_lib.codes.is456.beam.torsion import *  # noqa: F401, F403
 
 # Re-export __all__ if defined
 try:
-    from structural_lib.codes.is456.torsion import __all__  # noqa: F401
+    from structural_lib.codes.is456.beam.torsion import __all__  # noqa: F401
 except ImportError:
     pass  # Module may not define __all__
