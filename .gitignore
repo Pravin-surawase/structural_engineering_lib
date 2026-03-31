@@ -95,6 +95,9 @@ scratch/
 temp/
 tmp/
 
+# MkDocs build output
+site/
+
 # Stale operational data (deleted in Phase 1 cleanup, Mar 2026)
 git_operations_log/
 metrics/

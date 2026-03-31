@@ -1089,10 +1089,16 @@ def create_beam_detailing(
         cover: Clear cover (mm)
         fck: Concrete strength (N/mm²)
         fy: Steel yield strength (N/mm²)
-        ast_start, ast_mid, ast_end: Required tension steel at each section (mm²)
-        asc_start, asc_mid, asc_end: Required compression steel (mm²)
+        ast_start: Required tension steel at start section (mm²)
+        ast_mid: Required tension steel at mid section (mm²)
+        ast_end: Required tension steel at end section (mm²)
+        asc_start: Required compression steel at start section (mm²)
+        asc_mid: Required compression steel at mid section (mm²)
+        asc_end: Required compression steel at end section (mm²)
         stirrup_dia: Stirrup diameter (mm)
-        stirrup_spacing_start/mid/end: Stirrup spacing (mm)
+        stirrup_spacing_start: Stirrup spacing at start (mm)
+        stirrup_spacing_mid: Stirrup spacing at mid (mm)
+        stirrup_spacing_end: Stirrup spacing at end (mm)
         is_seismic: Apply IS 13920 requirements
 
     Returns:

@@ -463,7 +463,6 @@ def generate_bbs_from_detailing(
 
     Args:
         detailing: Beam detailing result
-        include_hooks: Whether to include hook lengths in calculations
 
     Returns:
         List of BBS line items

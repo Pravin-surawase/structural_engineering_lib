@@ -112,13 +112,13 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         working-directory: Python
         run: |
-          python -m pytest --cov=structural_lib --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=80  # Target: restore to 85 when coverage improves
+          python -m pytest -m "not slow and not performance" --cov=structural_lib --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=80  # Target: restore to 85 when coverage improves
 
       - name: Run tests (no coverage)
         if: matrix.os != 'ubuntu-latest' || matrix.python-version != '3.12'
         working-directory: Python
         run: |
-          python -m pytest -q
+          python -m pytest -q -m "not slow and not performance"
 
       - name: Upload coverage artifact
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'

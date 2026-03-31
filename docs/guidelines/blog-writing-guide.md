@@ -62,7 +62,7 @@ tags: []
 
 ### Headline Writing
 
-**Formula: [Benefit/Problem] [Topic]: [Specific Outcome/Angle]**
+**Formula: \[Benefit/Problem\] \[Topic\]: \[Specific Outcome/Angle\]**
 
 ✅ **Good Headlines:**
 - "Reduce Design Time by 40%: Automating IS 456 Compliance"
@@ -80,9 +80,9 @@ tags: []
 
 | Type | Formula | Example |
 |------|---------|---------|
-| **Tutorial** | "[Action] [Topic]: [Outcome]" | "Design Your First Beam: Step-by-Step Guide" |
+| **Tutorial** | "\[Action\] \[Topic\]: \[Outcome\]" | "Design Your First Beam: Step-by-Step Guide" |
 | **Deep-Dive** | "[Concept]: Deep Dive / How It Works" | "Rebar Optimization: Algorithm Deep Dive" |
-| **Case Study** | "Case Study: [Company] [Challenge] → [Result]" | "Case Study: 30-Story Building Cost Reduced by 30%" |
+| **Case Study** | "Case Study: \[Company\] \[Challenge\] → \[Result\]" | "Case Study: 30-Story Building Cost Reduced by 30%" |
 | **Insight** | "[Trend/Question] in [Domain]: [Answer]" | "The State of Structural Engineering Software in 2026" |
 
 **Headline Quality Checklist:**
