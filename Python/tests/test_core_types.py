@@ -63,7 +63,7 @@ class TestDesignError:
     def test_frozen_immutability(self):
         """DesignError is frozen (immutable)."""
         err = DesignError(code="E_TEST_001", severity=Severity.ERROR, message="Test")
-        with pytest.raises(Exception):
+        with pytest.raises(AttributeError):
             err.code = "MODIFIED"
 
     def test_to_dict_required_only(self):
@@ -131,7 +131,7 @@ class TestPreDefinedErrors:
 
     def test_predefined_are_frozen(self):
         """Pre-defined error constants are immutable."""
-        with pytest.raises(Exception):
+        with pytest.raises(AttributeError):
             E_INPUT_001.message = "tampered"
 
 
