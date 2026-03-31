@@ -39,7 +39,15 @@ from pydantic import BaseModel
 # JWT settings — NEVER deploy with the default secret key.
 # Set JWT_SECRET_KEY in environment or .env file (see .env.example).
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-key-change-in-production")
+_ENVIRONMENT = os.getenv("ENVIRONMENT", "development").lower()
+
 if "change" in SECRET_KEY or "dev-secret" in SECRET_KEY:
+    if _ENVIRONMENT in ("production", "prod", "staging"):
+        raise RuntimeError(
+            "JWT_SECRET_KEY is using a default/insecure value. "
+            "Set a strong secret via JWT_SECRET_KEY environment variable before deploying. "
+            "Current ENVIRONMENT=%s" % _ENVIRONMENT
+        )
     import warnings
 
     warnings.warn(
@@ -135,10 +143,10 @@ def decode_token(token: str) -> TokenData:
             scopes=payload.get("scopes", []),
             exp=datetime.fromtimestamp(payload.get("exp", 0), tz=timezone.utc),
         )
-    except JWTError as e:
+    except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Invalid token: {str(e)}",
+            detail="Invalid or expired authentication token",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
