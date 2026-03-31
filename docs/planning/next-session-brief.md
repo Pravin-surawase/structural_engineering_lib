@@ -30,7 +30,7 @@ tags: []
 | **Current** | v0.20.0 | 🔄 React UX Overhaul + Library Expansion |
 | **Next** | v0.22.0 | 📋 Planned |
 
-**Last Session:** TASK-712 complete — enhanced shear near supports (IS 456 Cl 40.3). New `enhanced_shear_strength()` in `codes/is456/beam/shear.py`, `design_shear()` gained `av_mm` param, new API wrapper `enhanced_shear_strength_is456()`, new FastAPI endpoint `POST /api/v1/design/beam/enhanced-shear`. 14 new tests, 3485 total passing.
+**Last Session:** Phase 1 Batch 4 complete (TASK-617/618/619) — test assertion helpers (`tests/helpers/is456_assertions.py`), top-level `__init__.py` exports for all public API functions, unit plausibility guards in `services/api.py`. Reviewer approved, 3485 tests passing. Phase 1 Foundation Cleanup is now COMPLETE.
 
 **Release Infrastructure (latest):** Overhauled release tooling — `bump_version.py` now syncs pyproject.toml/package.json/CITATION.cff with semver validation + rollback; `release.py` gained `preflight` subcommand + pytest-based `verify`; `publish.yml` added `validate` job (tests + tag-version check before publish); `ops.agent.md` updated with release procedure; 37 new tests in `test_release_scripts.py`.
 
@@ -45,8 +45,8 @@ tags: []
 3. ~~**Phase 1.5: IS 456 Beam Restructure (700-708, 711)**~~ — ✅ Done via PR #466: 5 beam modules moved to `codes/is456/beam/`, shims at old locations, compliance.py updated, governance check updated
 4. ~~**Phase 1.5 Remaining (709-710)**~~ — ✅ Done via PR #467 (`32f49571`): ductile.py → is13920, upward import fix, strategic-roadmap archived. **Phase 0 complete.**
 5. ~~**TASK-712**~~ — ✅ Done: Enhanced shear near supports (Cl 40.3) — `enhanced_shear_strength()` + 14 tests + API endpoint (PR #468)
-6. **Phase 1 Batch 4** — TASK-617 (test assertion helpers), TASK-618 (top-level `__init__.py` exports), TASK-619 (unit plausibility guards) ← **START HERE**
-7. **Phase 2 Column** — Start only after Phase 1 complete (TASK-630+)
+6. ~~**Phase 1 Batch 4 (617-619)**~~ — ✅ Done: test assertion helpers, top-level `__init__.py` exports, unit plausibility guards. **Phase 1 Foundation Cleanup COMPLETE.**
+7. **Phase 2 Column Design (TASK-630+)** ← **START HERE**
 8. **Phase 2.5: Multi-Code Infrastructure** — Activate CodeRegistry, DesignEnvelope result types, code-specific input dataclasses, `core/units.py`
 
 ---

@@ -18,6 +18,115 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib.core.errors import DesignError
+
+
+def assert_approx(
+    actual: float,
+    expected: float,
+    *,
+    abs_tol: float = 0.01,
+    rel_tol: float = 0.001,
+    msg: str = "",
+) -> None:
+    """Assert approximate equality with both absolute and relative tolerance.
+
+    Uses the stricter of abs_tol and rel_tol for comparison.
+
+    Args:
+        actual: Actual value.
+        expected: Expected value.
+        abs_tol: Absolute tolerance (default 0.01).
+        rel_tol: Relative tolerance (default 0.001).
+        msg: Optional message prefix.
+
+    Raises:
+        AssertionError: If values don't match within tolerance.
+    """
+    assert actual == pytest.approx(expected, abs=abs_tol, rel=rel_tol), (
+        f"{msg + ': ' if msg else ''}{actual} != {expected} "
+        f"(abs_tol={abs_tol}, rel_tol={rel_tol})"
+    )
+
+
+def assert_within_sp16(
+    actual: float,
+    expected: float,
+    *,
+    tolerance_pct: float = 0.1,
+    msg: str = "",
+) -> None:
+    """Assert value matches SP:16 benchmark within ±0.1% (default).
+
+    Args:
+        actual: Computed value.
+        expected: SP:16 benchmark value.
+        tolerance_pct: Tolerance percentage (default 0.1%).
+        msg: Optional message prefix.
+
+    Raises:
+        AssertionError: If values don't match within tolerance.
+    """
+    rel_tol = tolerance_pct / 100.0
+    assert actual == pytest.approx(expected, rel=rel_tol), (
+        f"{msg + ': ' if msg else ''}SP:16 benchmark failed: {actual} vs {expected} "
+        f"(±{tolerance_pct}%)"
+    )
+
+
+def assert_raises_design_error(
+    func, *args, error_code: str | None = None, **kwargs
+) -> DesignError:
+    """Assert a function raises DesignError, optionally with a specific error code.
+
+    Args:
+        func: Function to call.
+        *args: Positional arguments for func.
+        error_code: Expected error code (optional).
+        **kwargs: Keyword arguments for func.
+
+    Returns:
+        The raised DesignError instance.
+
+    Raises:
+        AssertionError: If DesignError not raised or error_code doesn't match.
+    """
+    with pytest.raises(DesignError) as exc_info:
+        func(*args, **kwargs)
+    if error_code is not None:
+        assert (
+            exc_info.value.code == error_code
+        ), f"Expected error code {error_code}, got {exc_info.value.code}"
+    return exc_info.value
+
+
+def assert_positive(value: float, name: str = "value") -> None:
+    """Assert a value is strictly positive.
+
+    Args:
+        value: Value to check.
+        name: Name of the value for error messages.
+
+    Raises:
+        AssertionError: If value <= 0.
+    """
+    assert value > 0, f"{name} must be positive, got {value}"
+
+
+def assert_in_range(value: float, lo: float, hi: float, name: str = "value") -> None:
+    """Assert a value is within [lo, hi] inclusive.
+
+    Args:
+        value: Value to check.
+        lo: Lower bound (inclusive).
+        hi: Upper bound (inclusive).
+        name: Name of the value for error messages.
+
+    Raises:
+        AssertionError: If value not in range.
+    """
+    assert lo <= value <= hi, f"{name}={value} not in [{lo}, {hi}]"
+
 
 def assert_within_sp16_tolerance(
     actual: float,

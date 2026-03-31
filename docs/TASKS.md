@@ -131,9 +131,9 @@
 | TASK-614 | Create `@deprecated` decorator in `core/deprecation.py` | 🔴 High | ✅ Done |
 | TASK-615 | Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39) | 🔴 High | ✅ Done |
 | TASK-616 | Add IS 13920 references to clauses.json (~15 entries) | 🔴 High | ✅ Done |
-| TASK-617 | Create test assertion helpers `tests/helpers/is456_assertions.py` | 🟡 Medium | 📋 |
-| TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | 📋 |
-| TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | 📋 |
+| TASK-617 | Create test assertion helpers `tests/helpers/is456_assertions.py` | 🟡 Medium | ✅ Done |
+| TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | ✅ Done |
+| TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | ✅ Done |
 | TASK-620 | Stack trace sanitization (security) in `fastapi_app/main.py` | 🟡 Medium | 📋 |
 | TASK-621 | Add `recovery` field to `DesignError` in `core/errors.py` | 🟡 Medium | 📋 |
 | TASK-622 | Create `check_function_quality.py` script (12-point checklist CI) | 🟡 Medium | 📋 |
