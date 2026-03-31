@@ -245,7 +245,7 @@ class DesignEnvelope:
 | Staircase | Cl 33 | P2 |
 | Deep beam | Cl 29 | P2 |
 | Flat slab | Cl 31.6 (punching) | P2 |
-| Enhanced shear near supports | Cl 40.3 | P0 ⚠️ MISSING — unconservative |
+| Enhanced shear near supports | Cl 40.3 | ✅ Done (TASK-712) |
 | Punching shear | Cl 31.6 | P1 |
 | Moment redistribution | Annex C | P2 |
 | Effective flange width (L-beam) | Cl 36.4.2 | P1 |
@@ -387,7 +387,7 @@ warnings.warn(
 
 | # | Task | IS 456 Reference | Priority |
 |---|------|-----------------|----------|
-| 1 | Enhanced shear near supports | Cl 40.3 (τc' = τc·2d/av) | 🔴 HIGH — currently unconservative |
+| 1 | Enhanced shear near supports | Cl 40.3 (τc' = τc·2d/av) | ✅ Done (TASK-712) |
 | 2 | Punching shear (shared with slab/footing) | Cl 31.6 | HIGH |
 | 3 | Effective flange width for L-beams | Cl 36.4.2 variant | MEDIUM |
 | 4 | Deep beam lever arm | Cl 29 | MEDIUM |
@@ -682,7 +682,7 @@ class LoadCombination:
 | 2 | **φ vs γ architecture mismatch** | ACI code produces wrong results | HIGH | Each code's math is self-contained, never abstract safety factors |
 | 3 | **National Annex proliferation (EC2)** | 150 parameters × N countries | MEDIUM | Start with "recommended" + UK NA only |
 | 4 | **Variable strut inclination (EC2)** | No precedent in codebase | MEDIUM | Start with θ = 21.8° (conservative), add optimizer later |
-| 5 | **Enhanced shear NOT implemented** | IS 456 currently unconservative | HIGH | Fix in Phase 0 — this is a correctness bug |
+| 5 | **Enhanced shear NOT implemented** | IS 456 currently unconservative | ~~HIGH~~ RESOLVED | ✅ Fixed in TASK-712 (PR #468) |
 | 6 | **Column P-M interaction complexity** | Most complex IS 456 calculation | MEDIUM | Implement incrementally: axial first, then uniaxial, then biaxial |
 | 7 | **Load combination explosion** | 50+ combinations per code | MEDIUM | Build combination engine early (Phase 2) |
 | 8 | **ACI/EC2 code review expertise** | Team has IS 456 expertise only | HIGH | Require professional review for non-IS 456 code |
@@ -1076,7 +1076,7 @@ Every IS 456 function must pass the 9-step pipeline from `/function-quality-pipe
 | Cl 38.1–38.4 | Flexure (beam) | ✅ | Done |
 | Cl 39.1–39.7 | Column design | ❌ | P1 |
 | Cl 40.1–40.5 | Shear (beam) | ✅ | Done |
-| Cl 40.3 | Enhanced shear near supports | ❌ ⚠️ | P0 |
+| Cl 40.3 | Enhanced shear near supports | ✅ Done | Done |
 | Cl 41 | Torsion | ✅ | Done |
 | Cl 43 | Serviceability | ✅ | Done |
 | Annex B | Continuous beam coefficients | ❌ | P2 |
