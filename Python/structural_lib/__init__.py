@@ -59,8 +59,12 @@ from .services.api import (
     CalculationHash,
     # Calculation Report
     CalculationReport,
+    # Return types (for type annotations)
+    ComplianceCaseResult,
+    ComplianceReport,
     # Load Analysis
     CriticalPoint,
+    DesignAndDetailResult,
     DetailingConfigInput,
     # ETABS Integration
     ETABSEnvelopeResult,
@@ -186,6 +190,10 @@ __all__ = [
     "check_beam_is456",
     "detail_beam_is456",
     "design_and_detail_beam_is456",
+    # Return types
+    "ComplianceCaseResult",
+    "ComplianceReport",
+    "DesignAndDetailResult",
     # Input dataclasses
     "BeamInput",
     "BeamGeometryInput",

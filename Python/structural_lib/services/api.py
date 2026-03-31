@@ -195,6 +195,44 @@ def _require_is456_units(units: str) -> None:
     beam_pipeline.validate_units(units)
 
 
+def _validate_plausibility(
+    *,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    b_mm: float | None = None,
+    d_mm: float | None = None,
+    D_mm: float | None = None,
+) -> None:
+    """Catch common unit-confusion mistakes at the API boundary.
+
+    Guards are deliberately generous (e.g. fck ≤ 120 allows UHPC).
+    The goal is to catch Pa-vs-MPa and μm-vs-mm mistakes, not to
+    enforce IS 456 material limits.
+    """
+    if fck_nmm2 is not None and fck_nmm2 > 120:
+        raise ValueError(
+            f"fck_nmm2={fck_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 25), not Pa or kPa."
+        )
+    if fy_nmm2 is not None and fy_nmm2 > 700:
+        raise ValueError(
+            f"fy_nmm2={fy_nmm2} seems too large. "
+            "Expected N/mm² (e.g., 415), not Pa or kPa."
+        )
+    if b_mm is not None and b_mm > 5000:
+        raise ValueError(
+            f"b_mm={b_mm} seems too large. " "Expected mm (e.g., 300), not μm or m."
+        )
+    if d_mm is not None and d_mm > 5000:
+        raise ValueError(
+            f"d_mm={d_mm} seems too large. " "Expected mm (e.g., 450), not μm or m."
+        )
+    if D_mm is not None and D_mm > 5000:
+        raise ValueError(
+            f"D_mm={D_mm} seems too large. " "Expected mm (e.g., 500), not μm or m."
+        )
+
+
 def get_library_version() -> str:
     """Return the installed package version.
 
@@ -1163,15 +1201,7 @@ def enhanced_shear_strength_is456(
         Enhanced τc: 0.880 N/mm²
     """
     # Unit plausibility guards (catch common mistakes)
-    if fck_nmm2 > 120:
-        raise ValueError(
-            f"fck_nmm2={fck_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 25), not Pa or kPa."
-        )
-    if d_mm > 5000:
-        raise ValueError(
-            f"d_mm={d_mm} seems too large. " "Expected mm (e.g., 450), not μm or m."
-        )
+    _validate_plausibility(fck_nmm2=fck_nmm2, d_mm=d_mm)
 
     return enhanced_shear_strength(
         fck=fck_nmm2,
@@ -1249,24 +1279,13 @@ def design_beam_is456(
     _require_is456_units(units)
 
     # Unit plausibility guards (catch common mistakes)
-    if fck_nmm2 > 120:
-        raise ValueError(
-            f"fck_nmm2={fck_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 25), not Pa or kPa."
-        )
-    if fy_nmm2 > 700:
-        raise ValueError(
-            f"fy_nmm2={fy_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 415), not Pa or kPa."
-        )
-    if b_mm > 5000:
-        raise ValueError(
-            f"b_mm={b_mm} seems too large. " "Expected mm (e.g., 300), not μm or m."
-        )
-    if d_mm > 5000:
-        raise ValueError(
-            f"d_mm={d_mm} seems too large. " "Expected mm (e.g., 450), not μm or m."
-        )
+    _validate_plausibility(
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        b_mm=b_mm,
+        d_mm=d_mm,
+        D_mm=D_mm,
+    )
 
     return compliance.check_compliance_case(
         case_id=case_id,
@@ -1343,6 +1362,15 @@ def check_beam_is456(
 
     _require_is456_units(units)
 
+    # Unit plausibility guards (catch common mistakes)
+    _validate_plausibility(
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        b_mm=b_mm,
+        d_mm=d_mm,
+        D_mm=D_mm,
+    )
+
     return compliance.check_compliance_report(
         cases=cases,
         b_mm=b_mm,
@@ -1412,24 +1440,12 @@ def detail_beam_is456(
     _require_is456_units(units)
 
     # Unit plausibility guards (catch common mistakes)
-    if fck_nmm2 > 120:
-        raise ValueError(
-            f"fck_nmm2={fck_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 25), not Pa or kPa."
-        )
-    if fy_nmm2 > 700:
-        raise ValueError(
-            f"fy_nmm2={fy_nmm2} seems too large. "
-            "Expected N/mm² (e.g., 415), not Pa or kPa."
-        )
-    if b_mm > 5000:
-        raise ValueError(
-            f"b_mm={b_mm} seems too large. " "Expected mm (e.g., 300), not μm or m."
-        )
-    if D_mm > 5000:
-        raise ValueError(
-            f"D_mm={D_mm} seems too large. " "Expected mm (e.g., 500), not μm or m."
-        )
+    _validate_plausibility(
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        b_mm=b_mm,
+        D_mm=D_mm,
+    )
 
     return detailing.create_beam_detailing(
         beam_id=beam_id,
@@ -1883,6 +1899,15 @@ def smart_analyze_design(
     from structural_lib.insights import SmartDesigner
 
     _require_is456_units(units)
+
+    # Unit plausibility guards (catch common mistakes)
+    _validate_plausibility(
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        b_mm=b_mm,
+        d_mm=d_mm,
+        D_mm=D_mm,
+    )
 
     # Run full pipeline to get BeamDesignOutput
     pipeline_result = beam_pipeline.design_single_beam(
