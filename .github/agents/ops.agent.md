@@ -69,6 +69,8 @@ If stale branches or open PRs are found, **list them and ask user** before clean
 | Push only (no new commit) | `./scripts/ai_commit.sh --push` |
 | Amend last commit | `./scripts/ai_commit.sh --amend` |
 | DCO sign-off | `./scripts/ai_commit.sh "msg" --signoff` |
+| Finish PR (BLOCKS ~5-20 min) | `./scripts/ai_commit.sh --finish "description"` |
+| Resume interrupted PR merge | `./scripts/ai_commit.sh --continue PR_NUM` |
 
 ### PR Lifecycle
 
@@ -76,8 +78,26 @@ If stale branches or open PRs are found, **list them and ask user** before clean
 ./scripts/ai_commit.sh --status               # 1. Check state first
 ./scripts/ai_commit.sh --branch TASK-XXX "d"  # 2. Create task branch
 ./scripts/ai_commit.sh "type: message"        # 3. Commit on task branch
-./scripts/ai_commit.sh --finish "description" # 4. CI poll + merge + cleanup
+./scripts/ai_commit.sh --finish "description" # 4. CI poll + merge + cleanup (BLOCKS ~5-20 min)
+git branch --show-current                      # 5. VERIFY: must show 'main'
 ```
+
+### How `--finish` Works (READ THIS)
+
+`--finish` calls `finish_task_pr.sh` which does ALL of this in ONE command:
+1. Pushes your branch to remote
+2. Creates PR (or reuses existing one)
+3. Polls CI checks every 15s until all pass (~5-20 min)
+4. Squash-merges when CI is green
+5. Switches back to `main`, pulls, prunes
+6. Deletes task branch (local + remote)
+
+**This is a long-running command. It BLOCKS until everything is done. Do NOT interrupt it.**
+
+`--finish` is **re-runnable** — if interrupted, run it again. It detects existing PRs and resumes.
+If you know the PR number, use `--continue PR_NUM` instead (skips steps 1-2, faster recovery).
+
+After `--finish` completes, ALWAYS verify: `git branch --show-current` must show `main`.
 
 ## Git Workflow
 
@@ -100,7 +120,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
 **NEVER use `--force` to bypass PR checks.** This has caused 10+ hours of rework historically.
 
-**MANDATORY: Always finish PRs.** After the LAST commit on a task branch, run `--finish`. Never leave a PR open without merging — open unmerged PRs cause branch drift and confusion for the next session.
+**MANDATORY: Always finish PRs.** After the LAST commit on a task branch, run `--finish`. This command takes ~5-20 minutes (CI polling) — this is normal. Do NOT interrupt it or assume it failed because output is slow. Wait for the full output, then verify you're on `main`.
 
 ## Dev Stack
 
@@ -169,6 +189,8 @@ Destructive GitHub operations require **explicit user confirmation**.
 | Hook blocks commit | Check `logs/hook_output_*.log` — fix the issue, don't bypass |
 | Network failure on push | `./scripts/ai_commit.sh --push` |
 | PR left open (forgot to merge) | `./scripts/ai_commit.sh --finish "description"` |
+| `--finish` interrupted mid-run | `./scripts/ai_commit.sh --continue PR_NUM` |
+| Stuck on deleted branch after partial `--finish` | `git checkout main && git pull --ff-only && git fetch --prune` |
 | Merge fails (conflicts after CI passed) | Automatic — finish_task_pr.sh now checks mergeable state before merge |
 | Stale remote tracking refs | Automatic — agent_start.sh + finish_task_pr.sh prune on every run |
 | Stale merged branches accumulate | Automatic — finish_task_pr.sh cleans up merged branches after every PR merge |
@@ -191,6 +213,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 6. **Ignoring stale-version warnings** → Fix immediately with `check_doc_versions.py --fix`
 7. **SIGPIPE from pipefail** → Guard pipes with `|| true`
 8. **Stale branches accumulated (11 in Session 112)** → agent_start.sh now checks at session start, finish_task_pr.sh auto-cleans after merge
+9. **Ran `--finish` but didn't wait for completion** → PR left open, branch not merged, next session found stale PR. Always wait for full output and verify `git branch --show-current` shows `main`.
 
 ## Release Procedure
 
