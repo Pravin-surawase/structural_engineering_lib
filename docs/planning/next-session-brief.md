@@ -25,6 +25,7 @@ tags: []
 - Session: Phase 2 Column Design — axial functions complete
 - Done: TASK-630/631/632 — 3 IS 456 column functions (classify_column, min_eccentricity, short_axial_capacity), ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 errors, 7 constants, 3 API wrappers in services/api.py, column FastAPI router with 3 POST endpoints, 75 tests passing, dual review approved
 - Next: Column uniaxial bending (TASK-633 P-M interaction, Cl 39.5), wire E_COLUMN_* error codes into axial.py (reviewer obs), remove logging from pure math module (reviewer obs), frontend column design form
+- Merged: PR #471, squash commit 69d4d2c3 on main
 - State: main branch, clean worktree
 <!-- HANDOFF:END -->
 
