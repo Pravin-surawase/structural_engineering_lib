@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-03-31 | TASK-712 | Enhanced shear near supports (Cl 40.3): new function + 14 tests + API endpoint | pending |
 | 2026-03-31 | TASK-709,710 | Phase 0 complete: ductile.py→is13920, upward import fix, archive strategic-roadmap | 32f49571 |
 | 2026-03-28 | PROMPTS | Comprehensive quality pass: fixed 7 issues across 11 files (agents, prompts, instructions) | 8fb7aeb2 |
 | 2026-03-28 | PROMPTS | Fixed endpoint count 35→38 in AGENTS.md, CLAUDE.md, fastapi.instructions.md | 8fb7aeb2 |

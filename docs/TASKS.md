@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-31 (Phase 0 complete — TASK-709, TASK-710 done via PR #467, ductile.py→is13920, upward import fix)
+**Updated:** 2026-03-31 (TASK-712 done — enhanced shear near supports Cl 40.3, 14 tests, API endpoint)
 
 ---
 
@@ -159,7 +159,7 @@
 | TASK-709 | Move `ductile.py` → `codes/is13920/beam.py` + shim | 🟡 Medium | ✅ Done (`32f49571`, PR #467) |
 | TASK-710 | Fix upward import in `detailing.py` line 152 (codes → visualization) | 🔴 P0 | ✅ Done (`32f49571`, PR #467) |
 | TASK-711 | Run full test suite — zero failures gate | 🔴 P0 | ✅ PR #466 |
-| TASK-712 | Implement enhanced shear near supports (Cl 40.3) — currently unconservative | 🔴 HIGH | 📋 |
+| TASK-712 | Implement enhanced shear near supports (Cl 40.3) — new function + 14 tests + API endpoint | 🔴 HIGH | ✅ Done (PR #468) |
 
 ### Phase 2: Column Design (After Phase 1.5)
 
