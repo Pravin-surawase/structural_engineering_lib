@@ -3627,6 +3627,21 @@ Types: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code
 <td>Browser "Cannot connect" but <code>curl</code> works</td>
 <td>macOS resolves <code>localhost</code> to IPv6 <code>::1</code>; use <code>--host "::"</code> for dual-stack</td>
 </tr>
+<tr>
+<td><code>Path.read_text()</code> without encoding</td>
+<td>Windows CI fails with UnicodeDecodeError</td>
+<td>Always use <code>encoding="utf-8"</code> with <code>.read_text()</code> / <code>.write_text()</code></td>
+</tr>
+<tr>
+<td>Remove Required Reading from next-session-brief</td>
+<td>Session check fails in CI</td>
+<td>Keep <code>## Required Reading</code> section — validated by <code>scripts/session.py</code></td>
+</tr>
+<tr>
+<td>Add symbol to <code>api.__all__</code> without docs</td>
+<td>API doc check fails in CI</td>
+<td>Add <code>api.SYMBOL_NAME</code> usage example in <code>docs/reference/api.md</code></td>
+</tr>
 </tbody>
 </table>
 <hr />
