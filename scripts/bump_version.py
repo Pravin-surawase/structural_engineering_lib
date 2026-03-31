@@ -208,7 +208,7 @@ def update_file(
 
     if unmatched_patterns:
         for p in unmatched_patterns:
-            print(f"  ⚠ WARNING: Pattern not found in {filepath}: {p}")
+            print(f"  [!] WARNING: Pattern not found in {filepath}: {p}")
 
     if content != original:
         if dry_run:
@@ -370,7 +370,7 @@ def main():
             return 1
 
     print(
-        f"{'[DRY RUN] ' if args.dry_run else ''}Bumping version: {current} → {new_version}"
+        f"{'[DRY RUN] ' if args.dry_run else ''}Bumping version: {current} -> {new_version}"
     )
     print()
 

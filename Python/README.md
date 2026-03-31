@@ -98,7 +98,7 @@ print(f"Governing case: {report.governing_case_id}")
 - **API Contract Testing:** `check_api.py --signatures` for preventing API mismatches.
 - **Enhanced Cost Optimizer UI:** Interactive Pareto visualization with WHY explanations.
 
-## New in v0.19.1
+## New in v0.20.0
 
 - **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
 - **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.

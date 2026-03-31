@@ -7,8 +7,12 @@
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Downloads](https://img.shields.io/pypi/dm/structural-lib-is456)](https://pypi.org/project/structural-lib-is456/)
 [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
+[![Fast PR Checks](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
+[![CodeQL](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/codeql.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/codeql.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Pravin-surawase/structural_engineering_lib/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Pravin-surawase/structural_engineering_lib)
 
 **Open-source reinforced concrete design toolkit for IS 456:2000.**
 Use it as a Python package, a CLI, a FastAPI backend, or a React app.
@@ -51,6 +55,21 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 - 🎨 **3D Visualization** — Interactive rebar geometry in React Three Fiber
 - 📑 **HTML & PDF Reports** — Comprehensive design reports
 - ⚡ **CLI Pipeline** — From input to design → detail → BBS → DXF in one flow
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Project Stats
+
+| Metric | Value |
+|--------|-------|
+| **Python tests** | 3,548 tests across Ubuntu, Windows, macOS |
+| **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
+| **API functions** | 27 public functions in `structural_lib.api` |
+| **REST endpoints** | 43 endpoints across 13 routers + WebSocket |
+| **React hooks** | 18 custom hooks for CSV, geometry, export, live design |
+| **IS 456 clauses** | Flexure, shear, torsion, detailing, serviceability |
+| **CSV column mappings** | 40+ column names auto-detected |
+| **Export formats** | BBS CSV, DXF drawings, HTML/PDF reports |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

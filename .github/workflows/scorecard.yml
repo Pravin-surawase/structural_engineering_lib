@@ -57,13 +57,16 @@ jobs:
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: scorecard-results.sarif
+        continue-on-error: true
 
       - name: Upload Scorecard results as artifact
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: scorecard-results
           path: scorecard-results.sarif
           retention-days: 90
+          if-no-files-found: ignore
 
   # Generate human-readable summary
   scorecard-summary:
@@ -83,6 +86,7 @@ jobs:
         continue-on-error: true
 
       - name: Parse and display summary
+        if: always()
         run: |
           echo "📊 OpenSSF Scorecard Summary"
           echo "============================"

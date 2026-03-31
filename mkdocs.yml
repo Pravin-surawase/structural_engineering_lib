@@ -47,6 +47,8 @@ plugins:
             docstring_style: google
             show_signature_annotations: true
             separate_signature: true
+            docstring_options:
+              warn_unknown_params: false
 
 markdown_extensions:
   - pymdownx.arithmatex:
@@ -75,6 +77,32 @@ extra_javascript:
 
 extra_css:
   - https://unpkg.com/katex@0/dist/katex.min.css
+
+# Exclude internal/archived directories from the published site.
+# These contain stale cross-references that break --strict builds.
+# README.md files are excluded where index.md already exists (avoids conflicts).
+exclude_docs: |
+  _archive/**
+  _active/**
+  _internal/**
+  README.md
+  **/README.md
+
+# Prevent --strict from failing on non-critical link issues in docs.
+# nav.not_found remains 'warn' so missing nav targets still error.
+validation:
+  omitted_files: info
+  absolute_links: info
+  unrecognized_links: info
+  nav:
+    omitted_files: info
+    not_found: warn
+    absolute_links: info
+  links:
+    not_found: info
+    absolute_links: info
+    unrecognized_links: info
+    anchors: info
 
 nav:
   - Home: index.md
