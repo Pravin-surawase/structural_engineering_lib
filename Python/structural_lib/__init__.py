@@ -274,4 +274,8 @@ __all__ = [
     "compute_stirrup_positions",
     "compute_beam_outline",
     "beam_to_3d_geometry",
+    # Column Design (IS 456 Cl 25, 39.3)
+    "classify_column_is456",
+    "min_eccentricity_is456",
+    "design_column_axial_is456",
 ]

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Column Design (IS 456)** — `classify_column` (Cl 25.1.2), `min_eccentricity` (Cl 25.4), `short_axial_capacity` (Cl 39.3) with ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 constants, 3 API wrappers, FastAPI column router with 3 POST endpoints, 75 tests (TASK-630/631/632)
+- **Enhanced Shear Near Supports** — `enhanced_shear_strength` (Cl 40.3) with 14 tests and API endpoint (TASK-712)
+
 ## [0.20.0] - 2026-03-30
 
 V3 Foundation release — everything built since v0.19.1. Full-stack maturity milestone: React 19 + FastAPI + Python structural_lib with comprehensive quality infrastructure.

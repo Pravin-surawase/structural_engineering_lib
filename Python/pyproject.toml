@@ -123,6 +123,7 @@ classmethod-decorators = ["classmethod"]
 "tests/integration/test_tables_and_materials_additional.py" = ["N802"]  # test_*_D pattern
 "tests/unit/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
 "tests/unit/test_serviceability.py" = ["E402"]  # Import after section header comment
+"tests/codes/is456/column/test_axial.py" = ["N806"]  # Structural engineering variables (Ag, Asc, Ac, D)
 
 [tool.mypy]
 python_version = "3.11"

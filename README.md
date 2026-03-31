@@ -37,6 +37,7 @@ Units are explicit at the API boundary: `mm`, `kN`, `kN*m`, and `N/mm^2`.
 ## What You Can Do With It
 
 - Design and check reinforced concrete beams to IS 456:2000
+- Classify columns and compute axial load capacity per IS 456:2000
 - Generate detailing outputs, bar bending schedules, and DXF drawings
 - Run batch workflows from CSV or JSON inputs
 - Import beam data through API adapters and frontend upload flows

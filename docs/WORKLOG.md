@@ -40,6 +40,7 @@ tags: []
 | 2026-03-31 | TASK-630+ | Wired 3 column API functions (classify/min_ecc/axial) to services/api.py with is456 suffix convention | pending |
 | 2026-03-31 | TASK-630+ | Created fastapi_app/routers/column.py with 3 POST endpoints (/classify, /eccentricity, /axial) | pending |
 | 2026-03-31 | TASK-630+ | 75 column tests: unit, boundary, edge, SP:16 benchmark, Hypothesis property-based | pending |
+| 2026-03-31 | TASK-630 | Fixed clause refs 39.6→39.3, boundary ≤→< in API wrappers + router | — |
 | 2026-03-31 | TASK-712 | Enhanced shear near supports (Cl 40.3): new function + 14 tests + API endpoint | pending |
 | 2026-03-31 | TASK-709,710 | Phase 0 complete: ductile.py→is13920, upward import fix, archive strategic-roadmap | 32f49571 |
 | 2026-03-28 | PROMPTS | Comprehensive quality pass: fixed 7 issues across 11 files (agents, prompts, instructions) | 8fb7aeb2 |

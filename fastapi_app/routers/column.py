@@ -33,14 +33,14 @@ router = APIRouter(
     summary="Classify Column (Short/Slender)",
     description=(
         "Classify a column as SHORT or SLENDER based on its slenderness ratio "
-        "le/D per IS 456:2000 Cl. 25.1.2. Short columns have le/D ≤ 12."
+        "le/D per IS 456:2000 Cl. 25.1.2. Short columns have le/D < 12."
     ),
 )
 async def classify_column(request: ColumnClassifyRequest) -> ColumnClassifyResponse:
     """
     Classify a column as short or slender.
 
-    A column is **short** if le/D ≤ 12, otherwise **slender**.
+    A column is **short** if le/D < 12, otherwise **slender**.
     Per IS 456:2000, Cl. 25.1.2.
     """
     try:
@@ -117,7 +117,7 @@ async def column_eccentricity(
     summary="Short Column Axial Capacity",
     description=(
         "Calculate the axial load capacity of a short column under pure axial "
-        "load (or minimum eccentricity) per IS 456:2000 Cl. 39.6: "
+        "load (or minimum eccentricity) per IS 456:2000 Cl. 39.3: "
         "Pu = 0.4·fck·Ac + 0.67·fy·Asc."
     ),
 )
@@ -125,7 +125,7 @@ async def column_axial_capacity(
     request: ColumnAxialRequest,
 ) -> ColumnAxialResponse:
     """
-    Calculate axial capacity for a short column per IS 456 Cl. 39.6.
+    Calculate axial capacity for a short column per IS 456 Cl. 39.3.
 
     Pu = 0.4·fck·(Ag - Asc) + 0.67·fy·Asc
 

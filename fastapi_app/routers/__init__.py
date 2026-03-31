@@ -21,6 +21,7 @@ from fastapi_app.routers import (
 
 __all__ = [
     "analysis",
+    "column",
     "design",
     "detailing",
     "geometry",

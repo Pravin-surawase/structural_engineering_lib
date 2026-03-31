@@ -1654,8 +1654,8 @@ def classify_column_is456(
     """Classify column as SHORT or SLENDER based on slenderness ratio (IS 456 Cl 25.1.2).
 
     A column is considered SHORT if both:
-    - le/D ≤ 12 for a rectangular column
-    - le/d ≤ 12 for a circular column (d = diameter)
+    - le/D < 12 for a rectangular column
+    - le/d < 12 for a circular column (d = diameter)
 
     where le = effective length based on end restraints.
 
@@ -1665,7 +1665,7 @@ def classify_column_is456(
               For circular: diameter. Must be > 0.
 
     Returns:
-        "SHORT" if slenderness ratio ≤ 12, "SLENDER" otherwise.
+        "SHORT" if slenderness ratio < 12, "SLENDER" otherwise.
 
     Raises:
         E_COLUMN_001: If le_mm ≤ 0 or D_mm ≤ 0.
@@ -1725,7 +1725,7 @@ def design_column_axial_is456(
     Ag_mm2: float,
     Asc_mm2: float,
 ) -> dict[str, Any]:
-    """Calculate axial load capacity for a short column (IS 456 Cl 39.6).
+    """Calculate axial load capacity for a short column (IS 456 Cl 39.3).
 
     For a short column under pure axial load (or minimum eccentricity),
     the design strength is:
@@ -1757,7 +1757,7 @@ def design_column_axial_is456(
         E_COLUMN_005: If Asc_mm2 > Ag_mm2.
 
     References:
-        IS 456:2000, Cl. 39.6
+        IS 456:2000, Cl. 39.3
         IS 456:2000, Cl. 26.5.3.1 (steel ratio limits)
 
     Examples:
