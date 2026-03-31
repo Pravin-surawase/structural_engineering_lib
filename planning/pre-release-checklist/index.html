@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/planning/next-session-brief/">
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/planning/pre-release-checklist/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Next Session Briefing - structural_engineering_lib</title>
+        <title>Pre-Release Checklist - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#next-session-briefing" class="md-skip">
+        <a href="#pre-release-checklist" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Next Session Briefing
+              Pre-Release Checklist
             
           </span>
         </div>
@@ -1481,10 +1481,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#latest-handoff-auto" class="md-nav__link">
+  <a href="#current-state" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Latest Handoff (auto)
+        Current State
       
     </span>
   </a>
@@ -1492,22 +1492,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
+  <a href="#beta-readiness-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's Next
+        Beta Readiness Checklist
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="What&#39;s Next">
+    <nav class="md-nav" aria-label="Beta Readiness Checklist">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#technical-debt" class="md-nav__link">
+  <a href="#required-before-beta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Technical Debt
+        Required Before Beta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-before-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Before 1.0
       
     </span>
   </a>
@@ -1516,28 +1527,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Commands
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Files
-      
-    </span>
-  </a>
   
 </li>
       
@@ -1561,81 +1550,43 @@
   
 
 
-<h1 id="next-session-briefing">Next Session Briefing<a class="headerlink" href="#next-session-briefing" title="Permanent link">&para;</a></h1>
-<p><strong>Type:</strong> Handoff
+<h1 id="pre-release-checklist">Pre-Release Checklist<a class="headerlink" href="#pre-release-checklist" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Active
-<strong>Importance:</strong> Critical
-<strong>Created:</strong> 2025-01-01
-<strong>Last Updated:</strong> 2026-04-01</p>
-<hr />
-<h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
-<!-- HANDOFF:START -->
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-03-31
+<strong>Last Updated:</strong> 2026-03-31</p>
+<h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Date: 2026-03-31</li>
-<li>Session: Phase 2 Column Design — axial functions complete</li>
-<li>Done: TASK-630/631/632 — 3 IS 456 column functions (classify_column, min_eccentricity, short_axial_capacity), ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 errors, 7 constants, 3 API wrappers in services/api.py, column FastAPI router with 3 POST endpoints, 75 tests passing, dual review approved</li>
-<li>Next: Column uniaxial bending (TASK-633 P-M interaction, Cl 39.5), wire E_COLUMN_* error codes into axial.py (reviewer obs), remove logging from pure math module (reviewer obs), frontend column design form</li>
-<li>Merged: PR #471, squash commit 69d4d2c3 on main</li>
-<li>State: main branch, clean worktree</li>
+<li><strong>Version:</strong> 0.20.0</li>
+<li><strong>Branch:</strong> main</li>
+<li><strong>CI Status:</strong> All workflows passing</li>
 </ul>
-<!-- HANDOFF:END -->
-
-<table>
-<thead>
-<tr>
-<th>Release</th>
-<th>Version</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Current</strong></td>
-<td>v0.20.0</td>
-<td>🔄 React UX Overhaul + Library Expansion</td>
-</tr>
-<tr>
-<td><strong>Next</strong></td>
-<td>v0.22.0</td>
-<td>📋 Planned</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p><strong>Master Plan:</strong> <a href="../library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a></p>
-</blockquote>
-<ol>
-<li><strong>Phase 2 Column Design (TASK-633+)</strong> ← <strong>START HERE</strong> — uniaxial bending (Cl 39.5), P-M interaction, biaxial bending</li>
-<li><strong>Wire E_COLUMN_* error codes</strong> into axial.py (reviewer observation)</li>
-<li><strong>Remove logging from pure math module</strong> (reviewer observation)</li>
-<li><strong>Frontend column design form</strong> — React UI for column design</li>
-<li><strong>Phase 2.5: Multi-Code Infrastructure</strong> — CodeRegistry, DesignEnvelope, code-specific input dataclasses, <code>core/units.py</code></li>
-<li><strong>Quality scripts</strong> — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)</li>
-</ol>
-<h3 id="technical-debt">Technical Debt<a class="headerlink" href="#technical-debt" title="Permanent link">&para;</a></h3>
+<h2 id="beta-readiness-checklist">Beta Readiness Checklist<a class="headerlink" href="#beta-readiness-checklist" title="Permanent link">&para;</a></h2>
+<h3 id="required-before-beta">Required Before Beta<a class="headerlink" href="#required-before-beta" title="Permanent link">&para;</a></h3>
 <ul>
-<li>2 architecture violations: rebar_optimizer/multi_objective_optimizer bypass api facade</li>
-<li>~13 backward-compat stub imports in streamlit_app/</li>
-<li>28 unit conversion warnings in IS 456 code (documented)</li>
+<li>[x] Core beam design (flexure, shear, detailing) complete</li>
+<li>[x] IS 456 clause compliance verified with SP:16 benchmarks</li>
+<li>[x] FastAPI REST + WebSocket API operational (43 endpoints)</li>
+<li>[x] React frontend with 3D visualization</li>
+<li>[x] CSV/ETABS import pipeline working</li>
+<li>[x] Export pipeline (BBS, DXF, HTML report)</li>
+<li>[x] 3500+ tests passing across 3 platforms</li>
+<li>[ ] Column design functions fully tested with SP:16 benchmarks</li>
+<li>[ ] Slab design module implemented</li>
+<li>[ ] Footing design module implemented</li>
+<li>[ ] API stability guarantees documented</li>
 </ul>
-<hr />
-<h2 id="quick-commands">Quick Commands<a class="headerlink" href="#quick-commands" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start<span class="w">              </span><span class="c1"># Begin work</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./run.sh<span class="w"> </span>commit<span class="w"> </span><span class="s2">&quot;type: message&quot;</span><span class="w">     </span><span class="c1"># Safe commit (THE ONE RULE)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick<span class="w">              </span><span class="c1"># Fast validation (&lt;30s)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>./run.sh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>TASK-XXX<span class="w"> </span><span class="s2">&quot;desc&quot;</span><span class="w">  </span><span class="c1"># Start a PR</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w">                       </span><span class="c1"># Run pytest</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build<span class="w">           </span><span class="c1"># FastAPI at :8000/docs</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">cd</span><span class="w"> </span>react_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev<span class="w">         </span><span class="c1"># React at :5173</span>
-</code></pre></div>
-<h2 id="key-files">Key Files<a class="headerlink" href="#key-files" title="Permanent link">&para;</a></h2>
+<h3 id="required-before-10">Required Before 1.0<a class="headerlink" href="#required-before-10" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Task tracking: <a href="../../TASKS/">docs/TASKS.md</a></li>
-<li>Session history: <a href="../../SESSION_LOG/">docs/SESSION_LOG.md</a></li>
-<li>Agent bootstrap: <a href="../../getting-started/agent-bootstrap/">docs/getting-started/agent-bootstrap.md</a></li>
+<li>[ ] All structural elements (beam, column, slab, footing) complete</li>
+<li>[ ] Professional validation by licensed structural engineer</li>
+<li>[ ] Performance benchmarks published</li>
+<li>[ ] Security audit complete (OWASP compliance)</li>
+<li>[ ] User documentation complete with worked examples</li>
+<li>[ ] PyPI stable release published</li>
+<li>[ ] Docker production image optimized</li>
 </ul>
 
 
@@ -1643,9 +1594,6 @@
 
 
 
-
-  
-  
 
 
 

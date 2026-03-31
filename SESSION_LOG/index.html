@@ -1481,6 +1481,67 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#2026-03-31-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-03-31 — Session
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2026-03-31 — Session">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prs-merged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRs Merged
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-deliverables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#2026-03-28-session-105" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1593,7 +1654,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
+  <a href="#summary_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -1644,6 +1705,44 @@
 <p>Append-only decision log for AI agent sessions.
 Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/">SESSION_LOG_through_session_100.md</a></p>
 </blockquote>
+<hr />
+<h2 id="2026-03-31-session">2026-03-31 — Session<a class="headerlink" href="#2026-03-31-session" title="Permanent link">&para;</a></h2>
+<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed all 3 failing GitHub Actions CI workflows (Python tests, Deploy Docs, OpenSSF Scorecard)</li>
+<li>Fixed Windows Unicode encoding error in bump_version.py (→ replaced with -&gt;)</li>
+<li>Created .gitattributes for LF line ending normalization</li>
+<li>Enhanced README.md with 4 new badges and Project Stats table</li>
+<li>Fixed griffe docstring warnings in detailing.py and bbs.py</li>
+<li>Fixed mkdocs autorefs warnings in blog-writing-guide.md</li>
+<li>Synced doc version references to 0.20.0</li>
+</ul>
+<h3 id="prs-merged">PRs Merged<a class="headerlink" href="#prs-merged" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>PR</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#474</td>
+<td>fix(ci): resolve all GitHub Actions failures, fix Windows Unicode encoding, enhance README</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-deliverables">Key Deliverables<a class="headerlink" href="#key-deliverables" title="Permanent link">&para;</a></h3>
+<ul>
+<li>All CI workflows green</li>
+<li>README enhanced with badges + stats</li>
+<li>.gitattributes for cross-platform line endings</li>
+</ul>
+<h3 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>16 files changed in single PR</li>
+<li>Performance tests excluded from CI with <code>-m "not slow and not performance"</code></li>
+</ul>
 <hr />
 <h2 id="2026-03-28-session-105">2026-03-28 — Session 105<a class="headerlink" href="#2026-03-28-session-105" title="Permanent link">&para;</a></h2>
 <p><strong>Focus:</strong> Agent testing + architecture fixes + shear tests + agent infrastructure</p>
@@ -1703,7 +1802,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 <hr />
 <h2 id="2026-03-27-session-103-mac-mini-sync-ipv6-fix">2026-03-27 — Session 103 (Mac Mini sync + IPv6 fix)<a class="headerlink" href="#2026-03-27-session-103-mac-mini-sync-ipv6-fix" title="Permanent link">&para;</a></h2>
 <p><strong>Focus:</strong> Post-migration sync, pull PR #440, fix "Cannot connect to backend" on Sample Building</p>
-<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<h3 id="summary_1">Summary<a class="headerlink" href="#summary_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Pulled PR #440 to Mac Mini (82 files, Streamlit cleanup, TASK-101/102 fixes)</li>
 <li>Restored <code>Etabs_CSV/</code> directory (5 CSV files) via <code>git checkout HEAD</code></li>
