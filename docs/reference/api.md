@@ -1098,6 +1098,37 @@ See [Section 1B](#1b-load-analysis-bmdsfd) for full documentation.
 - `deltas: dict[str, float]`
 - `winner: str`
 
+### `FrameType` (StrEnum)
+
+Type of structural frame element.
+
+| Value | Description |
+|-------|-------------|
+| `BEAM` | Beam element |
+| `COLUMN` | Column element |
+| `BRACE` | Brace element |
+
+---
+
+### `BeamGeometry` (BaseModel)
+
+Canonical beam geometry model with complete geometric definition including identification (id, label, story), 3D coordinates (point1, point2), section properties, and computed properties (length_m, is_vertical).
+
+---
+
+### `DesignDefaults` (BaseModel)
+
+Default design parameters for batch processing. Applied when individual beams don't specify their own section properties.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `fck_mpa` | `float` | Concrete strength (MPa) |
+| `fy_mpa` | `float` | Steel yield strength (MPa) |
+| `cover_mm` | `float` | Clear cover (mm) |
+| `min_bar_dia_mm` | `float` | Minimum bar diameter (mm) |
+| `max_bar_dia_mm` | `float` | Maximum bar diameter (mm) |
+| `stirrup_dia_mm` | `float` | Stirrup diameter (mm) |
+
 ### 1B.1 Units Validation
 
 ```python
@@ -1318,6 +1349,23 @@ def design_shear(
 | `spacing` | float | Governing stirrup spacing (mm) |
 | `is_safe` | bool | True if $\tau_v \le \tau_{c,max}$ |
 | `remarks` | str | Design status (e.g., "Shear reinforcement required") |
+
+---
+
+### `enhanced_shear_strength_is456(fck_nmm2, pt_percent, d_mm, av_mm) → float`
+
+Enhanced design shear strength for sections close to supports.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `fck_nmm2` | `float` | Concrete strength (N/mm²) |
+| `pt_percent` | `float` | Tension steel percentage |
+| `d_mm` | `float` | Effective depth (mm) |
+| `av_mm` | `float` | Distance from face of support to load point (mm) |
+
+**Returns:** `float` — Enhanced shear strength τc' (N/mm²)
+
+**Reference:** IS 456 Cl 40.3 — `τc' = (2d/av) × τc`, subject to `τc' ≤ τc,max`
 
 ---
 
@@ -3025,3 +3073,52 @@ api.compute_stirrup_positions(span, stirrup_spacing_start, ...)
 api.compute_beam_outline(beam_width, beam_depth, span)
 api.beam_to_3d_geometry(detailing, is_seismic=False)
 ```
+
+---
+
+## 16. Column Design Module
+
+### `classify_column_is456(le_mm, D_mm) → str`
+
+Classify column as **SHORT** or **SLENDER** based on slenderness ratio.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `le_mm` | `float` | Effective length of column (mm) |
+| `D_mm` | `float` | Lateral dimension in plane of bending (mm) |
+
+**Returns:** `str` — `"SHORT"` or `"SLENDER"`
+
+**Reference:** IS 456 Cl 25.1.2
+
+---
+
+### `min_eccentricity_is456(l_unsupported_mm, D_mm) → float`
+
+Calculate minimum design eccentricity for a column.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `l_unsupported_mm` | `float` | Unsupported length of column (mm) |
+| `D_mm` | `float` | Lateral dimension in plane of bending (mm) |
+
+**Returns:** `float` — Minimum eccentricity in mm (≥ 20 mm per IS 456)
+
+**Reference:** IS 456 Cl 25.4 — `e_min = max(l/500 + D/30, 20)`
+
+---
+
+### `design_column_axial_is456(fck, fy, Ag_mm2, Asc_mm2) → dict`
+
+Calculate axial load capacity for a short column under pure axial load.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `fck` | `float` | Concrete strength (N/mm²) |
+| `fy` | `float` | Steel yield strength (N/mm²) |
+| `Ag_mm2` | `float` | Gross cross-sectional area (mm²) |
+| `Asc_mm2` | `float` | Area of longitudinal steel (mm²) |
+
+**Returns:** `dict` with keys: `Pu_kN`, `Ac_mm2`, `steel_ratio_pct`, `is_valid`
+
+**Reference:** IS 456 Cl 39.3 — `Pu = 0.4·fck·Ac + 0.67·fy·Asc`

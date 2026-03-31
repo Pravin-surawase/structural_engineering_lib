@@ -45,41 +45,13 @@ VERSION_FILES = {
 
 # Documentation references that should track the library version.
 DOC_VERSION_FILES = {
-    "README.md": [
-        (
-            r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+",
-            "structural-lib-is456=={version}",
-        ),
-        (
-            r"^🚀 \*\*Active \(v[0-9]+\.[0-9]+\.[0-9]+\)\*\*",
-            "🚀 **Active (v{version})**",
-        ),
-        (
-            r"^\*\*What's new in v[0-9]+\.[0-9]+\.[0-9]+:\*\*",
-            "**What's new in v{version}:**",
-        ),
-    ],
     "Python/README.md": [
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
         (r"@v[0-9]+\.[0-9]+\.[0-9]+", "@v{version}"),
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+", "## New in v{version}"),
     ],
-    "docs/README.md": [
-        # Now links to TASKS.md, no version to update
-    ],
-    # docs/ai-context-pack.md removed (file no longer exists)
-    "docs/planning/production-roadmap.md": [
-        (r"^(> \*\*Current Status:\*\* )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
-    ],
-    "docs/planning/current-state-and-goals.md": [
-        (r"^(Current release tag: )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
-    ],
     "docs/getting-started/python-quickstart.md": [
         (r"@v[0-9]+\.[0-9]+\.[0-9]+", "@v{version}"),
-    ],
-    "docs/contributing/vba-testing-guide.md": [
-        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
-        (r"(Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
     ],
     "docs/reference/api.md": [
         (
@@ -116,9 +88,6 @@ DOC_VERSION_FILES = {
             r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
             "| **Current** | v{version}",
         ),
-    ],
-    "docs/planning/v0.20-stabilization-checklist.md": [
-        # Now links to TASKS.md, no version to update
     ],
 }
 

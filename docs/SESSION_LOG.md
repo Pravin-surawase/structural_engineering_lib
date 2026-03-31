@@ -5,6 +5,33 @@
 
 ---
 
+## 2026-03-31 — Session
+
+### Summary
+- Fixed all 3 failing GitHub Actions CI workflows (Python tests, Deploy Docs, OpenSSF Scorecard)
+- Fixed Windows Unicode encoding error in bump_version.py (→ replaced with ->)
+- Created .gitattributes for LF line ending normalization
+- Enhanced README.md with 4 new badges and Project Stats table
+- Fixed griffe docstring warnings in detailing.py and bbs.py
+- Fixed mkdocs autorefs warnings in blog-writing-guide.md
+- Synced doc version references to 0.20.0
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #474 | fix(ci): resolve all GitHub Actions failures, fix Windows Unicode encoding, enhance README |
+
+### Key Deliverables
+- All CI workflows green
+- README enhanced with badges + stats
+- .gitattributes for cross-platform line endings
+
+### Notes
+- 16 files changed in single PR
+- Performance tests excluded from CI with `-m "not slow and not performance"`
+
+---
+
 ## 2026-03-28 — Session 105
 
 **Focus:** Agent testing + architecture fixes + shear tests + agent infrastructure
