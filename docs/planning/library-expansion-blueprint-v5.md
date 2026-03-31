@@ -226,8 +226,8 @@ class DesignEnvelope:
 | IS456Code class | ✅ Exists | Registered but doesn't implement ABCs |
 | @clause() decorator | ✅ Exists | IS 456-only, no code namespace |
 | clauses.json | ✅ Exists | IS 456 clauses, ~100 entries |
-| Backward-compat shims | ✅ 46 exist | No @deprecated decorator |
-| @deprecated decorator | ❌ Missing | Blocks shim deprecation cycle |
+| Backward-compat shims | ✅ 46 exist | @deprecated decorator available in core/deprecation.py |
+| @deprecated decorator | ✅ Done | In core/deprecation.py (TASK-614) |
 | Code-specific input types | ❌ Missing | Only IS456 BeamInput exists |
 | DesignEnvelope result | ❌ Missing | Two parallel result hierarchies |
 | Unit conversion layer | ❌ Missing | No core/units.py |
@@ -306,12 +306,12 @@ warnings.warn(
 ```
 
 ### 4.4 Success Criteria
-- [ ] All 2270+ tests pass
-- [ ] `from structural_lib.codes.is456 import flexure` still works (via shim)
-- [ ] `from structural_lib.codes.is456.beam import flexure` is the new canonical path
-- [ ] No circular imports
-- [ ] `validate_imports.py` passes
-- [ ] `check_architecture_boundaries.py` passes
+- [x] All 3401 tests pass (originally 2270+)
+- [x] `from structural_lib.codes.is456 import flexure` still works (via shim)
+- [x] `from structural_lib.codes.is456.beam import flexure` is the new canonical path
+- [x] No circular imports
+- [x] `validate_imports.py` passes
+- [x] `check_architecture_boundaries.py` passes
 
 ---
 

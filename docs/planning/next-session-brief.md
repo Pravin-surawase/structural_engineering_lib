@@ -21,7 +21,11 @@ tags: []
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-30
+- Date: 2026-03-31
+- Session: Progress audit + Column work planning
+- Next: TASK-630 Column types + TASK-631 Minimum eccentricity + TASK-632 Short axial capacity
+- Blueprint v5.0 §3.2 corrected (deprecated decorator, test count)
+- Phase 0 checkboxes marked complete in §4.4
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |

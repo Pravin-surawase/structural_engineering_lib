@@ -81,12 +81,20 @@
 
 ---
 
-## Active
+## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | TASK-525 | Smart HubPage replacing ModeSelectPage | Copilot | ✅ Done |
 | TASK-515 | Load Calculator (FastAPI + React) | Copilot | ✅ Done |
+
+## Active
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| TASK-630 | Column types (ColumnGeometryInput, ColumnResult, errors) | — | 📋 Up Next |
+| TASK-631 | Minimum eccentricity (Cl 25.4) | — | 📋 Up Next |
+| TASK-632 | Short column axial (Cl 39.3) | — | 📋 Up Next |
 
 ## Up Next
 
