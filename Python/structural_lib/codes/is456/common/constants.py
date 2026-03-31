@@ -123,3 +123,34 @@ STANDARD_STIRRUP_SPACINGS: tuple[int, ...] = (
     275,
     300,
 )
+
+# ---------------------------------------------------------------------------
+# Column capacity coefficients --- IS 456 Cl. 39.3
+# Pu = 0.4 * fck * Ac + 0.67 * fy * Asc
+# These are IS 456 prescribed constants (NOT derived from gamma_c/gamma_s)
+# ---------------------------------------------------------------------------
+COLUMN_CONCRETE_COEFF: float = 0.4
+COLUMN_STEEL_COEFF: float = 0.67
+
+# ---------------------------------------------------------------------------
+# Column steel limits --- IS 456 Cl. 26.5.3.1
+# ---------------------------------------------------------------------------
+COLUMN_MIN_STEEL_RATIO: float = 0.008  # 0.8% of Ag
+COLUMN_MAX_STEEL_RATIO: float = 0.04  # 4% of Ag (general)
+
+# ---------------------------------------------------------------------------
+# Minimum eccentricity floor --- IS 456 Cl. 25.4
+# e_min = max(l/500 + D/30, 20 mm)
+# ---------------------------------------------------------------------------
+MIN_ECCENTRICITY_MM: float = 20.0
+
+# ---------------------------------------------------------------------------
+# Slenderness classification --- IS 456 Cl. 25.1.2
+# Short column: le/D < 12 (strict less-than, NOT <=)
+# ---------------------------------------------------------------------------
+SHORT_COLUMN_SLENDERNESS_LIMIT: float = 12.0
+
+# ---------------------------------------------------------------------------
+# Maximum slenderness ratio --- IS 456 Cl. 25.3.1
+# ---------------------------------------------------------------------------
+MAX_SLENDERNESS_RATIO: float = 60.0

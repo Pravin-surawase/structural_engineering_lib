@@ -92,6 +92,8 @@ from .services.api import (
     check_compliance_report,
     check_crack_width,
     check_deflection_span_depth,
+    # Column Design
+    classify_column_is456,
     compute_bbs,
     compute_bmd_sfd,
     compute_critical,
@@ -106,6 +108,7 @@ from .services.api import (
     # Core design functions
     design_and_detail_beam_is456,
     design_beam_is456,
+    design_column_axial_is456,
     design_from_input,
     design_torsion,
     detail_beam_is456,
@@ -116,6 +119,7 @@ from .services.api import (
     # Version
     get_library_version,
     load_etabs_csv,
+    min_eccentricity_is456,
     normalize_etabs_forces,
     # Smart features
     optimize_beam_cost,
