@@ -1,0 +1,2430 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/publications/blog-posts/01-smart-library/outline/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Blog Post 01: Making Structural Design Intelligent (Without Machine Learning) - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#blog-post-01-making-structural-design-intelligent-without-machine-learning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Blog Post 01: Making Structural Design Intelligent (Without Machine Learning)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#working-title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working Title
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-150-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook (150 words)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-1-the-dumb-calculator-problem-300-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 1: The "Dumb Calculator" Problem (300 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 1: The &#34;Dumb Calculator&#34; Problem (300 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state-of-engineering-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current State of Engineering Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-2-what-makes-software-smart-400-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 2: What Makes Software "Smart"? (400 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 2: What Makes Software &#34;Smart&#34;? (400 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defining-intelligence-in-engineering-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Intelligence in Engineering Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-not-machine-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why NOT Machine Learning?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-intelligence-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alternative Intelligence Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-3-feature-1-predictive-validation-500-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 3: Feature 1 — Predictive Validation (500 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 3: Feature 1 — Predictive Validation (500 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-idea-fast-pre-checks-before-full-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Idea: Fast Pre-Checks Before Full Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-4-feature-2-sensitivity-analysis-500-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 4: Feature 2 — Sensitivity Analysis (500 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 4: Feature 2 — Sensitivity Analysis (500 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-idea-identify-critical-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Idea: Identify Critical Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-5-feature-3-constructability-scoring-400-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 5: Feature 3 — Constructability Scoring (400 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 5: Feature 3 — Constructability Scoring (400 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-idea-quantify-construction-ease" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Idea: Quantify Construction Ease
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-6-the-results-validation-300-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 6: The Results &amp; Validation (300 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 6: The Results &amp; Validation (300 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-against-golden-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Against Golden Vectors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-7-architecture-decision-stability-first-350-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 7: Architecture Decision — Stability First (350 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 7: Architecture Decision — Stability First (350 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dilemma-embed-or-separate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Dilemma: Embed or Separate?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-8-key-takeaways-200-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 8: Key Takeaways (200 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 8: Key Takeaways (200 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-we-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What We Learned
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-software-engineers-building-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Software Engineers Building Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#call-to-action-100-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Call to Action (100 words)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources-references-to-add-in-full-draft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources &amp; References (To Add in Full Draft)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sources &amp; References (To Add in Full Draft)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-sources-peer-reviewed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary Sources (Peer-Reviewed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secondary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secondary Sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="blog-post-01-making-structural-design-intelligent-without-machine-learning">Blog Post 01: Making Structural Design Intelligent (Without Machine Learning)<a class="headerlink" href="#blog-post-01-making-structural-design-intelligent-without-machine-learning" title="Permanent link">&para;</a></h1>
+<p><strong>Target:</strong> Dev.to + Medium
+<strong>Audience:</strong> Software engineers building engineering tools, structural engineers curious about innovation
+<strong>Estimated length:</strong> 2000-2500 words
+<strong>Publication date:</strong> 2025-01-15
+<strong>Status:</strong> OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
+<strong>Evidence basis:</strong> <a href="../../../findings/00-research-summary-final/">00-research-summary-final.md</a></p>
+<hr />
+<h2 id="working-title">Working Title<a class="headerlink" href="#working-title" title="Permanent link">&para;</a></h2>
+<p><strong>Option 1:</strong> "Making Structural Design Intelligent (Without Machine Learning)"
+<strong>Option 2:</strong> "How We Built a Smart Structural Library Using Deterministic Methods"
+<strong>Option 3:</strong> "Beyond Calculations: Adding Intelligence to Engineering Software"</p>
+<p><strong>Selected:</strong> Option 1 (clear value prop, provocative)</p>
+<hr />
+<h2 id="hook-150-words">Hook (150 words)<a class="headerlink" href="#hook-150-words" title="Permanent link">&para;</a></h2>
+<p><strong>Opening Question:</strong></p>
+<blockquote>
+<p>What if I told you that you don't need neural networks, gradient descent, or training data to make engineering software "smart"?</p>
+</blockquote>
+<p><strong>The Problem:</strong>
+Most structural design software is a glorified calculator. You input beam geometry and loads, it spits out pass/fail. No guidance, no optimization, no "what if" analysis.</p>
+<p><strong>The Insight:</strong>
+Intelligence ≠ Machine Learning. For engineering problems with:
+- Clear physical models
+- Code compliance requirements
+- Deterministic expectations</p>
+<p>...classical methods often beat ML: faster, explainable, verifiable, and deterministic.</p>
+<p><strong>The Promise:</strong>
+This post shows how we added three "smart" features to a structural design library—sensitivity analysis, predictive validation, and constructability scoring—using zero machine learning. All features achieved 100% match against IS 456 golden test vectors (sample-only validation) and are fully deterministic and traceable.</p>
+<hr />
+<h2 id="section-1-the-dumb-calculator-problem-300-words">Section 1: The "Dumb Calculator" Problem (300 words)<a class="headerlink" href="#section-1-the-dumb-calculator-problem-300-words" title="Permanent link">&para;</a></h2>
+<h3 id="current-state-of-engineering-software">Current State of Engineering Software<a class="headerlink" href="#current-state-of-engineering-software" title="Permanent link">&para;</a></h3>
+<p><strong>Typical workflow:</strong>
+1. Engineer guesses beam dimensions (width, depth)
+2. Inputs into software
+3. Gets "FAIL: Insufficient reinforcement"
+4. Manually tweaks dimensions
+5. Repeats until it passes</p>
+<p><strong>Pain points:</strong>
+- ❌ No guidance on what to change
+- ❌ No understanding of critical parameters
+- ❌ No optimization (first safe design ≠ best design)
+- ❌ No warnings before full computation</p>
+<p><strong>Real-world impact:</strong>
+- Engineers commonly use trial-and-error workflows, iteratively revising until code-compliant (time waste)
+- Sub-optimal designs (cost waste)
+- Over-conservative safety factors (material waste)</p>
+<p><strong>Example scenario:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Input: 300×500mm beam, 5m span, Mu=160 kN·m
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Output: ❌ FAIL: Ast required = 952 mm² exceeds max = 900 mm²
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Engineer: &quot;Okay... should I increase width? depth? concrete grade? 🤷&quot;
+</code></pre></div></p>
+<p><strong>What's missing:</strong> Intelligence—the ability to guide, predict, and optimize.</p>
+<hr />
+<h2 id="section-2-what-makes-software-smart-400-words">Section 2: What Makes Software "Smart"? (400 words)<a class="headerlink" href="#section-2-what-makes-software-smart-400-words" title="Permanent link">&para;</a></h2>
+<h3 id="defining-intelligence-in-engineering-context">Defining Intelligence in Engineering Context<a class="headerlink" href="#defining-intelligence-in-engineering-context" title="Permanent link">&para;</a></h3>
+<p><strong>Not just automation.</strong> Smart software:
+1. <strong>Predicts</strong> — "This will likely fail before you compute"
+2. <strong>Explains</strong> — "Depth is your most critical parameter"
+3. <strong>Optimizes</strong> — "Here are 5 better alternatives"
+4. <strong>Guides</strong> — "Increase depth to 550mm to meet deflection limits"</p>
+<h3 id="why-not-machine-learning">Why NOT Machine Learning?<a class="headerlink" href="#why-not-machine-learning" title="Permanent link">&para;</a></h3>
+<p><strong>ML is great for:</strong>
+- Pattern recognition (images, text)
+- Non-deterministic problems (recommendations)
+- When you have massive training data</p>
+<p><strong>ML is terrible for:</strong>
+- Code compliance (must cite clauses)
+- Safety-critical (black box unacceptable)
+- Determinism (same input → same output required)
+- Small data (research shows small samples cause overfitting and bias — Vabalas et al. 2019)</p>
+<p><strong>Engineering software needs:</strong>
+| Requirement | ML | Classical Methods |
+|-------------|----|--------------------|
+| Deterministic | ❌ Stochastic | ✅ Repeatable |
+| Explainable | ❌ Black box | ✅ Traceable |
+| Verifiable | ❌ Statistical | ✅ Provable |
+| Data efficiency | ⚠️ Often needs larger labeled datasets (small-sample bias risk) | ✅ Can be validated with a small set of worked examples (sample-only) |
+| Code compliance | ❌ No citations | ✅ Clause-linked |</p>
+<p><strong>The insight:</strong> Classical methods (perturbation analysis, heuristics, enumeration) are often superior for engineering.</p>
+<h3 id="alternative-intelligence-methods">Alternative Intelligence Methods<a class="headerlink" href="#alternative-intelligence-methods" title="Permanent link">&para;</a></h3>
+<p><strong>1. Sensitivity Analysis</strong> (Perturbation-based)
+- Math: Vary each parameter ±10%, measure impact
+- Output: "Depth: HIGH impact, Width: LOW impact"</p>
+<p><strong>2. Predictive Validation</strong> (Heuristic rules)
+- Math: Engineering rules of thumb from codes/practice
+- Output: "Span/depth=24 &gt; 20, deflection will govern"</p>
+<p><strong>3. Constructability Scoring</strong> (Weighted metrics)
+- Math: Quantify ease of construction (bar spacing, layers)
+- Output: "Score: 6.5/10 (acceptable, stirrup spacing tight)"</p>
+<p><strong>All deterministic. All explainable. All verifiable.</strong></p>
+<hr />
+<h2 id="section-3-feature-1-predictive-validation-500-words">Section 3: Feature 1 — Predictive Validation (500 words)<a class="headerlink" href="#section-3-feature-1-predictive-validation-500-words" title="Permanent link">&para;</a></h2>
+<h3 id="the-idea-fast-pre-checks-before-full-design">The Idea: Fast Pre-Checks Before Full Design<a class="headerlink" href="#the-idea-fast-pre-checks-before-full-design" title="Permanent link">&para;</a></h3>
+<p><strong>Analogy:</strong> Like a spell-checker before you compile code.</p>
+<p><strong>Engineering basis:</strong>
+Structural engineers have rules of thumb:
+- Span/depth ratio: 10-12 typical, &gt;20 deflection-critical
+- Steel percentage: 0.5-1.5% typical, &gt;2% congested
+- Width minimums: &lt;230mm spacing issues</p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">quick_precheck</span><span class="p">(</span><span class="n">span_mm</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">,</span> <span class="n">D_mm</span><span class="p">,</span> <span class="n">mu_knm</span><span class="p">,</span> <span class="n">fck_nmm2</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="p">):</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Fast heuristic pre-checks (&lt;10ms).&quot;&quot;&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="c1"># Rule 1: Span/depth ratio (IS 456 Table 23)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">sd_ratio</span> <span class="o">=</span> <span class="n">span_mm</span> <span class="o">/</span> <span class="n">d_mm</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">if</span> <span class="n">sd_ratio</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;DEFLECTION_RISK&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>            <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;HIGH&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Span/depth = </span><span class="si">{</span><span class="n">sd_ratio</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> &gt; 20&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>            <span class="s1">&#39;fix&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Increase d to at least </span><span class="si">{</span><span class="n">span_mm</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">18</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">mm&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>            <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;IS 456 Table 23 — typical limit for deflection control&#39;</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="p">})</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="c1"># Rule 2: Quick steel estimate (lever arm approximation)</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="n">ast_estimate</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu_knm</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy_nmm2</span> <span class="o">*</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">d_mm</span><span class="p">)</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">pt_estimate</span> <span class="o">=</span> <span class="p">(</span><span class="n">ast_estimate</span> <span class="o">/</span> <span class="p">(</span><span class="n">b_mm</span> <span class="o">*</span> <span class="n">d_mm</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="k">if</span> <span class="n">pt_estimate</span> <span class="o">&gt;</span> <span class="mf">4.0</span><span class="p">:</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;HIGH_STEEL_CONGESTION&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>            <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;MEDIUM&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Estimated steel %: </span><span class="si">{</span><span class="n">pt_estimate</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">% &gt; 4%&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>            <span class="s1">&#39;fix&#39;</span><span class="p">:</span> <span class="s1">&#39;Increase depth or use higher fck&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>            <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;Singly-reinforced economical up to ~4%&#39;</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="p">})</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="c1"># Rule 3: Width check (constructability)</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="k">if</span> <span class="n">b_mm</span> <span class="o">&lt;</span> <span class="mi">150</span><span class="p">:</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;NARROW_BEAM&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>            <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;LOW&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Width &lt; 150mm may have bar spacing issues&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>            <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;Practical minimum for bar placement&#39;</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="p">})</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="s1">&#39;check_time_ms&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Almost instant!</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="n">warnings</span><span class="p">,</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>        <span class="s1">&#39;recommended_action&#39;</span><span class="p">:</span> <span class="s1">&#39;proceed&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">warnings</span> <span class="k">else</span> <span class="s1">&#39;review_geometry&#39;</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>    <span class="p">}</span>
+</code></pre></div>
+<p><strong>Performance:</strong>
+- Full design: ~50ms
+- Quick precheck: ~0.5ms (100x faster!)</p>
+<p><strong>Validation results:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Test Case</th>
+<th>Precheck</th>
+<th>Actual</th>
+<th>Match?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light steel (Mu=80 kN·m)</td>
+<td>✅ PROCEED</td>
+<td>✅ SAFE</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>Typical steel (Mu=120 kN·m)</td>
+<td>✅ PROCEED</td>
+<td>✅ SAFE</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>Heavy steel (Mu=160 kN·m)</td>
+<td>✅ PROCEED</td>
+<td>✅ SAFE</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>Shallow beam (d=250mm)</td>
+<td>⚠ DEFLECTION RISK</td>
+<td>❌ FAIL</td>
+<td>✅ Correct</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Match rate: 100% (4/4 cases, sample-only)</strong></p>
+<p><strong>User value:</strong>
+- Instant feedback before computation
+- Educational (teaches engineering heuristics)
+- Actionable suggestions ("Increase d to 333mm")</p>
+<hr />
+<h2 id="section-4-feature-2-sensitivity-analysis-500-words">Section 4: Feature 2 — Sensitivity Analysis (500 words)<a class="headerlink" href="#section-4-feature-2-sensitivity-analysis-500-words" title="Permanent link">&para;</a></h2>
+<h3 id="the-idea-identify-critical-parameters">The Idea: Identify Critical Parameters<a class="headerlink" href="#the-idea-identify-critical-parameters" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Engineer doesn't know which dimension matters most.</p>
+<p><strong>Solution:</strong> Perturbation analysis—vary each parameter ±10%, measure utilization change.</p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">sensitivity_analysis</span><span class="p">(</span><span class="n">design_function</span><span class="p">,</span> <span class="n">base_params</span><span class="p">,</span> <span class="n">parameters_to_vary</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="mf">0.10</span><span class="p">):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Deterministic sensitivity analysis.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">base_result</span> <span class="o">=</span> <span class="n">design_function</span><span class="p">(</span><span class="o">**</span><span class="n">base_params</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">base_util</span> <span class="o">=</span> <span class="n">base_result</span><span class="o">.</span><span class="n">utilization</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">sensitivities</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters_to_vary</span><span class="p">:</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="c1"># Perturb parameter +10%</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="n">perturbed_params</span> <span class="o">=</span> <span class="n">base_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="n">perturbed_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">perturbation</span><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="c1"># Re-run design</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="n">perturbed_result</span> <span class="o">=</span> <span class="n">design_function</span><span class="p">(</span><span class="o">**</span><span class="n">perturbed_params</span><span class="p">)</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="n">perturbed_util</span> <span class="o">=</span> <span class="n">perturbed_result</span><span class="o">.</span><span class="n">utilization</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="c1"># Calculate sensitivity (dimensionless)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="n">delta_util</span> <span class="o">=</span> <span class="n">perturbed_util</span> <span class="o">-</span> <span class="n">base_util</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">delta_util</span> <span class="o">/</span> <span class="n">perturbation</span>  <span class="c1"># (%/%)</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        <span class="c1"># Classify impact</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="n">impact</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>            <span class="s1">&#39;HIGH&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sensitivity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>            <span class="s1">&#39;MEDIUM&#39;</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sensitivity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.2</span> <span class="k">else</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>            <span class="s1">&#39;LOW&#39;</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>        <span class="p">)</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>        <span class="n">sensitivities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>            <span class="s1">&#39;parameter&#39;</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>            <span class="s1">&#39;sensitivity&#39;</span><span class="p">:</span> <span class="n">sensitivity</span><span class="p">,</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>            <span class="s1">&#39;impact&#39;</span><span class="p">:</span> <span class="n">impact</span><span class="p">,</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>            <span class="s1">&#39;interpretation&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;+10% </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s1"> → </span><span class="si">{</span><span class="n">delta_util</span><span class="si">:</span><span class="s1">+.1%</span><span class="si">}</span><span class="s1"> utilization&#39;</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>        <span class="p">})</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>    <span class="c1"># Rank by impact</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>    <span class="n">sensitivities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;sensitivity&#39;</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>    <span class="c1"># Calculate robustness score</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>    <span class="n">high_impact_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensitivities</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;impact&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;HIGH&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>    <span class="n">robustness_score</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">high_impact_count</span> <span class="o">*</span> <span class="mf">0.15</span><span class="p">)</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>    <span class="k">return</span> <span class="n">sensitivities</span><span class="p">,</span> <span class="n">robustness_score</span>
+</code></pre></div>
+<p><strong>Example output:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>============================================================
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>SENSITIVITY ANALYSIS
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>============================================================
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Critical Parameters (ranked by impact):
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>1. d (depth)        🟡 MEDIUM
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>   └─ +10% change → utilization 12.6% → 10.2%
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>   └─ Sensitivity: -0.24
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>2. mu_knm (moment)  🟢 LOW
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>   └─ +10% change → utilization 12.6% → 14.1%
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>   └─ Sensitivity: 0.14
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>3. b (width)        🟢 LOW
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>   └─ +10% change → utilization 12.6% → 11.4%
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>   └─ Sensitivity: -0.13
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>------------------------------------------------------------
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>ROBUSTNESS ASSESSMENT
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>------------------------------------------------------------
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>Score:  0.90 (EXCELLENT)
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>Status: Design has moderate sensitivity to 1 parameter.
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>⚠ Vulnerable to: d (depth)
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>============================================================
+</code></pre></div>
+<p><strong>Physical meaning:</strong>
+- Depth matters most (lever arm effect)
+- Width less critical (area effect)
+- Moment sensitivity proportional to utilization</p>
+<p><strong>Validation:</strong>
+Tested on golden vector G2 (300×500mm, Mu=120 kN·m):
+- ✅ Depth ranked #1 (physically correct)
+- ✅ Width ranked #3 (physically correct)
+- ✅ Robustness score 0.90 (low utilization → robust)</p>
+<p><strong>User value:</strong>
+- Know where to focus optimization effort
+- Quantify design robustness
+- Understand parameter interactions</p>
+<hr />
+<h2 id="section-5-feature-3-constructability-scoring-400-words">Section 5: Feature 3 — Constructability Scoring (400 words)<a class="headerlink" href="#section-5-feature-3-constructability-scoring-400-words" title="Permanent link">&para;</a></h2>
+<h3 id="the-idea-quantify-construction-ease">The Idea: Quantify Construction Ease<a class="headerlink" href="#the-idea-quantify-construction-ease" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Safe design ≠ buildable design</p>
+<p><strong>Research basis:</strong>
+- Singapore BDAS framework: 0-10 scale
+- Impact: 10% time saving, 7% cost saving</p>
+<p><strong>Metrics:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">calculate_constructability_score</span><span class="p">(</span><span class="n">design_result</span><span class="p">,</span> <span class="n">detailing_result</span><span class="p">):</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantify construction ease (0-10 scale).&quot;&quot;&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">score</span> <span class="o">=</span> <span class="mf">10.0</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="c1"># Factor 1: Bar spacing (IS 456 Cl 26.3)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="k">if</span> <span class="n">detailing_result</span><span class="o">.</span><span class="n">main_bar_spacing</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="n">score</span> <span class="o">-=</span> <span class="mf">2.0</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Congested bar spacing (&lt;40mm)&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="k">elif</span> <span class="n">detailing_result</span><span class="o">.</span><span class="n">main_bar_spacing</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        <span class="n">score</span> <span class="o">-=</span> <span class="mf">1.0</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Tight bar spacing (40-60mm)&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="c1"># Factor 2: Bar variety</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">unique_bars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">detailing_result</span><span class="o">.</span><span class="n">bar_sizes</span><span class="p">))</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="k">if</span> <span class="n">unique_bars</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="n">score</span> <span class="o">-=</span> <span class="mf">1.0</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">unique_bars</span><span class="si">}</span><span class="s1"> different bar sizes&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="c1"># Factor 3: Stirrup spacing (vibrator access)</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="k">if</span> <span class="n">detailing_result</span><span class="o">.</span><span class="n">stirrup_spacing</span> <span class="o">&lt;</span> <span class="mi">125</span><span class="p">:</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>        <span class="n">score</span> <span class="o">-=</span> <span class="mf">1.5</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Tight stirrup spacing (&lt;125mm)&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    <span class="c1"># Factor 4: Number of layers</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>    <span class="k">if</span> <span class="n">detailing_result</span><span class="o">.</span><span class="n">layers</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>        <span class="n">score</span> <span class="o">-=</span> <span class="mf">1.0</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">detailing_result</span><span class="o">.</span><span class="n">layers</span><span class="si">}</span><span class="s1"> layers (complex formwork)&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>    <span class="c1"># Bonus: Standard bar sizes</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">detailing_result</span><span class="o">.</span><span class="n">bar_sizes</span><span class="p">):</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>        <span class="n">score</span> <span class="o">+=</span> <span class="mf">1.0</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Uses standard bar sizes&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>    <span class="n">rating</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>        <span class="s1">&#39;EXCELLENT&#39;</span> <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">8</span> <span class="k">else</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>        <span class="s1">&#39;GOOD&#39;</span> <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">6</span> <span class="k">else</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>        <span class="s1">&#39;ACCEPTABLE&#39;</span> <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="k">else</span>
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>        <span class="s1">&#39;POOR&#39;</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>    <span class="p">)</span>
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>        <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">score</span><span class="p">)),</span>
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>        <span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="n">rating</span><span class="p">,</span>
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>        <span class="s1">&#39;factors&#39;</span><span class="p">:</span> <span class="n">factors</span>
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>    <span class="p">}</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Constructability: 7.5/10 (GOOD)
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>✓ Standard bar sizes (bonus)
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>⚠ Tight stirrup spacing at support (125mm)
+</code></pre></div></p>
+<p><strong>User value:</strong>
+- Catch constructability issues early
+- Communicate with field teams
+- Optimize for ease of construction</p>
+<hr />
+<h2 id="section-6-the-results-validation-300-words">Section 6: The Results &amp; Validation (300 words)<a class="headerlink" href="#section-6-the-results-validation-300-words" title="Permanent link">&para;</a></h2>
+<h3 id="testing-against-golden-vectors">Testing Against Golden Vectors<a class="headerlink" href="#testing-against-golden-vectors" title="Permanent link">&para;</a></h3>
+<p><strong>Methodology:</strong>
+- Golden vectors from <code>tests/data/golden_vectors_is456.json</code>
+- 3 verified test cases (light, typical, heavy steel)
+- 100% deterministic (same input → same output)</p>
+<p><strong>Results:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Test Cases</th>
+<th>Match Rate</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Predictive Validation</td>
+<td>4</td>
+<td>100% match (sample-only)</td>
+<td>&lt;1ms</td>
+</tr>
+<tr>
+<td>Sensitivity Analysis</td>
+<td>3</td>
+<td>100% match (sample-only)</td>
+<td>~10ms</td>
+</tr>
+<tr>
+<td>Constructability</td>
+<td>3</td>
+<td>100% match (sample-only)</td>
+<td>&lt;1ms</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key findings:</strong>
+1. ✅ All features fully deterministic (same inputs always produce same outputs)
+2. ✅ Physically meaningful outputs (depth &gt; width sensitivity aligns with mechanics)
+3. ✅ Traceable to engineering principles (clause references to IS 456)
+4. ✅ Fast enough for real-time use
+5. ⚠️ Sample-only validation (3-4 test vectors from IS 456 worked examples, not field data)</p>
+<p><strong>No machine learning. No training data. Deterministic and verifiable.</strong></p>
+<hr />
+<h2 id="section-7-architecture-decision-stability-first-350-words">Section 7: Architecture Decision — Stability First (350 words)<a class="headerlink" href="#section-7-architecture-decision-stability-first-350-words" title="Permanent link">&para;</a></h2>
+<h3 id="the-dilemma-embed-or-separate">The Dilemma: Embed or Separate?<a class="headerlink" href="#the-dilemma-embed-or-separate" title="Permanent link">&para;</a></h3>
+<p><strong>Option 1: Embed in results JSON</strong>
+- Pro: All data in one place
+- Con: Schema version bump (breaking change for existing users)</p>
+<p><strong>Option 2: Separate insights module</strong>
+- Pro: Zero breaking changes, opt-in adoption
+- Con: Two output files</p>
+<p><strong>Decision: Separate (stability &gt; convenience)</strong></p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Core API unchanged (stable)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_beam_is456</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># ✅ Still works for v0.12 users</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Insights are opt-in (new users only)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.insights</span><span class="w"> </span><span class="kn">import</span> <span class="n">precheck</span><span class="p">,</span> <span class="n">sensitivity</span><span class="p">,</span> <span class="n">constructability</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="n">pre</span> <span class="o">=</span> <span class="n">precheck</span><span class="o">.</span><span class="n">quick_precheck</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">sens</span><span class="p">,</span> <span class="n">robust</span> <span class="o">=</span> <span class="n">sensitivity</span><span class="o">.</span><span class="n">sensitivity_analysis</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">construct</span> <span class="o">=</span> <span class="n">constructability</span><span class="o">.</span><span class="n">calculate_constructability_score</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Output files:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>outputs/
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>├── results.json      # Stable schema-v1 (unchanged)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>└── insights.json     # New insights-v1 (opt-in)
+</code></pre></div></p>
+<p><strong>Benefits:</strong>
+- ✅ v0.12 users see no changes
+- ✅ v0.13 users can opt-in incrementally
+- ✅ Future schema evolution independent
+- ✅ Safety: advisory insights never affect pass/fail</p>
+<p><strong>Lesson:</strong> In library design, stability &gt; features.</p>
+<hr />
+<h2 id="section-8-key-takeaways-200-words">Section 8: Key Takeaways (200 words)<a class="headerlink" href="#section-8-key-takeaways-200-words" title="Permanent link">&para;</a></h2>
+<h3 id="what-we-learned">What We Learned<a class="headerlink" href="#what-we-learned" title="Permanent link">&para;</a></h3>
+<p><strong>1. Intelligence ≠ Machine Learning</strong>
+- Deterministic methods often superior for engineering
+- Classical techniques (perturbation, heuristics, enumeration) underrated
+- Explainability and verifiability trump predictive power</p>
+<p><strong>2. Research-Driven Development Works</strong>
+- Start with literature review (20+ papers)
+- Prototype quickly (3-4 hours)
+- Validate rigorously (golden vectors)
+- Integrate thoughtfully (stability first)</p>
+<p><strong>3. Library-First Architecture Scales</strong>
+- Core API frozen → stability
+- Insights as separate module → flexibility
+- Opt-in adoption → zero breaking changes</p>
+<p><strong>4. Deterministic Methods Are Data-Efficient</strong>
+- Validated with 3-4 golden vectors from IS 456 worked examples (sample-only)
+- Deterministic methods based on physical equations require zero training data
+- ML with small samples leads to overfitting and bias (Vabalas et al. 2019 PLOS One)
+- For code-compliant design, verified test cases beat large synthetic datasets</p>
+<h3 id="for-software-engineers-building-tools">For Software Engineers Building Tools<a class="headerlink" href="#for-software-engineers-building-tools" title="Permanent link">&para;</a></h3>
+<p><strong>If your domain has:</strong>
+- Clear physical models → use them!
+- Code compliance → determinism required
+- Safety criticality → explainability non-negotiable</p>
+<p><strong>Then classical methods beat ML every time.</strong></p>
+<hr />
+<h2 id="call-to-action-100-words">Call to Action (100 words)<a class="headerlink" href="#call-to-action-100-words" title="Permanent link">&para;</a></h2>
+<p><strong>Try it yourself:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pip<span class="w"> </span>install<span class="w"> </span>structural-lib<span class="w">  </span><span class="c1"># (v0.13 when released)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>from<span class="w"> </span>structural_lib.insights<span class="w"> </span>import<span class="w"> </span>precheck,<span class="w"> </span>sensitivity
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># Your beam dimensions</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nv">pre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>precheck.quick_precheck<span class="o">(</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nv">span_mm</span><span class="o">=</span><span class="m">5000</span>,<span class="w"> </span><span class="nv">b_mm</span><span class="o">=</span><span class="m">300</span>,<span class="w"> </span><span class="nv">d_mm</span><span class="o">=</span><span class="m">450</span>,<span class="w"> </span>...
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="o">)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>print<span class="o">(</span>pre<span class="o">[</span><span class="s1">&#39;warnings&#39;</span><span class="o">])</span><span class="w">  </span><span class="c1"># Instant feedback!</span>
+</code></pre></div></p>
+<p><strong>Read more:</strong>
+- GitHub: <a href="https://github.com/Pravin-surawase/structural_engineering_lib">structural_engineering_lib</a>
+- Research doc: <a href="../../../../_archive/2026-01/research-smart-library/">research-smart-library.md</a>
+- Implementation plan: <a href="../../../../_archive/2026-01/v0.13-v0.14-implementation-plan/">v0.13-v0.14-implementation-plan.md</a></p>
+<p><strong>Questions? Comments?</strong> Let's discuss in the comments!</p>
+<hr />
+<h2 id="metadata">Metadata<a class="headerlink" href="#metadata" title="Permanent link">&para;</a></h2>
+<p><strong>Tags:</strong> #python #engineering #software-architecture #structural-engineering #determinism #no-ml
+<strong>Estimated reading time:</strong> 10 minutes
+<strong>Code license:</strong> MIT
+<strong>Content license:</strong> CC BY 4.0
+<strong>Publication channels:</strong> Dev.to (primary), Medium (cross-post), Hashnode (cross-post)</p>
+<hr />
+<p><strong>Draft status:</strong> OUTLINE — EVIDENCE-CORRECTED
+<strong>Next steps:</strong>
+1. Write full draft (expand each section)
+2. Add code snippets with outputs
+3. Create diagrams (sensitivity chart, architecture diagram)
+4. Add sources/references section (below)
+5. Internal review
+6. Publish to Dev.to
+7. Cross-post to Medium/Hashnode</p>
+<hr />
+<h2 id="sources-references-to-add-in-full-draft">Sources &amp; References (To Add in Full Draft)<a class="headerlink" href="#sources-references-to-add-in-full-draft" title="Permanent link">&para;</a></h2>
+<h3 id="primary-sources-peer-reviewed">Primary Sources (Peer-Reviewed)<a class="headerlink" href="#primary-sources-peer-reviewed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Vabalas, A., et al. (2019). Machine learning algorithm validation with a limited sample size. <em>PLOS One</em>, 14(11), e0224365.</li>
+<li>Poh, P., &amp; Chen, J. (1998). The Singapore buildable design appraisal system. <em>Construction Management and Economics</em>, 16(6), 681-692.</li>
+<li>Kytinou, V.K., et al. (2021). Flexural behavior of steel fiber RC beams: Sensitivity analysis. <em>Applied Sciences</em>, 11(20), 9591.</li>
+</ul>
+<h3 id="secondary-sources">Secondary Sources<a class="headerlink" href="#secondary-sources" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Chang, D., et al. (2020). Learning to simulate and design for structural engineering. <em>ICML Proceedings</em>.</li>
+<li>EuSpRIG (European Spreadsheet Risks Interest Group). Research synthesis. https://eusprig.org</li>
+</ul>
+<h3 id="internal-documentation">Internal Documentation<a class="headerlink" href="#internal-documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../../../_archive/2026-01/research-smart-library/">Research document</a></li>
+<li><a href="../../../../_archive/2026-01/prototype-findings-intelligence/">Prototype findings</a></li>
+<li><a href="../../../../_archive/2026-01/v0.13-v0.14-implementation-plan/">Implementation plan</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

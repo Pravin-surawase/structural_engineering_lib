@@ -1,0 +1,2787 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/agents/sessions/2026-01/agent-8-week2-plan/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Agent 8 Week 2 Implementation Plan - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agent-8-week-2-implementation-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent 8 Week 2 Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#week-2-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Week 2 Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#week-2-optimizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Week 2 Optimizations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Week 2 Optimizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimization-5-ci-monitor-integration-2-3-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimization #5: CI Monitor Integration (2-3 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimization-6-pre-commit-hook-optimization-3-4-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimization #6: Pre-commit Hook Optimization (3-4 hours)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optimization #6: Pre-commit Hook Optimization (3-4 hours)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-a-conditional-execution-15-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A: Conditional Execution (1.5 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-b-parallel-hook-execution-15-2-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B: Parallel Hook Execution (1.5-2 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimization-7-file-risk-caching-2-3-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimization #7: File Risk Caching (2-3 hours)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optimization #7: File Risk Caching (2-3 hours)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-a-risk-cache-implementation-15-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A: Risk Cache Implementation (1.5 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-b-integrate-with-should_use_prsh-1-15-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B: Integrate with should_use_pr.sh (1-1.5 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-c-cache-invalidation-30-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part C: Cache Invalidation (30 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimization-8-branch-state-test-suite-3-4-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimization #8: Branch State Test Suite (3-4 hours)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optimization #8: Branch State Test Suite (3-4 hours)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-scenarios-20-tests-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Scenarios (20 tests planned)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-performance-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📈 Expected Performance Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Implementation Order
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Implementation Order">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-high-impact-low-risk-first-session-2-3-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: High-Impact, Low-Risk (First Session, 2-3 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-medium-impact-medium-risk-second-session-3-4-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Medium-Impact, Medium-Risk (Second Session, 3-4 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-high-value-higher-risk-third-session-4-5-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: High-Value, Higher-Risk (Third Session, 4-5 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-polish-and-documentation-fourth-session-1-2-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Polish and Documentation (Fourth Session, 1-2 hours)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Testing Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Testing Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-tests-per-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit Tests (Per Optimization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-tests-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integration Tests (End-to-End)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regression-tests-week-1-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regression Tests (Week 1 Coverage)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Success Metrics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Success Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quantitative-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantitative Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qualitative-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qualitative Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚨 Risk Assessment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚨 Risk Assessment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-risk-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Risk Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#medium-risk-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Medium-Risk Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#low-risk-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low-Risk Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Documentation Updates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Documentation Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#files-to-update-post-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files to Update (Post-Implementation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-documentation-to-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Documentation to Create
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎓 Learning Objectives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎓 Learning Objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-future-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Future Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Project
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 References
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔗 References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#week-1-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Week 1 Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#week-2-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Week 2 Scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-estimates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⏱️ Time Estimates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Getting Started
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Getting Started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Week 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agent-8-week-2-implementation-plan">Agent 8 Week 2 Implementation Plan<a class="headerlink" href="#agent-8-week-2-implementation-plan" title="Permanent link">&para;</a></h1>
+<!-- lint-ignore-git -->
+<p><strong>Version:</strong> 0.16.0
+<strong>Date:</strong> 2026-01-09
+<strong>Status:</strong> 📋 PLANNING
+<strong>Prerequisites:</strong> Week 1 complete (4/4 optimizations merged, 90% speedup achieved)</p>
+<hr />
+<h2 id="week-2-objectives">🎯 Week 2 Objectives<a class="headerlink" href="#week-2-objectives" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Further optimize workflow through integration and intelligence</p>
+<p><strong>Target Improvements:</strong>
+- <strong>User Experience:</strong> Seamless CI monitoring, smarter decision-making, faster hooks
+- <strong>Developer Productivity:</strong> Automatic PR management, intelligent caching, parallel execution
+- <strong>System Reliability:</strong> Comprehensive test coverage for all git operations</p>
+<p><strong>Success Criteria:</strong>
+- CI Monitor auto-start integrated into workflow
+- Pre-commit hooks optimized (conditional execution + parallelization)
+- File risk assessment cached (avoid redundant analysis)
+- Branch operations tested (comprehensive coverage)
+- All changes deployed to production with zero regressions</p>
+<hr />
+<h2 id="week-2-optimizations">📊 Week 2 Optimizations<a class="headerlink" href="#week-2-optimizations" title="Permanent link">&para;</a></h2>
+<h3 id="optimization-5-ci-monitor-integration-2-3-hours">Optimization #5: CI Monitor Integration (2-3 hours)<a class="headerlink" href="#optimization-5-ci-monitor-integration-2-3-hours" title="Permanent link">&para;</a></h3>
+<p><strong>Status:</strong> 📋 PLANNED
+<strong>Priority:</strong> HIGH
+<strong>Dependencies:</strong> Week 1 Optimization #3 (CI Monitor Daemon)</p>
+<p><strong>Implementation:</strong>
+1. <strong>Auto-start CI Monitor</strong> (30 minutes)
+   - Add daemon start to <code>scripts/agent_setup.sh</code>
+   - Check if daemon is already running (avoid duplicates)
+   - Log daemon PID in session notes
+   - Graceful handling if daemon fails to start</p>
+<ol>
+<li><strong>Integrate with finish_task_pr.sh</strong> (45 minutes)</li>
+<li>Add <code>--wait-for-ci</code> flag to <code>finish_task_pr.sh</code></li>
+<li>After PR creation, notify daemon to monitor this PR</li>
+<li>Optional: Block until PR merges (for synchronous workflow)</li>
+<li>
+<p>Terminal notification when PR auto-merges</p>
+</li>
+<li>
+<p><strong>Dashboard View</strong> (45 minutes)</p>
+</li>
+<li>Enhance <code>ci_monitor_daemon.sh status</code> to show all monitored PRs</li>
+<li>Show CI status for each PR (pending/running/passed/failed)</li>
+<li>Estimated merge time (based on typical CI duration)</li>
+<li>Color-coded status output (green=passing, yellow=running, red=failed)</li>
+</ol>
+<p><strong>Files Modified:</strong>
+- <code>scripts/agent_setup.sh</code> (add daemon start)
+- <code>scripts/finish_task_pr.sh</code> (add <code>--wait-for-ci</code> flag)
+- <code>scripts/ci_monitor_daemon.sh</code> (enhance status command)</p>
+<p><strong>Expected Performance Impact:</strong>
+- <strong>User Experience:</strong> Developers never need to manually check CI status
+- <strong>Time Savings:</strong> 0-2 minutes per PR (if not waiting, no blocking)
+- <strong>Workflow Improvement:</strong> Notifications keep developers informed without context-switching</p>
+<p><strong>Test Cases:</strong>
+- Daemon auto-starts on session setup
+- Daemon doesn't duplicate if already running
+- <code>finish_task_pr.sh --wait-for-ci</code> blocks until merge
+- Status command shows accurate PR states
+- Terminal notifications work correctly</p>
+<hr />
+<h3 id="optimization-6-pre-commit-hook-optimization-3-4-hours">Optimization #6: Pre-commit Hook Optimization (3-4 hours)<a class="headerlink" href="#optimization-6-pre-commit-hook-optimization-3-4-hours" title="Permanent link">&para;</a></h3>
+<p><strong>Status:</strong> 📋 PLANNED
+<strong>Priority:</strong> HIGH
+<strong>Dependencies:</strong> None</p>
+<p><strong>Problem Analysis:</strong>
+Current pre-commit hooks run ALL checks on EVERY commit:
+- <code>check-yaml</code> runs even if no YAML files changed
+- <code>check-json</code> runs even if no JSON files changed
+- <code>black</code> runs on all Python files (even unchanged)
+- <code>ruff</code> runs on all Python files (even unchanged)
+- <strong>Total overhead:</strong> 1-2 seconds per commit (adds up over time)</p>
+<p><strong>Implementation:</strong></p>
+<h4 id="part-a-conditional-execution-15-hours">Part A: Conditional Execution (1.5 hours)<a class="headerlink" href="#part-a-conditional-execution-15-hours" title="Permanent link">&para;</a></h4>
+<p>Modify <code>.pre-commit-config.yaml</code> to run hooks only on relevant files:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># OLD: Run black on all files</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.12.1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">black</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="c1"># No conditions - runs on all commits</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># NEW: Run black only if Python files changed</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.12.1</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">black</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\.py$</span><span class="w">  </span><span class="c1"># Only .py files</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="c1"># Pre-commit automatically skips if no matching files</span>
+</code></pre></div>
+<p><strong>Hooks to optimize:</strong>
+- <code>check-yaml</code> → only if <code>*.yml</code> or <code>*.yaml</code> changed
+- <code>check-json</code> → only if <code>*.json</code> changed
+- <code>black</code> → only if <code>*.py</code> changed (already done, verify)
+- <code>ruff</code> → only if <code>*.py</code> changed (already done, verify)
+- <code>check-added-large-files</code> → always run (critical)
+- <code>trailing-whitespace</code> → always run (critical for Step 2.5)
+- <code>end-of-file-fixer</code> → always run (critical)
+- <code>mixed-line-ending</code> → always run (critical)</p>
+<p><strong>Implementation Steps:</strong>
+1. Audit <code>.pre-commit-config.yaml</code> - identify hooks without file filters
+2. Add <code>files:</code> patterns to appropriate hooks
+3. Test with commits touching different file types
+4. Measure performance improvement (expect 30-50% faster for non-Python commits)</p>
+<h4 id="part-b-parallel-hook-execution-15-2-hours">Part B: Parallel Hook Execution (1.5-2 hours)<a class="headerlink" href="#part-b-parallel-hook-execution-15-2-hours" title="Permanent link">&para;</a></h4>
+<p>Enable parallel execution in <code>.pre-commit-config.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># At top of .pre-commit-config.yaml</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">default_stages</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">commit</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">default_language_version</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3.9</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">fail_fast</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># Don&#39;t stop on first failure</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># NEW: Run hooks in parallel</span>
+</code></pre></div>
+<p><strong>Challenges:</strong>
+- Some hooks may have side effects (writing to same file)
+- Need to test for race conditions
+- May need to exclude certain hooks from parallelization</p>
+<p><strong>Safe Hooks for Parallelization:</strong>
+- <code>check-yaml</code> (read-only)
+- <code>check-json</code> (read-only)
+- <code>check-added-large-files</code> (read-only)
+- <code>black</code> (safe - atomic writes)
+- <code>ruff</code> (safe - atomic writes)</p>
+<p><strong>Unsafe Hooks (keep sequential):</strong>
+- <code>trailing-whitespace</code> (modifies files - may conflict)
+- <code>end-of-file-fixer</code> (modifies files - may conflict)
+- <code>mixed-line-ending</code> (modifies files - may conflict)</p>
+<p><strong>Implementation Steps:</strong>
+1. Add <code>parallel: true</code> to config
+2. Test with multiple file changes
+3. Watch for race conditions or corrupted files
+4. If issues, exclude problematic hooks from parallelization
+5. Measure performance improvement (expect 20-40% faster on multi-file commits)</p>
+<p><strong>Files Modified:</strong>
+- <code>.pre-commit-config.yaml</code> (add file filters, enable parallel)</p>
+<p><strong>Expected Performance Impact:</strong>
+- <strong>Conditional execution:</strong> 30-50% faster for non-Python commits (YAML/JSON/docs only)
+- <strong>Parallel execution:</strong> 20-40% faster for multi-file commits
+- <strong>Combined:</strong> Up to 70% faster for commits with mixed file types</p>
+<p><strong>Test Cases:</strong>
+- Commit only YAML files → <code>check-yaml</code> runs, black/ruff skip
+- Commit only Python files → black/ruff run, YAML checks skip
+- Commit mixed files → relevant hooks run in parallel
+- Hooks don't corrupt files (race condition test)
+- Pre-commit still catches all issues (no false negatives)</p>
+<hr />
+<h3 id="optimization-7-file-risk-caching-2-3-hours">Optimization #7: File Risk Caching (2-3 hours)<a class="headerlink" href="#optimization-7-file-risk-caching-2-3-hours" title="Permanent link">&para;</a></h3>
+<p><strong>Status:</strong> 📋 PLANNED
+<strong>Priority:</strong> MEDIUM
+<strong>Dependencies:</strong> None</p>
+<p><strong>Problem Analysis:</strong>
+<code>scripts/should_use_pr.sh</code> analyzes file risk on EVERY invocation:
+- Parses file extensions
+- Counts lines changed
+- Calculates complexity score
+- <strong>Redundant:</strong> Same file analyzed multiple times in same session</p>
+<p><strong>Implementation:</strong></p>
+<h4 id="part-a-risk-cache-implementation-15-hours">Part A: Risk Cache Implementation (1.5 hours)<a class="headerlink" href="#part-a-risk-cache-implementation-15-hours" title="Permanent link">&para;</a></h4>
+<p>Create <code>scripts/risk_cache.sh</code> library:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># scripts/risk_cache.sh</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Cache file risk assessments to avoid redundant analysis</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nv">CACHE_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROJECT_ROOT</span><span class="si">}</span><span class="s2">/.git/risk_cache&quot;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nv">CACHE_TTL</span><span class="o">=</span><span class="m">3600</span><span class="w">  </span><span class="c1"># 1 hour (adjustable)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># Initialize cache directory</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>init_cache<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CACHE_DIR</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="o">}</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># Generate cache key from file path and modification time</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>get_cache_key<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="nv">$1</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">mtime</span><span class="o">=</span><span class="k">$(</span>stat<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;%m&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="k">)</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">file</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">mtime</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sha256sum<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f1
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="o">}</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="c1"># Check if cached risk assessment exists and is valid</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>get_cached_risk<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="nv">$1</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_key</span><span class="o">=</span><span class="k">$(</span>get_cache_key<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="k">)</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CACHE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">cache_key</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="c1"># Check if cache file exists and is within TTL</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cache_file</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">        </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_age</span><span class="o">=</span><span class="k">$(($(</span>date<span class="w"> </span>+%s<span class="k">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">$(</span>stat<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;%m&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cache_file</span><span class="s2">&quot;</span><span class="k">)))</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cache_age</span><span class="s2">&quot;</span><span class="w"> </span>-lt<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CACHE_TTL</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">            </span>cat<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cache_file</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">        </span><span class="k">fi</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="o">}</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="c1"># Store risk assessment in cache</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>set_cached_risk<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="nv">$1</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">risk</span><span class="o">=</span><span class="nv">$2</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_key</span><span class="o">=</span><span class="k">$(</span>get_cache_key<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="k">)</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CACHE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">cache_key</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$risk</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cache_file</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="o">}</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a><span class="c1"># Invalidate cache for specific file (on modification)</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>invalidate_cache<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="nv">$1</span>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_key</span><span class="o">=</span><span class="k">$(</span>get_cache_key<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="k">)</span>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">cache_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CACHE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">cache_key</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cache_file</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="o">}</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="c1"># Clean up old cache entries (run periodically)</span>
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>cleanup_cache<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a><span class="w">    </span>find<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CACHE_DIR</span><span class="s2">&quot;</span><span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-mtime<span class="w"> </span>+1<span class="w"> </span>-delete<span class="w">  </span><span class="c1"># Remove &gt;1 day old</span>
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="o">}</span>
+</code></pre></div>
+<h4 id="part-b-integrate-with-should_use_prsh-1-15-hours">Part B: Integrate with should_use_pr.sh (1-1.5 hours)<a class="headerlink" href="#part-b-integrate-with-should_use_prsh-1-15-hours" title="Permanent link">&para;</a></h4>
+<p>Modify <code>scripts/should_use_pr.sh</code> to use cache:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># At start of should_use_pr.sh</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">source</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">/risk_cache.sh&quot;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>init_cache
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># In file analysis loop</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">for</span><span class="w"> </span>file<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nv">$files</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="c1"># Check cache first</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">cached_risk</span><span class="o">=</span><span class="k">$(</span>get_cached_risk<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;DEBUG: Using cached risk for </span><span class="nv">$file</span><span class="s2">: </span><span class="nv">$cached_risk</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="nv">total_risk</span><span class="o">=</span><span class="k">$((</span><span class="nv">total_risk</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">cached_risk</span><span class="k">))</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="k">continue</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="c1"># Cache miss - calculate risk</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nv">file_risk</span><span class="o">=</span><span class="k">$(</span>calculate_file_risk<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="k">)</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="c1"># Store in cache</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span>set_cached_risk<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file_risk</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="nv">total_risk</span><span class="o">=</span><span class="k">$((</span><span class="nv">total_risk</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">file_risk</span><span class="k">))</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="k">done</span>
+</code></pre></div>
+<h4 id="part-c-cache-invalidation-30-minutes">Part C: Cache Invalidation (30 minutes)<a class="headerlink" href="#part-c-cache-invalidation-30-minutes" title="Permanent link">&para;</a></h4>
+<p>Hook into git operations to invalidate cache:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># In safe_push.sh after Step 2 (commit)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># Invalidate cache for committed files</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">for</span><span class="w"> </span>file<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w"> </span>HEAD~1<span class="w"> </span>HEAD<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>invalidate_cache<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">done</span>
+</code></pre></div>
+<p><strong>Files Modified:</strong>
+- <code>scripts/risk_cache.sh</code> (new)
+- <code>scripts/should_use_pr.sh</code> (add cache usage)
+- <code>scripts/safe_push.sh</code> (add cache invalidation)</p>
+<p><strong>Expected Performance Impact:</strong>
+- <strong>First analysis:</strong> Same speed (cache miss)
+- <strong>Subsequent analyses:</strong> 50-80% faster (cache hit)
+- <strong>Session improvement:</strong> 30-50% faster overall (multiple <code>should_use_pr.sh</code> calls)</p>
+<p><strong>Cache Invalidation Strategy:</strong>
+- <strong>File modified:</strong> Invalidate on commit (mtime change detected)
+- <strong>TTL expires:</strong> 1 hour (adjustable)
+- <strong>Manual cleanup:</strong> <code>cleanup_cache</code> runs weekly (cron or agent_setup.sh)</p>
+<p><strong>Test Cases:</strong>
+- First <code>should_use_pr.sh</code> call → cache miss, analysis runs
+- Second call (same file) → cache hit, instant result
+- File modified → cache invalidated, fresh analysis
+- Cache entry expires → automatic cleanup
+- Manual <code>cleanup_cache</code> → old entries removed</p>
+<hr />
+<h3 id="optimization-8-branch-state-test-suite-3-4-hours">Optimization #8: Branch State Test Suite (3-4 hours)<a class="headerlink" href="#optimization-8-branch-state-test-suite-3-4-hours" title="Permanent link">&para;</a></h3>
+<p><strong>Status:</strong> 📋 PLANNED
+<strong>Priority:</strong> MEDIUM
+<strong>Dependencies:</strong> None</p>
+<p><strong>Rationale:</strong>
+Week 1 Optimization #4 tested merge conflicts (90% coverage). Week 2 should test ALL git operations for comprehensive reliability.</p>
+<p><strong>Implementation:</strong></p>
+<h4 id="test-scenarios-20-tests-planned">Test Scenarios (20 tests planned)<a class="headerlink" href="#test-scenarios-20-tests-planned" title="Permanent link">&para;</a></h4>
+<p><strong>Branch Operations (5 tests):</strong>
+1. <strong>Create branch</strong> - <code>git checkout -b task/TEST-001</code>
+2. <strong>Switch branch</strong> - <code>git checkout main</code> then <code>git checkout task/TEST-001</code>
+3. <strong>Delete branch</strong> - <code>git branch -d task/TEST-001</code> (merged), <code>git branch -D task/TEST-001</code> (forced)
+4. <strong>List branches</strong> - <code>git branch --list</code>, verify all branches shown
+5. <strong>Rename branch</strong> - <code>git branch -m old-name new-name</code></p>
+<p><strong>Worktree Operations (5 tests):</strong>
+1. <strong>Create worktree</strong> - <code>git worktree add ../worktree-test task/TEST-001</code>
+2. <strong>List worktrees</strong> - <code>git worktree list</code>, verify all shown
+3. <strong>Remove worktree</strong> - <code>git worktree remove ../worktree-test</code>
+4. <strong>Prune stale worktrees</strong> - <code>git worktree prune</code>
+5. <strong>Worktree branch conflict</strong> - Two worktrees try to use same branch (should fail)</p>
+<p><strong>PR Workflow Operations (5 tests):</strong>
+1. <strong>Create task branch</strong> - <code>scripts/create_task_pr.sh TASK-001 "Test"</code>
+2. <strong>Commit on task branch</strong> - <code>scripts/ai_commit.sh "test commit"</code>
+3. <strong>Finish task PR</strong> - <code>scripts/finish_task_pr.sh TASK-001 "Test"</code>
+4. <strong>PR merge</strong> - Verify PR created, CI passes, auto-merge works
+5. <strong>Branch cleanup</strong> - Verify local/remote branches deleted after merge</p>
+<p><strong>Edge Cases (5 tests):</strong>
+1. <strong>Unfinished merge</strong> - Detect <code>MERGE_HEAD</code>, complete merge
+2. <strong>Detached HEAD</strong> - Recovery to named branch
+3. <strong>Uncommitted changes</strong> - Stash, switch branch, pop stash
+4. <strong>Branch behind remote</strong> - Pull with fast-forward, handle conflicts
+5. <strong>Remote branch deleted</strong> - Local branch still exists, clean up</p>
+<p><strong>Test Infrastructure:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># scripts/test_branch_operations.sh</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Comprehensive test suite for git branch and worktree operations</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>setup_test_env<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nv">TEST_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TEST_DIR</span><span class="s2">&quot;</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="c1"># Create test repository</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span>git<span class="w"> </span>init<span class="w"> </span>test_repo
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nb">cd</span><span class="w"> </span>test_repo
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;test@example.com&quot;</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;Test User&quot;</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">    </span><span class="c1"># Create initial commit</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Initial commit&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>README.md
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span>git<span class="w"> </span>add<span class="w"> </span>README.md
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial commit&quot;</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="o">}</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>cleanup_test_env<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">    </span><span class="nb">cd</span><span class="w"> </span>/
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TEST_DIR</span><span class="s2">&quot;</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="o">}</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="nb">trap</span><span class="w"> </span>cleanup_test_env<span class="w"> </span>EXIT
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="c1"># Test functions</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>test_1_create_branch<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">    </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>task/TEST-001
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">    </span>assert_equal<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>git<span class="w"> </span>branch<span class="w"> </span>--show-current<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;task/TEST-001&quot;</span><span class="w"> </span><span class="s2">&quot;Branch created&quot;</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="o">}</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>test_6_create_worktree<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">    </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>task/WORKTREE-001
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">    </span>git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>../worktree-test<span class="w"> </span>task/WORKTREE-001
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">    </span>assert_contains<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>git<span class="w"> </span>worktree<span class="w"> </span>list<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;worktree-test&quot;</span><span class="w"> </span><span class="s2">&quot;Worktree created&quot;</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="o">}</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="c1"># ... 18 more tests ...</span>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="c1"># Run all tests</span>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>run_tests
+</code></pre></div></p>
+<p><strong>Files Created:</strong>
+- <code>scripts/test_branch_operations.sh</code> (new, 800-1000 lines)</p>
+<p><strong>Expected Coverage:</strong>
+- Branch operations: 100%
+- Worktree operations: 100%
+- PR workflow: 80% (some steps require GitHub API)
+- Edge cases: 90%</p>
+<p><strong>Test Cases:</strong>
+- All 20 tests pass
+- Test duration &lt;10 seconds
+- No false positives (tests accurately reflect real behavior)
+- Edge cases caught before production</p>
+<hr />
+<h2 id="expected-performance-summary">📈 Expected Performance Summary<a class="headerlink" href="#expected-performance-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Week 1 Baseline</th>
+<th>Week 2 Target</th>
+<th>Improvement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Commit Time</td>
+<td>~5s</td>
+<td>~3-4s</td>
+<td>20-40% faster</td>
+</tr>
+<tr>
+<td>CI Wait</td>
+<td>0s (daemon)</td>
+<td>0s (integrated)</td>
+<td>Same (already optimal)</td>
+</tr>
+<tr>
+<td>Pre-commit Hooks</td>
+<td>1-2s</td>
+<td>0.5-1s</td>
+<td>50% faster</td>
+</tr>
+<tr>
+<td>should_use_pr.sh</td>
+<td>0.5s</td>
+<td>0.1-0.2s</td>
+<td>60-80% faster</td>
+</tr>
+<tr>
+<td>Test Coverage</td>
+<td>15 tests (conflicts)</td>
+<td>35 tests (all ops)</td>
+<td>133% increase</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall Workflow Impact:</strong>
+- Week 1: 45-60s → 5s (90% faster)
+- Week 2: 5s → 3-4s (additional 20-40% speedup)
+- <strong>Total improvement:</strong> 45-60s → 3-4s (93-95% faster!)</p>
+<hr />
+<h2 id="implementation-order">🔄 Implementation Order<a class="headerlink" href="#implementation-order" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-high-impact-low-risk-first-session-2-3-hours">Phase 1: High-Impact, Low-Risk (First Session, 2-3 hours)<a class="headerlink" href="#phase-1-high-impact-low-risk-first-session-2-3-hours" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Optimization #5A:</strong> Auto-start CI Monitor (30 min)</li>
+<li><strong>Optimization #6A:</strong> Conditional pre-commit hooks (1.5 hours)</li>
+<li>Test and validate changes</li>
+</ol>
+<p><strong>Rationale:</strong> These changes are low-risk (no breaking changes) and high-impact (immediate productivity gains). Start Week 2 with quick wins.</p>
+<h3 id="phase-2-medium-impact-medium-risk-second-session-3-4-hours">Phase 2: Medium-Impact, Medium-Risk (Second Session, 3-4 hours)<a class="headerlink" href="#phase-2-medium-impact-medium-risk-second-session-3-4-hours" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Optimization #7:</strong> File risk caching (2-3 hours)</li>
+<li><strong>Optimization #5B:</strong> Integrate CI Monitor with finish_task_pr.sh (45 min)</li>
+<li>Test and validate changes</li>
+</ol>
+<p><strong>Rationale:</strong> Caching adds complexity (cache invalidation), so implement after high-confidence changes. CI Monitor integration builds on Phase 1 foundation.</p>
+<h3 id="phase-3-high-value-higher-risk-third-session-4-5-hours">Phase 3: High-Value, Higher-Risk (Third Session, 4-5 hours)<a class="headerlink" href="#phase-3-high-value-higher-risk-third-session-4-5-hours" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Optimization #6B:</strong> Parallel pre-commit hooks (1.5-2 hours)</li>
+<li><strong>Optimization #8:</strong> Branch state test suite (3-4 hours)</li>
+<li>Comprehensive testing</li>
+</ol>
+<p><strong>Rationale:</strong> Parallel hooks have race condition risks. Test suite is time-intensive but critical for reliability. Implement last when all other optimizations are stable.</p>
+<h3 id="phase-4-polish-and-documentation-fourth-session-1-2-hours">Phase 4: Polish and Documentation (Fourth Session, 1-2 hours)<a class="headerlink" href="#phase-4-polish-and-documentation-fourth-session-1-2-hours" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Optimization #5C:</strong> CI Monitor dashboard (45 min)</li>
+<li>Update documentation (30 min)</li>
+<li>Create Week 2 completion summary (30 min)</li>
+</ol>
+<p><strong>Rationale:</strong> Dashboard is nice-to-have, not critical. Documentation ensures knowledge transfer for future agents.</p>
+<hr />
+<h2 id="testing-strategy">🧪 Testing Strategy<a class="headerlink" href="#testing-strategy" title="Permanent link">&para;</a></h2>
+<h3 id="unit-tests-per-optimization">Unit Tests (Per Optimization)<a class="headerlink" href="#unit-tests-per-optimization" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Each optimization has specific test cases (listed above)</li>
+<li>Test isolation (no dependencies between tests)</li>
+<li>Fast execution (&lt;10 seconds per optimization)</li>
+</ul>
+<h3 id="integration-tests-end-to-end">Integration Tests (End-to-End)<a class="headerlink" href="#integration-tests-end-to-end" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Full workflow test: <code>agent_setup.sh → ai_commit.sh → finish_task_pr.sh</code></li>
+<li>Verify all optimizations work together</li>
+<li>No performance regressions (Week 1 baseline maintained)</li>
+</ul>
+<h3 id="regression-tests-week-1-coverage">Regression Tests (Week 1 Coverage)<a class="headerlink" href="#regression-tests-week-1-coverage" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Re-run Week 1 test suite (15 merge conflict tests)</li>
+<li>Verify Week 1 optimizations still work</li>
+<li>No breaking changes introduced</li>
+</ul>
+<h3 id="performance-benchmarks">Performance Benchmarks<a class="headerlink" href="#performance-benchmarks" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Measure commit time (target: 3-4s)</li>
+<li>Measure pre-commit duration (target: 0.5-1s)</li>
+<li>Measure should_use_pr.sh (target: 0.1-0.2s)</li>
+<li>Compare against Week 1 baseline</li>
+</ul>
+<hr />
+<h2 id="success-metrics">📊 Success Metrics<a class="headerlink" href="#success-metrics" title="Permanent link">&para;</a></h2>
+<h3 id="quantitative-metrics">Quantitative Metrics<a class="headerlink" href="#quantitative-metrics" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Commit time reduced by 20-40% (5s → 3-4s)</li>
+<li>[ ] Pre-commit hooks 50% faster (1-2s → 0.5-1s)</li>
+<li>[ ] File risk assessment 60-80% faster (0.5s → 0.1-0.2s)</li>
+<li>[ ] Test coverage increased by 133% (15 → 35 tests)</li>
+<li>[ ] All tests passing (35/35)</li>
+<li>[ ] CI Monitor auto-starts on session setup</li>
+<li>[ ] Zero manual CI status checks required</li>
+</ul>
+<h3 id="qualitative-metrics">Qualitative Metrics<a class="headerlink" href="#qualitative-metrics" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Developer experience improved (seamless workflow)</li>
+<li>[ ] CI monitoring fully automated (no manual intervention)</li>
+<li>[ ] Git operations reliable (comprehensive test coverage)</li>
+<li>[ ] Documentation updated (knowledge preserved)</li>
+</ul>
+<hr />
+<h2 id="risk-assessment">🚨 Risk Assessment<a class="headerlink" href="#risk-assessment" title="Permanent link">&para;</a></h2>
+<h3 id="high-risk-changes">High-Risk Changes<a class="headerlink" href="#high-risk-changes" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Parallel pre-commit hooks (Opt #6B)</strong></li>
+<li><strong>Risk:</strong> Race conditions, file corruption</li>
+<li><strong>Mitigation:</strong> Thorough testing, exclude unsafe hooks, rollback plan</li>
+<li>
+<p><strong>Rollback:</strong> Revert <code>.pre-commit-config.yaml</code> to sequential execution</p>
+</li>
+<li>
+<p><strong>Cache invalidation (Opt #7)</strong></p>
+</li>
+<li><strong>Risk:</strong> Stale cache, incorrect risk assessments</li>
+<li><strong>Mitigation:</strong> Conservative TTL (1 hour), file mtime tracking, manual cleanup</li>
+<li><strong>Rollback:</strong> Delete <code>.git/risk_cache/</code>, disable caching</li>
+</ol>
+<h3 id="medium-risk-changes">Medium-Risk Changes<a class="headerlink" href="#medium-risk-changes" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>CI Monitor auto-start (Opt #5A)</strong></li>
+<li><strong>Risk:</strong> Daemon fails to start, blocks session setup</li>
+<li><strong>Mitigation:</strong> Graceful error handling, continue if daemon fails</li>
+<li>
+<p><strong>Rollback:</strong> Remove auto-start from <code>agent_setup.sh</code></p>
+</li>
+<li>
+<p><strong>Conditional pre-commit hooks (Opt #6A)</strong></p>
+</li>
+<li><strong>Risk:</strong> Hooks skip incorrectly, miss issues</li>
+<li><strong>Mitigation:</strong> Test with all file types, verify no false negatives</li>
+<li><strong>Rollback:</strong> Remove <code>files:</code> patterns from <code>.pre-commit-config.yaml</code></li>
+</ol>
+<h3 id="low-risk-changes">Low-Risk Changes<a class="headerlink" href="#low-risk-changes" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>CI Monitor integration (Opt #5B)</strong></li>
+<li><strong>Risk:</strong> Minimal (optional flag, doesn't affect existing workflow)</li>
+<li>
+<p><strong>Mitigation:</strong> Test both with/without <code>--wait-for-ci</code> flag</p>
+</li>
+<li>
+<p><strong>Branch state tests (Opt #8)</strong></p>
+</li>
+<li><strong>Risk:</strong> None (read-only tests, no production impact)</li>
+<li><strong>Mitigation:</strong> N/A (pure testing)</li>
+</ol>
+<hr />
+<h2 id="documentation-updates">📝 Documentation Updates<a class="headerlink" href="#documentation-updates" title="Permanent link">&para;</a></h2>
+<h3 id="files-to-update-post-implementation">Files to Update (Post-Implementation)<a class="headerlink" href="#files-to-update-post-implementation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] <code>docs/agents/sessions/2026-01/agent-8-week2-completion-summary.md</code> (create)</li>
+<li>[ ] <code>docs/TASKS.md</code> (add AGENT8-WEEK2 entry)</li>
+<li>[ ] <code>docs/SESSION_LOG.md</code> (add Week 2 achievements)</li>
+<li>[ ] <code>docs/planning/next-session-brief.md</code> (update with Week 3 planning)</li>
+<li>[ ] <code>docs/AGENT_WORKFLOW_MASTER_GUIDE.md</code> (add Week 2 features)</li>
+<li>[ ] <code>.github/copilot-instructions.md</code> (update performance metrics)</li>
+</ul>
+<h3 id="new-documentation-to-create">New Documentation to Create<a class="headerlink" href="#new-documentation-to-create" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] <code>docs/git-workflow-caching.md</code> (cache usage guide)</li>
+<li>[ ] <code>docs/ci-monitor-integration-guide.md</code> (daemon usage)</li>
+<li>[ ] <code>scripts/README.md</code> (update with new scripts)</li>
+</ul>
+<hr />
+<h2 id="learning-objectives">🎓 Learning Objectives<a class="headerlink" href="#learning-objectives" title="Permanent link">&para;</a></h2>
+<h3 id="for-future-agents">For Future Agents<a class="headerlink" href="#for-future-agents" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Caching strategies:</strong> When to cache, how to invalidate, TTL considerations</li>
+<li><strong>Pre-commit optimization:</strong> Conditional execution, parallelization, trade-offs</li>
+<li><strong>Background daemon integration:</strong> Auto-start, graceful degradation, status monitoring</li>
+<li><strong>Comprehensive testing:</strong> Branch operations, worktrees, PR workflows, edge cases</li>
+</ol>
+<h3 id="for-project">For Project<a class="headerlink" href="#for-project" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Performance optimization patterns:</strong> I/O parallelization, incremental processing, intelligent caching</li>
+<li><strong>Reliability through testing:</strong> Comprehensive test suites prevent regressions</li>
+<li><strong>Developer experience focus:</strong> Automation eliminates manual tasks, reduces cognitive load</li>
+</ol>
+<hr />
+<h2 id="references">🔗 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<h3 id="week-1-resources">Week 1 Resources<a class="headerlink" href="#week-1-resources" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../agent-8-week1-completion-summary/">Week 1 Completion Summary</a></li>
+<li><a href="https://github.com/Pravin-surawase/structural_engineering_lib/pull/309">PR #309: Parallel Git Fetch</a></li>
+<li><a href="https://github.com/Pravin-surawase/structural_engineering_lib/pull/310">PR #310: Incremental Whitespace Fix</a></li>
+<li><a href="https://github.com/Pravin-surawase/structural_engineering_lib/pull/311">PR #311: CI Monitor Daemon</a></li>
+<li><a href="https://github.com/Pravin-surawase/structural_engineering_lib/pull/312">PR #312: Merge Conflict Test Suite</a></li>
+</ul>
+<h3 id="week-2-scripts">Week 2 Scripts<a class="headerlink" href="#week-2-scripts" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>scripts/agent_setup.sh</code> (modify)</li>
+<li><code>scripts/finish_task_pr.sh</code> (modify)</li>
+<li><code>scripts/ci_monitor_daemon.sh</code> (enhance)</li>
+<li><code>scripts/should_use_pr.sh</code> (add caching)</li>
+<li><code>scripts/risk_cache.sh</code> (new)</li>
+<li><code>scripts/test_branch_operations.sh</code> (new)</li>
+<li><code>.pre-commit-config.yaml</code> (optimize)</li>
+</ul>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>docs/AGENT_WORKFLOW_MASTER_GUIDE.md</code> (comprehensive workflow guide)</li>
+<li><code>docs/git-workflow-ai-agents.md</code> (git workflow documentation)</li>
+<li><code>docs/TASKS.md</code> (task tracking)</li>
+</ul>
+<hr />
+<h2 id="time-estimates">⏱️ Time Estimates<a class="headerlink" href="#time-estimates" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Optimization</th>
+<th>Estimate</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#5: CI Monitor Integration</td>
+<td>2-3 hours</td>
+<td>HIGH (builds on Week 1)</td>
+</tr>
+<tr>
+<td>#6: Pre-commit Optimization</td>
+<td>3-4 hours</td>
+<td>MEDIUM (testing critical)</td>
+</tr>
+<tr>
+<td>#7: File Risk Caching</td>
+<td>2-3 hours</td>
+<td>MEDIUM (cache invalidation complex)</td>
+</tr>
+<tr>
+<td>#8: Branch State Tests</td>
+<td>3-4 hours</td>
+<td>HIGH (similar to Week 1 tests)</td>
+</tr>
+<tr>
+<td><strong>Total Week 2</strong></td>
+<td><strong>10-14 hours</strong></td>
+<td><strong>HIGH</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comparison:</strong>
+- Week 1: 6 hours actual (as estimated)
+- Week 2: 10-14 hours estimated (67% more complex)</p>
+<hr />
+<h2 id="getting-started">🚀 Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites-check">Prerequisites Check<a class="headerlink" href="#prerequisites-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Verify Week 1 complete</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-4<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;(#309|#310|#311|#312)&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Verify CI Monitor available</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>./scripts/ci_monitor_daemon.sh<span class="w"> </span>status
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Verify test suite passing</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>./scripts/test_merge_conflicts.sh
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># Verify clean working tree</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>git<span class="w"> </span>status<span class="w"> </span>-sb
+</code></pre></div>
+<h3 id="start-week-2">Start Week 2<a class="headerlink" href="#start-week-2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Create Week 2 branch (optional)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>agent8/week2-integration
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Or work directly on main (for small incremental changes)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Begin with Optimization #5A (CI Monitor auto-start)</span>
+</code></pre></div>
+<hr />
+<p><strong>Prepared by:</strong> Agent 8 (Main Agent)
+<strong>Planning Date:</strong> 2026-01-09
+<strong>Implementation Start:</strong> TBD
+<strong>Estimated Completion:</strong> TBD</p>
+<p><strong>Status:</strong> 📋 PLANNING COMPLETE - READY TO START!</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2958 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/TASKS/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Task Board - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#task-board" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Task Board
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rules-read-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules (read first)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#release-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Roadmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-status-react-vs-streamlit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Status (React vs Streamlit)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v021-feature-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21 Feature Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.21 Feature Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#react-ux-overhaul-new-phase-a-quick-wins-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        React UX Overhaul (new — Phase A quick wins first)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#library-expansion-original-v021-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Library Expansion (original v0.21 plan)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recently-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recently Done
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recently-done_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recently Done
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#up-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Up Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-expansion-multi-code-multi-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Library Expansion — Multi-Code, Multi-Element
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Library Expansion — Multi-Code, Multi-Element">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-quality-infrastructure-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: Quality Infrastructure ✅ Done
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-cleanup-before-column-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Foundation Cleanup (Before Column Work)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-15-is-456-beam-restructure-v5-phase-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1.5: IS 456 Beam Restructure (v5 Phase 0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-column-design-after-phase-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Column Design (After Phase 1.5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-footing-design-after-phase-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Footing Design (After Phase 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-6-slab-staircase-shear-wall-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4-6: Slab, Staircase, Shear Wall (Future)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backlog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recently-done_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recently Done
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Archive
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="task-board">Task Board<a class="headerlink" href="#task-board" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
+</blockquote>
+<p><strong>Updated:</strong> 2026-03-31 (TASK-630/631/632 done — column types, classify, min eccentricity, short axial capacity, 75 tests)</p>
+<hr />
+<h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>WIP = 2</strong> (max 2 active tasks at once)</li>
+<li><strong>Done = tests pass + docs updated + scanner passes</strong></li>
+<li><strong>Archive rule:</strong> Move completed items to <a href="../_archive/tasks-history/">tasks-history.md</a> after 20+ items</li>
+<li><strong>No new Streamlit work</strong> — all new features go to React. Bug fixes only for Streamlit-only features.</li>
+</ul>
+<hr />
+<h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Version:</strong> v0.19.1 ✅ Complete → v0.20 (V3 Foundation) → v0.21 (Library Expansion)</li>
+<li><strong>Focus:</strong> Library expansion — new Python modules + FastAPI endpoints + React UI</li>
+<li><strong>Target:</strong> v0.21 — PDF export, load calculator, BOQ, torsion API, Pareto panel, rationalization</li>
+<li><strong>Vision:</strong> <a href="../planning/democratization-vision/">democratization-vision.md</a> — AI chat, automation, library evolution</li>
+<li><strong>Detailed Plan:</strong> <a href="../planning/next-phase-improvements-plan/">next-phase-improvements-plan.md</a> — code-level specs for all 8 tasks</li>
+</ul>
+<h3 id="release-roadmap">Release Roadmap<a class="headerlink" href="#release-roadmap" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Focus</th>
+<th>Status</th>
+<th>Key Deliverables</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v0.19.1</strong></td>
+<td>AI Tools + UX</td>
+<td>✅ DONE</td>
+<td>Dashboard insights, code checks, ExportPanel, rebar suggestions</td>
+</tr>
+<tr>
+<td><strong>v0.20</strong></td>
+<td>V3 Foundation</td>
+<td>✅ Released (v0.20.0)</td>
+<td>Batch design React UI, compliance checker, cost optimizer, 86 API tests</td>
+</tr>
+<tr>
+<td><strong>v0.21</strong></td>
+<td>React UX + Library Expansion</td>
+<td>🔄 ACTIVE</td>
+<td>Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion</td>
+</tr>
+<tr>
+<td><strong>v0.22</strong></td>
+<td>Full React</td>
+<td>📋 NEXT</td>
+<td>AI assistant port, learning center, Streamlit deprecation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="migration-status-react-vs-streamlit">Migration Status (React vs Streamlit)<a class="headerlink" href="#migration-status-react-vs-streamlit" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Streamlit</th>
+<th>React</th>
+<th>API Ready</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single beam design</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>CSV import (40+ cols)</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>3D visualization</td>
+<td>✅</td>
+<td>✅ R3F</td>
+<td>✅</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Export (BBS/DXF/Report)</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Dashboard insights</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>Rebar suggestions</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done</td>
+</tr>
+<tr>
+<td><strong>Batch design UI</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅ streaming.py</td>
+<td>Done</td>
+</tr>
+<tr>
+<td><strong>Compliance checker</strong></td>
+<td>✅</td>
+<td>✅ DesignView panel</td>
+<td>✅ insights.py</td>
+<td>Done</td>
+</tr>
+<tr>
+<td><strong>Cost optimizer</strong></td>
+<td>✅</td>
+<td>✅ DesignView rebar</td>
+<td>✅ optimization.py</td>
+<td>Done</td>
+</tr>
+<tr>
+<td><strong>AI Assistant</strong></td>
+<td>✅</td>
+<td>--</td>
+<td>Partial</td>
+<td>🟡 Medium</td>
+</tr>
+<tr>
+<td>Learning center</td>
+<td>✅</td>
+<td>--</td>
+<td>--</td>
+<td>🟢 Low</td>
+</tr>
+</tbody>
+</table>
+<h3 id="v021-feature-matrix">v0.21 Feature Matrix<a class="headerlink" href="#v021-feature-matrix" title="Permanent link">&para;</a></h3>
+<h4 id="react-ux-overhaul-new-phase-a-quick-wins-first">React UX Overhaul (new — Phase A quick wins first)<a class="headerlink" href="#react-ux-overhaul-new-phase-a-quick-wins-first" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Task ID</th>
+<th>Feature</th>
+<th>Files</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1</td>
+<td>TASK-522</td>
+<td>BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results + redesign + edit rebar</td>
+<td><code>BeamDetailPanel.tsx</code>, <code>BuildingEditorPage.tsx</code>, <code>Viewport3D.tsx</code></td>
+<td>✅ Done (<code>a242878</code>, <code>a5612b0</code>)</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>TASK-523</td>
+<td>Activate FloatingDock (already built) + BentoGrid Dashboard (already built)</td>
+<td><code>App.tsx</code>, <code>DashboardPage.tsx</code></td>
+<td>✅ Done (<code>a242878</code>)</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>TASK-524</td>
+<td>DesignView dynamic layout — 3D expands when no result, export dropdown</td>
+<td><code>DesignView.tsx</code></td>
+<td>✅ Done (<code>a242878</code>)</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>TASK-525</td>
+<td>Smart HubPage replacing ModeSelectPage</td>
+<td>new <code>HubPage.tsx</code>, update <code>App.tsx</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>TASK-526</td>
+<td>Cross-section annotations — utilization color, actual barDia/barCount, ascRequired</td>
+<td><code>CrossSectionView.tsx</code></td>
+<td>✅ Done (<code>a242878</code>, <code>a5612b0</code>)</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>TASK-527</td>
+<td>TopBar context badges + fix settings button (SettingsPanel slide-over)</td>
+<td><code>TopBar.tsx</code>, new <code>SettingsPanel.tsx</code></td>
+<td>📋</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>TASK-528</td>
+<td>Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard)</td>
+<td>new <code>WorkflowBreadcrumb.tsx</code>, 4 page files</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Design principle:</strong> Editor is the workstation. Manual beam form lives only in <code>/design</code>. No redundant forms in batch flow.
+Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvement-plan.md</a></p>
+</blockquote>
+<h4 id="library-expansion-original-v021-plan">Library Expansion (original v0.21 plan)<a class="headerlink" href="#library-expansion-original-v021-plan" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Task ID</th>
+<th>Feature</th>
+<th>Python</th>
+<th>FastAPI</th>
+<th>React</th>
+<th>Tests</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>TASK-514</td>
+<td>PDF Export</td>
+<td><code>report.py</code> +15 lines</td>
+<td>extend export router</td>
+<td>extend useExport type</td>
+<td>4</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>2</td>
+<td>TASK-515</td>
+<td>Load Calculator</td>
+<td>— (existing)</td>
+<td>new <code>/analysis/loads/simple</code></td>
+<td>new <code>useLoadAnalysis</code> + panel</td>
+<td>7</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TASK-516</td>
+<td>Triangular + Moment loads</td>
+<td><code>load_analysis.py</code> +120 lines</td>
+<td>— (extends TASK-515)</td>
+<td>—</td>
+<td>6</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>4</td>
+<td>TASK-517</td>
+<td>Project BOQ</td>
+<td>new <code>boq.py</code> ~120 lines</td>
+<td>new <code>/insights/project-boq</code></td>
+<td>new <code>useProjectBOQ</code> + panel</td>
+<td>5</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>5</td>
+<td>TASK-518</td>
+<td>Torsion API + React</td>
+<td><code>api.py</code> +60 lines</td>
+<td>new <code>/design/beam/torsion</code></td>
+<td>new <code>useTorsionDesign</code> + toggle</td>
+<td>5</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>6</td>
+<td>TASK-519</td>
+<td>Alternatives Panel (Pareto)</td>
+<td>— (existing)</td>
+<td>new <code>/optimization/beam/pareto</code></td>
+<td>new <code>useParetoDesign</code> + panel</td>
+<td>3</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>7</td>
+<td>TASK-520</td>
+<td>Report/3D Test Coverage</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>~15</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>8</td>
+<td>TASK-521</td>
+<td>Beam Rationalization</td>
+<td>new <code>rationalization.py</code> ~250 lines</td>
+<td>new <code>/insights/rationalize</code></td>
+<td>new panel in BuildingEditor</td>
+<td>4</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Detailed specs (function signatures, Pydantic models, React hooks, UI wireframes) in <a href="../planning/next-phase-improvements-plan/">next-phase-improvements-plan.md</a> Part 2.</p>
+</blockquote>
+<hr />
+<h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-525</td>
+<td>Smart HubPage replacing ModeSelectPage</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-515</td>
+<td>Load Calculator (FastAPI + React)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h2 id="active">Active<a class="headerlink" href="#active" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-633</td>
+<td>Short column uniaxial (Cl 39.5)</td>
+<td>—</td>
+<td>📋 Up Next</td>
+</tr>
+<tr>
+<td>TASK-634</td>
+<td>P-M interaction curve (Cl 39.5, Annex G)</td>
+<td>—</td>
+<td>📋 Up Next</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recently-done_1">Recently Done<a class="headerlink" href="#recently-done_1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-630</td>
+<td>Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-631</td>
+<td>classify_column (Cl 25.1.2) + min_eccentricity (Cl 25.4)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-632</td>
+<td>short_axial_capacity (Cl 39.3) + API + FastAPI + 75 tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h2 id="up-next">Up Next<a class="headerlink" href="#up-next" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Est</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-527</td>
+<td>TopBar context badges + SettingsPanel slide-over</td>
+<td>—</td>
+<td>2h</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-528</td>
+<td>Workflow breadcrumb for batch flow</td>
+<td>—</td>
+<td>1h</td>
+<td>🟢 Low</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-516</td>
+<td>Triangular + Moment load stubs in load_analysis.py</td>
+<td>—</td>
+<td>1d</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-519</td>
+<td>Alternatives Panel — Pareto front in DesignView</td>
+<td>—</td>
+<td>3–4d</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-520</td>
+<td>Test coverage: report.py, geometry_3d.py, dashboard.py</td>
+<td>—</td>
+<td>2–3d</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-521</td>
+<td>Beam Rationalization (new algo + FastAPI + React)</td>
+<td>—</td>
+<td>1–2w</td>
+<td>🟢 Low</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<h2 id="library-expansion-multi-code-multi-element">Library Expansion — Multi-Code, Multi-Element<a class="headerlink" href="#library-expansion-multi-code-multi-element" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>v5.0:</strong> Multi-code (IS 456 + ACI 318 + EC2), multi-element expansion. Every function goes through a 9-step quality pipeline.
+See <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> for full plan.
+Use <code>/function-quality-pipeline</code> skill for every new function.</p>
+</blockquote>
+<h3 id="phase-0-quality-infrastructure-done">Phase 0: Quality Infrastructure ✅ Done<a class="headerlink" href="#phase-0-quality-infrastructure-done" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-600</td>
+<td>Create function-quality-pipeline skill</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-601</td>
+<td>Create function-quality-gate prompt</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-602</td>
+<td>Update structural-math agent (12-point checklist, numerical rules)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-603</td>
+<td>Update tester agent (benchmark, degenerate, monotonicity tests)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-604</td>
+<td>Update reviewer agent (two-pass review, IS 456 quality checks)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-605</td>
+<td>Update api-developer agent (endpoint quality, plausibility guards)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-606</td>
+<td>Update structural-engineer agent (math verification protocol)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-607</td>
+<td>Update governance agent (quality metrics tracking)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-608</td>
+<td>Update doc-master agent (element doc checklist)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-609</td>
+<td>Update library-expert agent (quality enforcement rules)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-610</td>
+<td>Create blueprint v4.0 with quality pipeline</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-1-foundation-cleanup-before-column-work">Phase 1: Foundation Cleanup (Before Column Work)<a class="headerlink" href="#phase-1-foundation-cleanup-before-column-work" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-611</td>
+<td>Create <code>core/numerics.py</code> — safe_divide(), approx_equal(), clamp()</td>
+<td>🔴 P0</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-612</td>
+<td>Extract shared math to <code>codes/is456/common/</code> (stress_blocks, reinforcement, minimums)</td>
+<td>🔴 P0</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-613</td>
+<td>Hardcode safety factors in <code>codes/is456/common/constants.py</code></td>
+<td>🔴 P0</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-614</td>
+<td>Create <code>@deprecated</code> decorator in <code>core/deprecation.py</code></td>
+<td>🔴 High</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-615</td>
+<td>Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39)</td>
+<td>🔴 High</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-616</td>
+<td>Add IS 13920 references to clauses.json (~15 entries)</td>
+<td>🔴 High</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-617</td>
+<td>Create test assertion helpers <code>tests/helpers/is456_assertions.py</code></td>
+<td>🟡 Medium</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-618</td>
+<td>Top-level <code>__init__.py</code> exports for all public functions</td>
+<td>🟡 Medium</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-619</td>
+<td>Unit plausibility guards in <code>services/api.py</code></td>
+<td>🟡 Medium</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-620</td>
+<td>Stack trace sanitization (security) in <code>fastapi_app/main.py</code></td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-621</td>
+<td>Add <code>recovery</code> field to <code>DesignError</code> in <code>core/errors.py</code></td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-622</td>
+<td>Create <code>check_function_quality.py</code> script (12-point checklist CI)</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-623</td>
+<td>Create <code>check_clause_coverage.py</code> script (clause gap detection)</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-624</td>
+<td>Create <code>check_new_element_completeness.py</code> script</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-625</td>
+<td>Create maintenance playbook <code>docs/governance/maintenance-playbook.md</code></td>
+<td>🟢 Low</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-15-is-456-beam-restructure-v5-phase-0">Phase 1.5: IS 456 Beam Restructure (v5 Phase 0)<a class="headerlink" href="#phase-15-is-456-beam-restructure-v5-phase-0" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Move existing beam modules into <code>codes/is456/beam/</code> subfolder. See <a href="../planning/library-expansion-blueprint-v5/#4-phase-0--is-456-restructure">blueprint v5.0 §4</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-700</td>
+<td>Create <code>codes/is456/beam/</code> directory + <code>__init__.py</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-701</td>
+<td>Move <code>flexure.py</code> → <code>beam/flexure.py</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-702</td>
+<td>Move <code>shear.py</code> → <code>beam/shear.py</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-703</td>
+<td>Move <code>detailing.py</code> → <code>beam/detailing.py</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-704</td>
+<td>Move <code>serviceability.py</code> → <code>beam/serviceability.py</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-705</td>
+<td>Move <code>torsion.py</code> → <code>beam/torsion.py</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-706</td>
+<td>Update <code>compliance.py</code> imports: <code>from .beam import flexure, shear, serviceability</code></td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-707</td>
+<td>Update <code>codes/is456/__init__.py</code> — re-export beam modules for backward compat</td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-708</td>
+<td>Generate backward-compat shims at old locations (5 files)</td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-709</td>
+<td>Move <code>ductile.py</code> → <code>codes/is13920/beam.py</code> + shim</td>
+<td>🟡 Medium</td>
+<td>✅ Done (<code>32f49571</code>, PR #467)</td>
+</tr>
+<tr>
+<td>TASK-710</td>
+<td>Fix upward import in <code>detailing.py</code> line 152 (codes → visualization)</td>
+<td>🔴 P0</td>
+<td>✅ Done (<code>32f49571</code>, PR #467)</td>
+</tr>
+<tr>
+<td>TASK-711</td>
+<td>Run full test suite — zero failures gate</td>
+<td>🔴 P0</td>
+<td>✅ PR #466</td>
+</tr>
+<tr>
+<td>TASK-712</td>
+<td>Implement enhanced shear near supports (Cl 40.3) — new function + 14 tests + API endpoint</td>
+<td>🔴 HIGH</td>
+<td>✅ Done (PR #468)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-2-column-design-after-phase-15">Phase 2: Column Design (After Phase 1.5)<a class="headerlink" href="#phase-2-column-design-after-phase-15" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-630</td>
+<td>Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors)</td>
+<td>Types</td>
+<td>—</td>
+<td>🔴 P0</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-631</td>
+<td>classify_column + min_eccentricity</td>
+<td><code>classify_column</code>, <code>min_eccentricity</code></td>
+<td>Cl 25.1.2, 25.4</td>
+<td>🔴 P0</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-632</td>
+<td>Short column axial</td>
+<td><code>short_axial_capacity</code></td>
+<td>Cl 39.3</td>
+<td>🔴 P0</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-633</td>
+<td>Short column uniaxial</td>
+<td><code>design_short_column_uniaxial</code></td>
+<td>Cl 39.5</td>
+<td>🔴 High</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-634</td>
+<td>P-M interaction curve</td>
+<td><code>pm_interaction_curve</code></td>
+<td>Cl 39.5, Annex G</td>
+<td>🔴 High</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-635</td>
+<td>Biaxial bending check</td>
+<td><code>biaxial_bending_check</code></td>
+<td>Cl 39.6</td>
+<td>🔴 High</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-636</td>
+<td>Effective length</td>
+<td><code>calculate_effective_length</code></td>
+<td>Cl 25.2</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-637</td>
+<td>Additional moment</td>
+<td><code>calculate_additional_moment</code></td>
+<td>Cl 39.7.1</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-638</td>
+<td>Long column design</td>
+<td><code>design_long_column</code></td>
+<td>Cl 39.7</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-639</td>
+<td>Helical reinforcement</td>
+<td><code>check_helical_reinforcement</code></td>
+<td>Cl 39.8</td>
+<td>🟢 Low</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-640</td>
+<td>Column orchestrator</td>
+<td><code>design_column_is456</code></td>
+<td>All</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-641</td>
+<td>Column FastAPI endpoint</td>
+<td><code>POST /api/v1/design/column</code></td>
+<td>—</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-3-footing-design-after-phase-2">Phase 3: Footing Design (After Phase 2)<a class="headerlink" href="#phase-3-footing-design-after-phase-2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-650</td>
+<td>Footing types + errors</td>
+<td>Types</td>
+<td>—</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-651</td>
+<td>Isolated footing design</td>
+<td><code>design_isolated_footing</code></td>
+<td>Cl 34</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-652</td>
+<td>Punching shear check</td>
+<td><code>punching_shear_check</code></td>
+<td>Cl 31.6</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-653</td>
+<td>One-way shear check</td>
+<td><code>one_way_shear_check</code></td>
+<td>Cl 34.2.4</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-654</td>
+<td>Bearing pressure</td>
+<td><code>calculate_bearing_pressure</code></td>
+<td>Cl 34.4</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-655</td>
+<td>Dowel bars</td>
+<td><code>check_dowel_bars</code></td>
+<td>Cl 34.2.5</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-656</td>
+<td>Footing FastAPI endpoint</td>
+<td><code>POST /api/v1/design/footing</code></td>
+<td>—</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-4-6-slab-staircase-shear-wall-future">Phase 4-6: Slab, Staircase, Shear Wall (Future)<a class="headerlink" href="#phase-4-6-slab-staircase-shear-wall-future" title="Permanent link">&para;</a></h3>
+<p>See <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> for full multi-code, multi-element plan.</p>
+<h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Priority</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-513</td>
+<td>React: AI assistant port</td>
+<td>🟡 Medium</td>
+<td>Deferred to v0.22 — needs LLM API design</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Wire BuildingEditor Cost tab (placeholder → real data)</td>
+<td>🟢 Low</td>
+<td>Use <code>/optimization/cost-rates</code></td>
+</tr>
+<tr>
+<td>—</td>
+<td>28 unit conversion warnings</td>
+<td>🟢 Low</td>
+<td>Informational, not bugs. Self-documenting via <code>_nmm</code>/<code>_knm</code> var names.</td>
+</tr>
+<tr>
+<td>—</td>
+<td>287 legacy import warnings (Streamlit)</td>
+<td>🟢 Low</td>
+<td>Won't fix — will go away when Streamlit is deprecated</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recently-done_2">Recently Done<a class="headerlink" href="#recently-done_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>—</td>
+<td>Release infrastructure overhaul — preflight, semver validation, CI tests, rollback, 37 tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Session 107: Safety gates hardening — FORBIDDEN commands in 5 files, CodeQL fix, ops role scoping</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>—</td>
+<td>TopBar nav + ModeSelect quick links (v0.20 wrap-up)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-518</td>
+<td>Torsion API + React — endpoint + hook + DesignView toggle + 3 API tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-515</td>
+<td>Load Calculator — endpoint + useLoadAnalysis hook + MiniDiagram + 4 tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-514</td>
+<td>PDF Export — export_pdf() + extend export router + PDF button + 4 export tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Created WORKLOG.md compact change log + updated agent-bootstrap</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-522</td>
+<td>BeamDetailPanel + 3D rebar + redesign + edit rebar in BuildingEditorPage</td>
+<td>Copilot</td>
+<td>✅ Done (<code>a242878</code>, <code>a5612b0</code>)</td>
+</tr>
+<tr>
+<td>TASK-523</td>
+<td>Activate FloatingDock + BentoGrid Dashboard</td>
+<td>Copilot</td>
+<td>✅ Done (<code>a242878</code>)</td>
+</tr>
+<tr>
+<td>TASK-524</td>
+<td>DesignView dynamic layout + export dropdown</td>
+<td>Copilot</td>
+<td>✅ Done (<code>a242878</code>)</td>
+</tr>
+<tr>
+<td>TASK-526</td>
+<td>Cross-section annotations + utilization color + ascRequired fix</td>
+<td>Copilot</td>
+<td>✅ Done (<code>a242878</code>, <code>a5612b0</code>)</td>
+</tr>
+<tr>
+<td>TASK-525</td>
+<td>Smart HubPage replacing ModeSelectPage — quick actions + last session context</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-517</td>
+<td>Project BOQ — services/boq.py + FastAPI endpoint + useProjectBOQ hook + DashboardPage</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Bug fix: 3D/2D top bar mismatch + utilization formula + BatchDesignResult.utilization_ratio</td>
+<td>Copilot</td>
+<td>✅ Done (<code>a5612b0</code>)</td>
+</tr>
+<tr>
+<td>TASK-505</td>
+<td>React: API integration tests (86 tests, 12 routers, all pass)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-510</td>
+<td>React: Batch design page with SSE progress + <code>/batch</code> route</td>
+<td>Copilot</td>
+<td>✅ Done (merged to main)</td>
+</tr>
+<tr>
+<td>TASK-511</td>
+<td>Compliance checker — <strong>already exists</strong> (useCodeChecks + DesignView panel)</td>
+<td>—</td>
+<td>✅ Not needed</td>
+</tr>
+<tr>
+<td>TASK-512</td>
+<td>Cost optimizer — <strong>already exists</strong> (useRebarSuggestions + DesignView panel)</td>
+<td>—</td>
+<td>✅ Not needed</td>
+</tr>
+<tr>
+<td>TASK-509</td>
+<td>Type annotations: Streamlit 100% coverage (19 files, PR #438)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Phase 1+2 cleanup: delete stale files + Streamlit deprecation markers</td>
+<td>Copilot</td>
+<td>✅ Done (<code>ec62ed0</code>)</td>
+</tr>
+<tr>
+<td>TASK-502</td>
+<td>Code-split React bundle: lazy routes + manual chunks (1,158→67 kB main)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-501</td>
+<td>Fix pre-existing check_all.py failures (19/28 → 25/28)</td>
+<td>Copilot</td>
+<td>✅ Done (PR #437)</td>
+</tr>
+<tr>
+<td>TASK-508</td>
+<td>Split ai_workspace.py into 6 modules (5103→5314 lines, 7 files)</td>
+<td>Copilot</td>
+<td>✅ Done (<code>b9b2733</code>)</td>
+</tr>
+<tr>
+<td>TASK-503</td>
+<td>Wire REST fallback in DesignView (WS disconnect → REST auto-design)</td>
+<td>Copilot</td>
+<td>✅ Done (<code>cad5e24</code>)</td>
+</tr>
+<tr>
+<td>TASK-506</td>
+<td>React test infra: Vitest + 5 test suites (23 tests)</td>
+<td>Copilot</td>
+<td>✅ Done (<code>ff3a937</code>)</td>
+</tr>
+<tr>
+<td>TASK-507</td>
+<td>Fix arch violations: stub imports in Streamlit + delete dead test</td>
+<td>Copilot</td>
+<td>✅ Done (<code>0e6657e</code>)</td>
+</tr>
+<tr>
+<td>TASK-500</td>
+<td>Unified CLI + onboarding audit (run.sh, check_all.py, 28 checks)</td>
+<td>Claude</td>
+<td>✅ Done (PR #436)</td>
+</tr>
+<tr>
+<td>TASK-499</td>
+<td>AI agent efficiency + git workflow improvements</td>
+<td>Claude</td>
+<td>✅ Done (<code>a9bf35e</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="archive">Archive<a class="headerlink" href="#archive" title="Permanent link">&para;</a></h2>
+<p>Sessions 32–73 and legacy TASK items have been completed. See <a href="../_archive/tasks-history/">docs/_archive/tasks-history.md</a> for details.</p>
+<p>Key milestones from archived sessions:
+- <strong>Session 73</strong> (Jan 24): FastAPI skeleton (20 routes, 31 tests), WebSocket endpoint, <code>discover_api_signatures.py</code>
+- <strong>Session 66</strong> (Jan 24): V3 automation foundation, 143 scripts audited, API latency validated
+- <strong>Session 65</strong> (Jan 23): Agent effectiveness research, <code>docs-canonical.json</code>, <code>automation-map.json</code>
+- <strong>Session 63</strong> (Jan 23): Rebar consolidation, scanner fixes, TASK-350/351/352 resolved
+- <strong>Sessions 32–62c</strong> (Jan 22): Rebar editor, DXF export, cost optimizer, section geometry</p>
+<hr />
+<p><strong>Session logs:</strong> See <a href="../SESSION_LOG/">SESSION_LOG.md</a> for detailed history.
+<strong>Task history:</strong> See <a href="../_archive/tasks-history/">_archive/tasks-history.md</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

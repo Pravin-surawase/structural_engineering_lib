@@ -1,0 +1,3005 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/getting-started/releases/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Release Ledger - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#release-ledger" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Release Ledger
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#release-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Process
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Release Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-maintainers-how-to-publish-a-new-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For maintainers: How to publish a new release
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testpypi-for-testing-before-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TestPyPI (for testing before release)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0170" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.17.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0166" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.16.6
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0175" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.17.5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0165" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.16.5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0160" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.16.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0150" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.15.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0140" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.14.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0130" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.13.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.12.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0110" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.11.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0107" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.7
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0106" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.6
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0105" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0104" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.4
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.10.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v096" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.6
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v095" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v094" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.4
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v093" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v070" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.7.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v060" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.6.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.5.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v030" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.3.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.2.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.2.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v071" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.7.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.8.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chronological-index-read-in-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chronological Index (read in order)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#append-only-clarification-2025-12-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Append-Only Clarification (2025-12-15)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v081" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.8.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chronological-index-addendum-2025-12-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chronological Index Addendum (2025-12-16)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v082" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.8.2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chronological-index-addendum-2025-12-16-patch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chronological Index Addendum (2025-12-16, patch)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v090" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chronological-index-addendum-2025-12-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chronological Index Addendum (2025-12-19)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v091" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chronological-index-addendum-2025-12-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chronological Index Addendum (2025-12-25)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-notes-addendum-2025-12-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Notes Addendum (2025-12-25)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Release Notes Addendum (2025-12-25)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v071-expanded-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.7.1 — Expanded Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v080-expanded-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.8.0 — Expanded Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v081-expanded-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.8.1 — Expanded Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v082-expanded-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.8.2 — Expanded Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v090-expanded-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.0 — Expanded Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v091-expanded-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.9.1 — Expanded Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs-layout-note-2025-12-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs Layout Note (2025-12-25)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0180" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.18.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0200" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.20.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0191" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.19.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0190" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.19.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="release-ledger">Release Ledger<a class="headerlink" href="#release-ledger" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
+<strong>Audience:</strong> Maintainers
+<strong>Status:</strong> Approved
+<strong>Importance:</strong> Critical
+<strong>Version:</strong> 1.0.0
+<strong>Created:</strong> 2025-12-01
+<strong>Last Updated:</strong> 2026-03-29</p>
+<hr />
+<p>This document serves as the <strong>immutable source of truth</strong> for project releases.
+Entries here represent "locked" versions that have been verified and approved.
+<strong>Rule:</strong> Agents may ONLY append to this file. Never edit or delete past entries.</p>
+<hr />
+<h2 id="release-process">Release Process<a class="headerlink" href="#release-process" title="Permanent link">&para;</a></h2>
+<h3 id="for-maintainers-how-to-publish-a-new-release">For maintainers: How to publish a new release<a class="headerlink" href="#for-maintainers-how-to-publish-a-new-release" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Run preflight checks:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>preflight<span class="w"> </span><span class="m">0</span>.X.Y
+</code></pre></div>
+   Validates semver format, checks pyproject.toml/package.json/CITATION.cff consistency,
+   runs pytest, and ensures no uncommitted changes.</p>
+</li>
+<li>
+<p><strong>Create release branch:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./scripts/ai_commit.sh<span class="w"> </span>--branch<span class="w"> </span>TASK-RELEASE<span class="w"> </span><span class="s2">&quot;Release v0.X.Y&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Bump version (automated):</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>run<span class="w"> </span><span class="m">0</span>.X.Y<span class="w"> </span>--no-open
+</code></pre></div>
+   This updates <code>pyproject.toml</code>, <code>package.json</code>, <code>CITATION.cff</code>, and all docs
+   with the new version. Includes semver validation, rollback on failure, and
+   pattern warnings for stale references.</p>
+</li>
+<li>
+<p><strong>Edit CHANGELOG.md</strong> with release notes</p>
+</li>
+<li>
+<p><strong>Edit docs/getting-started/releases.md</strong> with release entry</p>
+</li>
+<li>
+<p><strong>Commit:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: release v0.X.Y&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Finish PR:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/ai_commit.sh<span class="w"> </span>--finish<span class="w"> </span><span class="s2">&quot;Release v0.X.Y&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Tag and push</strong> (triggers <code>publish.yml</code> → validate → build → publish to PyPI):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git<span class="w"> </span>tag<span class="w"> </span>v0.X.Y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.X.Y
+</code></pre></div>
+   The CI pipeline runs a <code>validate</code> job (tests + tag-version check) before
+   building and publishing.</p>
+</li>
+<li>
+<p><strong>Verify published package:</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span><span class="m">0</span>.X.Y<span class="w"> </span>--source<span class="w"> </span>pypi<span class="w"> </span>--skip-cli
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="testpypi-for-testing-before-release">TestPyPI (for testing before release)<a class="headerlink" href="#testpypi-for-testing-before-release" title="Permanent link">&para;</a></h3>
+<p>Use workflow_dispatch with <code>testpypi</code> target:
+1. Go to Actions → Publish to PyPI → Run workflow
+2. Select <code>testpypi</code> and run
+3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0170">v0.17.0<a class="headerlink" href="#v0170" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-13
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Professional API Features + Debug Infrastructure + Documentation Excellence
+<strong>Commits:</strong> <code>a2587da</code> (Phase 1+2), <code>70da224</code> (IMP-02/03), <code>87c137f</code> (fixes), <code>234ac4b</code> (release), <code>d1610ff</code> (docs)</p>
+<p><strong>Key Changes:</strong></p>
+<p><strong>Added - Professional API Features:</strong>
+- <code>BeamInput</code> dataclasses for flexible input handling (TASK-276)
+- Professional calculation report generation module (TASK-277)
+- Verification and audit trail module for compliance tracking (TASK-278)
+- Engineering testing strategies module with benchmark framework (TASK-279)</p>
+<p><strong>Added - Debug &amp; Diagnostics Infrastructure:</strong>
+- <code>scripts/collect_diagnostics.py</code> - Creates timestamped diagnostic bundles (5 min → 10 sec)
+- <code>scripts/generate_api_manifest.py</code> - Generates/validates API manifest with 38 public symbols
+- <code>scripts/check_scripts_index.py</code> - Validates scripts/index.json accuracy (128 scripts)
+- <code>docs/reference/api-manifest.json</code> - Complete API surface documentation
+- Diagnostics reminders in <code>agent_start.sh</code> and <code>end_session.py</code>
+- Debug snapshot checklist in handoff documentation</p>
+<p><strong>Added - Documentation Metadata System (TASK-458):</strong>
+- Added metadata headers to 50+ documentation files
+- <code>scripts/create_doc.py</code> - Creates new docs with proper metadata
+- <code>scripts/check_doc_metadata.py</code> - Validates metadata in pre-commit
+- Standardized Type, Audience, Status, Importance, Version fields</p>
+<p><strong>Added - Documentation Consolidation (TASK-457):</strong>
+- Archived 91 session/task docs from streamlit_app/docs (98% reduction: 93 → 2 files)
+- Archived 26 completed research files with 180 link fixes
+- <code>scripts/consolidate_docs.py</code> - Improved consolidation workflow
+- Reduced documentation sprawl significantly</p>
+<p><strong>Changed - Git Workflow Automation:</strong>
+- Added enforcement hook blocking manual git commands
+- Improved error clarity with 'why' and recovery guidance
+- Policy-aware merge with <code>--force</code> mode for batched commits
+- Removed manual git examples from active documentation</p>
+<p><strong>Changed - Pre-commit Hooks:</strong>
+- Added API manifest validation hook
+- Added scripts index validation hook
+- Added doc metadata check (warning mode)
+- Skip research folder in filename validation</p>
+<p><strong>Fixed:</strong>
+- Streamlit import checker: added <code>--skip-known</code> flag to reduce false positives
+- CI: skip research folder in filename validation for legacy naming
+- Fixed invalid 'local' keyword in <code>finish_task_pr.sh</code>
+- Pre-commit whitespace and line ending fixes across 15 files
+- Ruff UP038 fixes in test files (use <code>X | Y</code> in isinstance)</p>
+<p><strong>Impact Metrics:</strong>
+- Diagnostics collection: 5 min → 10 sec (96% faster)
+- API breakage detection: Post-CI → Pre-commit (earlier)
+- Documentation: 50+ files with metadata, 91 files archived
+- All 2598 tests passing
+- 128 automation scripts indexed
+- 38 public API symbols tracked</p>
+<hr />
+<h2 id="v0166">v0.16.6<a class="headerlink" href="#v0166" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-12
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Python 3.11 Baseline - Modern Python, faster CI, cleaner codebase
+<strong>Key Changes:</strong>
+- <strong>Python 3.11 Baseline:</strong> Minimum Python version raised from 3.9 to 3.11
+- <strong>CI Optimization:</strong> Test matrix reduced from 4 versions to 2 (50% faster CI)
+- <strong>Type Hint Modernization:</strong> PEP 604 syntax (<code>X | None</code> instead of <code>Optional[X]</code>)
+- <strong>Pre-commit Updates:</strong> All local hooks use <code>.venv/bin/python</code> for 3.11 compatibility</p>
+<p><strong>Developer Requirements:</strong>
+- Python 3.11+ required locally (<code>brew install python@3.11</code> on macOS)
+- Virtual environment should be recreated with Python 3.11</p>
+<p><strong>New Scripts:</strong>
+- <code>scripts/check_python_version.py</code> - Validates Python version consistency across project
+- <code>scripts/add_future_annotations.py</code> - Helper to add <code>from __future__ import annotations</code></p>
+<p><strong>Tests:</strong> 2430 passing on Python 3.11</p>
+<hr />
+<h2 id="v0175">v0.17.5<a class="headerlink" href="#v0175" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-14
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Multi-Objective Optimization + API Validation
+<strong>Tag:</strong> v0.17.5</p>
+<p><strong>Key Changes:</strong>
+- NSGA-II multi-objective optimizer for Pareto-optimal beam designs
+- Cost optimizer UI enhancements with Pareto scatter + best-by-objective views
+- API signature validation in pre-commit + CI
+- Added optimizer tests for non-dominated sorting + crowding distance</p>
+<p><strong>Tests:</strong> 1317 passing (per tag notes)</p>
+<hr />
+<h2 id="v0165">v0.16.5<a class="headerlink" href="#v0165" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-11
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Developer Experience &amp; Automation - Workflow efficiency and multi-code foundation
+<strong>Key Changes:</strong>
+- <strong>Unified Agent Onboarding:</strong> Single <code>./scripts/agent_start.sh</code> command replaces 4-command workflow (90% faster)
+- <strong>Folder Structure Governance:</strong> 115 validation errors → 0, CI-enforced folder limits, comprehensive V2.0 spec
+- <strong>Git Workflow Automation:</strong> 90-95% faster commits (45-60s → 5s), parallel fetch, incremental whitespace checks
+- <strong>Multi-Code Foundation:</strong> New <code>core/</code> and <code>codes/</code> architecture ready for ACI 318/EC2 support
+- <strong>IS 456 Module Migration:</strong> All 7 modules reorganized under <code>codes/is456/</code> (3,048 lines, zero breaking changes)
+- <strong>Documentation Quality:</strong> 789 internal links validated, zero orphan files, semantic READMEs in all folders
+- <strong>103 Automation Scripts:</strong> Safe file operations, link validation, governance compliance, migration tools</p>
+<p><strong>New Infrastructure:</strong>
+- <code>scripts/agent_start.sh</code> (164 lines) - Unified onboarding replacing 4 commands
+- <code>docs/guidelines/folder-structure-governance.md</code> (272 lines) - V2.0 governance spec
+- <code>scripts/safe_file_move.py</code> (200+ lines) - Automated link-safe file operations
+- <code>scripts/check_governance.py</code> - CI-enforced folder validation
+- <code>Python/structural_lib/core/</code> - Code-agnostic base modules (geometry, materials)
+- <code>Python/structural_lib/codes/is456/</code> - IS 456 module namespace (7 modules)</p>
+<p><strong>Tests:</strong> 2392 passed (all categories), maintained 86% coverage
+<strong>Commits:</strong> ~25 commits across 7 session parts
+<strong>PRs:</strong> #323, #326, #327, #328, #329, #330</p>
+<p><strong>Impact:</strong>
+- Agent onboarding: 4 commands → 1, ~30s → ~3s (90% faster)
+- Commit speed: 45-60s → 5s (90-95% improvement)
+- Documentation: Zero broken links (789 validated)
+- Folder hygiene: Root files 14 → 9 (below CI limit of 10)
+- Multi-code ready: Foundation for ACI 318/EC2 support
+- Repository health: 115 governance issues → 0</p>
+<hr />
+<h2 id="v0160">v0.16.0<a class="headerlink" href="#v0160" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-08
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Streamlit UI Excellence + API Convenience
+<strong>Key Changes:</strong>
+- <strong>Streamlit UI Phase 2 Complete:</strong> Dark mode (theme_manager.py), loading states (loading_states.py), chart enhancements (plotly_enhancements.py)
+- <strong>API Convenience Layer:</strong> <code>design_and_detail_beam_is456()</code>, <code>generate_summary_table()</code>, <code>quick_dxf()</code>, <code>quick_dxf_bytes()</code>
+- <strong>UI Component Testing:</strong> 70+ new tests for theme management, loading states, and visualizations
+- <strong>Developer Experience:</strong> One-liner functions for common Streamlit integration patterns
+- <strong>Serialization Support:</strong> <code>to_dict()</code>, <code>from_dict()</code>, <code>to_json()</code> methods on <code>DesignAndDetailResult</code>
+- <strong>Repository Hygiene:</strong> Cleaned up 3 merged worktrees and remote branches</p>
+<p><strong>New Files:</strong>
+- <code>streamlit_app/utils/theme_manager.py</code> (325 lines) - Dark mode with session persistence
+- <code>streamlit_app/utils/loading_states.py</code> (494 lines) - Professional loading animations
+- <code>streamlit_app/utils/plotly_enhancements.py</code> (383 lines) - Chart theme integration
+- <code>streamlit_app/tests/test_theme_manager.py</code> (278 lines, 20+ tests)
+- <code>streamlit_app/tests/test_loading_states.py</code> (407 lines, 40+ tests)
+- <code>streamlit_app/tests/test_plotly_enhancements.py</code> (350 lines, 30+ tests)</p>
+<p><strong>Tests:</strong> 2370+ passed (includes 70+ new UI tests, 16 API convenience tests)
+<strong>PRs:</strong> #286 (API convenience), #287 (UI-003/004/005)</p>
+<p><strong>Impact:</strong>
+- Professional dark mode UX with accessibility compliance (WCAG 2.1 AA)
+- Enhanced developer productivity with convenience API functions
+- Improved Streamlit integration patterns (one-liners for common tasks)
+- Complete UI modernization foundation (UI-001 through UI-005 done)
+- Ready for Phase 3 feature expansion</p>
+<hr />
+<h2 id="v0150">v0.15.0<a class="headerlink" href="#v0150" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-07
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Code Quality Excellence — Enterprise-grade standards with comprehensive tooling
+<strong>Key Changes:</strong>
+- <strong>License Compliance:</strong> SPDX headers on all 73 files (100% coverage)
+- <strong>Type Safety:</strong> PEP 585/604 modernization (398 issues resolved), <code>disallow_untyped_defs</code> enabled
+- <strong>Code Quality:</strong> Zero ruff errors (down from 91), 9 linting rule categories
+- <strong>Test Organization:</strong> 5-category structure (unit/integration/regression/property/performance), 2270 tests
+- <strong>Performance Tracking:</strong> 13 benchmarks baseline established with pytest-benchmark
+- <strong>Documentation:</strong> Complete docstrings for api.py + core modules, architecture diagrams, 450+ page automation catalog
+- <strong>Smart Features:</strong> SmartDesigner unified dashboard, multi-design comparison, cost-aware sensitivity
+- <strong>Git Workflow:</strong> PR-first enforcement, audit logging, comprehensive testing suite
+- <strong>TypedDicts Phase 1:</strong> BarDict and StirrupDict for type-safe reinforcement data</p>
+<p><strong>Tests:</strong> 2270 passed (all categories), 13 benchmarks
+<strong>Coverage:</strong> 86% (6 modules &gt;90%, 8 modules 80-90%)
+<strong>PRs:</strong> #256-#276, #263-#273</p>
+<p><strong>Impact:</strong>
+- Industry-leading code quality (0 lint errors, modern type hints, 100% license compliance)
+- Professional test infrastructure (organized, benchmarked, comprehensive)
+- Enhanced developer experience (complete docs, automated workflows, clear standards)
+- Advanced design intelligence (smart analysis, comparison tools)
+- v1.0-ready foundation (deprecation policy, type safety, contract testing)</p>
+<hr />
+<h2 id="v0140">v0.14.0<a class="headerlink" href="#v0140" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-06
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Foundation Hardening — Professional-grade engineering practices
+<strong>Key Changes:</strong>
+- <strong>Contract testing:</strong> Prevents accidental API breaking changes (6 tests protecting API surface)
+- <strong>Validation utilities:</strong> 8 reusable validators reducing code duplication by ~30%
+- <strong>Deprecation policy:</strong> Safe evolution with <code>@deprecated</code> decorator following NumPy/pandas patterns
+- <strong>Error handling:</strong> 5-layer architecture documented in CONTRIBUTING.md, 17 silent failures eliminated
+- <strong>Type safety:</strong> Stricter mypy checks (<code>warn_return_any</code>, <code>strict_optional</code>, <code>warn_redundant_casts</code>)
+- <strong>Research documentation:</strong> 5 comprehensive reports (5,800+ lines) covering CS best practices, backward compatibility, modern tooling, implementation roadmap, and VBA deprecation strategy
+- <strong>Git workflow:</strong> Pull-first workflow and pre-commit hooks prevent merge conflicts
+- <strong>Test improvements:</strong> 2200 tests (+160), 86% coverage (+2%), 10 modules at 100% coverage</p>
+<p><strong>Tests:</strong> 2269 passed (up from 2200)
+<strong>Coverage:</strong> 86% (up from 84%)
+<strong>PRs:</strong> #247, #248, #249, #250</p>
+<p><strong>Impact:</strong>
+- Eliminates fear of AI agents breaking existing code (contract tests)
+- Professional-grade error handling and validation patterns
+- Foundation now ready for v1.0 with safe deprecation path
+- Addresses CS knowledge gaps with comprehensive research</p>
+<hr />
+<h2 id="v0130">v0.13.0<a class="headerlink" href="#v0130" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-31
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Insights Foundation — Advisory intelligence for beam design
+<strong>Key Changes:</strong>
+- <strong>Insights module:</strong> Complete <code>structural_lib.insights</code> package with three advisory features:
+  - <code>quick_precheck()</code> — Heuristic validation before full design (~1ms)
+  - <code>sensitivity_analysis()</code> — Identify critical parameters and robustness scoring
+  - <code>calculate_constructability_score()</code> — Ease of construction assessment (0-100 scale)
+- <strong>CLI integration:</strong> New <code>--insights</code> flag for <code>design</code> command exports insights to JSON
+- <strong>Verification pack:</strong> 10 benchmark cases with JSON-driven parametrized tests
+- <strong>Documentation:</strong> User guide, API reference, and Colab examples for all insights features
+- <strong>Side-face reinforcement:</strong> IS 456 Cl 26.5.1.3 check for beams with D &gt; 750mm</p>
+<p><strong>Tests:</strong> 2200 passed
+<strong>PRs:</strong> #224, #226, #230, #233, #234, #235, #236</p>
+<hr />
+<h2 id="v0120">v0.12.0<a class="headerlink" href="#v0120" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-30
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Library-First API Expansion + DXF/BBS Quality
+<strong>Key Changes:</strong>
+- <strong>Library-first APIs:</strong> <code>validate_*</code>, <code>compute_detailing</code>, <code>compute_bbs</code>, <code>export_bbs</code>, <code>compute_dxf</code>, <code>compute_report</code>, <code>compute_critical</code>.
+- <strong>New CLI helpers:</strong> <code>validate</code> and <code>detail</code> subcommands for schema checks and detailing JSON export.
+- <strong>DXF/BBS quality:</strong> bar mark consistency checks, DXF content tests, title block context, render workflow.
+- <strong>Docs &amp; examples:</strong> README + Colab workflow refreshed for report/critical/detail usage.</p>
+<p><strong>Tests:</strong> 1958 passed, 91 skipped
+<strong>PRs:</strong> #193, #194, #195, #196</p>
+<h2 id="v0110">v0.11.0<a class="headerlink" href="#v0110" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-29
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Visual v0.11 Complete (Reports + Packaging)
+<strong>Key Changes:</strong>
+- <strong>V04–V07 HTML report visuals:</strong> Cross-section SVG, input sanity heatmap, stability scorecard, units sentinel.
+- <strong>V08 batch packaging:</strong> <code>report</code> supports <code>design_results.json</code> and <code>--batch-threshold</code> for folder output.
+- <strong>V09 golden fixtures:</strong> Deterministic HTML outputs locked by golden-file tests.
+- <strong>Docs:</strong> README, Colab workflow, and API reference updated for report/critical usage.</p>
+<p><strong>Tests:</strong> 1958 passed, 91 skipped
+<strong>PRs:</strong> #151, #153, #154, #155, #156</p>
+<hr />
+<h2 id="v0107">v0.10.7<a class="headerlink" href="#v0107" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-29
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Visual Layer Phase 1 (Critical Set)
+<strong>Key Changes:</strong>
+- <strong>Critical Set CLI (V03):</strong> New <code>critical</code> subcommand exports sorted utilization tables (CSV/HTML) with <code>--top</code> filter and <code>data-source</code> traces for auditability.
+- <strong>Report foundations:</strong> <code>report.py</code> skeleton + <code>load_job_spec()</code> helper underpin report pipelines.
+- <strong>CLI discoverability:</strong> <code>report</code> subcommand scaffold added ahead of SVG/report deliverables.
+- <strong>Docs:</strong> AI context, TASKS, next-session brief refreshed for v0.10.7.</p>
+<p><strong>PRs:</strong> #147</p>
+<hr />
+<h2 id="v0106">v0.10.6<a class="headerlink" href="#v0106" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-28
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Complete Structured Validation
+<strong>Key Changes:</strong>
+- <strong>W5 Structured Validation:</strong>
+  - New error codes: <code>E_INPUT_010-016</code> for d_dash, min_long_bar_dia, and flanged beam inputs
+  - New <code>E_FLEXURE_004</code> for d' too large in doubly reinforced design
+  - Structured validation in <code>design_doubly_reinforced()</code> and <code>design_flanged_beam()</code>
+  - Validation in <code>check_beam_ductility()</code> for d, fck, fy, min_long_bar_dia
+- <strong>Docs:</strong> Solo maintainer guide, beginner learning path, improved error schema docs
+- <strong>CLI:</strong> Improved error messages</p>
+<p><strong>Note:</strong> v0.10.5 was not published to PyPI. This release includes all v0.10.5 changes.</p>
+<p><strong>PRs:</strong> #81, #94, #112, #113, #114, #115</p>
+<hr />
+<h2 id="v0105">v0.10.5<a class="headerlink" href="#v0105" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-28
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Structured Error Schema
+<strong>Key Changes:</strong>
+- <strong>New errors.py module:</strong> <code>DesignError</code> dataclass with code/severity/message/field/hint/clause
+- <strong>Core integration:</strong> Structured errors in <code>design_singly_reinforced()</code>, <code>design_shear()</code>, <code>check_beam_ductility()</code>
+- <strong>FlexureResult/ShearResult/DuctileBeamResult:</strong> Added <code>errors: List[DesignError]</code> field
+- <strong>29 new tests:</strong> Comprehensive error schema validation
+- <strong>Error catalog:</strong> 20+ error codes with hints and IS 456 clause references</p>
+<p><strong>Breaking Changes:</strong>
+- <code>ductile.check_geometry()</code> now returns 3 values: <code>(valid, message, errors)</code></p>
+<p><strong>PRs:</strong> #106, #107, #108, #109, #110, #111, #112</p>
+<hr />
+<h2 id="v0104">v0.10.4<a class="headerlink" href="#v0104" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-28
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Developer Automation &amp; Nightly QA
+<strong>Key Changes:</strong>
+- <strong>Session Automation:</strong>
+  - <code>start_session.py</code> — Shows status, adds SESSION_LOG entry, lists active tasks
+  - <code>end_session.py</code> — Pre-handoff checks (uncommitted files, doc freshness, log completeness)
+  - <code>check_handoff_ready.py</code> — Deep doc freshness validation
+- <strong>Nightly QA Workflow:</strong>
+  - Full test suite + CLI smoke test (design → bbs → dxf → job)
+  - Artifact upload + auto-issue on failure
+  - Scheduled 11:30pm IST daily
+- <strong>Docs &amp; Tasks:</strong>
+  - Updated copilot-instructions with session workflow
+  - Added TASK-090/091/092 to backlog
+  - Private <code>/docs/learning/</code> gitignored
+<strong>Tests:</strong> 1958 passed, 91 skipped
+<strong>Coverage:</strong> 92% branch</p>
+<hr />
+<h2 id="v0103">v0.10.3<a class="headerlink" href="#v0103" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-28
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Multi-Agent Review Phase 1+2 + CI Improvements
+<strong>Key Changes:</strong>
+- <strong>Multi-Agent Repository Review:</strong>
+  - Branch coverage gate (<code>--cov-branch --cov-fail-under=85</code>)
+  - Pytest timeout (15 min)
+  - CODEOWNERS file added
+  - IS 456 Cl. 38.1 clause comment for Mu_lim formula
+  - <code>design_shear()</code> docstring complete
+  - <code>__all__</code> export list in api.py
+  - Golden vector source documentation
+  - Shear section complete in api.md
+  - Review document at <code>docs/_internal/multi-agent-review-2025-12-28.md</code>
+- <strong>CLI Warning:</strong> Warns when <code>--crack-width-params</code> used with multiple beams
+- <strong>CI Standardization:</strong> GitHub Actions versions unified to @v6
+- <strong>Documentation Polish:</strong> TASKS.md, SESSION_LOG.md, ai-context-pack.md cleaned and reformatted</p>
+<p><strong>Test Results:</strong> 1958 passed, 91 skipped
+<strong>PyPI:</strong> <code>pip install structural-lib-is456==0.10.3</code></p>
+<hr />
+<h2 id="v0102">v0.10.2<a class="headerlink" href="#v0102" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-28
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> CLI Serviceability + DXF Title Block + Documentation Polish
+<strong>Key Changes:</strong>
+- <strong>CLI Serviceability Flags (PR #70):</strong>
+  - <code>--deflection</code> — Level A deflection check (span/depth)
+  - <code>--support-condition</code> — Support condition option
+  - <code>--crack-width-params</code> — JSON file for crack width parameters
+  - <code>--summary</code> — Compact CSV summary output
+- <strong>Schema Improvements:</strong>
+  - <code>deflection_status</code> and <code>crack_width_status</code> fields (<code>not_run</code> | <code>ok</code> | <code>fail</code>)
+- <strong>DXF Title Block Documentation:</strong>
+  - <code>--title-block</code> usage documented in CLI reference
+- <strong>Getting-Started Simplification:</strong>
+  - beginners-guide.md reduced from 631 to 137 lines
+  - Python/README.md with dev preview wording
+- <strong>New Tests:</strong> 8 CLI tests for serviceability and error paths
+- <strong>CI:</strong> Coverage threshold lowered to 90%</p>
+<p><strong>Test Results:</strong> 1760+ passed, 91 skipped
+<strong>PyPI:</strong> <code>pip install structural-lib-is456==0.10.2</code></p>
+<hr />
+<h2 id="v0101">v0.10.1<a class="headerlink" href="#v0101" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-27
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Documentation improvements and version sync
+<strong>Key Changes:</strong>
+- Bumped version references across 19 files
+- Fixed README.md PyPI pin example</p>
+<hr />
+<h2 id="v0100">v0.10.0<a class="headerlink" href="#v0100" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-27
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Level B Serviceability + AI/CLI Discoverability + Release Automation
+<strong>Key Changes:</strong>
+- <strong>Level B Serviceability (TASK-055):</strong> Full curvature-based deflection per IS 456 Cl 23.2 / Annex C
+  - 7 new functions: cracking moment, gross/cracked/effective MOI, long-term factor, short-term deflection
+  - <code>DeflectionLevelBResult</code> dataclass for structured outputs
+- <strong>CLI/AI Discoverability (TASK-069-072):</strong>
+  - <code>llms.txt</code> — AI-friendly summary for LLM tools
+  - Enhanced CLI help text with examples
+  - CLI reference synced to canonical schema v1
+- <strong>Release Automation (TASK-065-068):</strong>
+  - <code>scripts/release.py</code> — One-command release helper
+  - <code>scripts/check_doc_versions.py</code> — Doc version drift detector
+  - CI doc drift check step
+- <strong>Tests:</strong> 1958 passed, 95 skipped</p>
+<hr />
+<h2 id="v096">v0.9.6<a class="headerlink" href="#v096" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-27
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Verification examples + API docs UX + Pre-release checklist</p>
+<hr />
+<h2 id="v095">v0.9.5<a class="headerlink" href="#v095" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-27
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> PyPI launch + docs restructure + release automation
+<strong>Key Changes:</strong>
+- <strong>Published to PyPI:</strong> Trusted Publishing (OIDC) with GitHub Release auto-creation.
+- <strong>Docs restructure:</strong> 7 folders (getting-started, reference, verification, contributing, architecture, planning, cookbook).
+- <strong>Project metadata:</strong> <code>project.urls</code> added to <code>pyproject.toml</code>.</p>
+<hr />
+<h2 id="v094">v0.9.4<a class="headerlink" href="#v094" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-27
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Unified CLI + VBA parity + Cutting-stock optimizer
+<strong>Key Changes:</strong>
+- <strong>Unified CLI:</strong> <code>python -m structural_lib design|bbs|dxf|job</code>
+- <strong>Cutting-Stock Optimizer:</strong> First-fit-decreasing bin packing for rebar nesting
+- <strong>VBA BBS Module:</strong> <code>M18_BBS.bas</code> — bar weights, cut lengths, stirrup lengths
+- <strong>VBA Compliance Module:</strong> <code>M19_Compliance.bas</code> — multi-check orchestration
+- <strong>Tests:</strong> 1680+ passed, 9 VBA test suites
+- <strong>Docs:</strong> Professional README with pipeline diagram, trust section</p>
+<hr />
+<h2 id="v093">v0.9.3<a class="headerlink" href="#v093" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-26
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Code quality hardening before feature expansion.
+<strong>Key Changes:</strong>
+- <strong>Code Quality Sweep:</strong> 14 targeted fixes across 5 phases:
+  - Phase 1: Input validation guards (ZeroDivisionError prevention)
+  - Phase 2: Logging for stack trace preservation
+  - Phase 3: VBA/Python parity verified + VBA guards added
+  - Phase 4: API/doc drift fixed
+  - Phase 5: Edge case tests for job_runner and dxf_export
+- <strong>Tests:</strong> 1958 passed, 93 skipped
+- <strong>VBA:</strong> Guards added to M05_Materials.bas and M10_Ductile.bas</p>
+<hr />
+<h2 id="v070">v0.7.0<a class="headerlink" href="#v070" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> 8f64d93
+<strong>Mindset:</strong> Transitioning from "Usability" (v0.6) to "Deliverables" (v0.7).
+*   <strong>Detailing:</strong> Pure-function calculations for IS 456 reinforcement detailing (Ld, lap, spacing).
+*   <strong>DXF Export:</strong> CAD-ready drawing generation for shop drawings.
+*   <strong>Integration:</strong> CSV/JSON batch processing with CLI for automation.
+*   <strong>Strategy:</strong> Python-first implementation with optional ezdxf dependency for DXF generation.
+<strong>Key Features:</strong>
+- Reinforcement Detailing (<code>detailing.py</code>)
+  - Development length (Ld) per IS 456 Cl 26.2.1
+  - Lap length with zone multipliers (1.5× tension)
+  - Bar spacing validation per IS 456 Cl 26.3.2
+  - Automatic bar arrangement selection
+- DXF Export (<code>dxf_export.py</code>)
+  - DXF R2010 format with standard layers
+  - Beam elevation and section views
+  - Automatic dimensioning and callouts
+- Excel Integration (<code>excel_integration.py</code>)
+  - CSV/JSON parsing with flexible key mapping
+  - Batch DXF generation with progress tracking
+  - Detailing schedule export
+  - CLI: <code>python -m structural_lib.excel_integration</code>
+- Documentation:
+  - <code>docs/specs/v0.7-data-mapping.md</code>
+  - <code>docs/_archive/planning-completed-2026-03/research-detailing.md</code>
+  - <code>docs/agent-workflow.md</code>
+- Tests: 1958 passing (31 detailing + 15 integration + 21 original)</p>
+<h2 id="v060">v0.6.0<a class="headerlink" href="#v060" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> 48c4c88
+<strong>Mindset:</strong> Transitioning from "Core Logic" (v0.5) to "Usability" (v0.6).
+*   <strong>Integration:</strong> Bridging the gap between analysis software (ETABS) and our design engine.
+*   <strong>Reporting:</strong> Converting raw design data into professional deliverables (Beam Schedules).
+*   <strong>Strategy:</strong> We are using a consolidated feature branch because these features are tightly coupled (Import -&gt; Design -&gt; Schedule) and represent a single "Usability" milestone.
+<strong>Key Features:</strong>
+- ETABS CSV Import (<code>M13_Integration.bas</code>)
+- Beam Schedule Generation (<code>M14_Reporting.bas</code>)
+- Robustness Refactoring (Dynamic Columns, Sorting)
+- Governance Docs (<code>git-governance.md</code>, <code>mission-and-principles.md</code>)</p>
+<h2 id="v050">v0.5.0<a class="headerlink" href="#v050" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> be04b12b65a0e2c147ec018ea3ba7b826ac5abdc
+<strong>Key Features:</strong>
+- Excel Workbook Integration (<code>StructEng_BeamDesign_v0.5.xlsm</code>)
+- Application Layer (<code>M11_AppLayer.bas</code>) for Table-to-Library orchestration
+- UI Layer (<code>M12_UI.bas</code>) with "Run Design" and "Clear" controls
+- Setup Script (<code>M99_Setup.bas</code>) for automated workbook scaffolding
+- Governance: Added DOCS, INTEGRATION, and SUPPORT agents
+- Verification: Sample run (B1, 230x450, Mu=150 kN·m, Vu=100 kN, M25/Fe500) returned Ast ≈ 1026 mm², Status OK, shear reinforcement required, stirrups "2L-8mm @ 300 mm", remarks "Doubly Reinforced" as expected.</p>
+<h2 id="v040">v0.4.0<a class="headerlink" href="#v040" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> 1e1d3ce45be5e003f7d233ff7c94f9cfc7c9011a
+<strong>Key Features:</strong>
+- IS 13920 Ductile Detailing (Geometry, Min/Max Steel, Confinement)
+- Python Packaging (<code>pyproject.toml</code>)
+- Excel Add-in (<code>StructEngLib.xlam</code>)
+- Full Test Coverage (Python + VBA)</p>
+<h2 id="v030">v0.3.0<a class="headerlink" href="#v030" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked
+<strong>Key Features:</strong>
+- Flanged Beam Design (T/L Sections)
+- Neutral Axis analysis (Flange vs Web)
+- <code>Test_Flanged.bas</code></p>
+<h2 id="v021">v0.2.1<a class="headerlink" href="#v021" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked
+<strong>Key Fixes (Mac VBA Compatibility):</strong>
+- Stack corruption fixes for boolean pass-by-value cases.
+- Wrapped dimension multiplications in <code>CDbl()</code> to avoid overflow.
+- Safer test harness assertions in <code>Test_Structural.bas</code>.</p>
+<h2 id="v020">v0.2.0<a class="headerlink" href="#v020" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-11
+<strong>Status:</strong> ✅ Locked
+<strong>Key Features:</strong>
+- Doubly Reinforced Beam Design
+- Non-linear stress-strain curve (IS 456 Fig 23)
+- Mac VBA Overflow Fixes</p>
+<h2 id="v010">v0.1.0<a class="headerlink" href="#v010" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-10
+<strong>Status:</strong> ✅ Locked
+<strong>Key Features:</strong>
+- Core Flexure (Singly Reinforced)
+- Shear Design (Table 19/20)
+- Dual Python/VBA Architecture</p>
+<hr />
+<h2 id="v071">v0.7.1<a class="headerlink" href="#v071" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-15
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> eef6c7d3212b2cc00bccee7cb8a574148157698a
+<strong>Mindset:</strong> Hardening the v0.7 deliverables with stronger CI/testing and DXF parity.
+<strong>Key Features:</strong>
+- CI/test hardening:
+  - Expanded Python edge-case coverage and DXF smoke testing.
+  - Coverage floor enforced at <code>--cov-fail-under=92</code>.
+- Packaging:
+  - Ensured <code>structural_lib/py.typed</code> is included in built distributions.
+- VBA DXF:
+  - Native DXF R12 export module (<code>M16_DXF.bas</code>) + UDF entrypoints + VBA test suite.</p>
+<h2 id="v080">v0.8.0<a class="headerlink" href="#v080" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-15
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> 8319bc487ad8fab445b19dab00bdd169b4759ec7
+<strong>Mindset:</strong> Moving toward production readiness: add serviceability and an Excel-friendly compliance verdict.
+<strong>Key Features:</strong>
+- Serviceability (Level A):
+  - Deflection span/depth check with explicit modifiers and auditable assumptions.
+  - Crack width estimate (Annex-F-style) with exposure-driven limits.
+  - Python + VBA parity.
+- Compliance checker:
+  - Multi-case orchestration across flexure + shear (+ optional serviceability) with deterministic governing-case selection.
+  - Excel-friendly summary row output.
+- Verification:
+  - Python tests: 158 collected/passing.</p>
+<hr />
+<h2 id="chronological-index-read-in-order">Chronological Index (read in order)<a class="headerlink" href="#chronological-index-read-in-order" title="Permanent link">&para;</a></h2>
+<p>Note: This ledger is <strong>append-only</strong>, so entries may not appear in chronological order above.
+Use this index as the canonical “timeline view”.</p>
+<ul>
+<li>v0.1.0 (2025-12-10)</li>
+<li>v0.2.0 (2025-12-11)</li>
+<li>v0.3.0 (2025-12-11)</li>
+<li>v0.4.0 (2025-12-11)</li>
+<li>v0.5.0 (2025-12-11)</li>
+<li>v0.6.0 (2025-12-11)</li>
+<li>v0.7.0 (2025-12-11)</li>
+<li>v0.7.1 (2025-12-15)</li>
+<li>v0.8.0 (2025-12-15)</li>
+</ul>
+<hr />
+<h2 id="append-only-clarification-2025-12-15">Append-Only Clarification (2025-12-15)<a class="headerlink" href="#append-only-clarification-2025-12-15" title="Permanent link">&para;</a></h2>
+<p>The <code>v0.7.1</code> and <code>v0.8.0</code> entries were <strong>finalized later</strong> and therefore <strong>appended after</strong> the earlier <code>v0.1.0</code>–<code>v0.7.0</code> block.
+To preserve the “immutable / append-only” rule, older entries were not reordered; use the <strong>Chronological Index</strong> section as the intended reading order.</p>
+<hr />
+<h2 id="v081">v0.8.1<a class="headerlink" href="#v081" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-16
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> (tag: v0.8.1)
+<strong>Mindset:</strong> Tooling-only hardening patch after v0.8.0.
+<strong>Key Changes (no engineering behavior changes):</strong>
+- Packaging:
+  - <code>pyproject.toml</code> is the single source of truth (remove duplicated metadata from <code>setup.cfg</code>).
+  - Standardize license inclusion via <code>project.license-files</code>.
+- CI quality gates:
+  - Run <code>ruff check</code> alongside black + mypy.
+  - Packaging smoke check now installs the built wheel and imports <code>structural_lib</code>.
+- Local workflow:
+  - Add <code>Python/scripts/pre_release_check.sh</code> to run the full gate locally.</p>
+<h2 id="chronological-index-addendum-2025-12-16">Chronological Index Addendum (2025-12-16)<a class="headerlink" href="#chronological-index-addendum-2025-12-16" title="Permanent link">&para;</a></h2>
+<ul>
+<li>v0.8.1 (2025-12-16)</li>
+</ul>
+<hr />
+<h2 id="v082">v0.8.2<a class="headerlink" href="#v082" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-16
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> (tag: v0.8.2)
+<strong>Mindset:</strong> Robustness + CI patch after v0.8.1.
+<strong>Key Changes:</strong>
+- Compliance robustness:
+  - Hardened serviceability parameter handling and made failure-mode utilization deterministic.
+- DXF export robustness:
+  - Improved optional <code>ezdxf</code> surface handling for tests and type checking.
+- CI:
+  - Addressed coverage-gate failures by adding targeted regression tests to keep total coverage ≥ 92%.</p>
+<h2 id="chronological-index-addendum-2025-12-16-patch">Chronological Index Addendum (2025-12-16, patch)<a class="headerlink" href="#chronological-index-addendum-2025-12-16-patch" title="Permanent link">&para;</a></h2>
+<ul>
+<li>v0.8.2 (2025-12-16)</li>
+</ul>
+<hr />
+<h2 id="v090">v0.9.0<a class="headerlink" href="#v090" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-19
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> (tag: v0.9.0)
+<strong>Mindset:</strong> Move from library usage to automation usage: stable entrypoints + deterministic file-in/file-out runs.
+<strong>Key Changes:</strong>
+- Stable IS456 public entrypoints (future-proof for additional design codes).
+- Golden-vector regression tests to lock down key outputs and determinism.
+- Deterministic job schema + batch runner + CLI (JSON/CSV outputs with a fixed folder layout).</p>
+<h2 id="chronological-index-addendum-2025-12-19">Chronological Index Addendum (2025-12-19)<a class="headerlink" href="#chronological-index-addendum-2025-12-19" title="Permanent link">&para;</a></h2>
+<ul>
+<li>v0.9.0 (2025-12-19)</li>
+</ul>
+<hr />
+<h2 id="v091">v0.9.1<a class="headerlink" href="#v091" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2025-12-25
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Commit Hash:</strong> (tag: v0.9.1)
+<strong>Mindset:</strong> Patch release tagging the latest green <code>main</code> state.
+<strong>Key Changes:</strong>
+- CI: enforce <code>--cov-fail-under=92</code> (reduced friction while iterating).
+- Robustness fixes + regression tests (findings audit across flexure/detailing/compliance/serviceability).
+- Docs: README + quickstart pins updated; batch runner + DXF usage clarified.</p>
+<h2 id="chronological-index-addendum-2025-12-25">Chronological Index Addendum (2025-12-25)<a class="headerlink" href="#chronological-index-addendum-2025-12-25" title="Permanent link">&para;</a></h2>
+<ul>
+<li>v0.9.1 (2025-12-25)</li>
+</ul>
+<hr />
+<h2 id="release-notes-addendum-2025-12-25">Release Notes Addendum (2025-12-25)<a class="headerlink" href="#release-notes-addendum-2025-12-25" title="Permanent link">&para;</a></h2>
+<p>This section <strong>adds depth</strong> to the existing locked entries for recent releases.
+It exists because this ledger is <strong>append-only</strong>.</p>
+<h3 id="v071-expanded-notes">v0.7.1 — Expanded Notes<a class="headerlink" href="#v071-expanded-notes" title="Permanent link">&para;</a></h3>
+<p><strong>Why it existed:</strong> v0.7 shipped big deliverables (detailing + DXF + integration). v0.7.1 focused on making them safer to use via CI hardening and better edge coverage.</p>
+<p><strong>Engineering behavior:</strong> no intentional algorithm changes; focused on robustness.</p>
+<p><strong>Python test/CI hardening:</strong>
+- Added targeted regression and edge-case tests, including a DXF smoke test, so DXF behavior is exercised in CI when optional dependencies are present.
+- Introduced/raised the Python coverage gate to keep long-term safety against accidental numerical drift.</p>
+<p><strong>Packaging correctness:</strong>
+- Ensured <code>structural_lib/py.typed</code> is shipped so type checkers can consume the package as typed (PEP 561).</p>
+<p><strong>Integration fixes:</strong>
+- Made schedule generation resilient when a beam has only one valid bar arrangement.
+- Made <code>BeamDesignData.from_dict()</code> deterministic when both <code>d</code> and <code>D</code> keys exist (legacy lowercase <code>d</code> won’t override a provided <code>D</code>).</p>
+<p><strong>VBA parity (DXF):</strong>
+- Added native VBA DXF export (<code>M16_DXF.bas</code>) and UDF/macro entrypoints so the Excel flow can generate drawings without Python.</p>
+<h3 id="v080-expanded-notes">v0.8.0 — Expanded Notes<a class="headerlink" href="#v080-expanded-notes" title="Permanent link">&para;</a></h3>
+<p><strong>Why it existed:</strong> move toward “production readiness” by adding serviceability checks and an Excel-friendly compliance verdict.</p>
+<p><strong>Serviceability (Python + VBA parity):</strong>
+- Deflection: span/depth check via <code>serviceability.check_deflection_span_depth(...)</code> with explicit assumptions recorded.
+- Crack width: simplified Annex-F-style workflow via <code>serviceability.check_crack_width(...)</code> with exposure-driven limits.</p>
+<p><strong>Compliance orchestration:</strong>
+- Added a deterministic multi-check orchestrator (<code>compliance.check_compliance_report(...)</code>) that selects a governing case and governing utilization in a stable, auditable manner.
+- Structured outputs are designed to be consumed by Excel/reporting layers (summary payloads + clear remarks).</p>
+<h3 id="v081-expanded-notes">v0.8.1 — Expanded Notes<a class="headerlink" href="#v081-expanded-notes" title="Permanent link">&para;</a></h3>
+<p><strong>Why it existed:</strong> tooling-only patch after v0.8.0 to reduce release friction and make CI “tell the truth”.</p>
+<p><strong>No engineering behavior changes</strong> (design calculations intended unchanged).</p>
+<p><strong>Packaging / build hygiene:</strong>
+- Consolidated packaging metadata into <code>Python/pyproject.toml</code> to avoid split-brain configuration.
+- Standardized license inclusion via <code>project.license-files</code>.</p>
+<p><strong>CI quality gates:</strong>
+- Added <code>ruff check</code> alongside formatting/type checks.
+- Strengthened packaging smoke testing by installing the built wheel and importing <code>structural_lib</code>.</p>
+<p><strong>Local workflow:</strong>
+- Added <code>Python/scripts/pre_release_check.sh</code> as a single “run the release gate locally” entrypoint.</p>
+<h3 id="v082-expanded-notes">v0.8.2 — Expanded Notes<a class="headerlink" href="#v082-expanded-notes" title="Permanent link">&para;</a></h3>
+<p><strong>Why it existed:</strong> robustness patch to keep behavior deterministic under slightly malformed inputs and to stabilize the DXF optional-dependency surface.</p>
+<p><strong>Compliance robustness:</strong>
+- Hardened serviceability parameter handling so missing/malformed fields fail fast or normalize deterministically.
+- Ensured governing-case utilization remains deterministic in failure modes (no accidental dependence on dict ordering or incidental iteration).</p>
+<p><strong>DXF optional dependency surface:</strong>
+- Made <code>ezdxf</code>-optional code easier to monkeypatch/test and friendlier for type checking when DXF extras are not installed.</p>
+<p><strong>CI reliability:</strong>
+- Added targeted regression tests to keep overall coverage at/above the configured threshold.</p>
+<h3 id="v090-expanded-notes">v0.9.0 — Expanded Notes<a class="headerlink" href="#v090-expanded-notes" title="Permanent link">&para;</a></h3>
+<p><strong>Why it existed:</strong> “automation usage” milestone — stable entrypoints + deterministic file-in/file-out workflows.</p>
+<p><strong>Stable public entrypoints (IS456):</strong>
+- <code>api.design_beam_is456(...)</code>: single-case design/check returning a structured <code>ComplianceCaseResult</code>.
+- <code>api.check_beam_is456(...)</code>: multi-case report returning <code>ComplianceReport</code> with governing-case selection.
+- <code>api.detail_beam_is456(...)</code>: wraps detailing to produce structured reinforcement outputs.</p>
+<p><strong>Golden vectors (regression targets):</strong>
+- Introduced pinned numerical targets that lock key outputs and determinism across core modules.</p>
+<p><strong>Deterministic job runner + CLI:</strong>
+- Job spec: <a href="../../specs/v0.9-job-schema/">docs/specs/v0.9-job-schema.md</a>.
+- Runner: <code>structural_lib.job_runner.run_job(...)</code> writes stable outputs (JSON + CSV) in a fixed folder layout.
+- CLI: <code>python -m structural_lib.job_cli run --job job.json --out &lt;dir&gt;</code>.</p>
+<h3 id="v091-expanded-notes">v0.9.1 — Expanded Notes<a class="headerlink" href="#v091-expanded-notes" title="Permanent link">&para;</a></h3>
+<p><strong>Why it existed:</strong> patch release tagging a known-green state and capturing the “findings audit” fixes.</p>
+<p><strong>CI policy (temporary):</strong>
+- Standardized the Python coverage floor at 92% to keep signal high while reducing friction during rapid iteration.</p>
+<p><strong>Robustness fixes (findings audit):</strong>
+- Flexure: corrected flanged-beam max-steel behavior at edge cases.
+- Detailing: tightened spacing validation so rule violations are reported deterministically.
+- Compliance: clarified utilization semantics so summary/governing-case values are consistent.
+- Serviceability: normalized inputs so equivalent values produce identical outputs.</p>
+<p><strong>Docs updates:</strong>
+- Refreshed onboarding/version pins and clarified batch runner + DXF workflows so users can run the end-to-end pipeline without repo-specific tribal knowledge.</p>
+<hr />
+<h2 id="docs-layout-note-2025-12-25">Docs Layout Note (2025-12-25)<a class="headerlink" href="#docs-layout-note-2025-12-25" title="Permanent link">&para;</a></h2>
+<p>To keep <code>docs/</code> cleaner, several top-level redirect stubs were removed.</p>
+<ul>
+<li>Canonical governance docs:</li>
+<li><code>docs/_internal/git-governance.md</code></li>
+<li><code>docs/_internal/agent-workflow.md</code></li>
+<li>Archived research:</li>
+<li><code>docs/_archive/research-and-findings.md</code></li>
+</ul>
+<p>Older release notes may reference the historical stub paths that existed at the time; prefer the canonical locations above.</p>
+<hr />
+<h2 id="v0180">v0.18.0<a class="headerlink" href="#v0180" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-20
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Tag:</strong> <code>v0.18.0</code></p>
+<p><strong>Key Changes:</strong>
+- AI Assistant v2 with dynamic workspace (9 states)
+- Interactive rebar editor + cross-section views
+- Material takeoff and cost estimation panel
+- Model configuration defaulted to <code>gpt-4o-mini</code></p>
+<hr />
+<h2 id="v0200">v0.20.0<a class="headerlink" href="#v0200" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-03-30
+<strong>Status:</strong> ✅ Released
+<strong>Tag:</strong> <code>v0.20.0</code></p>
+<p><strong>Key Changes:</strong>
+- V3 Foundation release — full-stack maturity milestone
+- Batch design React UI with SSE streaming progress
+- Compliance checker and cost optimizer wired to React
+- 86 API integration tests across 12 FastAPI routers (Vitest)
+- React UX overhaul: BeamDetailPanel, CrossSectionView annotations, HomePage rewrite, code-split bundle
+- Library expansion: PDF export, load calculator, project BOQ, torsion API
+- Phase 1 foundation cleanup: <code>core/numerics.py</code>, <code>codes/is456/common/</code>, deprecation decorator, <code>clauses.json</code> (119 entries), 41 new tests
+- Quality infrastructure: function-quality-pipeline, 14 agents, 8 skills, 15 prompts
+- Developer tooling: release infrastructure overhaul, <code>ai_commit.sh</code> upgrades, <code>run.sh</code> unified CLI, <code>launch_stack.sh</code>, MkDocs Material
+- Legacy Streamlit app removed, VBA/Excel extracted to separate repo
+- 90+ commits across sessions 92–113</p>
+<hr />
+<h2 id="v0191">v0.19.1<a class="headerlink" href="#v0191" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-03-24
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Tag:</strong> <code>v0.19.1</code></p>
+<p><strong>Key Changes:</strong>
+- React 19 frontend with R3F 3D visualization, live design, dual CSV import, export panel
+- FastAPI backend: 35 endpoints across 12 routers (design, geometry, import, export, websocket, etc.)
+- 4-layer architecture enforced: core/IS 456/services/UI with migration scripts and governance tests
+- Scripts consolidated: 163 → 84 active, with shared <code>_lib/</code> utilities
+- Developer tooling: AGENTS.md, automation-map (84 scripts), drift checker, sync_numbers
+- 240 commits, 267 lint fixes, 280+ stale references repaired</p>
+<hr />
+<h2 id="v0190">v0.19.0<a class="headerlink" href="#v0190" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-01-21
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Tag:</strong> <code>v0.19.0</code></p>
+<p><strong>Key Changes:</strong>
+- DXF schedule polish (column widths, text sizing, smart truncation)
+- AI model name fix (<code>gpt-4o-mini</code>)
+- Streamlit API index for component reuse</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

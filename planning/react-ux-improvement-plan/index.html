@@ -1,0 +1,2961 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/planning/react-ux-improvement-plan/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>React App — UX & Visual Improvement Plan - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#react-app-ux-visual-improvement-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React App — UX &amp; Visual Improvement Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-design-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Design Philosophy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-principle-the-editor-is-the-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Principle: The Editor is the Center
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-state-navigation-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current State — Navigation Flowchart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-state-navigation-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future State — Navigation Flowchart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-central-feature-beam-selection-split-detail-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Central Feature: Beam Selection → Split Detail Panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-component-does-in-the-new-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Each Component Does in the New Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bugs-found-fixed-session-98" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bugs Found &amp; Fixed (Session 98)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bugs Found &amp; Fixed (Session 98)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-is-456-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key IS 456 Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#improvement-plan-3-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improvement Plan (3 Phases)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Improvement Plan (3 Phases)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-a-polish-core-flow-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase A: Polish &amp; Core Flow Fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase A: Polish &amp; Core Flow Fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a1-buildingeditorpage-beam-selection-detail-panel-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A1. BuildingEditorPage — Beam Selection Detail Panel ✅ DONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2-designview-dynamic-layout-viewport-expands-when-empty-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A2. DesignView — Dynamic Layout (viewport expands when empty) ✅ DONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a3-replace-modeselectpage-smart-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A3. Replace ModeSelectPage → Smart Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a4-cross-section-annotations-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A4. Cross-Section Annotations ✅ DONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a5-activate-floatingdock-already-built-unused-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A5. Activate FloatingDock (already built, unused) ✅ DONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a6-activate-bentogrid-for-dashboard-already-built-unused-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A6. Activate BentoGrid for Dashboard (already built, unused) ✅ DONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a7-workflow-breadcrumb-batch-flow-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A7. Workflow Breadcrumb (batch flow only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a8-topbar-context-badges-fix-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A8. TopBar — Context Badges + Fix Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-b-new-feature-panels-task-514521" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase B: New Feature Panels (TASK-514–521)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase B: New Feature Panels (TASK-514–521)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b1-load-calculator-loads-tab-in-designview-task-515" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B1. Load Calculator — [Loads] tab in DesignView (TASK-515)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b2-torsion-toggle-in-designview-task-518" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B2. Torsion Toggle in DesignView (TASK-518)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b3-alternatives-panel-in-designview-task-519" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B3. Alternatives Panel in DesignView (TASK-519)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b4-dashboard-boq-card-task-517" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B4. Dashboard BOQ Card (TASK-517)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-c-micro-polish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase C: Micro-Polish
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase C: Micro-Polish">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c1-micro-animations-framer-motion-already-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C1. Micro-Animations (Framer Motion — already installed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c2-design-input-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C2. Design Input Presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c3-print-styles-for-beamdetailpage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C3. Print Styles for BeamDetailPage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c4-settings-panel-fixes-broken-topbar-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C4. Settings Panel (fixes broken TopBar button)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visual-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visual System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#colors-refined" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Colors (refined)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spacing-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spacing Standard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-created-modified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files Created / Modified
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Files Created / Modified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-a-new-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase A — New Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-a-modified-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase A — Modified Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-b-new-files-from-task-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase B — New Files (from TASK plan)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="react-app-ux-visual-improvement-plan">React App — UX &amp; Visual Improvement Plan<a class="headerlink" href="#react-app-ux-visual-improvement-plan" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Architecture
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> Active
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-03-25
+<strong>Last Updated:</strong> 2026-03-25 (Session 98 — A1–A6 implemented, bugs fixed)</p>
+<hr />
+<h2 id="the-design-philosophy">The Design Philosophy<a class="headerlink" href="#the-design-philosophy" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>"A structural engineer shouldn't have to fill in a form to see their own building."</p>
+</blockquote>
+<p>The primary workflow is <strong>import-first</strong>: bring in a real project (CSV / ETABS / SAFE), see all beams in 3D, select any beam, see its reinforcement live. Manual input is a secondary tool for quick single-beam checks — it should not appear in the batch workflow at all.</p>
+<p>The app should feel like a <strong>structural workstation</strong> — dense, contextual, and precise. Not a form wizard. The 3D view is the anchor; everything else serves it.</p>
+<hr />
+<h2 id="core-principle-the-editor-is-the-center">Core Principle: The Editor is the Center<a class="headerlink" href="#core-principle-the-editor-is-the-center" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>WRONG mental model:       RIGHT mental model:
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Form → design → 3D        Import → 3D Editor → select beam → see reinforcement
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  (form-first)              (data-first, visual-first)
+</code></pre></div>
+<p>Manual beam input belongs <strong>only</strong> in <code>/design</code> (single-beam check). Everywhere else — Editor, Dashboard, Batch — the engineer works with their actual imported project data, navigated through the 3D view and the AG Grid.</p>
+<hr />
+<h2 id="current-state-navigation-flowchart">Current State — Navigation Flowchart<a class="headerlink" href="#current-state-navigation-flowchart" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│  CURRENT UI FLOW                                               │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>└────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>   Browser opens
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        ▼
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>   ┌──────────┐      &quot;Start Engineering&quot; CTA
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>   │ HomePage │ ────────────────────────────►  /start
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>   │  (/)     │                                   │
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>   │  3D hero │                                   ▼
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>   └──────────┘                         ┌─────────────────┐
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                                        │ ModeSelectPage  │ ← speed bump
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                                        │ 2 cards         │
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>                                        └────────┬────────┘
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>                                                 │
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                          ┌──────────────────────┼─────────────────────┐
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>                          │                       │                     │
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                          ▼                       ▼              (if beams loaded)
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>                  ┌──────────────┐      ┌──────────────┐        Editor / Batch
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>                  │  DesignView  │      │  ImportView  │
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>                  │  (/design)   │      │  (/import)   │
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>                  │              │      │  drag-drop   │
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>                  │  340px FORM  │      └──────┬───────┘
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                  │  60% 3D      │             │
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>                  │  40% results │             ▼
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                  └──────┬───────┘    ┌──────────────────┐
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                         │            │ BuildingEditorPage│
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>                  [Full 3D] button    │  (/editor)        │
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>                         │            │                   │
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>                         ▼            │  ┌─────────────┐  │
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>                  ┌──────────────┐    │  │ 3D building │  │
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>                  │ BeamDetail   │    │  │ (top 30%)   │  │
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>                  │ (/design/    │    │  ├─────────────┤  │
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>                  │  results)    │    │  │ AG Grid     │  │
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>                  │ separate page│    │  │ (bottom 70%)│  │
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>                  └──────────────┘    │  └─────────────┘  │
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>                                      │                   │
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>                                      │  ← click beam →   │
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>                                      │  nothing happens  │ ← WASTED OPPORTUNITY
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>                                      └──────────────────┘
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>                                               │
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>                                               ▼
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>                                      ┌──────────────────┐
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>                                      │  BatchDesignPage │
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>                                      └──────────────────┘
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>                                               │
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>                                               ▼
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>                                      ┌──────────────────┐
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>                                      │  DashboardPage   │
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>                                      │  plain cards     │ ← no export
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>                                      └──────────────────┘
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>PROBLEMS:
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>  ✓ Manual form appears redundantly outside single-beam design  ← FIXED (form only in /design)
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>  ✓ BeamDetailPage is a separate route  ← FIXED (detail is inline in Editor via BeamDetailPanel)
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>  ✓ Clicking a beam in the Editor does NOT show its reinforcement ← FIXED (BeamDetailPanel slides in)
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>  ✓ 3D building view is only 30% of Editor  ← IMPROVED (wider split when panel active)
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>  ✓ DashboardPage has no export  ← FIXED (export buttons in BentoGrid header)
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>  × TopBar Settings → dead link  ← TODO
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>  ✓ FloatingDock.tsx, BentoGrid.tsx — ACTIVATED
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>  × CommandPalette.tsx — still unused
+</code></pre></div>
+<hr />
+<h2 id="future-state-navigation-flowchart">Future State — Navigation Flowchart<a class="headerlink" href="#future-state-navigation-flowchart" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│  FUTURE UI FLOW                                                │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>└────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>   Browser opens
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        │
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        ▼
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>   ┌──────────┐
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>   │ HomePage │ ─────────────────────────────► /start
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>   │  (/)     │                                   │
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>   └──────────┘                                   ▼
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>                                       ┌─────────────────────┐
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>                                       │  HubPage (/start)   │
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>                                       │                     │
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>                                       │  [New Design]       │  ← replaces ModeSelect
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>                                       │  [Import CSV]       │
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>                                       │  [Resume project →] │  ← from localStorage
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>                                       │  Capabilities bar   │
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>                                       └──────┬──────────────┘
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>                                              │
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>                      ┌───────────────────────┼──────────────────────┐
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>                      │                       │                      │
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>                      ▼                       ▼                      ▼
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>             ┌──────────────┐       ┌──────────────┐        ┌──────────────┐
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>             │  DesignView  │       │  ImportView  │        │  Dashboard   │
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>             │  (/design)   │       │  (/import)   │        │  (resume)    │
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>             │              │       │              │        └──────────────┘
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>             │  ONLY place  │       │  drag-drop   │
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>             │  with manual │       │  CSV / ETABS │
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>             │  beam form   │       └──────┬───────┘
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>             │              │              │
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>             │  Dynamic:    │    Workflow Breadcrumb:
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>             │  no result = │    Import ●── Editor ○── Batch ○── Dashboard
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>             │  3D 100%     │              │
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>             │  has result= │              ▼
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>             │  3D 55%+     │    ┌──────────────────────────────────────────┐
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>             │  results 45% │    │  BuildingEditorPage (/editor)  ← THE HUB│
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>             │              │    │                                          │
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>             │  [Export ▼]  │    │  ┌── 3D building (left, ~50%) ──────┐   │
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>             │  in header   │    │  │  Full 3D building frame          │   │
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>             │              │    │  │  Floors, selections, highlights  │   │
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>             └──────────────┘    │  └─────────────────────┬────────────┘   │
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>                                 │                         │                │
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>                                 │  AG Grid (bottom half)  │                │
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>                                 │  click beam ────────────┘                │
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>                                 │           │                               │
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>                                 │           ▼                               │
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>                                 │  ┌── Beam Detail Panel (right, ~40%) ─┐  │
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>                                 │  │ SLIDES IN when beam selected        │  │
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>                                 │  │                                     │  │
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>                                 │  │  ┌─ 3D Reinforcement View ───────┐  │  │
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>                                 │  │  │ Full rebar + stirrups of      │  │  │
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>                                 │  │  │ selected beam only            │  │  │
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>                                 │  │  │ (same Viewport3D component)   │  │  │
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>                                 │  │  └───────────────────────────────┘  │  │
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>                                 │  │                                     │  │
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a>                                 │  │  ✓ SAFE  73%  Ast 850mm² Sv 150c/c │  │
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>                                 │  │  [████████░░] utilization bar       │  │
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a>                                 │  │                                     │  │
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a>                                 │  │  Cross-section SVG (annotated)      │  │
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a>                                 │  │                                     │  │
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a>                                 │  │  IS 456 clause checks ▼             │  │
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a>                                 │  │  Rebar suggestions ▼                │  │
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a>                                 │  │                                     │  │
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a>                                 │  │  [📐 DXF]  [📊 BBS]  [📄 Report]   │  │
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a>                                 │  └─────────────────────────────────────┘  │
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a>                                 └──────────────────────────────────────────┘
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a>                                              │
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>                                              ▼
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a>                                    ┌─────────────────┐
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a>                                    │ BatchDesignPage  │
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>                                    │ SSE progress     │
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a>                                    │ per-beam status  │
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>                                    └────────┬─────────┘
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a>                                             │
+<a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>                                             ▼
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a>                                    ┌─────────────────────────────────────┐
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>                                    │ DashboardPage                       │
+<a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a>                                    │                                     │
+<a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a>                                    │ BentoGrid layout (already built!)   │
+<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a>                                    │ Pass rate · Utilization · BOQ       │
+<a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a>                                    │ [Export PDF]  [Export BOQ CSV]      │
+<a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a>                                    │ in header — not buried at bottom    │
+<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a>                                    └─────────────────────────────────────┘
+<a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a>
+<a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a>GLOBAL (all pages except /):
+<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a>┌──────────────────────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a>│ TopBar: StructLib  Design | Import | Batch | Editor | Dashboard   [M25] [154b] ⚙ │
+<a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a>└──────────────────────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a>
+<a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a>FloatingDock (already built) — activate on all pages except /:
+<a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a>         ┌─────────────────────────────────────────┐
+<a id="__codelineno-2-93" name="__codelineno-2-93" href="#__codelineno-2-93"></a>         │  [🏠] [🔧] [📁] [🏗] [⚡] [📊]        │  ← bottom-center, macOS magnify
+<a id="__codelineno-2-94" name="__codelineno-2-94" href="#__codelineno-2-94"></a>         └─────────────────────────────────────────┘
+</code></pre></div>
+<hr />
+<h2 id="the-central-feature-beam-selection-split-detail-panel">The Central Feature: Beam Selection → Split Detail Panel<a class="headerlink" href="#the-central-feature-beam-selection-split-detail-panel" title="Permanent link">&para;</a></h2>
+<p>This is the single highest-impact change. When an engineer clicks any beam — in the 3D building OR in the AG Grid — the Editor splits to show:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>BEFORE (clicking a beam does nothing meaningful):
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>┌────────────────────────────────────┐
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>│  3D Building (top 30%)             │
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>├────────────────────────────────────┤
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│                                    │
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│  AG Grid — all beams               │
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│  click row → row highlights        │
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│  (that&#39;s it)                       │
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│                                    │
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>└────────────────────────────────────┘
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>AFTER (clicking any beam):
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>┌──────────────────────────┬─────────────────────────────────────────┐
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│                          │  B-204 · Floor 2                   [×]  │
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>│  3D Building (left 55%)  ├─────────────────────────────────────────┤
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>│                          │                                         │
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│  Selected beam glows     │  ┌─ 3D Reinforcement ────────────────┐  │
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>│  blue in the building    │  │                                   │  │
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>│                          │  │  Full rebar + stirrup 3D model    │  │
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>│  Floor isolation still   │  │  Rotate / zoom freely             │  │
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>│  works — other beams     │  │  Same Viewport3D, single beam     │  │
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>│  fade to 20% opacity     │  │  mode                             │  │
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>│                          │  └───────────────────────────────────┘  │
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>├──────────────────────────┤                                         │
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>│                          │  ✓ SAFE   Ast 850mm²   Sv 8φ@150c/c    │
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>│  AG Grid (bottom)        │  [████████░░] 73% utilized              │
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>│  selected row = active   │                                         │
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>│                          │  Cross-section (annotated SVG)          │
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>│  Can keep editing cells  │  ←300mm→                                │
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>│  in grid while panel     │  ┌─────────┐ ─┬─                       │
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>│  is open → live update   │  │ ⊗  ⊗  ⊗ │  │                       │
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>│  in 3D reinforcement     │  │         │ 500mm                     │
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>│                          │  │ ○  ○  ○ │  │                       │
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>│                          │  └─────────┘ ─┴─                       │
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>│                          │  3-20φ (942mm²)  Sv: 8φ@150c/c         │
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>│                          │                                         │
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>│                          │  IS 456 clause checks (collapsible)     │
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>│                          │  Rebar suggestions (collapsible)        │
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>│                          │                                         │
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>│                          │  [📐 DXF]  [📊 BBS]  [📄 Report]       │
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>└──────────────────────────┴─────────────────────────────────────────┘
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>  Editing a cell in the AG Grid (e.g. depth 500→600):
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>  → auto-triggers re-design for that beam
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>  → 3D reinforcement updates live (WebSocket or REST)
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>  → results panel updates
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>  → row color in grid updates (pass/fail/utilization)
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>  → building 3D model updates that beam&#39;s rendered height
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>  All without leaving the page.
+</code></pre></div>
+<hr />
+<h2 id="what-each-component-does-in-the-new-model">What Each Component Does in the New Model<a class="headerlink" href="#what-each-component-does-in-the-new-model" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+<th>Manual form?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DesignView</code></td>
+<td>Single-beam quick check &amp; exploration</td>
+<td>✓ Yes — this is its only job</td>
+</tr>
+<tr>
+<td><code>BuildingEditorPage</code></td>
+<td>Primary workstation for real projects</td>
+<td>✗ No form — data comes from import</td>
+</tr>
+<tr>
+<td><code>BeamDetailPage</code></td>
+<td><strong>Retired or repurposed</strong> — detail is now inline in Editor</td>
+<td>✗ Removed from batch flow</td>
+</tr>
+<tr>
+<td><code>DashboardPage</code></td>
+<td>Post-batch analytics + BOQ + export</td>
+<td>✗ No form</td>
+</tr>
+<tr>
+<td><code>ImportView</code></td>
+<td>Entry point for project data</td>
+<td>✗ No beam form</td>
+</tr>
+<tr>
+<td><code>BatchDesignPage</code></td>
+<td>SSE progress view</td>
+<td>✗ No form</td>
+</tr>
+</tbody>
+</table>
+<p>The BeamDetailPage (<code>/design/results</code>) can be kept as a standalone deep-link (for sharing a specific beam result), but it should no longer be a required step in any workflow.</p>
+<hr />
+<h2 id="bugs-found-fixed-session-98">Bugs Found &amp; Fixed (Session 98)<a class="headerlink" href="#bugs-found-fixed-session-98" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Bug</th>
+<th>Root Cause</th>
+<th>Fix</th>
+<th>Commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>3D shows 3 top bars, 2D shows 2</strong></td>
+<td>CrossSectionView used <code>Math.min(2, ceil(numBars * 0.3))</code> while 3D API uses <code>select_bar_arrangement(0.25 * Ast)</code> — different formulas</td>
+<td>Added <code>ascRequired</code> prop to CrossSectionView; now computes <code>ceil(ascRequired / barArea)</code></td>
+<td><code>a5612b0</code></td>
+</tr>
+<tr>
+<td><strong>Utilization shows wrong %</strong></td>
+<td>BuildingEditorPage computed <code>ast_required / (0.04 * b * D)</code> (steel ratio) instead of <code>Mu / Mu_cap</code> (moment utilization)</td>
+<td>Added <code>utilization_ratio</code> to backend <code>BatchDesignResult</code>; frontend uses API value</td>
+<td><code>a5612b0</code></td>
+</tr>
+<tr>
+<td><strong>Stirrup max 275 not 300</strong></td>
+<td><strong>Not a bug</strong> — IS 456 Cl 26.5.1.5: <code>max_sv = min(0.75d, 300mm)</code>. For d≈367mm: 0.75×367=275mm governs</td>
+<td>Added annotation showing which limit governs: "Sv = X mm (max: 0.75d = Y mm)"</td>
+<td><code>a5612b0</code></td>
+</tr>
+<tr>
+<td><strong>asc_required not passed to CrossSectionView</strong></td>
+<td>BeamDetailPanel stored value but never forwarded as prop</td>
+<td>Added <code>ascRequired={beam.asc_required}</code> prop pass-through</td>
+<td><code>a5612b0</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-is-456-reference">Key IS 456 Reference<a class="headerlink" href="#key-is-456-reference" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Stirrup spacing limit (Cl 26.5.1.5):</strong> <code>max_sv = min(0.75d, 300mm)</code> — for beams with d &lt; 400mm, 0.75d governs (not 300)</li>
+<li><strong>Compression steel default:</strong> When <code>asc = 0</code>, detailing uses <code>0.25 × Ast</code> as minimum compression reinforcement</li>
+<li><strong>Standard stirrup spacings:</strong> <code>[75, 100, 125, 150, 175, 200, 225, 250, 275, 300]</code> — <code>round_to_practical_spacing()</code> rounds down</li>
+</ul>
+<hr />
+<h2 id="improvement-plan-3-phases">Improvement Plan (3 Phases)<a class="headerlink" href="#improvement-plan-3-phases" title="Permanent link">&para;</a></h2>
+<h3 id="phase-a-polish-core-flow-fixes">Phase A: Polish &amp; Core Flow Fixes<a class="headerlink" href="#phase-a-polish-core-flow-fixes" title="Permanent link">&para;</a></h3>
+<hr />
+<h4 id="a1-buildingeditorpage-beam-selection-detail-panel-done">A1. BuildingEditorPage — Beam Selection Detail Panel ✅ DONE<a class="headerlink" href="#a1-buildingeditorpage-beam-selection-detail-panel-done" title="Permanent link">&para;</a></h4>
+<p><strong>IMPLEMENTED in commit <code>a5612b0</code>.</strong> When a beam is clicked (row in AG Grid or mesh in 3D), a BeamDetailPanel slides in from the right.</p>
+<p><strong>Layout change:</strong>
+- Existing: 3D top 30% + Grid bottom 70%
+- New when beam selected: 3D left 55% + Grid bottom-left 55% + Detail panel right 45%
+- Panel slides in with <code>transition-all duration-300</code>
+- Close button (×) returns to normal layout
+- Panel has its own scroll</p>
+<p><strong>Detail panel sections (top to bottom):</strong>
+1. Beam ID + floor label header
+2. <code>Viewport3D</code> in single-beam mode (rebar + stirrups, rotateable, ~220px tall)
+3. Compact result bar: <code>✓ SAFE  73%  850mm²  150c/c</code>
+4. Animated utilization bar (count-up)
+5. <code>CrossSectionView</code> with annotations (see A4)
+6. IS 456 code checks (collapsible, <code>useCodeChecks</code>)
+7. Rebar suggestions (collapsible, <code>useRebarSuggestions</code>)
+8. Export row: <code>[DXF]</code> <code>[BBS]</code> <code>[Report]</code></p>
+<p><strong>Live edit loop:</strong>
+- User changes a cell in AG Grid (e.g. depth 500 → 600)
+- <code>useAutoDesign</code> triggers for that beam
+- Result and 3D reinforcement in the panel update live
+- Row color in grid updates
+- 3D building model updates that beam's height</p>
+<p><strong>Implementation:</strong>
+- New <code>components/design/BeamDetailPanel.tsx</code> (~200 lines)
+- Embed <code>Viewport3D</code> in single-beam mode (already supports this)
+- <code>useBeamGeometry(selectedBeam)</code> + <code>useCodeChecks(selectedBeam)</code> + <code>useRebarSuggestions</code>
+- Pass <code>onClose</code>, <code>beam</code>, <code>result</code> as props</p>
+<hr />
+<h4 id="a2-designview-dynamic-layout-viewport-expands-when-empty-done">A2. DesignView — Dynamic Layout (viewport expands when empty) ✅ DONE<a class="headerlink" href="#a2-designview-dynamic-layout-viewport-expands-when-empty-done" title="Permanent link">&para;</a></h4>
+<p><strong>IMPLEMENTED in commit <code>a242878</code>.</strong> Results panel now collapses/expands dynamically.</p>
+<p><strong>3 states:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>EMPTY (just opened):        HAS RESULT:              MINIMIZED:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>┌──────┬─────────────┐     ┌──────┬────┬────────┐   ┌──────┬────────────────┐
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>│      │             │     │      │ 3D │        │   │      │                │
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│ Form │  3D (100%)  │     │ Form │55% │Results │   │ Form │  3D (100%)     │
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│      │             │     │      │    │  45%   │   │      │                │
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│      │  [Try M25   │     │      │    │        │   ├──────┴────────────────┤
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>│      │   300×500 →]│     │      │    │        │   │ ✓ SAFE 73% 850mm² [▲]│
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>└──────┴─────────────┘     └──────┴────┴────────┘   └────────────────────── ┘
+</code></pre></div></p>
+<ul>
+<li>Animate <code>flex-[3] ↔ flex-[5.5]</code> with <code>transition-all duration-300</code></li>
+<li>Empty state: show preset button "Try: 300×500 M25 Mu=120 kN·m →" that auto-fills and designs</li>
+<li>Minimized: <code>CompactResultsBar</code> single-line (<code>✓ SAFE  73%  Ast 850mm²  Sv 150c/c</code>)</li>
+</ul>
+<hr />
+<h4 id="a3-replace-modeselectpage-smart-hub">A3. Replace ModeSelectPage → Smart Hub<a class="headerlink" href="#a3-replace-modeselectpage-smart-hub" title="Permanent link">&para;</a></h4>
+<p><strong>Current:</strong> 2 mode cards. Returning users click through it every session — pure friction.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>┌───────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│  StructLib                                                 [⚙]   │
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├───────────────────────────────────────────────────────────────────┤
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│                                                                   │
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│  ┌─── Quick Actions ──────────────┐  ┌─── Last Session ────────┐ │
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│  │  [🔧  New Beam Design    →]    │  │  MedPlaza · 154 beams   │ │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│  │  [📁  Import CSV / ETABS →]    │  │  96% pass · 2 min ago   │ │
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│  │  [📊  Open Dashboard     →]    │  │  [Resume Project →]     │ │
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>│  └────────────────────────────────┘  └─────────────────────────┘ │
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>│                                                                   │
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>│  ✓ IS 456:2000   ✓ Live 3D   ✓ BBS / DXF   ✓ ETABS / SAFE      │
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>└───────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<ul>
+<li>Create <code>HubPage.tsx</code> (~150 lines)</li>
+<li>Read <code>useImportedBeamsStore</code> for last project context</li>
+<li><code>localStorage</code> for project name + last pass rate</li>
+<li>No new API calls</li>
+</ul>
+<hr />
+<h4 id="a4-cross-section-annotations-done">A4. Cross-Section Annotations ✅ DONE<a class="headerlink" href="#a4-cross-section-annotations-done" title="Permanent link">&para;</a></h4>
+<p><strong>IMPLEMENTED in commits <code>a242878</code> + <code>a5612b0</code>.</strong> CrossSectionView now accepts <code>ascRequired</code>, <code>barDia</code>, <code>barCount</code>, <code>utilization</code> props.</p>
+<p><strong>Proposed (extend <code>CrossSectionView.tsx</code>):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>          ←── 300mm ──→
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>         ┌──────────────┐ ─┬─
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>         │  ⊗    ⊗    ⊗ │  │
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>cover ──►│╌╌╌╌╌╌╌╌╌╌╌╌╌│  │
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  40mm   │              │ 500mm
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>         │              │  │
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>         │  ○    ○    ○ │  │
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>         └──────────────┘ ─┴─
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>          3-20φ  (942 mm²)
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>          Sv: 8φ @ 150 c/c
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>          Utilization: 73% [████████░░]
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>Bar color: emerald-400 &lt; 75%  |  amber-400 75–90%  |  rose-400 &gt; 90%
+</code></pre></div></p>
+<p>Adds: width/depth dimension lines (SVG arrows), cover dashed line, bar label, stirrup label, utilization color. Pure SVG, ~60 lines. Used in both BeamDetailPanel and BeamDetailPage.</p>
+<hr />
+<h4 id="a5-activate-floatingdock-already-built-unused-done">A5. Activate FloatingDock (already built, unused) ✅ DONE<a class="headerlink" href="#a5-activate-floatingdock-already-built-unused-done" title="Permanent link">&para;</a></h4>
+<p><strong>IMPLEMENTED in commit <code>a242878</code>.</strong> FloatingDock is now mounted in App.tsx on all routes except <code>/</code>.</p>
+<p>Wire it to App.tsx (~10 lines):
+- Show on all routes except <code>/</code>
+- Replace or supplement TopBar on mobile
+- Badge: imported beam count, last pass rate
+- Active state on current route</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>         ┌──────────────────────────────────────────────┐
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>         │  [🏠] [🔧 Design] [📁 Import] [🏗 Editor] [📊]│
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>         └──────────────────────────────────────────────┘
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>                    bottom-center, spring magnify on hover
+</code></pre></div>
+<hr />
+<h4 id="a6-activate-bentogrid-for-dashboard-already-built-unused-done">A6. Activate BentoGrid for Dashboard (already built, unused) ✅ DONE<a class="headerlink" href="#a6-activate-bentogrid-for-dashboard-already-built-unused-done" title="Permanent link">&para;</a></h4>
+<p><strong>IMPLEMENTED in commit <code>a242878</code>.</strong> DashboardPage rewritten with BentoGrid + BentoCard layout. Export buttons (BBS, Report) moved to page header.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>╔══════════════════╦═══════════════════╦══════════════════════╗
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>║ PASS RATE 96%    ║ AVG UTIL 73%      ║  PASS / FAIL         ║
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>║ 148 / 154 beams  ║ [████████░░]      ║  148 ██████████████  ║
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>╠══════════════════╩═══════════════════╣   6  ██             ║
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>║ CRITICAL BEAMS                       ╠══════════════════════╣
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>║ B-204  Floor 2  94%  ████████████    ║  STEEL    CONCRETE   ║
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>║ B-112  Floor 1  91%  █████████████   ║  4,250kg   12.3m³   ║
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>╠═══════════════╦══════════════════════╣  ₹2,55,000  ₹73,800 ║
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>║ BY STORY      ║  [📊 Export BBS]     ╚══════════════════════╝
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>║ GF  52 beams  ║  [📐 Export DXF]
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>║ 1F  48 beams  ║  [📄 Export PDF]
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>║ 2F  54 beams  ║
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>╚═══════════════╩══════════════════════╝
+</code></pre></div>
+<p>Export buttons move from buried at the bottom to a visible BentoCard at the top-right.</p>
+<hr />
+<h4 id="a7-workflow-breadcrumb-batch-flow-only">A7. Workflow Breadcrumb (batch flow only)<a class="headerlink" href="#a7-workflow-breadcrumb-batch-flow-only" title="Permanent link">&para;</a></h4>
+<p>Shown below TopBar on the 4-step batch flow. Clickable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Import ──●── Editor ──●── Batch Design ──○── Dashboard
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                           ↑ you are here
+</code></pre></div>
+<p>New <code>WorkflowBreadcrumb.tsx</code> (~60 lines). Added to ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage.</p>
+<hr />
+<h4 id="a8-topbar-context-badges-fix-settings">A8. TopBar — Context Badges + Fix Settings<a class="headerlink" href="#a8-topbar-context-badges-fix-settings" title="Permanent link">&para;</a></h4>
+<p><strong>Context badges (right side, when data exists):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>StructLib  Design | Import | Batch | Editor | Dashboard   [M25 Fe500] [154b] [96%✓] [⚙]
+</code></pre></div></p>
+<p><strong>Fix settings:</strong> TopBar settings button currently navigates to <code>/settings</code> (dead). Replace with a slide-over <code>SettingsPanel</code> (~60 lines):
+- API endpoint field
+- Theme + version info
+- No new routes needed</p>
+<hr />
+<h3 id="phase-b-new-feature-panels-task-514521">Phase B: New Feature Panels (TASK-514–521)<a class="headerlink" href="#phase-b-new-feature-panels-task-514521" title="Permanent link">&para;</a></h3>
+<hr />
+<h4 id="b1-load-calculator-loads-tab-in-designview-task-515">B1. Load Calculator — <code>[Loads]</code> tab in DesignView (TASK-515)<a class="headerlink" href="#b1-load-calculator-loads-tab-in-designview-task-515" title="Permanent link">&para;</a></h4>
+<p>Second tab in DesignView left panel. Compute Mu/Vu from span + loads, then "Use These Values" fills the Beam tab.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>[Beam] [Loads]
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>────────────────
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Span: [5000] mm
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Support: [Simply Supported ▼]
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>#1 UDL   [15] kN/m       ×
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>#2 Point [30]kN @[2500]mm ×
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>[+ Add Load]
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>[Compute]
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a> BMD: /\   SVG polyline (inline, no chart lib)
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>     /  \
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>SFD: ─────\
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>Mu_max = 46.9 kN·m
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>Vu_max = 37.5 kN
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>[↗ Use These Values]
+</code></pre></div>
+<hr />
+<h4 id="b2-torsion-toggle-in-designview-task-518">B2. Torsion Toggle in DesignView (TASK-518)<a class="headerlink" href="#b2-torsion-toggle-in-designview-task-518" title="Permanent link">&para;</a></h4>
+<p>Inside "Design Forces" accordion, below Vu:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>▼ Design Forces
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  Mu [120] kN·m
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  Vu  [75] kN
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  ☐ Include Torsion
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    └─ Tu [8.5] kN·m
+</code></pre></div></p>
+<p>When checked → POST to <code>/api/v1/design/beam/torsion</code>. Results show equivalent forces. 3D renders closed stirrups (already supported).</p>
+<hr />
+<h4 id="b3-alternatives-panel-in-designview-task-519">B3. Alternatives Panel in DesignView (TASK-519)<a class="headerlink" href="#b3-alternatives-panel-in-designview-task-519" title="Permanent link">&para;</a></h4>
+<p>Collapsible section below results:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>▶ Alternatives (3 Pareto-optimal options)
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>● 300×500  3-20φ  78%  ₹1,250/m  ← current
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>○ 250×600  3-18φ  82%  ₹1,180/m  [Apply]
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>○ 350×450  4-18φ  71%  ₹1,320/m  [Apply]
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>Sort: [Cost ▼]  [Util]  [Steel]
+</code></pre></div></p>
+<p>"Apply" → <code>updateInputs()</code> → auto-design → live 3D update.</p>
+<hr />
+<h4 id="b4-dashboard-boq-card-task-517">B4. Dashboard BOQ Card (TASK-517)<a class="headerlink" href="#b4-dashboard-boq-card-task-517" title="Permanent link">&para;</a></h4>
+<p>Full-width BentoCard at bottom:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>┌─ Bill of Quantities ────────────────────────────────────────┐
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>│  Fe500: 4,250 kg  ₹2,55,000    M25: 12.3 m³  ₹73,800       │
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>│  By story: GF ████  1F ████  2F ████████████                │
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>│  Grand Total: ₹3,28,800                                     │
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>│  [📥 Export BOQ CSV]   [📕 Download PDF Summary]           │
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>└─────────────────────────────────────────────────────────────┘
+</code></pre></div></p>
+<hr />
+<h3 id="phase-c-micro-polish">Phase C: Micro-Polish<a class="headerlink" href="#phase-c-micro-polish" title="Permanent link">&para;</a></h3>
+<hr />
+<h4 id="c1-micro-animations-framer-motion-already-installed">C1. Micro-Animations (Framer Motion — already installed)<a class="headerlink" href="#c1-micro-animations-framer-motion-already-installed" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Animation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BeamDetailPanel slide-in</td>
+<td><code>x: 400 → 0</code>, spring, 300ms</td>
+</tr>
+<tr>
+<td>Result cards appear</td>
+<td>Staggered fade-in (0, 50, 100ms)</td>
+</tr>
+<tr>
+<td>Utilization bar</td>
+<td>Count-up 0 → actual %</td>
+</tr>
+<tr>
+<td>SAFE/FAIL badge</td>
+<td>Scale spring + colored glow</td>
+</tr>
+<tr>
+<td>Accordion expand</td>
+<td><code>height: 0 → auto</code></td>
+</tr>
+<tr>
+<td>Export download</td>
+<td>Button → spinner → checkmark</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="c2-design-input-presets">C2. Design Input Presets<a class="headerlink" href="#c2-design-input-presets" title="Permanent link">&para;</a></h4>
+<p>Dropdown at top of BeamForm (single-beam only):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Preset: [Custom ▼]
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>├── Plinth beam (230×300, M20, Mu=15)
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>├── Floor beam  (300×500, M25, Mu=120)
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>├── Transfer    (400×800, M30, Mu=450)
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>└── Custom
+</code></pre></div></p>
+<p>One click → fills all fields → auto-design triggers. Helps first-time users and repetitive check scenarios.</p>
+<hr />
+<h4 id="c3-print-styles-for-beamdetailpage">C3. Print Styles for BeamDetailPage<a class="headerlink" href="#c3-print-styles-for-beamdetailpage" title="Permanent link">&para;</a></h4>
+<p><code>Ctrl+P</code> on BeamDetailPage hides nav/buttons, formats clean report:
+- Header: <code>StructLib — IS 456:2000 Beam Design Report</code>
+- Full-width annotated cross-section SVG
+- Results table + IS 456 clause refs
+- Footer: version + date</p>
+<p>Tailwind <code>print:</code> modifier. No new CSS files.</p>
+<hr />
+<h4 id="c4-settings-panel-fixes-broken-topbar-button">C4. Settings Panel (fixes broken TopBar button)<a class="headerlink" href="#c4-settings-panel-fixes-broken-topbar-button" title="Permanent link">&para;</a></h4>
+<p>Slide-over panel (~60 lines). Shows:
+- API endpoint (editable, saves to localStorage)
+- App version
+- About / credits</p>
+<p>No new routes. No new API calls.</p>
+<hr />
+<h2 id="visual-system">Visual System<a class="headerlink" href="#visual-system" title="Permanent link">&para;</a></h2>
+<h3 id="colors-refined">Colors (refined)<a class="headerlink" href="#colors-refined" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Tailwind</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Util low (&lt; 75%)</td>
+<td><code>emerald-400</code></td>
+<td>Warmer green than green-500</td>
+</tr>
+<tr>
+<td>Util mid (75–90%)</td>
+<td><code>amber-400</code></td>
+<td>More readable than yellow-500</td>
+</tr>
+<tr>
+<td>Util high (&gt; 90%)</td>
+<td><code>rose-400</code></td>
+<td>Less alarming than red-500</td>
+</tr>
+<tr>
+<td>Util over (&gt; 100%)</td>
+<td><code>red-500 font-bold</code></td>
+<td>FAIL — intentionally alarming</td>
+</tr>
+<tr>
+<td>Card border</td>
+<td><code>white/6</code></td>
+<td>Subtler than current white/8</td>
+</tr>
+<tr>
+<td>Text secondary</td>
+<td><code>white/60</code></td>
+<td>Slightly lower than current white/70</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spacing-standard">Spacing Standard<a class="headerlink" href="#spacing-standard" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Padding</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compact card</td>
+<td><code>p-3</code></td>
+<td><code>gap-2</code></td>
+</tr>
+<tr>
+<td>Standard card</td>
+<td><code>p-4</code></td>
+<td><code>gap-3</code></td>
+</tr>
+<tr>
+<td>Page wrapper</td>
+<td><code>px-6 py-6</code></td>
+<td><code>space-y-6</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="implementation-priority">Implementation Priority<a class="headerlink" href="#implementation-priority" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Change</th>
+<th>Effort</th>
+<th>Impact</th>
+<th>Risk</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>A1: BeamDetailPanel in Editor</strong></td>
+<td>3–4h</td>
+<td>★★★★★ highest impact</td>
+<td>Low</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>A5: Activate FloatingDock</strong> — 10 lines</td>
+<td>30min</td>
+<td>★★★★ wow, free</td>
+<td>None</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>A6: Activate BentoGrid on Dashboard</strong></td>
+<td>2h</td>
+<td>★★★★ visual upgrade</td>
+<td>Low</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>A2: DesignView dynamic layout</strong></td>
+<td>2h</td>
+<td>★★★★ fixes viewport waste</td>
+<td>Low</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>A4: Cross-section annotations</strong></td>
+<td>3h</td>
+<td>★★★★ looks like real drawings</td>
+<td>Low</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>A7: Export dropdown in DesignView</strong></td>
+<td>1h</td>
+<td>★★★ engineers need this</td>
+<td>None</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>A8: TopBar badges + fix settings</strong></td>
+<td>2h</td>
+<td>★★★ professional context</td>
+<td>Low</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>A3: Smart Hub page</strong></td>
+<td>3h</td>
+<td>★★★ returning user UX</td>
+<td>Low</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>A9: Workflow breadcrumb</strong></td>
+<td>1h</td>
+<td>★★ batch flow clarity</td>
+<td>None</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>B1: Load calculator</strong></td>
+<td>1–2d</td>
+<td>★★★★ TASK-515 feature</td>
+<td>Med</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>B2: Torsion toggle</strong></td>
+<td>3h</td>
+<td>★★★ TASK-518</td>
+<td>Med</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>B3: Alternatives panel</strong></td>
+<td>1d</td>
+<td>★★★ TASK-519</td>
+<td>Med</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>B4: Dashboard BOQ</strong></td>
+<td>1d</td>
+<td>★★★ TASK-517</td>
+<td>Med</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>C1: Micro-animations</strong></td>
+<td>3h</td>
+<td>★★ polish</td>
+<td>Low</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>C2: Design presets</strong></td>
+<td>1h</td>
+<td>★★ first-time UX</td>
+<td>None</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>C3: Print styles</strong></td>
+<td>2h</td>
+<td>★★★ professional output</td>
+<td>None</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td>17</td>
+<td><strong>C4: Settings panel</strong></td>
+<td>1h</td>
+<td>★ fixes broken button</td>
+<td>None</td>
+<td>📋 TODO</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quick wins (already built, just wire up):</strong> FloatingDock + BentoGrid = ~2.5h total, major visual upgrade.</p>
+<hr />
+<h2 id="files-created-modified">Files Created / Modified<a class="headerlink" href="#files-created-modified" title="Permanent link">&para;</a></h2>
+<h3 id="phase-a-new-files">Phase A — New Files<a class="headerlink" href="#phase-a-new-files" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Lines</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>components/design/BeamDetailPanel.tsx</code></td>
+<td>Slide-in panel: 3D rebar + results + redesign + edit rebar + export</td>
+<td>~495</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>components/pages/HubPage.tsx</code></td>
+<td>Smart hub replacing ModeSelectPage</td>
+<td>~150</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td><code>components/ui/WorkflowBreadcrumb.tsx</code></td>
+<td>Batch flow step indicator</td>
+<td>~60</td>
+<td>📋 TODO</td>
+</tr>
+<tr>
+<td><code>components/ui/CompactResultsBar.tsx</code></td>
+<td>Single-line result summary bar</td>
+<td>~50</td>
+<td>✅ DONE (inline in DesignView)</td>
+</tr>
+<tr>
+<td><code>components/ui/ExportDropdown.tsx</code></td>
+<td>Unified export dropdown</td>
+<td>~60</td>
+<td>✅ DONE (inline in DesignView)</td>
+</tr>
+<tr>
+<td><code>components/ui/SettingsPanel.tsx</code></td>
+<td>Slide-over settings panel</td>
+<td>~60</td>
+<td>📋 TODO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-a-modified-files">Phase A — Modified Files<a class="headerlink" href="#phase-a-modified-files" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Change</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BuildingEditorPage.tsx</code></td>
+<td>Add BeamDetailPanel, split layout on beam select, removed old ChecksSidebar</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>App.tsx</code></td>
+<td>Mount FloatingDock (AppDock component)</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>DashboardPage.tsx</code></td>
+<td>BentoGrid layout, export in header</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>DesignView.tsx</code></td>
+<td>Dynamic layout, export dropdown, preset, empty state, CompactResultsBar</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>CrossSectionView.tsx</code></td>
+<td><code>ascRequired</code>, <code>barDia</code>, <code>barCount</code>, <code>utilization</code> props, color coding</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>Viewport3D.tsx</code></td>
+<td>Added <code>overrideDimensions</code> prop for non-store beams</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>fastapi_app/routers/imports.py</code></td>
+<td>Added <code>utilization_ratio</code> to <code>BatchDesignResult</code></td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td><code>TopBar.tsx</code></td>
+<td>Context badges, fix settings to SettingsPanel</td>
+<td>📋 TODO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-b-new-files-from-task-plan">Phase B — New Files (from TASK plan)<a class="headerlink" href="#phase-b-new-files-from-task-plan" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>components/design/LoadCalculatorPanel.tsx</code></td>
+<td>TASK-515</td>
+</tr>
+<tr>
+<td><code>components/design/AlternativesPanel.tsx</code></td>
+<td>TASK-519</td>
+</tr>
+<tr>
+<td><code>components/design/ProjectBOQPanel.tsx</code></td>
+<td>TASK-517</td>
+</tr>
+<tr>
+<td><code>hooks/useLoadAnalysis.ts</code></td>
+<td>TASK-515</td>
+</tr>
+<tr>
+<td><code>hooks/useTorsionDesign.ts</code></td>
+<td>TASK-518</td>
+</tr>
+<tr>
+<td><code>hooks/useParetoDesign.ts</code></td>
+<td>TASK-519</td>
+</tr>
+<tr>
+<td><code>hooks/useProjectBOQ.ts</code></td>
+<td>TASK-517</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

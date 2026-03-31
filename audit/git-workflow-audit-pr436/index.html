@@ -1,0 +1,2207 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/audit/git-workflow-audit-pr436/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Git Workflow Audit - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#git-workflow-audit" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Git Workflow Audit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-steps-tested" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Steps Tested
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#issues-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issues Found
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Issues Found">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issue-1-governance-limits-three-sources-of-truth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-1: Governance Limits — Three Sources of Truth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-2-index-format-mismatch-between-generator-and-checker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-2: Index Format Mismatch Between Generator and Checker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-3-phantom-scripts-in-automation-mapjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-3: Phantom Scripts in automation-map.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-4-gh-pr-merge-multi-line-body-breaks-zsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-4: gh pr merge Multi-Line Body Breaks zsh
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-5-finish_task_prsh-incomplete-merge-failure-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-5: finish_task_pr.sh — Incomplete Merge Failure Path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-6-pre-existing-ci-failures-not-distinguished-from-pr-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-6: Pre-Existing CI Failures Not Distinguished from PR Failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-7-safe_pushsh-ignores-fetch-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-7: safe_push.sh Ignores Fetch Failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-8-archive_old_filessh-references-nonexistent-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-8: archive_old_files.sh References Nonexistent Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-9-should_use_prsh-hardcoded-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-9: should_use_pr.sh Hardcoded Thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-10-recover_git_statesh-hardcoded-safe-files-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-10: recover_git_state.sh Hardcoded Safe Files List
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-11-check_scripts_indexpy-phantom-detection-uses-simple-string-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISSUE-11: check_scripts_index.py Phantom Detection Uses Simple String Split
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-steps-tested-pr-436" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Steps Tested (PR #436)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-worked-well" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Worked Well
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#script-health-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script Health Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#improvement-priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improvement Priorities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-results-post-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Results (post-fix)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="git-workflow-audit">Git Workflow Audit<a class="headerlink" href="#git-workflow-audit" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Audit
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> Approved
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-03-25
+<strong>Last Updated:</strong> 2026-03-25</p>
+<hr />
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p>Living audit of the git workflow. Originally based on PR #436 (TASK-500: Unified CLI + onboarding audit) which was deliberately used as a full workflow test. Now expanded with deep analysis of all 11 workflow scripts.</p>
+<p><strong>Scripts audited:</strong> <code>ai_commit.sh</code>, <code>safe_push.sh</code>, <code>create_task_pr.sh</code>, <code>finish_task_pr.sh</code>, <code>should_use_pr.sh</code>, <code>recover_git_state.sh</code>, <code>archive_old_files.sh</code>, <code>check_root_file_count.sh</code>, <code>check_governance.py</code>, <code>check_scripts_index.py</code>, <code>check_all.py</code></p>
+<hr />
+<h2 id="workflow-steps-tested">Workflow Steps Tested<a class="headerlink" href="#workflow-steps-tested" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tool/Script</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Branch creation</td>
+<td><code>create_task_pr.sh TASK-500</code></td>
+<td>✅ Worked (prior session)</td>
+</tr>
+<tr>
+<td>Incremental commits</td>
+<td><code>ai_commit.sh "type: message"</code></td>
+<td>✅ Worked (6 commits)</td>
+</tr>
+<tr>
+<td>CI pipeline (3 jobs)</td>
+<td>GitHub Actions</td>
+<td>❌ 3 failures on first push</td>
+</tr>
+<tr>
+<td>PR review comments</td>
+<td>GitHub Copilot review</td>
+<td>⚠️ 4 comments required fixes</td>
+</tr>
+<tr>
+<td>Fix + re-push</td>
+<td><code>ai_commit.sh</code></td>
+<td>✅ Worked</td>
+</tr>
+<tr>
+<td>CI re-run (all pass)</td>
+<td>GitHub Actions</td>
+<td>✅ All 6 checks green</td>
+</tr>
+<tr>
+<td>Squash merge</td>
+<td><code>gh pr merge 436 --squash</code></td>
+<td>✅ Merged</td>
+</tr>
+<tr>
+<td>Post-merge cleanup</td>
+<td>Manual <code>git checkout main</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>Branch deletion</td>
+<td><code>git branch -d task/TASK-500</code></td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="issues-found">Issues Found<a class="headerlink" href="#issues-found" title="Permanent link">&para;</a></h2>
+<h3 id="issue-1-governance-limits-three-sources-of-truth">ISSUE-1: Governance Limits — Three Sources of Truth<a class="headerlink" href="#issue-1-governance-limits-three-sources-of-truth" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> High
+<strong>Status:</strong> ✅ FIXED</p>
+<p>Root file count limits were defined in <strong>three different places</strong> with <strong>three different values</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Value Before Fix</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/guidelines/governance-limits.json</code></td>
+<td>16</td>
+<td>JSON config (canonical?)</td>
+</tr>
+<tr>
+<td><code>scripts/check_root_file_count.sh</code></td>
+<td>15</td>
+<td>CI bash check</td>
+</tr>
+<tr>
+<td><code>scripts/check_governance.py</code></td>
+<td>15 (hardcoded default)</td>
+<td>Python validator</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Root cause:</strong> When <code>AGENTS.md</code> and <code>CLAUDE.md</code> were added, only the JSON was bumped to 16, but the bash and Python scripts still had 15. When <code>run.sh</code> was added (file #17), all three disagreed.</p>
+<p><strong>Fixes applied:</strong>
+1. Set all three to 17 and added <code>run.sh</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code> to <code>allowed_files</code> whitelist (PR #436)
+2. Made <code>check_root_file_count.sh</code> read from <code>governance-limits.json</code> at runtime instead of hardcoding — now <code>governance-limits.json</code> is the single source of truth (post-merge fix)</p>
+<p><strong>Verified:</strong> <code>check_root_file_count.sh</code> ✅ PASS, <code>check_governance.py --structure</code> ✅ PASS (9/9)</p>
+<h3 id="issue-2-index-format-mismatch-between-generator-and-checker">ISSUE-2: Index Format Mismatch Between Generator and Checker<a class="headerlink" href="#issue-2-index-format-mismatch-between-generator-and-checker" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> High
+<strong>Status:</strong> ✅ FIXED (PR #436)</p>
+<p><code>generate_enhanced_index.py</code> produces <code>index.json</code> with a <code>files</code> array format, but <code>check_scripts_index.py</code> expected the old <code>categories → scripts</code> format. Updated <code>_load_indexed_scripts()</code> to support both formats.</p>
+<p><strong>Verified:</strong> <code>check_scripts_index.py</code> ✅ PASS (79/79 scripts covered)</p>
+<h3 id="issue-3-phantom-scripts-in-automation-mapjson">ISSUE-3: Phantom Scripts in automation-map.json<a class="headerlink" href="#issue-3-phantom-scripts-in-automation-mapjson" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Medium
+<strong>Status:</strong> ✅ FIXED</p>
+<p>Seven archived scripts were still listed in <code>automation-map.json</code>. Removed them in PR #436.</p>
+<p><strong>Additional fix:</strong> Updated <code>archive_old_files.sh</code> to replace stale reference to nonexistent <code>update_archive_index.py</code> with correct post-archive steps (<code>generate_enhanced_index.py</code> + <code>check_scripts_index.py</code>).</p>
+<h3 id="issue-4-gh-pr-merge-multi-line-body-breaks-zsh">ISSUE-4: <code>gh pr merge</code> Multi-Line Body Breaks zsh<a class="headerlink" href="#issue-4-gh-pr-merge-multi-line-body-breaks-zsh" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Low
+<strong>Status:</strong> Workaround documented</p>
+<p>Running <code>gh pr merge</code> with multi-line <code>--body</code> in zsh causes <code>dquote&gt;</code> prompt hang. Workaround: use single-line body with single quotes. Proper fix: always use <code>finish_task_pr.sh</code> (which doesn't have this problem since it uses <code>--body-file</code>).</p>
+<h3 id="issue-5-finish_task_prsh-incomplete-merge-failure-path">ISSUE-5: <code>finish_task_pr.sh</code> — Incomplete Merge Failure Path<a class="headerlink" href="#issue-5-finish_task_prsh-incomplete-merge-failure-path" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> High
+<strong>Status:</strong> ✅ FIXED</p>
+<p>When CI checks fail in <code>poll_pr_checks</code>, the script exited with <code>exit 1</code> without:
+- Switching back to main
+- Telling the user how to recover
+- Cleaning up state</p>
+<p><strong>Fix applied:</strong> Added recovery information and <code>git checkout main</code> on the failure path, with clear instructions for retry/manual-merge/close options.</p>
+<h3 id="issue-6-pre-existing-ci-failures-not-distinguished-from-pr-failures">ISSUE-6: Pre-Existing CI Failures Not Distinguished from PR Failures<a class="headerlink" href="#issue-6-pre-existing-ci-failures-not-distinguished-from-pr-failures" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Medium
+<strong>Status:</strong> Open (recommendation)</p>
+<p><code>check_all.py</code> shows 9 failures, but ALL are pre-existing on main:
+- <code>check_api.py --sync</code> (3 missing API symbols)
+- <code>generate_api_manifest.py</code> (pydantic import error)
+- <code>check_links.py</code> (9 broken doc links)
+- <code>check_tasks_format.py</code> (missing heading)
+- <code>check_architecture_boundaries.py</code> (2 violations)
+- <code>validate_imports.py</code> (293 Streamlit stub imports)
+- <code>check_openapi_snapshot.py</code> (stale snapshot)
+- <code>check_type_annotations.py</code> (missing annotations)</p>
+<p><strong>Recommendation:</strong> Add a <code>--baseline</code> mode to <code>check_all.py</code> that stores results and compares against them, reporting only <strong>new</strong> failures.</p>
+<h3 id="issue-7-safe_pushsh-ignores-fetch-failure">ISSUE-7: <code>safe_push.sh</code> Ignores Fetch Failure<a class="headerlink" href="#issue-7-safe_pushsh-ignores-fetch-failure" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> High
+<strong>Status:</strong> ✅ FIXED</p>
+<p><code>parallel_fetch_complete()</code> returns 1 on fetch failure, but the calling code at Step 5 did not check the return value. A failed fetch meant the commit could proceed without pulling the latest remote state.</p>
+<p><strong>Fix applied:</strong> Added <code>if ! parallel_fetch_complete; then</code> with warning message and log entry. Continues with local state (non-fatal) but clearly reports the issue.</p>
+<h3 id="issue-8-archive_old_filessh-references-nonexistent-script">ISSUE-8: <code>archive_old_files.sh</code> References Nonexistent Script<a class="headerlink" href="#issue-8-archive_old_filessh-references-nonexistent-script" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Medium
+<strong>Status:</strong> ✅ FIXED</p>
+<p>The "Next steps" message referenced <code>python scripts/update_archive_index.py</code> which does not exist. Users following the instructions would get a <code>No such file</code> error.</p>
+<p><strong>Fix applied:</strong> Replaced with correct commands: <code>generate_enhanced_index.py scripts/</code> and <code>check_scripts_index.py</code>.</p>
+<h3 id="issue-9-should_use_prsh-hardcoded-thresholds">ISSUE-9: <code>should_use_pr.sh</code> Hardcoded Thresholds<a class="headerlink" href="#issue-9-should_use_prsh-hardcoded-thresholds" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Low
+<strong>Status:</strong> Open (observation)</p>
+<p>All policy thresholds are hardcoded in the script:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">MINOR_LINES_THRESHOLD</span><span class="o">=</span><span class="m">50</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">MINOR_FILES_THRESHOLD</span><span class="o">=</span><span class="m">3</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">SUBSTANTIAL_LINES</span><span class="o">=</span><span class="m">150</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">MAJOR_LINES</span><span class="o">=</span><span class="m">500</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nv">STREAMLIT_MINOR_THRESHOLD</span><span class="o">=</span><span class="m">20</span>
+</code></pre></div></p>
+<p>These aren't in <code>governance-limits.json</code>. If thresholds change, the script requires manual editing.</p>
+<p><strong>Recommendation:</strong> Add a <code>pr_thresholds</code> section to <code>governance-limits.json</code> and have <code>should_use_pr.sh</code> read from it (same pattern as ISSUE-1 fix).</p>
+<h3 id="issue-10-recover_git_statesh-hardcoded-safe-files-list">ISSUE-10: <code>recover_git_state.sh</code> Hardcoded Safe Files List<a class="headerlink" href="#issue-10-recover_git_statesh-hardcoded-safe-files-list" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Low
+<strong>Status:</strong> Open (observation)</p>
+<p>The list of files safe for auto-merge resolution is hardcoded:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">SAFE_FILES</span><span class="o">=</span><span class="s2">&quot;docs/TASKS.md docs/SESSION_LOG.md docs/planning/next-session-brief.md&quot;</span>
+</code></pre></div></p>
+<p>Low impact since the list rarely changes, but violates the DRY principle.</p>
+<h3 id="issue-11-check_scripts_indexpy-phantom-detection-uses-simple-string-split">ISSUE-11: <code>check_scripts_index.py</code> Phantom Detection Uses Simple String Split<a class="headerlink" href="#issue-11-check_scripts_indexpy-phantom-detection-uses-simple-string-split" title="Permanent link">&para;</a></h3>
+<p><strong>Severity:</strong> Low
+<strong>Status:</strong> Open (observation)</p>
+<p>Phantom detection splits commands on whitespace and stops at the first <code>scripts/</code> match. Fails for multi-script commands like <code>"python3 scripts/a.py &amp;&amp; scripts/b.py"</code> — only extracts <code>a.py</code>, misses <code>b.py</code>.</p>
+<p>Current usage doesn't trigger this edge case, but a regex-based approach would be more robust.</p>
+<hr />
+<h2 id="workflow-steps-tested-pr-436">Workflow Steps Tested (PR #436)<a class="headerlink" href="#workflow-steps-tested-pr-436" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tool/Script</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Branch creation</td>
+<td><code>create_task_pr.sh TASK-500</code></td>
+<td>✅ Worked</td>
+</tr>
+<tr>
+<td>Incremental commits</td>
+<td><code>ai_commit.sh "type: message"</code></td>
+<td>✅ Worked (6 commits)</td>
+</tr>
+<tr>
+<td>CI pipeline (3 jobs)</td>
+<td>GitHub Actions</td>
+<td>❌ → ✅ (3 failures fixed)</td>
+</tr>
+<tr>
+<td>PR review comments</td>
+<td>GitHub Copilot review</td>
+<td>⚠️ 4 comments, all addressed</td>
+</tr>
+<tr>
+<td>Fix + re-push</td>
+<td><code>ai_commit.sh</code></td>
+<td>✅ Worked</td>
+</tr>
+<tr>
+<td>CI re-run (all pass)</td>
+<td>GitHub Actions</td>
+<td>✅ All 6 checks green</td>
+</tr>
+<tr>
+<td>Squash merge</td>
+<td><code>gh pr merge 436 --squash</code></td>
+<td>✅ Merged</td>
+</tr>
+<tr>
+<td>Post-merge cleanup</td>
+<td><code>git checkout main &amp;&amp; pull</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>Branch deletion</td>
+<td><code>git branch -d task/TASK-500</code></td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-worked-well">What Worked Well<a class="headerlink" href="#what-worked-well" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong><code>ai_commit.sh</code></strong> — Reliable for staging, committing, and pushing. No issues in 6 commits.</li>
+<li><strong>CI pipeline structure</strong> — Three parallel jobs (Docs, Scripts, Python+FastAPI) give fast feedback (~2 min).</li>
+<li><strong>Copilot code review</strong> — Caught real issues (unused parameter, missing error handling, misleading description).</li>
+<li><strong><code>check_all.py --serial</code></strong> — Great for local debugging. Clear category grouping and pass/fail summary.</li>
+<li><strong><code>check_governance.py</code></strong> — Most robust script in the suite. Loads config from JSON, deep merges overrides, good error reporting. 11 checks, 0 issues found.</li>
+<li><strong><code>check_scripts_index.py</code></strong> — Catches drift between scripts folder and documentation indexes.</li>
+<li><strong>Squash merge</strong> — Collapses 6 development commits into one clean merge commit.</li>
+</ol>
+<hr />
+<h2 id="script-health-summary">Script Health Summary<a class="headerlink" href="#script-health-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Issues</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check_governance.py</code></td>
+<td>0</td>
+<td>✅ Clean</td>
+<td>Best script — reads config, good error handling</td>
+</tr>
+<tr>
+<td><code>check_all.py</code></td>
+<td>0</td>
+<td>✅ Clean</td>
+<td>Works well, could benefit from <code>--baseline</code></td>
+</tr>
+<tr>
+<td><code>check_scripts_index.py</code></td>
+<td>1 low</td>
+<td>✅ Works</td>
+<td>Minor: string-split parsing for phantoms</td>
+</tr>
+<tr>
+<td><code>ai_commit.sh</code></td>
+<td>0</td>
+<td>✅ Clean</td>
+<td>Reliable commit workflow</td>
+</tr>
+<tr>
+<td><code>safe_push.sh</code></td>
+<td>1 high</td>
+<td>✅ Fixed</td>
+<td>Fetch failure now checked</td>
+</tr>
+<tr>
+<td><code>finish_task_pr.sh</code></td>
+<td>1 high</td>
+<td>✅ Fixed</td>
+<td>Recovery path now complete</td>
+</tr>
+<tr>
+<td><code>check_root_file_count.sh</code></td>
+<td>1 critical</td>
+<td>✅ Fixed</td>
+<td>Now reads governance JSON</td>
+</tr>
+<tr>
+<td><code>archive_old_files.sh</code></td>
+<td>1 medium</td>
+<td>✅ Fixed</td>
+<td>Stale reference removed</td>
+</tr>
+<tr>
+<td><code>create_task_pr.sh</code></td>
+<td>0</td>
+<td>✅ Clean</td>
+<td>Stash formatting not a real risk</td>
+</tr>
+<tr>
+<td><code>should_use_pr.sh</code></td>
+<td>1 low</td>
+<td>⚠️ Open</td>
+<td>Hardcoded thresholds</td>
+</tr>
+<tr>
+<td><code>recover_git_state.sh</code></td>
+<td>1 low</td>
+<td>⚠️ Open</td>
+<td>Hardcoded safe files list</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="improvement-priorities">Improvement Priorities<a class="headerlink" href="#improvement-priorities" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Issue</th>
+<th>Effort</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>Single source of truth for governance limits (ISSUE-1)</td>
+<td>Small</td>
+<td>Prevents config drift</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><code>safe_push.sh</code> fetch error handling (ISSUE-7)</td>
+<td>Small</td>
+<td>Prevents silent sync failure</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>P0</td>
+<td><code>finish_task_pr.sh</code> merge failure cleanup (ISSUE-5)</td>
+<td>Small</td>
+<td>Prevents stuck branches</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Remove stale <code>update_archive_index.py</code> ref (ISSUE-8)</td>
+<td>Small</td>
+<td>Prevents user confusion</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Baseline mode for <code>check_all.py</code> (ISSUE-6)</td>
+<td>Medium</td>
+<td>Saves 30+ min per PR for agents</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Move PR thresholds to governance JSON (ISSUE-9)</td>
+<td>Small</td>
+<td>Config centralization</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Regex phantom detection (ISSUE-11)</td>
+<td>Small</td>
+<td>Edge case only</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Centralize safe files list (ISSUE-10)</td>
+<td>Small</td>
+<td>Rarely changes</td>
+<td>Open</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="validation-results-post-fix">Validation Results (post-fix)<a class="headerlink" href="#validation-results-post-fix" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>check_root_file_count.sh  ✅ PASS (17/17, reads from governance-limits.json)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>check_governance.py       ✅ PASS (9/9 structure checks)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>check_scripts_index.py    ✅ PASS (79/79 scripts covered)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>check_all.py --serial     19/28 pass, 9 pre-existing failures (unchanged)
+</code></pre></div>
+<p>All 4 green categories: Governance (4/4), Git (3/3), Stale Refs (3/3), Streamlit (1/1).</p>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>11 issues found across 11 workflow scripts. <strong>7 fixed, 4 open</strong> (all low priority).</p>
+<p>The git workflow is <strong>functional and robust</strong> after these fixes. The remaining open items are quality-of-life improvements, not blockers. The single biggest remaining improvement would be a <code>--baseline</code> mode for <code>check_all.py</code> (ISSUE-6) to distinguish pre-existing failures from new ones.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

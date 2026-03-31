@@ -1,0 +1,46 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Database Tables for Editing and Display</title><meta name="Language" content="en-us" /><meta name="Microsoft.Help.Id" content="ae1f88ac-084d-45af-9a36-02d90e74af80" /><meta name="Description" content="Beginning with Version 18, ETABS includes a new set of database tables that allow significantly better interactive editing capability (similar to other CSI programs, such as SAP2000 and SAFE)." /><meta name="Microsoft.Help.ContentType" content="Concepts" /><meta name="BrandingAware" content="true" /><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>Database Tables for Editing and Display</h1></td></tr></table><span class="introStyle"></span> <div class="introduction"><p>
+				Beginning with Version 18, ETABS includes a new set of database tables that allow significantly better interactive editing capability
+				(similar to other CSI programs, such as SAP2000 and SAFE).
+				For API users who wish to take advantage of these interactive tables, a new class has been added, <span class="code">cDatabaseTables</span>.
+				It is recommended that API users first familiarize themselves with the new database tables using the ETABS GUI,
+				to understand how data can be requested, viewed, modified, and applied to the model.
+			</p><p>
+				Generally, you will start with a call to the API function <span class="code">GetAvailableTables</span>.
+				Then decide which tables you want to retrieve data from or edit and apply to the model.
+				Call <span class="code">GetAllFieldsInTable</span> to see which columns each table of interest has,
+				and which columns can be edited and imported.
+			</p><p>
+				To simply retrieve data, use one of the <span class="code">GetTableForDisplay...</span> functions.
+				Results can be obtained for the entire model or for a specified group to reduce the amount of data produced.
+				Functions are provided to set the Load Cases, Load Combinations, and Load Patterns for which data is desired.
+				Use the <span class="code">SetOutputOptionsForDisplay</span> function to set other options for display.
+			</p><p>
+				To edit a table and apply it the model, start by calling one of the <span class="code">GetTableForEditing...</span> functions.
+				This will retrieve the table data in one of several formats (array, CSV string, or CSV file).
+				You can then modify that data, but ensure that the format of the data is not altered.
+				In particular, you can add and delete rows, but the columns should not be changed.
+				After editing the table, send it back to the model using the respective <span class="code">SetTableForEditing...</span> function.
+				These functions only operate on one table at a time, but you can edit any number of tables by calling them successively.
+			</p><p>
+				Finally, call <span class="code">ApplyEditedTables</span> to actually apply the edited tables to the model.
+				Note that no changes are made to the model using the <span class="code">SetTableForEditing...</span> functions,
+				these simply build the list of tables to be processed when calling <span class="code">ApplyEditedTables</span>.
+				If for any reason you want to clear this internal list of edited tables instead of applying the changes,
+				call the <span class="code">CancelTableEditing</span> function.
+				Note that it is recommended that you work with groups of related tables and apply them all at once,
+				rather than editing and applying tables one at a time. This helps with data consistency and is also more efficient.
+			</p><p>
+				For thorough descriptions of database table operations,
+				please refer to the individual function documentation in <span class="code">cDatabaseTables</span>.
+				For detailed examples of database table interaction using the API, please see the Examples section.
+				For even more examples, please visit the CSI Wiki page at:
+				<a href="https://wiki.csiamerica.com" target="_blank" rel="noopener noreferrer">https://wiki.csiamerica.com</a>
+				and search for "database tables API".
+			</p></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script></div></body></html>

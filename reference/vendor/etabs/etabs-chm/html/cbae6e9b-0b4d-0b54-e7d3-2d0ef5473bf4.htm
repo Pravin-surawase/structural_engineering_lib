@@ -1,0 +1,142 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cDesignStrip.GetDesignStrip Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetDesignStrip method" /><meta name="System.Keywords" content="cDesignStrip.GetDesignStrip method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cDesignStrip.GetDesignStrip" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cDesignStrip.GetDesignStrip(System.String,System.String[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Boolean[]@)" /><meta name="Description" content="Retrieves the specified Design Strip" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="cbae6e9b-0b4d-0b54-e7d3-2d0ef5473bf4" /><meta name="guid" content="cbae6e9b-0b4d-0b54-e7d3-2d0ef5473bf4" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cDesignStrip<span id="LSTACFB2E75_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_0?cpp=::|nu=.");</script>GetDesignStrip Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves the specified Design Strip
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetDesignStrip</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Point</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">GlobalX</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">GlobalY</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">GlobalZ</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">WBLeft</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">WBRight</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">WALeft</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">WARight</span>,
+	<span class="keyword">ref</span> <span class="identifier">bool</span>[] <span class="parameter">AutoWiden</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetDesignStrip</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Point</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">GlobalX</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">GlobalY</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">GlobalZ</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">WBLeft</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">WBRight</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">WALeft</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">WARight</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">AutoWiden</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>()
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cDesignStrip</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">Point</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">GlobalX</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">GlobalY</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">GlobalZ</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">WBLeft</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">WBRight</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">WALeft</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">WARight</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">AutoWiden</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>()
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetDesignStrip</span>(<span class="parameter">Name</span>,
+	<span class="parameter">Point</span>, <span class="parameter">GlobalX</span>, <span class="parameter">GlobalY</span>, <span class="parameter">GlobalZ</span>,
+	<span class="parameter">WBLeft</span>, <span class="parameter">WBRight</span>, <span class="parameter">WALeft</span>, <span class="parameter">WARight</span>,
+	<span class="parameter">AutoWiden</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetDesignStrip</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Point</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">GlobalX</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">GlobalY</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">GlobalZ</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">WBLeft</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">WBRight</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">WALeft</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">WARight</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">bool</span>&gt;^% <span class="parameter">AutoWiden</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetDesignStrip</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">Point</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">GlobalX</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">GlobalY</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">GlobalZ</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">WBLeft</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">WBRight</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">WALeft</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">WARight</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">AutoWiden</span> : <span class="identifier">bool</span>[] <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing Design Strip
+ </dd><dt><span class="parameter">Point</span></dt><dd>Type: <span id="LSTACFB2E75_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_2?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_3?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTACFB2E75_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_4?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_5?cpp=%");</script><br />
+ The unique name of a point object along the polyline that defines the strip.
+ </dd><dt><span class="parameter">GlobalX</span></dt><dd>Type: <span id="LSTACFB2E75_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_6?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_7?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_8?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_9?cpp=%");</script><br />
+ The global X coordinate of the specified point object.
+ </dd><dt><span class="parameter">GlobalY</span></dt><dd>Type: <span id="LSTACFB2E75_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_10?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_11?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_12?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_13?cpp=%");</script><br />
+ The global Y coordinate of the specified point object.
+ </dd><dt><span class="parameter">GlobalZ</span></dt><dd>Type: <span id="LSTACFB2E75_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_14?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_15?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_16?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_17?cpp=%");</script><br />
+ The global Z coordinate of the specified point object.
+ </dd><dt><span class="parameter">WBLeft</span></dt><dd>Type: <span id="LSTACFB2E75_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_18?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_19?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_20?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_21?cpp=%");</script><br />
+ The strip width left just before the specified point.
+ </dd><dt><span class="parameter">WBRight</span></dt><dd>Type: <span id="LSTACFB2E75_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_22?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_23?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_24?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_25?cpp=%");</script><br />
+ The strip width right just before the specified point.
+ </dd><dt><span class="parameter">WALeft</span></dt><dd>Type: <span id="LSTACFB2E75_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_26?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_27?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_28?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_29?cpp=%");</script><br />
+ The strip width left just after the specified point.
+ </dd><dt><span class="parameter">WARight</span></dt><dd>Type: <span id="LSTACFB2E75_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_30?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_31?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTACFB2E75_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_32?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_33?cpp=%");</script><br />
+ The strip width right just after the specified point.
+ </dd><dt><span class="parameter">AutoWiden</span></dt><dd>Type: <span id="LSTACFB2E75_34"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_34?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.boolean" target="_blank" rel="noopener noreferrer">System<span id="LSTACFB2E75_35"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_35?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Boolean</a><span id="LSTACFB2E75_36"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_36?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTACFB2E75_37"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTACFB2E75_37?cpp=%");</script><br />
+ This is boolean indicating whether the Strip Width Option is set to Auto Widen Entire Strip (<span class="code">True</span>),
+  or User Specified Strip Segment Width (<span class="code">False</span>)
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the Design Strip is successfully retrieved,
+ otherwise it returns a nonzero value.
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+   <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+   <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+   <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+   <span class="highlight-keyword">Dim</span> Point <span class="highlight-keyword">as</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> GlobalX <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> GlobalY <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> GlobalZ <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> WBLeft <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> WBRight <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> WALeft <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> WARight <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> AutoWiden <span class="highlight-keyword">as</span> <span class="highlight-keyword">Boolean</span>()
+
+<span class="highlight-comment">'create ETABS object</span>
+   <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+   EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+<span class="highlight-comment">'start ETABS application</span>
+  ret = EtabsObject.ApplicationStart()
+
+<span class="highlight-comment">'create SapModel object</span>
+   SapModel = EtabsObject.SapModel
+
+<span class="highlight-comment">'initialize model</span>
+   ret = SapModel.InitializeNewModel()
+
+<span class="highlight-comment">'create steel deck template model</span>
+   ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>, <span class="highlight-number">12</span>, <span class="highlight-number">12</span>, <span class="highlight-number">4</span>, <span class="highlight-number">4</span>, <span class="highlight-number">24</span>, <span class="highlight-number">24</span>)
+
+<span class="highlight-comment">'define new Design Strip with name "MyDesignStrip1A" ; currently not available in API</span>
+
+<span class="highlight-comment">'get DesignStrip</span>
+    ret = SapModel.DesignConcreteSlab.DesignStrip.GetDesignStrip(<span class="highlight-literal">"MyDesignStrip1A"</span>, Point, GlobalX, GlobalY, GlobalZ, WBLeft, WBRight, WALeft, WARight, AutoWiden)
+
+<span class="highlight-comment">'close ETABS</span>
+   EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+<span class="highlight-comment">'clean up variables</span>
+   SapModel = <span class="highlight-keyword">Nothing</span>
+   EtabsObject = <span class="highlight-keyword">Nothing</span>
+
+<span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="a81b3f03-3ed3-5a32-06f5-af6bc3daf603.htm">cDesignStrip Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

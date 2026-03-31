@@ -1,0 +1,195 @@
+{
+  "folder": "docs",
+  "type": "documentation",
+  "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
+  "last_updated": "2026-03-29",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 254,
+      "last_updated": "2026-03-26",
+      "title": "Docs Index (Start Here)",
+      "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
+      "content_hash": "6ae88763c863"
+    },
+    {
+      "name": "SESSION_LOG.md",
+      "type": "documentation",
+      "size_lines": 10330,
+      "last_updated": "2026-03-28",
+      "title": "Session Log",
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Tested all 11 custom agents against real project tasks — overall score 8.7/10 (up from 8.2)",
+      "content_hash": "78c987f1c885"
+    },
+    {
+      "name": "TASKS.md",
+      "type": "documentation",
+      "size_lines": 158,
+      "last_updated": "2026-03-29",
+      "title": "Task Board",
+      "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
+      "content_hash": "09b9b970deb3"
+    },
+    {
+      "name": "WORKLOG.md",
+      "type": "documentation",
+      "size_lines": 76,
+      "last_updated": "2026-03-29",
+      "title": "Work Log",
+      "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
+      "content_hash": "5582e7fcf5a7"
+    },
+    {
+      "name": "docs-canonical.json",
+      "type": "config",
+      "last_updated": "2026-03-26",
+      "top_level_keys": [
+        "_comment",
+        "_updated",
+        "_usage",
+        "topics",
+        "naming_conventions",
+        "forbidden_patterns"
+      ],
+      "content_hash": "c3d8ef675908"
+    },
+    {
+      "name": "docs-index.json",
+      "type": "config",
+      "last_updated": "2026-03-26",
+      "top_level_keys": [
+        "version",
+        "generated",
+        "total_docs",
+        "docs",
+        "navigation"
+      ],
+      "content_hash": "c9ff74817023"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "adr",
+      "path": "adr/",
+      "file_count": 6,
+      "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later."
+    },
+    {
+      "name": "agents",
+      "path": "agents/",
+      "file_count": 22,
+      "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly."
+    },
+    {
+      "name": "architecture",
+      "path": "architecture/",
+      "file_count": 14,
+      "description": "Deep dives into project structure, design decisions, and system architecture."
+    },
+    {
+      "name": "audit",
+      "path": "audit/",
+      "file_count": 8
+    },
+    {
+      "name": "blog-drafts",
+      "path": "blog-drafts/",
+      "file_count": 7,
+      "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance."
+    },
+    {
+      "name": "contributing",
+      "path": "contributing/",
+      "file_count": 26,
+      "description": "Guides for developers and maintainers of the structural engineering library."
+    },
+    {
+      "name": "cookbook",
+      "path": "cookbook/",
+      "file_count": 5,
+      "description": "Task-focused recipes and code snippets for common structural engineering workflows."
+    },
+    {
+      "name": "developers",
+      "path": "developers/",
+      "file_count": 6,
+      "description": "> **For developers building on top of the structural_engineering_lib platform**"
+    },
+    {
+      "name": "getting-started",
+      "path": "getting-started/",
+      "file_count": 20,
+      "description": "Quick onboarding guides for new users of the structural engineering library."
+    },
+    {
+      "name": "git-automation",
+      "path": "git-automation/",
+      "file_count": 2
+    },
+    {
+      "name": "guidelines",
+      "path": "guidelines/",
+      "file_count": 17
+    },
+    {
+      "name": "guides",
+      "path": "guides/",
+      "file_count": 11,
+      "description": "End-user and developer guides for specific workflows."
+    },
+    {
+      "name": "images",
+      "path": "images/",
+      "file_count": 1,
+      "description": "This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams)."
+    },
+    {
+      "name": "learning",
+      "path": "learning/",
+      "file_count": 6,
+      "description": "A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the P"
+    },
+    {
+      "name": "legal",
+      "path": "legal/",
+      "file_count": 6,
+      "description": "Engineering certification templates and usage guidelines."
+    },
+    {
+      "name": "planning",
+      "path": "planning/",
+      "file_count": 48
+    },
+    {
+      "name": "publications",
+      "path": "publications/",
+      "file_count": 10,
+      "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineeri"
+    },
+    {
+      "name": "reference",
+      "path": "reference/",
+      "file_count": 1790
+    },
+    {
+      "name": "research",
+      "path": "research/",
+      "file_count": 2
+    },
+    {
+      "name": "specs",
+      "path": "specs/",
+      "file_count": 6,
+      "description": "Technical specifications for data formats and schemas."
+    },
+    {
+      "name": "verification",
+      "path": "verification/",
+      "file_count": 8,
+      "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
+    }
+  ],
+  "content_hash": "ef9ebe6dbcccb1c8"
+}

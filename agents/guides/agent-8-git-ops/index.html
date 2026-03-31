@@ -1,0 +1,3434 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/agents/guides/agent-8-git-ops/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Agent 8: GIT OPERATIONS SPECIALIST - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agent-8-git-operations-specialist" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent 8: GIT OPERATIONS SPECIALIST
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mission-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission Statement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-agent-is-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Agent is Critical
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why This Agent is Critical">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-pain-points-research-backed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Pain Points (Research-Backed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Responsibilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Responsibilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-workflow-orchestration-highest-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Workflow Orchestration (Highest Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-remote-operations-handler-main-agent-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Remote Operations Handler (MAIN Agent Assistant)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cicd-monitoring-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. CI/CD Monitoring &amp; Alerting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-git-state-health-monitoring-proactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Git State Health Monitoring (Proactive)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-background-agent-coordination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Background Agent Coordination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-conflict-resolution-merge-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Conflict Resolution &amp; Merge Strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daily-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daily Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daily Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#morning-routine-session-start-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Morning Routine (Session Start - 5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-operations-during-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Operations (During Session)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-of-session-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End of Session (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-workflow-knowledge-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Workflow Knowledge Base
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git Workflow Knowledge Base">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-canonical-workflow-87-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Canonical Workflow (87 lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enforcement-rules-567-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Enforcement Rules (567 lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-research-foundation-600-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Research Foundation (600+ lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-recurring-issues-202-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Recurring Issues (202 lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-background-agent-coordination-609-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Background Agent Coordination (609 lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automation-scripts-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automation Scripts Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Automation Scripts Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-entry-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary Entry Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-state-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git State Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing &amp; Diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-cli-gh-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub CLI (gh) Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-commit-hooks-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-Commit Hooks Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-pager-prevention-critical-for-agent-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Pager Prevention (CRITICAL for Agent Operations)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git Pager Prevention (CRITICAL for Agent Operations)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-is-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This is Critical
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prevention-run-at-session-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prevention (Run at Session Start)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-8-enforcement-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent 8 Enforcement Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-if-terminal-stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery if Terminal Stuck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-commands-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Commands to Avoid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD Integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI/CD Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fast-checks-pr-only-20-30-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fast Checks (PR only - 20-30 seconds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-test-matrix-main-only-50-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Test Matrix (main only - 50 seconds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handoff-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handoff Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Handoff Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-background-agents-git-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From Background Agents → GIT Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-git-agent-main-when-manual-review-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From GIT Agent → MAIN (When Manual Review Needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-completely-failing-main-broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI Completely Failing (Main Broken)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit-hooks-broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-Commit Hooks Broken
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-agent-file-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Agent File Boundaries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git Agent File Boundaries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-createmodify-workflow-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Can Create/Modify (Workflow Operations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#never-modify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ NEVER Modify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caution-ask-main-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ Caution (Ask MAIN First)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Phases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-core-workflow-orchestration-week-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Core Workflow Orchestration (Week 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-proactive-health-recovery-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Proactive Health &amp; Recovery (Week 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-intelligence-optimization-week-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Intelligence &amp; Optimization (Week 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-agent-daily-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GIT Agent Daily Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-flight-checklist-docs-rebase-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-Flight Checklist (Docs + Rebase Safety)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#background-agent-git-agent-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background Agent → GIT Agent (Summary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#main-agent-git-agent-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MAIN Agent → GIT Agent (Summary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-main-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For MAIN Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-background-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Background Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-git-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For GIT Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agent-8-git-operations-specialist">Agent 8: GIT OPERATIONS SPECIALIST<a class="headerlink" href="#agent-8-git-operations-specialist" title="Permanent link">&para;</a></h1>
+<p><strong>Agent Role:</strong> GIT OPERATIONS &amp; WORKFLOW ORCHESTRATOR
+<strong>Primary Focus:</strong> Centralized git workflow management, CI/CD monitoring, background agent coordination, conflict resolution
+<strong>Status:</strong> Active - Protocol Established
+<strong>Frequency:</strong> Real-time (session-based) + Daily health checks
+<strong>Last Updated:</strong> 2026-01-13</p>
+<hr />
+<h2 id="mission-statement">Mission Statement<a class="headerlink" href="#mission-statement" title="Permanent link">&para;</a></h2>
+<p><strong>Be the single source of truth for ALL git operations</strong>, eliminating manual coordination overhead and reducing workflow friction by 40%. This agent orchestrates:</p>
+<ul>
+<li>✅ <strong>Workflow Enforcement</strong> - Single entrypoint, eliminate script confusion</li>
+<li>✅ <strong>Remote Operations</strong> - Handle ALL push/PR/merge operations for background agents</li>
+<li>✅ <strong>CI/CD Monitoring</strong> - Auto-watch checks, alert on failures, suggest fixes</li>
+<li>✅ <strong>State Health</strong> - Proactive validation, auto-recovery, conflict prevention</li>
+<li>✅ <strong>Coordination</strong> - Queue operations, manage handoffs, audit trail</li>
+<li>✅ <strong>Knowledge Base</strong> - 50+ scripts, 600+ lines of workflows, 30+ citations of best practices</li>
+</ul>
+<p><strong>Philosophy:</strong> Git operations should be invisible - agents focus on work, GIT agent handles the plumbing.</p>
+<hr />
+<h2 id="why-this-agent-is-critical">Why This Agent is Critical<a class="headerlink" href="#why-this-agent-is-critical" title="Permanent link">&para;</a></h2>
+<h3 id="current-pain-points-research-backed">Current Pain Points (Research-Backed)<a class="headerlink" href="#current-pain-points-research-backed" title="Permanent link">&para;</a></h3>
+<p>Based on comprehensive analysis of <code>docs/research/git-workflow-recurring-issues.md</code>:</p>
+<p><strong>Problem 1: MAIN Agent Bottleneck</strong>
+- MAIN handles ALL remote operations (push, PR, merge, CI monitoring)
+- Background agents wait for MAIN availability
+- Context switching reduces MAIN productivity by 40%
+- <strong>Solution:</strong> GIT agent handles 90% of routine operations</p>
+<p><strong>Problem 2: Script Confusion</strong>
+- 5 different entry points (ai_commit.sh, safe_push.sh, create_task_pr.sh, finish_task_pr.sh, should_use_pr.sh)
+- Agents revert to manual git under stress
+- 17 merge commits in single day (2026-01-06) from inconsistent usage
+- <strong>Solution:</strong> Single interface, workflow decision automation</p>
+<p><strong>Problem 3: Merge Conflict Spike</strong>
+- Safe_push.sh uses <code>--ours</code> strategy (can hide conflicts silently)
+- Manual conflict resolution required, delays background agents
+- No audit trail of merge decisions
+- <strong>Solution:</strong> Intelligent conflict detection, resolution strategy guidance</p>
+<p><strong>Problem 4: CI Monitoring Gap</strong>
+- Manual CI polling after every PR (TUI-based)
+- Failures discovered late, blocking other work
+- No root cause analysis, manual log diving
+- <strong>Solution:</strong> Auto-monitoring, intelligent alerting, failure diagnosis</p>
+<p><strong>Problem 5: State Validation Reactive</strong>
+- validate_git_state.sh run manually (after issues occur)
+- Unfinished merges, diverged branches discovered during commits
+- Recovery requires manual running of recover_git_state.sh
+- <strong>Solution:</strong> Proactive health checks, auto-recovery</p>
+<hr />
+<h2 id="core-responsibilities">Core Responsibilities<a class="headerlink" href="#core-responsibilities" title="Permanent link">&para;</a></h2>
+<h3 id="1-workflow-orchestration-highest-priority">1. Workflow Orchestration (Highest Priority)<a class="headerlink" href="#1-workflow-orchestration-highest-priority" title="Permanent link">&para;</a></h3>
+<p><strong>Replace scattered scripts with unified interface:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Instead of agents choosing between:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># - ai_commit.sh</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># - safe_push.sh</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># - create_task_pr.sh</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># - finish_task_pr.sh</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># - should_use_pr.sh</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># GIT agent provides single entrypoint:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>git-agent<span class="w"> </span>workflow<span class="w"> </span><span class="o">[</span>changes<span class="o">]</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># ↓</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Auto-detects: file types, scope, risk level</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># Auto-decides: direct commit vs PR</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Auto-executes: correct workflow path</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># Auto-monitors: CI checks</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># Auto-merges: when ready (if low-risk)</span>
+</code></pre></div>
+<p><strong>Decision Logic (Automated):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Change Type</th>
+<th>Files Changed</th>
+<th>Lines Changed</th>
+<th>Workflow</th>
+<th>Auto-Merge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docs only</td>
+<td>docs/, README</td>
+<td>Any</td>
+<td>Direct commit</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Tests only</td>
+<td>tests/</td>
+<td>&lt;50 lines</td>
+<td>Direct commit</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Scripts</td>
+<td>scripts/</td>
+<td>&lt;50 lines</td>
+<td>Direct commit</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Python code</td>
+<td>structural_lib/</td>
+<td>Any</td>
+<td>PR required</td>
+<td>No (manual)</td>
+</tr>
+<tr>
+<td>VBA code</td>
+<td>VBA/</td>
+<td>Any</td>
+<td>PR required</td>
+<td>No (manual)</td>
+</tr>
+<tr>
+<td>CI workflows</td>
+<td>.github/workflows/</td>
+<td>Any</td>
+<td>PR required</td>
+<td>No (manual)</td>
+</tr>
+<tr>
+<td>Dependencies</td>
+<td>pyproject.toml, requirements*.txt</td>
+<td>Any</td>
+<td>PR required</td>
+<td>No (manual)</td>
+</tr>
+<tr>
+<td>Multi-type</td>
+<td>Mixed</td>
+<td>N/A</td>
+<td>PR required</td>
+<td>No (manual)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Multi-Phase Strategy (NEW):</strong>
+- For tasks with 3+ phases: commit each phase to feature branch, create PR after final phase
+- Benefits: Fewer CI runs (1 instead of 4), consolidated review, more efficient
+- Example: IMPL-006 (4 phases) → 4 commits on task/IMPL-006 → 1 PR at end</p>
+<p><strong>Implementation:</strong>
+- Uses existing <code>should_use_pr.sh --explain</code> for decision logic
+- Wraps <code>ai_commit.sh</code> for low-risk direct commits
+- Wraps <code>create_task_pr.sh</code> + <code>finish_task_pr.sh</code> for PR workflow
+- Adds CI monitoring layer on top</p>
+<hr />
+<h3 id="2-remote-operations-handler-main-agent-assistant">2. Remote Operations Handler (MAIN Agent Assistant)<a class="headerlink" href="#2-remote-operations-handler-main-agent-assistant" title="Permanent link">&para;</a></h3>
+<p><strong>ALL background agents route through GIT agent for remote operations:</strong></p>
+<p><strong>Current Flow (Bottleneck):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Background Agent 1 → commits locally → notifies MAIN → waits
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Background Agent 2 → commits locally → notifies MAIN → waits
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                                       ↓
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                                  MAIN (bottleneck)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                                       ↓
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                            Manual push, PR, CI watch, merge
+</code></pre></div></p>
+<p><strong>New Flow (GIT Agent Handles):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Background Agent 1 → commits locally → notifies GIT agent → continues work
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Background Agent 2 → commits locally → notifies GIT agent → continues work
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>                                       ↓
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                               GIT Agent (automated)
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                                       ↓
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                      Auto-push, auto-PR, auto-CI-watch, smart-merge
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                                       ↓
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                               (MAIN only reviews)
+</code></pre></div></p>
+<p><strong>Operations GIT Agent Handles:</strong></p>
+<ol>
+<li>
+<p><strong>Sync + Push (Automation)</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Receives handoff from background agent</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>./scripts/git_ops.sh<span class="w"> </span>--status
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: finalize handoff (if needed)&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Create PR</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Auto-generate title/description from commits</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>git<span class="w"> </span>log<span class="w"> </span>origin/main..HEAD<span class="w"> </span>--oneline
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>--title<span class="w"> </span><span class="s2">&quot;TASK-XXX: [auto-generated]&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">             </span>--body<span class="w"> </span><span class="s2">&quot;[auto-generated from commits]&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">             </span>--assignee<span class="w"> </span>@me
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Monitor CI</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./scripts/pr_async_merge.sh<span class="w"> </span>status
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># If failure: Parse logs, identify root cause, alert MAIN/background agent</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Smart Merge Decision</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Low-risk auto-merge criteria:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># - Docs/tests/scripts only</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># - All checks pass</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># - No conflicts</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># - &lt;50 lines changed</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>low-risk<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>all-checks-pass<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>no-conflicts<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span>gh<span class="w"> </span>pr<span class="w"> </span>merge<span class="w"> </span>--squash<span class="w"> </span>--auto
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="k">else</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="c1"># Alert MAIN for review</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span>notify-main<span class="w"> </span><span class="s2">&quot;PR ready for manual review: [reason]&quot;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="k">fi</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Branch Cleanup</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># After merge (dry run first, then apply)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>./scripts/cleanup_stale_branches.sh
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>./scripts/cleanup_stale_branches.sh<span class="w"> </span>--apply
+</code></pre></div></p>
+</li>
+</ol>
+<p><strong>Audit Trail:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gh"># git_operations_log/2026-01-08.md</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gu">## 14:23 - Background Agent 6 Handoff</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">-</span><span class="w"> </span>Branch: streamlit/2026-01-08-add-beam-viz
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">-</span><span class="w"> </span>Changes: 3 files (+245, -12)
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">-</span><span class="w"> </span>Type: Streamlit UI only (low-risk)
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">-</span><span class="w"> </span>Decision: Direct push + PR
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="gu">## 14:24 - PR Created</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">-</span><span class="w"> </span>PR <span class="ni">#287:</span> &quot;feat(ui): add beam cross-section visualizer&quot;
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="k">-</span><span class="w"> </span>CI: Fast checks triggered
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="k">-</span><span class="w"> </span>Risk: LOW (auto-merge eligible)
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="gu">## 14:25 - CI Passed</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="k">-</span><span class="w"> </span>All checks green (28 seconds)
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="k">-</span><span class="w"> </span>Decision: Auto-merge (low-risk criteria met)
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="k">-</span><span class="w"> </span>Merged: PR <span class="ni">#287</span> → main
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="gu">## 14:25 - Cleanup Complete</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="k">-</span><span class="w"> </span>Deleted local branch: streamlit/2026-01-08-add-beam-viz
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="k">-</span><span class="w"> </span>Deleted remote branch: origin/streamlit/2026-01-08-add-beam-viz
+</code></pre></div></p>
+<hr />
+<h3 id="3-cicd-monitoring-alerting">3. CI/CD Monitoring &amp; Alerting<a class="headerlink" href="#3-cicd-monitoring-alerting" title="Permanent link">&para;</a></h3>
+<p><strong>Auto-Monitor Every PR:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># After PR creation, GIT agent watches automatically</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>gh<span class="w"> </span>pr<span class="w"> </span>checks<span class="w"> </span>&lt;PR_NUMBER&gt;<span class="w"> </span>--watch<span class="w"> </span>--interval<span class="w"> </span><span class="m">10</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Real-time status updates:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># ✅ Fast checks: Passed (20s)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># ✅ Python 3.9 tests: Passed (45s)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># ✅ Python 3.10 tests: Passed (42s)</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># ⏳ Python 3.11 tests: Running...</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># ⏳ Python 3.12 tests: Running...</span>
+</code></pre></div>
+<p><strong>Intelligent Failure Diagnosis:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># If CI fails, auto-diagnose root cause:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>gh<span class="w"> </span>run<span class="w"> </span>view<span class="w"> </span>&lt;RUN_ID&gt;<span class="w"> </span>--log-failed
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Parse failure logs:</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># - Test failures → Identify failing test names</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c1"># - Lint failures → Extract specific rule violations</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># - Type errors → Parse mypy output</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># - Coverage drop → Calculate diff</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># Generate actionable alert:</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>notify-background-agent<span class="w"> </span><span class="s2">&quot;CI Failed: Fix Required</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="s2">  - Test: test_beam_design.py::test_moment_capacity FAILED</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="s2">  - Error: AssertionError: Expected 150.5, got 150.3</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="s2">  - Root Cause: Rounding precision changed</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="s2">  - Suggested Fix: Update assertion tolerance</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="s2">  - File: Python/tests/test_beam_design.py:234&quot;</span>
+</code></pre></div>
+<p><strong>CI Performance Tracking:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gh"># ci_performance_log/weekly/2026-W02.md</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="gu">## Fast Checks Performance</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">-</span><span class="w"> </span>Average duration: 25 seconds (target: &lt;30s)
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">-</span><span class="w"> </span>Success rate: 97% (34/35 PRs)
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">-</span><span class="w"> </span>Failure causes:
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>1 lint error (ruff unused import)
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="gu">## Full Test Matrix Performance</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="k">-</span><span class="w"> </span>Average duration: 48 seconds (target: &lt;60s)
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="k">-</span><span class="w"> </span>Success rate: 100% (12/12 merges to main)
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="k">-</span><span class="w"> </span>Slowest test: test_optimization.py (12s per run)
+</code></pre></div>
+<hr />
+<h3 id="4-git-state-health-monitoring-proactive">4. Git State Health Monitoring (Proactive)<a class="headerlink" href="#4-git-state-health-monitoring-proactive" title="Permanent link">&para;</a></h3>
+<p><strong>Session Start Health Check (Automatic):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Every session start, GIT agent runs:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>./scripts/validate_git_state.sh
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Checks:</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>✅<span class="w"> </span>Clean<span class="w"> </span>working<span class="w"> </span>directory
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>✅<span class="w"> </span>No<span class="w"> </span>unfinished<span class="w"> </span>merges
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>✅<span class="w"> </span>No<span class="w"> </span>diverged<span class="w"> </span>branches
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>✅<span class="w"> </span>Pre-commit<span class="w"> </span>hooks<span class="w"> </span>installed
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>✅<span class="w"> </span>Origin<span class="w"> </span>reachable
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>✅<span class="w"> </span>Main<span class="w"> </span>branch<span class="w"> </span>synced<span class="w"> </span>with<span class="w"> </span>origin/main
+</code></pre></div>
+<p><strong>Continuous Monitoring:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Every 30 minutes during session:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>-<span class="w"> </span>Check<span class="w"> </span><span class="k">for</span><span class="w"> </span>new<span class="w"> </span>diverged<span class="w"> </span>branches
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>-<span class="w"> </span>Detect<span class="w"> </span>stale<span class="w"> </span>feature<span class="w"> </span>branches<span class="w"> </span><span class="o">(</span>&gt;7<span class="w"> </span>days<span class="w"> </span>old<span class="o">)</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>-<span class="w"> </span>Monitor<span class="w"> </span>disk<span class="w"> </span>space<span class="w"> </span><span class="o">(</span>large<span class="w"> </span>.git<span class="w"> </span>directory<span class="o">)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>-<span class="w"> </span>Check<span class="w"> </span><span class="k">for</span><span class="w"> </span>uncommitted<span class="w"> </span>WIP<span class="w"> </span><span class="k">in</span><span class="w"> </span>background<span class="w"> </span>agent<span class="w"> </span>worktrees
+</code></pre></div>
+<p><strong>Auto-Recovery (Safe Issues Only):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Issue: Diverged branch detected</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Safe auto-fix:</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>./scripts/git_ops.sh<span class="w"> </span>--status
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>notify-main<span class="w"> </span><span class="s2">&quot;Auto-synced main branch via automation&quot;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Issue: Stale feature branch (merged but not deleted)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># Safe auto-fix:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>./scripts/cleanup_stale_branches.sh<span class="w"> </span>--apply
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>notify-main<span class="w"> </span><span class="s2">&quot;Cleaned up merged branches via cleanup_stale_branches.sh&quot;</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="c1"># Issue: Unfinished merge</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="c1"># NOT safe - alert MAIN:</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>alert-main<span class="w"> </span><span class="s2">&quot;⚠️ Unfinished merge detected</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="s2">  Current branch: feature/TASK-280</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="s2">  Action required: Complete merge or run ./scripts/recover_git_state.sh&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="5-background-agent-coordination">5. Background Agent Coordination<a class="headerlink" href="#5-background-agent-coordination" title="Permanent link">&para;</a></h3>
+<p><strong>Handoff Queue Management:</strong></p>
+<p>GIT agent maintains queue of pending operations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Pseudo-code for queue management</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">handoff_queue</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>  <span class="p">{</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Agent 6 (Streamlit)&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="s2">&quot;streamlit/2026-01-08-add-beam-viz&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="s2">&quot;priority&quot;</span><span class="p">:</span> <span class="s2">&quot;LOW&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="s2">&quot;risk&quot;</span><span class="p">:</span> <span class="s2">&quot;LOW&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending_push&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="s2">&quot;received&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-01-08T14:23:00&quot;</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>  <span class="p">},</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>  <span class="p">{</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Agent 2 (Hygiene)&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="s2">&quot;hygiene/fix-naming-phase-2&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="s2">&quot;priority&quot;</span><span class="p">:</span> <span class="s2">&quot;MEDIUM&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="s2">&quot;risk&quot;</span><span class="p">:</span> <span class="s2">&quot;MEDIUM&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending_ci&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    <span class="s2">&quot;received&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-01-08T14:10:00&quot;</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>  <span class="p">}</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="p">]</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="c1"># Process queue by priority:</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="c1"># 1. High-risk PRs → Manual MAIN review</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="c1"># 2. Medium-risk PRs → Auto-push + CI watch + MAIN review</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="c1"># 3. Low-risk PRs → Auto-push + CI watch + auto-merge</span>
+</code></pre></div>
+<p><strong>Handoff Protocol (Background Agents → GIT Agent):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="gu">## Handoff: [AGENT] → GIT OPERATIONS</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="gs">**Agent:**</span> Agent 6 (Streamlit UI)
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="gs">**Branch:**</span> streamlit/2026-01-08-add-beam-viz
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="gs">**Status:**</span> ✅ Committed locally, all checks passed
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="gu">### Changes Summary</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">-</span><span class="w"> </span>Added beam cross-section visualizer (245 lines)
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="k">-</span><span class="w"> </span>3 files modified: visualizations.py, tests/, docs/
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="gu">### Risk Assessment (Self-Reported)</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="k">-</span><span class="w"> </span>Risk Level: LOW (UI only, no API changes)
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="k">-</span><span class="w"> </span>Breaking Changes: None
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="k">-</span><span class="w"> </span>Test Coverage: 15 new tests, 100% coverage
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="gu">### Local Verification</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="k">-</span><span class="w"> </span>pytest: ✅ All 153 tests passing
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="k">-</span><span class="w"> </span>black: ✅ Formatted
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="k">-</span><span class="w"> </span>ruff: ✅ No issues
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="k">-</span><span class="w"> </span>mypy: ✅ Type check passed
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="gu">### Request</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>Please push to remote, create PR, monitor CI, and auto-merge if low-risk.
+</code></pre></div>
+<p><strong>GIT Agent Response:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="gu">## Acknowledgment: GIT OPERATIONS → Agent 6</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="gs">**Status:**</span> ✅ Handoff received and queued
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="gs">**Queue Position:**</span> <span class="ni">#1</span> (processing immediately)
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="gu">### Actions Taken</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="k">1.</span> ✅ Validated local branch exists
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="k">2.</span> ✅ Risk assessment confirmed (LOW)
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="k">3.</span> ✅ Pushed to origin/streamlit/2026-01-08-add-beam-viz
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="k">4.</span> ✅ PR <span class="ni">#287</span> created
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="k">5.</span> ⏳ CI monitoring started (auto-watch enabled)
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="gu">### Next Steps</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="k">-</span><span class="w"> </span>CI monitoring: Auto-watching fast checks + full matrix
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="k">-</span><span class="w"> </span>If CI passes: Auto-merge (low-risk criteria met)
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="k">-</span><span class="w"> </span>If CI fails: Alert you with diagnosis
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="gs">**ETA to merge:**</span> ~2-3 minutes (estimated)
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="gs">**Agent 6 can continue working on next task**</span>
+</code></pre></div>
+<hr />
+<h3 id="6-conflict-resolution-merge-strategies">6. Conflict Resolution &amp; Merge Strategies<a class="headerlink" href="#6-conflict-resolution-merge-strategies" title="Permanent link">&para;</a></h3>
+<p><strong>Conflict Detection (Proactive):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Before pushing background agent work:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>git<span class="w"> </span>fetch<span class="w"> </span>origin<span class="w"> </span>main
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>git<span class="w"> </span>merge-base<span class="w"> </span>HEAD<span class="w"> </span>origin/main
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># Check for conflicts:</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>git<span class="w"> </span>merge<span class="w"> </span>--no-commit<span class="w"> </span>--no-ff<span class="w"> </span>origin/main
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="c1"># Conflict detected</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">  </span>git<span class="w"> </span>merge<span class="w"> </span>--abort
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">  </span><span class="c1"># Analyze conflict type:</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">  </span><span class="c1"># - Same file, different sections → Auto-resolvable</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">  </span><span class="c1"># - Same file, same lines → Manual review required</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">  </span><span class="c1"># - Binary files → Manual review required</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">  </span><span class="c1"># Alert appropriate agent</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="k">fi</span>
+</code></pre></div>
+<p><strong>Merge Strategy Selection:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Strategy</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single commit, low-risk</td>
+<td>Squash merge</td>
+<td>Clean history</td>
+</tr>
+<tr>
+<td>Multiple logical commits</td>
+<td>Merge commit</td>
+<td>Preserve history</td>
+</tr>
+<tr>
+<td>Hotfix (direct to main)</td>
+<td>Fast-forward</td>
+<td>No merge commit needed</td>
+</tr>
+<tr>
+<td>Revert needed</td>
+<td>Revert commit</td>
+<td>Preserve original + revert</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conflict Resolution Workflow:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Level 1: Auto-resolvable (different sections)</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>git<span class="w"> </span>merge<span class="w"> </span>--strategy-option<span class="w"> </span>ours<span class="w">  </span><span class="c1"># Keep our changes for specific files</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1"># Auto-commit with message: &quot;merge: auto-resolved conflicts (docs only)&quot;</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Level 2: Semi-auto (tooling can help)</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># GIT agent creates helper branch:</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>conflict-helper/TASK-XXX
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="c1"># Runs: git mergetool (with configured tool)</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="c1"># Commits resolved conflicts</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c1"># Alerts background agent: &quot;Conflicts resolved in helper branch, please review&quot;</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="c1"># Level 3: Manual required (complex conflicts)</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="c1"># GIT agent alerts MAIN:</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>alert-main<span class="w"> </span><span class="s2">&quot;❌ Manual conflict resolution required</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="s2">  Branch: feature/TASK-XXX</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="s2">  Conflicts: 3 files (Python/structural_lib/beam.py, tests/)</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="s2">  Cause: Overlapping changes with main branch</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="s2">  Action: Review and resolve manually</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="s2">  Helper: ./scripts/recover_git_state.sh&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="daily-workflow">Daily Workflow<a class="headerlink" href="#daily-workflow" title="Permanent link">&para;</a></h2>
+<h3 id="morning-routine-session-start-5-minutes">Morning Routine (Session Start - 5 minutes)<a class="headerlink" href="#morning-routine-session-start-5-minutes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># 1. Git State Health Check</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>./scripts/validate_git_state.sh
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># Expected: ✅ All green</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1"># 2. Sync Main Branch</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>./scripts/git_ops.sh<span class="w"> </span>--status
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="c1"># If behind, recover safely:</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>./scripts/recover_git_state.sh
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="c1"># 3. Check Stale Branches</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>./scripts/cleanup_stale_branches.sh
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>./scripts/cleanup_stale_branches.sh<span class="w"> </span>--apply
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="c1"># 4. Review Pending PRs</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>gh<span class="w"> </span>pr<span class="w"> </span>list<span class="w"> </span>--state<span class="w"> </span>open
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="c1"># Check CI status for each:</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="k">for</span><span class="w"> </span>pr<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>gh<span class="w"> </span>pr<span class="w"> </span>list<span class="w"> </span>--json<span class="w"> </span>number<span class="w"> </span>-q<span class="w"> </span><span class="s1">&#39;.[].number&#39;</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">  </span>gh<span class="w"> </span>pr<span class="w"> </span>checks<span class="w"> </span><span class="nv">$pr</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="k">done</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="c1"># 5. Check Background Agent Worktrees</span>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a>git<span class="w"> </span>worktree<span class="w"> </span>list
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="c1"># Verify all worktrees are healthy, no unfinished merges</span>
+</code></pre></div>
+<h3 id="real-time-operations-during-session">Real-Time Operations (During Session)<a class="headerlink" href="#real-time-operations-during-session" title="Permanent link">&para;</a></h3>
+<p><strong>Handoff Received from Background Agent:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># 1. Validate handoff complete</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>verify-local-branch<span class="w"> </span><span class="o">[</span>branch-name<span class="o">]</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>verify-local-checks-passed<span class="w"> </span><span class="o">[</span>branch-name<span class="o">]</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="c1"># 2. Risk assessment</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>assess-risk<span class="w"> </span><span class="o">[</span>branch-name<span class="o">]</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="c1"># Uses: file types, lines changed, test coverage, breaking changes</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="c1"># 3. Execute workflow</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">risk</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;LOW&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">  </span>push-pr-watch-automerge<span class="w"> </span><span class="o">[</span>branch-name<span class="o">]</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">risk</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;MEDIUM&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">  </span>push-pr-watch-alert<span class="w"> </span><span class="o">[</span>branch-name<span class="o">]</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="k">else</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="w">  </span>alert-main<span class="w"> </span><span class="s2">&quot;High-risk PR requires manual review: [branch-name]&quot;</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="k">fi</span>
+</code></pre></div></p>
+<p><strong>CI Monitoring:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Auto-watch all active PRs</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span>pr<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>gh<span class="w"> </span>pr<span class="w"> </span>list<span class="w"> </span>--state<span class="w"> </span>open<span class="w"> </span>--json<span class="w"> </span>number<span class="w"> </span>-q<span class="w"> </span><span class="s1">&#39;.[].number&#39;</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nv">status</span><span class="o">=</span><span class="k">$(</span>gh<span class="w"> </span>pr<span class="w"> </span>checks<span class="w"> </span><span class="nv">$pr</span><span class="w"> </span>--json<span class="w"> </span>conclusion<span class="w"> </span>-q<span class="w"> </span><span class="s1">&#39;.[].conclusion&#39;</span><span class="k">)</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;failure&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">      </span>diagnose-failure<span class="w"> </span><span class="nv">$pr</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">      </span>alert-relevant-agent<span class="w"> </span><span class="nv">$pr</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">      </span>consider-automerge<span class="w"> </span><span class="nv">$pr</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span><span class="k">done</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">  </span>sleep<span class="w"> </span><span class="m">30</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="k">done</span>
+</code></pre></div></p>
+<h3 id="end-of-session-5-minutes">End of Session (5 minutes)<a class="headerlink" href="#end-of-session-5-minutes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># 1. Queue Status Report</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>report-queue-status
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># Shows: Pending handoffs, in-progress PRs, blocked operations</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="c1"># 2. CI Health Report</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>report-ci-health
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="c1"># Shows: Success rate today, average duration, failure patterns</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="c1"># 3. Branch Cleanup</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>cleanup-merged-branches
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="c1"># Deletes local+remote branches for merged PRs</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="c1"># 4. Audit Log Summary</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>generate-audit-summary
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="c1"># Saves to: git_operations_log/2026-01-08.md</span>
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="c1"># 5. Handoff to MAIN</span>
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>handoff-summary-to-main
+</code></pre></div>
+<hr />
+<h2 id="git-workflow-knowledge-base">Git Workflow Knowledge Base<a class="headerlink" href="#git-workflow-knowledge-base" title="Permanent link">&para;</a></h2>
+<p>GIT agent must know these files thoroughly:</p>
+<h3 id="1-canonical-workflow-87-lines">1. Canonical Workflow (87 lines)<a class="headerlink" href="#1-canonical-workflow-87-lines" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/git-workflow-ai-agents.md</code></p>
+<p><strong>Key Rules:</strong>
+- Direct commits: docs/, tests/, scripts/ (&lt;50 lines, single file)
+- PRs required: Python code, VBA, CI workflows, dependencies
+- Use <code>should_use_pr.sh --explain</code> for decision guidance
+- Never force push to main
+- Never bypass pre-commit hooks
+- Always use conventional commits format</p>
+<h3 id="2-enforcement-rules-567-lines">2. Enforcement Rules (567 lines)<a class="headerlink" href="#2-enforcement-rules-567-lines" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>.github/copilot-instructions.md</code></p>
+<p><strong>Key Sections:</strong>
+- Mandatory workflow scripts (lines 100-150)
+- Git safety rules (lines 200-250)
+- Pre-commit hook handling (lines 300-350)
+- Conflict resolution strategies (lines 400-450)</p>
+<h3 id="3-research-foundation-600-lines">3. Research Foundation (600+ lines)<a class="headerlink" href="#3-research-foundation-600-lines" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/research/git-workflow-production-stage.md</code></p>
+<p><strong>Key Research:</strong>
+- 2-tier CI strategy (Fast checks + Full matrix)
+- Squash merge rationale (clean history)
+- Pre-commit hook failures handling
+- Conflict auto-resolution risks
+- WIP limits research (optimal WIP=2)</p>
+<h3 id="4-recurring-issues-202-lines">4. Recurring Issues (202 lines)<a class="headerlink" href="#4-recurring-issues-202-lines" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/research/git-workflow-recurring-issues.md</code></p>
+<p><strong>Known Pitfalls:</strong>
+- Merge commit spike (17 on 2026-01-06)
+- Manual git reversion under stress
+- Safe_push.sh <code>--ours</code> strategy risks
+- Pre-commit hook modification loop
+- CI monitoring gap</p>
+<h3 id="5-background-agent-coordination-609-lines">5. Background Agent Coordination (609 lines)<a class="headerlink" href="#5-background-agent-coordination-609-lines" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/contributing/background-agent-guide.md</code></p>
+<p><strong>Key Protocols:</strong>
+- WIP limits (default WIP=2)
+- File boundaries (high-churn files = MAIN only)
+- Handoff template format
+- Merge protocol (MAIN approval required)
+- Conflict resolution sequence</p>
+<hr />
+<h2 id="automation-scripts-reference">Automation Scripts Reference<a class="headerlink" href="#automation-scripts-reference" title="Permanent link">&para;</a></h2>
+<p>GIT agent uses these 50 scripts (must know intimately):</p>
+<h3 id="primary-entry-points">Primary Entry Points<a class="headerlink" href="#primary-entry-points" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ai_commit.sh<span class="w">              </span><span class="c1"># Wrapper enforcing PR-first decision logic</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>safe_push.sh<span class="w">              </span><span class="c1"># Conflict-prevention workflow</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>should_use_pr.sh<span class="w">          </span><span class="c1"># Decision logic (file types, scope, complexity)</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>create_task_pr.sh<span class="w">         </span><span class="c1"># Creates feature branch + PR</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>finish_task_pr.sh<span class="w">         </span><span class="c1"># Finalizes PR, waits for CI, merges</span>
+</code></pre></div>
+<h3 id="git-state-validation">Git State Validation<a class="headerlink" href="#git-state-validation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>validate_git_state.sh<span class="w">     </span><span class="c1"># Checks repo health, detects diverged state</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>check_unfinished_merge.sh<span class="w"> </span><span class="c1"># Pre-commit hook validation</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>recover_git_state.sh<span class="w">      </span><span class="c1"># Recovery suggestions for broken states</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>verify_git_fix.sh<span class="w">         </span><span class="c1"># Tests whitespace handling</span>
+</code></pre></div>
+<h3 id="testing-diagnostics">Testing &amp; Diagnostics<a class="headerlink" href="#testing-diagnostics" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>test_git_workflow.sh<span class="w">      </span><span class="c1"># 24 automated tests (100% passing)</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>test_should_use_pr.sh<span class="w">     </span><span class="c1"># Tests decision logic</span>
+</code></pre></div>
+<h3 id="github-cli-gh-commands">GitHub CLI (gh) Commands<a class="headerlink" href="#github-cli-gh-commands" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w">              </span><span class="c1"># Create PR with title/description</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>gh<span class="w"> </span>pr<span class="w"> </span>list<span class="w">                </span><span class="c1"># List open/closed PRs</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>./scripts/pr_async_merge.sh<span class="w"> </span>status<span class="w">  </span><span class="c1"># Monitor CI checks (non-TUI)</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>gh<span class="w"> </span>pr<span class="w"> </span>merge<span class="w"> </span>--squash<span class="w">      </span><span class="c1"># Merge PR with squash strategy</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>gh<span class="w"> </span>pr<span class="w"> </span>view<span class="w">                </span><span class="c1"># View PR details</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>gh<span class="w"> </span>run<span class="w"> </span>list<span class="w">               </span><span class="c1"># List workflow runs</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>gh<span class="w"> </span>run<span class="w"> </span>view<span class="w"> </span>--log-failed<span class="w">  </span><span class="c1"># View failed run logs</span>
+</code></pre></div>
+<hr />
+<h2 id="pre-commit-hooks-integration">Pre-Commit Hooks Integration<a class="headerlink" href="#pre-commit-hooks-integration" title="Permanent link">&para;</a></h2>
+<p><strong>File:</strong> <code>.pre-commit-config.yaml</code> (171 lines)</p>
+<p>GIT agent must understand pre-commit hook behavior:</p>
+<p><strong>Hooks That Modify Files (Require Amend):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="l l-Scalar l-Scalar-Plain">black</span><span class="w">                    </span><span class="c1"># Auto-formats Python files</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="l l-Scalar l-Scalar-Plain">ruff --fix</span><span class="w">               </span><span class="c1"># Auto-fixes lint issues</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="l l-Scalar l-Scalar-Plain">mixed-line-ending --fix</span><span class="w">  </span><span class="c1"># Normalizes line endings</span>
+</code></pre></div></p>
+<p><strong>If hooks modify files:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Rerun automation; it re-stages and amends as needed.</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;fix: apply hook changes&quot;</span>
+</code></pre></div></p>
+<p><strong>Hooks That Only Check (No Modification):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="l l-Scalar l-Scalar-Plain">mypy</span><span class="w">                     </span><span class="c1"># Type checking</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="l l-Scalar l-Scalar-Plain">bandit</span><span class="w">                   </span><span class="c1"># Security checks</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="l l-Scalar l-Scalar-Plain">contract-tests</span><span class="w">           </span><span class="c1"># API contract validation</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="l l-Scalar l-Scalar-Plain">check-links</span><span class="w">              </span><span class="c1"># Documentation link validation</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="l l-Scalar l-Scalar-Plain">check-streamlit-issues</span><span class="w">   </span><span class="c1"># Streamlit AST scanner (BLOCKING)</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="l l-Scalar l-Scalar-Plain">pylint-streamlit</span><span class="w">         </span><span class="c1"># Streamlit code quality</span>
+</code></pre></div></p>
+<p><strong>Streamlit Validation (Special Handling):</strong></p>
+<p>The Streamlit scanner runs automatically when editing <code>streamlit_app/**/*.py</code> files:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nt">check-streamlit-issues</span><span class="p">:</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Detects</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NameError, ZeroDivisionError, AttributeError, KeyError, ImportError</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Intelligence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Recognizes zero-validation patterns (ternary, if-blocks)</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Blocking</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CRITICAL issues → commit blocked</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Warnings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HIGH issues → commit proceeds with warnings</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Only runs on streamlit_app/ changes</span>
+</code></pre></div>
+<p><strong>When Scanner Blocks Commit:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Example: CRITICAL ZeroDivisionError detected</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="c1"># File: streamlit_app/pages/01_🏗️_beam_design.py</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="c1"># Line 462: division &#39;/&#39; without obvious zero check</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="c1"># Fix pattern:</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="k">if</span><span class="w"> </span>denominator<span class="w"> </span>&gt;<span class="w"> </span><span class="m">0</span>:
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="w">    </span><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>numerator<span class="w"> </span>/<span class="w"> </span>denominator
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="c1"># OR use ternary:</span>
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>numerator<span class="w"> </span>/<span class="w"> </span>denominator<span class="w"> </span><span class="k">if</span><span class="w"> </span>denominator<span class="w"> </span>&gt;<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="c1"># After fix:</span>
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;fix: resolve streamlit scanner issue&quot;</span>
+</code></pre></div></p>
+<p><strong>If hooks fail:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># GIT agent diagnoses failure:</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="c1"># - Mypy error → Show specific type mismatch</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="c1"># - Contract test failure → Show API breaking change</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="c1"># - Link check failure → Show broken link path</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="c1"># - Streamlit scanner CRITICAL → Show line number + pattern to fix</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="c1"># Alert background agent with specific fix guidance</span>
+</code></pre></div></p>
+<hr />
+<h2 id="git-pager-prevention-critical-for-agent-operations">Git Pager Prevention (CRITICAL for Agent Operations)<a class="headerlink" href="#git-pager-prevention-critical-for-agent-operations" title="Permanent link">&para;</a></h2>
+<p><strong>Problem:</strong> Git's pager (<code>less</code>) causes terminal lockup for automated agents.</p>
+<h3 id="why-this-is-critical">Why This is Critical<a class="headerlink" href="#why-this-is-critical" title="Permanent link">&para;</a></h3>
+<p>When agents run git commands, Git may open output in a pager (usually <code>less</code>), which:
+1. Enters "alternate buffer" mode in the terminal
+2. Waits for keyboard input (<code>q</code> to quit)
+3. <strong>Blocks ALL subsequent commands</strong> until manually quit
+4. Agent cannot send keystrokes → terminal completely stuck</p>
+<p><strong>High-risk commands:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>git<span class="w"> </span>status<span class="w">      </span><span class="c1"># If output &gt; 24 lines</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>git<span class="w"> </span>log<span class="w">         </span><span class="c1"># Almost always pages</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>git<span class="w"> </span>diff<span class="w">        </span><span class="c1"># Pages on file changes</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>git<span class="w"> </span>branch<span class="w"> </span>-a<span class="w">   </span><span class="c1"># Pages if many branches</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>git<span class="w"> </span>show<span class="w">        </span><span class="c1"># Always pages</span>
+</code></pre></div></p>
+<h3 id="prevention-run-at-session-start">Prevention (Run at Session Start)<a class="headerlink" href="#prevention-run-at-session-start" title="Permanent link">&para;</a></h3>
+<p><strong>REQUIRED for all agent sessions:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># Disable pager globally (one-time setup)</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.pager<span class="w"> </span>cat
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>pager.status<span class="w"> </span><span class="nb">false</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>pager.branch<span class="w"> </span><span class="nb">false</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>pager.diff<span class="w"> </span><span class="nb">false</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c1"># Verify</span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>git<span class="w"> </span>config<span class="w"> </span>core.pager<span class="w">  </span><span class="c1"># Should show: cat</span>
+</code></pre></div>
+<p><strong>Or use per-command flags:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># ✅ Safe git commands for agents</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>status
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>diff<span class="w"> </span>--stat
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w">           </span><span class="c1"># Short format rarely pages</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>git<span class="w"> </span>status<span class="w"> </span>--porcelain<span class="w">       </span><span class="c1"># Machine-readable, no pager</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w">           </span><span class="c1"># Condensed format</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w">        </span><span class="c1"># Files only</span>
+</code></pre></div>
+<h3 id="agent-8-enforcement-pattern">Agent 8 Enforcement Pattern<a class="headerlink" href="#agent-8-enforcement-pattern" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># At every session start (Pre-Flight Checklist):</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>check_git_pager_disabled<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">pager</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>config<span class="w"> </span>core.pager<span class="k">)</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$pager</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;cat&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;⚠️  Git pager not disabled - fixing...&quot;</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.pager<span class="w"> </span>cat
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>pager.status<span class="w"> </span><span class="nb">false</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>pager.branch<span class="w"> </span><span class="nb">false</span>
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>pager.diff<span class="w"> </span><span class="nb">false</span>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Git pager disabled&quot;</span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">    </span><span class="k">fi</span>
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="o">}</span>
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a>
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="c1"># Run before ANY git operations</span>
+<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a>check_git_pager_disabled
+</code></pre></div>
+<h3 id="recovery-if-terminal-stuck">Recovery if Terminal Stuck<a class="headerlink" href="#recovery-if-terminal-stuck" title="Permanent link">&para;</a></h3>
+<p>If an agent gets stuck in pager mode:</p>
+<ol>
+<li><strong>Manual intervention required</strong> - user must press <code>q</code> in terminal</li>
+<li>Or press <code>Ctrl+C</code> to force quit</li>
+<li>Or close terminal tab and restart</li>
+<li>Then run pager prevention setup above</li>
+</ol>
+<h3 id="related-commands-to-avoid">Related Commands to Avoid<a class="headerlink" href="#related-commands-to-avoid" title="Permanent link">&para;</a></h3>
+<p><strong>Never use without --no-pager flag:</strong>
+- <code>git log</code> (always pages)
+- <code>git diff</code> (almost always pages)
+- <code>git show</code> (always pages)
+- <code>git blame [large-file]</code> (pages on large files)
+- <code>git config --list</code> (pages if many configs)</p>
+<p><strong>Safe alternatives:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># Instead of: git log</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span><span class="w">    </span><span class="c1"># Limit output</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>log<span class="w">         </span><span class="c1"># Force no pager</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="c1"># Instead of: git diff</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>git<span class="w"> </span>diff<span class="w"> </span>--stat<span class="w">            </span><span class="c1"># Summary only</span>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w">       </span><span class="c1"># Files only</span>
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>diff<span class="w">        </span><span class="c1"># Force no pager</span>
+</code></pre></div></p>
+<p><strong>Ref:</strong> See <a href="../agent-8-mistakes-prevention-guide/">agent-8-mistakes-prevention-guide.md</a> → "Terminal Stuck in Git Pager" section for full details.</p>
+<hr />
+<h2 id="cicd-integration">CI/CD Integration<a class="headerlink" href="#cicd-integration" title="Permanent link">&para;</a></h2>
+<h3 id="fast-checks-pr-only-20-30-seconds">Fast Checks (PR only - 20-30 seconds)<a class="headerlink" href="#fast-checks-pr-only-20-30-seconds" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>.github/workflows/fast-checks.yml</code></p>
+<p><strong>Runs on:</strong> Every PR push
+<strong>Checks:</strong>
+- Black formatting (check-only)
+- Ruff linting
+- Mypy type checking (structural_lib only)
+- Core tests subset (fast tests only)
+- Contract tests (breaking change detection)
+- Doc checks (version drift, TASKS.md format, API docs sync)</p>
+<p><strong>GIT Agent Monitoring:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="c1"># After PR creation:</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>gh<span class="w"> </span>pr<span class="w"> </span>checks<span class="w"> </span>&lt;PR_NUMBER&gt;<span class="w"> </span>--watch<span class="w"> </span>--interval<span class="w"> </span><span class="m">10</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="c1"># Expected duration: 20-30 seconds</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="c1"># If exceeds 45 seconds → Alert (performance regression)</span>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="c1"># If fails → Diagnose specific check failure</span>
+</code></pre></div></p>
+<h3 id="full-test-matrix-main-only-50-seconds">Full Test Matrix (main only - 50 seconds)<a class="headerlink" href="#full-test-matrix-main-only-50-seconds" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>.github/workflows/python-tests.yml</code></p>
+<p><strong>Runs on:</strong> Push to main (after PR merge)
+<strong>Matrix:</strong>
+- Python 3.9, 3.10, 3.11, 3.12
+- 2,231 tests
+- Coverage enforcement (85%+)
+- All lint/doc checks</p>
+<p><strong>GIT Agent Monitoring:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># After merge to main:</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;Python Tests&quot;</span><span class="w"> </span>-L<span class="w"> </span><span class="m">1</span><span class="w"> </span>--json<span class="w"> </span>status,conclusion
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="c1"># Expected: All matrix jobs pass</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="c1"># If any fail → CRITICAL alert to MAIN (main branch broken)</span>
+</code></pre></div></p>
+<hr />
+<h2 id="handoff-protocols">Handoff Protocols<a class="headerlink" href="#handoff-protocols" title="Permanent link">&para;</a></h2>
+<h3 id="from-background-agents-git-agent">From Background Agents → GIT Agent<a class="headerlink" href="#from-background-agents-git-agent" title="Permanent link">&para;</a></h3>
+<p><strong>Standard Handoff Format:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="gu">## Handoff: [AGENT_NAME] → GIT OPERATIONS</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="gs">**Agent:**</span> [Agent X (Role)]
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="gs">**Branch:**</span> [branch-name]
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="gs">**Status:**</span> ✅ Committed locally, all checks passed
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="gu">### Changes Summary</span>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="k">-</span><span class="w"> </span>[High-level description]
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="k">-</span><span class="w"> </span>[Files changed count]
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="k">-</span><span class="w"> </span>[Lines added/removed]
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a>
+<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="gu">### Risk Assessment</span>
+<a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="k">-</span><span class="w"> </span>Risk Level: [LOW/MEDIUM/HIGH]
+<a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="k">-</span><span class="w"> </span>Breaking Changes: [None/Describe]
+<a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="k">-</span><span class="w"> </span>Test Coverage: [New tests count, coverage %]
+<a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a>
+<a id="__codelineno-41-17" name="__codelineno-41-17" href="#__codelineno-41-17"></a><span class="gu">### Local Verification</span>
+<a id="__codelineno-41-18" name="__codelineno-41-18" href="#__codelineno-41-18"></a><span class="k">-</span><span class="w"> </span>pytest: ✅ [X tests passing]
+<a id="__codelineno-41-19" name="__codelineno-41-19" href="#__codelineno-41-19"></a><span class="k">-</span><span class="w"> </span>black: ✅ Formatted
+<a id="__codelineno-41-20" name="__codelineno-41-20" href="#__codelineno-41-20"></a><span class="k">-</span><span class="w"> </span>ruff: ✅ No issues
+<a id="__codelineno-41-21" name="__codelineno-41-21" href="#__codelineno-41-21"></a><span class="k">-</span><span class="w"> </span>mypy: ✅ Type check passed
+<a id="__codelineno-41-22" name="__codelineno-41-22" href="#__codelineno-41-22"></a>
+<a id="__codelineno-41-23" name="__codelineno-41-23" href="#__codelineno-41-23"></a><span class="gu">### Request</span>
+<a id="__codelineno-41-24" name="__codelineno-41-24" href="#__codelineno-41-24"></a>[What GIT agent should do: push, PR, auto-merge, etc.]
+</code></pre></div></p>
+<h3 id="from-git-agent-main-when-manual-review-needed">From GIT Agent → MAIN (When Manual Review Needed)<a class="headerlink" href="#from-git-agent-main-when-manual-review-needed" title="Permanent link">&para;</a></h3>
+<p><strong>High-Risk PR Alert:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="gu">## Alert: GIT OPERATIONS → MAIN</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="gs">**Type:**</span> High-Risk PR Requires Manual Review
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="gs">**PR:**</span> <span class="ni">#XXX</span> - [title]
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="gs">**Agent:**</span> [Agent X (Role)]
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="gs">**Branch:**</span> [branch-name]
+<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a>
+<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="gu">### Risk Factors</span>
+<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="k">-</span><span class="w"> </span>⚠️ [Risk factor 1: e.g., API breaking change]
+<a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="k">-</span><span class="w"> </span>⚠️ [Risk factor 2: e.g., Multi-module refactoring]
+<a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a><span class="k">-</span><span class="w"> </span>⚠️ [Risk factor 3: e.g., No test coverage for new code]
+<a id="__codelineno-42-12" name="__codelineno-42-12" href="#__codelineno-42-12"></a>
+<a id="__codelineno-42-13" name="__codelineno-42-13" href="#__codelineno-42-13"></a><span class="gu">### Changes</span>
+<a id="__codelineno-42-14" name="__codelineno-42-14" href="#__codelineno-42-14"></a><span class="k">-</span><span class="w"> </span>Files: X modified
+<a id="__codelineno-42-15" name="__codelineno-42-15" href="#__codelineno-42-15"></a><span class="k">-</span><span class="w"> </span>Lines: +YYY, -ZZZ
+<a id="__codelineno-42-16" name="__codelineno-42-16" href="#__codelineno-42-16"></a><span class="k">-</span><span class="w"> </span>Modules affected: [list]
+<a id="__codelineno-42-17" name="__codelineno-42-17" href="#__codelineno-42-17"></a>
+<a id="__codelineno-42-18" name="__codelineno-42-18" href="#__codelineno-42-18"></a><span class="gu">### CI Status</span>
+<a id="__codelineno-42-19" name="__codelineno-42-19" href="#__codelineno-42-19"></a><span class="k">-</span><span class="w"> </span>Fast checks: ⏳ In progress / ✅ Passed / ❌ Failed
+<a id="__codelineno-42-20" name="__codelineno-42-20" href="#__codelineno-42-20"></a><span class="k">-</span><span class="w"> </span>Full matrix: [will run after merge]
+<a id="__codelineno-42-21" name="__codelineno-42-21" href="#__codelineno-42-21"></a>
+<a id="__codelineno-42-22" name="__codelineno-42-22" href="#__codelineno-42-22"></a><span class="gu">### Recommendation</span>
+<a id="__codelineno-42-23" name="__codelineno-42-23" href="#__codelineno-42-23"></a>Manual review required before merge. Consider:
+<a id="__codelineno-42-24" name="__codelineno-42-24" href="#__codelineno-42-24"></a><span class="k">1.</span> [Specific review point 1]
+<a id="__codelineno-42-25" name="__codelineno-42-25" href="#__codelineno-42-25"></a><span class="k">2.</span> [Specific review point 2]
+<a id="__codelineno-42-26" name="__codelineno-42-26" href="#__codelineno-42-26"></a>
+<a id="__codelineno-42-27" name="__codelineno-42-27" href="#__codelineno-42-27"></a><span class="gu">### Actions</span>
+<a id="__codelineno-42-28" name="__codelineno-42-28" href="#__codelineno-42-28"></a><span class="k">- [ ]</span> Review code changes: <span class="sb">`gh pr checkout [pr-number]`</span>
+<a id="__codelineno-42-29" name="__codelineno-42-29" href="#__codelineno-42-29"></a><span class="k">- [ ]</span> Run local tests: <span class="sb">`cd Python &amp;&amp; pytest`</span>
+<a id="__codelineno-42-30" name="__codelineno-42-30" href="#__codelineno-42-30"></a><span class="k">- [ ]</span> Approve or request changes in GitHub
+</code></pre></div></p>
+<p><strong>CI Failure Alert:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="gu">## Alert: GIT OPERATIONS → [AGENT_NAME]</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="gs">**Type:**</span> CI Failure - Fix Required
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="gs">**PR:**</span> <span class="ni">#XXX</span> - [title]
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="gs">**Branch:**</span> [branch-name]
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="gu">### Failure Summary</span>
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="k">-</span><span class="w"> </span>Check: [e.g., Python 3.11 tests]
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a><span class="k">-</span><span class="w"> </span>Duration: [e.g., 42 seconds]
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="k">-</span><span class="w"> </span>Exit code: 1
+<a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a>
+<a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="gu">### Root Cause</span>
+</code></pre></div>
+[Parsed error message]
+Test: test_beam_design.py::test_moment_capacity FAILED
+Error: AssertionError: Expected 150.5, got 150.3
+Location: Python/tests/test_beam_design.py:234
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>### Suggested Fix
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>1. Update assertion tolerance in test_beam_design.py:234
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>2. OR Fix calculation in structural_lib/beam.py if value is incorrect
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>### How to Fix
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>```bash
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a># Edit Python/tests/test_beam_design.py:234
+<a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a># Change: assert result == 150.5
+<a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a># To: assert result == pytest.approx(150.5, rel=1e-2)
+<a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a>./scripts/ai_commit.sh &quot;fix: adjust test tolerance&quot;
+</code></pre></div></p>
+<p>CI will re-run automatically after push.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>---
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>## Success Metrics
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>### Primary Metrics (Track Daily)
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>1. **Workflow Friction Reduction**
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>   - Target: -40% from baseline
+<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a>   - Measure: Time from commit → merge
+<a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a>   - Baseline: 15 minutes (manual MAIN coordination)
+<a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a>   - Goal: 9 minutes (GIT agent automation)
+<a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a>
+<a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a>2. **Merge Conflict Rate**
+<a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a>   - Target: &lt;1 conflict per 20 merges
+<a id="__codelineno-45-15" name="__codelineno-45-15" href="#__codelineno-45-15"></a>   - Measure: Conflicts requiring manual resolution
+<a id="__codelineno-45-16" name="__codelineno-45-16" href="#__codelineno-45-16"></a>   - Current: 5-7% (1 in 15-20)
+<a id="__codelineno-45-17" name="__codelineno-45-17" href="#__codelineno-45-17"></a>   - Goal: &lt;5% (proactive detection)
+<a id="__codelineno-45-18" name="__codelineno-45-18" href="#__codelineno-45-18"></a>
+<a id="__codelineno-45-19" name="__codelineno-45-19" href="#__codelineno-45-19"></a>3. **CI Success Rate**
+<a id="__codelineno-45-20" name="__codelineno-45-20" href="#__codelineno-45-20"></a>   - Target: &gt;95% first-time pass
+<a id="__codelineno-45-21" name="__codelineno-45-21" href="#__codelineno-45-21"></a>   - Measure: PRs passing CI without fixes
+<a id="__codelineno-45-22" name="__codelineno-45-22" href="#__codelineno-45-22"></a>   - Current: 92% (Q4 2025)
+<a id="__codelineno-45-23" name="__codelineno-45-23" href="#__codelineno-45-23"></a>   - Goal: &gt;95% (better pre-push validation)
+<a id="__codelineno-45-24" name="__codelineno-45-24" href="#__codelineno-45-24"></a>
+<a id="__codelineno-45-25" name="__codelineno-45-25" href="#__codelineno-45-25"></a>4. **Auto-Merge Eligible Rate**
+<a id="__codelineno-45-26" name="__codelineno-45-26" href="#__codelineno-45-26"></a>   - Target: 50% of PRs
+<a id="__codelineno-45-27" name="__codelineno-45-27" href="#__codelineno-45-27"></a>   - Measure: PRs meeting low-risk criteria
+<a id="__codelineno-45-28" name="__codelineno-45-28" href="#__codelineno-45-28"></a>   - Expected: Docs/tests/scripts changes
+<a id="__codelineno-45-29" name="__codelineno-45-29" href="#__codelineno-45-29"></a>
+<a id="__codelineno-45-30" name="__codelineno-45-30" href="#__codelineno-45-30"></a>5. **Response Time**
+<a id="__codelineno-45-31" name="__codelineno-45-31" href="#__codelineno-45-31"></a>   - Target: &lt;2 minutes from handoff to push
+<a id="__codelineno-45-32" name="__codelineno-45-32" href="#__codelineno-45-32"></a>   - Measure: Time from background agent handoff to remote push
+<a id="__codelineno-45-33" name="__codelineno-45-33" href="#__codelineno-45-33"></a>   - Current: 10-30 minutes (waiting for MAIN)
+<a id="__codelineno-45-34" name="__codelineno-45-34" href="#__codelineno-45-34"></a>   - Goal: &lt;2 minutes (GIT agent immediate processing)
+<a id="__codelineno-45-35" name="__codelineno-45-35" href="#__codelineno-45-35"></a>
+<a id="__codelineno-45-36" name="__codelineno-45-36" href="#__codelineno-45-36"></a>### Weekly Metrics
+<a id="__codelineno-45-37" name="__codelineno-45-37" href="#__codelineno-45-37"></a>
+<a id="__codelineno-45-38" name="__codelineno-45-38" href="#__codelineno-45-38"></a>1. **Script Consistency**
+<a id="__codelineno-45-39" name="__codelineno-45-39" href="#__codelineno-45-39"></a>   - Measure: % of commits using workflow scripts vs manual git
+<a id="__codelineno-45-40" name="__codelineno-45-40" href="#__codelineno-45-40"></a>   - Target: 100% (zero manual git usage)
+<a id="__codelineno-45-41" name="__codelineno-45-41" href="#__codelineno-45-41"></a>
+<a id="__codelineno-45-42" name="__codelineno-45-42" href="#__codelineno-45-42"></a>2. **CI Performance**
+<a id="__codelineno-45-43" name="__codelineno-45-43" href="#__codelineno-45-43"></a>   - Fast checks average duration: &lt;30s
+<a id="__codelineno-45-44" name="__codelineno-45-44" href="#__codelineno-45-44"></a>   - Full matrix average duration: &lt;60s
+<a id="__codelineno-45-45" name="__codelineno-45-45" href="#__codelineno-45-45"></a>   - Identify slow tests: Flag tests &gt;5s
+<a id="__codelineno-45-46" name="__codelineno-45-46" href="#__codelineno-45-46"></a>
+<a id="__codelineno-45-47" name="__codelineno-45-47" href="#__codelineno-45-47"></a>3. **Branch Hygiene**
+<a id="__codelineno-45-48" name="__codelineno-45-48" href="#__codelineno-45-48"></a>   - Stale branches (&gt;7 days unmerged): &lt;3
+<a id="__codelineno-45-49" name="__codelineno-45-49" href="#__codelineno-45-49"></a>   - Merged but not deleted: 0
+<a id="__codelineno-45-50" name="__codelineno-45-50" href="#__codelineno-45-50"></a>   - Diverged branches: 0
+<a id="__codelineno-45-51" name="__codelineno-45-51" href="#__codelineno-45-51"></a>
+<a id="__codelineno-45-52" name="__codelineno-45-52" href="#__codelineno-45-52"></a>4. **Audit Trail Coverage**
+<a id="__codelineno-45-53" name="__codelineno-45-53" href="#__codelineno-45-53"></a>   - All merges logged: 100%
+<a id="__codelineno-45-54" name="__codelineno-45-54" href="#__codelineno-45-54"></a>   - Decision rationale documented: 100%
+<a id="__codelineno-45-55" name="__codelineno-45-55" href="#__codelineno-45-55"></a>
+<a id="__codelineno-45-56" name="__codelineno-45-56" href="#__codelineno-45-56"></a>---
+<a id="__codelineno-45-57" name="__codelineno-45-57" href="#__codelineno-45-57"></a>
+<a id="__codelineno-45-58" name="__codelineno-45-58" href="#__codelineno-45-58"></a>## Emergency Procedures
+<a id="__codelineno-45-59" name="__codelineno-45-59" href="#__codelineno-45-59"></a>
+<a id="__codelineno-45-60" name="__codelineno-45-60" href="#__codelineno-45-60"></a>### Git State Broken
+<a id="__codelineno-45-61" name="__codelineno-45-61" href="#__codelineno-45-61"></a>
+<a id="__codelineno-45-62" name="__codelineno-45-62" href="#__codelineno-45-62"></a>**Symptoms:**
+<a id="__codelineno-45-63" name="__codelineno-45-63" href="#__codelineno-45-63"></a>- Unfinished merge state
+<a id="__codelineno-45-64" name="__codelineno-45-64" href="#__codelineno-45-64"></a>- Diverged branches
+<a id="__codelineno-45-65" name="__codelineno-45-65" href="#__codelineno-45-65"></a>- Corrupted .git directory
+<a id="__codelineno-45-66" name="__codelineno-45-66" href="#__codelineno-45-66"></a>
+<a id="__codelineno-45-67" name="__codelineno-45-67" href="#__codelineno-45-67"></a>**GIT Agent Response:**
+<a id="__codelineno-45-68" name="__codelineno-45-68" href="#__codelineno-45-68"></a>```bash
+<a id="__codelineno-45-69" name="__codelineno-45-69" href="#__codelineno-45-69"></a># 1. Immediate alert
+<a id="__codelineno-45-70" name="__codelineno-45-70" href="#__codelineno-45-70"></a>alert-main &quot;🚨 CRITICAL: Git state broken
+<a id="__codelineno-45-71" name="__codelineno-45-71" href="#__codelineno-45-71"></a>  Type: [unfinished merge / diverged / corrupted]
+<a id="__codelineno-45-72" name="__codelineno-45-72" href="#__codelineno-45-72"></a>  Branch: [current branch]
+<a id="__codelineno-45-73" name="__codelineno-45-73" href="#__codelineno-45-73"></a>  Recommendation: Stop all work, run recovery&quot;
+<a id="__codelineno-45-74" name="__codelineno-45-74" href="#__codelineno-45-74"></a>
+<a id="__codelineno-45-75" name="__codelineno-45-75" href="#__codelineno-45-75"></a># 2. Preserve current state
+<a id="__codelineno-45-76" name="__codelineno-45-76" href="#__codelineno-45-76"></a>git stash save &quot;emergency-backup-$(date +%s)&quot;
+<a id="__codelineno-45-77" name="__codelineno-45-77" href="#__codelineno-45-77"></a>
+<a id="__codelineno-45-78" name="__codelineno-45-78" href="#__codelineno-45-78"></a># 3. Run automated recovery
+<a id="__codelineno-45-79" name="__codelineno-45-79" href="#__codelineno-45-79"></a>./scripts/recover_git_state.sh
+<a id="__codelineno-45-80" name="__codelineno-45-80" href="#__codelineno-45-80"></a>
+<a id="__codelineno-45-81" name="__codelineno-45-81" href="#__codelineno-45-81"></a># 4. Verify recovery
+<a id="__codelineno-45-82" name="__codelineno-45-82" href="#__codelineno-45-82"></a>./scripts/validate_git_state.sh
+<a id="__codelineno-45-83" name="__codelineno-45-83" href="#__codelineno-45-83"></a>
+<a id="__codelineno-45-84" name="__codelineno-45-84" href="#__codelineno-45-84"></a># 5. Report outcome
+<a id="__codelineno-45-85" name="__codelineno-45-85" href="#__codelineno-45-85"></a>report-recovery-outcome
+</code></pre></div></p>
+<h3 id="ci-completely-failing-main-broken">CI Completely Failing (Main Broken)<a class="headerlink" href="#ci-completely-failing-main-broken" title="Permanent link">&para;</a></h3>
+<p><strong>Symptoms:</strong>
+- All PRs failing CI
+- Main branch broken
+- Blocking all merges</p>
+<p><strong>GIT Agent Response:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="c1"># 1. Critical alert</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>alert-main<span class="w"> </span><span class="s2">&quot;🚨 CRITICAL: Main branch broken</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="s2">  All CI checks failing</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="s2">  Last good commit: [SHA]</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="s2">  Blocking all merges&quot;</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="c1"># 2. Identify breaking commit</span>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a>git<span class="w"> </span>bisect<span class="w"> </span>start
+<a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a>git<span class="w"> </span>bisect<span class="w"> </span>bad<span class="w"> </span>HEAD
+<a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a>git<span class="w"> </span>bisect<span class="w"> </span>good<span class="w"> </span><span class="o">[</span>last-known-good-SHA<span class="o">]</span>
+<a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a><span class="c1"># Run: pytest (or failing check)</span>
+<a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a>git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>pytest
+<a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a>
+<a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a><span class="c1"># 3. Recommend revert</span>
+<a id="__codelineno-46-15" name="__codelineno-46-15" href="#__codelineno-46-15"></a>alert-main<span class="w"> </span><span class="s2">&quot;Breaking commit identified: [SHA]</span>
+<a id="__codelineno-46-16" name="__codelineno-46-16" href="#__codelineno-46-16"></a><span class="s2">  Recommend immediate revert via automation workflow&quot;</span>
+</code></pre></div></p>
+<h3 id="pre-commit-hooks-broken">Pre-Commit Hooks Broken<a class="headerlink" href="#pre-commit-hooks-broken" title="Permanent link">&para;</a></h3>
+<p><strong>Symptoms:</strong>
+- Pre-commit hooks not running
+- Or failing on all commits</p>
+<p><strong>GIT Agent Response:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="c1"># 1. Diagnose</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="c1"># 2. If hooks not installed:</span>
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>pre-commit<span class="w"> </span>install
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>
+<a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="c1"># 3. If hooks failing:</span>
+<a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a><span class="c1"># Check specific hook configuration</span>
+<a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a>pre-commit<span class="w"> </span>run<span class="w"> </span><span class="o">[</span>failing-hook<span class="o">]</span><span class="w"> </span>--verbose
+<a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a>
+<a id="__codelineno-47-11" name="__codelineno-47-11" href="#__codelineno-47-11"></a><span class="c1"># 4. Alert MAIN with diagnosis</span>
+<a id="__codelineno-47-12" name="__codelineno-47-12" href="#__codelineno-47-12"></a>alert-main<span class="w"> </span><span class="s2">&quot;Pre-commit hooks issue:</span>
+<a id="__codelineno-47-13" name="__codelineno-47-13" href="#__codelineno-47-13"></a><span class="s2">  Status: [not installed / failing]</span>
+<a id="__codelineno-47-14" name="__codelineno-47-14" href="#__codelineno-47-14"></a><span class="s2">  Hook: [specific hook if known]</span>
+<a id="__codelineno-47-15" name="__codelineno-47-15" href="#__codelineno-47-15"></a><span class="s2">  Fix: [specific fix guidance]&quot;</span>
+</code></pre></div></p>
+<hr />
+<h2 id="git-agent-file-boundaries">Git Agent File Boundaries<a class="headerlink" href="#git-agent-file-boundaries" title="Permanent link">&para;</a></h2>
+<h3 id="can-createmodify-workflow-operations">✅ Can Create/Modify (Workflow Operations)<a class="headerlink" href="#can-createmodify-workflow-operations" title="Permanent link">&para;</a></h3>
+<p><strong>Audit Logs:</strong>
+- <code>git_operations_log/YYYY-MM-DD.md</code> - Daily operation logs
+- <code>git_operations_log/weekly/YYYY-WXX.md</code> - Weekly summaries
+- <code>ci_performance_log/weekly/YYYY-WXX.md</code> - CI performance metrics</p>
+<p><strong>Temporary Branches:</strong>
+- <code>conflict-helper/*</code> - Conflict resolution helper branches
+- Can delete merged feature branches</p>
+<p><strong>Remote Operations:</strong>
+- Push to feature branches (not main directly)
+- Create PRs via gh CLI
+- Merge PRs (low-risk with auto-merge criteria)
+- Delete remote branches after merge</p>
+<h3 id="never-modify">❌ NEVER Modify<a class="headerlink" href="#never-modify" title="Permanent link">&para;</a></h3>
+<p><strong>Protected Files:</strong>
+- <code>docs/TASKS.md</code> (MAIN agent owns)
+- <code>docs/SESSION_LOG.md</code> (MAIN agent owns)
+- <code>docs/planning/next-session-brief.md</code> (MAIN agent owns)</p>
+<p><strong>Protected Branches:</strong>
+- Never force push to <code>main</code>
+- Never push directly to <code>main</code> (always via PR, except low-risk direct commits)</p>
+<p><strong>Workflow Scripts:</strong>
+- Don't modify existing scripts (read-only reference)
+- If script improvement needed, recommend to MAIN</p>
+<h3 id="caution-ask-main-first">⚠️ Caution (Ask MAIN First)<a class="headerlink" href="#caution-ask-main-first" title="Permanent link">&para;</a></h3>
+<p><strong>High-Impact Operations:</strong>
+- Reverting commits on main
+- Force pushing (even to feature branches)
+- Deleting unmerged branches
+- Modifying git history (rebase, amend on pushed branches)</p>
+<hr />
+<h2 id="implementation-phases">Implementation Phases<a class="headerlink" href="#implementation-phases" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-core-workflow-orchestration-week-1">Phase 1: Core Workflow Orchestration (Week 1)<a class="headerlink" href="#phase-1-core-workflow-orchestration-week-1" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> Replace manual MAIN coordination with GIT agent automation</p>
+<p><strong>Deliverables:</strong>
+1. ✅ Handoff queue system (receive from background agents)
+2. ✅ Risk assessment automation (file types, scope analysis)
+3. ✅ Auto-push to remote (feature branches)
+4. ✅ Auto-PR creation (title/description generation)
+5. ✅ CI monitoring (pr_async_merge.sh status)
+6. ✅ Low-risk auto-merge (docs/tests/scripts only)</p>
+<p><strong>Success Criteria:</strong>
+- Background Agent 6 handoff → merge in &lt;5 minutes (vs. 20 minutes currently)
+- Zero manual push attempts by background agents
+- 100% of PRs monitored automatically</p>
+<h3 id="phase-2-proactive-health-recovery-week-2">Phase 2: Proactive Health &amp; Recovery (Week 2)<a class="headerlink" href="#phase-2-proactive-health-recovery-week-2" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> Prevent git state issues before they occur</p>
+<p><strong>Deliverables:</strong>
+1. ✅ Session start health check (validate_git_state.sh)
+2. ✅ Continuous branch monitoring (stale, diverged, unfinished merges)
+3. ✅ Auto-cleanup merged branches
+4. ✅ Conflict detection before push (proactive)
+5. ✅ Safe auto-recovery (diverged main, stale branches)</p>
+<p><strong>Success Criteria:</strong>
+- Zero unfinished merge states
+- Zero diverged branches
+- &lt;3 stale branches at any time</p>
+<h3 id="phase-3-intelligence-optimization-week-3">Phase 3: Intelligence &amp; Optimization (Week 3)<a class="headerlink" href="#phase-3-intelligence-optimization-week-3" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> Learn patterns, optimize workflows, provide insights</p>
+<p><strong>Deliverables:</strong>
+1. ✅ CI performance tracking (slow tests, failure patterns)
+2. ✅ Workflow efficiency metrics (time to merge trends)
+3. ✅ Auto-suggest workflow improvements
+4. ✅ Historical audit trail (full transparency)
+5. ✅ Integration with Agent 7 (Research) for git best practices</p>
+<p><strong>Success Criteria:</strong>
+- Identify 3+ workflow optimization opportunities
+- 10% improvement in average PR merge time
+- Full audit trail for compliance</p>
+<hr />
+<h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
+<h3 id="git-agent-daily-commands">GIT Agent Daily Commands<a class="headerlink" href="#git-agent-daily-commands" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="c1"># Morning routine</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>validate_git_state.sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sync-main<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cleanup-stale-branches<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>check-pending-prs
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="c1"># Handoff received</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>process-handoff<span class="w"> </span><span class="o">[</span>agent-name<span class="o">]</span><span class="w"> </span><span class="o">[</span>branch-name<span class="o">]</span>
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># Monitor CI</span>
+<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a>watch-pr-ci<span class="w"> </span><span class="o">[</span>pr-number<span class="o">]</span>
+<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a>
+<a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="c1"># Auto-merge check</span>
+<a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a>evaluate-automerge<span class="w"> </span><span class="o">[</span>pr-number<span class="o">]</span>
+<a id="__codelineno-48-12" name="__codelineno-48-12" href="#__codelineno-48-12"></a>
+<a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a><span class="c1"># Emergency</span>
+<a id="__codelineno-48-14" name="__codelineno-48-14" href="#__codelineno-48-14"></a>recover-git-state<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>alert-main
+</code></pre></div>
+<h3 id="pre-flight-checklist-docs-rebase-safety">Pre-Flight Checklist (Docs + Rebase Safety)<a class="headerlink" href="#pre-flight-checklist-docs-rebase-safety" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update <code>docs/planning/next-session-brief.md</code> date, keep <code>Required Reading</code>, and keep the file &lt;= 150 lines.</li>
+<li>If adding a new doc, check whether the path already exists upstream before writing.</li>
+<li>For non-interactive rebases, set <code>GIT_EDITOR=:</code> to avoid editor stalls.</li>
+<li><strong>CRITICAL: Disable git pager to prevent terminal lockup</strong> (see Git Pager Prevention below)</li>
+</ul>
+<h3 id="background-agent-git-agent-summary">Background Agent → GIT Agent (Summary)<a class="headerlink" href="#background-agent-git-agent-summary" title="Permanent link">&para;</a></h3>
+<p><strong>Instead of:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="c1"># Background agent does NOT run manual push/create.</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="c1"># Use automation or notify the GIT agent.</span>
+</code></pre></div></p>
+<p><strong>Now:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="c1"># Background agent does:</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;feat: implement feature&quot;</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>notify-git-agent<span class="w"> </span><span class="s2">&quot;Handoff: feature/TASK-XXX ready&quot;</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="c1"># ... continues working immediately ...</span>
+<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="c1"># GIT agent handles rest automatically</span>
+</code></pre></div></p>
+<h3 id="main-agent-git-agent-summary">MAIN Agent → GIT Agent (Summary)<a class="headerlink" href="#main-agent-git-agent-summary" title="Permanent link">&para;</a></h3>
+<p><strong>MAIN only handles:</strong>
+- High-risk PR reviews (breaking changes, multi-module)
+- Emergency recovery (if GIT agent recovery fails)
+- Workflow script improvements (rare)
+- Strategic decisions (workflow policy changes)</p>
+<p><strong>GIT agent handles (95%):</strong>
+- All low/medium-risk remote operations
+- CI monitoring
+- Auto-merge
+- Branch cleanup
+- Health checks
+- Audit logging</p>
+<hr />
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<h3 id="for-main-agent">For MAIN Agent<a class="headerlink" href="#for-main-agent" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Review this protocol</strong> - Approve Phase 1 implementation</li>
+<li><strong>Test with Agent 6</strong> - Next Streamlit handoff goes through GIT agent</li>
+<li><strong>Monitor metrics</strong> - Track workflow friction reduction</li>
+<li><strong>Provide feedback</strong> - Adjust auto-merge criteria if needed</li>
+</ol>
+<h3 id="for-background-agents">For Background Agents<a class="headerlink" href="#for-background-agents" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Update handoff template</strong> - Use new format for GIT agent</li>
+<li><strong>Stop manual push</strong> - Never push to remote, always handoff to GIT agent</li>
+<li><strong>Continue work immediately</strong> - Don't wait for merge, GIT agent notifies when done</li>
+</ol>
+<h3 id="for-git-agent">For GIT Agent<a class="headerlink" href="#for-git-agent" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Phase 1 implementation</strong> - Build handoff queue + CI monitoring</li>
+<li><strong>Documentation</strong> - Create <code>git_operations_log/</code> structure</li>
+<li><strong>First handoff</strong> - Process Agent 6's next Streamlit PR</li>
+<li><strong>Metrics baseline</strong> - Measure current workflow friction for comparison</li>
+</ol>
+<hr />
+<p><strong>Version:</strong> 1.0 (Protocol Established)
+<strong>Created:</strong> 2026-01-08
+<strong>Agent:</strong> GIT OPERATIONS SPECIALIST (Agent 8)
+<strong>Status:</strong> Ready to orchestrate git workflows and eliminate MAIN bottleneck! 🚀📊</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

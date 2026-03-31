@@ -1,0 +1,780 @@
+{
+  "folder": "docs/research",
+  "type": "documentation",
+  "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings.",
+  "last_updated": "2026-03-25",
+  "file_count": 83,
+  "files": [
+    {
+      "name": "3d-technology-deep-dive-research.md",
+      "type": "documentation",
+      "size_lines": 2430,
+      "last_updated": "2026-01-23",
+      "title": "3D Visualization Technology: Deep Dive Research",
+      "description": "> NOTE: Three.js source of truth is docs/research/threejs-visualization-source-of-truth.md. > This document is retained for historical context; avoid updating Three.js details here.",
+      "content_hash": "2692d2e0d8ff"
+    },
+    {
+      "name": "3d-visualization-differentiation-strategy.md",
+      "type": "documentation",
+      "size_lines": 318,
+      "last_updated": "2026-01-23",
+      "title": "3D Visualization Differentiation Strategy",
+      "description": "> \"The 3D view is just boxes. ETABS shows that too. Why will they use our product then?\" | Feature | ETABS | Our Value-Add |",
+      "content_hash": "cd45f0e18b67"
+    },
+    {
+      "name": "EXECUTIVE-SUMMARY.md",
+      "type": "documentation",
+      "size_lines": 274,
+      "last_updated": "2026-01-23",
+      "title": "🎯 BRAINSTORM COMPLETE — EXECUTIVE SUMMARY",
+      "description": "You asked: 1. Research a mathematical problem related to structural engineering automation",
+      "content_hash": "0b1cd0de2a25"
+    },
+    {
+      "name": "IMPLEMENTATION-DETAILED-PLAN.md",
+      "type": "documentation",
+      "size_lines": 624,
+      "last_updated": "2026-01-23",
+      "title": "Implementation Task Plan - Pareto Optimization MVP",
+      "description": "We're following a principle: **Build the simplest thing that works first.** 1. **Validator** = foundation (must work perfectly)",
+      "content_hash": "0c369dd00f4d"
+    },
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 169,
+      "last_updated": "2026-01-24",
+      "title": "Research Index",
+      "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings. > Use **Tags** to filter by topic, **Complexity** to gauge reading time.",
+      "content_hash": "be4e4308690e"
+    },
+    {
+      "name": "RESEARCH-JOURNEY-STATUS.md",
+      "type": "documentation",
+      "size_lines": 214,
+      "last_updated": "2026-01-23",
+      "title": "🎯 RESEARCH JOURNEY — Where We Are Now",
+      "description": "- Identified 6 actionable problems (mostly from your current library) - Ranked by impact × feasibility",
+      "content_hash": "e3f568c3f0d6"
+    },
+    {
+      "name": "RESEARCH-SUMMARY-AND-PLAN.md",
+      "type": "documentation",
+      "size_lines": 307,
+      "last_updated": "2026-01-23",
+      "title": "Research Summary & Mathematical Formulation",
+      "description": "> **Making the research simple + Converting to a solvable problem** - Option A: Cheapest beam (but a bit deeper)",
+      "content_hash": "b596f307b797"
+    },
+    {
+      "name": "UNSOLVED-PROBLEMS-RESEARCH.md",
+      "type": "documentation",
+      "size_lines": 390,
+      "last_updated": "2026-01-23",
+      "title": "🔬 RESEARCH: Unsolved & Hard Problems in Structural Engineering",
+      "description": "Engineers rarely design for ONE objective. Real constraints: - Minimize cost",
+      "content_hash": "204bc5136349"
+    },
+    {
+      "name": "agent-8-git-automation-comprehensive-research.md",
+      "type": "documentation",
+      "size_lines": 1192,
+      "last_updated": "2026-02-11",
+      "title": "Agent 8 & Git Automation: Comprehensive Research",
+      "description": "This document synthesizes **ALL internal research, documentation, and operational knowledge** about Agent 8 git automation and workflow systems. Based on analysis of: - **17 Agent 8 documents** (5 gui",
+      "content_hash": "7460070ae9ad"
+    },
+    {
+      "name": "agent-9-advanced-optimization-research.md",
+      "type": "documentation",
+      "size_lines": 353,
+      "last_updated": "2026-01-23",
+      "title": "Agent 9 Advanced Optimization Research",
+      "description": "This document analyzes three Agent 9 governance tasks for implementation: - **TASK-287:** Predictive Velocity Modeling",
+      "content_hash": "9dd74511524f"
+    },
+    {
+      "name": "agent-efficiency-research.md",
+      "type": "documentation",
+      "size_lines": 387,
+      "last_updated": "2026-01-23",
+      "title": "Agent Efficiency Research: Reducing Requests & Preventing Mistakes",
+      "description": "This session required **~40+ requests** to fix 129 test failures. Analysis shows most issues were: 1. **API signature mismatches** (tests calling functions with wrong args)",
+      "content_hash": "21c4bb86d701"
+    },
+    {
+      "name": "agent-repo-map-research.md",
+      "type": "documentation",
+      "size_lines": 263,
+      "last_updated": "2026-01-23",
+      "title": "Agent Repo Map Research",
+      "description": "Document the current repo layout, agent workflow entry points, automation scripts, and high-risk gaps so we do not repeat discovery work later. - Python/ - primary library source and tests.",
+      "content_hash": "877cba2be1e0"
+    },
+    {
+      "name": "agent-research-review-and-validation.md",
+      "type": "documentation",
+      "size_lines": 413,
+      "last_updated": "2026-01-23",
+      "title": "ChatGPT Agent Research Review & Validation",
+      "description": "- Comprehensive repo structure documentation - Critical risk identification (SESSION_LOG casing split)",
+      "content_hash": "89c943621da2"
+    },
+    {
+      "name": "ai-agent-effectiveness-research.md",
+      "type": "documentation",
+      "size_lines": 308,
+      "last_updated": "2026-01-23",
+      "title": "AI Agent Effectiveness Research: Current State & Improvements",
+      "description": "This project uses AI agents for **100% of code development and maintenance**. We have strong infrastructure, but agent effectiveness is still bottlenecked by knowledge freshness, context limits, and d",
+      "content_hash": "202591dfcc27"
+    },
+    {
+      "name": "ai-assistant-workspace-integration.md",
+      "type": "documentation",
+      "size_lines": 648,
+      "last_updated": "2026-01-23",
+      "title": "AI Assistant Workspace Integration — Research & Planning",
+      "description": "This document researches how to make the AI Assistant deeply integrated with the StructEng Streamlit workspace, giving it: 1. **Context awareness** - Understanding of the structural engineering librar",
+      "content_hash": "675124af1ca2"
+    },
+    {
+      "name": "ai-chat-architecture-v2.md",
+      "type": "documentation",
+      "size_lines": 430,
+      "last_updated": "2026-01-23",
+      "title": "AI Chat Architecture V2 — Streamlit Implementation",
+      "description": "This document defines the architecture for an AI-powered structural engineering chat interface using Streamlit. The goal is to create a ChatGPT-like experience where engineers can ask questions natura",
+      "content_hash": "f69b55668ed3"
+    },
+    {
+      "name": "ai-effective-usage-patterns.md",
+      "type": "documentation",
+      "size_lines": 231,
+      "last_updated": "2026-01-23",
+      "title": "Effective AI Usage Patterns for Structural Engineering",
+      "description": "This document captures research and best practices for effective AI integration in the StructEng AI Assistant. It covers model selection, prompt engineering, and usage patterns specific to structural ",
+      "content_hash": "6c6bb554da28"
+    },
+    {
+      "name": "ai-workspace-expansion-v2.md",
+      "type": "documentation",
+      "size_lines": 375,
+      "last_updated": "2026-01-23",
+      "title": "AI Workspace Expansion - Research & Architecture (V2)",
+      "description": "This document upgrades the AI assistant from a command executor into a structural engineering design editor with a dynamic, modern workspace. Key decisions: - Keep Streamlit as the shell, but moderniz",
+      "content_hash": "95001cc78865"
+    },
+    {
+      "name": "ai-workspace-expansion-v3.md",
+      "type": "documentation",
+      "size_lines": 806,
+      "last_updated": "2026-01-23",
+      "title": "AI Workspace Expansion - Research & Architecture (V3)",
+      "description": "We will keep the library as the primary strength and move the product UI to a premium, workspace-first shell built on React + React Three Fiber (R3F). The research confirms that premium feel will come",
+      "content_hash": "3d43c6538329"
+    },
+    {
+      "name": "api-design-pattern-analysis.md",
+      "type": "documentation",
+      "size_lines": 1594,
+      "last_updated": "2026-01-23",
+      "title": "API Design Pattern Analysis Report",
+      "description": "This report analyzes the current API design patterns in the structural engineering library and compares them against established patterns from professional scientific Python libraries (NumPy, SciPy, P",
+      "content_hash": "7ca6bc51b9c0"
+    },
+    {
+      "name": "api-integration-mistakes-analysis.md",
+      "type": "documentation",
+      "size_lines": 205,
+      "last_updated": "2026-01-24",
+      "title": "API Integration Mistakes Analysis - Root Cause and Prevention",
+      "description": "During Session 73, implementing FastAPI backend wrappers for structural_lib.api resulted in **7 failing tests** (29% failure rate) due to incorrect API parameter names and return type assumptions. Des",
+      "content_hash": "da236899f299"
+    },
+    {
+      "name": "automation-audit-readiness-research.md",
+      "type": "documentation",
+      "size_lines": 184,
+      "last_updated": "2026-01-24",
+      "title": "Automation Audit Readiness & CI Evidence Research",
+      "description": "✅ **Phase 1 — Evidence Baseline** (Complete) - Created docs/audit/ folder with audit-readiness.md and evidence-bundle-template.md",
+      "content_hash": "19d0205a50c2"
+    },
+    {
+      "name": "automation-gaps-manual-work-analysis.md",
+      "type": "documentation",
+      "size_lines": 425,
+      "last_updated": "2026-01-24",
+      "title": "Automation Gap Analysis & Manual Work Opportunities",
+      "description": "This research identifies manual workflows that can be automated to improve development velocity, reduce errors, and maintain quality standards. Analysis covers both existing automation gaps and opport",
+      "content_hash": "1afbb8adef5e"
+    },
+    {
+      "name": "autonomous-agent-workflow-research.md",
+      "type": "documentation",
+      "size_lines": 764,
+      "last_updated": "2026-02-11",
+      "title": "🔬 Autonomous Agent Workflow - Deep Research",
+      "description": " Agent writes code → User tests → Error found → User tells agent → Agent fixes → Repeat",
+      "content_hash": "31d24c1c5900"
+    },
+    {
+      "name": "background-agent-parallel-work.md",
+      "type": "documentation",
+      "size_lines": 699,
+      "last_updated": "2026-01-23",
+      "title": "Background Agent Parallel Work Research (2026-01-07)",
+      "description": "This research consolidates 12+ years of industry practices, academic research, and empirical findings on parallel agent coordination in software development. Key findings: 1. **Optimal WIP:** 2 concur",
+      "content_hash": "192cca17a3d0"
+    },
+    {
+      "name": "blogging-strategy-research.md",
+      "type": "documentation",
+      "size_lines": 1311,
+      "last_updated": "2026-01-23",
+      "title": "Blog Strategy Research for Structural Engineering Library",
+      "description": "This research document provides a comprehensive blogging strategy for the structural_engineering_lib project. The analysis synthesizes industry best practices from successful engineering blogs, techni",
+      "content_hash": "44a8809bc237"
+    },
+    {
+      "name": "brainstorm-research-opportunities.md",
+      "type": "documentation",
+      "size_lines": 468,
+      "last_updated": "2026-01-23",
+      "title": "IS 456 RC Beam Design — Research Opportunities Brainstorm",
+      "description": "This document identifies **12 strategic research directions** for extending the IS 456 RC Beam Design library beyond v0.16.6 (flexure/shear/ductile detailing core). Each opportunity is evaluated on **",
+      "content_hash": "0a9beeb8cd55"
+    },
+    {
+      "name": "calculation-report-generation-part2.md",
+      "type": "documentation",
+      "size_lines": 504,
+      "last_updated": "2026-01-23",
+      "title": "Calculation Report Generation - Part 2/2",
+      "description": "- ✅ Pure Python (no external deps) - ✅ Full Excel format support",
+      "content_hash": "ad85a562c55e"
+    },
+    {
+      "name": "chat-ui-product-strategy-research.md",
+      "type": "documentation",
+      "size_lines": 974,
+      "last_updated": "2026-01-23",
+      "title": "Chat UI & Product Strategy Research - Consolidated Findings",
+      "description": "> NOTE: Three.js source of truth is docs/research/threejs-visualization-source-of-truth.md. > Section 3 remains for historical context; avoid updating Three.js details here.",
+      "content_hash": "0a3cb46e1087"
+    },
+    {
+      "name": "colab-output-review.md",
+      "type": "documentation",
+      "size_lines": 33,
+      "last_updated": "2026-01-23",
+      "title": "Colab Output Review (v0.15)",
+      "description": "- colab_workflow.ipynb - docs/getting-started/colab-workflow.ipynb (synced to match root notebook)",
+      "content_hash": "567930dfe742"
+    },
+    {
+      "name": "critical-infrastructure-gaps-v018.md",
+      "type": "documentation",
+      "size_lines": 736,
+      "last_updated": "2026-01-23",
+      "title": "Critical Infrastructure Gap Analysis (Pre-v0.18.0)",
+      "description": "| # | Gap | Impact | Time to Fix | Time if Delayed | |---|-----|--------|-------------|-----------------|",
+      "content_hash": "b2e0f4393347"
+    },
+    {
+      "name": "design-editor-workflow.md",
+      "type": "documentation",
+      "size_lines": 408,
+      "last_updated": "2026-01-23",
+      "title": "Design Editor Workflow & UX Research",
+      "description": "This document researches the optimal workflow for structural engineers using the design editor. The current implementation has UX issues that prevent practical use. This research proposes a **unified ",
+      "content_hash": "d5a1a2422990"
+    },
+    {
+      "name": "doc-onb-01-02-consolidation-plan.md",
+      "type": "documentation",
+      "size_lines": 264,
+      "last_updated": "2026-01-23",
+      "title": "DOC-ONB-01/02 Guide Consolidation Plan",
+      "description": "| Guide | Lines | Purpose | Key Content | |-------|-------|---------|-------------|",
+      "content_hash": "1b065f637b7a"
+    },
+    {
+      "name": "documentation-handoff-analysis.md",
+      "type": "documentation",
+      "size_lines": 1130,
+      "last_updated": "2026-01-23",
+      "title": "Documentation & Agent Handoff Analysis",
+      "description": "> **Purpose:** Comprehensive audit of documentation quality and handoff mechanisms to ensure seamless knowledge transfer to new AI agents. > **Date:** 2026-01-06",
+      "content_hash": "277df6227780"
+    },
+    {
+      "name": "engineer-workflow-table-editor.md",
+      "type": "documentation",
+      "size_lines": 280,
+      "last_updated": "2026-01-23",
+      "title": "Engineer Workflow: Table Editor & 3D Visualization",
+      "description": "An engineer designing beams thinks in this flow: ",
+      "content_hash": "4f96b1d39506"
+    },
+    {
+      "name": "engineering-domain-apis.md",
+      "type": "documentation",
+      "size_lines": 1022,
+      "last_updated": "2026-01-23",
+      "title": "Engineering Domain API Patterns Research",
+      "description": "> **Research on domain-specific API patterns for structural engineering libraries** > Created: 2026-01-07 | Part of: API Improvement Research (TASK-205)",
+      "content_hash": "867bcaf13f8d"
+    },
+    {
+      "name": "enterprise-folder-structure-research.md",
+      "type": "documentation",
+      "size_lines": 343,
+      "last_updated": "2026-01-23",
+      "title": "Research: Enterprise Folder Structure for Multi-Code Structural Library",
+      "description": " structural_engineering_lib/",
+      "content_hash": "c3c7823256ae"
+    },
+    {
+      "name": "etabs-addin-integration.md",
+      "type": "documentation",
+      "size_lines": 240,
+      "last_updated": "2026-03-24",
+      "description": "An ETABS add-in can deliver the best in-app UX (one button inside ETABS) but requires confirmation that the ETABS add-in API is supported and stable across",
+      "content_hash": "ab2eb4e53264"
+    },
+    {
+      "name": "etabs-automation-integration.md",
+      "type": "documentation",
+      "size_lines": 274,
+      "last_updated": "2026-03-24",
+      "description": "Manual export (select table → export → convert → upload) is too slow for first-time users. The best user experience is **one-click connect** to a local ETABS instance,",
+      "content_hash": "f398b50587cf"
+    },
+    {
+      "name": "etabs-vba-export-macro.md",
+      "type": "documentation",
+      "size_lines": 148,
+      "last_updated": "2026-03-24",
+      "description": "While the bridge + add-in roadmap matures, a VBA macro gives us the fastest path to test imports, combos, and unit metadata. The macro runs entirely inside the",
+      "content_hash": "03c6b7d38a73"
+    },
+    {
+      "name": "etabs-vba-implementation-plan.md",
+      "type": "documentation",
+      "size_lines": 1206,
+      "last_updated": "2026-03-24",
+      "description": "This document provides comprehensive planning for implementing a production-ready VBA macro that exports ETABS data to our CSV schema. Focus areas: 1. **Performance:** Minimize API calls, batch operat",
+      "content_hash": "eaf8cd8c332f"
+    },
+    {
+      "name": "etabs-vba-questions-answered.md",
+      "type": "documentation",
+      "size_lines": 685,
+      "last_updated": "2026-03-24",
+      "description": "> 1. **Thanks. Please answer these questions, do more planning to make it efficient** > 2. **Find ways to do this faster in VBA, more control, and proper plan for errors, debug and find more points**",
+      "content_hash": "794a1bad9ea8"
+    },
+    {
+      "name": "fastapi-week3-review.md",
+      "type": "documentation",
+      "size_lines": 60,
+      "last_updated": "2026-01-24",
+      "title": "FastAPI Week 3 Implementation Review",
+      "description": "Reviewed Week 3 real-time features (PR #406) covering JWT auth, SSE streaming, WebSocket updates, and supporting tests/docs. Core functionality is present, but several wiring and dependency gaps reduc",
+      "content_hash": "d96b2fc663f3"
+    },
+    {
+      "name": "file-metadata-standards-research.md",
+      "type": "documentation",
+      "size_lines": 236,
+      "last_updated": "2026-01-23",
+      "title": "Research: File Metadata Standards for AI Agent Efficiency",
+      "description": "| Metric | Current | Target | |--------|---------|--------|",
+      "content_hash": "49cad3b97fae"
+    },
+    {
+      "name": "folder-cleanup-research.md",
+      "type": "documentation",
+      "size_lines": 320,
+      "last_updated": "2026-02-11",
+      "title": "Folder Cleanup & Maintenance Research",
+      "description": "> **Status:** Active Research | **Session:** 2026-01-10 Session 4 > **Purpose:** Define safe folder cleanup procedures, automation, and agent guidelines",
+      "content_hash": "45dbffbb0b32"
+    },
+    {
+      "name": "folder-restructuring-plan.md",
+      "type": "documentation",
+      "size_lines": 352,
+      "last_updated": "2026-01-23",
+      "title": "Folder Restructuring Plan",
+      "description": "> **Purpose:** Complete restructuring of project folders for cleaner organization > **Created:** 2026-01-11 (Session 7)",
+      "content_hash": "c1921e91549a"
+    },
+    {
+      "name": "fragment-api-restrictions-analysis.md",
+      "type": "documentation",
+      "size_lines": 627,
+      "last_updated": "2026-01-23",
+      "title": "Fragment API Restrictions Analysis",
+      "description": "1. Fix immediate issue (move theme toggle outside fragments) 2. Build fragment API validator",
+      "content_hash": "d30de064eab0"
+    },
+    {
+      "name": "hygiene-research-review.md",
+      "type": "documentation",
+      "size_lines": 423,
+      "last_updated": "2026-01-23",
+      "title": "Professional Standards & Hygiene Research Review",
+      "description": "All six Professional Standards & Hygiene research tasks have been completed to a high standard. Each document follows a consistent structure (Executive Summary, Methodology, Findings, Recommendations,",
+      "content_hash": "94b4ed92debf"
+    },
+    {
+      "name": "index-per-folder-efficiency-research.md",
+      "type": "documentation",
+      "size_lines": 2170,
+      "last_updated": "2026-01-23",
+      "title": "Index-Per-Folder Efficiency Research",
+      "description": "1. **Context Window Usage** - Tokens loaded per navigation task",
+      "content_hash": "01cc90ea74a1"
+    },
+    {
+      "name": "industry-cad-standards-bbs.md",
+      "type": "documentation",
+      "size_lines": 295,
+      "last_updated": "2026-01-23",
+      "title": "Industry CAD Standards for Structural Engineering Deliverables",
+      "description": "This document consolidates industry standards for structural engineering CAD deliverables, focusing on: 1. **Bar Bending Schedule (BBS)** format per IS 2502",
+      "content_hash": "d24b8f4ecdc8"
+    },
+    {
+      "name": "industry-report-practices.md",
+      "type": "documentation",
+      "size_lines": 191,
+      "last_updated": "2026-01-23",
+      "title": "Industry Report Practices Research",
+      "description": "Document industry-standard practices for structural engineering design reports to improve the compute_report() output quality. The current report.py module (1545 lines) generates HTML reports with:",
+      "content_hash": "d43c16d9b3b6"
+    },
+    {
+      "name": "input-flexibility-data-interchange-part1.md",
+      "type": "documentation",
+      "size_lines": 584,
+      "last_updated": "2026-01-23",
+      "title": "Input Flexibility & Data Interchange",
+      "description": "1. Multiple input formats (dict, dataclass, spreadsheet, ETABS export) 2. Progressive disclosure (simple → advanced)",
+      "content_hash": "ad47555661cf"
+    },
+    {
+      "name": "input-flexibility-data-interchange-part2.md",
+      "type": "documentation",
+      "size_lines": 501,
+      "last_updated": "2026-01-23",
+      "title": "Input Flexibility & Data Interchange - Part 2/3",
+      "description": "csv span_mm,width_mm,depth_mm,moment_knm,shear_kn,fck_mpa,fy_mpa",
+      "content_hash": "310128a78475"
+    },
+    {
+      "name": "input-flexibility-data-interchange-part3.md",
+      "type": "documentation",
+      "size_lines": 442,
+      "last_updated": "2026-01-23",
+      "title": "Input Flexibility & Data Interchange - Part 3/3",
+      "description": "python beam = BeamInput(",
+      "content_hash": "70aa8cf07ced"
+    },
+    {
+      "name": "library-refactoring-strategy.md",
+      "type": "documentation",
+      "size_lines": 716,
+      "last_updated": "2026-01-23",
+      "title": "Library Refactoring Strategy: Framework-Agnostic Core",
+      "description": "This document represents a **complete deep audit** of the library refactoring strategy. After comprehensive analysis of: - **79 library Python files** (~32,892 lines)",
+      "content_hash": "ccbcb596d06a"
+    },
+    {
+      "name": "live-3d-visualization-architecture.md",
+      "type": "documentation",
+      "size_lines": 3300,
+      "last_updated": "2026-01-23",
+      "title": "Live 3D Visualization Architecture - Technical Deep Dive",
+      "description": "> NOTE: Three.js source of truth is docs/research/threejs-visualization-source-of-truth.md. > This document is retained for historical context; avoid updating Three.js details here.",
+      "content_hash": "0700564086a2"
+    },
+    {
+      "name": "lod-threshold-validation.md",
+      "type": "documentation",
+      "size_lines": 403,
+      "last_updated": "2026-01-23",
+      "title": "LOD Threshold Validation Research",
+      "description": "- Typical small building: 100-300 beams - Typical large building: 300-800 beams",
+      "content_hash": "d6af005e1264"
+    },
+    {
+      "name": "metadata-migration-strategy.md",
+      "type": "documentation",
+      "size_lines": 159,
+      "last_updated": "2026-01-23",
+      "title": "Metadata Migration Strategy",
+      "description": "- 302 docs total (non-archive) - 75 docs migrated (25%)",
+      "content_hash": "b02517c0a713"
+    },
+    {
+      "name": "product-strategy-followup.md",
+      "type": "documentation",
+      "size_lines": 91,
+      "last_updated": "2026-01-23",
+      "title": "Product Strategy Follow-up - Detailed Answers",
+      "description": "1. Columns & Slabs Expansion Strategy 2. 3D Visualization Layout & Architecture",
+      "content_hash": "8814e6f89ad0"
+    },
+    {
+      "name": "professional-api-patterns.md",
+      "type": "documentation",
+      "size_lines": 627,
+      "last_updated": "2026-01-23",
+      "title": "Professional Python Library API Patterns Research",
+      "description": "This document analyzes API design patterns from top-tier Python libraries (NumPy, SciPy, Pandas, Requests, Pydantic, Scikit-learn) to establish professional standards for structural_engineering_lib. T",
+      "content_hash": "c26e4c97f8c8"
+    },
+    {
+      "name": "pyvista-evaluation.md",
+      "type": "documentation",
+      "size_lines": 344,
+      "last_updated": "2026-01-23",
+      "title": "PyVista Evaluation for CAD-Quality 3D Visualization",
+      "description": "PyVista offers superior CAD-quality rendering and export capabilities (STL, VTK, screenshots), but has significant deployment challenges on Streamlit Cloud. The optimal strategy is to keep Plotly for ",
+      "content_hash": "120f7d074914"
+    },
+    {
+      "name": "research-backlog-review.md",
+      "type": "documentation",
+      "size_lines": 308,
+      "last_updated": "2026-01-23",
+      "title": "Research Backlog Review: 27 Tasks Validation",
+      "description": "- ✅ Function signature standards (1,335 lines) - ✅ Result object patterns (1,420 lines)",
+      "content_hash": "d443b714ae81"
+    },
+    {
+      "name": "research-methodology.md",
+      "type": "documentation",
+      "size_lines": 411,
+      "last_updated": "2026-01-23",
+      "title": "Research Methodology for Smart Library",
+      "description": " 1. Problem Definition (Claude)",
+      "content_hash": "0305ff063657"
+    },
+    {
+      "name": "scanner-improvements.md",
+      "type": "documentation",
+      "size_lines": 272,
+      "last_updated": "2026-01-23",
+      "title": "Scanner Improvements Research",
+      "description": "The check_streamlit_issues.py scanner (~2200 lines) is a sophisticated AST-based static analyzer with **9 enhancement phases**. This research identified **false positives**, **missing detections**, an",
+      "content_hash": "d521e66f947d"
+    },
+    {
+      "name": "scripts-improvement-research.md",
+      "type": "documentation",
+      "size_lines": 428,
+      "last_updated": "2026-02-11",
+      "title": "Scripts Improvement Research",
+      "description": "The scripts/ directory contains **97 active scripts** (71 Python + 26 shell) totaling ~28,610 LOC in a flat folder structure. Deep analysis reveals: - **7 scripts ready to archive immediately** (depre",
+      "content_hash": "ee3b85a14caf"
+    },
+    {
+      "name": "security-best-practices-part1.md",
+      "type": "documentation",
+      "size_lines": 485,
+      "last_updated": "2026-01-23",
+      "title": "Security Best Practices for Engineering Software",
+      "description": "1. Input validation & sanitization 2. Dependency security",
+      "content_hash": "42989325e008"
+    },
+    {
+      "name": "security-best-practices-part2.md",
+      "type": "documentation",
+      "size_lines": 566,
+      "last_updated": "2026-01-23",
+      "title": "Security Best Practices - Part 2/2",
+      "description": "The library should NOT: - ❌ Send telemetry data to external servers",
+      "content_hash": "ed428d87bc0a"
+    },
+    {
+      "name": "streamlit-automation-testing-research.md",
+      "type": "documentation",
+      "size_lines": 423,
+      "last_updated": "2026-01-23",
+      "title": "Streamlit Automation Testing Research",
+      "description": "This document researches automated testing solutions for Streamlit applications that can: 1. Open the app and run each page",
+      "content_hash": "0aed6351bbd1"
+    },
+    {
+      "name": "streamlit-cloud-professional-deployment-plan.md",
+      "type": "documentation",
+      "size_lines": 955,
+      "last_updated": "2026-01-23",
+      "title": "Streamlit Cloud Professional Deployment Plan",
+      "description": "This document is the **single source of truth** for making the Streamlit app professional and deploying it to Streamlit Cloud. It consolidates all research, plans tasks in numbered phases, and provide",
+      "content_hash": "21649b1d5166"
+    },
+    {
+      "name": "streamlit-code-files-analysis.md",
+      "type": "documentation",
+      "size_lines": 520,
+      "last_updated": "2026-01-23",
+      "title": "Streamlit Code Quality Deep Research",
+      "description": "This document provides a comprehensive analysis of the Streamlit codebase (~20,000 lines) to identify code quality issues, scanner false positives, and improvement opportunities. 1. **Pages (12 files,",
+      "content_hash": "24cb986edb82"
+    },
+    {
+      "name": "streamlit-code-quality-research.md",
+      "type": "documentation",
+      "size_lines": 364,
+      "last_updated": "2026-03-24",
+      "title": "Streamlit Code Quality & Automation Research",
+      "description": "This research document analyzes code quality, core logic issues, scanner capabilities, and automation gaps in the Streamlit application. The goal is to create a comprehensive improvement plan that wil",
+      "content_hash": "0820dc2f40cc"
+    },
+    {
+      "name": "streamlit-modern-patterns-research.md",
+      "type": "documentation",
+      "size_lines": 343,
+      "last_updated": "2026-01-23",
+      "title": "Streamlit Modern Patterns & Code Quality Assessment",
+      "description": "This research document provides: 1. **Modern Streamlit Features Analysis** - What new APIs we can adopt",
+      "content_hash": "b49a1568b055"
+    },
+    {
+      "name": "task-146-147-research-summary.md",
+      "type": "documentation",
+      "size_lines": 459,
+      "last_updated": "2026-01-23",
+      "title": "TASK-146 & TASK-147 Research Summary",
+      "description": "1. **DXF Module (TASK-146):** Fully functional (1514 LOC, 26 functions, 978 LOC tests), needs **CAD visual QA workflow** + DWG export path 2. **Developer Docs (TASK-147):** Extensive architecture docs",
+      "content_hash": "0765334ccf3b"
+    },
+    {
+      "name": "threejs-visualization-source-of-truth.md",
+      "type": "documentation",
+      "size_lines": 138,
+      "last_updated": "2026-01-23",
+      "title": "Three.js 3D Visualization - Single Source of Truth",
+      "description": "This document consolidates all Three.js 3D visualization research, decisions, architecture, and roadmap. It is the single source of truth for Three.js work.",
+      "content_hash": "555851a31ee3"
+    },
+    {
+      "name": "ui-layout-best-practices.md",
+      "type": "documentation",
+      "size_lines": 561,
+      "last_updated": "2026-01-23",
+      "title": "UI Layout Best Practices Research",
+      "description": "1. **Narrow sidebar** with all input controls (300-400px) 2. **Large empty main area** underutilized until \"Analyze\" is clicked",
+      "content_hash": "44fcd4904cfe"
+    },
+    {
+      "name": "ui-layout-final-decision.md",
+      "type": "documentation",
+      "size_lines": 794,
+      "last_updated": "2026-01-23",
+      "title": "UI Layout Final Decision - Professional Engineering Application",
+      "description": "1. ✅ **Option 5** as primary layout (scalable, professional, inputs-always-visible) 2. ✅ **Professional chart design** (eliminate \"toy\" aesthetics)",
+      "content_hash": "0b774843fdb4"
+    },
+    {
+      "name": "ui-layout-options-comparison.md",
+      "type": "documentation",
+      "size_lines": 417,
+      "last_updated": "2026-01-23",
+      "title": "UI Layout Options - Detailed Comparison",
+      "description": "Four layout options analyzed with visual mockups, pros/cons, and scoring: 1. **Two-Column Split (40/60)** - Industry standard, real-time preview ⭐⭐⭐⭐⭐",
+      "content_hash": "f078f96c2b31"
+    },
+    {
+      "name": "ux-patterns-for-technical-apis.md",
+      "type": "documentation",
+      "size_lines": 1270,
+      "last_updated": "2026-01-23",
+      "title": "User Experience Patterns for Technical APIs",
+      "description": "This research focuses on the \"Developer Experience\" (DX) of using structural_engineering_lib. Just as a graphical UI needs to be intuitive, a library's Public API must be intuitive. The goal is to max",
+      "content_hash": "e97b47a87aeb"
+    },
+    {
+      "name": "v017-security-liability-plan.md",
+      "type": "documentation",
+      "size_lines": 249,
+      "last_updated": "2026-01-23",
+      "title": "v0.17.0 Security & Liability Implementation Plan",
+      "description": "This document provides the research and execution plan for the three priority tasks in v0.17.0: | Task | Description | Priority | Effort | Current State |",
+      "content_hash": "4b2aec8cb6d1"
+    },
+    {
+      "name": "v018-library-expansion-feasibility.md",
+      "type": "documentation",
+      "size_lines": 249,
+      "last_updated": "2026-01-23",
+      "title": "Research: v0.18.0 Strategy & Library Expansion Feasibility",
+      "description": "| Task | Status | Evidence | |------|--------|----------|",
+      "content_hash": "c433485549a2"
+    },
+    {
+      "name": "v3-automation-foundation-research.md",
+      "type": "documentation",
+      "size_lines": 303,
+      "last_updated": "2026-01-24",
+      "title": "V3 Automation Foundation Research",
+      "description": "This research analyzes the automation script ecosystem to prepare for the React + FastAPI V3 migration. Key findings: 1. **51% documentation gap**: 73 of 143 scripts lack documentation in automation-c",
+      "content_hash": "40362c1c03a3"
+    },
+    {
+      "name": "v3-infrastructure-gap-analysis.md",
+      "type": "documentation",
+      "size_lines": 468,
+      "last_updated": "2026-02-11",
+      "title": "V3 Infrastructure Gap Analysis & Automation Audit",
+      "description": "- CI/CD integration (no tests run in GitHub Actions) - Pre-commit hook coverage",
+      "content_hash": "5f9f2213dfac"
+    },
+    {
+      "name": "websocket-live-updates-research.md",
+      "type": "documentation",
+      "size_lines": 527,
+      "last_updated": "2026-01-24",
+      "title": "WebSocket Live Updates Research",
+      "description": "This document researches WebSocket implementation for live design result streaming in the V3 React + FastAPI architecture. WebSockets enable real-time updates when beam designs change, eliminating the",
+      "content_hash": "dd231f3a6c00"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "01-function-catalog-research",
+      "path": "01-function-catalog-research/",
+      "file_count": 7,
+      "description": "- ✅ `START-HERE.md` — **Read this first!** Navigation guide for all files"
+    },
+    {
+      "name": "in-progress",
+      "path": "in-progress/",
+      "file_count": 4
+    },
+    {
+      "name": "literature-review",
+      "path": "literature-review/",
+      "file_count": 12
+    },
+    {
+      "name": "navigation_study",
+      "path": "navigation_study/",
+      "file_count": 73
+    },
+    {
+      "name": "structural-automation-platform",
+      "path": "structural-automation-platform/",
+      "file_count": 1
+    }
+  ],
+  "content_hash": "eae413602ae6ff43"
+}

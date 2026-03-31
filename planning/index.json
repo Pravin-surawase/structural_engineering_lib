@@ -1,0 +1,69 @@
+{
+  "folder": "docs/planning",
+  "type": "documentation",
+  "description": "",
+  "last_updated": "2026-03-31",
+  "file_count": 7,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 143,
+      "last_updated": "2026-03-30",
+      "title": "Planning",
+      "description": "Internal planning documents and research notes. | Document | Purpose |",
+      "content_hash": "e84cd1b14767"
+    },
+    {
+      "name": "democratization-vision.md",
+      "type": "documentation",
+      "size_lines": 268,
+      "last_updated": "2026-03-30",
+      "description": "> **\"What was not possible few years back, or only possible for big firms — now everyone can use them free.\"** This project is not just about building a structural engineering library. It's about **de",
+      "content_hash": "7f2f40f01b6e"
+    },
+    {
+      "name": "library-expansion-blueprint-v5.md",
+      "type": "documentation",
+      "size_lines": 1130,
+      "last_updated": "2026-03-31",
+      "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
+      "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
+      "content_hash": "2e332c3d3f57"
+    },
+    {
+      "name": "memory.md",
+      "type": "documentation",
+      "size_lines": 285,
+      "last_updated": "2026-03-30",
+      "description": "- **v0.15.0** released (2026-01-07) - Focus: Code Quality Excellence",
+      "content_hash": "d9920fbc9294"
+    },
+    {
+      "name": "next-phase-improvements-plan.md",
+      "type": "documentation",
+      "size_lines": 1445,
+      "last_updated": "2026-03-30",
+      "description": "> This document is a result of a full audit of the beam library, FastAPI layer, and React app. > Nothing here assumes — it traces every suggestion back to what already exists and what is missing.",
+      "content_hash": "9be9935445ee"
+    },
+    {
+      "name": "next-session-brief.md",
+      "type": "documentation",
+      "size_lines": 316,
+      "last_updated": "2026-03-31",
+      "description": "<!-- HANDOFF:START --> - Date: 2026-03-30",
+      "content_hash": "dc40e282cbd7"
+    },
+    {
+      "name": "react-ux-improvement-plan.md",
+      "type": "documentation",
+      "size_lines": 702,
+      "last_updated": "2026-03-30",
+      "description": "> \"A structural engineer shouldn't have to fill in a form to see their own building.\" The primary workflow is **import-first**: bring in a real project (CSV / ETABS / SAFE), see all beams in 3D, selec",
+      "content_hash": "4ac77b09bca7"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "e9f8a38bc248a982"
+}

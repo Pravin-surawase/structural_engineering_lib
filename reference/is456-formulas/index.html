@@ -1,0 +1,2587 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/reference/is456-formulas/">
+      
+      
+        <link rel="prev" href="../api/">
+      
+      
+        <link rel="next" href="../error-codes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>IS 456 Formulas - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#is-4562000-quick-reference-rc-beam-design-formulas" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              IS 456 Formulas
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-effective-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Effective Depth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-limiting-neutral-axis-depth-annex-g11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Limiting Neutral Axis Depth (Annex G.1.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-limiting-moment-of-resistance-clause-381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Limiting Moment of Resistance (Clause 38.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-area-of-steel-singly-reinforced-clause-381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Area of Steel — Singly Reinforced (Clause 38.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-reinforcement-limits-clause-2651" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Reinforcement Limits (Clause 26.5.1)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Reinforcement Limits (Clause 26.5.1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minimum-tension-steel-clause-26511" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimum Tension Steel (Clause 26.5.1.1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-tension-steel-clause-26512" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Tension Steel (Clause 26.5.1.2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#side-face-reinforcement-clause-26513" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side Face Reinforcement (Clause 26.5.1.3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-shear-stress-clause-401" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Shear Stress (Clause 40.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-design-shear-strength-c-table-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Design Shear Strength τc — Table 19
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-maximum-shear-stress-cmax-table-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Maximum Shear Stress τc,max — Table 20
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-shear-reinforcement-clause-404" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Shear Reinforcement (Clause 40.4)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Shear Reinforcement (Clause 40.4)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shear-to-be-carried-by-stirrups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shear to be Carried by Stirrups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stirrup-spacing-vertical-stirrups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stirrup Spacing (Vertical Stirrups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-spacing-clause-26515" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Spacing (Clause 26.5.1.5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimum-shear-reinforcement-clause-26516" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimum Shear Reinforcement (Clause 26.5.1.6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-shear-design-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Shear Design Flowchart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-common-bar-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Common Bar Areas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-unit-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Unit Conversions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-stress-block-summary-clause-381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Stress Block Summary (Clause 38.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-effective-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Effective Depth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-limiting-neutral-axis-depth-annex-g11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Limiting Neutral Axis Depth (Annex G.1.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-limiting-moment-of-resistance-clause-381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Limiting Moment of Resistance (Clause 38.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-area-of-steel-singly-reinforced-clause-381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Area of Steel — Singly Reinforced (Clause 38.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-reinforcement-limits-clause-2651" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Reinforcement Limits (Clause 26.5.1)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Reinforcement Limits (Clause 26.5.1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minimum-tension-steel-clause-26511" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimum Tension Steel (Clause 26.5.1.1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-tension-steel-clause-26512" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Tension Steel (Clause 26.5.1.2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#side-face-reinforcement-clause-26513" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side Face Reinforcement (Clause 26.5.1.3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-shear-stress-clause-401" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Shear Stress (Clause 40.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-design-shear-strength-c-table-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Design Shear Strength τc — Table 19
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-maximum-shear-stress-cmax-table-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Maximum Shear Stress τc,max — Table 20
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-shear-reinforcement-clause-404" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Shear Reinforcement (Clause 40.4)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Shear Reinforcement (Clause 40.4)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shear-to-be-carried-by-stirrups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shear to be Carried by Stirrups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stirrup-spacing-vertical-stirrups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stirrup Spacing (Vertical Stirrups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maximum-spacing-clause-26515" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maximum Spacing (Clause 26.5.1.5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimum-shear-reinforcement-clause-26516" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimum Shear Reinforcement (Clause 26.5.1.6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-shear-design-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Shear Design Flowchart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-common-bar-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Common Bar Areas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-unit-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Unit Conversions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-stress-block-summary-clause-381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Stress Block Summary (Clause 38.1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="is-4562000-quick-reference-rc-beam-design-formulas">IS 456:2000 Quick Reference — RC Beam Design Formulas<a class="headerlink" href="#is-4562000-quick-reference-rc-beam-design-formulas" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
+<strong>Audience:</strong> Developers
+<strong>Status:</strong> Production Ready
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2025-01-01
+<strong>Last Updated:</strong> 2026-03-29</p>
+<hr />
+<p><strong>For use with:</strong> IS 456 RC Beam Design Library
+<strong>Code Reference:</strong> IS 456:2000, SP:16-1980</p>
+<hr />
+<h2 id="1-effective-depth">1. Effective Depth<a class="headerlink" href="#1-effective-depth" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[d = D - c_{clear} - \phi_{stirrup} - \frac{\phi_{main}}{2}\]</div>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(D\)</span></td>
+<td>Overall depth</td>
+<td>mm</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(c_{clear}\)</span></td>
+<td>Clear cover (Table 16: 25-50mm)</td>
+<td>mm</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\phi_{stirrup}\)</span></td>
+<td>Stirrup bar diameter</td>
+<td>mm</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\phi_{main}\)</span></td>
+<td>Main bar diameter</td>
+<td>mm</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(d\)</span></td>
+<td>Effective depth</td>
+<td>mm</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-limiting-neutral-axis-depth-annex-g11">2. Limiting Neutral Axis Depth (Annex G.1.1)<a class="headerlink" href="#2-limiting-neutral-axis-depth-annex-g11" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Steel Grade</th>
+<th><span class="arithmatex">\(f_y\)</span> (N/mm²)</th>
+<th><span class="arithmatex">\(x_{u,max}/d\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fe 250</td>
+<td>250</td>
+<td><strong>0.53</strong></td>
+</tr>
+<tr>
+<td>Fe 415</td>
+<td>415</td>
+<td><strong>0.48</strong></td>
+</tr>
+<tr>
+<td>Fe 500</td>
+<td>500</td>
+<td><strong>0.46</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-limiting-moment-of-resistance-clause-381">3. Limiting Moment of Resistance (Clause 38.1)<a class="headerlink" href="#3-limiting-moment-of-resistance-clause-381" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[M_{u,lim} = 0.36 \times f_{ck} \times b \times x_{u,max} \times (d - 0.42 \times x_{u,max})\]</div>
+<p><strong>Simplified form:</strong>
+$<span class="arithmatex">\(M_{u,lim} = R_u \times f_{ck} \times b \times d^2\)</span>$</p>
+<table>
+<thead>
+<tr>
+<th>Steel</th>
+<th><span class="arithmatex">\(R_u = 0.36k(1-0.42k)\)</span> where <span class="arithmatex">\(k = x_{u,max}/d\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fe 250</td>
+<td>0.149</td>
+</tr>
+<tr>
+<td>Fe 415</td>
+<td>0.138</td>
+</tr>
+<tr>
+<td>Fe 500</td>
+<td>0.133</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> Result is in N·mm. Divide by 10⁶ for kN·m.</p>
+<hr />
+<h2 id="4-area-of-steel-singly-reinforced-clause-381">4. Area of Steel — Singly Reinforced (Clause 38.1)<a class="headerlink" href="#4-area-of-steel-singly-reinforced-clause-381" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[A_{st} = \frac{0.5 \times f_{ck}}{f_y} \times \left[1 - \sqrt{1 - \frac{4.6 \times M_u}{f_{ck} \times b \times d^2}}\right] \times b \times d\]</div>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(M_u\)</span></td>
+<td>N·mm (convert kN·m × 10⁶)</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(f_{ck}\)</span>, <span class="arithmatex">\(f_y\)</span></td>
+<td>N/mm²</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(b\)</span>, <span class="arithmatex">\(d\)</span></td>
+<td>mm</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(A_{st}\)</span></td>
+<td>mm²</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Check:</strong> If discriminant <span class="arithmatex">\((1 - 4.6M_u/(f_{ck} \cdot b \cdot d^2)) &lt; 0\)</span>, then <span class="arithmatex">\(M_u &gt; M_{u,lim}\)</span> → doubly reinforced required.</p>
+<hr />
+<h2 id="5-reinforcement-limits-clause-2651">5. Reinforcement Limits (Clause 26.5.1)<a class="headerlink" href="#5-reinforcement-limits-clause-2651" title="Permanent link">&para;</a></h2>
+<h3 id="minimum-tension-steel-clause-26511">Minimum Tension Steel (Clause 26.5.1.1)<a class="headerlink" href="#minimum-tension-steel-clause-26511" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[A_{st,min} = \frac{0.85 \times b \times d}{f_y}\]</div>
+<h3 id="maximum-tension-steel-clause-26512">Maximum Tension Steel (Clause 26.5.1.2)<a class="headerlink" href="#maximum-tension-steel-clause-26512" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[A_{st,max} = 0.04 \times b \times D\]</div>
+<h3 id="side-face-reinforcement-clause-26513">Side Face Reinforcement (Clause 26.5.1.3)<a class="headerlink" href="#side-face-reinforcement-clause-26513" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Required when <span class="arithmatex">\(D &gt; 750\)</span> mm</li>
+<li><span class="arithmatex">\(A_{sf} = 0.1\%\)</span> of web area on each face</li>
+<li>Spacing ≤ 300 mm</li>
+</ul>
+<hr />
+<h2 id="6-shear-stress-clause-401">6. Shear Stress (Clause 40.1)<a class="headerlink" href="#6-shear-stress-clause-401" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[\tau_v = \frac{V_u}{b \times d}\]</div>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(V_u\)</span></td>
+<td>N (convert kN × 10³)</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(b\)</span>, <span class="arithmatex">\(d\)</span></td>
+<td>mm</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\tau_v\)</span></td>
+<td>N/mm²</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-design-shear-strength-c-table-19">7. Design Shear Strength τc — Table 19<a class="headerlink" href="#7-design-shear-strength-c-table-19" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><span class="arithmatex">\(p_t\)</span> (%)</th>
+<th>M15</th>
+<th>M20</th>
+<th>M25</th>
+<th>M30</th>
+<th>M35</th>
+<th>M40+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≤0.15</td>
+<td>0.28</td>
+<td>0.28</td>
+<td>0.29</td>
+<td>0.29</td>
+<td>0.29</td>
+<td>0.30</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>0.35</td>
+<td>0.36</td>
+<td>0.36</td>
+<td>0.37</td>
+<td>0.37</td>
+<td>0.38</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>0.46</td>
+<td>0.48</td>
+<td>0.49</td>
+<td>0.50</td>
+<td>0.50</td>
+<td>0.51</td>
+</tr>
+<tr>
+<td>0.75</td>
+<td>0.54</td>
+<td>0.56</td>
+<td>0.57</td>
+<td>0.59</td>
+<td>0.59</td>
+<td>0.60</td>
+</tr>
+<tr>
+<td>1.00</td>
+<td>0.60</td>
+<td>0.62</td>
+<td>0.64</td>
+<td>0.66</td>
+<td>0.67</td>
+<td>0.68</td>
+</tr>
+<tr>
+<td>1.25</td>
+<td>0.64</td>
+<td>0.67</td>
+<td>0.70</td>
+<td>0.71</td>
+<td>0.73</td>
+<td>0.74</td>
+</tr>
+<tr>
+<td>1.50</td>
+<td>0.68</td>
+<td>0.72</td>
+<td>0.74</td>
+<td>0.76</td>
+<td>0.78</td>
+<td>0.79</td>
+</tr>
+<tr>
+<td>1.75</td>
+<td>0.71</td>
+<td>0.75</td>
+<td>0.78</td>
+<td>0.80</td>
+<td>0.82</td>
+<td>0.84</td>
+</tr>
+<tr>
+<td>2.00</td>
+<td>0.71</td>
+<td>0.79</td>
+<td>0.82</td>
+<td>0.84</td>
+<td>0.86</td>
+<td>0.88</td>
+</tr>
+<tr>
+<td>2.25</td>
+<td>0.71</td>
+<td>0.81</td>
+<td>0.85</td>
+<td>0.88</td>
+<td>0.90</td>
+<td>0.92</td>
+</tr>
+<tr>
+<td>2.50</td>
+<td>0.71</td>
+<td>0.82</td>
+<td>0.88</td>
+<td>0.91</td>
+<td>0.93</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>2.75</td>
+<td>0.71</td>
+<td>0.82</td>
+<td>0.90</td>
+<td>0.94</td>
+<td>0.96</td>
+<td>0.98</td>
+</tr>
+<tr>
+<td>≥3.00</td>
+<td>0.71</td>
+<td>0.82</td>
+<td>0.92</td>
+<td>0.96</td>
+<td>0.99</td>
+<td>1.01</td>
+</tr>
+</tbody>
+</table>
+<div class="arithmatex">\[p_t = \frac{100 \times A_{st}}{b \times d}\]</div>
+<p><strong>Notes:</strong>
+- For <span class="arithmatex">\(p_t &lt; 0.15\%\)</span>: use 0.15% value
+- For <span class="arithmatex">\(p_t &gt; 3.0\%\)</span>: use 3.0% value
+- Interpolate for intermediate <span class="arithmatex">\(p_t\)</span></p>
+<hr />
+<h2 id="8-maximum-shear-stress-cmax-table-20">8. Maximum Shear Stress τc,max — Table 20<a class="headerlink" href="#8-maximum-shear-stress-cmax-table-20" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Grade</th>
+<th>M15</th>
+<th>M20</th>
+<th>M25</th>
+<th>M30</th>
+<th>M35</th>
+<th>M40+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\tau_{c,max}\)</span></td>
+<td>2.5</td>
+<td>2.8</td>
+<td>3.1</td>
+<td>3.5</td>
+<td>3.7</td>
+<td>4.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>If <span class="arithmatex">\(\tau_v &gt; \tau_{c,max}\)</span>:</strong> Section inadequate — increase b or d.</p>
+<hr />
+<h2 id="9-shear-reinforcement-clause-404">9. Shear Reinforcement (Clause 40.4)<a class="headerlink" href="#9-shear-reinforcement-clause-404" title="Permanent link">&para;</a></h2>
+<h3 id="shear-to-be-carried-by-stirrups">Shear to be Carried by Stirrups<a class="headerlink" href="#shear-to-be-carried-by-stirrups" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[V_{us} = V_u - \tau_c \times b \times d\]</div>
+<h3 id="stirrup-spacing-vertical-stirrups">Stirrup Spacing (Vertical Stirrups)<a class="headerlink" href="#stirrup-spacing-vertical-stirrups" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[s_v = \frac{0.87 \times f_y \times A_{sv} \times d}{V_{us}}\]</div>
+<p>where <span class="arithmatex">\(A_{sv} = n \times \frac{\pi \phi^2}{4}\)</span> (n = number of legs)</p>
+<h3 id="maximum-spacing-clause-26515">Maximum Spacing (Clause 26.5.1.5)<a class="headerlink" href="#maximum-spacing-clause-26515" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[s_{v,max} = \min(0.75d, 300 \text{ mm})\]</div>
+<h3 id="minimum-shear-reinforcement-clause-26516">Minimum Shear Reinforcement (Clause 26.5.1.6)<a class="headerlink" href="#minimum-shear-reinforcement-clause-26516" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\frac{A_{sv}}{b \times s_v} \geq \frac{0.4}{0.87 \times f_y}\]</div>
+<p><strong>Unit note:</strong> Use <span class="arithmatex">\(V_u\)</span> and <span class="arithmatex">\(V_{us}\)</span> in <strong>Newtons</strong> when combining with <span class="arithmatex">\(\tau_c\)</span> and <span class="arithmatex">\(b \times d\)</span> (convert kN → N by ×1000). Convert back to kN only for reporting.</p>
+<hr />
+<h2 id="10-shear-design-flowchart">10. Shear Design Flowchart<a class="headerlink" href="#10-shear-design-flowchart" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Calculate τv = Vu / (b × d)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>         ↓
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Is τv &gt; τc,max?  ──YES──→  SECTION INADEQUATE
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>         │                  Increase b or d
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>         NO
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>         ↓
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Calculate pt = 100 × Ast / (b × d)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>         ↓
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Look up τc from Table 19
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>         ↓
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>Is τv ≤ 0.5 × τc?  ──YES──→  PROVIDE MINIMUM SHEAR REINFORCEMENT
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>         │                  (Cl. 26.5.1.6)
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>         NO
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>         ↓
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>Is τv ≤ τc?  ──YES──→  MINIMUM SHEAR REINFORCEMENT
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>         │              sv = 0.87 × fy × Asv / (0.4 × b)
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>         NO
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>         ↓
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>DESIGN SHEAR REINFORCEMENT
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>Vus = Vu - τc × b × d
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>sv = 0.87 × fy × Asv × d / Vus
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>sv ≤ sv,max = min(0.75d, 300mm)
+</code></pre></div>
+<hr />
+<h2 id="11-common-bar-areas">11. Common Bar Areas<a class="headerlink" href="#11-common-bar-areas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Diameter (mm)</th>
+<th>Area (mm²)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>50.3</td>
+</tr>
+<tr>
+<td>10</td>
+<td>78.5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>113.1</td>
+</tr>
+<tr>
+<td>16</td>
+<td>201.1</td>
+</tr>
+<tr>
+<td>20</td>
+<td>314.2</td>
+</tr>
+<tr>
+<td>25</td>
+<td>490.9</td>
+</tr>
+<tr>
+<td>32</td>
+<td>804.2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Stirrup areas (2 legs):</strong>
+| Diameter | Area (mm²) |
+|----------|------------|
+| 8 mm | 100.5 |
+| 10 mm | 157.1 |
+| 12 mm | 226.2 |</p>
+<hr />
+<h2 id="12-unit-conversions">12. Unit Conversions<a class="headerlink" href="#12-unit-conversions" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Multiply by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kN·m</td>
+<td>N·mm</td>
+<td>10⁶</td>
+</tr>
+<tr>
+<td>kN</td>
+<td>N</td>
+<td>10³</td>
+</tr>
+<tr>
+<td>m</td>
+<td>mm</td>
+<td>10³</td>
+</tr>
+<tr>
+<td>MPa</td>
+<td>N/mm²</td>
+<td>1 (same)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="13-stress-block-summary-clause-381">13. Stress Block Summary (Clause 38.1)<a class="headerlink" href="#13-stress-block-summary-clause-381" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stress at compression face</td>
+<td><span class="arithmatex">\(0.446 f_{ck}\)</span></td>
+</tr>
+<tr>
+<td>Compression force</td>
+<td><span class="arithmatex">\(C = 0.36 f_{ck} \times b \times x_u\)</span></td>
+</tr>
+<tr>
+<td>Lever arm from NA</td>
+<td><span class="arithmatex">\(z = d - 0.42 x_u\)</span></td>
+</tr>
+<tr>
+<td>Tension force</td>
+<td><span class="arithmatex">\(T = 0.87 f_y \times A_{st}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Equilibrium:</strong> <span class="arithmatex">\(C = T\)</span></p>
+<div class="arithmatex">\[x_u = \frac{0.87 f_y \times A_{st}}{0.36 f_{ck} \times b}\]</div>
+<hr />
+<p><strong>End of Quick Reference</strong></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

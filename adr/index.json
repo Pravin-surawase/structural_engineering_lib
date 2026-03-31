@@ -1,0 +1,47 @@
+{
+  "folder": "docs/adr",
+  "type": "documentation",
+  "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later.",
+  "last_updated": "2026-03-24",
+  "file_count": 4,
+  "files": [
+    {
+      "name": "0001-three-layer-architecture.md",
+      "type": "documentation",
+      "size_lines": 64,
+      "last_updated": "2026-01-24",
+      "title": "ADR 0001: 3-Layer Architecture",
+      "description": "The structural_engineering_lib codebase needs a clear separation between calculation logic, orchestration, and user interfaces. Without boundaries: - Core calculation functions may accidentally import",
+      "content_hash": "89b4de62ed15"
+    },
+    {
+      "name": "0002-pydantic-models-for-api.md",
+      "type": "documentation",
+      "size_lines": 84,
+      "last_updated": "2026-01-24",
+      "title": "ADR 0002: Pydantic Models for API Contracts",
+      "description": "The structural_lib API exposes 43+ functions with complex input/output types. For V3 migration: - FastAPI requires typed request/response models",
+      "content_hash": "e6d824b4de74"
+    },
+    {
+      "name": "0003-contract-testing-for-v3.md",
+      "type": "documentation",
+      "size_lines": 86,
+      "last_updated": "2026-01-24",
+      "title": "ADR 0003: Contract Testing for V3 Migration",
+      "description": "V3 migration will: - Replace Streamlit with React + FastAPI",
+      "content_hash": "889f8eb5de22"
+    },
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 89,
+      "last_updated": "2026-01-24",
+      "title": "ADRs (Architecture Decision Records)",
+      "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later. | ADR | Title | Status |",
+      "content_hash": "199255c94127"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "b1d4407a0e73a89d"
+}

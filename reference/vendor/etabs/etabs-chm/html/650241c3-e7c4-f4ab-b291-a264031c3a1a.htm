@@ -1,0 +1,373 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cAnalysisResults.AreaStressShellLayered Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="AreaStressShellLayered method" /><meta name="System.Keywords" content="cAnalysisResults.AreaStressShellLayered method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cAnalysisResults.AreaStressShellLayered" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cAnalysisResults.AreaStressShellLayered(System.String,ETABSv1.eItemTypeElm,System.Int32@,System.String[]@,System.String[]@,System.String[]@,System.Int32[]@,System.Double[]@,System.String[]@,System.String[]@,System.String[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@)" /><meta name="Description" content="Reports the area stresses for the specified area elements that are assigned layered shell section properties" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="650241c3-e7c4-f4ab-b291-a264031c3a1a" /><meta name="guid" content="650241c3-e7c4-f4ab-b291-a264031c3a1a" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cAnalysisResults<span id="LST3F02C79C_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_0?cpp=::|nu=.");</script>AreaStressShellLayered Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Reports the area stresses for the specified area elements that are assigned layered shell section properties
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">AreaStressShellLayered</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="identifier">eItemTypeElm</span> <span class="parameter">ItemTypeElm</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberResults</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Obj</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Elm</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Layer</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span>[] <span class="parameter">IntPtNum</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">IntPtLoc</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">PointElm</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">LoadCase</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">StepType</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">StepNum</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">S11</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">S22</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">S12</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">SMax</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">SMin</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">SAngle</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">SVM</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">S13Avg</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">S23Avg</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">SMaxAvg</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">SAngleAvg</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">AreaStressShellLayered</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="parameter">ItemTypeElm</span> <span class="keyword">As</span> <span class="identifier">eItemTypeElm</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberResults</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Obj</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">Elm</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">Layer</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">IntPtNum</span> <span class="keyword">As</span> <span class="identifier">Integer</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">IntPtLoc</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">PointElm</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">LoadCase</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">StepType</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">StepNum</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">S11</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">S22</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">S12</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">SMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">SMin</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">SAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">SVM</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">S13Avg</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">S23Avg</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">SMaxAvg</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">SAngleAvg</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cAnalysisResults</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">ItemTypeElm</span> <span class="keyword">As</span> <span class="identifier">eItemTypeElm</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberResults</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Obj</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">Elm</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">Layer</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">IntPtNum</span> <span class="keyword">As</span> <span class="identifier">Integer</span>()
+<span class="keyword">Dim</span> <span class="parameter">IntPtLoc</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">PointElm</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">LoadCase</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">StepType</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">StepNum</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">S11</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">S22</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">S12</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">SMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">SMin</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">SAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">SVM</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">S13Avg</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">S23Avg</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">SMaxAvg</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">SAngleAvg</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">AreaStressShellLayered</span>(<span class="parameter">Name</span>,
+	<span class="parameter">ItemTypeElm</span>, <span class="parameter">NumberResults</span>, <span class="parameter">Obj</span>,
+	<span class="parameter">Elm</span>, <span class="parameter">Layer</span>, <span class="parameter">IntPtNum</span>, <span class="parameter">IntPtLoc</span>, <span class="parameter">PointElm</span>,
+	<span class="parameter">LoadCase</span>, <span class="parameter">StepType</span>, <span class="parameter">StepNum</span>, <span class="parameter">S11</span>,
+	<span class="parameter">S22</span>, <span class="parameter">S12</span>, <span class="parameter">SMax</span>, <span class="parameter">SMin</span>, <span class="parameter">SAngle</span>, <span class="parameter">SVM</span>, <span class="parameter">S13Avg</span>,
+	<span class="parameter">S23Avg</span>, <span class="parameter">SMaxAvg</span>, <span class="parameter">SAngleAvg</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">AreaStressShellLayered</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">eItemTypeElm</span> <span class="parameter">ItemTypeElm</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberResults</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Obj</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Elm</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Layer</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">int</span>&gt;^% <span class="parameter">IntPtNum</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">IntPtLoc</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">PointElm</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">LoadCase</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">StepType</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">StepNum</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">S11</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">S22</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">S12</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">SMax</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">SMin</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">SAngle</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">SVM</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">S13Avg</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">S23Avg</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">SMaxAvg</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">SAngleAvg</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">AreaStressShellLayered</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">ItemTypeElm</span> : <span class="identifier">eItemTypeElm</span> *
+        <span class="parameter">NumberResults</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Obj</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">Elm</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">Layer</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">IntPtNum</span> : <span class="identifier">int</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">IntPtLoc</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">PointElm</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">LoadCase</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">StepType</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">StepNum</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">S11</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">S22</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">S12</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">SMax</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">SMin</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">SAngle</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">SVM</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">S13Avg</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">S23Avg</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">SMaxAvg</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">SAngleAvg</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing area object, area element or group of objects,
+ depending on the value of the <span class="parameter">ItemTypeElm</span> item
+ </dd><dt><span class="parameter">ItemTypeElm</span></dt><dd>Type: <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">ETABSv1<span id="LST3F02C79C_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>eItemTypeElm</a><br />
+ This is one of the following items in the <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">eItemTypeElm</a>
+ enumeration.
+ <p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">ObjectElm</a>, the result request is for the area elements
+ corresponding to the area object specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">Element</a>, the result request is for the area
+ element specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">GroupElm</a>, the result request is for the area elements
+ corresponding to all area objects included in the group specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">SelectionElm</a>, the result request is for area elements
+ corresponding to all selected area objects and the <span class="parameter">Name</span> item is ignored.
+ </p></dd><dt><span class="parameter">NumberResults</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_3?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST3F02C79C_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_4?cpp=%");</script><br />
+ The total number of results returned by the program
+ </dd><dt><span class="parameter">Obj</span></dt><dd>Type: <span id="LST3F02C79C_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_5?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_6?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST3F02C79C_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_7?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_8?cpp=%");</script><br />
+ This is an array that includes the area object name associated with each result, if any
+ </dd><dt><span class="parameter">Elm</span></dt><dd>Type: <span id="LST3F02C79C_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_9?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_10?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST3F02C79C_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_11?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_12?cpp=%");</script><br />
+ This is an array that includes the area element name associated with each result
+ </dd><dt><span class="parameter">Layer</span></dt><dd>Type: <span id="LST3F02C79C_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_13?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_14?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST3F02C79C_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_15?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_16?cpp=%");</script><br />
+ This is an array that includes the layer name associated with each result
+ </dd><dt><span class="parameter">IntPtNum</span></dt><dd>Type: <span id="LST3F02C79C_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_17?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_18?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST3F02C79C_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_19?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_20?cpp=%");</script><br />
+ This is an array that includes the integration point number within the specified layer of the area element
+ </dd><dt><span class="parameter">IntPtLoc</span></dt><dd>Type: <span id="LST3F02C79C_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_21?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_22?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_23?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_24?cpp=%");</script><br />
+ This is an array that includes the integration point relative location within the specified layer of the area element.
+ The location is between -1 (bottom of layer) and +1 (top of layer), inclusive.
+ The midheight of the layer is at a value of 0
+ </dd><dt><span class="parameter">PointElm</span></dt><dd>Type: <span id="LST3F02C79C_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_25?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_26?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST3F02C79C_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_27?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_28?cpp=%");</script><br />
+ This is an array that includes the name of the point element where the results are reported
+ </dd><dt><span class="parameter">LoadCase</span></dt><dd>Type: <span id="LST3F02C79C_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_29?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_30?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST3F02C79C_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_31?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_32?cpp=%");</script><br />
+ This is an array that includes the name of the analysis case or load combination associated with each result
+ </dd><dt><span class="parameter">StepType</span></dt><dd>Type: <span id="LST3F02C79C_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_33?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_34"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_34?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST3F02C79C_35"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_35?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_36"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_36?cpp=%");</script><br />
+ This is an array that includes the step type, if any, for each result
+ </dd><dt><span class="parameter">StepNum</span></dt><dd>Type: <span id="LST3F02C79C_37"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_37?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_38"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_38?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_39"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_39?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_40"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_40?cpp=%");</script><br />
+ This is an array that includes the step number, if any, for each result
+ </dd><dt><span class="parameter">S11</span></dt><dd>Type: <span id="LST3F02C79C_41"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_41?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_42"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_42?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_43"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_43?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_44"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_44?cpp=%");</script><br />
+ The area element internal S11 stress at the specified point element location,
+ for the specified layer and layer integration point, reported in the area element local coordinate system. [F/L2]
+ </dd><dt><span class="parameter">S22</span></dt><dd>Type: <span id="LST3F02C79C_45"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_45?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_46"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_46?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_47"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_47?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_48"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_48?cpp=%");</script><br />
+ The area element internal S22 stress at the specified point element location,
+ for the specified layer and layer integration point, reported in the area element local coordinate system. [F/L2]
+ </dd><dt><span class="parameter">S12</span></dt><dd>Type: <span id="LST3F02C79C_49"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_49?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_50"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_50?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_51"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_51?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_52"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_52?cpp=%");</script><br />
+ The area element internal S12 stress at the specified point element location,
+ for the specified layer and layer integration point, reported in the area element local coordinate system. [F/L2]
+ </dd><dt><span class="parameter">SMax</span></dt><dd>Type: <span id="LST3F02C79C_53"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_53?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_54"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_54?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_55"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_55?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_56"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_56?cpp=%");</script><br />
+ The area element maximum principal stress at the specified point element location,
+ for the specified layer and layer integration point. [F/L2]
+ </dd><dt><span class="parameter">SMin</span></dt><dd>Type: <span id="LST3F02C79C_57"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_57?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_58"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_58?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_59"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_59?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_60"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_60?cpp=%");</script><br />
+ The area element minimum principal stress at the specified point element location,
+ for the specified layer and layer integration point. [F/L2]
+ </dd><dt><span class="parameter">SAngle</span></dt><dd>Type: <span id="LST3F02C79C_61"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_61?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_62"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_62?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_63"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_63?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_64"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_64?cpp=%");</script><br />
+ The angle measured counter clockwise (when the local 3 axis is pointing toward you)
+ from the area local 1 axis to the direction of the maximum principal stress. [deg]
+ </dd><dt><span class="parameter">SVM</span></dt><dd>Type: <span id="LST3F02C79C_65"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_65?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_66"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_66?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_67"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_67?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_68"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_68?cpp=%");</script><br />
+ The area element internal Von Mises stress at the specified point element location,
+ for the specified layer and layer integration point. [F/L2]
+ </dd><dt><span class="parameter">S13Avg</span></dt><dd>Type: <span id="LST3F02C79C_69"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_69?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_70"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_70?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_71"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_71?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_72"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_72?cpp=%");</script><br />
+ The area element average S13 out-of-plane shear stress at the specified point element location,
+ for the specified layer and layer integration point. [F/L2]
+ </dd><dt><span class="parameter">S23Avg</span></dt><dd>Type: <span id="LST3F02C79C_73"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_73?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_74"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_74?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_75"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_75?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_76"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_76?cpp=%");</script><br />
+ The area element average S23 out-of-plane shear stress at the specified point element location,
+ for the specified layer and layer integration point. [F/L2]
+ </dd><dt><span class="parameter">SMaxAvg</span></dt><dd>Type: <span id="LST3F02C79C_77"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_77?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_78"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_78?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_79"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_79?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_80"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_80?cpp=%");</script><br />
+ The area element maximum average out-of-plane shear stress for the specified layer and layer integration point.
+ It is equal to the square root of the sum of the squares of S13Avg and S23Avg. [F/L2]
+ </dd><dt><span class="parameter">SAngleAvg</span></dt><dd>Type: <span id="LST3F02C79C_81"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_81?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST3F02C79C_82"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_82?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST3F02C79C_83"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_83?cpp=&gt;|vb=()|nu=[]");</script><span id="LST3F02C79C_84"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST3F02C79C_84?cpp=%");</script><br />
+ The angle measured counter clockwise (when the local 3 axis is pointing toward you)
+ from the area local 1 axis to the direction of SMaxAvg. [deg]
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the stresses are successfully recovered, otherwise it returns a nonzero value
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection">
+ See <a href="0c2bc8bd-2382-75be-9075-b0a8245283c3.htm">Results</a> for more information.
+ <div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+       <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+       <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+       <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+
+       <span class="highlight-keyword">Dim</span> MyNumberLayers <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyLayerName() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> MyDist() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> MyThickness() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> MyType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyNumIntegrationPts() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyMatProp() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> MyMatAng() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> MyS11Type() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyS22Type() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyS12Type() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+
+       <span class="highlight-keyword">Dim</span> NumberResults <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> Obj() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> ObjSta() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> Elm() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> ElmSta() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> LoadCase() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> StepType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> StepNum() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> S11() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> S22() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> S12() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SMax() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SMin() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SAngle() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SVM() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SVMBot() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> S13Avg() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> S23Avg() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SMaxAvg() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SAngleAvg() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+   <span class="highlight-comment">'create ETABS object</span>
+       <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+       EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+   <span class="highlight-comment">'start ETABS application</span>
+       ret = EtabsObject.ApplicationStart()
+
+   <span class="highlight-comment">'create SapModel object</span>
+       SapModel = EtabsObject.SapModel
+
+   <span class="highlight-comment">'initialize model</span>
+       ret = SapModel.InitializeNewModel()
+
+   <span class="highlight-comment">'create steel deck template model</span>
+       ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>,<span class="highlight-number">12</span>,<span class="highlight-number">12</span>,<span class="highlight-number">4</span>,<span class="highlight-number">4</span>,<span class="highlight-number">24</span>,<span class="highlight-number">24</span>)
+
+   <span class="highlight-comment">'set new area property</span>
+       ret = SapModel.PropArea.SetSlab(<span class="highlight-literal">"A1"</span>, eSlabType.Slab, eShellType.Layered, <span class="highlight-literal">"4000Psi"</span>, <span class="highlight-number">16.0</span>)
+
+   <span class="highlight-comment">'add A615Gr60 rebar material</span>
+       ret = SapModel.PropMaterial.AddMaterial(Name, eMatType.Rebar, <span class="highlight-literal">"United States"</span>, <span class="highlight-literal">"ASTM A615"</span>, <span class="highlight-literal">"Grade 60"</span>)
+
+   <span class="highlight-comment">'set area property layer parameters</span>
+       MyNumberLayers = <span class="highlight-number">5</span>
+       <span class="highlight-keyword">ReDim</span> MyLayerName(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyDist(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyThickness(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyType(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyNumIntegrationPts(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyMatProp(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyMatAng(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyS11Type(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyS22Type(MyNumberLayers - <span class="highlight-number">1</span>)
+       <span class="highlight-keyword">ReDim</span> MyS12Type(MyNumberLayers - <span class="highlight-number">1</span>)
+
+       MyLayerName(<span class="highlight-number">0</span>) = <span class="highlight-literal">"Concrete"</span>
+       MyDist(<span class="highlight-number">0</span>) = <span class="highlight-number">0</span>
+       MyThickness(<span class="highlight-number">0</span>) = <span class="highlight-number">16</span>
+       MyType(<span class="highlight-number">0</span>) = <span class="highlight-number">1</span>
+       MyNumIntegrationPts(<span class="highlight-number">0</span>) = <span class="highlight-number">2</span>
+       MyMatProp(<span class="highlight-number">0</span>) = <span class="highlight-literal">"4000Psi"</span>
+       MyMatAng(<span class="highlight-number">0</span>) = <span class="highlight-number">0</span>
+       MyS11Type(<span class="highlight-number">0</span>) = <span class="highlight-number">1</span>
+       MyS22Type(<span class="highlight-number">0</span>) = <span class="highlight-number">1</span>
+       MyS12Type(<span class="highlight-number">0</span>) = <span class="highlight-number">1</span>
+
+       MyLayerName(<span class="highlight-number">1</span>) = <span class="highlight-literal">"Top Bar 1"</span>
+       MyDist(<span class="highlight-number">1</span>) = <span class="highlight-number">6</span>
+       MyThickness(<span class="highlight-number">1</span>) = <span class="highlight-number">0.03</span>
+       MyType(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+       MyNumIntegrationPts(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+       MyMatProp(<span class="highlight-number">1</span>) = Name
+       MyMatAng(<span class="highlight-number">1</span>) = <span class="highlight-number">0</span>
+       MyS11Type(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+       MyS22Type(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+       MyS12Type(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+
+       MyLayerName(<span class="highlight-number">2</span>) = <span class="highlight-literal">"Top Bar 2"</span>
+       MyDist(<span class="highlight-number">2</span>) = <span class="highlight-number">6</span>
+       MyThickness(<span class="highlight-number">2</span>) = <span class="highlight-number">0.03</span>
+       MyType(<span class="highlight-number">2</span>) = <span class="highlight-number">1</span>
+       MyNumIntegrationPts(<span class="highlight-number">2</span>) = <span class="highlight-number">1</span>
+       MyMatProp(<span class="highlight-number">2</span>) = Name
+       MyMatAng(<span class="highlight-number">2</span>) = <span class="highlight-number">90</span>
+       MyS11Type(<span class="highlight-number">2</span>) = <span class="highlight-number">1</span>
+       MyS22Type(<span class="highlight-number">2</span>) = <span class="highlight-number">1</span>
+       MyS12Type(<span class="highlight-number">2</span>) = <span class="highlight-number">1</span>
+
+       MyLayerName(<span class="highlight-number">3</span>) = <span class="highlight-literal">"Bot Bar 1"</span>
+       MyDist(<span class="highlight-number">3</span>) = <span class="highlight-number">-6</span>
+       MyThickness(<span class="highlight-number">3</span>) = <span class="highlight-number">0.03</span>
+       MyType(<span class="highlight-number">3</span>) = <span class="highlight-number">1</span>
+       MyNumIntegrationPts(<span class="highlight-number">3</span>) = <span class="highlight-number">1</span>
+       MyMatProp(<span class="highlight-number">3</span>) = Name
+       MyMatAng(<span class="highlight-number">3</span>) = <span class="highlight-number">0</span>
+       MyS11Type(<span class="highlight-number">3</span>) = <span class="highlight-number">1</span>
+       MyS22Type(<span class="highlight-number">3</span>) = <span class="highlight-number">1</span>
+       MyS12Type(<span class="highlight-number">3</span>) = <span class="highlight-number">1</span>
+
+       MyLayerName(<span class="highlight-number">4</span>) = <span class="highlight-literal">"Bot Bar 2"</span>
+       MyDist(<span class="highlight-number">4</span>) = <span class="highlight-number">-6</span>
+       MyThickness(<span class="highlight-number">4</span>) = <span class="highlight-number">0.03</span>
+       MyType(<span class="highlight-number">4</span>) = <span class="highlight-number">1</span>
+       MyNumIntegrationPts(<span class="highlight-number">4</span>) = <span class="highlight-number">1</span>
+       MyMatProp(<span class="highlight-number">4</span>) = Name
+       MyMatAng(<span class="highlight-number">4</span>) = <span class="highlight-number">90</span>
+       MyS11Type(<span class="highlight-number">4</span>) = <span class="highlight-number">1</span>
+       MyS22Type(<span class="highlight-number">4</span>) = <span class="highlight-number">1</span>
+       MyS12Type(<span class="highlight-number">4</span>) = <span class="highlight-number">1</span>
+
+       ret = SapModel.PropArea.SetShellLayer_1(<span class="highlight-literal">"A1"</span>, MyNumberLayers, MyLayerName, MyDist, MyThickness, MyType, MyNumIntegrationPts, MyMatProp, MyMatAng, MyS11Type, MyS22Type, MyS12Type)
+
+   <span class="highlight-comment">'set area property</span>
+       ret = SapModel.AreaObj.SetProperty(<span class="highlight-literal">"4"</span>, <span class="highlight-literal">"A1"</span>)
+
+   <span class="highlight-comment">'run analysis</span>
+       System.IO.Directory.CreateDirectory(<span class="highlight-literal">"c:\CSI_API_temp"</span>)
+       ret = SapModel.File.Save(<span class="highlight-literal">"C:\CSI_API_temp\example.edb"</span>)
+       ret = SapModel.Analyze.RunAnalysis()
+
+   <span class="highlight-comment">'deselect all cases and combos</span>
+       ret = SapModel.Results.Setup.DeselectAllCasesAndCombosForOutput()
+
+   <span class="highlight-comment">'set case selected for output</span>
+       ret = SapModel.Results.Setup.SetCaseSelectedForOutput(<span class="highlight-literal">"DEAD"</span>)
+
+   <span class="highlight-comment">'get area stresses for area object "4"</span>
+       ret = SapModel.Results.AreaStressShellLayered(<span class="highlight-literal">"4"</span>, eItemTypeElm.ObjectElm, NumberResults, Obj, Elm, Layer, IntPtNum, IntPtLoc, PointElm, LoadCase, StepType, StepNum, S11, S22, S12, SMax, SMin, SAngle, SVM, S13Avg, S23Avg, SMaxAvg, SAngleAvg)
+
+   <span class="highlight-comment">'close ETABS</span>
+       EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+   <span class="highlight-comment">'clean up variables</span>
+       SapModel = <span class="highlight-keyword">Nothing</span>
+       EtabsObject = <span class="highlight-keyword">Nothing</span>
+   <span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="b64f2f6e-9759-e542-faf2-0905474a04a7.htm">cAnalysisResults Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

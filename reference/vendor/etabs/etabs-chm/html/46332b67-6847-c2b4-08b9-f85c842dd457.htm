@@ -1,0 +1,99 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cGroup.GetAssignments Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetAssignments method" /><meta name="System.Keywords" content="cGroup.GetAssignments method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cGroup.GetAssignments" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cGroup.GetAssignments(System.String,System.Int32@,System.Int32[]@,System.String[]@)" /><meta name="Description" content="Retrieves the assignments to a specified group" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="46332b67-6847-c2b4-08b9-f85c842dd457" /><meta name="guid" content="46332b67-6847-c2b4-08b9-f85c842dd457" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cGroup<span id="LSTED40DAEE_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_0?cpp=::|nu=.");</script>GetAssignments Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves the assignments to a specified group
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetAssignments</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberItems</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span>[] <span class="parameter">ObjectType</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">ObjectName</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetAssignments</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberItems</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">ObjectType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">ObjectName</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cGroup</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberItems</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">ObjectType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>()
+<span class="keyword">Dim</span> <span class="parameter">ObjectName</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetAssignments</span>(<span class="parameter">Name</span>,
+	<span class="parameter">NumberItems</span>, <span class="parameter">ObjectType</span>, <span class="parameter">ObjectName</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetAssignments</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberItems</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">int</span>&gt;^% <span class="parameter">ObjectType</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">ObjectName</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetAssignments</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">NumberItems</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">ObjectType</span> : <span class="identifier">int</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">ObjectName</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTED40DAEE_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing group
+ </dd><dt><span class="parameter">NumberItems</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LSTED40DAEE_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LSTED40DAEE_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_3?cpp=%");</script><br />
+ The number of assignments made to the specified group
+ </dd><dt><span class="parameter">ObjectType</span></dt><dd>Type: <span id="LSTED40DAEE_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_4?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LSTED40DAEE_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_5?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LSTED40DAEE_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_6?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTED40DAEE_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_7?cpp=%");</script><br />
+ This is an array that includes the object type of each item in the group.
+ <ol><li>Point object</li><li>Frame object</li><li>Cable object</li><li>Tendon object</li><li>Area object</li><li>Solid object</li><li>Link object</li></ol></dd><dt><span class="parameter">ObjectName</span></dt><dd>Type: <span id="LSTED40DAEE_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_8?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTED40DAEE_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_9?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTED40DAEE_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_10?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTED40DAEE_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTED40DAEE_11?cpp=%");</script><br />
+ This is an array that includes the name of each item in the group
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the group assignment is successfully retrieved, otherwise it returns a nonzero value
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+       <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+       <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+       <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+       <span class="highlight-keyword">Dim</span> NumberItems <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> ObjectType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> ObjectName() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+
+   <span class="highlight-comment">'create ETABS object</span>
+       <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+       EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+   <span class="highlight-comment">'start ETABS application</span>
+       ret = EtabsObject.ApplicationStart()
+
+   <span class="highlight-comment">'create SapModel object</span>
+       SapModel = EtabsObject.SapModel
+
+   <span class="highlight-comment">'initialize model</span>
+       ret = SapModel.InitializeNewModel()
+
+   <span class="highlight-comment">'create steel deck template model</span>
+       ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>,<span class="highlight-number">12</span>,<span class="highlight-number">12</span>,<span class="highlight-number">4</span>,<span class="highlight-number">4</span>,<span class="highlight-number">24</span>,<span class="highlight-number">24</span>)
+
+   <span class="highlight-comment">'define new group</span>
+       ret = SapModel.GroupDef.SetGroup(<span class="highlight-literal">"Group1"</span>)
+
+   <span class="highlight-comment">'add point objects to group</span>
+       ret = SapModel.PointObj.SetGroupAssign(<span class="highlight-literal">"3"</span>, <span class="highlight-literal">"Group1"</span>)
+       ret = SapModel.PointObj.SetGroupAssign(<span class="highlight-literal">"6"</span>, <span class="highlight-literal">"Group1"</span>)
+       ret = SapModel.PointObj.SetGroupAssign(<span class="highlight-literal">"9"</span>, <span class="highlight-literal">"Group1"</span>)
+
+   <span class="highlight-comment">'add frame objects to group</span>
+       ret = SapModel.FrameObj.SetGroupAssign(<span class="highlight-literal">"8"</span>, <span class="highlight-literal">"Group1"</span>)
+       ret = SapModel.FrameObj.SetGroupAssign(<span class="highlight-literal">"10"</span>, <span class="highlight-literal">"Group1"</span>)
+
+   <span class="highlight-comment">'get group assignments</span>
+       ret = SapModel.GroupDef.GetAssignments(<span class="highlight-literal">"Group1"</span>, NumberItems, ObjectType, ObjectName)
+
+   <span class="highlight-comment">'close ETABS</span>
+       EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+   <span class="highlight-comment">'clean up variables</span>
+       SapModel = <span class="highlight-keyword">Nothing</span>
+       EtabsObject = <span class="highlight-keyword">Nothing</span>
+   <span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="d823d73d-c8bb-2034-2e47-d78ed6992ad2.htm">cGroup Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

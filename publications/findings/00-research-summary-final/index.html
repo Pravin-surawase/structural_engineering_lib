@@ -1,0 +1,2334 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/publications/findings/00-research-summary-final/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Research Summary — FINAL VERSION (Evidence-Based) - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#research-summary-final-version-evidence-based" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Research Summary — FINAL VERSION (Evidence-Based)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Executive Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-validation-evidence-corrected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Validation (Evidence-Corrected)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-engineer-pain-points-corrected-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: Engineer Pain Points — Corrected Evidence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1: Engineer Pain Points — Corrected Evidence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-problem-repetition-fatigue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Core Problem: Repetition Fatigue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spreadsheet-errors-peer-reviewed-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spreadsheet Errors: Peer-Reviewed Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-pressure-industry-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time Pressure: Industry Reports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etabs-api-reliability-anecdotal-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETABS API Reliability: Anecdotal Evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trial-and-error-workflows-academic-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trial-and-Error Workflows: Academic Evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-product-analysis-scope-limited-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Product Analysis — Scope-Limited Review
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2: Product Analysis — Scope-Limited Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commercial-software-reviewed-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commercial Software: Reviewed Products
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-source-libraries-reviewed-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-Source Libraries: Reviewed Projects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-academic-validation-primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: Academic Validation — Primary Sources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 3: Academic Validation — Primary Sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensitivity-analysis-for-rc-beams-well-established" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensitivity Analysis for RC Beams: Well-Established
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructability-scoring-government-validated-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructability Scoring: Government-Validated Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ml-vs-deterministic-small-sample-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ML vs. Deterministic: Small Sample Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synthesis-evidence-based-value-proposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synthesis: Evidence-Based Value Proposition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Synthesis: Evidence-Based Value Proposition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-we-offer-scope-limited-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What We Offer (Scope-Limited Claims)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quantified-evidence-for-blog-content-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quantified Evidence for Blog Content — FINAL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#blog-content-strategy-evidence-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blog Content Strategy — Evidence-Based
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Blog Content Strategy — Evidence-Based">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#blog-01-making-structural-design-intelligent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blog 01: Making Structural Design Intelligent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blog-02-deterministic-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blog 02: Deterministic ML
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attribution-corrections-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution Corrections Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-evidence-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Final Evidence Audit
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="research-summary-final-version-evidence-based">Research Summary — FINAL VERSION (Evidence-Based)<a class="headerlink" href="#research-summary-final-version-evidence-based" title="Permanent link">&para;</a></h1>
+<p><strong>Research Completion Date:</strong> 2025-12-31
+<strong>Credibility Review 1:</strong> 2025-12-31 (Initial corrections)
+<strong>Credibility Review 2:</strong> 2025-12-31 (Attribution fixes, evidence-level corrections)
+<strong>Status:</strong> ✅ FINAL — All attributions verified, evidence levels accurate</p>
+<p><strong>⚠️ CANONICAL VERSION:</strong> This is the authoritative research summary. Use for all blog writing.</p>
+<hr />
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>We conducted comprehensive research across three dimensions with rigorous source verification:</p>
+<ol>
+<li><strong>Engineer Pain Points</strong> — Real-world frustrations from peer-reviewed research and documented cases</li>
+<li><strong>Product Analysis</strong> — Competitive landscape of 13 products (limited review, not exhaustive)</li>
+<li><strong>Academic Literature</strong> — Primary research validation for sensitivity analysis and constructability</li>
+</ol>
+<h3 id="key-validation-evidence-corrected">Key Validation (Evidence-Corrected)<a class="headerlink" href="#key-validation-evidence-corrected" title="Permanent link">&para;</a></h3>
+<p>✅ <strong>Pain points are documented with peer-reviewed sources:</strong>
+- 🟢 <strong>PRIMARY:</strong> Cell error rates 1.1-5.6%, field audits find errors in 86%+ of spreadsheets (Panko 2008, peer-reviewed)
+- 🟡 <strong>SECONDARY:</strong> Real-world cases documented by EuSpRIG: UK COVID (16,000 cases lost), Norway ($92M), Standard Chartered (£46.55M fine)
+- 🟡 <strong>SECONDARY:</strong> Trial-and-error workflows described in academic papers (specific "majority" claim not quantified)
+- 🟠 <strong>ANECDOTAL:</strong> ETABS API reliability challenges reported in forums (not systematic study)</p>
+<p>✅ <strong>Market gaps identified in limited review:</strong>
+- 🟡 <strong>SECONDARY:</strong> In our review of 13 products (Dec 2025), we found no evidence of sensitivity analysis, predictive validation, or constructability scoring for Excel-native IS 456 beam design
+- <strong>Scope limitation:</strong> Not exhaustive market analysis; limited to products we reviewed</p>
+<p>✅ <strong>Academic foundation is solid:</strong>
+- 🟢 <strong>PRIMARY:</strong> Sensitivity analysis for RC beams well-established (Kytinou et al. 2021, multiple peer-reviewed studies)
+- 🟢 <strong>PRIMARY:</strong> Constructability scoring validated for labor productivity improvement (Poh &amp; Chen 1998, 37 projects)
+- 🟡 <strong>SECONDARY:</strong> Singapore BCA promotes buildability scoring (government framework, specific mandates vary by project type)
+- 🟢 <strong>PRIMARY:</strong> ML with small datasets leads to overfitting and bias (Vabalas et al. 2019 PLOS One)</p>
+<p><strong>Conclusion:</strong> Our approach (deterministic intelligence in Excel for IS 456 beam design) addresses documented needs with academically validated methods. All claims properly scoped and sourced.</p>
+<hr />
+<h2 id="part-1-engineer-pain-points-corrected-evidence">Part 1: Engineer Pain Points — Corrected Evidence<a class="headerlink" href="#part-1-engineer-pain-points-corrected-evidence" title="Permanent link">&para;</a></h2>
+<h3 id="the-core-problem-repetition-fatigue">The Core Problem: Repetition Fatigue<a class="headerlink" href="#the-core-problem-repetition-fatigue" title="Permanent link">&para;</a></h3>
+<p><strong>🟠 ANECDOTAL - User's own experience:</strong></p>
+<blockquote>
+<p>"When I started 2nd project, then I have to do that all over again, which felt like big task... ETABS API → Excel → Design → BBS → CAD... I did write each every function there."</p>
+</blockquote>
+<p><strong>🟡 SECONDARY - Industry validation:</strong></p>
+<blockquote>
+<p>"Profit margins on conventional design will not get bigger in the future and will probably continue to get smaller, requiring engineers to identify repetitive tasks and perform them more efficiently."</p>
+<p><strong>Source:</strong> <a href="https://www.structuremag.org/article/automation-and-the-future-of-structural-engineering/">Structure Magazine</a> (industry publication, not peer-reviewed)</p>
+</blockquote>
+<p><strong>Pattern:</strong> Engineers rebuild design logic for projects. User experience aligns with industry discussions.</p>
+<hr />
+<h3 id="spreadsheet-errors-peer-reviewed-research">Spreadsheet Errors: Peer-Reviewed Research<a class="headerlink" href="#spreadsheet-errors-peer-reviewed-research" title="Permanent link">&para;</a></h3>
+<p><strong>🟢 PRIMARY - Panko's Research Program:</strong></p>
+<p><strong>Cell Error Rates:</strong></p>
+<blockquote>
+<p>"For the nine studies that collected data on errors when developers worked alone, the cell error rates (CERs) averaged 1.1% to 5.6%. In general, errors seem to occur in a few percent of all cells, meaning that for large spreadsheets, the issue is how many errors there are, not whether an error exists."</p>
+<p><strong>Source:</strong> Panko, R. R. (2008). What we know about spreadsheet errors. <em>Journal of Organizational and End User Computing</em>, 20(2), 15-30. (Access-limited link: <a href="https://www.researchgate.net/publication/228662532_What_We_Know_About_Spreadsheet_Errors">ResearchGate</a>)</p>
+<p><strong>Related (open-access bibliography):</strong> EuSpRIG maintains an accessible bibliography with multiple Panko spreadsheet-risk papers (useful background; does not necessarily contain the same summary tables/quotes as the JOEU article): <a href="https://eusprig.org/research-info/research-and-best-practice/">EuSpRIG Research and Best Practice</a></p>
+</blockquote>
+<p><strong>Field Audit Rates:</strong></p>
+<blockquote>
+<p>"The most recent field audits, in contrast, generally used better methodologies and found errors in at least 86% of the spreadsheets audited."</p>
+<p><strong>Source:</strong> Panko (2008), Ibid.</p>
+</blockquote>
+<p><strong>Error Taxonomy:</strong></p>
+<blockquote>
+<p>"Panko and Halverson found that 45% of errors were logic errors, 23% were mechanical errors, and 31% were omission errors."</p>
+<p><strong>Source:</strong> Panko, R. R., &amp; Halverson, R. P. (1996). Spreadsheets on trial: A framework for research on spreadsheet risks. <em>Proceedings of the Hawaii International Conference on System Sciences</em>.</p>
+<p><strong>Note:</strong> Earlier publication cited Decision Support Systems (1998) for similar findings. Both sources consistent on error taxonomy.</p>
+</blockquote>
+<hr />
+<p><strong>🟡 SECONDARY - EuSpRIG Research Synthesis:</strong></p>
+<p>EuSpRIG is a research consortium (not a primary study author) that aggregates findings from 193 peer-reviewed papers:</p>
+<blockquote>
+<p>"The majority (&gt;90%) of spreadsheets contain errors, based on human error research. Spreadsheets are rarely tested, so errors remain. Although people are 95% to 99% accurate when they do calculations, write, code, or enter spreadsheet cells, human error research has shown that humans are much worse at finding errors that have occurred."</p>
+<p><strong>Source:</strong> <a href="https://eusprig.org/research-info/research-and-best-practice/">EuSpRIG Research Synthesis</a> (aggregates 193 peer-reviewed papers, 2000+ citations)</p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟡 SECONDARY (research aggregator, not primary author)</p>
+<p><strong>Primary papers they reference:</strong> Panko (2008), Powell et al. (2009), and others cataloged in their archives.</p>
+<hr />
+<p><strong>🟡 SECONDARY - Documented Real-World Impacts:</strong></p>
+<p>EuSpRIG maintains a database of spreadsheet error cases. Selected examples:</p>
+<ol>
+<li><strong>UK COVID-19 (2020):</strong> Nearly 16,000 positive cases disappeared when Excel files exceeded row limits (XLS format limitation ~65K rows vs needed capacity).</li>
+<li><strong>Source:</strong> <a href="https://eusprig.org/research-info/horror-stories/">EuSpRIG Horror Stories</a></li>
+<li>
+<p><strong>Note:</strong> Mortality impact estimates vary; we removed unverified "~1,500 deaths" claim</p>
+</li>
+<li>
+<p><strong>Norway Sovereign Wealth Fund (2024):</strong> NKr980 million (~$92M USD) lost due to incorrect date entry in benchmark calculation spreadsheet.</p>
+</li>
+<li>
+<p><strong>Source:</strong> <a href="https://eusprig.org/research-info/horror-stories/">EuSpRIG Horror Stories</a></p>
+</li>
+<li>
+<p><strong>Standard Chartered Bank (2021):</strong> Prudential Regulatory Authority fined bank £46.55M after discovering cell error showed +$10B (asset) instead of liability, representing £8B calculation error.</p>
+</li>
+<li><strong>Source:</strong> <a href="https://eusprig.org/research-info/horror-stories/">EuSpRIG Horror Stories</a></li>
+</ol>
+<p><strong>Evidence Level:</strong> 🟡 SECONDARY (EuSpRIG aggregates news reports and regulatory filings; not primary investigative source)</p>
+<p><strong>Pattern:</strong> Spreadsheet errors documented with significant real-world financial and operational impacts. EuSpRIG provides secondary aggregation of publicly reported cases.</p>
+<hr />
+<h3 id="time-pressure-industry-reports">Time Pressure: Industry Reports<a class="headerlink" href="#time-pressure-industry-reports" title="Permanent link">&para;</a></h3>
+<p><strong>🟡 SECONDARY - Industry blog:</strong></p>
+<blockquote>
+<p>"Structural engineers are time-poor, with clients wanting packages released earlier and earlier, leaving little time to experiment and try different designs."</p>
+<p>"Engineers today face growing project complexity, shorter deadlines, and tighter budgets, with the UK construction industry expected to grow by 4.5% in 2024, reaching £169 billion."</p>
+<p><strong>Source:</strong> <a href="https://skyciv.com/industry/5-pain-points-for-structural-engineers/">SkyCiv Industry Blog</a> (vendor blog, not peer-reviewed)</p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟡 SECONDARY — Industry observation, not academic study.</p>
+<hr />
+<h3 id="etabs-api-reliability-anecdotal-evidence">ETABS API Reliability: Anecdotal Evidence<a class="headerlink" href="#etabs-api-reliability-anecdotal-evidence" title="Permanent link">&para;</a></h3>
+<p><strong>🟠 ANECDOTAL - Forum discussions:</strong></p>
+<blockquote>
+<p>"ETABS doesn't open completely 8 out of 10 times, requiring Task Manager to close it... creating uncertainty for programming."</p>
+<p><strong>Source:</strong> <a href="https://www.eng-tips.com/threads/etabs-api-using-excel-vba.521067/">Eng-Tips Forum</a> (single user report, 2020+)</p>
+<p><strong>Related (access-limited):</strong> <a href="https://www.researchgate.net/post/Im_using_ETABS_API_with_Excel_VBA_to_model_a_frame_When_I_run_it_from_VBA_ETABS_opens_sometimes_and_doesnt_open_at_others_Why_this_uncertainty">ResearchGate Discussion</a> (may require login)</p>
+<p>"The coding requirements changed slightly between ETABS 2018 and ETABS 2019 and beyond, requiring different code versions."</p>
+<p><strong>Source:</strong> <a href="https://www.eng-tips.com/threads/etabs-api-using-excel-vba.521067/">Eng-Tips Forum</a> (forum thread)</p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟠 ANECDOTAL — User reports, not systematic reliability study.</p>
+<p><strong>Usage:</strong> Illustrative of integration challenges; do not present as quantified reliability data.</p>
+<hr />
+<h3 id="trial-and-error-workflows-academic-evidence">Trial-and-Error Workflows: Academic Evidence<a class="headerlink" href="#trial-and-error-workflows-academic-evidence" title="Permanent link">&para;</a></h3>
+<p><strong>🟡 SECONDARY - Academic papers (descriptive, not quantitative):</strong></p>
+<blockquote>
+<p>"In practice, structural engineers complete structural designs with trial-and-error, iteratively revising designs until all building codes are satisfied."</p>
+<p><strong>Source:</strong> Chang, D., et al. (2020). Learning to simulate and design for structural engineering. <em>ICML Proceedings</em>. <a href="https://proceedings.mlr.press/v119/chang20a.html">PMLR landing page</a></p>
+<p><strong>Note:</strong> Paper describes workflow but does not quantify "majority" — softened claim to "engineers commonly use..."</p>
+<p>"For each optimization iteration, structural simulation takes 2 to 15 minutes to run, meaning a single optimization process can take days to converge."</p>
+<p><strong>Source:</strong> Kaveh, A. (2025). Design optimization in structural engineering: Computational techniques. <em>American Journal of Mechanical and Materials Engineering</em>. <a href="https://www.sciencepublishinggroup.com/article/10.11648/j.ajmme.20250901.11">Link</a></p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟡 SECONDARY — Academic papers describe workflow, don't provide usage statistics.</p>
+<p><strong>CORRECTED CLAIM:</strong> "Engineers commonly use trial-and-error workflows..." (removed unsupported "majority" quantifier)</p>
+<hr />
+<h2 id="part-2-product-analysis-scope-limited-review">Part 2: Product Analysis — Scope-Limited Review<a class="headerlink" href="#part-2-product-analysis-scope-limited-review" title="Permanent link">&para;</a></h2>
+<p><strong>⚠️ SCOPE LIMITATION:</strong> We reviewed 13 products (December 2025). This is not an exhaustive market analysis.</p>
+<h3 id="commercial-software-reviewed-products">Commercial Software: Reviewed Products<a class="headerlink" href="#commercial-software-reviewed-products" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Intelligence Features</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tedds</td>
+<td>Calculations only, no sensitivity/optimization</td>
+<td><a href="https://www.tekla.com/products/tekla-tedds">Product Page</a></td>
+</tr>
+<tr>
+<td>ETABS</td>
+<td>No member-level sensitivity or constructability</td>
+<td>Product knowledge</td>
+</tr>
+<tr>
+<td>Revit + Robot</td>
+<td>"Optimization tools" (vague), no sensitivity</td>
+<td><a href="https://draftsmagic.com/10-best-structural-analysis-software-in-2024-a-structural-engineers-guide/">Review</a></td>
+</tr>
+<tr>
+<td>SkyCiv</td>
+<td>No sensitivity or constructability mentioned</td>
+<td>Website</td>
+</tr>
+<tr>
+<td>ENERCALC</td>
+<td>Calculations only</td>
+<td><a href="https://strucalc.com/blog/industry/enercalc-alternatives/">Comparison</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="open-source-libraries-reviewed-projects">Open-Source Libraries: Reviewed Projects<a class="headerlink" href="#open-source-libraries-reviewed-projects" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>Focus</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PyNite</td>
+<td>3D FEA (analysis)</td>
+<td>No beam design, no IS 456</td>
+</tr>
+<tr>
+<td>ConcreteProperties</td>
+<td>Section analysis</td>
+<td>No member design, no IS 456</td>
+</tr>
+<tr>
+<td>FoundationDesign</td>
+<td>Foundations (Eurocode)</td>
+<td>Not beams, not IS 456</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CORRECTED CLAIM:</strong></p>
+<blockquote>
+<p>"In our December 2025 review of 13 products (commercial tools, Excel add-ins, open-source libraries), we found no evidence of sensitivity analysis, predictive validation, or constructability scoring features for Excel-native IS 456 beam design workflows."</p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟡 SECONDARY (our own review, limited scope, not exhaustive)</p>
+<hr />
+<h2 id="part-3-academic-validation-primary-sources">Part 3: Academic Validation — Primary Sources<a class="headerlink" href="#part-3-academic-validation-primary-sources" title="Permanent link">&para;</a></h2>
+<h3 id="sensitivity-analysis-for-rc-beams-well-established">Sensitivity Analysis for RC Beams: Well-Established<a class="headerlink" href="#sensitivity-analysis-for-rc-beams-well-established" title="Permanent link">&para;</a></h3>
+<p><strong>🟢 PRIMARY - Peer-reviewed research:</strong></p>
+<ol>
+<li><strong>Variance-based sensitivity (Sobol indices):</strong></li>
+<li>Kytinou, V.K., et al. (2021). Flexural behavior of steel fiber RC beams: Probabilistic numerical modeling and sensitivity analysis. <em>Applied Sciences</em>, 11(20), 9591. <a href="https://www.mdpi.com/2076-3417/11/20/9591">MDPI</a></li>
+<li>
+<p><strong>Finding:</strong> Concrete tensile strength most affected first-crack force; yield point affected by residual tensile strength and reinforcement properties</p>
+</li>
+<li>
+<p><strong>Cost optimization (Lagrangian multipliers):</strong></p>
+</li>
+<li>Computational Lagrangian Multiplier Method for RC beams (2018). (Access-limited link: <a href="https://www.researchgate.net/publication/328687575">ResearchGate</a>)</li>
+<li>
+<p><strong>Finding:</strong> Sensitivity analysis determines influence of steel-to-concrete cost ratio, formwork costs, fck, width, span</p>
+</li>
+<li>
+<p><strong>Long-term deflection (Polynomial chaos expansion):</strong></p>
+</li>
+<li>Prediction and global sensitivity analysis (2023). <em>PMC</em>. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10342884/">Link</a></li>
+<li><strong>Finding:</strong> Global sensitivity analysis validated for long-term deflection prediction</li>
+</ol>
+<p><strong>Validation:</strong> Sensitivity analysis for RC beams is established in peer-reviewed literature using multiple methods (Sobol, perturbation, PCE, Lagrangian).</p>
+<p><strong>Our method:</strong> Perturbation-based (simplest, most accessible for practicing engineers).</p>
+<hr />
+<h3 id="constructability-scoring-government-validated-framework">Constructability Scoring: Government-Validated Framework<a class="headerlink" href="#constructability-scoring-government-validated-framework" title="Permanent link">&para;</a></h3>
+<p><strong>🟢 PRIMARY - Empirical research:</strong></p>
+<blockquote>
+<p>"Empirical results from 37 completed building projects provide support for the appraisal system's proposition that 'a design with a higher buildable score will result in more efficient labour usage in construction and therefore higher site labour productivity'."</p>
+<p><strong>Source:</strong> Poh, P., &amp; Chen, J. (1998). The Singapore buildable design appraisal system: A preliminary review of the relationship between buildability, site productivity and cost. <em>Construction Management and Economics</em>, 16(6), 681-692. <a href="https://ideas.repec.org/a/taf/conmgt/v16y1998i6p681-692.html">Link</a></p>
+</blockquote>
+<p><strong>Validation:</strong> Higher buildable scores correlate with improved labor productivity (37 projects, empirical).</p>
+<p><strong>REMOVED CLAIM:</strong> "7-10% cost and time savings" (not quantified in Poh &amp; Chen 1998)</p>
+<hr />
+<p><strong>🟡 SECONDARY - Singapore BCA Framework:</strong></p>
+<blockquote>
+<p>"Singapore has pioneered with the quantification of constructability for buildings based on a scheme known as the Buildable Design Appraisal System (BDAS), which culminated in a minimum requirement for building designs to comply with, known as the Buildability Score (BS)."</p>
+<p><strong>Source:</strong> <a href="https://link.springer.com/article/10.1007/s42107-018-0026-3">Asian Journal of Civil Engineering</a> (describes framework, not BCA primary source)</p>
+</blockquote>
+<p><strong>CORRECTED CLAIM (softened mandate language):</strong></p>
+<blockquote>
+<p>"Singapore's Building and Construction Authority promotes buildability scoring through its BDAS framework. Poh &amp; Chen's 1998 empirical study validated that higher buildable scores correlate with improved labor productivity."</p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟡 SECONDARY (framework described in academic paper; specific mandate requirements vary by project type and timeline — need BCA primary source for exact mandate claims)</p>
+<p><strong>For blog usage:</strong> Emphasize Poh &amp; Chen empirical validation (🟢 PRIMARY) over specific mandate details (🟡 SECONDARY).</p>
+<hr />
+<h3 id="ml-vs-deterministic-small-sample-requirements">ML vs. Deterministic: Small Sample Requirements<a class="headerlink" href="#ml-vs-deterministic-small-sample-requirements" title="Permanent link">&para;</a></h3>
+<p><strong>🟢 PRIMARY - Academic papers:</strong></p>
+<blockquote>
+<p>"Small sample size is associated with higher reported classification accuracy (false confidence). K-fold Cross-Validation produces strongly biased performance estimates with small sample sizes."</p>
+<p><strong>Source:</strong> Vabalas, A., Gowen, E., Poliakoff, E., &amp; Casson, A. J. (2019). Machine learning algorithm validation with a limited sample size. <em>PLOS One</em>, 14(11), e0224365. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0224365">Link</a></p>
+<p>"Supervised learning methods need annotated data to generate efficient models, but annotated data is relatively scarce and expensive to obtain."</p>
+<p><strong>Source:</strong> Figueroa, R. L., et al. (2012). Predicting sample size required for classification performance. <em>BMC Medical Informatics and Decision Making</em>, 12, 8. <a href="https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/1472-6947-12-8">Link</a></p>
+</blockquote>
+<p><strong>CORRECTED CLAIM:</strong></p>
+<blockquote>
+<p>"Academic research shows that insufficient sample sizes lead to ML overfitting and biased performance estimates. In contrast, deterministic methods based on physical models (IS 456 equations) require zero training data and can be validated with small numbers of verified test cases."</p>
+</blockquote>
+<p><strong>Evidence Level:</strong> 🟢 PRIMARY (peer-reviewed papers on ML limitations with small data)</p>
+<hr />
+<h2 id="synthesis-evidence-based-value-proposition">Synthesis: Evidence-Based Value Proposition<a class="headerlink" href="#synthesis-evidence-based-value-proposition" title="Permanent link">&para;</a></h2>
+<h3 id="what-we-offer-scope-limited-claims">What We Offer (Scope-Limited Claims)<a class="headerlink" href="#what-we-offer-scope-limited-claims" title="Permanent link">&para;</a></h3>
+<p><strong>CORRECTED:</strong> Based on our December 2025 review of 13 products:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Found in Review?</th>
+<th>Our Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sensitivity analysis (Excel-native)</td>
+<td>No</td>
+<td>✅ Perturbation-based</td>
+</tr>
+<tr>
+<td>Predictive validation (Excel-native)</td>
+<td>No</td>
+<td>✅ Heuristic rules</td>
+</tr>
+<tr>
+<td>Constructability scoring (Excel-native)</td>
+<td>No</td>
+<td>✅ Weighted metrics</td>
+</tr>
+<tr>
+<td>IS 456 beam library (Python + VBA)</td>
+<td>No</td>
+<td>✅ Dual platform</td>
+</tr>
+<tr>
+<td>Golden vector validation</td>
+<td>Some (commercial)</td>
+<td>✅ 3-4 test vectors (sample-only)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>NOT CLAIMING:</strong> "Only product in the world" or "No product anywhere offers"</p>
+<p><strong>CLAIMING:</strong> "In our review of 13 products, we found no evidence of..."</p>
+<hr />
+<h2 id="quantified-evidence-for-blog-content-final">Quantified Evidence for Blog Content — FINAL<a class="headerlink" href="#quantified-evidence-for-blog-content-final" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Evidence Level</th>
+<th>Source</th>
+<th>Blog Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell error rates</td>
+<td>1.1-5.6% (avg, 9 studies)</td>
+<td>🟢 PRIMARY</td>
+<td>Panko (2008) JOEU</td>
+<td>Peer-reviewed</td>
+</tr>
+<tr>
+<td>Field audit error rates</td>
+<td>86%+ (rigorous audits)</td>
+<td>🟢 PRIMARY</td>
+<td>Panko (2008) JOEU</td>
+<td>Peer-reviewed</td>
+</tr>
+<tr>
+<td>Real error impacts</td>
+<td>UK: 16K cases; Norway: $92M; SCB: £46.55M</td>
+<td>🟡 SECONDARY</td>
+<td>EuSpRIG aggregation</td>
+<td>Documented cases (secondary)</td>
+</tr>
+<tr>
+<td>BDAS productivity</td>
+<td>Higher scores → better productivity (37 projects)</td>
+<td>🟢 PRIMARY</td>
+<td>Poh &amp; Chen (1998) CME</td>
+<td>Academic validation</td>
+</tr>
+<tr>
+<td>BCA framework</td>
+<td>Promotes buildability scoring</td>
+<td>🟡 SECONDARY</td>
+<td>Academic descriptions</td>
+<td>Framework exists</td>
+</tr>
+<tr>
+<td>ETABS API issues</td>
+<td>Intermittent failures reported</td>
+<td>🟠 ANECDOTAL</td>
+<td>Forum posts</td>
+<td>Illustrative only</td>
+</tr>
+<tr>
+<td>Trial-and-error</td>
+<td>Engineers commonly use iterative workflows</td>
+<td>🟡 SECONDARY</td>
+<td>Academic papers (2020-2025)</td>
+<td>Workflow description</td>
+</tr>
+<tr>
+<td>ML overfitting</td>
+<td>Small samples → bias</td>
+<td>🟢 PRIMARY</td>
+<td>Vabalas et al. (2019) PLOS One</td>
+<td>Academic research</td>
+</tr>
+<tr>
+<td>Our validation</td>
+<td>100% match on 3-4 test vectors</td>
+<td>🟢 PRIMARY</td>
+<td>Our testing</td>
+<td>Sample-only</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="blog-content-strategy-evidence-based">Blog Content Strategy — Evidence-Based<a class="headerlink" href="#blog-content-strategy-evidence-based" title="Permanent link">&para;</a></h2>
+<h3 id="blog-01-making-structural-design-intelligent">Blog 01: Making Structural Design Intelligent<a class="headerlink" href="#blog-01-making-structural-design-intelligent" title="Permanent link">&para;</a></h3>
+<p><strong>Lead with primary research (Panko):</strong></p>
+<blockquote>
+<p>"Peer-reviewed research spanning 15 years found that cell error rates average 1.1-5.6%, and field audits using rigorous methodologies found errors in 86%+ of spreadsheets (Panko 2008). Real-world cases documented by EuSpRIG include: UK losing 16,000 COVID cases to an Excel row limit (2020), Norway's sovereign fund losing $92 million to a date entry error (2024), and Standard Chartered fined £46.55 million for an £8 billion calculation error (2021)."</p>
+</blockquote>
+<p><strong>Present Singapore validation (Poh &amp; Chen - PRIMARY):</strong></p>
+<blockquote>
+<p>"Singapore's Building and Construction Authority promotes constructability scoring for building designs. A 1998 empirical study of 37 completed projects validated that designs with higher buildable scores achieve better labor productivity (Poh &amp; Chen, <em>Construction Management and Economics</em>)."</p>
+</blockquote>
+<p><strong>Scope validation appropriately:</strong></p>
+<blockquote>
+<p>"Our sensitivity analysis, predictive validation, and constructability features achieved 100% match against 3-4 golden vectors from IS 456 worked examples (sample-only validation). All outputs are deterministic and traceable to code clauses."</p>
+</blockquote>
+<hr />
+<h3 id="blog-02-deterministic-ml">Blog 02: Deterministic ML<a class="headerlink" href="#blog-02-deterministic-ml" title="Permanent link">&para;</a></h3>
+<p><strong>Academic contrast (Vabalas - PRIMARY):</strong></p>
+<blockquote>
+<p>"A 2019 PLOS One study showed that machine learning with small sample sizes produces biased performance estimates and overfitting. For code-compliant design with verified test cases, deterministic methods based on physical equations require zero training data."</p>
+</blockquote>
+<p><strong>Panko citation (PRIMARY):</strong></p>
+<blockquote>
+<p>"Panko's 15-year research program found cell error rates of 1.1-5.6% in controlled experiments, and rigorous field audits found errors in 86%+ of spreadsheets. Tested libraries validated against code-compliant examples are safer than custom spreadsheets."</p>
+</blockquote>
+<hr />
+<h2 id="attribution-corrections-summary">Attribution Corrections Summary<a class="headerlink" href="#attribution-corrections-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Original</th>
+<th>Corrected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sensitivity sources</td>
+<td>Panko/Poh &amp; Chen listed</td>
+<td>Kytinou et al., Lagrangian studies listed</td>
+</tr>
+<tr>
+<td>EuSpRIG level</td>
+<td>PRIMARY</td>
+<td>SECONDARY (aggregator)</td>
+</tr>
+<tr>
+<td>Horror stories level</td>
+<td>PRIMARY</td>
+<td>SECONDARY (EuSpRIG aggregates public reports)</td>
+</tr>
+<tr>
+<td>Mortality estimate</td>
+<td>"~1,500 deaths"</td>
+<td>Removed (not verified in sources)</td>
+</tr>
+<tr>
+<td>Panko venue</td>
+<td>Inconsistent DSS/JOEU</td>
+<td>JOEU (2008) consistently cited</td>
+</tr>
+<tr>
+<td>BCA mandate</td>
+<td>"Mandates buildability"</td>
+<td>"Promotes buildability" (softened)</td>
+</tr>
+<tr>
+<td>"Majority" claim</td>
+<td>"Majority of engineers"</td>
+<td>"Engineers commonly use" (removed quantifier)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="final-evidence-audit">Final Evidence Audit<a class="headerlink" href="#final-evidence-audit" title="Permanent link">&para;</a></h2>
+<p><strong>Before publishing any blog post:</strong></p>
+<ul>
+<li>✅ Sensitivity analysis sources correctly attributed (Kytinou et al., not Panko)</li>
+<li>✅ EuSpRIG classified as SECONDARY aggregator (not PRIMARY)</li>
+<li>✅ Horror stories classified as SECONDARY (EuSpRIG aggregates news reports)</li>
+<li>✅ Unverified mortality estimate removed</li>
+<li>✅ Panko venue consistent (JOEU 2008)</li>
+<li>✅ BCA language softened ("promotes" not "mandates")</li>
+<li>✅ "Majority" quantifier removed where not supported</li>
+<li>✅ All PRIMARY claims trace to peer-reviewed papers or our own testing</li>
+<li>✅ All SECONDARY claims explicitly labeled with aggregator/industry source</li>
+<li>✅ All ANECDOTAL claims explicitly labeled</li>
+</ul>
+<p><strong>Status:</strong> ✅ <strong>FINAL EVIDENCE-BASED RESEARCH — READY FOR BLOG WRITING</strong></p>
+<hr />
+<p><strong>Last updated:</strong> 2025-12-31 (Review 2 complete)
+<strong>Canonical version:</strong> This document
+<strong>Replaces:</strong> 00-research-summary.md and 00-research-summary-corrected.md</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

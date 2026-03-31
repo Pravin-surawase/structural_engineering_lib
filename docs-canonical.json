@@ -1,0 +1,116 @@
+{
+  "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
+  "_updated": "2026-03-31",
+  "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
+
+  "topics": {
+    "agent-onboarding": {
+      "canonical": "docs/getting-started/agent-bootstrap.md",
+      "description": "Primary entry point for new agents",
+      "also_see": ["docs/getting-started/agent-essentials.md", "docs/getting-started/ai-context-pack.md"]
+    },
+    "git-workflow": {
+      "canonical": "docs/git-automation/git-workflow-single-source.md",
+      "description": "Git automation single source of truth — workflow, scripts, hooks, recovery",
+      "also_see": ["docs/_archive/git-automation-consolidated/workflow-guide.md", "docs/_archive/git-automation-consolidated/automation-scripts.md"]
+    },
+    "api-reference": {
+      "canonical": "docs/reference/api.md",
+      "description": "Public API documentation",
+      "also_see": ["docs/reference/api-stability.md"]
+    },
+    "coding-standards": {
+      "canonical": "docs/contributing/agent-coding-standards.md",
+      "description": "Code style and quality standards",
+      "also_see": []
+    },
+    "torsion": {
+      "canonical": "docs/research/torsion-design-research.md",
+      "description": "Torsion design implementation and IS 456 compliance",
+      "also_see": []
+    },
+    "boq": {
+      "canonical": "docs/reference/boq-export.md",
+      "description": "Bill of Quantities export and material estimation",
+      "also_see": []
+    },
+    "load-calculator": {
+      "canonical": "docs/reference/load-calculator.md",
+      "description": "Load calculation and combination utilities",
+      "also_see": []
+    },
+    "sse-streaming": {
+      "canonical": "docs/reference/sse-streaming.md",
+      "description": "Server-Sent Events streaming for real-time design updates",
+      "also_see": []
+    },
+    "folder-structure": {
+      "canonical": "docs/guidelines/folder-structure-governance.md",
+      "description": "Project organization rules",
+      "also_see": []
+    },
+    "known-issues": {
+      "canonical": "docs/reference/known-pitfalls.md",
+      "description": "Common mistakes and how to avoid them",
+      "also_see": ["docs/contributing/session-issues.md"]
+    },
+    "testing-strategy": {
+      "canonical": "docs/contributing/testing-strategy.md",
+      "description": "Test patterns and coverage requirements",
+      "also_see": []
+    },
+    "architecture": {
+      "canonical": "docs/architecture/project-overview.md",
+      "description": "System architecture and layer design",
+      "also_see": []
+    },
+    "agent-mistakes": {
+      "canonical": "docs/agents/guides/agent-8-mistakes-prevention-guide.md",
+      "description": "Historical mistakes and prevention patterns",
+      "also_see": []
+    },
+    "session-handoff": {
+      "canonical": "docs/planning/next-session-brief.md",
+      "description": "Current work status and next steps",
+      "also_see": ["docs/SESSION_LOG.md"]
+    },
+    "task-tracking": {
+      "canonical": "docs/TASKS.md",
+      "description": "Active work items and backlog",
+      "also_see": []
+    },
+    "library-expansion": {
+      "canonical": "docs/planning/library-expansion-blueprint-v5.md",
+      "description": "Multi-code multi-element expansion master plan (IS 456 + ACI 318 + EC2)",
+      "also_see": ["docs/_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md"]
+    },
+    "commit-conventions": {
+      "canonical": "docs/contributing/commit-message-conventions.md",
+      "description": "Commit message format and types",
+      "also_see": []
+    },
+    "automation-catalog": {
+      "canonical": "docs/reference/automation-catalog.md",
+      "description": "All automation scripts with usage",
+      "also_see": ["scripts/index.json"]
+    },
+    "3d-visualization": {
+      "canonical": "docs/research/live-3d-visualization-architecture.md",
+      "description": "3D rendering architecture and patterns",
+      "also_see": ["docs/research/pyvista-evaluation.md"]
+    }
+  },
+
+  "naming_conventions": {
+    "guides": "guide-{topic}.md or {topic}-guide.md",
+    "references": "reference-{topic}.md or {topic}.md in reference/",
+    "research": "research-{topic}.md or {topic}-research.md",
+    "decisions": "decision-{topic}.md or adr-NNN-{topic}.md"
+  },
+
+  "forbidden_patterns": [
+    "ALL_CAPS_NAMES.md (except README, CHANGELOG, TASKS, SESSION_LOG)",
+    "Numbered prefixes (01_, 02_) for non-ordered content",
+    "Agent-specific session docs outside _archive/ after 30 days"
+  ]
+}

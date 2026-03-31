@@ -1,0 +1,2911 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/guidelines/folder-structure-governance/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Folder Structure Governance - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#folder-structure-governance" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Folder Structure Governance
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-root-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I. Root Principles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I. Root Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-of-truth-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source of Truth (Limits)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-repository-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        II. Repository Root (/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-documentation-root-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III. Documentation Root (docs/)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Documentation Root (docs/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iiia-required-root-files-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III.A. Required Root Files (docs/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iiib-approved-doc-categories-level-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III.B. Approved Doc Categories (Level 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iiic-current-compliance-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        III.C. Current Compliance Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-python-library-pythonstructural_lib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV. Python Library (Python/structural_lib/)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IV. Python Library (Python/structural_lib/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iva-architecture-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV.A. Architecture Layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ivb-directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV.B. Directory Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ivc-backward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV.C. Backward Compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ivd-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV.D. Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-react-app-react_appsrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V. React App (react_app/src/)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V. React App (react_app/src/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#va-directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V.A. Directory Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vb-component-grouping-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V.B. Component Grouping Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vc-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V.C. Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vi-fastapi-app-fastapi_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VI. FastAPI App (fastapi_app/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vii-agents-folder-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VII. Agents Folder (agents/)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viii-document-metadata-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIII. Document Metadata Standard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ix-validation-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IX. Validation Checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. Validation Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-checks-pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automated Checks (Pre-commit)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-review-quarterly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Review (Quarterly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x-rule-updates-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X. Rule Updates &amp; Governance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Rule Updates &amp; Governance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changing the Spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-create-a-new-category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Create a New Category
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xi-current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XI. Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xii-migration-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XII. Migration History
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XII. Migration History">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-docs-reorganization-sessions-11-12-jan-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Docs Reorganization (Sessions 11-12, Jan 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-code-folder-structure-session-88-89-feb-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Code Folder Structure (Session 88-89, Feb 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="folder-structure-governance">Folder Structure Governance<a class="headerlink" href="#folder-structure-governance" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Guide
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> Production Ready
+<strong>Importance:</strong> Critical
+<strong>Version:</strong> 3.0
+<strong>Created:</strong> 2025-12-01
+<strong>Last Updated:</strong> 2026-03-29
+<strong>Enforcement:</strong> Automated validators + pre-commit hooks</p>
+<hr />
+<h2 id="i-root-principles">I. Root Principles<a class="headerlink" href="#i-root-principles" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Progressive Disclosure</strong> - Short entry docs, detailed content one level down</li>
+<li><strong>Clear Ownership</strong> - Every folder has a clear purpose and maintainer</li>
+<li><strong>Automation First</strong> - Rules are enforced by code, not conversation</li>
+<li><strong>Long-term Stability</strong> - Structure supports multi-year growth without major reorganization</li>
+<li><strong>Discoverability</strong> - Every document is reachable from a README index</li>
+</ol>
+<h3 id="source-of-truth-limits">Source of Truth (Limits)<a class="headerlink" href="#source-of-truth-limits" title="Permanent link">&para;</a></h3>
+<p>Numeric governance limits are defined in:
+<code>docs/guidelines/governance-limits.json</code></p>
+<p>Both the validator (<code>scripts/check_governance.py</code>) and this guide must stay aligned to that file.</p>
+<hr />
+<h2 id="ii-repository-root">II. Repository Root (/)<a class="headerlink" href="#ii-repository-root" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> Metadata, configuration, entry points
+<strong>Max files:</strong> 15 (strictly enforced)
+<strong>Allowed files:</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td>Project overview</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>LICENSE</td>
+<td>License text</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>LICENSE_ENGINEERING.md</td>
+<td>Engineering-specific license</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>CONTRIBUTING.md</td>
+<td>Contribution guidelines</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>CODE_OF_CONDUCT.md</td>
+<td>Community guidelines</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>CHANGELOG.md</td>
+<td>Version history</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>pyproject.toml</td>
+<td>Python configuration</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>.github/copilot-instructions.md</td>
+<td>AI agent guidelines</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>llms.txt</td>
+<td>LLM-friendly documentation</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>CITATION.cff</td>
+<td>Citation metadata</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>requirements.txt</td>
+<td>Python deps bundle</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>pytest.ini</td>
+<td>Pytest config</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>Dockerfile.fastapi</td>
+<td>FastAPI container build</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>docker-compose.yml</td>
+<td>Docker compose (prod)</td>
+<td>OPTIONAL</td>
+</tr>
+<tr>
+<td>docker-compose.dev.yml</td>
+<td>Docker compose (dev)</td>
+<td>OPTIONAL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Current count:</strong> 15 files ✅
+<strong>Status:</strong> COMPLIANT</p>
+<hr />
+<h2 id="iii-documentation-root-docs">III. Documentation Root (docs/)<a class="headerlink" href="#iii-documentation-root-docs" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> All user-facing and developer documentation
+<strong>Max root files:</strong> 3-5 (hub documents only)
+<strong>Structure:</strong> Three levels
+1. <strong>Root (3-5 files):</strong> Quick links, landing page, index
+2. <strong>Categories (15-20 folders):</strong> Organized by audience/purpose
+3. <strong>Detail (files in folders):</strong> Actual content</p>
+<h3 id="iiia-required-root-files-docs">III.A. Required Root Files (docs/)<a class="headerlink" href="#iiia-required-root-files-docs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td>Hub index with quick-start paths</td>
+</tr>
+<tr>
+<td>TASKS.md</td>
+<td>Active task tracking</td>
+</tr>
+<tr>
+<td>SESSION_LOG.md</td>
+<td>Session history and decisions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="iiib-approved-doc-categories-level-2">III.B. Approved Doc Categories (Level 2)<a class="headerlink" href="#iiib-approved-doc-categories-level-2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Purpose</th>
+<th>Max Files</th>
+<th>Sub-levels</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Core Learning</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>getting-started/</td>
+<td>Onboarding for all users</td>
+<td>10</td>
+<td>0</td>
+<td>Platform-specific quickstarts</td>
+</tr>
+<tr>
+<td>learning/</td>
+<td>Structured learning paths</td>
+<td>10</td>
+<td>0</td>
+<td>Beginner-friendly, self-paced</td>
+</tr>
+<tr>
+<td>cookbook/</td>
+<td>Task-focused recipes</td>
+<td>15</td>
+<td>0</td>
+<td>"How to" with examples</td>
+</tr>
+<tr>
+<td>reference/</td>
+<td>API, CLI, formula reference</td>
+<td>20</td>
+<td>1</td>
+<td>Searchable reference material</td>
+</tr>
+<tr>
+<td><strong>Architecture &amp; Design</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>architecture/</td>
+<td>System design, decisions</td>
+<td>10</td>
+<td>1</td>
+<td>Layer diagrams, trade-offs</td>
+</tr>
+<tr>
+<td>adr/</td>
+<td>Architecture Decision Records</td>
+<td>50</td>
+<td>0</td>
+<td>Searchable by decision type</td>
+</tr>
+<tr>
+<td><strong>Contributing</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>contributing/</td>
+<td>Developer guides</td>
+<td>20</td>
+<td>1</td>
+<td>Testing, PR workflow, standards</td>
+</tr>
+<tr>
+<td>guidelines/</td>
+<td>Development standards</td>
+<td>15</td>
+<td>1</td>
+<td>API design, naming, patterns</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>verification/</td>
+<td>Test vectors, benchmarks</td>
+<td>15</td>
+<td>1</td>
+<td>Hand calculations, edge cases</td>
+</tr>
+<tr>
+<td><strong>Planning &amp; Research</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>planning/</td>
+<td>Roadmaps, sprints, briefs</td>
+<td>30</td>
+<td>1</td>
+<td>Product roadmap, session planning</td>
+</tr>
+<tr>
+<td>research/</td>
+<td>Research notes, findings</td>
+<td>100</td>
+<td>2</td>
+<td>Exploratory work, deep dives</td>
+</tr>
+<tr>
+<td><strong>Content</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>blog-drafts/</td>
+<td>Blog posts in progress</td>
+<td>20</td>
+<td>0</td>
+<td>Editorial pipeline</td>
+</tr>
+<tr>
+<td>publications/</td>
+<td>Published content</td>
+<td>20</td>
+<td>0</td>
+<td>Links to external publications</td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>_archive/</td>
+<td>Completed/deprecated docs</td>
+<td>∞</td>
+<td>3</td>
+<td>Old versions, obsolete guides</td>
+</tr>
+<tr>
+<td>_internal/</td>
+<td>Internal notes, checklists</td>
+<td>50</td>
+<td>1</td>
+<td>Not for users, internal only</td>
+</tr>
+<tr>
+<td>_references/</td>
+<td>Local research materials</td>
+<td>50</td>
+<td>0</td>
+<td>PDFs, spreadsheets you own</td>
+</tr>
+<tr>
+<td><strong>Agent-Specific</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>agents/</td>
+<td>AI agent documentation</td>
+<td>5 (root)</td>
+<td>2</td>
+<td>Quick-start → guides → sessions</td>
+</tr>
+<tr>
+<td><strong>Utility</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>images/</td>
+<td>Images referenced by docs</td>
+<td>-</td>
+<td>0</td>
+<td>Screenshots, diagrams</td>
+</tr>
+<tr>
+<td>legal/</td>
+<td>Legal documents</td>
+<td>10</td>
+<td>0</td>
+<td>Terms, privacy, licensing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="iiic-current-compliance-check">III.C. Current Compliance Check<a class="headerlink" href="#iiic-current-compliance-check" title="Permanent link">&para;</a></h3>
+<p><strong>Compliant categories (✅):</strong>
+- getting-started/ (8 files)
+- learning/ (9 files)
+- cookbook/ (3 files)
+- reference/ (9 files)
+- architecture/ (12 files)
+- adr/ (1 file)
+- contributing/ (16 files)
+- guidelines/ (11 files)
+- verification/ (5 files)
+- planning/ (12 files)
+- research/ (20+ files)</p>
+<p><strong>Status (verified 2026-01-11):</strong>
+- blog-drafts/ - 4 files ✅
+- publications/ - archived ✅
+- agents/ - 3 root files + 2 folders ✅ (README.md, index.md, index.json, roles/, agent-9/)
+- _archive/ - properly structured ✅
+- _internal/ - exists, used ✅
+- _references/ - exists, used ✅</p>
+<hr />
+<h2 id="iv-python-library-pythonstructural_lib">IV. Python Library (Python/structural_lib/)<a class="headerlink" href="#iv-python-library-pythonstructural_lib" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> IS 456 RC beam design library with 4-layer architecture
+<strong>Structure:</strong> 4 layers — Core, Codes, Services, Insights
+<strong>Migration:</strong> Completed Feb 10, 2026 (Phases 1-3 of folder-structure-migration-v2)</p>
+<h3 id="iva-architecture-layers">IV.A. Architecture Layers<a class="headerlink" href="#iva-architecture-layers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Location</th>
+<th>Purpose</th>
+<th>Import Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Core</strong></td>
+<td><code>core/</code></td>
+<td>Pure math, types, validation, errors</td>
+<td>Cannot import from Services or Codes</td>
+</tr>
+<tr>
+<td><strong>Codes</strong></td>
+<td><code>codes/is456/</code> (+ future <code>aci318/</code>, <code>ec2/</code>)</td>
+<td>Design code calculations</td>
+<td>Can import Core only</td>
+</tr>
+<tr>
+<td><strong>Services</strong></td>
+<td><code>services/</code></td>
+<td>Orchestration, adapters, I/O, business logic</td>
+<td>Can import Core + Codes</td>
+</tr>
+<tr>
+<td><strong>Insights</strong></td>
+<td><code>insights/</code>, <code>reports/</code>, <code>visualization/</code></td>
+<td>Analysis, reports, 3D geometry</td>
+<td>Can import Core + Codes + Services</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ivb-directory-structure">IV.B. Directory Structure<a class="headerlink" href="#ivb-directory-structure" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Python/structural_lib/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── __init__.py                    # Package root (re-exports from core/ + services/)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── __main__.py                    # CLI entry point
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── core/                          # LAYER 1: Types, models, validation, errors (15 files)
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   ├── base.py                    # Abstract base classes
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   ├── constants.py               # Engineering constants
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   ├── data_types.py              # Data type definitions
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   ├── error_messages.py          # Error message catalog
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   ├── errors.py                  # Exception classes
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│   ├── geometry.py                # Cross-section geometry
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   ├── inputs.py                  # Input validation types
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   ├── materials.py               # Material properties
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│   ├── models.py                  # Domain models
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   ├── registry.py                # Code registry
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   ├── result_base.py             # Result base classes
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   ├── types.py                   # Type definitions
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   ├── utilities.py               # Pure utility functions
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   └── validation.py              # Input validation logic
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>├── codes/                         # LAYER 1: Code-specific calculations
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   ├── is456/                     # IS 456:2000 (12 files)
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   │   ├── flexure.py, shear.py, detailing.py, torsion.py
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   │   ├── ductile.py, serviceability.py, slenderness.py
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│   │   ├── tables.py, compliance.py, materials.py
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   │   └── design_checks.py, cost_optimizer.py
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   ├── aci318/                    # ACI 318 (placeholder)
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│   └── ec2/                       # Eurocode 2 (placeholder)
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>├── services/                      # LAYER 2: Integration &amp; business logic (27 files)
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│   ├── api.py                     # Public API facade (43 functions)
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│   ├── api_results.py             # Result formatting
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│   ├── adapters.py                # CSV adapters (Generic, ETABS, SAFE)
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│   ├── batch.py                   # Batch design operations
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│   ├── beam_pipeline.py           # Design orchestration
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│   ├── bbs.py                     # Bar bending schedule
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│   ├── dxf_export.py              # CAD export
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│   ├── report.py, report_svg.py, calculation_report.py  # Reports
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>│   ├── excel_bridge.py, excel_integration.py             # Excel I/O
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>│   ├── job_runner.py, job_cli.py                         # Job execution
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>│   ├── rebar.py, rebar_optimizer.py                      # Rebar operations
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>│   ├── optimization.py, multi_objective_optimizer.py     # Optimization
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>│   ├── imports.py, etabs_import.py                       # Import handling
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>│   ├── costing.py, compliance.py, audit.py               # Business logic
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>│   ├── intelligence.py, dashboard.py                     # Smart features
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>│   ├── serialization.py, testing_strategies.py           # Support
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>│   └── __init__.py
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>│
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>├── insights/                      # LAYER 3: Smart analysis (10 files)
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>├── reports/                       # LAYER 3: Report generation (2 files)
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>├── visualization/                 # LAYER 3: 3D geometry (2 files)
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>│
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>└── 48 backward-compat stubs      # Re-export from core/ or services/
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a>    ├── api.py → services.api      # Old imports still work
+<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a>    ├── types.py → core.types      # Deprecation warnings added
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a>    └── ...                        # Safe to remove after v1.0
+</code></pre></div>
+<h3 id="ivc-backward-compatibility">IV.C. Backward Compatibility<a class="headerlink" href="#ivc-backward-compatibility" title="Permanent link">&para;</a></h3>
+<p>All 48 root-level <code>.py</code> files are <strong>backward-compat shims</strong> that re-export from <code>core/</code> or <code>services/</code>. This ensures:
+- <code>from structural_lib.api import design_beam_is456</code> still works
+- <code>from structural_lib.types import BeamInput</code> still works
+- Deprecation warnings guide users to new paths</p>
+<h3 id="ivd-enforcement">IV.D. Enforcement<a class="headerlink" href="#ivd-enforcement" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Check</th>
+<th>Script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer boundaries</td>
+<td><code>validate_imports.py --scope structural_lib</code></td>
+<td>0 violations</td>
+</tr>
+<tr>
+<td>No orphan imports</td>
+<td><code>validate_imports.py --scope all</code></td>
+<td>Excludes legacy streamlit</td>
+</tr>
+<tr>
+<td>Folder structure</td>
+<td><code>check_governance.py --structure</code></td>
+<td>Pre-commit hook</td>
+</tr>
+<tr>
+<td>New modules</td>
+<td>Use <code>migrate_python_module.py</code> for moves</td>
+<td>Creates stubs automatically</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="v-react-app-react_appsrc">V. React App (react_app/src/)<a class="headerlink" href="#v-react-app-react_appsrc" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> V3 frontend — React 19 + React Three Fiber + Tailwind v4
+<strong>Structure:</strong> Feature-grouped components
+<strong>Migration:</strong> Completed Feb 10, 2026 (Phase 4 of folder-structure-migration-v2)</p>
+<h3 id="va-directory-structure">V.A. Directory Structure<a class="headerlink" href="#va-directory-structure" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>react_app/src/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── api/                           # HTTP/WS client (1 file)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   └── client.ts
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>├── components/                    # UI components (feature-grouped)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   ├── design/                    # Beam design feature
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   │   ├── DesignView.tsx         # Design page (form + viewport + results)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   │   ├── BeamForm.tsx           # Input form with live validation
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   │   ├── ResultsPanel.tsx       # Design results display
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│   │   ├── CrossSectionView.tsx   # Cross-section visualization
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│   │   └── index.ts              # Barrel export
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│   │
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│   ├── import/                    # Data import feature
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│   │   ├── ImportView.tsx         # Import page
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│   │   ├── CSVImportPanel.tsx     # Drag-drop CSV import
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>│   │   ├── BeamTable.tsx          # Imported beams table
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│   │   └── index.ts              # Barrel export
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>│   │
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>│   ├── viewport/                  # 3D visualization feature
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>│   │   ├── Viewport3D.tsx         # 3D beam/building visualization (R3F)
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>│   │   ├── WorkspaceLayout.tsx    # Dockview IDE-like layout
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>│   │   ├── LandingView.tsx        # Landing page content
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>│   │   └── index.ts              # Barrel export
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>│   │
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>│   ├── layout/                    # App shell &amp; navigation
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>│   │   ├── TopBar.tsx
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>│   │   └── ModernAppLayout.tsx
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>│   │
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>│   ├── pages/                     # Route-level pages
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>│   │   ├── HomePage.tsx
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>│   │   ├── ModeSelectPage.tsx
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>│   │   ├── BuildingEditorPage.tsx
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>│   │   └── BeamDetailPage.tsx
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>│   │
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>│   ├── ui/                        # Shared/primitive UI components
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>│   │   ├── BentoGrid.tsx, FloatingDock.tsx, Toast.tsx
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>│   │   ├── ConnectionStatus.tsx, FileDropZone.tsx
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>│   │   ├── Skeleton.tsx, ErrorBoundary.tsx
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>│   │   └── index.ts
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>│   │
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>│   ├── CommandPalette.tsx         # Global overlay (stays in root)
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>│   └── index.ts                   # Master barrel export
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>│
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>├── hooks/                         # Custom hooks (8 files)
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>│   ├── useCSVImport.ts            # CSV import via API adapters
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>│   ├── useBeamGeometry.ts         # 3D rebar/stirrup geometry from API
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>│   ├── useLiveDesign.ts           # WebSocket live design
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>│   ├── useAutoDesign.ts           # Auto-trigger on input change
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>│   ├── useGeometryAdvanced.ts     # Building &amp; cross-section geometry
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>│   └── useRebarEditor.ts          # Rebar edit validation
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>│
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>├── store/                         # Zustand state stores (2 files)
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>│   ├── designStore.ts             # Single beam design inputs/results
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>│   └── importedBeamsStore.ts      # Imported CSV beams + selection
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>│
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>├── types/                         # TypeScript types (2 files)
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>├── utils/                         # Utility functions (3 files)
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>├── lib/                           # External lib wrappers (1 file)
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>└── assets/                        # Static assets (1 file)
+</code></pre></div>
+<h3 id="vb-component-grouping-rules">V.B. Component Grouping Rules<a class="headerlink" href="#vb-component-grouping-rules" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Purpose</th>
+<th>When to add here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>design/</code></td>
+<td>Single beam design flow</td>
+<td>Forms, results, design-specific views</td>
+</tr>
+<tr>
+<td><code>import/</code></td>
+<td>Data import flow</td>
+<td>CSV, JSON, file handling components</td>
+</tr>
+<tr>
+<td><code>viewport/</code></td>
+<td>3D visualization</td>
+<td>R3F-based rendering, 3D layouts</td>
+</tr>
+<tr>
+<td><code>layout/</code></td>
+<td>App shell</td>
+<td>Top bars, sidebars, navigation</td>
+</tr>
+<tr>
+<td><code>pages/</code></td>
+<td>Route-level components</td>
+<td>Full pages rendered by React Router</td>
+</tr>
+<tr>
+<td><code>ui/</code></td>
+<td>Shared primitives</td>
+<td>Reusable across multiple features</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vc-enforcement">V.C. Enforcement<a class="headerlink" href="#vc-enforcement" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Check</th>
+<th>Script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TypeScript compilation</td>
+<td><code>npm run build</code> (catches all import errors)</td>
+<td>2754 modules</td>
+</tr>
+<tr>
+<td>Component moves</td>
+<td>Use <code>migrate_react_component.py</code></td>
+<td>Updates all imports + barrel exports</td>
+</tr>
+<tr>
+<td>Index generation</td>
+<td><code>generate_enhanced_index.py</code></td>
+<td>Per-folder index.json + index.md</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="vi-fastapi-app-fastapi_app">VI. FastAPI App (fastapi_app/)<a class="headerlink" href="#vi-fastapi-app-fastapi_app" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> REST + WebSocket API layer
+<strong>Status:</strong> Already well-organized — no changes needed</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>fastapi_app/
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── main.py                        # App entry point
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>├── config.py                      # Configuration
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>├── auth.py                        # Authentication
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>├── models/                        # Pydantic models (5 files)
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│   ├── beam.py, geometry.py, analysis.py
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│   ├── optimization.py, common.py
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│   └── __init__.py
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>├── routers/                       # API routes (11 files, one per domain)
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│   ├── design.py, geometry.py, import_router.py
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│   ├── insights.py, optimization.py, export.py
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│   └── ...
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>└── tests/                         # Route tests (7 files)
+</code></pre></div>
+<hr />
+<h2 id="vii-agents-folder-agents">VII. Agents Folder (agents/)<a class="headerlink" href="#vii-agents-folder-agents" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> Agent definitions, role descriptions, index
+<strong>Structure (ENFORCED):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>agents/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── README.md                    ← Hub (list all agents)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>├── index.md                     ← Registry (metadata JSON/YAML format)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>├── roles/                       ← REQUIRED
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│   ├── README.md                (hub for roles)
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│   ├── ARCHITECT.md
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│   ├── CLIENT.md
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│   ├── DEV.md
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│   ├── DEVOPS.md
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│   ├── DOCS.md
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│   ├── INTEGRATION.md
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│   ├── PM.md
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│   ├── RESEARCHER.md
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>│   ├── SUPPORT.md
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│   ├── TESTER.md
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>│   └── UI.md
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>├── guides/                      ← Agent guides (docs/agents/guides/)
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│   └── *.md                     (Not in agents/ root!)
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>├── templates/                   ← PLANNED (not yet populated)
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>│   ├── prompt-template.md
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>│   └── session-log-template.md
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>└── agent-9/                     ← Agent-specific folders
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    ├── README.md
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    └── ...
+</code></pre></div>
+<p><strong>Current status (verified 2026-01-11):</strong></p>
+<ol>
+<li>✅ <strong>agents/roles/ exists</strong> - All 12 role files properly organized</li>
+<li>✅ <strong>agents/roles/GOVERNANCE.md</strong> - In correct location</li>
+<li>✅ <strong>docs/agents/guides/</strong> - All agent guides properly nested</li>
+<li>✅ <strong>agents/ root</strong> - Only 4 files (README.md, index.json, index.md, roles/, agent-9/)</li>
+</ol>
+<p><strong>Note:</strong> Historical governance docs archived at <code>docs/_archive/2026-01/agent-9-governance-legacy/</code></p>
+<p><strong>Enforcement rules:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Check</th>
+<th>Consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Only 3-5 files in agents/ root</td>
+<td>Automated</td>
+<td>CI failure if violated</td>
+</tr>
+<tr>
+<td>All role .md in agents/roles/</td>
+<td>Automated</td>
+<td>Warning in validator</td>
+</tr>
+<tr>
+<td>agents/GOVERNANCE.md moved</td>
+<td>Link check</td>
+<td>Broken link detected</td>
+</tr>
+<tr>
+<td>guides/ properly nested</td>
+<td>Structure check</td>
+<td>Non-compliant flag</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="viii-document-metadata-standard">VIII. Document Metadata Standard<a class="headerlink" href="#viii-document-metadata-standard" title="Permanent link">&para;</a></h2>
+<p><strong>NEW (Session 11):</strong> Every document should have a metadata section.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gh"># Document Title</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="gs">**Type:**</span> [Guide | Reference | Research | Archive]
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="gs">**Audience:**</span> [All | Users | Developers | Maintainers]
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="gs">**Last Updated:**</span> 2026-03-29
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="gs">**Status:**</span> [Active | Obsolete | Superseded | In Progress]
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="gs">**Importance:**</span> [Critical | High | Medium | Low]
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="gs">**Version:**</span> [Original | v2 | Supersedes: doc-name.md]
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>---
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>[Rest of document...]
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>---
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="gs">**Archive:**</span> [If obsolete, link to new location or explain why]
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="gs">**Related:**</span> [Link to related docs or tasks]
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="gs">**Next Review:**</span> YYYY-MM-DD (or &quot;Quarterly&quot;)
+</code></pre></div>
+<hr />
+<h2 id="ix-validation-checklist">IX. Validation Checklist<a class="headerlink" href="#ix-validation-checklist" title="Permanent link">&para;</a></h2>
+<h3 id="automated-checks-pre-commit">Automated Checks (Pre-commit)<a class="headerlink" href="#automated-checks-pre-commit" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Root has ≤15 files</li>
+<li>[ ] docs/ root has ≤5 files</li>
+<li>[ ] All categories use proper structure</li>
+<li>[ ] agents/ roles in agents/roles/ folder</li>
+<li>[ ] No redirect stubs (single source rule)</li>
+<li>[ ] All internal links valid</li>
+<li>[ ] governance spec and validator synchronized</li>
+</ul>
+<h3 id="manual-review-quarterly">Manual Review (Quarterly)<a class="headerlink" href="#manual-review-quarterly" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] New doc categories reviewed and approved</li>
+<li>[ ] Orphan docs migrated or archived</li>
+<li>[ ] Link structure audit</li>
+<li>[ ] Navigation usability check</li>
+</ul>
+<hr />
+<h2 id="x-rule-updates-governance">X. Rule Updates &amp; Governance<a class="headerlink" href="#x-rule-updates-governance" title="Permanent link">&para;</a></h2>
+<h3 id="changing-the-spec">Changing the Spec<a class="headerlink" href="#changing-the-spec" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Propose change</strong> in GitHub issue with rationale</li>
+<li><strong>Update folder-structure-governance.md first</strong> (this file)</li>
+<li><strong>Update validators to match</strong></li>
+<li><strong>Run full validation</strong></li>
+<li><strong>Execute moves if needed</strong></li>
+<li><strong>Document in CHANGELOG</strong></li>
+</ol>
+<h3 id="when-to-create-a-new-category">When to Create a New Category<a class="headerlink" href="#when-to-create-a-new-category" title="Permanent link">&para;</a></h3>
+<p><strong>Required answers:</strong></p>
+<ol>
+<li>Does this fit in an existing category? (Prefer reuse)</li>
+<li>Is it audience-specific or purpose-specific?</li>
+<li>Will it have 5+ documents? (Or just temporary?)</li>
+<li>Does it need governance rules?</li>
+<li>Can validators check compliance?</li>
+</ol>
+<hr />
+<h2 id="xi-current-status">XI. Current Status<a class="headerlink" href="#xi-current-status" title="Permanent link">&para;</a></h2>
+<p><strong>Last Updated:</strong> 2026-03-29 (Session 89 — Folder Structure Migration v2 complete)</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Root files (≤15)</td>
+<td>✅ PASS</td>
+<td>15 files</td>
+</tr>
+<tr>
+<td>docs/ root (≤5)</td>
+<td>✅ PASS</td>
+<td>3 files</td>
+</tr>
+<tr>
+<td>Link validity</td>
+<td>✅ PASS</td>
+<td>801 links, 0 broken</td>
+</tr>
+<tr>
+<td>agents/ roles</td>
+<td>✅ PASS</td>
+<td>12 files in agents/roles/</td>
+</tr>
+<tr>
+<td>Governance consolidated</td>
+<td>✅ PASS</td>
+<td>Single location: docs/guidelines/</td>
+</tr>
+<tr>
+<td>docs/agents structure</td>
+<td>✅ PASS</td>
+<td>All agent guides in docs/agents/guides/</td>
+</tr>
+<tr>
+<td>Spec/validator sync</td>
+<td>✅ PASS</td>
+<td>values loaded from governance-limits.json</td>
+</tr>
+<tr>
+<td>Naming convention</td>
+<td>✅ PASS</td>
+<td>All files kebab-case</td>
+</tr>
+<tr>
+<td>Doc metadata</td>
+<td>⚠️ IN PROGRESS</td>
+<td>New standard being applied</td>
+</tr>
+<tr>
+<td><strong>Python library</strong></td>
+<td>✅ PASS</td>
+<td>4-layer: core/ + codes/ + services/ + insights/</td>
+</tr>
+<tr>
+<td><strong>React feature groups</strong></td>
+<td>✅ PASS</td>
+<td>design/ + import/ + viewport/ + layout/ + pages/ + ui/</td>
+</tr>
+<tr>
+<td><strong>FastAPI</strong></td>
+<td>✅ PASS</td>
+<td>Already well-organized (no changes needed)</td>
+</tr>
+<tr>
+<td><strong>Backward compat</strong></td>
+<td>✅ PASS</td>
+<td>48 root stubs re-export from core/ + services/</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="xii-migration-history">XII. Migration History<a class="headerlink" href="#xii-migration-history" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-docs-reorganization-sessions-11-12-jan-2026">Phase 1: Docs Reorganization (Sessions 11-12, Jan 2026)<a class="headerlink" href="#phase-1-docs-reorganization-sessions-11-12-jan-2026" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Task</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Publish governance spec</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Update validators</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Create migration tools</td>
+<td>✅ Complete (safe_file_move.py)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Migrate agents/ roles (12 files)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Reorganize docs/agents (6 files)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Move agents/GOVERNANCE.md</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Apply document metadata standard</td>
+<td>⏳ In Progress</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Reduce root files (14 → 10)</td>
+<td>✅ Complete</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-2-code-folder-structure-session-88-89-feb-2026">Phase 2: Code Folder Structure (Session 88-89, Feb 2026)<a class="headerlink" href="#phase-2-code-folder-structure-session-88-89-feb-2026" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Task</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Create migration automation scripts</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Python library — core/ expansion (15 files)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Python library — services/ creation (18 files)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Python library — integration merged into services/ (9 files)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>4</td>
+<td>React app — feature grouping (10 components)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Root cleanup — stale dirs deleted, indexes generated</td>
+<td>✅ Complete</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Validation:</strong> 3196 Python tests passed, React build 2754 modules, 0 broken imports in structural_lib. PR #426 merged.</p>
+<hr />
+<p><strong>Owner:</strong> Project Governance Team
+<strong>Review Schedule:</strong> Quarterly (2026-04-11)
+<strong>Validator:</strong> scripts/check_governance.py --structure + pre-commit hooks</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

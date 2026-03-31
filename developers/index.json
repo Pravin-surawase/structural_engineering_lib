@@ -1,0 +1,47 @@
+{
+  "folder": "docs/developers",
+  "type": "documentation",
+  "description": "> **For developers building on top of the structural_engineering_lib platform**",
+  "last_updated": "2026-03-25",
+  "file_count": 4,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 125,
+      "last_updated": "2026-01-23",
+      "title": "Developer Documentation",
+      "description": "> **For developers building on top of the structural_engineering_lib platform** Welcome to the developer documentation! This section is for developers who want to **build structural automations** usin",
+      "content_hash": "bdc2398186e9"
+    },
+    {
+      "name": "extension-guide.md",
+      "type": "documentation",
+      "size_lines": 652,
+      "last_updated": "2026-01-23",
+      "title": "Extension Guide: Adding Features Without Modifying Core",
+      "description": "This guide shows you how to **extend the library** with custom features **without modifying core code**. This ensures: - ✅ Your extensions survive library updates",
+      "content_hash": "3973a103a4ac"
+    },
+    {
+      "name": "integration-examples.md",
+      "type": "documentation",
+      "size_lines": 466,
+      "last_updated": "2026-01-23",
+      "title": "Integration Examples: Real-World Code Samples",
+      "description": "This document provides **copy-paste-runnable examples** of integrating structural_engineering_lib into real-world applications. 1. PDF Report Generation",
+      "content_hash": "db36a0665265"
+    },
+    {
+      "name": "platform-guide.md",
+      "type": "documentation",
+      "size_lines": 991,
+      "last_updated": "2026-01-23",
+      "title": "Platform Guide: Build Structural Automations",
+      "description": "1. Introduction 2. Quick Start (15 Minutes)",
+      "content_hash": "fcf5e2ca61fa"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "e87095aefde888a9"
+}

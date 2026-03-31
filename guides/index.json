@@ -1,0 +1,91 @@
+{
+  "folder": "docs/guides",
+  "type": "documentation",
+  "description": "End-user and developer guides for specific workflows.",
+  "last_updated": "2026-03-29",
+  "file_count": 9,
+  "files": [
+    {
+      "name": "README.md",
+      "type": "documentation",
+      "size_lines": 14,
+      "last_updated": "2026-03-26",
+      "title": "User Guides",
+      "description": "End-user and developer guides for specific workflows. | Guide | Description |",
+      "content_hash": "f74955da283d"
+    },
+    {
+      "name": "ai-agent-coding-guide.md",
+      "type": "documentation",
+      "size_lines": 994,
+      "last_updated": "2026-03-26",
+      "title": "AI Agent Coding Guide",
+      "description": "This guide ensures consistent, high-quality code from all AI agents working on this project. Every AI agent MUST read and follow this guide before writing any code. 1. Library-first: All logic belongs",
+      "content_hash": "0d31a48e817f"
+    },
+    {
+      "name": "code-reuse-and-library-structure.md",
+      "type": "documentation",
+      "size_lines": 592,
+      "last_updated": "2026-03-26",
+      "title": "Code Reuse and Library Structure",
+      "description": "Every calculation, validation, and data transformation MUST live in the library. UI (Streamlit, React) and AI tools are thin wrappers that call library functions. ",
+      "content_hash": "e755f2bd5f10"
+    },
+    {
+      "name": "copilot-agents-usage-guide.md",
+      "type": "documentation",
+      "size_lines": 428,
+      "last_updated": "2026-03-27",
+      "title": "How to Use Copilot Agents — Practical Guide",
+      "description": "You have **9 agents**, **4 skills**, and **9 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one. | What | How | Example |",
+      "content_hash": "b213d7f8556c"
+    },
+    {
+      "name": "fastapi-deployment-guide.md",
+      "type": "documentation",
+      "size_lines": 414,
+      "last_updated": "2026-03-26",
+      "description": "This guide covers deploying the structural_engineering_lib FastAPI application to production environments. 1. Prerequisites",
+      "content_hash": "272095820107"
+    },
+    {
+      "name": "maintenance-checklist.md",
+      "type": "documentation",
+      "size_lines": 181,
+      "last_updated": "2026-03-29",
+      "title": "Maintenance Checklist",
+      "description": "| Frequency | Command | What It Does | Time | |-----------|---------|-------------|------|",
+      "content_hash": "51fd22c57f43"
+    },
+    {
+      "name": "react-ui-user-flow.md",
+      "type": "documentation",
+      "size_lines": 521,
+      "last_updated": "2026-03-27",
+      "title": "React App User Flow Guide",
+      "description": "This document is the **single source of truth** for React app UX flows, consolidating research from: - 8-week-development-plan.md",
+      "content_hash": "093db366b4f6"
+    },
+    {
+      "name": "testing-and-cicd-strategy.md",
+      "type": "documentation",
+      "size_lines": 272,
+      "last_updated": "2026-03-26",
+      "title": "Testing and CI/CD Strategy",
+      "description": "This project has a **mature, production-grade** CI/CD setup. This document reflects what EXISTS and what's MISSING. ",
+      "content_hash": "ba9f0ec8b756"
+    },
+    {
+      "name": "week3-realtime-features-guide.md",
+      "type": "documentation",
+      "size_lines": 490,
+      "last_updated": "2026-03-26",
+      "title": "Week 3 FastAPI Real-Time Features: Learning Guide",
+      "description": "This document explains the real-time communication features implemented in Week 3 of the FastAPI migration: **WebSocket** for live design sessions, **Server-Sent Events (SSE)** for batch processing, *",
+      "content_hash": "05dc9f009cab"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "7ae239e4c9f98031"
+}

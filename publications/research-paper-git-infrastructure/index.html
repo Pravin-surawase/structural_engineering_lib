@@ -1,0 +1,3018 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/publications/research-paper-git-infrastructure/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#self-evolving-multi-agent-git-infrastructure-for-ai-assisted-structural-engineering-software-development-architecture-automation-and-lessons-learned" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Abstract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-related-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Related Work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Related Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-multi-agent-code-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Multi-Agent Code Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-tool-augmented-and-hierarchical-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Tool-Augmented and Hierarchical Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-self-healing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Self-Healing Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-agent-governance-and-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Agent Governance and Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-identified-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Identified Gap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. System Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-the-one-rule-git-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 The "One Rule" Git Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-pr-decision-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 PR Decision Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-ci-polling-and-auto-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 CI Polling and Auto-Merge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-multi-agent-orchestration-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Multi-Agent Orchestration System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Multi-Agent Orchestration System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-agent-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Agent Taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-agent-handoff-chains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Agent Handoff Chains
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-agent-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Agent Skills
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-prompt-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Prompt Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-session-continuity-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Session Continuity Mechanism
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Session Continuity Mechanism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-the-context-loss-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 The Context Loss Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-append-only-project-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Append-Only Project Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-session-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Session Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-context-recovery-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Context Recovery Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-self-evolving-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Self-Evolving Infrastructure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Self-Evolving Infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-three-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Three-Layer Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-parallel-validation-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Parallel Validation Checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-governance-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Governance Cadence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-safety-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Safety Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Safety Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-forbidden-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Forbidden Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-enforcement-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Enforcement Layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-recovery-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Recovery Mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-documentation-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Documentation Infrastructure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Documentation Infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-link-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Link Preservation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-folder-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Folder Indexes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-automation-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Automation Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-clause-traceability-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Clause Traceability API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-metrics-and-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Metrics and Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Lessons Learned
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Lessons Learned">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-what-worked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 What Worked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-what-failed-initially" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 What Failed Initially
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-recommendations-for-other-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Recommendations for Other Projects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-threats-to-validity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Threats to Validity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-proposed-improvements-and-future-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Proposed Improvements and Future Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="self-evolving-multi-agent-git-infrastructure-for-ai-assisted-structural-engineering-software-development-architecture-automation-and-lessons-learned">Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned<a class="headerlink" href="#self-evolving-multi-agent-git-infrastructure-for-ai-assisted-structural-engineering-software-development-architecture-automation-and-lessons-learned" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Research
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> Draft
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-03-30
+<strong>Last Updated:</strong> 2026-03-30</p>
+<hr />
+<h2 id="abstract">Abstract<a class="headerlink" href="#abstract" title="Permanent link">&para;</a></h2>
+<p>The proliferation of large language model (LLM) coding agents — including GitHub Copilot, Claude, Cursor, and Windsurf — has introduced a new class of software engineering challenges: multiple autonomous agents operating concurrently on a shared codebase produce merge conflicts, lose context across sessions, duplicate existing code, and break builds in ways that compound over time. This paper presents a production-deployed, self-evolving multi-agent git infrastructure developed for <code>structural_engineering_lib</code>, an open-source IS 456:2000 reinforced concrete beam design library. The infrastructure enforces a single-entry-point git workflow via pre-commit and pre-push hooks, orchestrates 14 specialized agents through structured handoff chains, maintains session continuity through append-only project memory logs, and implements a three-layer self-evolution engine that scans project health, collects agent feedback, and auto-fixes detected regressions. Over 105 numbered sessions (170+ dated entries in SESSION_LOG.md), 3,226 tests, 96 mapped tasks, 27 parallel validation checks, and 14 domain-specialized agents, the system has achieved zero merge conflicts since instruction-based enforcement was adopted (approximately Session 80+) — eliminating an estimated 10+ hours of rework per incident. We present the full architecture, quantitative metrics, failure modes encountered, and lessons learned, arguing that the overhead of safety infrastructure for multi-agent development pays for itself rapidly and proposing directions for formal agent behavioral contracts, token usage optimization, and cross-repository generalization.</p>
+<p><strong>Keywords:</strong> multi-agent systems, LLM coding agents, git workflow automation, software engineering infrastructure, self-healing systems, session continuity, reinforced concrete design, IS 456:2000, DevOps, CI/CD</p>
+<hr />
+<h2 id="1-introduction">1. Introduction<a class="headerlink" href="#1-introduction" title="Permanent link">&para;</a></h2>
+<p>The emergence of LLM-based coding agents has fundamentally altered the landscape of software development. Tools such as GitHub Copilot, Anthropic Claude, Cursor, and Windsurf can generate code, refactor modules, write tests, and manage documentation with minimal human oversight. However, when multiple autonomous agents operate on the same codebase — often in overlapping time windows and without shared memory — a predictable set of failure modes arises:</p>
+<ol>
+<li><strong>Merge conflicts</strong>: Agents working on overlapping files produce conflicting commits that require manual resolution.</li>
+<li><strong>Context loss</strong>: Each agent session starts fresh, with no memory of prior decisions, leading to repeated exploration and wasted tokens.</li>
+<li><strong>Code duplication</strong>: Without awareness of existing utilities, agents reinvent hooks, helpers, and adapters already present in the codebase.</li>
+<li><strong>Build breakage</strong>: Agents bypass pre-commit checks, skip tests, or use <code>--force</code> flags that circumvent safety mechanisms.</li>
+<li><strong>Architecture violations</strong>: Without enforced boundaries, agents import from wrong layers, mix I/O with pure math, or duplicate business logic across tiers.</li>
+</ol>
+<p>These problems are not hypothetical. In the early development of <code>structural_engineering_lib</code>, manual git operations by AI agents caused merge conflicts that consumed 10+ hours of rework per incident. Agents guessed API parameter names (<code>width</code> instead of <code>b_mm</code>), navigated to wrong directories, and skipped session-end documentation — leaving subsequent agents to rediscover project state from scratch.</p>
+<p>This paper presents a production-deployed infrastructure that systematically addresses each failure mode. The key contributions are:</p>
+<ul>
+<li><strong>Enforced git workflow</strong>: A single-entry-point commit script (<code>ai_commit.sh</code>, 430 lines) with instruction-based enforcement, pre-commit framework integration (Black, Ruff, mypy), and custom hook templates that prevent manual git operations.</li>
+<li><strong>Multi-agent orchestration</strong>: 14 specialized agents with defined roles, tool permissions, and structured handoff chains.</li>
+<li><strong>Session continuity</strong>: Append-only project memory (SESSION_LOG.md, WORKLOG.md, TASKS.md) that preserves context across sessions.</li>
+<li><strong>Self-evolving infrastructure</strong>: A three-layer system that scans health, collects feedback, and auto-fixes regressions.</li>
+</ul>
+<p>To our knowledge, this is the first documented self-evolving multi-agent git infrastructure deployed in production for domain-specific engineering software, with 105 numbered sessions (170+ dated entries) and quantitative evidence of its effectiveness.</p>
+<hr />
+<h2 id="2-related-work">2. Related Work<a class="headerlink" href="#2-related-work" title="Permanent link">&para;</a></h2>
+<h3 id="21-multi-agent-code-generation">2.1 Multi-Agent Code Generation<a class="headerlink" href="#21-multi-agent-code-generation" title="Permanent link">&para;</a></h3>
+<p><strong>SEMAG</strong> (Self-Evolutionary Multi-Agent Code Generation, arXiv:2603.15707) proposes agents that iteratively improve generated code through self-evaluation. While SEMAG focuses on the code generation task itself, our system addresses the surrounding infrastructure — git safety, session continuity, and architectural governance — that enables agents to generate code reliably in a production codebase.</p>
+<p><strong>AgentMesh</strong> (arXiv:2507.19902) presents a cooperative multi-agent framework for software development with role-based agents and communication protocols. Our system shares the concept of agent specialization but differs in being a deployed production system with 105 numbered sessions of empirical data, rather than a framework evaluated on benchmarks.</p>
+<p><strong>DebateCoder</strong> (arXiv:2601.21469) introduces adaptive confidence gating for multi-agent code collaboration, where agents debate code quality. Our system enforces quality through automated validation (27 parallel checks) rather than agent consensus, covering the full software development lifecycle rather than code quality alone.</p>
+<p>Other prominent multi-agent systems include <strong>ChatDev</strong> (Qian et al., 2023) [11] and <strong>DevGPT</strong> (Xie et al., 2023) [12], which focus on end-to-end code generation through role-playing agents. These systems optimize code generation quality rather than the surrounding development infrastructure — they lack git safety mechanisms, session continuity, or self-healing capabilities.</p>
+<h3 id="22-tool-augmented-and-hierarchical-agents">2.2 Tool-Augmented and Hierarchical Agents<a class="headerlink" href="#22-tool-augmented-and-hierarchical-agents" title="Permanent link">&para;</a></h3>
+<p><strong>SAGE</strong> (arXiv:2601.09750) focuses on tool-augmented LLM task solving in multi-agent environments. Our system similarly equips agents with specialized tools (7 skills, 14 prompts) but emphasizes git safety and session continuity — dimensions SAGE does not address.</p>
+<p><strong>Autonoma</strong> (arXiv:2603.19270) proposes a hierarchical multi-agent framework with orchestrator-worker patterns similar to our orchestrator → specialist → reviewer chain. However, our system adds self-healing capabilities: agents report problems back to the infrastructure, which auto-fixes them.</p>
+<h3 id="23-self-healing-infrastructure">2.3 Self-Healing Infrastructure<a class="headerlink" href="#23-self-healing-infrastructure" title="Permanent link">&para;</a></h3>
+<p><strong>Self-healing Infrastructure-as-Code</strong> (Diaz-De-Arcaya et al., ACM 2024) applies LLMs to detect and repair IaC configuration drift. Our self-healing concept operates at a different level — repairing git state, stale documentation, broken links, and architecture violations rather than cloud infrastructure.</p>
+<p><strong>LLM DevOps Self-Healing</strong> (Bhattarai, 2025) scales generative AI for self-healing DevOps pipelines, focusing on CI/CD recovery. Our system shares the self-healing philosophy but applies it to the development process itself: agent feedback loops, session log integrity, and project health scoring.</p>
+<h3 id="24-agent-governance-and-architecture">2.4 Agent Governance and Architecture<a class="headerlink" href="#24-agent-governance-and-architecture" title="Permanent link">&para;</a></h3>
+<p><strong>Agent Behavioral Contracts</strong> (arXiv:2602.22302) proposes formal specifications for AI agent behavior. Our system enforces behavioral contracts through git hooks and pre-commit enforcement — a pragmatic, deployed alternative to formal specification that has proven effective in practice.</p>
+<p><strong>Theory of Code Space</strong> (arXiv:2603.00601) investigates whether code agents understand software architecture. Our system sidesteps this question by enforcing architecture at the tooling level: automated boundary checks detect and block layer violations regardless of agent understanding.</p>
+<p><strong>Tokenomics</strong> (arXiv:2601.14470) analyzes token usage in agentic software engineering. Our session management system — with structured handoffs and append-only logs — directly reduces token waste from context re-exploration, though we do not yet track token consumption per session.</p>
+<h3 id="25-identified-gap">2.5 Identified Gap<a class="headerlink" href="#25-identified-gap" title="Permanent link">&para;</a></h3>
+<p>No existing system combines all five of the following properties:</p>
+<ol>
+<li><strong>Enforced git workflow</strong> for AI agents (hook-based, zero manual git)</li>
+<li><strong>Session continuity</strong> with append-only logs and structured handoffs</li>
+<li><strong>Self-evolving infrastructure</strong> with health scoring and auto-fix</li>
+<li><strong>Multi-agent handoff chains</strong> with domain-specific specialization</li>
+<li><strong>Domain-specific engineering constraints</strong> (IS 456:2000, unit enforcement, 4-layer architecture)</li>
+</ol>
+<p>Our system addresses this gap with a deployed, empirically validated implementation.</p>
+<hr />
+<h2 id="3-system-architecture">3. System Architecture<a class="headerlink" href="#3-system-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="31-overview">3.1 Overview<a class="headerlink" href="#31-overview" title="Permanent link">&para;</a></h3>
+<p><code>structural_engineering_lib</code> is a full-stack application for reinforced concrete beam design per IS 456:2000. The technology stack comprises:</p>
+<ul>
+<li><strong>Frontend</strong>: React 19, React Three Fiber (R3F) for 3D visualization, Tailwind CSS</li>
+<li><strong>Backend</strong>: FastAPI with 38 endpoints across 12 routers, WebSocket support</li>
+<li><strong>Core Library</strong>: Python <code>structural_lib</code> with pure IS 456:2000 math</li>
+</ul>
+<p>The codebase enforces a strict 4-layer architecture:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  Layer 4: UI/IO (react_app/, fastapi_app/)      │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────────────────────────────────────────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  Layer 3: Services (services/api.py, adapters)  │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├─────────────────────────────────────────────────┤
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  Layer 2: IS 456 Code (codes/is456/) — pure math│
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├─────────────────────────────────────────────────┤
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  Layer 1: Core Types (core/) — base classes     │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└─────────────────────────────────────────────────┘
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>         ↑ Import direction: upward only
+</code></pre></div>
+<p>Import direction is enforced automatically: Core cannot import from Services or UI; Services cannot import from UI. Units are always explicit (mm, N/mm², kN, kNm) with no hidden conversions.</p>
+<h3 id="32-the-one-rule-git-workflow">3.2 The "One Rule" Git Workflow<a class="headerlink" href="#32-the-one-rule-git-workflow" title="Permanent link">&para;</a></h3>
+<p>The cornerstone of the infrastructure is a single enforced rule: <strong>all git operations must go through <code>ai_commit.sh</code></strong>. This 430-line Bash script serves as the sole entry point for staging, committing, and pushing code.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌──────────────────────────────────────────────────────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│                    ai_commit.sh (430 lines)               │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│                                                          │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│  1. Set AI_COMMIT_ACTIVE=1 (bypass token for hooks)      │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│  2. Parse flags (--preview, --undo, --signoff, etc.)     │
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│  3. Run PR decision engine (should_use_pr.sh)            │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│  4. Pre-flight formatting (Black + Ruff)                 │
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│  5. Auto-stash → fetch → stage → commit → sync → push   │
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│  6. Stale lock detection (auto-remove .git/index.lock    │
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│     if &gt;300s old)                                        │
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│  7. Post-push verification                               │
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>└──────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p>The script sets the environment variable <code>AI_COMMIT_ACTIVE=1</code> before any git operations. Custom hook templates in <code>scripts/git-hooks/</code> check for this variable — if absent, the commit or push is blocked with an error message directing the agent to use <code>ai_commit.sh</code>. An installation script (<code>install_git_hooks.sh</code>) exists for deploying these enforcement hooks. Currently, the deployed <code>.git/hooks/pre-commit</code> uses the standard pre-commit framework (<code>.pre-commit-config.yaml</code>) for auto-formatting (Black) and linting (Ruff, mypy), while the custom <code>AI_COMMIT_ACTIVE</code> enforcement hooks remain available as templates but are not yet installed in production. The primary enforcement mechanism is <strong>instruction-based</strong>: all agent instruction files (AGENTS.md, CLAUDE.md, copilot-instructions.md) explicitly forbid manual git operations, and the documented consequences of bypass (causing significant rework, see §10.2) have proven effective at ensuring compliance.</p>
+<p><code>ai_commit.sh</code> delegates the actual push workflow to <code>safe_push.sh</code> (492 lines), which implements a 7-step sequence. This architectural separation of concerns keeps commit logic and push logic independently maintainable. The 7-step push sequence handles common failure modes automatically:</p>
+<ol>
+<li><strong>Check for unfinished merge</strong>: Completes any in-progress merge before proceeding</li>
+<li><strong>Pull/fetch</strong>: Fetches latest remote state to detect divergence</li>
+<li><strong>Stage</strong>: Stages all files with <code>git add -A</code></li>
+<li><strong>Commit</strong>: Creates the commit (pre-commit hooks run at this point)</li>
+<li><strong>Re-stage + amend</strong>: Re-stages any modifications made by hooks and amends the commit</li>
+<li><strong>Sync again</strong>: Pulls with rebase before push to linearize history</li>
+<li><strong>Push</strong>: Pushes safely to remote</li>
+</ol>
+<p>Additionally, the script detects stale <code>.git/index.lock</code> files older than 300 seconds and removes them automatically — a common issue when agents crash mid-operation.</p>
+<h3 id="33-pr-decision-engine">3.3 PR Decision Engine<a class="headerlink" href="#33-pr-decision-engine" title="Permanent link">&para;</a></h3>
+<p>The PR decision engine (<code>should_use_pr.sh</code>, 411 lines) analyzes staged changes to determine whether a pull request is required. The analysis considers:</p>
+<ul>
+<li><strong>File count</strong>: Number of files changed</li>
+<li><strong>Lines changed</strong>: Total lines added and removed</li>
+<li><strong>File types</strong>: Production code vs. documentation vs. tests</li>
+<li><strong>New files</strong>: Whether new files are being introduced</li>
+<li><strong>Change complexity</strong>: Renames, moves, and cross-layer modifications</li>
+</ul>
+<p>Decision thresholds:</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Production code: ≤50 lines AND ≤2 files AND 0 new files</td>
+<td>Direct commit allowed</td>
+</tr>
+<tr>
+<td>Docs/scripts: ≤150 lines</td>
+<td>Direct commit allowed</td>
+</tr>
+<tr>
+<td>150–500 lines (any category)</td>
+<td>PR recommended (substantial change)</td>
+</tr>
+<tr>
+<td>&gt;500 lines</td>
+<td>PR mandatory (major change)</td>
+</tr>
+<tr>
+<td>New files in <code>fastapi_app/</code> or <code>react_app/</code></td>
+<td>PR required</td>
+</tr>
+<tr>
+<td>Cross-layer changes (core + UI)</td>
+<td>PR required</td>
+</tr>
+</tbody>
+</table>
+<p>The engine logs its reasoning when invoked with <code>--explain</code>, providing transparency into the decision. Historical data shows that bypassing PR requirements with <code>--force</code> caused significant rework in early sessions (see §10.2) — a lesson that led to the current enforcement model.</p>
+<h3 id="34-ci-polling-and-auto-merge">3.4 CI Polling and Auto-Merge<a class="headerlink" href="#34-ci-polling-and-auto-merge" title="Permanent link">&para;</a></h3>
+<p>The task completion workflow (<code>finish_task_pr.sh</code>) implements non-TUI CI polling to avoid terminal buffer crashes that plagued earlier interactive approaches:</p>
+<ul>
+<li><strong>Polling interval</strong>: 15 seconds</li>
+<li><strong>Timeout</strong>: 20 minutes</li>
+<li><strong>State detection</strong>: MERGED, CLOSED, CONFLICTING, PENDING, ALL_GREEN</li>
+<li><strong>Auto-merge</strong>: On all-green CI, merges the PR and deletes the task branch</li>
+<li><strong>Failure handling</strong>: Reports failing checks and exits without merge</li>
+</ul>
+<p>This design ensures that task branches are short-lived and that the main branch remains green.</p>
+<hr />
+<h2 id="4-multi-agent-orchestration-system">4. Multi-Agent Orchestration System<a class="headerlink" href="#4-multi-agent-orchestration-system" title="Permanent link">&para;</a></h2>
+<h3 id="41-agent-taxonomy">4.1 Agent Taxonomy<a class="headerlink" href="#41-agent-taxonomy" title="Permanent link">&para;</a></h3>
+<p>The system employs 14 specialized agents, each with defined responsibilities, tool permissions, and scope boundaries:</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Role</th>
+<th>Tools</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orchestrator</code></td>
+<td>Planning, task delegation</td>
+<td>Read-only + subagents</td>
+<td>All files</td>
+</tr>
+<tr>
+<td><code>backend</code></td>
+<td>Python structural_lib, IS 456</td>
+<td>Full edit</td>
+<td><code>Python/structural_lib/</code></td>
+</tr>
+<tr>
+<td><code>frontend</code></td>
+<td>React 19, R3F, Tailwind</td>
+<td>Full edit</td>
+<td><code>react_app/</code></td>
+</tr>
+<tr>
+<td><code>structural-math</code></td>
+<td>IS 456 pure math, core types</td>
+<td>Full edit</td>
+<td><code>codes/is456/</code>, <code>core/</code></td>
+</tr>
+<tr>
+<td><code>api-developer</code></td>
+<td>FastAPI routers, endpoints</td>
+<td>Full edit</td>
+<td><code>fastapi_app/</code></td>
+</tr>
+<tr>
+<td><code>ui-designer</code></td>
+<td>Visual design (design-only)</td>
+<td>Read-only</td>
+<td><code>react_app/src/components/</code></td>
+</tr>
+<tr>
+<td><code>structural-engineer</code></td>
+<td>IS 456 compliance review</td>
+<td>Read + terminal</td>
+<td><code>codes/is456/</code></td>
+</tr>
+<tr>
+<td><code>reviewer</code></td>
+<td>Code review, testing</td>
+<td>Read + terminal</td>
+<td>All files</td>
+</tr>
+<tr>
+<td><code>tester</code></td>
+<td>Test creation, coverage</td>
+<td>Full edit</td>
+<td><code>Python/tests/</code>, <code>react_app/</code></td>
+</tr>
+<tr>
+<td><code>doc-master</code></td>
+<td>Docs, archives, session logs</td>
+<td>Full edit</td>
+<td><code>docs/</code></td>
+</tr>
+<tr>
+<td><code>ops</code></td>
+<td>Git, CI/CD, Docker</td>
+<td>Full edit</td>
+<td><code>.github/</code>, <code>scripts/</code></td>
+</tr>
+<tr>
+<td><code>governance</code></td>
+<td>Project health, maintenance</td>
+<td>Full edit</td>
+<td><code>scripts/</code>, <code>docs/</code></td>
+</tr>
+<tr>
+<td><code>security</code></td>
+<td>OWASP, dependency scanning</td>
+<td>Read + terminal</td>
+<td>All files</td>
+</tr>
+<tr>
+<td><code>library-expert</code></td>
+<td>IS 456 knowledge, standards</td>
+<td>Read + terminal + web</td>
+<td>All files</td>
+</tr>
+</tbody>
+</table>
+<p>Agent specialization serves two purposes: it limits the blast radius of errors (the <code>frontend</code> agent cannot modify Python core math), and it ensures domain expertise is applied where needed (the <code>structural-engineer</code> validates IS 456 compliance, not the <code>frontend</code> agent).</p>
+<h3 id="42-agent-handoff-chains">4.2 Agent Handoff Chains<a class="headerlink" href="#42-agent-handoff-chains" title="Permanent link">&para;</a></h3>
+<p>Complex tasks flow through structured handoff chains that ensure each specialist contributes at the appropriate stage:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Feature Workflow:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  orchestrator → backend → api-developer → frontend
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    → reviewer → tester → doc-master → ops
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>IS 456 Clause Implementation:
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  orchestrator → structural-engineer → structural-math
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    → tester → backend → api-developer → frontend
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    → reviewer → doc-master → ops
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>New Structural Element (column, slab, footing):
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  orchestrator → structural-engineer (research)
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    → structural-math (types + math) → tester
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    → backend → api-developer → frontend
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    → reviewer → doc-master → ops
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>Bug Fix:
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  orchestrator → backend/frontend → tester
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    → reviewer → doc-master → ops
+</code></pre></div>
+<p>Each agent in the chain follows a mandatory pipeline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>PLAN → RESEARCH → GATHER → EXECUTE → TEST → VERIFY → DOCUMENT → COMMIT
+</code></pre></div>
+<p>The chain terminates with <code>doc-master</code> updating project logs and <code>ops</code> committing the changes, ensuring session continuity is maintained regardless of which agent initiated the work.</p>
+<h3 id="43-agent-skills">4.3 Agent Skills<a class="headerlink" href="#43-agent-skills" title="Permanent link">&para;</a></h3>
+<p>Seven reusable skills encapsulate domain knowledge and tool sequences:</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Purpose</th>
+<th>Key Operations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session-management</code></td>
+<td>Session start/end automation</td>
+<td>Read priorities, verify env, log changes, update handoffs</td>
+</tr>
+<tr>
+<td><code>safe-file-ops</code></td>
+<td>File move/delete preserving links</td>
+<td>Update 870+ internal references, dry-run preview</td>
+</tr>
+<tr>
+<td><code>api-discovery</code></td>
+<td>API function signature lookup</td>
+<td>Prevents parameter name guessing (<code>b_mm</code> not <code>width</code>)</td>
+</tr>
+<tr>
+<td><code>is456-verification</code></td>
+<td>IS 456 test runner by category</td>
+<td>Clause-specific regression tests, benchmark verification</td>
+</tr>
+<tr>
+<td><code>new-structural-element</code></td>
+<td>New element workflow</td>
+<td>Research → types → math → tests → API → frontend</td>
+</tr>
+<tr>
+<td><code>react-validation</code></td>
+<td>React build/lint/type-check</td>
+<td>TypeScript errors, Tailwind issues, build failures</td>
+</tr>
+<tr>
+<td><code>architecture-check</code></td>
+<td>4-layer boundary validation</td>
+<td>Import direction, duplication scan, layer violations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-prompt-templates">4.4 Prompt Templates<a class="headerlink" href="#44-prompt-templates" title="Permanent link">&para;</a></h3>
+<p>Fourteen structured prompt templates provide step-by-step workflows for common tasks:</p>
+<ul>
+<li><code>new-feature</code>, <code>bug-fix</code>, <code>code-review</code> — Development workflows</li>
+<li><code>add-api-endpoint</code>, <code>add-is456-clause</code>, <code>add-structural-element</code> — Domain-specific creation</li>
+<li><code>fix-test-failure</code>, <code>performance-optimization</code> — Diagnostic workflows</li>
+<li><code>session-start</code>, <code>session-end</code> — Session lifecycle</li>
+<li><code>file-move</code>, <code>is456-verify</code> — Infrastructure operations</li>
+<li><code>context-recovery</code>, <code>master-workflow</code> — Continuity and orchestration</li>
+</ul>
+<p>Each template reduces the cognitive load on agents by specifying exactly which files to read, which commands to run, and which checks to perform — eliminating the exploratory phase that wastes tokens and time.</p>
+<hr />
+<h2 id="5-session-continuity-mechanism">5. Session Continuity Mechanism<a class="headerlink" href="#5-session-continuity-mechanism" title="Permanent link">&para;</a></h2>
+<h3 id="51-the-context-loss-problem">5.1 The Context Loss Problem<a class="headerlink" href="#51-the-context-loss-problem" title="Permanent link">&para;</a></h3>
+<p>LLM-based coding agents operate within finite context windows. When a session ends — whether by user action, context overflow, or timeout — all in-session state is lost. The next agent session starts with zero knowledge of:</p>
+<ul>
+<li>What was completed in the previous session</li>
+<li>What decisions were made and why</li>
+<li>What is currently in progress</li>
+<li>What the next priority should be</li>
+</ul>
+<p>Without a continuity mechanism, each new session begins with an exploration phase where the agent reads files, runs commands, and gradually reconstructs project state. This exploration consumes tokens, takes time, and often leads to incorrect assumptions about priorities.</p>
+<p>In early sessions of <code>structural_engineering_lib</code>, skipped session-end documentation was directly correlated with significant rework in subsequent sessions (see §10.2) — agents repeated completed work, made contradictory decisions, or failed to discover in-progress branches.</p>
+<h3 id="52-append-only-project-memory">5.2 Append-Only Project Memory<a class="headerlink" href="#52-append-only-project-memory" title="Permanent link">&para;</a></h3>
+<p>The system maintains four append-only memory artifacts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>┌─────────────────────────────────────────────────┐
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│               Project Memory                     │
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>│                                                  │
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│  SESSION_LOG.md (400KB+, 105 numbered sessions,  │
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│    170+ dated entries)                            │
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│  ├── Detailed per-session history                │
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>│  ├── What changed, what was decided              │
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>│  └── Unfinished items and blockers               │
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>│                                                  │
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>│  WORKLOG.md (55+ entries)                        │
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>│  ├── One line per change                         │
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>│  └── date | task | what | commit                 │
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>│                                                  │
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>│  TASKS.md (active task board)                    │
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>│  ├── WIP limits (max 2 concurrent)               │
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>│  ├── Priority ordering                           │
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>│  └── Status tracking                             │
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>│                                                  │
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>│  next-session-brief.md (structured handoff)      │
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>│  ├── What to do FIRST                            │
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>│  ├── Current state of work                       │
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>│  └── Known blockers                              │
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>└─────────────────────────────────────────────────┘
+</code></pre></div>
+<p>The append-only constraint is critical: logs are never rewritten, only extended. This ensures that no information is lost, even when agents make mistakes. A secondary artifact, <code>handoff_latest.md</code>, provides machine-readable structured handoff data.</p>
+<h3 id="53-session-lifecycle">5.3 Session Lifecycle<a class="headerlink" href="#53-session-lifecycle" title="Permanent link">&para;</a></h3>
+<p>Every agent session follows a mandatory lifecycle:</p>
+<p><strong>Start Phase:</strong>
+1. Read <code>next-session-brief.md</code> for current priorities
+2. Read <code>TASKS.md</code> for active work items
+3. Run <code>./run.sh session start</code> to verify environment</p>
+<p><strong>Execution Phase:</strong>
+- Commit frequently with descriptive conventional messages
+- Track changes, decisions, and unfinished items</p>
+<p><strong>End Phase (MANDATORY — skipping causes documented rework):</strong>
+1. Commit any uncommitted work via <code>./run.sh commit</code>
+2. Log agent feedback via <code>./run.sh feedback log --agent &lt;name&gt;</code>
+3. Auto-generate session summary via <code>./run.sh session summary</code>
+4. Sync stale numbers via <code>./run.sh session sync</code>
+5. Update <code>WORKLOG.md</code> — one line per change
+6. Update <code>TASKS.md</code> — mark completed, add discovered items
+7. Update <code>next-session-brief.md</code> — handoff for next agent
+8. Commit documentation updates</p>
+<p>The session-end phase is enforced through agent instructions, prompt templates, and the <code>session-management</code> skill. While not technically enforced by hooks (unlike git operations), the documented consequences of skipping have proven sufficient motivation for compliance.</p>
+<h3 id="54-context-recovery-protocol">5.4 Context Recovery Protocol<a class="headerlink" href="#54-context-recovery-protocol" title="Permanent link">&para;</a></h3>
+<p>A practical problem unique to LLM-based development is mid-session context overflow: when a conversation exceeds the model's context window, all in-session state is lost immediately. The system addresses this with a structured recovery protocol (<code>context-recovery.prompt.md</code>) that allows a new conversation to resume from the exact prior state by reading four specific files in order:</p>
+<ol>
+<li><code>docs/planning/next-session-brief.md</code> — current priorities and last decisions</li>
+<li><code>docs/TASKS.md</code> (first 60 lines) — active work items</li>
+<li>Agent instruction file (CLAUDE.md or copilot-instructions.md) — operational rules</li>
+<li><code>git log --oneline -20</code> — recent commit history</li>
+</ol>
+<p>This protocol reduces context recovery from an exploratory process (agents reading random files and guessing state) to a deterministic four-step procedure. To our knowledge, no related work has documented a structured recovery protocol for LLM agent context overflow.</p>
+<hr />
+<h2 id="6-self-evolving-infrastructure">6. Self-Evolving Infrastructure<a class="headerlink" href="#6-self-evolving-infrastructure" title="Permanent link">&para;</a></h2>
+<h3 id="61-three-layer-architecture">6.1 Three-Layer Architecture<a class="headerlink" href="#61-three-layer-architecture" title="Permanent link">&para;</a></h3>
+<p>The self-evolution system operates through three complementary layers:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>┌───────────────────────────────────────────────────────┐
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│  Layer 3: evolve.py (542 lines) — Orchestration       │
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│  ├── Auto-fix detected issues                         │
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│  ├── Process agent feedback                           │
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│  ├── Regenerate folder indexes                        │
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│  ├── Archive stale docs                               │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│  ├── Commit fixes                                     │
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│  └── Create TODOs for manual items                    │
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>├───────────────────────────────────────────────────────┤
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>│  Layer 2: agent_feedback.py (379 lines) — Collection  │
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>│  ├── Categories: stale-doc, missing, wrong-instruction│
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>│  ├──   time-wasted, fix-applied, suggestion           │
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>│  ├── Stored as JSON in logs/feedback/                 │
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>│  └── Trend analysis via ./run.sh feedback summary     │
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>├───────────────────────────────────────────────────────┤
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>│  Layer 1: project_health.py (740 lines) — Scanning    │
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>│  ├── Health score: 0–100                              │
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>│  ├── Categories weighted:                             │
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>│  │   Docs 30% | Code 25% | Agents 20%                │
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>│  │   Infra 15% | Feedback 10%                        │
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>│  └── Auto-fixable: stale numbers, broken links,       │
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>│      missing metadata                                 │
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>└───────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Layer 1 (Health Scanning)</strong> runs <code>project_health.py</code> to compute a 0–100 score across five weighted categories. Issues are classified as auto-fixable (stale numbers, broken links, missing metadata) or manual (architecture violations, missing tests). The <code>--fix</code> flag applies all auto-fixable corrections immediately.</p>
+<p><strong>Layer 2 (Feedback Collection)</strong> allows agents to report problems at session end: stale documentation, missing instructions, wrong parameter names, time wasted on avoidable issues, and suggestions for improvement. Each report is stored as timestamped JSON in <code>logs/feedback/</code>, enabling trend analysis.</p>
+<p><strong>Layer 3 (Evolution Orchestration)</strong> ties the system together. The <code>evolve.py</code> script (542 lines) runs the full cycle: auto-fix → process feedback → regenerate indexes → archive old docs → commit → create TODOs. With <code>--fix</code>, it applies corrections and commits them. With <code>--review weekly</code>, it performs weekly maintenance sweeps.</p>
+<p>The self-evolution cycle:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>     ┌──────────┐
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>     │  Agents  │
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>     │  report  │
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>     │ feedback │
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>     └────┬─────┘
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>          ▼
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  ┌───────────────┐     ┌────────────────┐
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  │ Health Scanner ├────►│ Auto-Fix Engine │
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  │ (0–100 score) │     │ (stale numbers, │
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  └───────┬───────┘     │  broken links)  │
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>          │             └────────┬───────┘
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>          ▼                      ▼
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  ┌───────────────┐     ┌────────────────┐
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  │ Feedback Trends│     │ Index Regen    │
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  │ (recurring     │     │ (index.json +  │
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>  │  issues)       │     │  index.md)     │
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>  └───────┬───────┘     └────────┬───────┘
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>          │                      │
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>          ▼                      ▼
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>  ┌──────────────────────────────────────┐
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>  │  TODOs for manual fixes + Commit     │
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>  └──────────────────────────────────────┘
+</code></pre></div>
+<h3 id="62-parallel-validation-checks">6.2 Parallel Validation Checks<a class="headerlink" href="#62-parallel-validation-checks" title="Permanent link">&para;</a></h3>
+<p>The <code>check_all.py</code> orchestrator runs 27 checks across 8 categories in parallel using Python's <code>ProcessPoolExecutor</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Checks</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API</strong> (3)</td>
+<td>API validation, API contracts, API manifest</td>
+<td>Endpoint correctness, contract compatibility</td>
+</tr>
+<tr>
+<td><strong>Docs</strong> (7)</td>
+<td>Doc validation, broken links, doc versions, CLI reference, tasks format, brief length, scripts index</td>
+<td>Documentation integrity</td>
+</tr>
+<tr>
+<td><strong>Architecture</strong> (3)</td>
+<td>Architecture boundaries, circular imports, import validation</td>
+<td>4-layer enforcement</td>
+</tr>
+<tr>
+<td><strong>Governance</strong> (4)</td>
+<td>Governance rules, repo hygiene, Python version, schema snapshots</td>
+<td>Project conventions</td>
+</tr>
+<tr>
+<td><strong>FastAPI</strong> (3)</td>
+<td>FastAPI issues, Docker config, OpenAPI snapshot</td>
+<td>Backend correctness</td>
+</tr>
+<tr>
+<td><strong>Git</strong> (3)</td>
+<td>Git state, unfinished merge, version consistency</td>
+<td>Repository health</td>
+</tr>
+<tr>
+<td><strong>Stale Refs</strong> (3)</td>
+<td>Script references, instruction drift, bootstrap freshness</td>
+<td>Reference integrity</td>
+</tr>
+<tr>
+<td><strong>Code</strong> (1)</td>
+<td>Type annotations</td>
+<td>Code quality</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>--quick</code> mode runs a fast subset of 8 checks in under 30 seconds for rapid feedback. A <code>--changed</code> mode uses path-filter optimization to skip irrelevant categories (e.g., docs-only changes skip Python tests and FastAPI checks).</p>
+<h3 id="63-governance-cadence">6.3 Governance Cadence<a class="headerlink" href="#63-governance-cadence" title="Permanent link">&para;</a></h3>
+<p>The governance process operates at three time scales:</p>
+<ul>
+<li><strong>Every session</strong>: Review commit reports, verify mandatory pipeline was followed, check session-end documentation</li>
+<li><strong>Weekly</strong>: Review git logs for anomalies, check stale tasks, scan for code duplication, run <code>./run.sh evolve --review weekly</code></li>
+<li><strong>Monthly</strong>: Review mistake patterns from feedback logs, update PR thresholds, archive stale docs, regenerate all folder indexes</li>
+</ul>
+<hr />
+<h2 id="7-safety-mechanisms">7. Safety Mechanisms<a class="headerlink" href="#7-safety-mechanisms" title="Permanent link">&para;</a></h2>
+<h3 id="71-forbidden-operations">7.1 Forbidden Operations<a class="headerlink" href="#71-forbidden-operations" title="Permanent link">&para;</a></h3>
+<p>The system maintains an explicit blocklist of operations that have historically caused damage:</p>
+<p><strong>Manual git (blocked by hooks):</strong>
+- <code>git add</code>, <code>git commit</code>, <code>git push</code>, <code>git pull</code> — Use <code>ai_commit.sh</code> instead
+- <code>git commit --amend</code> — Use <code>ai_commit.sh --amend</code>
+- <code>git reset --hard</code> — No safe equivalent; requires manual justification</p>
+<p><strong>Destructive GitHub operations (require user confirmation):</strong>
+- <code>gh pr merge --admin</code> — Bypasses required CI checks
+- <code>gh issue close</code> — Destructive, requires explicit approval
+- <code>git push origin --delete</code> — Use <code>cleanup_stale_branches.py --dry-run</code></p>
+<p><strong>Force flags (strongly discouraged — not technically blocked but cause documented harm):</strong>
+- <code>--no-verify</code> — Skips pre-commit hooks; forbidden in all agent instructions
+- <code>--force</code> — Strongly discouraged by all agent instructions. Historical data shows <code>--force</code> bypasses caused significant rework (see §10.2). Still technically available in <code>ai_commit.sh</code> for edge cases but agents are instructed never to use it
+- <code>GIT_HOOKS_BYPASS=1</code> — Disables all safety hooks; forbidden in all agent instructions</p>
+<p><strong>File operations:</strong>
+- <code>mv</code>, <code>rm</code> — Use <code>safe_file_move.py</code> and <code>safe_file_delete.py</code> which preserve 870+ internal documentation links</p>
+<h3 id="72-enforcement-layers">7.2 Enforcement Layers<a class="headerlink" href="#72-enforcement-layers" title="Permanent link">&para;</a></h3>
+<p>Safety enforcement operates through multiple complementary layers:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>┌─────────────────────────────────────────────────┐
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>│            Enforcement Stack                     │
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>│                                                  │
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>│  Agent instruction files (primary enforcement)   │
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>│  └── AGENTS.md, CLAUDE.md, copilot-instructions  │
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>│      explicitly forbid manual git operations      │
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>│                                                  │
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>│  Pre-commit framework (.pre-commit-config.yaml)  │
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>│  └── Deployed: auto-formats Python               │
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>│      (Black, Ruff, mypy) on every commit         │
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>│                                                  │
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>│  Custom hook templates (scripts/git-hooks/)       │
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>│  └── Block commits without AI_COMMIT_ACTIVE=1    │
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>│  └── Block pushes without SAFE_PUSH_ACTIVE=1     │
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>│  └── Validate conventional commit format          │
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>│  └── Deployable via install_git_hooks.sh          │
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>│  └── (designed but not yet deployed in prod)      │
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>│                                                  │
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>│  Architecture checks                             │
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>│  └── Blocks layer violations via                 │
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>│      check_architecture_boundaries.py            │
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>│                                                  │
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>│  PR decision engine                              │
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>│  └── Blocks direct commits for production changes│
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>└─────────────────────────────────────────────────┘
+</code></pre></div>
+<p>The enforcement stack uses a defense-in-depth approach. The primary layer is instruction-based: all agent configuration files explicitly forbid manual git operations, backed by documented evidence of the rework caused by violations. The pre-commit framework (Black, Ruff, mypy) is deployed and enforces code quality standards on every commit. Custom hook templates in <code>scripts/git-hooks/</code> provide an additional enforcement layer using environment variable bypass tokens (<code>AI_COMMIT_ACTIVE=1</code>, <code>SAFE_PUSH_ACTIVE=1</code>) — these templates are designed and available for deployment via <code>install_git_hooks.sh</code> but are not yet installed in production <code>.git/hooks/</code>. This represents a design gap: full hook-based enforcement is architecturally complete but current enforcement relies on instruction compliance, which has proven effective in practice.</p>
+<h3 id="73-recovery-mechanisms">7.3 Recovery Mechanisms<a class="headerlink" href="#73-recovery-mechanisms" title="Permanent link">&para;</a></h3>
+<p>The <code>recover_git_state.sh</code> script (161 lines) handles common git state corruption scenarios:</p>
+<ul>
+<li><strong>Rebase in progress</strong>: Auto-abort or continue based on conflict state</li>
+<li><strong>Cherry-pick in progress</strong>: Abort and restore clean state</li>
+<li><strong>Merge conflicts</strong>: Auto-resolve for safe files (TASKS.md, SESSION_LOG.md, next-session-brief.md); require manual resolution for production code</li>
+<li><strong>Detached HEAD</strong>: Checkout main branch and fast-forward</li>
+<li><strong>Stale hooks</strong>: Reinstall from template</li>
+<li><strong>Stale locks</strong>: Remove <code>.git/index.lock</code> if older than 300 seconds</li>
+</ul>
+<p>The distinction between safe files (documentation, logs) and production files (Python code, React components) ensures that auto-recovery never silently damages application logic.</p>
+<hr />
+<h2 id="8-documentation-infrastructure">8. Documentation Infrastructure<a class="headerlink" href="#8-documentation-infrastructure" title="Permanent link">&para;</a></h2>
+<h3 id="81-link-preservation">8.1 Link Preservation<a class="headerlink" href="#81-link-preservation" title="Permanent link">&para;</a></h3>
+<p>The codebase maintains 870+ internal documentation links across markdown files. Direct file operations (<code>mv</code>, <code>rm</code>) would break these links silently, creating a cascading documentation failure. Two safe scripts handle all file operations:</p>
+<ul>
+<li><code>safe_file_move.py</code> — Moves a file and updates all references across the entire repository</li>
+<li><code>safe_file_delete.py</code> — Deletes a file and removes or updates all referencing links</li>
+</ul>
+<p>Both scripts support <code>--dry-run</code> for preview before execution. The <code>check_links.py</code> validator detects any broken links that slip through, running as part of the 27-check validation suite.</p>
+<h3 id="82-folder-indexes">8.2 Folder Indexes<a class="headerlink" href="#82-folder-indexes" title="Permanent link">&para;</a></h3>
+<p>Every key folder maintains dual-format indexes:</p>
+<ul>
+<li><code>index.json</code> — Machine-readable: file list, exported classes, functions, parameters, and descriptions</li>
+<li><code>index.md</code> — Human-readable: tables with descriptions, export counts, and line counts</li>
+</ul>
+<p>Agents are instructed to read folder indexes before diving into individual files, reducing token consumption and improving context accuracy. The indexes are auto-regenerated by <code>generate_enhanced_index.py --all</code> after structural changes.</p>
+<h3 id="83-automation-map">8.3 Automation Map<a class="headerlink" href="#83-automation-map" title="Permanent link">&para;</a></h3>
+<p>All 96 tasks in the repository are catalogued in <code>automation-map.json</code> with metadata:</p>
+<ul>
+<li>Script path and description</li>
+<li>CLI options and usage examples</li>
+<li>"Never use" alternatives (e.g., never use <code>mv</code> — use <code>safe_file_move.py</code>)</li>
+</ul>
+<p>The <code>find_automation.py</code> script provides fuzzy search over this map, allowing agents to discover existing automation for any task before creating new scripts — directly addressing the code duplication problem.</p>
+<h3 id="84-clause-traceability-api">8.4 Clause Traceability API<a class="headerlink" href="#84-clause-traceability-api" title="Permanent link">&para;</a></h3>
+<p>A unique contribution for engineering software infrastructure is the <code>@clause</code> decorator system in <code>codes/is456/traceability.py</code>. Every IS 456:2000 calculation function is decorated with the specific clause reference it implements (e.g., <code>@clause("39.4.1")</code> for shear design). This enables programmatic clause-to-code tracing: given any IS 456 clause number, the system can identify which functions implement it, and given any function, the system can report which clauses it satisfies. This bidirectional traceability is critical for engineering software where regulatory compliance must be auditable and is a pattern applicable to any domain with codified standards (Eurocode, ACI 318, ASCE 7).</p>
+<hr />
+<h2 id="9-metrics-and-results">9. Metrics and Results<a class="headerlink" href="#9-metrics-and-results" title="Permanent link">&para;</a></h2>
+<p>The following metrics are drawn from the deployed system as of March 2026:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sessions logged in SESSION_LOG.md</td>
+<td>105 numbered sessions (170+ dated entries)</td>
+</tr>
+<tr>
+<td>Python tests passing</td>
+<td>3,226</td>
+</tr>
+<tr>
+<td>API endpoints</td>
+<td>38 across 12 routers</td>
+</tr>
+<tr>
+<td>Custom React hooks</td>
+<td>16+</td>
+</tr>
+<tr>
+<td>Specialized agents</td>
+<td>14</td>
+</tr>
+<tr>
+<td>Agent skills</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Prompt templates</td>
+<td>14</td>
+</tr>
+<tr>
+<td>Tasks mapped in automation-map.json</td>
+<td>96</td>
+</tr>
+<tr>
+<td>Parallel validation checks</td>
+<td>27 (8 categories)</td>
+</tr>
+<tr>
+<td>Internal documentation links preserved</td>
+<td>870+</td>
+</tr>
+<tr>
+<td>WORKLOG entries</td>
+<td>55+</td>
+</tr>
+<tr>
+<td><code>ai_commit.sh</code> size</td>
+<td>430 lines</td>
+</tr>
+<tr>
+<td><code>should_use_pr.sh</code> size</td>
+<td>411 lines</td>
+</tr>
+<tr>
+<td><code>project_health.py</code> size</td>
+<td>740 lines</td>
+</tr>
+<tr>
+<td><code>evolve.py</code> size</td>
+<td>542 lines</td>
+</tr>
+<tr>
+<td>Merge conflicts from manual git</td>
+<td><strong>0</strong> (since instruction-based enforcement, ~Session 80+)</td>
+</tr>
+<tr>
+<td>Hours saved per averted incident</td>
+<td>~10 (vs. pre-enforcement baseline)</td>
+</tr>
+<tr>
+<td>CI workflows</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>The most significant metric is the elimination of merge conflicts. Prior to instruction-based enforcement, each merge conflict incident consumed substantial human and agent time for resolution, context recovery, and rework (see §10.2 for specific failure cases and time estimates). The zero-conflict record applies to the period since instruction-based enforcement was adopted (approximately Session 80+); the system was iteratively developed and refined through all 105+ sessions. With zero conflicts since enforcement, the investment in infrastructure has yielded substantial time savings.</p>
+<p><em>Note on session counting:</em> Sessions are numbered sequentially; the 170+ dated entries include unnumbered maintenance entries and multi-entry sessions.</p>
+<hr />
+<h2 id="10-lessons-learned">10. Lessons Learned<a class="headerlink" href="#10-lessons-learned" title="Permanent link">&para;</a></h2>
+<h3 id="101-what-worked">10.1 What Worked<a class="headerlink" href="#101-what-worked" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Zero-tolerance for manual git.</strong> Pre-push hooks eliminate approximately 80% of merge conflicts by design. The remaining 20% — concurrent work on the same logical feature — is addressed by the PR decision engine and task branch isolation.</p>
+</li>
+<li>
+<p><strong>Append-only logs.</strong> By never allowing log overwrites, the system preserves complete project history. When context is lost, agents can reconstruct state from SESSION_LOG.md and WORKLOG.md rather than re-exploring the codebase.</p>
+</li>
+<li>
+<p><strong>Standardized entry points.</strong> <code>run.sh</code> and <code>ai_commit.sh</code> reduce cognitive load for agents. Instead of remembering directory structures and tool chains, agents use a consistent command vocabulary.</p>
+</li>
+<li>
+<p><strong>Self-healing feedback loops.</strong> The cycle of agent feedback → evolution engine → auto-fix → health score creates a positive feedback loop: infrastructure improves with each session.</p>
+</li>
+<li>
+<p><strong>Domain-specific agent specialization.</strong> The <code>structural-engineer</code> agent validates IS 456:2000 compliance; the <code>security</code> agent checks OWASP conformance. Specialization ensures that domain expertise is applied where it matters, not diluted across generalist agents.</p>
+</li>
+</ol>
+<h3 id="102-what-failed-initially">10.2 What Failed Initially<a class="headerlink" href="#102-what-failed-initially" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Parameter name guessing.</strong> Agents consistently guessed API parameter names (<code>width</code> instead of <code>b_mm</code>, <code>concrete_grade</code> instead of <code>fck</code>). This was solved by creating <code>discover_api_signatures.py</code> and making it a mandatory pre-step in the <code>api-discovery</code> skill.</p>
+</li>
+<li>
+<p><strong>Terminal path confusion.</strong> Agents ran commands from wrong directories (<code>cd Python &amp;&amp; .venv/bin/pytest tests/</code> when <code>.venv</code> is at the project root). Explicit path rules in agent instructions and the <code>terminal-rules.instructions.md</code> file addressed this.</p>
+</li>
+<li>
+<p><strong>PR bypass with <code>--force</code>.</strong> Early versions of the commit script allowed <code>--force</code> to bypass PR requirements. This led to 10+ hours of rework on multiple occasions. The flag now triggers a prominent warning and is listed as FORBIDDEN in all agent instructions.</p>
+</li>
+<li>
+<p><strong>Session-end skipping.</strong> When agents terminated without updating logs and handoffs, subsequent agents wasted significant time rediscovering project state. The mandatory session-end protocol, enforced through agent instructions and the <code>session-management</code> skill, reduced this to near-zero.</p>
+</li>
+<li>
+<p><strong>PR decision blind spots.</strong> The initial <code>should_use_pr.sh</code> did not account for changes to <code>fastapi_app/</code> and <code>react_app/</code> directories, leading to unreviewed production changes. The script was expanded to cover all production code paths.</p>
+</li>
+</ol>
+<h3 id="103-recommendations-for-other-projects">10.3 Recommendations for Other Projects<a class="headerlink" href="#103-recommendations-for-other-projects" title="Permanent link">&para;</a></h3>
+<p>Based on 105 numbered sessions of operational experience, we offer the following recommendations for teams adopting multi-agent development:</p>
+<ol>
+<li>
+<p><strong>Start with git hook enforcement from day one.</strong> Retrofitting hooks onto an existing workflow is harder than building with them.</p>
+</li>
+<li>
+<p><strong>Implement session continuity before scaling to multiple agents.</strong> A single agent with good logs outperforms three agents with no memory.</p>
+</li>
+<li>
+<p><strong>Use append-only logs, not overwritten state files.</strong> Overwritten state files lose the "why" behind decisions.</p>
+</li>
+<li>
+<p><strong>Build self-healing before it is needed.</strong> The cost of not having auto-recovery compounds exponentially with session count.</p>
+</li>
+<li>
+<p><strong>Enforce architecture at the tooling level, not just with documentation.</strong> Agents respect hooks and checks; they inconsistently respect written guidelines.</p>
+</li>
+<li>
+<p><strong>Map all automation.</strong> Agents need a "where is the script for X?" lookup to avoid reinventing existing tools.</p>
+</li>
+<li>
+<p><strong>Implement agent feedback loops.</strong> Let agents report problems back to the infrastructure — this closes the loop between detection and resolution.</p>
+</li>
+</ol>
+<h3 id="104-limitations">10.4 Limitations<a class="headerlink" href="#104-limitations" title="Permanent link">&para;</a></h3>
+<p>The following limitations should be considered when interpreting the results presented in this paper:</p>
+<ol>
+<li>
+<p><strong>Single-developer project.</strong> <code>structural_engineering_lib</code> is maintained by a single developer with AI agent assistance. The multi-agent coordination challenges and solutions described here may not generalize directly to large teams with multiple human developers operating concurrently.</p>
+</li>
+<li>
+<p><strong>Hook enforcement designed but not yet fully deployed.</strong> The custom git hooks (<code>AI_COMMIT_ACTIVE</code> enforcement) exist as templates in <code>scripts/git-hooks/</code> but are not installed in <code>.git/hooks/</code> in production. Current enforcement is instruction-based — agents comply because instruction files forbid manual git and document the consequences of violation. This has proven effective but is not a technical guarantee.</p>
+</li>
+<li>
+<p><strong>No token usage tracking.</strong> While the session continuity mechanism reduces redundant context exploration, we do not track per-session or per-agent token consumption. We cannot quantify the exact token waste prevented by the infrastructure.</p>
+</li>
+<li>
+<p><strong>No formal verification of architecture.</strong> The 4-layer architecture boundary checks are heuristic (import pattern matching, file path analysis) rather than formally provable. False negatives are possible, particularly for dynamic imports or runtime composition.</p>
+</li>
+<li>
+<p><strong>Self-evolution metrics are self-reported.</strong> The health scores, feedback trends, and auto-fix counts are generated by the system itself. No independent audit has verified these metrics against ground truth.</p>
+</li>
+</ol>
+<h3 id="105-threats-to-validity">10.5 Threats to Validity<a class="headerlink" href="#105-threats-to-validity" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Internal validity:</strong> This is a single-developer project with AI agent assistance. Results may not transfer to multi-developer teams with concurrent AI agent sessions, where coordination challenges are compounded by human-agent and agent-agent conflicts.</li>
+<li><strong>External validity:</strong> The infrastructure was developed for a domain-specific application (structural engineering per IS 456:2000). While the architectural patterns are intended to be general, infrastructure demands may differ substantially in other software domains (e.g., real-time systems, data pipelines, mobile applications).</li>
+<li><strong>Construct validity:</strong> Key metrics — including the "10+ hours of rework" estimate per merge conflict incident — are self-reported from project logs and developer experience. No independent auditor has verified these claims, and the estimates may be subject to recall bias.</li>
+<li><strong>Reliability:</strong> No controlled A/B experiment was conducted comparing development with vs. without the infrastructure. Causal claims (e.g., "instruction-based enforcement eliminated merge conflicts") are based on before/after observation within the same project, and confounding factors (developer experience growth, codebase maturity) cannot be ruled out.</li>
+</ul>
+<hr />
+<h2 id="11-proposed-improvements-and-future-work">11. Proposed Improvements and Future Work<a class="headerlink" href="#11-proposed-improvements-and-future-work" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>Formal Agent Behavioral Contracts.</strong> Extend hook-based enforcement to formal specification languages, enabling static verification of agent behavior before execution. Inspired by the behavioral contracts framework (arXiv:2602.22302).</p>
+</li>
+<li>
+<p><strong>Token Usage Tracking.</strong> Implement per-agent, per-session token consumption tracking to identify inefficient agents and optimize context loading strategies. Inspired by Tokenomics (arXiv:2601.14470).</p>
+</li>
+<li>
+<p><strong>Cross-Repository Generalization.</strong> Package the infrastructure (<code>ai_commit.sh</code>, hook templates, <code>check_all.py</code>, <code>evolve.py</code>) as a reusable framework for other domain-specific projects.</p>
+</li>
+<li>
+<p><strong>AI-Driven PR Review.</strong> Auto-generate PR descriptions and review comments using LLM analysis of diffs, reducing the manual review burden.</p>
+</li>
+<li>
+<p><strong>Predictive Conflict Detection.</strong> Train an ML model on historical file modification patterns to warn agents before they begin work on files likely to cause conflicts.</p>
+</li>
+<li>
+<p><strong>Agent Performance Benchmarking.</strong> Track agent effectiveness over time: errors per session, rework rate, time-to-completion, tests written, and documentation quality.</p>
+</li>
+<li>
+<p><strong>Automated Rollback.</strong> If CI fails after merge, automatically revert the merge commit and notify the responsible agent with context about the failure.</p>
+</li>
+<li>
+<p><strong>Multi-Repository Orchestration.</strong> Extend handoff chains across multiple repositories for projects with separate frontend, backend, and library repositories.</p>
+</li>
+<li>
+<p><strong>Real-Time Agent Monitoring Dashboard.</strong> A live web view showing which agent is working, what files are being modified, current pipeline stage, and health score — enabling human supervisors to intervene early.</p>
+</li>
+<li>
+<p><strong>Formal Verification of Architecture.</strong> Static analysis to prove 4-layer boundaries at the type system level, eliminating the need for runtime architecture checks.</p>
+</li>
+<li>
+<p><strong>Parity Testing Harness.</strong> Automated cross-platform parity verification between Python and VBA implementations of IS 456 calculations.</p>
+</li>
+<li>
+<p><strong>Adaptive PR Thresholds.</strong> Learn optimal PR vs. direct-commit thresholds from historical data: which types of direct commits caused regressions, and which PRs were unnecessary overhead.</p>
+</li>
+</ol>
+<hr />
+<h2 id="12-conclusion">12. Conclusion<a class="headerlink" href="#12-conclusion" title="Permanent link">&para;</a></h2>
+<p>This paper presents a production-deployed, self-evolving multi-agent git infrastructure for <code>structural_engineering_lib</code>, an IS 456:2000 reinforced concrete beam design library. The system addresses the fundamental challenges of LLM-based multi-agent software development through four interlocking mechanisms:</p>
+<ol>
+<li>
+<p><strong>Enforced git workflows</strong> via <code>ai_commit.sh</code> and pre-commit/pre-push hooks, eliminating manual git operations and the merge conflicts they cause.</p>
+</li>
+<li>
+<p><strong>Session continuity</strong> via append-only logs (SESSION_LOG.md, WORKLOG.md) and structured handoffs (next-session-brief.md), preserving context across 105 numbered sessions (170+ dated entries).</p>
+</li>
+<li>
+<p><strong>Self-evolving infrastructure</strong> via a three-layer system (health scanning, feedback collection, evolution orchestration) that detects and repairs its own regressions.</p>
+</li>
+<li>
+<p><strong>Domain-specific agent specialization</strong> via 14 agents with defined roles, 7 reusable skills, and 14 prompt templates, ensuring that IS 456:2000 compliance, architectural boundaries, and engineering units are maintained.</p>
+</li>
+</ol>
+<p>The quantitative results speak directly: zero merge conflicts since instruction-based enforcement was adopted (~Session 80+), 3,226 passing tests, 27 parallel validation checks, and 96 mapped tasks — all maintained across 105 numbered sessions without manual infrastructure maintenance. The estimated savings from averted merge conflict incidents (see §10.2) demonstrate that the overhead of safety infrastructure pays for itself within the first few sessions.</p>
+<p>The system is open-source and available for adoption by other domain-specific engineering software projects. We believe the principles demonstrated here — enforced workflows, append-only memory, self-healing infrastructure, and domain-specific specialization — are broadly applicable to any project where multiple LLM agents collaborate on a shared codebase.</p>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>SEMAG — Self-Evolutionary Multi-Agent Code Generation. arXiv:2603.15707, 2026.</p>
+</li>
+<li>
+<p>AgentMesh — A Cooperative Multi-Agent Framework for Software Development. arXiv:2507.19902, 2025.</p>
+</li>
+<li>
+<p>SAGE — Tool-Augmented LLM-Based Multi-Agent Task Solving. arXiv:2601.09750, 2026.</p>
+</li>
+<li>
+<p>DebateCoder — Adaptive Confidence Gating for Multi-Agent Collaboration in Code Generation. arXiv:2601.21469, 2026.</p>
+</li>
+<li>
+<p>Autonoma — A Hierarchical Multi-Agent Framework for Software Development. arXiv:2603.19270, 2026.</p>
+</li>
+<li>
+<p>Diaz-De-Arcaya, J. et al. — Self-Healing Infrastructure-as-Code with Large Language Models. ACM International Conference on the Art, Science, and Engineering of Programming, 2024.</p>
+</li>
+<li>
+<p>Bhattarai, S. — Scaling Generative AI for Self-Healing DevOps Pipelines. Preprint, 2025.</p>
+</li>
+<li>
+<p>Agent Behavioral Contracts — Formal Specification for AI Agents. arXiv:2602.22302, 2026.</p>
+</li>
+<li>
+<p>Theory of Code Space — Do Code Agents Understand Software Architecture? arXiv:2603.00601, 2026.</p>
+</li>
+<li>
+<p>Tokenomics — Token Usage Analysis in Agentic Software Engineering. arXiv:2601.14470, 2026.</p>
+</li>
+<li>
+<p>Qian, C., et al. "ChatDev: Communicative Agents for Software Development." arXiv:2307.07924, 2023.</p>
+</li>
+<li>
+<p>Xie, T., et al. "DevGPT: Studying Developer-ChatGPT Conversations." arXiv:2309.03914, 2023.</p>
+</li>
+</ol>
+<hr />
+<p><em>Manuscript prepared March 30, 2026. This paper describes the infrastructure of an open-source project; all metrics are derived from actual production usage.</em></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

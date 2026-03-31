@@ -1,0 +1,171 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cPropFrame.GetNonPrismatic Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetNonPrismatic method" /><meta name="System.Keywords" content="cPropFrame.GetNonPrismatic method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cPropFrame.GetNonPrismatic" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cPropFrame.GetNonPrismatic(System.String,System.Int32@,System.String[]@,System.String[]@,System.Double[]@,System.Int32[]@,System.Int32[]@,System.Int32[]@,System.Int32@,System.String@,System.String@)" /><meta name="Description" content="Assigns data to a nonprismatic frame section property." /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="693974b7-f60f-cc05-a557-6b4130f8da24" /><meta name="guid" content="693974b7-f60f-cc05-a557-6b4130f8da24" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cPropFrame<span id="LST25ADC0B8_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_0?cpp=::|nu=.");</script>GetNonPrismatic Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Assigns data to a nonprismatic frame section property.
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetNonPrismatic</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberItems</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">StartSec</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">EndSec</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">MyLength</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span>[] <span class="parameter">MyType</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span>[] <span class="parameter">EI33</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span>[] <span class="parameter">EI22</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">Color</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">Notes</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">GUID</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetNonPrismatic</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberItems</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">StartSec</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">EndSec</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MyLength</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MyType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">EI33</span> <span class="keyword">As</span> <span class="identifier">Integer</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">EI22</span> <span class="keyword">As</span> <span class="identifier">Integer</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">Color</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Notes</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">GUID</span> <span class="keyword">As</span> <span class="identifier">String</span>
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cPropFrame</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberItems</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">StartSec</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">EndSec</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">MyLength</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">MyType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>()
+<span class="keyword">Dim</span> <span class="parameter">EI33</span> <span class="keyword">As</span> <span class="identifier">Integer</span>()
+<span class="keyword">Dim</span> <span class="parameter">EI22</span> <span class="keyword">As</span> <span class="identifier">Integer</span>()
+<span class="keyword">Dim</span> <span class="parameter">Color</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Notes</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">GUID</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetNonPrismatic</span>(<span class="parameter">Name</span>,
+	<span class="parameter">NumberItems</span>, <span class="parameter">StartSec</span>, <span class="parameter">EndSec</span>, <span class="parameter">MyLength</span>,
+	<span class="parameter">MyType</span>, <span class="parameter">EI33</span>, <span class="parameter">EI22</span>, <span class="parameter">Color</span>, <span class="parameter">Notes</span>, <span class="parameter">GUID</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetNonPrismatic</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberItems</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">StartSec</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">EndSec</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">MyLength</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">int</span>&gt;^% <span class="parameter">MyType</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">int</span>&gt;^% <span class="parameter">EI33</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">int</span>&gt;^% <span class="parameter">EI22</span>,
+	<span class="identifier">int</span>% <span class="parameter">Color</span>,
+	<span class="identifier">String</span>^% <span class="parameter">Notes</span>,
+	<span class="identifier">String</span>^% <span class="parameter">GUID</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetNonPrismatic</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">NumberItems</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">StartSec</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">EndSec</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MyLength</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MyType</span> : <span class="identifier">int</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">EI33</span> : <span class="identifier">int</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">EI22</span> : <span class="identifier">int</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">Color</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Notes</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">GUID</span> : <span class="identifier">string</span> <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />The name of an existing frame section property.</dd><dt><span class="parameter">NumberItems</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST25ADC0B8_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_3?cpp=%");</script><br />The number of segments assigned to the nonprismatic section.</dd><dt><span class="parameter">StartSec</span></dt><dd>Type: <span id="LST25ADC0B8_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_4?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_5?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST25ADC0B8_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_6?cpp=&gt;|vb=()|nu=[]");</script><span id="LST25ADC0B8_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_7?cpp=%");</script><br />This is an array of the names of the frame section properties
+ at the start of each segment.</dd><dt><span class="parameter">EndSec</span></dt><dd>Type: <span id="LST25ADC0B8_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_8?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_9?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST25ADC0B8_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_10?cpp=&gt;|vb=()|nu=[]");</script><span id="LST25ADC0B8_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_11?cpp=%");</script><br />This is an array of the names of the frame section properties
+ at the end of each segment.</dd><dt><span class="parameter">MyLength</span></dt><dd>Type: <span id="LST25ADC0B8_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_12?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_13?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST25ADC0B8_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_14?cpp=&gt;|vb=()|nu=[]");</script><span id="LST25ADC0B8_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_15?cpp=%");</script><br />This is an array that includes the length of each segment.
+ The length may be variable or absolute as indicated by the MyType item. [L] when length is absolute.</dd><dt><span class="parameter">MyType</span></dt><dd>Type: <span id="LST25ADC0B8_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_16?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_17?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST25ADC0B8_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_18?cpp=&gt;|vb=()|nu=[]");</script><span id="LST25ADC0B8_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_19?cpp=%");</script><br />This is an array of either 1 or 2, indicating the length type for each segment:
+ <div class="tableSection"><table><tr><th>Value</th><th>MyType</th></tr><tr><td>1</td><td>Variable (relative length)</td></tr><tr><td>2</td><td>Absolute</td></tr></table></div></dd><dt><span class="parameter">EI33</span></dt><dd>Type: <span id="LST25ADC0B8_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_20?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_21?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST25ADC0B8_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_22?cpp=&gt;|vb=()|nu=[]");</script><span id="LST25ADC0B8_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_23?cpp=%");</script><br />This is an array of 1, 2 or 3, indicating the variation type for EI33
+ in each segment:
+ <div class="tableSection"><table><tr><th>Value</th><th>EI33</th></tr><tr><td>1</td><td>Linear</td></tr><tr><td>2</td><td>Parabolic</td></tr><tr><td>2</td><td>Cubic</td></tr></table></div></dd><dt><span class="parameter">EI22</span></dt><dd>Type: <span id="LST25ADC0B8_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_24?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_25?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST25ADC0B8_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_26?cpp=&gt;|vb=()|nu=[]");</script><span id="LST25ADC0B8_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_27?cpp=%");</script><br />This is an array of 1, 2 or 3, indicating the variation type for EI22
+ in each segment:
+ <div class="tableSection"><table><tr><th>Value</th><th>EI22</th></tr><tr><td>1</td><td>Linear</td></tr><tr><td>2</td><td>Parabolic</td></tr><tr><td>2</td><td>Cubic</td></tr></table></div></dd><dt><span class="parameter">Color</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_28?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST25ADC0B8_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_29?cpp=%");</script><br />The display color assigned to the section.</dd><dt><span class="parameter">Notes</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_30?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST25ADC0B8_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_31?cpp=%");</script><br />The notes, if any, assigned to the section.</dd><dt><span class="parameter">GUID</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST25ADC0B8_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_32?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST25ADC0B8_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST25ADC0B8_33?cpp=%");</script><br />The GUID (global unique identifier), if any, assigned to the section.</dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />Returns zero if the data is successfully retrieved;
+ otherwise it returns a nonzero value.</div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+       <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+       <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+       <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+       <span class="highlight-keyword">Dim</span> StartSec() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> EndSec() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> Length() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> SegType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> EI33() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> EI22() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> NumberItems <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyStartSec() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> MyEndSec() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> MyLength() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+       <span class="highlight-keyword">Dim</span> MySegType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyEI33() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> MyEI22() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> Color <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+       <span class="highlight-keyword">Dim</span> Notes <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+       <span class="highlight-keyword">Dim</span> GUID <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+
+   <span class="highlight-comment">'create ETABS object</span>
+       <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+       EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+   <span class="highlight-comment">'start ETABS application</span>
+       ret = EtabsObject.ApplicationStart()
+
+   <span class="highlight-comment">'create SapModel object</span>
+       SapModel = EtabsObject.SapModel
+
+   <span class="highlight-comment">'initialize model</span>
+       ret = SapModel.InitializeNewModel()
+
+   <span class="highlight-comment">'create steel deck template model</span>
+       ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>,<span class="highlight-number">12</span>,<span class="highlight-number">12</span>,<span class="highlight-number">4</span>,<span class="highlight-number">4</span>,<span class="highlight-number">24</span>,<span class="highlight-number">24</span>)
+
+   <span class="highlight-comment">'set new I-type frame section property</span>
+       ret = SapModel.PropFrame.SetISection(<span class="highlight-literal">"ISEC1"</span>, <span class="highlight-literal">"A992Fy50"</span>, <span class="highlight-number">24</span>, <span class="highlight-number">10</span>, <span class="highlight-number">0.5</span>, <span class="highlight-number">0.3</span>, <span class="highlight-number">14</span>, <span class="highlight-number">0.6</span>)
+
+   <span class="highlight-comment">'set new I-type frame section property</span>
+       ret = SapModel.PropFrame.SetISection(<span class="highlight-literal">"ISEC2"</span>, <span class="highlight-literal">"A992Fy50"</span>, <span class="highlight-number">36</span>, <span class="highlight-number">15</span>, <span class="highlight-number">1</span>, <span class="highlight-number">0.5</span>, <span class="highlight-number">121</span>, <span class="highlight-number">0.9</span>)
+
+    <span class="highlight-comment">'set new nonprismatic frame section property</span>
+       <span class="highlight-keyword">ReDim</span> StartSec(<span class="highlight-number">2</span>)
+       <span class="highlight-keyword">ReDim</span> EndSec(<span class="highlight-number">2</span>)
+       <span class="highlight-keyword">ReDim</span> Length(<span class="highlight-number">2</span>)
+       <span class="highlight-keyword">ReDim</span> SegType(<span class="highlight-number">2</span>)
+       <span class="highlight-keyword">ReDim</span> EI33(<span class="highlight-number">2</span>)
+       <span class="highlight-keyword">ReDim</span> EI22(<span class="highlight-number">2</span>)
+       StartSec(<span class="highlight-number">0</span>) = <span class="highlight-literal">"ISEC2"</span>
+       EndSec(<span class="highlight-number">0</span>) = <span class="highlight-literal">"ISEC1"</span>
+       Length(<span class="highlight-number">0</span>) = <span class="highlight-number">60</span>
+       SegType(<span class="highlight-number">0</span>) = <span class="highlight-number">2</span>
+       EI33(<span class="highlight-number">0</span>)= <span class="highlight-number">2</span>
+       EI22(<span class="highlight-number">0</span>)= <span class="highlight-number">1</span>
+
+       StartSec(<span class="highlight-number">1</span>) = <span class="highlight-literal">"ISEC1"</span>
+       EndSec(<span class="highlight-number">1</span>) = <span class="highlight-literal">"ISEC1"</span>
+       Length(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+       SegType(<span class="highlight-number">1</span>) = <span class="highlight-number">1</span>
+       EI33(<span class="highlight-number">1</span>)= <span class="highlight-number">2</span>
+       EI22(<span class="highlight-number">1</span>)= <span class="highlight-number">1</span>
+
+       StartSec(<span class="highlight-number">2</span>) = <span class="highlight-literal">"ISEC1"</span>
+       EndSec(<span class="highlight-number">2</span>) = <span class="highlight-literal">"ISEC2"</span>
+       Length(<span class="highlight-number">2</span>) = <span class="highlight-number">60</span>
+       SegType(<span class="highlight-number">2</span>) = <span class="highlight-number">2</span>
+       EI33(<span class="highlight-number">2</span>)= <span class="highlight-number">2</span>
+       EI22(<span class="highlight-number">2</span>)= <span class="highlight-number">1</span>
+
+       ret = SapModel.PropFrame.SetNonPrismatic(<span class="highlight-literal">"NP1"</span>, <span class="highlight-number">3</span>, StartSec, EndSec, Length, SegType, EI33, EI22)
+
+   <span class="highlight-comment">'get nonprismatic section data</span>
+        ret = SapModel.PropFrame.GetNonPrismatic(<span class="highlight-literal">"NP1"</span>, MyNumberItems, MyStartSec, MyEndSec, MyLength, MySegType, MyEI33, MyEI22, Color, Notes, GUID)
+
+   <span class="highlight-comment">'close ETABS</span>
+       EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+   <span class="highlight-comment">'clean up variables</span>
+       SapModel = <span class="highlight-keyword">Nothing</span>
+       EtabsObject = <span class="highlight-keyword">Nothing</span>
+   <span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="818573fe-2b13-6183-8dc9-0cf3e8e02c7a.htm">cPropFrame Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

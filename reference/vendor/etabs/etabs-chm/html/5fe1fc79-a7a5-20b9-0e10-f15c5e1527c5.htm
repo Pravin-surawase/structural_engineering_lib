@@ -1,0 +1,249 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cAnalysisResults.JointVel Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="JointVel method" /><meta name="System.Keywords" content="cAnalysisResults.JointVel method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cAnalysisResults.JointVel" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cAnalysisResults.JointVel(System.String,ETABSv1.eItemTypeElm,System.Int32@,System.String[]@,System.String[]@,System.String[]@,System.String[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@)" /><meta name="Description" content="Reports the joint velocities for the specified point elements. The velocities reported by this function are relative velocities" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="5fe1fc79-a7a5-20b9-0e10-f15c5e1527c5" /><meta name="guid" content="5fe1fc79-a7a5-20b9-0e10-f15c5e1527c5" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cAnalysisResults<span id="LSTF88A5226_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_0?cpp=::|nu=.");</script>JointVel Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Reports the joint velocities for the specified point elements.
+ The velocities reported by this function are relative velocities
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">JointVel</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="identifier">eItemTypeElm</span> <span class="parameter">ItemTypeElm</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberResults</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Obj</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Elm</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">LoadCase</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">StepType</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">StepNum</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">U1</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">U2</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">U3</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">R1</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">R2</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">R3</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">JointVel</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="parameter">ItemTypeElm</span> <span class="keyword">As</span> <span class="identifier">eItemTypeElm</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberResults</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Obj</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">Elm</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">LoadCase</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">StepType</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">StepNum</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">U1</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">U2</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">U3</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">R1</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">R2</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">R3</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cAnalysisResults</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">ItemTypeElm</span> <span class="keyword">As</span> <span class="identifier">eItemTypeElm</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberResults</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Obj</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">Elm</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">LoadCase</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">StepType</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">StepNum</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">U1</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">U2</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">U3</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">R1</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">R2</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">R3</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">JointVel</span>(<span class="parameter">Name</span>,
+	<span class="parameter">ItemTypeElm</span>, <span class="parameter">NumberResults</span>, <span class="parameter">Obj</span>,
+	<span class="parameter">Elm</span>, <span class="parameter">LoadCase</span>, <span class="parameter">StepType</span>, <span class="parameter">StepNum</span>,
+	<span class="parameter">U1</span>, <span class="parameter">U2</span>, <span class="parameter">U3</span>, <span class="parameter">R1</span>, <span class="parameter">R2</span>, <span class="parameter">R3</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">JointVel</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">eItemTypeElm</span> <span class="parameter">ItemTypeElm</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberResults</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Obj</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Elm</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">LoadCase</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">StepType</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">StepNum</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">U1</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">U2</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">U3</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">R1</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">R2</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">R3</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">JointVel</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">ItemTypeElm</span> : <span class="identifier">eItemTypeElm</span> *
+        <span class="parameter">NumberResults</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Obj</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">Elm</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">LoadCase</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">StepType</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">StepNum</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">U1</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">U2</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">U3</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">R1</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">R2</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">R3</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing point object, point element, or group of objects
+ depending on the value of the <span class="parameter">ItemTypeElm</span> item.
+ </dd><dt><span class="parameter">ItemTypeElm</span></dt><dd>Type: <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">ETABSv1<span id="LSTF88A5226_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>eItemTypeElm</a><br />
+ This is one of the following items in the <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">eItemTypeElm</a>
+ enumeration.
+ <p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">ObjectElm</a>, the result request is for the point
+ element corresponding to the point object specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">Element</a>, the result request is for the point
+ element specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">GroupElm</a>, the result request is for all point
+ elements directly or indirectly specified in the group specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">SelectionElm</a>, the result request is for all point
+ elements directly or indirectly selected and the <span class="parameter">Name</span> item is ignored.
+ </p></dd><dt><span class="parameter">NumberResults</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_3?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LSTF88A5226_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_4?cpp=%");</script><br />
+ The total number of results returned by the program.
+ </dd><dt><span class="parameter">Obj</span></dt><dd>Type: <span id="LSTF88A5226_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_5?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_6?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTF88A5226_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_7?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_8?cpp=%");</script><br />
+ This is an array that includes the point object name associated with each result,
+ if any. Some results will have no point object associated with them. For those cases, this item
+ will be blank.
+ </dd><dt><span class="parameter">Elm</span></dt><dd>Type: <span id="LSTF88A5226_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_9?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_10?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTF88A5226_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_11?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_12?cpp=%");</script><br />
+ This is an array that includes the point element name associated with each result.
+ </dd><dt><span class="parameter">LoadCase</span></dt><dd>Type: <span id="LSTF88A5226_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_13?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_14?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTF88A5226_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_15?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_16?cpp=%");</script><br />
+ This is an array that includes the name of the analysis case or load
+ combination associated with each result.
+ </dd><dt><span class="parameter">StepType</span></dt><dd>Type: <span id="LSTF88A5226_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_17?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_18?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTF88A5226_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_19?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_20?cpp=%");</script><br />
+ This is an array that includes the step type, if any, for each result.
+ </dd><dt><span class="parameter">StepNum</span></dt><dd>Type: <span id="LSTF88A5226_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_21?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_22?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_23?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_24?cpp=%");</script><br />
+ This is an array that includes the step number, if any, for each result.
+ </dd><dt><span class="parameter">U1</span></dt><dd>Type: <span id="LSTF88A5226_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_25?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_26?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_27?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_28?cpp=%");</script><br />
+ This is a one dimensional array that includes the translational velocity
+ in the point element local 1 direction for each result. [L/s]
+ </dd><dt><span class="parameter">U2</span></dt><dd>Type: <span id="LSTF88A5226_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_29?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_30?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_31?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_32?cpp=%");</script><br />
+ This is a one dimensional array that includes the translational velocity
+ in the point element local 2 direction for each result. [L/s]
+ </dd><dt><span class="parameter">U3</span></dt><dd>Type: <span id="LSTF88A5226_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_33?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_34"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_34?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_35"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_35?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_36"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_36?cpp=%");</script><br />
+ This is a one dimensional array that includes the translational velocity
+ in the point element local 3 direction for each result. [L/s]
+ </dd><dt><span class="parameter">R1</span></dt><dd>Type: <span id="LSTF88A5226_37"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_37?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_38"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_38?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_39"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_39?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_40"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_40?cpp=%");</script><br />
+ This is a one dimensional array that includes the rotational velocity
+ about the point element local 1 direction for each result. [rad/s]
+ </dd><dt><span class="parameter">R2</span></dt><dd>Type: <span id="LSTF88A5226_41"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_41?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_42"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_42?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_43"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_43?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_44"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_44?cpp=%");</script><br />
+ This is a one dimensional array that includes the rotational velocity
+ about the point element local 2 direction for each result. [rad/s]
+ </dd><dt><span class="parameter">R3</span></dt><dd>Type: <span id="LSTF88A5226_45"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_45?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTF88A5226_46"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_46?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTF88A5226_47"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_47?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTF88A5226_48"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTF88A5226_48?cpp=%");</script><br />
+ This is a one dimensional array that includes the rotational velocity
+ about the point element local 3 direction for each result. [rad/s]
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the velocities are successfully recovered,
+ otherwise it returns a nonzero value</div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection">
+ See <a href="0c2bc8bd-2382-75be-9075-b0a8245283c3.htm">Results</a> for more information.
+ <div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+    <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+
+    <span class="highlight-keyword">Dim</span> MyLoadType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> MyLoadName() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> MyFunc() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> MySF() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> MyTF() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> MyAT() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> MyCSys() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> MyAng() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+    <span class="highlight-keyword">Dim</span> NumberResults <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+    <span class="highlight-keyword">Dim</span> Obj() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> Elm() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> LoadCase() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> StepType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> StepNum() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> U1() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> U2() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> U3() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> R1() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> R2() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> R3() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+   <span class="highlight-comment">'create ETABS object</span>
+       <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+       EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+   <span class="highlight-comment">'start ETABS application</span>
+       ret = EtabsObject.ApplicationStart()
+
+   <span class="highlight-comment">'create SapModel object</span>
+       SapModel = EtabsObject.SapModel
+
+   <span class="highlight-comment">'initialize model</span>
+       ret = SapModel.InitializeNewModel()
+
+<span class="highlight-comment">'create steel deck template model</span>
+    ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>, <span class="highlight-number">12</span>, <span class="highlight-number">12</span>, <span class="highlight-number">4</span>, <span class="highlight-number">4</span>, <span class="highlight-number">24</span>, <span class="highlight-number">24</span>)
+
+<span class="highlight-comment">'add linear modal history load case</span>
+    ret = SapModel.LoadCases.ModHistLinear.SetCase(<span class="highlight-literal">"MyMHLCASE1"</span>)
+
+<span class="highlight-comment">'set load data</span>
+    <span class="highlight-keyword">ReDim</span> MyLoadType(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MyLoadName(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MyFunc(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MySF(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MyTF(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MyAT(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MyCSys(<span class="highlight-number">1</span>)
+    <span class="highlight-keyword">ReDim</span> MyAng(<span class="highlight-number">1</span>)
+    MyLoadType(<span class="highlight-number">0</span>) = <span class="highlight-literal">"Load"</span>
+    MyLoadName(<span class="highlight-number">0</span>) = <span class="highlight-literal">"DEAD"</span>
+    MyFunc(<span class="highlight-number">0</span>) = <span class="highlight-literal">"RAMPTH"</span>
+    MySF(<span class="highlight-number">0</span>) = <span class="highlight-number">1</span>
+    MyTF(<span class="highlight-number">0</span>) = <span class="highlight-number">1</span>
+    MyAT(<span class="highlight-number">0</span>) = <span class="highlight-number">0</span>
+    MyCSys(<span class="highlight-number">0</span>) = <span class="highlight-literal">"Global"</span>
+    MyAng(<span class="highlight-number">0</span>) = <span class="highlight-number">0</span>
+    MyLoadType(<span class="highlight-number">1</span>) = <span class="highlight-literal">"Accel"</span>
+    MyLoadName(<span class="highlight-number">1</span>) = <span class="highlight-literal">"U2"</span>
+    MyFunc(<span class="highlight-number">1</span>) = <span class="highlight-literal">"UnifTH"</span>
+    MySF(<span class="highlight-number">1</span>) = <span class="highlight-number">2</span>
+    MyTF(<span class="highlight-number">1</span>) = <span class="highlight-number">1.5</span>
+    MyAT(<span class="highlight-number">1</span>) = <span class="highlight-number">10</span>
+    MyCSys(<span class="highlight-number">1</span>) = <span class="highlight-literal">"Global"</span>
+    MyAng(<span class="highlight-number">1</span>) = <span class="highlight-number">10</span>
+    ret = SapModel.LoadCases.ModHistLinear.SetLoads(<span class="highlight-literal">"MyMHLCASE1"</span>, <span class="highlight-number">2</span>, MyLoadType, MyLoadName, MyFunc, MySF, MyTF, MyAT, MyCSys, MyAng)
+
+<span class="highlight-comment">'run analysis</span>
+    System.IO.Directory.CreateDirectory(<span class="highlight-literal">"c:\CSI_API_temp"</span>)
+    ret = SapModel.File.Save(<span class="highlight-literal">"C:\CSI_API_temp\example.edb"</span>)
+    ret = SapModel.Analyze.RunAnalysis()
+
+<span class="highlight-comment">'deselect all cases and combos</span>
+    ret = SapModel.Results.Setup.DeselectAllCasesAndCombosForOutput()
+
+<span class="highlight-comment">'set case selected for output</span>
+    ret = SapModel.Results.Setup.SetCaseSelectedForOutput(<span class="highlight-literal">"MyMHLCASE1"</span>)
+
+<span class="highlight-comment">'set modal history output option to step-by-step</span>
+    ret = SapModel.Results.Setup.SetOptionModalHist(<span class="highlight-number">2</span>)
+
+<span class="highlight-comment">'get joint velocity</span>
+    ret = SapModel.Results.JointVel(<span class="highlight-literal">"ALL"</span>, GroupElm, NumberResults, Obj, Elm, LoadCase, StepType, StepNum, U1, U2, U3, R1, R2, R3)
+
+<span class="highlight-comment">'check</span>
+    <span class="highlight-keyword">If</span> NumberResults &gt; <span class="highlight-number">0</span> <span class="highlight-keyword">Then</span> ret = <span class="highlight-number">0</span> <span class="highlight-keyword">Else</span> ret = <span class="highlight-number">-1</span>
+
+<span class="highlight-comment">'close application</span>
+    mySapObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+<span class="highlight-comment">'clean up variables</span>
+    SapModel = <span class="highlight-keyword">Nothing</span>
+    mySapObject = <span class="highlight-keyword">Nothing</span>
+   <span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="b64f2f6e-9759-e542-faf2-0905474a04a7.htm">cAnalysisResults Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

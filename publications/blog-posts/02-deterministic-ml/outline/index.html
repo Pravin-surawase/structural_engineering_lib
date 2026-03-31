@@ -1,0 +1,2486 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/publications/blog-posts/02-deterministic-ml/outline/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Blog Post 02: Deterministic ML — When Classical Methods Beat Neural Networks - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#blog-post-02-deterministic-ml-when-classical-methods-beat-neural-networks" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Blog Post 02: Deterministic ML — When Classical Methods Beat Neural Networks
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#working-title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working Title
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-100-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook (100 words)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-1-the-ml-hammer-problem-300-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 1: The ML Hammer Problem (300 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 1: The ML Hammer Problem (300 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-you-have-a-hammer-everything-looks-like-a-nail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When You Have a Hammer, Everything Looks Like a Nail
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-2-problem-characteristics-matrix-400-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 2: Problem Characteristics Matrix (400 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 2: Problem Characteristics Matrix (400 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-ml-vs-classical-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use ML vs Classical Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-of-classical-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Categories of Classical Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-3-case-study-sensitivity-analysis-500-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 3: Case Study — Sensitivity Analysis (500 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 3: Case Study — Sensitivity Analysis (500 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-which-parameters-are-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: Which Parameters Are Critical?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-4-case-study-predictive-validation-400-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 4: Case Study — Predictive Validation (400 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 4: Case Study — Predictive Validation (400 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-quick-pre-checks-before-full-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: Quick Pre-Checks Before Full Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-5-when-ml-actually-helps-250-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 5: When ML Actually Helps (250 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 5: When ML Actually Helps (250 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#not-anti-ml-just-pro-right-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not Anti-ML, Just Pro-Right-Tool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-6-implementation-lessons-300-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 6: Implementation Lessons (300 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 6: Implementation Lessons (300 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-choose-the-right-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Choose the Right Method
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-7-the-validation-story-200-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 7: The Validation Story (200 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 7: The Validation Story (200 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-we-knew-classical-methods-worked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How We Knew Classical Methods Worked
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-8-key-takeaways-200-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section 8: Key Takeaways (200 words)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 8: Key Takeaways (200 words)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-software-engineers-should-remember" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Software Engineers Should Remember
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#call-to-action-100-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Call to Action (100 words)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources-references-to-add-in-full-draft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources &amp; References (To Add in Full Draft)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sources &amp; References (To Add in Full Draft)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-sources-peer-reviewed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary Sources (Peer-Reviewed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secondary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secondary Sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="blog-post-02-deterministic-ml-when-classical-methods-beat-neural-networks">Blog Post 02: Deterministic ML — When Classical Methods Beat Neural Networks<a class="headerlink" href="#blog-post-02-deterministic-ml-when-classical-methods-beat-neural-networks" title="Permanent link">&para;</a></h1>
+<p><strong>Target:</strong> Dev.to (primary), HackerNews (via submission)
+<strong>Audience:</strong> Software engineers interested in ML alternatives, tech leads making architecture decisions
+<strong>Estimated length:</strong> 1800-2200 words
+<strong>Publication date:</strong> 2025-01-30
+<strong>Status:</strong> OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
+<strong>Evidence basis:</strong> <a href="../../../findings/00-research-summary-final/">00-research-summary-final.md</a></p>
+<hr />
+<h2 id="working-title">Working Title<a class="headerlink" href="#working-title" title="Permanent link">&para;</a></h2>
+<p><strong>Option 1:</strong> "Deterministic ML: When Classical Methods Beat Neural Networks"
+<strong>Option 2:</strong> "Why We Chose Perturbation Analysis Over Deep Learning"
+<strong>Option 3:</strong> "The Case Against Machine Learning in Engineering Software"</p>
+<p><strong>Selected:</strong> Option 1 (balanced, not anti-ML)</p>
+<hr />
+<h2 id="hook-100-words">Hook (100 words)<a class="headerlink" href="#hook-100-words" title="Permanent link">&para;</a></h2>
+<p><strong>The Setup:</strong></p>
+<blockquote>
+<p>"Just use machine learning" has become the default answer to any optimization or prediction problem. But what if ML is the wrong tool for the job?</p>
+</blockquote>
+<p><strong>The Contrarian View:</strong>
+For engineering problems with:
+- Small datasets (research shows ML overfits and produces biased estimates — Vabalas et al. 2019)
+- Physical models (equations known)
+- Deterministic requirements (same input → same output)
+- Safety criticality (explainability required)</p>
+<p>Classical methods aren't just "good enough"—they're often <strong>superior</strong> to ML.</p>
+<p>This post explores why, with concrete examples from structural engineering.</p>
+<hr />
+<h2 id="section-1-the-ml-hammer-problem-300-words">Section 1: The ML Hammer Problem (300 words)<a class="headerlink" href="#section-1-the-ml-hammer-problem-300-words" title="Permanent link">&para;</a></h2>
+<h3 id="when-you-have-a-hammer-everything-looks-like-a-nail">When You Have a Hammer, Everything Looks Like a Nail<a class="headerlink" href="#when-you-have-a-hammer-everything-looks-like-a-nail" title="Permanent link">&para;</a></h3>
+<p><strong>Industry trend:</strong>
+- 2015-2020: "Deep learning solves everything"
+- 2020-2025: Reality check (ChatGPT aside)</p>
+<p><strong>Examples of ML Overuse:</strong>
+1. <strong>Recommendation systems</strong> — Actually need collaborative filtering, not neural nets
+2. <strong>Time series forecasting</strong> — ARIMA often beats LSTM for small datasets
+3. <strong>Optimization</strong> — Gradient descent when analytical solutions exist</p>
+<p><strong>Why it happens:</strong>
+- ML is trendy (resumes, funding, hype)
+- Classical methods seem "boring"
+- Universities teach ML, not optimization theory
+- Tooling is better (TensorFlow vs NumPy)</p>
+<p><strong>The cost:</strong>
+- Longer development time
+- Higher computational cost
+- Black-box outputs (no explainability)
+- Brittleness to distribution shift</p>
+<p><strong>Real-world example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># ML approach (overkill)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">])</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Hours of training</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Classical approach (sufficient)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">)</span>  <span class="c1"># Seconds</span>
+</code></pre></div></p>
+<hr />
+<h2 id="section-2-problem-characteristics-matrix-400-words">Section 2: Problem Characteristics Matrix (400 words)<a class="headerlink" href="#section-2-problem-characteristics-matrix-400-words" title="Permanent link">&para;</a></h2>
+<h3 id="when-to-use-ml-vs-classical-methods">When to Use ML vs Classical Methods<a class="headerlink" href="#when-to-use-ml-vs-classical-methods" title="Permanent link">&para;</a></h3>
+<p><strong>Decision matrix:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>ML Better</th>
+<th>Classical Better</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dataset size</td>
+<td>Large datasets</td>
+<td>Small datasets (overfitting risk)</td>
+</tr>
+<tr>
+<td>Physical model</td>
+<td>Unknown/complex</td>
+<td>Known/tractable</td>
+</tr>
+<tr>
+<td>Explainability</td>
+<td>Not required</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Determinism</td>
+<td>Stochastic OK</td>
+<td>Repeatability required</td>
+</tr>
+<tr>
+<td>Compute budget</td>
+<td>High (GPUs)</td>
+<td>Low (CPU)</td>
+</tr>
+<tr>
+<td>Safety criticality</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Regulatory approval</td>
+<td>Not required</td>
+<td>Required (FDA, codes)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> "Large" vs "small" depends on problem complexity. Academic research (Vabalas et al. 2019) shows small samples lead to overfitting and biased ML performance estimates.</p>
+<p><strong>Engineering software characteristics:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Structural Engineering (Our Use Case)</th>
+<th>Typical ML Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data</td>
+<td>Small (3-4 IS 456 golden vectors for validation)</td>
+<td>Large (thousands+ samples)</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>IS 456 equations (known physics)</td>
+<td>Pattern recognition (learned)</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Must cite code clauses</td>
+<td>Probabilistic predictions</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Deterministic verification against worked examples</td>
+<td>Statistical accuracy metrics</td>
+</tr>
+<tr>
+<td>Explainability</td>
+<td>Mandatory (traceability required)</td>
+<td>Often nice-to-have</td>
+</tr>
+<tr>
+<td>Cost of error</td>
+<td>Structural failure (life safety)</td>
+<td>Varies (often lower stakes)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verdict: Classical methods are the right tool.</strong></p>
+<h3 id="categories-of-classical-methods">Categories of Classical Methods<a class="headerlink" href="#categories-of-classical-methods" title="Permanent link">&para;</a></h3>
+<p><strong>1. Optimization</strong>
+- Linear programming (simplex)
+- Quadratic programming
+- Evolutionary algorithms (deterministic with seed)
+- Gradient-free (Nelder-Mead, Powell)</p>
+<p><strong>2. Sensitivity Analysis</strong>
+- Finite differences (perturbation)
+- Adjoint methods (efficient gradients)
+- Sobol indices (variance decomposition)</p>
+<p><strong>3. Heuristics</strong>
+- Rules of thumb (engineering practice)
+- Expert systems (if-then rules)
+- Constraint propagation</p>
+<p><strong>4. Surrogates</strong>
+- Polynomial response surfaces
+- Gaussian processes (kriging)
+- Radial basis functions</p>
+<p><strong>All are:</strong>
+- ✅ Deterministic (repeatable)
+- ✅ Explainable (traceable)
+- ✅ Efficient (small data)</p>
+<hr />
+<h2 id="section-3-case-study-sensitivity-analysis-500-words">Section 3: Case Study — Sensitivity Analysis (500 words)<a class="headerlink" href="#section-3-case-study-sensitivity-analysis-500-words" title="Permanent link">&para;</a></h2>
+<h3 id="problem-which-parameters-are-critical">Problem: Which Parameters Are Critical?<a class="headerlink" href="#problem-which-parameters-are-critical" title="Permanent link">&para;</a></h3>
+<p><strong>Engineering context:</strong>
+A beam has 6 design parameters (width, depth, span, loads, materials). Which ones matter most for safety?</p>
+<p><strong>ML approach (over-engineered):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Train a neural network to predict utilization</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,)),</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">])</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Generate 1000 training samples</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">generate_training_data</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>  <span class="c1"># Hours of simulation</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Train</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>  <span class="c1"># 10-20 minutes</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># Extract feature importance (SHAP, LIME)</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="kn">import</span><span class="w"> </span><span class="nn">shap</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">Explainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">)</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>  <span class="c1"># More computation</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># Result: &quot;Depth is important&quot; (no quantification, no determinism)</span>
+</code></pre></div>
+<p><strong>Problems:</strong>
+- ❌ Typically requires a large labeled dataset (and careful validation to avoid small-sample bias)
+- ❌ Training time: 10-20 minutes
+- ❌ Non-deterministic (different runs → different results)
+- ❌ Explainability via SHAP (approximation, not exact)
+- ❌ Can't cite in code compliance report</p>
+<p><strong>Classical approach (perturbation analysis):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">sensitivity_analysis</span><span class="p">(</span><span class="n">base_params</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="mf">0.10</span><span class="p">):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Deterministic sensitivity via finite differences.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">base_result</span> <span class="o">=</span> <span class="n">design_function</span><span class="p">(</span><span class="o">**</span><span class="n">base_params</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">base_utilization</span> <span class="o">=</span> <span class="n">base_result</span><span class="o">.</span><span class="n">utilization</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">sensitivities</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">base_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="c1"># Perturb +10%</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="n">perturbed_params</span> <span class="o">=</span> <span class="n">base_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="n">perturbed_params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">perturbation</span><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="c1"># Evaluate</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="n">perturbed_result</span> <span class="o">=</span> <span class="n">design_function</span><span class="p">(</span><span class="o">**</span><span class="n">perturbed_params</span><span class="p">)</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="n">perturbed_utilization</span> <span class="o">=</span> <span class="n">perturbed_result</span><span class="o">.</span><span class="n">utilization</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="c1"># Sensitivity (% change in output / % change in input)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">perturbed_utilization</span> <span class="o">-</span> <span class="n">base_utilization</span><span class="p">)</span> <span class="o">/</span> <span class="n">base_utilization</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="n">sensitivities</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">/</span> <span class="n">perturbation</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sensitivities</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="c1"># Usage</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="n">result</span> <span class="o">=</span> <span class="n">sensitivity_analysis</span><span class="p">({</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mi">450</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>    <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">&#39;fck&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;fy&#39;</span><span class="p">:</span> <span class="mi">500</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="p">})</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="c1"># Output:</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="c1"># [</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="c1">#   (&#39;d&#39;, -0.24),      # 10% depth increase → 2.4% util decrease</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="c1">#   (&#39;mu&#39;, +0.14),     # 10% moment increase → 1.4% util increase</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="c1">#   (&#39;b&#39;, -0.13),      # 10% width increase → 1.3% util decrease</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="c1">#   ...</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="c1"># ]</span>
+</code></pre></div>
+<p><strong>Advantages:</strong>
+- ✅ Zero training data needed
+- ✅ Execution time: ~50ms (6 parameters × ~8ms per design)
+- ✅ 100% deterministic
+- ✅ Exact quantification (not approximation)
+- ✅ Physically interpretable (depth &gt; width makes sense)
+- ✅ Can cite in compliance reports</p>
+<p><strong>Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>ML Approach</th>
+<th>Classical Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training samples</td>
+<td>Often large (problem-dependent)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Computation time</td>
+<td>10-20 min</td>
+<td>50 ms</td>
+</tr>
+<tr>
+<td>Deterministic</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Explainability</td>
+<td>SHAP (approx)</td>
+<td>Exact derivatives</td>
+</tr>
+<tr>
+<td>Regulatory compliant</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Winner: Classical (100x faster, deterministic, compliant)</strong></p>
+<hr />
+<h2 id="section-4-case-study-predictive-validation-400-words">Section 4: Case Study — Predictive Validation (400 words)<a class="headerlink" href="#section-4-case-study-predictive-validation-400-words" title="Permanent link">&para;</a></h2>
+<h3 id="problem-quick-pre-checks-before-full-design">Problem: Quick Pre-Checks Before Full Design<a class="headerlink" href="#problem-quick-pre-checks-before-full-design" title="Permanent link">&para;</a></h3>
+<p><strong>ML approach (overkill):</strong></p>
+<p>Train a classifier to predict "will this design fail?"</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Collect 500+ design attempts with pass/fail labels</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># (span, b, d, mu, fck, fy)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">y_train</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># (0=fail, 1=pass)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Train classifier</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Predict</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">prediction</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">500</span><span class="p">]])</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># Output: [1] → &quot;Probably passes&quot; (no explanation, ~95% confidence)</span>
+</code></pre></div>
+<p><strong>Problems:</strong>
+- ❌ Needs 500+ training examples
+- ❌ Probabilistic (95% confident ≠ certain)
+- ❌ No actionable feedback ("increase d" not provided)
+- ❌ Retraining required when code changes</p>
+<p><strong>Classical approach (heuristic rules):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">quick_precheck</span><span class="p">(</span><span class="n">span_mm</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">,</span> <span class="n">mu_knm</span><span class="p">,</span> <span class="n">fck_nmm2</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="p">):</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Heuristic validation from IS 456 and practice.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="c1"># Rule 1: Span/depth ratio (Table 23)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="k">if</span> <span class="n">span_mm</span> <span class="o">/</span> <span class="n">d_mm</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>            <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;Deflection check&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>            <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Span/d = </span><span class="si">{</span><span class="n">span_mm</span><span class="o">/</span><span class="n">d_mm</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> &gt; 20&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            <span class="s1">&#39;fix&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Increase d to </span><span class="si">{</span><span class="n">span_mm</span><span class="o">/</span><span class="mi">18</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">mm&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>            <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;IS 456 Table 23&#39;</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="p">})</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="c1"># Rule 2: Steel estimate (lever arm = 0.9d)</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">ast_est</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu_knm</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy_nmm2</span> <span class="o">*</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">d_mm</span><span class="p">)</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="n">pt_est</span> <span class="o">=</span> <span class="n">ast_est</span> <span class="o">/</span> <span class="p">(</span><span class="n">b_mm</span> <span class="o">*</span> <span class="n">d_mm</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="k">if</span> <span class="n">pt_est</span> <span class="o">&gt;</span> <span class="mf">4.0</span><span class="p">:</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>            <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;Reinforcement limit&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>            <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Est. steel % = </span><span class="si">{</span><span class="n">pt_est</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">% &gt; 4%&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>            <span class="s1">&#39;fix&#39;</span><span class="p">:</span> <span class="s1">&#39;Increase depth or use doubly reinforced&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>            <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;Singly-reinforced economical up to ~4%&#39;</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>        <span class="p">})</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>    <span class="k">return</span> <span class="n">warnings</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="c1"># Usage</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="n">warnings</span> <span class="o">=</span> <span class="n">quick_precheck</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c1"># Output: [] (clean) or detailed actionable warnings</span>
+</code></pre></div>
+<p><strong>Advantages:</strong>
+- ✅ Zero training data
+- ✅ Execution: &lt;1ms (instant)
+- ✅ 100% deterministic
+- ✅ Actionable fixes provided
+- ✅ Clause references for traceability</p>
+<p><strong>Winner: Classical (instant, actionable, compliant)</strong></p>
+<hr />
+<h2 id="section-5-when-ml-actually-helps-250-words">Section 5: When ML Actually Helps (250 words)<a class="headerlink" href="#section-5-when-ml-actually-helps-250-words" title="Permanent link">&para;</a></h2>
+<h3 id="not-anti-ml-just-pro-right-tool">Not Anti-ML, Just Pro-Right-Tool<a class="headerlink" href="#not-anti-ml-just-pro-right-tool" title="Permanent link">&para;</a></h3>
+<p><strong>ML is genuinely better for:</strong></p>
+<ol>
+<li><strong>Pattern recognition</strong> (images, audio, text)</li>
+<li>Example: Crack detection in concrete from photos</li>
+<li>
+<p>Why ML: Visual patterns hard to codify</p>
+</li>
+<li>
+<p><strong>Complex non-linear relationships</strong> (when physical model unknown)</p>
+</li>
+<li>Example: Predicting construction delays from project data</li>
+<li>
+<p>Why ML: 100+ interacting factors, no equation</p>
+</li>
+<li>
+<p><strong>Large-scale data</strong> (when you have 10,000+ samples)</p>
+</li>
+<li>Example: Predictive maintenance from sensor streams</li>
+<li>
+<p>Why ML: Data-rich, pattern-rich</p>
+</li>
+<li>
+<p><strong>User behavior</strong> (non-deterministic by nature)</p>
+</li>
+<li>Example: Material ordering patterns</li>
+<li>Why ML: Human behavior is stochastic</li>
+</ol>
+<p><strong>Hybrid approach (best of both):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Use ML where it helps</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">crack_detected</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">beam_photo</span><span class="p">)</span>  <span class="c1"># Image recognition</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Use classical where it&#39;s better</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">if</span> <span class="n">crack_detected</span><span class="p">:</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">perturbation_analysis</span><span class="p">(</span><span class="n">beam_params</span><span class="p">)</span>  <span class="c1"># Deterministic</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">recommendation</span> <span class="o">=</span> <span class="n">optimize_repair</span><span class="p">(</span><span class="n">sensitivity</span><span class="p">)</span>      <span class="c1"># Gradient-free</span>
+</code></pre></div>
+<p><strong>Guideline:</strong>
+- Physical model known → Classical
+- Physical model unknown + large data → ML
+- Safety-critical → Classical (explainability)
+- Nice-to-have → ML acceptable</p>
+<hr />
+<h2 id="section-6-implementation-lessons-300-words">Section 6: Implementation Lessons (300 words)<a class="headerlink" href="#section-6-implementation-lessons-300-words" title="Permanent link">&para;</a></h2>
+<h3 id="how-to-choose-the-right-method">How to Choose the Right Method<a class="headerlink" href="#how-to-choose-the-right-method" title="Permanent link">&para;</a></h3>
+<p><strong>Decision tree:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>START: Do you have a physical/mathematical model?
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>├─ YES: Do you need 100% determinism?
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>│  ├─ YES: Use classical methods
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│  └─ NO: Do you have &gt;1000 samples?
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>│     ├─ YES: Consider ML (if it improves accuracy)
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>│     └─ NO: Use classical methods
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>└─ NO: Do you have &gt;1000 labeled samples?
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>   ├─ YES: Use ML
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>   └─ NO: Collect more data OR use heuristics
+</code></pre></div>
+<p><strong>Implementation tips:</strong></p>
+<ol>
+<li><strong>Start with the simplest method</strong></li>
+<li>Linear regression before neural nets</li>
+<li>Finite differences before adjoint methods</li>
+<li>
+<p>Rules of thumb before optimization</p>
+</li>
+<li>
+<p><strong>Benchmark against classical baselines</strong></p>
+</li>
+<li>If ML doesn't beat linear regression by &gt;10%, use linear regression</li>
+<li>
+<p>Complexity must justify gains</p>
+</li>
+<li>
+<p><strong>Measure what matters</strong></p>
+</li>
+<li>Determinism (repeatability)</li>
+<li>Explainability (traceability)</li>
+<li>Performance (latency)</li>
+<li>
+<p>Not just "accuracy"</p>
+</li>
+<li>
+<p><strong>Document your assumptions</strong></p>
+</li>
+<li>"Sensitivity assumes local linearity (±10%)"</li>
+<li>"Heuristics based on IS 456 Table 23"</li>
+<li>Transparency &gt; black-box accuracy</li>
+</ol>
+<p><strong>Red flags for ML:</strong>
+- ❌ "We'll need to collect 10,000 samples"
+- ❌ "It's probabilistic, not deterministic"
+- ❌ "We can't explain why it works"
+- ❌ "Training takes 4 hours on GPUs"</p>
+<hr />
+<h2 id="section-7-the-validation-story-200-words">Section 7: The Validation Story (200 words)<a class="headerlink" href="#section-7-the-validation-story-200-words" title="Permanent link">&para;</a></h2>
+<h3 id="how-we-knew-classical-methods-worked">How We Knew Classical Methods Worked<a class="headerlink" href="#how-we-knew-classical-methods-worked" title="Permanent link">&para;</a></h3>
+<p><strong>Test methodology:</strong>
+- Golden vectors from IS 456 worked examples
+- 3 verified test cases (light/typical/heavy steel)
+- 100% accuracy required (no "95% is good enough")</p>
+<p><strong>Results:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Samples</th>
+<th>Accuracy</th>
+<th>Time</th>
+<th>Deterministic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sensitivity Analysis</td>
+<td>3</td>
+<td>100%</td>
+<td>50ms</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Predictive Validation</td>
+<td>4</td>
+<td>100%</td>
+<td>&lt;1ms</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Constructability</td>
+<td>3</td>
+<td>100%</td>
+<td>&lt;1ms</td>
+<td>✅ Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key insight:</strong>
+Small data (3-4 cases) sufficient when:
+- Physical model is correct (IS 456 equations validated over decades)
+- Test cases are representative (light/typical/heavy covers range)
+- Method is deterministic (no randomness to average out)</p>
+<p><strong>Contrast with ML:</strong>
+- Would need 100-1000 samples
+- 95% accuracy considered good
+- Non-deterministic (average over runs)</p>
+<p><strong>Lesson: Right tool → right sample size.</strong></p>
+<hr />
+<h2 id="section-8-key-takeaways-200-words">Section 8: Key Takeaways (200 words)<a class="headerlink" href="#section-8-key-takeaways-200-words" title="Permanent link">&para;</a></h2>
+<h3 id="what-software-engineers-should-remember">What Software Engineers Should Remember<a class="headerlink" href="#what-software-engineers-should-remember" title="Permanent link">&para;</a></h3>
+<p><strong>1. Question the ML Default</strong>
+- "Should we use ML?" → "What's the classical baseline?"
+- ML is powerful, not universal</p>
+<p><strong>2. Small Data ≠ Use ML</strong>
+- ML needs 1000+ samples
+- Classical methods work with 10-100
+- Physical models are data-efficient</p>
+<p><strong>3. Determinism Matters</strong>
+- Engineering: same input → same output
+- Finance: same trade → same price
+- Healthcare: same diagnosis → same recommendation
+- ML's stochasticity is a bug, not a feature</p>
+<p><strong>4. Explainability Isn't Optional</strong>
+- Regulatory approval requires it
+- Engineers need to cite clauses
+- SHAP/LIME are approximations</p>
+<p><strong>5. Boring Tech Wins</strong>
+- Finite differences (1960s) &gt; neural nets (2010s) for sensitivity
+- Linear programming (1940s) &gt; GANs (2014) for optimization
+- Rules of thumb (centuries) &gt; deep learning for validation</p>
+<p><strong>The best code is the code that works, not the code that's trendy.</strong></p>
+<hr />
+<h2 id="call-to-action-100-words">Call to Action (100 words)<a class="headerlink" href="#call-to-action-100-words" title="Permanent link">&para;</a></h2>
+<p><strong>Try it yourself:</strong></p>
+<p>Compare classical vs ML for your next problem:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Baseline: Classical method</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">baseline</span> <span class="o">=</span> <span class="n">simple_optimization</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">x0</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Challenger: ML method</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">ml_result</span> <span class="o">=</span> <span class="n">neural_network_approach</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Compare:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># - Sample requirements</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># - Computation time</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># - Determinism</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="c1"># - Explainability</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="c1"># Be honest: Does ML actually win?</span>
+</code></pre></div>
+<p><strong>Read more:</strong>
+- Optimization without ML: A Practical Guide (draft TBD)
+- When to NOT Use Machine Learning (draft TBD)</p>
+<p><strong>Discuss:</strong> What classical methods have you used successfully?</p>
+<hr />
+<h2 id="metadata">Metadata<a class="headerlink" href="#metadata" title="Permanent link">&para;</a></h2>
+<p><strong>Tags:</strong> #machine-learning #optimization #classical-methods #engineering #determinism #software-architecture
+<strong>Estimated reading time:</strong> 9 minutes
+<strong>Controversial meter:</strong> 🔥🔥 (medium-hot take)
+<strong>Target audience:</strong> Intermediate-senior developers
+<strong>Prerequisites:</strong> Basic understanding of ML and optimization</p>
+<hr />
+<p><strong>Draft status:</strong> OUTLINE — EVIDENCE-CORRECTED
+<strong>Next steps:</strong>
+1. Expand with more code examples
+2. Add performance benchmarks
+3. Add decision tree diagram
+4. Add sources/references section (below)
+5. Internal review
+6. Publish to Dev.to
+7. Submit to HackerNews</p>
+<hr />
+<h2 id="sources-references-to-add-in-full-draft">Sources &amp; References (To Add in Full Draft)<a class="headerlink" href="#sources-references-to-add-in-full-draft" title="Permanent link">&para;</a></h2>
+<h3 id="primary-sources-peer-reviewed">Primary Sources (Peer-Reviewed)<a class="headerlink" href="#primary-sources-peer-reviewed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Vabalas, A., et al. (2019). Machine learning algorithm validation with a limited sample size. <em>PLOS One</em>, 14(11), e0224365.</li>
+<li>Figueroa, R. L., et al. (2012). Predicting sample size required for classification performance. <em>BMC Medical Informatics and Decision Making</em>, 12, 8.</li>
+<li>Panko, R. R. (2008). What we know about spreadsheet errors. <em>Journal of Organizational and End User Computing</em>, 20(2), 15-30.</li>
+</ul>
+<h3 id="secondary-sources">Secondary Sources<a class="headerlink" href="#secondary-sources" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Chang, D., et al. (2020). Learning to simulate and design for structural engineering. <em>ICML Proceedings</em>.</li>
+<li>Nature Scientific Reports (2025). Intelligent low carbon RC beam design via deep reinforcement learning.</li>
+</ul>
+<h3 id="internal-documentation">Internal Documentation<a class="headerlink" href="#internal-documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../../../_archive/2026-01/research-smart-library/">Research document</a></li>
+<li><a href="../../../findings/evidence-framework/">Evidence framework</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

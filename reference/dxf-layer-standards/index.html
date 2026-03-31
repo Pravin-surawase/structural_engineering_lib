@@ -1,0 +1,2683 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/reference/dxf-layer-standards/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>DXF Layer Standards & Drawing Conventions - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dxf-layer-standards-drawing-conventions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DXF Layer Standards &amp; Drawing Conventions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Definitions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocad-color-index-aci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoCAD Color Index (ACI)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linetype-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linetype Definitions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linetype Definitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuous" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CONTINUOUS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CENTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DASHED
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drawing-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drawing Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Drawing Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-beam-cross-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Beam Cross-Section
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-longitudinal-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Longitudinal Section
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-beam-detailing-combined-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Beam Detailing (Combined View)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drawing-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drawing Conventions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Drawing Conventions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#units" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Units
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bar-symbols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bar Symbols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callout-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Callout Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cad-software-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAD Software Compatibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CAD Software Compatibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tested-cad-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tested CAD Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-in-cad-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening in CAD Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customization-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customization Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customization Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-vba-developers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For VBA Developers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-cad-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For CAD Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-management-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Management Best Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer Management Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-viewing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Viewing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-printing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Printing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-editing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Editing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drawing-standards-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drawing Standards Compliance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Drawing Standards Compliance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issp-34-drawing-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IS/SP 34 Drawing Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#international-cad-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        International CAD Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issue-layers-not-visible-after-opening-dxf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issue: Layers not visible after opening DXF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-linetypes-not-showing-correctly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issue: Linetypes not showing correctly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-text-appears-garbled-or-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issue: Text appears garbled or missing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version History
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference Card
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Reference Card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cad-commands-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAD Commands Cheat Sheet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="dxf-layer-standards-drawing-conventions">DXF Layer Standards &amp; Drawing Conventions<a class="headerlink" href="#dxf-layer-standards-drawing-conventions" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
+<strong>Audience:</strong> Developers
+<strong>Status:</strong> Production Ready
+<strong>Importance:</strong> Medium
+<strong>Version:</strong> 0.16.6
+<strong>Created:</strong> 2025-01-01
+<strong>Last Updated:</strong> 2026-03-29</p>
+<hr />
+<p><strong>Module:</strong> M16_DXF.bas
+<strong>DXF Format:</strong> AutoCAD R12 (maximum compatibility)
+<strong>Reference:</strong> IS 456:2000, SP 34:1987 (Drawing Practices for RC Structures)</p>
+<p>This document defines CAD layer standards used in DXF drawings exported by the Structural Engineering Library.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#layer-definitions">Layer Definitions</a></li>
+<li><a href="#autocad-color-index-aci">AutoCAD Color Index (ACI)</a></li>
+<li><a href="#linetype-definitions">Linetype Definitions</a></li>
+<li><a href="#drawing-types">Drawing Types</a></li>
+<li><a href="#drawing-conventions">Drawing Conventions</a></li>
+<li><a href="#cad-software-compatibility">CAD Software Compatibility</a></li>
+<li><a href="#customization-guide">Customization Guide</a></li>
+</ul>
+<hr />
+<h2 id="layer-definitions">Layer Definitions<a class="headerlink" href="#layer-definitions" title="Permanent link">&para;</a></h2>
+<p>All DXF exports use standardized layer names based on IS/SP 34 drawing practices for reinforced concrete structures.</p>
+<table>
+<thead>
+<tr>
+<th>Layer Name</th>
+<th>Color</th>
+<th>Linetype</th>
+<th>Purpose</th>
+<th>Typical Entities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BEAM_OUTLINE</strong></td>
+<td>Cyan (4)</td>
+<td>CONTINUOUS</td>
+<td>Beam section boundary</td>
+<td>Lines, Polylines</td>
+</tr>
+<tr>
+<td><strong>REBAR_MAIN</strong></td>
+<td>Red (1)</td>
+<td>CONTINUOUS</td>
+<td>Main reinforcement bars</td>
+<td>Circles, Lines</td>
+</tr>
+<tr>
+<td><strong>REBAR_STIRRUP</strong></td>
+<td>Green (3)</td>
+<td>CONTINUOUS</td>
+<td>Stirrups and shear links</td>
+<td>Polylines, Rectangles</td>
+</tr>
+<tr>
+<td><strong>DIMENSIONS</strong></td>
+<td>Yellow (2)</td>
+<td>CONTINUOUS</td>
+<td>Dimension lines and arrows</td>
+<td>Lines, Text, Arrows</td>
+</tr>
+<tr>
+<td><strong>TEXT_CALLOUT</strong></td>
+<td>White (7)</td>
+<td>CONTINUOUS</td>
+<td>Bar callouts, labels, notes</td>
+<td>Text</td>
+</tr>
+<tr>
+<td><strong>CENTERLINE</strong></td>
+<td>Magenta (6)</td>
+<td>CENTER</td>
+<td>Center lines (symmetry)</td>
+<td>Lines</td>
+</tr>
+<tr>
+<td><strong>COVER_LINE</strong></td>
+<td>Blue (5)</td>
+<td>DASHED</td>
+<td>Clear cover lines</td>
+<td>Lines, Rectangles</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Layers:</strong>
+- <strong>Layer 0</strong> - Default layer (White, CONTINUOUS) - Used for miscellaneous entities</p>
+<hr />
+<h2 id="autocad-color-index-aci">AutoCAD Color Index (ACI)<a class="headerlink" href="#autocad-color-index-aci" title="Permanent link">&para;</a></h2>
+<p>The library uses the AutoCAD Color Index (ACI) standard for consistent layer colors across all CAD software.</p>
+<table>
+<thead>
+<tr>
+<th>ACI Number</th>
+<th>Color</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Red</strong></td>
+<td>Main reinforcement (primary structural element)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Yellow</strong></td>
+<td>Dimensions and measurements</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Green</strong></td>
+<td>Stirrups and secondary reinforcement</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Cyan</strong></td>
+<td>Structural boundaries (beams, columns)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Blue</strong></td>
+<td>Cover lines and construction lines</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Magenta</strong></td>
+<td>Centerlines and axes</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>White</strong></td>
+<td>Text, callouts, general annotation</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Gray</strong></td>
+<td>Hatching and fill patterns</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why ACI?</strong>
+- Universal standard across all CAD software
+- Consistent appearance in AutoCAD, BricsCAD, LibreCAD, QCAD
+- Predictable printing colors when using CTB (color-dependent plot styles)</p>
+<hr />
+<h2 id="linetype-definitions">Linetype Definitions<a class="headerlink" href="#linetype-definitions" title="Permanent link">&para;</a></h2>
+<p>Three linetypes are used in DXF exports:</p>
+<h3 id="continuous">CONTINUOUS<a class="headerlink" href="#continuous" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Appearance:</strong> Solid line (———————)</li>
+<li><strong>Layers:</strong> BEAM_OUTLINE, REBAR_MAIN, REBAR_STIRRUP, DIMENSIONS, TEXT_CALLOUT</li>
+<li><strong>Purpose:</strong> Primary structural elements and annotation</li>
+<li><strong>Load Order:</strong> Built-in linetype (always available)</li>
+</ul>
+<h3 id="center">CENTER<a class="headerlink" href="#center" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Appearance:</strong> Long dash - short dash (—— · —— · ——)</li>
+<li><strong>Layers:</strong> CENTERLINE</li>
+<li><strong>Purpose:</strong> Symmetry axes and centerlines</li>
+<li><strong>Load Order:</strong> Standard linetype (loaded in DXF header)</li>
+</ul>
+<h3 id="dashed">DASHED<a class="headerlink" href="#dashed" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Appearance:</strong> Short dashes (— — — — —)</li>
+<li><strong>Layers:</strong> COVER_LINE</li>
+<li><strong>Purpose:</strong> Non-structural lines (clear cover, reference lines)</li>
+<li><strong>Load Order:</strong> Standard linetype (loaded in DXF header)</li>
+</ul>
+<p><strong>Note:</strong> All linetypes are defined in the LTYPE table of the DXF file (no need to manually load them).</p>
+<hr />
+<h2 id="drawing-types">Drawing Types<a class="headerlink" href="#drawing-types" title="Permanent link">&para;</a></h2>
+<p>The library generates three types of structural drawings:</p>
+<h3 id="1-beam-cross-section">1. Beam Cross-Section<a class="headerlink" href="#1-beam-cross-section" title="Permanent link">&para;</a></h3>
+<p><strong>Purpose:</strong> Show rebar arrangement in section view</p>
+<p><strong>Layers Used:</strong>
+- BEAM_OUTLINE (rectangle outline)
+- REBAR_MAIN (circles for bar cross-sections)
+- REBAR_STIRRUP (rectangle for stirrup outline)
+- COVER_LINE (dashed rectangle for clear cover boundary)
+- TEXT_CALLOUT (bar callouts, e.g., "3-16φ")
+- DIMENSIONS (section dimensions: width × depth)</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  ┌──────────────┐      │ ← COVER_LINE (dashed)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  │  ● ● ● ●     │      │ ← REBAR_MAIN (top bars)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  │              │      │ ← BEAM_OUTLINE
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │              │      │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │  ● ● ● ●     │      │ ← REBAR_MAIN (bottom bars)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  └──────────────┘      │ ← REBAR_STIRRUP
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└────────────────────────┘
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   ↑ 300mm ↑              ← DIMENSIONS
+</code></pre></div></p>
+<p><strong>Entities:</strong>
+- BEAM_OUTLINE: 1 polyline (closed rectangle)
+- REBAR_MAIN: N circles (1 per bar)
+- REBAR_STIRRUP: 1 polyline (stirrup outline)
+- COVER_LINE: 1 polyline (dashed)
+- TEXT_CALLOUT: 2-4 text labels
+- DIMENSIONS: 2-4 dimension lines</p>
+<hr />
+<h3 id="2-longitudinal-section">2. Longitudinal Section<a class="headerlink" href="#2-longitudinal-section" title="Permanent link">&para;</a></h3>
+<p><strong>Purpose:</strong> Show main bars and stirrup spacing along beam length</p>
+<p><strong>Layers Used:</strong>
+- BEAM_OUTLINE (beam profile)
+- REBAR_MAIN (longitudinal bars)
+- REBAR_STIRRUP (vertical stirrup lines)
+- CENTERLINE (beam centerline)
+- TEXT_CALLOUT (stirrup spacing labels)
+- DIMENSIONS (span length)</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>           ──────── CENTERLINE (center) ────────
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>┌──────────────────────────────────────────────┐
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│─────● ● ────────────────────────● ●─────────│ ← REBAR_MAIN (top)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│ ┊   ┊  ┊   ┊   ┊   ┊   ┊   ┊   ┊  ┊   ┊   │ ← REBAR_STIRRUP
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│─────● ● ────────────────────────● ●─────────│ ← REBAR_MAIN (bottom)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>└──────────────────────────────────────────────┘ ← BEAM_OUTLINE
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a> ↑ 150mm spacing ↑
+</code></pre></div></p>
+<p><strong>Entities:</strong>
+- BEAM_OUTLINE: 1 polyline (beam profile)
+- REBAR_MAIN: 2N lines (top + bottom bars)
+- REBAR_STIRRUP: N lines (vertical stirrups)
+- CENTERLINE: 1 line (horizontal centerline)
+- TEXT_CALLOUT: 3-5 labels (spacing zones)
+- DIMENSIONS: 1 dimension (total span)</p>
+<hr />
+<h3 id="3-beam-detailing-combined-view">3. Beam Detailing (Combined View)<a class="headerlink" href="#3-beam-detailing-combined-view" title="Permanent link">&para;</a></h3>
+<p><strong>Purpose:</strong> Complete detailing with cross-section + longitudinal + bar schedule</p>
+<p><strong>Layout:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌─────────────────────────────────────────────────────┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│ TITLE BLOCK (TEXT_CALLOUT)                          │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│ Beam ID: B1 | Size: 300×500 | Span: 4000mm         │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>├─────────────────────────────────────────────────────┤
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│                                                      │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│ [Cross-Section]     [Longitudinal Section]          │
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│                                                      │
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>├─────────────────────────────────────────────────────┤
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│ BAR BENDING SCHEDULE (TEXT_CALLOUT)                 │
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│ Mark  Dia  No.  Length  Weight                      │
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│ A1    20   4    3950    9.88kg                      │
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│ B1    16   3    2000    4.74kg                      │
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>│ S1    8    30   1300    3.21kg                      │
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>└─────────────────────────────────────────────────────┘
+</code></pre></div></p>
+<p><strong>Combines all three drawing types in a single layout</strong></p>
+<hr />
+<h2 id="drawing-conventions">Drawing Conventions<a class="headerlink" href="#drawing-conventions" title="Permanent link">&para;</a></h2>
+<h3 id="units">Units<a class="headerlink" href="#units" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Drawing Units:</strong> Millimeters (mm)</li>
+<li><strong>Scale:</strong> 1:1 (1 DXF unit = 1 mm in real world)</li>
+<li><strong>Coordinate System:</strong> Cartesian (X=horizontal, Y=vertical)</li>
+<li><strong>Origin:</strong> Bottom-left corner of drawing (0, 0)</li>
+</ul>
+<h3 id="text">Text<a class="headerlink" href="#text" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Layer:</strong> TEXT_CALLOUT</li>
+<li><strong>Height:</strong> 3.5mm (standard annotation height)</li>
+<li><strong>Font:</strong> STANDARD (built-in AutoCAD font)</li>
+<li><strong>Alignment:</strong> Left-justified (horizontal), baseline (vertical)</li>
+<li><strong>Rotation:</strong> 0° (horizontal text)</li>
+</ul>
+<h3 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Layer:</strong> DIMENSIONS</li>
+<li><strong>Extension Line Overhang:</strong> 1.25mm</li>
+<li><strong>Arrow Size:</strong> 2.5mm</li>
+<li><strong>Text Height:</strong> 3.5mm</li>
+<li><strong>Precision:</strong> 0 decimal places (integer mm)</li>
+</ul>
+<h3 id="bar-symbols">Bar Symbols<a class="headerlink" href="#bar-symbols" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Reinforcement Bars:</strong> Circles (filled) with diameter = bar diameter</li>
+<li>12mm bar → 12mm diameter circle</li>
+<li>16mm bar → 16mm diameter circle</li>
+<li>20mm bar → 20mm diameter circle</li>
+<li><strong>Stirrups:</strong> Rectangles (unfilled polylines)</li>
+</ul>
+<h3 id="callout-format">Callout Format<a class="headerlink" href="#callout-format" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Main Bars:</strong> <code>3-16φ</code> (count - diameter - phi symbol)</li>
+<li><strong>Stirrups:</strong> <code>2L-8φ@150 c/c</code> (legs - diameter - spacing)</li>
+<li><strong>Position:</strong> Near relevant rebar group (3mm offset)</li>
+</ul>
+<hr />
+<h2 id="cad-software-compatibility">CAD Software Compatibility<a class="headerlink" href="#cad-software-compatibility" title="Permanent link">&para;</a></h2>
+<h3 id="tested-cad-software">Tested CAD Software<a class="headerlink" href="#tested-cad-software" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Software</th>
+<th>Version</th>
+<th>Compatibility</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AutoCAD</strong></td>
+<td>R12+</td>
+<td>✅ Full</td>
+<td>Native DXF R12 format</td>
+</tr>
+<tr>
+<td><strong>AutoCAD LT</strong></td>
+<td>2000+</td>
+<td>✅ Full</td>
+<td>Full feature support</td>
+</tr>
+<tr>
+<td><strong>BricsCAD</strong></td>
+<td>V19+</td>
+<td>✅ Full</td>
+<td>Native DXF support</td>
+</tr>
+<tr>
+<td><strong>LibreCAD</strong></td>
+<td>2.1+</td>
+<td>✅ Full</td>
+<td>Open-source, free</td>
+</tr>
+<tr>
+<td><strong>QCAD</strong></td>
+<td>3.0+</td>
+<td>✅ Full</td>
+<td>Free/paid versions</td>
+</tr>
+<tr>
+<td><strong>DraftSight</strong></td>
+<td>2019+</td>
+<td>✅ Full</td>
+<td>Dassault Systèmes</td>
+</tr>
+<tr>
+<td><strong>FreeCAD</strong></td>
+<td>0.19+</td>
+<td>⚠️ Partial</td>
+<td>Some text formatting issues</td>
+</tr>
+<tr>
+<td><strong>Inkscape</strong></td>
+<td>1.0+</td>
+<td>⚠️ View Only</td>
+<td>Can view, cannot edit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Compatibility Notes:</strong>
+- DXF R12 format ensures compatibility with CAD software from 1992+
+- All standard linetypes (CONTINUOUS, CENTER, DASHED) are universally supported
+- ACI colors render consistently across all platforms
+- Text may appear different depending on font availability</p>
+<h3 id="opening-in-cad-software">Opening in CAD Software<a class="headerlink" href="#opening-in-cad-software" title="Permanent link">&para;</a></h3>
+<p><strong>AutoCAD / AutoCAD LT / BricsCAD:</strong>
+1. File → Open → Select DXF file
+2. All layers load automatically
+3. Use ZOOM EXTENTS (type <code>Z</code> → <code>E</code> → Enter) to view full drawing</p>
+<p><strong>LibreCAD / QCAD:</strong>
+1. File → Open → Select DXF file
+2. Layers panel shows all structural layers
+3. View → Zoom Auto to fit drawing</p>
+<p><strong>FreeCAD:</strong>
+1. File → Import → Select DXF file
+2. Choose "Import" mode (not "Open as project")
+3. Layers appear in Tree View</p>
+<hr />
+<h2 id="customization-guide">Customization Guide<a class="headerlink" href="#customization-guide" title="Permanent link">&para;</a></h2>
+<h3 id="for-vba-developers">For VBA Developers<a class="headerlink" href="#for-vba-developers" title="Permanent link">&para;</a></h3>
+<p>If you need to customize layer properties (colors, linetypes), modify constants in <code>M16_DXF.bas</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&#39; Change layer colors (M16_DXF.bas, lines 59-65)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Public Const LAYER_BEAM_OUTLINE As String = &quot;BEAM_OUTLINE&quot;
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Public Const LAYER_REBAR_MAIN As String = &quot;REBAR_MAIN&quot;
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>&#39; ... etc
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&#39; Change layer definitions (M16_DXF.bas, WriteLayerTable subroutine)
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Call WriteLayerDef LAYER_BEAM_OUTLINE, ACI_CYAN, &quot;CONTINUOUS&quot;
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Call WriteLayerDef LAYER_REBAR_MAIN, ACI_RED, &quot;CONTINUOUS&quot;
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>&#39; ... etc
+</code></pre></div>
+<p><strong>Example: Change main rebar color from Red to Blue:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&#39; In WriteLayerTable subroutine (line 271)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&#39; OLD:
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Call WriteLayerDef LAYER_REBAR_MAIN, ACI_RED, &quot;CONTINUOUS&quot;
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>&#39; NEW:
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Call WriteLayerDef LAYER_REBAR_MAIN, ACI_BLUE, &quot;CONTINUOUS&quot;
+</code></pre></div></p>
+<h3 id="for-cad-users">For CAD Users<a class="headerlink" href="#for-cad-users" title="Permanent link">&para;</a></h3>
+<p>If you want to change layer properties after export:</p>
+<p><strong>AutoCAD / BricsCAD:</strong>
+1. Type <code>LAYER</code> or <code>LA</code> → Enter
+2. Select layer (e.g., REBAR_MAIN)
+3. Click color swatch → Choose new color
+4. Click linetype → Choose new linetype
+5. OK to apply</p>
+<p><strong>LibreCAD:</strong>
+1. View → Layer List
+2. Double-click layer name
+3. Modify color, linetype, lineweight
+4. OK to apply</p>
+<p><strong>Save as Template:</strong>
+- After customizing layers, save as DXF template
+- Reuse for future drawings</p>
+<hr />
+<h2 id="layer-management-best-practices">Layer Management Best Practices<a class="headerlink" href="#layer-management-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="for-viewing">For Viewing<a class="headerlink" href="#for-viewing" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Turn layers ON/OFF</strong> to focus on specific elements:</li>
+<li>OFF: COVER_LINE, CENTERLINE (declutter view)</li>
+<li>ON: BEAM_OUTLINE, REBAR_MAIN, REBAR_STIRRUP (core elements)</li>
+</ul>
+<h3 id="for-printing">For Printing<a class="headerlink" href="#for-printing" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Freeze layers</strong> not needed for print output:</li>
+<li>Freeze: COVER_LINE (construction lines)</li>
+<li>Keep: BEAM_OUTLINE, REBAR_MAIN, REBAR_STIRRUP, TEXT_CALLOUT</li>
+</ul>
+<h3 id="for-editing">For Editing<a class="headerlink" href="#for-editing" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Lock layers</strong> to prevent accidental modification:</li>
+<li>Lock: TEXT_CALLOUT (preserve annotations)</li>
+<li>Unlock: REBAR_MAIN (allow bar position adjustments)</li>
+</ul>
+<hr />
+<h2 id="drawing-standards-compliance">Drawing Standards Compliance<a class="headerlink" href="#drawing-standards-compliance" title="Permanent link">&para;</a></h2>
+<h3 id="issp-34-drawing-practices">IS/SP 34 Drawing Practices<a class="headerlink" href="#issp-34-drawing-practices" title="Permanent link">&para;</a></h3>
+<p>The layer standards follow Indian Standard drawing practices for reinforced concrete:</p>
+<ul>
+<li><strong>SP 34:1987</strong> - Handbook on Concrete Reinforcement and Detailing</li>
+<li>Section 5: Drawing Conventions</li>
+<li>Section 6: Bar Bending Schedules</li>
+<li>Appendix A: Standard Symbols</li>
+</ul>
+<p><strong>Compliance Points:</strong>
+- ✅ Red color for main reinforcement (SP 34 convention)
+- ✅ Green color for stirrups (SP 34 convention)
+- ✅ Bar callout format: <code>3-16φ</code> (SP 34 Clause 6.2)
+- ✅ Stirrup notation: <code>2L-8φ@150 c/c</code> (SP 34 Clause 6.3)
+- ✅ Section line conventions (SP 34 Appendix A)</p>
+<h3 id="international-cad-standards">International CAD Standards<a class="headerlink" href="#international-cad-standards" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ISO 128</strong> - Technical Drawings (linetype conventions)</li>
+<li><strong>ISO 13567</strong> - CAD Layers (layer naming)</li>
+<li><strong>AutoCAD DXF R12</strong> - Maximum compatibility</li>
+</ul>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="issue-layers-not-visible-after-opening-dxf">Issue: Layers not visible after opening DXF<a class="headerlink" href="#issue-layers-not-visible-after-opening-dxf" title="Permanent link">&para;</a></h3>
+<p><strong>Solutions:</strong>
+1. <strong>Check layer status:</strong>
+   - All layers should be ON and THAWED
+   - Use <code>LAYON</code> command to turn all layers on
+   - Use <code>LAYUNLCK</code> to unlock all layers</p>
+<ol>
+<li><strong>Zoom to extents:</strong></li>
+<li>Type <code>ZOOM</code> → <code>E</code> → Enter</li>
+<li>
+<p>Or use View menu → Zoom → Extents</p>
+</li>
+<li>
+<p><strong>Check color settings:</strong></p>
+</li>
+<li>White layers may not be visible on white background</li>
+<li>Switch to black background: OPTIONS → Display → Colors</li>
+</ol>
+<hr />
+<h3 id="issue-linetypes-not-showing-correctly">Issue: Linetypes not showing correctly<a class="headerlink" href="#issue-linetypes-not-showing-correctly" title="Permanent link">&para;</a></h3>
+<p><strong>Solutions:</strong>
+1. <strong>Linetype scale too large:</strong>
+   - Type <code>LTSCALE</code> → Enter
+   - Set value to 1.0 (default)</p>
+<ol>
+<li><strong>Regenerate drawing:</strong></li>
+<li>Type <code>REGEN</code> → Enter</li>
+<li>Forces redraw with correct linetypes</li>
+</ol>
+<hr />
+<h3 id="issue-text-appears-garbled-or-missing">Issue: Text appears garbled or missing<a class="headerlink" href="#issue-text-appears-garbled-or-missing" title="Permanent link">&para;</a></h3>
+<p><strong>Solutions:</strong>
+1. <strong>Font not installed:</strong>
+   - DXF uses STANDARD font (built-in)
+   - If missing, AutoCAD substitutes with default font</p>
+<ol>
+<li><strong>Text height too small:</strong></li>
+<li>Use ZOOM to magnify text</li>
+<li>Or change text height to 3.5mm minimum</li>
+</ol>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../bbs-dxf-contract/">BBS &amp; DXF Contract</a> - BBS and DXF specifications</li>
+</ul>
+<hr />
+<h2 id="version-history">Version History<a class="headerlink" href="#version-history" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.13.0</td>
+<td>2026-01</td>
+<td>Initial layer standards document</td>
+</tr>
+<tr>
+<td>0.8.0</td>
+<td>2024-07</td>
+<td>Native VBA DXF R12 writer implemented</td>
+</tr>
+<tr>
+<td>0.7.0</td>
+<td>2024-06</td>
+<td>Layer standards defined in M16_DXF.bas</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-reference-card">Quick Reference Card<a class="headerlink" href="#quick-reference-card" title="Permanent link">&para;</a></h2>
+<h3 id="layer-quick-reference">Layer Quick Reference<a class="headerlink" href="#layer-quick-reference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Layer</th>
+<th>Color Code</th>
+<th>Turn Off for Print?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Beam outline</td>
+<td>BEAM_OUTLINE</td>
+<td>Cyan (4)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Main bars</td>
+<td>REBAR_MAIN</td>
+<td>Red (1)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Stirrups</td>
+<td>REBAR_STIRRUP</td>
+<td>Green (3)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Dimensions</td>
+<td>DIMENSIONS</td>
+<td>Yellow (2)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Callouts</td>
+<td>TEXT_CALLOUT</td>
+<td>White (7)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Centerlines</td>
+<td>CENTERLINE</td>
+<td>Magenta (6)</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>Cover lines</td>
+<td>COVER_LINE</td>
+<td>Blue (5)</td>
+<td>Yes (construction lines)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cad-commands-cheat-sheet">CAD Commands Cheat Sheet<a class="headerlink" href="#cad-commands-cheat-sheet" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>AutoCAD Command</th>
+<th>LibreCAD Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zoom to fit</td>
+<td><code>ZOOM</code> → <code>E</code></td>
+<td>View → Zoom Auto</td>
+</tr>
+<tr>
+<td>Layer manager</td>
+<td><code>LAYER</code> or <code>LA</code></td>
+<td>View → Layer List</td>
+</tr>
+<tr>
+<td>Turn layer on/off</td>
+<td><code>LAYON</code> / <code>LAYOFF</code></td>
+<td>Right-click layer → Toggle</td>
+</tr>
+<tr>
+<td>Freeze layer</td>
+<td><code>LAYFRZ</code></td>
+<td>Right-click → Freeze</td>
+</tr>
+<tr>
+<td>Change layer color</td>
+<td><code>LAYER</code> → Select → Color</td>
+<td>Double-click layer → Color</td>
+</tr>
+<tr>
+<td>Regenerate drawing</td>
+<td><code>REGEN</code></td>
+<td>View → Redraw</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Document Version: 0.16.6 | Last Updated: 2026-01-11</em></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

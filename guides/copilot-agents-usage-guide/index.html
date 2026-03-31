@@ -1,0 +1,2999 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/guides/copilot-agents-usage-guide/">
+      
+      
+        <link rel="prev" href="../../getting-started/mac-mini-setup/">
+      
+      
+        <link rel="next" href="../../getting-started/cost-optimization-guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Copilot Agents - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-use-copilot-agents-practical-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Copilot Agents
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-invoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to invoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-9-agents-when-to-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 9 Agents — When to Use Each
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 9 Agents — When to Use Each">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-here-orchestrator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Here: @orchestrator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend: @frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend: @backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-developer-api-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Developer: @api-developer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-engineer-structural-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural Engineer: @structural-engineer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reviewer-reviewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewer: @reviewer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ui-designer-ui-designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UI Designer: @ui-designer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doc-master-doc-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doc Master: @doc-master
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ops-ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ops: @ops
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-4-skills-quick-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 4 Skills — Quick Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 4 Skills — Quick Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /session-management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /api-discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safe-file-ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /safe-file-ops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is456-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /is456-verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-9-prompt-files-workflow-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 9 Prompt Files — Workflow Templates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-workflows-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Workflows — Step by Step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Workflows — Step by Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-daily-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Daily Session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-new-feature-full-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. New Feature (Full Stack)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-bug-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Bug Fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-is-456-formula-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. IS 456 Formula Change
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-quick-tasks-no-agent-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Quick Tasks (No Agent Needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-handoff-how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Handoff — How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips &amp; Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tips &amp; Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dont" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Don't
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference Card
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-management-working-through-long-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context Management — Working Through Long Sessions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context Management — Working Through Long Sessions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-llm-context-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: LLM Context Overflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-checkpoint-recover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: Checkpoint &amp; Recover
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efficiency-tips-for-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency Tips for Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-files-read-selectively" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large Files — Read Selectively
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efficiency-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Efficiency Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-parallel-agent-handoffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Parallel Agent Handoffs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-skill-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Skill Chaining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-prompt-agent-combo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Prompt + Agent Combo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-batch-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Batch Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-pre-flight-before-deep-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Pre-Flight Before Deep Work
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-invoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to invoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-9-agents-when-to-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 9 Agents — When to Use Each
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 9 Agents — When to Use Each">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-here-orchestrator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Here: @orchestrator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend: @frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend: @backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-developer-api-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Developer: @api-developer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-engineer-structural-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural Engineer: @structural-engineer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reviewer-reviewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewer: @reviewer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ui-designer-ui-designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UI Designer: @ui-designer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doc-master-doc-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doc Master: @doc-master
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ops-ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ops: @ops
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-4-skills-quick-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 4 Skills — Quick Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 4 Skills — Quick Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /session-management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /api-discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safe-file-ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /safe-file-ops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is456-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /is456-verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-9-prompt-files-workflow-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 9 Prompt Files — Workflow Templates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-workflows-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Workflows — Step by Step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Workflows — Step by Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-daily-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Daily Session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-new-feature-full-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. New Feature (Full Stack)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-bug-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Bug Fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-is-456-formula-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. IS 456 Formula Change
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-quick-tasks-no-agent-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Quick Tasks (No Agent Needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-handoff-how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Handoff — How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips &amp; Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tips &amp; Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dont" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Don't
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference Card
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-management-working-through-long-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context Management — Working Through Long Sessions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context Management — Working Through Long Sessions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-llm-context-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: LLM Context Overflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-checkpoint-recover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: Checkpoint &amp; Recover
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efficiency-tips-for-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency Tips for Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-files-read-selectively" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large Files — Read Selectively
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efficiency-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Efficiency Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-parallel-agent-handoffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Parallel Agent Handoffs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-skill-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Skill Chaining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-prompt-agent-combo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Prompt + Agent Combo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-batch-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Batch Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-pre-flight-before-deep-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Pre-Flight Before Deep Work
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="how-to-use-copilot-agents-practical-guide">How to Use Copilot Agents — Practical Guide<a class="headerlink" href="#how-to-use-copilot-agents-practical-guide" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Guide
+<strong>Audience:</strong> Developers
+<strong>Status:</strong> Approved
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-03-27
+<strong>Last Updated:</strong> 2026-03-27</p>
+<hr />
+<h2 id="quick-overview">Quick Overview<a class="headerlink" href="#quick-overview" title="Permanent link">&para;</a></h2>
+<p>You have <strong>9 agents</strong>, <strong>4 skills</strong>, and <strong>9 prompt files</strong> configured in VS Code Copilot. This guide shows you when and how to use each one.</p>
+<h3 id="how-to-invoke">How to invoke<a class="headerlink" href="#how-to-invoke" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>How</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Type <code>@agent-name</code> in Copilot Chat</td>
+<td><code>@backend fix the flexure calculation</code></td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>Type <code>/skill-name</code> in Copilot Chat</td>
+<td><code>/api-discovery design_beam_is456</code></td>
+</tr>
+<tr>
+<td><strong>Prompt</strong></td>
+<td>Type <code>#prompt-name</code> in Copilot Chat</td>
+<td><code>#new-feature add torsion endpoint</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="the-9-agents-when-to-use-each">The 9 Agents — When to Use Each<a class="headerlink" href="#the-9-agents-when-to-use-each" title="Permanent link">&para;</a></h2>
+<h3 id="start-here-orchestrator">Start Here: <code>@orchestrator</code><a class="headerlink" href="#start-here-orchestrator" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> You're not sure which agent to use, or the task spans multiple areas.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>@orchestrator I need to add a deflection check feature — plan the work
+</code></pre></div>
+<p>The orchestrator will:
+- Break the task into steps
+- Tell you which specialist to use for each step
+- Provide handoff prompts to chain agents together</p>
+<hr />
+<h3 id="frontend-frontend">Frontend: <code>@frontend</code><a class="headerlink" href="#frontend-frontend" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Working on React components, hooks, 3D visualization, Tailwind styling.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>@frontend add a deflection results panel to the DesignView
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>@frontend why is the 3D viewport not showing stirrups?
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>@frontend create a hook for the new /api/v1/analysis/deflection endpoint
+</code></pre></div>
+<p><strong>It knows about:</strong> All 18+ existing hooks, component structure, Tailwind-only rule, Zustand stores.</p>
+<hr />
+<h3 id="backend-backend">Backend: <code>@backend</code><a class="headerlink" href="#backend-backend" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Working on Python structural_lib — IS 456 math, services, adapters.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>@backend add a deflection check to the serviceability module
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>@backend why is design_beam_is456 returning wrong Ast for doubly reinforced?
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>@backend add a new function to services/api.py
+</code></pre></div>
+<p><strong>It knows about:</strong> 4-layer architecture, units rules, all 23 API functions, the api.py stub warning.</p>
+<hr />
+<h3 id="api-developer-api-developer">API Developer: <code>@api-developer</code><a class="headerlink" href="#api-developer-api-developer" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Adding or modifying FastAPI endpoints.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>@api-developer add POST /api/v1/analysis/deflection endpoint
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>@api-developer the /design/beam endpoint is returning 422 — fix validation
+</code></pre></div>
+<p><strong>It knows about:</strong> All 38 existing endpoints across 12 routers, Pydantic models, Docker testing.</p>
+<hr />
+<h3 id="structural-engineer-structural-engineer">Structural Engineer: <code>@structural-engineer</code><a class="headerlink" href="#structural-engineer-structural-engineer" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Verifying IS 456 compliance, checking formulas, reviewing calculations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>@structural-engineer verify the shear design formula in shear.py matches IS 456 Cl 40
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>@structural-engineer check if our minimum reinforcement calculation handles fck=50
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>@structural-engineer review the torsion implementation against Cl 41
+</code></pre></div>
+<p><strong>It knows about:</strong> All IS 456 clause references, SP:16, benchmark problems, edge cases, units table.</p>
+<blockquote>
+<p><strong>Read-only</strong> — it reviews and advises but doesn't edit code. It hands off to <code>@backend</code> for implementation.</p>
+</blockquote>
+<hr />
+<h3 id="reviewer-reviewer">Reviewer: <code>@reviewer</code><a class="headerlink" href="#reviewer-reviewer" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> You want a code review before committing.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>@reviewer review my changes to the flexure module
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>@reviewer check if my new endpoint follows project conventions
+</code></pre></div>
+<p><strong>It checks:</strong> Architecture boundaries, units, IS 456 compliance, test coverage, no code duplication.</p>
+<blockquote>
+<p><strong>Read-only</strong> — it reviews but doesn't edit. It hands off to <code>@doc-master</code> for doc updates.</p>
+</blockquote>
+<hr />
+<h3 id="ui-designer-ui-designer">UI Designer: <code>@ui-designer</code><a class="headerlink" href="#ui-designer-ui-designer" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Planning the visual layout of a new feature before coding it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>@ui-designer design the layout for a batch design results dashboard
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>@ui-designer suggest how to display deflection check results in the beam detail panel
+</code></pre></div>
+<p><strong>It knows about:</strong> Existing components, color palette, Tailwind patterns, accessibility.</p>
+<blockquote>
+<p><strong>Read-only</strong> — it designs but doesn't code. It hands off to <code>@frontend</code> for implementation.</p>
+</blockquote>
+<hr />
+<h3 id="doc-master-doc-master">Doc Master: <code>@doc-master</code><a class="headerlink" href="#doc-master-doc-master" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Updating docs, running session end, archiving old files, fixing indexes.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>@doc-master run session end
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>@doc-master archive the old planning docs from Q1
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>@doc-master regenerate folder indexes after the file moves
+</code></pre></div>
+<p><strong>It knows about:</strong> Session workflow, safe file ops, doc metadata, archive policy, canonical docs.</p>
+<hr />
+<h3 id="ops-ops">Ops: <code>@ops</code><a class="headerlink" href="#ops-ops" title="Permanent link">&para;</a></h3>
+<p><strong>Use when:</strong> Git issues, Docker problems, CI/CD, environment setup.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>@ops I have a merge conflict — help me resolve it
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>@ops Docker compose is failing — Colima issue?
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>@ops create a PR for the deflection feature
+</code></pre></div>
+<p><strong>It knows about:</strong> THE ONE RULE (ai_commit.sh), PR workflow, Colima/Docker, port management, emergency recovery.</p>
+<hr />
+<h2 id="the-4-skills-quick-actions">The 4 Skills — Quick Actions<a class="headerlink" href="#the-4-skills-quick-actions" title="Permanent link">&para;</a></h2>
+<p>Skills are shortcuts for common tasks. Use them inline in any chat.</p>
+<h3 id="session-management"><code>/session-management</code><a class="headerlink" href="#session-management" title="Permanent link">&para;</a></h3>
+<p>Start or end a work session:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/session-management start a new session
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>/session-management end the session
+</code></pre></div></p>
+<h3 id="api-discovery"><code>/api-discovery</code><a class="headerlink" href="#api-discovery" title="Permanent link">&para;</a></h3>
+<p>Look up exact function signatures (prevents the #1 mistake — wrong param names):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>/api-discovery design_beam_is456
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>/api-discovery --filter rebar
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>/api-discovery --all
+</code></pre></div></p>
+<h3 id="safe-file-ops"><code>/safe-file-ops</code><a class="headerlink" href="#safe-file-ops" title="Permanent link">&para;</a></h3>
+<p>Move or delete files without breaking 870+ internal links:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>/safe-file-ops move docs/old-guide.md to docs/guides/new-guide.md
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>/safe-file-ops delete the deprecated planning doc
+</code></pre></div></p>
+<h3 id="is456-verification"><code>/is456-verification</code><a class="headerlink" href="#is456-verification" title="Permanent link">&para;</a></h3>
+<p>Run IS 456 compliance tests by category:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>/is456-verification run compliance tests
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>/is456-verification check detailing rules
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>/is456-verification full regression
+</code></pre></div></p>
+<hr />
+<h2 id="the-9-prompt-files-workflow-templates">The 9 Prompt Files — Workflow Templates<a class="headerlink" href="#the-9-prompt-files-workflow-templates" title="Permanent link">&para;</a></h2>
+<p>Prompt files are reusable workflow templates. Reference them with <code>#</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>When to Use</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#new-feature</code></td>
+<td>Starting any new feature</td>
+<td><code>#new-feature add deflection check</code></td>
+</tr>
+<tr>
+<td><code>#bug-fix</code></td>
+<td>Fixing a bug</td>
+<td><code>#bug-fix shear design returns wrong stirrup spacing</code></td>
+</tr>
+<tr>
+<td><code>#code-review</code></td>
+<td>Reviewing changes</td>
+<td><code>#code-review check my PR</code></td>
+</tr>
+<tr>
+<td><code>#add-api-endpoint</code></td>
+<td>Adding a FastAPI route</td>
+<td><code>#add-api-endpoint POST /analysis/deflection</code></td>
+</tr>
+<tr>
+<td><code>#session-start</code></td>
+<td>Beginning a session</td>
+<td><code>#session-start</code></td>
+</tr>
+<tr>
+<td><code>#session-end</code></td>
+<td>Ending a session</td>
+<td><code>#session-end</code></td>
+</tr>
+<tr>
+<td><code>#file-move</code></td>
+<td>Moving/renaming files</td>
+<td><code>#file-move old_module.py to services/</code></td>
+</tr>
+<tr>
+<td><code>#is456-verify</code></td>
+<td>Checking formulas</td>
+<td><code>#is456-verify verify Cl 38.1 flexure</code></td>
+</tr>
+<tr>
+<td><code>#context-recovery</code></td>
+<td>Resuming after context overflow</td>
+<td><code>#context-recovery</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="common-workflows-step-by-step">Common Workflows — Step by Step<a class="headerlink" href="#common-workflows-step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="1-daily-session">1. Daily Session<a class="headerlink" href="#1-daily-session" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>1. #session-start                              → Read priorities, check env
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>2. @orchestrator what should I work on today?   → Get a plan
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>3. (work with specialist agents)                → @backend, @frontend, etc.
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>4. @reviewer review my changes                  → Before committing
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>5. #session-end                                 → Log, handoff, commit
+</code></pre></div>
+<h3 id="2-new-feature-full-stack">2. New Feature (Full Stack)<a class="headerlink" href="#2-new-feature-full-stack" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>1. @orchestrator plan: add deflection check feature
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>2. @backend add serviceability check to codes/is456/serviceability.py
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>3. @structural-engineer verify the implementation matches IS 456 Cl 43
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>4. @api-developer add POST /api/v1/analysis/deflection endpoint
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>5. @frontend create useDeflectionCheck hook and results panel
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>6. @reviewer review all changes
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>7. @doc-master update docs and session end
+</code></pre></div>
+<h3 id="3-bug-fix">3. Bug Fix<a class="headerlink" href="#3-bug-fix" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>1. #bug-fix shear design returns wrong result for fck=50
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>2. @backend investigate and fix                → Finds and fixes the issue
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>3. @structural-engineer verify the fix         → Checks IS 456 compliance
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>4. @reviewer review the fix                    → Validates quality
+</code></pre></div>
+<h3 id="4-is-456-formula-change">4. IS 456 Formula Change<a class="headerlink" href="#4-is-456-formula-change" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>1. @structural-engineer review current Cl 40 shear implementation
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>2. @backend implement the corrections
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>3. /is456-verification run shear tests          → Verify nothing broke
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>4. @api-developer update endpoint if API contract changed
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>5. @reviewer final review
+</code></pre></div>
+<h3 id="5-quick-tasks-no-agent-needed">5. Quick Tasks (No Agent Needed)<a class="headerlink" href="#5-quick-tasks-no-agent-needed" title="Permanent link">&para;</a></h3>
+<p>For simple, single-file tasks, just use Copilot directly:
+- Fix a typo
+- Add a test case
+- Update a config value</p>
+<hr />
+<h2 id="agent-handoff-how-it-works">Agent Handoff — How It Works<a class="headerlink" href="#agent-handoff-how-it-works" title="Permanent link">&para;</a></h2>
+<p>When an agent finishes its part, it shows <strong>handoff buttons</strong> at the bottom of its response:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>[Review Changes]  [Frontend Integration]  [Back to Planning]
+</code></pre></div>
+<p>Click the button to switch to the next agent with context carried over. The typical flow:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>orchestrator → backend → api-developer → frontend → reviewer → doc-master → ops
+</code></pre></div>
+<p>You can also manually invoke agents at any point — you're not locked into the chain.</p>
+<hr />
+<h2 id="tips-common-mistakes">Tips &amp; Common Mistakes<a class="headerlink" href="#tips-common-mistakes" title="Permanent link">&para;</a></h2>
+<h3 id="do">Do<a class="headerlink" href="#do" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Start with <code>@orchestrator</code></strong> for multi-step tasks</li>
+<li><strong>Use <code>/api-discovery</code></strong> before wrapping any Python function</li>
+<li><strong>Run <code>#session-end</code></strong> at the end of every session — this is mandatory</li>
+<li><strong>Use <code>#code-review</code></strong> before committing production code</li>
+<li><strong>Click handoff buttons</strong> to maintain context across agents</li>
+</ul>
+<h3 id="dont">Don't<a class="headerlink" href="#dont" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Don't skip session end</strong> — it costs 10+ hours of rework for the next session</li>
+<li><strong>Don't guess parameter names</strong> — use <code>/api-discovery</code> (it's <code>b_mm</code> not <code>width</code>)</li>
+<li><strong>Don't use <code>git commit</code> manually</strong> — always <code>./scripts/ai_commit.sh</code></li>
+<li><strong>Don't create new hooks without checking</strong> — ask <code>@frontend</code> to search first</li>
+<li><strong>Don't edit <code>Python/structural_lib/api.py</code></strong> — it's a stub, real code is in <code>services/api.py</code></li>
+<li><strong>Don't create <code>.css</code> files</strong> — Tailwind only</li>
+</ul>
+<hr />
+<h2 id="quick-reference-card">Quick Reference Card<a class="headerlink" href="#quick-reference-card" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>AGENTS:      @orchestrator  @frontend  @backend  @api-developer
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>             @structural-engineer  @reviewer  @ui-designer
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>             @doc-master  @ops
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>SKILLS:      /session-management  /api-discovery
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>             /safe-file-ops  /is456-verification
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>PROMPTS:     #new-feature  #bug-fix  #code-review  #add-api-endpoint
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>             #session-start  #session-end  #file-move  #is456-verify
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>             #context-recovery
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>GIT:         ./scripts/ai_commit.sh &quot;type: message&quot;    (ALWAYS)
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>PR:          ./run.sh pr status → ./run.sh pr create    (when required)
+</code></pre></div>
+<hr />
+<h2 id="context-management-working-through-long-sessions">Context Management — Working Through Long Sessions<a class="headerlink" href="#context-management-working-through-long-sessions" title="Permanent link">&para;</a></h2>
+<h3 id="problem-llm-context-overflow">Problem: LLM Context Overflow<a class="headerlink" href="#problem-llm-context-overflow" title="Permanent link">&para;</a></h3>
+<p>Long sessions cause the LLM to lose track of what it was doing. Symptoms:
+- Agent starts repeating earlier work
+- Agent forgets decisions made earlier in the conversation
+- Responses become generic or miss project-specific rules</p>
+<h3 id="solution-checkpoint-recover">Solution: Checkpoint &amp; Recover<a class="headerlink" href="#solution-checkpoint-recover" title="Permanent link">&para;</a></h3>
+<p><strong>Before overflow hits</strong> (when conversation feels long):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Save a checkpoint: summarize what we&#39;ve done, what&#39;s in progress,
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>and what&#39;s left. Write it to docs/planning/next-session-brief.md
+</code></pre></div></p>
+<p><strong>After starting a new chat:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>#context-recovery
+</code></pre></div></p>
+<p>Or manually:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Read these to recover context:
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>1. docs/planning/next-session-brief.md
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>2. docs/TASKS.md (first 60 lines)
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>3. .github/copilot-instructions.md
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>4. git log --oneline -20
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>Then continue from where I left off.
+</code></pre></div></p>
+<h3 id="efficiency-tips-for-context">Efficiency Tips for Context<a class="headerlink" href="#efficiency-tips-for-context" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tip</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Commit frequently</td>
+<td>Each commit is a save point you can reference</td>
+</tr>
+<tr>
+<td>Use <code>next-session-brief.md</code> as scratchpad</td>
+<td>It survives between chats</td>
+</tr>
+<tr>
+<td>Keep conversations focused</td>
+<td>One feature per chat session</td>
+</tr>
+<tr>
+<td>Use <code>@orchestrator</code> to re-plan</td>
+<td>When resuming, it reads priorities and re-orients</td>
+</tr>
+<tr>
+<td>Read <code>index.json</code> files first</td>
+<td>Faster than reading individual files</td>
+</tr>
+<tr>
+<td>Use <code>grep_search</code> before <code>read_file</code></td>
+<td>Find the right lines without reading entire files</td>
+</tr>
+</tbody>
+</table>
+<h3 id="large-files-read-selectively">Large Files — Read Selectively<a class="headerlink" href="#large-files-read-selectively" title="Permanent link">&para;</a></h3>
+<p>These files are too large to read in full:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Size</th>
+<th>How to Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/SESSION_LOG.md</code></td>
+<td>400KB+</td>
+<td><code>tail -100</code> or search for specific session</td>
+</tr>
+<tr>
+<td><code>services/adapters.py</code></td>
+<td>71KB</td>
+<td>Search by class/function name first</td>
+</tr>
+<tr>
+<td><code>CHANGELOG.md</code></td>
+<td>52KB</td>
+<td><code>head -50</code> for recent entries</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="efficiency-patterns">Efficiency Patterns<a class="headerlink" href="#efficiency-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="1-parallel-agent-handoffs">1. Parallel Agent Handoffs<a class="headerlink" href="#1-parallel-agent-handoffs" title="Permanent link">&para;</a></h3>
+<p>For independent tasks, you can run agents in parallel (open multiple chat windows):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Chat 1: @backend implement the serviceability check
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>Chat 2: @frontend design the results panel layout
+</code></pre></div>
+Then merge with a review:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Chat 3: @reviewer review changes in both areas
+</code></pre></div></p>
+<h3 id="2-skill-chaining">2. Skill Chaining<a class="headerlink" href="#2-skill-chaining" title="Permanent link">&para;</a></h3>
+<p>Combine skills with agents for faster work:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>/api-discovery design_beam_is456          → Get exact params
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>@api-developer add endpoint using those params  → Build the route
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>@frontend create hook for the endpoint           → Wire up the UI
+</code></pre></div></p>
+<h3 id="3-prompt-agent-combo">3. Prompt + Agent Combo<a class="headerlink" href="#3-prompt-agent-combo" title="Permanent link">&para;</a></h3>
+<p>Start with a prompt template, then refine with an agent:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>#new-feature add deflection check         → Gets the workflow
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>@backend implement step 2 from the plan   → Executes specifically
+</code></pre></div></p>
+<h3 id="4-batch-operations">4. Batch Operations<a class="headerlink" href="#4-batch-operations" title="Permanent link">&para;</a></h3>
+<p>For repetitive tasks across files:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>@doc-master regenerate all folder indexes after the restructure
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>@ops commit all the doc changes in one batch
+</code></pre></div></p>
+<h3 id="5-pre-flight-before-deep-work">5. Pre-Flight Before Deep Work<a class="headerlink" href="#5-pre-flight-before-deep-work" title="Permanent link">&para;</a></h3>
+<p>Before a large feature, get oriented:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>@orchestrator I need to add column design — what exists already,
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>what needs to be added, and which agents should work on each part?
+</code></pre></div></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

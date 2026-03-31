@@ -1,0 +1,218 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cDesignSteel.GetSummaryResults_3 Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetSummaryResults_3 method" /><meta name="System.Keywords" content="cDesignSteel.GetSummaryResults_3 method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cDesignSteel.GetSummaryResults_3" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cDesignSteel.GetSummaryResults_3(System.String,System.Int32@,System.String[]@,ETABSv1.eFrameDesignOrientation[]@,System.String[]@,System.String[]@,System.String[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.String[]@,System.Double[]@,System.String[]@,System.Double[]@,ETABSv1.eItemType)" /><meta name="Description" content="Retrieves steel frame design summary results" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="dfd57f26-0eb0-0590-258b-d33f3da78c21" /><meta name="guid" content="dfd57f26-0eb0-0590-258b-d33f3da78c21" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cDesignSteel<span id="LSTFB55C679_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_0?cpp=::|nu=.");</script>GetSummaryResults_3 Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves steel frame design summary results
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetSummaryResults_3</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberItems</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">FrameName</span>,
+	<span class="keyword">ref</span> <span class="identifier">eFrameDesignOrientation</span>[] <span class="parameter">FrameType</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">DesignSect</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Status</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">PMMCombo</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">PMMRatio</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">PRatio</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">MMajRatio</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">MMinRatio</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">VMajCombo</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">VMajRatio</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">VMinCombo</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">VMinRatio</span>,
+	<span class="identifier">eItemType</span> <span class="parameter">ItemType</span> = <span class="identifier">eItemType</span>.Objects
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetSummaryResults_3</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberItems</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">FrameName</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">FrameType</span> <span class="keyword">As</span> <span class="identifier">eFrameDesignOrientation</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">DesignSect</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">Status</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">PMMCombo</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">PMMRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">PRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MMajRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MMinRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">VMajCombo</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">VMajRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">VMinCombo</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">VMinRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	Optional <span class="parameter">ItemType</span> <span class="keyword">As</span> <span class="identifier">eItemType</span> = <span class="identifier">eItemType</span>.Objects
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cDesignSteel</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberItems</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">FrameName</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">FrameType</span> <span class="keyword">As</span> <span class="identifier">eFrameDesignOrientation</span>()
+<span class="keyword">Dim</span> <span class="parameter">DesignSect</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">Status</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">PMMCombo</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">PMMRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">PRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">MMajRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">MMinRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">VMajCombo</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">VMajRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">VMinCombo</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">VMinRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">ItemType</span> <span class="keyword">As</span> <span class="identifier">eItemType</span>
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetSummaryResults_3</span>(<span class="parameter">Name</span>,
+	<span class="parameter">NumberItems</span>, <span class="parameter">FrameName</span>, <span class="parameter">FrameType</span>,
+	<span class="parameter">DesignSect</span>, <span class="parameter">Status</span>, <span class="parameter">PMMCombo</span>, <span class="parameter">PMMRatio</span>,
+	<span class="parameter">PRatio</span>, <span class="parameter">MMajRatio</span>, <span class="parameter">MMinRatio</span>, <span class="parameter">VMajCombo</span>,
+	<span class="parameter">VMajRatio</span>, <span class="parameter">VMinCombo</span>, <span class="parameter">VMinRatio</span>,
+	<span class="parameter">ItemType</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetSummaryResults_3</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberItems</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">FrameName</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">eFrameDesignOrientation</span>&gt;^% <span class="parameter">FrameType</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">DesignSect</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Status</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">PMMCombo</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">PMMRatio</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">PRatio</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">MMajRatio</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">MMinRatio</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">VMajCombo</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">VMajRatio</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">VMinCombo</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">VMinRatio</span>,
+	<span class="identifier">eItemType</span> <span class="parameter">ItemType</span> = <span class="identifier">eItemType</span>::Objects
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetSummaryResults_3</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">NumberItems</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">FrameName</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">FrameType</span> : <span class="identifier">eFrameDesignOrientation</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">DesignSect</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">Status</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">PMMCombo</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">PMMRatio</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">PRatio</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MMajRatio</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MMinRatio</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">VMajCombo</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">VMajRatio</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">VMinCombo</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">VMinRatio</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        ?<span class="parameter">ItemType</span> : <span class="identifier">eItemType</span>
+(* Defaults:
+        <span class="keyword">let </span><span class="identifier">_</span><span class="identifier">ItemType</span> = defaultArg <span class="identifier">ItemType</span> <span class="identifier">eItemType</span>.Objects
+*)
+<span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing frame object or group, depending on the
+ value of the <span class="parameter">ItemType</span> argument.
+ </dd><dt><span class="parameter">NumberItems</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LSTFB55C679_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_3?cpp=%");</script><br />
+ The number of results, this is the length of all output arrays
+ </dd><dt><span class="parameter">FrameName</span></dt><dd>Type: <span id="LSTFB55C679_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_4?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_5?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTFB55C679_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_6?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_7?cpp=%");</script><br />
+ The frame object unique name associated with each result
+ </dd><dt><span class="parameter">FrameType</span></dt><dd>Type: <span id="LSTFB55C679_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_8?cpp=array&lt;");</script><a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">ETABSv1<span id="LSTFB55C679_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_9?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>eFrameDesignOrientation</a><span id="LSTFB55C679_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_10?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_11?cpp=%");</script><br />
+ The type of each frame object, a value from <a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">eFrameDesignOrientation</a> enumeration,
+ either <a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">Column</a> , <a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">Beam</a> ,
+ <a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">Brace</a> , <a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">Other</a> , or
+ <a href="964db686-95e0-fdb1-69e9-16c6269e38ff.htm">Null</a></dd><dt><span class="parameter">DesignSect</span></dt><dd>Type: <span id="LSTFB55C679_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_12?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_13?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTFB55C679_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_14?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_15?cpp=%");</script><br />
+ The design section of each frame object
+ </dd><dt><span class="parameter">Status</span></dt><dd>Type: <span id="LSTFB55C679_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_16?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_17?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTFB55C679_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_18?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_19?cpp=%");</script><br />
+ The design status
+ </dd><dt><span class="parameter">PMMCombo</span></dt><dd>Type: <span id="LSTFB55C679_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_20?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_21?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTFB55C679_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_22?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_23?cpp=%");</script><br />
+ The load combination for which the PMM ratio is reported
+ </dd><dt><span class="parameter">PMMRatio</span></dt><dd>Type: <span id="LSTFB55C679_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_24?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_25?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTFB55C679_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_26?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_27?cpp=%");</script><br />
+ The controlling PMM ratio for the frame object
+ </dd><dt><span class="parameter">PRatio</span></dt><dd>Type: <span id="LSTFB55C679_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_28?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_29?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTFB55C679_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_30?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_31?cpp=%");</script><br />
+ The axial component of the controlling PMM ratio
+ </dd><dt><span class="parameter">MMajRatio</span></dt><dd>Type: <span id="LSTFB55C679_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_32?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_33?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTFB55C679_34"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_34?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_35"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_35?cpp=%");</script><br />
+ The major axis bending component of the controlling PMM ratio
+ </dd><dt><span class="parameter">MMinRatio</span></dt><dd>Type: <span id="LSTFB55C679_36"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_36?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_37"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_37?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTFB55C679_38"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_38?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_39"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_39?cpp=%");</script><br />
+ The minor axis bending component of the controlling PMM ratio
+ </dd><dt><span class="parameter">VMajCombo</span></dt><dd>Type: <span id="LSTFB55C679_40"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_40?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_41"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_41?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTFB55C679_42"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_42?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_43"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_43?cpp=%");</script><br />
+ The load combination for which the major direction shear ratio is reported
+ </dd><dt><span class="parameter">VMajRatio</span></dt><dd>Type: <span id="LSTFB55C679_44"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_44?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_45"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_45?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTFB55C679_46"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_46?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_47"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_47?cpp=%");</script><br />
+ The controlling major direction shear ratio for the frame object
+ </dd><dt><span class="parameter">VMinCombo</span></dt><dd>Type: <span id="LSTFB55C679_48"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_48?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_49"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_49?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTFB55C679_50"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_50?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_51"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_51?cpp=%");</script><br />
+ The load combination for which the minor direction shear ratio is reported
+ </dd><dt><span class="parameter">VMinRatio</span></dt><dd>Type: <span id="LSTFB55C679_52"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_52?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTFB55C679_53"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_53?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTFB55C679_54"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_54?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTFB55C679_55"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_55?cpp=%");</script><br />
+ The controlling minor direction shear ratio for the frame object
+ </dd><dt><span class="parameter">ItemType</span> (Optional)</dt><dd>Type: <a href="b6597895-3f27-39aa-33a5-31da1d7662a0.htm">ETABSv1<span id="LSTFB55C679_56"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTFB55C679_56?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>eItemType</a><br />
+ This is one of the following items in the <a href="b6597895-3f27-39aa-33a5-31da1d7662a0.htm">eItemType</a> enumeration:
+ <ol start="0"><li>Object</li><li>Group</li><li>SelectedObjects</li></ol><p>
+ If this item is <a href="b6597895-3f27-39aa-33a5-31da1d7662a0.htm">Objects</a>, results are retrieved for the frame object
+ specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="b6597895-3f27-39aa-33a5-31da1d7662a0.htm">Group</a>, results are retrieved for all frame objects
+ in the group specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="b6597895-3f27-39aa-33a5-31da1d7662a0.htm">SelectedObjects</a>, results are retrieved for all
+ selected frame objects and the <span class="parameter">Name</span> item is ignored.
+ </p></dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the results are successfully retrieved,
+ otherwise it returns a nonzero value.
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection">
+ The function will fail if no steel frame objects are present.
+ It will also fail if analysis results are not available.
+ <div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+   <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+   <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+   <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+
+<span class="highlight-comment">'create ETABS object</span>
+   <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+   EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+<span class="highlight-comment">'start ETABS application</span>
+  ret = EtabsObject.ApplicationStart()
+
+<span class="highlight-comment">'create SapModel object</span>
+   SapModel = EtabsObject.SapModel
+
+<span class="highlight-comment">'initialize model</span>
+   ret = SapModel.InitializeNewModel()
+
+<span class="highlight-comment">'create steel deck template model</span>
+   ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>, <span class="highlight-number">12</span>, <span class="highlight-number">12</span>, <span class="highlight-number">4</span>, <span class="highlight-number">4</span>, <span class="highlight-number">24</span>, <span class="highlight-number">24</span>)
+
+<span class="highlight-comment">'set steel design code</span>
+   ret = SapModel.DesignSteel.SetCode(<span class="highlight-literal">"AISC 360-10"</span>)
+
+<span class="highlight-comment">'run analysis</span>
+   System.IO.Directory.CreateDirectory(<span class="highlight-literal">"C:\CSI_API_temp"</span>)
+   ret = SapModel.File.Save(<span class="highlight-literal">"C:\CSI_API_temp\example.edb"</span>)
+   ret = SapModel.Analyze.RunAnalysis()
+
+<span class="highlight-comment">'start steel design</span>
+   ret = SapModel.DesignSteel.StartDesign()
+
+   <span class="highlight-keyword">Dim</span> NumberItems <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> FrameName <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> FrameType <span class="highlight-keyword">As</span> eFrameDesignOrientation()
+   <span class="highlight-keyword">Dim</span> DesignSect <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> Status <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> PMMCombo <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> PMMRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> PRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> MMajRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> MMinRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> VMajCombo <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> VMajRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>()
+   <span class="highlight-keyword">Dim</span> VMinCombo <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>()
+   <span class="highlight-keyword">Dim</span> VMinRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>()
+
+   ret = mySapModel.DesignSteel.GetSummaryResults_3(<span class="highlight-literal">"All"</span>, NumberItems, FrameName, FrameType, DesignSect, Status, PMMCombo, PMMRatio, PRatio, MMajRatio, MMinRatio, VMajCombo, VMajRatio, VMinCombo, VMinRatio, eItemType.Group)
+
+<span class="highlight-comment">'close ETABS</span>
+   EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+<span class="highlight-comment">'clean up variables</span>
+   SapModel = <span class="highlight-keyword">Nothing</span>
+   EtabsObject = <span class="highlight-keyword">Nothing</span>
+
+<span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="b1c226bd-117b-fef1-3ecf-9501e542b220.htm">cDesignSteel Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>
