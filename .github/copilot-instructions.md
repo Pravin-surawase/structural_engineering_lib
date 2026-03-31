@@ -39,8 +39,8 @@ Core CANNOT import from Services or UI.
 Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
-grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes (12 routers)
-grep "^def " Python/structural_lib/services/api.py | head -20   # 23 public + 6 private helpers
+grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes (13 routers)
+grep "^def " Python/structural_lib/services/api.py | head -20   # 27 public + 7 private helpers
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names
 ```
 
