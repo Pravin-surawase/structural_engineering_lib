@@ -1584,11 +1584,11 @@
 <!-- HANDOFF:START -->
 <ul>
 <li>Date: 2026-04-02</li>
-<li>Session: Session 3 — Column design TASK-637 (slenderness/additional moment, 9-step quality pipeline)</li>
-<li>Done: TASK-637 (additional moment Cl 39.7.1, slenderness.py, 24+8 tests, API wrapper, FastAPI endpoint, reviewer approved)</li>
-<li>Remaining: TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)</li>
-<li>State: main branch, TASK-637 awaiting commit</li>
-<li>Tests: 3854+ Python, 180+ FastAPI</li>
+<li>Session: Claw-code implementation Sessions 2+3 — agent infrastructure</li>
+<li>Done: 19/23 claw-code tasks complete (TASK-850 through TASK-872, except 861/867/869/871)</li>
+<li>Remaining: Session 4 — TASK-861 (trust gate), TASK-867 (snapshot tests), TASK-869 (update agent files), TASK-871 (update entry docs)</li>
+<li>State: main branch, all scripts created and reviewed</li>
+<li>New commands: ./run.sh route, ./run.sh tools, ./run.sh pipeline</li>
 </ul>
 <!-- HANDOFF:END -->
 
@@ -1615,16 +1615,14 @@
 </table>
 <hr />
 <h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p><strong>Master Plan:</strong> <a href="../library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a></p>
-</blockquote>
 <ol>
-<li><strong>TASK-638 (long column design)</strong> ← <strong>START HERE</strong> — <code>design_long_column</code> orchestrator using TASK-637</li>
+<li><strong>Session 4 — Final claw-code tasks</strong> ← START HERE</li>
+<li>TASK-861: Trust gate (defer destructive ops until session start confirms clean state)</li>
+<li>TASK-867: Snapshot regression tests (assert minimum script/tool/test counts)</li>
+<li>TASK-869: Update all 15 .agent.md files with permission_level, registry_ref</li>
+<li>TASK-871: Update AGENTS.md + CLAUDE.md with new commands (route, tools, pipeline)</li>
+<li><strong>TASK-638 (long column design)</strong> — <code>design_long_column</code> orchestrator</li>
 <li><strong>TASK-640 (design_column_is456 orchestrator)</strong> — combines all column functions</li>
-<li><strong>TASK-639 (helical reinforcement)</strong> — low priority, parallelizable</li>
-<li><strong>TASK-641 (column FastAPI endpoint)</strong> — final column endpoint</li>
-<li><strong>P12 Burn-in (15-20 sessions)</strong> — OBSERVE + MEASURE only, no EVOLVE yet</li>
-<li><strong>Quality scripts</strong> — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)</li>
 </ol>
 <h3 id="technical-debt">Technical Debt<a class="headerlink" href="#technical-debt" title="Permanent link">&para;</a></h3>
 <ul>

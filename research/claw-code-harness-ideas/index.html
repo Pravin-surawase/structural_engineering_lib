@@ -1,0 +1,3165 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/research/claw-code-harness-ideas/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Claw-Code Harness Architecture — Comprehensive Ideas for Our Project - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#claw-code-harness-architecture-comprehensive-ideas-for-our-project" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Claw-Code Harness Architecture — Comprehensive Ideas for Our Project
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-state-what-we-already-have-vs-whats-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current State: What We Already Have vs. What's Missing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-tool-command-architecture-from-rust-tools-python-toolspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tool &amp; Command Architecture (from Rust tools + Python tools.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Tool &amp; Command Architecture (from Rust tools + Python tools.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-unified-tool-registry-with-json-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Unified Tool Registry with JSON Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-tool-aliasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Tool Aliasing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-subagent-tool-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Subagent Tool Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-three-tier-permission-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Three-Tier Permission System
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-prompt-routing-discovery-from-runtimepy-execution_registrypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Prompt Routing &amp; Discovery (from runtime.py + execution_registry.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Prompt Routing &amp; Discovery (from runtime.py + execution_registry.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-token-based-prompt-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Token-Based Prompt Routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-execution-registry-unified-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Execution Registry (Unified Dispatch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-command-graph-segmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Command Graph Segmentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-session-runtime-architecture-from-query_enginepy-session_storepy-rust-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Session &amp; Runtime Architecture (from query_engine.py + session_store.py + Rust runtime)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Session &amp; Runtime Architecture (from query_engine.py + session_store.py + Rust runtime)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-query-engine-with-token-budgeting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Query Engine with Token Budgeting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-session-persistence-to-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Session Persistence to JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-transcript-store-with-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Transcript Store with Compaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-streaming-events-for-long-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Streaming Events for Long Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-security-permissions-from-permissionspy-rust-tools-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Security &amp; Permissions (from permissions.py + Rust tools + plugins)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Security &amp; Permissions (from permissions.py + Rust tools + plugins)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-tool-permission-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Tool Permission Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-trust-gated-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Trust-Gated Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-plugin-security-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Plugin Security Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-prompt-construction-context-from-rust-runtime-promptrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Prompt Construction &amp; Context (from Rust runtime prompt.rs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Prompt Construction &amp; Context (from Rust runtime prompt.rs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-hierarchical-system-prompt-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Hierarchical System Prompt Builder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-config-precedence-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Config Precedence Chain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-lsp-context-enrichment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 LSP Context Enrichment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-hooks-plugins-extensibility-from-rust-plugins-python-costhookpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Hooks, Plugins &amp; Extensibility (from Rust plugins + Python costHook.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Hooks, Plugins &amp; Extensibility (from Rust plugins + Python costHook.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-prepost-tool-execution-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Pre/Post Tool Execution Hooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-cost-hook-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Cost Hook Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-plugin-lifecycle-init-execute-shutdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Plugin Lifecycle (Init → Execute → Shutdown)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-workflow-orchestration-from-teamralph-modes-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Workflow Orchestration (from $team/$ralph modes + coordinator/)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Workflow Orchestration (from $team/$ralph modes + coordinator/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-parallel-agent-coordination-team-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Parallel Agent Coordination ($team mode)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-persistent-execution-loop-ralph-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Persistent Execution Loop ($ralph mode)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-pipeline-state-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Pipeline State Persistence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-slash-commands-for-design-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Slash Commands for Design Workflows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-resume-capable-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Resume-Capable Sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-testing-quality-patterns-from-tests-parity-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Testing &amp; Quality Patterns (from tests/ + parity audit)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Testing &amp; Quality Patterns (from tests/ + parity audit)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-parity-audit-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Parity Audit System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-cli-based-test-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 CLI-Based Test Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-snapshot-based-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Snapshot-Based Regression
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-advanced-patterns-from-rust-server-lsp-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Advanced Patterns (from Rust server, LSP, MCP)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Advanced Patterns (from Rust server, LSP, MCP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-sse-server-with-keep-alive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 SSE Server with Keep-Alive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-mcp-server-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 MCP Server Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-deferred-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Deferred Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-priority-implementation-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Priority Implementation Roadmap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Priority Implementation Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-quick-wins-1-2-sessions-high-roi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Quick Wins (1-2 sessions, High ROI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-core-infrastructure-3-5-sessions-medium-roi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Core Infrastructure (3-5 sessions, Medium ROI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-advanced-patterns-5-10-sessions-long-term-roi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Advanced Patterns (5-10 sessions, Long-term ROI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-ecosystem-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Ecosystem (Future)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Key Takeaways
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Key Takeaways">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-claw-code-does-that-we-should-adopt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What claw-code does that we should adopt:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-we-already-do-better-than-claw-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we already do BETTER than claw-code:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-highest-value-single-improvement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The highest-value single improvement:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="claw-code-harness-architecture-comprehensive-ideas-for-our-project">Claw-Code Harness Architecture — Comprehensive Ideas for Our Project<a class="headerlink" href="#claw-code-harness-architecture-comprehensive-ideas-for-our-project" title="Permanent link">&para;</a></h1>
+<p><strong>Source:</strong> <a href="https://github.com/instructkr/claw-code">instructkr/claw-code</a> — 114K stars, clean-room Python + Rust rewrite of an AI coding agent harness.</p>
+<p><strong>Analysis method:</strong> 5 parallel deep explorations (Rust crates, Python subsystems, CI/CD, schemas/types, reference data) + 1 infrastructure gap analysis against our codebase.</p>
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool definitions, 150+ commands, and 9 Rust crates, we identified <strong>25 actionable ideas</strong> organized into 7 categories. Our project is <strong>60-70% there</strong> on agent infrastructure — the biggest gaps are tool routing, permission enforcement, and session persistence.</p>
+<hr />
+<h2 id="current-state-what-we-already-have-vs-whats-missing">Current State: What We Already Have vs. What's Missing<a class="headerlink" href="#current-state-what-we-already-have-vs-whats-missing" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Our Status</th>
+<th>Claw-Code Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent context loading</td>
+<td>✅ <code>agent_context.py</code> (decorator registry)</td>
+<td>System init message builder</td>
+</tr>
+<tr>
+<td>Agent scoring (11 dimensions)</td>
+<td>✅ <code>agent_scorer.py</code></td>
+<td>No equivalent (we're ahead)</td>
+</tr>
+<tr>
+<td>Drift detection</td>
+<td>✅ <code>agent_drift_detector.py</code></td>
+<td>No equivalent (we're ahead)</td>
+</tr>
+<tr>
+<td>Feedback loop</td>
+<td>✅ <code>agent_feedback.py</code></td>
+<td>No equivalent (we're ahead)</td>
+</tr>
+<tr>
+<td>Session management</td>
+<td>✅ <code>session.py</code> (start/end/handoff)</td>
+<td>Session store + transcript</td>
+</tr>
+<tr>
+<td>Validation suite</td>
+<td>✅ <code>check_all.py</code> (28 checks, parallel)</td>
+<td>Parity audit</td>
+</tr>
+<tr>
+<td>Script discovery</td>
+<td>✅ <code>automation-map.json</code> (88 scripts)</td>
+<td>Command graph + tool pool</td>
+</tr>
+<tr>
+<td>Tool registry</td>
+<td>❌ Missing</td>
+<td><code>tools.py</code> + 200+ tool snapshot</td>
+</tr>
+<tr>
+<td>Prompt routing</td>
+<td>❌ Missing</td>
+<td>Token-based scoring engine</td>
+</tr>
+<tr>
+<td>Permission context</td>
+<td>❌ Honor-system only</td>
+<td><code>ToolPermissionContext</code> with deny lists</td>
+</tr>
+<tr>
+<td>Session persistence</td>
+<td>❌ Ephemeral only</td>
+<td>JSON session store + transcripts</td>
+</tr>
+<tr>
+<td>Cost/token tracking</td>
+<td>❌ Missing</td>
+<td><code>CostTracker</code> + cost hooks</td>
+</tr>
+<tr>
+<td>Hooks pipeline</td>
+<td>❌ Missing</td>
+<td>Pre/post tool execution hooks</td>
+</tr>
+<tr>
+<td>Plugin system</td>
+<td>❌ Missing</td>
+<td>3-tier plugin architecture</td>
+</tr>
+<tr>
+<td>Bootstrap graph</td>
+<td>❌ Flat script</td>
+<td>7-stage deterministic DAG</td>
+</tr>
+<tr>
+<td>LSP integration</td>
+<td>❌ Missing</td>
+<td>Context enrichment for prompts</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-tool-command-architecture-from-rust-tools-python-toolspy">1. Tool &amp; Command Architecture (from Rust <code>tools</code> + Python <code>tools.py</code>)<a class="headerlink" href="#1-tool-command-architecture-from-rust-tools-python-toolspy" title="Permanent link">&para;</a></h2>
+<h3 id="11-unified-tool-registry-with-json-schema">1.1 Unified Tool Registry with JSON Schema<a class="headerlink" href="#11-unified-tool-registry-with-json-schema" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Every tool is a structured entry with <code>name</code>, <code>description</code>, <code>input_schema</code> (JSON Schema), and <code>required_permission</code> level. 200+ tools are registered in a single <code>tools_snapshot.json</code>.</p>
+<p><strong>Tool categories found:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Tools</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent</td>
+<td>6</td>
+<td><code>AgentTool</code>, built-in agents (plan, explore, verification)</td>
+</tr>
+<tr>
+<td>File Operations</td>
+<td>4</td>
+<td><code>FileReadTool</code>, <code>FileWriteTool</code>, <code>FileEditTool</code></td>
+</tr>
+<tr>
+<td>Code Search</td>
+<td>3</td>
+<td><code>GrepTool</code>, <code>GlobTool</code>, <code>LSPTool</code></td>
+</tr>
+<tr>
+<td>Shell</td>
+<td>2</td>
+<td><code>BashTool</code> (with sed validation), <code>PowerShellTool</code></td>
+</tr>
+<tr>
+<td>Web</td>
+<td>3</td>
+<td><code>WebFetchTool</code>, <code>WebSearchTool</code>, <code>ReadMcpResourceTool</code></td>
+</tr>
+<tr>
+<td>Planning</td>
+<td>6</td>
+<td><code>EnterPlanModeTool</code>, <code>TaskCreateTool</code>, <code>TaskListTool</code>, <code>TaskUpdateTool</code></td>
+</tr>
+<tr>
+<td>Scheduling</td>
+<td>3</td>
+<td><code>CronCreateTool</code>, <code>CronDeleteTool</code>, <code>CronListTool</code></td>
+</tr>
+<tr>
+<td>Teams</td>
+<td>3</td>
+<td><code>SendMessageTool</code>, <code>TeamCreateTool</code>, <code>TeamDeleteTool</code></td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>2</td>
+<td><code>MCPTool</code>, <code>McpAuthTool</code></td>
+</tr>
+<tr>
+<td>Config</td>
+<td>2</td>
+<td><code>ConfigTool</code>, <code>ToolSearchTool</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our idea:</strong> Create <code>scripts/tool_registry.py</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">TOOL_REGISTRY</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;design_beam&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Design RC beam per IS 456&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s2">&quot;skill&quot;</span><span class="p">:</span> <span class="s2">&quot;api-discovery&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s2">&quot;script&quot;</span><span class="p">:</span> <span class="s2">&quot;discover_api_signatures.py design_beam_is456&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="s2">&quot;permission&quot;</span><span class="p">:</span> <span class="s2">&quot;workspace_write&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="s2">&quot;keywords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;beam&quot;</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">,</span> <span class="s2">&quot;is456&quot;</span><span class="p">,</span> <span class="s2">&quot;flexure&quot;</span><span class="p">,</span> <span class="s2">&quot;shear&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="p">},</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="s2">&quot;export_bbs&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Export bar bending schedule&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;/api/v1/export/bbs&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s2">&quot;permission&quot;</span><span class="p">:</span> <span class="s2">&quot;workspace_write&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="s2">&quot;keywords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bbs&quot;</span><span class="p">,</span> <span class="s2">&quot;export&quot;</span><span class="p">,</span> <span class="s2">&quot;rebar&quot;</span><span class="p">,</span> <span class="s2">&quot;schedule&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="p">}</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="12-tool-aliasing">1.2 Tool Aliasing<a class="headerlink" href="#12-tool-aliasing" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Short aliases map to full tool names: <code>"read" → "read_file"</code>, <code>"write" → "write_file"</code>, <code>"edit" → "edit_file"</code>, <code>"glob" → "glob_search"</code>.</p>
+<p><strong>Our idea:</strong> Add aliases for our most-used operations:
+- <code>design</code> → <code>design_beam_is456()</code>
+- <code>detail</code> → <code>detail_beam_is456()</code>
+- <code>check</code> → <code>./run.sh check --quick</code>
+- <code>test</code> → <code>.venv/bin/pytest Python/tests/ -v</code></p>
+<h3 id="13-subagent-tool-filtering">1.3 Subagent Tool Filtering<a class="headerlink" href="#13-subagent-tool-filtering" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Different subagent types get different tool sets:
+- <strong>Explore agent</strong> → ReadOnly tools only
+- <strong>Plan agent</strong> → Read + planning tools
+- <strong>Verification agent</strong> → Read + test tools</p>
+<p><strong>Our mapping (already partially in .agent.md but not enforced):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Allowed Tool Categories</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orchestrator</code></td>
+<td>read, search, web, agent delegation</td>
+</tr>
+<tr>
+<td><code>structural-engineer</code></td>
+<td>read, terminal (tests only)</td>
+</tr>
+<tr>
+<td><code>reviewer</code></td>
+<td>read, terminal</td>
+</tr>
+<tr>
+<td><code>frontend</code></td>
+<td>read, write, terminal</td>
+</tr>
+<tr>
+<td><code>backend</code></td>
+<td>read, write, terminal</td>
+</tr>
+<tr>
+<td><code>ops</code></td>
+<td>read, write, terminal, git</td>
+</tr>
+<tr>
+<td><code>doc-master</code></td>
+<td>read, write (docs only)</td>
+</tr>
+<tr>
+<td><code>security</code></td>
+<td>read, terminal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-three-tier-permission-system">1.4 Three-Tier Permission System<a class="headerlink" href="#14-three-tier-permission-system" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Tools require one of three permission levels:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Allows</th>
+<th>Example Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ReadOnly</code></td>
+<td>File read, search, LSP</td>
+<td><code>GrepTool</code>, <code>GlobTool</code>, <code>FileReadTool</code></td>
+</tr>
+<tr>
+<td><code>WorkspaceWrite</code></td>
+<td>File create/edit, design</td>
+<td><code>FileWriteTool</code>, <code>FileEditTool</code></td>
+</tr>
+<tr>
+<td><code>DangerFullAccess</code></td>
+<td>Shell exec, git push, delete</td>
+<td><code>BashTool</code>, <code>PowerShellTool</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our idea:</strong> Map to our operations:
+- <strong>ReadOnly:</strong> <code>discover_api_signatures.py</code>, <code>find_automation.py</code>, <code>agent_context.py</code>
+- <strong>WorkspaceWrite:</strong> <code>safe_file_move.py</code>, <code>create_doc.py</code>, <code>generate_enhanced_index.py</code>
+- <strong>DangerFullAccess:</strong> <code>ai_commit.sh</code>, <code>cleanup_stale_branches.py</code>, <code>safe_file_delete.py</code></p>
+<hr />
+<h2 id="2-prompt-routing-discovery-from-runtimepy-execution_registrypy">2. Prompt Routing &amp; Discovery (from <code>runtime.py</code> + <code>execution_registry.py</code>)<a class="headerlink" href="#2-prompt-routing-discovery-from-runtimepy-execution_registrypy" title="Permanent link">&para;</a></h2>
+<h3 id="21-token-based-prompt-routing">2.1 Token-Based Prompt Routing<a class="headerlink" href="#21-token-based-prompt-routing" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>PortRuntime.route_prompt()</code>:
+1. Tokenizes prompt (split on <code>/</code>, <code>-</code>, spaces)
+2. Scores each token against tool <code>name</code>, <code>source_hint</code>, <code>responsibility</code>
+3. Returns ranked matches with <code>kind</code> (command/tool), <code>name</code>, <code>score</code>
+4. Diversifies: ensures at least one command AND one tool in results</p>
+<p><strong>Our idea:</strong> Create <code>scripts/prompt_router.py</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">route_task</span><span class="p">(</span><span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">AgentMatch</span><span class="p">]:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route a natural-language task to the best agent + skill + script.&quot;&quot;&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>  <span class="c1"># split on spaces, /, -</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">AGENT_REGISTRY</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="n">score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">agent</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>            <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AgentMatch</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="n">score</span><span class="p">))</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="22-execution-registry-unified-dispatch">2.2 Execution Registry (Unified Dispatch)<a class="headerlink" href="#22-execution-registry-unified-dispatch" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>ExecutionRegistry</code> wraps all commands and tools behind a single <code>.execute(name, input)</code> interface. Each mirrored command/tool has <code>name</code>, <code>source_hint</code>, and an <code>execute()</code> method.</p>
+<p><strong>Our idea:</strong> Unify our 88 scripts + 15 agents + 8 skills into one registry:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">registry</span> <span class="o">=</span> <span class="n">build_execution_registry</span><span class="p">()</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">route_and_execute</span><span class="p">(</span><span class="s2">&quot;design beam 300x500 M25 Fe500&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># → Routes to @backend agent with design_beam_is456() params</span>
+</code></pre></div></p>
+<h3 id="23-command-graph-segmentation">2.3 Command Graph Segmentation<a class="headerlink" href="#23-command-graph-segmentation" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>command_graph.py</code> groups 360+ commands into stratified segments: Builtins | Plugin-like | Skill-like.</p>
+<p><strong>Our idea:</strong> Segment our 88 scripts into workflow groups:</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Scripts</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Session</strong></td>
+<td>session.py, agent_start.sh, agent_brief.sh</td>
+<td>Session lifecycle</td>
+</tr>
+<tr>
+<td><strong>Quality</strong></td>
+<td>check_all.py, pytest, validate_imports.py, check_architecture_boundaries.py</td>
+<td>Validation</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>ai_commit.sh, should_use_pr.sh, create_task_pr.sh, recover_git_state.sh</td>
+<td>Version control</td>
+</tr>
+<tr>
+<td><strong>Discovery</strong></td>
+<td>find_automation.py, discover_api_signatures.py, agent_context.py</td>
+<td>Code exploration</td>
+</tr>
+<tr>
+<td><strong>Docs</strong></td>
+<td>safe_file_move.py, safe_file_delete.py, create_doc.py, check_links.py</td>
+<td>Documentation</td>
+</tr>
+<tr>
+<td><strong>Generation</strong></td>
+<td>generate_enhanced_index.py, generate_all_indexes.sh, sync_numbers.py</td>
+<td>Auto-generation</td>
+</tr>
+<tr>
+<td><strong>Governance</strong></td>
+<td>agent_scorer.py, agent_drift_detector.py, agent_feedback.py, check_governance.py</td>
+<td>Health &amp; metrics</td>
+</tr>
+<tr>
+<td><strong>Evolution</strong></td>
+<td>agent_evolve_instructions.py, agent_compliance_checker.py, agent_trends.py</td>
+<td>Self-improvement</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-session-runtime-architecture-from-query_enginepy-session_storepy-rust-runtime">3. Session &amp; Runtime Architecture (from <code>query_engine.py</code> + <code>session_store.py</code> + Rust <code>runtime</code>)<a class="headerlink" href="#3-session-runtime-architecture-from-query_enginepy-session_storepy-rust-runtime" title="Permanent link">&para;</a></h2>
+<h3 id="31-query-engine-with-token-budgeting">3.1 Query Engine with Token Budgeting<a class="headerlink" href="#31-query-engine-with-token-budgeting" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>QueryEnginePort</code> manages conversation turns with:
+- <code>max_turns: 8</code> — hard limit on conversation length
+- <code>max_budget_tokens: 2000</code> — token budget per session
+- <code>compact_after_turns: 12</code> — auto-compaction threshold
+- <code>structured_output: bool</code> — JSON vs text output mode
+- <code>structured_retry_limit: 2</code> — retry on structured output failures</p>
+<p><strong>Our idea:</strong> Add token awareness to our session management:
+- Track context tokens consumed per agent session
+- Warn when approaching context limits (before the 413 error hits)
+- Auto-compact SESSION_LOG.md when it exceeds threshold
+- Track turns per task to detect stuck agents (&gt;5 turns = intervene)</p>
+<h3 id="32-session-persistence-to-json">3.2 Session Persistence to JSON<a class="headerlink" href="#32-session-persistence-to-json" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>StoredSession</code> saves to <code>.port_sessions/{session_id}.json</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">StoredSession</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">messages</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">input_tokens</span><span class="p">:</span> <span class="nb">int</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">output_tokens</span><span class="p">:</span> <span class="nb">int</span>
+</code></pre></div></p>
+<p><strong>Our idea:</strong> Add structured session state alongside SESSION_LOG.md:
+- <code>logs/sessions/{session_id}.json</code> — machine-readable session state
+- Includes: agent name, task description, files changed, pipeline step, tokens used
+- Enables: session resume, cross-session analytics, cost reporting</p>
+<h3 id="33-transcript-store-with-compaction">3.3 Transcript Store with Compaction<a class="headerlink" href="#33-transcript-store-with-compaction" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>TranscriptStore</code> manages in-memory conversation history:
+- <code>append(entry)</code> — add new message
+- <code>compact(keep_last=10)</code> — truncate to last N entries
+- <code>replay()</code> → tuple of all entries
+- <code>flush()</code> — mark as flushed (ready for persistence)</p>
+<p><strong>Our idea for SESSION_LOG.md (400KB+ problem):</strong>
+1. Keep last 10 full session entries in SESSION_LOG.md
+2. Archive older entries to <code>docs/_archive/session-logs/YYYY-MM.md</code>
+3. Generate a compact summary index: <code>logs/session_index.json</code>
+4. Auto-archive runs as part of <code>./run.sh session end</code></p>
+<h3 id="34-streaming-events-for-long-operations">3.4 Streaming Events for Long Operations<a class="headerlink" href="#34-streaming-events-for-long-operations" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>stream_submit_message()</code> yields typed events:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;message_start&#39;</span><span class="p">,</span> <span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="s1">&#39;prompt&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">}</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;command_match&#39;</span><span class="p">,</span> <span class="s1">&#39;commands&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;design&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)}</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;tool_match&#39;</span><span class="p">,</span> <span class="s1">&#39;tools&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;GrepTool&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)}</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;permission_denial&#39;</span><span class="p">,</span> <span class="s1">&#39;denials&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BashTool&#39;</span><span class="p">]}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;message_delta&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;message_stop&#39;</span><span class="p">,</span> <span class="s1">&#39;usage&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span> <span class="s1">&#39;stop_reason&#39;</span><span class="p">:</span> <span class="s1">&#39;completed&#39;</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Our idea:</strong> Apply to our long-running operations:
+- <code>./run.sh check</code> (28 checks) → emit progress events
+- <code>./run.sh test</code> → stream test results as they complete
+- Batch design → already has SSE via <code>/streaming/batch-design</code>
+- Pipeline tracking → emit step completion events (PLAN → GATHER → EXECUTE → ...)</p>
+<hr />
+<h2 id="4-security-permissions-from-permissionspy-rust-tools-plugins">4. Security &amp; Permissions (from <code>permissions.py</code> + Rust <code>tools</code> + <code>plugins</code>)<a class="headerlink" href="#4-security-permissions-from-permissionspy-rust-tools-plugins" title="Permanent link">&para;</a></h2>
+<h3 id="41-tool-permission-context">4.1 Tool Permission Context<a class="headerlink" href="#41-tool-permission-context" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>ToolPermissionContext</code> with <code>deny_names</code> (exact match) and <code>deny_prefixes</code> (prefix match):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">context</span> <span class="o">=</span> <span class="n">ToolPermissionContext</span><span class="o">.</span><span class="n">from_iterables</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">deny_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BashTool&#39;</span><span class="p">],</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">deny_prefixes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mcp&#39;</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">]</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">filtered_tools</span> <span class="o">=</span> <span class="n">filter_tools_by_permission_context</span><span class="p">(</span><span class="n">tools</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Our idea:</strong> Enforce tool restrictions that are currently honor-system:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">AGENT_PERMISSIONS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="s1">&#39;structural-engineer&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;deny_prefixes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">,</span> <span class="s1">&#39;delete&#39;</span><span class="p">,</span> <span class="s1">&#39;move&#39;</span><span class="p">]},</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="s1">&#39;reviewer&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;deny_prefixes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;write&#39;</span><span class="p">,</span> <span class="s1">&#39;delete&#39;</span><span class="p">,</span> <span class="s1">&#39;git&#39;</span><span class="p">]},</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="s1">&#39;doc-master&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;deny_prefixes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;git_push&#39;</span><span class="p">,</span> <span class="s1">&#39;delete_branch&#39;</span><span class="p">]},</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="s1">&#39;ops&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;deny_names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;safe_file_move&#39;</span><span class="p">,</span> <span class="s1">&#39;edit_structural_lib&#39;</span><span class="p">]},</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="42-trust-gated-initialization">4.2 Trust-Gated Initialization<a class="headerlink" href="#42-trust-gated-initialization" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Deferred init blocks plugin_init, skill_init, mcp_prefetch if untrusted:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">apply_deferred_init</span><span class="p">(</span><span class="n">trusted</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeferredInitReport</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">trusted</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="k">return</span> <span class="n">DeferredInitReport</span><span class="p">(</span><span class="n">plugin_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skill_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Our idea:</strong> Gate destructive operations on session state:
+- New session → read-only until <code>./run.sh session start</code> confirms clean git state
+- Uncommitted changes detected → block file writes until resolved
+- Wrong branch → block commits until branch check passes</p>
+<h3 id="43-plugin-security-model">4.3 Plugin Security Model<a class="headerlink" href="#43-plugin-security-model" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Three plugin tiers with different trust levels:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Location</th>
+<th>Default State</th>
+<th>Managed By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Builtin</td>
+<td>Embedded</td>
+<td>Enabled</td>
+<td>System</td>
+</tr>
+<tr>
+<td>Bundled</td>
+<td><code>bundled/</code> dir</td>
+<td>Disabled</td>
+<td>Auto-sync</td>
+</tr>
+<tr>
+<td>External</td>
+<td>User config</td>
+<td>Disabled</td>
+<td>User install</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our idea:</strong> Apply to our Skills (<code>.github/skills/</code>):
+- <strong>Core skills</strong> (session-management, api-discovery): Always available
+- <strong>Specialist skills</strong> (new-structural-element, function-quality-pipeline): Available to specific agents
+- <strong>Experimental skills</strong>: Require explicit activation</p>
+<hr />
+<h2 id="5-prompt-construction-context-from-rust-runtime-promptrs">5. Prompt Construction &amp; Context (from Rust <code>runtime</code> prompt.rs)<a class="headerlink" href="#5-prompt-construction-context-from-rust-runtime-promptrs" title="Permanent link">&para;</a></h2>
+<h3 id="51-hierarchical-system-prompt-builder">5.1 Hierarchical System Prompt Builder<a class="headerlink" href="#51-hierarchical-system-prompt-builder" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>SystemPromptBuilder</code> with chainable methods:
+- <code>.with_project_context()</code> — workspace info, git state
+- <code>.with_runtime_config()</code> — model, permissions, enabled features
+- <code>.with_lsp_context()</code> — real-time code analysis
+- <code>.append_section()</code> — custom instructions</p>
+<p>Token budgets:
+- <code>MAX_INSTRUCTION_FILE_CHARS = 4,000</code> per file
+- <code>MAX_TOTAL_INSTRUCTION_CHARS = 12,000</code> total
+- <strong>Deduplication:</strong> Detects identical content across scopes using stable hashing</p>
+<p><strong>Our idea:</strong> Enhance <code>agent_context.py</code> with:
+- <strong>Dynamic git context:</strong> Include <code>git diff --stat</code>, last 5 commits, PR status
+- <strong>Task context:</strong> Auto-include the specific TASKS.md item being worked on
+- <strong>Token budgeting:</strong> Track context size, warn before hitting limits
+- <strong>Deduplication:</strong> Don't repeat instructions already in .agent.md + copilot-instructions.md</p>
+<h3 id="52-config-precedence-chain">5.2 Config Precedence Chain<a class="headerlink" href="#52-config-precedence-chain" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> 4-level config merging:
+1. User legacy (<code>.claw.json</code>)
+2. User new (<code>settings.json</code>)
+3. Project (<code>.claw/settings.json</code>)
+4. Project local (<code>.claw/settings.local.json</code>)</p>
+<p><strong>Our idea:</strong> We have instructions at multiple levels but no explicit precedence:
+- <code>.github/copilot-instructions.md</code> (global)
+- <code>.github/instructions/*.instructions.md</code> (file-type)
+- <code>.claude/rules/*.md</code> (Claude-specific)
+- <code>.github/agents/*.agent.md</code> (per-agent)</p>
+<p>Document the intended precedence: agent-specific &gt; file-type &gt; global.</p>
+<h3 id="53-lsp-context-enrichment">5.3 LSP Context Enrichment<a class="headerlink" href="#53-lsp-context-enrichment" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>LspManager</code> collects workspace diagnostics, definitions, references, then injects into prompt:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a># LSP context
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>- Workspace diagnostics: 3 across 2 file(s)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>- Definitions: [flexure.py:42, shear.py:88]
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>- References: [api.py:15, api.py:23]
+</code></pre></div></p>
+<p><strong>Our idea:</strong> When an agent is working on a specific function:
+- Auto-discover all callers via grep (who imports/calls this function?)
+- Auto-discover all tests (which test files test this function?)
+- Inject this as context before the agent starts coding
+- Prevents the common mistake of changing a function without updating callers</p>
+<hr />
+<h2 id="6-hooks-plugins-extensibility-from-rust-plugins-python-costhookpy">6. Hooks, Plugins &amp; Extensibility (from Rust <code>plugins</code> + Python <code>costHook.py</code>)<a class="headerlink" href="#6-hooks-plugins-extensibility-from-rust-plugins-python-costhookpy" title="Permanent link">&para;</a></h2>
+<h3 id="61-prepost-tool-execution-hooks">6.1 Pre/Post Tool Execution Hooks<a class="headerlink" href="#61-prepost-tool-execution-hooks" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Hook events with typed payloads:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">enum</span><span class="w"> </span><span class="nc">HookEvent</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">PreToolUse</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">tool_name</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="n">PostToolUse</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">tool_name</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">}</span>
+</code></pre></div>
+Scripts run with environment variables: <code>CLAW_PLUGIN_ID</code>, <code>CLAW_TOOL_NAME</code>.</p>
+<p><strong>Our idea — Concrete hooks for our project:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Hook</th>
+<th>Trigger</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pre_file_write</code></td>
+<td>Before any file edit in <code>structural_lib/</code></td>
+<td>Run <code>validate_imports.py --scope structural_lib</code></td>
+</tr>
+<tr>
+<td><code>pre_file_move</code></td>
+<td>Before any <code>mv</code>/<code>rm</code></td>
+<td>Redirect to <code>safe_file_move.py</code> / <code>safe_file_delete.py</code></td>
+</tr>
+<tr>
+<td><code>pre_commit</code></td>
+<td>Before <code>ai_commit.sh</code></td>
+<td>Run <code>check_all.py --quick</code></td>
+</tr>
+<tr>
+<td><code>post_commit</code></td>
+<td>After successful commit</td>
+<td>Log to <code>git_workflow.log</code>, update <code>test_stats.json</code></td>
+</tr>
+<tr>
+<td><code>post_test</code></td>
+<td>After pytest run</td>
+<td>Update <code>Python/test_stats.json</code> with pass/fail counts</td>
+</tr>
+<tr>
+<td><code>pre_design</code></td>
+<td>Before beam design calculation</td>
+<td>Validate input parameters (b_mm &gt; 0, fck in [15-80])</td>
+</tr>
+<tr>
+<td><code>post_design</code></td>
+<td>After design result</td>
+<td>Run IS 456 compliance checks automatically</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-cost-hook-pattern">6.2 Cost Hook Pattern<a class="headerlink" href="#62-cost-hook-pattern" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>costHook.py</code> records units per operation, enabling budget gating:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CostTracker</span><span class="p">:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">total_units</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">events</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">total_units</span> <span class="o">+=</span> <span class="n">units</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Our idea:</strong> Track agent efficiency:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># logs/agent_costs.jsonl (append-only)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">{</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-04-02T10:30:00&quot;</span><span class="p">,</span> <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;backend&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;S105&quot;</span><span class="p">,</span> <span class="s2">&quot;tokens_in&quot;</span><span class="p">:</span> <span class="mi">12000</span><span class="p">,</span> <span class="s2">&quot;tokens_out&quot;</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span> <span class="s2">&quot;tools_used&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;files_changed&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;duration_min&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">}</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">{</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-04-02T10:45:00&quot;</span><span class="p">,</span> <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;reviewer&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;S105&quot;</span><span class="p">,</span> <span class="s2">&quot;tokens_in&quot;</span><span class="p">:</span> <span class="mi">8000</span><span class="p">,</span> <span class="s2">&quot;tokens_out&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span> <span class="s2">&quot;tools_used&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;files_changed&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;duration_min&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+</code></pre></div>
+Feed into <code>agent_scorer.py</code> as efficiency dimension.</p>
+<h3 id="63-plugin-lifecycle-init-execute-shutdown">6.3 Plugin Lifecycle (Init → Execute → Shutdown)<a class="headerlink" href="#63-plugin-lifecycle-init-execute-shutdown" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Full plugin lifecycle with manifest:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is456-checker&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">&quot;hooks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">&quot;PreToolUse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;./hooks/validate_params.sh&quot;</span><span class="p">],</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">&quot;PostToolUse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;./hooks/check_compliance.sh&quot;</span><span class="p">]</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="nt">&quot;lifecycle&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">&quot;Init&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;./lifecycle/load_code_tables.sh&quot;</span><span class="p">],</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nt">&quot;Shutdown&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;./lifecycle/save_cache.sh&quot;</span><span class="p">]</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Our idea (future):</strong> Design plugins for structural engineering workflows:
+- <strong>IS 456 Checker Plugin</strong> — auto-validates every design result
+- <strong>Material DB Plugin</strong> — provides material property lookup
+- <strong>BBS Formatter Plugin</strong> — custom BBS export templates
+- <strong>Cost Estimator Plugin</strong> — automatic cost calculations post-design</p>
+<hr />
+<h2 id="7-workflow-orchestration-from-teamralph-modes-coordinator">7. Workflow Orchestration (from <code>$team</code>/<code>$ralph</code> modes + <code>coordinator/</code>)<a class="headerlink" href="#7-workflow-orchestration-from-teamralph-modes-coordinator" title="Permanent link">&para;</a></h2>
+<h3 id="71-parallel-agent-coordination-team-mode">7.1 Parallel Agent Coordination ($team mode)<a class="headerlink" href="#71-parallel-agent-coordination-team-mode" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> OmX's <code>$team</code> mode runs multiple agents in parallel for coordinated review.</p>
+<p><strong>Our pipeline stages that can run in parallel:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Currently</th>
+<th>Could Be Parallel With</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MATH REVIEW (@structural-engineer)</td>
+<td>Sequential</td>
+<td>CODE REVIEW (@reviewer)</td>
+</tr>
+<tr>
+<td>WRITE TESTS (@tester)</td>
+<td>Sequential</td>
+<td>UPDATE DOCS (@doc-master)</td>
+</tr>
+<tr>
+<td>API WIRE (@backend)</td>
+<td>Sequential</td>
+<td>ENDPOINT (@api-developer) if independent</td>
+</tr>
+<tr>
+<td>Environment check</td>
+<td>Sequential</td>
+<td>Context loading</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Savings estimate:</strong> For a typical IS 456 function pipeline (9 steps), parallelizing review + docs could save ~30% wall-clock time.</p>
+<h3 id="72-persistent-execution-loop-ralph-mode">7.2 Persistent Execution Loop ($ralph mode)<a class="headerlink" href="#72-persistent-execution-loop-ralph-mode" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Agent keeps looping until task is complete with quality checks at each iteration.</p>
+<p><strong>Our idea — Auto-retry pipeline:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>EXECUTE → TEST → if tests fail → EXECUTE (with failure context) → TEST → ...
+</code></pre></div>
+- Max 3 retries before escalating to orchestrator
+- Each retry includes the test failure output as context
+- Track retry count in session state</p>
+<h3 id="73-pipeline-state-persistence">7.3 Pipeline State Persistence<a class="headerlink" href="#73-pipeline-state-persistence" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Session store persists turn history, tool calls, and results to disk.</p>
+<p><strong>Our idea:</strong> Persist pipeline state so interrupted sessions can resume:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TASK-042&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">&quot;pipeline&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is456_function&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">&quot;current_step&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">&quot;completed_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;PLAN&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;MATH_REVIEW&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;IMPLEMENT&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">],</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nt">&quot;pending_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;REVIEW&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;API_WIRE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ENDPOINT&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;DOCUMENT&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;COMMIT&quot;</span><span class="p">],</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nt">&quot;files_changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codes/is456/column/biaxial.py&quot;</span><span class="p">],</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="nt">&quot;last_agent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tester&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="nt">&quot;last_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all_tests_passed&quot;</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="74-slash-commands-for-design-workflows">7.4 Slash Commands for Design Workflows<a class="headerlink" href="#74-slash-commands-for-design-workflows" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> 28+ slash commands grouped by function: Session, Git, Agents/Skills, Dev, Plugins.</p>
+<p><strong>Our idea — Custom slash commands:</strong>
+- <code>/design-check &lt;beam-id&gt;</code> — Run IS 456 compliance checks on specific beam
+- <code>/export-bbs &lt;format&gt;</code> — Export bar bending schedule
+- <code>/code-reference &lt;clause&gt;</code> — Quick IS 456 clause lookup
+- <code>/api-params &lt;function&gt;</code> — Discover exact API parameter names
+- <code>/session-status</code> — Show current pipeline step, files changed, git state</p>
+<h3 id="75-resume-capable-sessions">7.5 Resume-Capable Sessions<a class="headerlink" href="#75-resume-capable-sessions" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> 13 of 28 commands support session resume — can restore previous state.</p>
+<p><strong>Our idea:</strong> Make our pipeline resumable:
+- When context overflows mid-task, save state to <code>logs/pipeline_state.json</code>
+- New session reads state + <code>next-session-brief.md</code> to resume exactly where left off
+- No duplicate work, no re-reading files already analyzed</p>
+<hr />
+<h2 id="8-testing-quality-patterns-from-tests-parity-audit">8. Testing &amp; Quality Patterns (from <code>tests/</code> + parity audit)<a class="headerlink" href="#8-testing-quality-patterns-from-tests-parity-audit" title="Permanent link">&para;</a></h2>
+<h3 id="81-parity-audit-system">8.1 Parity Audit System<a class="headerlink" href="#81-parity-audit-system" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> <code>parity_audit.py</code> compares Python port against TypeScript snapshot:
+- Root file coverage ratio
+- Directory coverage ratio
+- Command/tool entry coverage (≥150 commands, ≥100 tools)</p>
+<p><strong>Our idea — Apply to our IS 456 implementation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parity Check</th>
+<th>What It Tracks</th>
+<th>Current</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS 456 clause coverage</td>
+<td>Implemented vs. planned clauses</td>
+<td>~40% (beam + column)</td>
+</tr>
+<tr>
+<td>API-to-endpoint coverage</td>
+<td>API functions that have FastAPI routes</td>
+<td>~80%</td>
+</tr>
+<tr>
+<td>Test coverage per module</td>
+<td>Tests per structural module</td>
+<td>Varies</td>
+</tr>
+<tr>
+<td>Hook-to-route coverage</td>
+<td>React hooks with matching API endpoints</td>
+<td>~90%</td>
+</tr>
+</tbody>
+</table>
+<p>Generate a dashboard: <code>./run.sh parity</code> → shows completion heatmap.</p>
+<h3 id="82-cli-based-test-strategy">8.2 CLI-Based Test Strategy<a class="headerlink" href="#82-cli-based-test-strategy" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Tests validate CLI commands actually run and produce expected output:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_cli_summary_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;python3&#39;</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;src.main&#39;</span><span class="p">,</span> <span class="s1">&#39;summary&#39;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;workspace&#39;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</code></pre></div></p>
+<p><strong>Our idea:</strong> Add CLI smoke tests for our <code>./run.sh</code> commands:
+- <code>./run.sh check --quick</code> returns 0
+- <code>./run.sh find --api design_beam_is456</code> finds the function
+- <code>./run.sh session start</code> validates without error
+- <code>./run.sh test -k test_flexure</code> passes</p>
+<h3 id="83-snapshot-based-regression">8.3 Snapshot-Based Regression<a class="headerlink" href="#83-snapshot-based-regression" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> JSON snapshots of tool/command inventories are version-controlled. Tests assert minimum counts: ≥150 commands, ≥100 tools.</p>
+<p><strong>Our idea:</strong> Snapshot our API surface:
+- <code>openapi_baseline.json</code> (already exists!) — diff against current OpenAPI spec
+- <code>scripts/automation-map.json</code> — assert minimum script count (≥80)
+- <code>test_stats.json</code> — assert test count doesn't decrease</p>
+<hr />
+<h2 id="9-advanced-patterns-from-rust-server-lsp-mcp">9. Advanced Patterns (from Rust server, LSP, MCP)<a class="headerlink" href="#9-advanced-patterns-from-rust-server-lsp-mcp" title="Permanent link">&para;</a></h2>
+<h3 id="91-sse-server-with-keep-alive">9.1 SSE Server with Keep-Alive<a class="headerlink" href="#91-sse-server-with-keep-alive" title="Permanent link">&para;</a></h3>
+<p><strong>What they do (Rust server crate):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">POST</span><span class="w"> </span><span class="o">/</span><span class="n">sessions</span><span class="w">               </span><span class="err">→</span><span class="w"> </span><span class="n">CreateSessionResponse</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">session_id</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">GET</span><span class="w">  </span><span class="o">/</span><span class="n">sessions</span><span class="o">/</span><span class="p">{</span><span class="n">id</span><span class="p">}</span><span class="o">/</span><span class="n">events</span><span class="w">   </span><span class="err">→</span><span class="w"> </span><span class="n">SSE</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="p">(</span><span class="mi">15</span><span class="n">s</span><span class="w"> </span><span class="n">keep</span><span class="o">-</span><span class="n">alive</span><span class="p">)</span>
+</code></pre></div>
+- Broadcast channel: CAPACITY=64 for event distribution
+- Thread-safe session store: <code>Arc&lt;RwLock&lt;HashMap&lt;SessionId, Session&gt;&gt;&gt;</code></p>
+<p><strong>Our parallel:</strong> We already have SSE via <code>/streaming/batch-design</code> and WebSocket via <code>/ws/design/{session_id}</code>. Could extend SSE to:
+- Pipeline progress tracking (step 3/6: EXECUTE)
+- Agent activity feed (which agent is working, what tool it's using)
+- Health dashboard (28 checks running, 15 passed so far)</p>
+<h3 id="92-mcp-server-configuration">9.2 MCP Server Configuration<a class="headerlink" href="#92-mcp-server-configuration" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> Multiple transport types for MCP: Stdio, SSE, HTTP, WebSocket, SDK, ManagedProxy. Per-server OAuth, tool namespacing like <code>mcp__github__list_repos</code>.</p>
+<p><strong>Our idea (future):</strong> Expose our structural_lib as an MCP server:
+- External agents could call <code>mcp__structural_lib__design_beam</code>
+- Material databases as MCP resources
+- IS 456 code clauses as MCP resources</p>
+<h3 id="93-deferred-initialization">9.3 Deferred Initialization<a class="headerlink" href="#93-deferred-initialization" title="Permanent link">&para;</a></h3>
+<p><strong>What they do:</strong> 7-stage bootstrap with deferred init after trust gate:
+1. Prefetch side effects (parallel)
+2. Warning handlers + environment guards
+3. CLI parser + trust gate
+4. Setup + commands/agents parallel load
+5. Deferred init (trust-gated)
+6. Mode routing
+7. Query engine submit loop</p>
+<p><strong>Our idea for session start:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>FAST PATH (1-2 seconds):
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  1. git status + branch check
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>  2. Read next-session-brief.md
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  3. Show last handoff
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  → Agent starts coding immediately
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>DEFERRED (background):
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>  4. Full validation (check_all.py --quick)
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>  5. Index regeneration
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>  6. Stale doc sync
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>  7. Number sync
+</code></pre></div></p>
+<hr />
+<h2 id="10-priority-implementation-roadmap">10. Priority Implementation Roadmap<a class="headerlink" href="#10-priority-implementation-roadmap" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-quick-wins-1-2-sessions-high-roi">Phase 1: Quick Wins (1-2 sessions, High ROI)<a class="headerlink" href="#phase-1-quick-wins-1-2-sessions-high-roi" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Idea</th>
+<th>Files to Create/Modify</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Agent JSON Registry</strong></td>
+<td>Create <code>agents/agent_registry.json</code></td>
+<td>Enables routing, discovery</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Deferred Session Start</strong></td>
+<td>Modify <code>scripts/session.py</code></td>
+<td>5-10x faster startup</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>SESSION_LOG Compaction</strong></td>
+<td>Add to <code>scripts/session.py</code></td>
+<td>Fixes 400KB context problem</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Script Group Segmentation</strong></td>
+<td>Update <code>scripts/automation-map.json</code></td>
+<td>Better discoverability</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Cost/Token Logging</strong></td>
+<td>Create <code>logs/agent_costs.jsonl</code></td>
+<td>Efficiency visibility</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-2-core-infrastructure-3-5-sessions-medium-roi">Phase 2: Core Infrastructure (3-5 sessions, Medium ROI)<a class="headerlink" href="#phase-2-core-infrastructure-3-5-sessions-medium-roi" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Idea</th>
+<th>Files to Create/Modify</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td><strong>Prompt Router</strong></td>
+<td>Create <code>scripts/prompt_router.py</code></td>
+<td>Automated task routing</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Tool Permission Enforcement</strong></td>
+<td>Create <code>scripts/tool_permissions.py</code></td>
+<td>Security enforcement</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Session State Persistence</strong></td>
+<td>Extend <code>scripts/session.py</code></td>
+<td>Resumable pipelines</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>CLI Smoke Tests</strong></td>
+<td>Add to <code>Python/tests/</code></td>
+<td>Regression prevention</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>IS 456 Parity Dashboard</strong></td>
+<td>Create <code>scripts/parity_dashboard.py</code></td>
+<td>Progress tracking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-3-advanced-patterns-5-10-sessions-long-term-roi">Phase 3: Advanced Patterns (5-10 sessions, Long-term ROI)<a class="headerlink" href="#phase-3-advanced-patterns-5-10-sessions-long-term-roi" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Idea</th>
+<th>Files to Create/Modify</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td><strong>Pre/Post Hooks Pipeline</strong></td>
+<td>Create <code>scripts/hooks/</code></td>
+<td>Safety enforcement</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Parallel Agent Execution</strong></td>
+<td>Modify orchestrator pipeline</td>
+<td>30% faster reviews</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Pipeline State Resume</strong></td>
+<td>Create <code>logs/pipeline_state.json</code></td>
+<td>No lost work</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Custom Slash Commands</strong></td>
+<td>Extend <code>run.sh</code></td>
+<td>Developer UX</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>Auto-Retry with Failure Context</strong></td>
+<td>Modify orchestrator</td>
+<td>Fewer stuck agents</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-4-ecosystem-future">Phase 4: Ecosystem (Future)<a class="headerlink" href="#phase-4-ecosystem-future" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Idea</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16</td>
+<td>Plugin system for IS 456 rules</td>
+<td>Extensible verification</td>
+</tr>
+<tr>
+<td>17</td>
+<td>MCP server for structural_lib</td>
+<td>External agent access</td>
+</tr>
+<tr>
+<td>18</td>
+<td>LSP context enrichment</td>
+<td>Smarter agent prompts</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Voice-to-design interface</td>
+<td>Accessibility</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Agent memory across sessions</td>
+<td>Continuity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-key-takeaways">11. Key Takeaways<a class="headerlink" href="#11-key-takeaways" title="Permanent link">&para;</a></h2>
+<h3 id="what-claw-code-does-that-we-should-adopt">What claw-code does that we should adopt:<a class="headerlink" href="#what-claw-code-does-that-we-should-adopt" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Everything is a registerable, filterable, scorable entity</strong> — tools, commands, agents, permissions</li>
+<li><strong>Sessions are persistent and resumable</strong> — not ephemeral conversations</li>
+<li><strong>Permissions are enforced programmatically</strong> — not just documented</li>
+<li><strong>Startup is staged and parallelized</strong> — fast path to productive work</li>
+<li><strong>Cost tracking enables efficiency optimization</strong> — know what's expensive</li>
+</ol>
+<h3 id="what-we-already-do-better-than-claw-code">What we already do BETTER than claw-code:<a class="headerlink" href="#what-we-already-do-better-than-claw-code" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Agent scoring (11 dimensions)</strong> — they have no equivalent</li>
+<li><strong>Drift detection</strong> — automatically catches when agents deviate from instructions</li>
+<li><strong>Feedback loop</strong> — systematic capture of issues for improvement</li>
+<li><strong>28-check validation suite</strong> — comprehensive quality gate</li>
+<li><strong>15 specialist agents</strong> — compared to their 5 built-in agents (plan, explore, verification, etc.)</li>
+</ol>
+<h3 id="the-highest-value-single-improvement">The highest-value single improvement:<a class="headerlink" href="#the-highest-value-single-improvement" title="Permanent link">&para;</a></h3>
+<p>Build a lightweight <strong>AgentExecutionRegistry</strong> (<code>scripts/agent_registry.py</code>) that:
+- Loads agent metadata from <code>.agent.md</code> files + <code>agents/agent_registry.json</code>
+- Exposes tool/skill/script associations per agent
+- Provides <code>route_task(description) → [AgentMatch]</code> for automated routing
+- Enforces permission context per agent
+- Tracks session state and cost
+- This one script connects all our existing pieces (automation-map, agent_scorer, session management) into a unified runtime layer.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

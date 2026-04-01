@@ -1691,6 +1691,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#agent-infrastructure-claw-code-adaptation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Infrastructure (claw-code adaptation)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1753,7 +1764,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-02 (TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)</p>
+<p><strong>Updated:</strong> 2026-04-02 (19/23 claw-code adaptation tasks done — agent infrastructure, TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2787,6 +2798,181 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td>Tests</td>
 <td>—</td>
 <td>✅ Done (c1e0d222)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-infrastructure-claw-code-adaptation">Agent Infrastructure (claw-code adaptation)<a class="headerlink" href="#agent-infrastructure-claw-code-adaptation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Task ID</th>
+<th>Feature</th>
+<th>Script/File</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>TASK-850</td>
+<td>Agent Registry JSON</td>
+<td><code>agents/agent_registry.json</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>2</td>
+<td>TASK-851</td>
+<td>Unified Tool Registry</td>
+<td><code>scripts/tool_registry.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TASK-852</td>
+<td>Prompt Router</td>
+<td><code>scripts/prompt_router.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>4</td>
+<td>TASK-853</td>
+<td>run.sh integration (route, tools, pipeline)</td>
+<td><code>run.sh</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>5</td>
+<td>TASK-854</td>
+<td>Automation-map groups</td>
+<td><code>scripts/automation-map.json</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>6</td>
+<td>TASK-855</td>
+<td>SESSION_LOG compaction</td>
+<td><code>scripts/session.py compact</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>7</td>
+<td>TASK-856</td>
+<td>Session state persistence</td>
+<td><code>scripts/session_store.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>8</td>
+<td>TASK-857</td>
+<td>Pipeline state tracking</td>
+<td><code>scripts/pipeline_state.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>9</td>
+<td>TASK-858</td>
+<td>Fast session start (--fast)</td>
+<td><code>scripts/session.py start --fast</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>10</td>
+<td>TASK-859</td>
+<td>Cost/token logging</td>
+<td><code>scripts/session.py costs</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>11</td>
+<td>TASK-860</td>
+<td>Tool permission enforcement</td>
+<td><code>scripts/tool_permissions.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>12</td>
+<td>TASK-862</td>
+<td>Permission audit report</td>
+<td><code>scripts/audit_permissions.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>13</td>
+<td>TASK-863</td>
+<td>Hook framework</td>
+<td><code>scripts/hooks/</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>14</td>
+<td>TASK-864</td>
+<td>Hook implementations (6 hooks)</td>
+<td><code>scripts/hooks/pre_commit.py</code> etc.</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>15</td>
+<td>TASK-865</td>
+<td>CLI smoke tests (13 tests)</td>
+<td><code>scripts/test_cli_smoke.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>16</td>
+<td>TASK-866</td>
+<td>Parity dashboard (4 dimensions)</td>
+<td><code>scripts/parity_dashboard.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>17</td>
+<td>TASK-868</td>
+<td>Config precedence validator</td>
+<td><code>scripts/config_precedence.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>18</td>
+<td>TASK-870</td>
+<td>Parallel pipeline stages</td>
+<td><code>scripts/pipeline_state.py</code> (updated)</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>19</td>
+<td>TASK-872</td>
+<td>Skill tier classification</td>
+<td><code>scripts/skill_tiers.py</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>20</td>
+<td>TASK-861</td>
+<td>Trust gate initialization</td>
+<td>📋 Session 4</td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td>TASK-867</td>
+<td>Snapshot regression tests</td>
+<td>📋 Session 4</td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td>TASK-869</td>
+<td>Update all 15 agent files</td>
+<td>📋 Session 4</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td>TASK-871</td>
+<td>Update AGENTS.md/CLAUDE.md</td>
+<td>📋 Session 4</td>
+<td></td>
 </tr>
 </tbody>
 </table>
