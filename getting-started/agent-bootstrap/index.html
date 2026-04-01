@@ -3424,10 +3424,11 @@ Types: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code
 <a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>END:    □ ./run.sh commit &quot;type: message&quot;        ← commit all work
 <a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        □ ./run.sh session sync                  ← fix stale doc numbers
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        □ Update next-session-brief.md           ← what NEXT agent should do
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        □ Update TASKS.md                        ← mark done, add new
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>        □ ./run.sh commit &quot;docs: session end&quot;    ← commit doc updates
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        □ Update next-session-brief.md           ← what NEXT agent should do
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>        □ Update TASKS.md                        ← mark done, add new
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        □ ./run.sh commit &quot;docs: session end&quot;    ← commit doc updates
 </code></pre></div>
 <blockquote>
 <p><strong>Why mandatory?</strong> Skipping session end has caused 10+ hours of wasted rework. SESSION_LOG.md is the project memory — gaps mean lost context.</p>
