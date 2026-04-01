@@ -228,7 +228,7 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 | TASK-800.P2 | Agent-evolver definition + skill | P2 | `agent-evolver.agent.md`, `SKILL.md` | ✅ Done |
 | TASK-800.P11 | run.sh evolve integration | P11 | `run.sh` | ✅ Done |
 | TASK-800.P12 | Burn-in validation (15-20 sessions) | P12 | — | 📋 Ongoing |
-| TASK-800.T | Evolver unit tests | Tests | — | 📋 |
+| TASK-800.T | Evolver unit tests | Tests | — | ✅ Done (c1e0d222) |
 
 ## Backlog
 

@@ -23,8 +23,8 @@ tags: []
 <!-- HANDOFF:START -->
 - Date: 2026-04-01
 - Session: TASK-800 Agent Evolver Infrastructure — P2-P11 complete
-- Done: 10 evolver scripts (3 shared libs + 7 helpers = ~4,500 lines), agent-evolver.agent.md (15th agent), agent-evolution skill, run.sh integration. All 3,560 tests passing.
-- Remaining: P12 burn-in validation (15-20 sessions), evolver unit tests
+- Done: 10 evolver scripts (3 shared libs + 7 helpers = ~4,500 lines), agent-evolver.agent.md (15th agent), agent-evolution skill, run.sh integration, 84 unit tests, agent_registry bugfix. All 3,560+ tests passing.
+- Remaining: P12 burn-in validation (15-20 sessions)
 - State: task/TASK-800 branch, clean worktree, PR pending merge
 <!-- HANDOFF:END -->
 
