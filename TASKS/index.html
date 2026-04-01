@@ -1764,7 +1764,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-01 (TASK-634 done — P-M interaction curve, 45 tests, API + endpoint)</p>
+<p><strong>Updated:</strong> 2026-04-01 (TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2127,12 +2127,6 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <td>Copilot</td>
 <td>🔄 In Progress</td>
 </tr>
-<tr>
-<td>TASK-635</td>
-<td>Biaxial bending check (Cl 39.6)</td>
-<td>—</td>
-<td>📋 Up Next</td>
-</tr>
 </tbody>
 </table>
 <h2 id="recently-done_1">Recently Done<a class="headerlink" href="#recently-done_1" title="Permanent link">&para;</a></h2>
@@ -2146,6 +2140,24 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>TASK-642</td>
+<td>Five-point steel stress-strain curve (IS 456 Fig 23) — stress_blocks.py + uniaxial.py + 26 tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-636</td>
+<td>Effective length per IS 456 Table 28 — axial.py + EndCondition enum + 69 tests + API + endpoint</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-635</td>
+<td>Biaxial bending check (Cl 39.6) — biaxial.py + ColumnBiaxialResult + 84 tests + API + endpoint</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
 <tr>
 <td>TASK-634</td>
 <td>P-M interaction curve (Cl 39.5) — core + API + FastAPI endpoint + 45 tests</td>
@@ -2242,10 +2254,10 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <tr>
 <td>TASK-642</td>
 <td>IS 456 Fig 23 five-point steel stress-strain curve (replaces bilinear model in stress_blocks.py)</td>
-<td>—</td>
+<td>Copilot</td>
 <td>1-2d</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done (PR #481)</td>
 </tr>
 <tr>
 <td>TASK-643</td>
@@ -2586,7 +2598,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td><code>biaxial_bending_check</code></td>
 <td>Cl 39.6</td>
 <td>🔴 High</td>
-<td>📋</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>TASK-636</td>
@@ -2594,7 +2606,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td><code>calculate_effective_length</code></td>
 <td>Cl 25.2</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done (PR #481)</td>
 </tr>
 <tr>
 <td>TASK-637</td>

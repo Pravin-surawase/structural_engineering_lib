@@ -1584,10 +1584,11 @@
 <!-- HANDOFF:START -->
 <ul>
 <li>Date: 2026-04-01</li>
-<li>Session: Session 1 — CI/Docker optimization + TASK-620</li>
-<li>Done: Merged Docker CI jobs (~5 min savings), Trivy enforces CRITICAL, cap_drop/no-new-privileges added, TASK-620 stack trace sanitization complete</li>
-<li>Remaining: TASK-642 (5-point steel curve) is next, then TASK-635 (biaxial bending)</li>
-<li>State: main branch (pending commit)</li>
+<li>Session: Session 2 — Column design TASK-642, TASK-636, TASK-635 (9-step quality pipeline)</li>
+<li>Done: TASK-642 (5-point steel curve, 26 tests), TASK-636 (effective length + API + 69+12 tests), TASK-635 (biaxial bending + API + 84+19 tests). PR #481 merged (TASK-642 + TASK-636). TASK-635 pending commit.</li>
+<li>Remaining: TASK-637 (slenderness/additional moment), TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)</li>
+<li>State: main branch, TASK-635 uncommitted</li>
+<li>Tests: 3822+ Python, 172+ FastAPI</li>
 </ul>
 <!-- HANDOFF:END -->
 
@@ -1618,9 +1619,12 @@
 <p><strong>Master Plan:</strong> <a href="../library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a></p>
 </blockquote>
 <ol>
-<li><strong>TASK-642 (5-point steel curve)</strong> ← <strong>START HERE</strong></li>
-<li><strong>TASK-635 (biaxial bending)</strong> — depends on TASK-642</li>
-<li><strong>TASK-636 (effective length)</strong> — parallelizable with TASK-635</li>
+<li><strong>Commit TASK-635</strong> (biaxial bending) — pending commit/PR</li>
+<li><strong>TASK-637 (additional moment / slenderness effects)</strong> ← <strong>START HERE</strong> after TASK-635 commit</li>
+<li><strong>TASK-638 (long column design)</strong> — <code>design_long_column</code> orchestrator using TASK-637</li>
+<li><strong>TASK-640 (design_column_is456 orchestrator)</strong> — combines all column functions</li>
+<li><strong>TASK-639 (helical reinforcement)</strong> — low priority, parallelizable</li>
+<li><strong>TASK-641 (column FastAPI endpoint)</strong> — final column endpoint</li>
 <li><strong>P12 Burn-in (15-20 sessions)</strong> — OBSERVE + MEASURE only, no EVOLVE yet</li>
 <li><strong>Quality scripts</strong> — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)</li>
 </ol>
