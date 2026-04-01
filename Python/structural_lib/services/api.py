@@ -35,6 +35,9 @@ from structural_lib.codes.is456.column.axial import (
     min_eccentricity,
     short_axial_capacity,
 )
+from structural_lib.codes.is456.column.uniaxial import (
+    design_short_column_uniaxial,
+)
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
@@ -155,6 +158,7 @@ __all__ = [
     "classify_column_is456",
     "min_eccentricity_is456",
     "design_column_axial_is456",
+    "design_short_column_uniaxial_is456",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
@@ -1784,6 +1788,144 @@ def design_column_axial_is456(
     return {
         "Pu_kN": result.Pu_kN,
         "steel_ratio": result.steel_ratio,
+        "warnings": result.warnings,
+    }
+
+
+def design_short_column_uniaxial_is456(
+    Pu_kN: float,
+    Mu_kNm: float,
+    b_mm: float,
+    D_mm: float,
+    le_mm: float,
+    fck: float,
+    fy: float,
+    Asc_mm2: float,
+    d_prime_mm: float,
+    l_unsupported_mm: float | None = None,
+) -> dict[str, Any]:
+    """Design short column for uniaxial bending per IS 456 Cl 39.5.
+
+    Generates the P-M interaction envelope for the given section and
+    determines whether the applied (Pu, Mu) lies within it. Uses radial
+    intersection to find capacity: a ray from origin through (Pu, Mu)
+    intersects the envelope at (Pu_cap, Mu_cap).
+
+    Reinforcement is assumed symmetrical: Asc_mm2 / 2 on each face, placed
+    at d_prime_mm from the nearest face.
+
+    Args:
+        Pu_kN: Applied factored axial load (kN). Must be >= 0.
+        Mu_kNm: Applied factored moment about bending axis (kNm). Must be >= 0.
+        b_mm: Column width perpendicular to bending axis (mm). Typical: 100-2000.
+        D_mm: Column depth in direction of bending (mm). Typical: 100-2000.
+        le_mm: Effective length of column (mm). Must be > 0.
+        fck: Characteristic concrete strength (N/mm²). IS 456 range: 15-80.
+        fy: Yield strength of steel (N/mm²). IS 456 range: 250-550.
+        Asc_mm2: Total longitudinal reinforcement area (mm²), symmetrically placed.
+        d_prime_mm: Distance from face to steel centroid (mm). Must be > 0 and < D_mm/2.
+        l_unsupported_mm: Unsupported length (mm) for min eccentricity per Cl 25.4.
+            If None, minimum eccentricity check is skipped.
+
+    Returns:
+        Dictionary with:
+            - ok: True if (Pu, Mu) is within capacity envelope
+            - utilization: Radial utilization ratio (applied / capacity)
+            - Pu_cap_kN: Capacity axial load at same Pu/Mu slope
+            - Mu_cap_kNm: Capacity moment at same Pu/Mu slope
+            - classification: "SHORT" or "SLENDER"
+            - eccentricity_mm: Actual eccentricity e = M/P
+            - e_min_mm: Minimum eccentricity (if l_unsupported_mm provided)
+            - warnings: List of code compliance warnings
+
+    Raises:
+        DimensionError: If geometric dimensions are invalid.
+        MaterialError: If material properties are out of range.
+        ValueError: If plausibility checks fail.
+
+    References:
+        IS 456:2000, Cl. 39.5 (P-M interaction)
+        IS 456:2000, Cl. 25.4 (minimum eccentricity)
+        IS 456:2000, Cl. 25.1.2 (column classification)
+        SP:16:1980 Design Aids, Charts 27-62, Table I
+
+    Examples:
+        >>> result = design_short_column_uniaxial_is456(
+        ...     Pu_kN=1200.0,
+        ...     Mu_kNm=150.0,
+        ...     b_mm=300.0,
+        ...     D_mm=450.0,
+        ...     le_mm=3000.0,
+        ...     fck=25.0,
+        ...     fy=415.0,
+        ...     Asc_mm2=2700.0,
+        ...     d_prime_mm=50.0,
+        ...     l_unsupported_mm=3000.0,
+        ... )
+        >>> print(f"Safe: {result['ok']}")
+        >>> print(f"Utilization: {result['utilization']:.1%}")
+
+    See Also:
+        - classify_column_is456: Check if column is short or slender
+        - min_eccentricity_is456: Calculate minimum eccentricity
+        - design_column_axial_is456: Pure axial capacity (no moment)
+        - codes.is456.column.uniaxial.design_short_column_uniaxial: Core implementation
+    """
+    from structural_lib.core.data_types import ColumnUniaxialResult
+
+    # Plausibility guards (aligned with existing api.py patterns)
+    if Pu_kN < 0:
+        raise ValueError(f"Axial load Pu_kN must be >= 0, got {Pu_kN}")
+    if Mu_kNm < 0:
+        raise ValueError(f"Moment Mu_kNm must be >= 0, got {Mu_kNm}")
+
+    # Dimension checks
+    if not (100 <= b_mm <= 2000):
+        raise ValueError(
+            f"Column width b_mm should be 100-2000mm (got {b_mm}). "
+            "If intentional, adjust validation."
+        )
+    if not (100 <= D_mm <= 2000):
+        raise ValueError(
+            f"Column depth D_mm should be 100-2000mm (got {D_mm}). "
+            "If intentional, adjust validation."
+        )
+
+    # Material checks
+    if not (15 <= fck <= 80):
+        raise ValueError(
+            f"fck should be 15-80 N/mm² per IS 456 (got {fck}). "
+            "If intentional, adjust validation."
+        )
+    if not (250 <= fy <= 550):
+        raise ValueError(
+            f"fy should be 250-550 N/mm² per IS 456 (got {fy}). "
+            "If intentional, adjust validation."
+        )
+
+    # Call core implementation (already has full validation)
+    result: ColumnUniaxialResult = design_short_column_uniaxial(
+        Pu_kN=Pu_kN,
+        Mu_kNm=Mu_kNm,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        le_mm=le_mm,
+        fck=fck,
+        fy=fy,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+        l_unsupported_mm=l_unsupported_mm,
+    )
+
+    # Return serializable dict (not dataclass)
+    return {
+        "ok": result.ok,
+        "utilization": result.utilization,
+        "Pu_cap_kN": result.Pu_cap_kN,
+        "Mu_cap_kNm": result.Mu_cap_kNm,
+        "classification": result.classification.name,
+        "eccentricity_mm": result.eccentricity_mm,
+        "e_min_mm": result.e_min_mm,
         "warnings": result.warnings,
     }
 
