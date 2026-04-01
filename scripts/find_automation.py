@@ -9,6 +9,7 @@ Usage:
     python scripts/find_automation.py "commit code"
     python scripts/find_automation.py "move file"
     python scripts/find_automation.py --list
+    python scripts/find_automation.py --group Git
     python scripts/find_automation.py --category git_workflow
 """
 
@@ -62,7 +63,9 @@ def find_task(query: str, automation_map: dict) -> list[tuple[str, dict]]:
 
 def print_task(task_name: str, task_info: dict):
     """Print a task nicely."""
-    print(f"  📋 {task_name}")
+    group = task_info.get("group", "")
+    group_tag = f" [{group}]" if group else ""
+    print(f"  📋 {task_name}{group_tag}")
     print(f"     Script: {task_info['script']}")
     print(f"     {task_info.get('description', '')}")
     if "context_docs" in task_info:
@@ -104,36 +107,70 @@ def list_all_categories(automation_map: dict):
     print("Use: python scripts/find_automation.py --category <name>")
 
 
+def get_tasks_by_group(automation_map: dict) -> dict[str, list[tuple[str, dict]]]:
+    """Group tasks by their 'group' field."""
+    tasks = automation_map.get("tasks", {})
+    groups: dict[str, list[tuple[str, dict]]] = {}
+    for task_name, task_info in tasks.items():
+        group = task_info.get("group", "Ungrouped")
+        groups.setdefault(group, []).append((task_name, task_info))
+    return groups
+
+
+def list_group(group_name: str, automation_map: dict):
+    """List all tasks in a specific group."""
+    groups = get_tasks_by_group(automation_map)
+    # Case-insensitive lookup
+    matched = None
+    for g in groups:
+        if g.lower() == group_name.lower():
+            matched = g
+            break
+    if not matched:
+        print(f"❌ Unknown group: {group_name}")
+        print(f"   Available: {', '.join(sorted(groups.keys()))}")
+        sys.exit(1)
+    print(f"\n📂 Group: {matched} ({len(groups[matched])} tasks)\n")
+    for task_name, task_info in groups[matched]:
+        print_task(task_name, task_info)
+
+
+def list_all_groups(automation_map: dict):
+    """List all groups with their task counts, then tasks under each."""
+    groups = get_tasks_by_group(automation_map)
+    total = sum(len(v) for v in groups.values())
+    print(f"\n📚 Script Groups ({total} tasks in {len(groups)} groups)\n")
+    for group_name in sorted(groups.keys()):
+        task_list = groups[group_name]
+        print(f"━━ {group_name} ({len(task_list)}) ━━")
+        for task_name, task_info in task_list:
+            print(f"  • {task_name}: {task_info.get('description', '')[:80]}")
+        print()
+    print("Use: python scripts/find_automation.py --group <name>")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Find the right automation script for a task"
     )
+    parser.add_argument("query", nargs="?", help="Task description to search for")
+    parser.add_argument("--list", action="store_true", help="List all categories")
+    parser.add_argument("--category", help="List tasks in a specific category")
     parser.add_argument(
-        "query",
-        nargs="?",
-        help="Task description to search for"
+        "--group", help="List tasks in a specific group (e.g. Git, Quality, Session)"
     )
-    parser.add_argument(
-        "--list",
-        action="store_true",
-        help="List all categories"
-    )
-    parser.add_argument(
-        "--category",
-        help="List tasks in a specific category"
-    )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output as JSON"
-    )
+    parser.add_argument("--json", action="store_true", help="Output as JSON")
 
     args = parser.parse_args()
 
     automation_map = load_automation_map()
 
     if args.list:
-        list_all_categories(automation_map)
+        list_all_groups(automation_map)
+        return
+
+    if args.group:
+        list_group(args.group, automation_map)
         return
 
     if args.category:
@@ -147,19 +184,16 @@ def main():
     matches = find_task(args.query, automation_map)
 
     if args.json:
-        result = [
-            {"task": name, **info}
-            for name, info in matches
-        ]
+        result = [{"task": name, **info} for name, info in matches]
         print(json.dumps(result, indent=2))
         return
 
     if not matches:
-        print(f"\n❌ No automation found for: \"{args.query}\"")
+        print(f'\n❌ No automation found for: "{args.query}"')
         print("   Try: python scripts/find_automation.py --list")
         sys.exit(1)
 
-    print(f"\n🔍 Automation for: \"{args.query}\"\n")
+    print(f'\n🔍 Automation for: "{args.query}"\n')
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
     for task_name, task_info in matches:

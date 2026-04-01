@@ -14,21 +14,24 @@ USAGE:
     python scripts/session.py check
     python scripts/session.py summary [--write]
     python scripts/session.py sync [--fix] [--json]
+    python scripts/session.py compact [--keep-last N] [--dry-run]
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime
 from pathlib import Path
 from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine
+
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
@@ -46,12 +49,18 @@ def _python_exe() -> str:
     return str(venv_python) if venv_python.exists() else sys.executable
 
 
-def _run_script(script_name: str, *args: str, timeout: int = 60) -> subprocess.CompletedProcess:
+def _run_script(
+    script_name: str, *args: str, timeout: int = 60
+) -> subprocess.CompletedProcess:
     script = REPO_ROOT / "scripts" / script_name
     if not script.exists():
-        return subprocess.CompletedProcess([], 1, "", f"Script not found: {script_name}")
+        return subprocess.CompletedProcess(
+            [], 1, "", f"Script not found: {script_name}"
+        )
     cmd = [_python_exe(), str(script), *args]
-    return subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True, timeout=timeout)
+    return subprocess.run(
+        cmd, cwd=REPO_ROOT, capture_output=True, text=True, timeout=timeout
+    )
 
 
 # ─── Start Session ───────────────────────────────────────────────────────────
@@ -69,8 +78,10 @@ def get_version() -> str:
 def get_branch() -> str:
     try:
         result = subprocess.run(
-            ["git", "branch", "--show-current"], cwd=REPO_ROOT,
-            capture_output=True, text=True,
+            ["git", "branch", "--show-current"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
         return result.stdout.strip() or "unknown"
     except Exception:
@@ -80,11 +91,15 @@ def get_branch() -> str:
 def get_uncommitted_status() -> str:
     try:
         result = subprocess.run(
-            ["git", "status", "--porcelain"], cwd=REPO_ROOT,
-            capture_output=True, text=True,
+            ["git", "status", "--porcelain"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
         lines = result.stdout.strip().split("\n") if result.stdout.strip() else []
-        return "Clean working tree" if not lines else f"{len(lines)} uncommitted change(s)"
+        return (
+            "Clean working tree" if not lines else f"{len(lines)} uncommitted change(s)"
+        )
     except Exception:
         return "Unable to check"
 
@@ -142,7 +157,9 @@ def add_session_log_entry() -> bool:
 def get_active_tasks() -> list[tuple[str, str, str]]:
     try:
         content = TASKS_MD.read_text()
-        active_match = re.search(r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL)
+        active_match = re.search(
+            r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL
+        )
         if not active_match:
             return [("", "No Active section found", "")]
         active_section = active_match.group(1)
@@ -199,7 +216,11 @@ def archive_completed_tasks(fix: bool = False) -> tuple[int, int]:
             if line.strip().startswith("|") and "Task" in line:
                 header_line = i
                 continue
-        if table_start is not None and header_line is not None and separator_line is None:
+        if (
+            table_start is not None
+            and header_line is not None
+            and separator_line is None
+        ):
             if line.strip().startswith("|") and "---" in line:
                 separator_line = i
                 continue
@@ -227,7 +248,9 @@ def archive_completed_tasks(fix: bool = False) -> tuple[int, int]:
         # Append before the last line (or at end)
         if hist_content.rstrip().endswith("|"):
             # Table already exists, just append rows
-            hist_content = hist_content.rstrip() + "\n" + "\n".join(archive_lines) + "\n"
+            hist_content = (
+                hist_content.rstrip() + "\n" + "\n".join(archive_lines) + "\n"
+            )
         else:
             hist_content += f"\n\n## Archived from Session {_get_session_number()}\n\n"
             hist_content += "| Task | Status | PR |\n|------|--------|-----|\n"
@@ -311,6 +334,14 @@ def cmd_start(args: argparse.Namespace) -> int:
     print(f"  Branch:   {branch}")
     print(f"  Date:     {date.today().strftime('%Y-%m-%d')}")
     print(f"  Git:      {uncommitted}")
+
+    if getattr(args, "fast", False):
+        print()
+        print("⚡ Fast mode — skipping doc/task checks")
+        print("=" * 60)
+        print()
+        return 0
+
     print()
 
     # Check/add SESSION_LOG entry
@@ -361,10 +392,163 @@ def cmd_start(args: argparse.Namespace) -> int:
     else:
         print("Ready to work! Pick a task from Active or Up Next.")
     print()
-    print("🧭 Automation lookup: .venv/bin/python scripts/find_automation.py \"your task\"")
+    print(
+        '🧭 Automation lookup: .venv/bin/python scripts/find_automation.py "your task"'
+    )
     print("📚 Context routing: scripts/automation-map.json (context_docs per task)")
-    print("📖 Read first: docs/planning/next-session-brief.md → docs/getting-started/agent-bootstrap.md")
+    print(
+        "📖 Read first: docs/planning/next-session-brief.md → docs/getting-started/agent-bootstrap.md"
+    )
     print("=" * 60)
+    print()
+    return 0
+
+
+# ─── Cost / Token Logging ────────────────────────────────────────────────────
+
+COST_LOG = REPO_ROOT / "logs" / "agent_costs.jsonl"
+
+
+def _log_session_cost(agent: str = "unknown") -> None:
+    """Append session cost entry to logs/agent_costs.jsonl."""
+    today = date.today().strftime("%Y-%m-%d")
+
+    # Count files changed today
+    result = subprocess.run(
+        [
+            "git",
+            "log",
+            "--oneline",
+            f"--since={today}",
+            "--diff-filter=ACDMRT",
+            "--name-only",
+            "--pretty=format:",
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
+    files_changed = len({l.strip() for l in result.stdout.splitlines() if l.strip()})
+
+    # Count commits today
+    result = subprocess.run(
+        ["git", "log", "--oneline", f"--since={today}"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
+    commits = len([l for l in result.stdout.strip().splitlines() if l.strip()])
+
+    # Count lines added/removed today
+    result = subprocess.run(
+        ["git", "log", f"--since={today}", "--pretty=tformat:", "--numstat"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
+    lines_added = 0
+    lines_removed = 0
+    for line in result.stdout.strip().splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 2:
+            try:
+                lines_added += int(parts[0])
+            except ValueError:
+                pass
+            try:
+                lines_removed += int(parts[1])
+            except ValueError:
+                pass
+
+    entry = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "agent": agent,
+        "session_id": f"S{_get_session_number()}",
+        "task_id": "",
+        "files_changed": files_changed,
+        "git_commits": commits,
+        "lines_added": lines_added,
+        "lines_removed": lines_removed,
+        "duration_min": 0,
+    }
+
+    COST_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with open(COST_LOG, "a") as f:
+        f.write(json.dumps(entry) + "\n")
+
+
+def cmd_costs(args: argparse.Namespace) -> int:
+    """Show cost/session entries from logs/agent_costs.jsonl."""
+    if not COST_LOG.exists() or COST_LOG.stat().st_size == 0:
+        print("No cost entries yet. Run 'session.py end --agent <name>' to record.")
+        return 0
+
+    entries = []
+    for line in COST_LOG.read_text().splitlines():
+        line = line.strip()
+        if line:
+            try:
+                entries.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+
+    if not entries:
+        print("No valid cost entries found.")
+        return 0
+
+    # Filter by agent
+    agent_filter = getattr(args, "agent", None)
+    if agent_filter:
+        entries = [e for e in entries if e.get("agent") == agent_filter]
+        if not entries:
+            print(f"No entries for agent '{agent_filter}'.")
+            return 0
+
+    if getattr(args, "summary", False):
+        total = len(entries)
+        avg_files = (
+            sum(e.get("files_changed", 0) for e in entries) / total if total else 0
+        )
+        avg_commits = (
+            sum(e.get("git_commits", 0) for e in entries) / total if total else 0
+        )
+        total_added = sum(e.get("lines_added", 0) for e in entries)
+        total_removed = sum(e.get("lines_removed", 0) for e in entries)
+        agents = sorted({e.get("agent", "unknown") for e in entries})
+
+        print()
+        print("=" * 60)
+        print("📊 SESSION COST SUMMARY")
+        print("=" * 60)
+        print(f"  Total sessions:   {total}")
+        print(f"  Agents:           {', '.join(agents)}")
+        print(f"  Avg files/session: {avg_files:.1f}")
+        print(f"  Avg commits/session: {avg_commits:.1f}")
+        print(f"  Total lines added: {total_added:,}")
+        print(f"  Total lines removed: {total_removed:,}")
+        print("=" * 60)
+        print()
+        return 0
+
+    # Show last N entries as table
+    last_n = getattr(args, "last", 10) or 10
+    entries = entries[-last_n:]
+
+    print()
+    header = f"{'Timestamp':<20} {'Agent':<12} {'Session':<8} {'Files':>5} {'Commits':>7} {'Added':>7} {'Removed':>7}"
+    print(header)
+    print("-" * len(header))
+    for e in entries:
+        ts = e.get("timestamp", "")[:19]
+        agent = e.get("agent", "?")[:11]
+        sid = e.get("session_id", "")[:7]
+        files = e.get("files_changed", 0)
+        commits = e.get("git_commits", 0)
+        added = e.get("lines_added", 0)
+        removed = e.get("lines_removed", 0)
+        print(
+            f"{ts:<20} {agent:<12} {sid:<8} {files:>5} {commits:>7} {added:>7} {removed:>7}"
+        )
     print()
     return 0
 
@@ -375,8 +559,10 @@ def cmd_start(args: argparse.Namespace) -> int:
 def get_uncommitted_changes() -> list[str]:
     try:
         result = subprocess.run(
-            ["git", "status", "--porcelain"], cwd=REPO_ROOT,
-            capture_output=True, text=True,
+            ["git", "status", "--porcelain"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
         if not result.stdout.strip():
             return []
@@ -413,7 +599,11 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
                         has_focus = True
                 if "**Completed:**" in line:
                     has_completed = True
-                if has_completed and line.strip().startswith("-") and len(line.strip()) > 2:
+                if (
+                    has_completed
+                    and line.strip().startswith("-")
+                    and len(line.strip()) > 2
+                ):
                     if "<!--" not in line:
                         has_completed = True
 
@@ -432,7 +622,11 @@ def check_doc_links() -> tuple[bool, str]:
         result = _run_script("check_links.py", timeout=60)
         if result.returncode == 0:
             return True, "All doc links valid"
-        broken = [line.strip() for line in result.stdout.split("\n") if "BROKEN" in line or "❌" in line]
+        broken = [
+            line.strip()
+            for line in result.stdout.split("\n")
+            if "BROKEN" in line or "❌" in line
+        ]
         return False, f"{len(broken)} broken link(s) found"
     except Exception as e:
         return True, f"Link check skipped: {e}"
@@ -442,11 +636,18 @@ def get_changed_doc_folders() -> list[Path]:
     try:
         result = subprocess.run(
             ["git", "diff", "--name-only", "HEAD~5", "HEAD"],
-            cwd=REPO_ROOT, capture_output=True, text=True,
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
-        changed_files = result.stdout.strip().split("\n") if result.stdout.strip() else []
+        changed_files = (
+            result.stdout.strip().split("\n") if result.stdout.strip() else []
+        )
         result2 = subprocess.run(
-            ["git", "status", "--porcelain"], cwd=REPO_ROOT, capture_output=True, text=True,
+            ["git", "status", "--porcelain"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
         for line in result2.stdout.strip().split("\n"):
             if line.strip():
@@ -480,7 +681,10 @@ def update_folder_readmes(folders: list[Path], fix: bool = False) -> int:
                 continue
             result = subprocess.run(
                 [_python_exe(), str(gen_script), str(folder)],
-                cwd=REPO_ROOT, capture_output=True, text=True, timeout=30,
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
             )
             if result.returncode == 0:
                 updated += 1
@@ -494,12 +698,16 @@ def get_today_prs() -> list[str]:
         today_str = date.today().strftime("%Y-%m-%d")
         result = subprocess.run(
             ["git", "log", "--oneline", f"--since={today_str}", "--merges", "-n", "10"],
-            cwd=REPO_ROOT, capture_output=True, text=True,
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
         if not result.stdout.strip():
             result = subprocess.run(
                 ["git", "log", "--oneline", f"--since={today_str}", "-n", "10"],
-                cwd=REPO_ROOT, capture_output=True, text=True,
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
             )
         lines = result.stdout.strip().split("\n") if result.stdout.strip() else []
         return [line for line in lines if line][:5]
@@ -593,11 +801,17 @@ def cmd_end(args: argparse.Namespace) -> int:
     total_rows, to_archive = archive_completed_tasks(fix=args.fix)
     if to_archive > 0:
         if args.fix:
-            print(f"  ✅ Archived {to_archive} old completed task(s) to tasks-history.md (kept {total_rows - to_archive})")
+            print(
+                f"  ✅ Archived {to_archive} old completed task(s) to tasks-history.md (kept {total_rows - to_archive})"
+            )
         else:
-            print(f"  ℹ️  {to_archive} completed task(s) ready to archive (run with --fix)")
+            print(
+                f"  ℹ️  {to_archive} completed task(s) ready to archive (run with --fix)"
+            )
     else:
-        print(f"  ✅ Completed tasks table is tidy ({total_rows} rows, max {MAX_COMPLETED_ROWS})")
+        print(
+            f"  ✅ Completed tasks table is tidy ({total_rows} rows, max {MAX_COMPLETED_ROWS})"
+        )
     print()
 
     # 8. Governance compliance
@@ -607,7 +821,10 @@ def cmd_end(args: argparse.Namespace) -> int:
         try:
             result = subprocess.run(
                 [_python_exe(), str(gov_script)],
-                cwd=REPO_ROOT, capture_output=True, text=True, timeout=30,
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
             )
             if result.returncode == 0:
                 print("  ✅ All governance checks passed")
@@ -635,6 +852,16 @@ def cmd_end(args: argparse.Namespace) -> int:
             print(f"  • {pr}")
     else:
         print("  (No commits today)")
+    print()
+
+    # 10. Log session cost
+    print("💰 Session Cost Logging:")
+    agent_name = getattr(args, "agent", None) or "unknown"
+    try:
+        _log_session_cost(agent=agent_name)
+        print(f"  ✅ Cost entry logged (agent={agent_name})")
+    except Exception as exc:
+        print(f"  ⚠️  Could not log cost: {exc}")
     print()
 
     print("=" * 60)
@@ -726,18 +953,22 @@ def _build_handoff_lines(date_str: str, block: list[str]) -> list[str]:
 
 def _update_next_brief(handoff_lines: list[str]) -> None:
     text = NEXT_BRIEF.read_text(encoding="utf-8")
-    block = "\n".join([
-        "## Latest Handoff (auto)",
-        "",
-        HANDOFF_START,
-        *handoff_lines,
-        HANDOFF_END,
-        "",
-    ])
+    block = "\n".join(
+        [
+            "## Latest Handoff (auto)",
+            "",
+            HANDOFF_START,
+            *handoff_lines,
+            HANDOFF_END,
+            "",
+        ]
+    )
     if HANDOFF_START in text and HANDOFF_END in text:
         pattern = re.compile(
             r"## Latest Handoff \(auto\)\n\n"
-            + re.escape(HANDOFF_START) + r"[\s\S]*?" + re.escape(HANDOFF_END)
+            + re.escape(HANDOFF_START)
+            + r"[\s\S]*?"
+            + re.escape(HANDOFF_END)
         )
         new_text = pattern.sub(block.rstrip(), text)
     else:
@@ -823,14 +1054,18 @@ def _validate_commit_hashes(lines: list[str], filename: str) -> list[str]:
         re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}"),
     ]
     for line_num, line in enumerate(lines, 1):
-        if not any(kw in line.lower() for kw in ["commit", "hash", "sha", "merged", "squash"]):
+        if not any(
+            kw in line.lower() for kw in ["commit", "hash", "sha", "merged", "squash"]
+        ):
             continue
         for match in COMMIT_HASH_RE.finditer(line):
             candidate = match.group(1)
             if any(p.match(candidate) for p in skip_patterns):
                 continue
             if len(set(candidate)) == 1:
-                errors.append(f"{filename}:{line_num}: Suspicious hash '{candidate}' (all same character)")
+                errors.append(
+                    f"{filename}:{line_num}: Suspicious hash '{candidate}' (all same character)"
+                )
             # Skip pure digit candidates (likely numbers, not hashes)
     return errors
 
@@ -901,7 +1136,9 @@ def cmd_check(args: argparse.Namespace) -> int:
         print(f"ERROR: SESSION_LOG.md missing session entry for {date_str}")
         return 1
 
-    if first_session_line is not None and not first_session_line.startswith(session_heading):
+    if first_session_line is not None and not first_session_line.startswith(
+        session_heading
+    ):
         print("ERROR: SESSION_LOG.md newest session must be at the top (append-only).")
         print(f"Expected first session header to start with {session_heading}.")
         return 1
@@ -946,7 +1183,10 @@ def _get_commits_since(since_date: str | None) -> list[dict[str, str]]:
         args.append("-n20")
 
     result = subprocess.run(
-        args, cwd=REPO_ROOT, capture_output=True, text=True,
+        args,
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
     )
     if not result.stdout.strip():
         return []
@@ -967,18 +1207,29 @@ def _get_commits_since(since_date: str | None) -> list[dict[str, str]]:
 
         # Get files changed in this commit
         files_result = subprocess.run(
-            ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", hash_val.strip()],
-            cwd=REPO_ROOT, capture_output=True, text=True,
+            [
+                "git",
+                "diff-tree",
+                "--no-commit-id",
+                "--name-only",
+                "-r",
+                hash_val.strip(),
+            ],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
         )
         files = [f for f in files_result.stdout.strip().splitlines() if f]
 
-        commits.append({
-            "hash": hash_val[:7],
-            "type": commit_type,
-            "message": message.strip(),
-            "desc": desc.strip(),
-            "files": files,
-        })
+        commits.append(
+            {
+                "hash": hash_val[:7],
+                "type": commit_type,
+                "message": message.strip(),
+                "desc": desc.strip(),
+                "files": files,
+            }
+        )
 
     return commits
 
@@ -999,7 +1250,11 @@ def _detect_new_artifacts(commits: list[dict[str, str]]) -> dict[str, list[str]]
         if f.startswith("react_app/src/hooks/") and f.endswith(".ts"):
             name = Path(f).stem
             new_items["hooks"].append(name)
-        elif f.startswith("fastapi_app/routers/") and f.endswith(".py") and "__init__" not in f:
+        elif (
+            f.startswith("fastapi_app/routers/")
+            and f.endswith(".py")
+            and "__init__" not in f
+        ):
             name = Path(f).stem
             new_items["endpoints"].append(name)
         elif f.startswith("react_app/src/components/") and f.endswith(".tsx"):
@@ -1246,11 +1501,18 @@ def cmd_context(args: argparse.Namespace) -> int:
         for line in lines:
             stripped = line.strip()
             # Skip title, metadata, separators, empty, HTML comments
-            if stripped.startswith("#") or stripped.startswith("**Type:") or \
-               stripped.startswith("**Audience:") or stripped.startswith("**Status:") or \
-               stripped.startswith("**Importance:") or stripped.startswith("**Created:") or \
-               stripped.startswith("**Last Updated:") or stripped == "---" or \
-               stripped.startswith("<!--") or not stripped:
+            if (
+                stripped.startswith("#")
+                or stripped.startswith("**Type:")
+                or stripped.startswith("**Audience:")
+                or stripped.startswith("**Status:")
+                or stripped.startswith("**Importance:")
+                or stripped.startswith("**Created:")
+                or stripped.startswith("**Last Updated:")
+                or stripped == "---"
+                or stripped.startswith("<!--")
+                or not stripped
+            ):
                 if stripped == "---":
                     skip_metadata = False
                 continue
@@ -1292,11 +1554,17 @@ def cmd_context(args: argparse.Namespace) -> int:
     )
     changes = len([l for l in result.stdout.strip().split("\n") if l.strip()])
     result2 = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True, cwd=REPO_ROOT
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
     )
     branch = result2.stdout.strip()
     result3 = subprocess.run(
-        ["git", "log", "-1", "--format=%h %s (%cr)"], capture_output=True, text=True, cwd=REPO_ROOT
+        ["git", "log", "-1", "--format=%h %s (%cr)"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
     )
     last_commit = result3.stdout.strip()
 
@@ -1316,7 +1584,9 @@ def cmd_context(args: argparse.Namespace) -> int:
         # Find session headers (## YYYY-MM-DD or ## Session N)
         sessions = []
         for line in text.split("\n"):
-            if line.startswith("## ") and ("Session" in line or re.match(r"^## \d{4}-\d{2}-\d{2}", line)):
+            if line.startswith("## ") and (
+                "Session" in line or re.match(r"^## \d{4}-\d{2}-\d{2}", line)
+            ):
                 sessions.append(line.strip())
         if sessions:
             print(f"{BOLD}📝 Recent sessions:{NC}")
@@ -1337,6 +1607,233 @@ def cmd_context(args: argparse.Namespace) -> int:
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 
+# ─── Compact SESSION_LOG ─────────────────────────────────────────────────────
+
+SESSION_ARCHIVE_DIR = REPO_ROOT / "docs" / "_archive" / "session-logs"
+SESSION_INDEX = REPO_ROOT / "logs" / "session_index.json"
+
+
+def _parse_session_entries(text: str) -> tuple[str, list[dict]]:
+    """Parse SESSION_LOG.md into header and list of session entries.
+
+    Returns (header_text, entries) where each entry dict has:
+      - date: str (YYYY-MM-DD)
+      - session_label: str (e.g. 'Session 106')
+      - summary: str (first meaningful line after header)
+      - body: str (full text of the entry including the ## header)
+    """
+    lines = text.split("\n")
+    header_lines: list[str] = []
+    entries: list[dict] = []
+    current_entry_start: int | None = None
+
+    for i, line in enumerate(lines):
+        match = DATE_RE.match(line.strip())
+        if match:
+            # Close previous entry
+            if current_entry_start is not None:
+                _close_entry(lines, current_entry_start, i, entries)
+            current_entry_start = i
+        elif current_entry_start is None:
+            header_lines.append(line)
+
+    # Close last entry
+    if current_entry_start is not None:
+        _close_entry(lines, current_entry_start, len(lines), entries)
+
+    header = "\n".join(header_lines)
+    return header, entries
+
+
+def _close_entry(lines: list[str], start: int, end: int, entries: list[dict]) -> None:
+    """Extract one session entry from lines[start:end] and append to entries."""
+    header_line = lines[start].strip()
+    match = DATE_RE.match(header_line)
+    if not match:
+        return
+    entry_date = match.group(1)
+    # Extract session label (e.g. 'Session 106')
+    label_match = re.search(r"Session\s+(\d+)", header_line)
+    session_label = f"Session {label_match.group(1)}" if label_match else ""
+    # Find first summary line (non-empty, non-header, non-metadata)
+    summary = ""
+    for line in lines[start + 1 : end]:
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#") and not stripped.startswith("---"):
+            # Use Focus line if present, otherwise first content line
+            if stripped.startswith("**Focus:**"):
+                summary = stripped.split("**Focus:**", 1)[1].strip()
+                break
+            elif not summary:
+                summary = stripped
+    body = "\n".join(lines[start:end]).rstrip()
+    entries.append(
+        {
+            "date": entry_date,
+            "session_label": session_label,
+            "summary": summary[:120],
+            "body": body,
+        }
+    )
+
+
+def _write_archive(month_key: str, entry_bodies: list[str]) -> Path:
+    """Append entries to the monthly archive file, creating it if needed."""
+    SESSION_ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    archive_path = SESSION_ARCHIVE_DIR / f"{month_key}.md"
+
+    if archive_path.exists():
+        existing = archive_path.read_text(encoding="utf-8")
+        # Append new entries
+        new_content = existing.rstrip() + "\n\n" + "\n\n".join(entry_bodies) + "\n"
+    else:
+        new_content = f"# SESSION_LOG Archive — {month_key}\n\n"
+        new_content += "\n\n".join(entry_bodies) + "\n"
+
+    archive_path.write_text(new_content, encoding="utf-8")
+    return archive_path
+
+
+def _build_session_index(
+    entries_in_log: list[dict], archived_entries: list[dict]
+) -> dict:
+    """Build the session_index.json structure."""
+    sessions = []
+
+    for entry in entries_in_log:
+        sessions.append(
+            {
+                "date": entry["date"],
+                "session_number": entry["session_label"],
+                "summary": entry["summary"],
+                "archive_file": None,
+                "in_main_log": True,
+            }
+        )
+
+    for entry in archived_entries:
+        month_key = entry["date"][:7]  # YYYY-MM
+        sessions.append(
+            {
+                "date": entry["date"],
+                "session_number": entry["session_label"],
+                "summary": entry["summary"],
+                "archive_file": f"docs/_archive/session-logs/{month_key}.md",
+                "in_main_log": False,
+            }
+        )
+
+    # Sort by date descending
+    sessions.sort(key=lambda s: s["date"], reverse=True)
+
+    total = len(sessions)
+    in_log = sum(1 for s in sessions if s["in_main_log"])
+    return {
+        "sessions": sessions,
+        "_meta": {
+            "total_sessions": total,
+            "main_log_entries": in_log,
+            "archived_entries": total - in_log,
+            "last_compacted": date.today().strftime("%Y-%m-%d"),
+        },
+    }
+
+
+def cmd_compact(args: argparse.Namespace) -> int:
+    """Compact SESSION_LOG.md — keep last N entries, archive older ones."""
+    keep_last = args.keep_last
+    dry_run = args.dry_run
+
+    if not SESSION_LOG.exists():
+        print("❌ SESSION_LOG.md not found")
+        return 1
+
+    text = SESSION_LOG.read_text(encoding="utf-8")
+    header, entries = _parse_session_entries(text)
+
+    print("📝 SESSION_LOG Compaction")
+    print(f"   Entries found: {len(entries)}")
+    print(f"   Keep last:     {keep_last}")
+    print()
+
+    if len(entries) <= keep_last:
+        print(
+            f"✅ Nothing to compact — only {len(entries)} entries (threshold: {keep_last})"
+        )
+        # Still generate the index
+        if not dry_run:
+            index_data = _build_session_index(entries, [])
+            SESSION_INDEX.parent.mkdir(parents=True, exist_ok=True)
+            SESSION_INDEX.write_text(
+                json.dumps(index_data, indent=2) + "\n", encoding="utf-8"
+            )
+            print(f"📇 Updated {SESSION_INDEX.relative_to(REPO_ROOT)}")
+        return 0
+
+    # Entries are in document order (newest first in the file)
+    entries_to_keep = entries[:keep_last]
+    entries_to_archive = entries[keep_last:]
+
+    print(f"   To keep:       {len(entries_to_keep)}")
+    print(f"   To archive:    {len(entries_to_archive)}")
+    print()
+
+    # Group archived entries by month
+    by_month: dict[str, list[str]] = {}
+    for entry in entries_to_archive:
+        month_key = entry["date"][:7]  # YYYY-MM
+        by_month.setdefault(month_key, []).append(entry["body"])
+
+    for month_key, bodies in sorted(by_month.items()):
+        archive_path = SESSION_ARCHIVE_DIR / f"{month_key}.md"
+        exists = archive_path.exists()
+        action = "append to" if exists else "create"
+        print(
+            f"   📦 {action} {archive_path.relative_to(REPO_ROOT)} ({len(bodies)} entries)"
+        )
+
+    if dry_run:
+        print()
+        print("🔍 Dry run — no changes made")
+        print("   Entries that would be archived:")
+        for entry in entries_to_archive:
+            print(
+                f"     • {entry['date']} — {entry['session_label']}: {entry['summary'][:60]}"
+            )
+        return 0
+
+    # Write archives
+    for month_key, bodies in sorted(by_month.items()):
+        _write_archive(month_key, bodies)
+
+    # Rewrite SESSION_LOG.md with only kept entries
+    kept_bodies = [entry["body"] for entry in entries_to_keep]
+    new_log = header.rstrip() + "\n\n" + "\n\n".join(kept_bodies) + "\n"
+    SESSION_LOG.write_text(new_log, encoding="utf-8")
+
+    # Generate session index
+    index_data = _build_session_index(entries_to_keep, entries_to_archive)
+    SESSION_INDEX.parent.mkdir(parents=True, exist_ok=True)
+    SESSION_INDEX.write_text(json.dumps(index_data, indent=2) + "\n", encoding="utf-8")
+
+    original_size = len(text)
+    new_size = len(new_log)
+    reduction = original_size - new_size
+    pct = (reduction / original_size * 100) if original_size > 0 else 0
+
+    print()
+    print("✅ Compaction complete")
+    print(
+        f"   Archived:    {len(entries_to_archive)} entries to {len(by_month)} file(s)"
+    )
+    print(f"   Remaining:   {len(entries_to_keep)} entries in SESSION_LOG.md")
+    print(
+        f"   Size:        {original_size:,} → {new_size:,} bytes ({pct:.0f}% reduction)"
+    )
+    print(f"   Index:       {SESSION_INDEX.relative_to(REPO_ROOT)}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="session.py",
@@ -1346,13 +1843,27 @@ def build_parser() -> argparse.ArgumentParser:
 
     # start
     p_start = sub.add_parser("start", help="Start a coding session")
-    p_start.add_argument("--quick", action="store_true", help="Skip test count verification")
-    p_start.add_argument("--no-add", action="store_true", help="Don't add SESSION_LOG entry")
+    p_start.add_argument(
+        "--quick", action="store_true", help="Skip test count verification"
+    )
+    p_start.add_argument(
+        "--no-add", action="store_true", help="Don't add SESSION_LOG entry"
+    )
+    p_start.add_argument(
+        "--fast", action="store_true", help="Quick start — skip doc/task checks"
+    )
 
     # end
     p_end = sub.add_parser("end", help="End-of-session checks")
-    p_end.add_argument("--fix", action="store_true", help="Auto-fix issues where possible")
-    p_end.add_argument("--quick", action="store_true", help="Skip test count verification")
+    p_end.add_argument(
+        "--fix", action="store_true", help="Auto-fix issues where possible"
+    )
+    p_end.add_argument(
+        "--quick", action="store_true", help="Skip test count verification"
+    )
+    p_end.add_argument(
+        "--agent", type=str, default=None, help="Agent name for cost logging"
+    )
 
     # handoff
     sub.add_parser("handoff", help="Update next-session-brief.md from SESSION_LOG")
@@ -1361,16 +1872,48 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("check", help="Validate session docs consistency")
 
     # summary
-    p_summary = sub.add_parser("summary", help="Auto-generate session summary from git history")
-    p_summary.add_argument("--write", action="store_true", help="Write summary to SESSION_LOG + handoff")
+    p_summary = sub.add_parser(
+        "summary", help="Auto-generate session summary from git history"
+    )
+    p_summary.add_argument(
+        "--write", action="store_true", help="Write summary to SESSION_LOG + handoff"
+    )
 
     # sync
-    p_sync = sub.add_parser("sync", help="Sync stale numbers across documentation files")
+    p_sync = sub.add_parser(
+        "sync", help="Sync stale numbers across documentation files"
+    )
     p_sync.add_argument("--fix", action="store_true", help="Apply updates to doc files")
-    p_sync.add_argument("--json", dest="json_output", action="store_true", help="Output metrics as JSON")
+    p_sync.add_argument(
+        "--json", dest="json_output", action="store_true", help="Output metrics as JSON"
+    )
+
+    # costs
+    p_costs = sub.add_parser("costs", help="Show session cost/efficiency entries")
+    p_costs.add_argument(
+        "--last", type=int, default=10, help="Show last N entries (default 10)"
+    )
+    p_costs.add_argument("--agent", type=str, default=None, help="Filter by agent name")
+    p_costs.add_argument("--summary", action="store_true", help="Show aggregate stats")
 
     # context
     sub.add_parser("context", help="Dump compact session context for quick orientation")
+
+    # compact
+    p_compact = sub.add_parser(
+        "compact", help="Compact SESSION_LOG.md — archive old entries"
+    )
+    p_compact.add_argument(
+        "--keep-last",
+        type=int,
+        default=10,
+        help="Number of recent entries to keep in SESSION_LOG.md (default: 10)",
+    )
+    p_compact.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be archived without making changes",
+    )
 
     return parser
 
@@ -1390,7 +1933,9 @@ def main() -> int:
         "check": cmd_check,
         "summary": cmd_summary,
         "sync": cmd_sync,
+        "costs": cmd_costs,
         "context": cmd_context,
+        "compact": cmd_compact,
     }
 
     return handlers[args.command](args)

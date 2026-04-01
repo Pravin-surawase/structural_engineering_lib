@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-04-01
-**Files:** 97
+**Last Updated:** 2026-04-02
+**Files:** 108
 
 ## Config Files
 
@@ -20,8 +20,9 @@
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
+| [_tmp_add_groups.py](_tmp_add_groups.py) | Temporary script to add group fields to automation-map.json. | 0 | 0 | 168 |
 | [agent_compliance_checker.py](agent_compliance_checker.py) | Agent compliance checker — verify agents followed their .age | 0 | 12 | 514 |
-| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 18 | 590 |
+| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 18 | 579 |
 | [agent_drift_detector.py](agent_drift_detector.py) | Agent drift detector — detect when agents deviate from presc | 0 | 9 | 591 |
 | [agent_evolve_instructions.py](agent_evolve_instructions.py) | Agent instruction evolver — self-improving agent customizati | 0 | 11 | 483 |
 | [agent_feedback.py](agent_feedback.py) | Agent feedback collection and analysis. | 0 | 6 | 380 |
@@ -30,6 +31,7 @@
 | [agent_trends.py](agent_trends.py) | Agent trends — time series analysis and degradation detectio | 0 | 7 | 375 |
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit Input Validation Coverage for structural_lib. | 2 | 5 | 393 |
+| [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 2 | 363 |
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 773 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 439 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 799 |
@@ -57,6 +59,7 @@
 | [check_type_annotations.py](check_type_annotations.py) | Type Annotation Checker for Streamlit Application | 4 | 1 | 542 |
 | [cleanup_stale_branches.py](cleanup_stale_branches.py) | Cleanup stale remote branches. | 0 | 7 | 187 |
 | [collect_diagnostics.py](collect_diagnostics.py) | Collect a compact diagnostics bundle for debugging and suppo | 0 | 2 | 122 |
+| [config_precedence.py](config_precedence.py) | Configuration precedence auditing for instruction files. | 2 | 10 | 562 |
 | [create_doc.py](create_doc.py) | Create a new documentation file with proper metadata header. | 0 | 5 | 261 |
 | [create_test_scaffold.py](create_test_scaffold.py) | Test Scaffold Generator (Solution 2) | 0 | 3 | 236 |
 | [discover_api_signatures.py](discover_api_signatures.py) | Discover and display structural_lib API function signatures. | 2 | 6 | 376 |
@@ -64,7 +67,7 @@
 | [evolve.py](evolve.py) | Self-evolution engine — orchestrates project health, feedbac | 0 | 12 | 543 |
 | [export_paper_data.py](export_paper_data.py) | Export agent performance data for academic paper. | 0 | 8 | 388 |
 | [external_cli_test.py](external_cli_test.py) | External CLI smoke test (S-007). | 1 | 1 | 396 |
-| [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 6 | 174 |
+| [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 9 | 208 |
 | [fix_broken_links.py](fix_broken_links.py) | Fix broken internal links in markdown files. | 0 | 6 | 251 |
 | [generate_api_manifest.py](generate_api_manifest.py) | Generate or validate the public API manifest for structural_ | 0 | 1 | 157 |
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 526 |
@@ -74,18 +77,26 @@
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 511 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 470 |
+| [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 479 |
+| [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 847 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 200 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 741 |
+| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 433 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 7 | 919 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 484 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 1401 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 1946 |
+| [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 352 |
+| [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 8 | 516 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 389 |
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script (V3 Preparation) | 2 | 10 | 444 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 207 |
+| [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 294 |
 | [test_import_3d_pipeline.py](test_import_3d_pipeline.py) | Import → Design → 3D Pipeline Test | 0 | 1 | 203 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 249 |
 | [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 0 | 50 |
+| [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 3 | 312 |
+| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 13 | 535 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 608 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 305 |
@@ -124,3 +135,4 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [git-hooks/](git-hooks/) | 3 |  |
+| [hooks/](hooks/) 📦 | 5 |  |

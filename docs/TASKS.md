@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 (TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)
+**Updated:** 2026-04-02 (19/23 claw-code adaptation tasks done — agent infrastructure, TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)
 
 ---
 
@@ -229,6 +229,34 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 | TASK-800.P11 | run.sh evolve integration | P11 | `run.sh` | ✅ Done |
 | TASK-800.P12 | Burn-in validation (15-20 sessions) | P12 | — | 📋 Ongoing |
 | TASK-800.T | Evolver unit tests | Tests | — | ✅ Done (c1e0d222) |
+
+### Agent Infrastructure (claw-code adaptation)
+
+| # | Task ID | Feature | Script/File | Status |
+|---|---------|---------|-------------|--------|
+| 1 | TASK-850 | Agent Registry JSON | `agents/agent_registry.json` | ✅ Done |
+| 2 | TASK-851 | Unified Tool Registry | `scripts/tool_registry.py` | ✅ Done |
+| 3 | TASK-852 | Prompt Router | `scripts/prompt_router.py` | ✅ Done |
+| 4 | TASK-853 | run.sh integration (route, tools, pipeline) | `run.sh` | ✅ Done |
+| 5 | TASK-854 | Automation-map groups | `scripts/automation-map.json` | ✅ Done |
+| 6 | TASK-855 | SESSION_LOG compaction | `scripts/session.py compact` | ✅ Done |
+| 7 | TASK-856 | Session state persistence | `scripts/session_store.py` | ✅ Done |
+| 8 | TASK-857 | Pipeline state tracking | `scripts/pipeline_state.py` | ✅ Done |
+| 9 | TASK-858 | Fast session start (--fast) | `scripts/session.py start --fast` | ✅ Done |
+| 10 | TASK-859 | Cost/token logging | `scripts/session.py costs` | ✅ Done |
+| 11 | TASK-860 | Tool permission enforcement | `scripts/tool_permissions.py` | ✅ Done |
+| 12 | TASK-862 | Permission audit report | `scripts/audit_permissions.py` | ✅ Done |
+| 13 | TASK-863 | Hook framework | `scripts/hooks/` | ✅ Done |
+| 14 | TASK-864 | Hook implementations (6 hooks) | `scripts/hooks/pre_commit.py` etc. | ✅ Done |
+| 15 | TASK-865 | CLI smoke tests (13 tests) | `scripts/test_cli_smoke.py` | ✅ Done |
+| 16 | TASK-866 | Parity dashboard (4 dimensions) | `scripts/parity_dashboard.py` | ✅ Done |
+| 17 | TASK-868 | Config precedence validator | `scripts/config_precedence.py` | ✅ Done |
+| 18 | TASK-870 | Parallel pipeline stages | `scripts/pipeline_state.py` (updated) | ✅ Done |
+| 19 | TASK-872 | Skill tier classification | `scripts/skill_tiers.py` | ✅ Done |
+| 20 | TASK-861 | Trust gate initialization | 📋 Session 4 |
+| 21 | TASK-867 | Snapshot regression tests | 📋 Session 4 |
+| 22 | TASK-869 | Update all 15 agent files | 📋 Session 4 |
+| 23 | TASK-871 | Update AGENTS.md/CLAUDE.md | 📋 Session 4 |
 
 ## Backlog
 

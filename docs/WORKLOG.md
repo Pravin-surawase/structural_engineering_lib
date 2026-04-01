@@ -48,6 +48,19 @@ tags: []
 | 2026-04-01 | TASK-800.P6 | Created agent_drift_detector.py (12 agents × drift rules, violation tracking) | d875dcfa |
 | 2026-04-01 | TASK-800.P7 | Created agent_compliance_checker.py (8 compliance rules, per-agent checks) | d875dcfa |
 | 2026-04-01 | TASK-800.P8 | Created agent_trends.py (Mann-Kendall trend test, degradation alerts) | d69c4a4f |
+| 2026-04-02 | TASK-872 | Created skill_tiers.py — 3 tiers (core/specialist/experimental), validation | claw-code S3 |
+| 2026-04-02 | TASK-870 | Added parallel pipeline to pipeline_state.py — PARALLEL_GROUPS, advance_parallel | claw-code S3 |
+| 2026-04-02 | TASK-868 | Created config_precedence.py — 5 precedence levels, audit command | claw-code S3 |
+| 2026-04-02 | TASK-866 | Created parity dashboard — 4 dimensions, 78% overall score | claw-code S3 |
+| 2026-04-02 | TASK-865 | Created CLI smoke tests — 13 tests, all passing | claw-code S3 |
+| 2026-04-02 | TASK-864 | Implemented 6 hooks — pre_commit(3), post_commit(2), pre_route(1) | claw-code S3 |
+| 2026-04-02 | TASK-863 | Created hooks/ framework — HookRunner, auto-discovery, 5 event types | claw-code S3 |
+| 2026-04-02 | TASK-853 | Added route, tools, pipeline commands to run.sh | claw-code S2 |
+| 2026-04-02 | TASK-858 | Added --fast flag to session.py start — <1s startup | claw-code S2 |
+| 2026-04-02 | TASK-857 | Created pipeline_state.py — 6 functions, JSON persistence, default+IS456 steps | claw-code S2 |
+| 2026-04-02 | TASK-862 | Created audit_permissions.py — 5 anomaly checks, full audit reports | claw-code S2 |
+| 2026-04-02 | TASK-860 | Created tool_permissions.py — 3 permission levels, file scope enforcement | claw-code S2 |
+| 2026-04-02 | TASK-852 | Created prompt_router.py — 14 routing rules, weighted keyword scoring | claw-code S2 |
 | 2026-04-02 | TASK-637 | feat(column): additional moment for slender columns IS 456 Cl 39.7.1 (slenderness.py, 24 tests) | pending |
 | 2026-04-02 | TASK-637 | feat(column): POST /column/additional-moment FastAPI endpoint + 8 API tests | pending |
 | 2026-04-01 | TASK-800.P10 | Created export_paper_data.py (CSV export, bootstrap CIs, Hedges' g) | d69c4a4f |
