@@ -160,6 +160,7 @@ __all__ = [
     "check_compliance_report",
     # Column Design (IS 456 Clause 39)
     "calculate_effective_length_is456",
+    "calculate_additional_moment_is456",
     "classify_column_is456",
     "min_eccentricity_is456",
     "design_column_axial_is456",
@@ -2227,6 +2228,96 @@ def biaxial_bending_check_is456(
     )
 
     # Return serializable dict (not dataclass)
+    return result.to_dict()
+
+
+def calculate_additional_moment_is456(
+    Pu_kN: float,
+    b_mm: float,
+    D_mm: float,
+    lex_mm: float,
+    ley_mm: float,
+    fck: float,
+    fy: float,
+    Asc_mm2: float,
+    d_prime_mm: float,
+) -> dict[str, Any]:
+    """Calculate additional moment for slender columns per IS 456 Cl 39.7.1.
+
+    For slender columns (le/D >= 12), IS 456 requires an additional moment
+    Ma = Pu × eadd to account for P-delta effects.
+
+    Args:
+        Pu_kN: Factored axial load (kN). Must be >= 0.
+        b_mm: Column width (mm). Must be > 0.
+        D_mm: Column depth (mm). Must be > 0.
+        lex_mm: Effective length about x-axis (mm). Must be > 0.
+        ley_mm: Effective length about y-axis (mm). Must be > 0.
+        fck: Concrete characteristic strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+        Asc_mm2: Total longitudinal steel area (mm²).
+        d_prime_mm: Cover to centroid of reinforcement (mm).
+
+    Returns:
+        Dictionary with additional moments, eccentricities, k-factor,
+        and slenderness classification for both axes.
+
+    Raises:
+        DimensionError: If geometric dimensions are invalid.
+        MaterialError: If material properties are out of range.
+        CalculationError: If numerical issues are encountered.
+        ValueError: If plausibility checks fail.
+
+    References:
+        IS 456:2000, Cl. 39.7.1, 39.7.1.1
+
+    Examples:
+        >>> result = calculate_additional_moment_is456(
+        ...     Pu_kN=1200.0,
+        ...     b_mm=300.0,
+        ...     D_mm=450.0,
+        ...     lex_mm=5400.0,
+        ...     ley_mm=3600.0,
+        ...     fck=25.0,
+        ...     fy=415.0,
+        ...     Asc_mm2=2700.0,
+        ...     d_prime_mm=50.0,
+        ... )
+        >>> print(f"Ma_x: {result['Ma_x_kNm']:.2f} kN·m")
+        >>> print(f"Ma_y: {result['Ma_y_kNm']:.2f} kN·m")
+
+    See Also:
+        - classify_column_is456: Check if column is short or slender
+        - biaxial_bending_check_is456: Biaxial bending check
+        - codes.is456.column.slenderness.calculate_additional_moment: Core implementation
+    """
+    from structural_lib.codes.is456.column.slenderness import (
+        calculate_additional_moment,
+    )
+
+    # Plausibility guards (unit confusion detection)
+    if b_mm > 5000:
+        raise ValueError("b_mm > 5000 — did you pass meters instead of mm?")
+    if D_mm > 5000:
+        raise ValueError("D_mm > 5000 — did you pass meters instead of mm?")
+    if lex_mm > 100000:
+        raise ValueError("lex_mm > 100000 — did you pass meters instead of mm?")
+    if ley_mm > 100000:
+        raise ValueError("ley_mm > 100000 — did you pass meters instead of mm?")
+
+    # Call core implementation (already has full validation)
+    result = calculate_additional_moment(
+        Pu_kN=Pu_kN,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        lex_mm=lex_mm,
+        ley_mm=ley_mm,
+        fck=fck,
+        fy=fy,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+    )
+
     return result.to_dict()
 
 

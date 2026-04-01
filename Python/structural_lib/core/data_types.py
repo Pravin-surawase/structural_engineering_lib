@@ -7,7 +7,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, TypedDict
 
@@ -743,3 +743,81 @@ class ColumnBiaxialResult:
             f"Mux={self.Mux_kNm:.1f}kNm, Muy={self.Muy_kNm:.1f}kNm, "
             f"IR={self.interaction_ratio:.3f}, αn={self.alpha_n:.2f}"
         )
+
+
+@dataclass(frozen=True)
+class AdditionalMomentResult:
+    """Additional moment for slender columns per IS 456 Cl 39.7.1.
+
+    For slender columns (le/D >= 12), IS 456 requires an additional moment
+    Ma = Pu × eadd, where eadd = D × (le/D)² / 2000.
+
+    The additional moment may be reduced by factor k per Cl 39.7.1.1:
+    k = (Puz - Pu) / (Puz - Pb) ≤ 1.0
+    """
+
+    # Per x-axis (bending about x → depth D governs)
+    eadd_x_mm: float  # Additional eccentricity about x-axis (mm)
+    Max_kNm: float  # Additional moment about x-axis (kN·m)
+    slenderness_ratio_x: float  # le_x / D
+    is_slender_x: bool  # True if le_x/D >= 12
+
+    # Per y-axis (bending about y → width b governs)
+    eadd_y_mm: float  # Additional eccentricity about y-axis (mm)
+    May_kNm: float  # Additional moment about y-axis (kN·m)
+    slenderness_ratio_y: float  # le_y / b
+    is_slender_y: bool  # True if le_y/b >= 12
+
+    # k-factor reduction (Cl 39.7.1.1)
+    k: float  # Reduction factor (Puz - Pu) / (Puz - Pb), clamped ≤ 1.0
+    Max_reduced_kNm: float  # k × Max_kNm
+    May_reduced_kNm: float  # k × May_kNm
+    Puz_kN: float  # Pure axial crush load
+    Pb_kN: float  # Balanced failure axial load
+
+    # Input echo
+    Pu_kN: float
+    b_mm: float
+    D_mm: float
+    lex_mm: float
+    ley_mm: float
+
+    clause_ref: str = "Cl. 39.7.1"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {f.name: getattr(self, f.name) for f in fields(self)}
+
+    def summary(self) -> str:
+        """Human-readable summary."""
+        lines = [f"Additional Moment — IS 456 {self.clause_ref}"]
+        if self.is_slender_x:
+            lines.append(
+                f"  X-axis: le/D = {self.slenderness_ratio_x:.1f}, "
+                f"eadd = {self.eadd_x_mm:.1f} mm, "
+                f"Ma = {self.Max_kNm:.2f} kNm "
+                f"(reduced: {self.Max_reduced_kNm:.2f} kNm)"
+            )
+        else:
+            lines.append(
+                f"  X-axis: le/D = {self.slenderness_ratio_x:.1f} "
+                f"— SHORT, no additional moment"
+            )
+        if self.is_slender_y:
+            lines.append(
+                f"  Y-axis: le/b = {self.slenderness_ratio_y:.1f}, "
+                f"eadd = {self.eadd_y_mm:.1f} mm, "
+                f"Ma = {self.May_kNm:.2f} kNm "
+                f"(reduced: {self.May_reduced_kNm:.2f} kNm)"
+            )
+        else:
+            lines.append(
+                f"  Y-axis: le/b = {self.slenderness_ratio_y:.1f} "
+                f"— SHORT, no additional moment"
+            )
+        lines.append(
+            f"  k = {self.k:.3f} "
+            f"(Puz = {self.Puz_kN:.1f} kN, Pb = {self.Pb_kN:.1f} kN)"
+        )
+        return "\n".join(lines)

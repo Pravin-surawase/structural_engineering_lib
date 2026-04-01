@@ -80,6 +80,8 @@ from .services.api import (
     ResultSection,
     # Torsion Design
     TorsionResult,
+    # Column Design
+    calculate_additional_moment_is456,
     calculate_equivalent_moment,
     calculate_equivalent_shear,
     calculate_longitudinal_torsion_steel,
@@ -92,7 +94,6 @@ from .services.api import (
     check_compliance_report,
     check_crack_width,
     check_deflection_span_depth,
-    # Column Design
     classify_column_is456,
     compute_bbs,
     compute_bmd_sfd,
@@ -276,7 +277,8 @@ __all__ = [
     "compute_stirrup_positions",
     "compute_beam_outline",
     "beam_to_3d_geometry",
-    # Column Design (IS 456 Cl 25, 39.3, 39.5)
+    # Column Design (IS 456 Cl 25, 39.3, 39.5, 39.7)
+    "calculate_additional_moment_is456",
     "classify_column_is456",
     "min_eccentricity_is456",
     "design_column_axial_is456",

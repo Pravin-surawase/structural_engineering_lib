@@ -8,6 +8,8 @@ calculations per IS 456:2000.
 from fastapi import APIRouter, HTTPException, status
 
 from fastapi_app.models.column import (
+    AdditionalMomentRequest,
+    AdditionalMomentResponse,
     BiaxialCheckRequest,
     BiaxialCheckResponse,
     ColumnAxialRequest,
@@ -420,4 +422,44 @@ async def biaxial_check(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Biaxial bending check failed: {e}",
+        )
+
+
+@router.post(
+    "/additional-moment",
+    response_model=AdditionalMomentResponse,
+    summary="Additional Moment for Slender Columns per IS 456 Cl 39.7.1",
+    description=(
+        "Calculate additional moment Ma = Pu × eadd for slender columns, "
+        "where eadd = D × (le/D)² / 2000. Includes k-factor reduction "
+        "per Cl 39.7.1.1."
+    ),
+)
+async def additional_moment(request: AdditionalMomentRequest):
+    """Calculate additional moment for slender columns."""
+    try:
+        from structural_lib.services.api import calculate_additional_moment_is456
+
+        result = calculate_additional_moment_is456(
+            Pu_kN=request.Pu_kN,
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            lex_mm=request.lex_mm,
+            ley_mm=request.ley_mm,
+            fck=request.fck,
+            fy=request.fy,
+            Asc_mm2=request.Asc_mm2,
+            d_prime_mm=request.d_prime_mm,
+        )
+
+        return AdditionalMomentResponse(**result)
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Additional moment calculation failed: {e}",
         )

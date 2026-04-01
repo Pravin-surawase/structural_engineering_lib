@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-01
+last_updated: 2026-04-02
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,19 +14,19 @@ tags: []
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-04-01
+**Last Updated:** 2026-04-02
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-04-01
-- Session: Session 2 — Column design TASK-642, TASK-636, TASK-635 (9-step quality pipeline)
-- Done: TASK-642 (5-point steel curve, 26 tests), TASK-636 (effective length + API + 69+12 tests), TASK-635 (biaxial bending + API + 84+19 tests). PR #481 merged (TASK-642 + TASK-636). TASK-635 committed (PR #482).
-- Remaining: TASK-637 (slenderness/additional moment), TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)
-- State: main branch, all committed
-- Tests: 3822+ Python, 172+ FastAPI
+- Date: 2026-04-02
+- Session: Session 3 — Column design TASK-637 (slenderness/additional moment, 9-step quality pipeline)
+- Done: TASK-637 (additional moment Cl 39.7.1, slenderness.py, 24+8 tests, API wrapper, FastAPI endpoint, reviewer approved)
+- Remaining: TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)
+- State: main branch, TASK-637 awaiting commit
+- Tests: 3854+ Python, 180+ FastAPI
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -40,13 +40,12 @@ tags: []
 
 > **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md)
 
-1. **TASK-637 (additional moment / slenderness effects)** ← **START HERE**
-3. **TASK-638 (long column design)** — `design_long_column` orchestrator using TASK-637
-4. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
-5. **TASK-639 (helical reinforcement)** — low priority, parallelizable
-6. **TASK-641 (column FastAPI endpoint)** — final column endpoint
-7. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
-8. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
+1. **TASK-638 (long column design)** ← **START HERE** — `design_long_column` orchestrator using TASK-637
+2. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
+3. **TASK-639 (helical reinforcement)** — low priority, parallelizable
+4. **TASK-641 (column FastAPI endpoint)** — final column endpoint
+5. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
+6. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
 
 ### Technical Debt
 
