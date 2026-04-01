@@ -468,6 +468,34 @@
         "--fix": "Auto-fix fixable issues",
         "--category <name>": "Scan specific category only"
       }
+    },
+    "agent compliance check": {
+      "script": ".venv/bin/python scripts/agent_compliance_checker.py",
+      "description": "Verify agents followed their .agent.md rules"
+    },
+    "agent drift detection": {
+      "script": ".venv/bin/python scripts/agent_drift_detector.py",
+      "description": "Detect when agents deviate from prescribed behavior"
+    },
+    "agent evolve instructions": {
+      "script": ".venv/bin/python scripts/agent_evolve_instructions.py",
+      "description": "Self-improving agent customization files"
+    },
+    "agent scoring": {
+      "script": ".venv/bin/python scripts/agent_scorer.py",
+      "description": "Score agents on 11 performance dimensions"
+    },
+    "agent session collect": {
+      "script": ".venv/bin/python scripts/agent_session_collector.py",
+      "description": "Gather all session artifacts for scoring"
+    },
+    "agent trends": {
+      "script": ".venv/bin/python scripts/agent_trends.py",
+      "description": "Time series analysis and degradation detection for agent performance"
+    },
+    "export paper data": {
+      "script": ".venv/bin/python scripts/export_paper_data.py",
+      "description": "Export agent performance data for academic paper"
     }
   },
 
@@ -546,7 +574,10 @@
       "agent brief", "agent context"
     ],
     "agent_infrastructure": [
-      "agent feedback", "self evolve", "project health"
+      "agent feedback", "self evolve", "project health",
+      "agent compliance check", "agent drift detection",
+      "agent evolve instructions", "agent scoring",
+      "agent session collect", "agent trends", "export paper data"
     ]
   }
 }
