@@ -808,7 +808,7 @@ def pm_interaction_curve(
     # 6. Build result
     # ===========================================================
     return PMInteractionResult(
-        points=tuple((p, m) for p, m in zip(envelope_P, envelope_M)),
+        points=tuple((p, m) for p, m in zip(envelope_P, envelope_M, strict=True)),
         Pu_0_kN=Pu_0_kN,
         Mu_0_kNm=Mu_0_kNm,
         Pu_bal_kN=Pu_bal_kN,

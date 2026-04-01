@@ -161,13 +161,13 @@ class TestPMInteractionCurveEdge:
 
     def test_minimum_steel_ratio(self):
         """~0.8% steel: Asc = 0.008 * b * D — valid curve."""
-        Asc_min = 0.008 * 300.0 * 500.0  # 1200 mm2
+        asc_min = 0.008 * 300.0 * 500.0  # 1200 mm2
         result = pm_interaction_curve(
             b_mm=300.0,
             D_mm=500.0,
             fck=25.0,
             fy=415.0,
-            Asc_mm2=Asc_min,
+            Asc_mm2=asc_min,
             d_prime_mm=50.0,
         )
         assert isinstance(result, PMInteractionResult)
@@ -175,13 +175,13 @@ class TestPMInteractionCurveEdge:
 
     def test_maximum_steel_ratio(self):
         """4% steel: Asc = 0.04 * b * D — higher capacity than 2%."""
-        Asc_max = 0.04 * 300.0 * 500.0  # 6000 mm2
+        asc_max = 0.04 * 300.0 * 500.0  # 6000 mm2
         result = pm_interaction_curve(
             b_mm=300.0,
             D_mm=500.0,
             fck=25.0,
             fy=415.0,
-            Asc_mm2=Asc_max,
+            Asc_mm2=asc_max,
             d_prime_mm=50.0,
         )
         assert isinstance(result, PMInteractionResult)
@@ -425,8 +425,8 @@ class TestPMInteractionCurveConsistency:
         """Direct _pm_envelope_point call matches result.Pu_bal, Mu_bal."""
         result = pm_interaction_curve(**STD, n_points=50)
         d_eff = 500.0 - 50.0
-        Es = 2e5
-        xu_bal = d_eff * 0.0035 / (0.0035 + 415.0 / (1.15 * Es))
+        e_s = 2e5
+        xu_bal = d_eff * 0.0035 / (0.0035 + 415.0 / (1.15 * e_s))
         pu, mu = _pm_envelope_point(
             xu_bal,
             300.0,
@@ -460,13 +460,13 @@ class TestPMInteractionCurveHypothesis:
         d_prime = 50.0
         if d_prime >= D / 2.0:
             return  # skip invalid geometry
-        Asc = 0.02 * b * D  # 2% steel
+        asc = 0.02 * b * D  # 2% steel
         result = pm_interaction_curve(
             b_mm=b,
             D_mm=D,
             fck=fck,
             fy=fy,
-            Asc_mm2=Asc,
+            Asc_mm2=asc,
             d_prime_mm=d_prime,
         )
         assert result.Pu_0_kN > 0.0
