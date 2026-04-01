@@ -22,11 +22,11 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-02
-- Session: Session 3 — Column design TASK-637 (slenderness/additional moment, 9-step quality pipeline)
-- Done: TASK-637 (additional moment Cl 39.7.1, slenderness.py, 24+8 tests, API wrapper, FastAPI endpoint, reviewer approved)
-- Remaining: TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)
-- State: main branch, TASK-637 awaiting commit
-- Tests: 3854+ Python, 180+ FastAPI
+- Session: Claw-code implementation Sessions 2+3 — agent infrastructure
+- Done: 19/23 claw-code tasks complete (TASK-850 through TASK-872, except 861/867/869/871)
+- Remaining: Session 4 — TASK-861 (trust gate), TASK-867 (snapshot tests), TASK-869 (update agent files), TASK-871 (update entry docs)
+- State: main branch, all scripts created and reviewed
+- New commands: ./run.sh route, ./run.sh tools, ./run.sh pipeline
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -38,14 +38,13 @@ tags: []
 
 ## What's Next
 
-> **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md)
-
-1. **TASK-638 (long column design)** ← **START HERE** — `design_long_column` orchestrator using TASK-637
-2. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
-3. **TASK-639 (helical reinforcement)** — low priority, parallelizable
-4. **TASK-641 (column FastAPI endpoint)** — final column endpoint
-5. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
-6. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
+1. **Session 4 — Final claw-code tasks** ← START HERE
+   - TASK-861: Trust gate (defer destructive ops until session start confirms clean state)
+   - TASK-867: Snapshot regression tests (assert minimum script/tool/test counts)
+   - TASK-869: Update all 15 .agent.md files with permission_level, registry_ref
+   - TASK-871: Update AGENTS.md + CLAUDE.md with new commands (route, tools, pipeline)
+2. **TASK-638 (long column design)** — `design_long_column` orchestrator
+3. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
 
 ### Technical Debt
 

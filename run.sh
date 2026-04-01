@@ -19,6 +19,9 @@
 #   audit     Run readiness/governance audit
 #   test      Run test suites
 #   generate  Generate indexes, SDKs, manifests
+#   route     Route tasks to the right agent
+#   tools     Tool & script discovery
+#   pipeline  Pipeline state tracking
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 set -euo pipefail
 
@@ -635,6 +638,82 @@ Examples:
 EOF
 }
 
+# ── Command: route ─────────────────────────────────────────────────────────
+
+_cmd_route() {
+    _require_venv
+    local query="${*:-}"
+    if [[ -z "$query" ]]; then
+        _error "Usage: ./run.sh route \"your task description\""
+        echo "  Routes natural language to the right agent + skills"
+        echo ""
+        echo "  Examples:"
+        echo "    ./run.sh route \"design beam 300x500\""
+        echo "    ./run.sh route \"fix csv import bug\""
+        echo "    ./run.sh route \"security audit\""
+        exit 1
+    fi
+    "$VENV" "$SCRIPTS/prompt_router.py" "$query"
+}
+
+# ── Command: tools ─────────────────────────────────────────────────────────
+
+_cmd_tools() {
+    _require_venv
+    case "${1:-}" in
+        --list|list)    "$VENV" "$SCRIPTS/tool_registry.py" --list ;;
+        --find|find)    shift; "$VENV" "$SCRIPTS/tool_registry.py" --find "$*" ;;
+        --agent|agent)  shift; "$VENV" "$SCRIPTS/tool_registry.py" --agent "$1" ;;
+        --stats|stats)  "$VENV" "$SCRIPTS/tool_registry.py" --stats ;;
+        --permission)   shift; "$VENV" "$SCRIPTS/tool_registry.py" --permission "$1" ;;
+        *)
+            echo -e "${BOLD}./run.sh tools${NC} — Tool & script discovery"
+            echo ""
+            echo "  Subcommands:"
+            echo "    --list                List all tools/scripts"
+            echo "    --find \"query\"        Search tools by keyword"
+            echo "    --agent <name>        Show tools for specific agent"
+            echo "    --stats               Tool registry statistics"
+            echo "    --permission <level>  Filter by permission level"
+            echo ""
+            echo "  Examples:"
+            echo "    ./run.sh tools --agent backend"
+            echo "    ./run.sh tools --find \"beam design\""
+            echo "    ./run.sh tools --permission ReadOnly"
+            ;;
+    esac
+}
+
+# ── Command: pipeline ──────────────────────────────────────────────────────
+
+_cmd_pipeline() {
+    _require_venv
+    case "${1:-}" in
+        new)     shift; "$VENV" "$SCRIPTS/pipeline_state.py" new "$@" ;;
+        advance) shift; "$VENV" "$SCRIPTS/pipeline_state.py" advance "$@" ;;
+        fail)    shift; "$VENV" "$SCRIPTS/pipeline_state.py" fail "$@" ;;
+        show)    shift; "$VENV" "$SCRIPTS/pipeline_state.py" show "$@" ;;
+        list)    shift; "$VENV" "$SCRIPTS/pipeline_state.py" list "$@" ;;
+        resume)  shift; "$VENV" "$SCRIPTS/pipeline_state.py" resume "$@" ;;
+        *)
+            echo -e "${BOLD}./run.sh pipeline${NC} — Pipeline state tracking"
+            echo ""
+            echo "  Subcommands:"
+            echo "    new      Create a new pipeline"
+            echo "    advance  Complete current step"
+            echo "    fail     Mark step as failed"
+            echo "    show     Show pipeline details"
+            echo "    list     List all pipelines"
+            echo "    resume   Generate resume context"
+            echo ""
+            echo "  Examples:"
+            echo "    ./run.sh pipeline new --task TASK-857 --agent backend"
+            echo "    ./run.sh pipeline advance TASK-857-pipeline --notes \"done\""
+            echo "    ./run.sh pipeline list --status running"
+            ;;
+    esac
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -657,6 +736,9 @@ _print_usage() {
     echo -e "  ${GREEN}dev${NC}         Launch full development stack (FastAPI + React)"
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
+    echo -e "  ${GREEN}route${NC}       Route natural language to the right agent"
+    echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find, stats)"
+    echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
     echo -e "  ${DIM}./run.sh session start${NC}              # Begin work"
@@ -684,6 +766,9 @@ _dispatch_help() {
         feedback) _help_feedback ;;
         evolve)   _help_evolve ;;
         dev)      _help_dev ;;
+        route)    _cmd_route ;;
+        tools)    _cmd_tools ;;
+        pipeline) _cmd_pipeline ;;
         *)        _print_usage ;;
     esac
 }
@@ -709,6 +794,9 @@ _run_sh() {
         'health:Project health scan'
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
+        'route:Route tasks to the right agent'
+        'tools:Tool and script discovery'
+        'pipeline:Pipeline state tracking'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -799,6 +887,9 @@ main() {
         evolve)   _cmd_evolve "$@" ;;
         dev)      _cmd_dev "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
+        route)    _cmd_route "$@" ;;
+        tools)    _cmd_tools "$@" ;;
+        pipeline) _cmd_pipeline "$@" ;;
         *)
             _error "Unknown command: $cmd"
             echo ""
