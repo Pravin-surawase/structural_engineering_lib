@@ -358,7 +358,7 @@ def main():
                 {"version": new_version, "date": today},
                 args.dry_run,
             ):
-                doc_changes += 1
+                changes += 1
         except Exception as e:
             print(f"  ERROR updating {filepath}: {e}")
             if not args.dry_run:
