@@ -26,7 +26,6 @@ jobs:
       python: ${{ steps.filter.outputs.python }}
       docs: ${{ steps.filter.outputs.docs }}
       scripts: ${{ steps.filter.outputs.scripts }}
-      streamlit: ${{ steps.filter.outputs.streamlit }}
       fastapi: ${{ steps.filter.outputs.fastapi }}
     steps:
       - uses: actions/checkout@v6
@@ -44,8 +43,6 @@ jobs:
               - 'agents/**'
             scripts:
               - 'scripts/**'
-            streamlit:
-              - 'streamlit_app/**'
             fastapi:
               - 'fastapi_app/**'
               - 'requirements.txt'
@@ -54,7 +51,7 @@ jobs:
   python-validation:
     name: Python Validation
     needs: changes
-    if: needs.changes.outputs.python == 'true' || needs.changes.outputs.streamlit == 'true'
+    if: needs.changes.outputs.python == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -221,7 +218,6 @@ jobs:
       needs.changes.outputs.python != 'true' &&
       needs.changes.outputs.docs != 'true' &&
       needs.changes.outputs.scripts != 'true' &&
-      needs.changes.outputs.streamlit != 'true' &&
       needs.changes.outputs.fastapi != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 2

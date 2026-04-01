@@ -193,12 +193,6 @@ jobs:
           # Run individual scanners and capture output
           echo '{"scanners": {}}' > evidence/scanner-results.json
 
-          # Streamlit scanner
-          python scripts/check_streamlit.py --all-pages > evidence/streamlit-scanner.txt 2>&1 || true
-
-          # Fragment validator
-          python scripts/check_streamlit.py --fragments > evidence/fragment-validator.txt 2>&1 || true
-
           # Circular imports
           python scripts/check_circular_imports.py > evidence/circular-imports.txt 2>&1 || true
 

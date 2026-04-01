@@ -6,9 +6,6 @@ contact_links:
   - name: 💬 Discussions
     url: https://github.com/Pravin-surawase/structural_engineering_lib/discussions
     about: Ask questions and share ideas with the community
-  - name: 📊 Live Demo
-    url: https://structural-engineering-lib.streamlit.app
-    about: Try the Streamlit web app
-  - name: 📦 PyPI Package
+  - name:  PyPI Package
     url: https://pypi.org/project/structural-lib-is456/
     about: View package on PyPI

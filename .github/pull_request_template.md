@@ -16,7 +16,6 @@
 - [ ] React: `cd react_app && npm run build`
 - [ ] Docker: `docker compose up --build` (if FastAPI changed)
 - [ ] VBA: ran relevant tests in `VBA/Tests/` (manual, if VBA changed)
-- [ ] Streamlit: `.venv/bin/python scripts/check_streamlit.py --all-pages` (if Streamlit changed)
 
 ## Checklist
 

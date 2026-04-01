@@ -40,7 +40,6 @@ body:
       options:
         - Core library (structural_lib)
         - Excel/VBA parity
-        - Streamlit app
         - CLI tool
         - DXF export
         - Documentation

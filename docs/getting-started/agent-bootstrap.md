@@ -119,7 +119,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-47 endpoints across 13 routers + 1 WebSocket:
+48 endpoints across 13 routers + 1 WebSocket:
 
 | Router | Endpoint | Purpose |
 |--------|----------|---------|
@@ -160,6 +160,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | | `POST /api/v1/design/column/uniaxial` | Short column uniaxial bending |
 | | `POST /api/v1/design/column/interaction-curve` | P-M interaction curve |
 | | `POST /api/v1/design/column/biaxial-check` | Biaxial bending check (Cl 39.6) |
+| | `POST /api/v1/design/column/additional-moment` | Additional moment for slender columns (Cl 39.7.1) |
 | **health** | `GET  /health` | Basic health check |
 | | `GET  /health/ready` | Readiness check |
 | | `GET  /health/info` | Version & dependency info |
@@ -312,7 +313,7 @@ npm run dev
 # React is now at http://localhost:5173
 ```
 
-This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 47 endpoints.
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 48 endpoints.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash
