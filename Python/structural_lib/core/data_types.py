@@ -509,6 +509,18 @@ class ColumnClassification(Enum):
     SLENDER = auto()
 
 
+class EndCondition(Enum):
+    """Column end-condition for effective length per IS 456 Table 28."""
+
+    FIXED_FIXED = auto()  # Case 1: Both ends fixed, no lateral translation
+    FIXED_HINGED = auto()  # Case 2: One end fixed, one hinged
+    FIXED_FIXED_SWAY = auto()  # Case 3: Both ends fixed, lateral translation allowed
+    FIXED_FREE = auto()  # Case 4: One end fixed, one free (cantilever)
+    HINGED_HINGED = auto()  # Case 5: Both ends hinged
+    FIXED_PARTIAL = auto()  # Case 6: One fixed, partial restraint at other
+    HINGED_PARTIAL = auto()  # Case 7: One hinged, partial restraint at other
+
+
 @dataclass
 class ColumnAxialResult:
     """Result of short column axial capacity check per IS 456 Cl 39.3.

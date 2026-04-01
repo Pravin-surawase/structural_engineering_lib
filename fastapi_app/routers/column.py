@@ -16,6 +16,8 @@ from fastapi_app.models.column import (
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
     ColumnUniaxialResponse,
+    EffectiveLengthRequest,
+    EffectiveLengthResponse,
     PMInteractionRequest,
     PMInteractionResponse,
     PMPoint,
@@ -30,6 +32,53 @@ router = APIRouter(
 # =============================================================================
 # Column Design Endpoints
 # =============================================================================
+
+
+@router.post(
+    "/effective-length",
+    response_model=EffectiveLengthResponse,
+    summary="Effective Length per IS 456 Table 28",
+    description=(
+        "Calculate the effective length of a column based on end restraint "
+        "conditions per IS 456:2000 Cl. 25.2, Table 28. Returns le = ratio × l "
+        "for seven standard end-condition cases."
+    ),
+)
+async def calculate_effective_length(
+    request: EffectiveLengthRequest,
+) -> EffectiveLengthResponse:
+    """
+    Calculate effective length per IS 456 Cl 25.2, Table 28.
+
+    Computes le = ratio × l for the given end condition.
+    Supports both recommended (default) and theoretical values.
+    """
+    try:
+        from structural_lib.services.api import calculate_effective_length_is456
+
+        result = calculate_effective_length_is456(
+            l_mm=request.l_mm,
+            end_condition=request.end_condition,
+            use_theoretical=request.use_theoretical,
+        )
+
+        return EffectiveLengthResponse(
+            le_mm=round(result["le_mm"], 2),
+            ratio=round(result["ratio"], 4),
+            end_condition=result["end_condition"],
+            method=result["method"],
+        )
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Effective length calculation failed: {e}",
+        )
 
 
 @router.post(

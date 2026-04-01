@@ -32,6 +32,7 @@ from structural_lib.codes.is456.beam.torsion import (
 )
 from structural_lib.codes.is456.column.axial import (
     classify_column,
+    effective_length,
     min_eccentricity,
     short_axial_capacity,
 )
@@ -46,6 +47,7 @@ from structural_lib.core.data_types import (
     CrackWidthParams,
     CriticalPoint,
     DeflectionParams,
+    EndCondition,
     LoadDefinition,
     LoadDiagramResult,
     LoadType,
@@ -156,6 +158,7 @@ __all__ = [
     "check_crack_width",
     "check_compliance_report",
     # Column Design (IS 456 Clause 39)
+    "calculate_effective_length_is456",
     "classify_column_is456",
     "min_eccentricity_is456",
     "design_column_axial_is456",
@@ -1651,6 +1654,83 @@ def design_and_detail_beam_is456(
 # ============================================================================
 # Column Design Functions (IS 456:2000 Clause 39)
 # ============================================================================
+
+
+def calculate_effective_length_is456(
+    l_mm: float,
+    end_condition: str,
+    use_theoretical: bool = False,
+) -> dict[str, Any]:
+    """Calculate effective length per IS 456 Cl 25.2, Table 28.
+
+    Computes the effective length le = ratio × l for a column based on
+    end restraint conditions. IS 456 Table 28 provides both theoretical
+    (Euler) and recommended design values for seven standard cases.
+
+    Args:
+        l_mm: Unsupported length of column (mm). Must be between 100 and 50000 mm.
+        end_condition: End condition string — one of:
+            'FIXED_FIXED'      - Both ends fixed, no lateral translation
+            'FIXED_HINGED'     - One end fixed, one hinged
+            'FIXED_FIXED_SWAY' - Both ends fixed, lateral translation allowed
+            'FIXED_FREE'       - One end fixed, one free (cantilever)
+            'HINGED_HINGED'    - Both ends hinged
+            'FIXED_PARTIAL'    - One fixed, partial restraint at other
+            'HINGED_PARTIAL'   - One hinged, partial restraint at other
+        use_theoretical: If True, use theoretical values (default: recommended).
+            Note: Cases 6 and 7 have no theoretical values; recommended is used.
+
+    Returns:
+        dict with keys:
+            - le_mm (float): Effective length (mm)
+            - ratio (float): Effective length ratio (le/l)
+            - end_condition (str): End condition used
+            - method (str): 'theoretical' or 'recommended'
+
+    Raises:
+        ValueError: If l_mm is out of range or end_condition is invalid.
+
+    References:
+        IS 456:2000, Cl. 25.2, Table 28
+
+    Examples:
+        >>> calculate_effective_length_is456(3000, 'FIXED_FIXED')
+        {'le_mm': 1950.0, 'ratio': 0.65, 'end_condition': 'FIXED_FIXED', 'method': 'recommended'}
+        >>> calculate_effective_length_is456(4000, 'HINGED_HINGED', use_theoretical=True)
+        {'le_mm': 4000.0, 'ratio': 1.0, 'end_condition': 'HINGED_HINGED', 'method': 'theoretical'}
+    """
+    # Plausibility guard: reasonable column lengths (100mm to 50m)
+    if not (100 <= l_mm <= 50000):
+        raise ValueError(
+            f"Unsupported length l_mm must be between 100 and 50000 mm, got {l_mm}"
+        )
+
+    # Convert string to EndCondition enum
+    try:
+        end_cond_enum = EndCondition[end_condition]
+    except KeyError:
+        valid_conditions = ", ".join([ec.name for ec in EndCondition])
+        raise ValueError(
+            f"Invalid end_condition '{end_condition}'. "
+            f"Valid options: {valid_conditions}"
+        )
+
+    # Call the underlying IS 456 function
+    le_mm = effective_length(
+        l_mm=l_mm,
+        end_condition=end_cond_enum,
+        use_theoretical=use_theoretical,
+    )
+
+    # Calculate the ratio for reference
+    ratio = le_mm / l_mm
+
+    return {
+        "le_mm": le_mm,
+        "ratio": ratio,
+        "end_condition": end_condition,
+        "method": "theoretical" if use_theoretical else "recommended",
+    }
 
 
 def classify_column_is456(

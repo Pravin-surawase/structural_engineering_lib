@@ -28,14 +28,100 @@ from structural_lib.codes.is456.common.constants import (
     SHORT_COLUMN_SLENDERNESS_LIMIT,
 )
 from structural_lib.codes.is456.traceability import clause
-from structural_lib.core.data_types import ColumnAxialResult, ColumnClassification
+from structural_lib.core.data_types import (
+    ColumnAxialResult,
+    ColumnClassification,
+    EndCondition,
+)
 from structural_lib.core.errors import DimensionError, MaterialError
 
 __all__ = [
     "classify_column",
+    "effective_length",
     "min_eccentricity",
     "short_axial_capacity",
 ]
+
+# ---------------------------------------------------------------------------
+# IS 456 Table 28 — Effective length ratios (le/l)
+# ---------------------------------------------------------------------------
+# Key: EndCondition → le/l ratio
+# Cases 6 & 7 have no theoretical value (None → fall back to recommended).
+
+_TABLE_28_THEORETICAL: dict[EndCondition, float | None] = {
+    EndCondition.FIXED_FIXED: 0.50,
+    EndCondition.FIXED_HINGED: 0.70,
+    EndCondition.FIXED_FIXED_SWAY: 1.00,
+    EndCondition.FIXED_FREE: 2.00,
+    EndCondition.HINGED_HINGED: 1.00,
+    EndCondition.FIXED_PARTIAL: None,  # No theoretical value per Table 28
+    EndCondition.HINGED_PARTIAL: None,  # No theoretical value per Table 28
+}
+
+_TABLE_28_RECOMMENDED: dict[EndCondition, float] = {
+    EndCondition.FIXED_FIXED: 0.65,
+    EndCondition.FIXED_HINGED: 0.80,
+    EndCondition.FIXED_FIXED_SWAY: 1.20,
+    EndCondition.FIXED_FREE: 2.00,
+    EndCondition.HINGED_HINGED: 1.00,
+    EndCondition.FIXED_PARTIAL: 1.50,
+    EndCondition.HINGED_PARTIAL: 2.00,
+}
+
+
+@clause("25.2")
+def effective_length(
+    l_mm: float,
+    end_condition: EndCondition,
+    use_theoretical: bool = False,
+) -> float:
+    """Calculate effective length of column per IS 456 Cl 25.2, Table 28.
+
+    IS 456 Cl 25.2: The effective length le of a column depends on end
+    restraint conditions. Table 28 gives the ratio le/l for seven standard
+    cases, both as theoretical Euler values and as recommended design values.
+
+    Cases 6 (FIXED_PARTIAL) and 7 (HINGED_PARTIAL) have NO theoretical
+    value — only recommended. If ``use_theoretical=True`` is requested for
+    these cases, the recommended value is used instead (with a warning
+    attached to the return via the caller's responsibility to log).
+
+    Args:
+        l_mm: Unsupported length of column (mm). Must be > 0.
+        end_condition: End condition from IS 456 Table 28.
+        use_theoretical: If True, use theoretical values where available;
+            otherwise use recommended values (default).
+
+    Returns:
+        Effective length le (mm).
+
+    Raises:
+        DimensionError: If l_mm <= 0.
+
+    References:
+        IS 456:2000 Cl. 25.2, Table 28
+    """
+    if l_mm <= 0:
+        raise DimensionError(
+            f"Unsupported length l_mm must be > 0, got {l_mm}",
+            details={"l_mm": l_mm},
+            clause_ref="Cl. 25.2",
+        )
+
+    if use_theoretical:
+        # IS 456 Table 28: theoretical value (may be None for cases 6 & 7)
+        ratio = _TABLE_28_THEORETICAL[end_condition]
+        if ratio is None:
+            # Fall back to recommended for cases without theoretical values
+            ratio = _TABLE_28_RECOMMENDED[end_condition]
+    else:
+        # IS 456 Table 28: recommended value (always available)
+        ratio = _TABLE_28_RECOMMENDED[end_condition]
+
+    # IS 456 Cl 25.2: le = ratio × l
+    le_mm = ratio * l_mm
+
+    return le_mm
 
 
 @clause("25.1.2")

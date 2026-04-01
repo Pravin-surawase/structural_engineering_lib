@@ -5,11 +5,62 @@ Models for column classification, eccentricity, and axial design endpoints.
 All dimensions in mm, forces in kN, stresses in N/mm².
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 # =============================================================================
 # Request Models
 # =============================================================================
+
+
+class EffectiveLengthRequest(BaseModel):
+    """Request model for effective length calculation per IS 456 Cl 25.2, Table 28."""
+
+    l_mm: float = Field(
+        ...,
+        gt=0,
+        le=50000,
+        description="Unsupported length of column (mm)",
+        examples=[3000.0, 4500.0, 6000.0],
+    )
+    end_condition: str = Field(
+        ...,
+        description=(
+            "IS 456 Table 28 end condition. One of: "
+            "FIXED_FIXED, FIXED_HINGED, FIXED_FIXED_SWAY, FIXED_FREE, "
+            "HINGED_HINGED, FIXED_PARTIAL, HINGED_PARTIAL"
+        ),
+        examples=["FIXED_FIXED", "FIXED_HINGED", "HINGED_HINGED"],
+    )
+    use_theoretical: bool = Field(
+        False,
+        description=(
+            "Use theoretical (Euler) values instead of recommended. "
+            "Cases 6 and 7 have no theoretical values; recommended is used."
+        ),
+    )
+
+
+class EffectiveLengthResponse(BaseModel):
+    """Response model for effective length calculation."""
+
+    le_mm: float = Field(
+        description="Effective length of column (mm)",
+        examples=[1950.0, 3000.0],
+    )
+    ratio: float = Field(
+        description="Effective length ratio le/l",
+        examples=[0.65, 1.0],
+    )
+    end_condition: str = Field(
+        description="End condition used",
+        examples=["FIXED_FIXED", "HINGED_HINGED"],
+    )
+    method: Literal["recommended", "theoretical"] = Field(
+        description="Method used: 'recommended' or 'theoretical'",
+        examples=["recommended", "theoretical"],
+    )
 
 
 class ColumnClassifyRequest(BaseModel):

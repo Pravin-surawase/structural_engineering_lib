@@ -32,7 +32,9 @@ from structural_lib.codes.is456.common.constants import (
     STRESS_BLOCK_FACTOR,
     STRESS_BLOCK_PEAK,
 )
-from structural_lib.codes.is456.common.stress_blocks import steel_stress_from_strain
+from structural_lib.codes.is456.common.stress_blocks import (
+    steel_stress_from_strain_5point,
+)
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
     ColumnClassification,
@@ -216,7 +218,7 @@ def _pm_envelope_point(
     else:
         eps_sc = 0.0
 
-    f_sc = steel_stress_from_strain(eps_sc, fy)
+    f_sc = steel_stress_from_strain_5point(eps_sc, fy)
     # IS 456 Cl 38.1: subtract displaced concrete (already counted in Cc)
     # Net steel stress = f_sc - 0.446 * fck (if bar is in compression)
     if eps_sc > 0.0:
@@ -234,7 +236,7 @@ def _pm_envelope_point(
     else:
         eps_st = 0.0
 
-    f_st = steel_stress_from_strain(eps_st, fy)
+    f_st = steel_stress_from_strain_5point(eps_st, fy)
     # Subtract displaced concrete only if bar is in compression zone
     if eps_st > 0.0:
         f_st_net = f_st - STRESS_BLOCK_PEAK * fck
