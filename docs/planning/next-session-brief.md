@@ -22,10 +22,10 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-01
-- Session: TASK-633 Short Column Uniaxial Bending — Pipeline complete
-- Done: TASK-800 merged (PR #476), P12 burn-in added to session-end. TASK-633 uniaxial bending complete (implementation + 57 tests + API + endpoint).
-- Remaining: TASK-634 P-M interaction curve, TASK-635 biaxial bending, remaining Phase 2 column tasks
-- State: task/TASK-633 branch, PR pending finish
+- Session: TASK-634 P-M Interaction Curve — Pipeline complete
+- Done: TASK-634 P-M interaction curve complete (pm_interaction_curve() + PMInteractionResult + API wrapper + FastAPI endpoint + 45 tests). Axial.py logging cleanup done. Agent evolver burn-in completed (4 minor bugs found).
+- Remaining: TASK-634+axial cleanup need commit. TASK-635 biaxial bending next. TASK-642 (5-point steel curve) and TASK-643 (SP:16 Table I verification) added from structural-engineer review.
+- State: main branch (or task branch pending commit)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -39,12 +39,11 @@ tags: []
 
 > **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md)
 
-1. **Finish TASK-633 PR** ← **START HERE** — merge PR for uniaxial bending
-2. **Phase 2 Column Design (TASK-634+)** — P-M interaction curve (Cl 39.5, Annex G), biaxial bending (Cl 39.6)
+1. **Commit TASK-634 + axial.py cleanup** ← **START HERE** — commit pending changes via ai_commit.sh
+2. **Phase 2 Column Design (TASK-635+)** — Biaxial bending check (Cl 39.6), effective length (Cl 25.2). Also TASK-642 (IS 456 Fig 23 five-point steel curve) and TASK-643 (SP:16 Table I verification) from structural-engineer review
 3. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
 4. **Wire E_COLUMN_* error codes** into axial.py (reviewer observation)
-5. **Remove logging from pure math module** (reviewer observation)
-6. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
+5. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
 
 ### Technical Debt
 

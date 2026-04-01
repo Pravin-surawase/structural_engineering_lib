@@ -250,3 +250,89 @@ class ColumnUniaxialResponse(BaseModel):
         default_factory=list,
         description="Code compliance warnings",
     )
+
+
+# =============================================================================
+# P-M Interaction Curve Models
+# =============================================================================
+
+
+class PMInteractionRequest(BaseModel):
+    """Request model for P-M interaction curve generation."""
+
+    b_mm: float = Field(
+        ...,
+        gt=0,
+        le=3000,
+        description="Column width perpendicular to bending axis (mm)",
+        examples=[300.0, 400.0],
+    )
+    D_mm: float = Field(
+        ...,
+        gt=0,
+        le=3000,
+        description="Column depth in bending direction (mm)",
+        examples=[400.0, 500.0, 600.0],
+    )
+    fck: float = Field(
+        ...,
+        ge=15,
+        le=80,
+        description="Characteristic compressive strength of concrete (N/mm²)",
+        examples=[25.0, 30.0, 40.0],
+    )
+    fy: float = Field(
+        ...,
+        ge=250,
+        le=550,
+        description="Characteristic yield strength of steel (N/mm²)",
+        examples=[415.0, 500.0],
+    )
+    Asc_mm2: float = Field(
+        ...,
+        gt=0,
+        le=100000,
+        description="Total area of longitudinal reinforcement (mm²)",
+        examples=[2400.0, 3000.0, 4800.0],
+    )
+    d_prime_mm: float = Field(
+        ...,
+        gt=0,
+        le=200,
+        description="Cover to centroid of reinforcement from nearest face (mm)",
+        examples=[40.0, 50.0, 60.0],
+    )
+    n_points: int = Field(
+        default=50,
+        ge=10,
+        le=500,
+        description="Number of points on the interaction curve (default 50, min 10)",
+        examples=[50, 100],
+    )
+
+
+class PMPoint(BaseModel):
+    """A single point on the P-M interaction curve."""
+
+    Pu_kN: float = Field(..., description="Axial force (kN)")
+    Mu_kNm: float = Field(..., description="Moment (kN·m)")
+
+
+class PMInteractionResponse(BaseModel):
+    """Response model for P-M interaction curve."""
+
+    points: list[PMPoint] = Field(
+        ..., description="Points on the P-M interaction curve"
+    )
+    Pu_0_kN: float = Field(..., description="Pure axial capacity (kN)")
+    Mu_0_kNm: float = Field(..., description="Pure bending capacity (kN·m)")
+    Pu_bal_kN: float = Field(..., description="Balanced point axial load (kN)")
+    Mu_bal_kNm: float = Field(..., description="Balanced point moment capacity (kN·m)")
+    fck: float = Field(..., description="Concrete strength used (N/mm²)")
+    fy: float = Field(..., description="Steel yield strength used (N/mm²)")
+    b_mm: float = Field(..., description="Column width (mm)")
+    D_mm: float = Field(..., description="Column depth (mm)")
+    Asc_mm2: float = Field(..., description="Total steel area (mm²)")
+    d_prime_mm: float = Field(..., description="Cover to steel centroid (mm)")
+    clause_ref: str = Field(default="Cl. 39.5", description="IS 456 clause reference")
+    warnings: list[str] = Field(default_factory=list, description="Design warnings")

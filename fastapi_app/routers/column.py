@@ -16,6 +16,9 @@ from fastapi_app.models.column import (
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
     ColumnUniaxialResponse,
+    PMInteractionRequest,
+    PMInteractionResponse,
+    PMPoint,
 )
 
 router = APIRouter(
@@ -233,4 +236,65 @@ async def design_column_uniaxial(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Column uniaxial design failed: {e}",
+        )
+
+
+@router.post(
+    "/interaction-curve",
+    response_model=PMInteractionResponse,
+    summary="P-M Interaction Curve",
+    description=(
+        "Generate the P-M interaction diagram for a rectangular column "
+        "section per IS 456:2000 Cl. 39.5. Returns the full curve with "
+        "key points (pure axial, balanced, pure bending)."
+    ),
+)
+async def pm_interaction_curve(
+    request: PMInteractionRequest,
+) -> PMInteractionResponse:
+    """
+    Generate P-M interaction curve per IS 456 Cl. 39.5.
+
+    Sweeps the neutral axis depth and computes (Pu, Mu) pairs
+    at each point using the IS 456 stress-block model and SP:16 Table I
+    coefficients for xu > D.
+    """
+    try:
+        from structural_lib.services.api import pm_interaction_curve_is456
+
+        result = pm_interaction_curve_is456(
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            fck=request.fck,
+            fy=request.fy,
+            Asc_mm2=request.Asc_mm2,
+            d_prime_mm=request.d_prime_mm,
+            n_points=request.n_points,
+        )
+
+        return PMInteractionResponse(
+            points=[PMPoint(**pt) for pt in result["points"]],
+            Pu_0_kN=round(result["Pu_0_kN"], 2),
+            Mu_0_kNm=round(result["Mu_0_kNm"], 2),
+            Pu_bal_kN=round(result["Pu_bal_kN"], 2),
+            Mu_bal_kNm=round(result["Mu_bal_kNm"], 2),
+            fck=result["fck"],
+            fy=result["fy"],
+            b_mm=result["b_mm"],
+            D_mm=result["D_mm"],
+            Asc_mm2=result["Asc_mm2"],
+            d_prime_mm=result["d_prime_mm"],
+            clause_ref=result.get("clause_ref", "Cl. 39.5"),
+            warnings=result.get("warnings", []),
+        )
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"P-M interaction curve generation failed: {e}",
         )

@@ -110,6 +110,7 @@ from .services.api import (
     design_beam_is456,
     design_column_axial_is456,
     design_from_input,
+    design_short_column_uniaxial_is456,
     design_torsion,
     detail_beam_is456,
     # Shear
@@ -123,6 +124,7 @@ from .services.api import (
     normalize_etabs_forces,
     # Smart features
     optimize_beam_cost,
+    pm_interaction_curve_is456,
     smart_analyze_design,
     suggest_beam_design_improvements,
     validate_design_results,
@@ -274,8 +276,10 @@ __all__ = [
     "compute_stirrup_positions",
     "compute_beam_outline",
     "beam_to_3d_geometry",
-    # Column Design (IS 456 Cl 25, 39.3)
+    # Column Design (IS 456 Cl 25, 39.3, 39.5)
     "classify_column_is456",
     "min_eccentricity_is456",
     "design_column_axial_is456",
+    "design_short_column_uniaxial_is456",
+    "pm_interaction_curve_is456",
 ]

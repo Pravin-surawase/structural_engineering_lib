@@ -23,8 +23,10 @@ import math
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.common.constants import (
     COLUMN_AXIAL_EMIN_FACTOR,
+    COLUMN_CONCRETE_COEFF,
     COLUMN_MAX_STEEL_RATIO,
     COLUMN_MIN_STEEL_RATIO,
+    COLUMN_STEEL_COEFF,
     EPSILON_CU,
     STRESS_BLOCK_DEPTH,
     STRESS_BLOCK_FACTOR,
@@ -32,7 +34,11 @@ from structural_lib.codes.is456.common.constants import (
 )
 from structural_lib.codes.is456.common.stress_blocks import steel_stress_from_strain
 from structural_lib.codes.is456.traceability import clause
-from structural_lib.core.data_types import ColumnClassification, ColumnUniaxialResult
+from structural_lib.core.data_types import (
+    ColumnClassification,
+    ColumnUniaxialResult,
+    PMInteractionResult,
+)
 from structural_lib.core.errors import (
     CalculationError,
     DimensionError,
@@ -42,6 +48,7 @@ from structural_lib.core.numerics import safe_divide
 
 __all__ = [
     "design_short_column_uniaxial",
+    "pm_interaction_curve",
 ]
 
 # ---------------------------------------------------------------------------
@@ -603,5 +610,214 @@ def design_short_column_uniaxial(
         classification=classification,
         governing_check=governing,
         clause_ref="Cl. 39.5",
+        warnings=tuple(warnings),
+    )
+
+
+# ---------------------------------------------------------------------------
+# P-M interaction curve generation
+# ---------------------------------------------------------------------------
+
+
+@clause("39.5")
+def pm_interaction_curve(
+    b_mm: float,
+    D_mm: float,
+    fck: float,
+    fy: float,
+    Asc_mm2: float,
+    d_prime_mm: float,
+    n_points: int = 50,
+) -> PMInteractionResult:
+    """Generate the P-M interaction curve for a rectangular column section.
+
+    Sweeps the neutral axis depth from near-zero to 3×D to produce
+    (Pu, Mu) envelope points. Also computes the pure axial capacity,
+    balanced point, and pure bending intercept.
+
+    Reinforcement is assumed symmetrical: Asc_mm2 / 2 on each face,
+    placed at d_prime_mm from the nearest face.
+
+    Args:
+        b_mm: Column width perpendicular to bending axis (mm). Must be > 0.
+        D_mm: Column depth in the direction of bending (mm). Must be > 0.
+        fck: Characteristic compressive strength of concrete (N/mm²).
+            IS 456 range: 15–80.
+        fy: Characteristic yield strength of steel (N/mm²).
+            IS 456 range: 250–550.
+        Asc_mm2: Total area of longitudinal reinforcement (mm²).
+            Must be > 0.
+        d_prime_mm: Distance from nearest face to centroid of steel (mm).
+            Must be > 0 and < D_mm / 2.
+        n_points: Number of envelope points to generate (default 50).
+            Must be >= 10.
+
+    Returns:
+        PMInteractionResult with envelope points and key capacities.
+
+    Raises:
+        DimensionError: If geometric dimensions are invalid.
+        MaterialError: If material properties are out of range.
+
+    References:
+        IS 456:2000, Cl. 39.5 (P-M interaction)
+        IS 456:2000, Cl. 39.3 (pure axial capacity)
+        SP:16:1980 Table I (stress-block coefficients for xu > D)
+    """
+    # ===========================================================
+    # 1. Input validation
+    # ===========================================================
+    warnings: list[str] = []
+
+    # --- Dimensions ---
+    if b_mm <= 0:
+        raise DimensionError(
+            f"Column width b_mm must be > 0, got {b_mm}",
+            details={"b_mm": b_mm},
+            clause_ref="Cl. 39.5",
+        )
+    if D_mm <= 0:
+        raise DimensionError(
+            f"Column depth D_mm must be > 0, got {D_mm}",
+            details={"D_mm": D_mm},
+            clause_ref="Cl. 39.5",
+        )
+    if d_prime_mm <= 0 or d_prime_mm >= D_mm / 2.0:
+        raise DimensionError(
+            f"Cover d_prime_mm must be > 0 and < D/2={D_mm / 2.0}, "
+            f"got {d_prime_mm}",
+            details={"d_prime_mm": d_prime_mm, "D_mm": D_mm},
+            clause_ref="Cl. 26.4",
+        )
+
+    # --- Materials ---
+    if fck <= 0:
+        raise MaterialError(
+            f"fck must be > 0, got {fck}",
+            details={"fck": fck},
+            clause_ref="Cl. 39.5",
+        )
+    if fy <= 0:
+        raise MaterialError(
+            f"fy must be > 0, got {fy}",
+            details={"fy": fy},
+            clause_ref="Cl. 39.5",
+        )
+    if fck > 80:
+        warnings.append(
+            f"fck={fck} N/mm² exceeds typical IS 456 range (15-80). "
+            "Results may not be code-compliant."
+        )
+    if fy > 550:
+        warnings.append(
+            f"fy={fy} N/mm² exceeds typical IS 456 range (250-550). "
+            "Results may not be code-compliant."
+        )
+
+    # --- Steel area ---
+    if Asc_mm2 <= 0:
+        raise DimensionError(
+            f"Total steel area Asc_mm2 must be > 0, got {Asc_mm2}",
+            details={"Asc_mm2": Asc_mm2},
+            clause_ref="Cl. 26.5.3.1",
+        )
+    Ag_mm2 = b_mm * D_mm
+    steel_ratio = safe_divide(Asc_mm2, Ag_mm2, default=0.0)
+    if steel_ratio < COLUMN_MIN_STEEL_RATIO:
+        warnings.append(
+            f"Steel ratio {steel_ratio:.4f} below minimum "
+            f"{COLUMN_MIN_STEEL_RATIO} (0.8%) per Cl 26.5.3.1"
+        )
+    if steel_ratio > COLUMN_MAX_STEEL_RATIO:
+        warnings.append(
+            f"Steel ratio {steel_ratio:.4f} exceeds maximum "
+            f"{COLUMN_MAX_STEEL_RATIO} (4%) per Cl 26.5.3.1"
+        )
+
+    # --- n_points ---
+    if n_points < 10:
+        raise DimensionError(
+            f"n_points must be >= 10, got {n_points}",
+            details={"n_points": n_points},
+            clause_ref="Cl. 39.5",
+        )
+
+    # ===========================================================
+    # 2. Generate P-M interaction envelope
+    # ===========================================================
+    # IS 456 Cl 39.5: sweep xu from near-zero to 3*D
+    Asc_half = Asc_mm2 / 2.0
+    xu_min = 0.01 * D_mm
+    xu_max_sweep = 3.0 * D_mm
+
+    envelope_P: list[float] = []
+    envelope_M: list[float] = []
+
+    for i in range(n_points + 1):
+        xu = xu_min + (xu_max_sweep - xu_min) * i / n_points
+        p_pt, m_pt = _pm_envelope_point(xu, b_mm, D_mm, fck, fy, Asc_half, d_prime_mm)
+        envelope_P.append(p_pt)
+        # IS 456 Cl 39.5: moment is always positive (absolute)
+        envelope_M.append(abs(m_pt))
+
+    # ===========================================================
+    # 3. Pure axial capacity (Pu_0) per IS 456 Cl 39.3
+    # ===========================================================
+    # IS 456 Cl 39.3: Pu_0 = 0.4 * fck * Ac + 0.67 * fy * Asc
+    Ac_mm2 = Ag_mm2 - Asc_mm2
+    Pu_0_kN = (
+        COLUMN_CONCRETE_COEFF * fck * Ac_mm2 + COLUMN_STEEL_COEFF * fy * Asc_mm2
+    ) / 1000.0
+
+    # ===========================================================
+    # 4. Balanced point detection
+    # ===========================================================
+    # IS 456 Cl 38.1: balanced xu when tension steel just yields
+    # xu_bal = d_eff * ε_cu / (ε_cu + fy / (1.15 * Es))
+    Es = 2e5  # Steel modulus = 200,000 N/mm²
+    d_eff = D_mm - d_prime_mm
+    xu_bal = d_eff * EPSILON_CU / (EPSILON_CU + fy / (1.15 * Es))
+    Pu_bal_kN, Mu_bal_kNm = _pm_envelope_point(
+        xu_bal, b_mm, D_mm, fck, fy, Asc_half, d_prime_mm
+    )
+    Mu_bal_kNm = abs(Mu_bal_kNm)
+
+    # ===========================================================
+    # 5. Pure bending point (Mu_0) — where Pu crosses zero
+    # ===========================================================
+    Mu_0_kNm = 0.0
+    for i in range(len(envelope_P) - 1):
+        if envelope_P[i] * envelope_P[i + 1] <= 0:  # Sign change
+            # Linear interpolation to find Pu = 0 crossing
+            t = safe_divide(
+                -envelope_P[i],
+                envelope_P[i + 1] - envelope_P[i],
+                default=0.5,
+            )
+            Mu_0_kNm = envelope_M[i] + t * (envelope_M[i + 1] - envelope_M[i])
+            break
+    else:
+        # No sign change — use point with smallest |Pu|
+        min_idx = min(range(len(envelope_P)), key=lambda j: abs(envelope_P[j]))
+        Mu_0_kNm = envelope_M[min_idx]
+        warnings.append(
+            "Pure bending point (Pu=0) not found in sweep; " "using closest point"
+        )
+
+    # ===========================================================
+    # 6. Build result
+    # ===========================================================
+    return PMInteractionResult(
+        points=tuple((p, m) for p, m in zip(envelope_P, envelope_M, strict=True)),
+        Pu_0_kN=Pu_0_kN,
+        Mu_0_kNm=Mu_0_kNm,
+        Pu_bal_kN=Pu_bal_kN,
+        Mu_bal_kNm=Mu_bal_kNm,
+        fck=fck,
+        fy=fy,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
         warnings=tuple(warnings),
     )

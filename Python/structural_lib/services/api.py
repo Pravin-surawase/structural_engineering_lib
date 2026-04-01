@@ -37,6 +37,7 @@ from structural_lib.codes.is456.column.axial import (
 )
 from structural_lib.codes.is456.column.uniaxial import (
     design_short_column_uniaxial,
+    pm_interaction_curve,
 )
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
 from structural_lib.core.data_types import (
@@ -159,6 +160,7 @@ __all__ = [
     "min_eccentricity_is456",
     "design_column_axial_is456",
     "design_short_column_uniaxial_is456",
+    "pm_interaction_curve_is456",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
@@ -1928,6 +1930,71 @@ def design_short_column_uniaxial_is456(
         "e_min_mm": result.e_min_mm,
         "warnings": list(result.warnings),
     }
+
+
+def pm_interaction_curve_is456(
+    b_mm: float,
+    D_mm: float,  # noqa: N803
+    fck: float,
+    fy: float,
+    Asc_mm2: float,  # noqa: N803
+    d_prime_mm: float,
+    n_points: int = 50,
+) -> dict[str, Any]:
+    """Generate P-M interaction curve for column per IS 456 Cl 39.5.
+
+    Produces the complete P-M interaction diagram for a rectangular column
+    section with symmetrically placed reinforcement. Returns key points
+    (pure axial, balanced, pure bending) and the full curve data.
+
+    Args:
+        b_mm: Column width (mm). Must be > 0.
+        D_mm: Column depth in bending direction (mm). Must be > 0.
+        fck: Characteristic compressive strength of concrete (N/mm²).
+        fy: Characteristic yield strength of steel (N/mm²).
+        Asc_mm2: Total area of longitudinal reinforcement (mm²).
+        d_prime_mm: Cover to steel centroid from nearest face (mm).
+        n_points: Number of points on the curve (default 50, min 10).
+
+    Returns:
+        dict with keys:
+            points: list of {"Pu_kN": float, "Mu_kNm": float} dicts
+            Pu_0_kN: Pure axial capacity (kN)
+            Mu_0_kNm: Pure bending capacity (kN·m)
+            Pu_bal_kN: Balanced point axial load (kN)
+            Mu_bal_kNm: Balanced point moment (kN·m)
+            fck, fy, b_mm, D_mm, Asc_mm2, d_prime_mm: echoed inputs
+            clause_ref: "Cl. 39.5"
+            warnings: list of warning strings
+
+    Raises:
+        DimensionError: If geometric dimensions are invalid.
+        MaterialError: If material properties are out of range.
+        ValueError: If n_points < 10.
+
+    Example:
+        >>> result = pm_interaction_curve_is456(
+        ...     b_mm=300, D_mm=500, fck=25, fy=415,
+        ...     Asc_mm2=3000, d_prime_mm=50,
+        ... )
+        >>> result["Pu_0_kN"]  # Pure axial capacity
+        2304.15
+
+    See Also:
+        - codes.is456.column.uniaxial.pm_interaction_curve: Core implementation
+    """
+    from structural_lib.core.data_types import PMInteractionResult
+
+    result: PMInteractionResult = pm_interaction_curve(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        fck=fck,
+        fy=fy,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+        n_points=n_points,
+    )
+    return result.to_dict()
 
 
 def optimize_beam_cost(

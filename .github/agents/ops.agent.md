@@ -57,6 +57,8 @@ If stale branches or open PRs are found, **list them and ask user** before clean
 ./scripts/ai_commit.sh "type: message"    # ALL commits — NEVER manual git
 ```
 
+**Commit Autonomy:** When the orchestrator or any specialist agent hands off a commit task, execute it immediately. Regular commits and PRs via `ai_commit.sh` are autonomous operations — no user approval required. Only **destructive operations** (deleting branches/issues/PRs, force pushing) require explicit user confirmation.
+
 ### Quick Reference (daily use)
 
 | Task | Command |
@@ -176,7 +178,7 @@ NEVER: git push origin --delete (without user approval)
 NEVER: GIT_HOOKS_BYPASS=1 / --no-verify / --force   ← causes rework
 ```
 
-Destructive GitHub operations require **explicit user confirmation**.
+**Destructive GitHub operations require explicit user confirmation.** Regular commits and PRs via `ai_commit.sh` are autonomous — proceed immediately when delegated.
 
 ## Error Recovery
 

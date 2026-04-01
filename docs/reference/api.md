@@ -3181,3 +3181,36 @@ print(f"Safe: {result['ok']}, Utilization: {result['utilization']:.1%}")
 ```
 
 **FastAPI Endpoint:** `POST /api/v1/design/column/uniaxial`
+
+---
+
+### `pm_interaction_curve_is456(b_mm, D_mm, fck, fy, Asc_mm2, d_prime_mm, n_points=50) → dict`
+
+Generate the full P-M interaction envelope for a rectangular column with equal reinforcement at both faces. Sweeps neutral axis depth to produce (Pu, Mu) pairs using IS 456 stress-block model and SP:16 Table I coefficients.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `b_mm` | `float` | Column width (mm) |
+| `D_mm` | `float` | Column depth in direction of bending (mm) |
+| `fck` | `float` | Concrete strength (N/mm²). IS 456 range: 15–80 |
+| `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
+| `Asc_mm2` | `float` | Total longitudinal reinforcement area (mm²), equally split between faces |
+| `d_prime_mm` | `float` | Distance from face to steel centroid (mm) |
+| `n_points` | `int` | Number of points on the curve (default: 50) |
+
+**Returns:** `dict` with keys: `points` (list of `{Pu_kN, Mu_kNm}`), `Pu_max_kN`, `Mu_max_kNm`, `balanced_Pu_kN`, `balanced_Mu_kNm`, `steel_ratio_pct`
+
+**Reference:** IS 456 Cl 39.5, Annex G; SP:16 Table I
+
+**Usage:**
+```python
+from structural_lib import api
+
+curve = api.pm_interaction_curve_is456(
+    b_mm=300.0, D_mm=450.0, fck=25.0, fy=415.0,
+    Asc_mm2=2700.0, d_prime_mm=50.0, n_points=50,
+)
+print(f"Points: {len(curve['points'])}, Pu_max: {curve['Pu_max_kN']:.1f} kN")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/interaction-curve`

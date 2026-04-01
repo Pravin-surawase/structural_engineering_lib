@@ -142,6 +142,8 @@ Every task — no exceptions — flows through this pipeline:
 8. COMMIT    → @ops commits via ai_commit.sh
 ```
 
+**Step 8 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
+
 **No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
 
 ### IS 456 Function Pipeline (ADDITIONAL — for structural math tasks)
@@ -159,6 +161,8 @@ When the task involves adding/modifying IS 456 functions (`codes/is456/`), enfor
 8. DOCUMENT      → @doc-master updates all docs
 9. COMMIT        → @ops commits via ai_commit.sh
 ```
+
+**Step 9 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
 
 **Quality Gates:**
 - Step 2 → 3: Formula approved by @structural-engineer
@@ -273,4 +277,4 @@ This file is read by `agent_brief.sh --handoff` for the next agent's context.
 - **Intervene early** when agents are stuck — provide specific paths and context
 - **Track failure patterns** — when @ops reports a commit failure, document it in the governance log
 - **Don't bypass the pipeline under time pressure** — historical data shows `--force` PR bypasses cause 10+ hours of rework
-- **Hand off to @ops with specific commit type** — e.g., "Commit as `feat: add xu_max check`" not just "commit this"
+- **Hand off to @ops with specific commit type — ops executes autonomously** — e.g., "Commit as `feat: add xu_max check`" — ops proceeds immediately, no user approval needed for commits/PRs

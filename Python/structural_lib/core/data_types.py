@@ -602,3 +602,64 @@ class ColumnUniaxialResult:
             f"Utilization={self.utilization_ratio:.2f}, "
             f"Governed by: {self.governing_check}"
         )
+
+
+@dataclass(frozen=True)
+class PMInteractionResult:
+    """P-M interaction curve for a column section per IS 456 Cl 39.5.
+
+    Attributes:
+        points: Tuple of (Pu_kN, Mu_kNm) pairs along the interaction curve
+        Pu_0_kN: Pure axial capacity (kN) — Cl 39.3
+        Mu_0_kNm: Pure bending capacity (kN·m) — Pu = 0 intercept
+        Pu_bal_kN: Balanced point axial load (kN)
+        Mu_bal_kNm: Balanced point moment capacity (kN·m)
+        fck: Concrete strength used (N/mm²)
+        fy: Steel yield strength used (N/mm²)
+        b_mm: Column width (mm)
+        D_mm: Column depth in bending direction (mm)
+        Asc_mm2: Total steel area (mm²)
+        d_prime_mm: Cover to steel centroid (mm)
+        clause_ref: IS 456 clause reference
+        warnings: Tuple of warning messages
+    """
+
+    points: tuple[tuple[float, float], ...]
+    Pu_0_kN: float
+    Mu_0_kNm: float
+    Pu_bal_kN: float
+    Mu_bal_kNm: float
+    fck: float
+    fy: float
+    b_mm: float
+    D_mm: float
+    Asc_mm2: float
+    d_prime_mm: float
+    clause_ref: str = "Cl. 39.5"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "points": [{"Pu_kN": p, "Mu_kNm": m} for p, m in self.points],
+            "Pu_0_kN": self.Pu_0_kN,
+            "Mu_0_kNm": self.Mu_0_kNm,
+            "Pu_bal_kN": self.Pu_bal_kN,
+            "Mu_bal_kNm": self.Mu_bal_kNm,
+            "fck": self.fck,
+            "fy": self.fy,
+            "b_mm": self.b_mm,
+            "D_mm": self.D_mm,
+            "Asc_mm2": self.Asc_mm2,
+            "d_prime_mm": self.d_prime_mm,
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        return (
+            f"P-M Curve: {len(self.points)} pts, "
+            f"Pu_0={self.Pu_0_kN:.1f}kN, Mu_0={self.Mu_0_kNm:.1f}kNm, "
+            f"Balanced=({self.Pu_bal_kN:.1f}kN, {self.Mu_bal_kNm:.1f}kNm)"
+        )
