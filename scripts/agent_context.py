@@ -6,7 +6,6 @@ Usage:
     .venv/bin/python scripts/agent_context.py --list
 """
 
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -80,7 +79,7 @@ def print_status():
     recent = run("git --no-pager log --oneline -5")
     print(f"\n  Branch: {branch}")
     print(f"  Uncommitted files: {uncommitted}")
-    print(f"  Recent commits:")
+    print("  Recent commits:")
     for line in recent.splitlines()[:5]:
         print(f"    {line}")
 
@@ -101,8 +100,7 @@ def ctx_orchestrator():
     print_status()
 
     section("DECISION TREE — Which Agent?")
-    print(
-        """  Python/structural_lib changes → @backend
+    print("""  Python/structural_lib changes → @backend
   React/Tailwind/R3F changes    → @frontend
   FastAPI routes/endpoints      → @api-developer
   IS 456 formula/compliance     → @structural-engineer
@@ -111,28 +109,23 @@ def ctx_orchestrator():
   Docs/session/archive          → @doc-master
   Git/Docker/CI                 → @ops
   Project health/maintenance    → @governance
-  UI/UX design (read-only)      → @ui-designer"""
-    )
+  UI/UX design (read-only)      → @ui-designer""")
 
     section("SKILL ROUTING")
-    print(
-        """  /session-management   → session start/end
+    print("""  /session-management   → session start/end
   /safe-file-ops        → move/delete files
   /api-discovery        → API param lookup
   /is456-verification   → IS 456 test runner
   /react-validation     → React build/lint
-  /architecture-check   → 4-layer validation"""
-    )
+  /architecture-check   → 4-layer validation""")
 
     section("MANDATORY PIPELINE")
-    print(
-        """  1. PLAN    → Read priorities, scope work
+    print("""  1. PLAN    → Read priorities, scope work
   2. GATHER  → Search before coding (hooks, routes, API)
   3. EXECUTE → Delegate to specialist agent
   4. VERIFY  → @reviewer checks changes
   5. DOCUMENT → @doc-master updates docs
-  6. COMMIT  → @ops commits via ai_commit.sh"""
-    )
+  6. COMMIT  → @ops commits via ai_commit.sh""")
 
 
 @agent("backend", "Python structural_lib core — IS 456 math, services, adapters")
@@ -140,20 +133,16 @@ def ctx_backend():
     print_status()
 
     section("4-LAYER ARCHITECTURE")
-    print(
-        """  Core types  → Python/structural_lib/core/         (no IS 456 math)
+    print("""  Core types  → Python/structural_lib/core/         (no IS 456 math)
   IS 456 Code → Python/structural_lib/codes/is456/  (pure math, NO I/O)
   Services    → Python/structural_lib/services/      (orchestration)
   UI/IO       → react_app/, fastapi_app/             (interfaces)
 
   ⚠ Import rule: Core ← IS 456 ← Services ← UI. Never upward.
-  ⚠ Units: always explicit — mm, N/mm², kN, kNm"""
-    )
+  ⚠ Units: always explicit — mm, N/mm², kN, kNm""")
 
     section("PUBLIC API FUNCTIONS (services/api.py)")
-    api_funcs = run(
-        'grep "^def " Python/structural_lib/services/api.py | head -25'
-    )
+    api_funcs = run('grep "^def " Python/structural_lib/services/api.py | head -25')
     if api_funcs:
         for line in api_funcs.splitlines():
             print(f"    {line}")
@@ -171,7 +160,9 @@ def ctx_backend():
     section("KEY COMMANDS")
     bullet("API signatures: .venv/bin/python scripts/discover_api_signatures.py <func>")
     bullet("Tests: cd Python && .venv/bin/python -m pytest tests/ -v")
-    bullet("Import check: .venv/bin/python scripts/validate_imports.py --scope structural_lib")
+    bullet(
+        "Import check: .venv/bin/python scripts/validate_imports.py --scope structural_lib"
+    )
     bullet("Architecture: .venv/bin/python scripts/check_architecture_boundaries.py")
     bullet("Skill: /api-discovery, /is456-verification, /architecture-check")
 
@@ -223,7 +214,9 @@ def ctx_frontend():
 
     section("ENVIRONMENT")
     nm_exists = (ROOT / "react_app" / "node_modules").exists()
-    print(f"  node_modules: {'✓ installed' if nm_exists else '✗ run: cd react_app && npm install'}")
+    print(
+        f"  node_modules: {'✓ installed' if nm_exists else '✗ run: cd react_app && npm install'}"
+    )
     node = run("node --version 2>/dev/null")
     print(f"  Node: {node if node else '✗ not found'}")
 
@@ -232,7 +225,7 @@ def ctx_frontend():
 def ctx_api_developer():
     print_status()
 
-    section("ROUTER FILES (12 routers, 38 endpoints)")
+    section("ROUTER FILES (13 routers, 47 endpoints)")
     routers = run("ls fastapi_app/routers/*.py 2>/dev/null")
     if routers:
         for r in routers.splitlines():
@@ -312,24 +305,20 @@ def ctx_reviewer():
     print_status()
 
     section("REVIEW CHECKLIST")
-    print(
-        """  □ Architecture: correct layer, import direction okay
+    print("""  □ Architecture: correct layer, import direction okay
   □ Units: explicit mm/N/kN/kNm, no hidden conversions
   □ Duplication: no reinvented hooks/adapters/routes
   □ IS 456: formulas cite clause numbers, correct math
   □ Git: ./scripts/ai_commit.sh used, conventional commits
   □ Tests: 85% branch coverage, edge cases covered
-  □ Security: no hardcoded secrets, input validated"""
-    )
+  □ Security: no hardcoded secrets, input validated""")
 
     section("VERDICT FORMAT")
-    print(
-        """  ## Verdict: APPROVED / NEEDS CHANGES / BLOCKED
+    print("""  ## Verdict: APPROVED / NEEDS CHANGES / BLOCKED
   ### Findings
   - [PASS/FAIL] Category: Detail
   ### Required Actions (if not approved)
-  - [ ] Action item"""
-    )
+  - [ ] Action item""")
 
     section("SKILLS")
     bullet("/architecture-check — 4-layer boundary validation")
@@ -356,9 +345,7 @@ def ctx_tester():
         print("  (could not list test dirs)")
 
     section("TEST COUNTS")
-    test_count = run(
-        'grep -r "def test_" Python/tests/ | wc -l'
-    )
+    test_count = run('grep -r "def test_" Python/tests/ | wc -l')
     print(f"  Total test functions: {test_count}")
 
     section("KEY RULES")
@@ -389,21 +376,21 @@ def ctx_doc_master():
     bullet("docs/docs-canonical.json — canonical doc registry")
 
     section("SESSION END WORKFLOW (MANDATORY)")
-    print(
-        """  1. ./run.sh commit "type: message"     # Commit work
+    print("""  1. ./run.sh commit "type: message"     # Commit work
   2. ./run.sh session summary              # Auto-log to SESSION_LOG
   3. ./run.sh session sync                 # Fix stale numbers
   4. Update docs/planning/next-session-brief.md
   5. Update docs/TASKS.md
   6. Append to docs/WORKLOG.md
-  7. ./run.sh commit "docs: session end"   # Commit doc updates"""
-    )
+  7. ./run.sh commit "docs: session end"   # Commit doc updates""")
 
     section("COMMANDS")
     bullet("Safe move: .venv/bin/python scripts/safe_file_move.py a b --dry-run")
     bullet("Safe delete: .venv/bin/python scripts/safe_file_delete.py f")
     bullet("Create doc: .venv/bin/python scripts/create_doc.py path")
-    bullet("Generate indexes: .venv/bin/python scripts/generate_enhanced_index.py --all")
+    bullet(
+        "Generate indexes: .venv/bin/python scripts/generate_enhanced_index.py --all"
+    )
     bullet("Skill: /safe-file-ops, /session-management")
 
     section("DOC COUNTS")
@@ -416,11 +403,9 @@ def ctx_ops():
     print_status()
 
     section("GIT WORKFLOW — THE ONE RULE")
-    print(
-        """  ./scripts/ai_commit.sh "type: message"    # ALL commits
+    print("""  ./scripts/ai_commit.sh "type: message"    # ALL commits
   NEVER manual git add/commit/push/pull
-  Format: feat|fix|docs|refactor|test|chore|ci(scope): description"""
-    )
+  Format: feat|fix|docs|refactor|test|chore|ci(scope): description""")
 
     section("PR WORKFLOW")
     bullet("./run.sh pr status — check if PR required")
@@ -432,13 +417,13 @@ def ctx_ops():
     colima = run("colima status 2>&1 | head -3")
     docker_running = run("docker info 2>/dev/null | head -1")
     if colima and "running" in colima.lower():
-        print(f"  Colima: ✓ running")
+        print("  Colima: ✓ running")
     else:
-        print(f"  Colima: ✗ not running → colima start --cpu 4 --memory 4")
+        print("  Colima: ✗ not running → colima start --cpu 4 --memory 4")
     if docker_running:
-        print(f"  Docker: ✓ available")
+        print("  Docker: ✓ available")
     else:
-        print(f"  Docker: ✗ not available")
+        print("  Docker: ✗ not available")
     bullet("docker compose up --build (production)")
     bullet("docker compose -f docker-compose.dev.yml up (dev)")
 
@@ -487,7 +472,9 @@ def ctx_governance():
     bullet("Check governance: .venv/bin/python scripts/check_governance.py --structure")
     bullet("Sync numbers: .venv/bin/python scripts/sync_numbers.py --fix")
     bullet("Link health: .venv/bin/python scripts/check_links.py")
-    bullet("Generate indexes: .venv/bin/python scripts/generate_enhanced_index.py --all")
+    bullet(
+        "Generate indexes: .venv/bin/python scripts/generate_enhanced_index.py --all"
+    )
     bullet("Archive old docs: .venv/bin/python scripts/archive_old_files.sh")
 
     section("SUSTAINABILITY CHECKS")
@@ -516,14 +503,12 @@ def ctx_ui_designer():
     bullet("Engineers are the primary users — clarity > aesthetics")
 
     section("DESIGN SPEC FORMAT (MANDATORY)")
-    print(
-        """  ## Design Spec: [Feature Name]
+    print("""  ## Design Spec: [Feature Name]
   ### Layout — component hierarchy, grid, responsive
   ### Visual Design — colors, typography, spacing (Tailwind)
   ### State Variations — loading, empty, error, success
   ### Interactions — hover, click, transitions
-  ### Accessibility — ARIA, keyboard, contrast"""
-    )
+  ### Accessibility — ARIA, keyboard, contrast""")
 
     section("COLOR PALETTE")
     bullet("Primary: Tailwind blue-600")
@@ -578,7 +563,11 @@ def main():
         bullet(pending_fb.strip())
 
     section("SESSION END CHECKLIST")
-    bullet("Log feedback: ./run.sh feedback log --agent " + agent_name + " --stale-doc '...' --missing '...'")
+    bullet(
+        "Log feedback: ./run.sh feedback log --agent "
+        + agent_name
+        + " --stale-doc '...' --missing '...'"
+    )
     bullet("Commit: ./scripts/ai_commit.sh 'type: message'")
     bullet("Never manual git add/commit/push/pull")
     bullet("Search before coding — don't duplicate existing code")

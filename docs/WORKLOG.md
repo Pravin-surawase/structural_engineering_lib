@@ -37,8 +37,8 @@ tags: []
 | 2026-04-01 | TASK-642 | feat: 5-point steel stress-strain curve (stress_blocks.py, uniaxial.py, 26 tests) | PR #481 |
 | 2026-04-01 | TASK-636 | feat: effective length per IS 456 Table 28 (axial.py, EndCondition enum, 69 tests) | PR #481 |
 | 2026-04-01 | TASK-636 | feat: POST /column/effective-length FastAPI endpoint + 12 API tests | PR #481 |
-| 2026-04-01 | TASK-635 | feat: biaxial bending check IS 456 Cl 39.6 (biaxial.py, ColumnBiaxialResult, 84 tests) | pending commit |
-| 2026-04-01 | TASK-635 | feat: POST /column/biaxial-check FastAPI endpoint + 19 API tests | pending commit |
+| 2026-04-01 | TASK-635 | feat: biaxial bending check IS 456 Cl 39.6 (biaxial.py, ColumnBiaxialResult, 84 tests) | PR #482 |
+| 2026-04-01 | TASK-635 | feat: POST /column/biaxial-check FastAPI endpoint + 19 API tests | PR #482 |
 | 2026-04-01 | TASK-800.T | Added 84 evolver unit tests (scorer, drift, compliance, registry, data, scoring lib) | c1e0d222 |
 | 2026-04-01 | TASK-634 | Added P-M interaction curve (IS 456 Cl. 39.5) — core function, API wrapper, FastAPI endpoint, 45 tests | pending-commit |
 | 2026-04-01 | TASK-800.P3 | Fixed agent_registry.py name extraction bug (.stem → .name.removesuffix) | c1e0d222 |

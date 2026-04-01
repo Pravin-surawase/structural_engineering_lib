@@ -1,7 +1,7 @@
 /**
  * API Endpoint Integration Tests
  *
- * Validates React→FastAPI contract for all 12 routers (35 endpoints).
+ * Validates React→FastAPI contract for all 13 routers (47 endpoints).
  * Uses fetch mocking — no real server needed.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';

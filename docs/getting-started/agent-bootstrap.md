@@ -119,7 +119,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-45 endpoints across 13 routers + 1 WebSocket:
+47 endpoints across 13 routers + 1 WebSocket:
 
 | Router | Endpoint | Purpose |
 |--------|----------|---------|
@@ -153,6 +153,13 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | **export** | `POST /api/v1/export/bbs` | BBS CSV download |
 | | `POST /api/v1/export/dxf` | DXF drawing download |
 | | `POST /api/v1/export/report` | HTML report download |
+| **column** | `POST /api/v1/design/column/effective-length` | Effective length per IS 456 Table 28 |
+| | `POST /api/v1/design/column/classify` | Classify column (short/slender) |
+| | `POST /api/v1/design/column/eccentricity` | Minimum eccentricity |
+| | `POST /api/v1/design/column/axial` | Short column axial capacity |
+| | `POST /api/v1/design/column/uniaxial` | Short column uniaxial bending |
+| | `POST /api/v1/design/column/interaction-curve` | P-M interaction curve |
+| | `POST /api/v1/design/column/biaxial-check` | Biaxial bending check (Cl 39.6) |
 | **health** | `GET  /health` | Basic health check |
 | | `GET  /health/ready` | Readiness check |
 | | `GET  /health/info` | Version & dependency info |
@@ -169,6 +176,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
 | `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py` — IS 456:2000 |
+| `codes/is456/column/` | `axial.py` (classify, eccentricity, capacity, effective length), `uniaxial.py` (P-M curves), `biaxial.py` (biaxial check) |
 | `services/bbs.py` | Bar bending schedule generation |
 | `services/dxf_export.py` | DXF drawing export |
 | `insights/` | `smart_designer.py`, `design_suggestions.py`, `sensitivity.py`, `cost_optimization.py` |
@@ -304,7 +312,7 @@ npm run dev
 # React is now at http://localhost:5173
 ```
 
-This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 38 endpoints.
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 47 endpoints.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash

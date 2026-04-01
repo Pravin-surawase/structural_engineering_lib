@@ -23,7 +23,7 @@ pip install -e Python/
 | Layer | Technology |
 |-------|-----------|
 | Frontend | React 19 + R3F + Tailwind |
-| Backend | FastAPI (38 endpoints) |
+| Backend | FastAPI (47 endpoints) |
 | Core | Python structural_lib (IS 456:2000) |
 
 ## Documentation

@@ -86,7 +86,7 @@ The orchestrator will:
 @api-developer the /design/beam endpoint is returning 422 — fix validation
 ```
 
-**It knows about:** All 38 existing endpoints across 12 routers, Pydantic models, Docker testing.
+**It knows about:** All 47 existing endpoints across 13 routers, Pydantic models, Docker testing.
 
 ---
 

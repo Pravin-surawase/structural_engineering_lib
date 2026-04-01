@@ -58,13 +58,14 @@ docker compose -f docker-compose.dev.yml up            # Dev with hot reload
 grep -r "@router" fastapi_app/routers/ | head -30
 ```
 
-38 endpoints across 12 routers already exist. Do NOT duplicate.
+47 endpoints across 13 routers already exist. Do NOT duplicate.
 
 ## Existing Routers
 
 | Router | Key Endpoints |
 |--------|---------------|
 | **design** | `POST /api/v1/design/beam`, `/beam/check`, `/beam/torsion`, `GET /limits` |
+| **column** | `POST /effective-length`, `/classify`, `/eccentricity`, `/axial`, `/uniaxial`, `/interaction-curve`, `/biaxial-check` |
 | **detailing** | `POST /api/v1/detailing/beam`, `GET /bar-areas`, `/development-length/{d}` |
 | **analysis** | `POST /api/v1/analysis/beam/smart`, `GET /code-clauses` |
 | **imports** | `POST /csv`, `/csv/text`, `/dual-csv`, `/batch-design`, `GET /formats`, `/sample` |
@@ -95,7 +96,7 @@ fastapi_app/
 ├── config.py        # Settings
 ├── auth.py          # Auth (if needed)
 ├── models/          # Pydantic request/response models
-├── routers/         # 12 router files
+├── routers/         # 13 router files
 ├── examples/        # Example requests
 └── tests/           # API tests (86+ tests)
 ```
