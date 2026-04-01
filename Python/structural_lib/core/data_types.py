@@ -538,3 +538,67 @@ class ColumnAxialResult:
     is_safe: bool
     warnings: list[str] = field(default_factory=list)
     errors: list[DesignError] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class ColumnUniaxialResult:
+    """Result of short column uniaxial bending check per IS 456 Cl 39.5.
+
+    Attributes:
+        Pu_kN: Applied axial load (kN)
+        Mu_kNm: Applied moment (kN·m)
+        Pu_cap_kN: Axial capacity on P-M envelope at applied load ratio (kN)
+        Mu_cap_kNm: Moment capacity on P-M envelope at applied load ratio (kN·m)
+        utilization_ratio: Radial utilization (applied / capacity), <= 1.0 is safe
+        eccentricity_mm: Applied eccentricity Mu/Pu (mm)
+        e_min_mm: Minimum eccentricity per Cl 25.4 (mm), None if not computed
+        is_safe: True if utilization_ratio <= 1.0
+        classification: Column classification (SHORT or SLENDER)
+        governing_check: Description of the governing design check
+        clause_ref: IS 456 clause reference
+        warnings: Tuple of warning messages
+    """
+
+    Pu_kN: float
+    Mu_kNm: float
+    Pu_cap_kN: float
+    Mu_cap_kNm: float
+    utilization_ratio: float
+    eccentricity_mm: float
+    e_min_mm: float | None
+    is_safe: bool
+    classification: ColumnClassification
+    governing_check: str
+    clause_ref: str
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "Pu_kN": self.Pu_kN,
+            "Mu_kNm": self.Mu_kNm,
+            "Pu_cap_kN": self.Pu_cap_kN,
+            "Mu_cap_kNm": self.Mu_cap_kNm,
+            "utilization_ratio": self.utilization_ratio,
+            "eccentricity_mm": self.eccentricity_mm,
+            "e_min_mm": self.e_min_mm,
+            "is_safe": self.is_safe,
+            "classification": (
+                self.classification.value
+                if hasattr(self.classification, "value")
+                else str(self.classification)
+            ),
+            "governing_check": self.governing_check,
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        return (
+            f"Column Uniaxial Check ({status}): "
+            f"Pu={self.Pu_kN:.1f}kN, Mu={self.Mu_kNm:.1f}kNm, "
+            f"Utilization={self.utilization_ratio:.2f}, "
+            f"Governed by: {self.governing_check}"
+        )

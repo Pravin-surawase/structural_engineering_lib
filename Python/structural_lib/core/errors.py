@@ -558,6 +558,60 @@ E_COLUMN_005 = DesignError(
     clause="Cl. 39.3",
 )
 
+E_COLUMN_006 = DesignError(
+    code="E_COLUMN_006",
+    severity=Severity.ERROR,
+    message="Applied (Pu, Mu) exceeds P-M interaction envelope — section unsafe",
+    field="Pu_kN",
+    hint="Increase section size, concrete grade, or reinforcement.",
+    clause="Cl. 39.5",
+)
+
+E_COLUMN_007 = DesignError(
+    code="E_COLUMN_007",
+    severity=Severity.WARNING,
+    message="Column classified as slender — additional moment per Cl 39.7 required",
+    field="le_mm",
+    hint="Use design_long_column() for slender columns.",
+    clause="Cl. 39.7",
+)
+
+E_COLUMN_008 = DesignError(
+    code="E_COLUMN_008",
+    severity=Severity.WARNING,
+    message="Eccentricity below 0.05D — pure axial formula (Cl 39.3) is more appropriate",
+    field="Mu_kNm",
+    hint="Consider using short_axial_capacity() for small eccentricities.",
+    clause="Cl. 39.3",
+)
+
+E_COLUMN_009 = DesignError(
+    code="E_COLUMN_009",
+    severity=Severity.ERROR,
+    message="Cover to steel centroid d' must be > 0 and < D/2",
+    field="d_prime_mm",
+    hint="d_prime_mm should typically be 40-75mm.",
+    clause="Cl. 26.4",
+)
+
+E_COLUMN_010 = DesignError(
+    code="E_COLUMN_010",
+    severity=Severity.WARNING,
+    message="Applied moment amplified to P_u × e_min per Cl 25.4",
+    field="Mu_kNm",
+    hint="Minimum eccentricity governs — design moment increased.",
+    clause="Cl. 25.4",
+)
+
+E_COLUMN_011 = DesignError(
+    code="E_COLUMN_011",
+    severity=Severity.ERROR,
+    message="Axial load Pu must be >= 0 for compression member",
+    field="Pu_kN",
+    hint="This function is for compression members. For pure tension, use a different design method.",
+    clause="Cl. 39.5",
+)
+
 
 def make_error(
     code: str,
