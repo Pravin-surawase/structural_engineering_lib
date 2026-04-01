@@ -130,3 +130,8 @@ tags: []
 | 2026-03-31 | TASK-PREFLIGHT | fix: release preflight memory safety — timeouts, RAM check, NODE_OPTIONS, --docker flag, process group cleanup | — |
 | 2026-03-31 | TASK-617,618,619 | Phase 1 Batch 4: test helpers, top-level exports, unit plausibility guards | pending |
 | 2026-03-31 | — | Progress audit: Blueprint v5.0 §3.2 corrected, Phase 0 marked complete, Column design (TASK-630-632) planned | — |
+| 2026-04-01 | CI/Docker | Merged docker-build + docker-security-scan into one job (~5 min savings) | pending |
+| 2026-04-01 | CI/Docker | Trivy now fails CI on CRITICAL vulns (exit-code: 1) | pending |
+| 2026-04-01 | Security | Added cap_drop: ALL + no-new-privileges to docker-compose.yml + dev | pending |
+| 2026-04-01 | Security | Trimmed security.yml to scan prod deps only | pending |
+| 2026-04-01 | TASK-620 | Stack trace sanitization in fastapi_app/main.py — generic exception handler | pending |

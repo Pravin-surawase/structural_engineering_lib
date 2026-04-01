@@ -14,6 +14,10 @@ services:
       - ./fastapi_app:/app/fastapi_app
       - ./Python/structural_lib:/app/Python/structural_lib
       - ./Etabs_CSV:/app/Etabs_CSV
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
