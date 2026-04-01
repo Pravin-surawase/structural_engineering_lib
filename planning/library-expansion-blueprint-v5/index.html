@@ -2570,7 +2570,7 @@
 <strong>Status:</strong> Active
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-03-31
-<strong>Last Updated:</strong> 2026-03-31
+<strong>Last Updated:</strong> 2026-04-01
 <strong>Supersedes:</strong> <a href="../../_archive/planning-completed-2026-03/library-expansion-blueprint-v4/">library-expansion-blueprint-v4.md</a> (IS 456-only)</p>
 <blockquote>
 <p>Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.</p>
@@ -3023,7 +3023,7 @@
 <tr>
 <td>Column</td>
 <td>Cl 25, 39, Annex E/G</td>
-<td>P0 (before multi-code) — classify, min_ecc, axial ✅ (75 tests)</td>
+<td>P1 🔄 — 7/10 functions done: classify ✅, min_ecc ✅, axial ✅, uniaxial ✅, biaxial ✅, P-M curve ✅, effective_length ✅ (254+ tests). Remaining: additional_moment, helical, column_detailing, ductile_detailing</td>
 </tr>
 <tr>
 <td>One-way slab</td>
@@ -3283,68 +3283,86 @@
 <th>Function</th>
 <th>IS 456 Reference</th>
 <th>Complexity</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
 <td><code>classify_column()</code></td>
-<td>Cl 25.1–25.3</td>
+<td>Cl 25.1.2</td>
 <td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>2</td>
 <td><code>min_eccentricity()</code></td>
 <td>Cl 25.4</td>
 <td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>3</td>
 <td><code>short_axial_capacity()</code></td>
 <td>Cl 39.3</td>
 <td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>4</td>
 <td><code>helical_capacity()</code></td>
 <td>Cl 39.4</td>
 <td>Low</td>
+<td>📋 TASK-639</td>
 </tr>
 <tr>
 <td>5</td>
-<td><code>uniaxial_capacity()</code></td>
+<td><code>design_short_column_uniaxial()</code></td>
 <td>Cl 39.5, Annex G</td>
-<td>Medium-High</td>
+<td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>6</td>
-<td><code>biaxial_capacity()</code></td>
+<td><code>biaxial_bending_check()</code></td>
 <td>Cl 39.6 (Bresler)</td>
-<td>High</td>
+<td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>7</td>
 <td><code>slender_additional_moment()</code></td>
 <td>Cl 39.7</td>
 <td>Medium</td>
+<td>📋 TASK-637</td>
 </tr>
 <tr>
 <td>8</td>
-<td><code>interaction_diagram()</code></td>
-<td>Annex G</td>
-<td>High</td>
+<td><code>pm_interaction_curve()</code></td>
+<td>Cl 39.5, SP:16 Table I</td>
+<td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>9</td>
 <td><code>column_detailing()</code></td>
 <td>Cl 26.5.3</td>
 <td>Medium</td>
+<td>📋</td>
 </tr>
 <tr>
 <td>10</td>
 <td><code>column_ductile_detailing()</code></td>
 <td>IS 13920 Cl 7</td>
 <td>Medium</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>effective_length()</code></td>
+<td>Cl 25.2, Table 28</td>
+<td>✅ Done</td>
+<td>✅</td>
 </tr>
 </tbody>
 </table>
@@ -3545,11 +3563,11 @@
 </code></pre></div>
 <h3 id="57-phase-1-success-criteria">5.7 Phase 1 Success Criteria<a class="headerlink" href="#57-phase-1-success-criteria" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[ ] IS 456 column design: 10 functions, all SP:16 benchmarks ±0.1%</li>
+<li>[x] IS 456 column design: 7/10 functions done (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length). 254+ column tests, SP:16 benchmarks passing ±0.1%. Remaining: additional_moment, helical, detailing</li>
 <li>[ ] IS 456 one-way slab: 4 functions</li>
 <li>[ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases</li>
 <li>[ ] IS 456 footing: 6 functions including punching shear</li>
-<li>[ ] Enhanced shear (Cl 40.3) implemented</li>
+<li>[x] Enhanced shear (Cl 40.3) implemented</li>
 <li>[ ] New ABCs added to core/base.py</li>
 <li>[ ] IS456Code implements all ABCs</li>
 <li>[ ] All tests pass (including new ~500 tests)</li>
@@ -4190,8 +4208,8 @@
 <td>6</td>
 <td><strong>Column P-M interaction complexity</strong></td>
 <td>Most complex IS 456 calculation</td>
-<td>MEDIUM</td>
-<td>Implement incrementally: axial first, then uniaxial, then biaxial</td>
+<td>🔄 PARTIALLY MITIGATED</td>
+<td>Implemented incrementally as prescribed: axial → uniaxial → biaxial → P-M curve. 7/10 functions done. Remaining: slenderness, detailing</td>
 </tr>
 <tr>
 <td>7</td>
@@ -4808,7 +4826,7 @@
 <tr>
 <td>Cl 25.1–25.4</td>
 <td>Column classification &amp; eccentricity</td>
-<td>❌</td>
+<td>✅ Done</td>
 <td>P1</td>
 </tr>
 <tr>
@@ -4856,7 +4874,7 @@
 <tr>
 <td>Cl 39.1–39.7</td>
 <td>Column design</td>
-<td>❌</td>
+<td>🔄 Partial — 39.3/39.5/39.6 ✅, 39.4/39.7 ❌</td>
 <td>P1</td>
 </tr>
 <tr>
@@ -4903,14 +4921,14 @@
 </tr>
 <tr>
 <td>Annex E</td>
-<td>Column effective length</td>
+<td>Column effective length (stiffness method)</td>
 <td>❌</td>
 <td>P1</td>
 </tr>
 <tr>
 <td>Annex G</td>
 <td>P-M interaction</td>
-<td>❌</td>
+<td>✅ Done</td>
 <td>P1</td>
 </tr>
 <tr>
@@ -4922,7 +4940,7 @@
 <tr>
 <td>Table 28</td>
 <td>Column effective length ratios</td>
-<td>❌</td>
+<td>✅ Done</td>
 <td>P1</td>
 </tr>
 </tbody>

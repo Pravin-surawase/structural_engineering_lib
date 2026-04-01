@@ -1570,17 +1570,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recently-done" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recently Done
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#active" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1592,7 +1581,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recently-done_1" class="md-nav__link">
+  <a href="#recently-done" class="md-nav__link">
     <span class="md-ellipsis">
       
         Recently Done
@@ -1719,7 +1708,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recently-done_2" class="md-nav__link">
+  <a href="#recently-done_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Recently Done
@@ -1764,7 +1753,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-01 (TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)</p>
+<p><strong>Updated:</strong> 2026-04-02 (TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2079,37 +2068,6 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <p>Detailed specs (function signatures, Pydantic models, React hooks, UI wireframes) in <a href="../planning/next-phase-improvements-plan/">next-phase-improvements-plan.md</a> Part 2.</p>
 </blockquote>
 <hr />
-<h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Task</th>
-<th>Agent</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TASK-800.P2-P11</td>
-<td>Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh integration</td>
-<td>Copilot</td>
-<td>✅ Done</td>
-</tr>
-<tr>
-<td>TASK-525</td>
-<td>Smart HubPage replacing ModeSelectPage</td>
-<td>Copilot</td>
-<td>✅ Done</td>
-</tr>
-<tr>
-<td>TASK-515</td>
-<td>Load Calculator (FastAPI + React)</td>
-<td>Copilot</td>
-<td>✅ Done</td>
-</tr>
-</tbody>
-</table>
 <h2 id="active">Active<a class="headerlink" href="#active" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2129,7 +2087,7 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </tr>
 </tbody>
 </table>
-<h2 id="recently-done_1">Recently Done<a class="headerlink" href="#recently-done_1" title="Permanent link">&para;</a></h2>
+<h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -2140,6 +2098,12 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>TASK-637</td>
+<td>Additional moment / slenderness effects (IS 456 Cl 39.7.1) — slenderness.py + AdditionalMomentResult + 24 tests + API + endpoint + 8 API tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
 <tr>
 <td>TASK-642</td>
 <td>Five-point steel stress-strain curve (IS 456 Fig 23) — stress_blocks.py + uniaxial.py + 26 tests</td>
@@ -2185,6 +2149,24 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <tr>
 <td>TASK-632</td>
 <td>short_axial_capacity (Cl 39.3) + API + FastAPI + 75 tests</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-800.P2-P11</td>
+<td>Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh integration</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-525</td>
+<td>Smart HubPage replacing ModeSelectPage</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-515</td>
+<td>Load Calculator (FastAPI + React)</td>
 <td>Copilot</td>
 <td>✅ Done</td>
 </tr>
@@ -2250,14 +2232,6 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <td>1–2w</td>
 <td>🟢 Low</td>
 <td>📋</td>
-</tr>
-<tr>
-<td>TASK-642</td>
-<td>IS 456 Fig 23 five-point steel stress-strain curve (replaces bilinear model in stress_blocks.py)</td>
-<td>Copilot</td>
-<td>1-2d</td>
-<td>🟡 Medium</td>
-<td>✅ Done (PR #481)</td>
 </tr>
 <tr>
 <td>TASK-643</td>
@@ -2614,7 +2588,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td><code>calculate_additional_moment</code></td>
 <td>Cl 39.7.1</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>TASK-638</td>
@@ -2853,7 +2827,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="recently-done_2">Recently Done<a class="headerlink" href="#recently-done_2" title="Permanent link">&para;</a></h2>
+<h2 id="recently-done_1">Recently Done<a class="headerlink" href="#recently-done_1" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
