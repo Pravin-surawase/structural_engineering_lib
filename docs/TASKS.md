@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-01 (TASK-634 done — P-M interaction curve, 45 tests, API + endpoint)
+**Updated:** 2026-04-01 (TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)
 
 ---
 
@@ -94,12 +94,14 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | 🔄 In Progress |
-| TASK-635 | Biaxial bending check (Cl 39.6) | — | 📋 Up Next |
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-642 | Five-point steel stress-strain curve (IS 456 Fig 23) — stress_blocks.py + uniaxial.py + 26 tests | Copilot | ✅ Done |
+| TASK-636 | Effective length per IS 456 Table 28 — axial.py + EndCondition enum + 69 tests + API + endpoint | Copilot | ✅ Done |
+| TASK-635 | Biaxial bending check (Cl 39.6) — biaxial.py + ColumnBiaxialResult + 84 tests + API + endpoint | Copilot | ✅ Done |
 | TASK-634 | P-M interaction curve (Cl 39.5) — core + API + FastAPI endpoint + 45 tests | Copilot | ✅ Done |
 | TASK-633 | Short column uniaxial (Cl 39.5) — uniaxial.py + 57 tests + API + endpoint | Copilot | ✅ Done |
 | TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Copilot | ✅ Done |
@@ -116,7 +118,7 @@
 | TASK-519 | Alternatives Panel — Pareto front in DesignView | — | 3–4d | 🟡 Medium | 📋 |
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
-| TASK-642 | IS 456 Fig 23 five-point steel stress-strain curve (replaces bilinear model in stress_blocks.py) | — | 1-2d | 🟡 Medium | 📋 |
+| TASK-642 | IS 456 Fig 23 five-point steel stress-strain curve (replaces bilinear model in stress_blocks.py) | Copilot | 1-2d | 🟡 Medium | ✅ Done (PR #481) |
 | TASK-643 | Verify SP:16 Table I normalization convention against physical publication | — | 0.5d | 🟡 Medium | 📋 |
 
 ## Library Expansion — Multi-Code, Multi-Element
@@ -190,8 +192,8 @@
 | TASK-632 | Short column axial | `short_axial_capacity` | Cl 39.3 | 🔴 P0 | ✅ Done |
 | TASK-633 | Short column uniaxial | `design_short_column_uniaxial` | Cl 39.5 | 🔴 High | ✅ Done |
 | TASK-634 | P-M interaction curve | `pm_interaction_curve` | Cl 39.5, Annex G | 🔴 High | ✅ Done |
-| TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | 📋 |
-| TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | 📋 |
+| TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | ✅ Done |
+| TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | ✅ Done (PR #481) |
 | TASK-637 | Additional moment | `calculate_additional_moment` | Cl 39.7.1 | 🟡 Medium | 📋 |
 | TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | 📋 |
 | TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.8 | 🟢 Low | 📋 |

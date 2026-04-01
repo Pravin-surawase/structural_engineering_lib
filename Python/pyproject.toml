@@ -107,6 +107,12 @@ ignore-names = [
   "Pu_N", "Pu_kN", "expected_Pu_kN",  # Column axial capacity
   "D1",  # Column dimension variant
   "concrete_contribution_N", "steel_contribution_N",  # Column force components
+  "Puz_N", "Puz_kN", "Puz",  # Column Puz (IS 456 Cl 39.6a)
+  "Mux_kNm", "Muy_kNm", "Mux1_kNm", "Muy1_kNm",  # Biaxial moments
+  "P_i", "P_next", "P_lo", "P_hi", "M_i", "M_next",  # P-M curve interpolation
+  "M_bal", "M_above", "M_below",  # P-M curve test vars
+  "Pu_test", "Pu",  # Test axial load vars
+  "Asc",  # Area of steel (compression)
 ]
 
 # classmethod decorators use cls
@@ -130,6 +136,8 @@ classmethod-decorators = ["classmethod"]
 "tests/codes/is456/column/test_axial.py" = ["N802", "N803", "N806", "E741"]  # Structural engineering naming (Ag, Asc, Pu, l)
 "structural_lib/codes/is456/column/uniaxial.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc, Cc, Fsc)
 "tests/codes/is456/column/test_uniaxial.py" = ["N802", "N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc)
+"structural_lib/codes/is456/column/biaxial.py" = ["N803", "N806", "C409"]  # Structural engineering naming (Puz, Mux, Muy, alpha_n)
+"tests/test_column_biaxial.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict() for readability
 
 [tool.mypy]
 python_version = "3.11"

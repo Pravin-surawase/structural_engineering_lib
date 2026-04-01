@@ -679,3 +679,67 @@ class PMInteractionResult:
             f"Pu_0={self.Pu_0_kN:.1f}kN, Mu_0={self.Mu_0_kNm:.1f}kNm, "
             f"Balanced=({self.Pu_bal_kN:.1f}kN, {self.Mu_bal_kNm:.1f}kNm)"
         )
+
+
+@dataclass(frozen=True)
+class ColumnBiaxialResult:
+    """Result of biaxial bending check per IS 456 Cl 39.6.
+
+    Attributes:
+        Pu_kN: Applied axial load (kN)
+        Mux_kNm: Applied moment about x-axis (kN·m)
+        Muy_kNm: Applied moment about y-axis (kN·m)
+        Mux1_kNm: Uniaxial moment capacity about x at Pu (kN·m)
+        Muy1_kNm: Uniaxial moment capacity about y at Pu (kN·m)
+        Puz_kN: Pure axial crush capacity (kN) per Cl 39.6a
+        alpha_n: Bresler exponent (1.0–2.0)
+        interaction_ratio: (Mux/Mux1)^αn + (Muy/Muy1)^αn
+        is_safe: True if interaction_ratio ≤ 1.0
+        classification: Column classification (SHORT or SLENDER)
+        clause_ref: IS 456 clause reference
+        warnings: Tuple of warning messages
+    """
+
+    Pu_kN: float
+    Mux_kNm: float
+    Muy_kNm: float
+    Mux1_kNm: float
+    Muy1_kNm: float
+    Puz_kN: float
+    alpha_n: float
+    interaction_ratio: float
+    is_safe: bool
+    classification: ColumnClassification
+    clause_ref: str = "Cl. 39.6"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "Pu_kN": self.Pu_kN,
+            "Mux_kNm": self.Mux_kNm,
+            "Muy_kNm": self.Muy_kNm,
+            "Mux1_kNm": self.Mux1_kNm,
+            "Muy1_kNm": self.Muy1_kNm,
+            "Puz_kN": self.Puz_kN,
+            "alpha_n": self.alpha_n,
+            "interaction_ratio": self.interaction_ratio,
+            "is_safe": self.is_safe,
+            "classification": (
+                self.classification.value
+                if hasattr(self.classification, "value")
+                else str(self.classification)
+            ),
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        return (
+            f"Column Biaxial Check ({status}): "
+            f"Pu={self.Pu_kN:.1f}kN, "
+            f"Mux={self.Mux_kNm:.1f}kNm, Muy={self.Muy_kNm:.1f}kNm, "
+            f"IR={self.interaction_ratio:.3f}, αn={self.alpha_n:.2f}"
+        )

@@ -8,6 +8,8 @@ calculations per IS 456:2000.
 from fastapi import APIRouter, HTTPException, status
 
 from fastapi_app.models.column import (
+    BiaxialCheckRequest,
+    BiaxialCheckResponse,
     ColumnAxialRequest,
     ColumnAxialResponse,
     ColumnClassifyRequest,
@@ -346,4 +348,76 @@ async def pm_interaction_curve(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"P-M interaction curve generation failed: {e}",
+        )
+
+
+@router.post(
+    "/biaxial-check",
+    response_model=BiaxialCheckResponse,
+    summary="Biaxial Bending Check per IS 456 Cl 39.6",
+    description=(
+        "Check a column section under biaxial bending using the Bresler load "
+        "contour method per IS 456:2000 Cl. 39.6. Returns the interaction "
+        "ratio (Mux/Mux1)^αn + (Muy/Muy1)^αn and safety status."
+    ),
+)
+async def biaxial_check(
+    request: BiaxialCheckRequest,
+) -> BiaxialCheckResponse:
+    """
+    Biaxial bending check per IS 456 Cl 39.6 (Bresler load contour).
+
+    Computes uniaxial capacities Mux1 and Muy1 at the given Pu,
+    then evaluates the Bresler interaction equation with exponent αn
+    interpolated from Pu/Puz.
+
+    Returns interaction ratio, safety status, and component capacities.
+    """
+    try:
+        from structural_lib.services.api import biaxial_bending_check_is456
+        import math
+
+        result = biaxial_bending_check_is456(
+            Pu_kN=request.Pu_kN,
+            Mux_kNm=request.Mux_kNm,
+            Muy_kNm=request.Muy_kNm,
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            le_mm=request.le_mm,
+            fck=request.fck,
+            fy=request.fy,
+            Asc_mm2=request.Asc_mm2,
+            d_prime_mm=request.d_prime_mm,
+            l_unsupported_mm=request.l_unsupported_mm,
+        )
+
+        # Cap inf to a large finite value for JSON serialization
+        ratio = result["interaction_ratio"]
+        if math.isinf(ratio) or math.isnan(ratio):
+            ratio = 9999.0
+
+        return BiaxialCheckResponse(
+            Pu_kN=result["Pu_kN"],
+            Mux_kNm=result["Mux_kNm"],
+            Muy_kNm=result["Muy_kNm"],
+            Mux1_kNm=round(result["Mux1_kNm"], 2),
+            Muy1_kNm=round(result["Muy1_kNm"], 2),
+            Puz_kN=round(result["Puz_kN"], 2),
+            alpha_n=round(result["alpha_n"], 4),
+            interaction_ratio=round(ratio, 4),
+            is_safe=result["is_safe"],
+            classification=result["classification"],
+            clause_ref=result.get("clause_ref", "Cl. 39.6"),
+            warnings=result.get("warnings", []),
+        )
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Biaxial bending check failed: {e}",
         )
