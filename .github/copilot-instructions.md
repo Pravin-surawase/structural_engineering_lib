@@ -152,9 +152,10 @@ Every AI agent session MUST follow this workflow. Skipping these steps breaks co
 2. Run `./run.sh feedback log --agent <name>` — log stale docs, missing info, issues found
 3. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
 4. Run `./run.sh session sync` — fixes stale numbers in docs
-5. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
-6. Update `docs/TASKS.md` — mark completed items, add new items discovered
-7. Run `./run.sh commit "docs: session end"` — commit all doc updates
+5. Run `./run.sh evolve --status` — P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+6. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
+7. Update `docs/TASKS.md` — mark completed items, add new items discovered
+8. Run `./run.sh commit "docs: session end"` — commit all doc updates
 
 ### Why This Matters
 - **SESSION_LOG.md** is the project memory — gaps mean lost context

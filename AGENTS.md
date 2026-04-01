@@ -151,6 +151,7 @@ docs/TASKS.md                                   # Task board
 ./run.sh feedback log --agent <name>             # Log stale docs, issues found
 ./run.sh session summary                        # Auto-log to SESSION_LOG.md
 ./run.sh session sync                           # Fix stale doc numbers
+./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
 # Update: docs/planning/next-session-brief.md + docs/TASKS.md
 ./run.sh commit "docs: session end"             # Commit doc updates
 ```

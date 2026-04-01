@@ -487,6 +487,7 @@ START:  □ ./run.sh session context              ← quick orientation (brief +
 END:    □ ./run.sh commit "type: message"        ← commit all work
         □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
         □ ./run.sh session sync                  ← fix stale doc numbers
+        □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
         □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
         □ Update next-session-brief.md           ← what NEXT agent should do
         □ Update TASKS.md                        ← mark done, add new

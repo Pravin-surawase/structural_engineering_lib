@@ -25,21 +25,26 @@ Complete all end-of-session steps. Do NOT skip any.
    ```
    Direct script: `.venv/bin/python scripts/sync_numbers.py --fix`
 
-4. Update the handoff document for the next agent:
+4. P12 burn-in — observe evolution status:
+   ```bash
+   ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+   ```
+
+5. Update the handoff document for the next agent:
    - Edit `docs/planning/next-session-brief.md`
    - Add: what was completed, what's next, any blockers
 
-5. Update the task board:
+6. Update the task board:
    - Edit `docs/TASKS.md`
    - Mark completed items, add any new items discovered
 
-6. Log agent feedback (stale docs, missing info, issues found):
+7. Log agent feedback (stale docs, missing info, issues found):
    ```bash
    ./run.sh feedback log --agent <name>
    ```
    Direct script: `.venv/bin/python scripts/agent_feedback.py log --agent <name> --stale-doc "..." --missing-info "..." --issue "..."`
 
-7. Commit all doc updates:
+8. Commit all doc updates:
    ```bash
    ./scripts/ai_commit.sh "docs: session end"
    ```

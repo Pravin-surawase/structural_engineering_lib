@@ -61,21 +61,26 @@ Every step must complete. Skipping has caused 10+ hours of wasted rework.
    .venv/bin/python scripts/session.py sync --fix
    ```
 
-4. **Update WORKLOG.md** — append one line per change:
+4. **P12 burn-in — observe evolution status:**
+   ```bash
+   ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+   ```
+
+5. **Update WORKLOG.md** — append one line per change:
    ```markdown
    | YYYY-MM-DD | TASK-XXX | Description of what changed | commit_hash |
    ```
 
-5. **Update next-session-brief.md** — what the NEXT agent should do:
+6. **Update next-session-brief.md** — what the NEXT agent should do:
    - What was completed this session
    - What's still in progress
    - Any blockers or decisions needed
 
-6. **Update TASKS.md:**
+7. **Update TASKS.md:**
    - Mark completed items as ✅ Done
    - Add any new items discovered
 
-7. **Commit all doc updates:**
+8. **Commit all doc updates:**
    ```bash
    ./scripts/ai_commit.sh "docs: session end"
    ```
