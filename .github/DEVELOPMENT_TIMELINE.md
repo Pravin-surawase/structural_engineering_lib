@@ -118,6 +118,8 @@
 
 ## 🛠️ Quick Commands
 
+> ⚠️ **Deprecated (2026-04):** Streamlit frontend replaced by React 19 + FastAPI stack. Retained for historical context.
+
 ```bash
 # Daily workflow
 ./scripts/ai_commit.sh "message"           # Fast commits (5s)

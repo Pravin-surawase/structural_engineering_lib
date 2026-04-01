@@ -36,7 +36,6 @@ body:
       options:
         - Python library (structural_lib)
         - Excel/VBA
-        - Streamlit app
         - CLI tool
         - DXF export
         - Documentation
