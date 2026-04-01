@@ -1584,10 +1584,10 @@
 <!-- HANDOFF:START -->
 <ul>
 <li>Date: 2026-04-01</li>
-<li>Session: TASK-634 P-M Interaction Curve — Pipeline complete</li>
-<li>Done: TASK-634 P-M interaction curve complete (pm_interaction_curve() + PMInteractionResult + API wrapper + FastAPI endpoint + 45 tests). Axial.py logging cleanup done. Agent evolver burn-in completed (4 minor bugs found).</li>
-<li>Remaining: TASK-634+axial cleanup need commit. TASK-635 biaxial bending next. TASK-642 (5-point steel curve) and TASK-643 (SP:16 Table I verification) added from structural-engineer review.</li>
-<li>State: main branch (or task branch pending commit)</li>
+<li>Session: Session 1 — CI/Docker optimization + TASK-620</li>
+<li>Done: Merged Docker CI jobs (~5 min savings), Trivy enforces CRITICAL, cap_drop/no-new-privileges added, TASK-620 stack trace sanitization complete</li>
+<li>Remaining: TASK-642 (5-point steel curve) is next, then TASK-635 (biaxial bending)</li>
+<li>State: main branch (pending commit)</li>
 </ul>
 <!-- HANDOFF:END -->
 
@@ -1618,10 +1618,10 @@
 <p><strong>Master Plan:</strong> <a href="../library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a></p>
 </blockquote>
 <ol>
-<li><strong>Commit TASK-634 + axial.py cleanup</strong> ← <strong>START HERE</strong> — commit pending changes via ai_commit.sh</li>
-<li><strong>Phase 2 Column Design (TASK-635+)</strong> — Biaxial bending check (Cl 39.6), effective length (Cl 25.2). Also TASK-642 (IS 456 Fig 23 five-point steel curve) and TASK-643 (SP:16 Table I verification) from structural-engineer review</li>
+<li><strong>TASK-642 (5-point steel curve)</strong> ← <strong>START HERE</strong></li>
+<li><strong>TASK-635 (biaxial bending)</strong> — depends on TASK-642</li>
+<li><strong>TASK-636 (effective length)</strong> — parallelizable with TASK-635</li>
 <li><strong>P12 Burn-in (15-20 sessions)</strong> — OBSERVE + MEASURE only, no EVOLVE yet</li>
-<li><strong>Wire E_COLUMN_* error codes</strong> into axial.py (reviewer observation)</li>
 <li><strong>Quality scripts</strong> — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)</li>
 </ol>
 <h3 id="technical-debt">Technical Debt<a class="headerlink" href="#technical-debt" title="Permanent link">&para;</a></h3>

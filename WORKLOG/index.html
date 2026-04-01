@@ -2129,6 +2129,36 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <td>Progress audit: Blueprint v5.0 §3.2 corrected, Phase 0 marked complete, Column design (TASK-630-632) planned</td>
 <td>—</td>
 </tr>
+<tr>
+<td>2026-04-01</td>
+<td>CI/Docker</td>
+<td>Merged docker-build + docker-security-scan into one job (~5 min savings)</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>CI/Docker</td>
+<td>Trivy now fails CI on CRITICAL vulns (exit-code: 1)</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>Security</td>
+<td>Added cap_drop: ALL + no-new-privileges to docker-compose.yml + dev</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>Security</td>
+<td>Trimmed security.yml to scan prod deps only</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-620</td>
+<td>Stack trace sanitization in fastapi_app/main.py — generic exception handler</td>
+<td>pending</td>
+</tr>
 </tbody>
 </table>
 
