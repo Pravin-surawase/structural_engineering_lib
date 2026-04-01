@@ -206,8 +206,9 @@ class ColumnUniaxialRequest(BaseModel):
     d_prime_mm: float = Field(
         ...,
         gt=0,
-        description="Distance from face to steel centroid (mm)",
-        examples=[50.0, 60.0, 40.0],
+        le=500,
+        description="Cover to centroid of reinforcement from nearest face (mm). Must be less than D/2.",
+        examples=[40.0, 50.0, 60.0],
     )
     l_unsupported_mm: float | None = Field(
         None,

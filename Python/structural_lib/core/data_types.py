@@ -608,6 +608,10 @@ class ColumnUniaxialResult:
 class PMInteractionResult:
     """P-M interaction curve for a column section per IS 456 Cl 39.5.
 
+    Note: Unlike single-point result types (ColumnAxialResult, ColumnUniaxialResult),
+    this type intentionally omits ``is_safe`` — an interaction *curve* is a diagnostic
+    envelope, not a pass/fail design check.
+
     Attributes:
         points: Tuple of (Pu_kN, Mu_kNm) pairs along the interaction curve
         Pu_0_kN: Pure axial capacity (kN) — Cl 39.3

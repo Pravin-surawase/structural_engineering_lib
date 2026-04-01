@@ -736,11 +736,7 @@ def pm_interaction_curve(
 
     # --- n_points ---
     if n_points < 10:
-        raise DimensionError(
-            f"n_points must be >= 10, got {n_points}",
-            details={"n_points": n_points},
-            clause_ref="Cl. 39.5",
-        )
+        raise ValueError(f"n_points must be >= 10, got {n_points}")
 
     # ===========================================================
     # 2. Generate P-M interaction envelope
