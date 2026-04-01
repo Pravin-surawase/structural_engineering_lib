@@ -85,6 +85,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-800.P2-P11 | Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh integration | Copilot | ✅ Done |
 | TASK-525 | Smart HubPage replacing ModeSelectPage | Copilot | ✅ Done |
 | TASK-515 | Load Calculator (FastAPI + React) | Copilot | ✅ Done |
 
@@ -92,6 +93,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | 🔄 In Progress |
 | TASK-633 | Short column uniaxial (Cl 39.5) | — | 📋 Up Next |
 | TASK-634 | P-M interaction curve (Cl 39.5, Annex G) | — | 📋 Up Next |
 
@@ -208,6 +210,25 @@
 ### Phase 4-6: Slab, Staircase, Shear Wall (Future)
 
 See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) for full multi-code, multi-element plan.
+
+### Agent Evolver Infrastructure (TASK-800)
+
+> Self-evolving agent system. See [self-evolving-system.md](architecture/self-evolving-system.md) and [agent-evolver-plan.md.bak](_active/agent-evolver-plan.md.bak).
+
+| ID | Task | Phase | Script | Status |
+|----|------|-------|--------|--------|
+| TASK-800.P3 | Shared libraries (_lib/agent_registry, scoring, agent_data) | P3 | `scripts/_lib/*.py` | ✅ Done (8808c16b) |
+| TASK-800.P4 | Session collector | P4 | `agent_session_collector.py` | ✅ Done (8808c16b) |
+| TASK-800.P5 | Agent scorer (11 dimensions) | P5 | `agent_scorer.py` | ✅ Done (d875dcfa) |
+| TASK-800.P6 | Drift detector (12 agents × rules) | P6 | `agent_drift_detector.py` | ✅ Done (d875dcfa) |
+| TASK-800.P7 | Compliance checker (8 rules) | P7 | `agent_compliance_checker.py` | ✅ Done (d875dcfa) |
+| TASK-800.P8 | Trend analysis (Mann-Kendall) | P8 | `agent_trends.py` | ✅ Done (d69c4a4f) |
+| TASK-800.P9 | Instruction evolver (SHA-256, security levels) | P9 | `agent_evolve_instructions.py` | ✅ Done (e0702346) |
+| TASK-800.P10 | Paper data export (CSV, bootstrap CIs) | P10 | `export_paper_data.py` | ✅ Done (d69c4a4f) |
+| TASK-800.P2 | Agent-evolver definition + skill | P2 | `agent-evolver.agent.md`, `SKILL.md` | ✅ Done |
+| TASK-800.P11 | run.sh evolve integration | P11 | `run.sh` | ✅ Done |
+| TASK-800.P12 | Burn-in validation (15-20 sessions) | P12 | — | 📋 Ongoing |
+| TASK-800.T | Evolver unit tests | Tests | — | 📋 |
 
 ## Backlog
 

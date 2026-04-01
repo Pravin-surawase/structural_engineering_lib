@@ -95,7 +95,7 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 
 Direct scripts (when run.sh doesn't cover it):
 ```bash
-.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 14 agents)
+.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 15 agents)
 .venv/bin/python scripts/agent_context.py --list # List available agents
 .venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
 colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
@@ -173,7 +173,7 @@ docs/TASKS.md                                   # Task board
 
 ## VS Code Copilot Agents & Skills
 
-### 14 Custom Agents (`.github/agents/`)
+### 15 Custom Agents (`.github/agents/`)
 
 | Agent | Role | Tools |
 |-------|------|-------|
@@ -183,6 +183,7 @@ docs/TASKS.md                                   # Task board
 | `structural-math` | IS 456 pure math modules, core types, new elements | full edit |
 | `api-developer` | FastAPI routers, endpoints | full edit |
 | `ui-designer` | Visual design (design-only) | read-only |
+| `agent-evolver` | Meta-agent: performance scoring, drift detection, instruction evolution | read + terminal |
 | `structural-engineer` | IS 456 compliance | read + terminal |
 | `reviewer` | Code review, testing | read + terminal |
 | `tester` | Test creation, coverage, benchmarks | full edit |
@@ -236,3 +237,4 @@ docs/TASKS.md                                   # Task board
 - **Maintenance:** orchestrator → governance → doc-master → ops
 - **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
 - **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops
+- **Agent evolution:** orchestrator → agent-evolver → governance → doc-master → ops
