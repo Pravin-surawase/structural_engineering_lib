@@ -25,8 +25,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
-logger = logging.getLogger(__name__)
-
 from fastapi_app import __version__
 from fastapi_app.routers import (
     analysis,
@@ -43,6 +41,8 @@ from fastapi_app.routers import (
     streaming,
     websocket,
 )
+
+logger = logging.getLogger(__name__)
 
 # =============================================================================
 # Application Metadata for OpenAPI
