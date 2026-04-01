@@ -98,6 +98,11 @@
       "canonical": "docs/research/live-3d-visualization-architecture.md",
       "description": "3D rendering architecture and patterns",
       "also_see": ["docs/research/pyvista-evaluation.md"]
+    },
+    "column-design": {
+      "canonical": "docs/reference/api.md",
+      "description": "Column design functions — axial, uniaxial, biaxial, P-M curves, effective length",
+      "also_see": ["docs/planning/library-expansion-blueprint-v5.md"]
     }
   },
 

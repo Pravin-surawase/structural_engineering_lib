@@ -2902,6 +2902,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#calculate_effective_length_is456l_mm-end_condition-use_theoreticalfalse-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        calculate_effective_length_is456(l_mm, end_condition, use_theoretical=False) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#biaxial_bending_check_is456pu_kn-mux_knm-muy_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        biaxial_bending_check_is456(Pu_kN, Mux_kNm, Muy_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5396,6 +5418,28 @@
     <span class="md-ellipsis">
       
         pm_interaction_curve_is456(b_mm, D_mm, fck, fy, Asc_mm2, d_prime_mm, n_points=50) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculate_effective_length_is456l_mm-end_condition-use_theoreticalfalse-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        calculate_effective_length_is456(l_mm, end_condition, use_theoretical=False) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#biaxial_bending_check_is456pu_kn-mux_knm-muy_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        biaxial_bending_check_is456(Pu_kN, Mux_kNm, Muy_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict
       
     </span>
   </a>
@@ -8482,6 +8526,139 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <a id="__codelineno-131-7" name="__codelineno-131-7" href="#__codelineno-131-7"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Points: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">curve</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">, Pu_max: </span><span class="si">{</span><span class="n">curve</span><span class="p">[</span><span class="s1">&#39;Pu_max_kN&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/interaction-curve</code></p>
+<hr />
+<h3 id="calculate_effective_length_is456l_mm-end_condition-use_theoreticalfalse-dict"><code>calculate_effective_length_is456(l_mm, end_condition, use_theoretical=False) → dict</code><a class="headerlink" href="#calculate_effective_length_is456l_mm-end_condition-use_theoreticalfalse-dict" title="Permanent link">&para;</a></h3>
+<p>Calculate effective length per IS 456 Cl 25.2, Table 28. Computes the effective length le = ratio × l for a column based on end restraint conditions. IS 456 Table 28 provides both theoretical (Euler) and recommended design values for seven standard cases.</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>l_mm</code></td>
+<td><code>float</code></td>
+<td>Unsupported length of column (mm). Must be between 100 and 50000 mm</td>
+</tr>
+<tr>
+<td><code>end_condition</code></td>
+<td><code>str</code></td>
+<td>End condition string — one of: <code>'FIXED_FIXED'</code>, <code>'FIXED_HINGED'</code>, <code>'FIXED_FIXED_SWAY'</code>, <code>'FIXED_FREE'</code>, <code>'HINGED_HINGED'</code>, <code>'FIXED_PARTIAL'</code>, <code>'HINGED_PARTIAL'</code></td>
+</tr>
+<tr>
+<td><code>use_theoretical</code></td>
+<td><code>bool</code></td>
+<td>If True, use theoretical (Euler) values; default: recommended. Cases 6 and 7 have no theoretical values; recommended is used</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>dict</code> with keys: <code>le_mm</code>, <code>ratio</code>, <code>end_condition</code>, <code>method</code></p>
+<p><strong>Raises:</strong> <code>ValueError</code> if <code>l_mm</code> is out of range or <code>end_condition</code> is invalid.</p>
+<p><strong>Reference:</strong> IS 456 Cl 25.2, Table 28</p>
+<p><strong>Usage:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-132-1" name="__codelineno-132-1" href="#__codelineno-132-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-132-2" name="__codelineno-132-2" href="#__codelineno-132-2"></a>
+<a id="__codelineno-132-3" name="__codelineno-132-3" href="#__codelineno-132-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">calculate_effective_length_is456</span><span class="p">(</span>
+<a id="__codelineno-132-4" name="__codelineno-132-4" href="#__codelineno-132-4"></a>    <span class="n">l_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">end_condition</span><span class="o">=</span><span class="s1">&#39;FIXED_FIXED&#39;</span>
+<a id="__codelineno-132-5" name="__codelineno-132-5" href="#__codelineno-132-5"></a><span class="p">)</span>
+<a id="__codelineno-132-6" name="__codelineno-132-6" href="#__codelineno-132-6"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;le = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;le_mm&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> mm, ratio = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-132-7" name="__codelineno-132-7" href="#__codelineno-132-7"></a>
+<a id="__codelineno-132-8" name="__codelineno-132-8" href="#__codelineno-132-8"></a><span class="c1"># Theoretical values</span>
+<a id="__codelineno-132-9" name="__codelineno-132-9" href="#__codelineno-132-9"></a><span class="n">result_theo</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">calculate_effective_length_is456</span><span class="p">(</span>
+<a id="__codelineno-132-10" name="__codelineno-132-10" href="#__codelineno-132-10"></a>    <span class="n">l_mm</span><span class="o">=</span><span class="mf">4000.0</span><span class="p">,</span> <span class="n">end_condition</span><span class="o">=</span><span class="s1">&#39;HINGED_HINGED&#39;</span><span class="p">,</span> <span class="n">use_theoretical</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-132-11" name="__codelineno-132-11" href="#__codelineno-132-11"></a><span class="p">)</span>
+<a id="__codelineno-132-12" name="__codelineno-132-12" href="#__codelineno-132-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;le = </span><span class="si">{</span><span class="n">result_theo</span><span class="p">[</span><span class="s1">&#39;le_mm&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> mm, method = </span><span class="si">{</span><span class="n">result_theo</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/effective-length</code></p>
+<hr />
+<h3 id="biaxial_bending_check_is456pu_kn-mux_knm-muy_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict"><code>biaxial_bending_check_is456(Pu_kN, Mux_kNm, Muy_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict</code><a class="headerlink" href="#biaxial_bending_check_is456pu_kn-mux_knm-muy_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict" title="Permanent link">&para;</a></h3>
+<p>Check column under biaxial bending per IS 456 Cl 39.6. Implements the Bresler load contour formula to check if a column section with symmetrical reinforcement can safely resist combined axial load and biaxial bending moments.</p>
+<p>The Bresler formula: <code>(Mux / Mux1)^αn + (Muy / Muy1)^αn ≤ 1.0</code></p>
+<p>where Mux1, Muy1 are uniaxial moment capacities at the applied axial load Pu, obtained from P-M interaction curves. The exponent αn varies from 1.0 to 2.0 based on the Pu/Puz ratio.</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pu_kN</code></td>
+<td><code>float</code></td>
+<td>Applied factored axial load (kN). Must be ≥ 0</td>
+</tr>
+<tr>
+<td><code>Mux_kNm</code></td>
+<td><code>float</code></td>
+<td>Applied factored moment about x-axis (kNm). Must be ≥ 0</td>
+</tr>
+<tr>
+<td><code>Muy_kNm</code></td>
+<td><code>float</code></td>
+<td>Applied factored moment about y-axis (kNm). Must be ≥ 0</td>
+</tr>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column width perpendicular to x-axis bending (mm). Typical: 100–2000</td>
+</tr>
+<tr>
+<td><code>D_mm</code></td>
+<td><code>float</code></td>
+<td>Column depth in x-axis bending direction (mm). Typical: 100–2000</td>
+</tr>
+<tr>
+<td><code>le_mm</code></td>
+<td><code>float</code></td>
+<td>Effective length of column (mm). Must be &gt; 0</td>
+</tr>
+<tr>
+<td><code>fck</code></td>
+<td><code>float</code></td>
+<td>Characteristic concrete strength (N/mm²). IS 456 range: 15–80</td>
+</tr>
+<tr>
+<td><code>fy</code></td>
+<td><code>float</code></td>
+<td>Yield strength of steel (N/mm²). IS 456 range: 250–550</td>
+</tr>
+<tr>
+<td><code>Asc_mm2</code></td>
+<td><code>float</code></td>
+<td>Total longitudinal reinforcement area (mm²), symmetrically placed</td>
+</tr>
+<tr>
+<td><code>d_prime_mm</code></td>
+<td><code>float</code></td>
+<td>Distance from face to steel centroid (mm). Must be &gt; 0 and &lt; min(b_mm, D_mm)/2</td>
+</tr>
+<tr>
+<td><code>l_unsupported_mm</code></td>
+<td><code>float \| None</code></td>
+<td>Unsupported length (mm) for slenderness warning. If None, slenderness is checked using le_mm only</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>dict</code> with keys: <code>Pu_kN</code>, <code>Mux_kNm</code>, <code>Muy_kNm</code>, <code>Mux1_kNm</code>, <code>Muy1_kNm</code>, <code>Puz_kN</code>, <code>alpha_n</code>, <code>interaction_ratio</code>, <code>is_safe</code>, <code>classification</code>, <code>clause_ref</code>, <code>warnings</code></p>
+<p><strong>Raises:</strong> <code>DimensionError</code>, <code>MaterialError</code>, <code>CalculationError</code>, <code>ValueError</code></p>
+<p><strong>Reference:</strong> IS 456 Cl 39.6 (Bresler formula), Cl 39.6a (Puz formula)</p>
+<p><strong>Usage:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-133-1" name="__codelineno-133-1" href="#__codelineno-133-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-133-2" name="__codelineno-133-2" href="#__codelineno-133-2"></a>
+<a id="__codelineno-133-3" name="__codelineno-133-3" href="#__codelineno-133-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">biaxial_bending_check_is456</span><span class="p">(</span>
+<a id="__codelineno-133-4" name="__codelineno-133-4" href="#__codelineno-133-4"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mf">800.0</span><span class="p">,</span> <span class="n">Mux_kNm</span><span class="o">=</span><span class="mf">60.0</span><span class="p">,</span> <span class="n">Muy_kNm</span><span class="o">=</span><span class="mf">40.0</span><span class="p">,</span>
+<a id="__codelineno-133-5" name="__codelineno-133-5" href="#__codelineno-133-5"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span> <span class="n">le_mm</span><span class="o">=</span><span class="mf">2100.0</span><span class="p">,</span>
+<a id="__codelineno-133-6" name="__codelineno-133-6" href="#__codelineno-133-6"></a>    <span class="n">fck</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mf">415.0</span><span class="p">,</span> <span class="n">Asc_mm2</span><span class="o">=</span><span class="mf">2700.0</span><span class="p">,</span> <span class="n">d_prime_mm</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
+<a id="__codelineno-133-7" name="__codelineno-133-7" href="#__codelineno-133-7"></a><span class="p">)</span>
+<a id="__codelineno-133-8" name="__codelineno-133-8" href="#__codelineno-133-8"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;is_safe&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Ratio: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;interaction_ratio&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-133-9" name="__codelineno-133-9" href="#__codelineno-133-9"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;αn = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;alpha_n&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Classification: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/biaxial-check</code></p>
 
 
 

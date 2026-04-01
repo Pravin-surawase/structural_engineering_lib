@@ -2806,7 +2806,7 @@
 </tbody>
 </table>
 <h3 id="fastapi-endpoints-fastapi_approuters">FastAPI Endpoints (<code>fastapi_app/routers/</code>)<a class="headerlink" href="#fastapi-endpoints-fastapi_approuters" title="Permanent link">&para;</a></h3>
-<p>45 endpoints across 13 routers + 1 WebSocket:</p>
+<p>47 endpoints across 13 routers + 1 WebSocket:</p>
 <table>
 <thead>
 <tr>
@@ -2967,6 +2967,41 @@
 <td>HTML report download</td>
 </tr>
 <tr>
+<td><strong>column</strong></td>
+<td><code>POST /api/v1/design/column/effective-length</code></td>
+<td>Effective length per IS 456 Table 28</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/classify</code></td>
+<td>Classify column (short/slender)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/eccentricity</code></td>
+<td>Minimum eccentricity</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/axial</code></td>
+<td>Short column axial capacity</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/uniaxial</code></td>
+<td>Short column uniaxial bending</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/interaction-curve</code></td>
+<td>P-M interaction curve</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/biaxial-check</code></td>
+<td>Biaxial bending check (Cl 39.6)</td>
+</tr>
+<tr>
 <td><strong>health</strong></td>
 <td><code>GET  /health</code></td>
 <td>Basic health check</td>
@@ -3026,6 +3061,10 @@
 <tr>
 <td><code>codes/is456/</code></td>
 <td><code>flexure.py</code>, <code>shear.py</code>, <code>detailing.py</code>, <code>torsion.py</code>, <code>serviceability.py</code> — IS 456:2000</td>
+</tr>
+<tr>
+<td><code>codes/is456/column/</code></td>
+<td><code>axial.py</code> (classify, eccentricity, capacity, effective length), <code>uniaxial.py</code> (P-M curves), <code>biaxial.py</code> (biaxial check)</td>
 </tr>
 <tr>
 <td><code>services/bbs.py</code></td>
@@ -3190,7 +3229,7 @@
 <a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
 <a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1"># React is now at http://localhost:5173</span>
 </code></pre></div></p>
-<p>This builds and runs the FastAPI container with all Python dependencies + sample data (<code>Etabs_CSV/</code>). The <code>/docs</code> page auto-generates interactive Swagger UI for all 38 endpoints.</p>
+<p>This builds and runs the FastAPI container with all Python dependencies + sample data (<code>Etabs_CSV/</code>). The <code>/docs</code> page auto-generates interactive Swagger UI for all 47 endpoints.</p>
 <p>For development with hot-reload (code changes reflect without rebuild):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.dev.yml<span class="w"> </span>up<span class="w">          </span><span class="c1"># Mounts source + Etabs_CSV as volumes, auto-reloads</span>
 </code></pre></div></p>
