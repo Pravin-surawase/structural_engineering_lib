@@ -22,10 +22,11 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-01
-- Session: Session 1 — CI/Docker optimization + TASK-620
-- Done: Merged Docker CI jobs (~5 min savings), Trivy enforces CRITICAL, cap_drop/no-new-privileges added, TASK-620 stack trace sanitization complete
-- Remaining: TASK-642 (5-point steel curve) is next, then TASK-635 (biaxial bending)
-- State: main branch (pending commit)
+- Session: Session 2 — Column design TASK-642, TASK-636, TASK-635 (9-step quality pipeline)
+- Done: TASK-642 (5-point steel curve, 26 tests), TASK-636 (effective length + API + 69+12 tests), TASK-635 (biaxial bending + API + 84+19 tests). PR #481 merged (TASK-642 + TASK-636). TASK-635 pending commit.
+- Remaining: TASK-637 (slenderness/additional moment), TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)
+- State: main branch, TASK-635 uncommitted
+- Tests: 3822+ Python, 172+ FastAPI
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -39,11 +40,14 @@ tags: []
 
 > **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md)
 
-1. **TASK-642 (5-point steel curve)** ← **START HERE**
-2. **TASK-635 (biaxial bending)** — depends on TASK-642
-3. **TASK-636 (effective length)** — parallelizable with TASK-635
-4. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
-5. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
+1. **Commit TASK-635** (biaxial bending) — pending commit/PR
+2. **TASK-637 (additional moment / slenderness effects)** ← **START HERE** after TASK-635 commit
+3. **TASK-638 (long column design)** — `design_long_column` orchestrator using TASK-637
+4. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
+5. **TASK-639 (helical reinforcement)** — low priority, parallelizable
+6. **TASK-641 (column FastAPI endpoint)** — final column endpoint
+7. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
+8. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
 
 ### Technical Debt
 

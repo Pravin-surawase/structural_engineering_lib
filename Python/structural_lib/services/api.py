@@ -36,6 +36,7 @@ from structural_lib.codes.is456.column.axial import (
     min_eccentricity,
     short_axial_capacity,
 )
+from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
 from structural_lib.codes.is456.column.uniaxial import (
     design_short_column_uniaxial,
     pm_interaction_curve,
@@ -164,6 +165,7 @@ __all__ = [
     "design_column_axial_is456",
     "design_short_column_uniaxial_is456",
     "pm_interaction_curve_is456",
+    "biaxial_bending_check_is456",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
@@ -2074,6 +2076,157 @@ def pm_interaction_curve_is456(
         d_prime_mm=d_prime_mm,
         n_points=n_points,
     )
+    return result.to_dict()
+
+
+def biaxial_bending_check_is456(
+    Pu_kN: float,
+    Mux_kNm: float,
+    Muy_kNm: float,
+    b_mm: float,
+    D_mm: float,
+    le_mm: float,
+    fck: float,
+    fy: float,
+    Asc_mm2: float,
+    d_prime_mm: float,
+    l_unsupported_mm: float | None = None,
+) -> dict[str, Any]:
+    """Check column under biaxial bending per IS 456 Cl 39.6.
+
+    Implements the Bresler load contour formula to check if a column section
+    with symmetrical reinforcement can safely resist combined axial load and
+    biaxial bending moments.
+
+    The Bresler formula is:
+        (Mux / Mux1)^alpha_n + (Muy / Muy1)^alpha_n <= 1.0
+
+    where Mux1, Muy1 are the uniaxial moment capacities at the applied
+    axial load Pu, obtained from P-M interaction curves. The exponent
+    alpha_n varies from 1.0 to 2.0 based on the Pu/Puz ratio.
+
+    Reinforcement is assumed symmetrical: Asc_mm2 / 2 on each face,
+    placed at d_prime_mm from the nearest face.
+
+    Args:
+        Pu_kN: Applied factored axial load (kN). Must be >= 0.
+        Mux_kNm: Applied factored moment about x-axis (kNm). Must be >= 0.
+        Muy_kNm: Applied factored moment about y-axis (kNm). Must be >= 0.
+        b_mm: Column width perpendicular to x-axis bending (mm).
+            Typical: 100-2000.
+        D_mm: Column depth in x-axis bending direction (mm).
+            Typical: 100-2000.
+        le_mm: Effective length of column (mm). Must be > 0.
+        fck: Characteristic concrete strength (N/mm²). IS 456 range: 15-80.
+        fy: Yield strength of steel (N/mm²). IS 456 range: 250-550.
+        Asc_mm2: Total longitudinal reinforcement area (mm²),
+            symmetrically placed.
+        d_prime_mm: Distance from face to steel centroid (mm).
+            Must be > 0 and < min(b_mm, D_mm)/2.
+        l_unsupported_mm: Unsupported length (mm) for slenderness warning.
+            If None, slenderness is checked using le_mm only.
+
+    Returns:
+        Dictionary with:
+            - Pu_kN: Applied axial load (kN)
+            - Mux_kNm: Applied moment about x-axis (kN·m)
+            - Muy_kNm: Applied moment about y-axis (kN·m)
+            - Mux1_kNm: Uniaxial moment capacity about x at Pu (kN·m)
+            - Muy1_kNm: Uniaxial moment capacity about y at Pu (kN·m)
+            - Puz_kN: Pure axial crush capacity (kN) per Cl 39.6a
+            - alpha_n: Bresler exponent (1.0–2.0)
+            - interaction_ratio: (Mux/Mux1)^αn + (Muy/Muy1)^αn
+            - is_safe: True if interaction_ratio ≤ 1.0
+            - classification: "SHORT" or "SLENDER"
+            - clause_ref: "Cl. 39.6"
+            - warnings: List of warning messages
+
+    Raises:
+        DimensionError: If geometric dimensions are invalid.
+        MaterialError: If material properties are out of range.
+        CalculationError: If numerical issues are encountered.
+        ValueError: If plausibility checks fail.
+
+    References:
+        IS 456:2000, Cl. 39.6 (biaxial bending, Bresler formula)
+        IS 456:2000, Cl. 39.6a (Puz formula)
+        IS 456:2000, Cl. 39.5 (P-M interaction envelope)
+        IS 456:2000, Cl. 25.1.2 (column classification)
+        SP:16:1980 Design Aids, Charts 63-64
+        Pillai & Menon, "Reinforced Concrete Design", 3rd Ed., Ch. 13
+
+    Examples:
+        >>> result = biaxial_bending_check_is456(
+        ...     Pu_kN=1200.0,
+        ...     Mux_kNm=80.0,
+        ...     Muy_kNm=60.0,
+        ...     b_mm=300.0,
+        ...     D_mm=450.0,
+        ...     le_mm=3000.0,
+        ...     fck=25.0,
+        ...     fy=415.0,
+        ...     Asc_mm2=2700.0,
+        ...     d_prime_mm=50.0,
+        ... )
+        >>> print(f"Safe: {result['is_safe']}")
+        >>> print(f"Interaction Ratio: {result['interaction_ratio']:.3f}")
+
+    See Also:
+        - design_short_column_uniaxial_is456: Uniaxial bending check
+        - pm_interaction_curve_is456: Generate P-M interaction curve
+        - classify_column_is456: Check if column is short or slender
+        - codes.is456.column.biaxial.biaxial_bending_check: Core implementation
+    """
+    from structural_lib.core.data_types import ColumnBiaxialResult
+
+    # Plausibility guards (aligned with existing api.py patterns)
+    if Pu_kN < 0:
+        raise ValueError(f"Axial load Pu_kN must be >= 0, got {Pu_kN}")
+    if Mux_kNm < 0:
+        raise ValueError(f"Moment Mux_kNm must be >= 0, got {Mux_kNm}")
+    if Muy_kNm < 0:
+        raise ValueError(f"Moment Muy_kNm must be >= 0, got {Muy_kNm}")
+
+    # Dimension checks
+    if not (100 <= b_mm <= 2000):
+        raise ValueError(
+            f"Column width b_mm should be 100-2000mm (got {b_mm}). "
+            "If intentional, adjust validation."
+        )
+    if not (100 <= D_mm <= 2000):
+        raise ValueError(
+            f"Column depth D_mm should be 100-2000mm (got {D_mm}). "
+            "If intentional, adjust validation."
+        )
+
+    # Material checks
+    if not (15 <= fck <= 80):
+        raise ValueError(
+            f"fck should be 15-80 N/mm² per IS 456 (got {fck}). "
+            "If intentional, adjust validation."
+        )
+    if not (250 <= fy <= 550):
+        raise ValueError(
+            f"fy should be 250-550 N/mm² per IS 456 (got {fy}). "
+            "If intentional, adjust validation."
+        )
+
+    # Call core implementation (already has full validation)
+    result: ColumnBiaxialResult = biaxial_bending_check(
+        Pu_kN=Pu_kN,
+        Mux_kNm=Mux_kNm,
+        Muy_kNm=Muy_kNm,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        le_mm=le_mm,
+        fck=fck,
+        fy=fy,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+        l_unsupported_mm=l_unsupported_mm,
+    )
+
+    # Return serializable dict (not dataclass)
     return result.to_dict()
 
 

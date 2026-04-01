@@ -388,3 +388,117 @@ class PMInteractionResponse(BaseModel):
     d_prime_mm: float = Field(..., description="Cover to steel centroid (mm)")
     clause_ref: str = Field(default="Cl. 39.5", description="IS 456 clause reference")
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+
+
+# =============================================================================
+# Biaxial Bending Check Models (IS 456 Cl. 39.6)
+# =============================================================================
+
+
+class BiaxialCheckRequest(BaseModel):
+    """Request model for biaxial bending check per IS 456 Cl 39.6 (Bresler load contour)."""
+
+    Pu_kN: float = Field(
+        ...,
+        ge=0,
+        description="Factored axial load (kN)",
+        examples=[1500.0, 800.0, 2000.0],
+    )
+    Mux_kNm: float = Field(
+        ...,
+        ge=0,
+        description="Factored moment about x-axis (kNm)",
+        examples=[120.0, 80.0, 200.0],
+    )
+    Muy_kNm: float = Field(
+        ...,
+        ge=0,
+        description="Factored moment about y-axis (kNm)",
+        examples=[80.0, 60.0, 150.0],
+    )
+    b_mm: float = Field(
+        ...,
+        ge=100,
+        le=3000,
+        description="Column width in mm",
+        examples=[300.0, 400.0, 500.0],
+    )
+    D_mm: float = Field(
+        ...,
+        ge=100,
+        le=3000,
+        description="Column depth in mm",
+        examples=[400.0, 500.0, 600.0],
+    )
+    le_mm: float = Field(
+        ...,
+        gt=0,
+        le=50000,
+        description="Effective length in mm",
+        examples=[3000.0, 4500.0, 6000.0],
+    )
+    fck: float = Field(
+        ...,
+        ge=15,
+        le=80,
+        description="Concrete grade in N/mm²",
+        examples=[20.0, 25.0, 30.0],
+    )
+    fy: float = Field(
+        ...,
+        ge=250,
+        le=600,
+        description="Steel yield strength in N/mm²",
+        examples=[415.0, 500.0],
+    )
+    Asc_mm2: float = Field(
+        ...,
+        gt=0,
+        le=100000,
+        description="Total steel area in mm²",
+        examples=[2400.0, 3600.0, 4800.0],
+    )
+    d_prime_mm: float = Field(
+        ...,
+        gt=0,
+        le=500,
+        description="Cover to steel centroid in mm",
+        examples=[40.0, 50.0, 60.0],
+    )
+    l_unsupported_mm: float | None = Field(
+        None,
+        gt=0,
+        le=50000,
+        description="Unsupported length in mm (optional, for min eccentricity check)",
+        examples=[3000.0, 4500.0],
+    )
+
+
+class BiaxialCheckResponse(BaseModel):
+    """Response model for biaxial bending check per IS 456 Cl 39.6."""
+
+    Pu_kN: float = Field(description="Applied axial load (kN)")
+    Mux_kNm: float = Field(description="Applied moment about x-axis (kNm)")
+    Muy_kNm: float = Field(description="Applied moment about y-axis (kNm)")
+    Mux1_kNm: float = Field(
+        description="Uniaxial moment capacity about x-axis when Pu acts alone (kNm)"
+    )
+    Muy1_kNm: float = Field(
+        description="Uniaxial moment capacity about y-axis when Pu acts alone (kNm)"
+    )
+    Puz_kN: float = Field(description="Pure axial capacity Puz per Cl 39.6 (kN)")
+    alpha_n: float = Field(
+        description="Bresler exponent alpha_n interpolated from Pu/Puz"
+    )
+    interaction_ratio: float = Field(
+        description="Bresler interaction ratio (Mux/Mux1)^an + (Muy/Muy1)^an. "
+        "< 1.0 means safe."
+    )
+    is_safe: bool = Field(description="True if interaction_ratio <= 1.0")
+    classification: int = Field(
+        description="Column classification: 1 = SHORT, 2 = SLENDER"
+    )
+    clause_ref: str = Field(default="Cl. 39.6", description="IS 456 clause reference")
+    warnings: list[str] = Field(
+        default_factory=list, description="Code compliance warnings"
+    )
