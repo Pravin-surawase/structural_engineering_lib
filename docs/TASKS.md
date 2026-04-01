@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-03-31 (TASK-630/631/632 done — column types, classify, min eccentricity, short axial capacity, 75 tests)
+**Updated:** 2026-04-01 (TASK-633 done — short column uniaxial bending, 57 tests, API + endpoint)
 
 ---
 
@@ -94,13 +94,13 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | 🔄 In Progress |
-| TASK-633 | Short column uniaxial (Cl 39.5) | — | 📋 Up Next |
 | TASK-634 | P-M interaction curve (Cl 39.5, Annex G) | — | 📋 Up Next |
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-633 | Short column uniaxial (Cl 39.5) — uniaxial.py + 57 tests + API + endpoint | Copilot | ✅ Done |
 | TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Copilot | ✅ Done |
 | TASK-631 | classify_column (Cl 25.1.2) + min_eccentricity (Cl 25.4) | Copilot | ✅ Done |
 | TASK-632 | short_axial_capacity (Cl 39.3) + API + FastAPI + 75 tests | Copilot | ✅ Done |
@@ -185,7 +185,7 @@
 | TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Types | — | 🔴 P0 | ✅ Done |
 | TASK-631 | classify_column + min_eccentricity | `classify_column`, `min_eccentricity` | Cl 25.1.2, 25.4 | 🔴 P0 | ✅ Done |
 | TASK-632 | Short column axial | `short_axial_capacity` | Cl 39.3 | 🔴 P0 | ✅ Done |
-| TASK-633 | Short column uniaxial | `design_short_column_uniaxial` | Cl 39.5 | 🔴 High | 📋 |
+| TASK-633 | Short column uniaxial | `design_short_column_uniaxial` | Cl 39.5 | 🔴 High | ✅ Done |
 | TASK-634 | P-M interaction curve | `pm_interaction_curve` | Cl 39.5, Annex G | 🔴 High | 📋 |
 | TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | 📋 |
 | TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | 📋 |
