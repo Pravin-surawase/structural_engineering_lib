@@ -1919,14 +1919,14 @@ def design_short_column_uniaxial_is456(
 
     # Return serializable dict (not dataclass)
     return {
-        "ok": result.ok,
-        "utilization": result.utilization,
+        "ok": result.is_safe,
+        "utilization": result.utilization_ratio,
         "Pu_cap_kN": result.Pu_cap_kN,
         "Mu_cap_kNm": result.Mu_cap_kNm,
         "classification": result.classification.name,
         "eccentricity_mm": result.eccentricity_mm,
         "e_min_mm": result.e_min_mm,
-        "warnings": result.warnings,
+        "warnings": list(result.warnings),
     }
 
 
