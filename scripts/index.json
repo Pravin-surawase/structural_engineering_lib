@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-04-01",
-  "file_count": 97,
+  "last_updated": "2026-04-02",
+  "file_count": 108,
   "files": [
     {
       "name": "README.md",
@@ -13,6 +13,17 @@
       "title": "Scripts",
       "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks > **Owner:** All contributors",
       "content_hash": "9a4b16b64794"
+    },
+    {
+      "name": "_tmp_add_groups.py",
+      "type": "python",
+      "size_lines": 168,
+      "last_updated": "2026-04-02",
+      "description": "Temporary script to add group fields to automation-map.json. Delete after use.",
+      "constants": [
+        "GROUP_MAP"
+      ],
+      "content_hash": "0bff21f77141"
     },
     {
       "name": "agent_brief.sh",
@@ -119,8 +130,8 @@
     {
       "name": "agent_context.py",
       "type": "python",
-      "size_lines": 590,
-      "last_updated": "2026-03-28",
+      "size_lines": 579,
+      "last_updated": "2026-04-02",
       "description": "Agent Context Loader — gives each agent its tailored startup context.",
       "functions": [
         {
@@ -205,7 +216,7 @@
       "constants": [
         "ROOT"
       ],
-      "content_hash": "c2b129fa5a96"
+      "content_hash": "9feab3c10e32"
     },
     {
       "name": "agent_drift_detector.py",
@@ -731,6 +742,44 @@
       "content_hash": "789de215d60d"
     },
     {
+      "name": "audit_permissions.py",
+      "type": "python",
+      "size_lines": 363,
+      "last_updated": "2026-04-02",
+      "description": "Permission audit report for all agents.",
+      "classes": [
+        {
+          "name": "Anomaly",
+          "description": "A detected permission anomaly."
+        },
+        {
+          "name": "AgentPermissionInfo",
+          "description": "Summarised permission info for one agent."
+        },
+        {
+          "name": "AuditReport",
+          "description": "Complete audit results."
+        }
+      ],
+      "functions": [
+        {
+          "name": "audit_permissions",
+          "description": "Run full permission audit across all agents."
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "_WRITE_TOOLS",
+        "_RUN_TOOLS"
+      ],
+      "content_hash": "7a12c1dc2ddc"
+    },
+    {
       "name": "audit_readiness_report.py",
       "type": "python",
       "size_lines": 773,
@@ -829,7 +878,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-04-02",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -838,7 +887,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "58990e08fd4d"
+      "content_hash": "db21b474bfb7"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -2039,6 +2088,83 @@
       "content_hash": "1dc72fa2661b"
     },
     {
+      "name": "config_precedence.py",
+      "type": "python",
+      "size_lines": 562,
+      "last_updated": "2026-04-02",
+      "description": "Configuration precedence auditing for instruction files.",
+      "classes": [
+        {
+          "name": "InstructionFile",
+          "description": "Metadata for an instruction file."
+        },
+        {
+          "name": "Issue",
+          "description": "Configuration precedence issue."
+        }
+      ],
+      "functions": [
+        {
+          "name": "discover_instruction_files",
+          "description": "Discover all instruction files and classify by precedence level."
+        },
+        {
+          "name": "file_matches_pattern",
+          "description": "Check if a file path matches a glob pattern.",
+          "params": [
+            "file_path",
+            "pattern"
+          ]
+        },
+        {
+          "name": "show_precedence",
+          "description": "Show which instruction files apply to a given file path.",
+          "params": [
+            "file_path",
+            "agent"
+          ]
+        },
+        {
+          "name": "validate_precedence",
+          "description": "Validate instruction precedence for conflicts and issues."
+        },
+        {
+          "name": "audit",
+          "description": "Full audit of configuration precedence."
+        },
+        {
+          "name": "list_files_by_level",
+          "description": "List all instruction files grouped by precedence level."
+        },
+        {
+          "name": "cmd_show",
+          "description": "Show config precedence for a file.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_audit",
+          "description": "Run full precedence audit.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_list",
+          "description": "List all instruction files by level.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "CLI entry point."
+        }
+      ],
+      "content_hash": "690ffba3d9b2"
+    },
+    {
       "name": "create_doc.py",
       "type": "python",
       "size_lines": 261,
@@ -2386,8 +2512,8 @@
     {
       "name": "find_automation.py",
       "type": "python",
-      "size_lines": 174,
-      "last_updated": "2026-03-26",
+      "size_lines": 208,
+      "last_updated": "2026-04-02",
       "description": "Find the right automation script for a task.",
       "functions": [
         {
@@ -2426,10 +2552,32 @@
           ]
         },
         {
+          "name": "get_tasks_by_group",
+          "description": "Group tasks by their 'group' field.",
+          "params": [
+            "automation_map"
+          ]
+        },
+        {
+          "name": "list_group",
+          "description": "List all tasks in a specific group.",
+          "params": [
+            "group_name",
+            "automation_map"
+          ]
+        },
+        {
+          "name": "list_all_groups",
+          "description": "List all groups with their task counts, then tasks under each.",
+          "params": [
+            "automation_map"
+          ]
+        },
+        {
           "name": "main"
         }
       ],
-      "content_hash": "17a1892fe1e6"
+      "content_hash": "67ec2cc6a605"
     },
     {
       "name": "finish_task_pr.sh",
@@ -2957,6 +3105,203 @@
       "content_hash": "ee69f34529a0"
     },
     {
+      "name": "parity_dashboard.py",
+      "type": "python",
+      "size_lines": 479,
+      "last_updated": "2026-04-02",
+      "description": "Parity Dashboard — coverage/parity across IS 456, API, endpoints, and React hooks.",
+      "functions": [
+        {
+          "name": "check_clause_coverage",
+          "description": "Dimension 1: IS 456 clause coverage."
+        },
+        {
+          "name": "check_api_endpoint_coverage",
+          "description": "Dimension 2: API functions → FastAPI endpoint coverage."
+        },
+        {
+          "name": "check_endpoint_test_coverage",
+          "description": "Dimension 3: FastAPI endpoints → test coverage."
+        },
+        {
+          "name": "check_hook_api_coverage",
+          "description": "Dimension 4: React hooks → API route connectivity."
+        },
+        {
+          "name": "run_dashboard",
+          "description": "Run all parity checks and display results."
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "SCRIPT_DIR",
+        "REPO_ROOT",
+        "IS456_DIR",
+        "API_PY",
+        "ROUTERS_DIR",
+        "FASTAPI_TESTS",
+        "HOOKS_DIR"
+      ],
+      "content_hash": "ddf4ee307015"
+    },
+    {
+      "name": "pipeline_state.py",
+      "type": "python",
+      "size_lines": 847,
+      "last_updated": "2026-04-02",
+      "description": "Pipeline state tracking for multi-step agent workflows.",
+      "classes": [
+        {
+          "name": "StepState",
+          "description": "State of a single pipeline step.",
+          "public_methods": [
+            "to_dict",
+            "from_dict"
+          ]
+        },
+        {
+          "name": "PipelineState",
+          "description": "Multi-step pipeline state with resumability.",
+          "public_methods": [
+            "to_dict",
+            "from_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "create_pipeline",
+          "description": "Create a new pipeline with ordered steps.",
+          "params": [
+            "task_id",
+            "agent",
+            "step_names"
+          ]
+        },
+        {
+          "name": "get_pipeline",
+          "description": "Load pipeline state from disk.",
+          "params": [
+            "pipeline_id"
+          ]
+        },
+        {
+          "name": "advance_step",
+          "description": "Mark current step as completed and advance to next step.",
+          "params": [
+            "pipeline_id",
+            "notes",
+            "artifacts"
+          ]
+        },
+        {
+          "name": "fail_step",
+          "description": "Mark current step as failed and halt pipeline.",
+          "params": [
+            "pipeline_id",
+            "reason"
+          ]
+        },
+        {
+          "name": "list_pipelines",
+          "description": "List all pipelines, optionally filtered by status.",
+          "params": [
+            "status"
+          ]
+        },
+        {
+          "name": "can_parallelize",
+          "description": "Check if current step can run in parallel with other steps.",
+          "params": [
+            "pipeline"
+          ]
+        },
+        {
+          "name": "advance_parallel",
+          "description": "Mark multiple steps as completed simultaneously (parallel execution).",
+          "params": [
+            "pipeline_id",
+            "step_names",
+            "notes",
+            "artifacts"
+          ]
+        },
+        {
+          "name": "resume_context",
+          "description": "Generate a context string for resuming an interrupted pipeline.",
+          "params": [
+            "pipeline_id"
+          ]
+        },
+        {
+          "name": "cmd_new",
+          "description": "Create a new pipeline.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_advance",
+          "description": "Advance to the next pipeline step.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_advance_parallel",
+          "description": "Advance multiple parallel steps simultaneously.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_fail",
+          "description": "Mark current step as failed.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_show",
+          "description": "Show pipeline state.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_list",
+          "description": "List pipelines.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_resume",
+          "description": "Generate resume context.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "build_parser",
+          "description": "Build CLI argument parser."
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "PIPELINES_DIR",
+        "DEFAULT_STEPS",
+        "IS456_STEPS",
+        "PARALLEL_GROUPS"
+      ],
+      "content_hash": "e47214897f44"
+    },
+    {
       "name": "pre_commit_check.sh",
       "type": "shell-script",
       "size_lines": 36,
@@ -3122,6 +3467,42 @@
         "SCANNERS"
       ],
       "content_hash": "2a0abbb34d8a"
+    },
+    {
+      "name": "prompt_router.py",
+      "type": "python",
+      "size_lines": 433,
+      "last_updated": "2026-04-02",
+      "description": "Prompt router — routes natural language queries to the best agent + skills.",
+      "classes": [
+        {
+          "name": "RoutingResult",
+          "description": "Result of routing a query to an agent."
+        }
+      ],
+      "functions": [
+        {
+          "name": "route",
+          "description": "Route a natural language query to the best agent.",
+          "params": [
+            "query"
+          ]
+        },
+        {
+          "name": "route_all",
+          "description": "Route a query and return ALL candidate agents ranked by score.",
+          "params": [
+            "query"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "STOPWORDS"
+      ],
+      "content_hash": "a6436b24cd9c"
     },
     {
       "name": "recover_git_state.sh",
@@ -3302,8 +3683,8 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 1401,
-      "last_updated": "2026-03-26",
+      "size_lines": 1946,
+      "last_updated": "2026-04-02",
       "description": "Unified session management CLI.",
       "functions": [
         {
@@ -3340,6 +3721,13 @@
         },
         {
           "name": "cmd_start",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_costs",
+          "description": "Show cost/session entries from logs/agent_costs.jsonl.",
           "params": [
             "args"
           ]
@@ -3383,13 +3771,6 @@
           "params": [
             "args"
           ]
-        },
-        {
-          "name": "cmd_summary",
-          "description": "Auto-generate session summary from git history.",
-          "params": [
-            "args"
-          ]
         }
       ],
       "constants": [
@@ -3404,7 +3785,120 @@
         "COMMIT_HASH_RE",
         "TASKS_HISTORY"
       ],
-      "content_hash": "e3504e47fb12"
+      "content_hash": "fbb34b6b726f"
+    },
+    {
+      "name": "session_store.py",
+      "type": "python",
+      "size_lines": 352,
+      "last_updated": "2026-04-02",
+      "description": "JSON-based session state persistence for AI agent sessions.",
+      "classes": [
+        {
+          "name": "SessionState",
+          "description": "AI agent session state with pipeline tracking.",
+          "public_methods": [
+            "to_dict",
+            "from_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "generate_session_id",
+          "description": "Auto-increment from last saved session (S001, S002, etc.)."
+        },
+        {
+          "name": "save_session",
+          "description": "Write session state to logs/sessions/{session_id}.json.",
+          "params": [
+            "state"
+          ]
+        },
+        {
+          "name": "load_session",
+          "description": "Read session state from JSON file.",
+          "params": [
+            "session_id"
+          ]
+        },
+        {
+          "name": "list_sessions",
+          "description": "List recent sessions, sorted by start time.",
+          "params": [
+            "last_n"
+          ]
+        },
+        {
+          "name": "get_active_session",
+          "description": "Find the most recent session without ended_at."
+        },
+        {
+          "name": "end_session",
+          "description": "Set ended_at and calculate duration for a session.",
+          "params": [
+            "session_id",
+            "notes"
+          ]
+        },
+        {
+          "name": "resume_context",
+          "description": "Generate a context prompt for resuming work.",
+          "params": [
+            "session_id"
+          ]
+        },
+        {
+          "name": "cmd_new",
+          "description": "Create a new session.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_list",
+          "description": "List recent sessions.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_show",
+          "description": "Show full details of a session.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_end",
+          "description": "End a session (active or specified).",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_resume",
+          "description": "Generate resume context for a session.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_active",
+          "description": "Show the active session.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "CLI entry point."
+        }
+      ],
+      "constants": [
+        "SESSIONS_DIR"
+      ],
+      "content_hash": "c10784b3543e"
     },
     {
       "name": "should_use_pr.sh",
@@ -3413,6 +3907,66 @@
       "last_updated": "2026-03-29",
       "description": "Deprecation notice — use ai_commit.sh --pr-check instead",
       "content_hash": "365ea3298455"
+    },
+    {
+      "name": "skill_tiers.py",
+      "type": "python",
+      "size_lines": 516,
+      "last_updated": "2026-04-02",
+      "description": "Skill tier classification and management for AI agents.",
+      "classes": [
+        {
+          "name": "Issue",
+          "description": "Skill tier validation issue."
+        }
+      ],
+      "functions": [
+        {
+          "name": "discover_available_skills",
+          "description": "Discover all available skills from .github/skills/ directory."
+        },
+        {
+          "name": "load_agent_registry",
+          "description": "Load agent_registry.json."
+        },
+        {
+          "name": "get_skills_for_agent",
+          "description": "Get skills for a specific agent, classified by tier.",
+          "params": [
+            "agent_name"
+          ]
+        },
+        {
+          "name": "validate_skill_assignments",
+          "description": "Validate skill assignments against tier definitions."
+        },
+        {
+          "name": "cmd_list",
+          "description": "List all skills by tier.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_agent",
+          "description": "Show skills for a specific agent.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_validate",
+          "description": "Validate skill assignments.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "CLI entry point."
+        }
+      ],
+      "content_hash": "e9f985d9ca17"
     },
     {
       "name": "sync_numbers.py",
@@ -3617,6 +4171,38 @@
       "content_hash": "083adecc9a09"
     },
     {
+      "name": "test_cli_smoke.py",
+      "type": "python",
+      "size_lines": 294,
+      "last_updated": "2026-04-02",
+      "description": "CLI Smoke Tests — validate all key scripts work correctly.",
+      "functions": [
+        {
+          "name": "run_test",
+          "description": "Run a single smoke test and return its result.",
+          "params": [
+            "spec"
+          ]
+        },
+        {
+          "name": "run_all",
+          "description": "Run all smoke tests and print results. Returns 0 on all-pass, 1 otherwise.",
+          "params": [
+            "tests"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "SCRIPT_DIR",
+        "REPO_ROOT",
+        "VENV"
+      ],
+      "content_hash": "b68d1be5207b"
+    },
+    {
       "name": "test_import_3d_pipeline.py",
       "type": "python",
       "size_lines": 203,
@@ -3735,6 +4321,165 @@
       "last_updated": "2026-03-27",
       "description": "Quick test of the sample data endpoint.",
       "content_hash": "0e76cffe0a7b"
+    },
+    {
+      "name": "tool_permissions.py",
+      "type": "python",
+      "size_lines": 312,
+      "last_updated": "2026-04-02",
+      "description": "Tool permission enforcement for agent operations.",
+      "classes": [
+        {
+          "name": "PermissionResult",
+          "description": "Result of a permission check."
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_file_scope",
+          "description": "Check if *file_path* falls within the agent's file_scope glob.",
+          "params": [
+            "agent",
+            "file_path"
+          ]
+        },
+        {
+          "name": "check_permission",
+          "description": "Check whether *agent* may perform *operation* on *target_path*.",
+          "params": [
+            "agent",
+            "operation",
+            "target_path"
+          ]
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "_PERMISSION_LEVELS",
+        "_REGISTRY_PATH"
+      ],
+      "content_hash": "2fab3a21b3a5"
+    },
+    {
+      "name": "tool_registry.py",
+      "type": "python",
+      "size_lines": 535,
+      "last_updated": "2026-04-02",
+      "description": "Unified tool registry — connects agents, skills, scripts, and operations.",
+      "classes": [
+        {
+          "name": "ToolEntry",
+          "description": "A unified tool/operation entry."
+        }
+      ],
+      "functions": [
+        {
+          "name": "classify_permission",
+          "description": "Classify tool permission level based on keywords.",
+          "params": [
+            "script",
+            "task_name",
+            "description"
+          ]
+        },
+        {
+          "name": "extract_keywords",
+          "description": "Extract keywords from name and description.",
+          "params": [
+            "name",
+            "description"
+          ]
+        },
+        {
+          "name": "load_registry",
+          "description": "Load unified tool registry from agent_registry.json and automation-map.json."
+        },
+        {
+          "name": "infer_agent_from_task",
+          "description": "Infer the primary agent responsible for a task.",
+          "params": [
+            "task_name",
+            "description",
+            "group"
+          ]
+        },
+        {
+          "name": "find_tools",
+          "description": "Find tools matching the query using token-based scoring.",
+          "params": [
+            "query",
+            "registry",
+            "limit"
+          ]
+        },
+        {
+          "name": "get_agent_tools",
+          "description": "Get all tools for a specific agent.",
+          "params": [
+            "agent_name",
+            "registry"
+          ]
+        },
+        {
+          "name": "get_tools_by_category",
+          "description": "Get all tools in a category.",
+          "params": [
+            "category",
+            "registry"
+          ]
+        },
+        {
+          "name": "get_tools_by_permission",
+          "description": "Get all tools with a specific permission level.",
+          "params": [
+            "level",
+            "registry"
+          ]
+        },
+        {
+          "name": "resolve_alias",
+          "description": "Resolve an alias to the full tool name.",
+          "params": [
+            "alias"
+          ]
+        },
+        {
+          "name": "print_tool",
+          "description": "Print a tool entry.",
+          "params": [
+            "tool",
+            "show_score",
+            "score"
+          ]
+        },
+        {
+          "name": "list_registry",
+          "description": "List all tools grouped by category.",
+          "params": [
+            "registry"
+          ]
+        },
+        {
+          "name": "show_stats",
+          "description": "Show registry statistics.",
+          "params": [
+            "registry"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "TOOL_ALIASES",
+        "STOPWORDS"
+      ],
+      "content_hash": "70da5630259d"
     },
     {
       "name": "update_test_stats.py",
@@ -4031,7 +4776,13 @@
       "name": "git-hooks",
       "path": "git-hooks/",
       "file_count": 3
+    },
+    {
+      "name": "hooks",
+      "path": "hooks/",
+      "file_count": 5,
+      "is_package": true
     }
   ],
-  "content_hash": "bf98b24a2580444a"
+  "content_hash": "f05ab31a6f65a2c7"
 }

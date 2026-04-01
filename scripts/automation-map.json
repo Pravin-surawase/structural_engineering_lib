@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-03-24",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "88/88 scripts mapped",
+  "_coverage": "106/106 scripts mapped",
   "tasks": {
     "run all checks": {
       "group": "Quality",
@@ -621,6 +621,61 @@
       "group": "Infrastructure",
       "script": ".venv/bin/python scripts/export_paper_data.py",
       "description": "Export agent performance data for academic paper"
+    },
+    "prompt routing": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/prompt_router.py",
+      "description": "Route prompts to the best agent based on content analysis"
+    },
+    "tool permissions": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/tool_permissions.py",
+      "description": "Manage and validate per-agent tool permission grants"
+    },
+    "audit permissions": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/audit_permissions.py",
+      "description": "Audit tool permission usage and violations across agents"
+    },
+    "pipeline state": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/pipeline_state.py",
+      "description": "Track multi-step pipeline state with checkpoints and parallelism"
+    },
+    "config precedence": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/config_precedence.py",
+      "description": "Resolve configuration precedence across instruction layers"
+    },
+    "skill tiers": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/skill_tiers.py",
+      "description": "Manage skill tier assignments and progression"
+    },
+    "parity dashboard": {
+      "group": "Quality",
+      "script": ".venv/bin/python scripts/parity_dashboard.py",
+      "description": "Cross-stack parity dashboard showing coverage across layers"
+    },
+    "cli smoke tests": {
+      "group": "Testing",
+      "script": ".venv/bin/python scripts/test_cli_smoke.py",
+      "description": "Smoke test all CLI entry points for basic functionality"
+    },
+    "session store": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/session_store.py",
+      "description": "Persistent session state store for cross-command context"
+    },
+    "tool registry": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/tool_registry.py",
+      "description": "Registry of available tools with metadata and permission mappings"
+    },
+    "add groups temp": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/_tmp_add_groups.py",
+      "description": "Temporary script to add group metadata to automation-map entries"
     }
   },
   "categories": {
@@ -718,7 +773,8 @@
       "update test stats",
       "external cli test",
       "test import 3d pipeline",
-      "test vba adapter"
+      "test vba adapter",
+      "cli smoke tests"
     ],
     "generation": [
       "generate folder index",
@@ -766,7 +822,17 @@
       "agent scoring",
       "agent session collect",
       "agent trends",
-      "export paper data"
+      "export paper data",
+      "prompt routing",
+      "tool permissions",
+      "audit permissions",
+      "pipeline state",
+      "config precedence",
+      "skill tiers",
+      "parity dashboard",
+      "session store",
+      "tool registry",
+      "add groups temp"
     ]
   }
 }
