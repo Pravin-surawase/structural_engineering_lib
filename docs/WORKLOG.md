@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-04-01
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -34,6 +34,17 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-01 | TASK-800.T | Added 84 evolver unit tests (scorer, drift, compliance, registry, data, scoring lib) | c1e0d222 |
+| 2026-04-01 | TASK-800.P3 | Fixed agent_registry.py name extraction bug (.stem → .name.removesuffix) | c1e0d222 |
+| 2026-04-01 | TASK-800.P3 | Created scripts/_lib/agent_registry.py, scoring.py, agent_data.py (shared evolver libs) | 8808c16b |
+| 2026-04-01 | TASK-800.P4 | Created agent_session_collector.py (gather session artifacts for scoring) | 8808c16b |
+| 2026-04-01 | TASK-800.P5 | Created agent_scorer.py (11-dimension scoring, auto+manual, composite grades) | d875dcfa |
+| 2026-04-01 | TASK-800.P6 | Created agent_drift_detector.py (12 agents × drift rules, violation tracking) | d875dcfa |
+| 2026-04-01 | TASK-800.P7 | Created agent_compliance_checker.py (8 compliance rules, per-agent checks) | d875dcfa |
+| 2026-04-01 | TASK-800.P8 | Created agent_trends.py (Mann-Kendall trend test, degradation alerts) | d69c4a4f |
+| 2026-04-01 | TASK-800.P10 | Created export_paper_data.py (CSV export, bootstrap CIs, Hedges' g) | d69c4a4f |
+| 2026-04-01 | TASK-800.P9 | Created agent_evolve_instructions.py (SHA-256, security levels, rollback) | e0702346 |
+| 2026-04-01 | TASK-800.P2 | Created agent-evolver.agent.md (15th meta-agent) + agent-evolution/SKILL.md | pending |
 | 2026-03-31 | TASK-630 | Added ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 column constants | 69d4d2c3 |
 | 2026-03-31 | TASK-631 | Implemented classify_column (Cl 25.1.2) and min_eccentricity (Cl 25.4) in codes/is456/column/axial.py | 69d4d2c3 |
 | 2026-03-31 | TASK-632 | Implemented short_axial_capacity (Cl 39.3) with full validation in codes/is456/column/axial.py | 69d4d2c3 |

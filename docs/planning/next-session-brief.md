@@ -21,12 +21,11 @@ tags: []
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-03-31
-- Session: Phase 2 Column Design — axial functions complete
-- Done: TASK-630/631/632 — 3 IS 456 column functions (classify_column, min_eccentricity, short_axial_capacity), ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 errors, 7 constants, 3 API wrappers in services/api.py, column FastAPI router with 3 POST endpoints, 75 tests passing, dual review approved
-- Next: Column uniaxial bending (TASK-633 P-M interaction, Cl 39.5), wire E_COLUMN_* error codes into axial.py (reviewer obs), remove logging from pure math module (reviewer obs), frontend column design form
-- Merged: PR #471, squash commit 69d4d2c3 on main
-- State: main branch, clean worktree
+- Date: 2026-04-01
+- Session: TASK-800 Agent Evolver Infrastructure — P2-P11 complete
+- Done: 10 evolver scripts (3 shared libs + 7 helpers = ~4,500 lines), agent-evolver.agent.md (15th agent), agent-evolution skill, run.sh integration, 84 unit tests, agent_registry bugfix. All 3,560+ tests passing.
+- Remaining: P12 burn-in validation (15-20 sessions)
+- State: task/TASK-800 branch, clean worktree, PR pending merge
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -40,12 +39,13 @@ tags: []
 
 > **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md)
 
-1. **Phase 2 Column Design (TASK-633+)** ← **START HERE** — uniaxial bending (Cl 39.5), P-M interaction, biaxial bending
-2. **Wire E_COLUMN_* error codes** into axial.py (reviewer observation)
-3. **Remove logging from pure math module** (reviewer observation)
-4. **Frontend column design form** — React UI for column design
-5. **Phase 2.5: Multi-Code Infrastructure** — CodeRegistry, DesignEnvelope, code-specific input dataclasses, `core/units.py`
-6. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
+1. **Merge TASK-800 PR** ← **START HERE** — finish PR for evolver infrastructure
+2. **P12 Burn-in (15-20 sessions)** — OBSERVE + MEASURE only, no EVOLVE yet
+3. **Evolver unit tests** — test scorer, drift detector, compliance checker
+4. **Phase 2 Column Design (TASK-633+)** — uniaxial bending (Cl 39.5), P-M interaction
+5. **Wire E_COLUMN_* error codes** into axial.py (reviewer observation)
+6. **Remove logging from pure math module** (reviewer observation)
+7. **Quality scripts** — TASK-622/623/624 (check_function_quality, check_clause_coverage, check_new_element_completeness)
 
 ### Technical Debt
 

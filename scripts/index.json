@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-03-30",
-  "file_count": 90,
+  "last_updated": "2026-04-01",
+  "file_count": 97,
   "files": [
     {
       "name": "README.md",
@@ -21,6 +21,100 @@
       "last_updated": "2026-03-28",
       "description": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
       "content_hash": "20ab2f7458b4"
+    },
+    {
+      "name": "agent_compliance_checker.py",
+      "type": "python",
+      "size_lines": 514,
+      "last_updated": "2026-04-01",
+      "description": "Agent compliance checker — verify agents followed their .agent.md rules.",
+      "functions": [
+        {
+          "name": "parse_args",
+          "description": "Parse command-line arguments."
+        },
+        {
+          "name": "rule_applies_to_agent",
+          "description": "Check if a compliance rule applies to an agent.",
+          "params": [
+            "rule",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "check_file_modified",
+          "description": "Check if target file was modified in the session.",
+          "params": [
+            "session_data",
+            "target_file"
+          ]
+        },
+        {
+          "name": "check_feedback_exists",
+          "description": "Check if feedback was logged for this session.",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "check_tests_executed",
+          "description": "Check if tests were run during the session.",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "check_commit_format",
+          "description": "Check if all commits follow conventional format.",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "check_no_raw_file_ops",
+          "description": "Check that safe file scripts were used (not raw mv/rm).",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "check_architecture",
+          "description": "Check for architecture boundary violations.",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "check_build_ran",
+          "description": "Check if build was verified before commit (frontend agents).",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "check_compliance",
+          "description": "Check compliance for a session.",
+          "params": [
+            "session_data",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "format_summary_table",
+          "description": "Print a summary table across multiple sessions.",
+          "params": [
+            "results_list"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "COMPLIANCE_RULES"
+      ],
+      "content_hash": "49353b14a842"
     },
     {
       "name": "agent_context.py",
@@ -114,6 +208,157 @@
       "content_hash": "c2b129fa5a96"
     },
     {
+      "name": "agent_drift_detector.py",
+      "type": "python",
+      "size_lines": 591,
+      "last_updated": "2026-04-01",
+      "description": "Agent drift detector — detect when agents deviate from prescribed behavior.",
+      "functions": [
+        {
+          "name": "parse_args",
+          "description": "Parse command-line arguments."
+        },
+        {
+          "name": "detect_commit_drift",
+          "description": "Detect drift in commit messages.",
+          "params": [
+            "commits",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "detect_file_drift",
+          "description": "Detect drift in file operations.",
+          "params": [
+            "files_changed",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "drift_score",
+          "description": "Calculate drift score.",
+          "params": [
+            "violations",
+            "total_rules"
+          ]
+        },
+        {
+          "name": "detect_drift",
+          "description": "Detect drift events in a session.",
+          "params": [
+            "session_data",
+            "agent_filter"
+          ]
+        },
+        {
+          "name": "save_drift_report",
+          "description": "Save drift report to file.",
+          "params": [
+            "drift_data",
+            "output_path"
+          ]
+        },
+        {
+          "name": "load_all_drift_reports",
+          "description": "Load all drift reports from DRIFT_DIR."
+        },
+        {
+          "name": "print_drift_summary",
+          "description": "Print summary of all drift reports.",
+          "params": [
+            "reports",
+            "agent_filter"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "DRIFT_RULES"
+      ],
+      "content_hash": "9c738b601d7a"
+    },
+    {
+      "name": "agent_evolve_instructions.py",
+      "type": "python",
+      "size_lines": 483,
+      "last_updated": "2026-04-01",
+      "description": "Agent instruction evolver — self-improving agent customization files.",
+      "functions": [
+        {
+          "name": "compute_sha256",
+          "description": "Compute SHA-256 hash of file contents.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "backup_agent_file",
+          "description": "Backup agent instruction file to backups directory.",
+          "params": [
+            "agent_name"
+          ]
+        },
+        {
+          "name": "load_evolution_log",
+          "description": "Load evolution log (applied changes)."
+        },
+        {
+          "name": "save_evolution_log",
+          "description": "Save evolution log.",
+          "params": [
+            "evolutions"
+          ]
+        },
+        {
+          "name": "validate_yaml_frontmatter",
+          "description": "Validate YAML frontmatter structure.",
+          "params": [
+            "content"
+          ]
+        },
+        {
+          "name": "propose_evolutions",
+          "description": "Analyze trends and drift to propose instruction improvements."
+        },
+        {
+          "name": "apply_evolution",
+          "description": "Apply a pending evolution.",
+          "params": [
+            "evolution_id",
+            "dry_run"
+          ]
+        },
+        {
+          "name": "rollback_evolution",
+          "description": "Rollback an applied evolution using backup.",
+          "params": [
+            "evolution_id"
+          ]
+        },
+        {
+          "name": "list_pending",
+          "description": "List pending evolution proposals."
+        },
+        {
+          "name": "parse_args",
+          "description": "Parse command-line arguments."
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "EVOLUTION_LOG",
+        "MAX_PENDING",
+        "MAX_WEEKLY_EDITS"
+      ],
+      "content_hash": "be1b040d0510"
+    },
+    {
       "name": "agent_feedback.py",
       "type": "python",
       "size_lines": 380,
@@ -175,20 +420,196 @@
       "content_hash": "5652d225345a"
     },
     {
+      "name": "agent_scorer.py",
+      "type": "python",
+      "size_lines": 485,
+      "last_updated": "2026-04-01",
+      "description": "Agent scorer — score agents on 11 performance dimensions.",
+      "functions": [
+        {
+          "name": "auto_score_agent",
+          "description": "Compute auto-scored dimensions from session data.",
+          "params": [
+            "session_data",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "score_session",
+          "description": "Score a session and update records.",
+          "params": [
+            "session_id",
+            "agent_name",
+            "auto_only",
+            "manual_scores"
+          ]
+        },
+        {
+          "name": "view_scores",
+          "description": "Display current agent scores in table format.",
+          "params": [
+            "agent_name"
+          ]
+        },
+        {
+          "name": "parse_args",
+          "description": "Parse command-line arguments."
+        },
+        {
+          "name": "validate_score",
+          "description": "Validate a score is in [0, 10] range.",
+          "params": [
+            "value",
+            "name"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "fac44f5431b2"
+    },
+    {
+      "name": "agent_session_collector.py",
+      "type": "python",
+      "size_lines": 320,
+      "last_updated": "2026-04-01",
+      "description": "Agent session collector — gather all session artifacts for scoring.",
+      "functions": [
+        {
+          "name": "parse_args",
+          "description": "Parse command-line arguments."
+        },
+        {
+          "name": "get_git_commits",
+          "description": "Get git commits since a date.",
+          "params": [
+            "since"
+          ]
+        },
+        {
+          "name": "identify_agent_from_commit",
+          "description": "Identify agent from commit message patterns.",
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "get_files_changed",
+          "description": "Get files changed in a commit.",
+          "params": [
+            "sha"
+          ]
+        },
+        {
+          "name": "identify_agent_from_files",
+          "description": "Identify agent from files changed.",
+          "params": [
+            "files"
+          ]
+        },
+        {
+          "name": "load_test_results",
+          "description": "Load latest test results from test_stats.json."
+        },
+        {
+          "name": "load_latest_health",
+          "description": "Load latest health score from logs/evolution/."
+        },
+        {
+          "name": "collect_session",
+          "description": "Collect all session artifacts.",
+          "params": [
+            "since",
+            "session_id"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "AGENT_HINTS_FROM_COMMIT",
+        "AGENT_HINTS_FROM_FILES"
+      ],
+      "content_hash": "962389f930ea"
+    },
+    {
       "name": "agent_start.sh",
       "type": "shell-script",
-      "size_lines": 274,
-      "last_updated": "2026-03-28",
+      "size_lines": 323,
+      "last_updated": "2026-03-30",
       "description": "Unified Agent Start Script",
-      "content_hash": "eb85a91af327"
+      "content_hash": "4a8471e22af4"
+    },
+    {
+      "name": "agent_trends.py",
+      "type": "python",
+      "size_lines": 375,
+      "last_updated": "2026-04-01",
+      "description": "Agent trends — time series analysis and degradation detection.",
+      "functions": [
+        {
+          "name": "mann_kendall_trend",
+          "description": "Mann-Kendall trend test for monotonic trends.",
+          "params": [
+            "values"
+          ]
+        },
+        {
+          "name": "compute_consecutive_decline",
+          "description": "Count consecutive declining values from the end of the series.",
+          "params": [
+            "values"
+          ]
+        },
+        {
+          "name": "compute_trends",
+          "description": "Compute trend statistics for agents across sessions.",
+          "params": [
+            "sessions",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "check_alerts",
+          "description": "Check for agents with concerning performance trends.",
+          "params": [
+            "trends"
+          ]
+        },
+        {
+          "name": "save_trends",
+          "description": "Save trends data to TRENDS_DIR.",
+          "params": [
+            "period",
+            "trends_data",
+            "agent_name"
+          ]
+        },
+        {
+          "name": "format_trends",
+          "description": "Pretty-print trends to console.",
+          "params": [
+            "trends"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "6f27242e26dc"
     },
     {
       "name": "ai_commit.sh",
       "type": "shell-script",
-      "size_lines": 431,
-      "last_updated": "2026-03-29",
+      "size_lines": 448,
+      "last_updated": "2026-04-01",
       "description": "AI-friendly wrapper for safe commits and pushes",
-      "content_hash": "eccd34fb374c"
+      "content_hash": "5796695e6773"
     },
     {
       "name": "archive_old_files.sh",
@@ -555,8 +976,8 @@
     {
       "name": "bump_version.py",
       "type": "python",
-      "size_lines": 392,
-      "last_updated": "2026-03-26",
+      "size_lines": 432,
+      "last_updated": "2026-04-01",
       "description": "Version Bump Script — Single Source of Truth",
       "functions": [
         {
@@ -584,13 +1005,13 @@
         "DOC_DATE_FILES",
         "EVERGREEN_NOTES"
       ],
-      "content_hash": "e2c9e9096456"
+      "content_hash": "fe0d5fc018a0"
     },
     {
       "name": "check_all.py",
       "type": "python",
-      "size_lines": 664,
-      "last_updated": "2026-03-27",
+      "size_lines": 713,
+      "last_updated": "2026-03-31",
       "description": "Unified check orchestrator — runs all validation scripts in parallel.",
       "classes": [
         {
@@ -615,7 +1036,7 @@
         "VENV_PYTHON",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "02c8a1ffbf18"
+      "content_hash": "3d5823695c95"
     },
     {
       "name": "check_api.py",
@@ -1095,8 +1516,8 @@
     {
       "name": "check_governance.py",
       "type": "python",
-      "size_lines": 847,
-      "last_updated": "2026-03-27",
+      "size_lines": 1025,
+      "last_updated": "2026-03-31",
       "description": "Unified governance checker — folder structure + compliance validation.",
       "classes": [
         {
@@ -1243,7 +1664,7 @@
         "DEFAULT_RULES",
         "RULES"
       ],
-      "content_hash": "a17ff45fe405"
+      "content_hash": "d0888d9ce702"
     },
     {
       "name": "check_instruction_drift.py",
@@ -1875,6 +2296,72 @@
       "content_hash": "ebe10b1153db"
     },
     {
+      "name": "export_paper_data.py",
+      "type": "python",
+      "size_lines": 388,
+      "last_updated": "2026-04-01",
+      "description": "Export agent performance data for academic paper.",
+      "functions": [
+        {
+          "name": "export_agent_scores_csv",
+          "description": "Export agent scores to CSV for paper analysis.",
+          "params": [
+            "sessions",
+            "output_dir"
+          ]
+        },
+        {
+          "name": "export_dimension_trends_csv",
+          "description": "Export dimension trends to CSV for time series analysis.",
+          "params": [
+            "sessions",
+            "output_dir"
+          ]
+        },
+        {
+          "name": "bootstrap_ci",
+          "description": "Calculate bootstrap confidence interval.",
+          "params": [
+            "values",
+            "confidence",
+            "n_iterations"
+          ]
+        },
+        {
+          "name": "hedges_g",
+          "description": "Calculate Hedges' g effect size.",
+          "params": [
+            "pre",
+            "post"
+          ]
+        },
+        {
+          "name": "export_summary_stats",
+          "description": "Export summary statistics with bootstrap CIs.",
+          "params": [
+            "sessions",
+            "output_dir"
+          ]
+        },
+        {
+          "name": "print_paper_table",
+          "description": "Print formatted table matching paper §16.1.",
+          "params": [
+            "sessions"
+          ]
+        },
+        {
+          "name": "parse_args",
+          "description": "Parse command line arguments."
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "content_hash": "b0c6d592625b"
+    },
+    {
       "name": "external_cli_test.py",
       "type": "python",
       "size_lines": 396,
@@ -1947,10 +2434,10 @@
     {
       "name": "finish_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 369,
-      "last_updated": "2026-03-29",
+      "size_lines": 423,
+      "last_updated": "2026-03-30",
       "description": "Finish task work and create PR",
-      "content_hash": "9903c2e26690"
+      "content_hash": "45f832a8de41"
     },
     {
       "name": "fix_broken_links.py",
@@ -2480,8 +2967,8 @@
     {
       "name": "preflight.py",
       "type": "python",
-      "size_lines": 204,
-      "last_updated": "2026-03-26",
+      "size_lines": 200,
+      "last_updated": "2026-03-31",
       "description": "Pre-flight check — catch common mistakes BEFORE they happen.",
       "functions": [
         {
@@ -2533,7 +3020,7 @@
         "BOLD",
         "NC"
       ],
-      "content_hash": "d1d7612e080e"
+      "content_hash": "a0783bf440ee"
     },
     {
       "name": "project_health.py",
@@ -2647,8 +3134,8 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 369,
-      "last_updated": "2026-03-26",
+      "size_lines": 919,
+      "last_updated": "2026-03-31",
       "description": "Unified release management CLI.",
       "functions": [
         {
@@ -2676,6 +3163,13 @@
           ]
         },
         {
+          "name": "cmd_preflight",
+          "description": "Run all pre-release validation checks without making changes.",
+          "params": [
+            "args"
+          ]
+        },
+        {
           "name": "build_parser"
         },
         {
@@ -2690,7 +3184,7 @@
         "VERSION_RE",
         "REQUIRED_HEADINGS"
       ],
-      "content_hash": "7f2214326602"
+      "content_hash": "9d313bb34bc6"
     },
     {
       "name": "repo_health_check.sh",
@@ -3539,5 +4033,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "d073f529e2b8ef2b"
+  "content_hash": "bf98b24a2580444a"
 }
