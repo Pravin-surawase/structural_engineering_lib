@@ -2891,6 +2891,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pm_interaction_curve_is456b_mm-d_mm-fck-fy-asc_mm2-d_prime_mm-n_points50-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pm_interaction_curve_is456(b_mm, D_mm, fck, fy, Asc_mm2, d_prime_mm, n_points=50) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5374,6 +5385,17 @@
     <span class="md-ellipsis">
       
         design_short_column_uniaxial_is456(Pu_kN, Mu_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pm_interaction_curve_is456b_mm-d_mm-fck-fy-asc_mm2-d_prime_mm-n_points50-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pm_interaction_curve_is456(b_mm, D_mm, fck, fy, Asc_mm2, d_prime_mm, n_points=50) → dict
       
     </span>
   </a>
@@ -8399,6 +8421,67 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <a id="__codelineno-130-8" name="__codelineno-130-8" href="#__codelineno-130-8"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;ok&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Utilization: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;utilization&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/uniaxial</code></p>
+<hr />
+<h3 id="pm_interaction_curve_is456b_mm-d_mm-fck-fy-asc_mm2-d_prime_mm-n_points50-dict"><code>pm_interaction_curve_is456(b_mm, D_mm, fck, fy, Asc_mm2, d_prime_mm, n_points=50) → dict</code><a class="headerlink" href="#pm_interaction_curve_is456b_mm-d_mm-fck-fy-asc_mm2-d_prime_mm-n_points50-dict" title="Permanent link">&para;</a></h3>
+<p>Generate the full P-M interaction envelope for a rectangular column with equal reinforcement at both faces. Sweeps neutral axis depth to produce (Pu, Mu) pairs using IS 456 stress-block model and SP:16 Table I coefficients.</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column width (mm)</td>
+</tr>
+<tr>
+<td><code>D_mm</code></td>
+<td><code>float</code></td>
+<td>Column depth in direction of bending (mm)</td>
+</tr>
+<tr>
+<td><code>fck</code></td>
+<td><code>float</code></td>
+<td>Concrete strength (N/mm²). IS 456 range: 15–80</td>
+</tr>
+<tr>
+<td><code>fy</code></td>
+<td><code>float</code></td>
+<td>Steel yield strength (N/mm²). IS 456 range: 250–550</td>
+</tr>
+<tr>
+<td><code>Asc_mm2</code></td>
+<td><code>float</code></td>
+<td>Total longitudinal reinforcement area (mm²), equally split between faces</td>
+</tr>
+<tr>
+<td><code>d_prime_mm</code></td>
+<td><code>float</code></td>
+<td>Distance from face to steel centroid (mm)</td>
+</tr>
+<tr>
+<td><code>n_points</code></td>
+<td><code>int</code></td>
+<td>Number of points on the curve (default: 50)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>dict</code> with keys: <code>points</code> (list of <code>{Pu_kN, Mu_kNm}</code>), <code>Pu_max_kN</code>, <code>Mu_max_kNm</code>, <code>balanced_Pu_kN</code>, <code>balanced_Mu_kNm</code>, <code>steel_ratio_pct</code></p>
+<p><strong>Reference:</strong> IS 456 Cl 39.5, Annex G; SP:16 Table I</p>
+<p><strong>Usage:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-131-1" name="__codelineno-131-1" href="#__codelineno-131-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-131-2" name="__codelineno-131-2" href="#__codelineno-131-2"></a>
+<a id="__codelineno-131-3" name="__codelineno-131-3" href="#__codelineno-131-3"></a><span class="n">curve</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">pm_interaction_curve_is456</span><span class="p">(</span>
+<a id="__codelineno-131-4" name="__codelineno-131-4" href="#__codelineno-131-4"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mf">415.0</span><span class="p">,</span>
+<a id="__codelineno-131-5" name="__codelineno-131-5" href="#__codelineno-131-5"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mf">2700.0</span><span class="p">,</span> <span class="n">d_prime_mm</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-131-6" name="__codelineno-131-6" href="#__codelineno-131-6"></a><span class="p">)</span>
+<a id="__codelineno-131-7" name="__codelineno-131-7" href="#__codelineno-131-7"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Points: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">curve</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">, Pu_max: </span><span class="si">{</span><span class="n">curve</span><span class="p">[</span><span class="s1">&#39;Pu_max_kN&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/interaction-curve</code></p>
 
 
 
