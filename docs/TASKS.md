@@ -154,7 +154,7 @@
 | TASK-617 | Create test assertion helpers `tests/helpers/is456_assertions.py` | 🟡 Medium | ✅ Done |
 | TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | ✅ Done |
 | TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | ✅ Done |
-| TASK-620 | Stack trace sanitization (security) in `fastapi_app/main.py` | 🟡 Medium | 📋 |
+| TASK-620 | Stack trace sanitization (security) in `fastapi_app/main.py` | 🟡 Medium | ✅ Done |
 | TASK-621 | Add `recovery` field to `DesignError` in `core/errors.py` | 🟡 Medium | 📋 |
 | TASK-622 | Create `check_function_quality.py` script (12-point checklist CI) | 🟡 Medium | 📋 |
 | TASK-623 | Create `check_clause_coverage.py` script (clause gap detection) | 🟡 Medium | 📋 |

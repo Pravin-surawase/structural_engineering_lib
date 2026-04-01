@@ -16,12 +16,16 @@ API Docs:
     - OpenAPI JSON: http://localhost:8000/openapi.json
 """
 
+import logging
+import traceback
 import uuid
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
+
+logger = logging.getLogger(__name__)
 
 from fastapi_app import __version__
 from fastapi_app.routers import (
@@ -280,6 +284,27 @@ try:
 except ImportError:
     # structural_lib not installed — handlers will not be registered
     pass
+
+
+# =============================================================================
+# Generic Exception Handler — OWASP A05 Stack Trace Sanitization
+# =============================================================================
+
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    """Catch-all for unhandled exceptions. Logs full traceback server-side,
+    returns a generic 500 response to the client (no internal details leaked)."""
+    logger.error(
+        "Unhandled exception: %s\n%s",
+        str(exc),
+        traceback.format_exc(),
+    )
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error", "status_code": 500},
+    )
+
 
 # =============================================================================
 # Router Registration

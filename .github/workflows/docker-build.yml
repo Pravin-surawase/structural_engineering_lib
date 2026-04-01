@@ -87,33 +87,12 @@ jobs:
 
           echo "Docker Compose files are valid!"
 
-  docker-security-scan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: docker-build
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Build image for scanning
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: ./Dockerfile.fastapi
-          push: false
-          tags: structeng-api:scan
-          load: true
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'structeng-api:scan'
+          image-ref: 'structeng-api:test'
           format: 'table'
-          exit-code: '0'  # Don't fail on vulnerabilities (info only)
+          exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL'
