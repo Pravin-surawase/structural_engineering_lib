@@ -223,8 +223,7 @@ def check_no_raw_file_ops(session_data: dict) -> bool:
     Returns:
         True if no raw file ops detected on docs.
     """
-    # Check commits for evidence of raw file ops
-    commits = session_data.get("commits", [])
+    # Check files changed for evidence of raw file ops
     files_changed = session_data.get("files_changed", {})
 
     # Look for docs file renames/deletes without safe script use
