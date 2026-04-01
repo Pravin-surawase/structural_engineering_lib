@@ -128,6 +128,8 @@ classmethod-decorators = ["classmethod"]
 "tests/unit/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
 "tests/unit/test_serviceability.py" = ["E402"]  # Import after section header comment
 "tests/codes/is456/column/test_axial.py" = ["N802", "N803", "N806", "E741"]  # Structural engineering naming (Ag, Asc, Pu, l)
+"structural_lib/codes/is456/column/uniaxial.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc, Cc, Fsc)
+"tests/codes/is456/column/test_uniaxial.py" = ["N802", "N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc)
 
 [tool.mypy]
 python_version = "3.11"

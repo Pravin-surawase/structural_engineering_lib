@@ -1793,8 +1793,8 @@ def design_column_axial_is456(
 
 
 def design_short_column_uniaxial_is456(
-    Pu_kN: float,
-    Mu_kNm: float,
+    Pu_kN: float,  # noqa: N803
+    Mu_kNm: float,  # noqa: N803
     b_mm: float,
     D_mm: float,
     le_mm: float,

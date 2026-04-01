@@ -29,26 +29,26 @@ from structural_lib.core.errors import DimensionError, MaterialError
 # Standard test section (reused across multiple test classes)
 # 300x500mm, M25, Fe415, 2% steel, d'=50mm, le=3000mm
 # ---------------------------------------------------------------------------
-STD = dict(
-    b_mm=300.0,
-    D_mm=500.0,
-    le_mm=3000.0,
-    fck=25.0,
-    fy=415.0,
-    Asc_mm2=3000.0,  # 2% of 300*500=150000 -> 3000 mm2
-    d_prime_mm=50.0,
-)
+STD = {
+    "b_mm": 300.0,
+    "D_mm": 500.0,
+    "le_mm": 3000.0,
+    "fck": 25.0,
+    "fy": 415.0,
+    "Asc_mm2": 3000.0,  # 2% of 300*500=150000 -> 3000 mm2
+    "d_prime_mm": 50.0,
+}
 
 # SP:16 benchmark section: 300x500, M25, Fe415, d'/D=0.15, 2% steel
-SP16 = dict(
-    b_mm=300.0,
-    D_mm=500.0,
-    le_mm=3000.0,
-    fck=25.0,
-    fy=415.0,
-    Asc_mm2=3000.0,
-    d_prime_mm=75.0,  # d'/D = 75/500 = 0.15
-)
+SP16 = {
+    "b_mm": 300.0,
+    "D_mm": 500.0,
+    "le_mm": 3000.0,
+    "fck": 25.0,
+    "fy": 415.0,
+    "Asc_mm2": 3000.0,
+    "d_prime_mm": 75.0,  # d'/D = 75/500 = 0.15
+}
 
 
 # =============================================================================
