@@ -2880,6 +2880,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#design_short_column_uniaxial_is456pu_kn-mu_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        design_short_column_uniaxial_is456(Pu_kN, Mu_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5352,6 +5363,17 @@
     <span class="md-ellipsis">
       
         design_column_axial_is456(fck, fy, Ag_mm2, Asc_mm2) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design_short_column_uniaxial_is456pu_kn-mu_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        design_short_column_uniaxial_is456(Pu_kN, Mu_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict
       
     </span>
   </a>
@@ -8300,6 +8322,83 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <a id="__codelineno-129-4" name="__codelineno-129-4" href="#__codelineno-129-4"></a><span class="n">e_min</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">min_eccentricity_is456</span><span class="p">(</span><span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 <a id="__codelineno-129-5" name="__codelineno-129-5" href="#__codelineno-129-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_column_axial_is456</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">Ag_mm2</span><span class="o">=</span><span class="mi">160000</span><span class="p">,</span> <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">3200</span><span class="p">)</span>
 </code></pre></div></p>
+<hr />
+<h3 id="design_short_column_uniaxial_is456pu_kn-mu_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict"><code>design_short_column_uniaxial_is456(Pu_kN, Mu_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict</code><a class="headerlink" href="#design_short_column_uniaxial_is456pu_kn-mu_knm-b_mm-d_mm-le_mm-fck-fy-asc_mm2-d_prime_mm-l_unsupported_mmnone-dict" title="Permanent link">&para;</a></h3>
+<p>Design short column for uniaxial bending per IS 456 Cl 39.5. Generates the P-M interaction envelope and checks whether the applied (Pu, Mu) lies within capacity.</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pu_kN</code></td>
+<td><code>float</code></td>
+<td>Applied factored axial load (kN). Must be ≥ 0</td>
+</tr>
+<tr>
+<td><code>Mu_kNm</code></td>
+<td><code>float</code></td>
+<td>Applied factored moment about bending axis (kNm). Must be ≥ 0</td>
+</tr>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column width perpendicular to bending axis (mm)</td>
+</tr>
+<tr>
+<td><code>D_mm</code></td>
+<td><code>float</code></td>
+<td>Column depth in direction of bending (mm)</td>
+</tr>
+<tr>
+<td><code>le_mm</code></td>
+<td><code>float</code></td>
+<td>Effective length of column (mm)</td>
+</tr>
+<tr>
+<td><code>fck</code></td>
+<td><code>float</code></td>
+<td>Concrete strength (N/mm²). IS 456 range: 15–80</td>
+</tr>
+<tr>
+<td><code>fy</code></td>
+<td><code>float</code></td>
+<td>Steel yield strength (N/mm²). IS 456 range: 250–550</td>
+</tr>
+<tr>
+<td><code>Asc_mm2</code></td>
+<td><code>float</code></td>
+<td>Total longitudinal reinforcement area (mm²), symmetrically placed</td>
+</tr>
+<tr>
+<td><code>d_prime_mm</code></td>
+<td><code>float</code></td>
+<td>Distance from face to steel centroid (mm)</td>
+</tr>
+<tr>
+<td><code>l_unsupported_mm</code></td>
+<td><code>float \| None</code></td>
+<td>Unsupported length (mm) for min eccentricity (optional)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>dict</code> with keys: <code>ok</code>, <code>utilization</code>, <code>Pu_cap_kN</code>, <code>Mu_cap_kNm</code>, <code>classification</code>, <code>eccentricity_mm</code>, <code>e_min_mm</code>, <code>warnings</code></p>
+<p><strong>Reference:</strong> IS 456 Cl 39.5 (P-M interaction), Cl 25.4 (min eccentricity), SP:16 Charts 27–62</p>
+<p><strong>Usage:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-130-1" name="__codelineno-130-1" href="#__codelineno-130-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-130-2" name="__codelineno-130-2" href="#__codelineno-130-2"></a>
+<a id="__codelineno-130-3" name="__codelineno-130-3" href="#__codelineno-130-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_short_column_uniaxial_is456</span><span class="p">(</span>
+<a id="__codelineno-130-4" name="__codelineno-130-4" href="#__codelineno-130-4"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mf">1200.0</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mf">150.0</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mf">450.0</span><span class="p">,</span>
+<a id="__codelineno-130-5" name="__codelineno-130-5" href="#__codelineno-130-5"></a>    <span class="n">le_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mf">415.0</span><span class="p">,</span> <span class="n">Asc_mm2</span><span class="o">=</span><span class="mf">2700.0</span><span class="p">,</span>
+<a id="__codelineno-130-6" name="__codelineno-130-6" href="#__codelineno-130-6"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
+<a id="__codelineno-130-7" name="__codelineno-130-7" href="#__codelineno-130-7"></a><span class="p">)</span>
+<a id="__codelineno-130-8" name="__codelineno-130-8" href="#__codelineno-130-8"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;ok&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Utilization: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;utilization&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/uniaxial</code></p>
 
 
 
