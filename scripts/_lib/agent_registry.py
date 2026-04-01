@@ -55,7 +55,7 @@ def discover_agents() -> dict[str, AgentInfo]:
         return agents
 
     for agent_file in sorted(agents_dir.glob("*.agent.md")):
-        agent_name = agent_file.stem
+        agent_name = agent_file.name.removesuffix(".agent.md")
 
         try:
             content = agent_file.read_text(encoding="utf-8")
