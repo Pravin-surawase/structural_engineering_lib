@@ -104,6 +104,7 @@ NEVER: rm file.md                                     ← use .venv/bin/python s
 NEVER: mv old.md new.md                               ← use .venv/bin/python scripts/safe_file_move.py
 NEVER: git commit --amend                             ← use ./scripts/ai_commit.sh --amend
 NEVER: --no-verify or --force                         ← has caused 10+ hours of rework
+NEVER: cat > file << 'EOF' ... EOF   ← heredoc fails in agent terminals; use editFiles tool
 ```
 
 **Read-only git commands are OK:** `git status`, `git log`, `git diff`, `git branch`, `git show`.
@@ -117,6 +118,33 @@ NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 ```
 
 Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+
+## File Creation (IMPORTANT)
+
+**NEVER use heredoc syntax in terminals.** It fails because the terminal tool doesn't handle multi-line input properly.
+
+```bash
+# ❌ WRONG — heredoc delimiter gets "command not found":
+cat > file.py << 'EOF'
+content
+EOF
+
+# ❌ WRONG — multiline printf fails with escaping issues:
+printf "line1\nline2\n" > file.py
+
+# ✅ RIGHT — use the editFiles tool (available to most agents):
+# Simply use the VS Code file editing tool to create/write files.
+# This is the ONLY reliable method for creating files with content.
+
+# ✅ ACCEPTABLE — create empty placeholder, then fill with editFiles tool:
+touch file.py
+# Then use editFiles tool to add content
+```
+
+**Rule:** If your agent has `editFiles` in its tool list, ALWAYS use it for file creation. Never attempt to write file content through terminal commands.
+
+**Agents with editFiles:** backend, structural-math, api-developer, tester, frontend, doc-master, governance, agent-evolver, ops
+**Agents WITHOUT editFiles:** orchestrator, ui-designer, structural-engineer, reviewer, library-expert, security — delegate file creation to @backend or @doc-master
 
 ## MANDATORY: Document Terminal Issues
 
