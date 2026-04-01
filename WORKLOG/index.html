@@ -1554,6 +1554,72 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 </thead>
 <tbody>
 <tr>
+<td>2026-04-01</td>
+<td>TASK-800.T</td>
+<td>Added 84 evolver unit tests (scorer, drift, compliance, registry, data, scoring lib)</td>
+<td>c1e0d222</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P3</td>
+<td>Fixed agent_registry.py name extraction bug (.stem → .name.removesuffix)</td>
+<td>c1e0d222</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P3</td>
+<td>Created scripts/_lib/agent_registry.py, scoring.py, agent_data.py (shared evolver libs)</td>
+<td>8808c16b</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P4</td>
+<td>Created agent_session_collector.py (gather session artifacts for scoring)</td>
+<td>8808c16b</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P5</td>
+<td>Created agent_scorer.py (11-dimension scoring, auto+manual, composite grades)</td>
+<td>d875dcfa</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P6</td>
+<td>Created agent_drift_detector.py (12 agents × drift rules, violation tracking)</td>
+<td>d875dcfa</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P7</td>
+<td>Created agent_compliance_checker.py (8 compliance rules, per-agent checks)</td>
+<td>d875dcfa</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P8</td>
+<td>Created agent_trends.py (Mann-Kendall trend test, degradation alerts)</td>
+<td>d69c4a4f</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P10</td>
+<td>Created export_paper_data.py (CSV export, bootstrap CIs, Hedges' g)</td>
+<td>d69c4a4f</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P9</td>
+<td>Created agent_evolve_instructions.py (SHA-256, security levels, rollback)</td>
+<td>e0702346</td>
+</tr>
+<tr>
+<td>2026-04-01</td>
+<td>TASK-800.P2</td>
+<td>Created agent-evolver.agent.md (15th meta-agent) + agent-evolution/SKILL.md</td>
+<td>pending</td>
+</tr>
+<tr>
 <td>2026-03-31</td>
 <td>TASK-630</td>
 <td>Added ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 column constants</td>

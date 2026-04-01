@@ -1691,6 +1691,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#agent-evolver-infrastructure-task-800" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Evolver Infrastructure (TASK-800)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2080,6 +2091,12 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </thead>
 <tbody>
 <tr>
+<td>TASK-800.P2-P11</td>
+<td>Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh integration</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
 <td>TASK-525</td>
 <td>Smart HubPage replacing ModeSelectPage</td>
 <td>Copilot</td>
@@ -2104,6 +2121,12 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>TASK-800</td>
+<td>Agent evolver infrastructure (P3-P11 done, P12 burn-in)</td>
+<td>Copilot</td>
+<td>🔄 In Progress</td>
+</tr>
 <tr>
 <td>TASK-633</td>
 <td>Short column uniaxial (Cl 39.5)</td>
@@ -2658,6 +2681,107 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 </table>
 <h3 id="phase-4-6-slab-staircase-shear-wall-future">Phase 4-6: Slab, Staircase, Shear Wall (Future)<a class="headerlink" href="#phase-4-6-slab-staircase-shear-wall-future" title="Permanent link">&para;</a></h3>
 <p>See <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> for full multi-code, multi-element plan.</p>
+<h3 id="agent-evolver-infrastructure-task-800">Agent Evolver Infrastructure (TASK-800)<a class="headerlink" href="#agent-evolver-infrastructure-task-800" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Self-evolving agent system. See <a href="../architecture/self-evolving-system/">self-evolving-system.md</a> and <a href="../_active/agent-evolver-plan.md.bak">agent-evolver-plan.md.bak</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Phase</th>
+<th>Script</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-800.P3</td>
+<td>Shared libraries (_lib/agent_registry, scoring, agent_data)</td>
+<td>P3</td>
+<td><code>scripts/_lib/*.py</code></td>
+<td>✅ Done (8808c16b)</td>
+</tr>
+<tr>
+<td>TASK-800.P4</td>
+<td>Session collector</td>
+<td>P4</td>
+<td><code>agent_session_collector.py</code></td>
+<td>✅ Done (8808c16b)</td>
+</tr>
+<tr>
+<td>TASK-800.P5</td>
+<td>Agent scorer (11 dimensions)</td>
+<td>P5</td>
+<td><code>agent_scorer.py</code></td>
+<td>✅ Done (d875dcfa)</td>
+</tr>
+<tr>
+<td>TASK-800.P6</td>
+<td>Drift detector (12 agents × rules)</td>
+<td>P6</td>
+<td><code>agent_drift_detector.py</code></td>
+<td>✅ Done (d875dcfa)</td>
+</tr>
+<tr>
+<td>TASK-800.P7</td>
+<td>Compliance checker (8 rules)</td>
+<td>P7</td>
+<td><code>agent_compliance_checker.py</code></td>
+<td>✅ Done (d875dcfa)</td>
+</tr>
+<tr>
+<td>TASK-800.P8</td>
+<td>Trend analysis (Mann-Kendall)</td>
+<td>P8</td>
+<td><code>agent_trends.py</code></td>
+<td>✅ Done (d69c4a4f)</td>
+</tr>
+<tr>
+<td>TASK-800.P9</td>
+<td>Instruction evolver (SHA-256, security levels)</td>
+<td>P9</td>
+<td><code>agent_evolve_instructions.py</code></td>
+<td>✅ Done (e0702346)</td>
+</tr>
+<tr>
+<td>TASK-800.P10</td>
+<td>Paper data export (CSV, bootstrap CIs)</td>
+<td>P10</td>
+<td><code>export_paper_data.py</code></td>
+<td>✅ Done (d69c4a4f)</td>
+</tr>
+<tr>
+<td>TASK-800.P2</td>
+<td>Agent-evolver definition + skill</td>
+<td>P2</td>
+<td><code>agent-evolver.agent.md</code>, <code>SKILL.md</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-800.P11</td>
+<td>run.sh evolve integration</td>
+<td>P11</td>
+<td><code>run.sh</code></td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-800.P12</td>
+<td>Burn-in validation (15-20 sessions)</td>
+<td>P12</td>
+<td>—</td>
+<td>📋 Ongoing</td>
+</tr>
+<tr>
+<td>TASK-800.T</td>
+<td>Evolver unit tests</td>
+<td>Tests</td>
+<td>—</td>
+<td>✅ Done (c1e0d222)</td>
+</tr>
+</tbody>
+</table>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
