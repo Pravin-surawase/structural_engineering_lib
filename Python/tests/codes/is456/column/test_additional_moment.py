@@ -37,7 +37,7 @@ from structural_lib.core.errors import DimensionError
 # Standard test section (reused across multiple test classes)
 # M25, Fe415, 2400 mm² steel, d'=50mm
 # ---------------------------------------------------------------------------
-STD = dict(fck=25, fy=415, Asc_mm2=2400, d_prime_mm=50)
+STD = {"fck": 25, "fy": 415, "Asc_mm2": 2400, "d_prime_mm": 50}
 
 
 # =============================================================================
@@ -290,7 +290,7 @@ class TestAdditionalMomentDegenerate:
                 **STD,
             )
 
-    def test_zero_D_raises(self):
+    def test_zero_d_raises(self):
         """D_mm = 0 -> DimensionError (division by zero in formula)."""
         with pytest.raises(DimensionError):
             calculate_additional_moment(
@@ -431,7 +431,7 @@ class TestAdditionalMomentKFactor:
         # Reduced moments should be near zero
         assert result.Max_reduced_kNm < result.Max_kNm * 0.1
 
-    def test_reduced_moment_equals_k_times_Ma(self):
+    def test_reduced_moment_equals_k_times_ma(self):
         """Max_reduced = k × Max (exact relationship)."""
         result = calculate_additional_moment(
             Pu_kN=1200,
@@ -461,7 +461,7 @@ class TestAdditionalMomentProperties:
         le=st.floats(min_value=5500, max_value=20000),
     )
     @settings(max_examples=50)
-    def test_monotonicity_Ma_with_le(self, le):
+    def test_monotonicity_ma_with_le(self, le):  # noqa: N802
         """Monotonicity: Increasing lex -> increasing Max.
 
         Ma = Pu × le² / (2000 × D × 1000).
@@ -496,7 +496,7 @@ class TestAdditionalMomentProperties:
         Pu=st.floats(min_value=100, max_value=2000),
     )
     @settings(max_examples=50)
-    def test_monotonicity_Ma_with_Pu(self, Pu):
+    def test_monotonicity_ma_with_pu(self, Pu):  # noqa: N803
         """Monotonicity: Increasing Pu -> increasing Max (Ma proportional to Pu)."""
         r1 = calculate_additional_moment(
             Pu_kN=Pu,
@@ -523,7 +523,7 @@ class TestAdditionalMomentProperties:
         Pu=st.floats(min_value=100, max_value=1500),
     )
     @settings(max_examples=50)
-    def test_linearity_in_Pu(self, Pu):
+    def test_linearity_in_pu(self, Pu):  # noqa: N803
         """Linearity: Ma(2×Pu) == 2×Ma(Pu) — exact proportionality.
 
         Max = Pu × eadd / 1000, so Max is exactly linear in Pu.

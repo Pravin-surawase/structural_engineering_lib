@@ -150,13 +150,13 @@ def calculate_additional_moment(
     is_slender_y = slenderness_ratio_y >= SHORT_COLUMN_SLENDERNESS_LIMIT
 
     # Warn if slenderness approaches or exceeds IS 456 Cl 25.3.1 limit
-    _APPROACH_THRESHOLD = 40.0
+    approach_threshold = 40.0
     if slenderness_ratio_x >= MAX_SLENDERNESS_RATIO:
         warnings.append(
             f"le_x/D = {slenderness_ratio_x:.1f} exceeds IS 456 Cl 25.3.1 "
             f"limit of {MAX_SLENDERNESS_RATIO:.0f}"
         )
-    elif slenderness_ratio_x >= _APPROACH_THRESHOLD:
+    elif slenderness_ratio_x >= approach_threshold:
         warnings.append(
             f"le_x/D = {slenderness_ratio_x:.1f} approaching IS 456 Cl 25.3.1 "
             f"slenderness limit of {MAX_SLENDERNESS_RATIO:.0f}"
@@ -166,7 +166,7 @@ def calculate_additional_moment(
             f"le_y/b = {slenderness_ratio_y:.1f} exceeds IS 456 Cl 25.3.1 "
             f"limit of {MAX_SLENDERNESS_RATIO:.0f}"
         )
-    elif slenderness_ratio_y >= _APPROACH_THRESHOLD:
+    elif slenderness_ratio_y >= approach_threshold:
         warnings.append(
             f"le_y/b = {slenderness_ratio_y:.1f} approaching IS 456 Cl 25.3.1 "
             f"slenderness limit of {MAX_SLENDERNESS_RATIO:.0f}"
@@ -176,21 +176,21 @@ def calculate_additional_moment(
     # IS 456 Cl 39.7.1: eadd = D × (le/D)² / 2000
     if is_slender_x:
         eadd_x_mm = _additional_eccentricity(lex_mm, D_mm)
-        Max_kNm = Pu_kN * eadd_x_mm / 1000.0
+        max_kNm = Pu_kN * eadd_x_mm / 1000.0  # noqa: N806
     else:
         eadd_x_mm = 0.0
-        Max_kNm = 0.0
+        max_kNm = 0.0  # noqa: N806
 
     if is_slender_y:
         eadd_y_mm = _additional_eccentricity(ley_mm, b_mm)
-        May_kNm = Pu_kN * eadd_y_mm / 1000.0
+        may_kNm = Pu_kN * eadd_y_mm / 1000.0  # noqa: N806
     else:
         eadd_y_mm = 0.0
-        May_kNm = 0.0
+        may_kNm = 0.0  # noqa: N806
 
     # --- k-factor reduction per Cl 39.7.1.1 ---
     # k = (Puz - Pu) / (Puz - Pb), clamped to [0, 1.0]
-    Puz_kN = _calculate_puz(b_mm, D_mm, fck, fy, Asc_mm2)
+    puz_kN = _calculate_puz(b_mm, D_mm, fck, fy, Asc_mm2)  # noqa: N806
 
     # Get balanced point from P-M interaction curve
     pm_result = pm_interaction_curve(
@@ -201,22 +201,22 @@ def calculate_additional_moment(
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
     )
-    Pb_kN = pm_result.Pu_bal_kN
+    pb_kN = pm_result.Pu_bal_kN  # noqa: N806
 
     # k-factor calculation
-    if Pu_kN > Puz_kN:
+    if Pu_kN > puz_kN:
         warnings.append(
-            f"Pu ({Pu_kN:.1f} kN) exceeds Puz ({Puz_kN:.1f} kN) "
+            f"Pu ({Pu_kN:.1f} kN) exceeds Puz ({puz_kN:.1f} kN) "
             "— section may be overloaded"
         )
         k = 0.0
     else:
-        denom = Puz_kN - Pb_kN
+        denom = puz_kN - pb_kN
         if abs(denom) < 1e-6:
             # Puz ≈ Pb — degenerate case, use k = 1.0
             k = 1.0
         else:
-            k = (Puz_kN - Pu_kN) / denom
+            k = (puz_kN - Pu_kN) / denom
             # Clamp to [0, 1.0]
             if k > 1.0:
                 k = 1.0
@@ -224,23 +224,23 @@ def calculate_additional_moment(
                 k = 0.0
 
     # Reduced additional moments
-    Max_reduced_kNm = k * Max_kNm
-    May_reduced_kNm = k * May_kNm
+    max_reduced_kNm = k * max_kNm  # noqa: N806
+    may_reduced_kNm = k * may_kNm  # noqa: N806
 
     return AdditionalMomentResult(
         eadd_x_mm=eadd_x_mm,
-        Max_kNm=Max_kNm,
+        Max_kNm=max_kNm,
         slenderness_ratio_x=slenderness_ratio_x,
         is_slender_x=is_slender_x,
         eadd_y_mm=eadd_y_mm,
-        May_kNm=May_kNm,
+        May_kNm=may_kNm,
         slenderness_ratio_y=slenderness_ratio_y,
         is_slender_y=is_slender_y,
         k=k,
-        Max_reduced_kNm=Max_reduced_kNm,
-        May_reduced_kNm=May_reduced_kNm,
-        Puz_kN=Puz_kN,
-        Pb_kN=Pb_kN,
+        Max_reduced_kNm=max_reduced_kNm,
+        May_reduced_kNm=may_reduced_kNm,
+        Puz_kN=puz_kN,
+        Pb_kN=pb_kN,
         Pu_kN=Pu_kN,
         b_mm=b_mm,
         D_mm=D_mm,
