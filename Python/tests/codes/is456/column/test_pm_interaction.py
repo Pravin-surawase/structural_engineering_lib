@@ -299,8 +299,8 @@ class TestPMInteractionCurveErrors:
             )
 
     def test_n_points_too_small(self):
-        """n_points < 10 -> DimensionError."""
-        with pytest.raises(DimensionError):
+        """n_points < 10 -> ValueError."""
+        with pytest.raises(ValueError):
             pm_interaction_curve(**STD, n_points=5)
 
     def test_asc_zero(self):
