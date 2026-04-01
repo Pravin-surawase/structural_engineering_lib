@@ -14,6 +14,8 @@ from fastapi_app.models.column import (
     ColumnClassifyResponse,
     ColumnEccentricityRequest,
     ColumnEccentricityResponse,
+    ColumnUniaxialRequest,
+    ColumnUniaxialResponse,
 )
 
 router = APIRouter(
@@ -166,4 +168,69 @@ async def column_axial_capacity(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Column axial design failed: {e}",
+        )
+
+
+@router.post(
+    "/uniaxial",
+    response_model=ColumnUniaxialResponse,
+    summary="Short Column Uniaxial Bending Design",
+    description=(
+        "Design a short column for uniaxial bending per IS 456:2000 Cl. 39.5. "
+        "Generates the P-M interaction envelope and checks whether the applied "
+        "(Pu, Mu) lies within it."
+    ),
+)
+async def design_column_uniaxial(
+    request: ColumnUniaxialRequest,
+) -> ColumnUniaxialResponse:
+    """
+    Design short column for uniaxial bending per IS 456 Cl. 39.5.
+
+    Generates the P-M interaction envelope for the given section and
+    determines whether the applied (Pu, Mu) lies within it. Uses radial
+    intersection to find capacity.
+
+    Returns utilization ratio, capacity point, classification, and warnings.
+    """
+    try:
+        from structural_lib.services.api import design_short_column_uniaxial_is456
+
+        result = design_short_column_uniaxial_is456(
+            Pu_kN=request.Pu_kN,
+            Mu_kNm=request.Mu_kNm,
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            le_mm=request.le_mm,
+            fck=request.fck,
+            fy=request.fy,
+            Asc_mm2=request.Asc_mm2,
+            d_prime_mm=request.d_prime_mm,
+            l_unsupported_mm=request.l_unsupported_mm,
+        )
+
+        return ColumnUniaxialResponse(
+            ok=result["ok"],
+            utilization=round(result["utilization"], 4),
+            Pu_cap_kN=round(result["Pu_cap_kN"], 2),
+            Mu_cap_kNm=round(result["Mu_cap_kNm"], 2),
+            classification=result["classification"],
+            eccentricity_mm=round(result["eccentricity_mm"], 2),
+            e_min_mm=(
+                round(result["e_min_mm"], 2)
+                if result.get("e_min_mm") is not None
+                else None
+            ),
+            warnings=result["warnings"],
+        )
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Column uniaxial design failed: {e}",
         )

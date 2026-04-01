@@ -3144,3 +3144,40 @@ classification = api.classify_column_is456(le_mm=3000, D_mm=400)
 e_min = api.min_eccentricity_is456(l_unsupported_mm=3000, D_mm=400)
 result = api.design_column_axial_is456(fck=25, fy=415, Ag_mm2=160000, Asc_mm2=3200)
 ```
+
+---
+
+### `design_short_column_uniaxial_is456(Pu_kN, Mu_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict`
+
+Design short column for uniaxial bending per IS 456 Cl 39.5. Generates the P-M interaction envelope and checks whether the applied (Pu, Mu) lies within capacity.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Applied factored axial load (kN). Must be ≥ 0 |
+| `Mu_kNm` | `float` | Applied factored moment about bending axis (kNm). Must be ≥ 0 |
+| `b_mm` | `float` | Column width perpendicular to bending axis (mm) |
+| `D_mm` | `float` | Column depth in direction of bending (mm) |
+| `le_mm` | `float` | Effective length of column (mm) |
+| `fck` | `float` | Concrete strength (N/mm²). IS 456 range: 15–80 |
+| `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
+| `Asc_mm2` | `float` | Total longitudinal reinforcement area (mm²), symmetrically placed |
+| `d_prime_mm` | `float` | Distance from face to steel centroid (mm) |
+| `l_unsupported_mm` | `float \| None` | Unsupported length (mm) for min eccentricity (optional) |
+
+**Returns:** `dict` with keys: `ok`, `utilization`, `Pu_cap_kN`, `Mu_cap_kNm`, `classification`, `eccentricity_mm`, `e_min_mm`, `warnings`
+
+**Reference:** IS 456 Cl 39.5 (P-M interaction), Cl 25.4 (min eccentricity), SP:16 Charts 27–62
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.design_short_column_uniaxial_is456(
+    Pu_kN=1200.0, Mu_kNm=150.0, b_mm=300.0, D_mm=450.0,
+    le_mm=3000.0, fck=25.0, fy=415.0, Asc_mm2=2700.0,
+    d_prime_mm=50.0, l_unsupported_mm=3000.0,
+)
+print(f"Safe: {result['ok']}, Utilization: {result['utilization']:.1%}")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/uniaxial`

@@ -48,6 +48,10 @@ tags: []
 | 2026-03-31 | TASK-630 | Added ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 column constants | 69d4d2c3 |
 | 2026-03-31 | TASK-631 | Implemented classify_column (Cl 25.1.2) and min_eccentricity (Cl 25.4) in codes/is456/column/axial.py | 69d4d2c3 |
 | 2026-03-31 | TASK-632 | Implemented short_axial_capacity (Cl 39.3) with full validation in codes/is456/column/axial.py | 69d4d2c3 |
+| 2026-04-01 | TASK-633 | feat(column): implement design_short_column_uniaxial() Cl 39.5 | 94f1005d |
+| 2026-04-01 | TASK-633 | test(column): 45 tests for uniaxial bending (6 types) | 0ce8d69c |
+| 2026-04-01 | TASK-633 | feat(column): wire uniaxial into services/api.py | 143b9d46 |
+| 2026-04-01 | TASK-633 | feat(api): POST /api/v1/design/column/uniaxial endpoint + 12 API tests | 0fa31cd6 |
 | 2026-03-31 | TASK-630+ | Wired 3 column API functions (classify/min_ecc/axial) to services/api.py with is456 suffix convention | 69d4d2c3 |
 | 2026-03-31 | TASK-630+ | Created fastapi_app/routers/column.py with 3 POST endpoints (/classify, /eccentricity, /axial) | 69d4d2c3 |
 | 2026-03-31 | TASK-630+ | 75 column tests: unit, boundary, edge, SP:16 benchmark, Hypothesis property-based | 69d4d2c3 |

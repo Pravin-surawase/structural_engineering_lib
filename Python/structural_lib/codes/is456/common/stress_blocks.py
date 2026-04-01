@@ -11,9 +11,11 @@ References:
 from __future__ import annotations
 
 from structural_lib.codes.is456.common.constants import (
+    ES_STEEL_MPA,
     FLANGE_STRESS_FACTOR,
     STRESS_BLOCK_DEPTH,
     STRESS_BLOCK_FACTOR,
+    STRESS_RATIO,
 )
 
 
@@ -75,3 +77,48 @@ def flange_compressive_force(
         Flange compressive force (N).
     """
     return FLANGE_STRESS_FACTOR * fck * (bf - bw) * yf
+
+
+def steel_stress_from_strain(strain: float, fy: float) -> float:
+    """Compute design steel stress from strain per IS 456 Fig. 23.
+
+    Uses a bilinear stress-strain model for cold-worked deformed bars
+    (Fe 415 / Fe 500). The design yield stress is ``0.87 * fy`` (i.e.
+    ``fy / gamma_s`` with ``gamma_s = 1.15`` already applied).
+
+    The bilinear model:
+    - Elastic region: ``f_s = E_s × |strain|`` for ``|strain| <= 0.87*fy / E_s``
+    - Yield plateau:  ``f_s = 0.87 * fy``      for ``|strain| > 0.87*fy / E_s``
+
+    Returns stress with the same sign as the input strain (positive for
+    compression, negative for tension).
+
+    Args:
+        strain: Steel strain (dimensionless). Positive = compression.
+        fy: Characteristic yield strength of steel (N/mm²).
+
+    Returns:
+        Design steel stress (N/mm²), with sign matching input strain.
+
+    References:
+        IS 456:2000 Fig. 23
+        SP:16:1980 Table F
+    """
+    # IS 456 Fig. 23: design yield stress = 0.87 * fy
+    f_yd = STRESS_RATIO * fy
+
+    # IS 456 Fig. 23: yield strain = f_yd / E_s
+    eps_yd = f_yd / ES_STEEL_MPA
+
+    abs_strain = abs(strain)
+
+    # IS 456 Fig. 23: bilinear — elastic up to yield, then constant
+    if abs_strain <= eps_yd:
+        stress_mag = ES_STEEL_MPA * abs_strain
+    else:
+        stress_mag = f_yd
+
+    # Return with sign matching input strain
+    if strain < 0.0:
+        return -stress_mag
+    return stress_mag
