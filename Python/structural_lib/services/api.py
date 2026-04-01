@@ -1708,12 +1708,12 @@ def calculate_effective_length_is456(
     # Convert string to EndCondition enum
     try:
         end_cond_enum = EndCondition[end_condition]
-    except KeyError:
+    except KeyError as err:
         valid_conditions = ", ".join([ec.name for ec in EndCondition])
         raise ValueError(
             f"Invalid end_condition '{end_condition}'. "
             f"Valid options: {valid_conditions}"
-        )
+        ) from err
 
     # Call the underlying IS 456 function
     le_mm = effective_length(

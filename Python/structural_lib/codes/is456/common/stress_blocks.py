@@ -176,7 +176,8 @@ def steel_stress_from_strain_5point(strain: float, fy: float) -> float:
     # IS 456 Fig. 23: total_strain_i = inelastic_strain_i + stress_i / E_s
     stresses = tuple(r * f_yd for r in _STRESS_RATIOS_5PT)
     total_strains = tuple(
-        eps_in + f_s / ES_STEEL_MPA for eps_in, f_s in zip(_INELASTIC_STRAINS, stresses)
+        eps_in + f_s / ES_STEEL_MPA
+        for eps_in, f_s in zip(_INELASTIC_STRAINS, stresses, strict=True)
     )
 
     # Below Point 1: purely elastic
