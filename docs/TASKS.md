@@ -218,7 +218,7 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 
 ### Agent Evolver Infrastructure (TASK-800)
 
-> Self-evolving agent system. See [self-evolving-system.md](architecture/self-evolving-system.md) and [agent-evolver-plan.md.bak](_active/agent-evolver-plan.md.bak).
+> Self-evolving agent system. See [self-evolving-system.md](architecture/self-evolving-system.md) and [agent-evolver-plan.md.bak](_archive/2026-03/agent-evolver-plan-v1.md).
 
 | ID | Task | Phase | Script | Status |
 |----|------|-------|--------|--------|

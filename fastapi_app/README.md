@@ -19,16 +19,17 @@ fastapi_app/
 ├── config.py        # Settings and environment config
 ├── auth.py          # Authentication (API key)
 ├── models/          # Pydantic request/response models
-├── routers/         # API route handlers (12 routers)
+├── routers/         # API route handlers (13 routers)
 ├── tests/           # Endpoint, auth, WebSocket, load tests
 └── examples/        # Example request payloads
 ```
 
-## Routers (12)
+## Routers (13)
 
 | Router | Endpoint Prefix | Purpose |
-|--------|----------------|---------|
+|--------|----------------|--------|
 | design | `/api/v1/design` | Beam design (IS 456) |
+| column | `/api/v1/design/column` | Column design (IS 456) |
 | detailing | `/api/v1/detailing` | Rebar detailing |
 | analysis | `/api/v1/analysis` | Structural analysis |
 | geometry | `/api/v1/geometry` | 3D rebar/stirrup geometry |

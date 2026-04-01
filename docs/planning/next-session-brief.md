@@ -23,9 +23,9 @@ tags: []
 <!-- HANDOFF:START -->
 - Date: 2026-04-01
 - Session: Session 2 — Column design TASK-642, TASK-636, TASK-635 (9-step quality pipeline)
-- Done: TASK-642 (5-point steel curve, 26 tests), TASK-636 (effective length + API + 69+12 tests), TASK-635 (biaxial bending + API + 84+19 tests). PR #481 merged (TASK-642 + TASK-636). TASK-635 pending commit.
+- Done: TASK-642 (5-point steel curve, 26 tests), TASK-636 (effective length + API + 69+12 tests), TASK-635 (biaxial bending + API + 84+19 tests). PR #481 merged (TASK-642 + TASK-636). TASK-635 committed (PR #482).
 - Remaining: TASK-637 (slenderness/additional moment), TASK-638 (long column design), TASK-639 (helical reinforcement), TASK-640 (design_column_is456 orchestrator), TASK-641 (column FastAPI endpoint)
-- State: main branch, TASK-635 uncommitted
+- State: main branch, all committed
 - Tests: 3822+ Python, 172+ FastAPI
 <!-- HANDOFF:END -->
 
@@ -40,8 +40,7 @@ tags: []
 
 > **Master Plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md)
 
-1. **Commit TASK-635** (biaxial bending) — pending commit/PR
-2. **TASK-637 (additional moment / slenderness effects)** ← **START HERE** after TASK-635 commit
+1. **TASK-637 (additional moment / slenderness effects)** ← **START HERE**
 3. **TASK-638 (long column design)** — `design_long_column` orchestrator using TASK-637
 4. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
 5. **TASK-639 (helical reinforcement)** — low priority, parallelizable

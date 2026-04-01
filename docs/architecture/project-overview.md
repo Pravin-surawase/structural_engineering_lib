@@ -89,6 +89,7 @@ Function groups (conceptual):
 3) Shear helpers: τv from Vu,b,d; τc from Table 19 (with pt clamp and interpolation in pt); Vc; Vus; stirrup capacity/spacing with code limits.
 4) Ductile detailing (IS 13920): geometry limits, min/max steel, confinement spacing.
 5) Validation/error conventions: detect impossible inputs (negative dims, cover ≥ D, invalid grades); return clear status codes/flags, no UI.
+6) Column design (`codes/is456/column/`): axial capacity, uniaxial bending, biaxial bending, P-M interaction curves, effective length, classification. Files: `axial.py` (classify, eccentricity, capacity, effective length per Table 28), `uniaxial.py` (P-M interaction curves per Cl 39.5), `biaxial.py` (Bresler formula check per Cl 39.6). IS 456 clauses covered: Cl 25.1.2, 25.2, 25.4, 39.3, 39.5, 39.6.
 
 The AI should refine names, inputs/outputs, and ensure logic consistency without duplication.
 

@@ -3214,3 +3214,84 @@ print(f"Points: {len(curve['points'])}, Pu_max: {curve['Pu_max_kN']:.1f} kN")
 ```
 
 **FastAPI Endpoint:** `POST /api/v1/design/column/interaction-curve`
+
+---
+
+### `calculate_effective_length_is456(l_mm, end_condition, use_theoretical=False) → dict`
+
+Calculate effective length per IS 456 Cl 25.2, Table 28. Computes the effective length le = ratio × l for a column based on end restraint conditions. IS 456 Table 28 provides both theoretical (Euler) and recommended design values for seven standard cases.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `l_mm` | `float` | Unsupported length of column (mm). Must be between 100 and 50000 mm |
+| `end_condition` | `str` | End condition string — one of: `'FIXED_FIXED'`, `'FIXED_HINGED'`, `'FIXED_FIXED_SWAY'`, `'FIXED_FREE'`, `'HINGED_HINGED'`, `'FIXED_PARTIAL'`, `'HINGED_PARTIAL'` |
+| `use_theoretical` | `bool` | If True, use theoretical (Euler) values; default: recommended. Cases 6 and 7 have no theoretical values; recommended is used |
+
+**Returns:** `dict` with keys: `le_mm`, `ratio`, `end_condition`, `method`
+
+**Raises:** `ValueError` if `l_mm` is out of range or `end_condition` is invalid.
+
+**Reference:** IS 456 Cl 25.2, Table 28
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.calculate_effective_length_is456(
+    l_mm=3000.0, end_condition='FIXED_FIXED'
+)
+print(f"le = {result['le_mm']:.0f} mm, ratio = {result['ratio']:.2f}")
+
+# Theoretical values
+result_theo = api.calculate_effective_length_is456(
+    l_mm=4000.0, end_condition='HINGED_HINGED', use_theoretical=True
+)
+print(f"le = {result_theo['le_mm']:.0f} mm, method = {result_theo['method']}")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/effective-length`
+
+---
+
+### `biaxial_bending_check_is456(Pu_kN, Mux_kNm, Muy_kNm, b_mm, D_mm, le_mm, fck, fy, Asc_mm2, d_prime_mm, l_unsupported_mm=None) → dict`
+
+Check column under biaxial bending per IS 456 Cl 39.6. Implements the Bresler load contour formula to check if a column section with symmetrical reinforcement can safely resist combined axial load and biaxial bending moments.
+
+The Bresler formula: `(Mux / Mux1)^αn + (Muy / Muy1)^αn ≤ 1.0`
+
+where Mux1, Muy1 are uniaxial moment capacities at the applied axial load Pu, obtained from P-M interaction curves. The exponent αn varies from 1.0 to 2.0 based on the Pu/Puz ratio.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Applied factored axial load (kN). Must be ≥ 0 |
+| `Mux_kNm` | `float` | Applied factored moment about x-axis (kNm). Must be ≥ 0 |
+| `Muy_kNm` | `float` | Applied factored moment about y-axis (kNm). Must be ≥ 0 |
+| `b_mm` | `float` | Column width perpendicular to x-axis bending (mm). Typical: 100–2000 |
+| `D_mm` | `float` | Column depth in x-axis bending direction (mm). Typical: 100–2000 |
+| `le_mm` | `float` | Effective length of column (mm). Must be > 0 |
+| `fck` | `float` | Characteristic concrete strength (N/mm²). IS 456 range: 15–80 |
+| `fy` | `float` | Yield strength of steel (N/mm²). IS 456 range: 250–550 |
+| `Asc_mm2` | `float` | Total longitudinal reinforcement area (mm²), symmetrically placed |
+| `d_prime_mm` | `float` | Distance from face to steel centroid (mm). Must be > 0 and < min(b_mm, D_mm)/2 |
+| `l_unsupported_mm` | `float \| None` | Unsupported length (mm) for slenderness warning. If None, slenderness is checked using le_mm only |
+
+**Returns:** `dict` with keys: `Pu_kN`, `Mux_kNm`, `Muy_kNm`, `Mux1_kNm`, `Muy1_kNm`, `Puz_kN`, `alpha_n`, `interaction_ratio`, `is_safe`, `classification`, `clause_ref`, `warnings`
+
+**Raises:** `DimensionError`, `MaterialError`, `CalculationError`, `ValueError`
+
+**Reference:** IS 456 Cl 39.6 (Bresler formula), Cl 39.6a (Puz formula)
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.biaxial_bending_check_is456(
+    Pu_kN=800.0, Mux_kNm=60.0, Muy_kNm=40.0,
+    b_mm=300.0, D_mm=450.0, le_mm=2100.0,
+    fck=25.0, fy=415.0, Asc_mm2=2700.0, d_prime_mm=50.0,
+)
+print(f"Safe: {result['is_safe']}, Ratio: {result['interaction_ratio']:.3f}")
+print(f"αn = {result['alpha_n']:.2f}, Classification: {result['classification']}")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/biaxial-check`
