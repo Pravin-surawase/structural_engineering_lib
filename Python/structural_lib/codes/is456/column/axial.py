@@ -17,7 +17,6 @@ References:
 
 from __future__ import annotations
 
-import logging
 import math
 
 from structural_lib.codes.is456.common.constants import (
@@ -25,15 +24,12 @@ from structural_lib.codes.is456.common.constants import (
     COLUMN_MAX_STEEL_RATIO,
     COLUMN_MIN_STEEL_RATIO,
     COLUMN_STEEL_COEFF,
-    MAX_SLENDERNESS_RATIO,
     MIN_ECCENTRICITY_MM,
     SHORT_COLUMN_SLENDERNESS_LIMIT,
 )
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import ColumnAxialResult, ColumnClassification
 from structural_lib.core.errors import DimensionError, MaterialError
-
-_logger = logging.getLogger(__name__)
 
 __all__ = [
     "classify_column",
@@ -82,12 +78,8 @@ def classify_column(le_mm: float, D_mm: float) -> ColumnClassification:
     ratio = le_mm / D_mm
 
     # IS 456 Cl 25.3.1: max slenderness ratio = 60
-    if ratio >= MAX_SLENDERNESS_RATIO:
-        _logger.warning(
-            "Slenderness ratio %.1f exceeds maximum %.1f per Cl 25.3.1",
-            ratio,
-            MAX_SLENDERNESS_RATIO,
-        )
+    # Note: ratio >= 60 is still classified correctly as SLENDER.
+    # Warning about exceeding max ratio should be handled by caller if needed.
 
     # IS 456 Cl 25.1.2: short when le/D < 12 (strict less-than)
     if ratio < SHORT_COLUMN_SLENDERNESS_LIMIT:

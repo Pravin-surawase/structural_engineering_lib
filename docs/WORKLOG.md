@@ -35,6 +35,7 @@ tags: []
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
 | 2026-04-01 | TASK-800.T | Added 84 evolver unit tests (scorer, drift, compliance, registry, data, scoring lib) | c1e0d222 |
+| 2026-04-01 | TASK-634 | Added P-M interaction curve (IS 456 Cl. 39.5) — core function, API wrapper, FastAPI endpoint, 45 tests | pending-commit |
 | 2026-04-01 | TASK-800.P3 | Fixed agent_registry.py name extraction bug (.stem → .name.removesuffix) | c1e0d222 |
 | 2026-04-01 | TASK-800.P3 | Created scripts/_lib/agent_registry.py, scoring.py, agent_data.py (shared evolver libs) | 8808c16b |
 | 2026-04-01 | TASK-800.P4 | Created agent_session_collector.py (gather session artifacts for scoring) | 8808c16b |
