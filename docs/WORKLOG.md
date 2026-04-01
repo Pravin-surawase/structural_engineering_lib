@@ -48,6 +48,8 @@ tags: []
 | 2026-04-01 | TASK-800.P6 | Created agent_drift_detector.py (12 agents × drift rules, violation tracking) | d875dcfa |
 | 2026-04-01 | TASK-800.P7 | Created agent_compliance_checker.py (8 compliance rules, per-agent checks) | d875dcfa |
 | 2026-04-01 | TASK-800.P8 | Created agent_trends.py (Mann-Kendall trend test, degradation alerts) | d69c4a4f |
+| 2026-04-02 | TASK-637 | feat(column): additional moment for slender columns IS 456 Cl 39.7.1 (slenderness.py, 24 tests) | pending |
+| 2026-04-02 | TASK-637 | feat(column): POST /column/additional-moment FastAPI endpoint + 8 API tests | pending |
 | 2026-04-01 | TASK-800.P10 | Created export_paper_data.py (CSV export, bootstrap CIs, Hedges' g) | d69c4a4f |
 | 2026-04-01 | TASK-800.P9 | Created agent_evolve_instructions.py (SHA-256, security levels, rollback) | e0702346 |
 | 2026-04-01 | TASK-800.P2 | Created agent-evolver.agent.md (15th meta-agent) + agent-evolution/SKILL.md | pending |

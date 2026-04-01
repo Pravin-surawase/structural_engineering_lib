@@ -502,3 +502,101 @@ class BiaxialCheckResponse(BaseModel):
     warnings: list[str] = Field(
         default_factory=list, description="Code compliance warnings"
     )
+
+
+# =============================================================================
+# Additional Moment Models (IS 456 Cl. 39.7.1)
+# =============================================================================
+
+
+class AdditionalMomentRequest(BaseModel):
+    """Request for additional moment calculation per IS 456 Cl 39.7.1."""
+
+    Pu_kN: float = Field(
+        ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
+    )
+    b_mm: float = Field(
+        ...,
+        ge=100,
+        le=3000,
+        description="Column width (mm)",
+        examples=[300.0],
+    )
+    D_mm: float = Field(
+        ...,
+        ge=100,
+        le=3000,
+        description="Column depth (mm)",
+        examples=[450.0],
+    )
+    lex_mm: float = Field(
+        ...,
+        gt=0,
+        le=50000,
+        description="Effective length about x-axis (mm)",
+        examples=[6000.0],
+    )
+    ley_mm: float = Field(
+        ...,
+        gt=0,
+        le=50000,
+        description="Effective length about y-axis (mm)",
+        examples=[4500.0],
+    )
+    fck: float = Field(
+        ...,
+        gt=0,
+        le=100,
+        description="Concrete strength (N/mm²)",
+        examples=[25.0],
+    )
+    fy: float = Field(
+        ...,
+        gt=0,
+        le=600,
+        description="Steel yield strength (N/mm²)",
+        examples=[415.0],
+    )
+    Asc_mm2: float = Field(
+        ..., ge=0, description="Total steel area (mm²)", examples=[2400.0]
+    )
+    d_prime_mm: float = Field(
+        ...,
+        ge=0,
+        le=200,
+        description="Cover to steel centroid (mm)",
+        examples=[50.0],
+    )
+
+
+class AdditionalMomentResponse(BaseModel):
+    """Response for additional moment per IS 456 Cl 39.7.1."""
+
+    eadd_x_mm: float = Field(description="Additional eccentricity about x-axis (mm)")
+    Max_kNm: float = Field(description="Additional moment about x-axis (kN·m)")
+    slenderness_ratio_x: float = Field(description="le_x / D")
+    is_slender_x: bool = Field(description="True if le_x/D >= 12")
+
+    eadd_y_mm: float = Field(description="Additional eccentricity about y-axis (mm)")
+    May_kNm: float = Field(description="Additional moment about y-axis (kN·m)")
+    slenderness_ratio_y: float = Field(description="le_y / b")
+    is_slender_y: bool = Field(description="True if le_y/b >= 12")
+
+    k: float = Field(description="Reduction factor per Cl 39.7.1.1")
+    Max_reduced_kNm: float = Field(
+        description="Reduced additional moment x-axis (kN·m)"
+    )
+    May_reduced_kNm: float = Field(
+        description="Reduced additional moment y-axis (kN·m)"
+    )
+    Puz_kN: float = Field(description="Pure axial crush capacity (kN)")
+    Pb_kN: float = Field(description="Balanced failure load (kN)")
+
+    Pu_kN: float = Field(description="Applied axial load (kN)")
+    b_mm: float = Field(description="Column width (mm)")
+    D_mm: float = Field(description="Column depth (mm)")
+    lex_mm: float = Field(description="Effective length x-axis (mm)")
+    ley_mm: float = Field(description="Effective length y-axis (mm)")
+
+    clause_ref: str = Field(default="Cl. 39.7.1", description="IS 456 clause reference")
+    warnings: list[str] = Field(default_factory=list, description="Design warnings")

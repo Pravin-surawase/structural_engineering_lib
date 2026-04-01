@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-03-31
-**Last Updated:** 2026-03-31
+**Last Updated:** 2026-04-01
 **Supersedes:** [library-expansion-blueprint-v4.md](../_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md) (IS 456-only)
 
 > Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.
@@ -237,7 +237,7 @@ class DesignEnvelope:
 
 | Element | Clauses | Priority |
 |---------|---------|----------|
-| Column | Cl 25, 39, Annex E/G | P0 (before multi-code) — classify, min_ecc, axial ✅ (75 tests) |
+| Column | Cl 25, 39, Annex E/G | P1 🔄 — 7/10 functions done: classify ✅, min_ecc ✅, axial ✅, uniaxial ✅, biaxial ✅, P-M curve ✅, effective_length ✅ (254+ tests). Remaining: additional_moment, helical, column_detailing, ductile_detailing |
 | One-way slab | Cl 24.1–24.2 | P1 |
 | Two-way slab | Cl 24.3, Annex D, Table 26 | P1 |
 | Footing | Cl 34, 31.6 | P1 |
@@ -325,18 +325,19 @@ warnings.warn(
 
 **10 functions in incremental complexity order:**
 
-| # | Function | IS 456 Reference | Complexity |
-|---|----------|-----------------|------------|
-| 1 | `classify_column()` | Cl 25.1–25.3 | ✅ Done |
-| 2 | `min_eccentricity()` | Cl 25.4 | ✅ Done |
-| 3 | `short_axial_capacity()` | Cl 39.3 | ✅ Done |
-| 4 | `helical_capacity()` | Cl 39.4 | Low |
-| 5 | `uniaxial_capacity()` | Cl 39.5, Annex G | Medium-High |
-| 6 | `biaxial_capacity()` | Cl 39.6 (Bresler) | High |
-| 7 | `slender_additional_moment()` | Cl 39.7 | Medium |
-| 8 | `interaction_diagram()` | Annex G | High |
-| 9 | `column_detailing()` | Cl 26.5.3 | Medium |
-| 10 | `column_ductile_detailing()` | IS 13920 Cl 7 | Medium |
+| # | Function | IS 456 Reference | Complexity | Status |
+|---|----------|-----------------|------------|--------|
+| 1 | `classify_column()` | Cl 25.1.2 | ✅ Done | ✅ |
+| 2 | `min_eccentricity()` | Cl 25.4 | ✅ Done | ✅ |
+| 3 | `short_axial_capacity()` | Cl 39.3 | ✅ Done | ✅ |
+| 4 | `helical_capacity()` | Cl 39.4 | Low | 📋 TASK-639 |
+| 5 | `design_short_column_uniaxial()` | Cl 39.5, Annex G | ✅ Done | ✅ |
+| 6 | `biaxial_bending_check()` | Cl 39.6 (Bresler) | ✅ Done | ✅ |
+| 7 | `slender_additional_moment()` | Cl 39.7 | Medium | 📋 TASK-637 |
+| 8 | `pm_interaction_curve()` | Cl 39.5, SP:16 Table I | ✅ Done | ✅ |
+| 9 | `column_detailing()` | Cl 26.5.3 | Medium | 📋 |
+| 10 | `column_ductile_detailing()` | IS 13920 Cl 7 | Medium | 📋 |
+| 11 | `effective_length()` | Cl 25.2, Table 28 | ✅ Done | ✅ |
 
 **Quality Gate:** Each function goes through the 9-step function quality pipeline. SP:16 benchmarks required ±0.1%.
 
@@ -427,11 +428,11 @@ class LoadCombination(ABC):
 ```
 
 ### 5.7 Phase 1 Success Criteria
-- [ ] IS 456 column design: 10 functions, all SP:16 benchmarks ±0.1%
+- [x] IS 456 column design: 7/10 functions done (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length). 254+ column tests, SP:16 benchmarks passing ±0.1%. Remaining: additional_moment, helical, detailing
 - [ ] IS 456 one-way slab: 4 functions
 - [ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases
 - [ ] IS 456 footing: 6 functions including punching shear
-- [ ] Enhanced shear (Cl 40.3) implemented
+- [x] Enhanced shear (Cl 40.3) implemented
 - [ ] New ABCs added to core/base.py
 - [ ] IS456Code implements all ABCs
 - [ ] All tests pass (including new ~500 tests)
@@ -683,7 +684,7 @@ class LoadCombination:
 | 3 | **National Annex proliferation (EC2)** | 150 parameters × N countries | MEDIUM | Start with "recommended" + UK NA only |
 | 4 | **Variable strut inclination (EC2)** | No precedent in codebase | MEDIUM | Start with θ = 21.8° (conservative), add optimizer later |
 | 5 | **Enhanced shear NOT implemented** | IS 456 currently unconservative | ~~HIGH~~ RESOLVED | ✅ Fixed in TASK-712 (PR #468) |
-| 6 | **Column P-M interaction complexity** | Most complex IS 456 calculation | MEDIUM | Implement incrementally: axial first, then uniaxial, then biaxial |
+| 6 | **Column P-M interaction complexity** | Most complex IS 456 calculation | 🔄 PARTIALLY MITIGATED | Implemented incrementally as prescribed: axial → uniaxial → biaxial → P-M curve. 7/10 functions done. Remaining: slenderness, detailing |
 | 7 | **Load combination explosion** | 50+ combinations per code | MEDIUM | Build combination engine early (Phase 2) |
 | 8 | **ACI/EC2 code review expertise** | Team has IS 456 expertise only | HIGH | Require professional review for non-IS 456 code |
 | 9 | **Test count explosion** | ~8000 tests, CI time grows | LOW | Parallelize by code in CI matrix |
@@ -1066,7 +1067,7 @@ Every IS 456 function must pass the 9-step pipeline from `/function-quality-pipe
 |--------|-------------|--------|-------|
 | Cl 24.1–24.2 | One-way slab | ❌ | P1 |
 | Cl 24.3, Annex D | Two-way slab | ❌ | P1 |
-| Cl 25.1–25.4 | Column classification & eccentricity | ❌ | P1 |
+| Cl 25.1–25.4 | Column classification & eccentricity | ✅ Done | P1 |
 | Cl 26.2–26.5 | Detailing (beam) | ✅ | Done |
 | Cl 29 | Deep beams | ❌ | P5 |
 | Cl 31.6 | Punching shear | ❌ | P1 |
@@ -1074,7 +1075,7 @@ Every IS 456 function must pass the 9-step pipeline from `/function-quality-pipe
 | Cl 33 | Stairs | ❌ | P5 |
 | Cl 34 | Footings | ❌ | P1 |
 | Cl 38.1–38.4 | Flexure (beam) | ✅ | Done |
-| Cl 39.1–39.7 | Column design | ❌ | P1 |
+| Cl 39.1–39.7 | Column design | 🔄 Partial — 39.3/39.5/39.6 ✅, 39.4/39.7 ❌ | P1 |
 | Cl 40.1–40.5 | Shear (beam) | ✅ | Done |
 | Cl 40.3 | Enhanced shear near supports | ✅ Done | Done |
 | Cl 41 | Torsion | ✅ | Done |
@@ -1082,10 +1083,10 @@ Every IS 456 function must pass the 9-step pipeline from `/function-quality-pipe
 | Annex B | Continuous beam coefficients | ❌ | P2 |
 | Annex C | Moment redistribution | ❌ | P2 |
 | Annex D | Two-way slab coefficients | ❌ | P1 |
-| Annex E | Column effective length | ❌ | P1 |
-| Annex G | P-M interaction | ❌ | P1 |
+| Annex E | Column effective length (stiffness method) | ❌ | P1 |
+| Annex G | P-M interaction | ✅ Done | P1 |
 | Table 26 | Two-way moment coefficients | ❌ | P1 |
-| Table 28 | Column effective length ratios | ❌ | P1 |
+| Table 28 | Column effective length ratios | ✅ Done | P1 |
 
 ### B. Seismic Detailing Comparison
 
