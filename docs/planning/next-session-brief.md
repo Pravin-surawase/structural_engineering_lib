@@ -22,11 +22,12 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-02
-- Session: Claw-code implementation Session 4 (FINAL) — agent infrastructure complete
-- Done: 23/23 claw-code tasks complete (all TASK-850 through TASK-872)
-- Remaining: None — claw-code adaptation plan fully implemented
-- State: main branch, all 23 tasks done
-- New infra: agent_registry.json, tool_registry.py, prompt_router.py, pipeline_state.py, session_store.py, tool_permissions.py, hooks framework, parity dashboard, skill tiers, trust gate, snapshot tests, all 15 agent files updated, entry docs updated
+- Session: Claw-code review complete — all 23 tasks implemented + reviewed
+- Done: 4-agent parallel review (reviewer, tester, security, governance). 3 P0/P1 security fixes applied. 2 missing WS-5 docs created. claw-code-harness-ideas.md updated with implementation status.
+- Security fixes: Path traversal protection in session_store.py + pipeline_state.py, JSON error handling in tool_permissions.py
+- New docs: docs/architecture/config-precedence.md (fixes 15 broken links), .github/skills/skill_tiers.json
+- Remaining: Test coverage for session_store.py and pipeline_state.py (0 pytest coverage — P1 for next session)
+- State: main branch, claw-code adaptation fully reviewed
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -38,9 +39,10 @@ tags: []
 
 ## What's Next
 
-1. **TASK-638 (long column design)** — `design_long_column` orchestrator
-2. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
-3. **React UX remaining** — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)
+1. **Test infrastructure scripts** — Create pytest tests for `session_store.py` and `pipeline_state.py` (0 coverage found in review)
+2. **TASK-638 (long column design)** — `design_long_column` orchestrator
+3. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
+4. **React UX remaining** — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)
 
 ### Technical Debt
 

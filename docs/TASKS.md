@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 (23/23 claw-code adaptation tasks done — agent infrastructure, TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)
+**Updated:** 2026-04-02 (23/23 claw-code done + review complete — 3 security fixes applied, 2 missing docs created, config-precedence.md + skill_tiers.json)
 
 ---
 
@@ -257,6 +257,8 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 | 21 | TASK-867 | Snapshot regression tests | ✅ Done |
 | 22 | TASK-869 | Update all 15 agent files | ✅ Done |
 | 23 | TASK-871 | Update AGENTS.md/CLAUDE.md | ✅ Done |
+
+**Review (Session 4):** 4-agent parallel review completed. Security fixes: path traversal in session_store.py/pipeline_state.py, JSON error handling in tool_permissions.py. Created: `docs/architecture/config-precedence.md` (fixes 15 broken links), `.github/skills/skill_tiers.json`. Updated: `docs/research/claw-code-harness-ideas.md` with implementation status.
 
 ## Backlog
 
