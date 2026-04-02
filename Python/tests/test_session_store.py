@@ -273,7 +273,7 @@ class TestEndSession:
 class TestGenerateSessionId:
     """Tests for generate_session_id."""
 
-    def test_first_session_is_S001(self, tmp_path):
+    def test_first_session_is_s001(self, tmp_path):
         mod = _import_session_store(tmp_path)
         assert mod.generate_session_id() == "S001"
 

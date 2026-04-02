@@ -181,7 +181,6 @@ def propose_evolutions() -> list[dict]:
     # Load existing trends and drift data
     trends_dir = REPO_ROOT / "logs" / "agent-performance" / "trends"
     drift_dir = REPO_ROOT / "logs" / "agent-performance" / "drift"
-    feedback_dir = REPO_ROOT / "logs" / "feedback"
 
     # Discover agents
     agents = discover_agents()

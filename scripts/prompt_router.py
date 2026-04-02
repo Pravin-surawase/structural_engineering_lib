@@ -321,7 +321,6 @@ def route(query: str) -> RoutingResult:
 
     # Normalize confidence to 0-1 range
     # Use a sigmoid-like mapping: score of 5+ → ~0.95
-    max_possible = max(best_score, 1.0)
     confidence = min(best_score / (best_score + 3.0), 0.99) if best_score > 0 else 0.05
 
     # Build reasoning from matched keywords
