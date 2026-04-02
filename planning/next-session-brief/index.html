@@ -1584,11 +1584,11 @@
 <!-- HANDOFF:START -->
 <ul>
 <li>Date: 2026-04-02</li>
-<li>Session: Claw-code implementation Sessions 2+3 — agent infrastructure</li>
-<li>Done: 19/23 claw-code tasks complete (TASK-850 through TASK-872, except 861/867/869/871)</li>
-<li>Remaining: Session 4 — TASK-861 (trust gate), TASK-867 (snapshot tests), TASK-869 (update agent files), TASK-871 (update entry docs)</li>
-<li>State: main branch, all scripts created and reviewed</li>
-<li>New commands: ./run.sh route, ./run.sh tools, ./run.sh pipeline</li>
+<li>Session: Claw-code implementation Session 4 (FINAL) — agent infrastructure complete</li>
+<li>Done: 23/23 claw-code tasks complete (all TASK-850 through TASK-872)</li>
+<li>Remaining: None — claw-code adaptation plan fully implemented</li>
+<li>State: main branch, all 23 tasks done</li>
+<li>New infra: agent_registry.json, tool_registry.py, prompt_router.py, pipeline_state.py, session_store.py, tool_permissions.py, hooks framework, parity dashboard, skill tiers, trust gate, snapshot tests, all 15 agent files updated, entry docs updated</li>
 </ul>
 <!-- HANDOFF:END -->
 
@@ -1616,13 +1616,9 @@
 <hr />
 <h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Session 4 — Final claw-code tasks</strong> ← START HERE</li>
-<li>TASK-861: Trust gate (defer destructive ops until session start confirms clean state)</li>
-<li>TASK-867: Snapshot regression tests (assert minimum script/tool/test counts)</li>
-<li>TASK-869: Update all 15 .agent.md files with permission_level, registry_ref</li>
-<li>TASK-871: Update AGENTS.md + CLAUDE.md with new commands (route, tools, pipeline)</li>
 <li><strong>TASK-638 (long column design)</strong> — <code>design_long_column</code> orchestrator</li>
 <li><strong>TASK-640 (design_column_is456 orchestrator)</strong> — combines all column functions</li>
+<li><strong>React UX remaining</strong> — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)</li>
 </ol>
 <h3 id="technical-debt">Technical Debt<a class="headerlink" href="#technical-debt" title="Permanent link">&para;</a></h3>
 <ul>

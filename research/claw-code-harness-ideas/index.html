@@ -2107,6 +2107,100 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#implementation-status-2026-04-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Status (2026-04-02)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Status (2026-04-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-scorecard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Scorecard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-was-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Was Built
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#review-findings-session-4-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Findings (Session 4 Review)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-fixes-applied" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Fixes Applied
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deferred-items-not-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deferred Items (Not Implemented)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#whats-different-from-original-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Different from Original Plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics-before-vs-after" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics: Before vs After
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3091,6 +3185,317 @@ Feed into <code>agent_scorer.py</code> as efficiency dimension.</p>
 - Enforces permission context per agent
 - Tracks session state and cost
 - This one script connects all our existing pieces (automation-map, agent_scorer, session management) into a unified runtime layer.</p>
+<hr />
+<h2 id="implementation-status-2026-04-02">Implementation Status (2026-04-02)<a class="headerlink" href="#implementation-status-2026-04-02" title="Permanent link">&para;</a></h2>
+<p>All 23 claw-code adaptation tasks (TASK-850 through TASK-872) have been implemented across 4 sessions. Below is the final status of each idea from this research doc.</p>
+<h3 id="implementation-scorecard">Implementation Scorecard<a class="headerlink" href="#implementation-scorecard" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Ideas</th>
+<th>Implemented</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Tool &amp; Command Architecture</td>
+<td>4 ideas</td>
+<td>4/4</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>2. Prompt Routing &amp; Discovery</td>
+<td>3 ideas</td>
+<td>3/3</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>3. Session &amp; Runtime Architecture</td>
+<td>4 ideas</td>
+<td>4/4</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>4. Security &amp; Permissions</td>
+<td>3 ideas</td>
+<td>3/3</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>5. Prompt Construction &amp; Context</td>
+<td>3 ideas</td>
+<td>2/3</td>
+<td>⚠️ LSP deferred</td>
+</tr>
+<tr>
+<td>6. Hooks, Plugins &amp; Extensibility</td>
+<td>3 ideas</td>
+<td>2/3</td>
+<td>⚠️ Plugin system deferred</td>
+</tr>
+<tr>
+<td>7. Integration</td>
+<td>5 ideas</td>
+<td>4/5</td>
+<td>⚠️ Streaming events deferred</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>25</strong></td>
+<td><strong>22/25</strong></td>
+<td><strong>88%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-was-built">What Was Built<a class="headerlink" href="#what-was-built" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Idea</th>
+<th>File(s) Created</th>
+<th>Lines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1 Unified Tool Registry</td>
+<td><code>scripts/tool_registry.py</code></td>
+<td>~480</td>
+</tr>
+<tr>
+<td>1.2 Tool Aliasing</td>
+<td>Built into <code>tool_registry.py</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>1.3 Subagent Tool Filtering</td>
+<td><code>agents/agent_registry.json</code></td>
+<td>~200</td>
+</tr>
+<tr>
+<td>1.4 Three-Tier Permission System</td>
+<td><code>scripts/tool_permissions.py</code>, <code>scripts/audit_permissions.py</code></td>
+<td>~620</td>
+</tr>
+<tr>
+<td>2.1 Token-Based Prompt Routing</td>
+<td><code>scripts/prompt_router.py</code></td>
+<td>~430</td>
+</tr>
+<tr>
+<td>2.2 Execution Registry</td>
+<td>Built into <code>tool_registry.py</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>2.3 Command Graph Segmentation</td>
+<td><code>scripts/automation-map.json</code> (group field added)</td>
+<td>115 entries</td>
+</tr>
+<tr>
+<td>3.1 Query Engine / Token Budgeting</td>
+<td><code>scripts/session_store.py</code> (session limits)</td>
+<td>~350</td>
+</tr>
+<tr>
+<td>3.2 Session Persistence to JSON</td>
+<td><code>scripts/session_store.py</code>, <code>logs/sessions/</code></td>
+<td>~350</td>
+</tr>
+<tr>
+<td>3.3 Transcript Compaction</td>
+<td><code>session.py compact</code> subcommand</td>
+<td>—</td>
+</tr>
+<tr>
+<td>3.4 Streaming Events</td>
+<td>Deferred — already have SSE for batch design</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4.1 Tool Permission Context</td>
+<td><code>scripts/tool_permissions.py</code></td>
+<td>~280</td>
+</tr>
+<tr>
+<td>4.2 Trust-Gated Initialization</td>
+<td><code>scripts/session.py</code> trust state</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4.3 Plugin Security / Skill Tiers</td>
+<td><code>.github/skills/skill_tiers.json</code>, <code>scripts/skill_tiers.py</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>5.1 Hierarchical System Prompt</td>
+<td>Enhanced <code>agent_context.py</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>5.2 Config Precedence</td>
+<td><code>docs/architecture/config-precedence.md</code>, <code>scripts/config_precedence.py</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>5.3 LSP Context Enrichment</td>
+<td>Deferred — VS Code handles natively</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6.1 Pre/Post Hooks</td>
+<td><code>scripts/hooks/</code> (3 modules, 6 hooks)</td>
+<td>~350</td>
+</tr>
+<tr>
+<td>6.2 Cost Hook Pattern</td>
+<td><code>logs/agent_costs.jsonl</code>, session cost tracking</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6.3 Plugin Lifecycle</td>
+<td>Deferred — skills cover our needs</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="review-findings-session-4-review">Review Findings (Session 4 Review)<a class="headerlink" href="#review-findings-session-4-review" title="Permanent link">&para;</a></h3>
+<p>Four parallel agent reviews were conducted:</p>
+<table>
+<thead>
+<tr>
+<th>Review</th>
+<th>Agent</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code Quality (WS-1+WS-3)</td>
+<td>@reviewer</td>
+<td><strong>APPROVED</strong> — A/A- grades, 2 medium issues fixed</td>
+</tr>
+<tr>
+<td>Test Coverage (WS-2+WS-4)</td>
+<td>@tester</td>
+<td><strong>Gaps identified</strong> — session_store/pipeline_state need pytest</td>
+</tr>
+<tr>
+<td>Security Audit (Permissions)</td>
+<td>@security</td>
+<td><strong>MEDIUM risk</strong> — path traversal fixed, agent spoofing is design limitation</td>
+</tr>
+<tr>
+<td>Governance (WS-5+Docs)</td>
+<td>@governance</td>
+<td><strong>2 missing docs created</strong> — config-precedence.md + skill_tiers.json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-fixes-applied">Security Fixes Applied<a class="headerlink" href="#security-fixes-applied" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Path traversal</strong> in <code>session_store.py</code> and <code>pipeline_state.py</code> — ID validation added</li>
+<li><strong>JSON error handling</strong> in <code>tool_permissions.py</code> — fail-safe on corrupt registry</li>
+<li><strong>Audit tool name mismatch</strong> in <code>audit_permissions.py</code> — <code>editFiles</code> added to write tools set</li>
+</ol>
+<h3 id="deferred-items-not-implemented">Deferred Items (Not Implemented)<a class="headerlink" href="#deferred-items-not-implemented" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Why Deferred</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plugin system (3-tier lifecycle)</td>
+<td>Over-engineering — skills cover needs</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>LSP context enrichment</td>
+<td>VS Code handles natively</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Streaming events for checks</td>
+<td>Already have SSE for batch design</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>MCP server for structural_lib</td>
+<td>Future ecosystem play</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Voice-to-design interface</td>
+<td>Way future</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="whats-different-from-original-plan">What's Different from Original Plan<a class="headerlink" href="#whats-different-from-original-plan" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Hooks:</strong> Implemented as 3 Python modules (pre_commit, post_commit, pre_route) with HookRunner framework, rather than 6 separate shell/Python scripts. Cleaner architecture.</li>
+<li><strong>Session compaction:</strong> Archives to <code>docs/_archive/SESSION_LOG_through_session_100.md</code> rather than monthly <code>YYYY-MM.md</code> files. Simpler approach.</li>
+<li><strong>Parity dashboard:</strong> Implemented as <code>scripts/parity_dashboard.py</code> with 4 dimensions (clauses, endpoints, tests, hooks). Accessible via <code>./run.sh parity</code>.</li>
+<li><strong>CLI smoke tests:</strong> Implemented as <code>scripts/test_cli_smoke.py</code> (standalone runner, 13 tests) rather than <code>Python/tests/test_cli_smoke.py</code> (pytest).</li>
+</ol>
+<h3 id="metrics-before-vs-after">Metrics: Before vs After<a class="headerlink" href="#metrics-before-vs-after" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before (Session 0)</th>
+<th>After (Session 4)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scripts in automation-map</td>
+<td>88</td>
+<td>115</td>
+</tr>
+<tr>
+<td>Agent registry entries</td>
+<td>0 (honor system)</td>
+<td>15 (programmatic)</td>
+</tr>
+<tr>
+<td>Permission enforcement</td>
+<td>None</td>
+<td>3-tier with file scope</td>
+</tr>
+<tr>
+<td>Session persistence</td>
+<td>Ephemeral (SESSION_LOG only)</td>
+<td>JSON state + resumable pipelines</td>
+</tr>
+<tr>
+<td>Routing capability</td>
+<td>Manual delegation</td>
+<td>NLP token-based scoring</td>
+</tr>
+<tr>
+<td>Parity tracking</td>
+<td>None</td>
+<td>4-dimension dashboard</td>
+</tr>
+<tr>
+<td>Hook execution points</td>
+<td>0</td>
+<td>6 (across 3 modules)</td>
+</tr>
+<tr>
+<td>Config precedence</td>
+<td>Undocumented</td>
+<td>3-tier documented + validated</td>
+</tr>
+</tbody>
+</table>
 
 
 
