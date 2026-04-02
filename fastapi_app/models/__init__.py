@@ -32,6 +32,20 @@ from fastapi_app.models.common import (
     APIResponse,
     ErrorResponse,
 )
+from fastapi_app.models.compliance import (
+    DuctilityCheckRequest,
+    DuctilityCheckResponse,
+    SlendernessCheckRequest,
+    SlendernessCheckResponse,
+    AnchorageCheckRequest,
+    AnchorageCheckResponse,
+    DeflectionCheckRequest,
+    DeflectionCheckResponse,
+    CrackWidthCheckRequest,
+    CrackWidthCheckResponse,
+    ComplianceReportRequest,
+    ComplianceReportResponse,
+)
 
 __all__ = [
     # Beam models
@@ -57,4 +71,17 @@ __all__ = [
     "DesignBasis",
     "APIResponse",
     "ErrorResponse",
+    # Compliance check models
+    "DuctilityCheckRequest",
+    "DuctilityCheckResponse",
+    "SlendernessCheckRequest",
+    "SlendernessCheckResponse",
+    "AnchorageCheckRequest",
+    "AnchorageCheckResponse",
+    "DeflectionCheckRequest",
+    "DeflectionCheckResponse",
+    "CrackWidthCheckRequest",
+    "CrackWidthCheckResponse",
+    "ComplianceReportRequest",
+    "ComplianceReportResponse",
 ]

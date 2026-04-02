@@ -181,7 +181,6 @@ def propose_evolutions() -> list[dict]:
     # Load existing trends and drift data
     trends_dir = REPO_ROOT / "logs" / "agent-performance" / "trends"
     drift_dir = REPO_ROOT / "logs" / "agent-performance" / "drift"
-    feedback_dir = REPO_ROOT / "logs" / "feedback"
 
     # Discover agents
     agents = discover_agents()
@@ -403,6 +402,55 @@ def list_pending() -> None:
     print(f"\nTotal pending: {len(pending)}")
 
 
+def show_status() -> None:
+    """Show evolution system status."""
+    pending = load_pending_evolutions()
+    log = load_evolution_log()
+
+    # Count by status
+    applied = [e for e in log if e.get("status") == "applied"]
+    rolled_back = [e for e in log if e.get("status") == "rolled_back"]
+
+    print("🔄 Evolution System Status")
+    print("━" * 40)
+    print()
+    print(f"  Pending proposals:    {len(pending)}")
+    print(f"  Applied evolutions:   {len(applied)}")
+    print(f"  Rolled back:          {len(rolled_back)}")
+    print()
+
+    # Age of oldest pending
+    if pending:
+        oldest = min(pending, key=lambda e: e.get("proposed_at", ""))
+        oldest_date = oldest.get("proposed_at", "Unknown")
+        try:
+            dt = datetime.fromisoformat(oldest_date)
+            age_days = (datetime.now() - dt).days
+            print(f"  Oldest pending:       {age_days} days ago ({oldest_date[:10]})")
+        except (ValueError, AttributeError):
+            print(f"  Oldest pending:       {oldest_date}")
+    else:
+        print("  Oldest pending:       N/A")
+
+    # Last evolution application
+    if applied:
+        latest = max(applied, key=lambda e: e.get("applied_at", ""))
+        latest_date = latest.get("applied_at", "Unknown")
+        try:
+            dt = datetime.fromisoformat(latest_date)
+            days_ago = (datetime.now() - dt).days
+            print(f"  Last applied:         {days_ago} days ago ({latest_date[:10]})")
+            print(
+                f"                        {latest.get('agent_name', 'Unknown')} - {latest.get('evolution_id', '')}"
+            )
+        except (ValueError, AttributeError):
+            print(f"  Last applied:         {latest_date}")
+    else:
+        print("  Last applied:         Never")
+
+    print()
+
+
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
@@ -418,6 +466,11 @@ def parse_args() -> argparse.Namespace:
         "--list",
         action="store_true",
         help="List pending evolution proposals",
+    )
+    parser.add_argument(
+        "--status",
+        action="store_true",
+        help="Show evolution system status (counts, age, last application)",
     )
     parser.add_argument(
         "--apply",
@@ -463,6 +516,10 @@ def main() -> int:
 
     if args.list:
         list_pending()
+        return 0
+
+    if args.status:
+        show_status()
         return 0
 
     if args.apply:

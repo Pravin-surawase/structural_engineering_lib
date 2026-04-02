@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 (23/23 claw-code done + review complete — 3 security fixes applied, 2 missing docs created, config-precedence.md + skill_tiers.json)
+**Updated:** 2026-04-02 (5 agent infrastructure improvements: 6 IS 456 endpoints, ReadOnlyTerminal tier, 3 auto-scoring dimensions, router discrimination, --status CLI)
 
 ---
 

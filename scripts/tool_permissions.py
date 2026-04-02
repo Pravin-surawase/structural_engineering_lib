@@ -63,7 +63,12 @@ DANGER_OPS: set[str] = {
 }
 
 # Minimum permission level required for each category (ordered low→high)
-_PERMISSION_LEVELS = ("ReadOnly", "WorkspaceWrite", "DangerFullAccess")
+_PERMISSION_LEVELS = (
+    "ReadOnly",
+    "ReadOnlyTerminal",
+    "WorkspaceWrite",
+    "DangerFullAccess",
+)
 
 _LEVEL_FOR_CATEGORY: dict[str, str] = {
     "read": "ReadOnly",
@@ -144,6 +149,28 @@ class PermissionResult:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
+
+def check_terminal_command(agent: str, command: str) -> bool:
+    """Check if *command* is allowed for agent's terminal_allowlist.
+
+    Returns True if the agent has no terminal_allowlist restriction (null/empty) OR
+    if the command starts with any pattern in the allowlist.
+    """
+    agents = _load_registry()
+    agent_data = _find_agent(agents, agent)
+    if agent_data is None:
+        return False
+
+    allowlist = agent_data.get("terminal_allowlist", [])
+    if not allowlist:
+        return True  # No restriction
+
+    # Check if command starts with any allowed pattern
+    for pattern in allowlist:
+        if command.strip().startswith(pattern):
+            return True
+    return False
 
 
 def check_file_scope(agent: str, file_path: str) -> bool:

@@ -18,6 +18,19 @@ from fastapi_app.models.beam import (
     TorsionDesignRequest,
     TorsionDesignResponse,
 )
+from fastapi_app.models.compliance import (
+    DuctilityCheckRequest,
+    DuctilityCheckResponse,
+    SlendernessCheckRequest,
+    SlendernessCheckResponse,
+    DeflectionCheckRequest,
+    DeflectionCheckResponse,
+    CrackWidthCheckRequest,
+    CrackWidthCheckResponse,
+    ComplianceReportRequest,
+    ComplianceReportResponse,
+    ComplianceCaseOutput,
+)
 
 router = APIRouter(
     prefix="/design",
@@ -483,4 +496,343 @@ async def enhanced_shear(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Enhanced shear calculation failed: {e}",
+        )
+
+
+# =============================================================================
+# Ductility Check Endpoint (IS 13920)
+# =============================================================================
+
+
+@router.post(
+    "/beam/ductility-check",
+    response_model=DuctilityCheckResponse,
+    summary="Beam Ductility Check (IS 13920)",
+    description=(
+        "Run IS 13920 beam ductility checks for a single section. "
+        "Checks geometry (Cl 6.1), min/max steel (Cl 6.2), "
+        "and confinement spacing (Cl 6.3.5)."
+    ),
+)
+async def check_ductility(
+    request: DuctilityCheckRequest,
+) -> DuctilityCheckResponse:
+    """Check beam ductility per IS 13920 for seismic design."""
+    try:
+        from structural_lib.services.api import check_beam_ductility
+
+        result = check_beam_ductility(
+            b=request.b,
+            D=request.D,
+            d=request.d,
+            fck=request.fck,
+            fy=request.fy,
+            min_long_bar_dia=request.min_long_bar_dia,
+        )
+
+        return DuctilityCheckResponse(
+            is_geometry_valid=result.is_geometry_valid,
+            min_pt=result.min_pt,
+            max_pt=result.max_pt,
+            confinement_spacing=result.confinement_spacing,
+            remarks=result.remarks,
+            errors=[
+                (
+                    {"code": str(e.code), "message": e.message}
+                    if hasattr(e, "code")
+                    else {"message": str(e)}
+                )
+                for e in result.errors
+            ],
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Ductility check failed: {e}",
+        )
+
+
+# =============================================================================
+# Slenderness Check Endpoint (IS 456 Cl 23.3)
+# =============================================================================
+
+
+@router.post(
+    "/beam/slenderness-check",
+    response_model=SlendernessCheckResponse,
+    summary="Beam Slenderness Check (IS 456 Cl 23.3)",
+    description=(
+        "Check beam slenderness for lateral stability per IS 456:2000 Cl 23.3. "
+        "Verifies slenderness ratio l_eff/b against code limits."
+    ),
+)
+async def check_slenderness(
+    request: SlendernessCheckRequest,
+) -> SlendernessCheckResponse:
+    """Check beam slenderness / lateral stability per IS 456 Cl 23.3."""
+    try:
+        from structural_lib.services.api import check_beam_slenderness
+
+        result = check_beam_slenderness(
+            b_mm=request.b_mm,
+            d_mm=request.d_mm,
+            l_eff_mm=request.l_eff_mm,
+            beam_type=request.beam_type,
+            has_lateral_restraint=request.has_lateral_restraint,
+        )
+
+        return SlendernessCheckResponse(
+            is_ok=result.is_ok,
+            is_slender=result.is_slender,
+            slenderness_ratio=result.slenderness_ratio,
+            slenderness_limit=result.slenderness_limit,
+            utilization=result.utilization,
+            depth_to_width_ratio=result.depth_to_width_ratio,
+            remarks=result.remarks,
+            errors=result.errors,
+            warnings=result.warnings,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Slenderness check failed: {e}",
+        )
+
+
+# =============================================================================
+# Deflection Span/Depth Check Endpoint (IS 456 Cl 23.2)
+# =============================================================================
+
+
+@router.post(
+    "/beam/deflection-check",
+    response_model=DeflectionCheckResponse,
+    summary="Deflection Span/Depth Check (IS 456 Cl 23.2)",
+    description=(
+        "Check deflection using span/depth ratio (Level A) per IS 456:2000 Cl 23.2. "
+        "Compares actual L/d against allowable ratios with modification factors."
+    ),
+)
+async def check_deflection(
+    request: DeflectionCheckRequest,
+) -> DeflectionCheckResponse:
+    """Check deflection via span/depth ratio per IS 456 Cl 23.2."""
+    try:
+        from structural_lib.services.api import check_deflection_span_depth
+
+        result = check_deflection_span_depth(
+            span_mm=request.span_mm,
+            d_mm=request.d_mm,
+            support_condition=request.support_condition,
+            base_allowable_ld=request.base_allowable_ld,
+            mf_tension_steel=request.mf_tension_steel,
+            mf_compression_steel=request.mf_compression_steel,
+            mf_flanged=request.mf_flanged,
+        )
+
+        return DeflectionCheckResponse(
+            is_ok=result.is_ok,
+            remarks=result.remarks,
+            support_condition=(
+                result.support_condition.value
+                if hasattr(result.support_condition, "value")
+                else str(result.support_condition)
+            ),
+            assumptions=result.assumptions,
+            inputs=result.inputs,
+            computed=result.computed,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Deflection check failed: {e}",
+        )
+
+
+# =============================================================================
+# Crack Width Check Endpoint (IS 456 Annex F)
+# =============================================================================
+
+
+@router.post(
+    "/beam/crack-width-check",
+    response_model=CrackWidthCheckResponse,
+    summary="Crack Width Check (IS 456 Annex F)",
+    description=(
+        "Check crack width using an Annex-F-style estimate per IS 456:2000. "
+        "Computes estimated crack width and compares against exposure-class limits."
+    ),
+)
+async def check_crack_width_endpoint(
+    request: CrackWidthCheckRequest,
+) -> CrackWidthCheckResponse:
+    """Check crack width per IS 456 Annex F."""
+    try:
+        from structural_lib.services.api import check_crack_width
+
+        result = check_crack_width(
+            exposure_class=request.exposure_class,
+            limit_mm=request.limit_mm,
+            acr_mm=request.acr_mm,
+            cmin_mm=request.cmin_mm,
+            h_mm=request.h_mm,
+            x_mm=request.x_mm,
+            epsilon_m=request.epsilon_m,
+            fs_service_nmm2=request.fs_service_nmm2,
+            es_nmm2=request.es_nmm2,
+        )
+
+        return CrackWidthCheckResponse(
+            is_ok=result.is_ok,
+            remarks=result.remarks,
+            exposure_class=(
+                result.exposure_class.value
+                if hasattr(result.exposure_class, "value")
+                else str(result.exposure_class)
+            ),
+            assumptions=result.assumptions,
+            inputs=result.inputs,
+            computed=result.computed,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Crack width check failed: {e}",
+        )
+
+
+# =============================================================================
+# Compliance Report Endpoint (Multi-case IS 456)
+# =============================================================================
+
+
+@router.post(
+    "/beam/compliance",
+    response_model=ComplianceReportResponse,
+    summary="Multi-case Compliance Report",
+    description=(
+        "Run a multi-case IS 456 compliance report. "
+        "Checks flexure, shear, deflection, and crack width for each load case "
+        "and identifies the governing case."
+    ),
+)
+async def compliance_report(
+    request: ComplianceReportRequest,
+) -> ComplianceReportResponse:
+    """Run multi-case IS 456 compliance report."""
+    try:
+        from structural_lib.services.api import check_compliance_report
+
+        # Convert Pydantic case models to dicts
+        cases = [c.model_dump() for c in request.cases]
+
+        # Convert optional param models to TypedDicts
+        deflection_defaults = None
+        if request.deflection_defaults:
+            deflection_defaults = {
+                k: v
+                for k, v in request.deflection_defaults.model_dump().items()
+                if v is not None
+            }
+
+        crack_width_defaults = None
+        if request.crack_width_defaults:
+            crack_width_defaults = {
+                k: v
+                for k, v in request.crack_width_defaults.model_dump().items()
+                if v is not None
+            }
+
+        result = check_compliance_report(
+            cases=cases,
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            d_mm=request.d_mm,
+            fck_nmm2=request.fck_nmm2,
+            fy_nmm2=request.fy_nmm2,
+            d_dash_mm=request.d_dash_mm,
+            asv_mm2=request.asv_mm2,
+            pt_percent=request.pt_percent,
+            deflection_defaults=deflection_defaults,
+            crack_width_defaults=crack_width_defaults,
+        )
+
+        return ComplianceReportResponse(
+            is_ok=result.is_ok,
+            governing_case_id=result.governing_case_id,
+            governing_utilization=result.governing_utilization,
+            cases=[
+                ComplianceCaseOutput(
+                    case_id=c.case_id,
+                    mu_knm=c.mu_knm,
+                    vu_kn=c.vu_kn,
+                    is_ok=c.is_ok,
+                    governing_utilization=c.governing_utilization,
+                    utilizations=c.utilizations,
+                    failed_checks=c.failed_checks,
+                    remarks=c.remarks,
+                )
+                for c in result.cases
+            ],
+            summary=result.summary,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Compliance report failed: {e}",
         )
