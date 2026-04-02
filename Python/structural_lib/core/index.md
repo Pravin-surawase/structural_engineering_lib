@@ -1,7 +1,7 @@
 # Core
 
 **Type:** Python Package
-**Last Updated:** 2026-03-30
+**Last Updated:** 2026-04-02
 **Files:** 18
 
 ## Public API
@@ -26,10 +26,10 @@
 | [__init__.py](__init__.py) | Core module - Code-agnostic base classes and utilities. | 0 | 0 | 42 |
 | [base.py](base.py) | Abstract base classes for design code implementations. | 5 | 0 | 139 |
 | [constants.py](constants.py) | Module:       constants | 0 | 0 | 20 |
-| [data_types.py](data_types.py) | Module:       types | 15 | 0 | 498 |
+| [data_types.py](data_types.py) | Module:       types | 15 | 0 | 824 |
 | [deprecation.py](deprecation.py) | Module:       deprecation | 0 | 2 | 156 |
 | [error_messages.py](error_messages.py) | Module:       error_messages | 0 | 15 | 496 |
-| [errors.py](errors.py) | Module:       errors | 11 | 1 | 524 |
+| [errors.py](errors.py) | Module:       errors | 11 | 1 | 680 |
 | [geometry.py](geometry.py) | Code-agnostic geometry definitions. | 4 | 1 | 227 |
 | [inputs.py](inputs.py) | Module:       inputs | 6 | 3 | 615 |
 | [logging_config.py](logging_config.py) | Module:       logging_config | 0 | 1 | 66 |

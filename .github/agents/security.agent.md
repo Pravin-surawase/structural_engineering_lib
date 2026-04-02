@@ -2,7 +2,7 @@
 description: "Security auditing, OWASP Top 10, dependency scanning, input validation review"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal']
 model: Claude Opus 4.6 (copilot)
-permission_level: ReadOnly
+permission_level: ReadOnlyTerminal
 registry_ref: agents/agent_registry.json
 handoffs:
   - label: Fix Security Issues

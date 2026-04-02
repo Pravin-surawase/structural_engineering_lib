@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/core",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-30",
+  "last_updated": "2026-04-02",
   "file_count": 18,
   "files": [
     {
@@ -80,8 +80,8 @@
     {
       "name": "data_types.py",
       "type": "python",
-      "size_lines": 498,
-      "last_updated": "2026-03-26",
+      "size_lines": 824,
+      "last_updated": "2026-04-02",
       "description": "Module:       types",
       "classes": [
         {
@@ -144,7 +144,7 @@
           "description": "Result of BMD/SFD computation for a beam."
         }
       ],
-      "content_hash": "c74a849facfd"
+      "content_hash": "af44cafe5c32"
     },
     {
       "name": "deprecation.py",
@@ -349,8 +349,8 @@
     {
       "name": "errors.py",
       "type": "python",
-      "size_lines": 524,
-      "last_updated": "2026-03-28",
+      "size_lines": 680,
+      "last_updated": "2026-04-02",
       "description": "Module:       errors",
       "classes": [
         {
@@ -411,7 +411,8 @@
             "message",
             "field",
             "hint",
-            "clause"
+            "clause",
+            "recovery"
           ]
         }
       ],
@@ -427,7 +428,7 @@
         "E_INPUT_009",
         "E_INPUT_010"
       ],
-      "content_hash": "14083c11abaa"
+      "content_hash": "777ebedd6b8c"
     },
     {
       "name": "geometry.py",
@@ -1006,7 +1007,7 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "bd96eb48b2a245d8",
+  "content_hash": "e6c6f4d4286761fb",
   "has_init": true,
   "public_api": [
     "DesignCode",

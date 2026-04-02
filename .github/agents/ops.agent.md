@@ -105,6 +105,64 @@ If you know the PR number, use `--continue PR_NUM` instead (skips steps 1-2, fas
 
 After `--finish` completes, ALWAYS verify: `git branch --show-current` must show `main`.
 
+## Pre-Commit Planning & Review (MANDATORY)
+
+Before executing ANY commit, the ops agent MUST complete this 4-step review:
+
+### Step 1: Assess Changes
+```bash
+git status --short                                    # What's changed
+git diff --stat                                       # File count + line changes
+git diff --name-only | head -30                       # File list
+```
+
+Categorize all changed files:
+| Category | Examples | PR Required? |
+|----------|----------|-------------|
+| Production code | `structural_lib/`, `fastapi_app/routers/`, `react_app/src/` | YES |
+| Scripts (new/modified) | `scripts/*.py` | YES (if >150 lines or >2 files) |
+| Documentation | `docs/`, `*.md`, `*.json` configs | NO |
+| Indexes (auto-generated) | `index.json`, `index.md` | NO |
+| Agent configs | `.github/agents/`, `.claude/rules/` | NO |
+| CI/Docker | `.github/workflows/`, `Dockerfile`, `docker-compose*` | YES |
+
+### Step 2: Plan Commit Strategy
+Based on categorization:
+1. **All docs/configs/indexes** → Single direct commit
+2. **Mixed docs + production** → Split: commit docs first, then PR for production code
+3. **Production code only** → Task branch + PR
+4. **Large batch (>50 files)** → Check if `should_use_pr.sh` will flag as "mixed changes"
+
+If >50 files across multiple categories, consider splitting into logical commits:
+- Commit 1: docs/configs (direct)
+- Commit 2: production code (PR)
+
+### Step 3: Validate Before Committing
+```bash
+# Verify commit message format
+# Format: type(scope): description — subject ≤72 chars, no period
+# Types: feat|fix|docs|style|refactor|perf|test|ci|chore
+
+# For production code, run quick checks:
+.venv/bin/pytest Python/tests/ -x -q 2>/dev/null     # Smoke test (fast fail)
+```
+
+### Step 4: Self-Review Report
+Before executing the commit, generate this mental checklist:
+- [ ] **Files categorized** — know what's docs vs production vs mixed
+- [ ] **Commit type correct** — `docs:` for docs, `feat:` for features, etc.
+- [ ] **PR decision made** — direct commit or task branch?
+- [ ] **No --force or --no-verify** — NEVER bypass
+- [ ] **Commit message ≤72 chars** — clear, descriptive
+- [ ] **No unintended files** — only expected changes staged
+
+### Efficiency Tips
+- `ai_commit.sh` does `git add -A` (stages everything) — you can't selectively stage
+- If you need to split commits, commit docs first, then the remaining files go in commit 2
+- For docs-only changes across many files, one commit is fine — don't over-split
+- When delegated by orchestrator with a specific message, execute immediately after the 4-step review
+- The review should take <30 seconds mentally — don't over-analyze docs-only commits
+
 ## Git Workflow
 
 ### Commit Format
@@ -161,6 +219,7 @@ colima stop                                   # Free RAM when done
 |---------|-----|
 | Stale version references | `.venv/bin/python scripts/check_doc_versions.py --fix` → commit |
 | Broken links | `.venv/bin/python scripts/check_links.py --fix` → commit |
+| PR check blocked commit | Follow Pre-Commit Planning step 2 — split or use task branch |
 
 ### 2. Report
 

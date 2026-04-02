@@ -2,7 +2,7 @@
   "folder": "docs/reference",
   "type": "mixed",
   "description": "",
-  "last_updated": "2026-03-29",
+  "last_updated": "2026-04-02",
   "file_count": 25,
   "files": [
     {
@@ -16,29 +16,27 @@
     {
       "name": "3d-visualization-performance.md",
       "type": "documentation",
-      "size_lines": 163,
-      "last_updated": "2026-03-27",
-      "title": "3D Visualization Performance Benchmarks",
-      "description": "This document provides performance benchmarks for the 3D beam visualization module (streamlit_app/components/visualizations_3d.py). These benchmarks ensure the visualization meets the <100ms latency t",
-      "content_hash": "6c12c468407a"
+      "size_lines": 172,
+      "last_updated": "2026-03-31",
+      "description": "This document provides performance benchmarks for the 3D beam visualization module (react_app/src/components/viewport/Viewport3D.tsx). These benchmarks ensure the visualization meets the <100ms latenc",
+      "content_hash": "108199575846"
     },
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 80,
-      "last_updated": "2026-03-27",
+      "last_updated": "2026-03-29",
       "title": "Reference Documentation",
       "description": "Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |",
-      "content_hash": "5bd3f99a658a"
+      "content_hash": "6ffc97220be6"
     },
     {
       "name": "agent-automation-pitfalls.md",
       "type": "documentation",
-      "size_lines": 624,
-      "last_updated": "2026-03-26",
-      "title": "Agent Automation Pitfalls and Best Practices",
+      "size_lines": 633,
+      "last_updated": "2026-03-30",
       "description": "<!-- lint-ignore-git --> > ⚠️ **Note:** This document includes manual git examples only to illustrate pitfalls.",
-      "content_hash": "3e6c2c15a17c"
+      "content_hash": "9636c17c09da"
     },
     {
       "name": "api-manifest.json",
@@ -56,173 +54,154 @@
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 461,
-      "last_updated": "2026-03-26",
-      "title": "API Stability",
+      "size_lines": 470,
+      "last_updated": "2026-03-31",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "eca737c30ca2"
+      "content_hash": "6ced68b7fc06"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 3019,
-      "last_updated": "2026-03-28",
-      "title": "IS 456 RC Beam Design Library — API Reference",
+      "size_lines": 3298,
+      "last_updated": "2026-04-01",
       "description": "Machine-readable signatures live in docs/reference/api-manifest.json. bash",
-      "content_hash": "468463dbfcd4"
+      "content_hash": "f03fb2a33b42"
     },
     {
       "name": "automation-catalog.md",
       "type": "documentation",
-      "size_lines": 2838,
-      "last_updated": "2026-03-28",
-      "title": "Automation Script Catalog",
+      "size_lines": 2847,
+      "last_updated": "2026-03-30",
       "description": "> **Purpose:** Complete reference of all automation scripts in this project. > **For AI Agents:** Use this to discover available automation before implementing manually.",
-      "content_hash": "e65fcd837cca"
+      "content_hash": "2ecfb8194ae1"
     },
     {
       "name": "bbs-dxf-contract.md",
       "type": "documentation",
-      "size_lines": 107,
-      "last_updated": "2026-03-26",
-      "title": "BBS + DXF Contract (v1.x)",
+      "size_lines": 116,
+      "last_updated": "2026-03-30",
       "description": "This document defines the stable contracts for Bar Bending Schedule (BBS) and DXF outputs. It is beam-only (IS 456) and is intended for integrators who need",
-      "content_hash": "ad6b47b5473f"
+      "content_hash": "f44f739cd52e"
     },
     {
       "name": "deferred-integrations.md",
       "type": "documentation",
-      "size_lines": 141,
-      "last_updated": "2026-03-26",
-      "title": "Deferred Integrations Tracker",
+      "size_lines": 150,
+      "last_updated": "2026-03-30",
       "description": "- Uses conservative default (0.7) in comparison scoring - Full integration requires BeamDesignOutput availability",
-      "content_hash": "b73ed6938fde"
+      "content_hash": "2a74c89114df"
     },
     {
       "name": "deprecation-policy.md",
       "type": "documentation",
-      "size_lines": 359,
-      "last_updated": "2026-03-26",
-      "title": "Deprecation Policy",
+      "size_lines": 368,
+      "last_updated": "2026-03-30",
       "description": "This document defines the deprecation policy for the structural_engineering_lib project. It ensures users have advance notice before features are removed, maintaining backward compatibility while allo",
-      "content_hash": "6ef8d4add340"
+      "content_hash": "870d1c6507f0"
     },
     {
       "name": "dxf-layer-standards.md",
       "type": "documentation",
-      "size_lines": 460,
-      "last_updated": "2026-03-27",
-      "title": "DXF Layer Standards & Drawing Conventions",
+      "size_lines": 469,
+      "last_updated": "2026-03-30",
       "description": "This document defines CAD layer standards used in DXF drawings exported by the Structural Engineering Library. - Layer Definitions",
-      "content_hash": "67d587ee9c17"
+      "content_hash": "8e7b8d6c0393"
     },
     {
       "name": "error-codes.md",
       "type": "documentation",
-      "size_lines": 78,
-      "last_updated": "2026-03-29",
-      "title": "Error Code Reference",
+      "size_lines": 87,
+      "last_updated": "2026-03-30",
       "description": "> Auto-generated from Python/structural_lib/core/errors.py. > Run scripts/generate_error_docs.py to regenerate.",
-      "content_hash": "43419189ef7c"
+      "content_hash": "3649f701e5e0"
     },
     {
       "name": "error-schema.md",
       "type": "documentation",
-      "size_lines": 256,
-      "last_updated": "2026-03-26",
-      "title": "Error Schema v1",
+      "size_lines": 269,
+      "last_updated": "2026-04-02",
       "description": "*Structured error format for machine-readable and human-friendly errors* This document defines the standard error schema for all structural_lib errors. The goal is:",
-      "content_hash": "a70e3836cdab"
+      "content_hash": "c77bd236e119"
     },
     {
       "name": "fastapi-rest-api.md",
       "type": "documentation",
-      "size_lines": 576,
-      "last_updated": "2026-03-27",
-      "title": "FastAPI REST API Reference",
+      "size_lines": 585,
+      "last_updated": "2026-03-30",
       "description": "The Structural Engineering Library provides a REST API via FastAPI for beam design, analysis, and detailing per IS 456:2000. | Environment | URL |",
-      "content_hash": "17ed6a23ef9d"
+      "content_hash": "26203aff0d75"
     },
     {
       "name": "insights-api.md",
       "type": "documentation",
-      "size_lines": 985,
-      "last_updated": "2026-03-26",
-      "title": "Insights API Reference",
+      "size_lines": 994,
+      "last_updated": "2026-03-30",
       "description": "> **Status:** Preview (v0.13.0+) > **Stability:** Experimental - API may change before v1.0",
-      "content_hash": "28c5ec7f51d1"
+      "content_hash": "8125f9e3ff91"
     },
     {
       "name": "is456-formulas.md",
       "type": "documentation",
-      "size_lines": 234,
-      "last_updated": "2026-03-26",
-      "title": "IS 456:2000 Quick Reference — RC Beam Design Formulas",
+      "size_lines": 243,
+      "last_updated": "2026-03-30",
       "description": "$$d = D - c_{clear} - \\phi_{stirrup} - \\frac{\\phi_{main}}{2}$$ | Symbol | Description | Unit |",
-      "content_hash": "ceda0d6c3915"
+      "content_hash": "686dfe2ab39d"
     },
     {
       "name": "known-pitfalls.md",
       "type": "documentation",
-      "size_lines": 126,
-      "last_updated": "2026-03-26",
-      "title": "IS 456 RC Beam Design Library — Known Pitfalls and Traps",
+      "size_lines": 135,
+      "last_updated": "2026-03-30",
       "description": "Use this as a checklist to avoid common mistakes when implementing or reviewing code. - Always convert Vu to N and Mu to N·mm before combining with b×d or τc.",
-      "content_hash": "5972d03b5d95"
+      "content_hash": "165d111de24a"
     },
     {
       "name": "library-contract.md",
       "type": "documentation",
-      "size_lines": 93,
-      "last_updated": "2026-03-26",
-      "title": "Library Contract (v1) - Beam-Only IS 456",
+      "size_lines": 102,
+      "last_updated": "2026-03-30",
       "description": "This document defines the stability promises for the beam design library. It is written for developers who want to depend on the library as a core",
-      "content_hash": "10cd425f7370"
+      "content_hash": "82c9ab418bc5"
     },
     {
       "name": "repo-health-baseline-2026-01-07.md",
       "type": "documentation",
-      "size_lines": 54,
-      "last_updated": "2026-03-26",
-      "title": "Repository Health Baseline (2026-01-07)",
+      "size_lines": 63,
+      "last_updated": "2026-03-30",
       "description": "- This baseline is a point-in-time snapshot for trend tracking. - Re-run monthly or before major releases.",
-      "content_hash": "ed8a3d98aeb9"
+      "content_hash": "b9ffe291bbbd"
     },
     {
       "name": "sdk-api-contract-v1.md",
       "type": "documentation",
-      "size_lines": 919,
-      "last_updated": "2026-03-26",
-      "title": "Structural SDK API Contract — v1.0",
+      "size_lines": 928,
+      "last_updated": "2026-03-30",
       "description": "This document defines the public API contract for the Structural SDK. All functions documented here are considered stable and will follow semantic versioning. python",
-      "content_hash": "541dcf4e7d91"
+      "content_hash": "e9c0960dfbb5"
     },
     {
       "name": "tech-stack-rationale.md",
       "type": "documentation",
-      "size_lines": 52,
-      "last_updated": "2026-03-26",
-      "title": "Tech Stack Rationale",
+      "size_lines": 61,
+      "last_updated": "2026-03-30",
       "description": "> Moved from agent-bootstrap.md to keep bootstrap lean. This is reference material — agents don't need this to start working. | Technology | Why chosen | What it gives us | Trade-offs |",
-      "content_hash": "abfbf47ff20c"
+      "content_hash": "9d3a2b2f1946"
     },
     {
       "name": "third-party-licenses.md",
       "type": "documentation",
-      "size_lines": 42,
-      "last_updated": "2026-03-26",
-      "title": "Third-Party Licenses",
+      "size_lines": 51,
+      "last_updated": "2026-03-30",
       "description": "This repository is primarily standard-library based. Optional and development tools introduce third-party licenses. - Standard library only (core runtime)",
-      "content_hash": "9e6ea34ab25a"
+      "content_hash": "112e2279a066"
     },
     {
       "name": "troubleshooting.md",
       "type": "documentation",
-      "size_lines": 313,
-      "last_updated": "2026-03-26",
-      "title": "Troubleshooting Guide",
+      "size_lines": 322,
+      "last_updated": "2026-03-30",
       "description": "Use this when reporting bugs or debugging agent failures: bash",
-      "content_hash": "8bda87cd064c"
+      "content_hash": "85f3ba23aed9"
     }
   ],
   "subfolders": [
@@ -232,5 +211,5 @@
       "file_count": 1762
     }
   ],
-  "content_hash": "67f895f756a24246"
+  "content_hash": "f108c4cd6eec7918"
 }

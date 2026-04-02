@@ -52,7 +52,7 @@ You are a Python backend specialist for **structural_engineering_lib** — an IS
 
 | Module | Functions |
 |--------|-----------|
-| `services/api.py` | 23 public + 6 private — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()` |
+| `services/api.py` | 32 public + 7 private — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` |
 | `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py` |

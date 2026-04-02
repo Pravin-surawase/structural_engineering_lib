@@ -2,7 +2,7 @@
 description: "Library domain expert — full IS 456 knowledge, professional standards, usage guidance, API mastery"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal', 'web']
 model: Claude Opus 4.6 (copilot)
-permission_level: ReadOnly
+permission_level: ReadOnlyTerminal
 registry_ref: agents/agent_registry.json
 handoffs:
   - label: Implement Recommendation

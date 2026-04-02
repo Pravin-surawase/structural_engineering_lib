@@ -1,7 +1,7 @@
 # Hooks
 
 **Type:** React Source
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-02
 **Files:** 13
 
 ## React Hook Files
@@ -15,7 +15,7 @@
 | [useDesignWebSocket.ts](useDesignWebSocket.ts) | ConnectionStatus, WebSocketState, useDesignWebSocket | 237 |
 | [useExport.ts](useExport.ts) | ExportBeamParams, ExportReportParams, useExportBBS, useExportDXF, useExportReport (+3) | 183 |
 | [useGeometryAdvanced.ts](useGeometryAdvanced.ts) | Point3D, BuildingBeamInput, BuildingBeamResult, BuildingGeometryResponse, CrossSectionRequest (+4) | 171 |
-| [useInsights.ts](useInsights.ts) | BeamResult, StoryStats, DashboardData, CheckDetail, CodeChecksResult (+5) | 242 |
+| [useInsights.ts](useInsights.ts) | BeamResult, StoryStats, DashboardData, CheckDetail, CodeChecksResult (+10) | 323 |
 | [useLiveDesign.ts](useLiveDesign.ts) | useLiveDesign | 264 |
 | [useLoadAnalysis.ts](useLoadAnalysis.ts) | useLoadAnalysis | 17 |
 | [useRebarEditor.ts](useRebarEditor.ts) | BeamParams, RebarConfig, ValidationDetail, RebarValidateResponse, RebarApplyResponse (+2) | 158 |
@@ -25,4 +25,4 @@
 
 | File | Exports | Lines |
 |------|---------|-------|
-| [index.ts](index.ts) | useAutoDesign, useDesignWebSocket, useBeamGeometry, useLiveDesign, useCSVFileImport (+10) | 84 |
+| [index.ts](index.ts) | useAutoDesign, useDesignWebSocket, useBeamGeometry, useLiveDesign, useCSVFileImport (+10) | 86 |

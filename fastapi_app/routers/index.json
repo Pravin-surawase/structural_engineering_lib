@@ -2,16 +2,16 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-29",
-  "file_count": 13,
+  "last_updated": "2026-04-02",
+  "file_count": 14,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 34,
-      "last_updated": "2026-03-26",
+      "size_lines": 36,
+      "last_updated": "2026-04-01",
       "description": "FastAPI Routers Package.",
-      "content_hash": "233df3ef088f"
+      "content_hash": "da16792c49de"
     },
     {
       "name": "analysis.py",
@@ -42,10 +42,76 @@
       "content_hash": "bcda1c6b5eec"
     },
     {
+      "name": "column.py",
+      "type": "python",
+      "size_lines": 466,
+      "last_updated": "2026-04-02",
+      "description": "Column Design Router.",
+      "functions": [
+        {
+          "name": "calculate_effective_length",
+          "description": "Calculate effective length per IS 456 Cl 25.2, Table 28.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "classify_column",
+          "description": "Classify a column as short or slender.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "column_eccentricity",
+          "description": "Calculate minimum eccentricity per IS 456 Cl. 25.4.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "column_axial_capacity",
+          "description": "Calculate axial capacity for a short column per IS 456 Cl. 39.3.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_column_uniaxial",
+          "description": "Design short column for uniaxial bending per IS 456 Cl. 39.5.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "pm_interaction_curve",
+          "description": "Generate P-M interaction curve per IS 456 Cl. 39.5.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "biaxial_check",
+          "description": "Biaxial bending check per IS 456 Cl 39.6 (Bresler load contour).",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "additional_moment",
+          "description": "Calculate additional moment for slender columns.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "95f83b5a0747"
+    },
+    {
       "name": "design.py",
       "type": "python",
-      "size_lines": 408,
-      "last_updated": "2026-03-29",
+      "size_lines": 839,
+      "last_updated": "2026-04-02",
       "description": "Beam Design Router.",
       "functions": [
         {
@@ -72,15 +138,57 @@
           "params": [
             "request"
           ]
+        },
+        {
+          "name": "enhanced_shear",
+          "description": "Enhanced shear strength for sections near supports.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_ductility",
+          "description": "Check beam ductility per IS 13920 for seismic design.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_slenderness",
+          "description": "Check beam slenderness / lateral stability per IS 456 Cl 23.3.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_deflection",
+          "description": "Check deflection via span/depth ratio per IS 456 Cl 23.2.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "check_crack_width_endpoint",
+          "description": "Check crack width per IS 456 Annex F.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "compliance_report",
+          "description": "Run multi-case IS 456 compliance report.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "c40416bf6957"
+      "content_hash": "3b016850f0c3"
     },
     {
       "name": "detailing.py",
       "type": "python",
-      "size_lines": 318,
-      "last_updated": "2026-03-26",
+      "size_lines": 381,
+      "last_updated": "2026-04-02",
       "description": "Beam Detailing Router.",
       "functions": [
         {
@@ -103,9 +211,16 @@
             "fy",
             "bar_type"
           ]
+        },
+        {
+          "name": "check_anchorage",
+          "description": "Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "acbdfd69b3c4"
+      "content_hash": "f4abbbdbabe0"
     },
     {
       "name": "export.py",
@@ -328,8 +443,8 @@
     {
       "name": "insights.py",
       "type": "python",
-      "size_lines": 372,
-      "last_updated": "2026-03-26",
+      "size_lines": 493,
+      "last_updated": "2026-03-30",
       "description": "Insights Router.",
       "classes": [
         {
@@ -402,9 +517,16 @@
           "params": [
             "request"
           ]
+        },
+        {
+          "name": "project_boq",
+          "description": "Aggregate project Bill of Quantities from beam metadata.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "12a2771f5a7a"
+      "content_hash": "d737d7c78c67"
     },
     {
       "name": "optimization.py",
@@ -569,10 +691,11 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "01c339b5bf51572a",
+  "content_hash": "186aca92ba9b1c46",
   "has_init": true,
   "public_api": [
     "analysis",
+    "column",
     "design",
     "detailing",
     "geometry",

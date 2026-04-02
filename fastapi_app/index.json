@@ -2,31 +2,31 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-03-29",
+  "last_updated": "2026-04-02",
   "file_count": 6,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 49,
-      "last_updated": "2026-03-26",
+      "size_lines": 50,
+      "last_updated": "2026-04-01",
       "title": "FastAPI Backend",
       "description": "REST API + WebSocket bridge between the React frontend and the Python structural_lib. bash",
-      "content_hash": "8429900d345a"
+      "content_hash": "174e3838edd5"
     },
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 11,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "FastAPI backend for structural_engineering_lib.",
-      "content_hash": "f86e5af78d92"
+      "content_hash": "e9e00e5f71a5"
     },
     {
       "name": "auth.py",
       "type": "python",
-      "size_lines": 353,
-      "last_updated": "2026-03-26",
+      "size_lines": 361,
+      "last_updated": "2026-03-31",
       "description": "Authentication and Authorization Module.",
       "classes": [
         {
@@ -102,18 +102,19 @@
       ],
       "constants": [
         "SECRET_KEY",
+        "_ENVIRONMENT",
         "ALGORITHM",
         "ACCESS_TOKEN_EXPIRE_MINUTES",
         "RATE_LIMIT_REQUESTS",
         "RATE_LIMIT_WINDOW_SECONDS"
       ],
-      "content_hash": "e56a9cee61b0"
+      "content_hash": "b7460cd91b1d"
     },
     {
       "name": "config.py",
       "type": "python",
       "size_lines": 61,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Application Configuration.",
       "classes": [
         {
@@ -127,13 +128,13 @@
           "description": "Get cached application settings."
         }
       ],
-      "content_hash": "fef64e3f6401"
+      "content_hash": "845826dff9f5"
     },
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 382,
-      "last_updated": "2026-03-29",
+      "size_lines": 416,
+      "last_updated": "2026-04-01",
       "description": "FastAPI Application Entry Point.",
       "classes": [
         {
@@ -145,6 +146,14 @@
         }
       ],
       "functions": [
+        {
+          "name": "generic_exception_handler",
+          "description": "Catch-all for unhandled exceptions. Logs full traceback server-side,",
+          "params": [
+            "request",
+            "exc"
+          ]
+        },
         {
           "name": "root",
           "description": "Root endpoint providing API information."
@@ -165,7 +174,7 @@
         "ALLOWED_ORIGINS",
         "API_V1_PREFIX"
       ],
-      "content_hash": "2a0747bd77a4"
+      "content_hash": "ae3a551a548b"
     },
     {
       "name": "openapi_baseline.json",
@@ -190,23 +199,23 @@
     {
       "name": "models",
       "path": "models/",
-      "file_count": 8,
+      "file_count": 11,
       "is_package": true
     },
     {
       "name": "routers",
       "path": "routers/",
-      "file_count": 15,
+      "file_count": 16,
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 12,
+      "file_count": 17,
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
       "is_package": true
     }
   ],
-  "content_hash": "978b7ce977f8cf61",
+  "content_hash": "d8cc0a1cf04326f2",
   "has_init": true
 }

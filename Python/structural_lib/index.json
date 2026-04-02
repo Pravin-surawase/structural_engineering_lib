@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-03-29",
+  "last_updated": "2026-04-02",
   "file_count": 51,
   "files": [
     {
@@ -17,16 +17,16 @@
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 90,
-      "last_updated": "2026-03-26",
+      "size_lines": 288,
+      "last_updated": "2026-04-02",
       "description": "Package:      structural_lib",
-      "content_hash": "4853335c6e41"
+      "content_hash": "9ac7bedb8169"
     },
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1504,
-      "last_updated": "2026-03-26",
+      "size_lines": 1500,
+      "last_updated": "2026-03-31",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
         {
@@ -107,7 +107,7 @@
           ]
         }
       ],
-      "content_hash": "593b574fd270"
+      "content_hash": "77c61138480a"
     },
     {
       "name": "adapters.py",
@@ -218,17 +218,17 @@
       "name": "detailing.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Backward compatibility stub.",
-      "content_hash": "28627382c4b1"
+      "content_hash": "a3912e28ce01"
     },
     {
       "name": "ductile.py",
       "type": "python",
-      "size_lines": 21,
-      "last_updated": "2026-03-26",
+      "size_lines": 35,
+      "last_updated": "2026-03-31",
       "description": "Backward compatibility stub.",
-      "content_hash": "9fe5670fef94"
+      "content_hash": "aac6e6ee9c07"
     },
     {
       "name": "dxf_export.py",
@@ -283,10 +283,10 @@
     {
       "name": "flexure.py",
       "type": "python",
-      "size_lines": 24,
-      "last_updated": "2026-03-26",
+      "size_lines": 25,
+      "last_updated": "2026-03-31",
       "description": "Backward compatibility stub.",
-      "content_hash": "27dcb719ad20"
+      "content_hash": "b902b8f967f2"
     },
     {
       "name": "imports.py",
@@ -416,17 +416,17 @@
       "name": "serviceability.py",
       "type": "python",
       "size_lines": 37,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Backward compatibility stub.",
-      "content_hash": "ab78399e6c3c"
+      "content_hash": "295e2f8f09a7"
     },
     {
       "name": "shear.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Backward compatibility stub.",
-      "content_hash": "c6190de99759"
+      "content_hash": "b87fbc011d63"
     },
     {
       "name": "slenderness.py",
@@ -456,9 +456,9 @@
       "name": "torsion.py",
       "type": "python",
       "size_lines": 23,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Backward compatibility stub.",
-      "content_hash": "7863500fbb57"
+      "content_hash": "58d9dc301adb"
     },
     {
       "name": "traceability.py",
@@ -497,13 +497,13 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 22,
+      "file_count": 40,
       "is_package": true
     },
     {
       "name": "core",
       "path": "core/",
-      "file_count": 18,
+      "file_count": 20,
       "is_package": true
     },
     {
@@ -521,7 +521,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 30,
+      "file_count": 31,
       "is_package": true
     },
     {
@@ -531,7 +531,7 @@
       "is_package": true
     }
   ],
-  "content_hash": "1ce28b39534fbad1",
+  "content_hash": "5d86ab01cf3dfdd4",
   "has_init": true,
   "public_api": [
     "__version__",
@@ -539,8 +539,6 @@
     "api",
     "audit",
     "batch",
-    "bbs",
-    "calculation_report",
     "compliance",
     "costing",
     "detailing",
@@ -553,6 +551,8 @@
     "rebar",
     "reports",
     "result_base",
-    "serialization"
+    "serialization",
+    "serviceability",
+    "shear"
   ]
 }

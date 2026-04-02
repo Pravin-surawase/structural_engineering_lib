@@ -2,7 +2,7 @@
 description: "Code review, architecture validation, testing, security checks"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal']
 model: Claude Opus 4.6 (copilot)
-permission_level: ReadOnly
+permission_level: ReadOnlyTerminal
 registry_ref: agents/agent_registry.json
 handoffs:
   - label: Approved — Update Docs

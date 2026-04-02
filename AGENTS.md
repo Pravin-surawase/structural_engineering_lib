@@ -73,7 +73,7 @@ UI/IO        → react_app/, fastapi_app/
 ```bash
 ls react_app/src/hooks/                                         # Existing React hooks
 grep -r "@router" fastapi_app/routers/ | head -30               # Existing API routes
-grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23 functions)
+grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (32 functions)
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names (b_mm not width)
 .venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (83 mapped)
 ```

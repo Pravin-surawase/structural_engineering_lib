@@ -151,8 +151,8 @@ Comprehensive testing of all 11 VS Code Copilot agents + Explore subagent agains
 **Task:** Cross-check all numbers in agent-bootstrap.md.
 
 **Result:** 4 stale numbers:
-- Line 566: 9 agents → 11 agents
-- Line 580: 4 skills → 6 skills
+- Line 566: 9 agents → 15 agents
+- Line 580: 4 skills → 9 skills
 - Line 589: 8 prompts → 13 prompts
 - Line 159: 23+6 functions → 20+9 functions
 

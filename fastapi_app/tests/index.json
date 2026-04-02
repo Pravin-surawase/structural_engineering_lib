@@ -2,8 +2,8 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-03-29",
-  "file_count": 10,
+  "last_updated": "2026-04-02",
+  "file_count": 15,
   "files": [
     {
       "name": "README.md",
@@ -64,7 +64,7 @@
       "name": "test_auth.py",
       "type": "python",
       "size_lines": 243,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Tests for Authentication and Rate Limiting.",
       "classes": [
         {
@@ -108,7 +108,205 @@
           "description": "Dev token helper should create valid token."
         }
       ],
-      "content_hash": "c503fd50c283"
+      "content_hash": "576ef6b0053b"
+    },
+    {
+      "name": "test_column_additional_moment.py",
+      "type": "python",
+      "size_lines": 202,
+      "last_updated": "2026-04-02",
+      "description": "Tests for POST /api/v1/design/column/additional-moment endpoint.",
+      "classes": [
+        {
+          "name": "TestAdditionalMomentEndpoint",
+          "description": "FastAPI endpoint tests for additional moment (Cl 39.7.1).",
+          "public_methods": [
+            "test_happy_path_200",
+            "test_response_has_all_fields",
+            "test_short_column_zero_moment",
+            "test_zero_pu_returns_zero",
+            "test_invalid_D_422",
+            "test_negative_pu_422",
+            "test_clause_ref_present",
+            "test_k_factor_in_response"
+          ]
+        }
+      ],
+      "constants": [
+        "URL"
+      ],
+      "content_hash": "e48fd1fd90df"
+    },
+    {
+      "name": "test_column_biaxial.py",
+      "type": "python",
+      "size_lines": 181,
+      "last_updated": "2026-04-01",
+      "description": "Tests for POST /api/v1/design/column/biaxial-check endpoint.",
+      "classes": [
+        {
+          "name": "TestBiaxialCheckHappyPath",
+          "description": "Tests for successful biaxial bending checks.",
+          "public_methods": [
+            "test_safe_case_returns_200",
+            "test_safe_case_is_safe",
+            "test_safe_case_response_fields",
+            "test_safe_case_clause_ref",
+            "test_safe_case_capacities_positive",
+            "test_alpha_n_range",
+            "test_echoes_input_loads"
+          ]
+        },
+        {
+          "name": "TestBiaxialCheckUnsafe",
+          "description": "Tests for unsafe biaxial cases (interaction_ratio > 1.0).",
+          "public_methods": [
+            "test_overloaded_column_unsafe"
+          ]
+        },
+        {
+          "name": "TestBiaxialCheckEdgeCases",
+          "description": "Edge cases: zero moments, slender column, optional params.",
+          "public_methods": [
+            "test_zero_moments",
+            "test_slender_column_warnings",
+            "test_with_l_unsupported",
+            "test_without_l_unsupported"
+          ]
+        },
+        {
+          "name": "TestBiaxialCheckValidation",
+          "description": "Tests for input validation (422 responses).",
+          "public_methods": [
+            "test_missing_required_field",
+            "test_negative_dimension",
+            "test_zero_dimension",
+            "test_fck_below_minimum",
+            "test_fy_above_maximum",
+            "test_negative_Pu",
+            "test_empty_body"
+          ]
+        }
+      ],
+      "constants": [
+        "ENDPOINT",
+        "SAFE_PAYLOAD"
+      ],
+      "content_hash": "998a9d5fa346"
+    },
+    {
+      "name": "test_column_effective_length.py",
+      "type": "python",
+      "size_lines": 168,
+      "last_updated": "2026-04-01",
+      "description": "Tests for POST /api/v1/design/column/effective-length endpoint.",
+      "classes": [
+        {
+          "name": "TestEffectiveLengthHappyPath",
+          "description": "Tests for successful effective length calculations.",
+          "public_methods": [
+            "test_fixed_fixed_recommended",
+            "test_hinged_hinged_recommended",
+            "test_fixed_free_cantilever",
+            "test_theoretical_values",
+            "test_fixed_hinged",
+            "test_response_contains_all_fields"
+          ]
+        },
+        {
+          "name": "TestEffectiveLengthValidation",
+          "description": "Tests for input validation and error handling.",
+          "public_methods": [
+            "test_invalid_end_condition_returns_422",
+            "test_l_mm_zero_returns_422",
+            "test_l_mm_negative_returns_422",
+            "test_l_mm_too_large_returns_422",
+            "test_missing_required_fields_returns_422",
+            "test_default_use_theoretical_is_false"
+          ]
+        }
+      ],
+      "constants": [
+        "ENDPOINT"
+      ],
+      "content_hash": "253d891a9295"
+    },
+    {
+      "name": "test_column_pm_interaction.py",
+      "type": "python",
+      "size_lines": 104,
+      "last_updated": "2026-04-01",
+      "description": "Tests for POST /api/v1/design/column/interaction-curve endpoint.",
+      "classes": [
+        {
+          "name": "TestPMInteractionCurveHappyPath",
+          "description": "Tests for successful P-M interaction curve generation.",
+          "public_methods": [
+            "test_pm_interaction_curve_valid",
+            "test_pm_interaction_curve_custom_n_points"
+          ]
+        },
+        {
+          "name": "TestPMInteractionCurveValidation",
+          "description": "Tests for Pydantic input validation (422 errors).",
+          "public_methods": [
+            "test_pm_interaction_curve_invalid_dimensions",
+            "test_pm_interaction_curve_invalid_fck",
+            "test_pm_interaction_curve_invalid_n_points",
+            "test_pm_interaction_curve_missing_required_field",
+            "test_pm_interaction_curve_d_prime_too_large"
+          ]
+        }
+      ],
+      "constants": [
+        "ENDPOINT",
+        "VALID_REQUEST"
+      ],
+      "content_hash": "ea1fb2cddeab"
+    },
+    {
+      "name": "test_column_uniaxial.py",
+      "type": "python",
+      "size_lines": 141,
+      "last_updated": "2026-04-01",
+      "description": "Tests for POST /api/v1/design/column/uniaxial endpoint.",
+      "classes": [
+        {
+          "name": "TestColumnUniaxialHappyPath",
+          "description": "Tests for successful design calculations.",
+          "public_methods": [
+            "test_safe_design_returns_200",
+            "test_response_contains_all_fields",
+            "test_eccentricity_values",
+            "test_without_l_unsupported",
+            "test_pure_bending_pu_zero"
+          ]
+        },
+        {
+          "name": "TestColumnUniaxialUnsafe",
+          "description": "Tests for designs that exceed capacity.",
+          "public_methods": [
+            "test_overloaded_column_returns_ok_false"
+          ]
+        },
+        {
+          "name": "TestColumnUniaxialValidation",
+          "description": "Tests for Pydantic input validation (422 errors).",
+          "public_methods": [
+            "test_negative_moment_rejected",
+            "test_width_too_small_rejected",
+            "test_width_too_large_rejected",
+            "test_fck_out_of_range_rejected",
+            "test_missing_required_field",
+            "test_zero_effective_length_rejected"
+          ]
+        }
+      ],
+      "constants": [
+        "ENDPOINT",
+        "SAFE_REQUEST"
+      ],
+      "content_hash": "a91768dd8e22"
     },
     {
       "name": "test_endpoints.py",
@@ -375,7 +573,7 @@
       "name": "test_security.py",
       "type": "python",
       "size_lines": 407,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-31",
       "description": "Security Tests for FastAPI Application.",
       "classes": [
         {
@@ -457,7 +655,7 @@
           "description": "Create an expired JWT token."
         }
       ],
-      "content_hash": "456369527046"
+      "content_hash": "54c3b9f9c730"
     },
     {
       "name": "test_streaming.py",
@@ -513,6 +711,6 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d740cbf6b358340f",
+  "content_hash": "255808e4d8cfc68a",
   "has_init": true
 }

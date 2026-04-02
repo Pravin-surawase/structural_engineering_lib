@@ -2,49 +2,48 @@
   "folder": "docs",
   "type": "documentation",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
-  "last_updated": "2026-03-29",
+  "last_updated": "2026-04-02",
   "file_count": 6,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 254,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-30",
       "title": "Docs Index (Start Here)",
       "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
-      "content_hash": "6ae88763c863"
+      "content_hash": "e7b381269418"
     },
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 10330,
-      "last_updated": "2026-03-28",
+      "size_lines": 111,
+      "last_updated": "2026-04-02",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Tested all 11 custom agents against real project tasks — overall score 8.7/10 (up from 8.2)",
-      "content_hash": "78c987f1c885"
+      "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
+      "content_hash": "bf8dbf3fd7ee"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 158,
-      "last_updated": "2026-03-29",
+      "size_lines": 325,
+      "last_updated": "2026-04-02",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "09b9b970deb3"
+      "content_hash": "b36e2b513e2b"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
-      "size_lines": 76,
-      "last_updated": "2026-03-29",
-      "title": "Work Log",
+      "size_lines": 167,
+      "last_updated": "2026-04-02",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
-      "content_hash": "5582e7fcf5a7"
+      "content_hash": "a3c0d8f354d6"
     },
     {
       "name": "docs-canonical.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-02",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -53,12 +52,12 @@
         "naming_conventions",
         "forbidden_patterns"
       ],
-      "content_hash": "c3d8ef675908"
+      "content_hash": "c57ccaa9d92f"
     },
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-30",
       "top_level_keys": [
         "version",
         "generated",
@@ -66,7 +65,7 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "c9ff74817023"
+      "content_hash": "8eab3a588f60"
     }
   ],
   "subfolders": [
@@ -83,9 +82,14 @@
       "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly."
     },
     {
+      "name": "api-reference",
+      "path": "api-reference/",
+      "file_count": 1
+    },
+    {
       "name": "architecture",
       "path": "architecture/",
-      "file_count": 14,
+      "file_count": 15,
       "description": "Deep dives into project structure, design decisions, and system architecture."
     },
     {
@@ -129,6 +133,11 @@
       "file_count": 2
     },
     {
+      "name": "governance",
+      "path": "governance/",
+      "file_count": 1
+    },
+    {
       "name": "guidelines",
       "path": "guidelines/",
       "file_count": 17
@@ -160,12 +169,12 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 48
+      "file_count": 10
     },
     {
       "name": "publications",
       "path": "publications/",
-      "file_count": 10,
+      "file_count": 11,
       "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineeri"
     },
     {
@@ -176,7 +185,7 @@
     {
       "name": "research",
       "path": "research/",
-      "file_count": 2
+      "file_count": 3
     },
     {
       "name": "specs",
@@ -191,5 +200,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "ef9ebe6dbcccb1c8"
+  "content_hash": "70e6cc7ed5237d0f"
 }

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-04-02
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,13 +14,13 @@ tags: []
 **Status:** Approved
 **Importance:** High
 **Created:** 2026-03-27
-**Last Updated:** 2026-03-27
+**Last Updated:** 2026-04-02
 
 ---
 
 ## Quick Overview
 
-You have **9 agents**, **4 skills**, and **9 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one.
+You have **15 agents**, **9 skills**, and **15 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one.
 
 ### How to invoke
 
@@ -32,7 +32,7 @@ You have **9 agents**, **4 skills**, and **9 prompt files** configured in VS Cod
 
 ---
 
-## The 9 Agents — When to Use Each
+## The 15 Agents — When to Use Each
 
 ### Start Here: `@orchestrator`
 
@@ -150,6 +150,94 @@ The orchestrator will:
 
 ---
 
+### Governance: `@governance`
+
+**Use when:** Checking project health, maintenance metrics, enforcing standards.
+
+```
+@governance run a project health check
+@governance validate folder conventions
+@governance check doc budget
+```
+
+**It knows about:** Doc budget, folder structure conventions, project health scoring, maintenance tasks.
+
+---
+
+### Security: `@security`
+
+**Use when:** Auditing for OWASP vulnerabilities, scanning dependencies, reviewing auth.
+
+```
+@security audit the FastAPI routers for injection vulnerabilities
+@security scan dependencies for known CVEs
+@security review the auth middleware
+```
+
+**It knows about:** OWASP Top 10, dependency scanning, security best practices, permission enforcement.
+
+> **Read-only** — it audits and advises but doesn't edit code. It hands off to `@backend` for fixes.
+
+---
+
+### Library Expert: `@library-expert`
+
+**Use when:** Need IS 456 domain expertise, professional engineering standards, or library design guidance.
+
+```
+@library-expert what does IS 456 Cl 26.5.1.1 require for minimum reinforcement?
+@library-expert review the API design for the new column module
+@library-expert compare our deflection approach vs SP:16 recommendations
+```
+
+**It knows about:** IS 456:2000 in depth, SP:16, professional structural engineering practice, library API design.
+
+> **Read-only** — it advises but doesn't edit code. It hands off to `@backend` or `@structural-engineer`.
+
+---
+
+### Agent Evolver: `@agent-evolver`
+
+**Use when:** Improving agent instructions, detecting drift, scoring agent performance.
+
+```
+@agent-evolver score all agents and detect instruction drift
+@agent-evolver propose improvements for the backend agent
+@agent-evolver run weekly auto-maintenance review
+```
+
+**It knows about:** Agent registry, instruction evolution, performance scoring, drift detection.
+
+---
+
+### Structural Math: `@structural-math`
+
+**Use when:** Adding new IS 456 pure math modules, core types, or new structural elements.
+
+```
+@structural-math implement the column interaction curve calculation
+@structural-math add torsion design per IS 456 Cl 41
+@structural-math create the footing core types
+```
+
+**It knows about:** 4-layer architecture (codes layer), pure math implementation, IS 456 formulas, units rules.
+
+---
+
+### Tester: `@tester`
+
+**Use when:** Creating tests, improving coverage, running benchmarks.
+
+```
+@tester add tests for the new deflection check function
+@tester check coverage for the shear module
+@tester create benchmark tests against SP:16 examples
+```
+
+**It knows about:** pytest setup, test patterns, IS 456 benchmarks, coverage requirements (85% branch).
+
+---
+
 ### Ops: `@ops`
 
 **Use when:** Git issues, Docker problems, CI/CD, environment setup.
@@ -164,7 +252,7 @@ The orchestrator will:
 
 ---
 
-## The 4 Skills — Quick Actions
+## The 9 Skills — Quick Actions
 
 Skills are shortcuts for common tasks. Use them inline in any chat.
 
@@ -202,23 +290,70 @@ Run IS 456 compliance tests by category:
 /is456-verification full regression
 ```
 
+### `/react-validation`
+
+Run React build, lint, type-check, and test validation:
+```
+/react-validation run full check
+/react-validation check types only
+```
+
+### `/agent-evolution`
+
+Run self-evolution cycle — score agents, detect drift, propose improvements:
+```
+/agent-evolution score all agents
+/agent-evolution detect drift
+/agent-evolution weekly review
+```
+
+### `/new-structural-element`
+
+Step-by-step workflow for adding a new structural element:
+```
+/new-structural-element add column design
+/new-structural-element add footing design
+```
+
+### `/function-quality-pipeline`
+
+Mandatory 9-step quality pipeline for every new IS 456 function:
+```
+/function-quality-pipeline check design_singly_reinforced
+/function-quality-pipeline run full pipeline
+```
+
+### `/architecture-check`
+
+Validate 4-layer architecture boundaries and import direction:
+```
+/architecture-check validate imports
+/architecture-check check for duplication
+```
+
 ---
 
-## The 9 Prompt Files — Workflow Templates
+## The 15 Prompt Files — Workflow Templates
 
 Prompt files are reusable workflow templates. Reference them with `#`.
 
 | Prompt | When to Use | Example |
-|--------|-------------|---------|
+|--------|-------------|--------|
 | `#new-feature` | Starting any new feature | `#new-feature add deflection check` |
 | `#bug-fix` | Fixing a bug | `#bug-fix shear design returns wrong stirrup spacing` |
 | `#code-review` | Reviewing changes | `#code-review check my PR` |
 | `#add-api-endpoint` | Adding a FastAPI route | `#add-api-endpoint POST /analysis/deflection` |
+| `#add-is456-clause` | Implementing an IS 456 clause | `#add-is456-clause implement Cl 41 torsion` |
+| `#add-structural-element` | New structural element workflow | `#add-structural-element add column design` |
+| `#function-quality-gate` | IS 456 function quality gate (9-step) | `#function-quality-gate check_deflection` |
+| `#fix-test-failure` | Diagnosing and fixing test failures | `#fix-test-failure test_shear_design fails` |
+| `#performance-optimization` | Profile, optimize, benchmark | `#performance-optimization optimize beam pipeline` |
 | `#session-start` | Beginning a session | `#session-start` |
 | `#session-end` | Ending a session | `#session-end` |
 | `#file-move` | Moving/renaming files | `#file-move old_module.py to services/` |
 | `#is456-verify` | Checking formulas | `#is456-verify verify Cl 38.1 flexure` |
 | `#context-recovery` | Resuming after context overflow | `#context-recovery` |
+| `#master-workflow` | Master workflow orchestration | `#master-workflow plan full feature delivery` |
 
 ---
 
@@ -317,15 +452,21 @@ You can also manually invoke agents at any point — you're not locked into the 
 
 ```
 AGENTS:      @orchestrator  @frontend  @backend  @api-developer
-             @structural-engineer  @reviewer  @ui-designer
-             @doc-master  @ops
+             @structural-math  @structural-engineer  @reviewer
+             @ui-designer  @doc-master  @ops  @governance
+             @security  @library-expert  @agent-evolver  @tester
 
-SKILLS:      /session-management  /api-discovery
-             /safe-file-ops  /is456-verification
+SKILLS:      /session-management  /api-discovery  /safe-file-ops
+             /is456-verification  /react-validation  /agent-evolution
+             /new-structural-element  /function-quality-pipeline
+             /architecture-check
 
 PROMPTS:     #new-feature  #bug-fix  #code-review  #add-api-endpoint
-             #session-start  #session-end  #file-move  #is456-verify
-             #context-recovery
+             #add-is456-clause  #add-structural-element
+             #function-quality-gate  #fix-test-failure
+             #performance-optimization  #session-start  #session-end
+             #file-move  #is456-verify  #context-recovery
+             #master-workflow
 
 GIT:         ./scripts/ai_commit.sh "type: message"    (ALWAYS)
 PR:          ./run.sh pr status → ./run.sh pr create    (when required)

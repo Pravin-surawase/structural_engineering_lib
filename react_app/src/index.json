@@ -2,8 +2,8 @@
   "folder": "react_app/src",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-03-29",
-  "file_count": 5,
+  "last_updated": "2026-04-02",
+  "file_count": 6,
   "files": [
     {
       "name": "App.css",
@@ -16,9 +16,21 @@
       "name": "App.tsx",
       "type": "react-component",
       "size_lines": 147,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-03-30",
       "description": "Structural Engineering App",
-      "content_hash": "14dee778674b"
+      "content_hash": "d8a83df7623e"
+    },
+    {
+      "name": "config.ts",
+      "type": "typescript",
+      "size_lines": 17,
+      "last_updated": "2026-03-30",
+      "exports": [
+        "API_BASE_URL",
+        "WS_BASE_URL"
+      ],
+      "description": "Centralized API configuration.",
+      "content_hash": "10386e2863ae"
     },
     {
       "name": "index.css",
@@ -56,7 +68,7 @@
     {
       "name": "components",
       "path": "components/",
-      "file_count": 42
+      "file_count": 44
     },
     {
       "name": "hooks",
@@ -89,5 +101,5 @@
       "file_count": 5
     }
   ],
-  "content_hash": "084932f624c12bbf"
+  "content_hash": "d06386c6f0042d4b"
 }

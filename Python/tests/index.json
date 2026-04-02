@@ -2,8 +2,8 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-03-29",
-  "file_count": 20,
+  "last_updated": "2026-04-02",
+  "file_count": 34,
   "files": [
     {
       "name": "README.md",
@@ -91,6 +91,101 @@
       "content_hash": "5bb1f0f94b11"
     },
     {
+      "name": "test_api_surface_snapshot.py",
+      "type": "python",
+      "size_lines": 120,
+      "last_updated": "2026-04-02",
+      "description": "Snapshot regression tests — assert minimum API surface counts.",
+      "classes": [
+        {
+          "name": "TestAutomationMapSurface",
+          "description": "Ensure automation-map.json doesn't lose scripts.",
+          "public_methods": [
+            "test_minimum_script_count",
+            "test_all_scripts_have_group"
+          ]
+        },
+        {
+          "name": "TestAgentRegistrySurface",
+          "description": "Ensure agent_registry.json doesn't lose agents.",
+          "public_methods": [
+            "test_minimum_agent_count",
+            "test_required_agent_fields",
+            "test_known_agents_present"
+          ]
+        },
+        {
+          "name": "TestOpenAPIBaselineSurface",
+          "description": "Ensure OpenAPI baseline doesn't lose endpoints.",
+          "public_methods": [
+            "test_baseline_exists",
+            "test_minimum_endpoint_count"
+          ]
+        },
+        {
+          "name": "TestPythonTestSurface",
+          "description": "Ensure test count doesn't decrease.",
+          "public_methods": [
+            "test_minimum_test_file_count",
+            "test_stats_file_exists"
+          ]
+        },
+        {
+          "name": "TestAgentMDFilesSurface",
+          "description": "Ensure all 15 agent .md files exist.",
+          "public_methods": [
+            "test_all_agent_files_exist"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "18f0515a54af"
+    },
+    {
+      "name": "test_assertion_helpers.py",
+      "type": "python",
+      "size_lines": 80,
+      "last_updated": "2026-03-30",
+      "description": "Tests for the IS 456 test assertion helpers.",
+      "classes": [
+        {
+          "name": "TestAssertCapacityExceedsDemand",
+          "public_methods": [
+            "test_capacity_greater_passes",
+            "test_capacity_equal_passes",
+            "test_capacity_less_fails",
+            "test_label_in_message",
+            "test_utilization_ratio_in_message"
+          ]
+        },
+        {
+          "name": "TestAssertSpacingValid",
+          "public_methods": [
+            "test_valid_spacing",
+            "test_spacing_at_limit",
+            "test_spacing_exceeds_300_fails",
+            "test_spacing_exceeds_075d_fails",
+            "test_zero_spacing_fails",
+            "test_negative_spacing_fails",
+            "test_label_in_message"
+          ]
+        },
+        {
+          "name": "TestAssertDimensionsPositive",
+          "public_methods": [
+            "test_all_positive_passes",
+            "test_zero_fails",
+            "test_negative_fails",
+            "test_single_dim",
+            "test_single_dim_negative"
+          ]
+        }
+      ],
+      "content_hash": "edcd0fb5b2d7"
+    },
+    {
       "name": "test_audit.py",
       "type": "python",
       "size_lines": 468,
@@ -163,6 +258,32 @@
         }
       ],
       "content_hash": "3525592018ee"
+    },
+    {
+      "name": "test_boq.py",
+      "type": "python",
+      "size_lines": 190,
+      "last_updated": "2026-03-31",
+      "description": "Tests for the BOQ (Bill of Quantities) aggregation module.",
+      "classes": [
+        {
+          "name": "TestAggregateProjectBOQ",
+          "description": "Tests for aggregate_project_boq function.",
+          "public_methods": [
+            "test_single_beam_basic",
+            "test_concrete_volume_calculation",
+            "test_steel_cost_calculation",
+            "test_multiple_beams_aggregation",
+            "test_story_grouping",
+            "test_empty_input_returns_empty_schedule",
+            "test_custom_concrete_costs",
+            "test_multiple_steel_grades",
+            "test_default_concrete_costs_used",
+            "test_project_name_default"
+          ]
+        }
+      ],
+      "content_hash": "5b94d7b3d0bd"
     },
     {
       "name": "test_calculation_report.py",
@@ -402,6 +523,209 @@
       "content_hash": "18e8d70d45a0"
     },
     {
+      "name": "test_column_axial.py",
+      "type": "python",
+      "size_lines": 273,
+      "last_updated": "2026-04-01",
+      "description": "Tests for column axial module — effective_length() per IS 456 Table 28.",
+      "classes": [
+        {
+          "name": "TestEffectiveLengthRecommended",
+          "description": "Unit tests: effective_length with recommended values (default). IS 456 Table 28.",
+          "public_methods": [
+            "test_all_7_end_conditions",
+            "test_fixed_fixed_ratio",
+            "test_fixed_free_cantilever",
+            "test_hinged_hinged_identity"
+          ]
+        },
+        {
+          "name": "TestEffectiveLengthTheoretical",
+          "description": "Tests for use_theoretical=True mode. IS 456 Table 28.",
+          "public_methods": [
+            "test_all_7_end_conditions_theoretical",
+            "test_fixed_fixed_theoretical_lower_than_recommended",
+            "test_fixed_partial_fallback_to_recommended",
+            "test_hinged_partial_fallback_to_recommended"
+          ]
+        },
+        {
+          "name": "TestEffectiveLengthEdgeCases",
+          "description": "Edge cases for effective_length.",
+          "public_methods": [
+            "test_very_short_column",
+            "test_very_tall_column",
+            "test_very_small_positive_length",
+            "test_large_length_fixed_fixed_sway"
+          ]
+        },
+        {
+          "name": "TestEffectiveLengthDegenerate",
+          "description": "Degenerate inputs for effective_length.",
+          "public_methods": [
+            "test_zero_length_raises_dimension_error",
+            "test_negative_length_raises_dimension_error",
+            "test_large_negative_raises"
+          ]
+        },
+        {
+          "name": "TestEffectiveLengthIntegration",
+          "description": "Integration: effective_length -> classify_column.",
+          "public_methods": [
+            "test_fixed_fixed_3000mm_is_short",
+            "test_fixed_free_3000mm_is_slender",
+            "test_hinged_hinged_3000mm_boundary",
+            "test_fixed_hinged_short_column"
+          ]
+        },
+        {
+          "name": "TestEffectiveLengthParametrize",
+          "description": "Parametrized tests combining length, end condition, and mode.",
+          "public_methods": [
+            "test_le_equals_ratio_times_l",
+            "test_effective_length_always_positive",
+            "test_theoretical_le_recommended"
+          ]
+        }
+      ],
+      "constants": [
+        "_TABLE_28_RECOMMENDED",
+        "_TABLE_28_THEORETICAL"
+      ],
+      "content_hash": "8203709b38f0"
+    },
+    {
+      "name": "test_column_biaxial.py",
+      "type": "python",
+      "size_lines": 947,
+      "last_updated": "2026-04-01",
+      "description": "Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635.",
+      "classes": [
+        {
+          "name": "TestCalculatePuz",
+          "description": "Tests for _calculate_puz helper — IS 456 Cl 39.6a.",
+          "public_methods": [
+            "test_standard_case_300x500_m25_fe415",
+            "test_square_column_400x400_m25_fe415",
+            "test_m20_fe415",
+            "test_m30_fe500",
+            "test_m40_fe500",
+            "test_near_zero_reinforcement",
+            "test_max_reinforcement_6_percent",
+            "test_returns_kn_units"
+          ]
+        },
+        {
+          "name": "TestCalculateAlphaN",
+          "description": "Tests for _calculate_alpha_n helper — IS 456 Cl 39.6.",
+          "public_methods": [
+            "test_at_lower_boundary_0_2",
+            "test_at_upper_boundary_0_8",
+            "test_below_lower_boundary_clamped",
+            "test_above_upper_boundary_clamped",
+            "test_midpoint_0_5",
+            "test_interpolation_0_35",
+            "test_interpolation_0_65",
+            "test_small_load_ratio_0_1",
+            "test_high_load_ratio_0_9",
+            "test_puz_zero_returns_clamped"
+          ]
+        },
+        {
+          "name": "TestMomentAtAxialLoad",
+          "description": "Tests for _moment_at_axial_load — P-M curve interpolation.",
+          "public_methods": [
+            "simple_pm_curve",
+            "real_pm_curve",
+            "test_at_zero_load_returns_pure_bending",
+            "test_at_pure_axial_returns_zero",
+            "test_exceeds_pure_axial_returns_zero",
+            "test_negative_load_returns_pure_bending",
+            "test_midpoint_interpolation",
+            "test_balanced_point",
+            "test_empty_points_returns_zero",
+            "test_real_pm_curve_has_positive_capacity"
+          ]
+        },
+        {
+          "name": "TestBiaxialBendingCheck",
+          "description": "Tests for main biaxial_bending_check function — IS 456 Cl 39.6.",
+          "public_methods": [
+            "test_returns_column_biaxial_result",
+            "test_clearly_safe_loading",
+            "test_puz_computed_correctly",
+            "test_alpha_n_consistent_with_ratio",
+            "test_mux1_positive",
+            "test_muy1_positive",
+            "test_rectangular_column_mux1_ne_muy1",
+            "test_square_column_mux1_equals_muy1",
+            "test_interaction_ratio_formula",
+            "test_clause_ref"
+          ]
+        },
+        {
+          "name": "TestBiaxialEdgeCases",
+          "description": "Edge cases and degenerate inputs.",
+          "public_methods": [
+            "test_zero_moments_is_safe",
+            "test_uniaxial_x_only",
+            "test_uniaxial_y_only",
+            "test_pu_zero_pure_bending",
+            "test_pu_exceeds_puz_is_unsafe",
+            "test_pu_equals_puz_is_unsafe",
+            "test_small_eccentricity",
+            "test_l_unsupported_mm_accepted"
+          ]
+        },
+        {
+          "name": "TestBiaxialValidation",
+          "description": "Validation: invalid inputs should raise appropriate errors.",
+          "public_methods": [
+            "test_negative_b_mm_raises",
+            "test_zero_b_mm_raises",
+            "test_negative_d_mm_raises",
+            "test_zero_d_mm_raises",
+            "test_negative_le_mm_raises",
+            "test_zero_le_mm_raises",
+            "test_negative_fck_raises",
+            "test_zero_fck_raises",
+            "test_negative_fy_raises",
+            "test_zero_fy_raises"
+          ]
+        },
+        {
+          "name": "TestBiaxialIntegration",
+          "description": "Integration tests: biaxial uses classify_column and pm_interaction_curve.",
+          "public_methods": [
+            "test_classification_matches_standalone",
+            "test_mux1_matches_pm_curve_interpolation",
+            "test_muy1_matches_pm_curve_interpolation_swapped",
+            "test_full_pipeline_short_column",
+            "test_full_pipeline_slender_column"
+          ]
+        },
+        {
+          "name": "TestBiaxialStructuralBenchmarks",
+          "description": "Structural benchmark tests with hand-verified expectations.",
+          "public_methods": [
+            "test_safe_loading_300x500_moderate",
+            "test_high_loading_300x500_unsafe",
+            "test_alpha_n_at_ratio_0_5",
+            "test_interaction_ratio_monotonicity_increasing_mux",
+            "test_interaction_ratio_monotonicity_increasing_muy",
+            "test_higher_fck_gives_higher_puz",
+            "test_larger_section_is_safer",
+            "test_more_steel_reduces_ratio"
+          ]
+        }
+      ],
+      "constants": [
+        "_PUZ_CONCRETE_COEFF",
+        "_PUZ_STEEL_COEFF"
+      ],
+      "content_hash": "faac96a7580c"
+    },
+    {
       "name": "test_core.py",
       "type": "python",
       "size_lines": 176,
@@ -470,6 +794,142 @@
         }
       ],
       "content_hash": "3c775173337c"
+    },
+    {
+      "name": "test_core_types.py",
+      "type": "python",
+      "size_lines": 261,
+      "last_updated": "2026-03-31",
+      "description": "Tests for core types and error dataclasses.",
+      "classes": [
+        {
+          "name": "TestDesignError",
+          "description": "Tests for the DesignError structured error dataclass.",
+          "public_methods": [
+            "test_create_with_required_fields",
+            "test_create_with_all_fields",
+            "test_frozen_immutability",
+            "test_to_dict_required_only",
+            "test_to_dict_includes_optional_fields"
+          ]
+        },
+        {
+          "name": "TestSeverityEnum",
+          "description": "Tests for the Severity enum.",
+          "public_methods": [
+            "test_severity_values",
+            "test_severity_is_str_enum"
+          ]
+        },
+        {
+          "name": "TestPreDefinedErrors",
+          "description": "Tests for pre-defined error constants.",
+          "public_methods": [
+            "test_e_input_001",
+            "test_e_input_002",
+            "test_e_flexure_001",
+            "test_e_input_006_moment",
+            "test_predefined_are_frozen"
+          ]
+        },
+        {
+          "name": "TestMakeError",
+          "description": "Tests for the make_error factory function.",
+          "public_methods": [
+            "test_make_error_creates_design_error",
+            "test_make_error_with_optional_fields"
+          ]
+        },
+        {
+          "name": "TestDataTypeEnums",
+          "description": "Tests for enums in data_types module.",
+          "public_methods": [
+            "test_beam_type_values",
+            "test_design_section_type",
+            "test_support_condition",
+            "test_exposure_class",
+            "test_load_type"
+          ]
+        },
+        {
+          "name": "TestFlexureResult",
+          "description": "Tests for FlexureResult dataclass.",
+          "public_methods": [
+            "test_create_flexure_result"
+          ]
+        },
+        {
+          "name": "TestLoadDefinition",
+          "description": "Tests for LoadDefinition dataclass.",
+          "public_methods": [
+            "test_udl_load",
+            "test_point_load"
+          ]
+        },
+        {
+          "name": "TestTypesShim",
+          "description": "Tests for the types.py backward-compat shim.",
+          "public_methods": [
+            "test_shim_imports_match_data_types",
+            "test_shim_re_exports_multiple_names"
+          ]
+        }
+      ],
+      "content_hash": "c17ac5fc16e3"
+    },
+    {
+      "name": "test_dashboard.py",
+      "type": "python",
+      "size_lines": 259,
+      "last_updated": "2026-03-31",
+      "description": "Tests for the dashboard analytics module.",
+      "classes": [
+        {
+          "name": "TestGenerateDashboard",
+          "description": "Tests for generate_dashboard function.",
+          "public_methods": [
+            "test_empty_results_returns_zeroed_summary",
+            "test_single_passing_beam",
+            "test_single_failing_beam",
+            "test_pass_rate_calculation",
+            "test_utilization_stats",
+            "test_critical_beams_high_utilization",
+            "test_story_grouping",
+            "test_to_dict_format",
+            "test_warnings_counted"
+          ]
+        },
+        {
+          "name": "TestCodeChecksLive",
+          "description": "Tests for code_checks_live function.",
+          "public_methods": [
+            "test_basic_passing_beam",
+            "test_no_config_returns_result",
+            "test_narrow_beam_warning",
+            "test_to_dict_format"
+          ]
+        },
+        {
+          "name": "TestSuggestRebarOptions",
+          "description": "Tests for suggest_rebar_options function.",
+          "public_methods": [
+            "test_basic_suggestion",
+            "test_empty_beam_returns_result",
+            "test_to_dict_format"
+          ]
+        },
+        {
+          "name": "TestDashboardDataclasses",
+          "description": "Tests for dashboard dataclass to_dict methods.",
+          "public_methods": [
+            "test_dashboard_summary_default_values",
+            "test_dashboard_summary_to_dict_inf_handling",
+            "test_code_check_result_to_dict",
+            "test_rebar_suggestion_to_dict"
+          ]
+        }
+      ],
+      "content_hash": "035d8fe90a72"
     },
     {
       "name": "test_design_from_input.py",
@@ -790,6 +1250,159 @@
       "content_hash": "cc8768fba576"
     },
     {
+      "name": "test_is456_common.py",
+      "type": "python",
+      "size_lines": 537,
+      "last_updated": "2026-04-01",
+      "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
+      "classes": [
+        {
+          "name": "TestConcreteCompressiveForce",
+          "description": "Tests for concrete_compressive_force() - IS 456 Cl. 38.1.",
+          "public_methods": [
+            "test_standard_values",
+            "test_uses_stress_block_factor",
+            "test_zero_xu_gives_zero_force",
+            "test_higher_fck_gives_higher_force"
+          ]
+        },
+        {
+          "name": "TestConcreteMomentCapacity",
+          "description": "Tests for concrete_moment_capacity() - IS 456 Cl. 38.1.",
+          "public_methods": [
+            "test_standard_values",
+            "test_uses_both_constants",
+            "test_zero_xu_gives_zero_moment",
+            "test_moment_increases_with_depth"
+          ]
+        },
+        {
+          "name": "TestFlangeCompressiveForce",
+          "description": "Tests for flange_compressive_force() - IS 456 Annex G.",
+          "public_methods": [
+            "test_standard_values",
+            "test_bf_equals_bw_gives_zero",
+            "test_zero_yf_gives_zero",
+            "test_wider_flange_gives_higher_force"
+          ]
+        },
+        {
+          "name": "TestDesignSteelStress",
+          "description": "Tests for design_steel_stress() - IS 456 Cl. 36.1.",
+          "public_methods": [
+            "test_fe415",
+            "test_fe500",
+            "test_fe250",
+            "test_uses_stress_ratio"
+          ]
+        },
+        {
+          "name": "TestSteelForce",
+          "description": "Tests for steel_force().",
+          "public_methods": [
+            "test_standard_values",
+            "test_zero_area_gives_zero_force",
+            "test_uses_stress_ratio"
+          ]
+        },
+        {
+          "name": "TestMinSteelArea",
+          "description": "Tests for min_steel_area() - IS 456 Cl. 26.5.1.1.",
+          "public_methods": [
+            "test_standard_values",
+            "test_higher_fy_gives_less_min_steel",
+            "test_fy_zero_raises",
+            "test_fy_negative_raises"
+          ]
+        },
+        {
+          "name": "TestMaxSteelArea",
+          "description": "Tests for max_steel_area() - IS 456 Cl. 26.5.1.1.",
+          "public_methods": [
+            "test_standard_values",
+            "test_uses_max_steel_ratio",
+            "test_wider_beam_more_max_steel"
+          ]
+        },
+        {
+          "name": "TestValidateBeamDimensions",
+          "description": "Tests for validate_beam_dimensions().",
+          "public_methods": [
+            "test_valid_dimensions_no_raise",
+            "test_zero_width_raises",
+            "test_negative_depth_raises",
+            "test_both_invalid_catches_width_first",
+            "test_custom_label_in_error",
+            "test_very_small_positive_ok"
+          ]
+        },
+        {
+          "name": "TestValidateMaterialGrades",
+          "description": "Tests for validate_material_grades().",
+          "public_methods": [
+            "test_valid_grades_no_raise",
+            "test_zero_fck_raises",
+            "test_zero_fy_raises",
+            "test_negative_fck_raises",
+            "test_negative_fy_raises",
+            "test_non_standard_positive_grades_ok",
+            "test_both_invalid_catches_fck_first"
+          ]
+        },
+        {
+          "name": "TestSteelStress5Point",
+          "description": "Tests for steel_stress_from_strain_5point() — IS 456 Fig. 23 / SP:16 Table F.",
+          "public_methods": [
+            "test_fe415_all_5_points",
+            "test_fe415_point1_exact_values",
+            "test_fe415_point5_exact_values",
+            "test_zero_strain_gives_zero",
+            "test_very_large_strain_gives_yield_plateau",
+            "test_strain_at_yield_plateau",
+            "test_strain_exactly_at_point1_boundary",
+            "test_strain_just_below_point1",
+            "test_very_small_strain_elastic",
+            "test_interpolation_between_point2_and_point3_fe415"
+          ]
+        }
+      ],
+      "constants": [
+        "_ES",
+        "_FE415_FYD",
+        "_FE415_POINTS",
+        "_FE500_FYD",
+        "_FE500_POINT1",
+        "_FE500_POINT5"
+      ],
+      "content_hash": "8e451160806a"
+    },
+    {
+      "name": "test_is456_constants.py",
+      "type": "python",
+      "size_lines": 163,
+      "last_updated": "2026-03-30",
+      "description": "Tests for IS 456:2000 named design constants.",
+      "classes": [
+        {
+          "name": "TestIS456Constants",
+          "description": "GOLDEN: IS 456:2000 constant values - never delete these tests.",
+          "public_methods": [
+            "test_stress_ratio",
+            "test_stress_block_factor",
+            "test_stress_block_depth",
+            "test_stress_block_peak",
+            "test_xu_max_numerator",
+            "test_xu_max_denom_base",
+            "test_flange_stress_factor",
+            "test_min_steel_factor",
+            "test_max_steel_ratio",
+            "test_max_spacing_factor"
+          ]
+        }
+      ],
+      "content_hash": "b30e404c43d1"
+    },
+    {
       "name": "test_multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 319,
@@ -841,6 +1454,322 @@
         }
       ],
       "content_hash": "2c69faffb29d"
+    },
+    {
+      "name": "test_numerics.py",
+      "type": "python",
+      "size_lines": 136,
+      "last_updated": "2026-03-30",
+      "description": "Tests for structural_lib.core.numerics - safe arithmetic utilities.",
+      "classes": [
+        {
+          "name": "TestSafeDivide",
+          "description": "Tests for safe_divide().",
+          "public_methods": [
+            "test_normal_division",
+            "test_division_by_zero_returns_default",
+            "test_division_by_near_zero_returns_default",
+            "test_custom_default",
+            "test_zero_numerator",
+            "test_both_zero",
+            "test_negative_numerator",
+            "test_negative_denominator_near_zero",
+            "test_denominator_exactly_at_threshold",
+            "test_large_values"
+          ]
+        },
+        {
+          "name": "TestApproxEqual",
+          "description": "Tests for approx_equal().",
+          "public_methods": [
+            "test_exactly_equal",
+            "test_close_within_default_tolerance",
+            "test_not_close",
+            "test_custom_rel_tol",
+            "test_zero_comparison_default_tol",
+            "test_zero_comparison_with_abs_tol",
+            "test_negative_close"
+          ]
+        },
+        {
+          "name": "TestClamp",
+          "description": "Tests for clamp().",
+          "public_methods": [
+            "test_within_range",
+            "test_below_range",
+            "test_above_range",
+            "test_at_lower_boundary",
+            "test_at_upper_boundary",
+            "test_invalid_range_raises",
+            "test_single_point_range",
+            "test_single_point_range_value_outside"
+          ]
+        },
+        {
+          "name": "TestZeroThreshold",
+          "description": "Verify ZERO_THRESHOLD constant.",
+          "public_methods": [
+            "test_value"
+          ]
+        }
+      ],
+      "content_hash": "cf64f7cbac36"
+    },
+    {
+      "name": "test_pipeline_state.py",
+      "type": "python",
+      "size_lines": 351,
+      "last_updated": "2026-04-02",
+      "description": "Tests for scripts/pipeline_state.py — Pipeline step tracking + resume.",
+      "classes": [
+        {
+          "name": "TestCreatePipeline",
+          "description": "Tests for create_pipeline.",
+          "public_methods": [
+            "test_create_with_default_steps",
+            "test_create_with_custom_steps",
+            "test_create_generates_unique_id"
+          ]
+        },
+        {
+          "name": "TestSaveLoad",
+          "description": "Tests for _save_pipeline and get_pipeline.",
+          "public_methods": [
+            "test_save_and_load_round_trip",
+            "test_load_missing_pipeline_raises",
+            "test_load_invalid_json"
+          ]
+        },
+        {
+          "name": "TestStepProgression",
+          "description": "Tests for advance_step through the pipeline.",
+          "public_methods": [
+            "test_advance_single_step",
+            "test_advance_all_steps_completes_pipeline",
+            "test_advance_completed_pipeline_raises"
+          ]
+        },
+        {
+          "name": "TestFailStep",
+          "description": "Tests for fail_step.",
+          "public_methods": [
+            "test_fail_marks_step_and_pipeline",
+            "test_fail_on_completed_pipeline_raises",
+            "test_advance_failed_pipeline_raises"
+          ]
+        },
+        {
+          "name": "TestPathTraversal",
+          "description": "Ensure path traversal attacks are rejected.",
+          "public_methods": [
+            "test_validate_id_rejects_traversal",
+            "test_get_pipeline_rejects_traversal",
+            "test_save_pipeline_rejects_traversal",
+            "test_valid_pipeline_ids_accepted"
+          ]
+        },
+        {
+          "name": "TestResumeContext",
+          "description": "Tests for resume_context.",
+          "public_methods": [
+            "test_resume_running_pipeline",
+            "test_resume_completed_pipeline",
+            "test_resume_failed_pipeline"
+          ]
+        },
+        {
+          "name": "TestListPipelines",
+          "description": "Tests for list_pipelines.",
+          "public_methods": [
+            "test_list_empty",
+            "test_list_returns_pipelines",
+            "test_list_filters_by_status"
+          ]
+        }
+      ],
+      "constants": [
+        "_REPO_ROOT"
+      ],
+      "content_hash": "bfbf8adba8f8"
+    },
+    {
+      "name": "test_release_scripts.py",
+      "type": "python",
+      "size_lines": 340,
+      "last_updated": "2026-03-31",
+      "description": "Tests for release scripts (bump_version.py, release.py).",
+      "classes": [
+        {
+          "name": "TestBumpVersionCurrent",
+          "description": "Tests for the --current flag.",
+          "public_methods": [
+            "test_current_version"
+          ]
+        },
+        {
+          "name": "TestBumpVersionDryRun",
+          "description": "Tests for --dry-run ensuring no actual file changes.",
+          "public_methods": [
+            "test_dry_run_no_file_changes",
+            "test_dry_run_shows_would_update"
+          ]
+        },
+        {
+          "name": "TestBumpVersionValidation",
+          "description": "Tests for version format and ordering validation.",
+          "public_methods": [
+            "test_invalid_version_format",
+            "test_semver_ordering_rejects_downgrade",
+            "test_semver_ordering_force_override",
+            "test_equal_version_rejected"
+          ]
+        },
+        {
+          "name": "TestBumpVersionReport",
+          "description": "Tests for --report flag.",
+          "public_methods": [
+            "test_report_lists_expected_files"
+          ]
+        },
+        {
+          "name": "TestBumpVersionCheckDocs",
+          "description": "Tests for --check-docs flag.",
+          "public_methods": [
+            "test_check_docs_runs"
+          ]
+        },
+        {
+          "name": "TestBumpVersionSyncDocs",
+          "description": "Tests for --sync-docs --dry-run.",
+          "public_methods": [
+            "test_sync_docs_dry_run"
+          ]
+        },
+        {
+          "name": "TestBumpVersionPatternMatch",
+          "description": "Tests for pattern matching edge cases.",
+          "public_methods": [
+            "test_pattern_match_detection"
+          ]
+        },
+        {
+          "name": "TestReleaseHelp",
+          "description": "Tests for help output.",
+          "public_methods": [
+            "test_no_subcommand_prints_help",
+            "test_verify_help"
+          ]
+        },
+        {
+          "name": "TestReleasePreflight",
+          "description": "Tests for the preflight subcommand.",
+          "public_methods": [
+            "test_preflight_runs",
+            "test_preflight_with_version",
+            "test_preflight_detects_version_issues"
+          ]
+        },
+        {
+          "name": "TestReleaseCheckDocs",
+          "description": "Tests for the check-docs subcommand.",
+          "public_methods": [
+            "test_check_docs_command"
+          ]
+        },
+        {
+          "name": "TestReleaseRun",
+          "description": "Tests for the run subcommand.",
+          "public_methods": [
+            "test_run_dry_run",
+            "test_run_without_version"
+          ]
+        },
+        {
+          "name": "TestReleaseChecklist",
+          "description": "Tests for the checklist subcommand.",
+          "public_methods": [
+            "test_checklist_runs"
+          ]
+        },
+        {
+          "name": "TestEdgeCases",
+          "description": "Cross-cutting edge case tests.",
+          "public_methods": [
+            "test_concurrent_version_format_validation",
+            "test_scripts_exist",
+            "test_bump_no_args_shows_usage"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "run_script",
+          "description": "Run a script and return the result.",
+          "params": [
+            "script"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "PYTHON",
+        "BUMP_SCRIPT",
+        "RELEASE_SCRIPT",
+        "VERSION_TRACKED_FILES"
+      ],
+      "content_hash": "91c00a4ec349"
+    },
+    {
+      "name": "test_report_svg.py",
+      "type": "python",
+      "size_lines": 141,
+      "last_updated": "2026-03-31",
+      "description": "Tests for the SVG report generation module.",
+      "classes": [
+        {
+          "name": "TestRenderSectionSvg",
+          "description": "Tests for render_section_svg function.",
+          "public_methods": [
+            "test_basic_valid_section",
+            "test_invalid_zero_width",
+            "test_invalid_negative_depth",
+            "test_with_effective_depth",
+            "test_with_compression_cover",
+            "test_custom_dimensions",
+            "test_accessibility_attributes"
+          ]
+        },
+        {
+          "name": "TestRenderSectionSvgFromBeam",
+          "description": "Tests for render_section_svg_from_beam function.",
+          "public_methods": [
+            "test_valid_beam_dict",
+            "test_missing_dimensions",
+            "test_partial_beam_dict"
+          ]
+        },
+        {
+          "name": "TestHelperFunctions",
+          "description": "Tests for internal helper functions.",
+          "public_methods": [
+            "test_fmt_default_decimals",
+            "test_fmt_custom_decimals",
+            "test_safe_float_valid",
+            "test_safe_float_invalid",
+            "test_clamp_within_range",
+            "test_clamp_below_minimum",
+            "test_clamp_above_maximum"
+          ]
+        },
+        {
+          "name": "TestRenderErrorSvg",
+          "description": "Tests for _render_error_svg function.",
+          "public_methods": [
+            "test_error_svg_contains_message"
+          ]
+        }
+      ],
+      "content_hash": "f8115cf2755b"
     },
     {
       "name": "test_reports.py",
@@ -995,6 +1924,78 @@
         }
       ],
       "content_hash": "c91f8121885a"
+    },
+    {
+      "name": "test_session_store.py",
+      "type": "python",
+      "size_lines": 285,
+      "last_updated": "2026-04-02",
+      "description": "Tests for scripts/session_store.py — JSON session persistence.",
+      "classes": [
+        {
+          "name": "TestSessionStateDataclass",
+          "description": "Tests for SessionState creation and serialization.",
+          "public_methods": [
+            "test_create_session_state",
+            "test_to_dict_round_trip"
+          ]
+        },
+        {
+          "name": "TestSaveLoad",
+          "description": "Tests for save_session and load_session.",
+          "public_methods": [
+            "test_save_and_load",
+            "test_load_missing_session_raises",
+            "test_load_invalid_json"
+          ]
+        },
+        {
+          "name": "TestPathTraversal",
+          "description": "Ensure path traversal attacks are rejected.",
+          "public_methods": [
+            "test_validate_id_rejects_traversal",
+            "test_save_rejects_traversal_id",
+            "test_load_rejects_traversal_id",
+            "test_valid_ids_accepted"
+          ]
+        },
+        {
+          "name": "TestListSessions",
+          "description": "Tests for list_sessions.",
+          "public_methods": [
+            "test_list_empty",
+            "test_list_returns_sessions",
+            "test_list_respects_last_n"
+          ]
+        },
+        {
+          "name": "TestResumeContext",
+          "description": "Tests for resume_context.",
+          "public_methods": [
+            "test_resume_generates_context"
+          ]
+        },
+        {
+          "name": "TestEndSession",
+          "description": "Tests for end_session.",
+          "public_methods": [
+            "test_end_session_sets_timestamp",
+            "test_end_no_active_session_raises"
+          ]
+        },
+        {
+          "name": "TestGenerateSessionId",
+          "description": "Tests for generate_session_id.",
+          "public_methods": [
+            "test_first_session_is_s001",
+            "test_increments_from_last"
+          ]
+        }
+      ],
+      "constants": [
+        "_REPO_ROOT"
+      ],
+      "content_hash": "80df4895cc57"
     },
     {
       "name": "test_slenderness.py",
@@ -1360,6 +2361,12 @@
   ],
   "subfolders": [
     {
+      "name": "codes",
+      "path": "codes/",
+      "file_count": 7,
+      "is_package": true
+    },
+    {
       "name": "data",
       "path": "data/",
       "file_count": 5
@@ -1399,8 +2406,8 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 26
+      "file_count": 27
     }
   ],
-  "content_hash": "235f19e84d29d2a3"
+  "content_hash": "f6118198a25b6c92"
 }
