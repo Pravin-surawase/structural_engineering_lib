@@ -223,6 +223,7 @@ class DesignError:
         field: Input field that caused the error (optional)
         hint: Actionable suggestion to fix the error (optional)
         clause: IS 456 clause reference (optional)
+        recovery: Step-by-step recovery/fix instructions (optional)
     """
 
     code: str
@@ -231,6 +232,7 @@ class DesignError:
     field: str | None = None
     hint: str | None = None
     clause: str | None = None
+    recovery: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -245,6 +247,8 @@ class DesignError:
             result["hint"] = self.hint
         if self.clause:
             result["clause"] = self.clause
+        if self.recovery:
+            result["recovery"] = self.recovery
         return result
 
 
@@ -259,6 +263,7 @@ E_INPUT_001 = DesignError(
     message="b must be > 0",
     field="b",
     hint="Check beam width input.",
+    recovery="Provide beam width b > 0 mm. Typical rectangular beams: 200\u2013500 mm.",
 )
 
 E_INPUT_002 = DesignError(
@@ -267,6 +272,7 @@ E_INPUT_002 = DesignError(
     message="d must be > 0",
     field="d",
     hint="Check effective depth input.",
+    recovery="Provide effective depth d > 0 mm. d = D \u2212 cover \u2212 stirrup_dia \u2212 bar_dia/2.",
 )
 
 E_INPUT_003 = DesignError(
@@ -275,6 +281,7 @@ E_INPUT_003 = DesignError(
     message="d_total must be > d",
     field="d_total",
     hint="Ensure D > d + cover.",
+    recovery="Ensure overall depth D > effective depth d. D = d + cover + stirrup_dia + bar_dia/2.",
 )
 
 # Note: E_INPUT_003a is for d_total <= 0, E_INPUT_003 is for d_total <= d
@@ -284,6 +291,7 @@ E_INPUT_003a = DesignError(
     message="d_total must be > 0",
     field="d_total",
     hint="Check overall depth input.",
+    recovery="Provide overall depth D > 0 mm. Typical beams: 300\u2013900 mm.",
 )
 
 E_INPUT_004 = DesignError(
@@ -292,6 +300,7 @@ E_INPUT_004 = DesignError(
     message="fck must be > 0",
     field="fck",
     hint="Use valid concrete grade (15-80 N/mm²).",
+    recovery="Use standard IS 456 concrete grades: M15, M20, M25, M30, M35, M40 (fck = 15\u201340 N/mm\u00b2).",
 )
 
 E_INPUT_005 = DesignError(
@@ -300,6 +309,7 @@ E_INPUT_005 = DesignError(
     message="fy must be > 0",
     field="fy",
     hint="Use valid steel grade (250/415/500/550).",
+    recovery="Use standard IS 456 steel grades: Fe250, Fe415, Fe500, Fe550 (fy = 250/415/500/550 N/mm\u00b2).",
 )
 
 E_INPUT_006 = DesignError(
@@ -308,6 +318,7 @@ E_INPUT_006 = DesignError(
     message="Mu must be >= 0",
     field="Mu",
     hint="Check moment input sign.",
+    recovery="Provide non-negative factored moment Mu \u2265 0. For hogging, use absolute value.",
 )
 
 E_INPUT_007 = DesignError(
@@ -316,6 +327,7 @@ E_INPUT_007 = DesignError(
     message="Vu must be >= 0",
     field="Vu",
     hint="Check shear input sign.",
+    recovery="Provide non-negative factored shear Vu \u2265 0.",
 )
 
 E_INPUT_008 = DesignError(
@@ -324,6 +336,7 @@ E_INPUT_008 = DesignError(
     message="asv must be > 0",
     field="asv",
     hint="Provide stirrup area.",
+    recovery="Provide stirrup cross-sectional area asv > 0 mm\u00b2. For 2-legged 8mm stirrups: asv = 2 \u00d7 50.3 = 100.5 mm\u00b2.",
 )
 
 E_INPUT_009 = DesignError(
@@ -332,6 +345,7 @@ E_INPUT_009 = DesignError(
     message="pt must be >= 0",
     field="pt",
     hint="Check tension steel percentage.",
+    recovery="Provide non-negative tension steel percentage pt \u2265 0.",
 )
 
 E_INPUT_010 = DesignError(
@@ -340,6 +354,7 @@ E_INPUT_010 = DesignError(
     message="d_dash must be > 0",
     field="d_dash",
     hint="Check compression steel cover input.",
+    recovery="Provide compression steel cover d' > 0 mm. Typically 40\u201360 mm from compression face.",
 )
 
 E_INPUT_011 = DesignError(
@@ -348,6 +363,7 @@ E_INPUT_011 = DesignError(
     message="min_long_bar_dia must be > 0",
     field="min_long_bar_dia",
     hint="Provide smallest longitudinal bar diameter.",
+    recovery="Provide smallest longitudinal bar diameter > 0 mm. Minimum bar: 12 mm for beams.",
 )
 
 E_INPUT_012 = DesignError(
@@ -356,6 +372,7 @@ E_INPUT_012 = DesignError(
     message="bw must be > 0",
     field="bw",
     hint="Check web width input.",
+    recovery="Provide web width bw > 0 mm for flanged beam sections.",
 )
 
 E_INPUT_013 = DesignError(
@@ -364,6 +381,7 @@ E_INPUT_013 = DesignError(
     message="bf must be > 0",
     field="bf",
     hint="Check flange width input.",
+    recovery="Provide flange width bf > 0 mm. Per Cl 23.1.2: bf \u2264 L0/6 + bw + 6Df.",
 )
 
 E_INPUT_014 = DesignError(
@@ -372,6 +390,7 @@ E_INPUT_014 = DesignError(
     message="Df must be > 0",
     field="Df",
     hint="Check flange thickness input.",
+    recovery="Provide flange thickness Df > 0 mm. Typically equals slab thickness (100\u2013200 mm).",
 )
 
 E_INPUT_015 = DesignError(
@@ -380,6 +399,7 @@ E_INPUT_015 = DesignError(
     message="bf must be >= bw",
     field="bf",
     hint="Ensure flange width is not smaller than web width.",
+    recovery="Flange width bf must be \u2265 web width bw. Check flange effective width per Cl 23.1.2.",
 )
 
 E_INPUT_016 = DesignError(
@@ -388,6 +408,7 @@ E_INPUT_016 = DesignError(
     message="Df must be < d",
     field="Df",
     hint="Ensure flange thickness is less than effective depth.",
+    recovery="Flange thickness Df must be < effective depth d. If Df \u2265 d, section behaves as rectangular, not flanged.",
 )
 
 # Flexure Errors
@@ -398,6 +419,7 @@ E_FLEXURE_001 = DesignError(
     field="Mu",
     hint="Use doubly reinforced or increase depth.",
     clause="Cl. 38.1",
+    recovery="1. Increase depth D (Mu_lim \u221d d\u00b2, most economical). 2. Or use doubly reinforced design per Annex G-1.1. 3. Or increase concrete grade fck.",
 )
 
 E_FLEXURE_002 = DesignError(
@@ -407,6 +429,7 @@ E_FLEXURE_002 = DesignError(
     field="Ast",
     hint="Increase steel to meet minimum.",
     clause="Cl. 26.5.1.1",
+    recovery="Increase steel to Ast_min = max(0.85\u00d7b\u00d7d/fy, 0.12%\u00d7b\u00d7D) per Cl 26.5.1.1.",
 )
 
 E_FLEXURE_003 = DesignError(
@@ -416,6 +439,7 @@ E_FLEXURE_003 = DesignError(
     field="Ast",
     hint="Reduce steel or increase section.",
     clause="Cl. 26.5.1.2",
+    recovery="Reduce steel below 4% of bD per Cl 26.5.1.2. Options: increase section, use higher fck, or split into multiple beams.",
 )
 
 E_FLEXURE_004 = DesignError(
@@ -424,6 +448,7 @@ E_FLEXURE_004 = DesignError(
     message="d' too large for doubly reinforced design",
     field="d_dash",
     hint="Reduce compression steel cover.",
+    recovery="Reduce compression steel cover d'. d' should be \u2264 0.2d for effective compression steel contribution.",
 )
 
 # Shear Errors
@@ -434,6 +459,7 @@ E_SHEAR_001 = DesignError(
     field="tv",
     hint="Increase section size.",
     clause="Cl. 40.2.3",
+    recovery="Redesign section \u2014 per Cl 40.2.3, no amount of shear reinforcement can fix this. Increase b or D.",
 )
 
 # Note: E_SHEAR_002 is reserved for future use when spacing limits are exceeded.
@@ -446,6 +472,7 @@ E_SHEAR_002 = DesignError(
     field="spacing",
     hint="Reduce stirrup spacing.",
     clause="Cl. 26.5.1.6",
+    recovery="Reduce stirrup spacing to \u2264 min(0.75d, 300 mm) per Cl 26.5.1.6.",
 )
 
 E_SHEAR_003 = DesignError(
@@ -455,6 +482,7 @@ E_SHEAR_003 = DesignError(
     field="tv",
     hint="Minimum stirrups per Cl. 26.5.1.6.",
     clause="Cl. 26.5.1.6",
+    recovery="Provide minimum shear reinforcement per Cl 26.5.1.6: Asv_min/(b\u00d7sv) \u2265 0.4/0.87fy.",
 )
 
 E_SHEAR_004 = DesignError(
@@ -464,6 +492,7 @@ E_SHEAR_004 = DesignError(
     field="fck",
     hint="Use fck within 15-40 for Table 19 or confirm conservative design.",
     clause="Table 19",
+    recovery="Use fck within 15\u201340 N/mm\u00b2 for IS 456 Table 19. For higher grades, \u03c4c values are conservative.",
 )
 
 E_SHEAR_005 = DesignError(
@@ -473,6 +502,7 @@ E_SHEAR_005 = DesignError(
     field="av_mm",
     hint="Provide distance from face of support to nearest edge of concentrated load.",
     clause="Cl. 40.3",
+    recovery="Provide distance from face of support to load point. For enhanced shear near supports per Cl 40.3.",
 )
 
 # Ductile Detailing Errors
@@ -483,6 +513,7 @@ E_DUCTILE_001 = DesignError(
     field="b",
     hint="Increase beam width to ≥ 200 mm.",
     clause="IS 13920 Cl. 6.1.1",
+    recovery="Increase beam width to \u2265 200 mm per IS 13920 Cl 6.1.1 for seismic resistance.",
 )
 
 E_DUCTILE_002 = DesignError(
@@ -492,6 +523,7 @@ E_DUCTILE_002 = DesignError(
     field="b/D",
     hint="Increase width or reduce depth.",
     clause="IS 13920 Cl. 6.1.2",
+    recovery="Increase width or reduce depth so that b/D \u2265 0.3 per IS 13920 Cl 6.1.2.",
 )
 
 E_DUCTILE_003 = DesignError(
@@ -500,6 +532,7 @@ E_DUCTILE_003 = DesignError(
     message="Invalid depth",
     field="D",
     hint="Depth must be > 0.",
+    recovery="Provide overall depth D > 0 mm.",
 )
 
 # Torsion Errors
@@ -510,6 +543,7 @@ E_TORSION_001 = DesignError(
     field="tv_equiv",
     hint="Increase section size (b or D).",
     clause="Cl. 41.3",
+    recovery="Increase section size. Per Cl 41.3, equivalent shear stress must not exceed \u03c4c,max from Table 20.",
 )
 
 # Column Errors --- IS 456 Cl. 25, 39
@@ -520,6 +554,7 @@ E_COLUMN_001 = DesignError(
     field="D_mm",
     hint="Provide positive column dimensions.",
     clause="Cl. 25",
+    recovery="Provide positive column dimensions. Minimum per Cl 25: 300 mm for tied columns.",
 )
 
 E_COLUMN_002 = DesignError(
@@ -529,6 +564,7 @@ E_COLUMN_002 = DesignError(
     field="Asc_mm2",
     hint="Increase longitudinal reinforcement to at least 0.8% of Ag.",
     clause="Cl. 26.5.3.1",
+    recovery="Increase longitudinal steel to \u2265 0.8% of Ag per Cl 26.5.3.1.",
 )
 
 E_COLUMN_003 = DesignError(
@@ -538,6 +574,7 @@ E_COLUMN_003 = DesignError(
     field="Asc_mm2",
     hint="Reduce longitudinal reinforcement or increase section.",
     clause="Cl. 26.5.3.1",
+    recovery="Reduce longitudinal steel to \u2264 4% (6% at laps) of Ag, or increase section per Cl 26.5.3.1.",
 )
 
 E_COLUMN_004 = DesignError(
@@ -547,6 +584,7 @@ E_COLUMN_004 = DesignError(
     field="le_mm",
     hint="Reduce unsupported length or increase column dimensions.",
     clause="Cl. 25.3.1",
+    recovery="Reduce unsupported length or increase column section so le/D \u2264 60 per Cl 25.3.1.",
 )
 
 E_COLUMN_005 = DesignError(
@@ -556,6 +594,7 @@ E_COLUMN_005 = DesignError(
     field="e_min",
     hint="Use P-M interaction design for larger eccentricities.",
     clause="Cl. 39.3",
+    recovery="For small eccentricities (e_min \u2264 0.05D), use Cl 39.3 axial formula. For larger, use P-M interaction design.",
 )
 
 E_COLUMN_006 = DesignError(
@@ -565,6 +604,7 @@ E_COLUMN_006 = DesignError(
     field="Pu_kN",
     hint="Increase section size, concrete grade, or reinforcement.",
     clause="Cl. 39.5",
+    recovery="Increase section, fck, or reinforcement. Use SP:16 Charts 27\u201362 to verify P-M interaction capacity.",
 )
 
 E_COLUMN_007 = DesignError(
@@ -574,6 +614,7 @@ E_COLUMN_007 = DesignError(
     field="le_mm",
     hint="Use design_long_column() for slender columns.",
     clause="Cl. 39.7",
+    recovery="Apply additional moment per Cl 39.7.1: M_add = Pu \u00d7 (le\u00b2)/(2000\u00d7D). Use design_long_column().",
 )
 
 E_COLUMN_008 = DesignError(
@@ -583,6 +624,7 @@ E_COLUMN_008 = DesignError(
     field="Mu_kNm",
     hint="Consider using short_axial_capacity() for small eccentricities.",
     clause="Cl. 39.3",
+    recovery="Consider using short_axial_capacity() for pure axial with small eccentricity per Cl 39.3.",
 )
 
 E_COLUMN_009 = DesignError(
@@ -592,6 +634,7 @@ E_COLUMN_009 = DesignError(
     field="d_prime_mm",
     hint="d_prime_mm should typically be 40-75mm.",
     clause="Cl. 26.4",
+    recovery="Provide cover to steel centroid d' > 0 and < D/2. Typical values: 40\u201375 mm.",
 )
 
 E_COLUMN_010 = DesignError(
@@ -601,6 +644,7 @@ E_COLUMN_010 = DesignError(
     field="Mu_kNm",
     hint="Minimum eccentricity governs — design moment increased.",
     clause="Cl. 25.4",
+    recovery="Design moment increased to Pu \u00d7 e_min per Cl 25.4. Minimum eccentricity = max(le/500 + D/30, 20 mm).",
 )
 
 E_COLUMN_011 = DesignError(
@@ -610,6 +654,7 @@ E_COLUMN_011 = DesignError(
     field="Pu_kN",
     hint="This function is for compression members. For pure tension, use a different design method.",
     clause="Cl. 39.5",
+    recovery="This function is for compression members (Pu \u2265 0). For tension members, use different design methods.",
 )
 
 
@@ -620,6 +665,7 @@ def make_error(
     field: str | None = None,
     hint: str | None = None,
     clause: str | None = None,
+    recovery: str | None = None,
 ) -> DesignError:
     """Factory function to create a DesignError."""
     return DesignError(
@@ -629,4 +675,5 @@ def make_error(
         field=field,
         hint=hint,
         clause=clause,
+        recovery=recovery,
     )

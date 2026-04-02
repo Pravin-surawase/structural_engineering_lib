@@ -1,8 +1,8 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-03-24",
+  "_updated": "2026-04-02",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "106/106 scripts mapped",
+  "_coverage": "107/107 scripts mapped",
   "tasks": {
     "run all checks": {
       "group": "Quality",
@@ -222,6 +222,16 @@
       "group": "Quality",
       "script": ".venv/bin/python scripts/check_architecture_boundaries.py",
       "description": "Enforce 4-layer architecture — core cannot import services/UI"
+    },
+    "check element completeness": {
+      "group": "Quality",
+      "script": ".venv/bin/python scripts/check_new_element_completeness.py",
+      "description": "Check completeness across 7 layers (types, math, tests, API, endpoint, UI, docs) for all structural elements",
+      "options": {
+        "--element <name>": "Detailed report for specific element (beam, column, slab, etc.)",
+        "--json": "Machine-readable JSON output",
+        "--verbose": "Show file paths for each check"
+      }
     },
     "check circular imports": {
       "group": "Quality",

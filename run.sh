@@ -714,6 +714,13 @@ _cmd_pipeline() {
     esac
 }
 
+# ── Command: coverage ──────────────────────────────────────────────────────
+
+_cmd_coverage() {
+    _require_venv
+    "$VENV" "$SCRIPTS/check_clause_coverage.py" "$@"
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -737,8 +744,9 @@ _print_usage() {
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo -e "  ${GREEN}route${NC}       Route natural language to the right agent"
-    echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find, stats)"
+    echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
+    echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
     echo -e "  ${DIM}./run.sh session start${NC}              # Begin work"
@@ -769,6 +777,7 @@ _dispatch_help() {
         route)    _cmd_route ;;
         tools)    _cmd_tools ;;
         pipeline) _cmd_pipeline ;;
+        coverage) _cmd_coverage ;;
         *)        _print_usage ;;
     esac
 }
@@ -889,6 +898,7 @@ main() {
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         route)    _cmd_route "$@" ;;
         tools)    _cmd_tools "$@" ;;
+        coverage) _cmd_coverage "$@" ;;
         pipeline) _cmd_pipeline "$@" ;;
         *)
             _error "Unknown command: $cmd"
