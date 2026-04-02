@@ -382,10 +382,16 @@ else
 fi
 echo ""
 
-# Step 0: Auto-stash dirty changes before sync
-if [[ -n $(git status --porcelain) ]]; then
-  echo -e "${YELLOW}Step 0/7: Stashing local changes before sync...${NC}"
-  git stash push -u -m "safe_push auto-stash" >/dev/null
+# Step 0: Auto-stash UNSTAGED/UNTRACKED changes before sync
+# IMPORTANT: Only stash unstaged modifications and untracked files.
+# Do NOT stash staged changes — they are the intended commit content.
+# Using git status --porcelain here would stash staged changes too,
+# which breaks renormalization commits (CRLF→LF stash/pop conflicts).
+UNSTAGED_CHANGES=$(git diff --name-only 2>/dev/null)
+UNTRACKED_FILES=$(git ls-files --others --exclude-standard 2>/dev/null)
+if [[ -n "$UNSTAGED_CHANGES" || -n "$UNTRACKED_FILES" ]]; then
+  echo -e "${YELLOW}Step 0/7: Stashing unstaged/untracked changes before sync...${NC}"
+  git stash push -u -k -m "safe_push auto-stash" >/dev/null
   AUTO_STASHED="true"
 fi
 
