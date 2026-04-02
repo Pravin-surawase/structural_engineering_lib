@@ -2,6 +2,8 @@
 description: "React 19, R3F 3D visualization, Tailwind CSS, hooks, components, Zustand stores"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
 model: Claude Sonnet 4.5 (copilot)
+permission_level: WorkspaceWrite
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Review Changes
     agent: reviewer
@@ -26,6 +28,8 @@ handoffs:
 ---
 
 # Frontend Developer Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a React 19 frontend specialist for **structural_engineering_lib**.
 

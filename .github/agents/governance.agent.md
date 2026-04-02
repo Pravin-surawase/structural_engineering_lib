@@ -2,6 +2,8 @@
 description: "Project health, maintenance automation, doc archival, metrics tracking, sustainability"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
 model: Claude Opus 4.6 (copilot)
+permission_level: WorkspaceWrite
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Fix Issues Found
     agent: orchestrator
@@ -18,6 +20,8 @@ handoffs:
 ---
 
 # Governance Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are the governance and project health specialist for **structural_engineering_lib**. You run maintenance sessions, track metrics, enforce standards, and ensure long-term sustainability.
 

@@ -36,6 +36,7 @@ SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 NEXT_BRIEF = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
+TRUST_STATE_FILE = REPO_ROOT / "logs" / "session_trust.json"
 
 DATE_RE = re.compile(r"##\s+(\d{4}-\d{2}-\d{2})\s+—\s+Session")
 HANDOFF_START = "<!-- HANDOFF:START -->"
@@ -47,6 +48,35 @@ COMMIT_HASH_RE = re.compile(r"(?<![0-9a-fA-F])([0-9a-fA-F]{7,40})(?![0-9a-fA-F])
 def _python_exe() -> str:
     venv_python = REPO_ROOT / ".venv" / "bin" / "python"
     return str(venv_python) if venv_python.exists() else sys.executable
+
+
+# ─── Trust State Management ──────────────────────────────────────────────────
+
+
+def save_trust_state(trusted: bool, reason: str) -> None:
+    """Write trust state to session_trust.json."""
+    TRUST_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    state = {
+        "trusted": trusted,
+        "reason": reason,
+        "timestamp": datetime.now().isoformat(),
+    }
+    TRUST_STATE_FILE.write_text(json.dumps(state, indent=2))
+
+
+def load_trust_state() -> dict:
+    """Read trust state from session_trust.json."""
+    if not TRUST_STATE_FILE.exists():
+        return {"trusted": False, "reason": "no trust state file", "timestamp": ""}
+    try:
+        return json.loads(TRUST_STATE_FILE.read_text())
+    except Exception:
+        return {"trusted": False, "reason": "corrupt trust state file", "timestamp": ""}
+
+
+def is_session_trusted() -> bool:
+    """Check if current session is trusted."""
+    return load_trust_state().get("trusted", False)
 
 
 def _run_script(
@@ -325,6 +355,19 @@ def cmd_start(args: argparse.Namespace) -> int:
     branch = get_branch()
     uncommitted = get_uncommitted_status()
 
+    # Evaluate trust state
+    if "modified" in uncommitted.lower() or "untracked" in uncommitted.lower():
+        trusted = False
+        trust_reason = "uncommitted changes detected"
+    elif branch == "main":
+        trusted = False
+        trust_reason = "on main branch, expected feature branch"
+    else:
+        trusted = True
+        trust_reason = "clean state confirmed"
+
+    save_trust_state(trusted, trust_reason)
+
     print()
     print("=" * 60)
     print("🚀 SESSION START")
@@ -334,6 +377,11 @@ def cmd_start(args: argparse.Namespace) -> int:
     print(f"  Branch:   {branch}")
     print(f"  Date:     {date.today().strftime('%Y-%m-%d')}")
     print(f"  Git:      {uncommitted}")
+    if trusted:
+        print(f"  Trust:    ✅ Trusted ({trust_reason})")
+    else:
+        print(f"  Trust:    ⚠️  Untrusted ({trust_reason})")
+        print("            → Destructive operations blocked until resolved")
 
     if getattr(args, "fast", False):
         print()
@@ -1834,6 +1882,42 @@ def cmd_compact(args: argparse.Namespace) -> int:
     return 0
 
 
+# ─── Trust Command ────────────────────────────────────────────────────────────
+
+
+def cmd_trust(args: argparse.Namespace) -> int:
+    """Show or reset session trust state."""
+    if args.reset:
+        if TRUST_STATE_FILE.exists():
+            TRUST_STATE_FILE.unlink()
+            print("✅ Trust state cleared")
+        else:
+            print("⚠️  No trust state file to clear")
+        return 0
+
+    state = load_trust_state()
+    trusted = state.get("trusted", False)
+    reason = state.get("reason", "unknown")
+    timestamp = state.get("timestamp", "")
+
+    print()
+    print("🔒 Session Trust State")
+    print("=" * 60)
+    print()
+    if trusted:
+        print("  Status:    ✅ Trusted")
+    else:
+        print("  Status:    ⚠️  Untrusted")
+    print(f"  Reason:    {reason}")
+    if timestamp:
+        print(f"  Updated:   {timestamp}")
+    print()
+    print("=" * 60)
+    print()
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="session.py",
@@ -1915,6 +1999,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="Show what would be archived without making changes",
     )
 
+    # trust
+    p_trust = sub.add_parser("trust", help="Show or reset session trust state")
+    p_trust.add_argument("--reset", action="store_true", help="Clear trust state file")
+
     return parser
 
 
@@ -1936,6 +2024,7 @@ def main() -> int:
         "costs": cmd_costs,
         "context": cmd_context,
         "compact": cmd_compact,
+        "trust": cmd_trust,
     }
 
     return handlers[args.command](args)

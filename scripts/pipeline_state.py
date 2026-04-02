@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -30,6 +31,24 @@ from _lib.output import StatusLine
 from _lib.utils import REPO_ROOT
 
 PIPELINES_DIR = REPO_ROOT / "logs" / "pipelines"
+
+
+def _validate_id(id_value: str, id_type: str = "pipeline_id") -> None:
+    """Validate ID to prevent path traversal attacks.
+
+    Args:
+        id_value: The ID to validate
+        id_type: Type of ID for error messages (e.g., "session_id", "pipeline_id")
+
+    Raises:
+        ValueError: If ID contains invalid characters
+    """
+    if not re.match(r"^[A-Za-z0-9_-]+$", id_value):
+        raise ValueError(
+            f"Invalid {id_type}: '{id_value}'. "
+            f"Only alphanumeric characters, underscores, and hyphens are allowed."
+        )
+
 
 # Default pipeline step sequences
 DEFAULT_STEPS = [
@@ -205,6 +224,7 @@ def create_pipeline(
 
 def _save_pipeline(pipeline: PipelineState) -> Path:
     """Save pipeline state to disk."""
+    _validate_id(pipeline.pipeline_id, "pipeline_id")
     _ensure_pipelines_dir()
 
     pipeline_file = PIPELINES_DIR / f"{pipeline.pipeline_id}.json"
@@ -216,6 +236,7 @@ def _save_pipeline(pipeline: PipelineState) -> Path:
 
 def get_pipeline(pipeline_id: str) -> PipelineState:
     """Load pipeline state from disk."""
+    _validate_id(pipeline_id, "pipeline_id")
     pipeline_file = PIPELINES_DIR / f"{pipeline_id}.json"
     if not pipeline_file.exists():
         raise FileNotFoundError(f"Pipeline {pipeline_id} not found at {pipeline_file}")

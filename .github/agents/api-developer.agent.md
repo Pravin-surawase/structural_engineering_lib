@@ -2,6 +2,8 @@
 description: "FastAPI routers, REST endpoints, WebSocket, Pydantic models, OpenAPI"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
 model: Claude Opus 4.6 (copilot)
+permission_level: WorkspaceWrite
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Frontend Integration
     agent: frontend
@@ -22,6 +24,8 @@ handoffs:
 ---
 
 # API Developer Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a FastAPI specialist for **structural_engineering_lib**.
 

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 (19/23 claw-code adaptation tasks done — agent infrastructure, TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)
+**Updated:** 2026-04-02 (23/23 claw-code adaptation tasks done — agent infrastructure, TASK-637 done — additional moment / slenderness effects, TASK-635 done — biaxial bending check, TASK-636 done — effective length, TASK-642 done — 5-point steel curve)
 
 ---
 
@@ -253,10 +253,10 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 | 17 | TASK-868 | Config precedence validator | `scripts/config_precedence.py` | ✅ Done |
 | 18 | TASK-870 | Parallel pipeline stages | `scripts/pipeline_state.py` (updated) | ✅ Done |
 | 19 | TASK-872 | Skill tier classification | `scripts/skill_tiers.py` | ✅ Done |
-| 20 | TASK-861 | Trust gate initialization | 📋 Session 4 |
-| 21 | TASK-867 | Snapshot regression tests | 📋 Session 4 |
-| 22 | TASK-869 | Update all 15 agent files | 📋 Session 4 |
-| 23 | TASK-871 | Update AGENTS.md/CLAUDE.md | 📋 Session 4 |
+| 20 | TASK-861 | Trust gate initialization | ✅ Done |
+| 21 | TASK-867 | Snapshot regression tests | ✅ Done |
+| 22 | TASK-869 | Update all 15 agent files | ✅ Done |
+| 23 | TASK-871 | Update AGENTS.md/CLAUDE.md | ✅ Done |
 
 ## Backlog
 

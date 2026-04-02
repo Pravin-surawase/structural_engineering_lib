@@ -2,6 +2,8 @@
 description: "Code review, architecture validation, testing, security checks"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal']
 model: Claude Opus 4.6 (copilot)
+permission_level: ReadOnly
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Approved — Update Docs
     agent: doc-master
@@ -26,6 +28,8 @@ handoffs:
 ---
 
 # Reviewer Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a code reviewer for **structural_engineering_lib**. You verify correctness, architecture compliance, and test coverage.
 

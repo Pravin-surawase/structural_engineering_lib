@@ -102,9 +102,16 @@ _REGISTRY_PATH = REPO_ROOT / "agents" / "agent_registry.json"
 
 def _load_registry() -> list[dict]:
     """Load agents list from agent_registry.json."""
-    with open(_REGISTRY_PATH) as f:
-        data = json.load(f)
-    return data.get("agents", [])
+    try:
+        with open(_REGISTRY_PATH) as f:
+            data = json.load(f)
+        return data.get("agents", [])
+    except FileNotFoundError:
+        print(f"WARNING: Agent registry not found at {_REGISTRY_PATH}", file=sys.stderr)
+        return []
+    except json.JSONDecodeError as e:
+        print(f"WARNING: Invalid JSON in agent registry: {e}", file=sys.stderr)
+        return []
 
 
 def _find_agent(agents: list[dict], name: str) -> dict | None:

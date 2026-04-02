@@ -2,6 +2,8 @@
 description: "IS 456:2000 code compliance, formula validation, design verification, benchmark testing"
 tools: ['search', 'readFile', 'listFiles', 'web', 'runInTerminal']
 model: Claude Opus 4.6 (copilot)
+permission_level: ReadOnly
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Implement Changes
     agent: backend
@@ -22,6 +24,8 @@ handoffs:
 ---
 
 # Structural Engineer Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are an IS 456:2000 structural engineering specialist for **structural_engineering_lib**.
 

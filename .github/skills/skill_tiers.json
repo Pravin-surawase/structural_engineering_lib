@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "description": "Skill tier classifications for agent infrastructure",
+    "tiers": {
+      "core": "Always available to all agents",
+      "specialist": "Available to specific agents based on role",
+      "experimental": "Requires explicit activation"
+    },
+    "last_updated": "2026-04-02"
+  },
+  "core": [
+    {"name": "session-management", "description": "Session start/end automation", "available_to": "all"},
+    {"name": "api-discovery", "description": "API function signature lookup", "available_to": "all"},
+    {"name": "safe-file-ops", "description": "File move/delete preserving links", "available_to": "all"}
+  ],
+  "specialist": [
+    {"name": "function-quality-pipeline", "description": "9-step IS 456 function quality gate", "available_to": ["structural-math", "tester", "reviewer"]},
+    {"name": "new-structural-element", "description": "New structural element workflow", "available_to": ["structural-math", "structural-engineer"]},
+    {"name": "is456-verification", "description": "IS 456 compliance tests", "available_to": ["structural-engineer", "backend", "tester"]}
+  ],
+  "experimental": [
+    {"name": "architecture-check", "description": "4-layer architecture validation", "available_to": ["reviewer", "governance"]},
+    {"name": "react-validation", "description": "React build/lint/type-check", "available_to": ["frontend", "reviewer"]},
+    {"name": "agent-evolution", "description": "Agent performance scoring and drift detection", "available_to": ["agent-evolver", "governance"]}
+  ]
+}

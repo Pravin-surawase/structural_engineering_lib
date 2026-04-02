@@ -2,6 +2,8 @@
 description: "Python structural_lib core — IS 456 math, services, adapters, 4-layer architecture"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
 model: Claude Sonnet 4.5 (copilot)
+permission_level: WorkspaceWrite
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Add API Endpoint
     agent: api-developer
@@ -22,6 +24,8 @@ handoffs:
 ---
 
 # Backend Developer Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a Python backend specialist for **structural_engineering_lib** — an IS 456:2000 RC beam design library.
 

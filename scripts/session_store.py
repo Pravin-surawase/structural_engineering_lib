@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -28,6 +29,23 @@ from _lib.output import StatusLine, print_json
 from _lib.utils import REPO_ROOT
 
 SESSIONS_DIR = REPO_ROOT / "logs" / "sessions"
+
+
+def _validate_id(id_value: str, id_type: str = "session_id") -> None:
+    """Validate ID to prevent path traversal attacks.
+
+    Args:
+        id_value: The ID to validate
+        id_type: Type of ID for error messages (e.g., "session_id", "pipeline_id")
+
+    Raises:
+        ValueError: If ID contains invalid characters
+    """
+    if not re.match(r"^[A-Za-z0-9_-]+$", id_value):
+        raise ValueError(
+            f"Invalid {id_type}: '{id_value}'. "
+            f"Only alphanumeric characters, underscores, and hyphens are allowed."
+        )
 
 
 @dataclass
@@ -83,6 +101,7 @@ def generate_session_id() -> str:
 
 def save_session(state: SessionState) -> Path:
     """Write session state to logs/sessions/{session_id}.json."""
+    _validate_id(state.session_id, "session_id")
     _ensure_sessions_dir()
 
     session_file = SESSIONS_DIR / f"{state.session_id}.json"
@@ -94,6 +113,7 @@ def save_session(state: SessionState) -> Path:
 
 def load_session(session_id: str) -> SessionState:
     """Read session state from JSON file."""
+    _validate_id(session_id, "session_id")
     session_file = SESSIONS_DIR / f"{session_id}.json"
     if not session_file.exists():
         raise FileNotFoundError(f"Session {session_id} not found at {session_file}")

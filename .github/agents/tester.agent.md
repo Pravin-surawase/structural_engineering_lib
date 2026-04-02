@@ -2,6 +2,8 @@
 description: "Test creation, test coverage, regression testing, benchmark validation"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
 model: Claude Opus 4.6 (copilot)
+permission_level: WorkspaceWrite
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Review Test Results
     agent: reviewer
@@ -22,6 +24,8 @@ handoffs:
 ---
 
 # Tester Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are a test specialist for **structural_engineering_lib**. You create, maintain, and run tests across all layers.
 

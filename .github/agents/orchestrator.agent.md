@@ -2,6 +2,8 @@
 description: "Plan, triage, and delegate tasks. Start every session here."
 tools: ['read/readFile', 'search', 'web', 'agent']
 model: Claude Opus 4.6 (copilot)
+permission_level: ReadOnly
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Frontend Work
     agent: frontend
@@ -38,6 +40,8 @@ handoffs:
 ---
 
 # Orchestrator Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are the project orchestrator for **structural_engineering_lib** — an IS 456 RC beam design library with React 19 + FastAPI + Python.
 

@@ -22,11 +22,11 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-02
-- Session: Claw-code implementation Sessions 2+3 — agent infrastructure
-- Done: 19/23 claw-code tasks complete (TASK-850 through TASK-872, except 861/867/869/871)
-- Remaining: Session 4 — TASK-861 (trust gate), TASK-867 (snapshot tests), TASK-869 (update agent files), TASK-871 (update entry docs)
-- State: main branch, all scripts created and reviewed
-- New commands: ./run.sh route, ./run.sh tools, ./run.sh pipeline
+- Session: Claw-code implementation Session 4 (FINAL) — agent infrastructure complete
+- Done: 23/23 claw-code tasks complete (all TASK-850 through TASK-872)
+- Remaining: None — claw-code adaptation plan fully implemented
+- State: main branch, all 23 tasks done
+- New infra: agent_registry.json, tool_registry.py, prompt_router.py, pipeline_state.py, session_store.py, tool_permissions.py, hooks framework, parity dashboard, skill tiers, trust gate, snapshot tests, all 15 agent files updated, entry docs updated
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -38,13 +38,9 @@ tags: []
 
 ## What's Next
 
-1. **Session 4 — Final claw-code tasks** ← START HERE
-   - TASK-861: Trust gate (defer destructive ops until session start confirms clean state)
-   - TASK-867: Snapshot regression tests (assert minimum script/tool/test counts)
-   - TASK-869: Update all 15 .agent.md files with permission_level, registry_ref
-   - TASK-871: Update AGENTS.md + CLAUDE.md with new commands (route, tools, pipeline)
-2. **TASK-638 (long column design)** — `design_long_column` orchestrator
-3. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
+1. **TASK-638 (long column design)** — `design_long_column` orchestrator
+2. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
+3. **React UX remaining** — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)
 
 ### Technical Debt
 

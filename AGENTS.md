@@ -41,6 +41,8 @@ NEVER: --no-verify / --force          ← breaks CI, causes rework
 
 Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
 
+**Permission enforcement:** Agent permissions are now programmatically enforced via `tool_permissions.py`. Each agent has a `permission_level` (ReadOnly, WorkspaceWrite, DangerFullAccess) defined in `agents/agent_registry.json`.
+
 ## Architecture (4 layers — STRICT)
 
 ```
@@ -53,6 +55,18 @@ UI/IO        → react_app/, fastapi_app/
 **Import rule:** Core ← IS 456 ← Services ← UI. Never import upward.
 **Units rule:** Always explicit — mm, N/mm², kN, kNm. No hidden conversions.
 **Stub warning:** `Python/structural_lib/api.py` is a backward-compat stub. Real code → `services/api.py`.
+
+### Agent Infrastructure
+
+- **Agent Registry:** `agents/agent_registry.json` — 15 agents with permissions, skills, keywords
+- **Tool Registry:** `scripts/tool_registry.py` — unified search across agents, skills, scripts
+- **Prompt Router:** `scripts/prompt_router.py` — NLP-based task → agent routing
+- **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
+- **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
+- **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
+- **Hooks Framework:** `scripts/hooks/` — pre/post execution hooks (pre_commit, post_commit, pre_route)
+- **Parity Dashboard:** `scripts/parity_dashboard.py` — IS 456 clause/endpoint/test coverage
+- **Skill Tiers:** Core (always), Specialist (role-based), Experimental (explicit)
 
 ## Search Before Coding
 
@@ -91,6 +105,13 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (23
 ./run.sh release preflight 0.X.Y   # Pre-release validation
 ./run.sh release preflight --docker # Run preflight in Docker (2GB memory limit)
 ./run.sh release run 0.X.Y         # Bump version + release flow
+./run.sh route "task description"   # Route task to best agent (NLP-based)
+./run.sh tools [--list|--find|--agent] # Unified tool/script registry
+./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
+./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
+./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
+./run.sh session costs --summary    # Agent cost/efficiency tracking
+./run.sh session trust              # Check session trust state
 ```
 
 Direct scripts (when run.sh doesn't cover it):

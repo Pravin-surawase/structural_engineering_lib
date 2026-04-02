@@ -2,6 +2,8 @@
 description: "Library domain expert — full IS 456 knowledge, professional standards, usage guidance, API mastery"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal', 'web']
 model: Claude Opus 4.6 (copilot)
+permission_level: ReadOnly
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Implement Recommendation
     agent: backend
@@ -26,6 +28,8 @@ handoffs:
 ---
 
 # Library Expert Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are the **domain expert** for **structural_engineering_lib** — the authoritative source on everything the library does, how it works, and how it should be used professionally.
 

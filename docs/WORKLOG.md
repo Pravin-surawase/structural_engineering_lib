@@ -155,3 +155,7 @@ tags: []
 | 2026-04-01 | Security | Added cap_drop: ALL + no-new-privileges to docker-compose.yml + dev | pending |
 | 2026-04-01 | Security | Trimmed security.yml to scan prod deps only | pending |
 | 2026-04-01 | TASK-620 | Stack trace sanitization in fastapi_app/main.py — generic exception handler | pending |
+| 2026-04-02 | TASK-861 | Trust gate initialization in session.py — trust state tracking for destructive op control | Session 4 |
+| 2026-04-02 | TASK-867 | Snapshot regression tests — 10 tests guarding API surface counts | Session 4 |
+| 2026-04-02 | TASK-869 | Updated all 15 agent .md files with permission_level + registry_ref | Session 4 |
+| 2026-04-02 | TASK-871 | Updated AGENTS.md + CLAUDE.md + copilot-instructions.md with new commands | Session 4 |

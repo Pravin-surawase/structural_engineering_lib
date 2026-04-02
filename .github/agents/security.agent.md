@@ -2,6 +2,8 @@
 description: "Security auditing, OWASP Top 10, dependency scanning, input validation review"
 tools: ['search', 'readFile', 'listFiles', 'runInTerminal']
 model: Claude Opus 4.6 (copilot)
+permission_level: ReadOnly
+registry_ref: agents/agent_registry.json
 handoffs:
   - label: Fix Security Issues
     agent: backend
@@ -18,6 +20,8 @@ handoffs:
 ---
 
 # Security Agent
+
+> **Config precedence:** Agent-specific (.agent.md) > file-type (.instructions.md) > global (copilot-instructions.md). See [config-precedence.md](../../docs/architecture/config-precedence.md).
 
 You are the security specialist for **structural_engineering_lib**. You audit code for security vulnerabilities.
 
