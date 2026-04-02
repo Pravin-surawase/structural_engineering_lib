@@ -17,7 +17,14 @@ NEVER: gh issue close (without user approval) ← destructive, ask first
 NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
 NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 NEVER: --no-verify / --force          ← breaks CI, causes rework
+NEVER: git rebase --skip              ← silently drops conflicting commits
+NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh
 ```
+
+**When git operations fail (all agents):**
+1. Run: `./scripts/recover_git_state.sh`
+2. If that fails, report to @ops
+3. NEVER attempt manual `git rebase`, `--skip`, or `--force` push
 
 Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
 

@@ -29,6 +29,14 @@ if [[ -z "$DESCRIPTION" ]]; then
     exit 1
 fi
 
+# Validate task ID format (TASK-911)
+if [[ ! "$TASK_ID" =~ ^[A-Z]+-[A-Z0-9-]+$ ]]; then
+    echo -e "${RED}Error: Invalid task ID format: $TASK_ID${NC}"
+    echo "Expected: TASK-123, TASK-ABC-123, RELEASE-001"
+    echo "Pattern: uppercase letters, dash, alphanumeric"
+    exit 1
+fi
+
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 

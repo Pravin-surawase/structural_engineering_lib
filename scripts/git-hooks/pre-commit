@@ -9,9 +9,16 @@
 #   AI_COMMIT_ACTIVE=1 - Set by ai_commit.sh
 #   SAFE_PUSH_ACTIVE=1 - Set by safe_push.sh
 
-# Skip if running through automation
+# Skip if running through automation (TASK-907: log bypass events)
 if [[ -n "$AI_COMMIT_ACTIVE" ]] || [[ -n "$SAFE_PUSH_ACTIVE" ]]; then
-    # Allow - running through proper automation
+    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+    BYPASS_LOG="$PROJECT_ROOT/logs/git_workflow.log"
+    if [[ -d "$PROJECT_ROOT/logs" ]]; then
+        BYPASS_SOURCE=""
+        [[ -n "$AI_COMMIT_ACTIVE" ]] && BYPASS_SOURCE="AI_COMMIT_ACTIVE"
+        [[ -n "$SAFE_PUSH_ACTIVE" ]] && BYPASS_SOURCE="${BYPASS_SOURCE:+$BYPASS_SOURCE+}SAFE_PUSH_ACTIVE"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] BYPASS: Commit allowed via $BYPASS_SOURCE (branch: $(git branch --show-current 2>/dev/null || echo unknown))" >> "$BYPASS_LOG"
+    fi
     exit 0
 fi
 
@@ -20,9 +27,13 @@ if [[ -n "$CI" ]] || [[ -n "$GITHUB_ACTIONS" ]]; then
     exit 0
 fi
 
-# Skip if explicitly bypassed (for emergencies only)
+# Skip if explicitly bypassed (for emergencies only — LOGGED)
 if [[ -n "$GIT_HOOKS_BYPASS" ]]; then
     echo "⚠️  Git hooks bypassed (GIT_HOOKS_BYPASS set)"
+    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+    if [[ -d "$PROJECT_ROOT/logs" ]]; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARNING: Commit hook BYPASSED via GIT_HOOKS_BYPASS (branch: $(git branch --show-current 2>/dev/null || echo unknown))" >> "$PROJECT_ROOT/logs/git_workflow.log"
+    fi
     exit 0
 fi
 

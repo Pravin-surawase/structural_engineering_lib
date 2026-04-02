@@ -239,6 +239,8 @@ NEVER: gh pr merge --admin                           ← bypasses CI checks
 NEVER: gh issue close (without user approval)       ← destructive
 NEVER: git push origin --delete (without user approval)
 NEVER: GIT_HOOKS_BYPASS=1 / --no-verify / --force   ← causes rework
+NEVER: git rebase --skip                             ← silently drops conflicting commits
+NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh protections
 ```
 
 **Destructive GitHub operations require explicit user confirmation.** Regular commits and PRs via `ai_commit.sh` are autonomous — proceed immediately when delegated.
@@ -259,6 +261,9 @@ NEVER: GIT_HOOKS_BYPASS=1 / --no-verify / --force   ← causes rework
 | Merge fails (conflicts after CI passed) | Automatic — finish_task_pr.sh now checks mergeable state before merge |
 | Stale remote tracking refs | Automatic — agent_start.sh + finish_task_pr.sh prune on every run |
 | Stale merged branches accumulate | Automatic — finish_task_pr.sh cleans up merged branches after every PR merge |
+| Branch diverged (squash-merge) | `./scripts/recover_git_state.sh` then `./scripts/ai_commit.sh --push` |
+| `--finish` interrupted | `./scripts/ai_commit.sh --continue PR_NUM` or check `.git/FINISH_STATE` |
+| `--finish` PR number lost | `gh pr list --head $(git branch --show-current)` or check `.git/FINISH_STATE` |
 
 ### Git System Architecture (for debugging only)
 
@@ -280,6 +285,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 8. **Stale branches accumulated (11 in Session 112)** → agent_start.sh now checks at session start, finish_task_pr.sh auto-cleans after merge
 9. **Ran `--finish` but didn't wait for completion** → PR left open, branch not merged, next session found stale PR. Always wait for full output and verify `git branch --show-current` shows `main`.
 10. **Missing `encoding="utf-8"` on Windows CI (Session 115)** → All `Path.read_text()`/`.write_text()` in scripts must use `encoding="utf-8"`. Windows defaults to cp1252.
+11. **`git rebase --skip` to resolve conflicts (Session 119)** → Silently drops commits. ALWAYS use `recover_git_state.sh` instead. Added as FORBIDDEN command.
 
 ## Release Procedure
 

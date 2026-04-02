@@ -41,6 +41,18 @@ LOG_FILE="$LOG_DIR/git_workflow.log"
 # Ensure log directory exists
 mkdir -p "$LOG_DIR"
 
+# Log rotation: rotate when >1MB, keep 3 old copies (TASK-912)
+if [[ -f "$LOG_FILE" ]]; then
+    LOG_SIZE=$(wc -c < "$LOG_FILE" 2>/dev/null || echo 0)
+    if [[ "$LOG_SIZE" -gt 1048576 ]]; then
+        [[ -f "${LOG_FILE}.3" ]] && rm -f "${LOG_FILE}.3"
+        [[ -f "${LOG_FILE}.2" ]] && mv "${LOG_FILE}.2" "${LOG_FILE}.3"
+        [[ -f "${LOG_FILE}.1" ]] && mv "${LOG_FILE}.1" "${LOG_FILE}.2"
+        mv "$LOG_FILE" "${LOG_FILE}.1"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] Log rotated (previous log exceeded 1MB)" > "$LOG_FILE"
+    fi
+fi
+
 # Logging function
 log_message() {
   local level="$1"
@@ -77,6 +89,14 @@ DEFAULT_BRANCH="main"
 REMOTE_NAME="origin"
 AUTO_STASHED="false"
 PUSH_HAS_UPSTREAM="false"
+
+# Parse flags
+PUSH_ONLY_MODE="false"
+for arg in "$@"; do
+    case "$arg" in
+        --push-only) PUSH_ONLY_MODE="true" ;;
+    esac
+done
 
 # Detect if we're in a worktree (for background agents)
 IS_WORKTREE="false"
@@ -177,7 +197,23 @@ parallel_fetch_complete() {
   fi
 }
 
-# Check if we're already in a merge state
+# Step 0: Pre-flight — detect ALL incomplete git operations (TASK-903)
+# Catches rebase, cherry-pick, and merge states before any work begins
+if [[ -d .git/rebase-merge ]] || [[ -d .git/rebase-apply ]]; then
+  echo -e "${RED}ERROR: Rebase in progress${NC}"
+  echo -e "${YELLOW}RECOVERY: ./scripts/recover_git_state.sh${NC}"
+  echo -e "${RED}DO NOT use: git rebase --skip (drops commits silently)${NC}"
+  log_message "ERROR" "Rebase in progress — blocking safe_push"
+  exit 1
+fi
+
+if [[ -f .git/CHERRY_PICK_HEAD ]]; then
+  echo -e "${RED}ERROR: Cherry-pick in progress${NC}"
+  echo -e "${YELLOW}RECOVERY: ./scripts/recover_git_state.sh${NC}"
+  log_message "ERROR" "Cherry-pick in progress — blocking safe_push"
+  exit 1
+fi
+
 if [ -f .git/MERGE_HEAD ]; then
   echo -e "${YELLOW}⚠️  Unfinished merge detected!${NC}"
   echo -e "${YELLOW}Completing the merge first...${NC}"
@@ -185,7 +221,7 @@ if [ -f .git/MERGE_HEAD ]; then
   # Check if there are conflicts
   if git status | grep -q "Unmerged paths"; then
     echo -e "${RED}ERROR: There are unresolved merge conflicts${NC}"
-    echo "Please resolve conflicts manually or run with --resolve flag"
+    echo -e "${YELLOW}RECOVERY: ./scripts/recover_git_state.sh${NC}"
     log_message "ERROR" "Unfinished merge with conflicts detected"
     exit 1
   fi
@@ -204,6 +240,114 @@ if [ -f .git/MERGE_HEAD ]; then
   echo -e "⏱️  Total time: ${TOTAL_DURATION}s"
   log_message "TIMING" "Total workflow duration: ${TOTAL_DURATION}s"
   exit 0
+fi
+
+# Push-only mode: skip commit steps, go straight to sync + push (TASK-902)
+if [[ "$PUSH_ONLY_MODE" == "true" ]]; then
+  log_message "INFO" "Push-only mode: skipping commit steps"
+  echo -e "${GREEN}=== Push-Only Workflow ===${NC}"
+  echo -e "${BLUE}📍 Branch: $CURRENT_BRANCH${NC}"
+
+  # Fetch latest remote state
+  echo -e "${YELLOW}Step 1/3: Fetching remote state...${NC}"
+  git fetch "$REMOTE_NAME" --quiet 2>/dev/null || true
+
+  # Step 2: Safety check (reuses Step 6 logic)
+  echo -e "${YELLOW}Step 2/3: Verifying push safety...${NC}"
+  LOCAL=$(git rev-parse HEAD)
+  REMOTE=""
+  BASE=""
+  if remote_ref_exists; then
+    REMOTE=$(git rev-parse "$REMOTE_NAME/$CURRENT_BRANCH")
+    BASE=$(git merge-base HEAD "$REMOTE_NAME/$CURRENT_BRANCH")
+  fi
+
+  if [[ -n "$REMOTE" && "$LOCAL" = "$REMOTE" ]]; then
+    echo -e "${GREEN}✓ Already synced with remote - nothing to push${NC}"
+    log_message "INFO" "Push-only: already synced"
+    exit 0
+  elif [[ -n "$REMOTE" && "$BASE" = "$REMOTE" ]]; then
+    echo -e "${GREEN}Fast-forward push ready${NC}"
+  elif [[ -n "$REMOTE" && "$BASE" = "$LOCAL" ]]; then
+    echo -e "${YELLOW}Local behind remote - pulling latest${NC}"
+    git pull --ff-only "$REMOTE_NAME" "$CURRENT_BRANCH"
+  elif [[ -z "$REMOTE" ]]; then
+    echo -e "${YELLOW}No remote branch yet; will set upstream on push${NC}"
+  else
+    AHEAD=$(git rev-list --count "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD 2>/dev/null || echo "?")
+    BEHIND=$(git rev-list --count HEAD.."$REMOTE_NAME/$CURRENT_BRANCH" 2>/dev/null || echo "?")
+    echo -e "${RED}ERROR: Branch '$CURRENT_BRANCH' has diverged from remote${NC}"
+    echo -e "${RED}       ($AHEAD commit(s) ahead, $BEHIND commit(s) behind)${NC}"
+    echo ""
+    echo -e "${YELLOW}RECOVERY: ./scripts/recover_git_state.sh${NC}"
+    echo -e "${RED}DO NOT use: git push --force, git rebase --skip${NC}"
+    log_message "ERROR" "Push-only: branch diverged ($AHEAD ahead, $BEHIND behind)"
+    exit 1
+  fi
+
+  # Step 3: Push with retry
+  echo -e "${YELLOW}Step 3/3: Pushing to remote...${NC}"
+  if ! git ls-remote --exit-code "$REMOTE_NAME" >/dev/null 2>&1; then
+    echo -e "${RED}ERROR: Cannot reach remote '$REMOTE_NAME'${NC}"
+    echo -e "${YELLOW}💡 Push later with: ./scripts/ai_commit.sh --push${NC}"
+    log_message "ERROR" "Push-only: remote connectivity failed"
+    exit 1
+  fi
+
+  if has_upstream; then
+    PUSH_CMD=(git push)
+  else
+    PUSH_CMD=(git push -u "$REMOTE_NAME" "$CURRENT_BRANCH")
+  fi
+
+  MAX_RETRIES=3
+  RETRY_DELAYS=(2 5 10)
+  for ((attempt=1; attempt<=MAX_RETRIES; attempt++)); do
+    PUSH_OUTPUT=$("${PUSH_CMD[@]}" 2>&1) && {
+      echo "$PUSH_OUTPUT"
+      WORKFLOW_END_TIME=$(date +%s)
+      TOTAL_DURATION=$((WORKFLOW_END_TIME - WORKFLOW_START_TIME))
+      echo -e "${GREEN}✅ Push-only: successfully pushed!${NC}"
+      echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
+      echo -e "⏱️  Total time: ${TOTAL_DURATION}s"
+      log_message "SUCCESS" "Push-only completed: $(git log -1 --oneline)"
+      exit 0
+    }
+    PUSH_ERROR="$PUSH_OUTPUT"
+    if echo "$PUSH_ERROR" | grep -qiE "non-fast-forward|diverge"; then
+      echo -e "${RED}ERROR: Push rejected — branch diverged from remote${NC}"
+      echo ""
+      echo -e "${YELLOW}LIKELY CAUSE: Concurrent PR was squash-merged, changing commit hashes${NC}"
+      echo -e "${YELLOW}RECOVERY:     ./scripts/recover_git_state.sh${NC}"
+      echo -e "${RED}DO NOT use:   git push --force, git rebase --skip${NC}"
+      log_message "ERROR" "Push diverged: $PUSH_ERROR"
+      exit 1
+    elif echo "$PUSH_ERROR" | grep -qiE "denied|forbidden|401|403"; then
+      echo -e "${RED}ERROR: Push rejected — authentication failed${NC}"
+      echo -e "${YELLOW}FIX: gh auth status && gh auth login${NC}"
+      log_message "ERROR" "Push auth failed: $PUSH_ERROR"
+      exit 1
+    elif echo "$PUSH_ERROR" | grep -qiE "protected|required"; then
+      echo -e "${RED}ERROR: Push rejected — branch protection requires PR${NC}"
+      echo -e "${YELLOW}FIX: ./scripts/ai_commit.sh --branch TASK-XXX 'description'${NC}"
+      log_message "ERROR" "Push protected branch: $PUSH_ERROR"
+      exit 1
+    elif echo "$PUSH_ERROR" | grep -qiE "rejected"; then
+      echo -e "${RED}ERROR: Push rejected${NC}"
+      echo "$PUSH_ERROR"
+      echo -e "${YELLOW}RECOVERY: ./scripts/recover_git_state.sh${NC}"
+      log_message "ERROR" "Push rejected (other): $PUSH_ERROR"
+      exit 1
+    fi
+    if [[ $attempt -lt $MAX_RETRIES ]]; then
+      DELAY=${RETRY_DELAYS[$((attempt-1))]}
+      echo -e "${YELLOW}⚠ Attempt $attempt failed. Retrying in ${DELAY}s...${NC}"
+      sleep "$DELAY"
+    fi
+  done
+  echo -e "${RED}ERROR: Push-only failed after $MAX_RETRIES attempts${NC}"
+  log_message "ERROR" "Push-only failed after $MAX_RETRIES attempts"
+  exit 1
 fi
 
 # Check if commit message provided
@@ -397,12 +541,23 @@ elif [[ -n "$REMOTE" && "$BASE" = "$REMOTE" ]]; then
 elif [[ -n "$REMOTE" && "$BASE" = "$LOCAL" ]]; then
   echo -e "${YELLOW}Local behind remote - pulling latest${NC}"
   git pull --ff-only "$REMOTE_NAME" "$CURRENT_BRANCH"
+elif [[ -z "$REMOTE" ]]; then
+  echo -e "${YELLOW}No remote branch yet; will set upstream on push${NC}"
 else
-  if [[ -z "$REMOTE" ]]; then
-    echo -e "${YELLOW}No remote branch yet; will set upstream on push${NC}"
-  else
-    echo -e "${GREEN}Push ready${NC}"
-  fi
+  # DIVERGED STATE: local and remote have independent commits (TASK-900 fix)
+  AHEAD=$(git rev-list --count "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD 2>/dev/null || echo "?")
+  BEHIND=$(git rev-list --count HEAD.."$REMOTE_NAME/$CURRENT_BRANCH" 2>/dev/null || echo "?")
+  echo -e "${RED}ERROR: Branch '$CURRENT_BRANCH' has diverged from remote${NC}"
+  echo -e "${RED}       ($AHEAD commit(s) ahead, $BEHIND commit(s) behind)${NC}"
+  echo ""
+  echo -e "${YELLOW}This often happens after a squash-merge of a concurrent PR.${NC}"
+  echo ""
+  echo -e "${YELLOW}RECOVERY:${NC}"
+  echo "  ./scripts/recover_git_state.sh"
+  echo ""
+  echo -e "${RED}DO NOT use: git push --force, git rebase --skip${NC}"
+  log_message "ERROR" "Branch diverged: $AHEAD ahead, $BEHIND behind on $CURRENT_BRANCH"
+  exit 1
 fi
 
 # Step 7: Push (or skip for worktrees)
@@ -447,10 +602,30 @@ else
     PUSH_EXIT=$?
     PUSH_ERROR="$PUSH_OUTPUT"
     # Check if error is retryable (transient network issues)
-    if echo "$PUSH_ERROR" | grep -qiE "rejected|denied|forbidden|protected|non-fast-forward"; then
-      # Non-retryable: auth failure, branch protection, or diverged history
-      echo -e "${RED}ERROR: Push rejected (non-retryable)${NC}"
-      log_message "ERROR" "Push rejected (non-retryable): $PUSH_ERROR"
+    if echo "$PUSH_ERROR" | grep -qiE "non-fast-forward|diverge"; then
+      # Diverged history — most common after squash-merge of concurrent PR (TASK-906)
+      echo -e "${RED}ERROR: Push rejected — branch diverged from remote${NC}"
+      echo ""
+      echo -e "${YELLOW}LIKELY CAUSE: Concurrent PR was squash-merged, changing commit hashes${NC}"
+      echo -e "${YELLOW}RECOVERY:     ./scripts/recover_git_state.sh${NC}"
+      echo -e "${RED}DO NOT use:   git push --force, git rebase --skip${NC}"
+      log_message "ERROR" "Push diverged: $PUSH_ERROR"
+      break
+    elif echo "$PUSH_ERROR" | grep -qiE "denied|forbidden|401|403"; then
+      echo -e "${RED}ERROR: Push rejected — authentication failed${NC}"
+      echo -e "${YELLOW}FIX: gh auth status && gh auth login${NC}"
+      log_message "ERROR" "Push auth failed: $PUSH_ERROR"
+      break
+    elif echo "$PUSH_ERROR" | grep -qiE "protected|required"; then
+      echo -e "${RED}ERROR: Push rejected — branch protection requires PR${NC}"
+      echo -e "${YELLOW}FIX: ./scripts/ai_commit.sh --branch TASK-XXX 'description'${NC}"
+      log_message "ERROR" "Push protected branch: $PUSH_ERROR"
+      break
+    elif echo "$PUSH_ERROR" | grep -qiE "rejected"; then
+      echo -e "${RED}ERROR: Push rejected${NC}"
+      echo "$PUSH_ERROR"
+      echo -e "${YELLOW}RECOVERY: ./scripts/recover_git_state.sh${NC}"
+      log_message "ERROR" "Push rejected (other): $PUSH_ERROR"
       break
     fi
 
@@ -480,8 +655,9 @@ else
     log_message "INFO" "=== Workflow Completed Successfully ==="
   else
     echo -e "${RED}ERROR: Push failed after $MAX_RETRIES attempts${NC}"
-    echo -e "${YELLOW}💡 Your commit is saved locally. Push later with:${NC}"
-    echo "  ./scripts/ai_commit.sh --push"
+    echo -e "${YELLOW}💡 Your commit is saved locally.${NC}"
+    echo "  Retry:   ./scripts/ai_commit.sh --push"
+    echo "  Recover: ./scripts/recover_git_state.sh"
     echo ""
     echo "Current branch status:"
     git status
