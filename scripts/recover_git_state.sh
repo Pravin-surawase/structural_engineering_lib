@@ -127,8 +127,21 @@ if git rev-parse --abbrev-ref "@{u}" > /dev/null 2>&1; then
         log_ok "Branch up to date"
     elif [[ "$LOCAL" == "$BASE" ]]; then
         log_warn "Branch behind - syncing"
-        run_cmd "git pull --ff-only"
-        log_ok "Synced!"
+        # Clean working tree first (CRLF/.gitattributes artifacts can block pull)
+        if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+            log_warn "Cleaning working tree artifacts before sync..."
+            run_cmd "git checkout -- . 2>/dev/null || true"
+            run_cmd "git clean -fd 2>/dev/null || true"
+        fi
+        if run_cmd "git pull --ff-only" 2>/dev/null; then
+            log_ok "Synced!"
+        else
+            log_warn "Pull failed — force-resetting to remote"
+            run_cmd "git fetch origin"
+            CURRENT_BRANCH_NAME=$(git branch --show-current)
+            run_cmd "git reset --hard origin/$CURRENT_BRANCH_NAME"
+            log_ok "Force-synced!"
+        fi
     elif [[ "$REMOTE" == "$BASE" ]]; then
         log_warn "Branch ahead - pushing"
         run_cmd "git push"

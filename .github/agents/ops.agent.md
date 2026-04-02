@@ -287,7 +287,8 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 9. **Ran `--finish` but didn't wait for completion** → PR left open, branch not merged, next session found stale PR. Always wait for full output and verify `git branch --show-current` shows `main`.
 10. **Missing `encoding="utf-8"` on Windows CI (Session 115)** → All `Path.read_text()`/`.write_text()` in scripts must use `encoding="utf-8"`. Windows defaults to cp1252.
 11. **`git rebase --skip` to resolve conflicts (Session 119)** → Silently drops commits. ALWAYS use `recover_git_state.sh` instead. Added as FORBIDDEN command.
-12. **CRLF stash pop loop blocking all commits** → `.gitattributes` normalizes CRLF→LF; `git stash pop` sees conflict and fails. Fixed in `safe_push.sh` with 3-tier recovery (checkout+pop → patch apply → exit with preserved stash). Never `git stash drop` without first restoring content.
+12. **CRLF stash pop loop blocking all commits** → `.gitattributes` normalizes CRLF→LF; `git stash pop` sees conflict and fails. Fixed in `safe_push.sh` with Tier 0 CRLF detection (`--ignore-cr-at-eol`) + 3-tier recovery. Step 0 now skips stash entirely for CRLF-only diffs.
+13. **Post-merge CRLF artifacts blocking main pull (Session ~125)** → After `--finish` squash-merged PR, CRLF artifacts in working tree blocked `git pull --ff-only` on main. `finish_task_pr.sh` silently swallowed the error (`|| true`), leaving main 1 commit behind remote. Fixed: added `git checkout -- .` cleanup before pull + `git reset --hard origin/main` fallback. Also fixed `recover_git_state.sh` to handle this case.
 
 ## Release Procedure
 

@@ -145,7 +145,15 @@ merge_and_cleanup() {
 
     echo "→ Switching back to main..."
     git checkout main
-    git pull --ff-only 2>/dev/null || true
+    # Force-clean working tree to prevent CRLF/.gitattributes artifacts from blocking pull
+    git checkout -- . 2>/dev/null || true
+    git clean -fd 2>/dev/null || true
+    if ! git pull --ff-only 2>/dev/null; then
+      # If pull still fails (rare), force-reset to remote main
+      echo -e "${YELLOW}⚠ Pull failed — force-syncing to origin/main${NC}"
+      git fetch origin main
+      git reset --hard origin/main
+    fi
     git fetch --prune --quiet 2>/dev/null || true
 
     # Clean up local task branch
