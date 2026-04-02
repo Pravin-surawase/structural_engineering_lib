@@ -1,10 +1,14 @@
 # Agents
 
-> **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlie
+> **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (15 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlie
 
 **Type:** Documentation
-**Last Updated:** 2026-03-29
-**Files:** 1
+**Last Updated:** 2026-04-02
+**Files:** 2
+
+## Config Files
+
+- [agent_registry.json](agent_registry.json)
 
 ## Documentation Files
 

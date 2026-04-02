@@ -2,7 +2,7 @@
 description: "IS 456:2000 code compliance, formula validation, design verification, benchmark testing"
 tools: ['search', 'readFile', 'listFiles', 'web', 'runInTerminal']
 model: Claude Opus 4.6 (copilot)
-permission_level: ReadOnly
+permission_level: ReadOnlyTerminal
 registry_ref: agents/agent_registry.json
 handoffs:
   - label: Implement Changes

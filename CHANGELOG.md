@@ -6,7 +6,20 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Column Design (IS 456)** — `classify_column` (Cl 25.1.2), `min_eccentricity` (Cl 25.4), `short_axial_capacity` (Cl 39.3) with ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 constants, 3 API wrappers, FastAPI column router with 3 POST endpoints, 75 tests (TASK-630/631/632)
+- **TASK-633:** Short column uniaxial bending (Cl 39.5) — design_short_column_uniaxial() + 57 tests + API + FastAPI endpoint
+- **TASK-634:** P-M interaction curve (Cl 39.5, Annex G) — pm_interaction_curve() + 45 tests + API + endpoint
+- **TASK-635:** Biaxial bending check (Cl 39.6) — biaxial_bending_check() + 84 tests + API + endpoint
+- **TASK-636:** Effective length per Table 28 (Cl 25.2) — calculate_effective_length() + EndCondition enum + 69 tests + API + endpoint
+- **TASK-637:** Additional moment for slender columns (Cl 39.7.1) — calculate_additional_moment() + 24 tests + API + endpoint
 - **Enhanced Shear Near Supports** — `enhanced_shear_strength` (Cl 40.3) with 14 tests and API endpoint (TASK-712)
+- **Steel Stress-Strain**
+- **TASK-642:** Five-point steel stress-strain curve (IS 456 Fig 23) — stress_strain_steel_5pt() in stress_blocks.py + 26 tests
+- **Foundation Cleanup (Phase 1 Complete)**
+- **TASK-621:** Added `recovery` field to DesignError — step-by-step fix instructions for all 39 error codes
+- **TASK-622:** Created check_function_quality.py — 12-point AST-based IS 456 function quality checker
+- **TASK-623:** Created check_clause_coverage.py — IS 456 clause gap detection (119 clauses tracked)
+- **TASK-624:** Created check_new_element_completeness.py — 7-layer element completeness matrix
+- **TASK-625:** Created docs/governance/maintenance-playbook.md — governance playbook (11 sections)
 
 ## [0.20.0] - 2026-03-30
 

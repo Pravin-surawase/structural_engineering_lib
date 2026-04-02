@@ -21,15 +21,14 @@ tags: []
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-04-02
-- Session: 5 agent infrastructure improvements implemented + reviewed
-- Done:
-  - 6 new IS 456 check endpoints (ductility, slenderness, anchorage, deflection, crack width, compliance) — 59 total routes
-  - ReadOnlyTerminal permission tier + terminal_allowlist for 4 agents
-  - 3 scoring dimensions auto-populated (handoff_quality, regression_avoidance, code_quality)
-  - Router keyword discrimination: suppression rules, combo rules, updated keywords for 7 agents
-  - --status CLI for agent_evolve_instructions.py
-  - 51 new tests for session_store.py + pipeline_state.py
+### Session: 2026-04-02 — Phase 1 Foundation Cleanup Complete
+- TASK-621: Added `recovery` field to DesignError (39 error codes with step-by-step fix text)
+- TASK-622: Created check_function_quality.py (12-point AST-based IS 456 function checker, 667 lines)
+- TASK-623: Created check_clause_coverage.py (IS 456 clause gap detection, 485 lines)
+- TASK-624: Created check_new_element_completeness.py (7-layer element completeness matrix, 570 lines)
+- TASK-625: Created docs/governance/maintenance-playbook.md (11-section governance playbook)
+- Fixed: 4 agent permission level mismatches (security, structural-engineer, library-expert, reviewer → ReadOnlyTerminal)
+- Phase 1 Foundation Cleanup: 15/15 tasks COMPLETE
 - State: main branch, all tests passing
 <!-- HANDOFF:END -->
 
@@ -42,11 +41,13 @@ tags: []
 
 ## What's Next
 
-1. **Add P2 API endpoints** — design_and_detail_beam_is456, design_from_input, get_library_version (extend /health/info)
-2. **Add routing test fixture** — 10 sample prompts → expected agent mappings to validate router changes
-3. **TASK-638 (long column design)** — `design_long_column` orchestrator
-4. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
-5. **React UX remaining** — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)
+### Next Priorities
+1. **TASK-638: Long column design** (Cl 39.7 — design_long_column) — next column function
+2. **TASK-640: Column orchestrator** (design_column_is456 — wraps all column functions)
+3. **TASK-641: Column FastAPI endpoint** (POST /api/v1/design/column)
+4. **TASK-527: TopBar context badges + SettingsPanel** (React UX)
+5. **TASK-519: Alternatives Panel — Pareto front** (optimization)
+6. **Documentation: Regenerate folder indexes** (Python/, fastapi_app/, react_app/ are 4-9 days stale)
 
 ### Technical Debt
 

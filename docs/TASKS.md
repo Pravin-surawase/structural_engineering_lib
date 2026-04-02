@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 (5 agent infrastructure improvements: 6 IS 456 endpoints, ReadOnlyTerminal tier, 3 auto-scoring dimensions, router discrimination, --status CLI)
+**Updated:** 2026-04-02 — Phase 1 Foundation Cleanup complete (25/25), 5 agent infrastructure improvements, 6 IS 456 endpoints, ReadOnlyTerminal tier, 3 auto-scoring dimensions, router discrimination, --status CLI
 
 ---
 
@@ -91,6 +91,11 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-621 | DesignError recovery field — step-by-step fix for 39 errors | Copilot | ✅ Done |
+| TASK-622 | check_function_quality.py — 12-point AST quality checker | Copilot | ✅ Done |
+| TASK-623 | check_clause_coverage.py — IS 456 clause gap detection | Copilot | ✅ Done |
+| TASK-624 | check_new_element_completeness.py — element completeness matrix | Copilot | ✅ Done |
+| TASK-625 | maintenance-playbook.md — governance playbook | Copilot | ✅ Done |
 | TASK-637 | Additional moment / slenderness effects (IS 456 Cl 39.7.1) — slenderness.py + AdditionalMomentResult + 24 tests + API + endpoint + 8 API tests | Copilot | ✅ Done |
 | TASK-642 | Five-point steel stress-strain curve (IS 456 Fig 23) — stress_blocks.py + uniaxial.py + 26 tests | Copilot | ✅ Done |
 | TASK-636 | Effective length per IS 456 Table 28 — axial.py + EndCondition enum + 69 tests + API + endpoint | Copilot | ✅ Done |
@@ -152,11 +157,11 @@
 | TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | ✅ Done |
 | TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | ✅ Done |
 | TASK-620 | Stack trace sanitization (security) in `fastapi_app/main.py` | 🟡 Medium | ✅ Done |
-| TASK-621 | Add `recovery` field to `DesignError` in `core/errors.py` | 🟡 Medium | 📋 |
-| TASK-622 | Create `check_function_quality.py` script (12-point checklist CI) | 🟡 Medium | 📋 |
-| TASK-623 | Create `check_clause_coverage.py` script (clause gap detection) | 🟡 Medium | 📋 |
-| TASK-624 | Create `check_new_element_completeness.py` script | 🟡 Medium | 📋 |
-| TASK-625 | Create maintenance playbook `docs/governance/maintenance-playbook.md` | 🟢 Low | 📋 |
+| TASK-621 | Add `recovery` field to `DesignError` in `core/errors.py` | 🟡 Medium | ✅ Done |
+| TASK-622 | Create `check_function_quality.py` script (12-point checklist CI) | 🟡 Medium | ✅ Done |
+| TASK-623 | Create `check_clause_coverage.py` script (clause gap detection) | 🟡 Medium | ✅ Done |
+| TASK-624 | Create `check_new_element_completeness.py` script | 🟡 Medium | ✅ Done |
+| TASK-625 | Create maintenance playbook `docs/governance/maintenance-playbook.md` | 🟢 Low | ✅ Done |
 
 ### Phase 1.5: IS 456 Beam Restructure (v5 Phase 0)
 

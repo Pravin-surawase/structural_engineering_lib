@@ -3,7 +3,7 @@
 > **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copilot agents). These files are kept for reference on
 
 **Type:** Documentation
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-02
 **Files:** 13
 
 ## Documentation Files

@@ -1,6 +1,6 @@
 {
   "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
-  "_updated": "2026-03-31",
+  "_updated": "2026-04-02",
   "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
 
   "topics": {
@@ -100,9 +100,24 @@
       "also_see": ["docs/research/pyvista-evaluation.md"]
     },
     "column-design": {
-      "canonical": "docs/reference/api.md",
-      "description": "Column design functions — axial, uniaxial, biaxial, P-M curves, effective length",
-      "also_see": ["docs/planning/library-expansion-blueprint-v5.md"]
+      "canonical": "docs/planning/library-expansion-blueprint-v5.md",
+      "description": "Column design implementation (IS 456 Cl 25, 39) — classify, axial, uniaxial, P-M curve, biaxial, effective length, slenderness",
+      "aliases": ["column", "columns", "axial capacity", "P-M interaction", "biaxial bending"]
+    },
+    "quality-pipeline": {
+      "canonical": ".github/skills/function-quality-pipeline/SKILL.md",
+      "description": "9-step quality pipeline for IS 456 functions — mandatory for every new function",
+      "aliases": ["function quality", "12-point checklist", "quality gate"]
+    },
+    "governance": {
+      "canonical": "docs/governance/maintenance-playbook.md",
+      "description": "Project governance, maintenance schedules, quality gates, incident response",
+      "aliases": ["maintenance", "playbook", "weekly maintenance", "release checklist"]
+    },
+    "error-handling": {
+      "canonical": "docs/guidelines/error-handling-standard.md",
+      "description": "Error hierarchy, DesignError schema, recovery field, error codes",
+      "aliases": ["errors", "DesignError", "recovery", "error codes", "E_FLEXURE", "E_COLUMN"]
     }
   },
 

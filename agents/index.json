@@ -2,8 +2,8 @@
   "folder": "agents",
   "type": "documentation",
   "description": "> **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlie",
-  "last_updated": "2026-03-29",
-  "file_count": 1,
+  "last_updated": "2026-04-02",
+  "file_count": 2,
   "files": [
     {
       "name": "README.md",
@@ -13,6 +13,16 @@
       "title": "Agent Prompt Cheat Sheet",
       "description": "> **⚠️ NOTE:** The authoritative agent system is in .github/agents/ (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier ",
       "content_hash": "71c04d88fb0e"
+    },
+    {
+      "name": "agent_registry.json",
+      "type": "config",
+      "last_updated": "2026-04-02",
+      "top_level_keys": [
+        "agents",
+        "_meta"
+      ],
+      "content_hash": "da4caf2c6169"
     }
   ],
   "subfolders": [
@@ -28,5 +38,5 @@
       "description": "> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copi"
     }
   ],
-  "content_hash": "bdf06d631f129431"
+  "content_hash": "886151d948661af3"
 }

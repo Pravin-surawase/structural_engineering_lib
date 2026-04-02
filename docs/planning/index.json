@@ -2,8 +2,8 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-31",
-  "file_count": 7,
+  "last_updated": "2026-04-02",
+  "file_count": 8,
   "files": [
     {
       "name": "README.md",
@@ -25,11 +25,11 @@
     {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
-      "size_lines": 1130,
-      "last_updated": "2026-03-31",
+      "size_lines": 1131,
+      "last_updated": "2026-04-02",
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
-      "content_hash": "2e332c3d3f57"
+      "content_hash": "3ad851ef771d"
     },
     {
       "name": "memory.md",
@@ -50,10 +50,19 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 316,
-      "last_updated": "2026-03-31",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-03-30",
-      "content_hash": "dc40e282cbd7"
+      "size_lines": 85,
+      "last_updated": "2026-04-02",
+      "description": "<!-- HANDOFF:START --> - TASK-621: Added recovery field to DesignError (39 error codes with step-by-step fix text)",
+      "content_hash": "6da5300dcc82"
+    },
+    {
+      "name": "pre-release-checklist.md",
+      "type": "documentation",
+      "size_lines": 41,
+      "last_updated": "2026-04-01",
+      "title": "Pre-Release Checklist",
+      "description": "- **Version:** 0.20.0 - **Branch:** main",
+      "content_hash": "ef38e5b55bc5"
     },
     {
       "name": "react-ux-improvement-plan.md",
@@ -65,5 +74,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e9f8a38bc248a982"
+  "content_hash": "06ee772acdaa666d"
 }

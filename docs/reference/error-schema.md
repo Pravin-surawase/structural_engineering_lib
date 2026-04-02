@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-04-02
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** Medium
 **Created:** 2025-12-28
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-02
 
 ---
 
@@ -45,6 +45,7 @@ This document defines the standard error schema for all structural_lib errors. T
 | `message` | string | ✅ | Human-readable error description |
 | `hint` | string | ❌ | Actionable suggestion to fix the error |
 | `clause` | string | ❌ | IS 456 clause reference (e.g., `Cl. 26.5.1.1`) |
+| `recovery` | str \| None | ❌ | Step-by-step fix instructions. Multi-sentence guidance for resolving the error. |
 
 ### JSON Example
 
@@ -55,7 +56,8 @@ This document defines the standard error schema for all structural_lib errors. T
   "field": "Mu",
   "message": "Mu exceeds Mu_lim. Doubly reinforced section required.",
   "hint": "Use design_doubly_reinforced() or increase section depth.",
-  "clause": "Cl. 38.1"
+  "clause": "Cl. 38.1",
+  "recovery": "1. Check if Mu can be reduced by redistributing loads. 2. If not, call design_doubly_reinforced() with the same inputs. 3. Alternatively, increase section depth d to raise Mu_lim above Mu."
 }
 ```
 
@@ -174,6 +176,7 @@ class DesignError:
     field: Optional[str] = None
     hint: Optional[str] = None
     clause: Optional[str] = None
+    recovery: Optional[str] = None
 
 @dataclass
 class FlexureResult:
@@ -216,7 +219,8 @@ Error: Mu exceeds Mu_lim. Doubly reinforced section required.
       "field": "Mu",
       "message": "Mu exceeds Mu_lim",
       "hint": "Use design_doubly_reinforced() or increase section depth.",
-      "clause": "Cl. 38.1"
+      "clause": "Cl. 38.1",
+      "recovery": "1. Check if Mu can be reduced by redistributing loads. 2. If not, call design_doubly_reinforced() with the same inputs. 3. Alternatively, increase section depth d to raise Mu_lim above Mu."
     }
   ]
 }

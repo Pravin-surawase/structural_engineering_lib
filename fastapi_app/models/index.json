@@ -2,16 +2,16 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-29",
-  "file_count": 6,
+  "last_updated": "2026-04-02",
+  "file_count": 9,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 61,
-      "last_updated": "2026-03-26",
+      "size_lines": 88,
+      "last_updated": "2026-04-02",
       "description": "Pydantic Models Package.",
-      "content_hash": "4e67651c641b"
+      "content_hash": "ef8eea18fcda"
     },
     {
       "name": "analysis.py",
@@ -66,8 +66,8 @@
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 437,
-      "last_updated": "2026-03-29",
+      "size_lines": 486,
+      "last_updated": "2026-03-31",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
         {
@@ -120,9 +120,121 @@
         {
           "name": "TorsionDesignResponse",
           "description": "Response model for torsion design."
+        },
+        {
+          "name": "EnhancedShearRequest",
+          "description": "Request model for enhanced shear strength near supports (IS 456 Cl 40.3)."
+        },
+        {
+          "name": "EnhancedShearResponse",
+          "description": "Response model for enhanced shear strength calculation."
         }
       ],
-      "content_hash": "3392c6dfcb7c"
+      "content_hash": "3fd964b8adb2"
+    },
+    {
+      "name": "boq.py",
+      "type": "python",
+      "size_lines": 75,
+      "last_updated": "2026-03-30",
+      "description": "Pydantic models for Project BOQ endpoint.",
+      "classes": [
+        {
+          "name": "BeamMetadata",
+          "description": "Per-beam metadata for BOQ aggregation."
+        },
+        {
+          "name": "ProjectBOQRequest",
+          "description": "Request for project BOQ aggregation."
+        },
+        {
+          "name": "SteelSummaryResponse",
+          "description": "Steel quantities for one grade."
+        },
+        {
+          "name": "ConcreteSummaryResponse",
+          "description": "Concrete quantities for one grade."
+        },
+        {
+          "name": "StorySummaryResponse",
+          "description": "Quantities for one story/floor."
+        },
+        {
+          "name": "ProjectBOQResponse",
+          "description": "BOQ response with aggregated quantities and costs."
+        }
+      ],
+      "content_hash": "3819fe00ad52"
+    },
+    {
+      "name": "column.py",
+      "type": "python",
+      "size_lines": 603,
+      "last_updated": "2026-04-02",
+      "description": "Column Design Pydantic Models.",
+      "classes": [
+        {
+          "name": "EffectiveLengthRequest",
+          "description": "Request model for effective length calculation per IS 456 Cl 25.2, Table 28."
+        },
+        {
+          "name": "EffectiveLengthResponse",
+          "description": "Response model for effective length calculation."
+        },
+        {
+          "name": "ColumnClassifyRequest",
+          "description": "Request model for column classification (short vs slender)."
+        },
+        {
+          "name": "ColumnEccentricityRequest",
+          "description": "Request model for minimum eccentricity calculation."
+        },
+        {
+          "name": "ColumnAxialRequest",
+          "description": "Request model for short column axial capacity calculation."
+        },
+        {
+          "name": "ColumnClassifyResponse",
+          "description": "Response model for column classification."
+        },
+        {
+          "name": "ColumnEccentricityResponse",
+          "description": "Response model for minimum eccentricity."
+        },
+        {
+          "name": "ColumnAxialResponse",
+          "description": "Response model for short column axial capacity."
+        },
+        {
+          "name": "ColumnUniaxialRequest",
+          "description": "Request model for short column uniaxial bending design per IS 456 Cl 39.5."
+        },
+        {
+          "name": "ColumnUniaxialResponse",
+          "description": "Response model for short column uniaxial bending design."
+        },
+        {
+          "name": "PMInteractionRequest",
+          "description": "Request model for P-M interaction curve generation."
+        },
+        {
+          "name": "PMPoint",
+          "description": "A single point on the P-M interaction curve."
+        },
+        {
+          "name": "PMInteractionResponse",
+          "description": "Response model for P-M interaction curve."
+        },
+        {
+          "name": "BiaxialCheckRequest",
+          "description": "Request model for biaxial bending check per IS 456 Cl 39.6 (Bresler load contour)."
+        },
+        {
+          "name": "BiaxialCheckResponse",
+          "description": "Response model for biaxial bending check per IS 456 Cl 39.6."
+        }
+      ],
+      "content_hash": "e0f95ec76a7a"
     },
     {
       "name": "common.py",
@@ -160,6 +272,76 @@
         "T"
       ],
       "content_hash": "840c108953f3"
+    },
+    {
+      "name": "compliance.py",
+      "type": "python",
+      "size_lines": 315,
+      "last_updated": "2026-04-02",
+      "description": "IS 456 Compliance Check Pydantic Models.",
+      "classes": [
+        {
+          "name": "DuctilityCheckRequest",
+          "description": "Request for IS 13920 beam ductility check."
+        },
+        {
+          "name": "DuctilityCheckResponse",
+          "description": "Response for IS 13920 beam ductility check."
+        },
+        {
+          "name": "SlendernessCheckRequest",
+          "description": "Request for beam slenderness / lateral stability check."
+        },
+        {
+          "name": "SlendernessCheckResponse",
+          "description": "Response for beam slenderness check."
+        },
+        {
+          "name": "AnchorageCheckRequest",
+          "description": "Request for anchorage check at simple support."
+        },
+        {
+          "name": "AnchorageCheckResponse",
+          "description": "Response for anchorage check at simple support."
+        },
+        {
+          "name": "DeflectionCheckRequest",
+          "description": "Request for deflection span/depth ratio check."
+        },
+        {
+          "name": "DeflectionCheckResponse",
+          "description": "Response for deflection span/depth ratio check."
+        },
+        {
+          "name": "CrackWidthCheckRequest",
+          "description": "Request for crack width check."
+        },
+        {
+          "name": "CrackWidthCheckResponse",
+          "description": "Response for crack width check."
+        },
+        {
+          "name": "ComplianceCaseInput",
+          "description": "A single load case for compliance checking."
+        },
+        {
+          "name": "DeflectionParamsInput",
+          "description": "Optional deflection parameters for compliance report."
+        },
+        {
+          "name": "CrackWidthParamsInput",
+          "description": "Optional crack width parameters for compliance report."
+        },
+        {
+          "name": "ComplianceReportRequest",
+          "description": "Request for multi-case IS 456 compliance report."
+        },
+        {
+          "name": "ComplianceCaseOutput",
+          "description": "Result for a single compliance case."
+        }
+      ],
+      "content_hash": "6e747cea865e"
     },
     {
       "name": "geometry.py",
@@ -267,7 +449,7 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "703d6cd7a8ff72ed",
+  "content_hash": "b45a46d87e3e8f02",
   "has_init": true,
   "public_api": [
     "BeamDesignRequest",
@@ -287,6 +469,8 @@
     "LoadCase",
     "DesignBasis",
     "APIResponse",
-    "ErrorResponse"
+    "ErrorResponse",
+    "DuctilityCheckRequest",
+    "DuctilityCheckResponse"
   ]
 }

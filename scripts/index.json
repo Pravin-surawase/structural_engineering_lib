@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-04-02",
-  "file_count": 108,
+  "file_count": 111,
   "files": [
     {
       "name": "README.md",
@@ -294,8 +294,8 @@
     {
       "name": "agent_evolve_instructions.py",
       "type": "python",
-      "size_lines": 483,
-      "last_updated": "2026-04-01",
+      "size_lines": 540,
+      "last_updated": "2026-04-02",
       "description": "Agent instruction evolver — self-improving agent customization files.",
       "functions": [
         {
@@ -354,6 +354,10 @@
           "description": "List pending evolution proposals."
         },
         {
+          "name": "show_status",
+          "description": "Show evolution system status."
+        },
+        {
           "name": "parse_args",
           "description": "Parse command-line arguments."
         },
@@ -367,7 +371,7 @@
         "MAX_PENDING",
         "MAX_WEEKLY_EDITS"
       ],
-      "content_hash": "be1b040d0510"
+      "content_hash": "d74c2684621e"
     },
     {
       "name": "agent_feedback.py",
@@ -433,10 +437,31 @@
     {
       "name": "agent_scorer.py",
       "type": "python",
-      "size_lines": 485,
-      "last_updated": "2026-04-01",
+      "size_lines": 548,
+      "last_updated": "2026-04-02",
       "description": "Agent scorer — score agents on 11 performance dimensions.",
       "functions": [
+        {
+          "name": "auto_handoff_quality",
+          "description": "Check if agent updated the 3 mandatory handoff files.",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "auto_regression_avoidance",
+          "description": "Compare test failures: if tests that were passing now fail, deduct.",
+          "params": [
+            "session_data"
+          ]
+        },
+        {
+          "name": "auto_code_quality_proxy",
+          "description": "Proxy: conventional commits + focused changes.",
+          "params": [
+            "session_data"
+          ]
+        },
         {
           "name": "auto_score_agent",
           "description": "Compute auto-scored dimensions from session data.",
@@ -479,7 +504,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "fac44f5431b2"
+      "content_hash": "6c11545c3694"
     },
     {
       "name": "agent_session_collector.py",
@@ -744,7 +769,7 @@
     {
       "name": "audit_permissions.py",
       "type": "python",
-      "size_lines": 363,
+      "size_lines": 394,
       "last_updated": "2026-04-02",
       "description": "Permission audit report for all agents.",
       "classes": [
@@ -777,7 +802,7 @@
         "_WRITE_TOOLS",
         "_RUN_TOOLS"
       ],
-      "content_hash": "7a12c1dc2ddc"
+      "content_hash": "56009c60f71f"
     },
     {
       "name": "audit_readiness_report.py",
@@ -887,7 +912,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "db21b474bfb7"
+      "content_hash": "7665e7471042"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1360,6 +1385,82 @@
       "content_hash": "3d4aa89ded47"
     },
     {
+      "name": "check_clause_coverage.py",
+      "type": "python",
+      "size_lines": 486,
+      "last_updated": "2026-04-02",
+      "description": "IS 456 clause coverage gap detection.",
+      "functions": [
+        {
+          "name": "load_clauses_json",
+          "description": "Load clauses.json and return (clauses, annexures, metadata)."
+        },
+        {
+          "name": "get_implemented_clauses",
+          "description": "Import IS 456 modules to populate the clause registry."
+        },
+        {
+          "name": "build_coverage_matrix",
+          "description": "Build coverage matrix: which clauses are implemented.",
+          "params": [
+            "all_clauses",
+            "annexures",
+            "implemented"
+          ]
+        },
+        {
+          "name": "group_by_category",
+          "description": "Group coverage matrix by category.",
+          "params": [
+            "matrix"
+          ]
+        },
+        {
+          "name": "format_summary",
+          "description": "Format summary statistics only.",
+          "params": [
+            "matrix",
+            "metadata"
+          ]
+        },
+        {
+          "name": "format_json_output",
+          "description": "Format full JSON output.",
+          "params": [
+            "matrix",
+            "metadata"
+          ]
+        },
+        {
+          "name": "format_detailed_report",
+          "description": "Format detailed coverage report.",
+          "params": [
+            "matrix",
+            "metadata",
+            "gaps_only",
+            "implemented_only",
+            "filter_category"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "SCRIPT_DIR",
+        "REPO_ROOT",
+        "CLAUSES_JSON",
+        "COLOR_GREEN",
+        "COLOR_YELLOW",
+        "COLOR_RED",
+        "COLOR_BLUE",
+        "COLOR_RESET",
+        "COLOR_BOLD"
+      ],
+      "content_hash": "859e0d53bb45"
+    },
+    {
       "name": "check_cli_reference.py",
       "type": "python",
       "size_lines": 48,
@@ -1561,6 +1662,92 @@
         }
       ],
       "content_hash": "5b763b85c1b9"
+    },
+    {
+      "name": "check_function_quality.py",
+      "type": "python",
+      "size_lines": 668,
+      "last_updated": "2026-04-02",
+      "description": "12-point quality checklist for IS 456 functions.",
+      "classes": [
+        {
+          "name": "CheckResult",
+          "description": "Result of a single quality check."
+        },
+        {
+          "name": "FunctionReport",
+          "description": "Quality report for a single function.",
+          "public_methods": [
+            "score",
+            "has_failures"
+          ]
+        },
+        {
+          "name": "FunctionChecker",
+          "description": "AST visitor to check quality metrics for a function.",
+          "public_methods": [
+            "check_all",
+            "visit_Call",
+            "visit_Compare",
+            "visit_Assign",
+            "visit_AugAssign",
+            "visit_Expr"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_formula_comments",
+          "description": "Check if function has IS 456 formula comments using tokenize.",
+          "params": [
+            "filepath",
+            "func_name",
+            "func_lineno"
+          ]
+        },
+        {
+          "name": "scan_module",
+          "description": "Scan a Python module and return quality reports for all functions.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "scan_all_modules",
+          "description": "Scan all IS 456 modules and return reports grouped by module.",
+          "params": [
+            "module_filter"
+          ]
+        },
+        {
+          "name": "format_human_report",
+          "description": "Format reports as human-readable text.",
+          "params": [
+            "all_reports",
+            "show_passing"
+          ]
+        },
+        {
+          "name": "format_json_report",
+          "description": "Format reports as JSON.",
+          "params": [
+            "all_reports"
+          ]
+        },
+        {
+          "name": "main",
+          "description": "Main entry point."
+        }
+      ],
+      "constants": [
+        "SCRIPT_DIR",
+        "REPO_ROOT",
+        "IS456_DIR",
+        "BARE_PARAMS",
+        "UNIT_SUFFIXES",
+        "ADVISORY_CHECKS"
+      ],
+      "content_hash": "1f3dde142c2d"
     },
     {
       "name": "check_governance.py",
@@ -1770,6 +1957,119 @@
         "SKIP_DIRECTORIES"
       ],
       "content_hash": "91383f089d5a"
+    },
+    {
+      "name": "check_new_element_completeness.py",
+      "type": "python",
+      "size_lines": 622,
+      "last_updated": "2026-04-02",
+      "description": "Check structural element completeness across all 7 layers.",
+      "functions": [
+        {
+          "name": "discover_elements",
+          "description": "Auto-detect elements from codes/is456/ subdirectories."
+        },
+        {
+          "name": "check_types",
+          "description": "Check Layer 1: Type definitions in core/.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "check_math",
+          "description": "Check Layer 2: Math implementation in codes/is456/.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "check_tests",
+          "description": "Check Layer 3: Test files.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "check_api",
+          "description": "Check Layer 4: API wiring in services/api.py.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "check_endpoint",
+          "description": "Check Layer 5: FastAPI router.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "check_frontend",
+          "description": "Check Layer 6: React hook + component.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "check_docs",
+          "description": "Check Layer 7: Documentation.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "determine_level",
+          "description": "Determine completeness level L1/L2/L3.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "check_element",
+          "description": "Run all checks for a single element.",
+          "params": [
+            "element",
+            "verbose"
+          ]
+        },
+        {
+          "name": "format_matrix_row",
+          "description": "Format a single row for the matrix table.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "print_matrix",
+          "description": "Print the completeness matrix table.",
+          "params": [
+            "results"
+          ]
+        },
+        {
+          "name": "print_detailed",
+          "description": "Print detailed information for a single element.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "KNOWN_ELEMENTS"
+      ],
+      "content_hash": "997c664a60a7"
     },
     {
       "name": "check_next_session_brief_length.py",
@@ -3149,7 +3449,7 @@
     {
       "name": "pipeline_state.py",
       "type": "python",
-      "size_lines": 847,
+      "size_lines": 868,
       "last_updated": "2026-04-02",
       "description": "Pipeline state tracking for multi-step agent workflows.",
       "classes": [
@@ -3299,7 +3599,7 @@
         "IS456_STEPS",
         "PARALLEL_GROUPS"
       ],
-      "content_hash": "e47214897f44"
+      "content_hash": "a796f81c8d9a"
     },
     {
       "name": "pre_commit_check.sh",
@@ -3471,7 +3771,7 @@
     {
       "name": "prompt_router.py",
       "type": "python",
-      "size_lines": 433,
+      "size_lines": 492,
       "last_updated": "2026-04-02",
       "description": "Prompt router — routes natural language queries to the best agent + skills.",
       "classes": [
@@ -3502,7 +3802,7 @@
       "constants": [
         "STOPWORDS"
       ],
-      "content_hash": "a6436b24cd9c"
+      "content_hash": "cb3f2a21c85e"
     },
     {
       "name": "recover_git_state.sh",
@@ -3683,10 +3983,26 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 1946,
+      "size_lines": 2035,
       "last_updated": "2026-04-02",
       "description": "Unified session management CLI.",
       "functions": [
+        {
+          "name": "save_trust_state",
+          "description": "Write trust state to session_trust.json.",
+          "params": [
+            "trusted",
+            "reason"
+          ]
+        },
+        {
+          "name": "load_trust_state",
+          "description": "Read trust state from session_trust.json."
+        },
+        {
+          "name": "is_session_trusted",
+          "description": "Check if current session is trusted."
+        },
         {
           "name": "get_version"
         },
@@ -3753,24 +4069,6 @@
         },
         {
           "name": "get_today_prs"
-        },
-        {
-          "name": "cmd_end",
-          "params": [
-            "args"
-          ]
-        },
-        {
-          "name": "cmd_handoff",
-          "params": [
-            "args"
-          ]
-        },
-        {
-          "name": "cmd_check",
-          "params": [
-            "args"
-          ]
         }
       ],
       "constants": [
@@ -3778,19 +4076,19 @@
         "TASKS_MD",
         "PYPROJECT",
         "NEXT_BRIEF",
+        "TRUST_STATE_FILE",
         "DATE_RE",
         "HANDOFF_START",
         "HANDOFF_END",
         "HANDOFF_DATE_RE",
-        "COMMIT_HASH_RE",
-        "TASKS_HISTORY"
+        "COMMIT_HASH_RE"
       ],
-      "content_hash": "fbb34b6b726f"
+      "content_hash": "2501309dc649"
     },
     {
       "name": "session_store.py",
       "type": "python",
-      "size_lines": 352,
+      "size_lines": 372,
       "last_updated": "2026-04-02",
       "description": "JSON-based session state persistence for AI agent sessions.",
       "classes": [
@@ -3898,7 +4196,7 @@
       "constants": [
         "SESSIONS_DIR"
       ],
-      "content_hash": "c10784b3543e"
+      "content_hash": "c25fde05cef7"
     },
     {
       "name": "should_use_pr.sh",
@@ -4325,7 +4623,7 @@
     {
       "name": "tool_permissions.py",
       "type": "python",
-      "size_lines": 312,
+      "size_lines": 346,
       "last_updated": "2026-04-02",
       "description": "Tool permission enforcement for agent operations.",
       "classes": [
@@ -4335,6 +4633,14 @@
         }
       ],
       "functions": [
+        {
+          "name": "check_terminal_command",
+          "description": "Check if *command* is allowed for agent's terminal_allowlist.",
+          "params": [
+            "agent",
+            "command"
+          ]
+        },
         {
           "name": "check_file_scope",
           "description": "Check if *file_path* falls within the agent's file_scope glob.",
@@ -4363,7 +4669,7 @@
         "_PERMISSION_LEVELS",
         "_REGISTRY_PATH"
       ],
-      "content_hash": "2fab3a21b3a5"
+      "content_hash": "f2805fec9167"
     },
     {
       "name": "tool_registry.py",
@@ -4784,5 +5090,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "f05ab31a6f65a2c7"
+  "content_hash": "8d3da1daf869922d"
 }

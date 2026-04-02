@@ -159,3 +159,8 @@ tags: []
 | 2026-04-02 | TASK-867 | Snapshot regression tests — 10 tests guarding API surface counts | Session 4 |
 | 2026-04-02 | TASK-869 | Updated all 15 agent .md files with permission_level + registry_ref | Session 4 |
 | 2026-04-02 | TASK-871 | Updated AGENTS.md + CLAUDE.md + copilot-instructions.md with new commands | Session 4 |
+| 2026-04-02 | TASK-621 | feat(core): add recovery field to DesignError + text for 39 errors | pending |
+| 2026-04-02 | TASK-622 | feat(scripts): create check_function_quality.py 12-point checker | pending |
+| 2026-04-02 | TASK-623 | feat(scripts): create check_clause_coverage.py clause gap scanner | pending |
+| 2026-04-02 | TASK-624 | feat(scripts): create check_new_element_completeness.py matrix | pending |
+| 2026-04-02 | TASK-625 | docs(governance): create maintenance-playbook.md 11 sections | pending |
