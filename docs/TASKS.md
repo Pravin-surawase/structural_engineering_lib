@@ -177,7 +177,7 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 ### Git Workflow Hardening (TASK-900)
 
 > **Hardening the git automation infrastructure** based on 9-script audit and TASK-640 root-cause analysis.
-> Full plan: [git-workflow-hardening-plan.md](../_active/git-workflow-hardening-plan.md)
+> Full plan: [git-workflow-hardening-plan.md](_active/git-workflow-hardening-plan.md)
 > WIP limit: 2 active at once.
 
 | ID | Task | Phase | Priority | Status |

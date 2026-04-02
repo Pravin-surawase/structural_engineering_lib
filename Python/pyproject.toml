@@ -143,6 +143,7 @@ classmethod-decorators = ["classmethod"]
 "structural_lib/codes/is456/column/slenderness.py" = ["N803", "N806"]  # Structural engineering naming (Pu, M)
 "tests/test_column_helical.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict()
 "tests/test_column_long.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict()
+"structural_lib/services/api.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mux, Muy, M1x, M2y)
 
 [tool.mypy]
 python_version = "3.11"

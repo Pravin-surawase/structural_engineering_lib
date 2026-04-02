@@ -223,6 +223,11 @@
       "script": ".venv/bin/python scripts/check_architecture_boundaries.py",
       "description": "Enforce 4-layer architecture — core cannot import services/UI"
     },
+    "check git script budget": {
+      "group": "Quality",
+      "script": ".venv/bin/python scripts/check_git_script_budget.py",
+      "description": "Check that git automation scripts stay within line budget (2500 total, 700 per script)"
+    },
     "check element completeness": {
       "group": "Quality",
       "script": ".venv/bin/python scripts/check_new_element_completeness.py",
