@@ -117,27 +117,10 @@ if [[ "$DRY_RUN" == "true" ]]; then
 fi
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Push-only mode: push already-committed changes without new commit
+# Push-only mode: delegate to safe_push.sh for retry logic + divergence detection (TASK-902)
 if [[ "$PUSH_ONLY" == "true" ]]; then
-    echo -e "${YELLOW}→ Push-only mode: pushing existing commits...${NC}"
-    # Check if there's anything to push
-    git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null || true
-    LOCAL_HEAD=$(git rev-parse HEAD)
-    REMOTE_HEAD=$(git rev-parse "origin/$CURRENT_BRANCH" 2>/dev/null || echo "none")
-    if [[ "$LOCAL_HEAD" == "$REMOTE_HEAD" ]]; then
-        echo -e "${GREEN}✓ Already synced with remote - nothing to push${NC}"
-        exit 0
-    fi
-    echo "→ Pushing to origin/$CURRENT_BRANCH..."
-    export SAFE_PUSH_ACTIVE=1
-    if git push; then
-        echo -e "${GREEN}✓ Successfully pushed!${NC}"
-        echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
-    else
-        echo -e "${RED}✗ Push failed${NC}"
-        exit 1
-    fi
-    exit 0
+    echo -e "${YELLOW}→ Push-only mode: routing through safe_push.sh...${NC}"
+    exec "$PROJECT_ROOT/scripts/safe_push.sh" "--push-only"
 fi
 
 # Undo mode: soft-reset the last commit (keeps changes staged)
@@ -164,6 +147,12 @@ fi
 
 # Amend mode: add staged changes to the last commit and push
 if [[ "$AMEND" == "true" ]]; then
+    # TASK-901: Block --amend on protected branches
+    if [[ "$CURRENT_BRANCH" == "main" || "$CURRENT_BRANCH" == "develop" || "$CURRENT_BRANCH" =~ ^release/ ]]; then
+        echo -e "${RED}✗ Cannot --amend on protected branch '$CURRENT_BRANCH'${NC}"
+        echo -e "${YELLOW}  Use a task branch: ./scripts/ai_commit.sh --branch TASK-XXX 'desc'${NC}"
+        exit 1
+    fi
     echo -e "${YELLOW}→ Amend mode: updating last commit...${NC}"
     git add -A
     if [[ -z $(git status --porcelain) ]] && [[ -z "$COMMIT_MSG" ]]; then
@@ -198,6 +187,13 @@ if [[ "$STATUS" == "true" ]]; then
     echo -e "Unpushed:  $AHEAD commit(s)"
     STASH_COUNT=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
     echo -e "Stashes:   $STASH_COUNT"
+    # Check for interrupted --finish (TASK-904)
+    if [[ -f ".git/FINISH_STATE" ]]; then
+        FINISH_PR=$(grep "^PR_NUMBER=" ".git/FINISH_STATE" | cut -d= -f2)
+        FINISH_STAGE=$(grep "^STAGE=" ".git/FINISH_STATE" | cut -d= -f2)
+        echo -e "${YELLOW}⚠ Interrupted --finish: PR #$FINISH_PR (stage: $FINISH_STAGE)${NC}"
+        echo -e "  Resume: ./scripts/ai_commit.sh --continue $FINISH_PR"
+    fi
     if command -v gh &>/dev/null; then
         echo ""
         echo "Open PRs:"

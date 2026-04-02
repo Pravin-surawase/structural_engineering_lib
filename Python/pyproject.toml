@@ -138,6 +138,12 @@ classmethod-decorators = ["classmethod"]
 "tests/codes/is456/column/test_uniaxial.py" = ["N802", "N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc)
 "structural_lib/codes/is456/column/biaxial.py" = ["N803", "N806", "C409"]  # Structural engineering naming (Puz, Mux, Muy, alpha_n)
 "tests/test_column_biaxial.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict() for readability
+"structural_lib/codes/is456/column/helical.py" = ["N803", "N806"]  # Structural engineering naming (D_core, Pu, A_helix, V_helix)
+"structural_lib/codes/is456/column/long_column.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mu, M1, M2)
+"structural_lib/codes/is456/column/slenderness.py" = ["N803", "N806"]  # Structural engineering naming (Pu, M)
+"tests/test_column_helical.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict()
+"tests/test_column_long.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict()
+"structural_lib/services/api.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mux, Muy, M1x, M2y)
 
 [tool.mypy]
 python_version = "3.11"

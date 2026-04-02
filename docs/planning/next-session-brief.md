@@ -1,84 +1,66 @@
----
-owner: Main Agent
-status: active
-last_updated: 2026-04-02
-doc_type: guide
-complexity: intermediate
-tags: []
----
+# Next Session Brief
 
-# Next Session Briefing
-
-**Type:** Handoff
-**Audience:** All Agents
-**Status:** Active
-**Importance:** Critical
-**Created:** 2025-01-01
-**Last Updated:** 2026-04-02
+**Updated:** 2026-04-02
+**Last Session:** Git Workflow Hardening — All 4 Phases Implemented (13/14 tasks done)
 
 ---
 
-## Latest Handoff (auto)
+## What Was Done This Session
 
-<!-- HANDOFF:START -->
-### Session: 2026-04-02 — Phase 1 Foundation Cleanup Complete
-- TASK-621: Added `recovery` field to DesignError (39 error codes with step-by-step fix text)
-- TASK-622: Created check_function_quality.py (12-point AST-based IS 456 function checker, 667 lines)
-- TASK-623: Created check_clause_coverage.py (IS 456 clause gap detection, 485 lines)
-- TASK-624: Created check_new_element_completeness.py (7-layer element completeness matrix, 570 lines)
-- TASK-625: Created docs/governance/maintenance-playbook.md (11-section governance playbook)
-- Fixed: 4 agent permission level mismatches (security, structural-engineer, library-expert, reviewer → ReadOnlyTerminal)
-- Phase 1 Foundation Cleanup: 15/15 tasks COMPLETE
-- State: main branch, all tests passing
-<!-- HANDOFF:END -->
+### Git Workflow Hardening (TASK-900 series — 13/14 tasks complete)
 
-| Release | Version | Status |
-|---------|---------|--------|
-| **Current** | v0.20.0 | 🔄 React UX Overhaul + Library Expansion |
-| **Next** | v0.22.0 | 📋 Planned |
+**Phase 1 — Emergency Fixes (4/4 done):**
+- TASK-900: Fixed safe_push.sh Step 6 divergence detection — no more false "Push ready" for diverged branches
+- TASK-901: Blocked `--amend` on main/develop/release branches
+- TASK-902: Routed `--push` through safe_push.sh (was bypassing divergence detection)
+- TASK-903: Added pre-flight checks for rebase/cherry-pick/merge states in safe_push.sh
 
----
+**Phase 2 — Recovery & Resilience (3/3 done):**
+- TASK-904: Persist `--finish` state to `.git/FINISH_STATE` for recovery after terminal reset
+- TASK-905: Squash-merge divergence detection (merged into TASK-900/906 error messages)
+- TASK-906: Categorized push error messages (diverged, auth, protected, network) with specific recovery commands
 
-## What's Next
+**Phase 3 — Observability & Testing (3/4 done):**
+- TASK-907: All bypass events now logged to `logs/git_workflow.log` (pre-push + pre-commit hooks)
+- TASK-909: Consolidated duplicated merge+cleanup blocks in finish_task_pr.sh into `merge_and_cleanup()` function
+- TASK-910: Added git script line budget check to check_all.py (2500 total, 700 per script)
+- TASK-908: bats-core tests DEFERRED (requires bats-core installation)
 
-### Next Priorities
-1. **TASK-638: Long column design** (Cl 39.7 — design_long_column) — next column function
-2. **TASK-640: Column orchestrator** (design_column_is456 — wraps all column functions)
-3. **TASK-641: Column FastAPI endpoint** (POST /api/v1/design/column)
-4. **TASK-527: TopBar context badges + SettingsPanel** (React UX)
-5. **TASK-519: Alternatives Panel — Pareto front** (optimization)
-6. **Documentation: Regenerate folder indexes** (Python/, fastapi_app/, react_app/ are 4-9 days stale)
+**Phase 4 — Hardening (3/3 done):**
+- TASK-911: Task ID format validation in create_task_pr.sh
+- TASK-912: Log rotation for git_workflow.log (>1MB, keep 3 old copies)
+- TASK-913: Updated ops.agent.md, AGENTS.md, CLAUDE.md with new FORBIDDEN commands
 
-### Technical Debt
-
-- 2 architecture violations: rebar_optimizer/multi_objective_optimizer bypass api facade
-- ~13 backward-compat stub imports in streamlit_app/
-- 28 unit conversion warnings in IS 456 code (documented)
-
----
-
-## Required Reading
-
-1. [TASKS.md](../TASKS.md) — current task board & priorities
-2. [agent-bootstrap.md](../getting-started/agent-bootstrap.md) — full project reference
-3. [api.md](../reference/api.md) — API reference (29 public functions)
+**Files Changed:**
+- `scripts/safe_push.sh` — divergence detection, pre-flight checks, push-only mode, error categorization, log rotation
+- `scripts/ai_commit.sh` — --push routes through safe_push.sh, --amend branch guard, --status shows FINISH_STATE
+- `scripts/finish_task_pr.sh` — state persistence, merge_and_cleanup() dedup
+- `scripts/create_task_pr.sh` — task ID validation
+- `scripts/git-hooks/pre-push` — bypass event logging
+- `scripts/git-hooks/pre-commit` — bypass event logging
+- `scripts/check_git_script_budget.py` — NEW: line budget check
+- `scripts/check_all.py` — added script budget check to git category
+- `.github/agents/ops.agent.md` — new FORBIDDEN commands, error recovery rows, historical mistake #11
+- `AGENTS.md` — git rebase --skip FORBIDDEN, recovery guidance
+- `CLAUDE.md` — git rebase --skip FORBIDDEN, recovery guidance
+- `docs/_active/git-workflow-hardening-plan.md` — status: Active
+- `docs/TASKS.md` — TASK-900 series all marked done
 
 ---
 
-## Quick Commands
+## What To Do Next
+
+1. **PR #491 (Phase 2 Column Design)** — still open. Check status: `gh pr view 491`
+2. **TASK-908 (bats-core tests)** — install bats-core and write tests for the git failure paths
+3. **Phase 3: Footing Design** — TASK-650 through TASK-656 are next in the library expansion
+4. **Verify git workflow** — test the new divergence detection by creating a temporary diverged state
+
+---
+
+## Quick Start
 
 ```bash
-./run.sh session start              # Begin work
-./run.sh commit "type: message"     # Safe commit (THE ONE RULE)
-./run.sh check --quick              # Fast validation (<30s)
-./run.sh pr create TASK-XXX "desc"  # Start a PR
-./run.sh test                       # Run pytest
-docker compose up --build           # FastAPI at :8000/docs
-cd react_app && npm run dev         # React at :5173
+git status --short && git branch --show-current
+docs/TASKS.md                    # Check priorities
+./run.sh session start           # Verify environment
 ```
-
-## Key Files
-
-- Task tracking: [docs/TASKS.md](../TASKS.md)
-- Session history: [docs/SESSION_LOG.md](../SESSION_LOG.md)
-- Agent bootstrap: [docs/getting-started/agent-bootstrap.md](../getting-started/agent-bootstrap.md)

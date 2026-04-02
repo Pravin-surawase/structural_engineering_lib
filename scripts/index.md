@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-04-02
-**Files:** 111
+**Last Updated:** 2026-04-03
+**Files:** 112
 
 ## Config Files
 
@@ -36,7 +36,7 @@
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 439 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 799 |
 | [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 432 |
-| [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 713 |
+| [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 714 |
 | [check_api.py](check_api.py) | Unified API validation — signatures, docs, and sync checks. | 1 | 4 | 379 |
 | [check_api_compat.py](check_api_compat.py) | Check API backward compatibility. | 0 | 3 | 152 |
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 518 |
@@ -49,6 +49,7 @@
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 653 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 422 |
 | [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 668 |
+| [check_git_script_budget.py](check_git_script_budget.py) | Check that git automation scripts stay within line budget (T | 0 | 1 | 63 |
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 18 | 1025 |
 | [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 210 |
 | [check_links.py](check_links.py) | Check and fix broken internal links in markdown files. | 0 | 2 | 327 |

@@ -85,8 +85,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | � Monitoring |
-
+| TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | Monitoring (burn-in) |
+| TASK-900 | Git workflow hardening — all phases complete (13/14 tasks) | Copilot | ✅ Done |
 ## Recently Done
 
 | ID | Task | Agent | Status |
@@ -127,7 +127,7 @@
 
 > TASK-700–712 complete. Beam modules → `codes/is456/beam/`, ductile → `codes/is13920/`, backward-compat shims, enhanced shear (Cl 40.3). PRs #466, #467, #468. See [tasks-history.md](_archive/tasks-history.md).
 
-### Phase 2: Column Design (After Phase 1.5)
+### Phase 2: Column Design ✅ Done (12/12)
 
 | ID | Task | Function | IS 456 Clause | Priority | Status |
 |----|------|----------|---------------|----------|--------|
@@ -139,10 +139,12 @@
 | TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | ✅ Done |
 | TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | ✅ Done (PR #481) |
 | TASK-637 | Additional moment | `calculate_additional_moment` | Cl 39.7.1 | 🟡 Medium | ✅ Done |
-| TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | 📋 |
-| TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.8 | 🟢 Low | 📋 |
-| TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | 📋 |
-| TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | 📋 |
+| TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | ✅ Done — long_column.py (395 lines), braced/unbraced, k-factor, additional moments, 23 tests |
+| TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.4 | 🟢 Low | ✅ Done — helical.py (236 lines), volume ratio, pitch limits, 1.05 enhancement, 14 tests |
+| TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | ✅ Done — services/api.py (~300 lines), routes short→axial/uniaxial/biaxial, slender→long_column |
+| TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | ✅ Done — 3 endpoints (long-column, helical-check, design/column), 6 Pydantic models |
+
+> Phase 2 complete. 12 tasks, full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, orchestrator + FastAPI. Pre-work: `_calculate_puz` deduplication into `_common.py`. 37 new tests (23 long column + 14 helical). 3 orchestrator bug fixes. Full suite: 3,944 tests, 0 failures.
 
 ### Phase 3: Footing Design (After Phase 2)
 
@@ -171,6 +173,29 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 ### Agent Infrastructure (claw-code adaptation) ✅ Done (23/23)
 
 > TASK-850–872 complete. Agent registry, tool registry, prompt router, permission enforcement, hooks, parity dashboard, skill tiers. See [tasks-history.md](_archive/tasks-history.md).
+
+### Git Workflow Hardening (TASK-900)
+
+> **Hardening the git automation infrastructure** based on 9-script audit and TASK-640 root-cause analysis.
+> Full plan: [git-workflow-hardening-plan.md](_active/git-workflow-hardening-plan.md)
+> WIP limit: 2 active at once.
+
+| ID | Task | Phase | Priority | Status |
+|----|------|-------|----------|--------|
+| TASK-900 | Fix safe_push.sh Step 6 divergence detection | Phase 1 | 🔴 Critical | ✅ Done |
+| TASK-901 | Block --amend on main/develop/release branches | Phase 1 | 🔴 Critical | ✅ Done |
+| TASK-902 | Route --push through safe_push.sh | Phase 1 | 🔴 Critical | ✅ Done |
+| TASK-903 | Wire or delete validate_git_state.sh | Phase 1 | 🟡 Medium | ✅ Done |
+| TASK-904 | Persist --finish state (.git/FINISH_STATE) | Phase 2 | 🔴 High | ✅ Done |
+| TASK-905 | Squash-merge divergence detection | Phase 2 | 🔴 High | ✅ Done (merged into TASK-900/906) |
+| TASK-906 | Actionable push error messages | Phase 2 | 🔴 High | ✅ Done |
+| TASK-907 | Log all bypass events | Phase 3 | 🟡 Medium | ✅ Done |
+| TASK-908 | bats-core tests for failure paths | Phase 3 | 🟡 Medium | 📋 (deferred — requires bats-core install) |
+| TASK-909 | Consolidate finish_task_pr.sh duplicates | Phase 3 | 🟡 Medium | ✅ Done |
+| TASK-910 | Script line budget in check_all.py | Phase 3 | 🟢 Low | ✅ Done |
+| TASK-911 | Task ID validation in create_task_pr.sh | Phase 4 | 🟢 Low | ✅ Done |
+| TASK-912 | Log rotation for git_workflow.log | Phase 4 | 🟢 Low | ✅ Done |
+| TASK-913 | Agent instruction updates (FORBIDDEN commands) | Phase 4 | 🟢 Low | ✅ Done |
 
 ## Backlog
 

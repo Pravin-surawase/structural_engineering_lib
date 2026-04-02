@@ -17,6 +17,7 @@ References:
 
 from __future__ import annotations
 
+from structural_lib.codes.is456.column._common import _calculate_puz
 from structural_lib.codes.is456.column.uniaxial import pm_interaction_curve
 from structural_lib.codes.is456.common.constants import (
     MAX_SLENDERNESS_RATIO,
@@ -30,35 +31,8 @@ __all__ = [
     "calculate_additional_moment",
 ]
 
-# ---------------------------------------------------------------------------
-# IS 456 Cl 39.6a: Puz coefficients
-# Puz = 0.45 * fck * Ac + 0.75 * fy * Asc
-# 0.45 = 0.67 * fck / gamma_c where gamma_c = 1.5
-# 0.75 = fy / (gamma_s * factor) — IS 456 specified
-# ---------------------------------------------------------------------------
-_PUZ_CONCRETE_COEFF: float = 0.45
-_PUZ_STEEL_COEFF: float = 0.75
-
 # IS 456 Cl 39.7.1: eadd denominator constant
 _EADD_DENOMINATOR: float = 2000.0
-
-
-def _calculate_puz(
-    b_mm: float,
-    D_mm: float,
-    fck: float,
-    fy: float,
-    Asc_mm2: float,
-) -> float:
-    """Calculate pure axial crush capacity per IS 456 Cl 39.6a.
-
-    Returns:
-        Puz in kN.
-    """
-    Ag_mm2 = b_mm * D_mm
-    Ac_mm2 = Ag_mm2 - Asc_mm2
-    Puz_N = _PUZ_CONCRETE_COEFF * fck * Ac_mm2 + _PUZ_STEEL_COEFF * fy * Asc_mm2
-    return Puz_N / 1000.0
 
 
 def _additional_eccentricity(le_mm: float, D_mm: float) -> float:
