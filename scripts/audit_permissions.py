@@ -152,15 +152,46 @@ def audit_permissions() -> AuditReport:
                 )
             )
 
-        # Check 5: Has run tools but ReadOnly → MISMATCH
-        if _has_run_tools(tools) and perm == "ReadOnly":
+        # Check 5: Terminal tool + permission level consistency
+        has_terminal = _has_run_tools(tools)
+        terminal_allowlist = agent.get("terminal_allowlist", [])
+
+        # ReadOnly + terminal tools WITHOUT allowlist → MISMATCH
+        if has_terminal and perm == "ReadOnly" and not terminal_allowlist:
             anomalies.append(
                 Anomaly(
                     agent=name,
                     severity="MISMATCH",
                     message=(
                         f"Has terminal tools ({', '.join(set(tools) & _RUN_TOOLS)}) "
-                        f"but permission_level=ReadOnly — may execute destructive commands"
+                        f"with permission_level=ReadOnly but no terminal_allowlist — "
+                        f"should be ReadOnlyTerminal with allowlist"
+                    ),
+                )
+            )
+
+        # ReadOnlyTerminal without terminal tools → MISMATCH
+        if perm == "ReadOnlyTerminal" and not has_terminal:
+            anomalies.append(
+                Anomaly(
+                    agent=name,
+                    severity="MISMATCH",
+                    message=(
+                        "permission_level=ReadOnlyTerminal but no runInTerminal tool — "
+                        "terminal tier requires terminal tool access"
+                    ),
+                )
+            )
+
+        # Check 6: ReadOnlyTerminal should have terminal_allowlist
+        if perm == "ReadOnlyTerminal" and not terminal_allowlist:
+            anomalies.append(
+                Anomaly(
+                    agent=name,
+                    severity="WARNING",
+                    message=(
+                        "permission_level=ReadOnlyTerminal but no terminal_allowlist — "
+                        "agent can run any terminal command"
                     ),
                 )
             )
@@ -197,7 +228,7 @@ def _print_report(report: AuditReport) -> None:
 
     # Summary by permission level
     print("Summary:")
-    for level in ("ReadOnly", "WorkspaceWrite", "DangerFullAccess"):
+    for level in ("ReadOnly", "ReadOnlyTerminal", "WorkspaceWrite", "DangerFullAccess"):
         count = report.summary.get(level, 0)
         names = [a.name for a in report.agents if a.permission_level == level]
         print(f"  {level + ':':22s} {count} agent{'s' if count != 1 else ''}", end="")

@@ -22,12 +22,15 @@ tags: []
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-02
-- Session: Claw-code review complete — all 23 tasks implemented + reviewed
-- Done: 4-agent parallel review (reviewer, tester, security, governance). 3 P0/P1 security fixes applied. 2 missing WS-5 docs created. claw-code-harness-ideas.md updated with implementation status.
-- Security fixes: Path traversal protection in session_store.py + pipeline_state.py, JSON error handling in tool_permissions.py
-- New docs: docs/architecture/config-precedence.md (fixes 15 broken links), .github/skills/skill_tiers.json
-- Remaining: Test coverage for session_store.py and pipeline_state.py (0 pytest coverage — P1 for next session)
-- State: main branch, claw-code adaptation fully reviewed
+- Session: 5 agent infrastructure improvements implemented + reviewed
+- Done:
+  - 6 new IS 456 check endpoints (ductility, slenderness, anchorage, deflection, crack width, compliance) — 59 total routes
+  - ReadOnlyTerminal permission tier + terminal_allowlist for 4 agents
+  - 3 scoring dimensions auto-populated (handoff_quality, regression_avoidance, code_quality)
+  - Router keyword discrimination: suppression rules, combo rules, updated keywords for 7 agents
+  - --status CLI for agent_evolve_instructions.py
+  - 51 new tests for session_store.py + pipeline_state.py
+- State: main branch, all tests passing
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -39,10 +42,11 @@ tags: []
 
 ## What's Next
 
-1. **Test infrastructure scripts** — Create pytest tests for `session_store.py` and `pipeline_state.py` (0 coverage found in review)
-2. **TASK-638 (long column design)** — `design_long_column` orchestrator
-3. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
-4. **React UX remaining** — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)
+1. **Add P2 API endpoints** — design_and_detail_beam_is456, design_from_input, get_library_version (extend /health/info)
+2. **Add routing test fixture** — 10 sample prompts → expected agent mappings to validate router changes
+3. **TASK-638 (long column design)** — `design_long_column` orchestrator
+4. **TASK-640 (design_column_is456 orchestrator)** — combines all column functions
+5. **React UX remaining** — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)
 
 ### Technical Debt
 

@@ -41,15 +41,21 @@ AUTO_SCORED_DIMENSIONS: set[str] = {
     "error_rate",
     "engineering_accuracy",
     "instruction_adherence",
+    "handoff_quality",
+    "regression_avoidance",
+}
+
+# Auto-overridable dimensions (auto by default, manual override allowed)
+AUTO_OVERRIDABLE_DIMENSIONS: set[str] = {
+    "handoff_quality",
+    "regression_avoidance",
+    "code_quality",
 }
 
 # Manual dimensions (require human scoring)
 MANUAL_DIMENSIONS: set[str] = {
     "task_completion",
-    "code_quality",
     "context_utilization",
-    "handoff_quality",
-    "regression_avoidance",
     "collaboration",
 }
 

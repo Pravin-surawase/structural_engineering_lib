@@ -116,6 +116,40 @@ PRIORITY_RULES: list[tuple[set[str], str, float]] = [
     ({"ux", "wireframe", "layout", "accessibility", "visual"}, "ui-designer", 2.5),
 ]
 
+# Suppression rules — reduce score by 50% if agent matches suppression keywords
+SUPPRESSION_RULES: dict[str, set[str]] = {
+    "ui-designer": {
+        "beam",
+        "column",
+        "slab",
+        "footing",
+        "shear",
+        "flexure",
+        "is456",
+        "structural",
+    },
+    "library-expert": {
+        "implement",
+        "code",
+        "write",
+        "create",
+        "fix",
+        "add",
+    },
+}
+
+# Combo rules — bonus when ALL keywords in a set are present
+# (keywords_required, agent_name, bonus_score)
+COMBO_RULES: list[tuple[set[str], str, float]] = [
+    ({"is456", "verify"}, "structural-engineer", 4.0),
+    ({"is456", "implement"}, "structural-math", 4.0),
+    ({"is456", "usage"}, "library-expert", 4.0),
+    ({"test", "write"}, "tester", 3.0),
+    ({"test", "review"}, "reviewer", 3.0),
+    ({"verify", "compliance"}, "structural-engineer", 3.5),
+    ({"implement", "formula"}, "structural-math", 3.5),
+]
+
 # Stopwords to ignore in query tokenization
 STOPWORDS = {
     "a",
@@ -261,6 +295,20 @@ def route(query: str) -> RoutingResult:
             if token in desc_lower:
                 score += 0.3
 
+        # Phase 4: Combo rules — bonus when ALL keywords in a combo match
+        for combo_keywords, combo_agent, bonus in COMBO_RULES:
+            if combo_agent == name and combo_keywords.issubset(tokens):
+                score += bonus
+                matched.append(f"combo({'+'.join(sorted(combo_keywords))})")
+
+        # Phase 5: Suppression — reduce score if suppression keywords match
+        suppressed_keywords = SUPPRESSION_RULES.get(name, set())
+        if suppressed_keywords:
+            suppression_hits = tokens & suppressed_keywords
+            if suppression_hits:
+                score *= 0.5
+                matched.append(f"suppressed({','.join(sorted(suppression_hits))})")
+
         scores[name] = score
         match_details[name] = matched
 
@@ -340,6 +388,18 @@ def route_all(query: str) -> list[RoutingResult]:
         for token in tokens:
             if token in desc_lower:
                 score += 0.3
+
+        # Combo rules
+        for combo_keywords, combo_agent, bonus in COMBO_RULES:
+            if combo_agent == name and combo_keywords.issubset(tokens):
+                score += bonus
+
+        # Suppression rules
+        suppressed_keywords = SUPPRESSION_RULES.get(name, set())
+        if suppressed_keywords:
+            suppression_hits = tokens & suppressed_keywords
+            if suppression_hits:
+                score *= 0.5
 
         if score > 0:
             results.append((agent, score, matched))

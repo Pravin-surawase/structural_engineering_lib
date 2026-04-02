@@ -12,6 +12,10 @@ from fastapi_app.models.beam import (
     BarArrangement,
     StirrupArrangement,
 )
+from fastapi_app.models.compliance import (
+    AnchorageCheckRequest,
+    AnchorageCheckResponse,
+)
 
 router = APIRouter(
     prefix="/detailing",
@@ -315,3 +319,62 @@ async def calculate_development_length(
             "ld_in_diameters": round(ld / bar_diameter, 1) if bar_diameter > 0 else 0,
             "clause": "IS 456:2000 Cl. 26.2.1 (fallback calculation)",
         }
+
+
+# =============================================================================
+# Anchorage Check at Simple Support (IS 456 Cl 26.2.3.3)
+# =============================================================================
+
+
+@router.post(
+    "/anchorage-check",
+    response_model=AnchorageCheckResponse,
+    summary="Anchorage Check at Simple Support (IS 456 Cl 26.2.3.3)",
+    description=(
+        "Check anchorage of bottom bars at simple supports per IS 456:2000 Cl 26.2.3.3. "
+        "Verifies that development length is adequate beyond the face of support."
+    ),
+)
+async def check_anchorage(
+    request: AnchorageCheckRequest,
+) -> AnchorageCheckResponse:
+    """Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3."""
+    try:
+        from structural_lib.services.api import check_anchorage_at_simple_support
+
+        result = check_anchorage_at_simple_support(
+            bar_dia_mm=request.bar_dia_mm,
+            fck=request.fck,
+            fy=request.fy,
+            vu_kn=request.vu_kn,
+            support_width_mm=request.support_width_mm,
+            cover_mm=request.cover_mm,
+            bar_type=request.bar_type,
+            has_standard_bend=request.has_standard_bend,
+        )
+
+        return AnchorageCheckResponse(
+            is_adequate=result.is_adequate,
+            ld_required=result.ld_required,
+            ld_available=result.ld_available,
+            m1_enhancement=result.m1_enhancement,
+            utilization=result.utilization,
+            errors=result.errors,
+            warnings=result.warnings,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"structural_lib not available: {e}",
+        )
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Anchorage check failed: {e}",
+        )

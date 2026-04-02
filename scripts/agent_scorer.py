@@ -44,6 +44,52 @@ from _lib.scoring import (
 )
 
 
+def auto_handoff_quality(session_data: dict) -> float:
+    """Check if agent updated the 3 mandatory handoff files."""
+    handoff_files = {
+        "docs/planning/next-session-brief.md": 3.3,
+        "docs/TASKS.md": 3.3,
+        "docs/WORKLOG.md": 3.4,
+    }
+    files_changed = session_data.get("files_changed", {})
+    score = sum(
+        pts
+        for f, pts in handoff_files.items()
+        if any(f in str(fc) for fc in files_changed)
+    )
+    return min(score, 10.0)
+
+
+def auto_regression_avoidance(session_data: dict) -> float:
+    """Compare test failures: if tests that were passing now fail, deduct."""
+    test_results = session_data.get("test_results", {})
+    failed = test_results.get("failed", 0)
+    score = max(10.0 - (failed * 2.0), 0.0)
+    return score
+
+
+def auto_code_quality_proxy(session_data: dict) -> float:
+    """Proxy: conventional commits + focused changes."""
+    import re as _re
+
+    score = 7.0  # neutral base
+    commits = session_data.get("commits", [])
+    # Check conventional commit format
+    conventional = _re.compile(
+        r"^(feat|fix|docs|refactor|test|chore|ci|perf|style|build)\b"
+    )
+    if commits and all(conventional.match(c.get("message", "")) for c in commits):
+        score += 1.5
+    # Check focused commits (avg files per commit < 10)
+    if commits:
+        avg_files = sum(c.get("files_changed_count", 0) for c in commits) / len(commits)
+        if avg_files < 10:
+            score += 1.0
+        if avg_files < 5:
+            score += 0.5
+    return min(score, 10.0)
+
+
 def auto_score_agent(session_data: dict, agent_name: str) -> dict[str, float | None]:
     """Compute auto-scored dimensions from session data.
 
@@ -143,6 +189,23 @@ def auto_score_agent(session_data: dict, agent_name: str) -> dict[str, float | N
     else:
         scores["instruction_adherence"] = None  # No compliance data yet
 
+    # 6. Handoff quality (auto: check mandatory handoff files updated)
+    scores["handoff_quality"] = auto_handoff_quality(session_data)
+
+    # 7. Regression avoidance (auto: deduct for test failures)
+    test_results = session_data.get("test_results", {})
+    if test_results.get("passed", 0) > 0 or test_results.get("failed", 0) > 0:
+        scores["regression_avoidance"] = auto_regression_avoidance(session_data)
+    else:
+        scores["regression_avoidance"] = None  # No test data
+
+    # 8. Code quality proxy (auto: conventional commits + focused changes)
+    commits = session_data.get("commits", [])
+    if commits:
+        scores["code_quality"] = auto_code_quality_proxy(session_data)
+    else:
+        scores["code_quality"] = None  # No commit data
+
     return scores
 
 
@@ -172,7 +235,7 @@ def score_session(
     # Compute auto-scores
     auto_scores = auto_score_agent(session_data, agent_name)
 
-    # Merge manual scores if provided
+    # Merge manual scores if provided (manual overrides auto-overridable dimensions)
     all_scores = auto_scores.copy()
     if not auto_only and manual_scores:
         all_scores.update(manual_scores)

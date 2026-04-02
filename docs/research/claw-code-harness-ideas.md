@@ -15,7 +15,7 @@ Last Updated: 2026-04-02
 
 ## Executive Summary
 
-The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool definitions, 150+ commands, and 9 Rust crates, we identified **25 actionable ideas** organized into 7 categories. Our project is **60-70% there** on agent infrastructure — the biggest gaps are tool routing, permission enforcement, and session persistence.
+The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool definitions, 150+ commands, and 9 Rust crates, we identified **25 actionable ideas** organized into 7 categories. Our project is **~90% there** on agent infrastructure — remaining gaps are plugin architecture and bootstrap graph (low priority).
 
 ---
 
@@ -24,21 +24,21 @@ The claw-code repo reveals how production-grade AI agent systems wire tools, man
 | Component | Our Status | Claw-Code Equivalent |
 |-----------|-----------|---------------------|
 | Agent context loading | ✅ `agent_context.py` (decorator registry) | System init message builder |
-| Agent scoring (11 dimensions) | ✅ `agent_scorer.py` | No equivalent (we're ahead) |
+| Agent scoring (11 dimensions) | ✅ `agent_scorer.py` — 8 auto + 3 auto-overridable | No equivalent (we're ahead) |
 | Drift detection | ✅ `agent_drift_detector.py` | No equivalent (we're ahead) |
 | Feedback loop | ✅ `agent_feedback.py` | No equivalent (we're ahead) |
 | Session management | ✅ `session.py` (start/end/handoff) | Session store + transcript |
 | Validation suite | ✅ `check_all.py` (28 checks, parallel) | Parity audit |
 | Script discovery | ✅ `automation-map.json` (88 scripts) | Command graph + tool pool |
-| Tool registry | ❌ Missing | `tools.py` + 200+ tool snapshot |
-| Prompt routing | ❌ Missing | Token-based scoring engine |
-| Permission context | ❌ Honor-system only | `ToolPermissionContext` with deny lists |
-| Session persistence | ❌ Ephemeral only | JSON session store + transcripts |
-| Cost/token tracking | ❌ Missing | `CostTracker` + cost hooks |
-| Hooks pipeline | ❌ Missing | Pre/post tool execution hooks |
-| Plugin system | ❌ Missing | 3-tier plugin architecture |
-| Bootstrap graph | ❌ Flat script | 7-stage deterministic DAG |
-| LSP integration | ❌ Missing | Context enrichment for prompts |
+| Tool registry | ✅ `tool_registry.py` — unified catalog + search | `tools.py` + 200+ tool snapshot |
+| Prompt routing | ✅ `prompt_router.py` — token scoring + suppression + combo rules | Token-based scoring engine |
+| Permission context | ✅ `tool_permissions.py` — 4-tier (ReadOnly/ReadOnlyTerminal/WorkspaceWrite/Danger) + terminal allowlists | `ToolPermissionContext` with deny lists |
+| Session persistence | ✅ `session_store.py` — JSON to `logs/sessions/` | JSON session store + transcripts |
+| Cost/token tracking | ✅ `agent_costs.jsonl` + session costs CLI | `CostTracker` + cost hooks |
+| Hooks pipeline | ✅ `hooks/hook_runner.py` — pre/post commit, file write, test | Pre/post tool execution hooks |
+| Plugin system | 🟡 Partial — `skill_tiers.json` (Core/Specialist/Advanced) | 3-tier plugin architecture |
+| Bootstrap graph | ❌ Flat script — low priority | 7-stage deterministic DAG |
+| LSP integration | ❌ Not planned — VS Code provides this natively | Context enrichment for prompts |
 
 ---
 
