@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-04-02",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "107/107 scripts mapped",
+  "_coverage": "109/109 scripts mapped",
   "tasks": {
     "run all checks": {
       "group": "Quality",
@@ -667,6 +667,29 @@
       "script": ".venv/bin/python scripts/parity_dashboard.py",
       "description": "Cross-stack parity dashboard showing coverage across layers"
     },
+    "check clause coverage": {
+      "group": "Quality",
+      "script": ".venv/bin/python scripts/check_clause_coverage.py",
+      "description": "IS 456 clause coverage gap detection — compares clauses.json against @clause() decorated functions",
+      "options": {
+        "--gaps-only": "Show only unimplemented clauses",
+        "--category X": "Filter by category (e.g. flexure)",
+        "--json": "Machine-readable output",
+        "--summary": "Just totals",
+        "--implemented": "Show only implemented clauses"
+      }
+    },
+    "check function quality": {
+      "group": "Quality",
+      "script": ".venv/bin/python scripts/check_function_quality.py",
+      "description": "12-point quality checklist for IS 456 functions — AST-based static analysis",
+      "options": {
+        "--strict": "Exit 1 on failures",
+        "--module X": "Check specific module",
+        "--json": "Machine-readable output",
+        "--summary": "Just totals"
+      }
+    },
     "cli smoke tests": {
       "group": "Testing",
       "script": ".venv/bin/python scripts/test_cli_smoke.py",
@@ -840,6 +863,8 @@
       "config precedence",
       "skill tiers",
       "parity dashboard",
+      "check clause coverage",
+      "check function quality",
       "session store",
       "tool registry",
       "add groups temp"
