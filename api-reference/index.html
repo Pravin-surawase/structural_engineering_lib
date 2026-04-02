@@ -6435,10 +6435,7 @@ Description:  Public facing API functions</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>Python/structural_lib/services/api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1235">1235</a></span>
-<span class="normal"><a href="#__codelineno-0-1236">1236</a></span>
-<span class="normal"><a href="#__codelineno-0-1237">1237</a></span>
-<span class="normal"><a href="#__codelineno-0-1238">1238</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1238">1238</a></span>
 <span class="normal"><a href="#__codelineno-0-1239">1239</a></span>
 <span class="normal"><a href="#__codelineno-0-1240">1240</a></span>
 <span class="normal"><a href="#__codelineno-0-1241">1241</a></span>
@@ -6526,98 +6523,101 @@ Description:  Public facing API functions</p>
 <span class="normal"><a href="#__codelineno-0-1323">1323</a></span>
 <span class="normal"><a href="#__codelineno-0-1324">1324</a></span>
 <span class="normal"><a href="#__codelineno-0-1325">1325</a></span>
-<span class="normal"><a href="#__codelineno-0-1326">1326</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1235" name="__codelineno-0-1235"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span>
-<a id="__codelineno-0-1236" name="__codelineno-0-1236"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-0-1237" name="__codelineno-0-1237"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-1238" name="__codelineno-0-1238"></a>    <span class="n">case_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CASE-1&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-1239" name="__codelineno-0-1239"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1240" name="__codelineno-0-1240"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1241" name="__codelineno-0-1241"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1242" name="__codelineno-0-1242"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1243" name="__codelineno-0-1243"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1244" name="__codelineno-0-1244"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1245" name="__codelineno-0-1245"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1246" name="__codelineno-0-1246"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
-<a id="__codelineno-0-1247" name="__codelineno-0-1247"></a>    <span class="n">asv_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
-<a id="__codelineno-0-1248" name="__codelineno-0-1248"></a>    <span class="n">pt_percent</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1249" name="__codelineno-0-1249"></a>    <span class="n">ast_mm2_for_shear</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1250" name="__codelineno-0-1250"></a>    <span class="n">deflection_params</span><span class="p">:</span> <span class="n">DeflectionParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1251" name="__codelineno-0-1251"></a>    <span class="n">crack_width_params</span><span class="p">:</span> <span class="n">CrackWidthParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1252" name="__codelineno-0-1252"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplianceCaseResult</span><span class="p">:</span>
-<a id="__codelineno-0-1253" name="__codelineno-0-1253"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Design/check a single IS 456 beam case (strength + optional serviceability).</span>
-<a id="__codelineno-0-1254" name="__codelineno-0-1254"></a>
-<a id="__codelineno-0-1255" name="__codelineno-0-1255"></a><span class="sd">    This is a *public entrypoint* intended to stay stable even if internals evolve.</span>
-<a id="__codelineno-0-1256" name="__codelineno-0-1256"></a>
-<a id="__codelineno-0-1257" name="__codelineno-0-1257"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-1258" name="__codelineno-0-1258"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
-<a id="__codelineno-0-1259" name="__codelineno-0-1259"></a><span class="sd">        case_id: Case identifier for reporting.</span>
-<a id="__codelineno-0-1260" name="__codelineno-0-1260"></a><span class="sd">        mu_knm: Factored bending moment (kN·m).</span>
-<a id="__codelineno-0-1261" name="__codelineno-0-1261"></a><span class="sd">        vu_kn: Factored shear (kN).</span>
-<a id="__codelineno-0-1262" name="__codelineno-0-1262"></a><span class="sd">        b_mm: Beam width (mm).</span>
-<a id="__codelineno-0-1263" name="__codelineno-0-1263"></a><span class="sd">        D_mm: Overall depth (mm).</span>
-<a id="__codelineno-0-1264" name="__codelineno-0-1264"></a><span class="sd">        d_mm: Effective depth (mm).</span>
-<a id="__codelineno-0-1265" name="__codelineno-0-1265"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
-<a id="__codelineno-0-1266" name="__codelineno-0-1266"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
-<a id="__codelineno-0-1267" name="__codelineno-0-1267"></a><span class="sd">        d_dash_mm: Compression steel depth from top (mm).</span>
-<a id="__codelineno-0-1268" name="__codelineno-0-1268"></a><span class="sd">        asv_mm2: Area of stirrup legs (mm²).</span>
-<a id="__codelineno-0-1269" name="__codelineno-0-1269"></a><span class="sd">        pt_percent: Percentage steel for shear table lookup (optional).</span>
-<a id="__codelineno-0-1270" name="__codelineno-0-1270"></a><span class="sd">        ast_mm2_for_shear: Use this Ast for shear table lookup (optional).</span>
-<a id="__codelineno-0-1271" name="__codelineno-0-1271"></a><span class="sd">        deflection_params: Per-case deflection params (optional).</span>
-<a id="__codelineno-0-1272" name="__codelineno-0-1272"></a><span class="sd">        crack_width_params: Per-case crack width params (optional).</span>
-<a id="__codelineno-0-1273" name="__codelineno-0-1273"></a>
-<a id="__codelineno-0-1274" name="__codelineno-0-1274"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-1275" name="__codelineno-0-1275"></a><span class="sd">        ComplianceCaseResult with flexure, shear, and optional serviceability checks.</span>
+<span class="normal"><a href="#__codelineno-0-1326">1326</a></span>
+<span class="normal"><a href="#__codelineno-0-1327">1327</a></span>
+<span class="normal"><a href="#__codelineno-0-1328">1328</a></span>
+<span class="normal"><a href="#__codelineno-0-1329">1329</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1238" name="__codelineno-0-1238"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-0-1239" name="__codelineno-0-1239"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-1240" name="__codelineno-0-1240"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-1241" name="__codelineno-0-1241"></a>    <span class="n">case_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CASE-1&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-1242" name="__codelineno-0-1242"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1243" name="__codelineno-0-1243"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1244" name="__codelineno-0-1244"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1245" name="__codelineno-0-1245"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1246" name="__codelineno-0-1246"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1247" name="__codelineno-0-1247"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1248" name="__codelineno-0-1248"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1249" name="__codelineno-0-1249"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+<a id="__codelineno-0-1250" name="__codelineno-0-1250"></a>    <span class="n">asv_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
+<a id="__codelineno-0-1251" name="__codelineno-0-1251"></a>    <span class="n">pt_percent</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1252" name="__codelineno-0-1252"></a>    <span class="n">ast_mm2_for_shear</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1253" name="__codelineno-0-1253"></a>    <span class="n">deflection_params</span><span class="p">:</span> <span class="n">DeflectionParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1254" name="__codelineno-0-1254"></a>    <span class="n">crack_width_params</span><span class="p">:</span> <span class="n">CrackWidthParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1255" name="__codelineno-0-1255"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplianceCaseResult</span><span class="p">:</span>
+<a id="__codelineno-0-1256" name="__codelineno-0-1256"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Design/check a single IS 456 beam case (strength + optional serviceability).</span>
+<a id="__codelineno-0-1257" name="__codelineno-0-1257"></a>
+<a id="__codelineno-0-1258" name="__codelineno-0-1258"></a><span class="sd">    This is a *public entrypoint* intended to stay stable even if internals evolve.</span>
+<a id="__codelineno-0-1259" name="__codelineno-0-1259"></a>
+<a id="__codelineno-0-1260" name="__codelineno-0-1260"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-1261" name="__codelineno-0-1261"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
+<a id="__codelineno-0-1262" name="__codelineno-0-1262"></a><span class="sd">        case_id: Case identifier for reporting.</span>
+<a id="__codelineno-0-1263" name="__codelineno-0-1263"></a><span class="sd">        mu_knm: Factored bending moment (kN·m).</span>
+<a id="__codelineno-0-1264" name="__codelineno-0-1264"></a><span class="sd">        vu_kn: Factored shear (kN).</span>
+<a id="__codelineno-0-1265" name="__codelineno-0-1265"></a><span class="sd">        b_mm: Beam width (mm).</span>
+<a id="__codelineno-0-1266" name="__codelineno-0-1266"></a><span class="sd">        D_mm: Overall depth (mm).</span>
+<a id="__codelineno-0-1267" name="__codelineno-0-1267"></a><span class="sd">        d_mm: Effective depth (mm).</span>
+<a id="__codelineno-0-1268" name="__codelineno-0-1268"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
+<a id="__codelineno-0-1269" name="__codelineno-0-1269"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
+<a id="__codelineno-0-1270" name="__codelineno-0-1270"></a><span class="sd">        d_dash_mm: Compression steel depth from top (mm).</span>
+<a id="__codelineno-0-1271" name="__codelineno-0-1271"></a><span class="sd">        asv_mm2: Area of stirrup legs (mm²).</span>
+<a id="__codelineno-0-1272" name="__codelineno-0-1272"></a><span class="sd">        pt_percent: Percentage steel for shear table lookup (optional).</span>
+<a id="__codelineno-0-1273" name="__codelineno-0-1273"></a><span class="sd">        ast_mm2_for_shear: Use this Ast for shear table lookup (optional).</span>
+<a id="__codelineno-0-1274" name="__codelineno-0-1274"></a><span class="sd">        deflection_params: Per-case deflection params (optional).</span>
+<a id="__codelineno-0-1275" name="__codelineno-0-1275"></a><span class="sd">        crack_width_params: Per-case crack width params (optional).</span>
 <a id="__codelineno-0-1276" name="__codelineno-0-1276"></a>
-<a id="__codelineno-0-1277" name="__codelineno-0-1277"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-1278" name="__codelineno-0-1278"></a><span class="sd">        ValueError: If units is not one of the accepted IS456 aliases.</span>
+<a id="__codelineno-0-1277" name="__codelineno-0-1277"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-1278" name="__codelineno-0-1278"></a><span class="sd">        ComplianceCaseResult with flexure, shear, and optional serviceability checks.</span>
 <a id="__codelineno-0-1279" name="__codelineno-0-1279"></a>
-<a id="__codelineno-0-1280" name="__codelineno-0-1280"></a><span class="sd">    Units (IS456):</span>
-<a id="__codelineno-0-1281" name="__codelineno-0-1281"></a><span class="sd">    - Mu: kN·m (factored)</span>
-<a id="__codelineno-0-1282" name="__codelineno-0-1282"></a><span class="sd">    - Vu: kN (factored)</span>
-<a id="__codelineno-0-1283" name="__codelineno-0-1283"></a><span class="sd">    - b_mm, D_mm, d_mm, d_dash_mm: mm</span>
-<a id="__codelineno-0-1284" name="__codelineno-0-1284"></a><span class="sd">    - fck_nmm2, fy_nmm2: N/mm² (MPa)</span>
-<a id="__codelineno-0-1285" name="__codelineno-0-1285"></a>
-<a id="__codelineno-0-1286" name="__codelineno-0-1286"></a><span class="sd">    Example:</span>
-<a id="__codelineno-0-1287" name="__codelineno-0-1287"></a><span class="sd">        result = design_beam_is456(</span>
-<a id="__codelineno-0-1288" name="__codelineno-0-1288"></a><span class="sd">            units=&quot;IS456&quot;,</span>
-<a id="__codelineno-0-1289" name="__codelineno-0-1289"></a><span class="sd">            case_id=&quot;DL+LL&quot;,</span>
-<a id="__codelineno-0-1290" name="__codelineno-0-1290"></a><span class="sd">            mu_knm=150,</span>
-<a id="__codelineno-0-1291" name="__codelineno-0-1291"></a><span class="sd">            vu_kn=100,</span>
-<a id="__codelineno-0-1292" name="__codelineno-0-1292"></a><span class="sd">            b_mm=300,</span>
-<a id="__codelineno-0-1293" name="__codelineno-0-1293"></a><span class="sd">            D_mm=500,</span>
-<a id="__codelineno-0-1294" name="__codelineno-0-1294"></a><span class="sd">            d_mm=450,</span>
-<a id="__codelineno-0-1295" name="__codelineno-0-1295"></a><span class="sd">            fck_nmm2=25,</span>
-<a id="__codelineno-0-1296" name="__codelineno-0-1296"></a><span class="sd">            fy_nmm2=500,</span>
-<a id="__codelineno-0-1297" name="__codelineno-0-1297"></a><span class="sd">        )</span>
-<a id="__codelineno-0-1298" name="__codelineno-0-1298"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1299" name="__codelineno-0-1299"></a>
-<a id="__codelineno-0-1300" name="__codelineno-0-1300"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-<a id="__codelineno-0-1301" name="__codelineno-0-1301"></a>
-<a id="__codelineno-0-1302" name="__codelineno-0-1302"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
-<a id="__codelineno-0-1303" name="__codelineno-0-1303"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
-<a id="__codelineno-0-1304" name="__codelineno-0-1304"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1305" name="__codelineno-0-1305"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1306" name="__codelineno-0-1306"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1307" name="__codelineno-0-1307"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1308" name="__codelineno-0-1308"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1309" name="__codelineno-0-1309"></a>    <span class="p">)</span>
-<a id="__codelineno-0-1310" name="__codelineno-0-1310"></a>
-<a id="__codelineno-0-1311" name="__codelineno-0-1311"></a>    <span class="k">return</span> <span class="n">compliance</span><span class="o">.</span><span class="n">check_compliance_case</span><span class="p">(</span>
-<a id="__codelineno-0-1312" name="__codelineno-0-1312"></a>        <span class="n">case_id</span><span class="o">=</span><span class="n">case_id</span><span class="p">,</span>
-<a id="__codelineno-0-1313" name="__codelineno-0-1313"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
-<a id="__codelineno-0-1314" name="__codelineno-0-1314"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
-<a id="__codelineno-0-1315" name="__codelineno-0-1315"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1316" name="__codelineno-0-1316"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1317" name="__codelineno-0-1317"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1318" name="__codelineno-0-1318"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1319" name="__codelineno-0-1319"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1320" name="__codelineno-0-1320"></a>        <span class="n">d_dash_mm</span><span class="o">=</span><span class="n">d_dash_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1321" name="__codelineno-0-1321"></a>        <span class="n">asv_mm2</span><span class="o">=</span><span class="n">asv_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1322" name="__codelineno-0-1322"></a>        <span class="n">pt_percent</span><span class="o">=</span><span class="n">pt_percent</span><span class="p">,</span>
-<a id="__codelineno-0-1323" name="__codelineno-0-1323"></a>        <span class="n">ast_mm2_for_shear</span><span class="o">=</span><span class="n">ast_mm2_for_shear</span><span class="p">,</span>
-<a id="__codelineno-0-1324" name="__codelineno-0-1324"></a>        <span class="n">deflection_params</span><span class="o">=</span><span class="n">deflection_params</span><span class="p">,</span>
-<a id="__codelineno-0-1325" name="__codelineno-0-1325"></a>        <span class="n">crack_width_params</span><span class="o">=</span><span class="n">crack_width_params</span><span class="p">,</span>
-<a id="__codelineno-0-1326" name="__codelineno-0-1326"></a>    <span class="p">)</span>
+<a id="__codelineno-0-1280" name="__codelineno-0-1280"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-1281" name="__codelineno-0-1281"></a><span class="sd">        ValueError: If units is not one of the accepted IS456 aliases.</span>
+<a id="__codelineno-0-1282" name="__codelineno-0-1282"></a>
+<a id="__codelineno-0-1283" name="__codelineno-0-1283"></a><span class="sd">    Units (IS456):</span>
+<a id="__codelineno-0-1284" name="__codelineno-0-1284"></a><span class="sd">    - Mu: kN·m (factored)</span>
+<a id="__codelineno-0-1285" name="__codelineno-0-1285"></a><span class="sd">    - Vu: kN (factored)</span>
+<a id="__codelineno-0-1286" name="__codelineno-0-1286"></a><span class="sd">    - b_mm, D_mm, d_mm, d_dash_mm: mm</span>
+<a id="__codelineno-0-1287" name="__codelineno-0-1287"></a><span class="sd">    - fck_nmm2, fy_nmm2: N/mm² (MPa)</span>
+<a id="__codelineno-0-1288" name="__codelineno-0-1288"></a>
+<a id="__codelineno-0-1289" name="__codelineno-0-1289"></a><span class="sd">    Example:</span>
+<a id="__codelineno-0-1290" name="__codelineno-0-1290"></a><span class="sd">        result = design_beam_is456(</span>
+<a id="__codelineno-0-1291" name="__codelineno-0-1291"></a><span class="sd">            units=&quot;IS456&quot;,</span>
+<a id="__codelineno-0-1292" name="__codelineno-0-1292"></a><span class="sd">            case_id=&quot;DL+LL&quot;,</span>
+<a id="__codelineno-0-1293" name="__codelineno-0-1293"></a><span class="sd">            mu_knm=150,</span>
+<a id="__codelineno-0-1294" name="__codelineno-0-1294"></a><span class="sd">            vu_kn=100,</span>
+<a id="__codelineno-0-1295" name="__codelineno-0-1295"></a><span class="sd">            b_mm=300,</span>
+<a id="__codelineno-0-1296" name="__codelineno-0-1296"></a><span class="sd">            D_mm=500,</span>
+<a id="__codelineno-0-1297" name="__codelineno-0-1297"></a><span class="sd">            d_mm=450,</span>
+<a id="__codelineno-0-1298" name="__codelineno-0-1298"></a><span class="sd">            fck_nmm2=25,</span>
+<a id="__codelineno-0-1299" name="__codelineno-0-1299"></a><span class="sd">            fy_nmm2=500,</span>
+<a id="__codelineno-0-1300" name="__codelineno-0-1300"></a><span class="sd">        )</span>
+<a id="__codelineno-0-1301" name="__codelineno-0-1301"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1302" name="__codelineno-0-1302"></a>
+<a id="__codelineno-0-1303" name="__codelineno-0-1303"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+<a id="__codelineno-0-1304" name="__codelineno-0-1304"></a>
+<a id="__codelineno-0-1305" name="__codelineno-0-1305"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
+<a id="__codelineno-0-1306" name="__codelineno-0-1306"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
+<a id="__codelineno-0-1307" name="__codelineno-0-1307"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1308" name="__codelineno-0-1308"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1309" name="__codelineno-0-1309"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1310" name="__codelineno-0-1310"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1311" name="__codelineno-0-1311"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1312" name="__codelineno-0-1312"></a>    <span class="p">)</span>
+<a id="__codelineno-0-1313" name="__codelineno-0-1313"></a>
+<a id="__codelineno-0-1314" name="__codelineno-0-1314"></a>    <span class="k">return</span> <span class="n">compliance</span><span class="o">.</span><span class="n">check_compliance_case</span><span class="p">(</span>
+<a id="__codelineno-0-1315" name="__codelineno-0-1315"></a>        <span class="n">case_id</span><span class="o">=</span><span class="n">case_id</span><span class="p">,</span>
+<a id="__codelineno-0-1316" name="__codelineno-0-1316"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
+<a id="__codelineno-0-1317" name="__codelineno-0-1317"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
+<a id="__codelineno-0-1318" name="__codelineno-0-1318"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1319" name="__codelineno-0-1319"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1320" name="__codelineno-0-1320"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1321" name="__codelineno-0-1321"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1322" name="__codelineno-0-1322"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1323" name="__codelineno-0-1323"></a>        <span class="n">d_dash_mm</span><span class="o">=</span><span class="n">d_dash_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1324" name="__codelineno-0-1324"></a>        <span class="n">asv_mm2</span><span class="o">=</span><span class="n">asv_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1325" name="__codelineno-0-1325"></a>        <span class="n">pt_percent</span><span class="o">=</span><span class="n">pt_percent</span><span class="p">,</span>
+<a id="__codelineno-0-1326" name="__codelineno-0-1326"></a>        <span class="n">ast_mm2_for_shear</span><span class="o">=</span><span class="n">ast_mm2_for_shear</span><span class="p">,</span>
+<a id="__codelineno-0-1327" name="__codelineno-0-1327"></a>        <span class="n">deflection_params</span><span class="o">=</span><span class="n">deflection_params</span><span class="p">,</span>
+<a id="__codelineno-0-1328" name="__codelineno-0-1328"></a>        <span class="n">crack_width_params</span><span class="o">=</span><span class="n">crack_width_params</span><span class="p">,</span>
+<a id="__codelineno-0-1329" name="__codelineno-0-1329"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -7005,10 +7005,7 @@ Description:  Public facing API functions</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>Python/structural_lib/services/api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1410">1410</a></span>
-<span class="normal"><a href="#__codelineno-0-1411">1411</a></span>
-<span class="normal"><a href="#__codelineno-0-1412">1412</a></span>
-<span class="normal"><a href="#__codelineno-0-1413">1413</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1413">1413</a></span>
 <span class="normal"><a href="#__codelineno-0-1414">1414</a></span>
 <span class="normal"><a href="#__codelineno-0-1415">1415</a></span>
 <span class="normal"><a href="#__codelineno-0-1416">1416</a></span>
@@ -7086,88 +7083,91 @@ Description:  Public facing API functions</p>
 <span class="normal"><a href="#__codelineno-0-1488">1488</a></span>
 <span class="normal"><a href="#__codelineno-0-1489">1489</a></span>
 <span class="normal"><a href="#__codelineno-0-1490">1490</a></span>
-<span class="normal"><a href="#__codelineno-0-1491">1491</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1410" name="__codelineno-0-1410"></a><span class="k">def</span><span class="w"> </span><span class="nf">detail_beam_is456</span><span class="p">(</span>
-<a id="__codelineno-0-1411" name="__codelineno-0-1411"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-0-1412" name="__codelineno-0-1412"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-1413" name="__codelineno-0-1413"></a>    <span class="n">beam_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-1414" name="__codelineno-0-1414"></a>    <span class="n">story</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-1415" name="__codelineno-0-1415"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1416" name="__codelineno-0-1416"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1417" name="__codelineno-0-1417"></a>    <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1418" name="__codelineno-0-1418"></a>    <span class="n">cover_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1419" name="__codelineno-0-1419"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1420" name="__codelineno-0-1420"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1421" name="__codelineno-0-1421"></a>    <span class="n">ast_start_mm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1422" name="__codelineno-0-1422"></a>    <span class="n">ast_mid_mm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1423" name="__codelineno-0-1423"></a>    <span class="n">ast_end_mm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1424" name="__codelineno-0-1424"></a>    <span class="n">asc_start_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-0-1425" name="__codelineno-0-1425"></a>    <span class="n">asc_mid_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-0-1426" name="__codelineno-0-1426"></a>    <span class="n">asc_end_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-<a id="__codelineno-0-1427" name="__codelineno-0-1427"></a>    <span class="n">stirrup_dia_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.0</span><span class="p">,</span>
-<a id="__codelineno-0-1428" name="__codelineno-0-1428"></a>    <span class="n">stirrup_spacing_start_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">150.0</span><span class="p">,</span>
-<a id="__codelineno-0-1429" name="__codelineno-0-1429"></a>    <span class="n">stirrup_spacing_mid_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">200.0</span><span class="p">,</span>
-<a id="__codelineno-0-1430" name="__codelineno-0-1430"></a>    <span class="n">stirrup_spacing_end_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">150.0</span><span class="p">,</span>
-<a id="__codelineno-0-1431" name="__codelineno-0-1431"></a>    <span class="n">is_seismic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-1432" name="__codelineno-0-1432"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">detailing</span><span class="o">.</span><span class="n">BeamDetailingResult</span><span class="p">:</span>
-<a id="__codelineno-0-1433" name="__codelineno-0-1433"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups.</span>
-<a id="__codelineno-0-1434" name="__codelineno-0-1434"></a>
-<a id="__codelineno-0-1435" name="__codelineno-0-1435"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-1436" name="__codelineno-0-1436"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
-<a id="__codelineno-0-1437" name="__codelineno-0-1437"></a><span class="sd">        beam_id: Beam identifier.</span>
-<a id="__codelineno-0-1438" name="__codelineno-0-1438"></a><span class="sd">        story: Story/level name.</span>
-<a id="__codelineno-0-1439" name="__codelineno-0-1439"></a><span class="sd">        b_mm: Beam width (mm).</span>
-<a id="__codelineno-0-1440" name="__codelineno-0-1440"></a><span class="sd">        D_mm: Overall depth (mm).</span>
-<a id="__codelineno-0-1441" name="__codelineno-0-1441"></a><span class="sd">        span_mm: Beam span (mm).</span>
-<a id="__codelineno-0-1442" name="__codelineno-0-1442"></a><span class="sd">        cover_mm: Clear cover (mm).</span>
-<a id="__codelineno-0-1443" name="__codelineno-0-1443"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
-<a id="__codelineno-0-1444" name="__codelineno-0-1444"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
-<a id="__codelineno-0-1445" name="__codelineno-0-1445"></a><span class="sd">        ast_start_mm2: Tension steel at start (mm²).</span>
-<a id="__codelineno-0-1446" name="__codelineno-0-1446"></a><span class="sd">        ast_mid_mm2: Tension steel at midspan (mm²).</span>
-<a id="__codelineno-0-1447" name="__codelineno-0-1447"></a><span class="sd">        ast_end_mm2: Tension steel at end (mm²).</span>
-<a id="__codelineno-0-1448" name="__codelineno-0-1448"></a><span class="sd">        asc_start_mm2: Compression steel at start (mm²).</span>
-<a id="__codelineno-0-1449" name="__codelineno-0-1449"></a><span class="sd">        asc_mid_mm2: Compression steel at midspan (mm²).</span>
-<a id="__codelineno-0-1450" name="__codelineno-0-1450"></a><span class="sd">        asc_end_mm2: Compression steel at end (mm²).</span>
-<a id="__codelineno-0-1451" name="__codelineno-0-1451"></a><span class="sd">        stirrup_dia_mm: Stirrup diameter (mm).</span>
-<a id="__codelineno-0-1452" name="__codelineno-0-1452"></a><span class="sd">        stirrup_spacing_start_mm: Stirrup spacing at start (mm).</span>
-<a id="__codelineno-0-1453" name="__codelineno-0-1453"></a><span class="sd">        stirrup_spacing_mid_mm: Stirrup spacing at midspan (mm).</span>
-<a id="__codelineno-0-1454" name="__codelineno-0-1454"></a><span class="sd">        stirrup_spacing_end_mm: Stirrup spacing at end (mm).</span>
-<a id="__codelineno-0-1455" name="__codelineno-0-1455"></a><span class="sd">        is_seismic: Apply IS 13920 detailing rules if True.</span>
-<a id="__codelineno-0-1456" name="__codelineno-0-1456"></a>
-<a id="__codelineno-0-1457" name="__codelineno-0-1457"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-1458" name="__codelineno-0-1458"></a><span class="sd">        BeamDetailingResult with bars, stirrups, and development lengths.</span>
-<a id="__codelineno-0-1459" name="__codelineno-0-1459"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1460" name="__codelineno-0-1460"></a>
-<a id="__codelineno-0-1461" name="__codelineno-0-1461"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-<a id="__codelineno-0-1462" name="__codelineno-0-1462"></a>
-<a id="__codelineno-0-1463" name="__codelineno-0-1463"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
-<a id="__codelineno-0-1464" name="__codelineno-0-1464"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
-<a id="__codelineno-0-1465" name="__codelineno-0-1465"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1466" name="__codelineno-0-1466"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1467" name="__codelineno-0-1467"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1468" name="__codelineno-0-1468"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1469" name="__codelineno-0-1469"></a>    <span class="p">)</span>
-<a id="__codelineno-0-1470" name="__codelineno-0-1470"></a>
-<a id="__codelineno-0-1471" name="__codelineno-0-1471"></a>    <span class="k">return</span> <span class="n">detailing</span><span class="o">.</span><span class="n">create_beam_detailing</span><span class="p">(</span>
-<a id="__codelineno-0-1472" name="__codelineno-0-1472"></a>        <span class="n">beam_id</span><span class="o">=</span><span class="n">beam_id</span><span class="p">,</span>
-<a id="__codelineno-0-1473" name="__codelineno-0-1473"></a>        <span class="n">story</span><span class="o">=</span><span class="n">story</span><span class="p">,</span>
-<a id="__codelineno-0-1474" name="__codelineno-0-1474"></a>        <span class="n">b</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1475" name="__codelineno-0-1475"></a>        <span class="n">D</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1476" name="__codelineno-0-1476"></a>        <span class="n">span</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1477" name="__codelineno-0-1477"></a>        <span class="n">cover</span><span class="o">=</span><span class="n">cover_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1478" name="__codelineno-0-1478"></a>        <span class="n">fck</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1479" name="__codelineno-0-1479"></a>        <span class="n">fy</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1480" name="__codelineno-0-1480"></a>        <span class="n">ast_start</span><span class="o">=</span><span class="n">ast_start_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1481" name="__codelineno-0-1481"></a>        <span class="n">ast_mid</span><span class="o">=</span><span class="n">ast_mid_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1482" name="__codelineno-0-1482"></a>        <span class="n">ast_end</span><span class="o">=</span><span class="n">ast_end_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1483" name="__codelineno-0-1483"></a>        <span class="n">asc_start</span><span class="o">=</span><span class="n">asc_start_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1484" name="__codelineno-0-1484"></a>        <span class="n">asc_mid</span><span class="o">=</span><span class="n">asc_mid_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1485" name="__codelineno-0-1485"></a>        <span class="n">asc_end</span><span class="o">=</span><span class="n">asc_end_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1486" name="__codelineno-0-1486"></a>        <span class="n">stirrup_dia</span><span class="o">=</span><span class="n">stirrup_dia_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1487" name="__codelineno-0-1487"></a>        <span class="n">stirrup_spacing_start</span><span class="o">=</span><span class="n">stirrup_spacing_start_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1488" name="__codelineno-0-1488"></a>        <span class="n">stirrup_spacing_mid</span><span class="o">=</span><span class="n">stirrup_spacing_mid_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1489" name="__codelineno-0-1489"></a>        <span class="n">stirrup_spacing_end</span><span class="o">=</span><span class="n">stirrup_spacing_end_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1490" name="__codelineno-0-1490"></a>        <span class="n">is_seismic</span><span class="o">=</span><span class="n">is_seismic</span><span class="p">,</span>
-<a id="__codelineno-0-1491" name="__codelineno-0-1491"></a>    <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-1491">1491</a></span>
+<span class="normal"><a href="#__codelineno-0-1492">1492</a></span>
+<span class="normal"><a href="#__codelineno-0-1493">1493</a></span>
+<span class="normal"><a href="#__codelineno-0-1494">1494</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1413" name="__codelineno-0-1413"></a><span class="k">def</span><span class="w"> </span><span class="nf">detail_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-0-1414" name="__codelineno-0-1414"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-1415" name="__codelineno-0-1415"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-1416" name="__codelineno-0-1416"></a>    <span class="n">beam_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-1417" name="__codelineno-0-1417"></a>    <span class="n">story</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-1418" name="__codelineno-0-1418"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1419" name="__codelineno-0-1419"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1420" name="__codelineno-0-1420"></a>    <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1421" name="__codelineno-0-1421"></a>    <span class="n">cover_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1422" name="__codelineno-0-1422"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1423" name="__codelineno-0-1423"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1424" name="__codelineno-0-1424"></a>    <span class="n">ast_start_mm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1425" name="__codelineno-0-1425"></a>    <span class="n">ast_mid_mm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1426" name="__codelineno-0-1426"></a>    <span class="n">ast_end_mm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1427" name="__codelineno-0-1427"></a>    <span class="n">asc_start_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<a id="__codelineno-0-1428" name="__codelineno-0-1428"></a>    <span class="n">asc_mid_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<a id="__codelineno-0-1429" name="__codelineno-0-1429"></a>    <span class="n">asc_end_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<a id="__codelineno-0-1430" name="__codelineno-0-1430"></a>    <span class="n">stirrup_dia_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.0</span><span class="p">,</span>
+<a id="__codelineno-0-1431" name="__codelineno-0-1431"></a>    <span class="n">stirrup_spacing_start_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">150.0</span><span class="p">,</span>
+<a id="__codelineno-0-1432" name="__codelineno-0-1432"></a>    <span class="n">stirrup_spacing_mid_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">200.0</span><span class="p">,</span>
+<a id="__codelineno-0-1433" name="__codelineno-0-1433"></a>    <span class="n">stirrup_spacing_end_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">150.0</span><span class="p">,</span>
+<a id="__codelineno-0-1434" name="__codelineno-0-1434"></a>    <span class="n">is_seismic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-1435" name="__codelineno-0-1435"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">detailing</span><span class="o">.</span><span class="n">BeamDetailingResult</span><span class="p">:</span>
+<a id="__codelineno-0-1436" name="__codelineno-0-1436"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups.</span>
+<a id="__codelineno-0-1437" name="__codelineno-0-1437"></a>
+<a id="__codelineno-0-1438" name="__codelineno-0-1438"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-1439" name="__codelineno-0-1439"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
+<a id="__codelineno-0-1440" name="__codelineno-0-1440"></a><span class="sd">        beam_id: Beam identifier.</span>
+<a id="__codelineno-0-1441" name="__codelineno-0-1441"></a><span class="sd">        story: Story/level name.</span>
+<a id="__codelineno-0-1442" name="__codelineno-0-1442"></a><span class="sd">        b_mm: Beam width (mm).</span>
+<a id="__codelineno-0-1443" name="__codelineno-0-1443"></a><span class="sd">        D_mm: Overall depth (mm).</span>
+<a id="__codelineno-0-1444" name="__codelineno-0-1444"></a><span class="sd">        span_mm: Beam span (mm).</span>
+<a id="__codelineno-0-1445" name="__codelineno-0-1445"></a><span class="sd">        cover_mm: Clear cover (mm).</span>
+<a id="__codelineno-0-1446" name="__codelineno-0-1446"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
+<a id="__codelineno-0-1447" name="__codelineno-0-1447"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
+<a id="__codelineno-0-1448" name="__codelineno-0-1448"></a><span class="sd">        ast_start_mm2: Tension steel at start (mm²).</span>
+<a id="__codelineno-0-1449" name="__codelineno-0-1449"></a><span class="sd">        ast_mid_mm2: Tension steel at midspan (mm²).</span>
+<a id="__codelineno-0-1450" name="__codelineno-0-1450"></a><span class="sd">        ast_end_mm2: Tension steel at end (mm²).</span>
+<a id="__codelineno-0-1451" name="__codelineno-0-1451"></a><span class="sd">        asc_start_mm2: Compression steel at start (mm²).</span>
+<a id="__codelineno-0-1452" name="__codelineno-0-1452"></a><span class="sd">        asc_mid_mm2: Compression steel at midspan (mm²).</span>
+<a id="__codelineno-0-1453" name="__codelineno-0-1453"></a><span class="sd">        asc_end_mm2: Compression steel at end (mm²).</span>
+<a id="__codelineno-0-1454" name="__codelineno-0-1454"></a><span class="sd">        stirrup_dia_mm: Stirrup diameter (mm).</span>
+<a id="__codelineno-0-1455" name="__codelineno-0-1455"></a><span class="sd">        stirrup_spacing_start_mm: Stirrup spacing at start (mm).</span>
+<a id="__codelineno-0-1456" name="__codelineno-0-1456"></a><span class="sd">        stirrup_spacing_mid_mm: Stirrup spacing at midspan (mm).</span>
+<a id="__codelineno-0-1457" name="__codelineno-0-1457"></a><span class="sd">        stirrup_spacing_end_mm: Stirrup spacing at end (mm).</span>
+<a id="__codelineno-0-1458" name="__codelineno-0-1458"></a><span class="sd">        is_seismic: Apply IS 13920 detailing rules if True.</span>
+<a id="__codelineno-0-1459" name="__codelineno-0-1459"></a>
+<a id="__codelineno-0-1460" name="__codelineno-0-1460"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-1461" name="__codelineno-0-1461"></a><span class="sd">        BeamDetailingResult with bars, stirrups, and development lengths.</span>
+<a id="__codelineno-0-1462" name="__codelineno-0-1462"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1463" name="__codelineno-0-1463"></a>
+<a id="__codelineno-0-1464" name="__codelineno-0-1464"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+<a id="__codelineno-0-1465" name="__codelineno-0-1465"></a>
+<a id="__codelineno-0-1466" name="__codelineno-0-1466"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
+<a id="__codelineno-0-1467" name="__codelineno-0-1467"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
+<a id="__codelineno-0-1468" name="__codelineno-0-1468"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1469" name="__codelineno-0-1469"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1470" name="__codelineno-0-1470"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1471" name="__codelineno-0-1471"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1472" name="__codelineno-0-1472"></a>    <span class="p">)</span>
+<a id="__codelineno-0-1473" name="__codelineno-0-1473"></a>
+<a id="__codelineno-0-1474" name="__codelineno-0-1474"></a>    <span class="k">return</span> <span class="n">detailing</span><span class="o">.</span><span class="n">create_beam_detailing</span><span class="p">(</span>
+<a id="__codelineno-0-1475" name="__codelineno-0-1475"></a>        <span class="n">beam_id</span><span class="o">=</span><span class="n">beam_id</span><span class="p">,</span>
+<a id="__codelineno-0-1476" name="__codelineno-0-1476"></a>        <span class="n">story</span><span class="o">=</span><span class="n">story</span><span class="p">,</span>
+<a id="__codelineno-0-1477" name="__codelineno-0-1477"></a>        <span class="n">b</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1478" name="__codelineno-0-1478"></a>        <span class="n">D</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1479" name="__codelineno-0-1479"></a>        <span class="n">span</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1480" name="__codelineno-0-1480"></a>        <span class="n">cover</span><span class="o">=</span><span class="n">cover_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1481" name="__codelineno-0-1481"></a>        <span class="n">fck</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1482" name="__codelineno-0-1482"></a>        <span class="n">fy</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1483" name="__codelineno-0-1483"></a>        <span class="n">ast_start</span><span class="o">=</span><span class="n">ast_start_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1484" name="__codelineno-0-1484"></a>        <span class="n">ast_mid</span><span class="o">=</span><span class="n">ast_mid_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1485" name="__codelineno-0-1485"></a>        <span class="n">ast_end</span><span class="o">=</span><span class="n">ast_end_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1486" name="__codelineno-0-1486"></a>        <span class="n">asc_start</span><span class="o">=</span><span class="n">asc_start_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1487" name="__codelineno-0-1487"></a>        <span class="n">asc_mid</span><span class="o">=</span><span class="n">asc_mid_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1488" name="__codelineno-0-1488"></a>        <span class="n">asc_end</span><span class="o">=</span><span class="n">asc_end_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1489" name="__codelineno-0-1489"></a>        <span class="n">stirrup_dia</span><span class="o">=</span><span class="n">stirrup_dia_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1490" name="__codelineno-0-1490"></a>        <span class="n">stirrup_spacing_start</span><span class="o">=</span><span class="n">stirrup_spacing_start_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1491" name="__codelineno-0-1491"></a>        <span class="n">stirrup_spacing_mid</span><span class="o">=</span><span class="n">stirrup_spacing_mid_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1492" name="__codelineno-0-1492"></a>        <span class="n">stirrup_spacing_end</span><span class="o">=</span><span class="n">stirrup_spacing_end_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1493" name="__codelineno-0-1493"></a>        <span class="n">is_seismic</span><span class="o">=</span><span class="n">is_seismic</span><span class="p">,</span>
+<a id="__codelineno-0-1494" name="__codelineno-0-1494"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -7463,10 +7463,7 @@ report = check_beam_is456(
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>Python/structural_lib/services/api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1329">1329</a></span>
-<span class="normal"><a href="#__codelineno-0-1330">1330</a></span>
-<span class="normal"><a href="#__codelineno-0-1331">1331</a></span>
-<span class="normal"><a href="#__codelineno-0-1332">1332</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1332">1332</a></span>
 <span class="normal"><a href="#__codelineno-0-1333">1333</a></span>
 <span class="normal"><a href="#__codelineno-0-1334">1334</a></span>
 <span class="normal"><a href="#__codelineno-0-1335">1335</a></span>
@@ -7541,85 +7538,88 @@ report = check_beam_is456(
 <span class="normal"><a href="#__codelineno-0-1404">1404</a></span>
 <span class="normal"><a href="#__codelineno-0-1405">1405</a></span>
 <span class="normal"><a href="#__codelineno-0-1406">1406</a></span>
-<span class="normal"><a href="#__codelineno-0-1407">1407</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1329" name="__codelineno-0-1329"></a><span class="k">def</span><span class="w"> </span><span class="nf">check_beam_is456</span><span class="p">(</span>
-<a id="__codelineno-0-1330" name="__codelineno-0-1330"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-0-1331" name="__codelineno-0-1331"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-1332" name="__codelineno-0-1332"></a>    <span class="n">cases</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-<a id="__codelineno-0-1333" name="__codelineno-0-1333"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1334" name="__codelineno-0-1334"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1335" name="__codelineno-0-1335"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1336" name="__codelineno-0-1336"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1337" name="__codelineno-0-1337"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-1338" name="__codelineno-0-1338"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
-<a id="__codelineno-0-1339" name="__codelineno-0-1339"></a>    <span class="n">asv_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
-<a id="__codelineno-0-1340" name="__codelineno-0-1340"></a>    <span class="n">pt_percent</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1341" name="__codelineno-0-1341"></a>    <span class="n">deflection_defaults</span><span class="p">:</span> <span class="n">DeflectionParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1342" name="__codelineno-0-1342"></a>    <span class="n">crack_width_defaults</span><span class="p">:</span> <span class="n">CrackWidthParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1343" name="__codelineno-0-1343"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplianceReport</span><span class="p">:</span>
-<a id="__codelineno-0-1344" name="__codelineno-0-1344"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run an IS 456 compliance report across multiple cases.</span>
-<a id="__codelineno-0-1345" name="__codelineno-0-1345"></a>
-<a id="__codelineno-0-1346" name="__codelineno-0-1346"></a><span class="sd">    This is the stable multi-case entrypoint for IS456.</span>
-<a id="__codelineno-0-1347" name="__codelineno-0-1347"></a>
-<a id="__codelineno-0-1348" name="__codelineno-0-1348"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-1349" name="__codelineno-0-1349"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
-<a id="__codelineno-0-1350" name="__codelineno-0-1350"></a><span class="sd">        cases: List of dicts with at least `case_id`, `mu_knm`, `vu_kn`.</span>
-<a id="__codelineno-0-1351" name="__codelineno-0-1351"></a><span class="sd">        b_mm: Beam width (mm).</span>
-<a id="__codelineno-0-1352" name="__codelineno-0-1352"></a><span class="sd">        D_mm: Overall depth (mm).</span>
-<a id="__codelineno-0-1353" name="__codelineno-0-1353"></a><span class="sd">        d_mm: Effective depth (mm).</span>
-<a id="__codelineno-0-1354" name="__codelineno-0-1354"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
-<a id="__codelineno-0-1355" name="__codelineno-0-1355"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
-<a id="__codelineno-0-1356" name="__codelineno-0-1356"></a><span class="sd">        d_dash_mm: Compression steel depth from top (mm).</span>
-<a id="__codelineno-0-1357" name="__codelineno-0-1357"></a><span class="sd">        asv_mm2: Area of stirrup legs (mm²).</span>
-<a id="__codelineno-0-1358" name="__codelineno-0-1358"></a><span class="sd">        pt_percent: Percentage steel for shear table lookup (optional).</span>
-<a id="__codelineno-0-1359" name="__codelineno-0-1359"></a><span class="sd">        deflection_defaults: Default deflection params (optional).</span>
-<a id="__codelineno-0-1360" name="__codelineno-0-1360"></a><span class="sd">        crack_width_defaults: Default crack width params (optional).</span>
-<a id="__codelineno-0-1361" name="__codelineno-0-1361"></a>
-<a id="__codelineno-0-1362" name="__codelineno-0-1362"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-1363" name="__codelineno-0-1363"></a><span class="sd">        ComplianceReport with per-case results and governing case.</span>
+<span class="normal"><a href="#__codelineno-0-1407">1407</a></span>
+<span class="normal"><a href="#__codelineno-0-1408">1408</a></span>
+<span class="normal"><a href="#__codelineno-0-1409">1409</a></span>
+<span class="normal"><a href="#__codelineno-0-1410">1410</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1332" name="__codelineno-0-1332"></a><span class="k">def</span><span class="w"> </span><span class="nf">check_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-0-1333" name="__codelineno-0-1333"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-1334" name="__codelineno-0-1334"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-1335" name="__codelineno-0-1335"></a>    <span class="n">cases</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+<a id="__codelineno-0-1336" name="__codelineno-0-1336"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1337" name="__codelineno-0-1337"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1338" name="__codelineno-0-1338"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1339" name="__codelineno-0-1339"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1340" name="__codelineno-0-1340"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-1341" name="__codelineno-0-1341"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+<a id="__codelineno-0-1342" name="__codelineno-0-1342"></a>    <span class="n">asv_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
+<a id="__codelineno-0-1343" name="__codelineno-0-1343"></a>    <span class="n">pt_percent</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1344" name="__codelineno-0-1344"></a>    <span class="n">deflection_defaults</span><span class="p">:</span> <span class="n">DeflectionParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1345" name="__codelineno-0-1345"></a>    <span class="n">crack_width_defaults</span><span class="p">:</span> <span class="n">CrackWidthParams</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1346" name="__codelineno-0-1346"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplianceReport</span><span class="p">:</span>
+<a id="__codelineno-0-1347" name="__codelineno-0-1347"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run an IS 456 compliance report across multiple cases.</span>
+<a id="__codelineno-0-1348" name="__codelineno-0-1348"></a>
+<a id="__codelineno-0-1349" name="__codelineno-0-1349"></a><span class="sd">    This is the stable multi-case entrypoint for IS456.</span>
+<a id="__codelineno-0-1350" name="__codelineno-0-1350"></a>
+<a id="__codelineno-0-1351" name="__codelineno-0-1351"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-1352" name="__codelineno-0-1352"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
+<a id="__codelineno-0-1353" name="__codelineno-0-1353"></a><span class="sd">        cases: List of dicts with at least `case_id`, `mu_knm`, `vu_kn`.</span>
+<a id="__codelineno-0-1354" name="__codelineno-0-1354"></a><span class="sd">        b_mm: Beam width (mm).</span>
+<a id="__codelineno-0-1355" name="__codelineno-0-1355"></a><span class="sd">        D_mm: Overall depth (mm).</span>
+<a id="__codelineno-0-1356" name="__codelineno-0-1356"></a><span class="sd">        d_mm: Effective depth (mm).</span>
+<a id="__codelineno-0-1357" name="__codelineno-0-1357"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
+<a id="__codelineno-0-1358" name="__codelineno-0-1358"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
+<a id="__codelineno-0-1359" name="__codelineno-0-1359"></a><span class="sd">        d_dash_mm: Compression steel depth from top (mm).</span>
+<a id="__codelineno-0-1360" name="__codelineno-0-1360"></a><span class="sd">        asv_mm2: Area of stirrup legs (mm²).</span>
+<a id="__codelineno-0-1361" name="__codelineno-0-1361"></a><span class="sd">        pt_percent: Percentage steel for shear table lookup (optional).</span>
+<a id="__codelineno-0-1362" name="__codelineno-0-1362"></a><span class="sd">        deflection_defaults: Default deflection params (optional).</span>
+<a id="__codelineno-0-1363" name="__codelineno-0-1363"></a><span class="sd">        crack_width_defaults: Default crack width params (optional).</span>
 <a id="__codelineno-0-1364" name="__codelineno-0-1364"></a>
-<a id="__codelineno-0-1365" name="__codelineno-0-1365"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-1366" name="__codelineno-0-1366"></a><span class="sd">        ValueError: If units is not one of the accepted IS456 aliases.</span>
+<a id="__codelineno-0-1365" name="__codelineno-0-1365"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-1366" name="__codelineno-0-1366"></a><span class="sd">        ComplianceReport with per-case results and governing case.</span>
 <a id="__codelineno-0-1367" name="__codelineno-0-1367"></a>
-<a id="__codelineno-0-1368" name="__codelineno-0-1368"></a><span class="sd">    Example:</span>
-<a id="__codelineno-0-1369" name="__codelineno-0-1369"></a><span class="sd">        cases = [</span>
-<a id="__codelineno-0-1370" name="__codelineno-0-1370"></a><span class="sd">            {&quot;case_id&quot;: &quot;DL+LL&quot;, &quot;mu_knm&quot;: 80, &quot;vu_kn&quot;: 60},</span>
-<a id="__codelineno-0-1371" name="__codelineno-0-1371"></a><span class="sd">            {&quot;case_id&quot;: &quot;1.5(DL+LL)&quot;, &quot;mu_knm&quot;: 120, &quot;vu_kn&quot;: 90},</span>
-<a id="__codelineno-0-1372" name="__codelineno-0-1372"></a><span class="sd">        ]</span>
-<a id="__codelineno-0-1373" name="__codelineno-0-1373"></a><span class="sd">        report = check_beam_is456(</span>
-<a id="__codelineno-0-1374" name="__codelineno-0-1374"></a><span class="sd">            units=&quot;IS456&quot;,</span>
-<a id="__codelineno-0-1375" name="__codelineno-0-1375"></a><span class="sd">            cases=cases,</span>
-<a id="__codelineno-0-1376" name="__codelineno-0-1376"></a><span class="sd">            b_mm=300,</span>
-<a id="__codelineno-0-1377" name="__codelineno-0-1377"></a><span class="sd">            D_mm=500,</span>
-<a id="__codelineno-0-1378" name="__codelineno-0-1378"></a><span class="sd">            d_mm=450,</span>
-<a id="__codelineno-0-1379" name="__codelineno-0-1379"></a><span class="sd">            fck_nmm2=25,</span>
-<a id="__codelineno-0-1380" name="__codelineno-0-1380"></a><span class="sd">            fy_nmm2=500,</span>
-<a id="__codelineno-0-1381" name="__codelineno-0-1381"></a><span class="sd">        )</span>
-<a id="__codelineno-0-1382" name="__codelineno-0-1382"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1383" name="__codelineno-0-1383"></a>
-<a id="__codelineno-0-1384" name="__codelineno-0-1384"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-<a id="__codelineno-0-1385" name="__codelineno-0-1385"></a>
-<a id="__codelineno-0-1386" name="__codelineno-0-1386"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
-<a id="__codelineno-0-1387" name="__codelineno-0-1387"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
-<a id="__codelineno-0-1388" name="__codelineno-0-1388"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1389" name="__codelineno-0-1389"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1390" name="__codelineno-0-1390"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1391" name="__codelineno-0-1391"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1392" name="__codelineno-0-1392"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1393" name="__codelineno-0-1393"></a>    <span class="p">)</span>
-<a id="__codelineno-0-1394" name="__codelineno-0-1394"></a>
-<a id="__codelineno-0-1395" name="__codelineno-0-1395"></a>    <span class="k">return</span> <span class="n">compliance</span><span class="o">.</span><span class="n">check_compliance_report</span><span class="p">(</span>
-<a id="__codelineno-0-1396" name="__codelineno-0-1396"></a>        <span class="n">cases</span><span class="o">=</span><span class="n">cases</span><span class="p">,</span>
-<a id="__codelineno-0-1397" name="__codelineno-0-1397"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1398" name="__codelineno-0-1398"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1399" name="__codelineno-0-1399"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1400" name="__codelineno-0-1400"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1401" name="__codelineno-0-1401"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-1402" name="__codelineno-0-1402"></a>        <span class="n">d_dash_mm</span><span class="o">=</span><span class="n">d_dash_mm</span><span class="p">,</span>
-<a id="__codelineno-0-1403" name="__codelineno-0-1403"></a>        <span class="n">asv_mm2</span><span class="o">=</span><span class="n">asv_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-1404" name="__codelineno-0-1404"></a>        <span class="n">pt_percent</span><span class="o">=</span><span class="n">pt_percent</span><span class="p">,</span>
-<a id="__codelineno-0-1405" name="__codelineno-0-1405"></a>        <span class="n">deflection_defaults</span><span class="o">=</span><span class="n">deflection_defaults</span><span class="p">,</span>
-<a id="__codelineno-0-1406" name="__codelineno-0-1406"></a>        <span class="n">crack_width_defaults</span><span class="o">=</span><span class="n">crack_width_defaults</span><span class="p">,</span>
-<a id="__codelineno-0-1407" name="__codelineno-0-1407"></a>    <span class="p">)</span>
+<a id="__codelineno-0-1368" name="__codelineno-0-1368"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-1369" name="__codelineno-0-1369"></a><span class="sd">        ValueError: If units is not one of the accepted IS456 aliases.</span>
+<a id="__codelineno-0-1370" name="__codelineno-0-1370"></a>
+<a id="__codelineno-0-1371" name="__codelineno-0-1371"></a><span class="sd">    Example:</span>
+<a id="__codelineno-0-1372" name="__codelineno-0-1372"></a><span class="sd">        cases = [</span>
+<a id="__codelineno-0-1373" name="__codelineno-0-1373"></a><span class="sd">            {&quot;case_id&quot;: &quot;DL+LL&quot;, &quot;mu_knm&quot;: 80, &quot;vu_kn&quot;: 60},</span>
+<a id="__codelineno-0-1374" name="__codelineno-0-1374"></a><span class="sd">            {&quot;case_id&quot;: &quot;1.5(DL+LL)&quot;, &quot;mu_knm&quot;: 120, &quot;vu_kn&quot;: 90},</span>
+<a id="__codelineno-0-1375" name="__codelineno-0-1375"></a><span class="sd">        ]</span>
+<a id="__codelineno-0-1376" name="__codelineno-0-1376"></a><span class="sd">        report = check_beam_is456(</span>
+<a id="__codelineno-0-1377" name="__codelineno-0-1377"></a><span class="sd">            units=&quot;IS456&quot;,</span>
+<a id="__codelineno-0-1378" name="__codelineno-0-1378"></a><span class="sd">            cases=cases,</span>
+<a id="__codelineno-0-1379" name="__codelineno-0-1379"></a><span class="sd">            b_mm=300,</span>
+<a id="__codelineno-0-1380" name="__codelineno-0-1380"></a><span class="sd">            D_mm=500,</span>
+<a id="__codelineno-0-1381" name="__codelineno-0-1381"></a><span class="sd">            d_mm=450,</span>
+<a id="__codelineno-0-1382" name="__codelineno-0-1382"></a><span class="sd">            fck_nmm2=25,</span>
+<a id="__codelineno-0-1383" name="__codelineno-0-1383"></a><span class="sd">            fy_nmm2=500,</span>
+<a id="__codelineno-0-1384" name="__codelineno-0-1384"></a><span class="sd">        )</span>
+<a id="__codelineno-0-1385" name="__codelineno-0-1385"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1386" name="__codelineno-0-1386"></a>
+<a id="__codelineno-0-1387" name="__codelineno-0-1387"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+<a id="__codelineno-0-1388" name="__codelineno-0-1388"></a>
+<a id="__codelineno-0-1389" name="__codelineno-0-1389"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
+<a id="__codelineno-0-1390" name="__codelineno-0-1390"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
+<a id="__codelineno-0-1391" name="__codelineno-0-1391"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1392" name="__codelineno-0-1392"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1393" name="__codelineno-0-1393"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1394" name="__codelineno-0-1394"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1395" name="__codelineno-0-1395"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1396" name="__codelineno-0-1396"></a>    <span class="p">)</span>
+<a id="__codelineno-0-1397" name="__codelineno-0-1397"></a>
+<a id="__codelineno-0-1398" name="__codelineno-0-1398"></a>    <span class="k">return</span> <span class="n">compliance</span><span class="o">.</span><span class="n">check_compliance_report</span><span class="p">(</span>
+<a id="__codelineno-0-1399" name="__codelineno-0-1399"></a>        <span class="n">cases</span><span class="o">=</span><span class="n">cases</span><span class="p">,</span>
+<a id="__codelineno-0-1400" name="__codelineno-0-1400"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1401" name="__codelineno-0-1401"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1402" name="__codelineno-0-1402"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1403" name="__codelineno-0-1403"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1404" name="__codelineno-0-1404"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-1405" name="__codelineno-0-1405"></a>        <span class="n">d_dash_mm</span><span class="o">=</span><span class="n">d_dash_mm</span><span class="p">,</span>
+<a id="__codelineno-0-1406" name="__codelineno-0-1406"></a>        <span class="n">asv_mm2</span><span class="o">=</span><span class="n">asv_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-1407" name="__codelineno-0-1407"></a>        <span class="n">pt_percent</span><span class="o">=</span><span class="n">pt_percent</span><span class="p">,</span>
+<a id="__codelineno-0-1408" name="__codelineno-0-1408"></a>        <span class="n">deflection_defaults</span><span class="o">=</span><span class="n">deflection_defaults</span><span class="p">,</span>
+<a id="__codelineno-0-1409" name="__codelineno-0-1409"></a>        <span class="n">crack_width_defaults</span><span class="o">=</span><span class="n">crack_width_defaults</span><span class="p">,</span>
+<a id="__codelineno-0-1410" name="__codelineno-0-1410"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -7813,193 +7813,193 @@ print(f"Savings: {result.savings_percent:.1f}%")</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>Python/structural_lib/services/api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2324">2324</a></span>
-<span class="normal"><a href="#__codelineno-0-2325">2325</a></span>
-<span class="normal"><a href="#__codelineno-0-2326">2326</a></span>
-<span class="normal"><a href="#__codelineno-0-2327">2327</a></span>
-<span class="normal"><a href="#__codelineno-0-2328">2328</a></span>
-<span class="normal"><a href="#__codelineno-0-2329">2329</a></span>
-<span class="normal"><a href="#__codelineno-0-2330">2330</a></span>
-<span class="normal"><a href="#__codelineno-0-2331">2331</a></span>
-<span class="normal"><a href="#__codelineno-0-2332">2332</a></span>
-<span class="normal"><a href="#__codelineno-0-2333">2333</a></span>
-<span class="normal"><a href="#__codelineno-0-2334">2334</a></span>
-<span class="normal"><a href="#__codelineno-0-2335">2335</a></span>
-<span class="normal"><a href="#__codelineno-0-2336">2336</a></span>
-<span class="normal"><a href="#__codelineno-0-2337">2337</a></span>
-<span class="normal"><a href="#__codelineno-0-2338">2338</a></span>
-<span class="normal"><a href="#__codelineno-0-2339">2339</a></span>
-<span class="normal"><a href="#__codelineno-0-2340">2340</a></span>
-<span class="normal"><a href="#__codelineno-0-2341">2341</a></span>
-<span class="normal"><a href="#__codelineno-0-2342">2342</a></span>
-<span class="normal"><a href="#__codelineno-0-2343">2343</a></span>
-<span class="normal"><a href="#__codelineno-0-2344">2344</a></span>
-<span class="normal"><a href="#__codelineno-0-2345">2345</a></span>
-<span class="normal"><a href="#__codelineno-0-2346">2346</a></span>
-<span class="normal"><a href="#__codelineno-0-2347">2347</a></span>
-<span class="normal"><a href="#__codelineno-0-2348">2348</a></span>
-<span class="normal"><a href="#__codelineno-0-2349">2349</a></span>
-<span class="normal"><a href="#__codelineno-0-2350">2350</a></span>
-<span class="normal"><a href="#__codelineno-0-2351">2351</a></span>
-<span class="normal"><a href="#__codelineno-0-2352">2352</a></span>
-<span class="normal"><a href="#__codelineno-0-2353">2353</a></span>
-<span class="normal"><a href="#__codelineno-0-2354">2354</a></span>
-<span class="normal"><a href="#__codelineno-0-2355">2355</a></span>
-<span class="normal"><a href="#__codelineno-0-2356">2356</a></span>
-<span class="normal"><a href="#__codelineno-0-2357">2357</a></span>
-<span class="normal"><a href="#__codelineno-0-2358">2358</a></span>
-<span class="normal"><a href="#__codelineno-0-2359">2359</a></span>
-<span class="normal"><a href="#__codelineno-0-2360">2360</a></span>
-<span class="normal"><a href="#__codelineno-0-2361">2361</a></span>
-<span class="normal"><a href="#__codelineno-0-2362">2362</a></span>
-<span class="normal"><a href="#__codelineno-0-2363">2363</a></span>
-<span class="normal"><a href="#__codelineno-0-2364">2364</a></span>
-<span class="normal"><a href="#__codelineno-0-2365">2365</a></span>
-<span class="normal"><a href="#__codelineno-0-2366">2366</a></span>
-<span class="normal"><a href="#__codelineno-0-2367">2367</a></span>
-<span class="normal"><a href="#__codelineno-0-2368">2368</a></span>
-<span class="normal"><a href="#__codelineno-0-2369">2369</a></span>
-<span class="normal"><a href="#__codelineno-0-2370">2370</a></span>
-<span class="normal"><a href="#__codelineno-0-2371">2371</a></span>
-<span class="normal"><a href="#__codelineno-0-2372">2372</a></span>
-<span class="normal"><a href="#__codelineno-0-2373">2373</a></span>
-<span class="normal"><a href="#__codelineno-0-2374">2374</a></span>
-<span class="normal"><a href="#__codelineno-0-2375">2375</a></span>
-<span class="normal"><a href="#__codelineno-0-2376">2376</a></span>
-<span class="normal"><a href="#__codelineno-0-2377">2377</a></span>
-<span class="normal"><a href="#__codelineno-0-2378">2378</a></span>
-<span class="normal"><a href="#__codelineno-0-2379">2379</a></span>
-<span class="normal"><a href="#__codelineno-0-2380">2380</a></span>
-<span class="normal"><a href="#__codelineno-0-2381">2381</a></span>
-<span class="normal"><a href="#__codelineno-0-2382">2382</a></span>
-<span class="normal"><a href="#__codelineno-0-2383">2383</a></span>
-<span class="normal"><a href="#__codelineno-0-2384">2384</a></span>
-<span class="normal"><a href="#__codelineno-0-2385">2385</a></span>
-<span class="normal"><a href="#__codelineno-0-2386">2386</a></span>
-<span class="normal"><a href="#__codelineno-0-2387">2387</a></span>
-<span class="normal"><a href="#__codelineno-0-2388">2388</a></span>
-<span class="normal"><a href="#__codelineno-0-2389">2389</a></span>
-<span class="normal"><a href="#__codelineno-0-2390">2390</a></span>
-<span class="normal"><a href="#__codelineno-0-2391">2391</a></span>
-<span class="normal"><a href="#__codelineno-0-2392">2392</a></span>
-<span class="normal"><a href="#__codelineno-0-2393">2393</a></span>
-<span class="normal"><a href="#__codelineno-0-2394">2394</a></span>
-<span class="normal"><a href="#__codelineno-0-2395">2395</a></span>
-<span class="normal"><a href="#__codelineno-0-2396">2396</a></span>
-<span class="normal"><a href="#__codelineno-0-2397">2397</a></span>
-<span class="normal"><a href="#__codelineno-0-2398">2398</a></span>
-<span class="normal"><a href="#__codelineno-0-2399">2399</a></span>
-<span class="normal"><a href="#__codelineno-0-2400">2400</a></span>
-<span class="normal"><a href="#__codelineno-0-2401">2401</a></span>
-<span class="normal"><a href="#__codelineno-0-2402">2402</a></span>
-<span class="normal"><a href="#__codelineno-0-2403">2403</a></span>
-<span class="normal"><a href="#__codelineno-0-2404">2404</a></span>
-<span class="normal"><a href="#__codelineno-0-2405">2405</a></span>
-<span class="normal"><a href="#__codelineno-0-2406">2406</a></span>
-<span class="normal"><a href="#__codelineno-0-2407">2407</a></span>
-<span class="normal"><a href="#__codelineno-0-2408">2408</a></span>
-<span class="normal"><a href="#__codelineno-0-2409">2409</a></span>
-<span class="normal"><a href="#__codelineno-0-2410">2410</a></span>
-<span class="normal"><a href="#__codelineno-0-2411">2411</a></span>
-<span class="normal"><a href="#__codelineno-0-2412">2412</a></span>
-<span class="normal"><a href="#__codelineno-0-2413">2413</a></span>
-<span class="normal"><a href="#__codelineno-0-2414">2414</a></span>
-<span class="normal"><a href="#__codelineno-0-2415">2415</a></span>
-<span class="normal"><a href="#__codelineno-0-2416">2416</a></span>
-<span class="normal"><a href="#__codelineno-0-2417">2417</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2324" name="__codelineno-0-2324"></a><span class="k">def</span><span class="w"> </span><span class="nf">optimize_beam_cost</span><span class="p">(</span>
-<a id="__codelineno-0-2325" name="__codelineno-0-2325"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-0-2326" name="__codelineno-0-2326"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-2327" name="__codelineno-0-2327"></a>    <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2328" name="__codelineno-0-2328"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2329" name="__codelineno-0-2329"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2330" name="__codelineno-0-2330"></a>    <span class="n">cost_profile</span><span class="p">:</span> <span class="n">CostProfile</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-2331" name="__codelineno-0-2331"></a>    <span class="n">cover_mm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
-<a id="__codelineno-0-2332" name="__codelineno-0-2332"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CostOptimizationResult</span><span class="p">:</span>
-<a id="__codelineno-0-2333" name="__codelineno-0-2333"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the most cost-effective beam design meeting IS 456:2000.</span>
-<a id="__codelineno-0-2334" name="__codelineno-0-2334"></a>
-<a id="__codelineno-0-2335" name="__codelineno-0-2335"></a><span class="sd">    Uses brute-force optimization to find the cheapest valid beam design</span>
-<a id="__codelineno-0-2336" name="__codelineno-0-2336"></a><span class="sd">    from a search space of standard dimensions and material grades.</span>
-<a id="__codelineno-0-2337" name="__codelineno-0-2337"></a>
-<a id="__codelineno-0-2338" name="__codelineno-0-2338"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-2339" name="__codelineno-0-2339"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
-<a id="__codelineno-0-2340" name="__codelineno-0-2340"></a><span class="sd">        span_mm: Beam span (mm).</span>
-<a id="__codelineno-0-2341" name="__codelineno-0-2341"></a><span class="sd">        mu_knm: Factored bending moment (kNm).</span>
-<a id="__codelineno-0-2342" name="__codelineno-0-2342"></a><span class="sd">        vu_kn: Factored shear force (kN).</span>
-<a id="__codelineno-0-2343" name="__codelineno-0-2343"></a><span class="sd">        cost_profile: Regional cost data (defaults to India CPWD 2023).</span>
-<a id="__codelineno-0-2344" name="__codelineno-0-2344"></a><span class="sd">        cover_mm: Concrete cover (default 40mm).</span>
-<a id="__codelineno-0-2345" name="__codelineno-0-2345"></a>
-<a id="__codelineno-0-2346" name="__codelineno-0-2346"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-2347" name="__codelineno-0-2347"></a><span class="sd">        CostOptimizationResult with:</span>
-<a id="__codelineno-0-2348" name="__codelineno-0-2348"></a><span class="sd">            - optimal_design: Best design found</span>
-<a id="__codelineno-0-2349" name="__codelineno-0-2349"></a><span class="sd">            - baseline_cost: Conservative design cost for comparison</span>
-<a id="__codelineno-0-2350" name="__codelineno-0-2350"></a><span class="sd">            - savings_amount: Cost saved (currency units)</span>
-<a id="__codelineno-0-2351" name="__codelineno-0-2351"></a><span class="sd">            - savings_percent: Percentage saved</span>
-<a id="__codelineno-0-2352" name="__codelineno-0-2352"></a><span class="sd">            - alternatives: List of next 3 cheapest designs</span>
-<a id="__codelineno-0-2353" name="__codelineno-0-2353"></a><span class="sd">            - candidates_evaluated: Total candidates evaluated</span>
-<a id="__codelineno-0-2354" name="__codelineno-0-2354"></a><span class="sd">            - candidates_valid: Number of valid candidates</span>
-<a id="__codelineno-0-2355" name="__codelineno-0-2355"></a><span class="sd">            - computation_time_sec: Time taken for optimization</span>
-<a id="__codelineno-0-2356" name="__codelineno-0-2356"></a>
-<a id="__codelineno-0-2357" name="__codelineno-0-2357"></a><span class="sd">    Example:</span>
-<a id="__codelineno-0-2358" name="__codelineno-0-2358"></a><span class="sd">        &gt;&gt;&gt; result = optimize_beam_cost(</span>
-<a id="__codelineno-0-2359" name="__codelineno-0-2359"></a><span class="sd">        ...     units=&quot;IS456&quot;,</span>
-<a id="__codelineno-0-2360" name="__codelineno-0-2360"></a><span class="sd">        ...     span_mm=5000,</span>
-<a id="__codelineno-0-2361" name="__codelineno-0-2361"></a><span class="sd">        ...     mu_knm=120,</span>
-<a id="__codelineno-0-2362" name="__codelineno-0-2362"></a><span class="sd">        ...     vu_kn=80</span>
-<a id="__codelineno-0-2363" name="__codelineno-0-2363"></a><span class="sd">        ... )</span>
-<a id="__codelineno-0-2364" name="__codelineno-0-2364"></a><span class="sd">        &gt;&gt;&gt; print(result.summary())</span>
-<a id="__codelineno-0-2365" name="__codelineno-0-2365"></a><span class="sd">        &#39;Optimal: 300×500mm, Cost: INR45,230, Savings: 18.5%&#39;</span>
-<a id="__codelineno-0-2366" name="__codelineno-0-2366"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Width: {result.optimal_design.b_mm}mm&quot;)</span>
-<a id="__codelineno-0-2367" name="__codelineno-0-2367"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Savings: {result.savings_percent:.1f}%&quot;)</span>
-<a id="__codelineno-0-2368" name="__codelineno-0-2368"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-2369" name="__codelineno-0-2369"></a>
-<a id="__codelineno-0-2370" name="__codelineno-0-2370"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-<a id="__codelineno-0-2371" name="__codelineno-0-2371"></a>
-<a id="__codelineno-0-2372" name="__codelineno-0-2372"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">cost_optimization</span><span class="o">.</span><span class="n">optimize_beam_design</span><span class="p">(</span>
-<a id="__codelineno-0-2373" name="__codelineno-0-2373"></a>        <span class="n">span_mm</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2374" name="__codelineno-0-2374"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
-<a id="__codelineno-0-2375" name="__codelineno-0-2375"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
-<a id="__codelineno-0-2376" name="__codelineno-0-2376"></a>        <span class="n">cost_profile</span><span class="o">=</span><span class="n">cost_profile</span><span class="p">,</span>
-<a id="__codelineno-0-2377" name="__codelineno-0-2377"></a>    <span class="p">)</span>
-<a id="__codelineno-0-2378" name="__codelineno-0-2378"></a>
-<a id="__codelineno-0-2379" name="__codelineno-0-2379"></a>    <span class="c1"># Convert internal result to CostOptimizationResult</span>
-<a id="__codelineno-0-2380" name="__codelineno-0-2380"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_to_cost_breakdown</span><span class="p">(</span><span class="n">breakdown</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CostBreakdown</span><span class="p">:</span>
-<a id="__codelineno-0-2381" name="__codelineno-0-2381"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal cost breakdown to CostBreakdown.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2382" name="__codelineno-0-2382"></a>        <span class="k">return</span> <span class="n">CostBreakdown</span><span class="p">(</span>
-<a id="__codelineno-0-2383" name="__codelineno-0-2383"></a>            <span class="n">concrete_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">concrete_cost</span><span class="p">,</span>
-<a id="__codelineno-0-2384" name="__codelineno-0-2384"></a>            <span class="n">steel_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">steel_cost</span><span class="p">,</span>
-<a id="__codelineno-0-2385" name="__codelineno-0-2385"></a>            <span class="n">formwork_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">formwork_cost</span><span class="p">,</span>
-<a id="__codelineno-0-2386" name="__codelineno-0-2386"></a>            <span class="n">labor_adjustment</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">labor_adjustment</span><span class="p">,</span>
-<a id="__codelineno-0-2387" name="__codelineno-0-2387"></a>            <span class="n">total_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">total_cost</span><span class="p">,</span>
-<a id="__codelineno-0-2388" name="__codelineno-0-2388"></a>            <span class="n">currency</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">currency</span><span class="p">,</span>
-<a id="__codelineno-0-2389" name="__codelineno-0-2389"></a>        <span class="p">)</span>
-<a id="__codelineno-0-2390" name="__codelineno-0-2390"></a>
-<a id="__codelineno-0-2391" name="__codelineno-0-2391"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_to_optimal_design</span><span class="p">(</span><span class="n">candidate</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimalDesign</span><span class="p">:</span>
-<a id="__codelineno-0-2392" name="__codelineno-0-2392"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal candidate to OptimalDesign.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-2393" name="__codelineno-0-2393"></a>        <span class="k">return</span> <span class="n">OptimalDesign</span><span class="p">(</span>
-<a id="__codelineno-0-2394" name="__codelineno-0-2394"></a>            <span class="n">b_mm</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2395" name="__codelineno-0-2395"></a>            <span class="n">D_mm</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2396" name="__codelineno-0-2396"></a>            <span class="n">d_mm</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2397" name="__codelineno-0-2397"></a>            <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-2398" name="__codelineno-0-2398"></a>            <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-2399" name="__codelineno-0-2399"></a>            <span class="n">cost_breakdown</span><span class="o">=</span><span class="n">_to_cost_breakdown</span><span class="p">(</span><span class="n">candidate</span><span class="o">.</span><span class="n">cost_breakdown</span><span class="p">),</span>
-<a id="__codelineno-0-2400" name="__codelineno-0-2400"></a>            <span class="n">is_valid</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">is_valid</span><span class="p">,</span>
-<a id="__codelineno-0-2401" name="__codelineno-0-2401"></a>            <span class="n">failure_reason</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">failure_reason</span><span class="p">,</span>
-<a id="__codelineno-0-2402" name="__codelineno-0-2402"></a>        <span class="p">)</span>
-<a id="__codelineno-0-2403" name="__codelineno-0-2403"></a>
-<a id="__codelineno-0-2404" name="__codelineno-0-2404"></a>    <span class="c1"># Convert optimal and alternatives</span>
-<a id="__codelineno-0-2405" name="__codelineno-0-2405"></a>    <span class="n">optimal</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">optimal_candidate</span>
-<a id="__codelineno-0-2406" name="__codelineno-0-2406"></a>    <span class="n">optimal_design</span> <span class="o">=</span> <span class="n">_to_optimal_design</span><span class="p">(</span><span class="n">optimal</span><span class="p">)</span>
-<a id="__codelineno-0-2407" name="__codelineno-0-2407"></a>    <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">_to_optimal_design</span><span class="p">(</span><span class="n">alt</span><span class="p">)</span> <span class="k">for</span> <span class="n">alt</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span> <span class="k">if</span> <span class="n">alt</span><span class="p">]</span>
-<a id="__codelineno-0-2408" name="__codelineno-0-2408"></a>    <span class="k">return</span> <span class="n">CostOptimizationResult</span><span class="p">(</span>
-<a id="__codelineno-0-2409" name="__codelineno-0-2409"></a>        <span class="n">optimal_design</span><span class="o">=</span><span class="n">optimal_design</span><span class="p">,</span>
-<a id="__codelineno-0-2410" name="__codelineno-0-2410"></a>        <span class="n">baseline_cost</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">baseline_cost</span><span class="p">,</span>
-<a id="__codelineno-0-2411" name="__codelineno-0-2411"></a>        <span class="n">savings_amount</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">savings_amount</span><span class="p">,</span>
-<a id="__codelineno-0-2412" name="__codelineno-0-2412"></a>        <span class="n">savings_percent</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">savings_percent</span><span class="p">,</span>
-<a id="__codelineno-0-2413" name="__codelineno-0-2413"></a>        <span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">,</span>
-<a id="__codelineno-0-2414" name="__codelineno-0-2414"></a>        <span class="n">candidates_evaluated</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">candidates_evaluated</span><span class="p">,</span>
-<a id="__codelineno-0-2415" name="__codelineno-0-2415"></a>        <span class="n">candidates_valid</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">candidates_valid</span><span class="p">,</span>
-<a id="__codelineno-0-2416" name="__codelineno-0-2416"></a>        <span class="n">computation_time_sec</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">computation_time_sec</span><span class="p">,</span>
-<a id="__codelineno-0-2417" name="__codelineno-0-2417"></a>    <span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2879">2879</a></span>
+<span class="normal"><a href="#__codelineno-0-2880">2880</a></span>
+<span class="normal"><a href="#__codelineno-0-2881">2881</a></span>
+<span class="normal"><a href="#__codelineno-0-2882">2882</a></span>
+<span class="normal"><a href="#__codelineno-0-2883">2883</a></span>
+<span class="normal"><a href="#__codelineno-0-2884">2884</a></span>
+<span class="normal"><a href="#__codelineno-0-2885">2885</a></span>
+<span class="normal"><a href="#__codelineno-0-2886">2886</a></span>
+<span class="normal"><a href="#__codelineno-0-2887">2887</a></span>
+<span class="normal"><a href="#__codelineno-0-2888">2888</a></span>
+<span class="normal"><a href="#__codelineno-0-2889">2889</a></span>
+<span class="normal"><a href="#__codelineno-0-2890">2890</a></span>
+<span class="normal"><a href="#__codelineno-0-2891">2891</a></span>
+<span class="normal"><a href="#__codelineno-0-2892">2892</a></span>
+<span class="normal"><a href="#__codelineno-0-2893">2893</a></span>
+<span class="normal"><a href="#__codelineno-0-2894">2894</a></span>
+<span class="normal"><a href="#__codelineno-0-2895">2895</a></span>
+<span class="normal"><a href="#__codelineno-0-2896">2896</a></span>
+<span class="normal"><a href="#__codelineno-0-2897">2897</a></span>
+<span class="normal"><a href="#__codelineno-0-2898">2898</a></span>
+<span class="normal"><a href="#__codelineno-0-2899">2899</a></span>
+<span class="normal"><a href="#__codelineno-0-2900">2900</a></span>
+<span class="normal"><a href="#__codelineno-0-2901">2901</a></span>
+<span class="normal"><a href="#__codelineno-0-2902">2902</a></span>
+<span class="normal"><a href="#__codelineno-0-2903">2903</a></span>
+<span class="normal"><a href="#__codelineno-0-2904">2904</a></span>
+<span class="normal"><a href="#__codelineno-0-2905">2905</a></span>
+<span class="normal"><a href="#__codelineno-0-2906">2906</a></span>
+<span class="normal"><a href="#__codelineno-0-2907">2907</a></span>
+<span class="normal"><a href="#__codelineno-0-2908">2908</a></span>
+<span class="normal"><a href="#__codelineno-0-2909">2909</a></span>
+<span class="normal"><a href="#__codelineno-0-2910">2910</a></span>
+<span class="normal"><a href="#__codelineno-0-2911">2911</a></span>
+<span class="normal"><a href="#__codelineno-0-2912">2912</a></span>
+<span class="normal"><a href="#__codelineno-0-2913">2913</a></span>
+<span class="normal"><a href="#__codelineno-0-2914">2914</a></span>
+<span class="normal"><a href="#__codelineno-0-2915">2915</a></span>
+<span class="normal"><a href="#__codelineno-0-2916">2916</a></span>
+<span class="normal"><a href="#__codelineno-0-2917">2917</a></span>
+<span class="normal"><a href="#__codelineno-0-2918">2918</a></span>
+<span class="normal"><a href="#__codelineno-0-2919">2919</a></span>
+<span class="normal"><a href="#__codelineno-0-2920">2920</a></span>
+<span class="normal"><a href="#__codelineno-0-2921">2921</a></span>
+<span class="normal"><a href="#__codelineno-0-2922">2922</a></span>
+<span class="normal"><a href="#__codelineno-0-2923">2923</a></span>
+<span class="normal"><a href="#__codelineno-0-2924">2924</a></span>
+<span class="normal"><a href="#__codelineno-0-2925">2925</a></span>
+<span class="normal"><a href="#__codelineno-0-2926">2926</a></span>
+<span class="normal"><a href="#__codelineno-0-2927">2927</a></span>
+<span class="normal"><a href="#__codelineno-0-2928">2928</a></span>
+<span class="normal"><a href="#__codelineno-0-2929">2929</a></span>
+<span class="normal"><a href="#__codelineno-0-2930">2930</a></span>
+<span class="normal"><a href="#__codelineno-0-2931">2931</a></span>
+<span class="normal"><a href="#__codelineno-0-2932">2932</a></span>
+<span class="normal"><a href="#__codelineno-0-2933">2933</a></span>
+<span class="normal"><a href="#__codelineno-0-2934">2934</a></span>
+<span class="normal"><a href="#__codelineno-0-2935">2935</a></span>
+<span class="normal"><a href="#__codelineno-0-2936">2936</a></span>
+<span class="normal"><a href="#__codelineno-0-2937">2937</a></span>
+<span class="normal"><a href="#__codelineno-0-2938">2938</a></span>
+<span class="normal"><a href="#__codelineno-0-2939">2939</a></span>
+<span class="normal"><a href="#__codelineno-0-2940">2940</a></span>
+<span class="normal"><a href="#__codelineno-0-2941">2941</a></span>
+<span class="normal"><a href="#__codelineno-0-2942">2942</a></span>
+<span class="normal"><a href="#__codelineno-0-2943">2943</a></span>
+<span class="normal"><a href="#__codelineno-0-2944">2944</a></span>
+<span class="normal"><a href="#__codelineno-0-2945">2945</a></span>
+<span class="normal"><a href="#__codelineno-0-2946">2946</a></span>
+<span class="normal"><a href="#__codelineno-0-2947">2947</a></span>
+<span class="normal"><a href="#__codelineno-0-2948">2948</a></span>
+<span class="normal"><a href="#__codelineno-0-2949">2949</a></span>
+<span class="normal"><a href="#__codelineno-0-2950">2950</a></span>
+<span class="normal"><a href="#__codelineno-0-2951">2951</a></span>
+<span class="normal"><a href="#__codelineno-0-2952">2952</a></span>
+<span class="normal"><a href="#__codelineno-0-2953">2953</a></span>
+<span class="normal"><a href="#__codelineno-0-2954">2954</a></span>
+<span class="normal"><a href="#__codelineno-0-2955">2955</a></span>
+<span class="normal"><a href="#__codelineno-0-2956">2956</a></span>
+<span class="normal"><a href="#__codelineno-0-2957">2957</a></span>
+<span class="normal"><a href="#__codelineno-0-2958">2958</a></span>
+<span class="normal"><a href="#__codelineno-0-2959">2959</a></span>
+<span class="normal"><a href="#__codelineno-0-2960">2960</a></span>
+<span class="normal"><a href="#__codelineno-0-2961">2961</a></span>
+<span class="normal"><a href="#__codelineno-0-2962">2962</a></span>
+<span class="normal"><a href="#__codelineno-0-2963">2963</a></span>
+<span class="normal"><a href="#__codelineno-0-2964">2964</a></span>
+<span class="normal"><a href="#__codelineno-0-2965">2965</a></span>
+<span class="normal"><a href="#__codelineno-0-2966">2966</a></span>
+<span class="normal"><a href="#__codelineno-0-2967">2967</a></span>
+<span class="normal"><a href="#__codelineno-0-2968">2968</a></span>
+<span class="normal"><a href="#__codelineno-0-2969">2969</a></span>
+<span class="normal"><a href="#__codelineno-0-2970">2970</a></span>
+<span class="normal"><a href="#__codelineno-0-2971">2971</a></span>
+<span class="normal"><a href="#__codelineno-0-2972">2972</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2879" name="__codelineno-0-2879"></a><span class="k">def</span><span class="w"> </span><span class="nf">optimize_beam_cost</span><span class="p">(</span>
+<a id="__codelineno-0-2880" name="__codelineno-0-2880"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-2881" name="__codelineno-0-2881"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-2882" name="__codelineno-0-2882"></a>    <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-2883" name="__codelineno-0-2883"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-2884" name="__codelineno-0-2884"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-2885" name="__codelineno-0-2885"></a>    <span class="n">cost_profile</span><span class="p">:</span> <span class="n">CostProfile</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-2886" name="__codelineno-0-2886"></a>    <span class="n">cover_mm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+<a id="__codelineno-0-2887" name="__codelineno-0-2887"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CostOptimizationResult</span><span class="p">:</span>
+<a id="__codelineno-0-2888" name="__codelineno-0-2888"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the most cost-effective beam design meeting IS 456:2000.</span>
+<a id="__codelineno-0-2889" name="__codelineno-0-2889"></a>
+<a id="__codelineno-0-2890" name="__codelineno-0-2890"></a><span class="sd">    Uses brute-force optimization to find the cheapest valid beam design</span>
+<a id="__codelineno-0-2891" name="__codelineno-0-2891"></a><span class="sd">    from a search space of standard dimensions and material grades.</span>
+<a id="__codelineno-0-2892" name="__codelineno-0-2892"></a>
+<a id="__codelineno-0-2893" name="__codelineno-0-2893"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-2894" name="__codelineno-0-2894"></a><span class="sd">        units: Units label (must be one of the IS456 aliases).</span>
+<a id="__codelineno-0-2895" name="__codelineno-0-2895"></a><span class="sd">        span_mm: Beam span (mm).</span>
+<a id="__codelineno-0-2896" name="__codelineno-0-2896"></a><span class="sd">        mu_knm: Factored bending moment (kNm).</span>
+<a id="__codelineno-0-2897" name="__codelineno-0-2897"></a><span class="sd">        vu_kn: Factored shear force (kN).</span>
+<a id="__codelineno-0-2898" name="__codelineno-0-2898"></a><span class="sd">        cost_profile: Regional cost data (defaults to India CPWD 2023).</span>
+<a id="__codelineno-0-2899" name="__codelineno-0-2899"></a><span class="sd">        cover_mm: Concrete cover (default 40mm).</span>
+<a id="__codelineno-0-2900" name="__codelineno-0-2900"></a>
+<a id="__codelineno-0-2901" name="__codelineno-0-2901"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-2902" name="__codelineno-0-2902"></a><span class="sd">        CostOptimizationResult with:</span>
+<a id="__codelineno-0-2903" name="__codelineno-0-2903"></a><span class="sd">            - optimal_design: Best design found</span>
+<a id="__codelineno-0-2904" name="__codelineno-0-2904"></a><span class="sd">            - baseline_cost: Conservative design cost for comparison</span>
+<a id="__codelineno-0-2905" name="__codelineno-0-2905"></a><span class="sd">            - savings_amount: Cost saved (currency units)</span>
+<a id="__codelineno-0-2906" name="__codelineno-0-2906"></a><span class="sd">            - savings_percent: Percentage saved</span>
+<a id="__codelineno-0-2907" name="__codelineno-0-2907"></a><span class="sd">            - alternatives: List of next 3 cheapest designs</span>
+<a id="__codelineno-0-2908" name="__codelineno-0-2908"></a><span class="sd">            - candidates_evaluated: Total candidates evaluated</span>
+<a id="__codelineno-0-2909" name="__codelineno-0-2909"></a><span class="sd">            - candidates_valid: Number of valid candidates</span>
+<a id="__codelineno-0-2910" name="__codelineno-0-2910"></a><span class="sd">            - computation_time_sec: Time taken for optimization</span>
+<a id="__codelineno-0-2911" name="__codelineno-0-2911"></a>
+<a id="__codelineno-0-2912" name="__codelineno-0-2912"></a><span class="sd">    Example:</span>
+<a id="__codelineno-0-2913" name="__codelineno-0-2913"></a><span class="sd">        &gt;&gt;&gt; result = optimize_beam_cost(</span>
+<a id="__codelineno-0-2914" name="__codelineno-0-2914"></a><span class="sd">        ...     units=&quot;IS456&quot;,</span>
+<a id="__codelineno-0-2915" name="__codelineno-0-2915"></a><span class="sd">        ...     span_mm=5000,</span>
+<a id="__codelineno-0-2916" name="__codelineno-0-2916"></a><span class="sd">        ...     mu_knm=120,</span>
+<a id="__codelineno-0-2917" name="__codelineno-0-2917"></a><span class="sd">        ...     vu_kn=80</span>
+<a id="__codelineno-0-2918" name="__codelineno-0-2918"></a><span class="sd">        ... )</span>
+<a id="__codelineno-0-2919" name="__codelineno-0-2919"></a><span class="sd">        &gt;&gt;&gt; print(result.summary())</span>
+<a id="__codelineno-0-2920" name="__codelineno-0-2920"></a><span class="sd">        &#39;Optimal: 300×500mm, Cost: INR45,230, Savings: 18.5%&#39;</span>
+<a id="__codelineno-0-2921" name="__codelineno-0-2921"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Width: {result.optimal_design.b_mm}mm&quot;)</span>
+<a id="__codelineno-0-2922" name="__codelineno-0-2922"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Savings: {result.savings_percent:.1f}%&quot;)</span>
+<a id="__codelineno-0-2923" name="__codelineno-0-2923"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-2924" name="__codelineno-0-2924"></a>
+<a id="__codelineno-0-2925" name="__codelineno-0-2925"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+<a id="__codelineno-0-2926" name="__codelineno-0-2926"></a>
+<a id="__codelineno-0-2927" name="__codelineno-0-2927"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">cost_optimization</span><span class="o">.</span><span class="n">optimize_beam_design</span><span class="p">(</span>
+<a id="__codelineno-0-2928" name="__codelineno-0-2928"></a>        <span class="n">span_mm</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
+<a id="__codelineno-0-2929" name="__codelineno-0-2929"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
+<a id="__codelineno-0-2930" name="__codelineno-0-2930"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
+<a id="__codelineno-0-2931" name="__codelineno-0-2931"></a>        <span class="n">cost_profile</span><span class="o">=</span><span class="n">cost_profile</span><span class="p">,</span>
+<a id="__codelineno-0-2932" name="__codelineno-0-2932"></a>    <span class="p">)</span>
+<a id="__codelineno-0-2933" name="__codelineno-0-2933"></a>
+<a id="__codelineno-0-2934" name="__codelineno-0-2934"></a>    <span class="c1"># Convert internal result to CostOptimizationResult</span>
+<a id="__codelineno-0-2935" name="__codelineno-0-2935"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_to_cost_breakdown</span><span class="p">(</span><span class="n">breakdown</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CostBreakdown</span><span class="p">:</span>
+<a id="__codelineno-0-2936" name="__codelineno-0-2936"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal cost breakdown to CostBreakdown.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2937" name="__codelineno-0-2937"></a>        <span class="k">return</span> <span class="n">CostBreakdown</span><span class="p">(</span>
+<a id="__codelineno-0-2938" name="__codelineno-0-2938"></a>            <span class="n">concrete_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">concrete_cost</span><span class="p">,</span>
+<a id="__codelineno-0-2939" name="__codelineno-0-2939"></a>            <span class="n">steel_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">steel_cost</span><span class="p">,</span>
+<a id="__codelineno-0-2940" name="__codelineno-0-2940"></a>            <span class="n">formwork_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">formwork_cost</span><span class="p">,</span>
+<a id="__codelineno-0-2941" name="__codelineno-0-2941"></a>            <span class="n">labor_adjustment</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">labor_adjustment</span><span class="p">,</span>
+<a id="__codelineno-0-2942" name="__codelineno-0-2942"></a>            <span class="n">total_cost</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">total_cost</span><span class="p">,</span>
+<a id="__codelineno-0-2943" name="__codelineno-0-2943"></a>            <span class="n">currency</span><span class="o">=</span><span class="n">breakdown</span><span class="o">.</span><span class="n">currency</span><span class="p">,</span>
+<a id="__codelineno-0-2944" name="__codelineno-0-2944"></a>        <span class="p">)</span>
+<a id="__codelineno-0-2945" name="__codelineno-0-2945"></a>
+<a id="__codelineno-0-2946" name="__codelineno-0-2946"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_to_optimal_design</span><span class="p">(</span><span class="n">candidate</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimalDesign</span><span class="p">:</span>
+<a id="__codelineno-0-2947" name="__codelineno-0-2947"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal candidate to OptimalDesign.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2948" name="__codelineno-0-2948"></a>        <span class="k">return</span> <span class="n">OptimalDesign</span><span class="p">(</span>
+<a id="__codelineno-0-2949" name="__codelineno-0-2949"></a>            <span class="n">b_mm</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-2950" name="__codelineno-0-2950"></a>            <span class="n">D_mm</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-2951" name="__codelineno-0-2951"></a>            <span class="n">d_mm</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-2952" name="__codelineno-0-2952"></a>            <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-2953" name="__codelineno-0-2953"></a>            <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-2954" name="__codelineno-0-2954"></a>            <span class="n">cost_breakdown</span><span class="o">=</span><span class="n">_to_cost_breakdown</span><span class="p">(</span><span class="n">candidate</span><span class="o">.</span><span class="n">cost_breakdown</span><span class="p">),</span>
+<a id="__codelineno-0-2955" name="__codelineno-0-2955"></a>            <span class="n">is_valid</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">is_valid</span><span class="p">,</span>
+<a id="__codelineno-0-2956" name="__codelineno-0-2956"></a>            <span class="n">failure_reason</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">failure_reason</span><span class="p">,</span>
+<a id="__codelineno-0-2957" name="__codelineno-0-2957"></a>        <span class="p">)</span>
+<a id="__codelineno-0-2958" name="__codelineno-0-2958"></a>
+<a id="__codelineno-0-2959" name="__codelineno-0-2959"></a>    <span class="c1"># Convert optimal and alternatives</span>
+<a id="__codelineno-0-2960" name="__codelineno-0-2960"></a>    <span class="n">optimal</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">optimal_candidate</span>
+<a id="__codelineno-0-2961" name="__codelineno-0-2961"></a>    <span class="n">optimal_design</span> <span class="o">=</span> <span class="n">_to_optimal_design</span><span class="p">(</span><span class="n">optimal</span><span class="p">)</span>
+<a id="__codelineno-0-2962" name="__codelineno-0-2962"></a>    <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">_to_optimal_design</span><span class="p">(</span><span class="n">alt</span><span class="p">)</span> <span class="k">for</span> <span class="n">alt</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span> <span class="k">if</span> <span class="n">alt</span><span class="p">]</span>
+<a id="__codelineno-0-2963" name="__codelineno-0-2963"></a>    <span class="k">return</span> <span class="n">CostOptimizationResult</span><span class="p">(</span>
+<a id="__codelineno-0-2964" name="__codelineno-0-2964"></a>        <span class="n">optimal_design</span><span class="o">=</span><span class="n">optimal_design</span><span class="p">,</span>
+<a id="__codelineno-0-2965" name="__codelineno-0-2965"></a>        <span class="n">baseline_cost</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">baseline_cost</span><span class="p">,</span>
+<a id="__codelineno-0-2966" name="__codelineno-0-2966"></a>        <span class="n">savings_amount</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">savings_amount</span><span class="p">,</span>
+<a id="__codelineno-0-2967" name="__codelineno-0-2967"></a>        <span class="n">savings_percent</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">savings_percent</span><span class="p">,</span>
+<a id="__codelineno-0-2968" name="__codelineno-0-2968"></a>        <span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">,</span>
+<a id="__codelineno-0-2969" name="__codelineno-0-2969"></a>        <span class="n">candidates_evaluated</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">candidates_evaluated</span><span class="p">,</span>
+<a id="__codelineno-0-2970" name="__codelineno-0-2970"></a>        <span class="n">candidates_valid</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">candidates_valid</span><span class="p">,</span>
+<a id="__codelineno-0-2971" name="__codelineno-0-2971"></a>        <span class="n">computation_time_sec</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">computation_time_sec</span><span class="p">,</span>
+<a id="__codelineno-0-2972" name="__codelineno-0-2972"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -8402,261 +8402,261 @@ data = result.to_dict()  # Dictionary</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>Python/structural_lib/services/api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-2514">2514</a></span>
-<span class="normal"><a href="#__codelineno-0-2515">2515</a></span>
-<span class="normal"><a href="#__codelineno-0-2516">2516</a></span>
-<span class="normal"><a href="#__codelineno-0-2517">2517</a></span>
-<span class="normal"><a href="#__codelineno-0-2518">2518</a></span>
-<span class="normal"><a href="#__codelineno-0-2519">2519</a></span>
-<span class="normal"><a href="#__codelineno-0-2520">2520</a></span>
-<span class="normal"><a href="#__codelineno-0-2521">2521</a></span>
-<span class="normal"><a href="#__codelineno-0-2522">2522</a></span>
-<span class="normal"><a href="#__codelineno-0-2523">2523</a></span>
-<span class="normal"><a href="#__codelineno-0-2524">2524</a></span>
-<span class="normal"><a href="#__codelineno-0-2525">2525</a></span>
-<span class="normal"><a href="#__codelineno-0-2526">2526</a></span>
-<span class="normal"><a href="#__codelineno-0-2527">2527</a></span>
-<span class="normal"><a href="#__codelineno-0-2528">2528</a></span>
-<span class="normal"><a href="#__codelineno-0-2529">2529</a></span>
-<span class="normal"><a href="#__codelineno-0-2530">2530</a></span>
-<span class="normal"><a href="#__codelineno-0-2531">2531</a></span>
-<span class="normal"><a href="#__codelineno-0-2532">2532</a></span>
-<span class="normal"><a href="#__codelineno-0-2533">2533</a></span>
-<span class="normal"><a href="#__codelineno-0-2534">2534</a></span>
-<span class="normal"><a href="#__codelineno-0-2535">2535</a></span>
-<span class="normal"><a href="#__codelineno-0-2536">2536</a></span>
-<span class="normal"><a href="#__codelineno-0-2537">2537</a></span>
-<span class="normal"><a href="#__codelineno-0-2538">2538</a></span>
-<span class="normal"><a href="#__codelineno-0-2539">2539</a></span>
-<span class="normal"><a href="#__codelineno-0-2540">2540</a></span>
-<span class="normal"><a href="#__codelineno-0-2541">2541</a></span>
-<span class="normal"><a href="#__codelineno-0-2542">2542</a></span>
-<span class="normal"><a href="#__codelineno-0-2543">2543</a></span>
-<span class="normal"><a href="#__codelineno-0-2544">2544</a></span>
-<span class="normal"><a href="#__codelineno-0-2545">2545</a></span>
-<span class="normal"><a href="#__codelineno-0-2546">2546</a></span>
-<span class="normal"><a href="#__codelineno-0-2547">2547</a></span>
-<span class="normal"><a href="#__codelineno-0-2548">2548</a></span>
-<span class="normal"><a href="#__codelineno-0-2549">2549</a></span>
-<span class="normal"><a href="#__codelineno-0-2550">2550</a></span>
-<span class="normal"><a href="#__codelineno-0-2551">2551</a></span>
-<span class="normal"><a href="#__codelineno-0-2552">2552</a></span>
-<span class="normal"><a href="#__codelineno-0-2553">2553</a></span>
-<span class="normal"><a href="#__codelineno-0-2554">2554</a></span>
-<span class="normal"><a href="#__codelineno-0-2555">2555</a></span>
-<span class="normal"><a href="#__codelineno-0-2556">2556</a></span>
-<span class="normal"><a href="#__codelineno-0-2557">2557</a></span>
-<span class="normal"><a href="#__codelineno-0-2558">2558</a></span>
-<span class="normal"><a href="#__codelineno-0-2559">2559</a></span>
-<span class="normal"><a href="#__codelineno-0-2560">2560</a></span>
-<span class="normal"><a href="#__codelineno-0-2561">2561</a></span>
-<span class="normal"><a href="#__codelineno-0-2562">2562</a></span>
-<span class="normal"><a href="#__codelineno-0-2563">2563</a></span>
-<span class="normal"><a href="#__codelineno-0-2564">2564</a></span>
-<span class="normal"><a href="#__codelineno-0-2565">2565</a></span>
-<span class="normal"><a href="#__codelineno-0-2566">2566</a></span>
-<span class="normal"><a href="#__codelineno-0-2567">2567</a></span>
-<span class="normal"><a href="#__codelineno-0-2568">2568</a></span>
-<span class="normal"><a href="#__codelineno-0-2569">2569</a></span>
-<span class="normal"><a href="#__codelineno-0-2570">2570</a></span>
-<span class="normal"><a href="#__codelineno-0-2571">2571</a></span>
-<span class="normal"><a href="#__codelineno-0-2572">2572</a></span>
-<span class="normal"><a href="#__codelineno-0-2573">2573</a></span>
-<span class="normal"><a href="#__codelineno-0-2574">2574</a></span>
-<span class="normal"><a href="#__codelineno-0-2575">2575</a></span>
-<span class="normal"><a href="#__codelineno-0-2576">2576</a></span>
-<span class="normal"><a href="#__codelineno-0-2577">2577</a></span>
-<span class="normal"><a href="#__codelineno-0-2578">2578</a></span>
-<span class="normal"><a href="#__codelineno-0-2579">2579</a></span>
-<span class="normal"><a href="#__codelineno-0-2580">2580</a></span>
-<span class="normal"><a href="#__codelineno-0-2581">2581</a></span>
-<span class="normal"><a href="#__codelineno-0-2582">2582</a></span>
-<span class="normal"><a href="#__codelineno-0-2583">2583</a></span>
-<span class="normal"><a href="#__codelineno-0-2584">2584</a></span>
-<span class="normal"><a href="#__codelineno-0-2585">2585</a></span>
-<span class="normal"><a href="#__codelineno-0-2586">2586</a></span>
-<span class="normal"><a href="#__codelineno-0-2587">2587</a></span>
-<span class="normal"><a href="#__codelineno-0-2588">2588</a></span>
-<span class="normal"><a href="#__codelineno-0-2589">2589</a></span>
-<span class="normal"><a href="#__codelineno-0-2590">2590</a></span>
-<span class="normal"><a href="#__codelineno-0-2591">2591</a></span>
-<span class="normal"><a href="#__codelineno-0-2592">2592</a></span>
-<span class="normal"><a href="#__codelineno-0-2593">2593</a></span>
-<span class="normal"><a href="#__codelineno-0-2594">2594</a></span>
-<span class="normal"><a href="#__codelineno-0-2595">2595</a></span>
-<span class="normal"><a href="#__codelineno-0-2596">2596</a></span>
-<span class="normal"><a href="#__codelineno-0-2597">2597</a></span>
-<span class="normal"><a href="#__codelineno-0-2598">2598</a></span>
-<span class="normal"><a href="#__codelineno-0-2599">2599</a></span>
-<span class="normal"><a href="#__codelineno-0-2600">2600</a></span>
-<span class="normal"><a href="#__codelineno-0-2601">2601</a></span>
-<span class="normal"><a href="#__codelineno-0-2602">2602</a></span>
-<span class="normal"><a href="#__codelineno-0-2603">2603</a></span>
-<span class="normal"><a href="#__codelineno-0-2604">2604</a></span>
-<span class="normal"><a href="#__codelineno-0-2605">2605</a></span>
-<span class="normal"><a href="#__codelineno-0-2606">2606</a></span>
-<span class="normal"><a href="#__codelineno-0-2607">2607</a></span>
-<span class="normal"><a href="#__codelineno-0-2608">2608</a></span>
-<span class="normal"><a href="#__codelineno-0-2609">2609</a></span>
-<span class="normal"><a href="#__codelineno-0-2610">2610</a></span>
-<span class="normal"><a href="#__codelineno-0-2611">2611</a></span>
-<span class="normal"><a href="#__codelineno-0-2612">2612</a></span>
-<span class="normal"><a href="#__codelineno-0-2613">2613</a></span>
-<span class="normal"><a href="#__codelineno-0-2614">2614</a></span>
-<span class="normal"><a href="#__codelineno-0-2615">2615</a></span>
-<span class="normal"><a href="#__codelineno-0-2616">2616</a></span>
-<span class="normal"><a href="#__codelineno-0-2617">2617</a></span>
-<span class="normal"><a href="#__codelineno-0-2618">2618</a></span>
-<span class="normal"><a href="#__codelineno-0-2619">2619</a></span>
-<span class="normal"><a href="#__codelineno-0-2620">2620</a></span>
-<span class="normal"><a href="#__codelineno-0-2621">2621</a></span>
-<span class="normal"><a href="#__codelineno-0-2622">2622</a></span>
-<span class="normal"><a href="#__codelineno-0-2623">2623</a></span>
-<span class="normal"><a href="#__codelineno-0-2624">2624</a></span>
-<span class="normal"><a href="#__codelineno-0-2625">2625</a></span>
-<span class="normal"><a href="#__codelineno-0-2626">2626</a></span>
-<span class="normal"><a href="#__codelineno-0-2627">2627</a></span>
-<span class="normal"><a href="#__codelineno-0-2628">2628</a></span>
-<span class="normal"><a href="#__codelineno-0-2629">2629</a></span>
-<span class="normal"><a href="#__codelineno-0-2630">2630</a></span>
-<span class="normal"><a href="#__codelineno-0-2631">2631</a></span>
-<span class="normal"><a href="#__codelineno-0-2632">2632</a></span>
-<span class="normal"><a href="#__codelineno-0-2633">2633</a></span>
-<span class="normal"><a href="#__codelineno-0-2634">2634</a></span>
-<span class="normal"><a href="#__codelineno-0-2635">2635</a></span>
-<span class="normal"><a href="#__codelineno-0-2636">2636</a></span>
-<span class="normal"><a href="#__codelineno-0-2637">2637</a></span>
-<span class="normal"><a href="#__codelineno-0-2638">2638</a></span>
-<span class="normal"><a href="#__codelineno-0-2639">2639</a></span>
-<span class="normal"><a href="#__codelineno-0-2640">2640</a></span>
-<span class="normal"><a href="#__codelineno-0-2641">2641</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-2514" name="__codelineno-0-2514"></a><span class="k">def</span><span class="w"> </span><span class="nf">smart_analyze_design</span><span class="p">(</span>
-<a id="__codelineno-0-2515" name="__codelineno-0-2515"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-0-2516" name="__codelineno-0-2516"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-2517" name="__codelineno-0-2517"></a>    <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2518" name="__codelineno-0-2518"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2519" name="__codelineno-0-2519"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2520" name="__codelineno-0-2520"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2521" name="__codelineno-0-2521"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2522" name="__codelineno-0-2522"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2523" name="__codelineno-0-2523"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2524" name="__codelineno-0-2524"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-0-2525" name="__codelineno-0-2525"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
-<a id="__codelineno-0-2526" name="__codelineno-0-2526"></a>    <span class="n">asv_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
-<a id="__codelineno-0-2527" name="__codelineno-0-2527"></a>    <span class="n">include_cost</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-2528" name="__codelineno-0-2528"></a>    <span class="n">include_suggestions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-2529" name="__codelineno-0-2529"></a>    <span class="n">include_sensitivity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-2530" name="__codelineno-0-2530"></a>    <span class="n">include_constructability</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-2531" name="__codelineno-0-2531"></a>    <span class="n">cost_profile</span><span class="p">:</span> <span class="n">CostProfile</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-2532" name="__codelineno-0-2532"></a>    <span class="n">weights</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-2533" name="__codelineno-0-2533"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SmartAnalysisResult</span><span class="p">:</span>
-<a id="__codelineno-0-2534" name="__codelineno-0-2534"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Unified smart design analysis dashboard.</span>
-<a id="__codelineno-0-2535" name="__codelineno-0-2535"></a>
-<a id="__codelineno-0-2536" name="__codelineno-0-2536"></a><span class="sd">    Combines cost optimization, design suggestions, sensitivity analysis,</span>
-<a id="__codelineno-0-2537" name="__codelineno-0-2537"></a><span class="sd">    and constructability assessment into a comprehensive dashboard.</span>
-<a id="__codelineno-0-2538" name="__codelineno-0-2538"></a>
-<a id="__codelineno-0-2539" name="__codelineno-0-2539"></a><span class="sd">    This function runs the full design pipeline internally to get complete</span>
-<a id="__codelineno-0-2540" name="__codelineno-0-2540"></a><span class="sd">    design context, then performs all smart analyses.</span>
-<a id="__codelineno-0-2541" name="__codelineno-0-2541"></a>
-<a id="__codelineno-0-2542" name="__codelineno-0-2542"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-2543" name="__codelineno-0-2543"></a><span class="sd">        units: Units label (must be &quot;IS456&quot;).</span>
-<a id="__codelineno-0-2544" name="__codelineno-0-2544"></a><span class="sd">        span_mm: Beam span (mm).</span>
-<a id="__codelineno-0-2545" name="__codelineno-0-2545"></a><span class="sd">        mu_knm: Factored bending moment (kN·m).</span>
-<a id="__codelineno-0-2546" name="__codelineno-0-2546"></a><span class="sd">        vu_kn: Factored shear (kN).</span>
-<a id="__codelineno-0-2547" name="__codelineno-0-2547"></a><span class="sd">        b_mm: Beam width (mm).</span>
-<a id="__codelineno-0-2548" name="__codelineno-0-2548"></a><span class="sd">        D_mm: Overall depth (mm).</span>
-<a id="__codelineno-0-2549" name="__codelineno-0-2549"></a><span class="sd">        d_mm: Effective depth (mm).</span>
-<a id="__codelineno-0-2550" name="__codelineno-0-2550"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
-<a id="__codelineno-0-2551" name="__codelineno-0-2551"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
-<a id="__codelineno-0-2552" name="__codelineno-0-2552"></a><span class="sd">        d_dash_mm: Compression steel depth (mm, default: 50).</span>
-<a id="__codelineno-0-2553" name="__codelineno-0-2553"></a><span class="sd">        asv_mm2: Stirrup area (mm², default: 100).</span>
-<a id="__codelineno-0-2554" name="__codelineno-0-2554"></a><span class="sd">        include_cost: Include cost optimization (default: True).</span>
-<a id="__codelineno-0-2555" name="__codelineno-0-2555"></a><span class="sd">        include_suggestions: Include design suggestions (default: True).</span>
-<a id="__codelineno-0-2556" name="__codelineno-0-2556"></a><span class="sd">        include_sensitivity: Include sensitivity analysis (default: True).</span>
-<a id="__codelineno-0-2557" name="__codelineno-0-2557"></a><span class="sd">        include_constructability: Include constructability (default: True).</span>
-<a id="__codelineno-0-2558" name="__codelineno-0-2558"></a><span class="sd">        cost_profile: Custom cost profile (optional).</span>
-<a id="__codelineno-0-2559" name="__codelineno-0-2559"></a><span class="sd">        weights: Custom weights for overall score (optional).</span>
-<a id="__codelineno-0-2560" name="__codelineno-0-2560"></a>
-<a id="__codelineno-0-2561" name="__codelineno-0-2561"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-2562" name="__codelineno-0-2562"></a><span class="sd">        SmartAnalysisResult with complete dashboard data.</span>
-<a id="__codelineno-0-2563" name="__codelineno-0-2563"></a><span class="sd">        Use .to_dict(), .to_json(), or .to_text() for different formats.</span>
-<a id="__codelineno-0-2564" name="__codelineno-0-2564"></a>
-<a id="__codelineno-0-2565" name="__codelineno-0-2565"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-2566" name="__codelineno-0-2566"></a><span class="sd">        ValueError: If units is not IS456 or design fails.</span>
-<a id="__codelineno-0-2567" name="__codelineno-0-2567"></a>
-<a id="__codelineno-0-2568" name="__codelineno-0-2568"></a><span class="sd">    Example:</span>
-<a id="__codelineno-0-2569" name="__codelineno-0-2569"></a><span class="sd">        &gt;&gt;&gt; result = smart_analyze_design(</span>
-<a id="__codelineno-0-2570" name="__codelineno-0-2570"></a><span class="sd">        ...     units=&quot;IS456&quot;,</span>
-<a id="__codelineno-0-2571" name="__codelineno-0-2571"></a><span class="sd">        ...     span_mm=5000,</span>
-<a id="__codelineno-0-2572" name="__codelineno-0-2572"></a><span class="sd">        ...     mu_knm=120,</span>
-<a id="__codelineno-0-2573" name="__codelineno-0-2573"></a><span class="sd">        ...     vu_kn=85,</span>
-<a id="__codelineno-0-2574" name="__codelineno-0-2574"></a><span class="sd">        ...     b_mm=300,</span>
-<a id="__codelineno-0-2575" name="__codelineno-0-2575"></a><span class="sd">        ...     D_mm=500,</span>
-<a id="__codelineno-0-2576" name="__codelineno-0-2576"></a><span class="sd">        ...     d_mm=450,</span>
-<a id="__codelineno-0-2577" name="__codelineno-0-2577"></a><span class="sd">        ...     fck_nmm2=25,</span>
-<a id="__codelineno-0-2578" name="__codelineno-0-2578"></a><span class="sd">        ...     fy_nmm2=500,</span>
-<a id="__codelineno-0-2579" name="__codelineno-0-2579"></a><span class="sd">        ... )</span>
-<a id="__codelineno-0-2580" name="__codelineno-0-2580"></a><span class="sd">        &gt;&gt;&gt; print(result.summary())</span>
-<a id="__codelineno-0-2581" name="__codelineno-0-2581"></a><span class="sd">        &#39;Analysis Score: 78.5/100&#39;</span>
-<a id="__codelineno-0-2582" name="__codelineno-0-2582"></a><span class="sd">        &gt;&gt;&gt; print(result.to_json())  # JSON string</span>
-<a id="__codelineno-0-2583" name="__codelineno-0-2583"></a><span class="sd">        &gt;&gt;&gt; print(result.to_text())  # Formatted text</span>
-<a id="__codelineno-0-2584" name="__codelineno-0-2584"></a><span class="sd">        &gt;&gt;&gt; data = result.to_dict()  # Dictionary</span>
-<a id="__codelineno-0-2585" name="__codelineno-0-2585"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-2586" name="__codelineno-0-2586"></a>
-<a id="__codelineno-0-2587" name="__codelineno-0-2587"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.insights</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartDesigner</span>
-<a id="__codelineno-0-2588" name="__codelineno-0-2588"></a>
-<a id="__codelineno-0-2589" name="__codelineno-0-2589"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-<a id="__codelineno-0-2590" name="__codelineno-0-2590"></a>
-<a id="__codelineno-0-2591" name="__codelineno-0-2591"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
-<a id="__codelineno-0-2592" name="__codelineno-0-2592"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
-<a id="__codelineno-0-2593" name="__codelineno-0-2593"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-2594" name="__codelineno-0-2594"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-2595" name="__codelineno-0-2595"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2596" name="__codelineno-0-2596"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2597" name="__codelineno-0-2597"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2598" name="__codelineno-0-2598"></a>    <span class="p">)</span>
-<a id="__codelineno-0-2599" name="__codelineno-0-2599"></a>
-<a id="__codelineno-0-2600" name="__codelineno-0-2600"></a>    <span class="c1"># Run full pipeline to get BeamDesignOutput</span>
-<a id="__codelineno-0-2601" name="__codelineno-0-2601"></a>    <span class="n">pipeline_result</span> <span class="o">=</span> <span class="n">beam_pipeline</span><span class="o">.</span><span class="n">design_single_beam</span><span class="p">(</span>
-<a id="__codelineno-0-2602" name="__codelineno-0-2602"></a>        <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
-<a id="__codelineno-0-2603" name="__codelineno-0-2603"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2604" name="__codelineno-0-2604"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2605" name="__codelineno-0-2605"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2606" name="__codelineno-0-2606"></a>        <span class="n">cover_mm</span><span class="o">=</span><span class="n">D_mm</span> <span class="o">-</span> <span class="n">d_mm</span><span class="p">,</span>  <span class="c1"># Calculate cover from D and d</span>
-<a id="__codelineno-0-2607" name="__codelineno-0-2607"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-2608" name="__codelineno-0-2608"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
-<a id="__codelineno-0-2609" name="__codelineno-0-2609"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
-<a id="__codelineno-0-2610" name="__codelineno-0-2610"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
-<a id="__codelineno-0-2611" name="__codelineno-0-2611"></a>        <span class="n">beam_id</span><span class="o">=</span><span class="s2">&quot;smart-analysis&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-2612" name="__codelineno-0-2612"></a>        <span class="n">story</span><span class="o">=</span><span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-2613" name="__codelineno-0-2613"></a>        <span class="n">span_mm</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2614" name="__codelineno-0-2614"></a>        <span class="n">d_dash_mm</span><span class="o">=</span><span class="n">d_dash_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2615" name="__codelineno-0-2615"></a>        <span class="n">asv_mm2</span><span class="o">=</span><span class="n">asv_mm2</span><span class="p">,</span>
-<a id="__codelineno-0-2616" name="__codelineno-0-2616"></a>    <span class="p">)</span>
-<a id="__codelineno-0-2617" name="__codelineno-0-2617"></a>
-<a id="__codelineno-0-2618" name="__codelineno-0-2618"></a>    <span class="c1"># Run smart analysis</span>
-<a id="__codelineno-0-2619" name="__codelineno-0-2619"></a>    <span class="n">dashboard</span> <span class="o">=</span> <span class="n">SmartDesigner</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span>
-<a id="__codelineno-0-2620" name="__codelineno-0-2620"></a>        <span class="n">design</span><span class="o">=</span><span class="n">pipeline_result</span><span class="p">,</span>
-<a id="__codelineno-0-2621" name="__codelineno-0-2621"></a>        <span class="n">span_mm</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
-<a id="__codelineno-0-2622" name="__codelineno-0-2622"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
-<a id="__codelineno-0-2623" name="__codelineno-0-2623"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
-<a id="__codelineno-0-2624" name="__codelineno-0-2624"></a>        <span class="n">include_cost</span><span class="o">=</span><span class="n">include_cost</span><span class="p">,</span>
-<a id="__codelineno-0-2625" name="__codelineno-0-2625"></a>        <span class="n">include_suggestions</span><span class="o">=</span><span class="n">include_suggestions</span><span class="p">,</span>
-<a id="__codelineno-0-2626" name="__codelineno-0-2626"></a>        <span class="n">include_sensitivity</span><span class="o">=</span><span class="n">include_sensitivity</span><span class="p">,</span>
-<a id="__codelineno-0-2627" name="__codelineno-0-2627"></a>        <span class="n">include_constructability</span><span class="o">=</span><span class="n">include_constructability</span><span class="p">,</span>
-<a id="__codelineno-0-2628" name="__codelineno-0-2628"></a>        <span class="n">cost_profile</span><span class="o">=</span><span class="n">cost_profile</span><span class="p">,</span>
-<a id="__codelineno-0-2629" name="__codelineno-0-2629"></a>        <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
-<a id="__codelineno-0-2630" name="__codelineno-0-2630"></a>    <span class="p">)</span>
-<a id="__codelineno-0-2631" name="__codelineno-0-2631"></a>
-<a id="__codelineno-0-2632" name="__codelineno-0-2632"></a>    <span class="c1"># Convert dashboard to SmartAnalysisResult</span>
-<a id="__codelineno-0-2633" name="__codelineno-0-2633"></a>    <span class="n">dashboard_dict</span> <span class="o">=</span> <span class="n">dashboard</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-<a id="__codelineno-0-2634" name="__codelineno-0-2634"></a>    <span class="k">return</span> <span class="n">SmartAnalysisResult</span><span class="p">(</span>
-<a id="__codelineno-0-2635" name="__codelineno-0-2635"></a>        <span class="n">summary_data</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="p">{}),</span>
-<a id="__codelineno-0-2636" name="__codelineno-0-2636"></a>        <span class="n">metadata</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">{}),</span>
-<a id="__codelineno-0-2637" name="__codelineno-0-2637"></a>        <span class="n">cost</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cost&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-2638" name="__codelineno-0-2638"></a>        <span class="n">suggestions</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suggestions&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-2639" name="__codelineno-0-2639"></a>        <span class="n">sensitivity</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sensitivity&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-2640" name="__codelineno-0-2640"></a>        <span class="n">constructability</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;constructability&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-2641" name="__codelineno-0-2641"></a>    <span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-3069">3069</a></span>
+<span class="normal"><a href="#__codelineno-0-3070">3070</a></span>
+<span class="normal"><a href="#__codelineno-0-3071">3071</a></span>
+<span class="normal"><a href="#__codelineno-0-3072">3072</a></span>
+<span class="normal"><a href="#__codelineno-0-3073">3073</a></span>
+<span class="normal"><a href="#__codelineno-0-3074">3074</a></span>
+<span class="normal"><a href="#__codelineno-0-3075">3075</a></span>
+<span class="normal"><a href="#__codelineno-0-3076">3076</a></span>
+<span class="normal"><a href="#__codelineno-0-3077">3077</a></span>
+<span class="normal"><a href="#__codelineno-0-3078">3078</a></span>
+<span class="normal"><a href="#__codelineno-0-3079">3079</a></span>
+<span class="normal"><a href="#__codelineno-0-3080">3080</a></span>
+<span class="normal"><a href="#__codelineno-0-3081">3081</a></span>
+<span class="normal"><a href="#__codelineno-0-3082">3082</a></span>
+<span class="normal"><a href="#__codelineno-0-3083">3083</a></span>
+<span class="normal"><a href="#__codelineno-0-3084">3084</a></span>
+<span class="normal"><a href="#__codelineno-0-3085">3085</a></span>
+<span class="normal"><a href="#__codelineno-0-3086">3086</a></span>
+<span class="normal"><a href="#__codelineno-0-3087">3087</a></span>
+<span class="normal"><a href="#__codelineno-0-3088">3088</a></span>
+<span class="normal"><a href="#__codelineno-0-3089">3089</a></span>
+<span class="normal"><a href="#__codelineno-0-3090">3090</a></span>
+<span class="normal"><a href="#__codelineno-0-3091">3091</a></span>
+<span class="normal"><a href="#__codelineno-0-3092">3092</a></span>
+<span class="normal"><a href="#__codelineno-0-3093">3093</a></span>
+<span class="normal"><a href="#__codelineno-0-3094">3094</a></span>
+<span class="normal"><a href="#__codelineno-0-3095">3095</a></span>
+<span class="normal"><a href="#__codelineno-0-3096">3096</a></span>
+<span class="normal"><a href="#__codelineno-0-3097">3097</a></span>
+<span class="normal"><a href="#__codelineno-0-3098">3098</a></span>
+<span class="normal"><a href="#__codelineno-0-3099">3099</a></span>
+<span class="normal"><a href="#__codelineno-0-3100">3100</a></span>
+<span class="normal"><a href="#__codelineno-0-3101">3101</a></span>
+<span class="normal"><a href="#__codelineno-0-3102">3102</a></span>
+<span class="normal"><a href="#__codelineno-0-3103">3103</a></span>
+<span class="normal"><a href="#__codelineno-0-3104">3104</a></span>
+<span class="normal"><a href="#__codelineno-0-3105">3105</a></span>
+<span class="normal"><a href="#__codelineno-0-3106">3106</a></span>
+<span class="normal"><a href="#__codelineno-0-3107">3107</a></span>
+<span class="normal"><a href="#__codelineno-0-3108">3108</a></span>
+<span class="normal"><a href="#__codelineno-0-3109">3109</a></span>
+<span class="normal"><a href="#__codelineno-0-3110">3110</a></span>
+<span class="normal"><a href="#__codelineno-0-3111">3111</a></span>
+<span class="normal"><a href="#__codelineno-0-3112">3112</a></span>
+<span class="normal"><a href="#__codelineno-0-3113">3113</a></span>
+<span class="normal"><a href="#__codelineno-0-3114">3114</a></span>
+<span class="normal"><a href="#__codelineno-0-3115">3115</a></span>
+<span class="normal"><a href="#__codelineno-0-3116">3116</a></span>
+<span class="normal"><a href="#__codelineno-0-3117">3117</a></span>
+<span class="normal"><a href="#__codelineno-0-3118">3118</a></span>
+<span class="normal"><a href="#__codelineno-0-3119">3119</a></span>
+<span class="normal"><a href="#__codelineno-0-3120">3120</a></span>
+<span class="normal"><a href="#__codelineno-0-3121">3121</a></span>
+<span class="normal"><a href="#__codelineno-0-3122">3122</a></span>
+<span class="normal"><a href="#__codelineno-0-3123">3123</a></span>
+<span class="normal"><a href="#__codelineno-0-3124">3124</a></span>
+<span class="normal"><a href="#__codelineno-0-3125">3125</a></span>
+<span class="normal"><a href="#__codelineno-0-3126">3126</a></span>
+<span class="normal"><a href="#__codelineno-0-3127">3127</a></span>
+<span class="normal"><a href="#__codelineno-0-3128">3128</a></span>
+<span class="normal"><a href="#__codelineno-0-3129">3129</a></span>
+<span class="normal"><a href="#__codelineno-0-3130">3130</a></span>
+<span class="normal"><a href="#__codelineno-0-3131">3131</a></span>
+<span class="normal"><a href="#__codelineno-0-3132">3132</a></span>
+<span class="normal"><a href="#__codelineno-0-3133">3133</a></span>
+<span class="normal"><a href="#__codelineno-0-3134">3134</a></span>
+<span class="normal"><a href="#__codelineno-0-3135">3135</a></span>
+<span class="normal"><a href="#__codelineno-0-3136">3136</a></span>
+<span class="normal"><a href="#__codelineno-0-3137">3137</a></span>
+<span class="normal"><a href="#__codelineno-0-3138">3138</a></span>
+<span class="normal"><a href="#__codelineno-0-3139">3139</a></span>
+<span class="normal"><a href="#__codelineno-0-3140">3140</a></span>
+<span class="normal"><a href="#__codelineno-0-3141">3141</a></span>
+<span class="normal"><a href="#__codelineno-0-3142">3142</a></span>
+<span class="normal"><a href="#__codelineno-0-3143">3143</a></span>
+<span class="normal"><a href="#__codelineno-0-3144">3144</a></span>
+<span class="normal"><a href="#__codelineno-0-3145">3145</a></span>
+<span class="normal"><a href="#__codelineno-0-3146">3146</a></span>
+<span class="normal"><a href="#__codelineno-0-3147">3147</a></span>
+<span class="normal"><a href="#__codelineno-0-3148">3148</a></span>
+<span class="normal"><a href="#__codelineno-0-3149">3149</a></span>
+<span class="normal"><a href="#__codelineno-0-3150">3150</a></span>
+<span class="normal"><a href="#__codelineno-0-3151">3151</a></span>
+<span class="normal"><a href="#__codelineno-0-3152">3152</a></span>
+<span class="normal"><a href="#__codelineno-0-3153">3153</a></span>
+<span class="normal"><a href="#__codelineno-0-3154">3154</a></span>
+<span class="normal"><a href="#__codelineno-0-3155">3155</a></span>
+<span class="normal"><a href="#__codelineno-0-3156">3156</a></span>
+<span class="normal"><a href="#__codelineno-0-3157">3157</a></span>
+<span class="normal"><a href="#__codelineno-0-3158">3158</a></span>
+<span class="normal"><a href="#__codelineno-0-3159">3159</a></span>
+<span class="normal"><a href="#__codelineno-0-3160">3160</a></span>
+<span class="normal"><a href="#__codelineno-0-3161">3161</a></span>
+<span class="normal"><a href="#__codelineno-0-3162">3162</a></span>
+<span class="normal"><a href="#__codelineno-0-3163">3163</a></span>
+<span class="normal"><a href="#__codelineno-0-3164">3164</a></span>
+<span class="normal"><a href="#__codelineno-0-3165">3165</a></span>
+<span class="normal"><a href="#__codelineno-0-3166">3166</a></span>
+<span class="normal"><a href="#__codelineno-0-3167">3167</a></span>
+<span class="normal"><a href="#__codelineno-0-3168">3168</a></span>
+<span class="normal"><a href="#__codelineno-0-3169">3169</a></span>
+<span class="normal"><a href="#__codelineno-0-3170">3170</a></span>
+<span class="normal"><a href="#__codelineno-0-3171">3171</a></span>
+<span class="normal"><a href="#__codelineno-0-3172">3172</a></span>
+<span class="normal"><a href="#__codelineno-0-3173">3173</a></span>
+<span class="normal"><a href="#__codelineno-0-3174">3174</a></span>
+<span class="normal"><a href="#__codelineno-0-3175">3175</a></span>
+<span class="normal"><a href="#__codelineno-0-3176">3176</a></span>
+<span class="normal"><a href="#__codelineno-0-3177">3177</a></span>
+<span class="normal"><a href="#__codelineno-0-3178">3178</a></span>
+<span class="normal"><a href="#__codelineno-0-3179">3179</a></span>
+<span class="normal"><a href="#__codelineno-0-3180">3180</a></span>
+<span class="normal"><a href="#__codelineno-0-3181">3181</a></span>
+<span class="normal"><a href="#__codelineno-0-3182">3182</a></span>
+<span class="normal"><a href="#__codelineno-0-3183">3183</a></span>
+<span class="normal"><a href="#__codelineno-0-3184">3184</a></span>
+<span class="normal"><a href="#__codelineno-0-3185">3185</a></span>
+<span class="normal"><a href="#__codelineno-0-3186">3186</a></span>
+<span class="normal"><a href="#__codelineno-0-3187">3187</a></span>
+<span class="normal"><a href="#__codelineno-0-3188">3188</a></span>
+<span class="normal"><a href="#__codelineno-0-3189">3189</a></span>
+<span class="normal"><a href="#__codelineno-0-3190">3190</a></span>
+<span class="normal"><a href="#__codelineno-0-3191">3191</a></span>
+<span class="normal"><a href="#__codelineno-0-3192">3192</a></span>
+<span class="normal"><a href="#__codelineno-0-3193">3193</a></span>
+<span class="normal"><a href="#__codelineno-0-3194">3194</a></span>
+<span class="normal"><a href="#__codelineno-0-3195">3195</a></span>
+<span class="normal"><a href="#__codelineno-0-3196">3196</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-3069" name="__codelineno-0-3069"></a><span class="k">def</span><span class="w"> </span><span class="nf">smart_analyze_design</span><span class="p">(</span>
+<a id="__codelineno-0-3070" name="__codelineno-0-3070"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-3071" name="__codelineno-0-3071"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-3072" name="__codelineno-0-3072"></a>    <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3073" name="__codelineno-0-3073"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3074" name="__codelineno-0-3074"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3075" name="__codelineno-0-3075"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3076" name="__codelineno-0-3076"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3077" name="__codelineno-0-3077"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3078" name="__codelineno-0-3078"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3079" name="__codelineno-0-3079"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-0-3080" name="__codelineno-0-3080"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+<a id="__codelineno-0-3081" name="__codelineno-0-3081"></a>    <span class="n">asv_mm2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
+<a id="__codelineno-0-3082" name="__codelineno-0-3082"></a>    <span class="n">include_cost</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-3083" name="__codelineno-0-3083"></a>    <span class="n">include_suggestions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-3084" name="__codelineno-0-3084"></a>    <span class="n">include_sensitivity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-3085" name="__codelineno-0-3085"></a>    <span class="n">include_constructability</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-3086" name="__codelineno-0-3086"></a>    <span class="n">cost_profile</span><span class="p">:</span> <span class="n">CostProfile</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-3087" name="__codelineno-0-3087"></a>    <span class="n">weights</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-3088" name="__codelineno-0-3088"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SmartAnalysisResult</span><span class="p">:</span>
+<a id="__codelineno-0-3089" name="__codelineno-0-3089"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Unified smart design analysis dashboard.</span>
+<a id="__codelineno-0-3090" name="__codelineno-0-3090"></a>
+<a id="__codelineno-0-3091" name="__codelineno-0-3091"></a><span class="sd">    Combines cost optimization, design suggestions, sensitivity analysis,</span>
+<a id="__codelineno-0-3092" name="__codelineno-0-3092"></a><span class="sd">    and constructability assessment into a comprehensive dashboard.</span>
+<a id="__codelineno-0-3093" name="__codelineno-0-3093"></a>
+<a id="__codelineno-0-3094" name="__codelineno-0-3094"></a><span class="sd">    This function runs the full design pipeline internally to get complete</span>
+<a id="__codelineno-0-3095" name="__codelineno-0-3095"></a><span class="sd">    design context, then performs all smart analyses.</span>
+<a id="__codelineno-0-3096" name="__codelineno-0-3096"></a>
+<a id="__codelineno-0-3097" name="__codelineno-0-3097"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-3098" name="__codelineno-0-3098"></a><span class="sd">        units: Units label (must be &quot;IS456&quot;).</span>
+<a id="__codelineno-0-3099" name="__codelineno-0-3099"></a><span class="sd">        span_mm: Beam span (mm).</span>
+<a id="__codelineno-0-3100" name="__codelineno-0-3100"></a><span class="sd">        mu_knm: Factored bending moment (kN·m).</span>
+<a id="__codelineno-0-3101" name="__codelineno-0-3101"></a><span class="sd">        vu_kn: Factored shear (kN).</span>
+<a id="__codelineno-0-3102" name="__codelineno-0-3102"></a><span class="sd">        b_mm: Beam width (mm).</span>
+<a id="__codelineno-0-3103" name="__codelineno-0-3103"></a><span class="sd">        D_mm: Overall depth (mm).</span>
+<a id="__codelineno-0-3104" name="__codelineno-0-3104"></a><span class="sd">        d_mm: Effective depth (mm).</span>
+<a id="__codelineno-0-3105" name="__codelineno-0-3105"></a><span class="sd">        fck_nmm2: Concrete strength (N/mm²).</span>
+<a id="__codelineno-0-3106" name="__codelineno-0-3106"></a><span class="sd">        fy_nmm2: Steel yield strength (N/mm²).</span>
+<a id="__codelineno-0-3107" name="__codelineno-0-3107"></a><span class="sd">        d_dash_mm: Compression steel depth (mm, default: 50).</span>
+<a id="__codelineno-0-3108" name="__codelineno-0-3108"></a><span class="sd">        asv_mm2: Stirrup area (mm², default: 100).</span>
+<a id="__codelineno-0-3109" name="__codelineno-0-3109"></a><span class="sd">        include_cost: Include cost optimization (default: True).</span>
+<a id="__codelineno-0-3110" name="__codelineno-0-3110"></a><span class="sd">        include_suggestions: Include design suggestions (default: True).</span>
+<a id="__codelineno-0-3111" name="__codelineno-0-3111"></a><span class="sd">        include_sensitivity: Include sensitivity analysis (default: True).</span>
+<a id="__codelineno-0-3112" name="__codelineno-0-3112"></a><span class="sd">        include_constructability: Include constructability (default: True).</span>
+<a id="__codelineno-0-3113" name="__codelineno-0-3113"></a><span class="sd">        cost_profile: Custom cost profile (optional).</span>
+<a id="__codelineno-0-3114" name="__codelineno-0-3114"></a><span class="sd">        weights: Custom weights for overall score (optional).</span>
+<a id="__codelineno-0-3115" name="__codelineno-0-3115"></a>
+<a id="__codelineno-0-3116" name="__codelineno-0-3116"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-3117" name="__codelineno-0-3117"></a><span class="sd">        SmartAnalysisResult with complete dashboard data.</span>
+<a id="__codelineno-0-3118" name="__codelineno-0-3118"></a><span class="sd">        Use .to_dict(), .to_json(), or .to_text() for different formats.</span>
+<a id="__codelineno-0-3119" name="__codelineno-0-3119"></a>
+<a id="__codelineno-0-3120" name="__codelineno-0-3120"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-3121" name="__codelineno-0-3121"></a><span class="sd">        ValueError: If units is not IS456 or design fails.</span>
+<a id="__codelineno-0-3122" name="__codelineno-0-3122"></a>
+<a id="__codelineno-0-3123" name="__codelineno-0-3123"></a><span class="sd">    Example:</span>
+<a id="__codelineno-0-3124" name="__codelineno-0-3124"></a><span class="sd">        &gt;&gt;&gt; result = smart_analyze_design(</span>
+<a id="__codelineno-0-3125" name="__codelineno-0-3125"></a><span class="sd">        ...     units=&quot;IS456&quot;,</span>
+<a id="__codelineno-0-3126" name="__codelineno-0-3126"></a><span class="sd">        ...     span_mm=5000,</span>
+<a id="__codelineno-0-3127" name="__codelineno-0-3127"></a><span class="sd">        ...     mu_knm=120,</span>
+<a id="__codelineno-0-3128" name="__codelineno-0-3128"></a><span class="sd">        ...     vu_kn=85,</span>
+<a id="__codelineno-0-3129" name="__codelineno-0-3129"></a><span class="sd">        ...     b_mm=300,</span>
+<a id="__codelineno-0-3130" name="__codelineno-0-3130"></a><span class="sd">        ...     D_mm=500,</span>
+<a id="__codelineno-0-3131" name="__codelineno-0-3131"></a><span class="sd">        ...     d_mm=450,</span>
+<a id="__codelineno-0-3132" name="__codelineno-0-3132"></a><span class="sd">        ...     fck_nmm2=25,</span>
+<a id="__codelineno-0-3133" name="__codelineno-0-3133"></a><span class="sd">        ...     fy_nmm2=500,</span>
+<a id="__codelineno-0-3134" name="__codelineno-0-3134"></a><span class="sd">        ... )</span>
+<a id="__codelineno-0-3135" name="__codelineno-0-3135"></a><span class="sd">        &gt;&gt;&gt; print(result.summary())</span>
+<a id="__codelineno-0-3136" name="__codelineno-0-3136"></a><span class="sd">        &#39;Analysis Score: 78.5/100&#39;</span>
+<a id="__codelineno-0-3137" name="__codelineno-0-3137"></a><span class="sd">        &gt;&gt;&gt; print(result.to_json())  # JSON string</span>
+<a id="__codelineno-0-3138" name="__codelineno-0-3138"></a><span class="sd">        &gt;&gt;&gt; print(result.to_text())  # Formatted text</span>
+<a id="__codelineno-0-3139" name="__codelineno-0-3139"></a><span class="sd">        &gt;&gt;&gt; data = result.to_dict()  # Dictionary</span>
+<a id="__codelineno-0-3140" name="__codelineno-0-3140"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-3141" name="__codelineno-0-3141"></a>
+<a id="__codelineno-0-3142" name="__codelineno-0-3142"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.insights</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmartDesigner</span>
+<a id="__codelineno-0-3143" name="__codelineno-0-3143"></a>
+<a id="__codelineno-0-3144" name="__codelineno-0-3144"></a>    <span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+<a id="__codelineno-0-3145" name="__codelineno-0-3145"></a>
+<a id="__codelineno-0-3146" name="__codelineno-0-3146"></a>    <span class="c1"># Unit plausibility guards (catch common mistakes)</span>
+<a id="__codelineno-0-3147" name="__codelineno-0-3147"></a>    <span class="n">_validate_plausibility</span><span class="p">(</span>
+<a id="__codelineno-0-3148" name="__codelineno-0-3148"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-3149" name="__codelineno-0-3149"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-3150" name="__codelineno-0-3150"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3151" name="__codelineno-0-3151"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3152" name="__codelineno-0-3152"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3153" name="__codelineno-0-3153"></a>    <span class="p">)</span>
+<a id="__codelineno-0-3154" name="__codelineno-0-3154"></a>
+<a id="__codelineno-0-3155" name="__codelineno-0-3155"></a>    <span class="c1"># Run full pipeline to get BeamDesignOutput</span>
+<a id="__codelineno-0-3156" name="__codelineno-0-3156"></a>    <span class="n">pipeline_result</span> <span class="o">=</span> <span class="n">beam_pipeline</span><span class="o">.</span><span class="n">design_single_beam</span><span class="p">(</span>
+<a id="__codelineno-0-3157" name="__codelineno-0-3157"></a>        <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+<a id="__codelineno-0-3158" name="__codelineno-0-3158"></a>        <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3159" name="__codelineno-0-3159"></a>        <span class="n">D_mm</span><span class="o">=</span><span class="n">D_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3160" name="__codelineno-0-3160"></a>        <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3161" name="__codelineno-0-3161"></a>        <span class="n">cover_mm</span><span class="o">=</span><span class="n">D_mm</span> <span class="o">-</span> <span class="n">d_mm</span><span class="p">,</span>  <span class="c1"># Calculate cover from D and d</span>
+<a id="__codelineno-0-3162" name="__codelineno-0-3162"></a>        <span class="n">fck_nmm2</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-3163" name="__codelineno-0-3163"></a>        <span class="n">fy_nmm2</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span>
+<a id="__codelineno-0-3164" name="__codelineno-0-3164"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
+<a id="__codelineno-0-3165" name="__codelineno-0-3165"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
+<a id="__codelineno-0-3166" name="__codelineno-0-3166"></a>        <span class="n">beam_id</span><span class="o">=</span><span class="s2">&quot;smart-analysis&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3167" name="__codelineno-0-3167"></a>        <span class="n">story</span><span class="o">=</span><span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3168" name="__codelineno-0-3168"></a>        <span class="n">span_mm</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3169" name="__codelineno-0-3169"></a>        <span class="n">d_dash_mm</span><span class="o">=</span><span class="n">d_dash_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3170" name="__codelineno-0-3170"></a>        <span class="n">asv_mm2</span><span class="o">=</span><span class="n">asv_mm2</span><span class="p">,</span>
+<a id="__codelineno-0-3171" name="__codelineno-0-3171"></a>    <span class="p">)</span>
+<a id="__codelineno-0-3172" name="__codelineno-0-3172"></a>
+<a id="__codelineno-0-3173" name="__codelineno-0-3173"></a>    <span class="c1"># Run smart analysis</span>
+<a id="__codelineno-0-3174" name="__codelineno-0-3174"></a>    <span class="n">dashboard</span> <span class="o">=</span> <span class="n">SmartDesigner</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span>
+<a id="__codelineno-0-3175" name="__codelineno-0-3175"></a>        <span class="n">design</span><span class="o">=</span><span class="n">pipeline_result</span><span class="p">,</span>
+<a id="__codelineno-0-3176" name="__codelineno-0-3176"></a>        <span class="n">span_mm</span><span class="o">=</span><span class="n">span_mm</span><span class="p">,</span>
+<a id="__codelineno-0-3177" name="__codelineno-0-3177"></a>        <span class="n">mu_knm</span><span class="o">=</span><span class="n">mu_knm</span><span class="p">,</span>
+<a id="__codelineno-0-3178" name="__codelineno-0-3178"></a>        <span class="n">vu_kn</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span>
+<a id="__codelineno-0-3179" name="__codelineno-0-3179"></a>        <span class="n">include_cost</span><span class="o">=</span><span class="n">include_cost</span><span class="p">,</span>
+<a id="__codelineno-0-3180" name="__codelineno-0-3180"></a>        <span class="n">include_suggestions</span><span class="o">=</span><span class="n">include_suggestions</span><span class="p">,</span>
+<a id="__codelineno-0-3181" name="__codelineno-0-3181"></a>        <span class="n">include_sensitivity</span><span class="o">=</span><span class="n">include_sensitivity</span><span class="p">,</span>
+<a id="__codelineno-0-3182" name="__codelineno-0-3182"></a>        <span class="n">include_constructability</span><span class="o">=</span><span class="n">include_constructability</span><span class="p">,</span>
+<a id="__codelineno-0-3183" name="__codelineno-0-3183"></a>        <span class="n">cost_profile</span><span class="o">=</span><span class="n">cost_profile</span><span class="p">,</span>
+<a id="__codelineno-0-3184" name="__codelineno-0-3184"></a>        <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+<a id="__codelineno-0-3185" name="__codelineno-0-3185"></a>    <span class="p">)</span>
+<a id="__codelineno-0-3186" name="__codelineno-0-3186"></a>
+<a id="__codelineno-0-3187" name="__codelineno-0-3187"></a>    <span class="c1"># Convert dashboard to SmartAnalysisResult</span>
+<a id="__codelineno-0-3188" name="__codelineno-0-3188"></a>    <span class="n">dashboard_dict</span> <span class="o">=</span> <span class="n">dashboard</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<a id="__codelineno-0-3189" name="__codelineno-0-3189"></a>    <span class="k">return</span> <span class="n">SmartAnalysisResult</span><span class="p">(</span>
+<a id="__codelineno-0-3190" name="__codelineno-0-3190"></a>        <span class="n">summary_data</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+<a id="__codelineno-0-3191" name="__codelineno-0-3191"></a>        <span class="n">metadata</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+<a id="__codelineno-0-3192" name="__codelineno-0-3192"></a>        <span class="n">cost</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cost&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-3193" name="__codelineno-0-3193"></a>        <span class="n">suggestions</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suggestions&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-3194" name="__codelineno-0-3194"></a>        <span class="n">sensitivity</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sensitivity&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-3195" name="__codelineno-0-3195"></a>        <span class="n">constructability</span><span class="o">=</span><span class="n">dashboard_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;constructability&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-3196" name="__codelineno-0-3196"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

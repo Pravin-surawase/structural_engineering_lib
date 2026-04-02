@@ -1581,17 +1581,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recently-done" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recently Done
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#up-next" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1648,10 +1637,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-2-column-design-after-phase-15" class="md-nav__link">
+  <a href="#phase-2-column-design-done-1212" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: Column Design (After Phase 1.5)
+        Phase 2: Column Design ✅ Done (12/12)
       
     </span>
   </a>
@@ -1696,6 +1685,17 @@
     <span class="md-ellipsis">
       
         Agent Infrastructure (claw-code adaptation) ✅ Done (23/23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-workflow-hardening-task-900" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Workflow Hardening (TASK-900)
       
     </span>
   </a>
@@ -2083,11 +2083,22 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <td>TASK-800</td>
 <td>Agent evolver infrastructure (P3-P11 done, P12 burn-in)</td>
 <td>Copilot</td>
-<td>� Monitoring</td>
+<td>Monitoring (burn-in)</td>
+</tr>
+<tr>
+<td>TASK-900</td>
+<td>Git workflow hardening — all phases complete (13/14 tasks)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>## Recently Done</td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -2219,7 +2230,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <blockquote>
 <p>TASK-700–712 complete. Beam modules → <code>codes/is456/beam/</code>, ductile → <code>codes/is13920/</code>, backward-compat shims, enhanced shear (Cl 40.3). PRs #466, #467, #468. See <a href="../_archive/tasks-history/">tasks-history.md</a>.</p>
 </blockquote>
-<h3 id="phase-2-column-design-after-phase-15">Phase 2: Column Design (After Phase 1.5)<a class="headerlink" href="#phase-2-column-design-after-phase-15" title="Permanent link">&para;</a></h3>
+<h3 id="phase-2-column-design-done-1212">Phase 2: Column Design ✅ Done (12/12)<a class="headerlink" href="#phase-2-column-design-done-1212" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2302,15 +2313,15 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td><code>design_long_column</code></td>
 <td>Cl 39.7</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done — long_column.py (395 lines), braced/unbraced, k-factor, additional moments, 23 tests</td>
 </tr>
 <tr>
 <td>TASK-639</td>
 <td>Helical reinforcement</td>
 <td><code>check_helical_reinforcement</code></td>
-<td>Cl 39.8</td>
+<td>Cl 39.4</td>
 <td>🟢 Low</td>
-<td>📋</td>
+<td>✅ Done — helical.py (236 lines), volume ratio, pitch limits, 1.05 enhancement, 14 tests</td>
 </tr>
 <tr>
 <td>TASK-640</td>
@@ -2318,7 +2329,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td><code>design_column_is456</code></td>
 <td>All</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done — services/api.py (~300 lines), routes short→axial/uniaxial/biaxial, slender→long_column</td>
 </tr>
 <tr>
 <td>TASK-641</td>
@@ -2326,10 +2337,13 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td><code>POST /api/v1/design/column</code></td>
 <td>—</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done — 3 endpoints (long-column, helical-check, design/column), 6 Pydantic models</td>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>Phase 2 complete. 12 tasks, full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, orchestrator + FastAPI. Pre-work: <code>_calculate_puz</code> deduplication into <code>_common.py</code>. 37 new tests (23 long column + 14 helical). 3 orchestrator bug fixes. Full suite: 3,944 tests, 0 failures.</p>
+</blockquote>
 <h3 id="phase-3-footing-design-after-phase-2">Phase 3: Footing Design (After Phase 2)<a class="headerlink" href="#phase-3-footing-design-after-phase-2" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2421,6 +2435,123 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <blockquote>
 <p>TASK-850–872 complete. Agent registry, tool registry, prompt router, permission enforcement, hooks, parity dashboard, skill tiers. See <a href="../_archive/tasks-history/">tasks-history.md</a>.</p>
 </blockquote>
+<h3 id="git-workflow-hardening-task-900">Git Workflow Hardening (TASK-900)<a class="headerlink" href="#git-workflow-hardening-task-900" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Hardening the git automation infrastructure</strong> based on 9-script audit and TASK-640 root-cause analysis.
+Full plan: <a href="../_active/git-workflow-hardening-plan/">git-workflow-hardening-plan.md</a>
+WIP limit: 2 active at once.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Phase</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-900</td>
+<td>Fix safe_push.sh Step 6 divergence detection</td>
+<td>Phase 1</td>
+<td>🔴 Critical</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-901</td>
+<td>Block --amend on main/develop/release branches</td>
+<td>Phase 1</td>
+<td>🔴 Critical</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-902</td>
+<td>Route --push through safe_push.sh</td>
+<td>Phase 1</td>
+<td>🔴 Critical</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-903</td>
+<td>Wire or delete validate_git_state.sh</td>
+<td>Phase 1</td>
+<td>🟡 Medium</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-904</td>
+<td>Persist --finish state (.git/FINISH_STATE)</td>
+<td>Phase 2</td>
+<td>🔴 High</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-905</td>
+<td>Squash-merge divergence detection</td>
+<td>Phase 2</td>
+<td>🔴 High</td>
+<td>✅ Done (merged into TASK-900/906)</td>
+</tr>
+<tr>
+<td>TASK-906</td>
+<td>Actionable push error messages</td>
+<td>Phase 2</td>
+<td>🔴 High</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-907</td>
+<td>Log all bypass events</td>
+<td>Phase 3</td>
+<td>🟡 Medium</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-908</td>
+<td>bats-core tests for failure paths</td>
+<td>Phase 3</td>
+<td>🟡 Medium</td>
+<td>📋 (deferred — requires bats-core install)</td>
+</tr>
+<tr>
+<td>TASK-909</td>
+<td>Consolidate finish_task_pr.sh duplicates</td>
+<td>Phase 3</td>
+<td>🟡 Medium</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-910</td>
+<td>Script line budget in check_all.py</td>
+<td>Phase 3</td>
+<td>🟢 Low</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-911</td>
+<td>Task ID validation in create_task_pr.sh</td>
+<td>Phase 4</td>
+<td>🟢 Low</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-912</td>
+<td>Log rotation for git_workflow.log</td>
+<td>Phase 4</td>
+<td>🟢 Low</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-913</td>
+<td>Agent instruction updates (FORBIDDEN commands)</td>
+<td>Phase 4</td>
+<td>🟢 Low</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
