@@ -328,3 +328,152 @@ All Public API Maintenance tasks are complete.
 - **Active Branch**: main
 - **Tests**: Run `python scripts/update_test_stats.py` for current count
 - **Target**: v0.20.0 stable release (see `docs/planning/v0.20-stabilization-checklist.md`)
+
+## Archived from TASKS.md (2026-04-02)
+
+### Phase 0: Quality Infrastructure (TASK-600–610)
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-600 | Create function-quality-pipeline skill | ✅ Done |
+| TASK-601 | Create function-quality-gate prompt | ✅ Done |
+| TASK-602 | Update structural-math agent (12-point checklist, numerical rules) | ✅ Done |
+| TASK-603 | Update tester agent (benchmark, degenerate, monotonicity tests) | ✅ Done |
+| TASK-604 | Update reviewer agent (two-pass review, IS 456 quality checks) | ✅ Done |
+| TASK-605 | Update api-developer agent (endpoint quality, plausibility guards) | ✅ Done |
+| TASK-606 | Update structural-engineer agent (math verification protocol) | ✅ Done |
+| TASK-607 | Update governance agent (quality metrics tracking) | ✅ Done |
+| TASK-608 | Update doc-master agent (element doc checklist) | ✅ Done |
+| TASK-609 | Update library-expert agent (quality enforcement rules) | ✅ Done |
+| TASK-610 | Create blueprint v4.0 with quality pipeline | ✅ Done |
+
+### Phase 1: Foundation Cleanup (TASK-611–625)
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-611 | Create core/numerics.py — safe_divide(), approx_equal(), clamp() | ✅ Done |
+| TASK-612 | Extract shared math to codes/is456/common/ | ✅ Done |
+| TASK-613 | Hardcode safety factors in codes/is456/common/constants.py | ✅ Done |
+| TASK-614 | Create @deprecated decorator in core/deprecation.py | ✅ Done |
+| TASK-615 | Populate clauses.json with ~66 subclauses | ✅ Done |
+| TASK-616 | Add IS 13920 references to clauses.json | ✅ Done |
+| TASK-617 | Create test assertion helpers | ✅ Done |
+| TASK-618 | Top-level __init__.py exports | ✅ Done |
+| TASK-619 | Unit plausibility guards in services/api.py | ✅ Done |
+| TASK-620 | Stack trace sanitization in fastapi_app/main.py | ✅ Done |
+| TASK-621 | Add recovery field to DesignError | ✅ Done |
+| TASK-622 | Create check_function_quality.py script | ✅ Done |
+| TASK-623 | Create check_clause_coverage.py script | ✅ Done |
+| TASK-624 | Create check_new_element_completeness.py script | ✅ Done |
+| TASK-625 | Create maintenance playbook | ✅ Done |
+
+### Phase 1.5: IS 456 Beam Restructure (TASK-700–712)
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-700 | Create codes/is456/beam/ directory + __init__.py | ✅ PR #466 |
+| TASK-701 | Move flexure.py → beam/flexure.py | ✅ PR #466 |
+| TASK-702 | Move shear.py → beam/shear.py | ✅ PR #466 |
+| TASK-703 | Move detailing.py → beam/detailing.py | ✅ PR #466 |
+| TASK-704 | Move serviceability.py → beam/serviceability.py | ✅ PR #466 |
+| TASK-705 | Move torsion.py → beam/torsion.py | ✅ PR #466 |
+| TASK-706 | Update compliance.py imports | ✅ PR #466 |
+| TASK-707 | Update __init__.py re-exports | ✅ PR #466 |
+| TASK-708 | Generate backward-compat shims | ✅ PR #466 |
+| TASK-709 | Move ductile.py → codes/is13920/beam.py + shim | ✅ PR #467 |
+| TASK-710 | Fix upward import in detailing.py | ✅ PR #467 |
+| TASK-711 | Run full test suite — zero failures gate | ✅ PR #466 |
+| TASK-712 | Enhanced shear near supports (Cl 40.3) | ✅ PR #468 |
+
+### Agent Evolver Infrastructure (TASK-800.P3–P11, P.T)
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-800.P3 | Shared libraries | ✅ Done |
+| TASK-800.P4 | Session collector | ✅ Done |
+| TASK-800.P5 | Agent scorer (11 dimensions) | ✅ Done |
+| TASK-800.P6 | Drift detector | ✅ Done |
+| TASK-800.P7 | Compliance checker (8 rules) | ✅ Done |
+| TASK-800.P8 | Trend analysis (Mann-Kendall) | ✅ Done |
+| TASK-800.P9 | Instruction evolver | ✅ Done |
+| TASK-800.P10 | Paper data export | ✅ Done |
+| TASK-800.P2 | Agent-evolver definition + skill | ✅ Done |
+| TASK-800.P11 | run.sh evolve integration | ✅ Done |
+| TASK-800.T | Evolver unit tests | ✅ Done |
+
+### Agent Infrastructure — claw-code adaptation (TASK-850–872)
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-850 | Agent Registry JSON | ✅ Done |
+| TASK-851 | Unified Tool Registry | ✅ Done |
+| TASK-852 | Prompt Router | ✅ Done |
+| TASK-853 | run.sh integration | ✅ Done |
+| TASK-854 | Automation-map groups | ✅ Done |
+| TASK-855 | SESSION_LOG compaction | ✅ Done |
+| TASK-856 | Session state persistence | ✅ Done |
+| TASK-857 | Pipeline state tracking | ✅ Done |
+| TASK-858 | Fast session start | ✅ Done |
+| TASK-859 | Cost/token logging | ✅ Done |
+| TASK-860 | Tool permission enforcement | ✅ Done |
+| TASK-862 | Permission audit report | ✅ Done |
+| TASK-863 | Hook framework | ✅ Done |
+| TASK-864 | Hook implementations (6 hooks) | ✅ Done |
+| TASK-865 | CLI smoke tests (13 tests) | ✅ Done |
+| TASK-866 | Parity dashboard | ✅ Done |
+| TASK-868 | Config precedence validator | ✅ Done |
+| TASK-870 | Parallel pipeline stages | ✅ Done |
+| TASK-872 | Skill tier classification | ✅ Done |
+| TASK-861 | Trust gate initialization | ✅ Done |
+| TASK-867 | Snapshot regression tests | ✅ Done |
+| TASK-869 | Update all 15 agent files | ✅ Done |
+| TASK-871 | Update AGENTS.md/CLAUDE.md | ✅ Done |
+
+### v0.20–v0.21 Recently Done (archived 2026-04-02)
+
+| ID | Task | Status |
+|----|------|--------|
+| — | Release infrastructure overhaul | ✅ Done |
+| — | Session 107: Safety gates hardening | ✅ Done |
+| — | TopBar nav + ModeSelect quick links | ✅ Done |
+| TASK-518 | Torsion API + React | ✅ Done |
+| TASK-515 | Load Calculator | ✅ Done |
+| TASK-514 | PDF Export | ✅ Done |
+| — | Created WORKLOG.md | ✅ Done |
+| TASK-522 | BeamDetailPanel | ✅ Done |
+| TASK-523 | FloatingDock + BentoGrid Dashboard | ✅ Done |
+| TASK-524 | DesignView dynamic layout | ✅ Done |
+| TASK-526 | Cross-section annotations | ✅ Done |
+| TASK-525 | Smart HubPage | ✅ Done |
+| TASK-517 | Project BOQ | ✅ Done |
+| — | Bug fix: 3D/2D top bar mismatch | ✅ Done |
+| TASK-505 | React API integration tests (86 tests) | ✅ Done |
+| TASK-510 | React Batch design page | ✅ Done |
+| TASK-509 | Type annotations: Streamlit coverage | ✅ Done |
+| — | Phase 1+2 cleanup | ✅ Done |
+| TASK-502 | Code-split React bundle | ✅ Done |
+| TASK-501 | Fix check_all.py failures | ✅ Done |
+| TASK-508 | Split ai_workspace.py | ✅ Done |
+| TASK-503 | Wire REST fallback in DesignView | ✅ Done |
+| TASK-506 | React test infra: Vitest | ✅ Done |
+| TASK-507 | Fix arch violations | ✅ Done |
+| TASK-500 | Unified CLI + onboarding audit | ✅ Done |
+| TASK-499 | AI agent efficiency | ✅ Done |
+
+### Column Design — Phase 2 Recently Done (archived 2026-04-02)
+
+| ID | Task | IS 456 Clause | Status |
+|----|------|---------------|--------|
+| TASK-630 | Column types | — | ✅ Done |
+| TASK-631 | classify_column + min_eccentricity | Cl 25.1.2, 25.4 | ✅ Done |
+| TASK-632 | short_axial_capacity | Cl 39.3 | ✅ Done |
+| TASK-633 | Short column uniaxial | Cl 39.5 | ✅ Done |
+| TASK-634 | P-M interaction curve | Cl 39.5, Annex G | ✅ Done |
+| TASK-635 | Biaxial bending check | Cl 39.6 | ✅ Done |
+| TASK-636 | Effective length | Cl 25.2, PR #481 | ✅ Done |
+| TASK-637 | Additional moment | Cl 39.7.1 | ✅ Done |
+| TASK-621 | DesignError recovery field | — | ✅ Done |
+| TASK-622 | check_function_quality.py | — | ✅ Done |
+| TASK-623 | check_clause_coverage.py | — | ✅ Done |
+| TASK-624 | check_new_element_completeness.py | — | ✅ Done |
+| TASK-625 | maintenance-playbook.md | — | ✅ Done |
