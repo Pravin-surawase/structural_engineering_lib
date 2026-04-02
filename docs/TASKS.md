@@ -127,7 +127,7 @@
 
 > TASK-700–712 complete. Beam modules → `codes/is456/beam/`, ductile → `codes/is13920/`, backward-compat shims, enhanced shear (Cl 40.3). PRs #466, #467, #468. See [tasks-history.md](_archive/tasks-history.md).
 
-### Phase 2: Column Design (After Phase 1.5)
+### Phase 2: Column Design ✅ Done (12/12)
 
 | ID | Task | Function | IS 456 Clause | Priority | Status |
 |----|------|----------|---------------|----------|--------|
@@ -139,10 +139,12 @@
 | TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | ✅ Done |
 | TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | ✅ Done (PR #481) |
 | TASK-637 | Additional moment | `calculate_additional_moment` | Cl 39.7.1 | 🟡 Medium | ✅ Done |
-| TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | 📋 |
-| TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.8 | 🟢 Low | 📋 |
-| TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | 📋 |
-| TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | 📋 |
+| TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | ✅ Done — long_column.py (395 lines), braced/unbraced, k-factor, additional moments, 23 tests |
+| TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.4 | 🟢 Low | ✅ Done — helical.py (236 lines), volume ratio, pitch limits, 1.05 enhancement, 14 tests |
+| TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | ✅ Done — services/api.py (~300 lines), routes short→axial/uniaxial/biaxial, slender→long_column |
+| TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | ✅ Done — 3 endpoints (long-column, helical-check, design/column), 6 Pydantic models |
+
+> Phase 2 complete. 12 tasks, full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, orchestrator + FastAPI. Pre-work: `_calculate_puz` deduplication into `_common.py`. 37 new tests (23 long column + 14 helical). 3 orchestrator bug fixes. Full suite: 3,944 tests, 0 failures.
 
 ### Phase 3: Footing Design (After Phase 2)
 

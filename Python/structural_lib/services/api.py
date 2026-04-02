@@ -2803,13 +2803,14 @@ def design_column_is456(
                     Mu_kNm=Mux_design,
                     b_mm=b_mm,
                     D_mm=D_mm,
+                    le_mm=le_mm,
                     fck=fck,
                     fy=fy,
                     Asc_mm2=Asc_mm2,
                     d_prime_mm=d_prime_mm,
                 )
                 result["checks"]["uniaxial_x"] = uniaxial_result
-                result["is_safe"] = uniaxial_result.get("is_safe", False)
+                result["is_safe"] = uniaxial_result["ok"]
                 result["governing_check"] = "uniaxial_x"
             else:
                 # Y-axis bending dominant (swap dimensions)
@@ -2818,13 +2819,14 @@ def design_column_is456(
                     Mu_kNm=Muy_design,
                     b_mm=D_mm,  # Swap for y-axis bending
                     D_mm=b_mm,
+                    le_mm=le_mm,
                     fck=fck,
                     fy=fy,
                     Asc_mm2=Asc_mm2,
                     d_prime_mm=d_prime_mm,
                 )
                 result["checks"]["uniaxial_y"] = uniaxial_result
-                result["is_safe"] = uniaxial_result.get("is_safe", False)
+                result["is_safe"] = uniaxial_result["ok"]
                 result["governing_check"] = "uniaxial_y"
 
             result["clause_refs"].append("Cl. 39.5")
@@ -2862,10 +2864,10 @@ def design_column_is456(
         result["governing_check"] = "long_column"
 
         # Include additional moments in top-level result
-        result["Ma_x_kNm"] = long_result.get("Ma_x_kNm", 0.0)
-        result["Ma_y_kNm"] = long_result.get("Ma_y_kNm", 0.0)
-        result["Mux_design_kNm"] = long_result.get("Mx_design_kNm", 0.0)
-        result["Muy_design_kNm"] = long_result.get("My_design_kNm", 0.0)
+        result["Ma_x_kNm"] = long_result.get("Max_kNm", 0.0)
+        result["Ma_y_kNm"] = long_result.get("May_kNm", 0.0)
+        result["Mux_design_kNm"] = long_result.get("Mux_design_kNm", 0.0)
+        result["Muy_design_kNm"] = long_result.get("Muy_design_kNm", 0.0)
 
         # Aggregate warnings
         if long_result.get("warnings"):
