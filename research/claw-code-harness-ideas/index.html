@@ -2225,7 +2225,7 @@
 <p><strong>Source:</strong> <a href="https://github.com/instructkr/claw-code">instructkr/claw-code</a> — 114K stars, clean-room Python + Rust rewrite of an AI coding agent harness.</p>
 <p><strong>Analysis method:</strong> 5 parallel deep explorations (Rust crates, Python subsystems, CI/CD, schemas/types, reference data) + 1 infrastructure gap analysis against our codebase.</p>
 <h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
-<p>The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool definitions, 150+ commands, and 9 Rust crates, we identified <strong>25 actionable ideas</strong> organized into 7 categories. Our project is <strong>60-70% there</strong> on agent infrastructure — the biggest gaps are tool routing, permission enforcement, and session persistence.</p>
+<p>The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool definitions, 150+ commands, and 9 Rust crates, we identified <strong>25 actionable ideas</strong> organized into 7 categories. Our project is <strong>~90% there</strong> on agent infrastructure — remaining gaps are plugin architecture and bootstrap graph (low priority).</p>
 <hr />
 <h2 id="current-state-what-we-already-have-vs-whats-missing">Current State: What We Already Have vs. What's Missing<a class="headerlink" href="#current-state-what-we-already-have-vs-whats-missing" title="Permanent link">&para;</a></h2>
 <table>
@@ -2244,7 +2244,7 @@
 </tr>
 <tr>
 <td>Agent scoring (11 dimensions)</td>
-<td>✅ <code>agent_scorer.py</code></td>
+<td>✅ <code>agent_scorer.py</code> — 8 auto + 3 auto-overridable</td>
 <td>No equivalent (we're ahead)</td>
 </tr>
 <tr>
@@ -2274,47 +2274,47 @@
 </tr>
 <tr>
 <td>Tool registry</td>
-<td>❌ Missing</td>
+<td>✅ <code>tool_registry.py</code> — unified catalog + search</td>
 <td><code>tools.py</code> + 200+ tool snapshot</td>
 </tr>
 <tr>
 <td>Prompt routing</td>
-<td>❌ Missing</td>
+<td>✅ <code>prompt_router.py</code> — token scoring + suppression + combo rules</td>
 <td>Token-based scoring engine</td>
 </tr>
 <tr>
 <td>Permission context</td>
-<td>❌ Honor-system only</td>
+<td>✅ <code>tool_permissions.py</code> — 4-tier (ReadOnly/ReadOnlyTerminal/WorkspaceWrite/Danger) + terminal allowlists</td>
 <td><code>ToolPermissionContext</code> with deny lists</td>
 </tr>
 <tr>
 <td>Session persistence</td>
-<td>❌ Ephemeral only</td>
+<td>✅ <code>session_store.py</code> — JSON to <code>logs/sessions/</code></td>
 <td>JSON session store + transcripts</td>
 </tr>
 <tr>
 <td>Cost/token tracking</td>
-<td>❌ Missing</td>
+<td>✅ <code>agent_costs.jsonl</code> + session costs CLI</td>
 <td><code>CostTracker</code> + cost hooks</td>
 </tr>
 <tr>
 <td>Hooks pipeline</td>
-<td>❌ Missing</td>
+<td>✅ <code>hooks/hook_runner.py</code> — pre/post commit, file write, test</td>
 <td>Pre/post tool execution hooks</td>
 </tr>
 <tr>
 <td>Plugin system</td>
-<td>❌ Missing</td>
+<td>🟡 Partial — <code>skill_tiers.json</code> (Core/Specialist/Advanced)</td>
 <td>3-tier plugin architecture</td>
 </tr>
 <tr>
 <td>Bootstrap graph</td>
-<td>❌ Flat script</td>
+<td>❌ Flat script — low priority</td>
 <td>7-stage deterministic DAG</td>
 </tr>
 <tr>
 <td>LSP integration</td>
-<td>❌ Missing</td>
+<td>❌ Not planned — VS Code provides this natively</td>
 <td>Context enrichment for prompts</td>
 </tr>
 </tbody>
