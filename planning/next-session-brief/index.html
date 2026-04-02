@@ -1489,6 +1489,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Latest Handoff (auto)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-2026-04-02-phase-1-foundation-cleanup-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session: 2026-04-02 — Phase 1 Foundation Cleanup Complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1502,6 +1519,17 @@
   
     <nav class="md-nav" aria-label="What&#39;s Next">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Priorities
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#technical-debt" class="md-nav__link">
@@ -1582,16 +1610,15 @@
 <hr />
 <h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
 <!-- HANDOFF:START -->
+<h3 id="session-2026-04-02-phase-1-foundation-cleanup-complete">Session: 2026-04-02 — Phase 1 Foundation Cleanup Complete<a class="headerlink" href="#session-2026-04-02-phase-1-foundation-cleanup-complete" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Date: 2026-04-02</li>
-<li>Session: 5 agent infrastructure improvements implemented + reviewed</li>
-<li>Done:</li>
-<li>6 new IS 456 check endpoints (ductility, slenderness, anchorage, deflection, crack width, compliance) — 59 total routes</li>
-<li>ReadOnlyTerminal permission tier + terminal_allowlist for 4 agents</li>
-<li>3 scoring dimensions auto-populated (handoff_quality, regression_avoidance, code_quality)</li>
-<li>Router keyword discrimination: suppression rules, combo rules, updated keywords for 7 agents</li>
-<li>--status CLI for agent_evolve_instructions.py</li>
-<li>51 new tests for session_store.py + pipeline_state.py</li>
+<li>TASK-621: Added <code>recovery</code> field to DesignError (39 error codes with step-by-step fix text)</li>
+<li>TASK-622: Created check_function_quality.py (12-point AST-based IS 456 function checker, 667 lines)</li>
+<li>TASK-623: Created check_clause_coverage.py (IS 456 clause gap detection, 485 lines)</li>
+<li>TASK-624: Created check_new_element_completeness.py (7-layer element completeness matrix, 570 lines)</li>
+<li>TASK-625: Created docs/governance/maintenance-playbook.md (11-section governance playbook)</li>
+<li>Fixed: 4 agent permission level mismatches (security, structural-engineer, library-expert, reviewer → ReadOnlyTerminal)</li>
+<li>Phase 1 Foundation Cleanup: 15/15 tasks COMPLETE</li>
 <li>State: main branch, all tests passing</li>
 </ul>
 <!-- HANDOFF:END -->
@@ -1619,12 +1646,14 @@
 </table>
 <hr />
 <h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<h3 id="next-priorities">Next Priorities<a class="headerlink" href="#next-priorities" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Add P2 API endpoints</strong> — design_and_detail_beam_is456, design_from_input, get_library_version (extend /health/info)</li>
-<li><strong>Add routing test fixture</strong> — 10 sample prompts → expected agent mappings to validate router changes</li>
-<li><strong>TASK-638 (long column design)</strong> — <code>design_long_column</code> orchestrator</li>
-<li><strong>TASK-640 (design_column_is456 orchestrator)</strong> — combines all column functions</li>
-<li><strong>React UX remaining</strong> — TASK-527 (TopBar badges), TASK-528 (workflow breadcrumb)</li>
+<li><strong>TASK-638: Long column design</strong> (Cl 39.7 — design_long_column) — next column function</li>
+<li><strong>TASK-640: Column orchestrator</strong> (design_column_is456 — wraps all column functions)</li>
+<li><strong>TASK-641: Column FastAPI endpoint</strong> (POST /api/v1/design/column)</li>
+<li><strong>TASK-527: TopBar context badges + SettingsPanel</strong> (React UX)</li>
+<li><strong>TASK-519: Alternatives Panel — Pareto front</strong> (optimization)</li>
+<li><strong>Documentation: Regenerate folder indexes</strong> (Python/, fastapi_app/, react_app/ are 4-9 days stale)</li>
 </ol>
 <h3 id="technical-debt">Technical Debt<a class="headerlink" href="#technical-debt" title="Permanent link">&para;</a></h3>
 <ul>
