@@ -600,3 +600,215 @@ class AdditionalMomentResponse(BaseModel):
 
     clause_ref: str = Field(default="Cl. 39.7.1", description="IS 456 clause reference")
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+
+
+# =============================================================================
+# Long Column Design (Cl 39.7)
+# =============================================================================
+
+
+class LongColumnRequest(BaseModel):
+    """Request for long (slender) column design per IS 456 Cl 39.7."""
+
+    Pu_kN: float = Field(
+        ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
+    )
+    M1x_kNm: float = Field(
+        0.0, description="Smaller end moment about x (kNm)", examples=[30.0]
+    )
+    M2x_kNm: float = Field(
+        0.0, description="Larger end moment about x (kNm)", examples=[80.0]
+    )
+    M1y_kNm: float = Field(
+        0.0, description="Smaller end moment about y (kNm)", examples=[20.0]
+    )
+    M2y_kNm: float = Field(
+        0.0, description="Larger end moment about y (kNm)", examples=[60.0]
+    )
+    b_mm: float = Field(
+        ..., gt=0, le=2000, description="Column width (mm)", examples=[300.0]
+    )
+    D_mm: float = Field(
+        ..., gt=0, le=2000, description="Column depth (mm)", examples=[450.0]
+    )
+    lex_mm: float = Field(
+        ...,
+        gt=0,
+        le=100000,
+        description="Effective length about x (mm)",
+        examples=[6000.0],
+    )
+    ley_mm: float = Field(
+        ...,
+        gt=0,
+        le=100000,
+        description="Effective length about y (mm)",
+        examples=[4500.0],
+    )
+    fck: float = Field(
+        ..., gt=0, le=100, description="Concrete strength (N/mm²)", examples=[25.0]
+    )
+    fy: float = Field(
+        ..., gt=0, le=600, description="Steel yield strength (N/mm²)", examples=[415.0]
+    )
+    Asc_mm2: float = Field(
+        ..., gt=0, description="Total steel area (mm²)", examples=[2400.0]
+    )
+    d_prime_mm: float = Field(
+        ..., gt=0, description="Cover to steel centroid (mm)", examples=[50.0]
+    )
+    braced: bool = Field(True, description="True if column is braced against sway")
+
+
+class LongColumnResponse(BaseModel):
+    """Response for long column design."""
+
+    Pu_kN: float
+    Mux_design_kNm: float
+    Muy_design_kNm: float
+    is_safe: bool
+    classification_x: str
+    classification_y: str
+    is_slender_x: bool
+    is_slender_y: bool
+    eadd_x_mm: float
+    eadd_y_mm: float
+    Max_kNm: float
+    May_kNm: float
+    k: float
+    Max_reduced_kNm: float
+    May_reduced_kNm: float
+    interaction_ratio: float
+    governing_check: str
+    Puz_kN: float
+    Pb_kN: float
+    b_mm: float
+    D_mm: float
+    lex_mm: float
+    ley_mm: float
+    braced: bool
+    clause_ref: str = "Cl. 39.7"
+    warnings: list[str] = []
+
+
+# =============================================================================
+# Helical Reinforcement (Cl 39.4)
+# =============================================================================
+
+
+class HelicalCheckRequest(BaseModel):
+    """Request for helical reinforcement check per IS 456 Cl 39.4."""
+
+    D_mm: float = Field(
+        ..., gt=0, description="Column outer diameter (mm)", examples=[450.0]
+    )
+    D_core_mm: float = Field(
+        ..., gt=0, description="Core diameter inside helix (mm)", examples=[350.0]
+    )
+    fck: float = Field(
+        ..., gt=0, le=100, description="Concrete strength (N/mm²)", examples=[25.0]
+    )
+    fy: float = Field(
+        ..., gt=0, le=600, description="Steel yield strength (N/mm²)", examples=[415.0]
+    )
+    d_helix_mm: float = Field(
+        ..., gt=0, description="Helix bar diameter (mm)", examples=[8.0]
+    )
+    pitch_mm: float = Field(..., gt=0, description="Helix pitch (mm)", examples=[50.0])
+    Pu_axial_kN: float = Field(
+        ..., gt=0, description="Short column axial capacity (kN)", examples=[2000.0]
+    )
+
+
+class HelicalCheckResponse(BaseModel):
+    """Response for helical reinforcement check."""
+
+    is_adequate: bool
+    enhancement_factor: float
+    Pu_enhanced_kN: float
+    helical_ratio_provided: float
+    helical_ratio_required: float
+    pitch_mm: float
+    min_pitch_mm: float
+    max_pitch_mm: float
+    pitch_ok: bool
+    D_core_mm: float
+    clause_ref: str = "Cl. 39.4"
+    warnings: list[str] = []
+
+
+# =============================================================================
+# Column Design Orchestrator
+# =============================================================================
+
+
+class ColumnDesignRequest(BaseModel):
+    """Request for unified column design per IS 456."""
+
+    Pu_kN: float = Field(
+        ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
+    )
+    Mux_kNm: float = Field(
+        0.0, ge=0, description="Applied moment about x (kNm)", examples=[120.0]
+    )
+    Muy_kNm: float = Field(
+        0.0, ge=0, description="Applied moment about y (kNm)", examples=[80.0]
+    )
+    b_mm: float = Field(
+        ..., gt=0, le=2000, description="Column width (mm)", examples=[300.0]
+    )
+    D_mm: float = Field(
+        ..., gt=0, le=2000, description="Column depth (mm)", examples=[450.0]
+    )
+    l_mm: float = Field(
+        ..., gt=0, le=50000, description="Unsupported length (mm)", examples=[3500.0]
+    )
+    end_condition: str = Field(
+        "FIXED_FIXED",
+        description="End condition per Table 28",
+        examples=["FIXED_FIXED", "FIXED_HINGED"],
+    )
+    fck: float = Field(
+        25.0, gt=0, le=100, description="Concrete strength (N/mm²)", examples=[25.0]
+    )
+    fy: float = Field(
+        415.0,
+        gt=0,
+        le=600,
+        description="Steel yield strength (N/mm²)",
+        examples=[415.0],
+    )
+    Asc_mm2: float = Field(
+        ..., gt=0, description="Total steel area (mm²)", examples=[2400.0]
+    )
+    d_prime_mm: float = Field(
+        50.0, gt=0, description="Cover to steel centroid (mm)", examples=[50.0]
+    )
+    l_unsupported_mm: float | None = Field(
+        None,
+        description="Unsupported length (mm, defaults to l_mm)",
+        examples=[3500.0],
+    )
+    braced: bool = Field(True, description="Braced against sway")
+    M1x_kNm: float | None = Field(
+        None, description="Smaller end moment about x (for slender)", examples=[30.0]
+    )
+    M2x_kNm: float | None = Field(
+        None, description="Larger end moment about x (for slender)", examples=[80.0]
+    )
+    M1y_kNm: float | None = Field(
+        None, description="Smaller end moment about y (for slender)", examples=[20.0]
+    )
+    M2y_kNm: float | None = Field(
+        None, description="Larger end moment about y (for slender)", examples=[60.0]
+    )
+
+
+class ColumnDesignResponse(BaseModel):
+    """Response for unified column design."""
+
+    is_safe: bool
+    classification: str
+    governing_check: str
+    checks: dict
+    warnings: list[str] = []

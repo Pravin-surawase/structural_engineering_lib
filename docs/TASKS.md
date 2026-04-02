@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 — Phase 1 Foundation Cleanup complete (25/25), 5 agent infrastructure improvements, 6 IS 456 endpoints, ReadOnlyTerminal tier, 3 auto-scoring dimensions, router discrimination, --status CLI
+**Updated:** 2026-04-02 — TASKS.md cleanup: merged duplicate sections, archived 28 old items, collapsed done phases
 
 ---
 
@@ -85,29 +85,17 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | 🔄 In Progress |
+| TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | Monitoring (burn-in) |
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| TASK-621 | DesignError recovery field — step-by-step fix for 39 errors | Copilot | ✅ Done |
-| TASK-622 | check_function_quality.py — 12-point AST quality checker | Copilot | ✅ Done |
-| TASK-623 | check_clause_coverage.py — IS 456 clause gap detection | Copilot | ✅ Done |
-| TASK-624 | check_new_element_completeness.py — element completeness matrix | Copilot | ✅ Done |
-| TASK-625 | maintenance-playbook.md — governance playbook | Copilot | ✅ Done |
-| TASK-637 | Additional moment / slenderness effects (IS 456 Cl 39.7.1) — slenderness.py + AdditionalMomentResult + 24 tests + API + endpoint + 8 API tests | Copilot | ✅ Done |
-| TASK-642 | Five-point steel stress-strain curve (IS 456 Fig 23) — stress_blocks.py + uniaxial.py + 26 tests | Copilot | ✅ Done |
-| TASK-636 | Effective length per IS 456 Table 28 — axial.py + EndCondition enum + 69 tests + API + endpoint | Copilot | ✅ Done |
-| TASK-635 | Biaxial bending check (Cl 39.6) — biaxial.py + ColumnBiaxialResult + 84 tests + API + endpoint | Copilot | ✅ Done |
-| TASK-634 | P-M interaction curve (Cl 39.5) — core + API + FastAPI endpoint + 45 tests | Copilot | ✅ Done |
-| TASK-633 | Short column uniaxial (Cl 39.5) — uniaxial.py + 57 tests + API + endpoint | Copilot | ✅ Done |
-| TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Copilot | ✅ Done |
-| TASK-631 | classify_column (Cl 25.1.2) + min_eccentricity (Cl 25.4) | Copilot | ✅ Done |
-| TASK-632 | short_axial_capacity (Cl 39.3) + API + FastAPI + 75 tests | Copilot | ✅ Done |
-| TASK-800.P2-P11 | Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh integration | Copilot | ✅ Done |
-| TASK-525 | Smart HubPage replacing ModeSelectPage | Copilot | ✅ Done |
-| TASK-515 | Load Calculator (FastAPI + React) | Copilot | ✅ Done |
+| TASK-712 | Enhanced shear near supports (Cl 40.3) — shear.py + 14 tests + API endpoint (PR #468) | Copilot | ✅ Done |
+| TASK-709 | Move ductile.py → codes/is13920/beam.py + shim (PR #467) | Copilot | ✅ Done |
+| TASK-710 | Fix upward import in detailing.py (PR #467) | Copilot | ✅ Done |
+| TASK-642 | Five-point steel stress-strain curve (IS 456 Fig 23) — 26 tests | Copilot | ✅ Done |
+| TASK-800.P2-P11 | Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh | Copilot | ✅ Done |
 
 ## Up Next
 
@@ -127,61 +115,17 @@
 > See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) for full plan.
 > Use `/function-quality-pipeline` skill for every new function.
 
-### Phase 0: Quality Infrastructure ✅ Done
+### Phase 0: Quality Infrastructure ✅ Done (11/11)
 
-| ID | Task | Status |
-|----|------|--------|
-| TASK-600 | Create function-quality-pipeline skill | ✅ Done |
-| TASK-601 | Create function-quality-gate prompt | ✅ Done |
-| TASK-602 | Update structural-math agent (12-point checklist, numerical rules) | ✅ Done |
-| TASK-603 | Update tester agent (benchmark, degenerate, monotonicity tests) | ✅ Done |
-| TASK-604 | Update reviewer agent (two-pass review, IS 456 quality checks) | ✅ Done |
-| TASK-605 | Update api-developer agent (endpoint quality, plausibility guards) | ✅ Done |
-| TASK-606 | Update structural-engineer agent (math verification protocol) | ✅ Done |
-| TASK-607 | Update governance agent (quality metrics tracking) | ✅ Done |
-| TASK-608 | Update doc-master agent (element doc checklist) | ✅ Done |
-| TASK-609 | Update library-expert agent (quality enforcement rules) | ✅ Done |
-| TASK-610 | Create blueprint v4.0 with quality pipeline | ✅ Done |
+> TASK-600–610 complete. Function quality pipeline, agent updates, blueprint v4.0. See [tasks-history.md](_archive/tasks-history.md).
 
-### Phase 1: Foundation Cleanup (Before Column Work)
+### Phase 1: Foundation Cleanup ✅ Done (15/15)
 
-| ID | Task | Priority | Status |
-|----|------|----------|--------|
-| TASK-611 | Create `core/numerics.py` — safe_divide(), approx_equal(), clamp() | 🔴 P0 | ✅ Done |
-| TASK-612 | Extract shared math to `codes/is456/common/` (stress_blocks, reinforcement, minimums) | 🔴 P0 | ✅ Done |
-| TASK-613 | Hardcode safety factors in `codes/is456/common/constants.py` | 🔴 P0 | ✅ Done |
-| TASK-614 | Create `@deprecated` decorator in `core/deprecation.py` | 🔴 High | ✅ Done |
-| TASK-615 | Populate clauses.json with ~66 subclauses (Cl 24, 25, 31.6, 32-34, 39) | 🔴 High | ✅ Done |
-| TASK-616 | Add IS 13920 references to clauses.json (~15 entries) | 🔴 High | ✅ Done |
-| TASK-617 | Create test assertion helpers `tests/helpers/is456_assertions.py` | 🟡 Medium | ✅ Done |
-| TASK-618 | Top-level `__init__.py` exports for all public functions | 🟡 Medium | ✅ Done |
-| TASK-619 | Unit plausibility guards in `services/api.py` | 🟡 Medium | ✅ Done |
-| TASK-620 | Stack trace sanitization (security) in `fastapi_app/main.py` | 🟡 Medium | ✅ Done |
-| TASK-621 | Add `recovery` field to `DesignError` in `core/errors.py` | 🟡 Medium | ✅ Done |
-| TASK-622 | Create `check_function_quality.py` script (12-point checklist CI) | 🟡 Medium | ✅ Done |
-| TASK-623 | Create `check_clause_coverage.py` script (clause gap detection) | 🟡 Medium | ✅ Done |
-| TASK-624 | Create `check_new_element_completeness.py` script | 🟡 Medium | ✅ Done |
-| TASK-625 | Create maintenance playbook `docs/governance/maintenance-playbook.md` | 🟢 Low | ✅ Done |
+> TASK-611–625 complete. core/numerics.py, is456/common/, @deprecated decorator, clauses.json, plausibility guards, check scripts. See [tasks-history.md](_archive/tasks-history.md).
 
-### Phase 1.5: IS 456 Beam Restructure (v5 Phase 0)
+### Phase 1.5: IS 456 Beam Restructure ✅ Done (13/13)
 
-> Move existing beam modules into `codes/is456/beam/` subfolder. See [blueprint v5.0 §4](planning/library-expansion-blueprint-v5.md#4-phase-0--is-456-restructure).
-
-| ID | Task | Priority | Status |
-|----|------|----------|--------|
-| TASK-700 | Create `codes/is456/beam/` directory + `__init__.py` | 🔴 P0 | ✅ PR #466 |
-| TASK-701 | Move `flexure.py` → `beam/flexure.py` | 🔴 P0 | ✅ PR #466 |
-| TASK-702 | Move `shear.py` → `beam/shear.py` | 🔴 P0 | ✅ PR #466 |
-| TASK-703 | Move `detailing.py` → `beam/detailing.py` | 🔴 P0 | ✅ PR #466 |
-| TASK-704 | Move `serviceability.py` → `beam/serviceability.py` | 🔴 P0 | ✅ PR #466 |
-| TASK-705 | Move `torsion.py` → `beam/torsion.py` | 🔴 P0 | ✅ PR #466 |
-| TASK-706 | Update `compliance.py` imports: `from .beam import flexure, shear, serviceability` | 🔴 P0 | ✅ PR #466 |
-| TASK-707 | Update `codes/is456/__init__.py` — re-export beam modules for backward compat | 🔴 P0 | ✅ PR #466 |
-| TASK-708 | Generate backward-compat shims at old locations (5 files) | 🔴 P0 | ✅ PR #466 |
-| TASK-709 | Move `ductile.py` → `codes/is13920/beam.py` + shim | 🟡 Medium | ✅ Done (`32f49571`, PR #467) |
-| TASK-710 | Fix upward import in `detailing.py` line 152 (codes → visualization) | 🔴 P0 | ✅ Done (`32f49571`, PR #467) |
-| TASK-711 | Run full test suite — zero failures gate | 🔴 P0 | ✅ PR #466 |
-| TASK-712 | Implement enhanced shear near supports (Cl 40.3) — new function + 14 tests + API endpoint | 🔴 HIGH | ✅ Done (PR #468) |
+> TASK-700–712 complete. Beam modules → `codes/is456/beam/`, ductile → `codes/is13920/`, backward-compat shims, enhanced shear (Cl 40.3). PRs #466, #467, #468. See [tasks-history.md](_archive/tasks-history.md).
 
 ### Phase 2: Column Design (After Phase 1.5)
 
@@ -218,52 +162,15 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 
 ### Agent Evolver Infrastructure (TASK-800)
 
-> Self-evolving agent system. See [self-evolving-system.md](architecture/self-evolving-system.md) and [agent-evolver-plan.md.bak](_archive/2026-03/agent-evolver-plan-v1.md).
+> Self-evolving agent system. P3–P11 + tests complete. See [tasks-history.md](_archive/tasks-history.md).
 
-| ID | Task | Phase | Script | Status |
-|----|------|-------|--------|--------|
-| TASK-800.P3 | Shared libraries (_lib/agent_registry, scoring, agent_data) | P3 | `scripts/_lib/*.py` | ✅ Done (8808c16b) |
-| TASK-800.P4 | Session collector | P4 | `agent_session_collector.py` | ✅ Done (8808c16b) |
-| TASK-800.P5 | Agent scorer (11 dimensions) | P5 | `agent_scorer.py` | ✅ Done (d875dcfa) |
-| TASK-800.P6 | Drift detector (12 agents × rules) | P6 | `agent_drift_detector.py` | ✅ Done (d875dcfa) |
-| TASK-800.P7 | Compliance checker (8 rules) | P7 | `agent_compliance_checker.py` | ✅ Done (d875dcfa) |
-| TASK-800.P8 | Trend analysis (Mann-Kendall) | P8 | `agent_trends.py` | ✅ Done (d69c4a4f) |
-| TASK-800.P9 | Instruction evolver (SHA-256, security levels) | P9 | `agent_evolve_instructions.py` | ✅ Done (e0702346) |
-| TASK-800.P10 | Paper data export (CSV, bootstrap CIs) | P10 | `export_paper_data.py` | ✅ Done (d69c4a4f) |
-| TASK-800.P2 | Agent-evolver definition + skill | P2 | `agent-evolver.agent.md`, `SKILL.md` | ✅ Done |
-| TASK-800.P11 | run.sh evolve integration | P11 | `run.sh` | ✅ Done |
-| TASK-800.P12 | Burn-in validation (15-20 sessions) | P12 | — | 📋 Ongoing |
-| TASK-800.T | Evolver unit tests | Tests | — | ✅ Done (c1e0d222) |
+| ID | Task | Phase | Status |
+|----|------|-------|--------|
+| TASK-800.P12 | Burn-in validation (15-20 sessions) | P12 | 👀 Monitoring |
 
-### Agent Infrastructure (claw-code adaptation)
+### Agent Infrastructure (claw-code adaptation) ✅ Done (23/23)
 
-| # | Task ID | Feature | Script/File | Status |
-|---|---------|---------|-------------|--------|
-| 1 | TASK-850 | Agent Registry JSON | `agents/agent_registry.json` | ✅ Done |
-| 2 | TASK-851 | Unified Tool Registry | `scripts/tool_registry.py` | ✅ Done |
-| 3 | TASK-852 | Prompt Router | `scripts/prompt_router.py` | ✅ Done |
-| 4 | TASK-853 | run.sh integration (route, tools, pipeline) | `run.sh` | ✅ Done |
-| 5 | TASK-854 | Automation-map groups | `scripts/automation-map.json` | ✅ Done |
-| 6 | TASK-855 | SESSION_LOG compaction | `scripts/session.py compact` | ✅ Done |
-| 7 | TASK-856 | Session state persistence | `scripts/session_store.py` | ✅ Done |
-| 8 | TASK-857 | Pipeline state tracking | `scripts/pipeline_state.py` | ✅ Done |
-| 9 | TASK-858 | Fast session start (--fast) | `scripts/session.py start --fast` | ✅ Done |
-| 10 | TASK-859 | Cost/token logging | `scripts/session.py costs` | ✅ Done |
-| 11 | TASK-860 | Tool permission enforcement | `scripts/tool_permissions.py` | ✅ Done |
-| 12 | TASK-862 | Permission audit report | `scripts/audit_permissions.py` | ✅ Done |
-| 13 | TASK-863 | Hook framework | `scripts/hooks/` | ✅ Done |
-| 14 | TASK-864 | Hook implementations (6 hooks) | `scripts/hooks/pre_commit.py` etc. | ✅ Done |
-| 15 | TASK-865 | CLI smoke tests (13 tests) | `scripts/test_cli_smoke.py` | ✅ Done |
-| 16 | TASK-866 | Parity dashboard (4 dimensions) | `scripts/parity_dashboard.py` | ✅ Done |
-| 17 | TASK-868 | Config precedence validator | `scripts/config_precedence.py` | ✅ Done |
-| 18 | TASK-870 | Parallel pipeline stages | `scripts/pipeline_state.py` (updated) | ✅ Done |
-| 19 | TASK-872 | Skill tier classification | `scripts/skill_tiers.py` | ✅ Done |
-| 20 | TASK-861 | Trust gate initialization | ✅ Done |
-| 21 | TASK-867 | Snapshot regression tests | ✅ Done |
-| 22 | TASK-869 | Update all 15 agent files | ✅ Done |
-| 23 | TASK-871 | Update AGENTS.md/CLAUDE.md | ✅ Done |
-
-**Review (Session 4):** 4-agent parallel review completed. Security fixes: path traversal in session_store.py/pipeline_state.py, JSON error handling in tool_permissions.py. Created: `docs/architecture/config-precedence.md` (fixes 15 broken links), `.github/skills/skill_tiers.json`. Updated: `docs/research/claw-code-harness-ideas.md` with implementation status.
+> TASK-850–872 complete. Agent registry, tool registry, prompt router, permission enforcement, hooks, parity dashboard, skill tiers. See [tasks-history.md](_archive/tasks-history.md).
 
 ## Backlog
 
@@ -273,39 +180,6 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 | — | Wire BuildingEditor Cost tab (placeholder → real data) | 🟢 Low | Use `/optimization/cost-rates` |
 | — | 28 unit conversion warnings | 🟢 Low | Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
 | — | 287 legacy import warnings (Streamlit) | 🟢 Low | Won't fix — will go away when Streamlit is deprecated |
-
-## Recently Done
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| — | Release infrastructure overhaul — preflight, semver validation, CI tests, rollback, 37 tests | Copilot | ✅ Done |
-| — | Session 107: Safety gates hardening — FORBIDDEN commands in 5 files, CodeQL fix, ops role scoping | Copilot | ✅ Done |
-| — | TopBar nav + ModeSelect quick links (v0.20 wrap-up) | Copilot | ✅ Done |
-| TASK-518 | Torsion API + React — endpoint + hook + DesignView toggle + 3 API tests | Copilot | ✅ Done |
-| TASK-515 | Load Calculator — endpoint + useLoadAnalysis hook + MiniDiagram + 4 tests | Copilot | ✅ Done |
-| TASK-514 | PDF Export — export_pdf() + extend export router + PDF button + 4 export tests | Copilot | ✅ Done |
-| — | Created WORKLOG.md compact change log + updated agent-bootstrap | Copilot | ✅ Done |
-| TASK-522 | BeamDetailPanel + 3D rebar + redesign + edit rebar in BuildingEditorPage | Copilot | ✅ Done (`a242878`, `a5612b0`) |
-| TASK-523 | Activate FloatingDock + BentoGrid Dashboard | Copilot | ✅ Done (`a242878`) |
-| TASK-524 | DesignView dynamic layout + export dropdown | Copilot | ✅ Done (`a242878`) |
-| TASK-526 | Cross-section annotations + utilization color + ascRequired fix | Copilot | ✅ Done (`a242878`, `a5612b0`) |
-| TASK-525 | Smart HubPage replacing ModeSelectPage — quick actions + last session context | Copilot | ✅ Done |
-| TASK-517 | Project BOQ — services/boq.py + FastAPI endpoint + useProjectBOQ hook + DashboardPage | Copilot | ✅ Done |
-| — | Bug fix: 3D/2D top bar mismatch + utilization formula + BatchDesignResult.utilization_ratio | Copilot | ✅ Done (`a5612b0`) |
-| TASK-505 | React: API integration tests (86 tests, 12 routers, all pass) | Copilot | ✅ Done |
-| TASK-510 | React: Batch design page with SSE progress + `/batch` route | Copilot | ✅ Done (merged to main) |
-| TASK-511 | Compliance checker — **already exists** (useCodeChecks + DesignView panel) | — | ✅ Not needed |
-| TASK-512 | Cost optimizer — **already exists** (useRebarSuggestions + DesignView panel) | — | ✅ Not needed |
-| TASK-509 | Type annotations: Streamlit 100% coverage (19 files, PR #438) | Copilot | ✅ Done |
-| — | Phase 1+2 cleanup: delete stale files + Streamlit deprecation markers | Copilot | ✅ Done (`ec62ed0`) |
-| TASK-502 | Code-split React bundle: lazy routes + manual chunks (1,158→67 kB main) | Copilot | ✅ Done |
-| TASK-501 | Fix pre-existing check_all.py failures (19/28 → 25/28) | Copilot | ✅ Done (PR #437) |
-| TASK-508 | Split ai_workspace.py into 6 modules (5103→5314 lines, 7 files) | Copilot | ✅ Done (`b9b2733`) |
-| TASK-503 | Wire REST fallback in DesignView (WS disconnect → REST auto-design) | Copilot | ✅ Done (`cad5e24`) |
-| TASK-506 | React test infra: Vitest + 5 test suites (23 tests) | Copilot | ✅ Done (`ff3a937`) |
-| TASK-507 | Fix arch violations: stub imports in Streamlit + delete dead test | Copilot | ✅ Done (`0e6657e`) |
-| TASK-500 | Unified CLI + onboarding audit (run.sh, check_all.py, 28 checks) | Claude | ✅ Done (PR #436) |
-| TASK-499 | AI agent efficiency + git workflow improvements | Claude | ✅ Done (`a9bf35e`) |
 
 ## Archive
 

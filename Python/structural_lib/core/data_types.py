@@ -821,3 +821,153 @@ class AdditionalMomentResult:
             f"(Puz = {self.Puz_kN:.1f} kN, Pb = {self.Pb_kN:.1f} kN)"
         )
         return "\n".join(lines)
+
+
+@dataclass(frozen=True)
+class LongColumnResult:
+    """Result of long (slender) column design per IS 456 Cl 39.7.
+
+    For slender columns (le/D >= 12), IS 456 requires augmenting the
+    design moment with an additional moment Ma = Pu × eadd, reduced
+    by factor k. The final design moment is checked against the P-M
+    interaction envelope via biaxial or uniaxial check.
+
+    Attributes:
+        Pu_kN: Applied factored axial load (kN)
+        Mux_design_kNm: Final design moment about x (after augmentation) (kN·m)
+        Muy_design_kNm: Final design moment about y (after augmentation) (kN·m)
+        is_safe: True if design moments are within capacity
+        classification_x: Column classification per x-axis
+        classification_y: Column classification per y-axis
+        is_slender_x: True if le_x/D >= 12
+        is_slender_y: True if le_y/b >= 12
+        eadd_x_mm: Additional eccentricity about x-axis (mm)
+        eadd_y_mm: Additional eccentricity about y-axis (mm)
+        Max_kNm: Additional moment about x-axis (kN·m)
+        May_kNm: Additional moment about y-axis (kN·m)
+        k: k-factor reduction (Cl 39.7.1.1)
+        Max_reduced_kNm: k × Max_kNm (kN·m)
+        May_reduced_kNm: k × May_kNm (kN·m)
+        interaction_ratio: From biaxial or uniaxial check
+        governing_check: "biaxial" or "uniaxial_x" or "uniaxial_y"
+        Puz_kN: Pure axial crush capacity (kN)
+        Pb_kN: Balanced failure axial load (kN)
+        b_mm: Column width (mm)
+        D_mm: Column depth (mm)
+        lex_mm: Effective length about x-axis (mm)
+        ley_mm: Effective length about y-axis (mm)
+        braced: True if column is braced
+        clause_ref: IS 456 clause reference
+        warnings: Tuple of warning messages
+    """
+
+    Pu_kN: float
+    Mux_design_kNm: float
+    Muy_design_kNm: float
+    is_safe: bool
+    classification_x: ColumnClassification
+    classification_y: ColumnClassification
+    is_slender_x: bool
+    is_slender_y: bool
+    eadd_x_mm: float
+    eadd_y_mm: float
+    Max_kNm: float
+    May_kNm: float
+    k: float
+    Max_reduced_kNm: float
+    May_reduced_kNm: float
+    interaction_ratio: float
+    governing_check: str
+    Puz_kN: float
+    Pb_kN: float
+    b_mm: float
+    D_mm: float
+    lex_mm: float
+    ley_mm: float
+    braced: bool
+    clause_ref: str = "Cl. 39.7"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        result: dict = {}
+        for f in fields(self):
+            val = getattr(self, f.name)
+            if isinstance(val, ColumnClassification):
+                result[f.name] = val.name
+            elif isinstance(val, tuple):
+                result[f.name] = list(val)
+            else:
+                result[f.name] = val
+        return result
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        slender_axes = []
+        if self.is_slender_x:
+            slender_axes.append("x")
+        if self.is_slender_y:
+            slender_axes.append("y")
+        slender_str = "+".join(slender_axes) if slender_axes else "none"
+        return (
+            f"Long Column Check ({status}): "
+            f"Pu={self.Pu_kN:.1f}kN, "
+            f"Mux_des={self.Mux_design_kNm:.1f}kNm, "
+            f"Muy_des={self.Muy_design_kNm:.1f}kNm, "
+            f"IR={self.interaction_ratio:.3f}, "
+            f"slender={slender_str}, k={self.k:.3f}"
+        )
+
+
+@dataclass(frozen=True)
+class HelicalReinforcementResult:
+    """Result of helical reinforcement check per IS 456 Cl 39.4.
+
+    For circular columns with helical reinforcement, IS 456 permits a
+    1.05 enhancement factor on the short column axial capacity, provided
+    the helical ratio requirement is met.
+
+    Attributes:
+        is_adequate: True if helical reinforcement meets IS 456 requirements
+        enhancement_factor: 1.05 per Cl 39.4
+        Pu_enhanced_kN: 1.05 × Pu_short_axial (kN)
+        helical_ratio_provided: V_helix / V_core (provided ratio)
+        helical_ratio_required: 0.36 × (Ag/Ac - 1) × fck/fy (required ratio)
+        pitch_mm: Provided helix pitch (mm)
+        min_pitch_mm: max(25mm, 3 × d_helix_bar) (mm)
+        max_pitch_mm: min(75mm, D_core/6) (mm)
+        pitch_ok: True if pitch is within limits
+        D_core_mm: Core diameter (mm)
+        clause_ref: IS 456 clause reference
+        warnings: Tuple of warning messages
+    """
+
+    is_adequate: bool
+    enhancement_factor: float
+    Pu_enhanced_kN: float
+    helical_ratio_provided: float
+    helical_ratio_required: float
+    pitch_mm: float
+    min_pitch_mm: float
+    max_pitch_mm: float
+    pitch_ok: bool
+    D_core_mm: float
+    clause_ref: str = "Cl. 39.4"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {f.name: getattr(self, f.name) for f in fields(self)}
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "ADEQUATE" if self.is_adequate else "INADEQUATE"
+        return (
+            f"Helical Reinforcement ({status}): "
+            f"ratio={self.helical_ratio_provided:.4f} "
+            f"(req={self.helical_ratio_required:.4f}), "
+            f"pitch={self.pitch_mm:.0f}mm "
+            f"[{self.min_pitch_mm:.0f}-{self.max_pitch_mm:.0f}mm], "
+            f"Pu_enh={self.Pu_enhanced_kN:.1f}kN"
+        )

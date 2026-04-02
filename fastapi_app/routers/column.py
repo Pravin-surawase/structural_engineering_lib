@@ -16,12 +16,18 @@ from fastapi_app.models.column import (
     ColumnAxialResponse,
     ColumnClassifyRequest,
     ColumnClassifyResponse,
+    ColumnDesignRequest,
+    ColumnDesignResponse,
     ColumnEccentricityRequest,
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
     ColumnUniaxialResponse,
     EffectiveLengthRequest,
     EffectiveLengthResponse,
+    HelicalCheckRequest,
+    HelicalCheckResponse,
+    LongColumnRequest,
+    LongColumnResponse,
     PMInteractionRequest,
     PMInteractionResponse,
     PMPoint,
@@ -462,4 +468,153 @@ async def additional_moment(request: AdditionalMomentRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Additional moment calculation failed: {e}",
+        )
+
+
+@router.post(
+    "/long-column",
+    response_model=LongColumnResponse,
+    summary="Long (Slender) Column Design per IS 456 Cl 39.7",
+    description=(
+        "Design a slender column with augmented moments for P-delta effects. "
+        "Classifies each axis, computes additional eccentricities, applies "
+        "k-factor reduction, and checks biaxial interaction."
+    ),
+)
+async def design_long_column(request: LongColumnRequest) -> LongColumnResponse:
+    """
+    Design a long (slender) column per IS 456 Cl 39.7.
+
+    Augments applied moments for P-delta effects, applies k-factor
+    reduction, and checks biaxial interaction capacity.
+    """
+    try:
+        from structural_lib.services.api import design_long_column_is456
+
+        result = design_long_column_is456(
+            Pu_kN=request.Pu_kN,
+            M1x_kNm=request.M1x_kNm,
+            M2x_kNm=request.M2x_kNm,
+            M1y_kNm=request.M1y_kNm,
+            M2y_kNm=request.M2y_kNm,
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            lex_mm=request.lex_mm,
+            ley_mm=request.ley_mm,
+            fck=request.fck,
+            fy=request.fy,
+            Asc_mm2=request.Asc_mm2,
+            d_prime_mm=request.d_prime_mm,
+            braced=request.braced,
+        )
+        # Convert ColumnClassification enum to string
+        result["classification_x"] = str(result.get("classification_x", ""))
+        result["classification_y"] = str(result.get("classification_y", ""))
+        return LongColumnResponse(**result)
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Long column design failed: {e}",
+        )
+
+
+@router.post(
+    "/helical-check",
+    response_model=HelicalCheckResponse,
+    summary="Helical Reinforcement Check per IS 456 Cl 39.4",
+    description=(
+        "Check helical reinforcement adequacy for circular columns. "
+        "Verifies pitch limits and computes the 1.05 enhancement factor "
+        "per IS 456 Cl 39.4."
+    ),
+)
+async def helical_check(request: HelicalCheckRequest) -> HelicalCheckResponse:
+    """
+    Check helical reinforcement per IS 456 Cl 39.4.
+
+    Validates pitch limits, computes the helical ratio, and determines
+    whether the 1.05× axial capacity enhancement applies.
+    """
+    try:
+        from structural_lib.services.api import check_helical_reinforcement_is456
+
+        result = check_helical_reinforcement_is456(
+            D_mm=request.D_mm,
+            D_core_mm=request.D_core_mm,
+            fck=request.fck,
+            fy=request.fy,
+            d_helix_mm=request.d_helix_mm,
+            pitch_mm=request.pitch_mm,
+            Pu_axial_kN=request.Pu_axial_kN,
+        )
+        return HelicalCheckResponse(**result)
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Helical check failed: {e}",
+        )
+
+
+@router.post(
+    "",
+    response_model=ColumnDesignResponse,
+    summary="Unified Column Design per IS 456",
+    description=(
+        "Complete column design check — classifies the column, computes "
+        "effective length, applies minimum eccentricity, checks axial and "
+        "bending capacity per the appropriate IS 456 clause."
+    ),
+)
+async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
+    """
+    Unified column design per IS 456.
+
+    Orchestrates classification, effective length, eccentricity,
+    and capacity checks into a single endpoint.
+    """
+    try:
+        from structural_lib.services.api import design_column_is456
+
+        result = design_column_is456(
+            Pu_kN=request.Pu_kN,
+            Mux_kNm=request.Mux_kNm,
+            Muy_kNm=request.Muy_kNm,
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            l_mm=request.l_mm,
+            end_condition=request.end_condition,
+            fck=request.fck,
+            fy=request.fy,
+            Asc_mm2=request.Asc_mm2,
+            d_prime_mm=request.d_prime_mm,
+            l_unsupported_mm=request.l_unsupported_mm,
+            braced=request.braced,
+            M1x_kNm=request.M1x_kNm,
+            M2x_kNm=request.M2x_kNm,
+            M1y_kNm=request.M1y_kNm,
+            M2y_kNm=request.M2y_kNm,
+        )
+        return ColumnDesignResponse(**result)
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Column design failed: {e}",
         )
