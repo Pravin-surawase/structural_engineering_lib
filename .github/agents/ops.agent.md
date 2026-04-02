@@ -264,6 +264,7 @@ NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh p
 | Branch diverged (squash-merge) | `./scripts/recover_git_state.sh` then `./scripts/ai_commit.sh --push` |
 | `--finish` interrupted | `./scripts/ai_commit.sh --continue PR_NUM` or check `.git/FINISH_STATE` |
 | `--finish` PR number lost | `gh pr list --head $(git branch --show-current)` or check `.git/FINISH_STATE` |
+| Stash pop fails (CRLF normalization) | Automatic — safe_push.sh now has 3-tier recovery (pop → checkout+pop → patch apply) |
 
 ### Git System Architecture (for debugging only)
 
@@ -286,6 +287,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 9. **Ran `--finish` but didn't wait for completion** → PR left open, branch not merged, next session found stale PR. Always wait for full output and verify `git branch --show-current` shows `main`.
 10. **Missing `encoding="utf-8"` on Windows CI (Session 115)** → All `Path.read_text()`/`.write_text()` in scripts must use `encoding="utf-8"`. Windows defaults to cp1252.
 11. **`git rebase --skip` to resolve conflicts (Session 119)** → Silently drops commits. ALWAYS use `recover_git_state.sh` instead. Added as FORBIDDEN command.
+12. **CRLF stash pop loop blocking all commits** → `.gitattributes` normalizes CRLF→LF; `git stash pop` sees conflict and fails. Fixed in `safe_push.sh` with 3-tier recovery (checkout+pop → patch apply → exit with preserved stash). Never `git stash drop` without first restoring content.
 
 ## Release Procedure
 

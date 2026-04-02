@@ -409,20 +409,33 @@ fi
 # Restore auto-stashed changes after sync
 if [[ "$AUTO_STASHED" == "true" ]]; then
   echo -e "${YELLOW}Restoring stashed changes...${NC}"
-  # Save stash ref for recovery
-  STASH_REF=$(git stash list --format="%H" | head -1)
   if ! git stash pop >/dev/null 2>&1; then
-    echo -e "${RED}ERROR: Auto-stash restore failed (conflicts with remote changes)${NC}"
-    echo -e "${YELLOW}Your stashed changes are safe. Recovery options:${NC}"
-    echo "  1. View conflicts:  git diff"
-    echo "  2. View stash:      git stash show -p"
-    echo "  3. Manual restore:  git stash pop  (then resolve conflicts)"
-    echo "  4. Drop stash:      git stash drop (discard stashed changes)"
-    if [[ -n "$STASH_REF" ]]; then
-      echo "  5. Stash ref:       $STASH_REF"
+    # Recovery: handles .gitattributes line-ending normalization conflicts (CRLF→LF).
+    # The background fetch only updates refs (no working tree changes yet).
+    echo -e "${YELLOW}⚠ Stash pop failed (likely line-ending normalization). Recovering...${NC}"
+    git checkout -- . 2>/dev/null || true
+    if git stash pop >/dev/null 2>&1; then
+      echo -e "${GREEN}  ✓ Recovered via checkout + retry${NC}"
+      log_message "WARNING" "Stash pop recovered after checkout retry"
+    else
+      # Last resort: apply stash as a patch (avoids merge conflict detection)
+      echo -e "${YELLOW}  Attempting patch-based restore...${NC}"
+      if git stash show -p | git apply --3way 2>/dev/null; then
+        git stash drop >/dev/null 2>&1 || true
+        echo -e "${GREEN}  ✓ Recovered via patch apply${NC}"
+        log_message "WARNING" "Stash pop failed twice, recovered via patch apply"
+      else
+        # Clean up any partial apply artifacts before exiting
+        git checkout -- . 2>/dev/null || true
+        echo -e "${RED}ERROR: Auto-stash restore failed${NC}"
+        echo -e "${YELLOW}Your stashed changes are safe. Recovery options:${NC}"
+        echo "  1. View stash:      git stash show -p"
+        echo "  2. Manual restore:  git stash pop  (then resolve conflicts)"
+        echo "  3. Drop stash:      git stash drop (discard stashed changes)"
+        log_message "ERROR" "Stash pop failed - all recovery methods exhausted"
+        exit 1
+      fi
     fi
-    log_message "ERROR" "Stash pop failed - stash preserved for manual recovery"
-    exit 1
   fi
 fi
 

@@ -69,10 +69,18 @@ jobs:
 
       - name: Verify scripts don't modify git state
         run: |
-          # After running tests, git should be in clean state
+          # Normalize line endings that .gitattributes may flag as "modified"
+          # (e.g., CRLF files checked into the repo before .gitattributes was added)
+          git diff --name-only | while read -r f; do
+            if git diff --quiet --ignore-cr-at-eol -- "$f" 2>/dev/null; then
+              git checkout -- "$f" 2>/dev/null || true
+            fi
+          done
+          # After handling normalization, git should be in clean state
           git status --porcelain
           if [[ -n $(git status --porcelain) ]]; then
             echo "ERROR: Tests left uncommitted changes"
+            git status --porcelain
             exit 1
           fi
 
