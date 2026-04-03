@@ -164,3 +164,8 @@ tags: []
 | 2026-04-02 | TASK-623 | feat(scripts): create check_clause_coverage.py clause gap scanner | pending |
 | 2026-04-02 | TASK-624 | feat(scripts): create check_new_element_completeness.py matrix | pending |
 | 2026-04-02 | TASK-625 | docs(governance): create maintenance-playbook.md 11 sections | pending |
+| 2026-04-03 | TASK-651 | fix(footing): both-direction flexure design + Cl 34.3.1 steel distribution (F-004, F-005) | pending |
+| 2026-04-03 | TASK-653 | fix(footing): both-direction one-way shear check + governing direction (F-006) | pending |
+| 2026-04-03 | TASK-650 | fix(footing): 150mm minimum depth enforcement in _common.py (F-001) | pending |
+| 2026-04-03 | TASK-650 | fix(footing): FootingFlexureResult both-direction fields + central_band_fraction (F-008) | pending |
+| 2026-04-03 | TASK-650 | test(footing): 79 tests (16 new — both-direction, Cl 34.3.1, min depth) | pending |
