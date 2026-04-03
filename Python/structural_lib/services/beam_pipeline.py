@@ -260,6 +260,40 @@ def _dataclass_to_dict(obj: Any) -> Any:
 # =============================================================================
 
 
+def _auto_construct_deflection_params(
+    span_mm: float,
+    d_mm: float,
+    support_condition: str = "SIMPLY_SUPPORTED",
+) -> DeflectionParams | None:
+    """Auto-construct deflection params from geometry when serviceability is requested.
+
+    Args:
+        span_mm: Span length (mm).
+        d_mm: Effective depth (mm).
+        support_condition: Support condition string
+            ("SIMPLY_SUPPORTED", "CANTILEVER", "CONTINUOUS").
+
+    Returns:
+        DeflectionParams dict, or None if inputs are invalid.
+    """
+    if span_mm <= 0 or d_mm <= 0:
+        return None
+
+    # Normalize support_condition to a valid string for DeflectionParams
+    from structural_lib.core.data_types import SupportCondition
+
+    try:
+        sc = SupportCondition[support_condition.upper()]
+    except (KeyError, AttributeError):
+        sc = SupportCondition.SIMPLY_SUPPORTED
+
+    return DeflectionParams(
+        span_mm=span_mm,
+        d_mm=d_mm,
+        support_condition=sc.name,
+    )
+
+
 def design_single_beam(
     *,
     units: str,
@@ -285,6 +319,8 @@ def design_single_beam(
     stirrup_spacing_end_mm: float = 150.0,
     deflection_params: DeflectionParams | None = None,
     crack_width_params: CrackWidthParams | None = None,
+    include_serviceability: bool = False,
+    support_condition: str = "SIMPLY_SUPPORTED",
 ) -> BeamDesignOutput:
     """
     Run complete beam design pipeline for a single beam/case.
@@ -313,6 +349,12 @@ def design_single_beam(
         stirrup_spacing_*: Stirrup spacing for zones.
         deflection_params: Deflection check parameters.
         crack_width_params: Crack width check parameters.
+        include_serviceability: Opt-in flag: when True and deflection_params
+            is None, auto-constructs DeflectionParams from span_mm and d_mm.
+            When both include_serviceability=True and explicit deflection_params
+            are provided, explicit params take precedence.
+        support_condition: Support condition for auto-constructed deflection
+            params ("SIMPLY_SUPPORTED", "CANTILEVER", "CONTINUOUS").
 
     Returns:
         BeamDesignOutput with complete design results.
@@ -322,6 +364,14 @@ def design_single_beam(
     """
     # Validate units at boundary
     validated_units = validate_units(units)
+
+    # Auto-construct deflection params when serviceability is opted-in
+    if include_serviceability and deflection_params is None:
+        deflection_params = _auto_construct_deflection_params(
+            span_mm=span_mm,
+            d_mm=d_mm,
+            support_condition=support_condition,
+        )
 
     # Run design via existing API
     case_result = api.design_beam_is456(

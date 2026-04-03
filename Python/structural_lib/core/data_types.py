@@ -7,6 +7,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field, fields
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, TypedDict
@@ -1440,3 +1441,97 @@ class FootingPunchingResult:
             f"βc={self.beta_c:.2f}, ks={self.ks:.2f}, "
             f"Util={self.utilization_ratio:.2f}"
         )
+
+
+# =============================================================================
+# Multi-Layer Reinforcement Types
+# =============================================================================
+
+
+@dataclass(frozen=True)
+class RebarLayer:
+    """Single layer of reinforcement bars.
+
+    Attributes:
+        bar_dia_mm: Bar diameter (mm). Must be positive.
+        count: Number of bars. Must be >= 1.
+        distance_from_bottom_mm: Distance from bottom face of beam to centroid
+            of this layer (mm).
+    """
+
+    bar_dia_mm: float
+    count: int
+    distance_from_bottom_mm: float
+
+    def __post_init__(self) -> None:
+        if self.bar_dia_mm <= 0:
+            raise ValueError(f"bar_dia_mm must be positive, got {self.bar_dia_mm}")
+        if self.count < 1:
+            raise ValueError(f"count must be >= 1, got {self.count}")
+        if self.distance_from_bottom_mm < 0:
+            raise ValueError(
+                f"distance_from_bottom_mm cannot be negative, "
+                f"got {self.distance_from_bottom_mm}"
+            )
+
+    @property
+    def area_mm2(self) -> float:
+        """Total area of bars in this layer (mm²)."""
+        return self.count * math.pi / 4 * self.bar_dia_mm**2
+
+
+@dataclass(frozen=True)
+class RebarArrangement:
+    """Multi-layer bar arrangement with weighted centroid calculation.
+
+    Attributes:
+        layers: Tuple of RebarLayer objects. Must not be empty.
+    """
+
+    layers: tuple[RebarLayer, ...]
+
+    def __post_init__(self) -> None:
+        if not self.layers:
+            raise ValueError("At least one rebar layer required")
+
+    @property
+    def centroid_from_bottom_mm(self) -> float:
+        """Weighted centroid of all bars from bottom face (mm).
+
+        Uses area-weighted average: d_cg = Σ(Asi × di) / Σ(Asi)
+        """
+        total_area = sum(layer.area_mm2 for layer in self.layers)
+        weighted_dist = sum(
+            layer.area_mm2 * layer.distance_from_bottom_mm for layer in self.layers
+        )
+        return weighted_dist / total_area
+
+    @property
+    def total_area_mm2(self) -> float:
+        """Total area of all bars across all layers (mm²)."""
+        return sum(layer.area_mm2 for layer in self.layers)
+
+    @property
+    def layer_count(self) -> int:
+        """Number of layers."""
+        return len(self.layers)
+
+    def effective_depth(self, D_mm: float) -> float:
+        """Calculate effective depth from overall depth.
+
+        d = D - centroid_from_bottom
+
+        Args:
+            D_mm: Overall beam depth (mm).
+
+        Returns:
+            Effective depth (mm) measured from compression face to
+            centroid of tension steel.
+        """
+        d = D_mm - self.centroid_from_bottom_mm
+        if d <= 0:
+            raise ValueError(
+                f"Effective depth must be positive: "
+                f"D={D_mm}, centroid={self.centroid_from_bottom_mm}"
+            )
+        return d

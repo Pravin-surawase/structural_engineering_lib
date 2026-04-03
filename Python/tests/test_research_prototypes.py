@@ -468,6 +468,31 @@ class TestDesignCompanion:
         assert companion.failure_story.safety_insight
         assert isinstance(companion.failure_story.safety_insight, str)
 
+    # ── Fix 4: failure story includes ast_required_mm2 ──
+
+    def test_failure_story_has_ast_required(self, companion):
+        """FailureScenario now includes ast_required_mm2 field."""
+        for scenario in companion.failure_story.scenarios:
+            assert hasattr(scenario, "ast_required_mm2")
+            assert scenario.ast_required_mm2 >= 0
+
+    def test_failure_story_first_scenario_ast_positive(self, companion):
+        """At design load (1.0×), steel is required."""
+        scenario_1x = [
+            s for s in companion.failure_story.scenarios if s.overload_factor == 1.0
+        ]
+        assert len(scenario_1x) == 1
+        assert scenario_1x[0].ast_required_mm2 > 0
+
+    def test_failure_story_ast_increases_with_overload(self, companion):
+        """Steel requirement increases with overload factor."""
+        scenarios = companion.failure_story.scenarios
+        for i in range(1, len(scenarios)):
+            assert scenarios[i].ast_required_mm2 >= scenarios[i - 1].ast_required_mm2, (
+                f"ast_required_mm2 decreased from factor "
+                f"{scenarios[i-1].overload_factor} to {scenarios[i].overload_factor}"
+            )
+
     # ── Anomaly detection returns list ──
 
     def test_anomalies_is_list(self, companion):

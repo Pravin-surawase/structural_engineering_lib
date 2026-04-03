@@ -91,6 +91,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-671 | Fix 4 known limitations (effective depth, serviceability, multi-layer rebar, failure story) | Copilot | ✅ Done |
 | TASK-670 | Fix calculation_report.py shear field bug (4 non-existent ShearResult fields, masked by MagicMock) | Copilot | ✅ Done |
 | TASK-660 | Standardize variable naming to IS 456 industry convention (21 fields, 4 dataclasses) | Copilot | ✅ Done |
 | TASK-650/651/652/653 | Phase 3 Footing: types, bearing/flexure, one-way shear, punching shear (61 tests) | Copilot | ✅ Done |

@@ -119,7 +119,7 @@ class TestDesignFromInput:
             story="GF",
             geometry=BeamGeometryInput(
                 b_mm=300, D_mm=500, span_mm=5000, cover_mm=50
-            ),  # d = 500 - 50 = 450
+            ),  # d = 500 - 50 - 8 - 20/2 = 432
             materials=MaterialsInput.m25_fe500(),
             loads=LoadsInput(mu_knm=100, vu_kn=60),
         )
@@ -127,7 +127,7 @@ class TestDesignFromInput:
         result = api.design_from_input(beam)
 
         assert isinstance(result, DesignAndDetailResult)
-        assert result.geometry["d_mm"] == 450.0
+        assert result.geometry["d_mm"] == 432.0
 
     def test_api_exports_input_classes(self) -> None:
         """Test that input classes are exported from api module."""
