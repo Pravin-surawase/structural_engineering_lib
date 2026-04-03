@@ -130,6 +130,33 @@ while IFS= read -r file; do
         DOCS_OR_SCRIPTS=false
     fi
 
+    # Check if file matches production code (FastAPI backend)
+    if [[ "$file" =~ ^fastapi_app/.*\.py$ ]]; then
+        HAS_PRODUCTION_CODE=true
+        DOCS_ONLY=false
+        TESTS_ONLY=false
+        SCRIPTS_ONLY=false
+        DOCS_OR_SCRIPTS=false
+    fi
+
+    # Check if file matches production code (React frontend)
+    if [[ "$file" =~ ^react_app/src/.*\.(ts|tsx|js|jsx)$ ]]; then
+        HAS_PRODUCTION_CODE=true
+        DOCS_ONLY=false
+        TESTS_ONLY=false
+        SCRIPTS_ONLY=false
+        DOCS_OR_SCRIPTS=false
+    fi
+
+    # Check if file is Docker infrastructure
+    if [[ "$file" =~ ^(Dockerfile|docker-compose) ]]; then
+        HAS_CI_CODE=true
+        DOCS_ONLY=false
+        TESTS_ONLY=false
+        SCRIPTS_ONLY=false
+        DOCS_OR_SCRIPTS=false
+    fi
+
     # Check if file is VBA
     if [[ "$file" =~ ^VBA/.*\.(bas|cls|frm)$ ]] || [[ "$file" =~ ^Excel/.*\.xlsm$ ]]; then
         HAS_VBA_CODE=true
@@ -211,7 +238,7 @@ if [[ "$HAS_PRODUCTION_CODE" == "true" ]]; then
         if [[ "$EXPLAIN" == "true" ]]; then
             echo ""
             echo "Reasoning:"
-            echo "- Python/structural_lib/ files changed"
+            echo "- Production code changed (structural_lib, fastapi_app, or react_app)"
             echo "- Small scope ($LINES_CHANGED lines < $PROD_MINOR_THRESHOLD, $FILE_COUNT files ≤ $PROD_MINOR_FILES)"
             echo "- No new files added"
             echo "- CI runs on push to main for validation"
@@ -226,7 +253,7 @@ if [[ "$HAS_PRODUCTION_CODE" == "true" ]]; then
     if [[ "$EXPLAIN" == "true" ]]; then
         echo ""
         echo "Reasoning:"
-        echo "- Python/structural_lib/ files changed"
+        echo "- Production code changed (structural_lib, fastapi_app, or react_app)"
         echo "- $LINES_CHANGED lines changed, $FILE_COUNT file(s), $NEW_FILES new file(s)"
         echo "- Substantial: ≥$PROD_MINOR_THRESHOLD lines, >$PROD_MINOR_FILES files, or new files"
         echo "- CI validation + audit trail REQUIRED"

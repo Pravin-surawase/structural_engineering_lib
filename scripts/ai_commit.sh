@@ -5,7 +5,7 @@
 # Usage:
 #   ./scripts/ai_commit.sh "commit message"
 #   ./scripts/ai_commit.sh "commit message" --dry-run  # Preview only
-#   ./scripts/ai_commit.sh "commit message" --force    # Bypass PR check (for batching)
+#   ./scripts/ai_commit.sh --branch TASK-XXX "desc"  # Create task branch for PR
 #   ./scripts/ai_commit.sh --help
 
 set -e  # Exit on any error
@@ -73,7 +73,7 @@ while [[ $i -lt ${#args[@]} ]]; do
             echo ""
             echo "Options:"
             echo "  --dry-run    Preview what would happen without committing"
-            echo "  --force      Bypass PR requirement check (for batching work)"
+            echo "  --force      Bypass PR check (RESTRICTED — only for ops agent batching)"
             echo "  --push       Push already-committed changes (no new commit)"
             echo "  --amend      Amend the last commit (add staged changes to it)"
             echo "  --preview    Show staged changes diff without committing"
@@ -89,7 +89,7 @@ while [[ $i -lt ${#args[@]} ]]; do
             echo "Examples:"
             echo "  ./scripts/ai_commit.sh \"docs: update guide\""
             echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
-            echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
+            echo "  ./scripts/ai_commit.sh --branch TASK-123 \"batch work\"  # PR workflow"
             echo "  ./scripts/ai_commit.sh --push          # Push existing commits"
             echo "  ./scripts/ai_commit.sh --amend          # Amend last commit + push"
             echo "  ./scripts/ai_commit.sh \"msg\" --preview  # Preview changes only"
@@ -292,10 +292,10 @@ elif [[ -f "$SHOULD_USE_PR_SCRIPT" ]]; then
         if [[ "$CURRENT_BRANCH" == "main" ]]; then
             echo ""
             echo -e "${RED}✗ PR required. Create a task branch first:${NC}"
-            echo "  ./scripts/create_task_pr.sh TASK-XXX \"description\""
+            echo "  ./scripts/ai_commit.sh --branch TASK-XXX \"description\""
             echo ""
-            echo -e "${YELLOW}TIP: Use --force to bypass for batched commits:${NC}"
-            echo "  ./scripts/ai_commit.sh \"message\" --force"
+            echo -e "${YELLOW}Or use create_task_pr.sh directly:${NC}"
+            echo "  ./scripts/create_task_pr.sh TASK-XXX \"description\""
             exit 1
         fi
         echo ""
