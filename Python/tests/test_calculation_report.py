@@ -21,6 +21,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from structural_lib.core.data_types import ShearResult
 from structural_lib.services.calculation_report import (
     CalculationReport,
     InputSection,
@@ -76,7 +77,15 @@ def sample_result_section() -> ResultSection:
             "ast_provided": 1017.88,
             "beam_type": "singly reinforced",
         },
-        shear={"vu_kn": 100, "vc_kn": 65, "vs_kn": 50, "is_ok": True},
+        shear={
+            "Vu_kn": 100,
+            "tau_v": 1.45,
+            "tau_c": 0.36,
+            "tau_c_max": 2.8,
+            "Vus": 50,
+            "spacing": 150,
+            "is_safe": True,
+        },
         serviceability={"deflection_ratio": 0.85, "crack_width_mm": 0.25},
         detailing={"main_bars": "3-20φ", "stirrups": "8φ@150 c/c"},
         summary={"is_ok": True, "summary": "Design satisfies all IS 456 requirements."},
@@ -99,11 +108,15 @@ def mock_design_result(sample_input_section, sample_result_section) -> MagicMock
     result.design.flexure.ast_provided = 1017.88
     result.design.flexure.beam_type = "singly reinforced"
 
-    result.design.shear = MagicMock()
-    result.design.shear.vu_kn = 100.0
-    result.design.shear.vc_kn = 65.0
-    result.design.shear.vs_kn = 50.0
-    result.design.shear.is_ok = True
+    result.design.shear = ShearResult(
+        tau_v=1.45,
+        tau_c=0.36,
+        tau_c_max=2.8,
+        Vus=50.0,
+        spacing=150.0,
+        is_safe=True,
+    )
+    result.design.Vu_kn = 100.0  # V_u lives on ComplianceCaseResult, not ShearResult
 
     result.is_ok = True
     result.summary = MagicMock(return_value="Design OK")
@@ -193,8 +206,8 @@ class TestResultSection:
     def test_populated_section(self, sample_result_section):
         """Test fully populated ResultSection."""
         assert sample_result_section.flexure["ast_required"] == 942.48
-        assert sample_result_section.shear["vu_kn"] == 100
-        assert sample_result_section.shear["is_ok"] is True
+        assert sample_result_section.shear["Vu_kn"] == 100
+        assert sample_result_section.shear["is_safe"] is True
         assert sample_result_section.summary["is_ok"] is True
 
 
@@ -253,9 +266,10 @@ class TestCalculationReport:
     def test_from_design_result_extracts_shear(self, mock_design_result):
         """Test that shear results are correctly extracted."""
         report = CalculationReport.from_design_result(result=mock_design_result)
-        assert report.results.shear["vu_kn"] == 100.0
-        assert report.results.shear["vc_kn"] == 65.0
-        assert report.results.shear["is_ok"] is True
+        assert report.results.shear["Vu_kn"] == 100.0
+        assert report.results.shear["tau_v"] == 1.45
+        assert report.results.shear["tau_c"] == 0.36
+        assert report.results.shear["is_safe"] is True
 
     def test_to_dict(self, mock_design_result, sample_project_info):
         """Test serializing report to dictionary."""
@@ -543,11 +557,15 @@ class TestEdgeCases:
         result.design.flexure.Ast_required = 0
         result.design.flexure.ast_provided = 0
         result.design.flexure.beam_type = "unknown"
-        result.design.shear = MagicMock()
-        result.design.shear.vu_kn = 0
-        result.design.shear.vc_kn = 0
-        result.design.shear.vs_kn = 0
-        result.design.shear.is_ok = True
+        result.design.shear = ShearResult(
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
+            spacing=0.0,
+            is_safe=True,
+        )
+        result.design.Vu_kn = 0.0
         result.is_ok = True
         result.summary = MagicMock(return_value="")
 
@@ -609,3 +627,55 @@ class TestEdgeCases:
             md_path = Path(tmpdir) / "report.md"
             report.export_markdown(md_path)
             assert "aaaa" in md_path.read_text()
+
+
+# =============================================================================
+# Test with Real Objects
+# =============================================================================
+
+
+class TestWithRealObjects:
+    """Tests using real dataclass objects instead of MagicMock."""
+
+    def test_from_design_result_real_shear(self):
+        """Verify from_design_result works with real ShearResult (not MagicMock)."""
+        result = MagicMock()
+        result.geometry = {
+            "b_mm": 300,
+            "D_mm": 500,
+            "d_mm": 460,
+            "span_mm": 6000,
+            "cover_mm": 40,
+        }
+        result.materials = {"fck_nmm2": 25, "fy_nmm2": 500}
+        result.is_ok = True
+        result.summary = MagicMock(return_value="Design OK")
+
+        result.design = MagicMock()
+        result.design.Vu_kn = 100.0
+        result.design.flexure = MagicMock()
+        result.design.flexure.Ast_required = 942.48
+        result.design.flexure.ast_provided = 1017.88
+        result.design.flexure.beam_type = "singly reinforced"
+        result.design.shear = ShearResult(
+            tau_v=1.45,
+            tau_c=0.36,
+            tau_c_max=2.8,
+            Vus=50.0,
+            spacing=150.0,
+            is_safe=True,
+        )
+
+        report = CalculationReport.from_design_result(result=result, beam_id="B1")
+
+        # Verify shear extraction uses real fields
+        assert report.results.shear["Vu_kn"] == 100.0
+        assert report.results.shear["tau_v"] == 1.45
+        assert report.results.shear["tau_c"] == 0.36
+        assert report.results.shear["tau_c_max"] == 2.8
+        assert report.results.shear["Vus"] == 50.0
+        assert report.results.shear["spacing"] == 150.0
+        assert report.results.shear["is_safe"] is True
+
+        # Verify flexure extraction
+        assert report.results.flexure["ast_required"] == 942.48

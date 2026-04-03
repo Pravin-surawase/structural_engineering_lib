@@ -15,6 +15,13 @@
 - Fixed Pydantic field access bug in design.py (mixed up dataclass vs Pydantic field names)
 - All tests pass: 4165 Python + 180 FastAPI
 
+### TASK-670: Fix calculation_report.py Shear Bug ✅
+- Fixed 4 non-existent field accesses on ShearResult (.vu_kn, .vc_kn, .vs_kn, .is_ok → tau_v, tau_c, tau_c_max, Vus, spacing, is_safe)
+- Updated HTML/Markdown templates to IS 456 stress-based format (τ_v, τ_c, τ_c,max)
+- Replaced MagicMock with real ShearResult in tests
+- Added integration test with real dataclass objects
+- 4175 Python + 180 FastAPI tests pass
+
 ### Files Changed (key)
 - `core/data_types.py` — 21 field renames + 21 @property aliases
 - `codes/is456/beam/flexure.py`, `shear.py`, `torsion.py` — construction sites
