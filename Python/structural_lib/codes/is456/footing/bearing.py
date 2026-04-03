@@ -1,0 +1,153 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
+"""IS 456:2000 — Footing bearing capacity and sizing per Cl. 34.1.
+
+IMPORTANT: Footing SIZING uses SERVICE (unfactored) loads per IS 456 Cl 34.1.
+Structural design (flexure, shear) uses FACTORED loads.
+
+Functions:
+    size_footing: Calculate required footing dimensions for bearing capacity
+"""
+
+from __future__ import annotations
+
+import math
+
+from structural_lib.core.data_types import FootingBearingResult, FootingType
+from structural_lib.core.errors import (
+    DimensionError,
+    ValidationError,
+)
+
+
+def size_footing(
+    P_service_kN: float,
+    q_safe_kPa: float,
+    a_mm: float,
+    b_mm: float,
+    M_service_kNm: float = 0.0,
+    footing_type: FootingType = FootingType.ISOLATED_SQUARE,
+) -> FootingBearingResult:
+    """Size an isolated footing for safe bearing capacity per IS 456 Cl 34.1.
+
+    Uses SERVICE (unfactored) loads for sizing as required by IS 456 Cl 34.1:
+    "In calculating the bearing pressure ... the loads and reactions shall
+    be taken as the service values."
+
+    Args:
+        P_service_kN: Service (unfactored) axial load (kN)
+        q_safe_kPa: Safe bearing capacity of soil (kPa = kN/m²)
+        a_mm: Column dimension parallel to footing length (mm)
+        b_mm: Column dimension parallel to footing width (mm)
+        M_service_kNm: Service moment (kN·m), default 0 (concentric)
+        footing_type: ISOLATED_SQUARE or ISOLATED_RECTANGULAR
+
+    Returns:
+        FootingBearingResult with sized footing dimensions and bearing check
+
+    Raises:
+        ValidationError: If load or bearing capacity is non-positive
+        DimensionError: If column dimensions are non-positive
+    """
+    if P_service_kN <= 0:
+        raise ValidationError(
+            "Service load must be positive for footing sizing",
+            details={"P_service_kN": P_service_kN},
+            clause_ref="Cl. 34.1",
+        )
+    if q_safe_kPa <= 0:
+        raise ValidationError(
+            "Safe bearing capacity must be positive",
+            details={"q_safe_kPa": q_safe_kPa},
+            clause_ref="Cl. 34.1",
+        )
+    if a_mm <= 0 or b_mm <= 0:
+        raise DimensionError(
+            "Column dimensions must be positive",
+            details={"a_mm": a_mm, "b_mm": b_mm},
+        )
+
+    # Required area in mm²  (q_safe_kPa = kN/m² → convert to kN/mm²)
+    q_safe_knmm2 = q_safe_kPa / 1e6  # kPa → kN/mm²
+    A_req_mm2 = P_service_kN / q_safe_knmm2
+
+    warnings: list[str] = []
+
+    if footing_type == FootingType.ISOLATED_SQUARE:
+        L_mm = math.ceil(math.sqrt(A_req_mm2) / 50) * 50  # Round up to 50mm
+        B_mm = L_mm
+    else:
+        # Rectangular: maintain column aspect ratio
+        aspect = a_mm / b_mm if b_mm > 0 else 1.0
+        B_mm_raw = math.sqrt(A_req_mm2 / aspect)
+        B_mm = math.ceil(B_mm_raw / 50) * 50
+        L_mm = math.ceil((A_req_mm2 / B_mm) / 50) * 50
+        # Ensure area is sufficient after rounding
+        if L_mm * B_mm < A_req_mm2:
+            L_mm += 50
+
+    # Ensure footing is larger than column
+    if L_mm <= a_mm:
+        L_mm = math.ceil((a_mm + 200) / 50) * 50  # Min 200mm projection
+    if B_mm <= b_mm:
+        B_mm = math.ceil((b_mm + 200) / 50) * 50
+
+    # Bearing pressure check (at service loads)
+    A_provided_mm2 = L_mm * B_mm
+
+    if M_service_kNm == 0.0:
+        # Concentric: uniform pressure
+        q_max_kPa = (P_service_kN / A_provided_mm2) * 1e6  # kN/mm² → kPa
+        q_min_kPa = q_max_kPa
+        pressure_type = "uniform"
+    else:
+        # Eccentric: trapezoidal or partial contact
+        e_mm = abs(M_service_kNm * 1e6 / (P_service_kN * 1e3))  # mm
+        kern_limit = L_mm / 6.0
+
+        if e_mm <= kern_limit:
+            # Trapezoidal pressure
+            q_max_kPa = (
+                (P_service_kN / A_provided_mm2) * (1.0 + 6.0 * e_mm / L_mm) * 1e6
+            )
+            q_min_kPa = (
+                (P_service_kN / A_provided_mm2) * (1.0 - 6.0 * e_mm / L_mm) * 1e6
+            )
+            pressure_type = "trapezoidal"
+        else:
+            # Partial contact — triangular (no tension in soil)
+            x = L_mm / 2.0 - e_mm  # Contact length from edge
+            if x <= 0:
+                raise ValidationError(
+                    "Eccentricity too large — footing lifts off completely",
+                    details={"e_mm": e_mm, "L_mm": L_mm, "x": x},
+                    clause_ref="Cl. 34.1",
+                )
+            q_max_kPa = (2.0 * P_service_kN / (3.0 * B_mm * x)) * 1e6
+            q_min_kPa = 0.0
+            pressure_type = "partial_contact"
+            warnings.append(
+                f"Eccentricity e={e_mm:.1f}mm exceeds kern limit L/6={kern_limit:.1f}mm. "
+                f"Partial contact with soil — consider increasing footing size."
+            )
+
+    utilization = q_max_kPa / q_safe_kPa
+    is_safe = utilization <= 1.0
+
+    if not is_safe:
+        warnings.append(
+            f"Bearing pressure q_max={q_max_kPa:.1f}kPa exceeds "
+            f"q_safe={q_safe_kPa:.1f}kPa. Increase footing size."
+        )
+
+    return FootingBearingResult(
+        L_mm=L_mm,
+        B_mm=B_mm,
+        q_max_kPa=q_max_kPa,
+        q_min_kPa=q_min_kPa,
+        q_safe_kPa=q_safe_kPa,
+        pressure_type=pressure_type,
+        utilization_ratio=utilization,
+        is_safe=is_safe,
+        warnings=tuple(warnings),
+    )

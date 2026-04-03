@@ -57,6 +57,15 @@ Validation:
     - All failure scenarios physically consistent
     - Anomaly baselines derived from IS 456 provisions
     - Safety factors (γc=1.5, γs=1.15) HARDCODED — never parameters
+
+Scope Limitations:
+    - Singly reinforced rectangular beams only (no T-beams, no flanged sections)
+    - Combined flexure and shear (no torsion, no axial load)
+    - IS 456:2000 limit state method only
+    - Simply supported or effectively restrained beams
+    - Effective depth approximated as D - cover (a known simplification)
+    - No deflection or crack width checks (serviceability not covered)
+    - No seismic detailing (IS 13920 not integrated)
 """
 
 from __future__ import annotations
@@ -78,6 +87,8 @@ from structural_lib.services.costing import CostProfile, calculate_beam_cost
 
 # Safety factors — HARDCODED constants, IS 456:2000 Table 18
 # NEVER parameters, NEVER modifiable
+# Documentary constants — actual safety factors are applied by design_beam_is456().
+# These are here as reference only: γc = 1.5 (concrete), γs = 1.15 (steel).
 _GAMMA_C = 1.5
 _GAMMA_S = 1.15
 
@@ -677,7 +688,7 @@ def _build_reasoning_chain(
             title="Shear Stress Check",
             description=(
                 "Shear failure is sudden and catastrophic — no warning. "
-                "IS 456 checks three levels: τv < τc (no stirrups needed), "
+                "IS 456 checks three levels: τv < τc (minimum stirrups only), "
                 "τc < τv < τc_max (stirrups needed), τv > τc_max (section inadequate)."
             ),
             formula="τv = Vu×1000 / (b×d)",
@@ -1080,6 +1091,12 @@ def _build_failure_story(
             f"compression steel."
         )
 
+    narrative_parts.append(
+        "NOTE: All loads are FACTORED (IS 456 Table 18). "
+        "The actual service load is typically 1.5× lower — "
+        f"so {safety_factor:.1f}× factored ≈ {safety_factor * 1.5:.1f}× service load."
+    )
+
     # Safety insight
     xu_d_at_design = scenarios[0].xu_d_ratio
     if xu_d_at_design < 0.3:
@@ -1456,7 +1473,11 @@ def _generate_alternatives(
         )
 
         # Build comparison text
-        cost_delta = (cost_bd.total_cost - primary_cost) / primary_cost * 100
+        cost_delta = (
+            (cost_bd.total_cost - primary_cost) / primary_cost * 100
+            if primary_cost > 0
+            else 0
+        )
         carbon_delta = (
             (carbon.total_kgco2e - primary_carbon) / primary_carbon * 100
             if primary_carbon > 0
@@ -1635,6 +1656,11 @@ def design_with_companion(
         ... )
         >>> print(response.full_report())
     """
+    if b_mm <= 0 or D_mm <= 0 or span_mm <= 0:
+        raise ValueError("b_mm, D_mm, and span_mm must be positive")
+    if D_mm <= cover_mm:
+        raise ValueError(f"D_mm ({D_mm}) must be greater than cover_mm ({cover_mm})")
+
     start_time = time.time()
     d_mm = D_mm - cover_mm
 

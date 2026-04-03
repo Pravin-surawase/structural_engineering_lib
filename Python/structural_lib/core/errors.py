@@ -657,6 +657,87 @@ E_COLUMN_011 = DesignError(
     recovery="This function is for compression members (Pu \u2265 0). For tension members, use different design methods.",
 )
 
+# Footing Errors --- IS 456 Cl. 34, 31.6
+E_FOOTING_001 = DesignError(
+    code="E_FOOTING_001",
+    severity=Severity.ERROR,
+    message="Footing dimensions must be positive",
+    field="L_mm",
+    hint="Provide positive footing dimensions.",
+    clause="Cl. 34.1",
+    recovery="Provide positive footing length and width. Minimum edge depth: 150mm per Cl 34.1.",
+)
+
+E_FOOTING_002 = DesignError(
+    code="E_FOOTING_002",
+    severity=Severity.ERROR,
+    message="Bearing pressure exceeds safe bearing capacity",
+    field="q_max_kPa",
+    hint="Increase footing size or reduce load.",
+    clause="Cl. 34.1",
+    recovery="Increase footing area so q_max \u2264 q_safe. Use service (unfactored) loads for sizing.",
+)
+
+E_FOOTING_003 = DesignError(
+    code="E_FOOTING_003",
+    severity=Severity.ERROR,
+    message="Punching shear exceeds capacity \u2014 increase depth or footing size",
+    field="tau_v_nmm2",
+    hint="Increase footing depth or plan dimensions. Shear reinforcement is not practical in footings.",
+    clause="Cl. 31.6.1",
+    recovery="Increase footing depth d or overall dimensions. Unlike beams, shear reinforcement is not practical in footings for punching.",
+)
+
+E_FOOTING_004 = DesignError(
+    code="E_FOOTING_004",
+    severity=Severity.ERROR,
+    message="One-way shear exceeds capacity",
+    field="tau_v_nmm2",
+    hint="Increase footing depth.",
+    clause="Cl. 34.2.4.1(a)",
+    recovery="Increase footing depth d. One-way shear critical section is at distance d from column face.",
+)
+
+E_FOOTING_005 = DesignError(
+    code="E_FOOTING_005",
+    severity=Severity.WARNING,
+    message="Footing depth less than minimum 150mm at edge per Cl 34.1",
+    field="d_mm",
+    hint="Minimum depth at edge is 150mm for footings on soil.",
+    clause="Cl. 34.1",
+    recovery="Increase footing depth to at least 150mm at edge (for soil) or 300mm (for piles) per Cl 34.1.",
+)
+
+E_FOOTING_006 = DesignError(
+    code="E_FOOTING_006",
+    severity=Severity.WARNING,
+    message="Eccentricity exceeds L/6 \u2014 partial contact with soil (tension not permitted)",
+    field="e_mm",
+    hint="Increase footing size to keep eccentricity within kern.",
+    clause="Cl. 34.1",
+    recovery="Increase footing length L so eccentricity e \u2264 L/6. No tension at soil interface.",
+)
+
+E_FOOTING_007 = DesignError(
+    code="E_FOOTING_007",
+    severity=Severity.ERROR,
+    message="Column dimensions exceed footing dimensions",
+    field="a_mm",
+    hint="Footing must be larger than the supported column.",
+    clause="Cl. 34",
+    recovery="Ensure footing L > column a and footing B > column b.",
+)
+
+E_FOOTING_008 = DesignError(
+    code="E_FOOTING_008",
+    severity=Severity.WARNING,
+    message="Steel percentage below minimum 0.12% for HYSD bars",
+    field="Ast_mm2",
+    hint="Provide minimum reinforcement per Cl 26.5.2.1.",
+    clause="Cl. 26.5.2.1",
+    recovery="Increase reinforcement to at least 0.12% of b\u00d7d for HYSD (Fe 415/500) bars.",
+)
+
 
 def make_error(
     code: str,

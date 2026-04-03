@@ -91,6 +91,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-650/651/652/653 | Phase 3 Footing: types, bearing/flexure, one-way shear, punching shear (61 tests) | Copilot | ✅ Done |
 | TASK-712 | Enhanced shear near supports (Cl 40.3) — shear.py + 14 tests + API endpoint (PR #468) | Copilot | ✅ Done |
 | TASK-709 | Move ductile.py → codes/is13920/beam.py + shim (PR #467) | Copilot | ✅ Done |
 | TASK-710 | Fix upward import in detailing.py (PR #467) | Copilot | ✅ Done |
@@ -150,13 +151,15 @@
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-650 | Footing types + errors | Types | — | 📋 |
-| TASK-651 | Isolated footing design | `design_isolated_footing` | Cl 34 | 📋 |
-| TASK-652 | Punching shear check | `punching_shear_check` | Cl 31.6 | 📋 |
-| TASK-653 | One-way shear check | `one_way_shear_check` | Cl 34.2.4 | 📋 |
+| TASK-650 | Footing types + errors (FootingType enum, 4 result dataclasses, 8 error codes) | Types | — | ✅ Done |
+| TASK-651 | Isolated footing design (bearing sizing + flexure) | `size_footing`, `footing_flexure` | Cl 34.1, 34.2.3.1 | ✅ Done |
+| TASK-652 | Punching shear check | `footing_punching_shear` | Cl 31.6.1 | ✅ Done |
+| TASK-653 | One-way shear check | `footing_one_way_shear` | Cl 34.2.4.1(a) | ✅ Done |
 | TASK-654 | Bearing pressure | `calculate_bearing_pressure` | Cl 34.4 | 📋 |
 | TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
 | TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
+
+> Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in `codes/is456/footing/`. 61 tests, 0 failures. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
 
 ### Phase 4-6: Slab, Staircase, Shear Wall (Future)
 
