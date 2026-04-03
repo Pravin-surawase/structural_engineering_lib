@@ -1,59 +1,50 @@
 # Next Session Brief
 
 **Updated:** 2026-04-02
-**Last Session:** Git Workflow Hardening — All 4 Phases Implemented (13/14 tasks done)
+**Last Session:** Phase 3 Footing Design — 4 tasks implemented (TASK-650/651/652/653)
 
 ---
 
 ## What Was Done This Session
 
-### Git Workflow Hardening (TASK-900 series — 13/14 tasks complete)
+### Phase 3: Footing Design (4/7 tasks)
 
-**Phase 1 — Emergency Fixes (4/4 done):**
-- TASK-900: Fixed safe_push.sh Step 6 divergence detection — no more false "Push ready" for diverged branches
-- TASK-901: Blocked `--amend` on main/develop/release branches
-- TASK-902: Routed `--push` through safe_push.sh (was bypassing divergence detection)
-- TASK-903: Added pre-flight checks for rebase/cherry-pick/merge states in safe_push.sh
+**TASK-650: Footing types + errors**
+- `FootingType` enum (ISOLATED_SQUARE, ISOLATED_RECTANGULAR)
+- 4 frozen result dataclasses: `FootingBearingResult`, `FootingFlexureResult`, `FootingOneWayShearResult`, `FootingPunchingResult`
+- 8 error codes (E_FOOTING_001 through E_FOOTING_008)
+- All with `to_dict()`, `summary()`, `is_safe`, `clause_ref`, `warnings`
 
-**Phase 2 — Recovery & Resilience (3/3 done):**
-- TASK-904: Persist `--finish` state to `.git/FINISH_STATE` for recovery after terminal reset
-- TASK-905: Squash-merge divergence detection (merged into TASK-900/906 error messages)
-- TASK-906: Categorized push error messages (diverged, auth, protected, network) with specific recovery commands
+**TASK-651: Isolated footing design (bearing + flexure)**
+- `size_footing()` — sizing with SERVICE loads per Cl 34.1 (concentric/trapezoidal/partial contact)
+- `footing_flexure()` — bending at column face per Cl 34.2.3.1, reuses `calculate_ast_required`
+- `_common.py` — shared validators, pressure calc, punching geometry helpers
 
-**Phase 3 — Observability & Testing (3/4 done):**
-- TASK-907: All bypass events now logged to `logs/git_workflow.log` (pre-push + pre-commit hooks)
-- TASK-909: Consolidated duplicated merge+cleanup blocks in finish_task_pr.sh into `merge_and_cleanup()` function
-- TASK-910: Added git script line budget check to check_all.py (2500 total, 700 per script)
-- TASK-908: bats-core tests DEFERRED (requires bats-core installation)
+**TASK-652: Punching shear check**
+- `footing_punching_shear()` — Cl 31.6.1, τc = ks × 0.25 × √fck
+- Handles column aspect ratio (βc, ks), edge case when perimeter exceeds footing
 
-**Phase 4 — Hardening (3/3 done):**
-- TASK-911: Task ID format validation in create_task_pr.sh
-- TASK-912: Log rotation for git_workflow.log (>1MB, keep 3 old copies)
-- TASK-913: Updated ops.agent.md, AGENTS.md, CLAUDE.md with new FORBIDDEN commands
+**TASK-653: One-way shear check**
+- `footing_one_way_shear()` — Cl 34.2.4.1(a), reuses `get_tc_value` from Table 19
+- Handles edge case: cantilever ≤ d → auto-pass
 
-**Files Changed:**
-- `scripts/safe_push.sh` — divergence detection, pre-flight checks, push-only mode, error categorization, log rotation
-- `scripts/ai_commit.sh` — --push routes through safe_push.sh, --amend branch guard, --status shows FINISH_STATE
-- `scripts/finish_task_pr.sh` — state persistence, merge_and_cleanup() dedup
-- `scripts/create_task_pr.sh` — task ID validation
-- `scripts/git-hooks/pre-push` — bypass event logging
-- `scripts/git-hooks/pre-commit` — bypass event logging
-- `scripts/check_git_script_budget.py` — NEW: line budget check
-- `scripts/check_all.py` — added script budget check to git category
-- `.github/agents/ops.agent.md` — new FORBIDDEN commands, error recovery rows, historical mistake #11
-- `AGENTS.md` — git rebase --skip FORBIDDEN, recovery guidance
-- `CLAUDE.md` — git rebase --skip FORBIDDEN, recovery guidance
-- `docs/_active/git-workflow-hardening-plan.md` — status: Active
-- `docs/TASKS.md` — TASK-900 series all marked done
+**Tests:** 61 tests across 6 classes, all passing. Code review: APPROVED.
+
+**Also fixed:** research_design_companion.py — scope limitation docs, cost_delta div-by-zero, input validation, plus 8 stress test scenarios.
+
+### Files Changed
+- 7 new files in `codes/is456/footing/` + `tests/test_footing.py`
+- 3 modified: `__init__.py` (footing import), `data_types.py` (+175 lines), `errors.py` (+80 lines)
+- 2 research fixes: `research_design_companion.py`, `test_research_prototypes.py`
 
 ---
 
 ## What To Do Next
 
-1. **PR #491 (Phase 2 Column Design)** — still open. Check status: `gh pr view 491`
-2. **TASK-908 (bats-core tests)** — install bats-core and write tests for the git failure paths
-3. **Phase 3: Footing Design** — TASK-650 through TASK-656 are next in the library expansion
-4. **Verify git workflow** — test the new divergence detection by creating a temporary diverged state
+1. **TASK-654: Bearing at column-footing interface** — Cl 34.4, load transfer between column and footing (NOT soil bearing — that's done in TASK-651)
+2. **TASK-655: Dowel bars** — Cl 34.2.5, anchorage requirements at column-footing junction
+3. **TASK-656: Footing FastAPI endpoint** — `POST /api/v1/design/footing`, wire up all 4 functions
+4. **PR #491 (Phase 2 Column Design)** — still open, check status: `gh pr view 491`
 
 ---
 
@@ -63,4 +54,5 @@
 git status --short && git branch --show-current
 docs/TASKS.md                    # Check priorities
 ./run.sh session start           # Verify environment
+.venv/bin/pytest Python/tests/test_footing.py -v  # Run footing tests
 ```

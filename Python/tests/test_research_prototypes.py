@@ -572,3 +572,311 @@ class TestDesignCompanion:
         assert isinstance(resp, CompanionResponse)
         assert resp.executive_summary
         assert resp.failure_story.critical_overload > 0
+
+
+# =============================================================================
+# Design Companion — Multiple Realistic Stress-Test Scenarios
+# =============================================================================
+
+
+class TestDesignCompanionMultipleExamples:
+    """Stress tests exercising the Design Companion with diverse, realistic scenarios.
+
+    Each scenario validates:
+    - design_with_companion() returns a CompanionResponse
+    - design_result.is_ok is True
+    - len(reasoning_chain) == 8
+    - failure_story.critical_overload >= 1.0
+    - rebar_reasoning.recommended.is_sufficient == True
+    - executive_summary is non-empty and contains "beam"
+    - full_report() generates a string without errors
+    - fingerprint has valid classifications
+    """
+
+    # ── Scenario parameters ──
+
+    SCENARIOS = {
+        "minimum_beam": dict(
+            b_mm=200,
+            D_mm=300,
+            span_mm=3000,
+            mu_knm=30,
+            vu_kn=25,
+            fck=20,
+            fy=500,
+        ),
+        "typical_residential": dict(
+            b_mm=230,
+            D_mm=450,
+            span_mm=4500,
+            mu_knm=80,
+            vu_kn=55,
+            fck=25,
+            fy=500,
+        ),
+        "heavy_commercial": dict(
+            b_mm=400,
+            D_mm=700,
+            span_mm=8000,
+            mu_knm=400,
+            vu_kn=200,
+            fck=30,
+            fy=500,
+        ),
+        "deep_beam_like": dict(
+            b_mm=200,
+            D_mm=800,
+            span_mm=3000,
+            mu_knm=150,
+            vu_kn=100,
+            fck=25,
+            fy=415,
+        ),
+        "wide_shallow": dict(
+            b_mm=600,
+            D_mm=350,
+            span_mm=5000,
+            mu_knm=60,
+            vu_kn=40,
+            fck=25,
+            fy=500,
+        ),
+        "long_span": dict(
+            b_mm=350,
+            D_mm=650,
+            span_mm=10000,
+            mu_knm=350,
+            vu_kn=180,
+            fck=35,
+            fy=500,
+        ),
+        "m40_high_grade": dict(
+            b_mm=300,
+            D_mm=550,
+            span_mm=6000,
+            mu_knm=200,
+            vu_kn=120,
+            fck=40,
+            fy=500,
+        ),
+        "fe415_steel": dict(
+            b_mm=300,
+            D_mm=500,
+            span_mm=5000,
+            mu_knm=120,
+            vu_kn=80,
+            fck=25,
+            fy=415,
+        ),
+    }
+
+    # ── Fixtures ──
+
+    @pytest.fixture(scope="class")
+    def all_responses(self) -> dict[str, CompanionResponse]:
+        """Run all scenarios once and cache results (expensive)."""
+        return {
+            name: design_with_companion(**params)
+            for name, params in self.SCENARIOS.items()
+        }
+
+    # ── Parametrized core validations ──
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_returns_companion_response(self, scenario, all_responses):
+        """design_with_companion() returns a CompanionResponse."""
+        resp = all_responses[scenario]
+        assert isinstance(
+            resp, CompanionResponse
+        ), f"{scenario}: expected CompanionResponse, got {type(resp).__name__}"
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_design_result_is_ok(self, scenario, all_responses):
+        """All scenarios should produce a safe design."""
+        resp = all_responses[scenario]
+        assert resp.design_result.is_ok, (
+            f"{scenario}: design_result.is_ok is False — "
+            f"flexure_safe={resp.design_result.flexure.is_safe}, "
+            f"shear_safe={resp.design_result.shear.is_safe}"
+        )
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_reasoning_chain_has_8_steps(self, scenario, all_responses):
+        """Reasoning chain must have exactly 8 steps."""
+        resp = all_responses[scenario]
+        assert (
+            len(resp.reasoning_chain) == 8
+        ), f"{scenario}: expected 8 reasoning steps, got {len(resp.reasoning_chain)}"
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_failure_story_critical_overload_ge_1(self, scenario, all_responses):
+        """Critical overload factor >= 1.0 for a safe design."""
+        resp = all_responses[scenario]
+        assert (
+            resp.failure_story.critical_overload >= 1.0
+        ), f"{scenario}: critical_overload={resp.failure_story.critical_overload:.3f} < 1.0"
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_rebar_recommended_is_sufficient(self, scenario, all_responses):
+        """Recommended rebar arrangement must be sufficient."""
+        resp = all_responses[scenario]
+        assert resp.rebar_reasoning.recommended.is_sufficient, (
+            f"{scenario}: recommended rebar '{resp.rebar_reasoning.recommended.bars}' "
+            f"is NOT sufficient (area={resp.rebar_reasoning.recommended.total_area_mm2:.0f} mm², "
+            f"required={resp.rebar_reasoning.ast_required_mm2:.0f} mm²)"
+        )
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_executive_summary_non_empty_and_mentions_beam(
+        self, scenario, all_responses
+    ):
+        """Executive summary is non-empty and contains 'beam'."""
+        resp = all_responses[scenario]
+        assert resp.executive_summary, f"{scenario}: executive_summary is empty"
+        assert (
+            len(resp.executive_summary) > 50
+        ), f"{scenario}: executive_summary too short ({len(resp.executive_summary)} chars)"
+        assert (
+            "beam" in resp.executive_summary.lower()
+        ), f"{scenario}: executive_summary does not contain 'beam'"
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_full_report_generates_string(self, scenario, all_responses):
+        """full_report() generates a non-empty string without errors."""
+        resp = all_responses[scenario]
+        report = resp.full_report()
+        assert isinstance(report, str), f"{scenario}: full_report() did not return str"
+        assert len(report) > 200, f"{scenario}: report too short ({len(report)} chars)"
+        assert "STRUCTURAL DESIGN COMPANION" in report
+
+    @pytest.mark.parametrize("scenario", SCENARIOS.keys())
+    def test_fingerprint_valid_classifications(self, scenario, all_responses):
+        """Fingerprint fields have valid classification values."""
+        fp = all_responses[scenario].fingerprint
+        assert fp.span_class in (
+            "short",
+            "medium",
+            "long",
+        ), f"{scenario}: invalid span_class={fp.span_class}"
+        assert fp.load_intensity in (
+            "light",
+            "medium",
+            "heavy",
+        ), f"{scenario}: invalid load_intensity={fp.load_intensity}"
+        assert fp.section_efficiency in (
+            "lean",
+            "balanced",
+            "generous",
+        ), f"{scenario}: invalid section_efficiency={fp.section_efficiency}"
+        assert fp.steel_intensity in (
+            "minimum",
+            "light",
+            "moderate",
+            "heavy",
+        ), f"{scenario}: invalid steel_intensity={fp.steel_intensity}"
+        assert fp.ductility_class in (
+            "highly_ductile",
+            "ductile",
+            "balanced",
+            "brittle_risk",
+        ), f"{scenario}: invalid ductility_class={fp.ductility_class}"
+        assert fp.carbon_rating in (
+            "A+",
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+        ), f"{scenario}: invalid carbon_rating={fp.carbon_rating}"
+
+    # ── Scenario-specific assertions ──
+
+    def test_deep_beam_anomaly_detects_b_d_ratio(self, all_responses):
+        """Deep beam (200×800): anomalies should detect unusual b/D ratio."""
+        resp = all_responses["deep_beam_like"]
+        anomaly_metrics = [a.metric.lower() for a in resp.anomalies]
+        has_bd_anomaly = any(
+            "width" in m or "b/d" in m or "depth" in m for m in anomaly_metrics
+        )
+        assert has_bd_anomaly, (
+            f"Deep beam (200×800) should detect unusual b/D ratio. "
+            f"Found anomalies: {anomaly_metrics}"
+        )
+
+    def test_m40_light_load_anomaly_detects_grade_mismatch(self):
+        """M40 + light load: anomalies should detect high grade mismatch.
+
+        The m40_high_grade scenario has Mu=200 kNm (heavy), which justifies M40.
+        Use a dedicated light-load M40 call to trigger the grade mismatch check
+        (anomaly fires when fck >= 35 AND load_per_m2 < 15).
+        """
+        resp = design_with_companion(
+            b_mm=300,
+            D_mm=550,
+            span_mm=6000,
+            mu_knm=50,
+            vu_kn=30,
+            fck=40,
+            fy=500,
+        )
+        anomaly_metrics = [a.metric.lower() for a in resp.anomalies]
+        has_grade_anomaly = any(
+            "grade" in m or "concrete" in m for m in anomaly_metrics
+        )
+        assert has_grade_anomaly, (
+            f"M40 beam with light load should detect grade mismatch. "
+            f"Found anomalies: {anomaly_metrics}"
+        )
+
+    # ── Cross-scenario consistency checks ──
+
+    def test_minimum_beam_has_generous_section(self, all_responses):
+        """Minimum beam (small load, decent section) should have generous efficiency."""
+        fp = all_responses["minimum_beam"].fingerprint
+        assert (
+            fp.load_intensity == "light"
+        ), f"Minimum beam should be 'light' load, got '{fp.load_intensity}'"
+
+    def test_heavy_commercial_is_heavy_load(self, all_responses):
+        """Heavy commercial beam should be classified as heavy load."""
+        fp = all_responses["heavy_commercial"].fingerprint
+        assert (
+            fp.load_intensity == "heavy"
+        ), f"Heavy commercial should be 'heavy' load, got '{fp.load_intensity}'"
+
+    def test_long_span_classified_correctly(self, all_responses):
+        """Long span (10m) should be classified as 'long'."""
+        fp = all_responses["long_span"].fingerprint
+        assert (
+            fp.span_class == "long"
+        ), f"10m span should be 'long', got '{fp.span_class}'"
+
+    def test_minimum_beam_span_short(self, all_responses):
+        """3m span should be classified as 'short'."""
+        fp = all_responses["minimum_beam"].fingerprint
+        assert (
+            fp.span_class == "short"
+        ), f"3m span should be 'short', got '{fp.span_class}'"
+
+    def test_fe415_companion_works(self, all_responses):
+        """Fe415 scenario should work correctly (different xu_max/d)."""
+        resp = all_responses["fe415_steel"]
+        assert resp.design_result.is_ok
+        # Fe415 has xu_max/d=0.48 (vs 0.46 for Fe500) — check it's used
+        chain = resp.reasoning_chain
+        step1 = chain[0]
+        assert (
+            "0.48" in step1.result
+        ), f"Fe415 should show xu_max/d=0.48, got: {step1.result}"
+
+    def test_wide_shallow_has_high_bd_ratio(self, all_responses):
+        """Wide shallow beam (600×350) — b/D > 1.0, should trigger anomaly."""
+        resp = all_responses["wide_shallow"]
+        anomaly_metrics = [a.metric.lower() for a in resp.anomalies]
+        has_bd_anomaly = any(
+            "width" in m or "b/d" in m or "shallow" in m for m in anomaly_metrics
+        )
+        assert has_bd_anomaly, (
+            f"Wide shallow beam (600×350, b/D=1.71) should detect unusual ratio. "
+            f"Found anomalies: {anomaly_metrics}"
+        )

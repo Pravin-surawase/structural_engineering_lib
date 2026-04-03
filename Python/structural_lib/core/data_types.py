@@ -971,3 +971,175 @@ class HelicalReinforcementResult:
             f"[{self.min_pitch_mm:.0f}-{self.max_pitch_mm:.0f}mm], "
             f"Pu_enh={self.Pu_enhanced_kN:.1f}kN"
         )
+
+
+# =============================================================================
+# Footing Design Types — IS 456 Cl. 34, 31.6
+# =============================================================================
+
+
+class FootingType(Enum):
+    """Footing classification."""
+
+    ISOLATED_SQUARE = auto()
+    ISOLATED_RECTANGULAR = auto()
+
+
+@dataclass(frozen=True)
+class FootingBearingResult:
+    """Bearing pressure check per IS 456 Cl 34.1.
+
+    Note: Sizing uses SERVICE (unfactored) loads per IS 456 Cl 34.1.
+    Structural design (flexure, shear) uses FACTORED loads.
+    """
+
+    L_mm: float  # Footing length (mm)
+    B_mm: float  # Footing width (mm)
+    q_max_kPa: float  # Maximum soil pressure at service (kPa = kN/m²)
+    q_min_kPa: float  # Minimum soil pressure at service (kPa)
+    q_safe_kPa: float  # Allowable bearing capacity (kPa)
+    pressure_type: str  # "uniform", "trapezoidal", "partial_contact"
+    utilization_ratio: float  # q_max / q_safe
+    is_safe: bool
+    clause_ref: str = "Cl. 34.1"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "L_mm": self.L_mm,
+            "B_mm": self.B_mm,
+            "q_max_kPa": self.q_max_kPa,
+            "q_min_kPa": self.q_min_kPa,
+            "q_safe_kPa": self.q_safe_kPa,
+            "pressure_type": self.pressure_type,
+            "utilization_ratio": self.utilization_ratio,
+            "is_safe": self.is_safe,
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        return (
+            f"Footing Bearing ({status}): {self.L_mm:.0f}×{self.B_mm:.0f}mm, "
+            f"q_max={self.q_max_kPa:.1f}kPa, q_safe={self.q_safe_kPa:.1f}kPa, "
+            f"Util={self.utilization_ratio:.2f}, Type={self.pressure_type}"
+        )
+
+
+@dataclass(frozen=True)
+class FootingFlexureResult:
+    """Flexural design per IS 456 Cl 34.2.3.1."""
+
+    Mu_kNm: float  # Bending moment at column face (kN·m)
+    Ast_mm2: float  # Required steel area (mm²)
+    pt_percent: float  # Steel percentage
+    cantilever_mm: float  # Cantilever projection from column face (mm)
+    d_mm: float  # Effective depth used (mm)
+    is_safe: bool
+    clause_ref: str = "Cl. 34.2.3.1"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "Mu_kNm": self.Mu_kNm,
+            "Ast_mm2": self.Ast_mm2,
+            "pt_percent": self.pt_percent,
+            "cantilever_mm": self.cantilever_mm,
+            "d_mm": self.d_mm,
+            "is_safe": self.is_safe,
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        return (
+            f"Footing Flexure ({status}): Mu={self.Mu_kNm:.1f}kNm, "
+            f"Ast={self.Ast_mm2:.0f}mm², pt={self.pt_percent:.2f}%"
+        )
+
+
+@dataclass(frozen=True)
+class FootingOneWayShearResult:
+    """One-way shear check per IS 456 Cl 34.2.4.1(a)."""
+
+    tau_v_nmm2: float  # Nominal shear stress (N/mm²)
+    tau_c_nmm2: float  # Design shear strength from Table 19 (N/mm²)
+    Vu_kN: float  # Shear force at critical section (kN)
+    d_mm: float  # Effective depth (mm)
+    critical_section_mm: float  # Distance from column face to critical section (mm)
+    utilization_ratio: float  # tau_v / tau_c
+    is_safe: bool
+    clause_ref: str = "Cl. 34.2.4.1(a)"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "tau_v_nmm2": self.tau_v_nmm2,
+            "tau_c_nmm2": self.tau_c_nmm2,
+            "Vu_kN": self.Vu_kN,
+            "d_mm": self.d_mm,
+            "critical_section_mm": self.critical_section_mm,
+            "utilization_ratio": self.utilization_ratio,
+            "is_safe": self.is_safe,
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        return (
+            f"Footing One-Way Shear ({status}): "
+            f"τv={self.tau_v_nmm2:.3f}, τc={self.tau_c_nmm2:.3f} N/mm², "
+            f"Util={self.utilization_ratio:.2f}"
+        )
+
+
+@dataclass(frozen=True)
+class FootingPunchingResult:
+    """Punching shear check per IS 456 Cl 31.6.1 + 34.2.4.1(b)."""
+
+    tau_v_nmm2: float  # Nominal punching shear stress (N/mm²)
+    tau_c_nmm2: float  # Permissible punching stress = ks × 0.25√fck (N/mm²)
+    perimeter_mm: float  # Critical perimeter at d/2 from column face (mm)
+    Vu_punch_kN: float  # Shear force on critical section (kN)
+    d_mm: float  # Effective depth (mm)
+    beta_c: float  # min(a,b)/max(a,b) — column aspect ratio
+    ks: float  # (0.5 + beta_c) ≤ 1.0
+    utilization_ratio: float  # tau_v / tau_c
+    is_safe: bool
+    clause_ref: str = "Cl. 31.6.1"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "tau_v_nmm2": self.tau_v_nmm2,
+            "tau_c_nmm2": self.tau_c_nmm2,
+            "perimeter_mm": self.perimeter_mm,
+            "Vu_punch_kN": self.Vu_punch_kN,
+            "d_mm": self.d_mm,
+            "beta_c": self.beta_c,
+            "ks": self.ks,
+            "utilization_ratio": self.utilization_ratio,
+            "is_safe": self.is_safe,
+            "clause_ref": self.clause_ref,
+            "warnings": list(self.warnings),
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "SAFE" if self.is_safe else "UNSAFE"
+        return (
+            f"Footing Punching Shear ({status}): "
+            f"τv={self.tau_v_nmm2:.3f}, τc={self.tau_c_nmm2:.3f} N/mm², "
+            f"βc={self.beta_c:.2f}, ks={self.ks:.2f}, "
+            f"Util={self.utilization_ratio:.2f}"
+        )

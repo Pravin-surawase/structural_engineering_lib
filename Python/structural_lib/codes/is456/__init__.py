@@ -39,6 +39,7 @@ from structural_lib.codes.is456 import (
     column,  # noqa: F401
     compliance,
     ductile,
+    footing,  # noqa: F401
     slenderness,
     tables,
     traceability,
