@@ -7,6 +7,8 @@ Covers: core/errors.py (DesignError, Severity, pre-defined codes),
         core/types.py (re-export shim).
 """
 
+import warnings
+
 import pytest
 
 from structural_lib.core.data_types import (
@@ -16,6 +18,7 @@ from structural_lib.core.data_types import (
     FlexureResult,
     LoadDefinition,
     LoadType,
+    ShearResult,
     SupportCondition,
 )
 from structural_lib.core.errors import (
@@ -258,3 +261,130 @@ class TestTypesShim:
         assert hasattr(types_mod, "FlexureResult")
         assert hasattr(types_mod, "ShearResult")
         assert hasattr(types_mod, "BeamType")
+
+
+class TestFlexureResultBackwardCompat:
+    """Verify deprecated @property aliases on FlexureResult emit warnings and return correct values."""
+
+    def _make(self):
+        return FlexureResult(
+            Mu_lim=150.0,
+            Ast_required=1200.0,
+            Asc_required=300.0,
+            pt_provided=0.89,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=120.0,
+            xu_max=200.0,
+            is_safe=True,
+        )
+
+    def test_mu_lim_alias_value(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.mu_lim == 150.0
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+            assert "mu_lim" in str(w[0].message)
+
+    def test_ast_required_alias_value(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.ast_required == 1200.0
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+
+    def test_asc_required_alias_value(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.asc_required == 300.0
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+
+
+class TestShearResultBackwardCompat:
+    """Verify deprecated @property aliases on ShearResult emit warnings and return correct values."""
+
+    def _make(self):
+        return ShearResult(
+            tau_v=1.5,
+            tau_c=0.6,
+            tau_c_max=2.8,
+            Vus=80.0,
+            is_safe=True,
+            spacing=150.0,
+        )
+
+    def test_tv_alias(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.tv == 1.5
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+
+    def test_tc_alias(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.tc == 0.6
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+
+    def test_tc_max_alias(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.tc_max == 2.8
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+
+    def test_vus_alias(self):
+        r = self._make()
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            assert r.vus == 80.0
+            assert len(w) == 1
+            assert issubclass(w[0].category, DeprecationWarning)
+
+
+class TestNewFieldAccessNoWarning:
+    """Verify canonical field names do NOT emit DeprecationWarning."""
+
+    def test_flexure_new_names_no_warning(self):
+        r = FlexureResult(
+            Mu_lim=150.0,
+            Ast_required=1200.0,
+            pt_provided=0.89,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=120.0,
+            xu_max=200.0,
+            is_safe=True,
+        )
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            _ = r.Mu_lim
+            _ = r.Ast_required
+            _ = r.Asc_required
+            dep_warnings = [x for x in w if issubclass(x.category, DeprecationWarning)]
+            assert len(dep_warnings) == 0
+
+    def test_shear_new_names_no_warning(self):
+        r = ShearResult(
+            tau_v=1.5,
+            tau_c=0.6,
+            tau_c_max=2.8,
+            Vus=80.0,
+            is_safe=True,
+            spacing=150.0,
+        )
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            _ = r.tau_v
+            _ = r.tau_c
+            _ = r.tau_c_max
+            _ = r.Vus
+            dep_warnings = [x for x in w if issubclass(x.category, DeprecationWarning)]
+            assert len(dep_warnings) == 0

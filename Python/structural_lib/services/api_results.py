@@ -76,7 +76,7 @@ class DesignAndDetailResult:
         """Human-readable summary of combined result."""
         b = self.geometry.get("b_mm", 0)
         D = self.geometry.get("D_mm", 0)
-        ast = self.design.flexure.ast_required if self.design else 0
+        ast = self.design.flexure.Ast_required if self.design else 0
         status = "OK" if self.is_ok else "FAIL"
         return f"{self.beam_id}@{self.story}: {b:.0f}×{D:.0f}mm, Ast={ast:.0f}mm², {status}"
 
