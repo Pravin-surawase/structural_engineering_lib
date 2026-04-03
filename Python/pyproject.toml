@@ -113,6 +113,11 @@ ignore-names = [
   "M_bal", "M_above", "M_below",  # P-M curve test vars
   "Pu_test", "Pu",  # Test axial load vars
   "Asc",  # Area of steel (compression)
+  "Xu", "Xu_max", "Xu_mm",  # Neutral axis depth
+  "Sv", "Sv_mm",  # Stirrup spacing
+  "Vus", "Vus_kN",  # Shear capacity of stirrups
+  "Ac",  # Concrete area
+  "Asc_prov",  # Provided compression steel
 ]
 
 # classmethod decorators use cls
@@ -133,21 +138,19 @@ classmethod-decorators = ["classmethod"]
 "tests/integration/test_tables_and_materials_additional.py" = ["N802"]  # test_*_D pattern
 "tests/unit/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
 "tests/unit/test_serviceability.py" = ["E402"]  # Import after section header comment
-"tests/codes/is456/column/test_axial.py" = ["N802", "N803", "N806", "E741"]  # Structural engineering naming (Ag, Asc, Pu, l)
-"structural_lib/codes/is456/column/uniaxial.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc, Cc, Fsc)
-"tests/codes/is456/column/test_uniaxial.py" = ["N802", "N803", "N806"]  # Structural engineering naming (Pu, Mu, Asc)
-"structural_lib/codes/is456/column/biaxial.py" = ["N803", "N806", "C409"]  # Structural engineering naming (Puz, Mux, Muy, alpha_n)
+# --- IS 456 structural engineering naming (glob patterns) ---
+# All IS 456 code modules use standard notation: Ag, Asc, Pu, Mu, Vu, etc.
+# Per IS 456:2000, SP:16 and international engineering convention, these MUST
+# be uppercase. Glob patterns cover all current and future IS 456 modules.
+"structural_lib/codes/is456/**/*.py" = ["N803", "N806"]
+# All IS 456 test files additionally use uppercase in test method names
+"tests/codes/is456/**/*.py" = ["N802", "N803", "N806"]
+# Individual overrides for files needing additional rules beyond N803/N806
+"tests/codes/is456/column/test_axial.py" = ["N802", "N803", "N806", "E741"]  # also 'l' variable
+"structural_lib/codes/is456/column/biaxial.py" = ["N803", "N806", "C409"]  # also unused zip-strict
 "tests/test_column_biaxial.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict() for readability
-"structural_lib/codes/is456/column/helical.py" = ["N803", "N806"]  # Structural engineering naming (D_core, Pu, A_helix, V_helix)
-"structural_lib/codes/is456/column/long_column.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mu, M1, M2)
-"structural_lib/codes/is456/column/slenderness.py" = ["N803", "N806"]  # Structural engineering naming (Pu, M)
 "tests/test_column_helical.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict()
 "tests/test_column_long.py" = ["N802", "N803", "N806", "C408"]  # Structural engineering naming + dict()
-"structural_lib/codes/is456/footing/_common.py" = ["N803", "N806"]  # Structural engineering naming (L_mm, B_mm, Pu_kN)
-"structural_lib/codes/is456/footing/bearing.py" = ["N803", "N806"]  # Structural engineering naming (P_service_kN, q_safe_kPa, L_mm, B_mm)
-"structural_lib/codes/is456/footing/flexure.py" = ["N803", "N806"]  # Structural engineering naming (L_mm, B_mm, Mu, Ast)
-"structural_lib/codes/is456/footing/one_way_shear.py" = ["N803", "N806"]  # Structural engineering naming (L_mm, B_mm, Vu)
-"structural_lib/codes/is456/footing/punching_shear.py" = ["N803", "N806"]  # Structural engineering naming (L_mm, B_mm, Vu, A_punch)
 "structural_lib/core/data_types.py" = ["N815"]  # Structural engineering naming in dataclass fields (q_max_kPa, q_min_kPa)
 "tests/test_footing.py" = ["N802", "N806"]  # Structural engineering naming in test methods + variables
 "tests/test_research_prototypes.py" = ["C408"]  # dict() for readability in test scenario definitions
