@@ -1659,6 +1659,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-naming-migration-task-660" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variable Naming Migration (TASK-660)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#phase-4-6-slab-staircase-shear-wall-future" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2414,7 +2425,31 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 </tbody>
 </table>
 <blockquote>
-<p>Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in <code>codes/is456/footing/</code>. 61 tests, 0 failures. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).</p>
+<p>Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in <code>codes/is456/footing/</code>. 79 tests, 0 failures. Fixes applied: both-direction flexure + shear design, Cl 34.3.1 steel distribution for rectangular footings, 150mm minimum depth enforcement. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).</p>
+</blockquote>
+<h3 id="variable-naming-migration-task-660">Variable Naming Migration (TASK-660)<a class="headerlink" href="#variable-naming-migration-task-660" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Scope</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-660</td>
+<td>Standardize variable naming to IS 456 industry convention</td>
+<td>FlexureResult, ShearResult, TorsionResult, LoadCase, ComplianceCaseResult</td>
+<td>🟡 Medium</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Breaking change:</strong> Beam module result types use lowercase (<code>mu_lim</code>, <code>ast_required</code>, <code>tv</code>, <code>tc</code>, <code>vus</code>, <code>tu_knm</code>, <code>vu_kn</code>, <code>asv_torsion</code>) where IS 456 convention requires uppercase (<code>Mu_lim</code>, <code>Ast_required</code>, <code>Tv</code>, <code>Tc</code>, <code>Vus</code>, <code>Tu_knm</code>, <code>Vu_kn</code>, <code>Asv_torsion</code>). Column and footing modules already follow correct convention. Migration requires updating: data_types.py, beam/*.py, services/api.py, FastAPI models, React types, all tests. Needs deprecation shim for backward compat.</p>
 </blockquote>
 <h3 id="phase-4-6-slab-staircase-shear-wall-future">Phase 4-6: Slab, Staircase, Shear Wall (Future)<a class="headerlink" href="#phase-4-6-slab-staircase-shear-wall-future" title="Permanent link">&para;</a></h3>
 <p>See <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> for full multi-code, multi-element plan.</p>
