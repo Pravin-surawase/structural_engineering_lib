@@ -1504,6 +1504,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#task-670-fix-calculation_reportpy-shear-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TASK-670: Fix calculation_report.py Shear Bug ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#files-changed-key" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1574,6 +1585,14 @@
 <li>JSON API stays backward compatible (Pydantic field names unchanged)</li>
 <li>Fixed Pydantic field access bug in design.py (mixed up dataclass vs Pydantic field names)</li>
 <li>All tests pass: 4165 Python + 180 FastAPI</li>
+</ul>
+<h3 id="task-670-fix-calculation_reportpy-shear-bug">TASK-670: Fix calculation_report.py Shear Bug ✅<a class="headerlink" href="#task-670-fix-calculation_reportpy-shear-bug" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed 4 non-existent field accesses on ShearResult (.vu_kn, .vc_kn, .vs_kn, .is_ok → tau_v, tau_c, tau_c_max, Vus, spacing, is_safe)</li>
+<li>Updated HTML/Markdown templates to IS 456 stress-based format (τ_v, τ_c, τ_c,max)</li>
+<li>Replaced MagicMock with real ShearResult in tests</li>
+<li>Added integration test with real dataclass objects</li>
+<li>4175 Python + 180 FastAPI tests pass</li>
 </ul>
 <h3 id="files-changed-key">Files Changed (key)<a class="headerlink" href="#files-changed-key" title="Permanent link">&para;</a></h3>
 <ul>
