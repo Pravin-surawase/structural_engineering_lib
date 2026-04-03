@@ -2121,6 +2121,12 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </thead>
 <tbody>
 <tr>
+<td>TASK-660</td>
+<td>Standardize variable naming to IS 456 industry convention (21 fields, 4 dataclasses)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
 <td>TASK-650/651/652/653</td>
 <td>Phase 3 Footing: types, bearing/flexure, one-way shear, punching shear (61 tests)</td>
 <td>Copilot</td>
@@ -2444,12 +2450,12 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td>Standardize variable naming to IS 456 industry convention</td>
 <td>FlexureResult, ShearResult, TorsionResult, LoadCase, ComplianceCaseResult</td>
 <td>🟡 Medium</td>
-<td>📋</td>
+<td>✅ Done</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p><strong>Breaking change:</strong> Beam module result types use lowercase (<code>mu_lim</code>, <code>ast_required</code>, <code>tv</code>, <code>tc</code>, <code>vus</code>, <code>tu_knm</code>, <code>vu_kn</code>, <code>asv_torsion</code>) where IS 456 convention requires uppercase (<code>Mu_lim</code>, <code>Ast_required</code>, <code>Tv</code>, <code>Tc</code>, <code>Vus</code>, <code>Tu_knm</code>, <code>Vu_kn</code>, <code>Asv_torsion</code>). Column and footing modules already follow correct convention. Migration requires updating: data_types.py, beam/*.py, services/api.py, FastAPI models, React types, all tests. Needs deprecation shim for backward compat.</p>
+<p>TASK-660 complete. 21 field renames across 4 dataclasses. @property backward-compat aliases added (deprecation warnings, removal in v1.0.0). ~60 files updated. JSON API backward compatible. 4165 Python + 180 FastAPI tests pass.</p>
 </blockquote>
 <h3 id="phase-4-6-slab-staircase-shear-wall-future">Phase 4-6: Slab, Staircase, Shear Wall (Future)<a class="headerlink" href="#phase-4-6-slab-staircase-shear-wall-future" title="Permanent link">&para;</a></h3>
 <p>See <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> for full multi-code, multi-element plan.</p>

@@ -1493,10 +1493,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#footing-module-review-fixes" class="md-nav__link">
+  <a href="#task-660-variable-naming-migration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Footing Module Review &amp; Fixes
+        TASK-660: Variable Naming Migration ✅
       
     </span>
   </a>
@@ -1504,21 +1504,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#variable-naming-audit" class="md-nav__link">
+  <a href="#files-changed-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Variable Naming Audit
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#files-changed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Files Changed
+        Files Changed (key)
       
     </span>
   </a>
@@ -1573,50 +1562,42 @@
 
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
-<p><strong>Updated:</strong> 2026-04-03
-<strong>Last Session:</strong> Footing module review + CRITICAL fixes (F-004, F-006, F-001, F-005, F-008)</p>
+<p><strong>Updated:</strong> 2026-04-04
+<strong>Last Session:</strong> TASK-660 Variable Naming Migration (complete)</p>
 <hr />
 <h2 id="what-was-done-this-session">What Was Done This Session<a class="headerlink" href="#what-was-done-this-session" title="Permanent link">&para;</a></h2>
-<h3 id="footing-module-review-fixes">Footing Module Review &amp; Fixes<a class="headerlink" href="#footing-module-review-fixes" title="Permanent link">&para;</a></h3>
+<h3 id="task-660-variable-naming-migration">TASK-660: Variable Naming Migration ✅<a class="headerlink" href="#task-660-variable-naming-migration" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>3-agent parallel review:</strong> structural-engineer + reviewer + variable naming audit</li>
-<li><strong>F-004 (CRITICAL):</strong> Fixed flexure.py — now designs steel in BOTH L and B directions independently</li>
-<li><strong>F-006 (CRITICAL):</strong> Fixed one_way_shear.py — now checks shear in BOTH directions, reports governing direction</li>
-<li><strong>F-001 (MAJOR):</strong> Added 150mm minimum depth enforcement in _common.py (E_FOOTING_005)</li>
-<li><strong>F-005 (MAJOR):</strong> Added IS 456 Cl 34.3.1 steel distribution for rectangular footings (2/(β+1) central band)</li>
-<li><strong>F-008 (MAJOR):</strong> Extended FootingFlexureResult with both-direction fields + central_band_fraction</li>
-<li><strong>Tests:</strong> 79 footing tests (was 63, +16 new), full suite 4165 passed, 0 failures</li>
-<li><strong>Re-verified:</strong> Structural engineer APPROVED all fixes</li>
+<li>Renamed 21 dataclass fields across FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult to IS 456 convention</li>
+<li>Added @property backward-compat aliases with DeprecationWarning (removal in v1.0.0)</li>
+<li>Updated ~60 files: core code, services, tests, examples, FastAPI routers</li>
+<li>JSON API stays backward compatible (Pydantic field names unchanged)</li>
+<li>Fixed Pydantic field access bug in design.py (mixed up dataclass vs Pydantic field names)</li>
+<li>All tests pass: 4165 Python + 180 FastAPI</li>
 </ul>
-<h3 id="variable-naming-audit">Variable Naming Audit<a class="headerlink" href="#variable-naming-audit" title="Permanent link">&para;</a></h3>
+<h3 id="files-changed-key">Files Changed (key)<a class="headerlink" href="#files-changed-key" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Footing + Column modules:</strong> CORRECT ✅ (Pu_kN, Mu_kNm, Ast_mm2)</li>
-<li><strong>Beam modules:</strong> VIOLATIONS found — FlexureResult, ShearResult, TorsionResult use lowercase where uppercase required</li>
-<li><strong>Created TASK-660</strong> for migration (breaking change, needs deprecation path)</li>
-</ul>
-<h3 id="files-changed">Files Changed<a class="headerlink" href="#files-changed" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>codes/is456/footing/flexure.py</code> — both-direction design, Cl 34.3.1</li>
-<li><code>codes/is456/footing/one_way_shear.py</code> — both-direction check, governing_direction</li>
-<li><code>codes/is456/footing/_common.py</code> — 150mm min depth, E_FOOTING_005</li>
-<li><code>codes/is456/footing/bearing.py</code> — comment fix</li>
-<li><code>core/data_types.py</code> — FootingFlexureResult both-direction fields + central_band_fraction, FootingOneWayShearResult governing_direction</li>
-<li><code>tests/test_footing.py</code> — 79 tests (16 new for both-direction, Cl 34.3.1, min depth)</li>
+<li><code>core/data_types.py</code> — 21 field renames + 21 @property aliases</li>
+<li><code>codes/is456/beam/flexure.py</code>, <code>shear.py</code>, <code>torsion.py</code> — construction sites</li>
+<li><code>codes/is456/compliance.py</code> — ComplianceCaseResult constructor</li>
+<li><code>services/*.py</code> — field accesses (~12 files)</li>
+<li><code>fastapi_app/routers/design.py</code> — Pydantic field access fix</li>
+<li><code>Python/tests/*</code> — ~25 test files updated</li>
+<li><code>Python/examples/*</code> — 8 example files updated</li>
 </ul>
 <hr />
 <h2 id="what-to-do-next">What To Do Next<a class="headerlink" href="#what-to-do-next" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>TASK-660: Variable naming migration</strong> — Standardize beam result types (FlexureResult, ShearResult, TorsionResult) to IS 456 convention. This is a breaking change — plan deprecation shim first.</li>
-<li><strong>TASK-654: Bearing at column-footing interface</strong> — Cl 34.4, load transfer (NOT soil bearing)</li>
+<li><strong>TASK-654: Bearing at column-footing interface</strong> — Cl 34.4, load transfer calculation</li>
 <li><strong>TASK-655: Dowel bars</strong> — Cl 34.2.5, anchorage at column-footing junction</li>
-<li><strong>TASK-656: Footing FastAPI endpoint</strong> — <code>POST /api/v1/design/footing</code>, wire up all functions</li>
+<li><strong>TASK-656: Footing FastAPI endpoint</strong> — <code>POST /api/v1/design/footing</code></li>
+<li><strong>TASK-519: Alternatives Panel (Pareto)</strong> — Pareto front in DesignView</li>
 </ol>
 <hr />
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>branch<span class="w"> </span>--show-current
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docs/TASKS.md<span class="w">                    </span><span class="c1"># Check priorities</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start<span class="w">           </span><span class="c1"># Verify environment</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>.venv/bin/pytest<span class="w"> </span>Python/tests/test_footing.py<span class="w"> </span>-v<span class="w">  </span><span class="c1"># Run footing tests (79 expected)</span>
 </code></pre></div>
 
 
