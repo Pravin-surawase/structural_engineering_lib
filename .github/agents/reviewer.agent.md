@@ -59,6 +59,29 @@ cd react_app && npm run build                          # Build check
 
 > See terminal-rules.instructions.md for fallback chain when commands fail.
 
+### Known Limitation: Large Output Truncation
+
+Architecture validation scripts can produce output that exceeds agent context limits, causing silent failure.
+
+**Prevention:**
+1. Always run checks in small scopes — one module at a time, not full codebase
+2. Use `| head -50` or `| wc -l` first to assess output size
+3. If output > 100 lines, split into separate passes:
+   ```bash
+   # Step 1: Quick count
+   .venv/bin/python scripts/check_architecture_boundaries.py 2>&1 | wc -l
+
+   # Step 2: If large, check one layer at a time
+   .venv/bin/python scripts/check_architecture_boundaries.py --scope core
+   .venv/bin/python scripts/check_architecture_boundaries.py --scope codes
+   .venv/bin/python scripts/check_architecture_boundaries.py --scope services
+   ```
+4. For import validation, scope narrowly:
+   ```bash
+   .venv/bin/python scripts/validate_imports.py --scope structural_lib.core
+   .venv/bin/python scripts/validate_imports.py --scope structural_lib.codes
+   ```
+
 ## Review Output Format (MANDATORY)
 
 After every review, report in this format:
@@ -92,6 +115,13 @@ After every review, report in this format:
 ### IS 456 Compliance
 - [ ] Formulas match IS 456:2000 clause references
 - [ ] Edge cases handled (min reinforcement, max spacing)
+
+**Modules in scope for IS 456 review:**
+- `codes/is456/beam/` — beam design (shear, flexure, torsion, deflection)
+- `codes/is456/column/` — 7 modules: axial, uniaxial, biaxial, slenderness, helical, long_column, detailing
+- `codes/is456/footing/` — 4 modules: flexure, one_way_shear, punching_shear, bearing
+- `codes/is456/compliance.py` — compliance checks
+- `codes/is13920/beam.py` — seismic detailing (IS 13920)
 
 ### Code Quality
 - [ ] No duplicate hooks/components (check `react_app/src/hooks/`)

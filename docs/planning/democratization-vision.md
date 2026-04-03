@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-04-04
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-01-19
-**Last Updated:** 2026-01-19
+**Last Updated:** 2026-04-04
 **Related Tasks:** TASK-3D-VIZ, TASK-AI-001
 
 ---
@@ -130,17 +130,20 @@ actions:
 > **"We can't just keep our main engine the same... it must be updated as we go ahead."**
 
 **Current library state (from research):**
-- 36+ public API functions
-- 2,269 tests passing
-- 86% branch coverage
+- 36+ public API functions + 12 column + 4 footing functions
+- 4,237+ tests passing
+- 85% branch coverage
+- 58 FastAPI endpoints (13 routers)
 - 11 insights submodules
 - Enterprise-grade error handling (633 lines)
+
+> **Detailed implementation plan:** [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md) is the v5.0 blueprint covering multi-code, multi-element expansion (Pillar 4: Library Excellence).
 
 **Roadmap (from chat-ui-product-strategy-research.md v0.25.0):**
 | Version | Module | Timeline |
 |---------|--------|----------|
-| v0.21.0 | Column design (IS 456) | Month 7+ |
-| v0.22.0 | Column detailing | Month 7+ |
+| v0.21.0 | Column design (IS 456) | ✅ DONE (Phase 2 complete: 14 column functions) |
+| v0.22.0 | Column detailing | ✅ DONE (TASK-645, 8 detailing functions) |
 | v0.23.0 | Slab design (IS 456) | Month 8+ |
 | v0.24.0 | Slab detailing | Month 8+ |
 | v0.25.0 | Multi-code (Eurocode, ACI) | Month 10+ |
@@ -186,18 +189,17 @@ actions:
 
 ### Current Tech Stack
 - **Backend:** Python 3.10+, Pydantic v2, NumPy/SciPy
-- **Frontend:** Streamlit 1.30+
-- **3D:** Plotly.js (current), PyVista (planned)
-- **Testing:** pytest, 86% coverage
-- **Automation:** Pre-commit hooks, CI/CD
+- **Frontend:** React 19 + React-Three-Fiber (R3F) + Tailwind CSS (fully operational, 58 API endpoints)
+- **API:** FastAPI (13 routers, 58 endpoints, REST + WebSocket)
+- **3D:** React-Three-Fiber (web), PyVista (planned server-side)
+- **Testing:** pytest, 85% coverage, 4,237+ tests
+- **Automation:** Pre-commit hooks, CI/CD, MkDocs Material
 
 ### Future Tech Adoption
 | Technology | Purpose | Timeline |
 |------------|---------|----------|
-| **PyVista** | CAD-quality 3D rendering | Phase 4 (Week 7) |
+| **PyVista** | CAD-quality 3D rendering (server-side) | V1.1+ |
 | **Vercel AI SDK v6** | Chat interface | V1.1 (Month 4-5) |
-| **FastAPI** | API backend for chat | V1.1 (Month 4-5) |
-| **React-Three-Fiber** | Advanced 3D (future web) | V2.0 |
 | **LangChain/LlamaIndex** | AI orchestration | V1.1 (Month 4-5) |
 | **MCP Protocol** | AI agent integration | V1.1 (research) |
 
@@ -215,13 +217,16 @@ actions:
 ### V1.1 (Month 4-6)
 - [ ] AI chat MVP ("help me design a beam")
 - [ ] Basic automation triggers
-- [ ] Column design module started
+- [x] Column design module (✅ Phase 2 complete — 14 functions, detailing, FastAPI endpoints)
+- [x] Footing design module (Phase 3 — 4 functions, 79 tests)
 - [ ] 10+ beta users providing feedback
 
 ### V2.0 (Month 10+)
 - [ ] Full conversational AI
 - [ ] User automation platform
-- [ ] Columns, slabs, foundations
+- [x] Columns (✅ Done)
+- [ ] Foundations (in progress — Phase 3, 4/7 tasks)
+- [ ] Slabs (planned)
 - [ ] Multi-code support (Eurocode, ACI)
 - [ ] 100+ active users
 

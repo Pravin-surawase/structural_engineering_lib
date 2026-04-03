@@ -119,19 +119,27 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-54 endpoints across 13 routers + 1 WebSocket:
+58 endpoints across 13 routers (57 REST + 1 WebSocket):
 
 | Router | Endpoint | Purpose |
 |--------|----------|---------|
 | **design** | `POST /api/v1/design/beam` | Beam design (Mu, Vu, Ast) |
 | | `POST /api/v1/design/beam/check` | Check existing beam design |
 | | `POST /api/v1/design/beam/torsion` | Torsion design (IS 456 Cl 41) |
+| | `POST /api/v1/design/beam/enhanced-shear` | Enhanced shear design |
+| | `POST /api/v1/design/beam/ductility-check` | Ductility check |
+| | `POST /api/v1/design/beam/slenderness-check` | Slenderness check |
+| | `POST /api/v1/design/beam/deflection-check` | Deflection check |
+| | `POST /api/v1/design/beam/crack-width-check` | Crack width check |
+| | `POST /api/v1/design/beam/compliance` | Full compliance check |
 | | `GET  /api/v1/design/limits` | Design parameter limits |
 | **detailing** | `POST /api/v1/detailing/beam` | Rebar detailing |
 | | `GET  /api/v1/detailing/bar-areas` | Standard bar area lookup |
 | | `GET  /api/v1/detailing/development-length/{bar_diameter}` | Development length calc |
-| **analysis** | `POST /api/v1/analysis/beam/smart` | Smart beam analysis |
-| | `GET  /api/v1/analysis/code-clauses` | IS 456 code clauses reference |
+| | `POST /api/v1/detailing/anchorage-check` | Anchorage check |
+| **analysis** | `POST /api/v1/analysis/loads/simple` | Simple load analysis |
+| | `POST /api/v1/analysis/beam/smart` | Smart beam analysis |
+| | `GET  /api/v1/analysis/limiting-values` | IS 456 limiting values |
 | **imports** | `POST /api/v1/import/csv` | CSV file import (40+ column mappings) |
 | | `POST /api/v1/import/csv/text` | CSV text/paste import |
 | | `POST /api/v1/import/dual-csv` | ETABS dual CSV import |
@@ -140,12 +148,13 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | | `GET  /api/v1/import/sample` | Sample data for testing |
 | **geometry** | `POST /api/v1/geometry/beam/3d` | Basic 3D beam geometry |
 | | `POST /api/v1/geometry/beam/full` | Full 3D rebar/stirrup positions |
-| | `GET  /api/v1/geometry/materials` | Material properties lookup |
+| | `POST /api/v1/geometry/reference-geometry` | Reference geometry |
 | | `POST /api/v1/geometry/building` | Building 3D geometry |
 | | `POST /api/v1/geometry/cross-section` | Cross-section visualization |
 | **insights** | `POST /api/v1/insights/dashboard` | Batch analytics (pass rate, utilization) |
 | | `POST /api/v1/insights/code-checks` | Live IS 456 clause checks |
-| | `POST /api/v1/insights/rebar-suggest` | AI rebar suggestions |
+| | `POST /api/v1/insights/suggestions` | AI rebar suggestions |
+| | `POST /api/v1/insights/project-boq` | Project bill of quantities |
 | **optimization** | `POST /api/v1/optimization/beam/cost` | Cost-optimized beam design |
 | | `GET  /api/v1/optimization/cost-rates` | Material cost rates |
 | **rebar** | `POST /api/v1/rebar/validate` | Rebar configuration validation |
@@ -153,6 +162,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | **export** | `POST /api/v1/export/bbs` | BBS CSV download |
 | | `POST /api/v1/export/dxf` | DXF drawing download |
 | | `POST /api/v1/export/report` | HTML report download |
+| | `POST /api/v1/export/building-summary` | Building summary export |
 | **column** | `POST /api/v1/design/column/effective-length` | Effective length per IS 456 Table 28 |
 | | `POST /api/v1/design/column/classify` | Classify column (short/slender) |
 | | `POST /api/v1/design/column/eccentricity` | Minimum eccentricity |
@@ -161,6 +171,10 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | | `POST /api/v1/design/column/interaction-curve` | P-M interaction curve |
 | | `POST /api/v1/design/column/biaxial-check` | Biaxial bending check (Cl 39.6) |
 | | `POST /api/v1/design/column/additional-moment` | Additional moment for slender columns (Cl 39.7.1) |
+| | `POST /api/v1/design/column/long-column` | Long column design |
+| | `POST /api/v1/design/column/helical-check` | Helical reinforcement check |
+| | `POST /api/v1/design/column` | Unified column design |
+| | `POST /api/v1/design/column/detailing` | Column detailing |
 | **health** | `GET  /health` | Basic health check |
 | | `GET  /health/ready` | Readiness check |
 | | `GET  /health/info` | Version & dependency info |
@@ -313,7 +327,7 @@ npm run dev
 # React is now at http://localhost:5173
 ```
 
-This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 48 endpoints.
+This builds and runs the FastAPI container with all Python dependencies + sample data (`Etabs_CSV/`). The `/docs` page auto-generates interactive Swagger UI for all 58 endpoints.
 
 For development with hot-reload (code changes reflect without rebuild):
 ```bash

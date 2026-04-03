@@ -225,7 +225,7 @@ def ctx_frontend():
 def ctx_api_developer():
     print_status()
 
-    section("ROUTER FILES (13 routers, 48 endpoints)")
+    section("ROUTER FILES (13 routers, 58 endpoints)")
     routers = run("ls fastapi_app/routers/*.py 2>/dev/null")
     if routers:
         for r in routers.splitlines():

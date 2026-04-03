@@ -1,7 +1,7 @@
 ---
 description: "Python structural_lib core — IS 456 math, services, adapters, 4-layer architecture"
 tools: ['search', 'editFiles', 'runInTerminal', 'listFiles', 'readFile']
-model: Claude Sonnet 4.5 (copilot)
+model: Claude Opus 4.6 (copilot)
 permission_level: WorkspaceWrite
 registry_ref: agents/agent_registry.json
 handoffs:
@@ -52,10 +52,13 @@ You are a Python backend specialist for **structural_engineering_lib** — an IS
 
 | Module | Functions |
 |--------|-----------|
-| `services/api.py` | 32 public + 7 private — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()` |
+| `services/api.py` | 36 public + 7 private — `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` |
-| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py` |
+| `codes/is456/` | `flexure.py`, `shear.py`, `detailing.py`, `torsion.py`, `serviceability.py`, `compliance.py`, `load_analysis.py`, `materials.py` |
+| `codes/is456/column/` | `axial.py`, `uniaxial.py`, `biaxial.py`, `slenderness.py`, `helical.py`, `long_column.py`, `detailing.py` |
+| `codes/is456/footing/` | `flexure.py`, `one_way_shear.py`, `punching_shear.py`, `bearing.py` |
+| `codes/is13920/` | `beam.py` — IS 13920 ductile detailing |
 
 ## Before Coding
 
