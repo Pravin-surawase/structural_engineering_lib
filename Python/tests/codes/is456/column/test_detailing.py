@@ -148,10 +148,10 @@ class TestUnitHappyPath:
             num_bars=8,
             bar_dia_mm=20.0,
         )
-        expected_Asc = 8 * math.pi / 4 * 20.0**2  # 2513.27 mm²
-        expected_Ag = 300 * 500  # 150000 mm²
-        expected_ratio = expected_Asc / expected_Ag  # 0.01676
-        assert result.Asc_provided_mm2 == pytest.approx(expected_Asc, rel=0.001)
+        expected_asc = 8 * math.pi / 4 * 20.0**2  # 2513.27 mm²
+        expected_ag = 300 * 500  # 150000 mm²
+        expected_ratio = expected_asc / expected_ag  # 0.01676
+        assert result.Asc_provided_mm2 == pytest.approx(expected_asc, rel=0.001)
         assert result.steel_ratio == pytest.approx(expected_ratio, rel=0.001)
 
     def test_small_bar_tie_spacing(self):
@@ -582,10 +582,10 @@ class TestCreateColumnDetailing:
             bar_dia_mm=20.0,
             is_circular=True,
         )
-        expected_Ag = math.pi / 4 * 450**2
-        expected_Asc = 6 * math.pi / 4 * 20**2
-        assert result.Ag_mm2 == pytest.approx(expected_Ag, rel=0.001)
-        assert result.Asc_provided_mm2 == pytest.approx(expected_Asc, rel=0.001)
+        expected_ag = math.pi / 4 * 450**2
+        expected_asc = 6 * math.pi / 4 * 20**2
+        assert result.Ag_mm2 == pytest.approx(expected_ag, rel=0.001)
+        assert result.Asc_provided_mm2 == pytest.approx(expected_asc, rel=0.001)
         assert result.min_bars_ok is True  # 6 >= 6 for circular
         assert result.min_steel_ok is True  # ~1.19% > 0.8%
 

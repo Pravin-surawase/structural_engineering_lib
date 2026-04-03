@@ -327,12 +327,12 @@ def check_bar_spacing(
         # Rectangular column: distribute bars around perimeter
         # Available perimeter = 2 * (b - 2*cover - bar_dia) + 2 * (D - 2*cover - bar_dia)
         avail_b = b_mm - 2.0 * cover_mm - bar_dia_mm
-        avail_D = D_mm - 2.0 * cover_mm - bar_dia_mm
-        if avail_b <= 0 or avail_D <= 0:
+        avail_d = D_mm - 2.0 * cover_mm - bar_dia_mm
+        if avail_b <= 0 or avail_d <= 0:
             return (0.0, False, ("Insufficient section size for bars and cover",))
 
         # Perimeter of bar centreline rectangle
-        perimeter = 2.0 * (avail_b + avail_D)
+        perimeter = 2.0 * (avail_b + avail_d)
         # Clear spacing between bars along the perimeter
         clear_spacing = (perimeter - num_bars * bar_dia_mm) / num_bars
 
@@ -347,7 +347,7 @@ def check_bar_spacing(
     is_ok = True
     if not is_circular:
         # Check the widest face
-        max_face = max(avail_b, avail_D)
+        max_face = max(avail_b, avail_d)
         # Conservative: if max face > 300mm, bars on that face must be spaced ≤ 300mm
         if max_face > _MAX_BAR_SPACING_MM:
             # With only corner bars on that face, the clear gap = max_face
@@ -408,14 +408,14 @@ def needs_cross_ties(
 
     # Available distance between corner bar centres on each face
     face_b = b_mm - 2.0 * cover_mm - bar_dia_mm
-    face_D = D_mm - 2.0 * cover_mm - bar_dia_mm
+    face_d = D_mm - 2.0 * cover_mm - bar_dia_mm
 
     # IS 456 Cl 26.5.3.2(c): cross-tie if any bar > 150mm from restrained bar
     # Corner-to-corner distance on each face — if > 2 × 150 = 300mm,
     # intermediate bars exist that are > 150mm from a restrained corner
     threshold = 2.0 * _CROSS_TIE_THRESHOLD_MM
 
-    return face_b > threshold or face_D > threshold
+    return face_b > threshold or face_d > threshold
 
 
 @clause("26.5.3")
@@ -505,13 +505,13 @@ def create_column_detailing(
         Ag_mm2 = b_mm * D_mm
 
     # IS 456: Asc = num_bars × π/4 × bar_dia²
-    Asc_provided_mm2 = num_bars * math.pi / 4.0 * bar_dia_mm * bar_dia_mm
+    asc_provided_mm2 = num_bars * math.pi / 4.0 * bar_dia_mm * bar_dia_mm
 
     # ===========================================================
     # 3. Longitudinal steel limits (Cl 26.5.3.1a)
     # ===========================================================
     steel_ratio, is_min_ok, is_max_ok, ratio_warnings = check_longitudinal_limits(
-        Ag_mm2, Asc_provided_mm2, at_lap_section=at_lap_section
+        Ag_mm2, asc_provided_mm2, at_lap_section=at_lap_section
     )
     all_warnings.extend(ratio_warnings)
 
@@ -599,7 +599,7 @@ def create_column_detailing(
         Ag_mm2=round(Ag_mm2, 1),
         num_bars=num_bars,
         bar_dia_mm=bar_dia_mm,
-        Asc_provided_mm2=round(Asc_provided_mm2, 1),
+        Asc_provided_mm2=round(asc_provided_mm2, 1),
         steel_ratio=round(steel_ratio, 6),
         min_steel_ok=is_min_ok,
         max_steel_ok=is_max_ok,
