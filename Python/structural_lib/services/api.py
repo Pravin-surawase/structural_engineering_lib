@@ -37,6 +37,7 @@ from structural_lib.codes.is456.column.axial import (
     short_axial_capacity,
 )
 from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
+from structural_lib.codes.is456.column.detailing import create_column_detailing
 from structural_lib.codes.is456.column.uniaxial import (
     design_short_column_uniaxial,
     pm_interaction_curve,
@@ -170,6 +171,7 @@ __all__ = [
     "design_long_column_is456",
     "check_helical_reinforcement_is456",
     "design_column_is456",
+    "detail_column_is456",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
@@ -2874,6 +2876,84 @@ def design_column_is456(
             result["warnings"].extend(long_result["warnings"])
 
     return result
+
+
+def detail_column_is456(
+    *,
+    b_mm: float,
+    D_mm: float,
+    cover_mm: float = 40.0,
+    fck: float = 25.0,
+    fy: float = 415.0,
+    num_bars: int,
+    bar_dia_mm: float,
+    tie_dia_mm: float | None = None,
+    is_circular: bool = False,
+    at_lap_section: bool = False,
+) -> dict:
+    """Check column detailing per IS 456 Cl 26.5.3.
+
+    Validates longitudinal reinforcement limits, bar spacing, tie diameter,
+    tie spacing, and cross-tie requirements for a column section.
+
+    Args:
+        b_mm: Column width (mm). Range: 100–5000.
+        D_mm: Column depth (mm). Range: 100–5000.
+        cover_mm: Clear cover (mm). Range: 15–100. Default: 40.0.
+        fck: Characteristic concrete strength (N/mm²). Range: 15–80. Default: 25.0.
+        fy: Yield strength of steel (N/mm²). Range: 250–600. Default: 415.0.
+        num_bars: Number of longitudinal bars. Range: 3–60.
+        bar_dia_mm: Longitudinal bar diameter (mm). Range: 8–50.
+        tie_dia_mm: Tie bar diameter (mm). If None, auto-selected per code.
+        is_circular: True for circular columns. Default: False.
+        at_lap_section: True if checking at lap splice location. Default: False.
+
+    Returns:
+        Dictionary with all detailing check results (see ColumnDetailingResult).
+
+    Raises:
+        ValueError: If parameters are outside plausible ranges.
+
+    References:
+        IS 456:2000, Cl. 26.5.3
+
+    Examples:
+        >>> result = detail_column_is456(
+        ...     b_mm=300, D_mm=450, num_bars=6, bar_dia_mm=16
+        ... )
+        >>> result['is_valid']
+        True
+    """
+    # Boundary validation
+    if not (100 <= b_mm <= 5000):
+        raise ValueError(f"Column width b_mm should be 100–5000mm (got {b_mm}).")
+    if not (100 <= D_mm <= 5000):
+        raise ValueError(f"Column depth D_mm should be 100–5000mm (got {D_mm}).")
+    if not (15 <= cover_mm <= 100):
+        raise ValueError(f"Cover cover_mm should be 15–100mm (got {cover_mm}).")
+    if not (15 <= fck <= 80):
+        raise ValueError(f"fck should be 15–80 N/mm² per IS 456 (got {fck}).")
+    if not (250 <= fy <= 600):
+        raise ValueError(f"fy should be 250–600 N/mm² per IS 456 (got {fy}).")
+    if not (3 <= num_bars <= 60):
+        raise ValueError(f"num_bars should be 3–60 (got {num_bars}).")
+    if not (8 <= bar_dia_mm <= 50):
+        raise ValueError(f"bar_dia_mm should be 8–50mm (got {bar_dia_mm}).")
+
+    result = create_column_detailing(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        cover_mm=cover_mm,
+        fck=fck,
+        fy=fy,
+        num_bars=num_bars,
+        bar_dia_mm=bar_dia_mm,
+        tie_dia_mm=tie_dia_mm,
+        is_circular=is_circular,
+        at_lap_section=at_lap_section,
+    )
+
+    return result.to_dict()
 
 
 def optimize_beam_cost(

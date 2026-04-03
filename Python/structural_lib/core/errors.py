@@ -657,6 +657,57 @@ E_COLUMN_011 = DesignError(
     recovery="This function is for compression members (Pu \u2265 0). For tension members, use different design methods.",
 )
 
+# Column detailing errors --- IS 456 Cl. 26.5.3
+E_COLUMN_012 = DesignError(
+    code="E_COLUMN_012",
+    severity=Severity.ERROR,
+    message="Bar count below minimum per Cl 26.5.3.1(b)",
+    field="num_bars",
+    hint="Rectangular columns need >= 4 bars, circular >= 6 bars.",
+    clause="Cl. 26.5.3.1",
+    recovery="Increase number of longitudinal bars to meet minimum: 4 (rectangular) or 6 (circular).",
+)
+
+E_COLUMN_013 = DesignError(
+    code="E_COLUMN_013",
+    severity=Severity.ERROR,
+    message="Bar diameter below 12mm minimum per Cl 26.5.3.1(b)",
+    field="bar_dia_mm",
+    hint="Minimum longitudinal bar diameter is 12mm.",
+    clause="Cl. 26.5.3.1",
+    recovery="Use longitudinal bars of at least 12mm diameter per Cl 26.5.3.1(b).",
+)
+
+E_COLUMN_014 = DesignError(
+    code="E_COLUMN_014",
+    severity=Severity.ERROR,
+    message="Tie diameter below requirement per Cl 26.5.3.2(a)",
+    field="tie_dia_mm",
+    hint="Tie diameter >= max(largest bar dia / 4, 6mm).",
+    clause="Cl. 26.5.3.2",
+    recovery="Increase tie diameter to at least max(largest_bar_dia/4, 6mm), rounded to standard size.",
+)
+
+E_COLUMN_015 = DesignError(
+    code="E_COLUMN_015",
+    severity=Severity.ERROR,
+    message="Tie spacing exceeds limits per Cl 26.5.3.2(b)",
+    field="tie_spacing_mm",
+    hint="Spacing <= min(least lateral dim, 16 × smallest bar dia, 300mm).",
+    clause="Cl. 26.5.3.2",
+    recovery="Reduce tie spacing to min(least lateral dimension, 16 × smallest bar dia, 300mm).",
+)
+
+E_COLUMN_016 = DesignError(
+    code="E_COLUMN_016",
+    severity=Severity.ERROR,
+    message="Bar spacing exceeds 300mm per Cl 26.5.3.1(c)",
+    field="bar_spacing_mm",
+    hint="Maximum face-to-face spacing between bars is 300mm.",
+    clause="Cl. 26.5.3.1",
+    recovery="Add more bars or reduce column dimensions so bar spacing <= 300mm.",
+)
+
 # Footing Errors --- IS 456 Cl. 34, 31.6
 E_FOOTING_001 = DesignError(
     code="E_FOOTING_001",

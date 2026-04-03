@@ -1247,6 +1247,81 @@ class HelicalReinforcementResult:
         )
 
 
+@dataclass(frozen=True)
+class ColumnDetailingResult:
+    """Column detailing result per IS 456 Cl 26.5.3.
+
+    Attributes:
+        b_mm: Column width (mm)
+        D_mm: Column depth (mm)
+        Ag_mm2: Gross cross-sectional area (mm²)
+        num_bars: Number of longitudinal bars
+        bar_dia_mm: Longitudinal bar diameter (mm)
+        Asc_provided_mm2: Total longitudinal steel area provided (mm²)
+        steel_ratio: Asc / Ag
+        min_steel_ok: True if ratio >= 0.8%
+        max_steel_ok: True if ratio <= 4% (or 6% at lap)
+        min_bars_ok: True if bar count >= minimum
+        min_bar_dia_ok: True if bar diameter >= 12mm
+        bar_spacing_mm: Minimum clear spacing between bars (mm)
+        bar_spacing_ok: True if spacing checks pass
+        tie_dia_mm: Provided/selected tie diameter (mm)
+        tie_dia_required_mm: Minimum required tie diameter (mm)
+        tie_spacing_mm: Provided tie spacing (mm)
+        max_tie_spacing_mm: Maximum permissible tie spacing (mm)
+        tie_spacing_ok: True if tie spacing <= max permissible
+        cross_ties_needed: True if cross-ties are required (Cl 26.5.3.2c)
+        is_valid: True if all checks pass
+        clause_ref: IS 456 clause reference
+        warnings: Tuple of warning messages
+    """
+
+    # Section
+    b_mm: float
+    D_mm: float
+    Ag_mm2: float
+
+    # Longitudinal bars
+    num_bars: int
+    bar_dia_mm: float
+    Asc_provided_mm2: float
+    steel_ratio: float
+    min_steel_ok: bool
+    max_steel_ok: bool
+    min_bars_ok: bool
+    min_bar_dia_ok: bool
+    bar_spacing_mm: float
+    bar_spacing_ok: bool
+
+    # Ties
+    tie_dia_mm: float
+    tie_dia_required_mm: float
+    tie_spacing_mm: float
+    max_tie_spacing_mm: float
+    tie_spacing_ok: bool
+    cross_ties_needed: bool
+
+    # Overall
+    is_valid: bool
+    clause_ref: str = "Cl. 26.5.3"
+    warnings: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {f.name: getattr(self, f.name) for f in fields(self)}
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "VALID" if self.is_valid else "INVALID"
+        return (
+            f"Column Detailing ({status}): "
+            f"{self.num_bars}-T{self.bar_dia_mm:.0f} "
+            f"(ρ={self.steel_ratio:.3f}), "
+            f"ties T{self.tie_dia_mm:.0f}@{self.tie_spacing_mm:.0f}mm, "
+            f"cross-ties={'YES' if self.cross_ties_needed else 'NO'}"
+        )
+
+
 # =============================================================================
 # Footing Design Types — IS 456 Cl. 34, 31.6
 # =============================================================================
