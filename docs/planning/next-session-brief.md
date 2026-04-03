@@ -1,58 +1,51 @@
 # Next Session Brief
 
-**Updated:** 2026-04-02
-**Last Session:** Phase 3 Footing Design — 4 tasks implemented (TASK-650/651/652/653)
+**Updated:** 2026-04-03
+**Last Session:** Footing module review + CRITICAL fixes (F-004, F-006, F-001, F-005, F-008)
 
 ---
 
 ## What Was Done This Session
 
-### Phase 3: Footing Design (4/7 tasks)
+### Footing Module Review & Fixes
+- **3-agent parallel review:** structural-engineer + reviewer + variable naming audit
+- **F-004 (CRITICAL):** Fixed flexure.py — now designs steel in BOTH L and B directions independently
+- **F-006 (CRITICAL):** Fixed one_way_shear.py — now checks shear in BOTH directions, reports governing direction
+- **F-001 (MAJOR):** Added 150mm minimum depth enforcement in _common.py (E_FOOTING_005)
+- **F-005 (MAJOR):** Added IS 456 Cl 34.3.1 steel distribution for rectangular footings (2/(β+1) central band)
+- **F-008 (MAJOR):** Extended FootingFlexureResult with both-direction fields + central_band_fraction
+- **Tests:** 79 footing tests (was 63, +16 new), full suite 4165 passed, 0 failures
+- **Re-verified:** Structural engineer APPROVED all fixes
 
-**TASK-650: Footing types + errors**
-- `FootingType` enum (ISOLATED_SQUARE, ISOLATED_RECTANGULAR)
-- 4 frozen result dataclasses: `FootingBearingResult`, `FootingFlexureResult`, `FootingOneWayShearResult`, `FootingPunchingResult`
-- 8 error codes (E_FOOTING_001 through E_FOOTING_008)
-- All with `to_dict()`, `summary()`, `is_safe`, `clause_ref`, `warnings`
-
-**TASK-651: Isolated footing design (bearing + flexure)**
-- `size_footing()` — sizing with SERVICE loads per Cl 34.1 (concentric/trapezoidal/partial contact)
-- `footing_flexure()` — bending at column face per Cl 34.2.3.1, reuses `calculate_ast_required`
-- `_common.py` — shared validators, pressure calc, punching geometry helpers
-
-**TASK-652: Punching shear check**
-- `footing_punching_shear()` — Cl 31.6.1, τc = ks × 0.25 × √fck
-- Handles column aspect ratio (βc, ks), edge case when perimeter exceeds footing
-
-**TASK-653: One-way shear check**
-- `footing_one_way_shear()` — Cl 34.2.4.1(a), reuses `get_tc_value` from Table 19
-- Handles edge case: cantilever ≤ d → auto-pass
-
-**Tests:** 61 tests across 6 classes, all passing. Code review: APPROVED.
-
-**Also fixed:** research_design_companion.py — scope limitation docs, cost_delta div-by-zero, input validation, plus 8 stress test scenarios.
+### Variable Naming Audit
+- **Footing + Column modules:** CORRECT ✅ (Pu_kN, Mu_kNm, Ast_mm2)
+- **Beam modules:** VIOLATIONS found — FlexureResult, ShearResult, TorsionResult use lowercase where uppercase required
+- **Created TASK-660** for migration (breaking change, needs deprecation path)
 
 ### Files Changed
-- 7 new files in `codes/is456/footing/` + `tests/test_footing.py`
-- 3 modified: `__init__.py` (footing import), `data_types.py` (+175 lines), `errors.py` (+80 lines)
-- 2 research fixes: `research_design_companion.py`, `test_research_prototypes.py`
+- `codes/is456/footing/flexure.py` — both-direction design, Cl 34.3.1
+- `codes/is456/footing/one_way_shear.py` — both-direction check, governing_direction
+- `codes/is456/footing/_common.py` — 150mm min depth, E_FOOTING_005
+- `codes/is456/footing/bearing.py` — comment fix
+- `core/data_types.py` — FootingFlexureResult both-direction fields + central_band_fraction, FootingOneWayShearResult governing_direction
+- `tests/test_footing.py` — 79 tests (16 new for both-direction, Cl 34.3.1, min depth)
 
 ---
 
 ## What To Do Next
 
-1. **TASK-654: Bearing at column-footing interface** — Cl 34.4, load transfer between column and footing (NOT soil bearing — that's done in TASK-651)
-2. **TASK-655: Dowel bars** — Cl 34.2.5, anchorage requirements at column-footing junction
-3. **TASK-656: Footing FastAPI endpoint** — `POST /api/v1/design/footing`, wire up all 4 functions
-4. **PR #491 (Phase 2 Column Design)** — still open, check status: `gh pr view 491`
+1. **TASK-660: Variable naming migration** — Standardize beam result types (FlexureResult, ShearResult, TorsionResult) to IS 456 convention. This is a breaking change — plan deprecation shim first.
+2. **TASK-654: Bearing at column-footing interface** — Cl 34.4, load transfer (NOT soil bearing)
+3. **TASK-655: Dowel bars** — Cl 34.2.5, anchorage at column-footing junction
+4. **TASK-656: Footing FastAPI endpoint** — `POST /api/v1/design/footing`, wire up all functions
 
 ---
 
-## Quick Start
+## Required Reading
 
 ```bash
 git status --short && git branch --show-current
 docs/TASKS.md                    # Check priorities
 ./run.sh session start           # Verify environment
-.venv/bin/pytest Python/tests/test_footing.py -v  # Run footing tests
+.venv/bin/pytest Python/tests/test_footing.py -v  # Run footing tests (79 expected)
 ```

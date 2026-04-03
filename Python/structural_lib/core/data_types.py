@@ -1031,50 +1031,73 @@ class FootingBearingResult:
 
 @dataclass(frozen=True)
 class FootingFlexureResult:
-    """Flexural design per IS 456 Cl 34.2.3.1."""
+    """Flexural design per IS 456 Cl 34.2.3.1 — both directions."""
 
-    Mu_kNm: float  # Bending moment at column face (kN·m)
-    Ast_mm2: float  # Required steel area (mm²)
-    pt_percent: float  # Steel percentage
-    cantilever_mm: float  # Cantilever projection from column face (mm)
+    # L-direction (steel runs parallel to B)
+    Mu_L_kNm: float  # Moment at column face along L (kN·m)
+    Ast_L_mm2: float  # Steel area for L-direction (mm²)
+    pt_L_percent: float  # Steel percentage for L-direction
+    cantilever_L_mm: float  # Cantilever (L-a)/2 (mm)
+
+    # B-direction (steel runs parallel to L)
+    Mu_B_kNm: float  # Moment at column face along B (kN·m)
+    Ast_B_mm2: float  # Steel area for B-direction (mm²)
+    pt_B_percent: float  # Steel percentage for B-direction
+    cantilever_B_mm: float  # Cantilever (B-b)/2 (mm)
+
     d_mm: float  # Effective depth used (mm)
     is_safe: bool
+    central_band_fraction: float = (
+        1.0  # Cl 34.3.1: fraction in central band (rectangular)
+    )
     clause_ref: str = "Cl. 34.2.3.1"
     warnings: tuple[str, ...] = ()
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
         return {
-            "Mu_kNm": self.Mu_kNm,
-            "Ast_mm2": self.Ast_mm2,
-            "pt_percent": self.pt_percent,
-            "cantilever_mm": self.cantilever_mm,
+            "Mu_L_kNm": self.Mu_L_kNm,
+            "Ast_L_mm2": self.Ast_L_mm2,
+            "pt_L_percent": self.pt_L_percent,
+            "cantilever_L_mm": self.cantilever_L_mm,
+            "Mu_B_kNm": self.Mu_B_kNm,
+            "Ast_B_mm2": self.Ast_B_mm2,
+            "pt_B_percent": self.pt_B_percent,
+            "cantilever_B_mm": self.cantilever_B_mm,
             "d_mm": self.d_mm,
             "is_safe": self.is_safe,
+            "central_band_fraction": self.central_band_fraction,
             "clause_ref": self.clause_ref,
             "warnings": list(self.warnings),
         }
 
     def summary(self) -> str:
-        """Return one-line human-readable summary."""
+        """Return one-line summary showing the critical (larger Mu) direction."""
         status = "SAFE" if self.is_safe else "UNSAFE"
+        # Show critical direction
+        if self.Mu_L_kNm >= self.Mu_B_kNm:
+            return (
+                f"Footing Flexure ({status}): Mu_L={self.Mu_L_kNm:.1f}kNm (governs), "
+                f"Ast_L={self.Ast_L_mm2:.0f}mm², pt_L={self.pt_L_percent:.2f}%"
+            )
         return (
-            f"Footing Flexure ({status}): Mu={self.Mu_kNm:.1f}kNm, "
-            f"Ast={self.Ast_mm2:.0f}mm², pt={self.pt_percent:.2f}%"
+            f"Footing Flexure ({status}): Mu_B={self.Mu_B_kNm:.1f}kNm (governs), "
+            f"Ast_B={self.Ast_B_mm2:.0f}mm², pt_B={self.pt_B_percent:.2f}%"
         )
 
 
 @dataclass(frozen=True)
 class FootingOneWayShearResult:
-    """One-way shear check per IS 456 Cl 34.2.4.1(a)."""
+    """One-way shear check per IS 456 Cl 34.2.4.1(a) — both directions."""
 
-    tau_v_nmm2: float  # Nominal shear stress (N/mm²)
+    tau_v_nmm2: float  # Nominal shear stress at governing section (N/mm²)
     tau_c_nmm2: float  # Design shear strength from Table 19 (N/mm²)
-    Vu_kN: float  # Shear force at critical section (kN)
+    Vu_kN: float  # Shear force at governing critical section (kN)
     d_mm: float  # Effective depth (mm)
     critical_section_mm: float  # Distance from column face to critical section (mm)
-    utilization_ratio: float  # tau_v / tau_c
-    is_safe: bool
+    utilization_ratio: float  # tau_v / tau_c (governing direction)
+    is_safe: bool  # True only if BOTH directions pass
+    governing_direction: str = "L"  # "L" or "B" — which direction governs
     clause_ref: str = "Cl. 34.2.4.1(a)"
     warnings: tuple[str, ...] = ()
 
@@ -1088,6 +1111,7 @@ class FootingOneWayShearResult:
             "critical_section_mm": self.critical_section_mm,
             "utilization_ratio": self.utilization_ratio,
             "is_safe": self.is_safe,
+            "governing_direction": self.governing_direction,
             "clause_ref": self.clause_ref,
             "warnings": list(self.warnings),
         }
@@ -1096,7 +1120,7 @@ class FootingOneWayShearResult:
         """Return one-line human-readable summary."""
         status = "SAFE" if self.is_safe else "UNSAFE"
         return (
-            f"Footing One-Way Shear ({status}): "
+            f"Footing One-Way Shear ({status}, governs={self.governing_direction}): "
             f"τv={self.tau_v_nmm2:.3f}, τc={self.tau_c_nmm2:.3f} N/mm², "
             f"Util={self.utilization_ratio:.2f}"
         )

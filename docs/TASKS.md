@@ -159,7 +159,15 @@
 | TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
 | TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
 
-> Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in `codes/is456/footing/`. 61 tests, 0 failures. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
+> Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in `codes/is456/footing/`. 79 tests, 0 failures. Fixes applied: both-direction flexure + shear design, Cl 34.3.1 steel distribution for rectangular footings, 150mm minimum depth enforcement. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
+
+### Variable Naming Migration (TASK-660)
+
+| ID | Task | Scope | Priority | Status |
+|----|------|-------|----------|--------|
+| TASK-660 | Standardize variable naming to IS 456 industry convention | FlexureResult, ShearResult, TorsionResult, LoadCase, ComplianceCaseResult | 🟡 Medium | 📋 |
+
+> **Breaking change:** Beam module result types use lowercase (`mu_lim`, `ast_required`, `tv`, `tc`, `vus`, `tu_knm`, `vu_kn`, `asv_torsion`) where IS 456 convention requires uppercase (`Mu_lim`, `Ast_required`, `Tv`, `Tc`, `Vus`, `Tu_knm`, `Vu_kn`, `Asv_torsion`). Column and footing modules already follow correct convention. Migration requires updating: data_types.py, beam/*.py, services/api.py, FastAPI models, React types, all tests. Needs deprecation shim for backward compat.
 
 ### Phase 4-6: Slab, Staircase, Shear Wall (Future)
 

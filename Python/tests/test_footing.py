@@ -250,10 +250,15 @@ class TestFootingFlexure:
             fy=415,
         )
         assert isinstance(result, FootingFlexureResult)
-        assert result.Mu_kNm == pytest.approx(192.0, rel=0.01)
-        assert result.Ast_mm2 > 0
-        assert result.pt_percent >= 0.12
-        assert result.cantilever_mm == pytest.approx(800.0)
+        # Square footing: both directions equal
+        assert result.Mu_L_kNm == pytest.approx(192.0, rel=0.01)
+        assert result.Mu_B_kNm == pytest.approx(192.0, rel=0.01)
+        assert result.Ast_L_mm2 > 0
+        assert result.Ast_B_mm2 > 0
+        assert result.pt_L_percent >= 0.12
+        assert result.pt_B_percent >= 0.12
+        assert result.cantilever_L_mm == pytest.approx(800.0)
+        assert result.cantilever_B_mm == pytest.approx(800.0)
         assert result.is_safe is True
 
     def test_minimum_steel_check(self):
@@ -270,7 +275,8 @@ class TestFootingFlexure:
             fck=25,
             fy=415,
         )
-        assert result.pt_percent >= 0.12
+        assert result.pt_L_percent >= 0.12
+        assert result.pt_B_percent >= 0.12
         assert any("minimum" in w.lower() for w in result.warnings)
 
     def test_symmetric_footing_equal_directions(self):
@@ -286,7 +292,9 @@ class TestFootingFlexure:
             fy=415,
         )
         # For symmetric case, cant_L == cant_B == 800
-        assert result.cantilever_mm == pytest.approx(800.0)
+        assert result.cantilever_L_mm == pytest.approx(800.0)
+        assert result.cantilever_B_mm == pytest.approx(800.0)
+        assert result.Mu_L_kNm == pytest.approx(result.Mu_B_kNm)
 
     def test_rectangular_footing_asymmetric(self):
         """Rectangular col on rectangular footing → different moments each direction."""
@@ -300,9 +308,14 @@ class TestFootingFlexure:
             fck=25,
             fy=415,
         )
-        assert result.Mu_kNm > 0
-        assert result.Ast_mm2 > 0
+        assert result.Mu_L_kNm > 0
+        assert result.Mu_B_kNm > 0
+        assert result.Ast_L_mm2 > 0
+        assert result.Ast_B_mm2 > 0
         assert result.is_safe is True
+        # Rectangular footing → Cl 34.3.1 central band distribution
+        assert result.central_band_fraction < 1.0
+        assert any("34.3.1" in w for w in result.warnings)
 
     def test_validation_negative_fck(self):
         """Validation: negative fck → ValidationError."""
@@ -345,7 +358,7 @@ class TestFootingFlexure:
             fy=415,
         )
         with pytest.raises(AttributeError):
-            result.Mu_kNm = 999  # type: ignore[misc]
+            result.Mu_L_kNm = 999  # type: ignore[misc]
 
     def test_result_to_dict(self):
         """Result type: to_dict() returns dict with all keys."""
@@ -362,12 +375,17 @@ class TestFootingFlexure:
         d = result.to_dict()
         assert isinstance(d, dict)
         for key in (
-            "Mu_kNm",
-            "Ast_mm2",
-            "pt_percent",
-            "cantilever_mm",
+            "Mu_L_kNm",
+            "Ast_L_mm2",
+            "pt_L_percent",
+            "cantilever_L_mm",
+            "Mu_B_kNm",
+            "Ast_B_mm2",
+            "pt_B_percent",
+            "cantilever_B_mm",
             "d_mm",
             "is_safe",
+            "central_band_fraction",
         ):
             assert key in d
 
@@ -422,7 +440,7 @@ class TestFootingOneWayShear:
 
     def test_auto_pass_cant_le_d(self):
         """IS 456 Cl 34.2.4.1(a): When cantilever ≤ d, shear auto-passes.
-        col 1200×1200, L=2000 → cant=(2000-1200)/2=400=d → Vu=0.
+        col 1200×1200, L=2000 → cant=(2000-1200)/2=400=d → Vu=0 in both dirs.
         """
         result = footing_one_way_shear(
             Pu_kN=1200,
@@ -437,16 +455,17 @@ class TestFootingOneWayShear:
         assert result.tau_v_nmm2 == pytest.approx(0.0)
         assert result.is_safe is True
         assert result.utilization_ratio == pytest.approx(0.0)
+        assert result.governing_direction in ("L", "B")
 
     def test_unsafe_shallow_footing(self):
         """IS 456 Cl 34.2.4.1(a): Shallow footing, large load → unsafe.
-        d=150mm, large load → tau_v > tau_c.
+        d=200mm (above 150mm min), large load → tau_v > tau_c.
         """
         result = footing_one_way_shear(
             Pu_kN=1500,
             L_mm=2000,
             B_mm=2000,
-            d_mm=150,
+            d_mm=200,
             a_mm=400,
             b_mm=400,
             fck=20,
@@ -457,6 +476,7 @@ class TestFootingOneWayShear:
         # Whether safe or unsafe depends on exact tau_c, but we can verify
         # the function runs and produces valid output
         assert result.utilization_ratio > 0
+        assert result.governing_direction in ("L", "B")
 
     def test_higher_steel_ratio_increases_tau_c(self):
         """IS 456 Table 19: Higher pt → higher tau_c → more safe."""
@@ -529,6 +549,7 @@ class TestFootingOneWayShear:
             "d_mm",
             "utilization_ratio",
             "is_safe",
+            "governing_direction",
         ):
             assert key in d
 
@@ -546,6 +567,7 @@ class TestFootingOneWayShear:
         s = result.summary()
         assert len(s) > 10
         assert "Shear" in s
+        assert "governs" in s
 
 
 # ===========================================================================
@@ -782,6 +804,15 @@ class TestFootingCommon:
         with pytest.raises(DimensionError, match="positive"):
             validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=400, a_mm=-300, b_mm=400)
 
+    def test_validate_min_depth_150mm(self):
+        """validate_footing_inputs: d < 150mm → DimensionError per Cl 34.1."""
+        with pytest.raises(DimensionError, match="150"):
+            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=140, a_mm=400, b_mm=400)
+
+    def test_validate_min_depth_exactly_150_passes(self):
+        """validate_footing_inputs: d == 150mm → no error."""
+        validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=150, a_mm=400, b_mm=400)
+
     # --- net_upward_pressure_nmm2 ---
 
     def test_net_pressure_benchmark(self):
@@ -864,7 +895,7 @@ class TestFootingTypes:
             fy=415,
         )
         with pytest.raises(AttributeError):
-            result.Ast_mm2 = 0  # type: ignore[misc]
+            result.Ast_L_mm2 = 0  # type: ignore[misc]
 
     def test_one_way_shear_result_frozen(self):
         """FootingOneWayShearResult is immutable."""
@@ -943,3 +974,260 @@ class TestFootingTypes:
             s = result.summary()
             assert isinstance(s, str)
             assert len(s) > 10
+
+
+# ===========================================================================
+# 7. Post-Fix Verification Tests — BOTH-direction & minimum depth
+# ===========================================================================
+
+
+class TestFlexureBothDirections:
+    """Verify BOTH-direction flexure design after critical fixes."""
+
+    def test_rectangular_b_direction_critical(self):
+        """Rectangular footing where B-direction has LARGER moment.
+
+        L=2000, B=2400, col a=500 (‖L), b=300 (‖B).
+        cant_L = (2000-500)/2 = 750mm, cant_B = (2400-300)/2 = 1050mm.
+        B-dir cantilever > L-dir → Mu_B > Mu_L.
+        Both Ast_L and Ast_B must be computed independently.
+        """
+        result = footing_flexure(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2400,
+            d_mm=400,
+            a_mm=500,
+            b_mm=300,
+            fck=25,
+            fy=415,
+        )
+        assert result.cantilever_L_mm == pytest.approx(750.0)
+        assert result.cantilever_B_mm == pytest.approx(1050.0)
+        # B-direction has larger cantilever → larger moment
+        assert result.Mu_B_kNm > result.Mu_L_kNm
+        # Both directions must have positive steel areas
+        assert result.Ast_L_mm2 > 0
+        assert result.Ast_B_mm2 > 0
+        # B-direction requires more steel (larger moment, wider width)
+        assert result.Ast_B_mm2 > result.Ast_L_mm2
+        assert result.is_safe is True
+
+    def test_rectangular_steel_distribution_beta_2(self):
+        """IS 456 Cl 34.3.1: β=2 → central_band_fraction = 2/(2+1) = 0.667.
+
+        L=3000, B=1500 → β = 3000/1500 = 2.0.
+        """
+        result = footing_flexure(
+            Pu_kN=1000,
+            L_mm=3000,
+            B_mm=1500,
+            d_mm=400,
+            a_mm=400,
+            b_mm=300,
+            fck=25,
+            fy=415,
+        )
+        expected_fraction = 2.0 / (2.0 + 1.0)  # 0.6667
+        assert result.central_band_fraction == pytest.approx(
+            expected_fraction, rel=0.001
+        )
+        # Must have the Cl 34.3.1 warning
+        assert any("34.3.1" in w for w in result.warnings)
+
+    def test_square_footing_central_band_fraction_1(self):
+        """Square footing → central_band_fraction = 1.0 (no distribution needed)."""
+        result = footing_flexure(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=400,
+            a_mm=400,
+            b_mm=400,
+            fck=25,
+            fy=415,
+        )
+        assert result.central_band_fraction == pytest.approx(1.0)
+        # No Cl 34.3.1 warning for square footings
+        assert not any("34.3.1" in w for w in result.warnings)
+
+    def test_rectangular_beta_1_5(self):
+        """IS 456 Cl 34.3.1: β=1.5 → fraction = 2/(1.5+1) = 0.8."""
+        result = footing_flexure(
+            Pu_kN=1000,
+            L_mm=2250,
+            B_mm=1500,
+            d_mm=350,
+            a_mm=400,
+            b_mm=300,
+            fck=25,
+            fy=415,
+        )
+        expected = 2.0 / (1.5 + 1.0)  # 0.8
+        assert result.central_band_fraction == pytest.approx(expected, rel=0.001)
+
+
+class TestOneWayShearBothDirections:
+    """Verify BOTH-direction one-way shear after critical fixes."""
+
+    def test_b_direction_fails_l_passes(self):
+        """One-way shear where B-direction FAILS but L-direction PASSES.
+
+        Use a footing with large cant_B but small cant_L by making
+        B large (big cantilever in B-dir) and small column b.
+        L=2000, B=3000, col a=1200 (small cant_L=400=d), b=300 (cant_B=1350>>d).
+        L-dir: cant_L = (2000-1200)/2 = 400 = d → Lv=0 → auto-passes.
+        B-dir: cant_B = (3000-300)/2 = 1350, Lv=1350-400=950mm → big shear.
+        """
+        result = footing_one_way_shear(
+            Pu_kN=2000,
+            L_mm=2000,
+            B_mm=3000,
+            d_mm=400,
+            a_mm=1200,
+            b_mm=300,
+            fck=20,
+            pt=0.15,
+        )
+        # B-direction has much larger shear span, should govern
+        assert result.governing_direction == "B"
+        # tau_v should be from the B-direction (higher utilization)
+        assert result.tau_v_nmm2 > 0
+        assert result.utilization_ratio > 0
+
+    def test_governing_direction_correct_l(self):
+        """Governing direction is L when L-direction has higher utilization.
+
+        L=3000, B=2000, col a=300 (cant_L=1350), b=1200 (cant_B=400=d).
+        L-dir cantilever is large → L governs.
+        """
+        result = footing_one_way_shear(
+            Pu_kN=2000,
+            L_mm=3000,
+            B_mm=2000,
+            d_mm=400,
+            a_mm=300,
+            b_mm=1200,
+            fck=20,
+            pt=0.15,
+        )
+        assert result.governing_direction == "L"
+        assert result.tau_v_nmm2 > 0
+
+    def test_both_directions_safe_symmetric(self):
+        """Square footing, square column → both directions equal, both safe."""
+        result = footing_one_way_shear(
+            Pu_kN=800,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=400,
+            a_mm=400,
+            b_mm=400,
+            fck=25,
+            pt=0.25,
+        )
+        assert result.is_safe is True
+        assert result.governing_direction in ("L", "B")
+
+    def test_governing_direction_in_to_dict(self):
+        """governing_direction appears in to_dict output."""
+        result = footing_one_way_shear(
+            Pu_kN=1200,
+            L_mm=2400,
+            B_mm=1800,
+            d_mm=400,
+            a_mm=400,
+            b_mm=300,
+            fck=25,
+            pt=0.20,
+        )
+        d = result.to_dict()
+        assert "governing_direction" in d
+        assert d["governing_direction"] in ("L", "B")
+
+    def test_summary_contains_governs(self):
+        """Summary string mentions which direction governs."""
+        result = footing_one_way_shear(
+            Pu_kN=1200,
+            L_mm=2400,
+            B_mm=1800,
+            d_mm=400,
+            a_mm=400,
+            b_mm=300,
+            fck=25,
+        )
+        s = result.summary()
+        assert "governs" in s
+
+
+class TestMinimumDepthEnforcement:
+    """Verify d_mm >= 150mm enforcement in _common.py."""
+
+    def test_d_149_raises_dimension_error(self):
+        """d_mm=149 should raise DimensionError per Cl 34.1."""
+        with pytest.raises(DimensionError, match="150"):
+            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=149, a_mm=400, b_mm=400)
+
+    def test_d_150_passes(self):
+        """d_mm=150 is exactly the minimum — should pass."""
+        validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=150, a_mm=400, b_mm=400)
+
+    def test_d_1_raises(self):
+        """d_mm=1 should raise DimensionError."""
+        with pytest.raises(DimensionError, match="150"):
+            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=1, a_mm=400, b_mm=400)
+
+    def test_d_150_flows_through_flexure(self):
+        """d_mm=150 flows through footing_flexure without error."""
+        result = footing_flexure(
+            Pu_kN=500,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=150,
+            a_mm=300,
+            b_mm=300,
+            fck=25,
+            fy=415,
+        )
+        assert result.d_mm == 150.0
+        assert result.is_safe is True
+
+    def test_d_149_rejected_by_flexure(self):
+        """d_mm=149 raises DimensionError through footing_flexure."""
+        with pytest.raises(DimensionError, match="150"):
+            footing_flexure(
+                Pu_kN=500,
+                L_mm=2000,
+                B_mm=2000,
+                d_mm=149,
+                a_mm=300,
+                b_mm=300,
+                fck=25,
+                fy=415,
+            )
+
+    def test_d_149_rejected_by_one_way_shear(self):
+        """d_mm=149 raises DimensionError through footing_one_way_shear."""
+        with pytest.raises(DimensionError, match="150"):
+            footing_one_way_shear(
+                Pu_kN=1200,
+                L_mm=2000,
+                B_mm=2000,
+                d_mm=149,
+                a_mm=400,
+                b_mm=400,
+                fck=25,
+            )
+
+    def test_d_149_rejected_by_punching_shear(self):
+        """d_mm=149 raises DimensionError through footing_punching_shear."""
+        with pytest.raises(DimensionError, match="150"):
+            footing_punching_shear(
+                Pu_kN=1200,
+                L_mm=2000,
+                B_mm=2000,
+                d_mm=149,
+                a_mm=400,
+                b_mm=400,
+                fck=25,
+            )

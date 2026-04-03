@@ -116,7 +116,7 @@ def size_footing(
             pressure_type = "trapezoidal"
         else:
             # Partial contact — triangular (no tension in soil)
-            x = L_mm / 2.0 - e_mm  # Contact length from edge
+            x = L_mm / 2.0 - e_mm  # Distance from edge to resultant location
             if x <= 0:
                 raise ValidationError(
                     "Eccentricity too large — footing lifts off completely",

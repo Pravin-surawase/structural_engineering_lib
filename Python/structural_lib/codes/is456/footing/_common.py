@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from structural_lib.core.errors import (
     E_FOOTING_001,
+    E_FOOTING_005,
     E_FOOTING_007,
     DimensionError,
     ValidationError,
@@ -54,6 +55,12 @@ def validate_footing_inputs(
             E_FOOTING_007.message,
             details={"a_mm": a_mm, "b_mm": b_mm, "L_mm": L_mm, "B_mm": B_mm},
             clause_ref=E_FOOTING_007.clause,
+        )
+    if d_mm < 150:
+        raise DimensionError(
+            E_FOOTING_005.message,
+            details={"d_mm": d_mm, "minimum": 150},
+            clause_ref=E_FOOTING_005.clause,
         )
 
 
