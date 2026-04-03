@@ -162,7 +162,7 @@ FETCH_PID=""
 
 parallel_fetch_start() {
   log_message "INFO" "Starting parallel fetch in background"
-  git fetch "$REMOTE_NAME" "$DEFAULT_BRANCH" 2>&1 | tee -a "$LOG_FILE" &
+  git fetch "$REMOTE_NAME" "$DEFAULT_BRANCH" >> "$LOG_FILE" 2>&1 &
   FETCH_PID=$!
   log_message "INFO" "Fetch started with PID: $FETCH_PID"
 }
@@ -394,10 +394,11 @@ if [[ -n "$UNSTAGED_CHANGES" || -n "$UNTRACKED_FILES" ]]; then
   # These cannot be stashed/popped safely — they cause an infinite stash-pop failure loop.
   REAL_CHANGES=$(git diff --ignore-cr-at-eol --name-only 2>/dev/null)
   if [[ -z "$REAL_CHANGES" && -z "$UNTRACKED_FILES" ]]; then
-    echo -e "${YELLOW}Step 0/7: Skipping stash — only CRLF normalization artifacts detected${NC}"
-    # Discard CRLF artifacts so they don't interfere with commit
+    CRLF_COUNT=$(echo "$UNSTAGED_CHANGES" | wc -l | tr -d ' ')
+    echo -e "${YELLOW}Step 0/7: Skipping stash — $CRLF_COUNT CRLF-only artifact(s) detected${NC}"
+    # Safe: --ignore-cr-at-eol confirms no real content changes, only line-ending diffs
     git checkout -- . 2>/dev/null || true
-    log_message "INFO" "Skipped stash: CRLF-only diffs discarded via checkout"
+    log_message "INFO" "Skipped stash: $CRLF_COUNT CRLF-only diffs discarded via checkout"
   else
     echo -e "${YELLOW}Step 0/7: Stashing unstaged/untracked changes before sync...${NC}"
     git stash push -u -k -m "safe_push auto-stash" >/dev/null
@@ -430,8 +431,8 @@ if [[ "$AUTO_STASHED" == "true" ]]; then
     # The background fetch only updates refs (no working tree changes yet).
     echo -e "${YELLOW}⚠ Stash pop failed (likely line-ending normalization). Recovering...${NC}"
     # Tier 0: If stash contains only CRLF diffs, just drop it (nothing real to restore)
-    STASH_REAL_CONTENT=$(git diff stash@{0} --ignore-cr-at-eol --stat 2>/dev/null | tail -1)
-    if [[ -z "$STASH_REAL_CONTENT" || "$STASH_REAL_CONTENT" == *"0 insertions"*"0 deletions"* ]]; then
+    STASH_REAL_CHANGES=$(git diff stash@{0} --ignore-cr-at-eol --shortstat 2>/dev/null)
+    if [[ -z "$STASH_REAL_CHANGES" ]]; then
       git stash drop >/dev/null 2>&1 || true
       echo -e "${GREEN}  ✓ Stash contained only CRLF artifacts — dropped safely${NC}"
       log_message "WARNING" "Stash pop recovery: CRLF-only stash dropped"

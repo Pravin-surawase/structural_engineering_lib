@@ -117,6 +117,13 @@ if [[ "$DRY_RUN" == "true" ]]; then
 fi
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+# Early detached HEAD check — prevents all modes from running in bad state
+if [[ -z "$CURRENT_BRANCH" && "$STATUS" != "true" ]]; then
+    echo -e "${RED}✗ Detached HEAD state — cannot proceed${NC}"
+    echo -e "${YELLOW}Fix: git checkout main${NC}"
+    exit 1
+fi
+
 # Push-only mode: delegate to safe_push.sh for retry logic + divergence detection (TASK-902)
 if [[ "$PUSH_ONLY" == "true" ]]; then
     echo -e "${YELLOW}→ Push-only mode: routing through safe_push.sh...${NC}"
