@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/architecture/config-precedence/">
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/research/innovation-sustainability-scoring/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Configuration Precedence - structural_engineering_lib</title>
+        <title>Innovation: Sustainability Scoring — Embodied Carbon per Beam Design - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configuration-precedence" class="md-skip">
+        <a href="#innovation-sustainability-scoring-embodied-carbon-per-beam-design" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configuration Precedence
+              Innovation: Sustainability Scoring — Embodied Carbon per Beam Design
             
           </span>
         </div>
@@ -306,7 +306,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../project-overview/" class="md-tabs__link">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
           
   
   
@@ -1094,7 +1094,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../project-overview/" class="md-nav__link">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
         
   
   
@@ -1129,7 +1129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data-flow-diagrams/" class="md-nav__link">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
         
   
   
@@ -1164,7 +1164,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dependencies/" class="md-nav__link">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
         
   
   
@@ -1481,10 +1481,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#3-tier-precedence-highest-lowest" class="md-nav__link">
+  <a href="#problem-statement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3-Tier Precedence (Highest → Lowest)
+        Problem Statement
       
     </span>
   </a>
@@ -1492,10 +1492,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-conflicts-resolve" class="md-nav__link">
+  <a href="#current-state" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How Conflicts Resolve
+        Current State
       
     </span>
   </a>
@@ -1503,10 +1503,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#additional-context-layers" class="md-nav__link">
+  <a href="#proposed-approach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Additional Context Layers
+        Proposed Approach
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Approach">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#carbon-calculation-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Carbon Calculation Method
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carbon-rating-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Carbon Rating System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Requirements
       
     </span>
   </a>
@@ -1514,10 +1564,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#file-type-scoping-applyto" class="md-nav__link">
+  <a href="#implementation-sketch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        File-Type Scoping (applyTo)
+        Implementation Sketch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Sketch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Fit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-path-after-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Path (after validation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Plan
       
     </span>
   </a>
@@ -1525,10 +1647,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agent-specific-overrides" class="md-nav__link">
+  <a href="#is-456-clause-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Agent-Specific Overrides
+        IS 456 Clause Map
       
     </span>
   </a>
@@ -1536,10 +1658,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#validation" class="md-nav__link">
+  <a href="#impact-assessment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validation
+        Impact Assessment
       
     </span>
   </a>
@@ -1547,10 +1669,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-reference" class="md-nav__link">
+  <a href="#next-steps-delegation-plan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick Reference
+        Next Steps — Delegation Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
       
     </span>
   </a>
@@ -1577,156 +1710,304 @@
   
 
 
-<h1 id="configuration-precedence">Configuration Precedence<a class="headerlink" href="#configuration-precedence" title="Permanent link">&para;</a></h1>
-<p><strong>Type:</strong> Architecture
-<strong>Audience:</strong> All Agents
-<strong>Status:</strong> Active
-<strong>Importance:</strong> High
-<strong>Created:</strong> 2026-04-02
-<strong>Last Updated:</strong> 2026-04-02</p>
-<hr />
-<h2 id="3-tier-precedence-highest-lowest">3-Tier Precedence (Highest → Lowest)<a class="headerlink" href="#3-tier-precedence-highest-lowest" title="Permanent link">&para;</a></h2>
+<h1 id="innovation-sustainability-scoring-embodied-carbon-per-beam-design">Innovation: Sustainability Scoring — Embodied Carbon per Beam Design<a class="headerlink" href="#innovation-sustainability-scoring-embodied-carbon-per-beam-design" title="Permanent link">&para;</a></h1>
+<p><strong>Innovation Domain:</strong> #1 — Sustainability Scoring
+<strong>Impact Level:</strong> 🌍 Planet
+<strong>Prototype:</strong> <code>Python/structural_lib/research/research_sustainability.py</code></p>
+<h2 id="problem-statement">Problem Statement<a class="headerlink" href="#problem-statement" title="Permanent link">&para;</a></h2>
+<p>Every beam design in our library produces structural results (area of steel, utilization, safety checks) and cost estimates — but <strong>zero information about environmental impact</strong>. Engineers designing RC structures in India have no way to:</p>
+<ol>
+<li>Know the <strong>embodied carbon (kgCO₂e)</strong> of their chosen beam cross-section</li>
+<li><strong>Compare alternatives</strong> by carbon, not just cost — a 300×500 M25 beam vs 230×600 M30</li>
+<li>Track designs against <strong>net-zero targets</strong> (ECBC 2017, GRIHA, UK NZCBS)</li>
+<li>Make <strong>carbon-cost trade-off decisions</strong> — sometimes 5% more cost = 20% less carbon</li>
+</ol>
+<p>This is a massive gap. The IStructE's "How to Calculate Embodied Carbon" (3rd ed, Jan 2025) makes this a <strong>core competency</strong> for structural engineers. The ICE Database v4.1 (Oct 2025) by Circular Ecology is the global standard for embodied carbon factors, used by 50,000+ professionals.</p>
+<p><strong>No open-source structural design library scores individual element designs for carbon.</strong> ETABS, SAP2000, SAFE — none of them do this at the element level. This would make us the first.</p>
+<h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Permanent link">&para;</a></h2>
+<p>What our library already has:
+- <code>services/costing.py</code> — <code>calculate_concrete_volume()</code>, <code>calculate_steel_weight()</code>, <code>CostProfile</code>, <code>CostBreakdown</code>
+- <code>insights/cost_optimization.py</code> — <code>optimize_beam_design()</code> finds cheapest design
+- <code>insights/comparison.py</code> — <code>compare_designs()</code> multi-criteria comparison (safety, cost, constructability, robustness)
+- <code>insights/sensitivity.py</code> — parameter sensitivity analysis
+- <code>insights/design_suggestions.py</code> — rule-based improvement suggestions</p>
+<p>What's missing:
+- Carbon emission factors for concrete grades (M20-M40) and steel rebar
+- Carbon scoring function that takes design inputs → kgCO₂e breakdown
+- Carbon intensity metrics (kgCO₂e/m, kgCO₂e/kN·m capacity)
+- Carbon rating system (A-E scale with benchmarks)
+- Integration with existing comparison and optimization modules</p>
+<h2 id="proposed-approach">Proposed Approach<a class="headerlink" href="#proposed-approach" title="Permanent link">&para;</a></h2>
+<h3 id="carbon-calculation-method">Carbon Calculation Method<a class="headerlink" href="#carbon-calculation-method" title="Permanent link">&para;</a></h3>
+<p>Based on IStructE guidance + ICE Database v4.1:</p>
+<div class="arithmatex">\[EC_{total} = EC_{concrete} + EC_{steel}\]</div>
+<p>Where:
+- <span class="arithmatex">\(EC_{concrete} = V_{concrete} \times EF_{concrete}(f_{ck})\)</span> — volume × emission factor per grade
+- <span class="arithmatex">\(EC_{steel} = W_{steel} \times EF_{steel}\)</span> — weight × emission factor for rebar</p>
+<p>Emission factors (kgCO₂e per unit) from ICE Database v4.1:</p>
 <table>
 <thead>
 <tr>
-<th>Tier</th>
-<th>Location</th>
-<th>Scope</th>
-<th>Example</th>
+<th>Material</th>
+<th>Unit</th>
+<th>Factor (kgCO₂e)</th>
+<th>Source</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>1 — Agent-specific</strong></td>
-<td><code>.github/agents/*.agent.md</code></td>
-<td>Per-agent rules</td>
-<td><code>backend.agent.md</code></td>
+<td>Concrete M20 (C20/25)</td>
+<td>per m³</td>
+<td>240</td>
+<td>ICE v4.1</td>
 </tr>
 <tr>
-<td><strong>2 — File-type scoped</strong></td>
-<td><code>.github/instructions/*.instructions.md</code></td>
-<td>By glob pattern (<code>applyTo</code>)</td>
-<td><code>python-core.instructions.md</code></td>
+<td>Concrete M25 (C25/30)</td>
+<td>per m³</td>
+<td>290</td>
+<td>ICE v4.1</td>
 </tr>
 <tr>
-<td><strong>3 — Global</strong></td>
-<td><code>.github/copilot-instructions.md</code></td>
-<td>All conversations</td>
-<td>Git rules, architecture</td>
+<td>Concrete M30 (C30/37)</td>
+<td>per m³</td>
+<td>340</td>
+<td>ICE v4.1</td>
+</tr>
+<tr>
+<td>Concrete M35 (C35/45)</td>
+<td>per m³</td>
+<td>390</td>
+<td>ICE v4.1</td>
+</tr>
+<tr>
+<td>Concrete M40 (C40/50)</td>
+<td>per m³</td>
+<td>440</td>
+<td>ICE v4.1</td>
+</tr>
+<tr>
+<td>Steel rebar (global avg)</td>
+<td>per kg</td>
+<td>1.40</td>
+<td>ICE v4.1</td>
+</tr>
+<tr>
+<td>Steel rebar (India EAF)</td>
+<td>per kg</td>
+<td>1.10</td>
+<td>ICE v4.1, adjusted</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Rule:</strong> Higher tiers override lower tiers on conflict.</p>
-<h2 id="how-conflicts-resolve">How Conflicts Resolve<a class="headerlink" href="#how-conflicts-resolve" title="Permanent link">&para;</a></h2>
-<p>When two tiers specify contradictory rules, the higher tier wins:</p>
-<ul>
-<li><strong>Agent &gt; File-type:</strong> If <code>backend.agent.md</code> says "use 4 spaces" but <code>python-core.instructions.md</code> says "use 2 spaces", the agent file wins (4 spaces).</li>
-<li><strong>File-type &gt; Global:</strong> If <code>react.instructions.md</code> says "Tailwind only" but <code>copilot-instructions.md</code> doesn't mention styling, the file-type rule applies in <code>react_app/</code> files.</li>
-<li><strong>Non-conflicting rules merge:</strong> Rules from all tiers apply together when they don't conflict. A global git rule and an agent-specific testing rule both apply simultaneously.</li>
-</ul>
-<h2 id="additional-context-layers">Additional Context Layers<a class="headerlink" href="#additional-context-layers" title="Permanent link">&para;</a></h2>
-<p>These provide supplementary rules but do not override the 3-tier hierarchy:</p>
+<p>Note: Indian concrete emission factors are adjusted upward from European values because Indian cement production is more carbon-intensive (higher clinker ratio, older kilns in many plants). These are conservative estimates.</p>
+<h3 id="carbon-rating-system">Carbon Rating System<a class="headerlink" href="#carbon-rating-system" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th>Layer</th>
-<th>Location</th>
-<th>Loaded By</th>
+<th>Rating</th>
+<th>kgCO₂e per kN·m capacity</th>
+<th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Claude rules</td>
-<td><code>.claude/rules/*.md</code></td>
-<td>Claude only (not Copilot)</td>
+<td>A+</td>
+<td>&lt; 1.5</td>
+<td>Exceptional — minimal carbon</td>
 </tr>
 <tr>
-<td>Cross-agent instructions</td>
-<td><code>AGENTS.md</code></td>
-<td>All AI assistants</td>
+<td>A</td>
+<td>1.5 – 2.5</td>
+<td>Excellent — well-optimized</td>
 </tr>
 <tr>
-<td>Claude-specific instructions</td>
-<td><code>CLAUDE.md</code></td>
-<td>Claude only</td>
+<td>B</td>
+<td>2.5 – 4.0</td>
+<td>Good — typical efficient design</td>
+</tr>
+<tr>
+<td>C</td>
+<td>4.0 – 6.0</td>
+<td>Average — room for improvement</td>
+</tr>
+<tr>
+<td>D</td>
+<td>6.0 – 10.0</td>
+<td>Below average — review design</td>
+</tr>
+<tr>
+<td>E</td>
+<td>&gt; 10.0</td>
+<td>Poor — significant optimization needed</td>
 </tr>
 </tbody>
 </table>
-<p>These layers add context (e.g., session workflow, terminal rules) but agent-specific <code>.agent.md</code> files always take precedence when there's a conflict.</p>
-<h2 id="file-type-scoping-applyto">File-Type Scoping (<code>applyTo</code>)<a class="headerlink" href="#file-type-scoping-applyto" title="Permanent link">&para;</a></h2>
-<p>File-type instructions use <code>applyTo</code> glob patterns in YAML frontmatter:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nn">---</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">applyTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;**/structural_lib/**&quot;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nn">---</span>
+<h3 id="key-metrics">Key Metrics<a class="headerlink" href="#key-metrics" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Total embodied carbon</strong> (kgCO₂e) — absolute emission</li>
+<li><strong>Carbon intensity</strong> (kgCO₂e per m beam length) — normalized per length</li>
+<li><strong>Carbon efficiency</strong> (kgCO₂e per kN·m capacity) — carbon per unit structural utility</li>
+<li><strong>Concrete carbon share</strong> (%) — how much comes from concrete vs steel</li>
+<li><strong>Carbon rating</strong> (A+ to E) — quick visual indicator</li>
+</ol>
+<h2 id="data-requirements">Data Requirements<a class="headerlink" href="#data-requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Concrete volume: already computed by <code>costing.calculate_concrete_volume()</code></li>
+<li>Steel weight: already computed by <code>costing.calculate_steel_weight()</code></li>
+<li>Emission factors: hardcoded from ICE Database v4.1 (publicly available data)</li>
+<li>No external data sources needed for v1 prototype</li>
+</ul>
+<h2 id="implementation-sketch">Implementation Sketch<a class="headerlink" href="#implementation-sketch" title="Permanent link">&para;</a></h2>
+<h3 id="new-module">New Module<a class="headerlink" href="#new-module" title="Permanent link">&para;</a></h3>
+<p><code>Python/structural_lib/research/research_sustainability.py</code></p>
+<h3 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>score_beam_carbon(b_mm, D_mm, span_mm, fck, ast_mm2, asc_mm2=0)</code> → <code>CarbonScore</code></li>
+<li><code>compare_carbon(designs: list)</code> → comparison table</li>
+<li><code>carbon_vs_cost_tradeoff(span_mm, mu_knm, vu_kn)</code> → Pareto-ish analysis</li>
+</ol>
+<h3 id="data-types">Data Types<a class="headerlink" href="#data-types" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">CarbonScore</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">total_kgco2e</span><span class="p">:</span> <span class="nb">float</span>           <span class="c1"># Total embodied carbon</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">concrete_kgco2e</span><span class="p">:</span> <span class="nb">float</span>        <span class="c1"># Concrete contribution</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">steel_kgco2e</span><span class="p">:</span> <span class="nb">float</span>           <span class="c1"># Steel contribution</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">carbon_per_meter</span><span class="p">:</span> <span class="nb">float</span>       <span class="c1"># kgCO2e/m beam length</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">carbon_per_knm</span><span class="p">:</span> <span class="nb">float</span>         <span class="c1"># kgCO2e per kN·m capacity</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">concrete_share_pct</span><span class="p">:</span> <span class="nb">float</span>     <span class="c1"># % from concrete</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">steel_share_pct</span><span class="p">:</span> <span class="nb">float</span>        <span class="c1"># % from steel</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">rating</span><span class="p">:</span> <span class="nb">str</span>                   <span class="c1"># &quot;A+&quot; to &quot;E&quot;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">rating_description</span><span class="p">:</span> <span class="nb">str</span>       <span class="c1"># Human-readable</span>
 </code></pre></div>
+<h3 id="architecture-fit">Architecture Fit<a class="headerlink" href="#architecture-fit" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Layer:</strong> Research (prototype) — will move to <code>insights/</code> when production-ready</li>
+<li><strong>Dependencies:</strong> Only <code>services/costing.py</code> (for volume/weight utilities)</li>
+<li><strong>Import direction:</strong> research → services → core ✓ (never upward)</li>
+</ul>
+<h3 id="production-path-after-validation">Production Path (after validation)<a class="headerlink" href="#production-path-after-validation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Move to <code>insights/sustainability.py</code></li>
+<li>Add <code>CarbonProfile</code> to <code>services/costing.py</code> (parallel to <code>CostProfile</code>)</li>
+<li>Wire into <code>compare_designs()</code> as a 5th comparison dimension</li>
+<li>Add to <code>optimize_beam_cost()</code> as carbon-aware optimization mode</li>
+<li>FastAPI endpoint: <code>POST /api/v1/insights/carbon</code></li>
+<li>React: carbon badge in <code>ResultsPanel</code>, carbon column in <code>BeamTable</code></li>
+</ol>
+<h2 id="validation-plan">Validation Plan<a class="headerlink" href="#validation-plan" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Unit test:</strong> Known concrete volume × emission factor = expected kgCO₂e</li>
+<li><strong>Cross-check:</strong> Compare with IStructE Structural Carbon Tool (Excel) results</li>
+<li><strong>Sensitivity:</strong> Verify that M30 beam has higher carbon than M25 for same dimensions</li>
+<li><strong>Integration:</strong> Run on all existing test beam designs, verify no crashes</li>
+<li><strong>Engineering review:</strong> @structural-engineer validates factors and methodology</li>
+</ol>
+<h2 id="is-456-clause-map">IS 456 Clause Map<a class="headerlink" href="#is-456-clause-map" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Instructions File</th>
-<th>Glob Pattern</th>
-<th>Applies To</th>
+<th>Clause</th>
+<th>Relationship</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>python-core.instructions.md</code></td>
-<td><code>**/structural_lib/**</code></td>
-<td>Python core library</td>
+<td>All clauses</td>
+<td>Unaffected</td>
+<td>Carbon scoring is a post-design analysis — it does NOT modify any IS 456 calculations</td>
 </tr>
 <tr>
-<td><code>fastapi.instructions.md</code></td>
-<td><code>**/fastapi_app/**</code></td>
-<td>FastAPI backend</td>
+<td>Cl 26.5.1</td>
+<td>Read-only</td>
+<td>Minimum steel ratio affects carbon floor</td>
 </tr>
 <tr>
-<td><code>react.instructions.md</code></td>
-<td><code>**/react_app/**</code></td>
-<td>React frontend</td>
-</tr>
-<tr>
-<td><code>docs.instructions.md</code></td>
-<td><code>**/docs/**</code>, <code>**/*.md</code></td>
-<td>Documentation</td>
-</tr>
-<tr>
-<td><code>terminal-rules.instructions.md</code></td>
-<td><code>**</code></td>
-<td>Everything (terminal rules)</td>
+<td>Table 2</td>
+<td>Read-only</td>
+<td>Concrete grade affects emission factor selection</td>
 </tr>
 </tbody>
 </table>
-<h2 id="agent-specific-overrides">Agent-Specific Overrides<a class="headerlink" href="#agent-specific-overrides" title="Permanent link">&para;</a></h2>
-<p>Each of the 16 agents in <code>.github/agents/</code> has its own <code>.agent.md</code> that can:</p>
+<p><strong>Important:</strong> This innovation adds information to designs — it never changes structural calculations, safety factors, or code minimums.</p>
+<h2 id="impact-assessment">Impact Assessment<a class="headerlink" href="#impact-assessment" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score (1-10)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Engineering Value</td>
+<td>9</td>
+<td>Every engineer needs this for net-zero compliance</td>
+</tr>
+<tr>
+<td>Uniqueness</td>
+<td>9</td>
+<td>No open-source structural library does element-level carbon scoring</td>
+</tr>
+<tr>
+<td>Feasibility</td>
+<td>10</td>
+<td>We already have volume/weight calculations — just add emission factors</td>
+</tr>
+<tr>
+<td>Data Availability</td>
+<td>8</td>
+<td>ICE Database is public, well-established, annually updated</td>
+</tr>
+<tr>
+<td>User Demand</td>
+<td>9</td>
+<td>GRIHA, ECBC 2017, UK NZCBS all require embodied carbon reporting</td>
+</tr>
+<tr>
+<td>Code Integration</td>
+<td>9</td>
+<td>Fits perfectly into insights layer, reuses costing infrastructure</td>
+</tr>
+<tr>
+<td>Safety</td>
+<td>10</td>
+<td>Pure analysis — cannot produce unsafe designs (no modification of structural calculations)</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>64/70</strong></td>
+<td>Well above 40/70 threshold</td>
+</tr>
+</tbody>
+</table>
+<h2 id="next-steps-delegation-plan">Next Steps — Delegation Plan<a class="headerlink" href="#next-steps-delegation-plan" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>@structural-engineer:</strong> Verify emission factors and methodology against IStructE guidance</li>
+<li><strong>@structural-math:</strong> Move validated prototype to <code>insights/sustainability.py</code> with full type annotations</li>
+<li><strong>@tester:</strong> Write unit tests (target: 95% branch coverage for sustainability module)</li>
+<li><strong>@api-developer:</strong> Add <code>POST /api/v1/insights/carbon</code> endpoint</li>
+<li><strong>@frontend:</strong> Add carbon badge to <code>ResultsPanel</code>, carbon column to comparison views</li>
+<li><strong>@security:</strong> Review — low risk (pure computation, no external data at runtime)</li>
+</ol>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Restrict available tools (e.g., <code>reviewer</code> is read-only)</li>
-<li>Set permission levels (<code>ReadOnly</code>, <code>WorkspaceWrite</code>, <code>DangerFullAccess</code>)</li>
-<li>Define handoff chains to other agents</li>
-<li>Specify which skills are available</li>
+<li>ICE Database v4.1 (Oct 2025) — Circular Ecology / University of Bath</li>
+<li>IStructE "How to Calculate Embodied Carbon" 3rd ed (Jan 2025)</li>
+<li>UK Net Zero Carbon Buildings Standard v1 (Mar 2026)</li>
+<li>ECBC 2017 — India Energy Conservation Building Code</li>
+<li>GRIHA — Green Rating for Integrated Habitat Assessment</li>
 </ul>
-<h2 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h2>
-<p>Run <code>scripts/config_precedence.py</code> to check for:</p>
-<ul>
-<li>Conflicting rules across tiers</li>
-<li>Missing <code>applyTo</code> patterns</li>
-<li>Orphaned instruction files not referenced by any agent</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>.venv/bin/python<span class="w"> </span>scripts/config_precedence.py
-</code></pre></div>
-<h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Agent .agent.md          ← WINS on conflict (per-agent overrides)
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ↓ falls through to
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>File-type .instructions.md  ← Scoped by glob (applyTo)
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ↓ falls through to
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Global copilot-instructions.md  ← Baseline for all conversations
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  +
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Context layers (AGENTS.md, .claude/rules/) ← Additive, never override
-</code></pre></div>
 
 
 
 
 
 
+
+  
+  
 
 
 
