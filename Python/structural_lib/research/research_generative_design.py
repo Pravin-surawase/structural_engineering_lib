@@ -267,7 +267,7 @@ class GenerativeDesignResult:
                 "─" * 78,
             ]
         )
-        for key, rec in self.recommendations.items():
+        for _key, rec in self.recommendations.items():
             lines.extend(
                 [
                     "",
@@ -397,8 +397,6 @@ def _generate_narrative(
         if greenest.carbon_kgco2e > 0
         else 0
     )
-    util_vs_conservative = rec.utilization - most_conservative.utilization
-
     # Identity check — is this THE cheapest/greenest/most conservative?
     is_cheapest = abs(rec.cost_inr - cheapest.cost_inr) < 1.0
     is_greenest = abs(rec.carbon_kgco2e - greenest.carbon_kgco2e) < 0.1
@@ -735,7 +733,7 @@ def _demo() -> None:
     print("═" * 78)
     print("  DETAILED ENGINEERING NARRATIVES")
     print("═" * 78)
-    for key, rec in result.recommendations.items():
+    for _key, rec in result.recommendations.items():
         print()
         print(f"  ━━━ {rec.persona.name} ━━━")
         print(f"  {rec.narrative}")

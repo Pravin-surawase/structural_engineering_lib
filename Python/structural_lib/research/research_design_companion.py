@@ -1168,8 +1168,8 @@ def _detect_anomalies(
     ranges = _TYPICAL_RANGES[span_class]
 
     pt = result.flexure.pt_provided
-    b_D = b_mm / D_mm
-    span_D = span_mm / D_mm
+    b_d = b_mm / D_mm
+    span_d = span_mm / D_mm
     xu = result.flexure.xu
     xu_max = result.flexure.xu_max
     utilization = xu / xu_max if xu_max > 0 else 0
@@ -1208,31 +1208,31 @@ def _detect_anomalies(
         )
 
     # ── Width/Depth Ratio ──
-    bD_range = ranges["b_D_ratio"]
-    if b_D < bD_range[0]:
+    bd_range = ranges["b_D_ratio"]
+    if b_d < bd_range[0]:
         anomalies.append(
             DesignAnomaly(
                 metric="Width-to-depth ratio (b/D) unusually low",
-                value=b_D,
-                typical_range=bD_range,
+                value=b_d,
+                typical_range=bd_range,
                 severity="warning",
                 explanation=(
-                    f"b/D = {b_D:.2f} makes this a very deep, narrow beam. "
+                    f"b/D = {b_d:.2f} makes this a very deep, narrow beam. "
                     f"This can cause lateral instability and construction "
                     f"difficulty. IS 456 Cl. 23.3 may require lateral bracing."
                 ),
                 question="Is this a deep beam or transfer girder? Check lateral stability.",
             )
         )
-    elif b_D > bD_range[1]:
+    elif b_d > bd_range[1]:
         anomalies.append(
             DesignAnomaly(
                 metric="Width-to-depth ratio (b/D) unusually high",
-                value=b_D,
-                typical_range=bD_range,
+                value=b_d,
+                typical_range=bd_range,
                 severity="info",
                 explanation=(
-                    f"b/D = {b_D:.2f} makes this a wide, shallow beam. "
+                    f"b/D = {b_d:.2f} makes this a wide, shallow beam. "
                     f"Consider a slab band or band beam approach. "
                     f"Deflection may govern over strength."
                 ),
@@ -1241,16 +1241,16 @@ def _detect_anomalies(
         )
 
     # ── Span/Depth Ratio ──
-    sD_range = ranges["span_D_ratio"]
-    if span_D > sD_range[1] * 1.1:
+    sd_range = ranges["span_D_ratio"]
+    if span_d > sd_range[1] * 1.1:
         anomalies.append(
             DesignAnomaly(
                 metric="Span-to-depth ratio (L/D) high",
-                value=span_D,
-                typical_range=sD_range,
+                value=span_d,
+                typical_range=sd_range,
                 severity="warning",
                 explanation=(
-                    f"L/D = {span_D:.1f} is high for a {span_class} span. "
+                    f"L/D = {span_d:.1f} is high for a {span_class} span. "
                     f"Deflection is likely to govern. IS 456 Cl. 23.2 "
                     f"basic L/d ratios may be violated."
                 ),
@@ -1408,16 +1408,16 @@ def _generate_alternatives(
         ),
     ]
 
-    for label, ab, aD, afck, afy in alt_configs:
-        ad = aD - cover
-        if ab < 150 or aD < 250 or ad <= 0:
+    for label, ab, a_d, afck, afy in alt_configs:
+        ad = a_d - cover
+        if ab < 150 or a_d < 250 or ad <= 0:
             continue
 
         try:
             alt_result = design_beam_is456(
                 units="IS456",
                 b_mm=float(ab),
-                D_mm=float(aD),
+                D_mm=float(a_d),
                 d_mm=float(ad),
                 fck_nmm2=float(afck),
                 fy_nmm2=float(afy),
@@ -1438,7 +1438,7 @@ def _generate_alternatives(
         pt = 100.0 * ast / (ab * ad)
         cost_bd = calculate_beam_cost(
             b_mm=float(ab),
-            D_mm=float(aD),
+            D_mm=float(a_d),
             span_mm=span_mm,
             ast_mm2=ast,
             fck_nmm2=afck,
@@ -1447,7 +1447,7 @@ def _generate_alternatives(
         )
         carbon = score_beam_carbon(
             b_mm=float(ab),
-            D_mm=float(aD),
+            D_mm=float(a_d),
             span_mm=span_mm,
             fck=afck,
             ast_mm2=ast,
@@ -1486,7 +1486,7 @@ def _generate_alternatives(
             AlternativeDesign(
                 label=label,
                 b_mm=ab,
-                D_mm=aD,
+                D_mm=a_d,
                 fck=afck,
                 fy=afy,
                 ast_mm2=ast,

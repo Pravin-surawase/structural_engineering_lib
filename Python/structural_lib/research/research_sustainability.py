@@ -372,7 +372,9 @@ def print_comparison(comparison: CarbonComparison) -> None:
     )
     print("─" * 78)
 
-    for i, (label, score) in enumerate(zip(comparison.labels, comparison.scores)):
+    for i, (label, score) in enumerate(
+        zip(comparison.labels, comparison.scores, strict=False)
+    ):
         marker = " ★" if i == comparison.best_idx else ""
         print(
             f"  {label:<20} {score.total_kgco2e:>12.1f}   "
