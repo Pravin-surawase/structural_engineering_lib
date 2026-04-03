@@ -7,6 +7,8 @@ Covers: core/errors.py (DesignError, Severity, pre-defined codes),
         core/types.py (re-export shim).
 """
 
+import warnings
+
 import pytest
 
 from structural_lib.core.data_types import (
@@ -259,9 +261,6 @@ class TestTypesShim:
         assert hasattr(types_mod, "FlexureResult")
         assert hasattr(types_mod, "ShearResult")
         assert hasattr(types_mod, "BeamType")
-
-
-import warnings
 
 
 class TestFlexureResultBackwardCompat:
