@@ -20,7 +20,7 @@ tags: []
 
 ## Quick Overview
 
-You have **15 agents**, **9 skills**, and **15 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one.
+You have **16 agents**, **10 skills**, and **16 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one.
 
 ### How to invoke
 
@@ -32,7 +32,7 @@ You have **15 agents**, **9 skills**, and **15 prompt files** configured in VS C
 
 ---
 
-## The 15 Agents — When to Use Each
+## The 16 Agents — When to Use Each
 
 ### Start Here: `@orchestrator`
 
@@ -238,6 +238,22 @@ The orchestrator will:
 
 ---
 
+### Innovator: `@innovator`
+
+**Use when:** Starting innovation research, identifying capability gaps, proposing novel features.
+
+```
+@innovator research sustainability scoring for structural designs
+@innovator what capabilities are we missing compared to other structural tools?
+@innovator propose a generative design approach for beam optimization
+```
+
+**It knows about:** Research methodologies, capability gap analysis, novel engineering approaches.
+
+> **Won't do:** Implement production code (delegates to specialists).
+
+---
+
 ### Ops: `@ops`
 
 **Use when:** Git issues, Docker problems, CI/CD, environment setup.
@@ -252,7 +268,7 @@ The orchestrator will:
 
 ---
 
-## The 9 Skills — Quick Actions
+## The 10 Skills — Quick Actions
 
 Skills are shortcuts for common tasks. Use them inline in any chat.
 
@@ -331,9 +347,17 @@ Validate 4-layer architecture boundaries and import direction:
 /architecture-check check for duplication
 ```
 
+### `/innovation-research`
+
+Run a guided innovation research cycle:
+```
+/innovation-research sustainability
+/innovation-research generative-design
+```
+
 ---
 
-## The 15 Prompt Files — Workflow Templates
+## The 16 Prompt Files — Workflow Templates
 
 Prompt files are reusable workflow templates. Reference them with `#`.
 
@@ -354,6 +378,7 @@ Prompt files are reusable workflow templates. Reference them with `#`.
 | `#is456-verify` | Checking formulas | `#is456-verify verify Cl 38.1 flexure` |
 | `#context-recovery` | Resuming after context overflow | `#context-recovery` |
 | `#master-workflow` | Master workflow orchestration | `#master-workflow plan full feature delivery` |
+| `#innovation-research` | Innovation research cycle | `#innovation-research sustainability scoring` |
 
 ---
 

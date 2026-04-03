@@ -37,7 +37,7 @@ class TestAgentRegistrySurface:
         assert path.exists(), "agent_registry.json missing"
         data = json.loads(path.read_text())
         agents = data.get("agents", [])
-        assert len(agents) >= 15, f"Expected ≥15 agents, got {len(agents)}"
+        assert len(agents) >= 16, f"Expected ≥16 agents, got {len(agents)}"
 
     def test_required_agent_fields(self):
         path = REPO_ROOT / "agents" / "agent_registry.json"

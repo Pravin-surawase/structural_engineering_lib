@@ -3,7 +3,7 @@
 Unified tool registry — connects agents, skills, scripts, and operations.
 
 Loads from:
-- agents/agent_registry.json (15 agents)
+- agents/agent_registry.json (16 agents)
 - scripts/automation-map.json (88+ scripts)
 
 Usage:

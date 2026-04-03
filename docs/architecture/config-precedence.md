@@ -59,7 +59,7 @@ applyTo: "**/structural_lib/**"
 
 ## Agent-Specific Overrides
 
-Each of the 15 agents in `.github/agents/` has its own `.agent.md` that can:
+Each of the 16 agents in `.github/agents/` has its own `.agent.md` that can:
 
 - Restrict available tools (e.g., `reviewer` is read-only)
 - Set permission levels (`ReadOnly`, `WorkspaceWrite`, `DangerFullAccess`)
