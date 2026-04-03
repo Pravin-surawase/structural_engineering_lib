@@ -47,20 +47,12 @@ SUBJECT_LENGTH=${#SUBJECT}
 # =============================================================================
 ERRORS=""
 
-# 1. Check subject length — auto-truncate if over limit
+# 1. Check subject length — reject if over limit (don't auto-truncate)
 if [ "$SUBJECT_LENGTH" -gt "$SUBJECT_MAX_LENGTH" ]; then
-    TRUNCATED="${SUBJECT:0:$SUBJECT_MAX_LENGTH}"
-    # Write truncated message back to file
-    echo "$TRUNCATED" > "$COMMIT_MSG_FILE"
-    if [ -n "$BODY" ]; then
-        echo "" >> "$COMMIT_MSG_FILE"
-        echo "$BODY" >> "$COMMIT_MSG_FILE"
-    fi
-    echo -e "${YELLOW}⚠ Subject auto-truncated: $SUBJECT_LENGTH → $SUBJECT_MAX_LENGTH chars${NC}"
-    echo -e "${YELLOW}  Original: $SUBJECT${NC}"
-    echo -e "${YELLOW}  Truncated: $TRUNCATED${NC}"
-    SUBJECT="$TRUNCATED"
-    SUBJECT_LENGTH=${#SUBJECT}
+    echo -e "${RED}✗ Subject line too long: $SUBJECT_LENGTH chars (max $SUBJECT_MAX_LENGTH)${NC}"
+    echo -e "${YELLOW}  Subject: $SUBJECT${NC}"
+    echo -e "${YELLOW}  Shorten the subject line and try again.${NC}"
+    exit 1
 fi
 
 # 2. Check type prefix

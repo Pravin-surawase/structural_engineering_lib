@@ -137,7 +137,6 @@ while IFS= read -r file; do
         TESTS_ONLY=false
         SCRIPTS_ONLY=false
         DOCS_OR_SCRIPTS=false
-        STREAMLIT_ONLY=false
     fi
 
     # Check if file is CI
@@ -147,7 +146,6 @@ while IFS= read -r file; do
         TESTS_ONLY=false
         SCRIPTS_ONLY=false
         DOCS_OR_SCRIPTS=false
-        STREAMLIT_ONLY=false
     fi
 
     # Check if file is dependency
@@ -157,7 +155,6 @@ while IFS= read -r file; do
         TESTS_ONLY=false
         SCRIPTS_ONLY=false
         DOCS_OR_SCRIPTS=false
-        STREAMLIT_ONLY=false
     fi
 
     # Check if NOT docs-like
