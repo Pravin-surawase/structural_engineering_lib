@@ -78,7 +78,7 @@ def _generate_rows(count: int, seed: int) -> list[dict]:
         probe = flexure.design_singly_reinforced(
             b=b, d=d, d_total=D, mu_knm=1.0, fck=fck, fy=fy
         )
-        mu_lim = probe.mu_lim if probe.mu_lim > 0 else 150.0
+        mu_lim = probe.Mu_lim if probe.Mu_lim > 0 else 150.0
         mu = mu_lim * rng.uniform(0.45, 0.7)
         mu = max(mu, 20.0)
 
@@ -120,7 +120,7 @@ def _generate_rows(count: int, seed: int) -> list[dict]:
                 "fy": round(fy, 1),
                 "Mu": round(mu, 2),
                 "Vu": round(vu, 2),
-                "Ast_req": round(flex.ast_required, 2),
+                "Ast_req": round(flex.Ast_required, 2),
                 "Asc_req": 0.0,
                 "Stirrup_Dia": round(stirrup_dia, 1),
                 "Stirrup_Spacing": round(spacing, 1),

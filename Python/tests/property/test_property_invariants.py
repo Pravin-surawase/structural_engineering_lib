@@ -98,7 +98,7 @@ class TestFlexureInvariants:
         result = flexure.design_singly_reinforced(b, d, d_total, 0.001, fck, fy)
 
         # Should get minimum steel area
-        assert result.ast_required > 0, "Should provide minimum steel"
+        assert result.Ast_required > 0, "Should provide minimum steel"
         assert result.is_safe, "Zero moment should be safe"
 
 

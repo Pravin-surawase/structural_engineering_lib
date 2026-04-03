@@ -328,10 +328,10 @@ def design_shear(
 
     if input_errors:
         return ShearResult(
-            tv=0.0,
-            tc=0.0,
-            tc_max=0.0,
-            vus=0.0,
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
             spacing=0.0,
             is_safe=False,
             errors=input_errors,
@@ -345,10 +345,10 @@ def design_shear(
 
     if material_errors:
         return ShearResult(
-            tv=0.0,
-            tc=0.0,
-            tc_max=0.0,
-            vus=0.0,
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
             spacing=0.0,
             is_safe=False,
             errors=material_errors,
@@ -356,10 +356,10 @@ def design_shear(
 
     if asv <= 0:
         return ShearResult(
-            tv=0.0,
-            tc=0.0,
-            tc_max=0.0,
-            vus=0.0,
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
             spacing=0.0,
             is_safe=False,
             errors=[E_INPUT_008],
@@ -367,10 +367,10 @@ def design_shear(
 
     if pt < 0:
         return ShearResult(
-            tv=0.0,
-            tc=0.0,
-            tc_max=0.0,
-            vus=0.0,
+            tau_v=0.0,
+            tau_c=0.0,
+            tau_c_max=0.0,
+            Vus=0.0,
             spacing=0.0,
             is_safe=False,
             errors=[E_INPUT_009],
@@ -389,10 +389,10 @@ def design_shear(
     # Check Safety
     if tv > tc_max:
         return ShearResult(
-            tv=tv,
-            tc=0.0,
-            tc_max=tc_max,
-            vus=0.0,
+            tau_v=tv,
+            tau_c=0.0,
+            tau_c_max=tc_max,
+            Vus=0.0,
             spacing=0.0,
             is_safe=False,
             errors=warning_errors + [E_SHEAR_001],
@@ -441,10 +441,10 @@ def design_shear(
     spacing = round_to_practical_spacing(spacing, round_down=True)
 
     return ShearResult(
-        tv=tv,
-        tc=tc,
-        tc_max=tc_max,
-        vus=vus,
+        tau_v=tv,
+        tau_c=tc,
+        tau_c_max=tc_max,
+        Vus=vus,
         spacing=spacing,
         is_safe=True,
         errors=design_errors,

@@ -1601,8 +1601,8 @@ def design_and_detail_beam_is456(
 
     # Step 2: Extract steel areas from design
     # For simplicity, use same Ast at all zones (conservative for gravity loads)
-    ast_required = design_result.flexure.ast_required
-    asc_required = design_result.flexure.asc_required
+    ast_required = design_result.flexure.Ast_required
+    asc_required = design_result.flexure.Asc_required
 
     # Step 3: Create detailing
     detail_result = detail_beam_is456(

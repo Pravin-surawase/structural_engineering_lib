@@ -187,7 +187,7 @@ class CalculationReport:
                 "fy_nmm2": result.materials.get("fy_nmm2", 500),
             }
             results_section.flexure = {
-                "ast_required": design.flexure.ast_required,
+                "ast_required": design.flexure.Ast_required,
                 "ast_provided": design.flexure.ast_provided,
                 "beam_type": design.flexure.beam_type,
             }
@@ -205,7 +205,7 @@ class CalculationReport:
             # ComplianceCaseResult
             inputs.geometry = {"beam_id": beam_id, "story": story}
             results_section.flexure = {
-                "ast_required": result.flexure.ast_required,
+                "ast_required": result.flexure.Ast_required,
                 "pt_provided": result.flexure.pt_provided,
             }
             results_section.shear = {

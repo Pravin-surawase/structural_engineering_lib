@@ -582,8 +582,8 @@ def explore_design_space(
                     if not result.flexure.is_safe or not result.shear.is_safe:
                         continue
 
-                    ast = result.flexure.ast_required
-                    asc = result.flexure.asc_required or 0.0
+                    ast = result.flexure.Ast_required
+                    asc = result.flexure.Asc_required or 0.0
                     xu = result.flexure.xu
                     xu_max = result.flexure.xu_max
 
@@ -627,7 +627,7 @@ def explore_design_space(
                         asc_required_mm2=asc,
                         xu=xu,
                         xu_max=xu_max,
-                        mu_lim_knm=result.flexure.mu_lim,
+                        mu_lim_knm=result.flexure.Mu_lim,
                         shear_spacing_mm=result.shear.spacing,
                         cost_inr=cost_bd.total_cost,
                         carbon_kgco2e=carbon.total_kgco2e,

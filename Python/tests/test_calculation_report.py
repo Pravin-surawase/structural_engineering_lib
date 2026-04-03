@@ -95,7 +95,7 @@ def mock_design_result(sample_input_section, sample_result_section) -> MagicMock
     # Design object with flexure and shear
     result.design = MagicMock()
     result.design.flexure = MagicMock()
-    result.design.flexure.ast_required = 942.48
+    result.design.flexure.Ast_required = 942.48
     result.design.flexure.ast_provided = 1017.88
     result.design.flexure.beam_type = "singly reinforced"
 
@@ -540,7 +540,7 @@ class TestEdgeCases:
         result.materials = {}
         result.design = MagicMock()
         result.design.flexure = MagicMock()
-        result.design.flexure.ast_required = 0
+        result.design.flexure.Ast_required = 0
         result.design.flexure.ast_provided = 0
         result.design.flexure.beam_type = "unknown"
         result.design.shear = MagicMock()
@@ -561,7 +561,7 @@ class TestEdgeCases:
 
         @dataclass
         class MockFlexure:
-            ast_required: float = 500.0
+            Ast_required: float = 500.0
             pt_provided: float = 0.5
 
         @dataclass

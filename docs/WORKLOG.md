@@ -169,3 +169,4 @@ tags: []
 | 2026-04-03 | TASK-650 | fix(footing): 150mm minimum depth enforcement in _common.py (F-001) | pending |
 | 2026-04-03 | TASK-650 | fix(footing): FootingFlexureResult both-direction fields + central_band_fraction (F-008) | pending |
 | 2026-04-03 | TASK-650 | test(footing): 79 tests (16 new — both-direction, Cl 34.3.1, min depth) | pending |
+| 2026-04-04 | TASK-660 | Standardize IS 456 variable naming — 21 field renames, 4 dataclasses, ~60 files, backward-compat aliases | — |

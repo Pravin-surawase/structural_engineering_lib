@@ -148,7 +148,9 @@ def test_compliance_utilization_for_failed_deflection_and_crack_is_infinite():
 
 
 def test_compliance_shear_utilization_infinite_when_failed_and_tcmax_zero():
-    sh = ShearResult(tv=1.0, tc=0.0, tc_max=0.0, vus=0.0, spacing=0.0, is_safe=False)
+    sh = ShearResult(
+        tau_v=1.0, tau_c=0.0, tau_c_max=0.0, Vus=0.0, spacing=0.0, is_safe=False
+    )
     assert compliance._compute_shear_utilization(sh) == float("inf")
 
 

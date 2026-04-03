@@ -136,15 +136,15 @@ def design_beam(row: dict) -> BeamDesignOutput:
         # Singly reinforced
         section_type = "Singly"
         flex_result = flexure.design_singly_reinforced(b, d, D, Mu, fck, fy)
-        ast_required = flex_result.ast_required
+        ast_required = flex_result.Ast_required
         asc_required = 0
     else:
         # Doubly reinforced
         section_type = "Doubly"
         d_dash = cover + stirrup_dia + 8  # Compression steel level
         flex_result = flexure.design_doubly_reinforced(b, d, d_dash, D, Mu, fck, fy)
-        ast_required = flex_result.ast_required
-        asc_required = flex_result.asc_required
+        ast_required = flex_result.Ast_required
+        asc_required = flex_result.Asc_required
 
     # Select tension bars
     n_bot, dia_bot, ast_provided = select_bars(ast_required)
@@ -233,8 +233,8 @@ def design_beam(row: dict) -> BeamDesignOutput:
         ast_provided=round(ast_provided, 0),
         asc_provided=round(asc_provided, 0),
         vu=Vu,
-        tv=round(shear_result.tv, 3),
-        tc=round(shear_result.tc, 3),
+        tv=round(shear_result.tau_v, 3),
+        tc=round(shear_result.tau_c, 3),
         stirrup_spacing=sv_practical,
         stirrups=stirrups,
         ld=round(ld, 0),

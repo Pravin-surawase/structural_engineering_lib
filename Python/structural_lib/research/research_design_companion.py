@@ -282,12 +282,12 @@ class CompanionResponse:
                 "━" * 78,
                 "",
                 f"  Mu = {r.mu_knm:.1f} kNm  |  Vu = {r.vu_kn:.1f} kN",
-                f"  Flexure: Ast = {r.flexure.ast_required:.0f} mm²  |  "
+                f"  Flexure: Ast = {r.flexure.Ast_required:.0f} mm²  |  "
                 f"xu = {r.flexure.xu:.1f} mm  |  xu_max = {r.flexure.xu_max:.1f} mm  |  "
-                f"Mu_lim = {r.flexure.mu_lim:.1f} kNm  |  "
+                f"Mu_lim = {r.flexure.Mu_lim:.1f} kNm  |  "
                 f"{'SAFE ✓' if r.flexure.is_safe else 'FAIL ✗'}",
-                f"  Shear:  τv = {r.shear.tv:.3f} N/mm²  |  "
-                f"τc = {r.shear.tc:.3f} N/mm²  |  "
+                f"  Shear:  τv = {r.shear.tau_v:.3f} N/mm²  |  "
+                f"τc = {r.shear.tau_c:.3f} N/mm²  |  "
                 f"spacing = {r.shear.spacing:.0f} mm  |  "
                 f"{'SAFE ✓' if r.shear.is_safe else 'FAIL ✗'}",
                 "",
@@ -507,7 +507,7 @@ def _build_reasoning_chain(
 
     # ── Step 2: Limiting Moment ──
     step_num += 1
-    mu_lim = result.flexure.mu_lim
+    mu_lim = result.flexure.Mu_lim
     k = 0.36 * xu_max_d * (1 - 0.42 * xu_max_d)
     steps.append(
         ReasoningStep(
@@ -579,7 +579,7 @@ def _build_reasoning_chain(
 
     # ── Step 4: Required Steel ──
     step_num += 1
-    ast_req = result.flexure.ast_required
+    ast_req = result.flexure.Ast_required
     ast_calc_raw = calculate_ast_required(b_mm, d_mm, mu_knm, fck, fy)
     governed_by_min = ast_calc_raw < ast_min and ast_calc_raw >= 0
     steps.append(
@@ -678,9 +678,9 @@ def _build_reasoning_chain(
 
     # ── Step 7: Shear Check ──
     step_num += 1
-    tv = result.shear.tv
-    tc = result.shear.tc
-    tc_max = result.shear.tc_max
+    tv = result.shear.tau_v
+    tc = result.shear.tau_c
+    tc_max = result.shear.tau_c_max
     steps.append(
         ReasoningStep(
             step_number=step_num,
@@ -1447,7 +1447,7 @@ def _generate_alternatives(
         if not alt_result.flexure.is_safe or not alt_result.shear.is_safe:
             continue
 
-        ast = alt_result.flexure.ast_required
+        ast = alt_result.flexure.Ast_required
         xu = alt_result.flexure.xu
         xu_max = alt_result.flexure.xu_max
         util = xu / xu_max if xu_max > 0 else 1.0
@@ -1565,7 +1565,7 @@ def _build_executive_summary(
     # Flexure
     if is_safe:
         parts.append(
-            f"The section requires {result.flexure.ast_required:.0f} mm² "
+            f"The section requires {result.flexure.Ast_required:.0f} mm² "
             f"tension steel ({rebar.recommended.bars}), achieving "
             f"xu/xu_max = {utilization:.2f} — "
             f"{'comfortably under-reinforced with good ductility' if utilization < 0.6 else 'adequately under-reinforced' if utilization < 0.85 else 'near the balanced condition'}."
@@ -1681,7 +1681,7 @@ def design_with_companion(
 
     # ── 3. Reason through rebar selection ──
     rebar = _build_rebar_reasoning(
-        ast_required=result.flexure.ast_required,
+        ast_required=result.flexure.Ast_required,
         b_mm=b_mm,
         cover_mm=cover_mm,
     )
@@ -1693,12 +1693,12 @@ def design_with_companion(
     anomalies = _detect_anomalies(b_mm, D_mm, d_mm, span_mm, fck, fy, mu_knm, result)
 
     # ── 6. Calculate cost and carbon ──
-    pt = 100.0 * result.flexure.ast_required / (b_mm * d_mm)
+    pt = 100.0 * result.flexure.Ast_required / (b_mm * d_mm)
     cost_bd = calculate_beam_cost(
         b_mm=b_mm,
         D_mm=D_mm,
         span_mm=span_mm,
-        ast_mm2=result.flexure.ast_required,
+        ast_mm2=result.flexure.Ast_required,
         fck_nmm2=int(fck),
         steel_percentage=pt,
         cost_profile=CostProfile(),
@@ -1708,8 +1708,8 @@ def design_with_companion(
         D_mm=D_mm,
         span_mm=span_mm,
         fck=int(fck),
-        ast_mm2=result.flexure.ast_required,
-        asc_mm2=result.flexure.asc_required,
+        ast_mm2=result.flexure.Ast_required,
+        asc_mm2=result.flexure.Asc_required,
         mu_knm=mu_knm,
     )
 

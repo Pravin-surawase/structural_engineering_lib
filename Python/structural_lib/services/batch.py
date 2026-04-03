@@ -94,15 +94,15 @@ def _design_single_beam(
         "index": idx,
         "input": dict(beam_params),
         "flexure": {
-            "ast_required": result.flexure.ast_required,
-            "mu_lim": result.flexure.mu_lim,
+            "ast_required": result.flexure.Ast_required,
+            "mu_lim": result.flexure.Mu_lim,
             "xu": result.flexure.xu,
             "is_safe": result.flexure.is_safe,
         },
         "shear": (
             {
-                "tv": result.shear.tv if result.shear else None,
-                "tc": result.shear.tc if result.shear else None,
+                "tv": result.shear.tau_v if result.shear else None,
+                "tc": result.shear.tau_c if result.shear else None,
                 "is_safe": result.shear.is_safe if result.shear else None,
             }
             if result.shear

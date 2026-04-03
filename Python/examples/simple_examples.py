@@ -44,14 +44,14 @@ def example_1_basic_flexure():
     print(f"Effective depth d = {d} mm")
     print(f"Materials: M{fck} / Fe{fy}")
     print(f"Applied moment Mu = {Mu} kN·m")
-    print(f"Limiting moment Mu_lim = {result.mu_lim:.2f} kN·m")
-    print(f"Required steel Ast = {result.ast_required:.0f} mm²")
+    print(f"Limiting moment Mu_lim = {result.Mu_lim:.2f} kN·m")
+    print(f"Required steel Ast = {result.Ast_required:.0f} mm²")
     print(f"Steel percentage pt = {result.pt_provided:.2f}%")
 
     # Select bars
     bar_dia = 16
     bar_area = math.pi * (bar_dia / 2) ** 2
-    n_bars = math.ceil(result.ast_required / bar_area)
+    n_bars = math.ceil(result.Ast_required / bar_area)
     print(f"\nProvide: {n_bars} nos. of {bar_dia}mm bars")
     print(f"Area provided = {n_bars * bar_area:.0f} mm²")
 
@@ -88,9 +88,9 @@ def example_2_shear_design():
 
     # Output
     print(f"Shear force Vu = {Vu} kN")
-    print(f"Nominal shear stress τv = {result.tv:.3f} N/mm²")
-    print(f"Design shear strength τc = {result.tc:.3f} N/mm²")
-    print(f"Maximum shear τc,max = {result.tc_max:.3f} N/mm²")
+    print(f"Nominal shear stress τv = {result.tau_v:.3f} N/mm²")
+    print(f"Design shear strength τc = {result.tau_c:.3f} N/mm²")
+    print(f"Maximum shear τc,max = {result.tau_c_max:.3f} N/mm²")
     print(f"Stirrup area Asv = {Asv:.1f} mm² ({legs}L-{stirrup_dia}mm)")
     print(f"Required spacing = {result.spacing:.0f} mm")
 
@@ -224,12 +224,12 @@ def example_6_doubly_reinforced():
     # Design
     result = flexure.design_doubly_reinforced(b, d, d_dash, D, Mu, fck, fy)
 
-    print(f"\nTension steel Ast = {result.ast_required:.0f} mm²")
-    print(f"Compression steel Asc = {result.asc_required:.0f} mm²")
+    print(f"\nTension steel Ast = {result.Ast_required:.0f} mm²")
+    print(f"Compression steel Asc = {result.Asc_required:.0f} mm²")
 
     # Select bars
-    n_tension = math.ceil(result.ast_required / 314.2)  # 20mm bars
-    n_compression = max(2, math.ceil(result.asc_required / 113.1))  # 12mm bars
+    n_tension = math.ceil(result.Ast_required / 314.2)  # 20mm bars
+    n_compression = max(2, math.ceil(result.Asc_required / 113.1))  # 12mm bars
 
     print("\nProvide:")
     print(f"  Bottom (tension): {n_tension}-20φ")
@@ -268,9 +268,9 @@ def example_7_complete_design():
 
     print("\n--- FLEXURE DESIGN ---")
     flex = flexure.design_singly_reinforced(b, d, D, Mu, fck, fy)
-    n_bars = math.ceil(flex.ast_required / (math.pi * (main_bar / 2) ** 2))
+    n_bars = math.ceil(flex.Ast_required / (math.pi * (main_bar / 2) ** 2))
     Ast_prov = n_bars * math.pi * (main_bar / 2) ** 2
-    print(f"Ast required = {flex.ast_required:.0f} mm²")
+    print(f"Ast required = {flex.Ast_required:.0f} mm²")
     print(f"Provide: {n_bars}-{main_bar}φ ({Ast_prov:.0f} mm²)")
 
     print("\n--- SHEAR DESIGN ---")
@@ -278,7 +278,7 @@ def example_7_complete_design():
     pt = Ast_prov * 100 / (b * d)
     shear_res = shear.design_shear(Vu, b, d, fck, fy, Asv, pt)
     sv = (shear_res.spacing // 25) * 25
-    print(f"τv = {shear_res.tv:.3f} N/mm², τc = {shear_res.tc:.3f} N/mm²")
+    print(f"τv = {shear_res.tau_v:.3f} N/mm², τc = {shear_res.tau_c:.3f} N/mm²")
     print(f"Provide: 2L-{stirrup_dia}φ @ {int(sv)} mm c/c")
 
     print("\n--- DETAILING ---")

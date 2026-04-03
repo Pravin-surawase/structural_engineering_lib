@@ -1,43 +1,37 @@
 # Next Session Brief
 
-**Updated:** 2026-04-03
-**Last Session:** Footing module review + CRITICAL fixes (F-004, F-006, F-001, F-005, F-008)
+**Updated:** 2026-04-04
+**Last Session:** TASK-660 Variable Naming Migration (complete)
 
 ---
 
 ## What Was Done This Session
 
-### Footing Module Review & Fixes
-- **3-agent parallel review:** structural-engineer + reviewer + variable naming audit
-- **F-004 (CRITICAL):** Fixed flexure.py — now designs steel in BOTH L and B directions independently
-- **F-006 (CRITICAL):** Fixed one_way_shear.py — now checks shear in BOTH directions, reports governing direction
-- **F-001 (MAJOR):** Added 150mm minimum depth enforcement in _common.py (E_FOOTING_005)
-- **F-005 (MAJOR):** Added IS 456 Cl 34.3.1 steel distribution for rectangular footings (2/(β+1) central band)
-- **F-008 (MAJOR):** Extended FootingFlexureResult with both-direction fields + central_band_fraction
-- **Tests:** 79 footing tests (was 63, +16 new), full suite 4165 passed, 0 failures
-- **Re-verified:** Structural engineer APPROVED all fixes
+### TASK-660: Variable Naming Migration ✅
+- Renamed 21 dataclass fields across FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult to IS 456 convention
+- Added @property backward-compat aliases with DeprecationWarning (removal in v1.0.0)
+- Updated ~60 files: core code, services, tests, examples, FastAPI routers
+- JSON API stays backward compatible (Pydantic field names unchanged)
+- Fixed Pydantic field access bug in design.py (mixed up dataclass vs Pydantic field names)
+- All tests pass: 4165 Python + 180 FastAPI
 
-### Variable Naming Audit
-- **Footing + Column modules:** CORRECT ✅ (Pu_kN, Mu_kNm, Ast_mm2)
-- **Beam modules:** VIOLATIONS found — FlexureResult, ShearResult, TorsionResult use lowercase where uppercase required
-- **Created TASK-660** for migration (breaking change, needs deprecation path)
-
-### Files Changed
-- `codes/is456/footing/flexure.py` — both-direction design, Cl 34.3.1
-- `codes/is456/footing/one_way_shear.py` — both-direction check, governing_direction
-- `codes/is456/footing/_common.py` — 150mm min depth, E_FOOTING_005
-- `codes/is456/footing/bearing.py` — comment fix
-- `core/data_types.py` — FootingFlexureResult both-direction fields + central_band_fraction, FootingOneWayShearResult governing_direction
-- `tests/test_footing.py` — 79 tests (16 new for both-direction, Cl 34.3.1, min depth)
+### Files Changed (key)
+- `core/data_types.py` — 21 field renames + 21 @property aliases
+- `codes/is456/beam/flexure.py`, `shear.py`, `torsion.py` — construction sites
+- `codes/is456/compliance.py` — ComplianceCaseResult constructor
+- `services/*.py` — field accesses (~12 files)
+- `fastapi_app/routers/design.py` — Pydantic field access fix
+- `Python/tests/*` — ~25 test files updated
+- `Python/examples/*` — 8 example files updated
 
 ---
 
 ## What To Do Next
 
-1. **TASK-660: Variable naming migration** — Standardize beam result types (FlexureResult, ShearResult, TorsionResult) to IS 456 convention. This is a breaking change — plan deprecation shim first.
-2. **TASK-654: Bearing at column-footing interface** — Cl 34.4, load transfer (NOT soil bearing)
-3. **TASK-655: Dowel bars** — Cl 34.2.5, anchorage at column-footing junction
-4. **TASK-656: Footing FastAPI endpoint** — `POST /api/v1/design/footing`, wire up all functions
+1. **TASK-654: Bearing at column-footing interface** — Cl 34.4, load transfer calculation
+2. **TASK-655: Dowel bars** — Cl 34.2.5, anchorage at column-footing junction
+3. **TASK-656: Footing FastAPI endpoint** — `POST /api/v1/design/footing`
+4. **TASK-519: Alternatives Panel (Pareto)** — Pareto front in DesignView
 
 ---
 
@@ -47,5 +41,4 @@
 git status --short && git branch --show-current
 docs/TASKS.md                    # Check priorities
 ./run.sh session start           # Verify environment
-.venv/bin/pytest Python/tests/test_footing.py -v  # Run footing tests (79 expected)
 ```

@@ -27,9 +27,9 @@ def test_singly_reinforced_fallback():
     res = design_doubly_reinforced(b, d, d_dash, d_total, mu_design, fck, fy)
 
     assert res.is_safe
-    assert res.asc_required == 0.0
-    assert res.ast_required > 0
-    assert res.mu_lim == pytest.approx(mu_lim, rel=1e-3)
+    assert res.Asc_required == 0.0
+    assert res.Ast_required > 0
+    assert res.Mu_lim == pytest.approx(mu_lim, rel=1e-3)
 
 
 def test_doubly_reinforced_needed():
@@ -47,9 +47,9 @@ def test_doubly_reinforced_needed():
     res = design_doubly_reinforced(b, d, d_dash, d_total, mu_design, fck, fy)
 
     assert res.is_safe
-    assert res.asc_required > 0
-    assert res.ast_required > 0
-    assert res.mu_lim == pytest.approx(mu_lim, rel=1e-3)
+    assert res.Asc_required > 0
+    assert res.Ast_required > 0
+    assert res.Mu_lim == pytest.approx(mu_lim, rel=1e-3)
 
     # Check logic manually
     # Mu2 = 0.5 * Mu_lim

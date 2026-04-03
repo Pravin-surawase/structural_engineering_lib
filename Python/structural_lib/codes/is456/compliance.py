@@ -77,16 +77,16 @@ def _compute_flexure_utilization(mu_knm: float, flex: FlexureResult) -> float:
         if flex.is_safe:
             return 1.0
 
-    if flex.mu_lim <= 0:
+    if flex.Mu_lim <= 0:
         return float("inf")
-    return mu_abs / flex.mu_lim
+    return mu_abs / flex.Mu_lim
 
 
 def _compute_shear_utilization(sh: ShearResult) -> float:
     """Compute shear utilization as tv / tc_max."""
-    if (not sh.is_safe) and sh.tc_max <= 0:
+    if (not sh.is_safe) and sh.tau_c_max <= 0:
         return float("inf")
-    return _utilization_safe(sh.tv, sh.tc_max)
+    return _utilization_safe(sh.tau_v, sh.tau_c_max)
 
 
 def _compute_deflection_utilization(defl: DeflectionResult) -> float:
@@ -221,8 +221,8 @@ def check_compliance_case(
         if ast_mm2_for_shear is not None and ast_mm2_for_shear > 0:
             pt_percent = (ast_mm2_for_shear * 100.0) / (b_mm * d_mm)
             assumptions.append("Computed pt_percent for shear using ast_mm2_for_shear.")
-        elif flex.ast_required > 0:
-            pt_percent = (flex.ast_required * 100.0) / (b_mm * d_mm)
+        elif flex.Ast_required > 0:
+            pt_percent = (flex.Ast_required * 100.0) / (b_mm * d_mm)
             assumptions.append(
                 "Computed pt_percent for shear using flexure ast_required."
             )
@@ -294,8 +294,8 @@ def check_compliance_case(
 
     return ComplianceCaseResult(
         case_id=case_id,
-        mu_knm=mu_knm,
-        vu_kn=vu_kn,
+        Mu_knm=mu_knm,
+        Vu_kn=vu_kn,
         flexure=flex,
         shear=sh,
         deflection=defl,

@@ -342,8 +342,8 @@ def design_singly_reinforced(
     if input_errors:
         # Build specific error message based on which fields failed
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -357,8 +357,8 @@ def design_singly_reinforced(
 
     if material_errors:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -373,8 +373,8 @@ def design_singly_reinforced(
     # Check if Doubly Reinforced Needed
     if abs(mu_knm) > mu_lim:
         return FlexureResult(
-            mu_lim=mu_lim,
-            ast_required=0.0,
+            Mu_lim=mu_lim,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.OVER_REINFORCED,
             xu=xu_max,
@@ -410,8 +410,8 @@ def design_singly_reinforced(
     xu = (0.87 * fy * ast_final) / (0.36 * fck * b)
 
     return FlexureResult(
-        mu_lim=mu_lim,
-        ast_required=ast_final,
+        Mu_lim=mu_lim,
+        Ast_required=ast_final,
         pt_provided=pt_provided,
         section_type=DesignSectionType.UNDER_REINFORCED,
         xu=xu,
@@ -456,8 +456,8 @@ def design_doubly_reinforced(
 
     if input_errors:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -471,8 +471,8 @@ def design_doubly_reinforced(
 
     if material_errors:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -483,8 +483,8 @@ def design_doubly_reinforced(
 
     if d_dash <= 0:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -501,7 +501,7 @@ def design_doubly_reinforced(
     if mu_abs <= mu_lim:
         res = design_singly_reinforced(b, d, d_total, mu_knm, fck, fy)
         # Ensure asc_required is 0 (default in dataclass, but explicit is good)
-        res.asc_required = 0.0
+        res.Asc_required = 0.0
         return res
 
     # Case 2: Doubly Reinforced (Mu > Mu_lim)
@@ -513,8 +513,8 @@ def design_doubly_reinforced(
     # and within the compression zone used for strain calculations.
     if d_dash >= d or d_dash >= xu_max:
         return FlexureResult(
-            mu_lim=mu_lim,
-            ast_required=0.0,
+            Mu_lim=mu_lim,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.OVER_REINFORCED,
             xu=xu_max,
@@ -539,8 +539,8 @@ def design_doubly_reinforced(
     denom = (fsc - fcc) * (d - d_dash)
     if denom <= 0:
         return FlexureResult(
-            mu_lim=mu_lim,
-            ast_required=0.0,
+            Mu_lim=mu_lim,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.OVER_REINFORCED,
             xu=xu_max,
@@ -580,14 +580,14 @@ def design_doubly_reinforced(
     pt_provided = (ast_total * 100.0) / (b * d)
 
     return FlexureResult(
-        mu_lim=mu_lim,
-        ast_required=ast_total,
+        Mu_lim=mu_lim,
+        Ast_required=ast_total,
         pt_provided=pt_provided,
         section_type=DesignSectionType.OVER_REINFORCED,  # Technically "Doubly Reinforced" is a better name, but using existing enum
         xu=xu_max,  # For doubly reinforced, we design at limiting depth
         xu_max=xu_max,
         is_safe=is_safe,
-        asc_required=asc,
+        Asc_required=asc,
         errors=design_errors,
     )
 
@@ -689,8 +689,8 @@ def design_flanged_beam(
 
     if input_errors:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -701,8 +701,8 @@ def design_flanged_beam(
 
     if bf < bw:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -713,8 +713,8 @@ def design_flanged_beam(
 
     if d_total <= d:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -725,8 +725,8 @@ def design_flanged_beam(
 
     if Df >= d:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -743,8 +743,8 @@ def design_flanged_beam(
 
     if material_errors:
         return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
+            Mu_lim=0.0,
+            Ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=0.0,
@@ -796,7 +796,7 @@ def design_flanged_beam(
 
         # Combine results
         ast_flange = c_flange / (0.87 * fy)
-        total_ast = web_result.ast_required + ast_flange
+        total_ast = web_result.Ast_required + ast_flange
 
         # Recalculate Pt based on bw (standard practice for T-beams is usually bw, but sometimes bf...
         # IS 456 Cl 26.5.1.1 refers to bw for min steel. For max steel it refers to gross area?
@@ -813,20 +813,20 @@ def design_flanged_beam(
             is_safe = False
             if not any(err.code == E_FLEXURE_003.code for err in design_errors):
                 design_errors.append(E_FLEXURE_003)
-        if web_result.asc_required > ast_max:
+        if web_result.Asc_required > ast_max:
             is_safe = False
             if not any(err.code == E_FLEXURE_003.code for err in design_errors):
                 design_errors.append(E_FLEXURE_003)
 
         return FlexureResult(
-            mu_lim=mu_lim_t,
-            ast_required=total_ast,
+            Mu_lim=mu_lim_t,
+            Ast_required=total_ast,
             pt_provided=pt_provided,
             section_type=DesignSectionType.OVER_REINFORCED,
             xu=xu_max,
             xu_max=xu_max,
             is_safe=is_safe,
-            asc_required=web_result.asc_required,
+            Asc_required=web_result.Asc_required,
             errors=design_errors,
         )
 
@@ -911,13 +911,13 @@ def design_flanged_beam(
     pt_provided = (ast_final * 100.0) / (bw * d)
 
     return FlexureResult(
-        mu_lim=mu_lim_t,
-        ast_required=ast_final,
+        Mu_lim=mu_lim_t,
+        Ast_required=ast_final,
         pt_provided=pt_provided,
         section_type=DesignSectionType.UNDER_REINFORCED,  # or BALANCED if close
         xu=xu_sol,
         xu_max=xu_max,
         is_safe=is_safe,
-        asc_required=0.0,
+        Asc_required=0.0,
         errors=design_errors,
     )

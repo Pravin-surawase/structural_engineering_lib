@@ -77,9 +77,9 @@ try:
         cover=25,
         fck=25,
         fy=500,
-        ast_start=design_result.flexure.ast_required,
-        ast_mid=design_result.flexure.ast_required,
-        ast_end=design_result.flexure.ast_required,
+        ast_start=design_result.flexure.Ast_required,
+        ast_mid=design_result.flexure.Ast_required,
+        ast_end=design_result.flexure.Ast_required,
     )
     score = constructability.calculate_constructability_score(design_result, detail)
     print(f"   OK Score: {score.score:.1f} ({score.rating})")

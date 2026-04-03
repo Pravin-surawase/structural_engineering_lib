@@ -269,14 +269,14 @@ class ExposureClass(Enum):
 
 @dataclass
 class FlexureResult:
-    mu_lim: float  # Limiting moment of resistance (kN-m)
-    ast_required: float  # Area of tension steel required/provided (mm^2)
+    Mu_lim: float  # Limiting moment of resistance (kN-m)
+    Ast_required: float  # Area of tension steel required/provided (mm^2)
     pt_provided: float  # Percentage of steel provided
     section_type: DesignSectionType
     xu: float  # Depth of neutral axis (mm)
     xu_max: float  # Max depth of neutral axis (mm)
     is_safe: bool  # True if design is valid
-    asc_required: float = 0.0  # Area of compression steel required (mm^2)
+    Asc_required: float = 0.0  # Area of compression steel required (mm^2)
     error_message: str = ""  # Deprecated: Use errors list instead
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
 
@@ -290,13 +290,52 @@ class FlexureResult:
                 alternative="errors",
             )
 
+    @property
+    def mu_lim(self) -> float:
+        """Deprecated: Use Mu_lim instead."""
+        import warnings
+
+        warnings.warn(
+            "FlexureResult.mu_lim is deprecated, use Mu_lim instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Mu_lim
+
+    @property
+    def ast_required(self) -> float:
+        """Deprecated: Use Ast_required instead."""
+        import warnings
+
+        warnings.warn(
+            "FlexureResult.ast_required is deprecated, use Ast_required instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Ast_required
+
+    @property
+    def asc_required(self) -> float:
+        """Deprecated: Use Asc_required instead."""
+        import warnings
+
+        warnings.warn(
+            "FlexureResult.asc_required is deprecated, use Asc_required instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Asc_required
+
 
 @dataclass
 class ShearResult:
-    tv: float  # Nominal shear stress (N/mm^2)
-    tc: float  # Design shear strength of concrete (N/mm^2)
-    tc_max: float  # Max shear stress (N/mm^2)
-    vus: float  # Shear capacity of stirrups (kN)
+    tau_v: float  # Nominal shear stress (N/mm^2)
+    tau_c: float  # Design shear strength of concrete (N/mm^2)
+    tau_c_max: float  # Max shear stress (N/mm^2)
+    Vus: float  # Shear capacity of stirrups (kN)
     spacing: float  # Calculated spacing (mm)
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
@@ -312,46 +351,254 @@ class ShearResult:
                 alternative="errors",
             )
 
+    @property
+    def tv(self) -> float:
+        """Deprecated: Use tau_v instead."""
+        import warnings
+
+        warnings.warn(
+            "ShearResult.tv is deprecated, use tau_v instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.tau_v
+
+    @property
+    def tc(self) -> float:
+        """Deprecated: Use tau_c instead."""
+        import warnings
+
+        warnings.warn(
+            "ShearResult.tc is deprecated, use tau_c instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.tau_c
+
+    @property
+    def tc_max(self) -> float:
+        """Deprecated: Use tau_c_max instead."""
+        import warnings
+
+        warnings.warn(
+            "ShearResult.tc_max is deprecated, use tau_c_max instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.tau_c_max
+
+    @property
+    def vus(self) -> float:
+        """Deprecated: Use Vus instead."""
+        import warnings
+
+        warnings.warn(
+            "ShearResult.vus is deprecated, use Vus instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Vus
+
 
 @dataclass
 class TorsionResult:
     """Result of torsion design per IS 456 Clause 41.
 
     Attributes:
-        tu_knm: Applied torsional moment (kN·m)
-        vu_kn: Applied shear force (kN)
-        mu_knm: Applied bending moment (kN·m)
-        ve_kn: Equivalent shear force (kN)
-        me_knm: Equivalent bending moment (kN·m)
-        tv_equiv: Equivalent shear stress (N/mm²)
-        tc: Design shear strength of concrete (N/mm²)
-        tc_max: Maximum shear stress limit (N/mm²)
-        asv_torsion: Area of stirrups for torsion per unit length (mm²/mm)
-        asv_shear: Area of stirrups for shear per unit length (mm²/mm)
-        asv_total: Total stirrup area per unit length (mm²/mm)
+        Tu_knm: Applied torsional moment (kN·m)
+        Vu_kn: Applied shear force (kN)
+        Mu_knm: Applied bending moment (kN·m)
+        Ve_kn: Equivalent shear force (kN)
+        Me_knm: Equivalent bending moment (kN·m)
+        tau_ve: Equivalent shear stress (N/mm²)
+        tau_c: Design shear strength of concrete (N/mm²)
+        tau_c_max: Maximum shear stress limit (N/mm²)
+        Asv_torsion: Area of stirrups for torsion per unit length (mm²/mm)
+        Asv_shear: Area of stirrups for shear per unit length (mm²/mm)
+        Asv_total: Total stirrup area per unit length (mm²/mm)
         stirrup_spacing: Designed stirrup spacing (mm)
-        al_torsion: Longitudinal steel for torsion (mm²)
+        Al_torsion: Longitudinal steel for torsion (mm²)
         is_safe: True if section is safe
         requires_closed_stirrups: True (always for torsion)
         errors: List of structured errors/warnings
     """
 
-    tu_knm: float
-    vu_kn: float
-    mu_knm: float
-    ve_kn: float
-    me_knm: float
-    tv_equiv: float
-    tc: float
-    tc_max: float
-    asv_torsion: float
-    asv_shear: float
-    asv_total: float
+    Tu_knm: float
+    Vu_kn: float
+    Mu_knm: float
+    Ve_kn: float
+    Me_knm: float
+    tau_ve: float
+    tau_c: float
+    tau_c_max: float
+    Asv_torsion: float
+    Asv_shear: float
+    Asv_total: float
     stirrup_spacing: float
-    al_torsion: float
+    Al_torsion: float
     is_safe: bool
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
+
+    @property
+    def tu_knm(self) -> float:
+        """Deprecated: Use Tu_knm instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.tu_knm is deprecated, use Tu_knm instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Tu_knm
+
+    @property
+    def vu_kn(self) -> float:
+        """Deprecated: Use Vu_kn instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.vu_kn is deprecated, use Vu_kn instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Vu_kn
+
+    @property
+    def mu_knm(self) -> float:
+        """Deprecated: Use Mu_knm instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.mu_knm is deprecated, use Mu_knm instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Mu_knm
+
+    @property
+    def ve_kn(self) -> float:
+        """Deprecated: Use Ve_kn instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.ve_kn is deprecated, use Ve_kn instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Ve_kn
+
+    @property
+    def me_knm(self) -> float:
+        """Deprecated: Use Me_knm instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.me_knm is deprecated, use Me_knm instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Me_knm
+
+    @property
+    def tv_equiv(self) -> float:
+        """Deprecated: Use tau_ve instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.tv_equiv is deprecated, use tau_ve instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.tau_ve
+
+    @property
+    def tc(self) -> float:
+        """Deprecated: Use tau_c instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.tc is deprecated, use tau_c instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.tau_c
+
+    @property
+    def tc_max(self) -> float:
+        """Deprecated: Use tau_c_max instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.tc_max is deprecated, use tau_c_max instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.tau_c_max
+
+    @property
+    def asv_torsion(self) -> float:
+        """Deprecated: Use Asv_torsion instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.asv_torsion is deprecated, use Asv_torsion instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Asv_torsion
+
+    @property
+    def asv_shear(self) -> float:
+        """Deprecated: Use Asv_shear instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.asv_shear is deprecated, use Asv_shear instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Asv_shear
+
+    @property
+    def asv_total(self) -> float:
+        """Deprecated: Use Asv_total instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.asv_total is deprecated, use Asv_total instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Asv_total
+
+    @property
+    def al_torsion(self) -> float:
+        """Deprecated: Use Al_torsion instead."""
+        import warnings
+
+        warnings.warn(
+            "TorsionResult.al_torsion is deprecated, use Al_torsion instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Al_torsion
 
 
 @dataclass
@@ -438,8 +685,8 @@ class CrackWidthResult:
 @dataclass
 class ComplianceCaseResult:
     case_id: str
-    mu_knm: float
-    vu_kn: float
+    Mu_knm: float
+    Vu_kn: float
     flexure: FlexureResult
     shear: ShearResult
     deflection: DeflectionResult | None = None
@@ -449,6 +696,32 @@ class ComplianceCaseResult:
     utilizations: dict[str, float] = field(default_factory=dict)
     failed_checks: list[str] = field(default_factory=list)
     remarks: str = ""
+
+    @property
+    def mu_knm(self) -> float:
+        """Deprecated: Use Mu_knm instead."""
+        import warnings
+
+        warnings.warn(
+            "ComplianceCaseResult.mu_knm is deprecated, use Mu_knm instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Mu_knm
+
+    @property
+    def vu_kn(self) -> float:
+        """Deprecated: Use Vu_kn instead."""
+        import warnings
+
+        warnings.warn(
+            "ComplianceCaseResult.vu_kn is deprecated, use Vu_kn instead. "
+            "Will be removed in v1.0.0.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.Vu_kn
 
 
 @dataclass

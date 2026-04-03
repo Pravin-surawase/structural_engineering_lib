@@ -378,7 +378,7 @@ class TestBeamDesignInvariants:
         # Create mock result that passes all invariants
         result = MagicMock()
         result.flexure.ast_provided = 1000
-        result.flexure.ast_required = 800
+        result.flexure.Ast_required = 800
         result.flexure.ast_min = 500
         result.flexure.ast_max = 2000
         result.shear.is_ok = True
@@ -398,7 +398,7 @@ class TestBeamDesignInvariants:
         # Create mock result that fails ast_provided >= ast_required
         result = MagicMock()
         result.flexure.ast_provided = 500
-        result.flexure.ast_required = 800  # More than provided - FAIL
+        result.flexure.Ast_required = 800  # More than provided - FAIL
 
         results = BeamDesignInvariants.check_all(result)
         failures = [msg for passed, msg in results if not passed]
@@ -412,7 +412,7 @@ class TestAssertBeamDesignValid:
         """Test that valid design doesn't raise."""
         result = MagicMock()
         result.flexure.ast_provided = 1000
-        result.flexure.ast_required = 800
+        result.flexure.Ast_required = 800
         result.flexure.ast_min = 500  # Add all attributes to avoid MagicMock comparison
         result.flexure.ast_max = 2000
         result.shear.is_ok = True
@@ -428,7 +428,7 @@ class TestAssertBeamDesignValid:
         """Test that invalid design raises AssertionError."""
         result = MagicMock()
         result.flexure.ast_provided = 500
-        result.flexure.ast_required = 800  # FAIL
+        result.flexure.Ast_required = 800  # FAIL
         result.flexure.ast_min = 300  # Add to avoid MagicMock comparison errors
         result.flexure.ast_max = 2000
         result.shear.is_ok = True

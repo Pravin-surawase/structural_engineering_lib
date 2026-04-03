@@ -66,13 +66,13 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertTrue(res.is_safe)
         self.assertEqual(res.section_type, types.DesignSectionType.UNDER_REINFORCED)
-        self.assertTrue(res.ast_required > 0)
+        self.assertTrue(res.Ast_required > 0)
 
         # Check Ast calc manually
         # Mu/bd^2 = 100e6 / (230*450^2) = 2.147
         # Pt formula or Ast formula...
         # Approx Ast: Mu / (0.87 * fy * 0.9 * d) = 100e6 / (0.87*415*0.9*450) = 683 mm2
-        self.assertTrue(650 < res.ast_required < 750)
+        self.assertTrue(650 < res.Ast_required < 750)
 
     def test_shear_design(self):
         # M20, Fe415
@@ -102,7 +102,7 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertTrue(res.is_safe)
         self.assertEqual(res.spacing, 300.0)
-        self.assertTrue(res.vus > 0)
+        self.assertTrue(res.Vus > 0)
 
     def test_flexure_negative_mu_matches_positive(self):
         """Core flexure design should treat Mu by magnitude (sign handled in UI/app layer)."""
@@ -115,7 +115,7 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertEqual(res_pos.is_safe, res_neg.is_safe)
         self.assertEqual(res_pos.section_type, res_neg.section_type)
-        self.assertAlmostEqual(res_pos.ast_required, res_neg.ast_required, places=8)
+        self.assertAlmostEqual(res_pos.Ast_required, res_neg.Ast_required, places=8)
         self.assertAlmostEqual(res_pos.xu, res_neg.xu, places=8)
 
     def test_shear_negative_vu_matches_positive(self):
@@ -129,9 +129,9 @@ class TestStructuralLib(unittest.TestCase):
         res_neg = shear.design_shear(-vu, b, d, fck, fy, asv, pt)
 
         self.assertEqual(res_pos.is_safe, res_neg.is_safe)
-        self.assertAlmostEqual(res_pos.tv, res_neg.tv, places=12)
-        self.assertAlmostEqual(res_pos.tc, res_neg.tc, places=12)
-        self.assertAlmostEqual(res_pos.vus, res_neg.vus, places=12)
+        self.assertAlmostEqual(res_pos.tau_v, res_neg.tau_v, places=12)
+        self.assertAlmostEqual(res_pos.tau_c, res_neg.tau_c, places=12)
+        self.assertAlmostEqual(res_pos.Vus, res_neg.Vus, places=12)
         self.assertAlmostEqual(res_pos.spacing, res_neg.spacing, places=12)
 
     def test_shear_zero_vu_min_reinforcement_spacing_capped(self):
@@ -143,7 +143,7 @@ class TestStructuralLib(unittest.TestCase):
         res = shear.design_shear(0.0, b, d, fck, fy, asv, pt)
 
         self.assertTrue(res.is_safe)
-        self.assertEqual(res.vus, 0.0)
+        self.assertEqual(res.Vus, 0.0)
         # Check for minimum shear reinforcement message in errors list
         self.assertTrue(
             _has_error_with_message(res.errors, "minimum")
@@ -168,7 +168,7 @@ class TestStructuralLib(unittest.TestCase):
         # = 212.0 mm2
 
         self.assertTrue(res.is_safe)
-        self.assertAlmostEqual(res.ast_required, ast_min, places=1)
+        self.assertAlmostEqual(res.Ast_required, ast_min, places=1)
         # Check for minimum steel info in errors list (E_FLEXURE_002)
         self.assertTrue(
             _has_error_with_message(res.errors, "minimum steel")
@@ -187,7 +187,7 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertFalse(res.is_safe)
         self.assertEqual(res.section_type, types.DesignSectionType.OVER_REINFORCED)
-        self.assertEqual(res.ast_required, 0.0)
+        self.assertEqual(res.Ast_required, 0.0)
 
     def test_flexure_threshold_near_mu_lim(self):
         """Mu just below Mu_lim should be safe; just above should fail (threshold stability)."""
@@ -203,7 +203,7 @@ class TestStructuralLib(unittest.TestCase):
         self.assertEqual(
             res_below.section_type, types.DesignSectionType.UNDER_REINFORCED
         )
-        self.assertTrue(res_below.ast_required > 0.0)
+        self.assertTrue(res_below.Ast_required > 0.0)
 
         res_above = flexure.design_singly_reinforced(
             b, d, D, mu_lim * 1.000001, fck, fy
@@ -224,7 +224,7 @@ class TestStructuralLib(unittest.TestCase):
 
         res_at = shear.design_shear(vu_at, b, d, fck, fy, asv, pt)
         self.assertTrue(res_at.is_safe)
-        self.assertAlmostEqual(res_at.tv, tc_max, places=9)
+        self.assertAlmostEqual(res_at.tau_v, tc_max, places=9)
 
         res_above = shear.design_shear(vu_at + 0.1, b, d, fck, fy, asv, pt)
         self.assertFalse(res_above.is_safe)
@@ -268,7 +268,7 @@ class TestStructuralLib(unittest.TestCase):
         res = shear.design_shear(vu_small, b, d, fck, fy, asv, pt)
 
         self.assertTrue(res.is_safe)
-        self.assertEqual(res.vus, 0.0)
+        self.assertEqual(res.Vus, 0.0)
         # Check for minimum shear reinforcement info in errors list
         self.assertTrue(
             _has_error_with_message(res.errors, "minimum")

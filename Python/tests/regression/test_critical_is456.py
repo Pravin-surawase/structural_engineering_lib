@@ -121,7 +121,7 @@ class TestTBeamSinglyReinforced:
         )
 
         assert res_t.xu <= Df
-        assert res_t.ast_required == pytest.approx(res_rect.ast_required, rel=0.01)
+        assert res_t.Ast_required == pytest.approx(res_rect.Ast_required, rel=0.01)
 
     def test_t_beam_na_in_web_singly_reinforced(self):
         """When Df < xu < xu_max, singly reinforced T-beam.
@@ -143,7 +143,7 @@ class TestTBeamSinglyReinforced:
 
         # Verify NA in web, singly reinforced
         assert res.xu > Df, f"xu={res.xu} should be > Df={Df} for NA in web"
-        assert res.asc_required == 0.0, "Should not need compression steel"
+        assert res.Asc_required == 0.0, "Should not need compression steel"
         assert res.section_type in (
             DesignSectionType.UNDER_REINFORCED,
             DesignSectionType.BALANCED,
@@ -222,7 +222,7 @@ class TestShearCapacityLimits:
             vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.75
         )
         # tc at pt=0.75% for M25 ≈ 0.56 (interpolated)
-        assert 0.50 < result.tc < 0.65
+        assert 0.50 < result.tau_c < 0.65
 
 
 class TestMinimumStirrupSpacing:
@@ -250,7 +250,7 @@ class TestMinimumStirrupSpacing:
         )
         # sv_min = 0.87*fy*Asv / (0.4*b)
         sv_min = (0.87 * 415 * 157) / (0.4 * 250)
-        assert result.vus == 0.0  # No shear reinforcement needed beyond minimum
+        assert result.Vus == 0.0  # No shear reinforcement needed beyond minimum
         assert result.spacing <= sv_min + 1  # Allow 1mm tolerance
 
 
@@ -434,7 +434,7 @@ class TestFlexureShearIntegration:
         flex_res = flexure.design_singly_reinforced(
             b=b, d=d, d_total=500, mu_knm=100, fck=fck, fy=fy
         )
-        pt = (flex_res.ast_required * 100) / (b * d)
+        pt = (flex_res.Ast_required * 100) / (b * d)
 
         # Use that pt for shear design
         shear_res = shear.design_shear(
@@ -451,7 +451,7 @@ class TestFlexureShearIntegration:
             b=230, d=450, d_total=500, mu_knm=120, fck=25, fy=500
         )
         # High Ast -> high pt -> higher tc -> shear more likely to pass
-        pt = (flex_res.ast_required * 100) / (230 * 450)
+        pt = (flex_res.Ast_required * 100) / (230 * 450)
 
         shear_res = shear.design_shear(
             vu_kn=50, b=230, d=450, fck=25, fy=500, asv=157, pt=pt
@@ -469,7 +469,7 @@ class TestFlexureShearIntegration:
         )
 
         assert res.is_safe
-        assert res.asc_required > 0
+        assert res.Asc_required > 0
         assert res.section_type == DesignSectionType.OVER_REINFORCED
 
 
@@ -495,9 +495,9 @@ class TestDeterminism:
         res1 = flexure.design_singly_reinforced(**params)
         res2 = flexure.design_singly_reinforced(**params)
 
-        assert res1.ast_required == res2.ast_required
+        assert res1.Ast_required == res2.Ast_required
         assert res1.xu == res2.xu
-        assert res1.mu_lim == res2.mu_lim
+        assert res1.Mu_lim == res2.Mu_lim
 
     def test_shear_deterministic(self):
         """Same inputs should give identical outputs."""
@@ -514,8 +514,8 @@ class TestDeterminism:
         res1 = shear.design_shear(**params)
         res2 = shear.design_shear(**params)
 
-        assert res1.tv == res2.tv
-        assert res1.tc == res2.tc
+        assert res1.tau_v == res2.tau_v
+        assert res1.tau_c == res2.tau_c
         assert res1.spacing == res2.spacing
 
     def test_table_lookup_deterministic(self):

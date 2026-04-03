@@ -212,8 +212,8 @@ class TestDesignTorsion:
         assert result.requires_closed_stirrups is True
         assert result.stirrup_spacing > 0
         assert result.stirrup_spacing <= 300  # Max spacing limit
-        assert result.al_torsion > 0
-        assert result.ve_kn > result.vu_kn  # Ve should be greater than Vu
+        assert result.Al_torsion > 0
+        assert result.Ve_kn > result.Vu_kn  # Ve should be greater than Vu
 
     def test_result_type(self):
         """Result should be TorsionResult dataclass."""
@@ -245,7 +245,7 @@ class TestDesignTorsion:
         )
         # Ve = Vu + 1.6 × Tu/b = 100 + 1.6 × 10000/300 = 153.33 kN
         expected_ve = 100 + 1.6 * 10000 / 300
-        assert result.ve_kn == pytest.approx(expected_ve, rel=0.01)
+        assert result.Ve_kn == pytest.approx(expected_ve, rel=0.01)
 
     def test_high_torsion_unsafe(self):
         """Very high torsion should make section unsafe (τve > τc,max)."""
@@ -262,7 +262,7 @@ class TestDesignTorsion:
         )
         # τve = Ve / (b × d) should be very high
         # τc,max for M20 = 2.8 N/mm²
-        if result.tv_equiv > result.tc_max:
+        if result.tau_ve > result.tau_c_max:
             assert result.is_safe is False
             assert len(result.errors) > 0
 
@@ -341,8 +341,8 @@ class TestDesignTorsion:
             fy=500,
             cover=40,
         )
-        expected_total = result.asv_torsion + result.asv_shear
-        assert result.asv_total == pytest.approx(expected_total, rel=0.01)
+        expected_total = result.Asv_torsion + result.Asv_shear
+        assert result.Asv_total == pytest.approx(expected_total, rel=0.01)
 
 
 class TestEdgeCases:
@@ -378,7 +378,7 @@ class TestEdgeCases:
             cover=40,
         )
         assert result.is_safe is True
-        assert result.me_knm > 0  # Me should still be > 0 due to Mt
+        assert result.Me_knm > 0  # Me should still be > 0 due to Mt
 
     def test_large_beam(self):
         """Large beam section should handle correctly."""
@@ -420,4 +420,4 @@ class TestEdgeCases:
             fy=500,
             cover=40,
         )
-        assert result_m40.tc_max > result_m20.tc_max
+        assert result_m40.tau_c_max > result_m20.tau_c_max
