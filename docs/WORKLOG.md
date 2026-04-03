@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-03 | TASK-645 | Column detailing IS 456 Cl 26.5.3 — detailing.py + API + endpoint + 47 tests | feat(column) |
 | 2026-04-01 | TASK-642 | feat: 5-point steel stress-strain curve (stress_blocks.py, uniaxial.py, 26 tests) | PR #481 |
 | 2026-04-01 | TASK-636 | feat: effective length per IS 456 Table 28 (axial.py, EndCondition enum, 69 tests) | PR #481 |
 | 2026-04-01 | TASK-636 | feat: POST /column/effective-length FastAPI endpoint + 12 API tests | PR #481 |

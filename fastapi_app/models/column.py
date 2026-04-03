@@ -812,3 +812,104 @@ class ColumnDesignResponse(BaseModel):
     governing_check: str
     checks: dict
     warnings: list[str] = []
+
+
+# =============================================================================
+# Column Detailing Models (IS 456 Cl. 26.5.3)
+# =============================================================================
+
+
+class ColumnDetailingRequest(BaseModel):
+    """Request for column detailing check per IS 456 Cl 26.5.3."""
+
+    b_mm: float = Field(
+        ...,
+        ge=100,
+        le=5000,
+        description="Column width (mm)",
+        examples=[300.0, 400.0, 500.0],
+    )
+    D_mm: float = Field(
+        ...,
+        ge=100,
+        le=5000,
+        description="Column depth (mm)",
+        examples=[300.0, 450.0, 600.0],
+    )
+    cover_mm: float = Field(
+        40.0,
+        ge=15,
+        le=100,
+        description="Clear cover (mm)",
+        examples=[40.0, 50.0],
+    )
+    fck: float = Field(
+        25.0,
+        ge=15,
+        le=80,
+        description="Concrete grade (N/mm²)",
+        examples=[20.0, 25.0, 30.0],
+    )
+    fy: float = Field(
+        415.0,
+        ge=250,
+        le=600,
+        description="Steel yield strength (N/mm²)",
+        examples=[415.0, 500.0],
+    )
+    num_bars: int = Field(
+        ...,
+        ge=3,
+        le=60,
+        description="Number of longitudinal bars",
+        examples=[4, 6, 8],
+    )
+    bar_dia_mm: float = Field(
+        ...,
+        ge=8,
+        le=50,
+        description="Longitudinal bar diameter (mm)",
+        examples=[16.0, 20.0, 25.0],
+    )
+    tie_dia_mm: float | None = Field(
+        None,
+        ge=6,
+        le=20,
+        description="Tie diameter (mm), auto-computed if None",
+        examples=[8.0, 10.0],
+    )
+    is_circular: bool = Field(
+        False,
+        description="True for circular columns",
+    )
+    at_lap_section: bool = Field(
+        False,
+        description="True if checking at lap splice location",
+    )
+
+
+class ColumnDetailingResponse(BaseModel):
+    """Response for column detailing check per IS 456 Cl 26.5.3."""
+
+    b_mm: float
+    D_mm: float
+    Ag_mm2: float
+    num_bars: int
+    bar_dia_mm: float
+    Asc_provided_mm2: float
+    steel_ratio: float
+    min_steel_ok: bool
+    max_steel_ok: bool
+    min_bars_ok: bool
+    min_bar_dia_ok: bool
+    bar_spacing_mm: float
+    bar_spacing_ok: bool
+    tie_dia_mm: float
+    tie_dia_required_mm: float
+    tie_spacing_mm: float
+    max_tie_spacing_mm: float
+    tie_spacing_ok: bool
+    cross_ties_needed: bool
+    is_valid: bool
+    clause_ref: str
+    warnings: list[str]

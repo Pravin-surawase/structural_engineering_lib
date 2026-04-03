@@ -131,7 +131,7 @@
 
 > TASK-700–712 complete. Beam modules → `codes/is456/beam/`, ductile → `codes/is13920/`, backward-compat shims, enhanced shear (Cl 40.3). PRs #466, #467, #468. See [tasks-history.md](_archive/tasks-history.md).
 
-### Phase 2: Column Design ✅ Done (12/12)
+### Phase 2: Column Design 🔄 (13/14 done, 1 remaining)
 
 | ID | Task | Function | IS 456 Clause | Priority | Status |
 |----|------|----------|---------------|----------|--------|
@@ -148,7 +148,10 @@
 | TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | ✅ Done — services/api.py (~300 lines), routes short→axial/uniaxial/biaxial, slender→long_column |
 | TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | ✅ Done — 3 endpoints (long-column, helical-check, design/column), 6 Pydantic models |
 
-> Phase 2 complete. 12 tasks, full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, orchestrator + FastAPI. Pre-work: `_calculate_puz` deduplication into `_common.py`. 37 new tests (23 long column + 14 helical). 3 orchestrator bug fixes. Full suite: 3,944 tests, 0 failures.
+| TASK-645 | Column detailing | `column_detailing` | Cl 26.5.3 | 🟡 Medium | ✅ Done — detailing.py (617 lines, 8 functions), ColumnDetailingResult, 5 error codes, API + FastAPI endpoint, 47 tests |
+| TASK-646 | Column ductile detailing | `column_ductile_detailing` | IS 13920 Cl 7 | 🟡 Medium | 📋 — 6 sub-functions + orchestrator, 25 tests planned, goes in codes/is13920/column.py |
+
+> Phase 2 progress: 13/14 tasks done. Full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, detailing (Cl 26.5.3), orchestrator + FastAPI. Only TASK-646 (ductile detailing, IS 13920 Cl 7) remaining.
 
 ### Phase 3: Footing Design (After Phase 2)
 

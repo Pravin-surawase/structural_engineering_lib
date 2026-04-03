@@ -1,53 +1,36 @@
 # Next Session Brief
 
-**Updated:** 2026-04-03
-**Last Session:** TASK-671 Fix 4 Known Limitations (complete)
+**Last Updated:** 2026-04-03
+**Last Session:** Column detailing implementation (TASK-645)
 
----
+## What Was Completed
+- TASK-645: Column detailing per IS 456 Cl 26.5.3 — FULLY DONE
+  - `Python/structural_lib/codes/is456/column/detailing.py` (617 lines, 8 functions)
+  - `ColumnDetailingResult` dataclass in `core/data_types.py`
+  - Error codes E_COLUMN_012-016 in `core/errors.py`
+  - API wrapper `detail_column_is456()` in `services/api.py`
+  - FastAPI endpoint `POST /api/v1/design/column/detailing`
+  - 40 unit tests + 7 FastAPI tests — all passing
+  - Reviewed and APPROVED by @reviewer
 
-## What Was Done This Session
+## What's Next (Priority Order)
+1. **TASK-646: Column ductile detailing** (IS 13920 Cl 7) — seismic confinement rules
+   - Create `Python/structural_lib/codes/is13920/column.py`
+   - 6 sub-functions + orchestrator (same pattern as detailing.py)
+   - ~25 tests needed
+   - This is the LAST remaining column function (11/11 will complete Phase 2 Column)
 
-### TASK-671: Fix 4 Known Limitations ✅
-- **Fix 1 (P0):** Unified effective depth — created canonical `compute_effective_depth()` in core/geometry.py. Formula: d = D - cover - stirrup_dia - bar_dia/2. Updated BeamGeometryInput, SectionProperties, RectangularSection, FastAPI router. Old D-cover overestimated capacity by 7-10%.
-- **Fix 2 (P1):** Serviceability pipeline integration — added `include_serviceability` opt-in flag + `_auto_construct_deflection_params()` in beam_pipeline.py. Level A deflection auto-runs when enabled.
-- **Fix 3 (P2):** Multi-layer rebar — added `RebarLayer`, `RebarArrangement` dataclasses in core/data_types.py + `calculate_effective_depth_multilayer()` in flexure.py. Supports area-weighted centroid for 2+ bar layers.
-- **Fix 4 (P3):** Failure story enhancement — added `ast_required_mm2` field to FailureScenario, redesign narrative showing steel requirements at each overload factor.
-- **FastAPI:** 3 new models (RebarLayerConfig, DeflectionCheckResult, CrackWidthCheckResult), 6 new request fields, 3 response fields. All backward compatible.
-- **Tests:** 22 new, 4 fixed, 4193+180 all passing.
+2. **Minor follow-up:** Add `is_safe` property alias to `ColumnDetailingResult` for consistency with other column result types (reviewer note, non-blocking)
 
-### TASK-670: Fix calculation_report.py Shear Bug ✅
-- Fixed 4 non-existent field accesses on ShearResult (.vu_kn, .vc_kn, .vs_kn, .is_ok → tau_v, tau_c, tau_c_max, Vus, spacing, is_safe)
-- Updated HTML/Markdown templates to IS 456 stress-based format (τ_v, τ_c, τ_c,max)
-- Replaced MagicMock with real ShearResult in tests
-- Added integration test with real dataclass objects
-- 4175 Python + 180 FastAPI tests pass
+3. **After Column complete:** Phase 3 planning (Slab design per IS 456 Cl 24)
 
-### Multi-Agent Review
-- 7 agents reviewed (structural-engineer, library-expert, reviewer, security, tester, backend, api-developer)
-- Final reviewer: APPROVED WITH CONDITIONS (all 5 conditions addressed)
-- Security finding: Limitations #1+#3 could compound to 25-35% capacity overestimate — now fixed
+## Blockers
+None
 
-### Files Changed (key)
-- `core/data_types.py` — 21 field renames + 21 @property aliases
-- `core/geometry.py` — canonical compute_effective_depth()
-- `core/inputs.py` — stirrup_dia_mm, bar_dia_mm fields
-- `core/models.py` — SectionProperties updated
-- `codes/is456/beam/flexure.py` — calculate_effective_depth_multilayer()
-- `services/beam_pipeline.py` — include_serviceability, auto-construction
-- `research/research_design_companion.py` — ast_required_mm2
-- `fastapi_app/models/beam.py` — 3 new models, 6 request fields
-- `fastapi_app/routers/design.py` — effective depth fix
-- `services/*.py` — field accesses (~12 files)
-- `Python/tests/*` — ~25 test files updated + 22 new
-
----
-
-## What To Do Next
-
-1. **TASK-654: Bearing at column-footing interface** — Cl 34.4, load transfer calculation
-2. **TASK-655: Dowel bars** — Cl 34.2.5, anchorage at column-footing junction
-3. **TASK-656: Footing FastAPI endpoint** — `POST /api/v1/design/footing`
-4. **TASK-519: Alternatives Panel (Pareto)** — Pareto front in DesignView
+## Key Files
+- Blueprint: `docs/planning/library-expansion-blueprint-v5.md`
+- Column module: `Python/structural_lib/codes/is456/column/`
+- Column tests: `Python/tests/codes/is456/column/`
 5. **Wire multi-layer rebar into detailing functions** — Fix 3 types exist but not yet consumed by detailing pipeline
 6. **Add Level B/C deflection to auto-serviceability** — Currently only Level A (span/depth ratio)
 

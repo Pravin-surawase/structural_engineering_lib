@@ -237,7 +237,7 @@ class DesignEnvelope:
 
 | Element | Clauses | Priority |
 |---------|---------|----------|
-| Column | Cl 25, 39, Annex E/G | P1 🔄 — 7/10 functions done: classify ✅, min_ecc ✅, axial ✅, uniaxial ✅, biaxial ✅, P-M curve ✅, effective_length ✅ (254+ tests). Remaining: additional_moment, helical, column_detailing, ductile_detailing |
+| Column | Cl 25, 39, Annex E/G | P1 🔄 — 9/11 functions done: classify ✅, min_ecc ✅, axial ✅, uniaxial ✅, biaxial ✅, P-M curve ✅, effective_length ✅, helical ✅, additional_moment ✅, long_column ✅ (410+ tests). Remaining: column_detailing, ductile_detailing |
 | One-way slab | Cl 24.1–24.2 | P1 |
 | Two-way slab | Cl 24.3, Annex D, Table 26 | P1 |
 | Footing | Cl 34, 31.6 | P1 |
@@ -330,10 +330,10 @@ warnings.warn(
 | 1 | `classify_column()` | Cl 25.1.2 | ✅ Done | ✅ |
 | 2 | `min_eccentricity()` | Cl 25.4 | ✅ Done | ✅ |
 | 3 | `short_axial_capacity()` | Cl 39.3 | ✅ Done | ✅ |
-| 4 | `helical_capacity()` | Cl 39.4 | Low | 📋 TASK-639 |
+| 4 | `helical_capacity()` | Cl 39.4 | ✅ Done | ✅ |
 | 5 | `design_short_column_uniaxial()` | Cl 39.5, Annex G | ✅ Done | ✅ |
 | 6 | `biaxial_bending_check()` | Cl 39.6 (Bresler) | ✅ Done | ✅ |
-| 7 | `slender_additional_moment()` | Cl 39.7 | Medium | 📋 TASK-637 |
+| 7 | `slender_additional_moment()` | Cl 39.7 | ✅ Done | ✅ |
 | 8 | `pm_interaction_curve()` | Cl 39.5, SP:16 Table I | ✅ Done | ✅ |
 | 9 | `column_detailing()` | Cl 26.5.3 | Medium | 📋 |
 | 10 | `column_ductile_detailing()` | IS 13920 Cl 7 | Medium | 📋 |

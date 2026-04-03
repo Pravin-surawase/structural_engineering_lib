@@ -18,6 +18,8 @@ from fastapi_app.models.column import (
     ColumnClassifyResponse,
     ColumnDesignRequest,
     ColumnDesignResponse,
+    ColumnDetailingRequest,
+    ColumnDetailingResponse,
     ColumnEccentricityRequest,
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
@@ -617,4 +619,51 @@ async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Column design failed: {e}",
+        )
+
+
+@router.post(
+    "/detailing",
+    response_model=ColumnDetailingResponse,
+    summary="Column Detailing per IS 456 Cl 26.5.3",
+    description=(
+        "Check longitudinal bar limits, tie sizing, spacing, and cross-tie "
+        "requirements for a column section per IS 456:2000 Cl. 26.5.3."
+    ),
+)
+async def column_detailing(
+    request: ColumnDetailingRequest,
+) -> ColumnDetailingResponse:
+    """
+    Column detailing check per IS 456 Cl 26.5.3.
+
+    Validates longitudinal bar count, diameter, spacing, steel ratio,
+    tie diameter, tie spacing, and cross-tie requirements.
+    """
+    try:
+        from structural_lib.services.api import detail_column_is456
+
+        result = detail_column_is456(
+            b_mm=request.b_mm,
+            D_mm=request.D_mm,
+            cover_mm=request.cover_mm,
+            fck=request.fck,
+            fy=request.fy,
+            num_bars=request.num_bars,
+            bar_dia_mm=request.bar_dia_mm,
+            tie_dia_mm=request.tie_dia_mm,
+            is_circular=request.is_circular,
+            at_lap_section=request.at_lap_section,
+        )
+        return ColumnDetailingResponse(**result)
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Column detailing check failed: {e}",
         )
