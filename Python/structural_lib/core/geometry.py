@@ -11,6 +11,34 @@ from dataclasses import dataclass
 from typing import Literal
 
 
+def compute_effective_depth(
+    D_mm: float,
+    cover_mm: float,
+    stirrup_dia_mm: float = 8.0,
+    bar_dia_mm: float = 20.0,
+) -> float:
+    """Compute effective depth per IS 456 convention.
+
+    d = D - cover_clear - stirrup_dia - bar_dia/2
+
+    Args:
+        D_mm: Overall beam depth (mm).
+        cover_mm: Clear cover to reinforcement (mm).
+        stirrup_dia_mm: Stirrup diameter (mm). Default 8mm.
+        bar_dia_mm: Main bar diameter (mm). Default 20mm.
+
+    Returns:
+        Effective depth (mm).
+    """
+    d = D_mm - cover_mm - stirrup_dia_mm - bar_dia_mm / 2
+    if d <= 0:
+        raise ValueError(
+            f"Effective depth must be positive: D={D_mm}, cover={cover_mm}, "
+            f"stirrup={stirrup_dia_mm}, bar={bar_dia_mm} → d={d}"
+        )
+    return d
+
+
 class Section(ABC):
     """Abstract base for cross-section geometry."""
 
@@ -63,8 +91,7 @@ class RectangularSection(Section):
 
     def __post_init__(self) -> None:
         if self.d is None:
-            # Assume single layer, 20mm bar, 8mm stirrup
-            self.d = self.D - self.cover - 8 - 10
+            self.d = compute_effective_depth(self.D, self.cover)
 
     @property
     def area(self) -> float:

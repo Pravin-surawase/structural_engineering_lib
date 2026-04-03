@@ -67,8 +67,9 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
         # Calculate effective depth if not provided
         effective_depth = request.effective_depth
         if effective_depth is None:
-            # Assume 50mm from face to center of tension steel
-            effective_depth = request.depth - request.clear_cover - 25  # ~bar_dia/2
+            stirrup = request.stirrup_dia_mm
+            bar = request.main_bar_dia_mm
+            effective_depth = request.depth - request.clear_cover - stirrup - bar / 2
 
         # Call the design function with actual API parameter names
         result = design_beam_is456(
@@ -80,7 +81,9 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
             vu_kn=request.shear if request.shear > 0 else 0.0,
             fck_nmm2=request.fck,
             fy_nmm2=request.fy,
-            d_dash_mm=request.clear_cover + 25,  # Compression steel depth
+            d_dash_mm=request.clear_cover
+            + request.stirrup_dia_mm
+            + request.main_bar_dia_mm / 2,
         )
 
         # Extract flexure results directly from ComplianceCaseResult
@@ -143,6 +146,7 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
             ast_total=flexure.ast_required,
             asc_total=flexure.asc_required,
             utilization_ratio=min(utilization, 2.0),
+            effective_depth_used=effective_depth,
             warnings=warnings,
         )
 

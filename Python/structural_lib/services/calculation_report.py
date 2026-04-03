@@ -192,10 +192,13 @@ class CalculationReport:
                 "beam_type": design.flexure.beam_type,
             }
             results_section.shear = {
-                "vu_kn": design.shear.vu_kn,
-                "vc_kn": design.shear.vc_kn,
-                "vs_kn": design.shear.vs_kn,
-                "is_ok": design.shear.is_ok,
+                "Vu_kn": design.Vu_kn,
+                "tau_v": design.shear.tau_v,
+                "tau_c": design.shear.tau_c,
+                "tau_c_max": design.shear.tau_c_max,
+                "Vus": design.shear.Vus,
+                "spacing": design.shear.spacing,
+                "is_safe": design.shear.is_safe,
             }
             results_section.summary = {
                 "is_ok": result.is_ok,
@@ -495,17 +498,26 @@ class CalculationReport:
         <table class="data-table">
             <tr><th>Parameter</th><th>Value</th><th>Units</th></tr>
             <tr><td>V<sub>u</sub> (Factored Shear)</td><td class="number">{
-            _format_number(results.shear.get("vu_kn"))
+            _format_number(results.shear.get("Vu_kn"))
         }</td><td>kN</td></tr>
-            <tr><td>V<sub>c</sub> (Concrete Capacity)</td><td class="number">{
-            _format_number(results.shear.get("vc_kn"))
+            <tr><td>&tau;<sub>v</sub> (Nominal Shear Stress)</td><td class="number">{
+            _format_number(results.shear.get("tau_v"))
+        }</td><td>N/mm²</td></tr>
+            <tr><td>&tau;<sub>c</sub> (Concrete Shear Strength)</td><td class="number">{
+            _format_number(results.shear.get("tau_c"))
+        }</td><td>N/mm²</td></tr>
+            <tr><td>&tau;<sub>c,max</sub> (Max Shear Stress)</td><td class="number">{
+            _format_number(results.shear.get("tau_c_max"))
+        }</td><td>N/mm²</td></tr>
+            <tr><td>V<sub>us</sub> (Stirrup Capacity)</td><td class="number">{
+            _format_number(results.shear.get("Vus"))
         }</td><td>kN</td></tr>
-            <tr><td>V<sub>s</sub> (Stirrup Capacity)</td><td class="number">{
-            _format_number(results.shear.get("vs_kn"))
-        }</td><td>kN</td></tr>
+            <tr><td>Stirrup Spacing</td><td class="number">{
+            _format_number(results.shear.get("spacing"))
+        }</td><td>mm</td></tr>
             <tr><td>Shear Check</td><td class="{
-            status_class if results.shear.get("is_ok") else "status-fail"
-        }">{"PASS" if results.shear.get("is_ok", True) else "FAIL"}</td><td>-</td></tr>
+            status_class if results.shear.get("is_safe") else "status-fail"
+        }">{"PASS" if results.shear.get("is_safe", True) else "FAIL"}</td><td>-</td></tr>
         </table>
     </div>
 
@@ -588,9 +600,12 @@ class CalculationReport:
 
 | Parameter | Value | Units |
 |-----------|-------|-------|
-| Vu (Factored Shear) | {_format_number(results.shear.get("vu_kn"))} | kN |
-| Vc (Concrete Capacity) | {_format_number(results.shear.get("vc_kn"))} | kN |
-| Vs (Stirrup Capacity) | {_format_number(results.shear.get("vs_kn"))} | kN |
+| Vu (Factored Shear) | {_format_number(results.shear.get("Vu_kn"))} | kN |
+| τv (Nominal Shear Stress) | {_format_number(results.shear.get("tau_v"))} | N/mm² |
+| τc (Concrete Shear Strength) | {_format_number(results.shear.get("tau_c"))} | N/mm² |
+| τc,max (Max Shear Stress) | {_format_number(results.shear.get("tau_c_max"))} | N/mm² |
+| Vus (Stirrup Capacity) | {_format_number(results.shear.get("Vus"))} | kN |
+| Stirrup Spacing | {_format_number(results.shear.get("spacing"))} | mm |
 
 ---
 

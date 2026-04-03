@@ -14,6 +14,14 @@ from pydantic import BaseModel, Field, model_validator
 # =============================================================================
 
 
+class RebarLayerConfig(BaseModel):
+    """Configuration for a single rebar layer in multi-layer reinforcement."""
+
+    layer: int = Field(ge=1, le=5, description="Layer number (1 = bottom)")
+    bar_count: int = Field(ge=1, le=12, description="Number of bars")
+    bar_dia_mm: float = Field(ge=8, le=36, description="Bar diameter (mm)")
+
+
 class BeamDesignRequest(BaseModel):
     """Request model for beam design calculation."""
 
@@ -72,6 +80,39 @@ class BeamDesignRequest(BaseModel):
         default=None,
         gt=0,
         description="Effective depth d (mm). Auto-calculated if not provided.",
+    )
+    stirrup_dia_mm: float = Field(
+        default=8.0,
+        ge=6,
+        le=16,
+        description="Stirrup diameter (mm)",
+    )
+    main_bar_dia_mm: float = Field(
+        default=20.0,
+        ge=8,
+        le=36,
+        description="Main bar diameter (mm)",
+    )
+
+    # Serviceability (opt-in)
+    include_serviceability: bool = Field(
+        default=False,
+        description="Include deflection and crack width checks",
+    )
+    span_mm: float | None = Field(
+        default=None,
+        ge=0,
+        description="Beam span (mm) — required when include_serviceability=True",
+    )
+    support_condition: str = Field(
+        default="SIMPLY_SUPPORTED",
+        description="Support condition for deflection check",
+    )
+
+    # Multi-layer rebar config
+    rebar_layers: list[RebarLayerConfig] | None = Field(
+        default=None,
+        description="Multi-layer rebar configuration",
     )
 
     @model_validator(mode="after")
@@ -215,6 +256,24 @@ class ShearResult(BaseModel):
     shear_capacity: float = Field(description="Shear capacity Vu,cap (kN)")
 
 
+class DeflectionCheckResult(BaseModel):
+    """Result of deflection span/depth check."""
+
+    is_ok: bool
+    span_depth_actual: float | None = None
+    span_depth_allowable: float | None = None
+    remarks: str = ""
+
+
+class CrackWidthCheckResult(BaseModel):
+    """Result of crack width check."""
+
+    is_ok: bool
+    crack_width_mm: float | None = None
+    crack_width_limit_mm: float | None = None
+    remarks: str = ""
+
+
 class BeamDesignResponse(BaseModel):
     """Response model for beam design calculation."""
 
@@ -232,6 +291,14 @@ class BeamDesignResponse(BaseModel):
     utilization_ratio: float = Field(
         ge=0, le=2.0, description="Mu/Mu_cap utilization ratio"
     )
+    effective_depth_used: float | None = Field(
+        default=None,
+        description="Actual effective depth used in calculation (mm)",
+    )
+
+    # Serviceability results (populated when include_serviceability=True)
+    deflection_check: DeflectionCheckResult | None = None
+    crack_width_check: CrackWidthCheckResult | None = None
 
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Design warnings")

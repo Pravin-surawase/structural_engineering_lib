@@ -50,13 +50,15 @@ class BeamGeometryInput:
         b_mm: Beam width (mm). Must be positive.
         D_mm: Overall depth (mm). Must be positive and > d_mm.
         span_mm: Clear span (mm). Must be positive.
-        d_mm: Effective depth (mm). If None, calculated as D_mm - cover_mm.
+        d_mm: Effective depth (mm). If None, computed from D, cover, stirrup, bar.
         cover_mm: Clear cover to reinforcement (mm). Default 40mm per IS 456.
+        stirrup_dia_mm: Stirrup diameter (mm). Default 8mm.
+        bar_dia_mm: Main bar diameter (mm). Default 20mm.
 
     Examples:
         >>> geom = BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000)
-        >>> geom.effective_depth  # Auto-calculated
-        460.0
+        >>> geom.effective_depth  # Auto-calculated: 500 - 40 - 8 - 10
+        442.0
 
         >>> # With explicit effective depth
         >>> geom = BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, d_mm=450)
@@ -70,6 +72,8 @@ class BeamGeometryInput:
     span_mm: float
     d_mm: float | None = None
     cover_mm: float = 40.0
+    stirrup_dia_mm: float = 8.0
+    bar_dia_mm: float = 20.0
 
     def __post_init__(self) -> None:
         """Validate geometry parameters."""
@@ -83,7 +87,12 @@ class BeamGeometryInput:
             raise ValueError(f"Cover cannot be negative, got {self.cover_mm}")
 
         # Effective depth validation
-        d_eff = self.d_mm if self.d_mm is not None else (self.D_mm - self.cover_mm)
+        if self.d_mm is not None:
+            d_eff = self.d_mm
+        else:
+            d_eff = (
+                self.D_mm - self.cover_mm - self.stirrup_dia_mm - self.bar_dia_mm / 2
+            )
         if d_eff <= 0:
             raise ValueError(f"Effective depth must be positive, got {d_eff}")
         if d_eff >= self.D_mm:
@@ -99,8 +108,14 @@ class BeamGeometryInput:
 
     @property
     def effective_depth(self) -> float:
-        """Return effective depth (d_mm or D_mm - cover_mm)."""
-        return self.d_mm if self.d_mm is not None else (self.D_mm - self.cover_mm)
+        """Return effective depth (d_mm or computed from D, cover, stirrup, bar)."""
+        if self.d_mm is not None:
+            return self.d_mm
+        from structural_lib.core.geometry import compute_effective_depth
+
+        return compute_effective_depth(
+            self.D_mm, self.cover_mm, self.stirrup_dia_mm, self.bar_dia_mm
+        )
 
     @property
     def span_depth_ratio(self) -> float:
@@ -131,12 +146,17 @@ class BeamGeometryInput:
         if span is None:
             raise ValueError("Missing required field: span_mm (or span)")
 
+        stirrup = data.get("stirrup_dia_mm", 8.0)
+        bar = data.get("bar_dia_mm", 20.0)
+
         return cls(
             b_mm=float(b),
             D_mm=float(D),
             span_mm=float(span),
             d_mm=float(d) if d is not None else None,
             cover_mm=float(cover),
+            stirrup_dia_mm=float(stirrup),
+            bar_dia_mm=float(bar),
         )
 
 

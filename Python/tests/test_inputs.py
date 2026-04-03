@@ -46,16 +46,38 @@ class TestBeamGeometryInput:
         assert geom.cover_mm == 40  # Default
 
     def test_effective_depth_auto_calculation(self) -> None:
-        """Test effective depth is calculated from D - cover."""
+        """Test effective depth is calculated from D - cover - stirrup - bar/2."""
         geom = BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, cover_mm=40)
 
-        assert geom.effective_depth == 460  # 500 - 40
+        assert geom.effective_depth == 442.0  # 500 - 40 - 8 - 20/2
 
     def test_effective_depth_explicit(self) -> None:
         """Test explicit effective depth is used."""
         geom = BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, d_mm=450)
 
         assert geom.effective_depth == 450  # Explicit
+
+    def test_effective_depth_with_custom_stirrup_bar(self) -> None:
+        """Test effective depth with non-default stirrup and bar sizes."""
+        geom = BeamGeometryInput(
+            b_mm=300,
+            D_mm=500,
+            span_mm=5000,
+            stirrup_dia_mm=10,
+            bar_dia_mm=25,
+        )
+        # d = 500 - 40 - 10 - 25/2 = 437.5
+        assert geom.effective_depth == 437.5
+
+    def test_effective_depth_explicit_d_overrides(self) -> None:
+        """When d_mm is explicit, stirrup/bar fields are ignored."""
+        geom = BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000, d_mm=450)
+        assert geom.effective_depth == 450.0  # Explicit override
+
+    def test_effective_depth_always_less_than_d_minus_cover(self) -> None:
+        """New formula always gives d < D - cover."""
+        geom = BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000)
+        assert geom.effective_depth < 500 - 40  # Always less than old formula
 
     def test_span_depth_ratio(self) -> None:
         """Test L/d ratio calculation."""

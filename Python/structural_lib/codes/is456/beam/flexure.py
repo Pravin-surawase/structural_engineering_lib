@@ -50,6 +50,7 @@ __all__ = [
     "design_doubly_reinforced",
     "calculate_mu_lim_flanged",
     "design_flanged_beam",
+    "calculate_effective_depth_multilayer",
 ]
 
 
@@ -921,3 +922,52 @@ def design_flanged_beam(
         Asc_required=0.0,
         errors=design_errors,
     )
+
+
+def calculate_effective_depth_multilayer(
+    D_mm: float,
+    layers: list[tuple[float, int, float]],
+) -> float:
+    """Calculate effective depth for multi-layer rebar arrangement.
+
+    The effective depth is measured from the compression face to the
+    centroid of the tension reinforcement group.
+
+    d = D - (Σ Asi × di) / (Σ Asi)
+
+    where di is the distance from bottom face for each layer.
+
+    Args:
+        D_mm: Overall beam depth (mm).
+        layers: List of (bar_dia_mm, count, distance_from_bottom_mm) tuples.
+
+    Returns:
+        Effective depth (mm).
+
+    Raises:
+        ValueError: If layers is empty or d ≤ 0.
+    """
+    if not layers:
+        raise ValueError("At least one rebar layer required")
+
+    total_area = 0.0
+    weighted_dist = 0.0
+    for bar_dia, count, dist in layers:
+        # IS 456: area of circular bar = π/4 × d²
+        area = count * math.pi / 4 * bar_dia**2
+        total_area += area
+        weighted_dist += area * dist
+
+    if total_area <= 0:
+        raise ValueError("Total reinforcement area must be positive")
+
+    centroid = weighted_dist / total_area
+    d = D_mm - centroid
+
+    if d <= 0:
+        raise ValueError(
+            f"Effective depth must be positive: D={D_mm}mm, "
+            f"centroid from bottom={centroid:.1f}mm"
+        )
+
+    return d
