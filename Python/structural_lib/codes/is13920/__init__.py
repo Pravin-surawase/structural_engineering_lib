@@ -3,6 +3,6 @@
 Companion code to IS 456:2000 for seismic zones.
 """
 
-from structural_lib.codes.is13920 import beam
+from structural_lib.codes.is13920 import beam, column
 
-__all__ = ["beam"]
+__all__ = ["beam", "column"]

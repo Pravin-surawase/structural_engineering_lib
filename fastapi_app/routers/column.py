@@ -20,6 +20,7 @@ from fastapi_app.models.column import (
     ColumnDesignResponse,
     ColumnDetailingRequest,
     ColumnDetailingResponse,
+    ColumnDuctileDetailingRequest,
     ColumnEccentricityRequest,
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
@@ -619,6 +620,35 @@ async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Column design failed: {e}",
+        )
+
+
+@router.post(
+    "/ductile-detailing",
+    summary="IS 13920 Column Ductile Detailing Check",
+    description=(
+        "Check column ductile detailing per IS 13920:2016 Cl 7. "
+        "Validates geometry, longitudinal steel limits, special confining "
+        "reinforcement spacing, confinement zone length, and confining bar area."
+    ),
+)
+async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
+    """Check column ductile detailing per IS 13920:2016 Cl 7."""
+    try:
+        from structural_lib import check_column_ductility_is13920
+
+        result = check_column_ductility_is13920(**request.model_dump())
+        return result
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Ductile detailing check failed: {e}",
         )
 
 

@@ -25,7 +25,7 @@ V3 Stack
 - Python structural_lib core (Python/structural_lib/)
 - Docker deployment (docker-compose.yml)
 
-Key API Endpoints (FastAPI) — 58 endpoints across 13 routers
+Key API Endpoints (FastAPI) — 59 endpoints across 13 routers
 - POST /api/v1/design/beam - Beam design (Mu, Vu, Ast)
 - POST /api/v1/design/beam/check - Check existing design
 - POST /api/v1/detailing/beam - Rebar detailing

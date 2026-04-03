@@ -34,6 +34,9 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-04 | TASK-681 | Migrated python-jose → PyJWT in auth.py, tests, CI | pending |
+| 2026-04-04 | TASK-646 | IS 13920 Cl 7 column ductile detailing — completes Phase 2 Column (14/14) | pending |
+| 2026-04-04 | maintenance | React test coverage: 5 component test files, 26 tests | pending |
 | 2026-04-04 | TASK-647 | fix: should_use_pr.sh now detects fastapi_app + react_app + Docker as production code | `37d9ed77` |
 | 2026-04-04 | TASK-647 | fix: ai_commit.sh removes --force suggestion from PR-blocked message, suggests --branch instead | `37d9ed77` |
 | 2026-04-04 | TASK-647 | fix: pyproject.toml replaces 11 individual IS 456 per-file-ignores with 2 glob patterns + 9 new ignore-names | `37d9ed77` |

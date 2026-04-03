@@ -91,6 +91,7 @@ from .services.api import (
     check_beam_ductility,
     check_beam_is456,
     check_beam_slenderness,
+    check_column_ductility_is13920,
     check_compliance_report,
     check_crack_width,
     check_deflection_span_depth,
@@ -284,4 +285,6 @@ __all__ = [
     "design_column_axial_is456",
     "design_short_column_uniaxial_is456",
     "pm_interaction_curve_is456",
+    # IS 13920 Ductile Detailing
+    "check_column_ductility_is13920",
 ]

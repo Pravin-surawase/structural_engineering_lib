@@ -113,7 +113,7 @@
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
 | TASK-643 | Verify SP:16 Table I normalization convention against physical publication | — | 0.5d | 🟡 Medium | 📋 |
-| TASK-681 | Migrate python-jose → PyJWT in auth.py | — | 0.5d | 🟡 Medium | 📋 |
+| TASK-681 | Migrate python-jose → PyJWT in auth.py | — | 0.5d | 🟡 Medium | ✅ Done |
 
 ## Library Expansion — Multi-Code, Multi-Element
 
@@ -151,9 +151,9 @@
 | TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | ✅ Done — 3 endpoints (long-column, helical-check, design/column), 6 Pydantic models |
 
 | TASK-645 | Column detailing | `column_detailing` | Cl 26.5.3 | 🟡 Medium | ✅ Done — detailing.py (617 lines, 8 functions), ColumnDetailingResult, 5 error codes, API + FastAPI endpoint, 47 tests |
-| TASK-646 | Column ductile detailing | `column_ductile_detailing` | IS 13920 Cl 7 | 🟡 Medium | 📋 — 6 sub-functions + orchestrator, 25 tests planned, goes in codes/is13920/column.py |
+| TASK-646 | Column ductile detailing | `column_ductile_detailing` | IS 13920 Cl 7 | 🟡 Medium | ✅ Done — codes/is13920/column.py (280 lines, 8 functions), DuctileColumnResult, 5 error codes, API + FastAPI endpoint, 18 tests |
 
-> Phase 2 progress: 13/14 tasks done. Full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, detailing (Cl 26.5.3), orchestrator + FastAPI. Only TASK-646 (ductile detailing, IS 13920 Cl 7) remaining.
+> Phase 2 progress: **14/14 tasks done — Phase 2 Column COMPLETE.** Full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, detailing (Cl 26.5.3), ductile detailing (IS 13920 Cl 7), orchestrator + FastAPI.
 
 ### Phase 3: Footing Design (After Phase 2)
 

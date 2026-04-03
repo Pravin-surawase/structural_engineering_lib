@@ -47,11 +47,11 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 ## Features
 
 - 🏗️ **Beam Design** — Design and check RC beams to IS 456:2000 (flexure, shear, torsion)
-- 🏛️ **Column Classification** — Classify columns and compute axial capacity per IS 456
+- 🏛️ **Column Design** — Full column design per IS 456 + IS 13920 ductile detailing
 - 📋 **Bar Bending Schedules** — Auto-generate BBS from design results
 - 📐 **DXF Export** — CAD-ready reinforcement drawings
 - 📊 **Batch Processing** — Design hundreds of beams from CSV/JSON inputs
-- 🌐 **REST & WebSocket API** — 58 endpoints via FastAPI
+- 🌐 **REST & WebSocket API** — 59 endpoints via FastAPI
 - 🎨 **3D Visualization** — Interactive rebar geometry in React Three Fiber
 - 📑 **HTML & PDF Reports** — Comprehensive design reports
 - ⚡ **CLI Pipeline** — From input to design → detail → BBS → DXF in one flow
@@ -65,7 +65,7 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 | **Python tests** | 3,401 tests across Ubuntu, Windows, macOS |
 | **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
 | **API functions** | 36 public functions in `structural_lib.api` |
-| **REST endpoints** | 58 endpoints across 13 routers + WebSocket |
+| **REST endpoints** | 59 endpoints across 13 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
 | **IS 456 clauses** | Flexure, shear, torsion, detailing, serviceability, column design |
 | **AI agents** | 16 VS Code Copilot agents with 10 skills |
@@ -206,7 +206,7 @@ Units are explicit at the API boundary: `mm`, `kN`, `kN·m`, and `N/mm²`.
 
 ## API Surface
 
-The Python library exposes 27 public functions through `structural_lib.api`. The FastAPI backend provides 43 REST/WebSocket/SSE endpoints across 13 routers.
+The Python library exposes 27 public functions through `structural_lib.api`. The FastAPI backend provides 44 REST/WebSocket/SSE endpoints across 13 routers.
 
 - [Python API Reference](docs/reference/api.md)
 - [FastAPI Swagger UI](http://localhost:8000/docs) (when running locally)
