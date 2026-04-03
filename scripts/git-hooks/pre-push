@@ -12,6 +12,7 @@
 # Skip if running through automation (TASK-907: log bypass events)
 if [[ -n "$AI_COMMIT_ACTIVE" ]] || [[ -n "$SAFE_PUSH_ACTIVE" ]]; then
     PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+    mkdir -p "$PROJECT_ROOT/logs" 2>/dev/null || true
     BYPASS_LOG="$PROJECT_ROOT/logs/git_workflow.log"
     if [[ -d "$PROJECT_ROOT/logs" ]]; then
         BYPASS_SOURCE=""
@@ -31,6 +32,7 @@ fi
 if [[ -n "$GIT_HOOKS_BYPASS" ]]; then
     echo "⚠️  Git hooks bypassed (GIT_HOOKS_BYPASS set)"
     PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+    mkdir -p "$PROJECT_ROOT/logs" 2>/dev/null || true
     if [[ -d "$PROJECT_ROOT/logs" ]]; then
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARNING: Push hook BYPASSED via GIT_HOOKS_BYPASS (branch: $(git branch --show-current 2>/dev/null || echo unknown))" >> "$PROJECT_ROOT/logs/git_workflow.log"
     fi
@@ -66,10 +68,9 @@ NC='\033[0m'
 
 # OPS-01: Log blocked event for analysis
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+mkdir -p "$PROJECT_ROOT/logs" 2>/dev/null || true
 LOG_FILE="$PROJECT_ROOT/logs/git_workflow.log"
-if [[ -d "$PROJECT_ROOT/logs" ]]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] BLOCKED: Manual git push attempted (use ai_commit.sh)" >> "$LOG_FILE"
-fi
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] BLOCKED: Manual git push attempted (use ai_commit.sh)" >> "$LOG_FILE"
 
 echo ""
 echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
