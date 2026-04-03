@@ -140,9 +140,11 @@ class SectionProperties(BaseModel):
         40.0, gt=0, le=100, description="Clear cover in mm (20-100)"
     )
     stirrup_dia_mm: float = Field(
-        8.0, gt=0, le=20, description="Stirrup diameter in mm"
+        default=8.0, gt=0, le=20, description="Stirrup diameter in mm"
     )
-    bar_dia_mm: float = Field(20.0, gt=0, le=40, description="Main bar diameter in mm")
+    bar_dia_mm: float = Field(
+        default=20.0, gt=0, le=40, description="Main bar diameter in mm"
+    )
 
     @computed_field
     @property
