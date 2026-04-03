@@ -51,7 +51,7 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 - 📋 **Bar Bending Schedules** — Auto-generate BBS from design results
 - 📐 **DXF Export** — CAD-ready reinforcement drawings
 - 📊 **Batch Processing** — Design hundreds of beams from CSV/JSON inputs
-- 🌐 **REST & WebSocket API** — 54 endpoints via FastAPI
+- 🌐 **REST & WebSocket API** — 58 endpoints via FastAPI
 - 🎨 **3D Visualization** — Interactive rebar geometry in React Three Fiber
 - 📑 **HTML & PDF Reports** — Comprehensive design reports
 - ⚡ **CLI Pipeline** — From input to design → detail → BBS → DXF in one flow
@@ -64,8 +64,8 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 |--------|-------|
 | **Python tests** | 3,401 tests across Ubuntu, Windows, macOS |
 | **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
-| **API functions** | 32 public functions in `structural_lib.api` |
-| **REST endpoints** | 54 endpoints across 14 routers + WebSocket |
+| **API functions** | 36 public functions in `structural_lib.api` |
+| **REST endpoints** | 58 endpoints across 13 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
 | **IS 456 clauses** | Flexure, shear, torsion, detailing, serviceability, column design |
 | **AI agents** | 16 VS Code Copilot agents with 10 skills |
@@ -242,7 +242,7 @@ structural_engineering_lib/
 - [x] Beam flexure, shear, and torsion design (IS 456)
 - [x] Column classification and short-column axial capacity (IS 456 Cl 39.3)
 - [x] PDF export, load calculator, project BOQ
-- [ ] Column biaxial bending and P-M interaction (IS 456 Cl 39.5–39.6)
+- [x] Column biaxial bending and P-M interaction (IS 456 Cl 39.5–39.6)
 - [ ] Slab design module
 - [ ] Footing design module
 

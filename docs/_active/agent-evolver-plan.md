@@ -140,7 +140,7 @@ Safety-critical agents (structural-engineer, structural-math) are **locked to Le
 | Health scanner | `scripts/project_health.py` | 740 | ✅ 62/100 | Not agent-granular |
 | Mistake tracker | `scripts/agent_mistakes_report.sh` | ~60 | ✅ Working | Git mistakes only |
 | Instruction drift | `scripts/check_instruction_drift.py` | ~150 | ✅ Working | Detects, doesn't fix |
-| Agent context | `scripts/agent_context.py` | ~300 | ✅ 14 agents | No performance data |
+| Agent context | `scripts/agent_context.py` | ~300 | ✅ 16 agents | No performance data |
 | 27 checks | `scripts/check_all.py` | ~400 | ✅ All pass | No per-agent attribution |
 
 ### 4.2 Available Data Sources

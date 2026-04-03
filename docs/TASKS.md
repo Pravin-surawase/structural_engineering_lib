@@ -113,6 +113,7 @@
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
 | TASK-643 | Verify SP:16 Table I normalization convention against physical publication | — | 0.5d | 🟡 Medium | 📋 |
+| TASK-681 | Migrate python-jose → PyJWT in auth.py | — | 0.5d | 🟡 Medium | 📋 |
 
 ## Library Expansion — Multi-Code, Multi-Element
 

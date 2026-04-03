@@ -48,6 +48,14 @@ You are an IS 456:2000 structural engineering specialist for **structural_engine
 | `codes/is456/detailing.py` | Cl 26 — Development length, spacing, cover |
 | `codes/is456/torsion.py` | Cl 41 — Torsion design |
 | `codes/is456/serviceability.py` | Cl 43 — Deflection, crack width |
+| `codes/is456/compliance.py` | Compliance checking |
+| `codes/is456/load_analysis.py` | Load analysis |
+| `codes/is456/materials.py` | Material properties |
+| `codes/is456/tables.py` | IS 456 reference tables |
+| `codes/is456/column/` | Cl 25-39 — axial.py, uniaxial.py, biaxial.py, slenderness.py, helical.py, long_column.py, detailing.py |
+| `codes/is456/footing/` | flexure.py, one_way_shear.py, punching_shear.py, bearing.py |
+| `codes/is456/common/` | Cross-code shared physics (numerics, stress_blocks) |
+| `codes/is13920/beam.py` | IS 13920 Cl 6 — Ductile detailing |
 
 ## Units (non-negotiable)
 

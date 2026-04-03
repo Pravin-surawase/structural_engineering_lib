@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-01
+last_updated: 2026-04-04
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-04-01
+**Last Updated:** 2026-04-04
 
 ---
 
@@ -34,9 +34,9 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
-| 2026-04-04 | TASK-647 | fix: should_use_pr.sh now detects fastapi_app + react_app + Docker as production code | pending |
-| 2026-04-04 | TASK-647 | fix: ai_commit.sh removes --force suggestion from PR-blocked message, suggests --branch instead | pending |
-| 2026-04-04 | TASK-647 | fix: pyproject.toml replaces 11 individual IS 456 per-file-ignores with 2 glob patterns + 9 new ignore-names | pending |
+| 2026-04-04 | TASK-647 | fix: should_use_pr.sh now detects fastapi_app + react_app + Docker as production code | `37d9ed77` |
+| 2026-04-04 | TASK-647 | fix: ai_commit.sh removes --force suggestion from PR-blocked message, suggests --branch instead | `37d9ed77` |
+| 2026-04-04 | TASK-647 | fix: pyproject.toml replaces 11 individual IS 456 per-file-ignores with 2 glob patterns + 9 new ignore-names | `37d9ed77` |
 | 2026-04-03 | TASK-645 | Column detailing IS 456 Cl 26.5.3 — detailing.py + API + endpoint + 47 tests | feat(column) |
 | 2026-04-01 | TASK-642 | feat: 5-point steel stress-strain curve (stress_blocks.py, uniaxial.py, 26 tests) | PR #481 |
 | 2026-04-01 | TASK-636 | feat: effective length per IS 456 Table 28 (axial.py, EndCondition enum, 69 tests) | PR #481 |
@@ -44,7 +44,7 @@ tags: []
 | 2026-04-01 | TASK-635 | feat: biaxial bending check IS 456 Cl 39.6 (biaxial.py, ColumnBiaxialResult, 84 tests) | PR #482 |
 | 2026-04-01 | TASK-635 | feat: POST /column/biaxial-check FastAPI endpoint + 19 API tests | PR #482 |
 | 2026-04-01 | TASK-800.T | Added 84 evolver unit tests (scorer, drift, compliance, registry, data, scoring lib) | c1e0d222 |
-| 2026-04-01 | TASK-634 | Added P-M interaction curve (IS 456 Cl. 39.5) — core function, API wrapper, FastAPI endpoint, 45 tests | pending-commit |
+| 2026-04-01 | TASK-634 | Added P-M interaction curve (IS 456 Cl. 39.5) — core function, API wrapper, FastAPI endpoint, 45 tests | PR #478 |
 | 2026-04-01 | TASK-800.P3 | Fixed agent_registry.py name extraction bug (.stem → .name.removesuffix) | c1e0d222 |
 | 2026-04-01 | TASK-800.P3 | Created scripts/_lib/agent_registry.py, scoring.py, agent_data.py (shared evolver libs) | 8808c16b |
 | 2026-04-01 | TASK-800.P4 | Created agent_session_collector.py (gather session artifacts for scoring) | 8808c16b |
@@ -65,11 +65,11 @@ tags: []
 | 2026-04-02 | TASK-862 | Created audit_permissions.py — 5 anomaly checks, full audit reports | claw-code S2 |
 | 2026-04-02 | TASK-860 | Created tool_permissions.py — 3 permission levels, file scope enforcement | claw-code S2 |
 | 2026-04-02 | TASK-852 | Created prompt_router.py — 14 routing rules, weighted keyword scoring | claw-code S2 |
-| 2026-04-02 | TASK-637 | feat(column): additional moment for slender columns IS 456 Cl 39.7.1 (slenderness.py, 24 tests) | pending |
-| 2026-04-02 | TASK-637 | feat(column): POST /column/additional-moment FastAPI endpoint + 8 API tests | pending |
+| 2026-04-02 | TASK-637 | feat(column): additional moment for slender columns IS 456 Cl 39.7.1 (slenderness.py, 24 tests) | PR #485 |
+| 2026-04-02 | TASK-637 | feat(column): POST /column/additional-moment FastAPI endpoint + 8 API tests | PR #485 |
 | 2026-04-01 | TASK-800.P10 | Created export_paper_data.py (CSV export, bootstrap CIs, Hedges' g) | d69c4a4f |
 | 2026-04-01 | TASK-800.P9 | Created agent_evolve_instructions.py (SHA-256, security levels, rollback) | e0702346 |
-| 2026-04-01 | TASK-800.P2 | Created agent-evolver.agent.md (15th meta-agent) + agent-evolution/SKILL.md | pending |
+| 2026-04-01 | TASK-800.P2 | Created agent-evolver.agent.md (15th meta-agent) + agent-evolution/SKILL.md | PR #476 |
 | 2026-03-31 | TASK-630 | Added ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 column constants | 69d4d2c3 |
 | 2026-03-31 | TASK-631 | Implemented classify_column (Cl 25.1.2) and min_eccentricity (Cl 25.4) in codes/is456/column/axial.py | 69d4d2c3 |
 | 2026-03-31 | TASK-632 | Implemented short_axial_capacity (Cl 39.3) with full validation in codes/is456/column/axial.py | 69d4d2c3 |
@@ -81,7 +81,7 @@ tags: []
 | 2026-03-31 | TASK-630+ | Created fastapi_app/routers/column.py with 3 POST endpoints (/classify, /eccentricity, /axial) | 69d4d2c3 |
 | 2026-03-31 | TASK-630+ | 75 column tests: unit, boundary, edge, SP:16 benchmark, Hypothesis property-based | 69d4d2c3 |
 | 2026-03-31 | TASK-630 | Fixed clause refs 39.6→39.3, boundary ≤→< in API wrappers + router | 69d4d2c3 |
-| 2026-03-31 | TASK-712 | Enhanced shear near supports (Cl 40.3): new function + 14 tests + API endpoint | pending |
+| 2026-03-31 | TASK-712 | Enhanced shear near supports (Cl 40.3): new function + 14 tests + API endpoint | PR #468 |
 | 2026-03-31 | TASK-709,710 | Phase 0 complete: ductile.py→is13920, upward import fix, archive strategic-roadmap | 32f49571 |
 | 2026-03-28 | PROMPTS | Comprehensive quality pass: fixed 7 issues across 11 files (agents, prompts, instructions) | 8fb7aeb2 |
 | 2026-03-28 | PROMPTS | Fixed endpoint count 35→38 in AGENTS.md, CLAUDE.md, fastapi.instructions.md | 8fb7aeb2 |
@@ -118,10 +118,10 @@ tags: []
 | 2026-03-27 | DOCS | Add IPv6 rows to agent-bootstrap.md troubleshooting + common mistakes tables | — |
 | 2026-03-27 | DOCS | Update mac-mini-setup.md + github-fix-plan.md with IPv6 root cause & fix | — |
 | 2026-03-25 | BUG | Fix export router ReportData construction — was passing wrong field names | — |
-| 2026-03-28 | Agent maintenance | Added A11y checklist to ui-designer.agent.md | pending |
-| 2026-03-28 | Agent maintenance | Fixed frontend.agent.md hooks table: 9 → 21 hooks | pending |
-| 2026-03-28 | Script audit | Rewrote scripts/_archive/README.md: 6 → 99 scripts documented | pending |
-| 2026-03-28 | Script audit | Added ⚠️ Archived warnings to automation-catalog.md entries 56, 98 | pending |
+| 2026-03-28 | Agent maintenance | Added A11y checklist to ui-designer.agent.md | committed |
+| 2026-03-28 | Agent maintenance | Fixed frontend.agent.md hooks table: 9 → 21 hooks | committed |
+| 2026-03-28 | Script audit | Rewrote scripts/_archive/README.md: 6 → 99 scripts documented | committed |
+| 2026-03-28 | Script audit | Added ⚠️ Archived warnings to automation-catalog.md entries 56, 98 | committed |
 | 2026-03-28 | TASK-AGENTS | Agent testing audit: all 11 agents tested, scored 8.7/10, identified 7 fix phases | ecfede46 |
 | 2026-03-28 | PHASE-1-2 | Fix BeamDetailPanel arch violations (3), FastAPI router imports (2 files analysis+design) | ecfede46 |
 | 2026-03-28 | PHASE-3 | Fix num_legs stirrup scaling bug in shear.py (effective_tv = tv * 2.0/num_legs) | ecfede46 |
@@ -136,8 +136,8 @@ tags: []
 | 2026-03-28 | Session 107 | Post-mortem Session 106 safety gates: FORBIDDEN commands in 5 files, CodeQL fix, ops no-script rule | — |
 | 2026-03-28 | Session 108 | Agent infrastructure expansion: @structural-math agent, /new-structural-element skill, #add-structural-element prompt, orchestrator 6→8 steps | — |
 | 2026-03-29 | Session 109 | Doc maintenance: batch metadata updates (53 docs), WORKLOG backfill S105-108, indexes regenerated, 2 docs archived | — |
-| 2026-03-30 | SESSION-110 | Doc system overhaul: audit, tool research (MkDocs Material), Phase 1 implementation (budget check, CODEOWNERS, append-first policy, archive extension, SESSION_LOG rotation) | pending |
-| 2026-03-30 | SESSION-110-P2 | MkDocs Material setup + frontmatter backfill (182 docs) + lychee CI workflow | pending |
+| 2026-03-30 | SESSION-110 | Doc system overhaul: audit, tool research (MkDocs Material), Phase 1 implementation (budget check, CODEOWNERS, append-first policy, archive extension, SESSION_LOG rotation) | PR #451 |
+| 2026-03-30 | SESSION-110-P2 | MkDocs Material setup + frontmatter backfill (182 docs) + lychee CI workflow | PR #452 |
 | 2026-03-30 | TASK-525 | Created HubPage.tsx replacing ModeSelectPage — smart landing with quick actions + last session | Session 111 |
 | 2026-03-30 | TASK-517 | Created services/boq.py — project BOQ aggregation from BBS data | Session 111 |
 | 2026-03-30 | TASK-517 | Created FastAPI POST /api/v1/insights/project-boq endpoint | Session 111 |
@@ -152,27 +152,27 @@ tags: []
 | 2026-03-30 | TASK-616 | Add 5 IS 13920 entries (6.3, 7.4.1, 8.1, 9.2, 9.3), total 11→16 | 8716c02c |
 | 2026-03-30 | — | Add 41 new tests: clauses.json schema (36) + deprecation import paths (5) | 8716c02c |
 | 2026-03-31 | TASK-PREFLIGHT | fix: release preflight memory safety — timeouts, RAM check, NODE_OPTIONS, --docker flag, process group cleanup | — |
-| 2026-03-31 | TASK-617,618,619 | Phase 1 Batch 4: test helpers, top-level exports, unit plausibility guards | pending |
+| 2026-03-31 | TASK-617,618,619 | Phase 1 Batch 4: test helpers, top-level exports, unit plausibility guards | PR #469 |
 | 2026-03-31 | — | Progress audit: Blueprint v5.0 §3.2 corrected, Phase 0 marked complete, Column design (TASK-630-632) planned | — |
-| 2026-04-01 | CI/Docker | Merged docker-build + docker-security-scan into one job (~5 min savings) | pending |
-| 2026-04-01 | CI/Docker | Trivy now fails CI on CRITICAL vulns (exit-code: 1) | pending |
-| 2026-04-01 | Security | Added cap_drop: ALL + no-new-privileges to docker-compose.yml + dev | pending |
-| 2026-04-01 | Security | Trimmed security.yml to scan prod deps only | pending |
-| 2026-04-01 | TASK-620 | Stack trace sanitization in fastapi_app/main.py — generic exception handler | pending |
+| 2026-04-01 | CI/Docker | Merged docker-build + docker-security-scan into one job (~5 min savings) | PR #480 |
+| 2026-04-01 | CI/Docker | Trivy now fails CI on CRITICAL vulns (exit-code: 1) | PR #480 |
+| 2026-04-01 | Security | Added cap_drop: ALL + no-new-privileges to docker-compose.yml + dev | PR #480 |
+| 2026-04-01 | Security | Trimmed security.yml to scan prod deps only | PR #480 |
+| 2026-04-01 | TASK-620 | Stack trace sanitization in fastapi_app/main.py — generic exception handler | PR #480 |
 | 2026-04-02 | TASK-861 | Trust gate initialization in session.py — trust state tracking for destructive op control | Session 4 |
 | 2026-04-02 | TASK-867 | Snapshot regression tests — 10 tests guarding API surface counts | Session 4 |
 | 2026-04-02 | TASK-869 | Updated all 15 agent .md files with permission_level + registry_ref | Session 4 |
 | 2026-04-02 | TASK-871 | Updated AGENTS.md + CLAUDE.md + copilot-instructions.md with new commands | Session 4 |
-| 2026-04-02 | TASK-621 | feat(core): add recovery field to DesignError + text for 39 errors | pending |
-| 2026-04-02 | TASK-622 | feat(scripts): create check_function_quality.py 12-point checker | pending |
-| 2026-04-02 | TASK-623 | feat(scripts): create check_clause_coverage.py clause gap scanner | pending |
-| 2026-04-02 | TASK-624 | feat(scripts): create check_new_element_completeness.py matrix | pending |
-| 2026-04-02 | TASK-625 | docs(governance): create maintenance-playbook.md 11 sections | pending |
-| 2026-04-03 | TASK-651 | fix(footing): both-direction flexure design + Cl 34.3.1 steel distribution (F-004, F-005) | pending |
-| 2026-04-03 | TASK-653 | fix(footing): both-direction one-way shear check + governing direction (F-006) | pending |
-| 2026-04-03 | TASK-650 | fix(footing): 150mm minimum depth enforcement in _common.py (F-001) | pending |
-| 2026-04-03 | TASK-650 | fix(footing): FootingFlexureResult both-direction fields + central_band_fraction (F-008) | pending |
-| 2026-04-03 | TASK-650 | test(footing): 79 tests (16 new — both-direction, Cl 34.3.1, min depth) | pending |
+| 2026-04-02 | TASK-621 | feat(core): add recovery field to DesignError + text for 39 errors | committed |
+| 2026-04-02 | TASK-622 | feat(scripts): create check_function_quality.py 12-point checker | committed |
+| 2026-04-02 | TASK-623 | feat(scripts): create check_clause_coverage.py clause gap scanner | committed |
+| 2026-04-02 | TASK-624 | feat(scripts): create check_new_element_completeness.py matrix | committed |
+| 2026-04-02 | TASK-625 | docs(governance): create maintenance-playbook.md 11 sections | committed |
+| 2026-04-03 | TASK-651 | fix(footing): both-direction flexure design + Cl 34.3.1 steel distribution (F-004, F-005) | PR #496 |
+| 2026-04-03 | TASK-653 | fix(footing): both-direction one-way shear check + governing direction (F-006) | PR #496 |
+| 2026-04-03 | TASK-650 | fix(footing): 150mm minimum depth enforcement in _common.py (F-001) | PR #496 |
+| 2026-04-03 | TASK-650 | fix(footing): FootingFlexureResult both-direction fields + central_band_fraction (F-008) | PR #496 |
+| 2026-04-03 | TASK-650 | test(footing): 79 tests (16 new — both-direction, Cl 34.3.1, min depth) | PR #496 |
 | 2026-04-04 | TASK-660 | Standardize IS 456 variable naming — 21 field renames, 4 dataclasses, ~60 files, backward-compat aliases | — |
 | 2026-04-04 | TASK-670 | Fix calculation_report.py: 4 broken ShearResult fields + update templates + real-object tests | — |
 | 2026-04-03 | TASK-671 | Fix 1: Unified effective depth — canonical `compute_effective_depth()` in core/geometry.py, updated inputs.py, models.py, design.py router | feat |

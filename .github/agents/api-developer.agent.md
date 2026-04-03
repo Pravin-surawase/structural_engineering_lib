@@ -62,22 +62,22 @@ docker compose -f docker-compose.dev.yml up            # Dev with hot reload
 grep -r "@router" fastapi_app/routers/ | head -30
 ```
 
-48 endpoints across 13 routers already exist. Do NOT duplicate.
+58 endpoints across 13 routers already exist. Do NOT duplicate.
 
 ## Existing Routers
 
 | Router | Key Endpoints |
 |--------|---------------|
-| **design** | `POST /api/v1/design/beam`, `/beam/check`, `/beam/torsion`, `GET /limits` |
-| **column** | `POST /effective-length`, `/classify`, `/eccentricity`, `/axial`, `/uniaxial`, `/interaction-curve`, `/biaxial-check` |
-| **detailing** | `POST /api/v1/detailing/beam`, `GET /bar-areas`, `/development-length/{d}` |
-| **analysis** | `POST /api/v1/analysis/beam/smart`, `GET /code-clauses` |
+| **design** | `POST /api/v1/design/beam`, `/beam/check`, `/beam/torsion`, `/beam/enhanced-shear`, `/beam/ductility-check`, `/beam/slenderness-check`, `/beam/deflection-check`, `/beam/crack-width-check`, `/beam/compliance`, `GET /limits` |
+| **column** | `POST /effective-length`, `/classify`, `/eccentricity`, `/axial`, `/uniaxial`, `/interaction-curve`, `/biaxial-check`, `/additional-moment`, `/long-column`, `/helical-check`, `/design/column` (unified), `/detailing` |
+| **detailing** | `POST /api/v1/detailing/beam`, `GET /bar-areas`, `/development-length/{d}`, `POST /anchorage-check` |
+| **analysis** | `POST /api/v1/analysis/loads/simple`, `/beam/smart`, `GET /limiting-values` |
 | **imports** | `POST /csv`, `/csv/text`, `/dual-csv`, `/batch-design`, `GET /formats`, `/sample` |
-| **geometry** | `POST /beam/3d`, `/beam/full`, `/building`, `/cross-section`, `GET /materials` |
-| **insights** | `POST /dashboard`, `/code-checks`, `/rebar-suggest` |
+| **geometry** | `POST /beam/3d`, `/beam/full`, `/reference-geometry`, `/building`, `/cross-section` |
+| **insights** | `POST /dashboard`, `/code-checks`, `/suggestions`, `/project-boq` |
 | **optimization** | `POST /beam/cost`, `GET /cost-rates` |
 | **rebar** | `POST /validate`, `/apply` |
-| **export** | `POST /bbs`, `/dxf`, `/report` |
+| **export** | `POST /bbs`, `/dxf`, `/report`, `/building-summary` |
 | **health** | `GET /health`, `/ready`, `/info` |
 | **streaming** | `GET /batch-design`, `/job/{job_id}` |
 | **websocket** | `WS /ws/design/{session_id}` |
