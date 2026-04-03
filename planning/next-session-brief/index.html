@@ -1481,71 +1481,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-was-done-this-session" class="md-nav__link">
+  <a href="#what-was-completed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What Was Done This Session
+        What Was Completed
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="What Was Done This Session">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#task-671-fix-4-known-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TASK-671: Fix 4 Known Limitations ✅
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#task-670-fix-calculation_reportpy-shear-bug" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TASK-670: Fix calculation_report.py Shear Bug ✅
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multi-agent-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multi-Agent Review
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#files-changed-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Files Changed (key)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-to-do-next" class="md-nav__link">
+  <a href="#whats-next-priority-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What To Do Next
+        What's Next (Priority Order)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#blockers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blockers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Files
       
     </span>
   </a>
@@ -1584,57 +1556,45 @@
 
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
-<p><strong>Updated:</strong> 2026-04-03
-<strong>Last Session:</strong> TASK-671 Fix 4 Known Limitations (complete)</p>
-<hr />
-<h2 id="what-was-done-this-session">What Was Done This Session<a class="headerlink" href="#what-was-done-this-session" title="Permanent link">&para;</a></h2>
-<h3 id="task-671-fix-4-known-limitations">TASK-671: Fix 4 Known Limitations ✅<a class="headerlink" href="#task-671-fix-4-known-limitations" title="Permanent link">&para;</a></h3>
+<p><strong>Last Updated:</strong> 2026-04-03
+<strong>Last Session:</strong> Column detailing implementation (TASK-645)</p>
+<h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Fix 1 (P0):</strong> Unified effective depth — created canonical <code>compute_effective_depth()</code> in core/geometry.py. Formula: d = D - cover - stirrup_dia - bar_dia/2. Updated BeamGeometryInput, SectionProperties, RectangularSection, FastAPI router. Old D-cover overestimated capacity by 7-10%.</li>
-<li><strong>Fix 2 (P1):</strong> Serviceability pipeline integration — added <code>include_serviceability</code> opt-in flag + <code>_auto_construct_deflection_params()</code> in beam_pipeline.py. Level A deflection auto-runs when enabled.</li>
-<li><strong>Fix 3 (P2):</strong> Multi-layer rebar — added <code>RebarLayer</code>, <code>RebarArrangement</code> dataclasses in core/data_types.py + <code>calculate_effective_depth_multilayer()</code> in flexure.py. Supports area-weighted centroid for 2+ bar layers.</li>
-<li><strong>Fix 4 (P3):</strong> Failure story enhancement — added <code>ast_required_mm2</code> field to FailureScenario, redesign narrative showing steel requirements at each overload factor.</li>
-<li><strong>FastAPI:</strong> 3 new models (RebarLayerConfig, DeflectionCheckResult, CrackWidthCheckResult), 6 new request fields, 3 response fields. All backward compatible.</li>
-<li><strong>Tests:</strong> 22 new, 4 fixed, 4193+180 all passing.</li>
+<li>TASK-645: Column detailing per IS 456 Cl 26.5.3 — FULLY DONE</li>
+<li><code>Python/structural_lib/codes/is456/column/detailing.py</code> (617 lines, 8 functions)</li>
+<li><code>ColumnDetailingResult</code> dataclass in <code>core/data_types.py</code></li>
+<li>Error codes E_COLUMN_012-016 in <code>core/errors.py</code></li>
+<li>API wrapper <code>detail_column_is456()</code> in <code>services/api.py</code></li>
+<li>FastAPI endpoint <code>POST /api/v1/design/column/detailing</code></li>
+<li>40 unit tests + 7 FastAPI tests — all passing</li>
+<li>Reviewed and APPROVED by @reviewer</li>
 </ul>
-<h3 id="task-670-fix-calculation_reportpy-shear-bug">TASK-670: Fix calculation_report.py Shear Bug ✅<a class="headerlink" href="#task-670-fix-calculation_reportpy-shear-bug" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Fixed 4 non-existent field accesses on ShearResult (.vu_kn, .vc_kn, .vs_kn, .is_ok → tau_v, tau_c, tau_c_max, Vus, spacing, is_safe)</li>
-<li>Updated HTML/Markdown templates to IS 456 stress-based format (τ_v, τ_c, τ_c,max)</li>
-<li>Replaced MagicMock with real ShearResult in tests</li>
-<li>Added integration test with real dataclass objects</li>
-<li>4175 Python + 180 FastAPI tests pass</li>
-</ul>
-<h3 id="multi-agent-review">Multi-Agent Review<a class="headerlink" href="#multi-agent-review" title="Permanent link">&para;</a></h3>
-<ul>
-<li>7 agents reviewed (structural-engineer, library-expert, reviewer, security, tester, backend, api-developer)</li>
-<li>Final reviewer: APPROVED WITH CONDITIONS (all 5 conditions addressed)</li>
-<li>Security finding: Limitations #1+#3 could compound to 25-35% capacity overestimate — now fixed</li>
-</ul>
-<h3 id="files-changed-key">Files Changed (key)<a class="headerlink" href="#files-changed-key" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>core/data_types.py</code> — 21 field renames + 21 @property aliases</li>
-<li><code>core/geometry.py</code> — canonical compute_effective_depth()</li>
-<li><code>core/inputs.py</code> — stirrup_dia_mm, bar_dia_mm fields</li>
-<li><code>core/models.py</code> — SectionProperties updated</li>
-<li><code>codes/is456/beam/flexure.py</code> — calculate_effective_depth_multilayer()</li>
-<li><code>services/beam_pipeline.py</code> — include_serviceability, auto-construction</li>
-<li><code>research/research_design_companion.py</code> — ast_required_mm2</li>
-<li><code>fastapi_app/models/beam.py</code> — 3 new models, 6 request fields</li>
-<li><code>fastapi_app/routers/design.py</code> — effective depth fix</li>
-<li><code>services/*.py</code> — field accesses (~12 files)</li>
-<li><code>Python/tests/*</code> — ~25 test files updated + 22 new</li>
-</ul>
-<hr />
-<h2 id="what-to-do-next">What To Do Next<a class="headerlink" href="#what-to-do-next" title="Permanent link">&para;</a></h2>
+<h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>TASK-654: Bearing at column-footing interface</strong> — Cl 34.4, load transfer calculation</li>
-<li><strong>TASK-655: Dowel bars</strong> — Cl 34.2.5, anchorage at column-footing junction</li>
-<li><strong>TASK-656: Footing FastAPI endpoint</strong> — <code>POST /api/v1/design/footing</code></li>
-<li><strong>TASK-519: Alternatives Panel (Pareto)</strong> — Pareto front in DesignView</li>
+<li><strong>TASK-646: Column ductile detailing</strong> (IS 13920 Cl 7) — seismic confinement rules</li>
+<li>Create <code>Python/structural_lib/codes/is13920/column.py</code></li>
+<li>6 sub-functions + orchestrator (same pattern as detailing.py)</li>
+<li>~25 tests needed</li>
+<li>
+<p>This is the LAST remaining column function (11/11 will complete Phase 2 Column)</p>
+</li>
+<li>
+<p><strong>Minor follow-up:</strong> Add <code>is_safe</code> property alias to <code>ColumnDetailingResult</code> for consistency with other column result types (reviewer note, non-blocking)</p>
+</li>
+<li>
+<p><strong>After Column complete:</strong> Phase 3 planning (Slab design per IS 456 Cl 24)</p>
+</li>
+</ol>
+<h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
+<p>None</p>
+<h2 id="key-files">Key Files<a class="headerlink" href="#key-files" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Blueprint: <code>docs/planning/library-expansion-blueprint-v5.md</code></li>
+<li>Column module: <code>Python/structural_lib/codes/is456/column/</code></li>
+<li>Column tests: <code>Python/tests/codes/is456/column/</code></li>
 <li><strong>Wire multi-layer rebar into detailing functions</strong> — Fix 3 types exist but not yet consumed by detailing pipeline</li>
 <li><strong>Add Level B/C deflection to auto-serviceability</strong> — Currently only Level A (span/depth ratio)</li>
-</ol>
+</ul>
 <hr />
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>branch<span class="w"> </span>--show-current
