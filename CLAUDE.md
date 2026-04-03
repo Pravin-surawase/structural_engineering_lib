@@ -44,7 +44,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI.
 
 ### Agent Infrastructure
 
-- **Agent Registry:** `agents/agent_registry.json` — 15 agents with permissions, skills, keywords
+- **Agent Registry:** `agents/agent_registry.json` — 16 agents with permissions, skills, keywords
 - **Tool Registry:** `scripts/tool_registry.py` — unified search across agents, skills, scripts
 - **Prompt Router:** `scripts/prompt_router.py` — NLP-based task → agent routing
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control

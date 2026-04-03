@@ -68,7 +68,7 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 | **REST endpoints** | 54 endpoints across 14 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
 | **IS 456 clauses** | Flexure, shear, torsion, detailing, serviceability, column design |
-| **AI agents** | 15 VS Code Copilot agents with 9 skills |
+| **AI agents** | 16 VS Code Copilot agents with 10 skills |
 | **CSV column mappings** | 40+ column names auto-detected |
 | **Export formats** | BBS CSV, DXF drawings, HTML/PDF reports |
 

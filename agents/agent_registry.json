@@ -231,13 +231,31 @@
       "handoff_targets": ["orchestrator", "governance"],
       "can_edit_files": true,
       "file_scope": ".github/agents/**"
+    },
+    {
+      "name": "innovator",
+      "description": "Research & innovation — discovers missing capabilities, proposes novel approaches, prototypes breakthroughs.",
+      "tools": ["search", "editFiles", "runInTerminal", "listFiles", "readFile", "web"],
+      "model": "Claude Opus 4.6",
+      "permission_level": "WorkspaceWrite",
+      "terminal_allowlist": [
+        "git status", "git log", "git diff", "git branch", "git show",
+        ".venv/bin/pytest", ".venv/bin/python scripts/",
+        "ls ", "cat ", "grep "
+      ],
+      "skills": ["innovation-research"],
+      "scripts": ["discover_api_signatures.py", "parity_dashboard.py"],
+      "keywords": ["innovate", "research", "novel", "prototype", "sustainability", "carbon", "generative", "ml", "digital_twin", "breakthrough", "explore", "discover"],
+      "handoff_targets": ["structural-math", "structural-engineer", "api-developer", "frontend", "library-expert", "tester", "security", "doc-master", "orchestrator"],
+      "can_edit_files": true,
+      "file_scope": null
     }
   ],
   "_meta": {
     "version": "1.0.0",
-    "updated": "2026-04-02",
-    "agent_count": 15,
-    "skill_count": 9,
+    "updated": "2026-04-03",
+    "agent_count": 16,
+    "skill_count": 10,
     "description": "Centralized agent metadata registry — enables routing, permission enforcement, and discovery"
   }
 }

@@ -65,7 +65,7 @@ UI/IO        → react_app/, fastapi_app/
 
 ### Agent Infrastructure
 
-- **Agent Registry:** `agents/agent_registry.json` — 15 agents with permissions, skills, keywords
+- **Agent Registry:** `agents/agent_registry.json` — 16 agents with permissions, skills, keywords
 - **Tool Registry:** `scripts/tool_registry.py` — unified search across agents, skills, scripts
 - **Prompt Router:** `scripts/prompt_router.py` — NLP-based task → agent routing
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
@@ -123,7 +123,7 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (32
 
 Direct scripts (when run.sh doesn't cover it):
 ```bash
-.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 15 agents)
+.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 16 agents)
 .venv/bin/python scripts/agent_context.py --list # List available agents
 .venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
 colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
@@ -202,7 +202,7 @@ docs/TASKS.md                                   # Task board
 
 ## VS Code Copilot Agents & Skills
 
-### 15 Custom Agents (`.github/agents/`)
+### 16 Custom Agents (`.github/agents/`)
 
 | Agent | Role | Tools |
 |-------|------|-------|
@@ -221,8 +221,9 @@ docs/TASKS.md                                   # Task board
 | `governance` | Project health, maintenance, metrics | full edit |
 | `security` | Security auditing, OWASP, dependency scanning | read + terminal |
 | `library-expert` | Library domain expert, IS 456 knowledge, professional standards | read + terminal + web |
+| `innovator` | Research & innovation — discovers missing capabilities, proposes novel approaches | read + edit + web |
 
-### 8 Agent Skills (`.github/skills/`)
+### 10 Agent Skills (`.github/skills/`)
 
 | Skill | Slash Command | Purpose |
 |-------|--------------|---------|
@@ -234,8 +235,9 @@ docs/TASKS.md                                   # Task board
 | `react-validation` | `/react-validation` | React build, lint, type-check, tests |
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
 | `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
+| `innovation-research` | `/innovation-research` | Guided innovation research cycle |
 
-### 15 Prompt Files (`.github/prompts/`)
+### 16 Prompt Files (`.github/prompts/`)
 
 | Prompt | Purpose |
 |--------|--------|
@@ -254,6 +256,7 @@ docs/TASKS.md                                   # Task board
 | `is456-verify` | IS 456 formula verification |
 | `context-recovery` | Resume after context overflow |
 | `master-workflow` | Master workflow orchestration |
+| `innovation-research` | Innovation research cycle workflow |
 
 ### Handoff Chains
 
@@ -267,3 +270,4 @@ docs/TASKS.md                                   # Task board
 - **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
 - **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops
 - **Agent evolution:** orchestrator → agent-evolver → governance → doc-master → ops
+- **Innovation research:** orchestrator → innovator → structural-engineer (gate) → structural-math → tester → reviewer → doc-master → ops

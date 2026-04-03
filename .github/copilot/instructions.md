@@ -17,7 +17,7 @@
 # Session start
 ./scripts/agent_start.sh --quick
 
-# Agent-specific context (15 agents)
+# Agent-specific context (16 agents)
 .venv/bin/python scripts/agent_context.py backend
 
 # Commits (ALWAYS use automation)

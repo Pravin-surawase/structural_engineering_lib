@@ -586,7 +586,7 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 
 ## 12. VS Code Copilot Agents & Skills
 
-### 12 Custom Agents (`@agent-name` in Copilot Chat)
+### 16 Custom Agents (`@agent-name` in Copilot Chat)
 
 | Agent | Role | When to Use |
 |-------|------|-------------|
@@ -602,8 +602,12 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `@ops` | Git, CI/CD, Docker | Commits, PRs, environment issues |
 | `@tester` | Test creation & coverage | Test suites, coverage analysis |
 | `@governance` | Project health & maintenance | Health scans, doc archival |
+| `@security` | Security auditing, OWASP Top 10 | Dependency scanning, input validation review |
+| `@library-expert` | IS 456 domain expert | Professional standards, usage guidance |
+| `@agent-evolver` | Meta-agent: instruction evolution | Performance scoring, drift detection |
+| `@innovator` | Research & innovation | Discover missing capabilities, prototype breakthroughs |
 
-### 7 Skills (`/skill-name` in Copilot Chat)
+### 10 Skills (`/skill-name` in Copilot Chat)
 
 | Skill | Purpose |
 |-------|---------|
@@ -614,8 +618,11 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `/new-structural-element` | New structural element workflow (column, slab, footing) |
 | `/architecture-check` | Validate 4-layer architecture boundaries |
 | `/react-validation` | React build, lint, type-check, tests |
+| `/function-quality-pipeline` | Mandatory 9-step quality pipeline for IS 456 functions |
+| `/agent-evolution` | Agent self-evolution cycle |
+| `/innovation-research` | Guided innovation research cycle |
 
-### 14 Prompt Files (`#prompt-name` in Copilot Chat)
+### 16 Prompt Files (`#prompt-name` in Copilot Chat)
 
 | Prompt | Purpose |
 |--------|---------|
@@ -633,6 +640,8 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `#performance-optimization` | Profile, optimize, benchmark |
 | `#context-recovery` | Resume after context overflow |
 | `#master-workflow` | Master workflow orchestration |
+| `#function-quality-gate` | IS 456 function quality gate (9-step) |
+| `#innovation-research` | Innovation research cycle workflow |
 
 ### Handoff Chains
 
@@ -641,6 +650,8 @@ New feature:   @orchestrator → @backend → @api-developer → @frontend → @
 IS 456 change: @orchestrator → @structural-engineer → @backend → @api-developer → @reviewer
 New element:   @orchestrator → @structural-engineer → @structural-math → @tester → @backend → @api-developer → @frontend → @reviewer
 Session end:   any agent → @doc-master → @ops
+Innovation:    @orchestrator → @innovator → @structural-engineer (gate) → @structural-math → @tester → @reviewer → @doc-master → @ops
+Security:      @orchestrator → @security → @backend/@frontend → @reviewer → @doc-master → @ops
 ```
 
 > **Full usage guide:** [copilot-agents-usage-guide.md](../guides/copilot-agents-usage-guide.md)
