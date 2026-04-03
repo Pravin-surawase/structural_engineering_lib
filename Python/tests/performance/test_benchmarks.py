@@ -135,13 +135,21 @@ def test_benchmark_design_beam_is456(benchmark):
 
 
 @pytest.mark.performance
-@pytest.mark.skip(
-    reason="compute_detailing requires complex dict structure - TODO: add proper benchmark"
-)
 def test_benchmark_compute_detailing(benchmark):
-    """Benchmark detailing computation."""
-    # Note: This function takes design_results dict with {"beams": [...]} structure
-    # For now, skipping as it requires more complex setup
+    """Benchmark detailing computation via compute_detailing API."""
+    design_results = {
+        "units": "IS456",
+        "beams": [
+            {
+                "beam_id": "BENCH-1",
+                "geometry": {"b_mm": 300, "D_mm": 500, "span_mm": 5000, "cover_mm": 25},
+                "materials": {"fck": 25, "fy": 415},
+                "reinforcement": {"ast_mm2": 1200, "asc_mm2": 0},
+            }
+        ],
+    }
+    result = benchmark(api.compute_detailing, design_results)
+    assert len(result) > 0
 
 
 # =============================================================================
@@ -221,11 +229,45 @@ def test_benchmark_batch_design_10_beams(benchmark):
 
 @pytest.mark.performance
 @pytest.mark.slow
-@pytest.mark.skip(reason="Needs proper compute_detailing setup - TODO: fix API usage")
 def test_benchmark_full_design_workflow(benchmark):
-    """Benchmark full design workflow: design → detailing → BBS → DXF."""
-    # Note: compute_detailing requires dict with {"beams": [...]} structure
-    # Need to refactor to use correct API
+    """Benchmark full design workflow: design → detailing."""
+
+    def full_workflow():
+        result = api.design_beam_is456(
+            units="IS456",
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            mu_knm=120,
+            vu_kn=80,
+        )
+        design_results = {
+            "units": "IS456",
+            "beams": [
+                {
+                    "beam_id": "WF-1",
+                    "geometry": {
+                        "b_mm": 300,
+                        "D_mm": 500,
+                        "span_mm": 5000,
+                        "cover_mm": 25,
+                    },
+                    "materials": {"fck": 25, "fy": 415},
+                    "reinforcement": {
+                        "ast_mm2": result.flexure.Ast_required,
+                        "asc_mm2": 0,
+                    },
+                }
+            ],
+        }
+        detail = api.compute_detailing(design_results)
+        return result, detail
+
+    result, detail = benchmark(full_workflow)
+    assert result.is_ok
+    assert len(detail) > 0
 
 
 # =============================================================================

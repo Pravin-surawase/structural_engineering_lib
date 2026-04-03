@@ -43,7 +43,7 @@ const defaultCommands: CommandItem[] = [
     icon: <Upload className="w-4 h-4" />,
     shortcut: '⌘I',
     group: 'Import',
-    action: () => console.log('Import CSV'),
+    action: () => console.log('[TODO] Import CSV action not yet implemented'),
   },
   {
     id: 'load-sample',
@@ -52,7 +52,7 @@ const defaultCommands: CommandItem[] = [
     icon: <RefreshCw className="w-4 h-4" />,
     shortcut: '⌘⇧S',
     group: 'Import',
-    action: () => console.log('Load sample'),
+    action: () => console.log('[TODO] Load sample action not yet implemented'),
   },
   {
     id: 'design-all',
@@ -61,7 +61,7 @@ const defaultCommands: CommandItem[] = [
     icon: <Play className="w-4 h-4" />,
     shortcut: '⌘⇧D',
     group: 'Design',
-    action: () => console.log('Design all'),
+    action: () => console.log('[TODO] Design all action not yet implemented'),
   },
   {
     id: 'view-3d',
@@ -70,7 +70,7 @@ const defaultCommands: CommandItem[] = [
     icon: <Box className="w-4 h-4" />,
     shortcut: '⌘3',
     group: 'View',
-    action: () => console.log('Toggle 3D'),
+    action: () => console.log('[TODO] Toggle 3D action not yet implemented'),
   },
   {
     id: 'export-results',
@@ -79,7 +79,7 @@ const defaultCommands: CommandItem[] = [
     icon: <FileDown className="w-4 h-4" />,
     shortcut: '⌘E',
     group: 'Export',
-    action: () => console.log('Export'),
+    action: () => console.log('[TODO] Export action not yet implemented'),
   },
   {
     id: 'settings',
@@ -88,7 +88,7 @@ const defaultCommands: CommandItem[] = [
     icon: <Settings className="w-4 h-4" />,
     shortcut: '⌘,',
     group: 'App',
-    action: () => console.log('Settings'),
+    action: () => console.log('[TODO] Settings action not yet implemented'),
   },
 ];
 

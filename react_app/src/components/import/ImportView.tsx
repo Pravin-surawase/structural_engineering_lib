@@ -7,6 +7,7 @@
  */
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import type { BeamCSVRow } from '../../types/csv';
 import { FileDropZone } from "../ui/FileDropZone";
 import {
   FileSpreadsheet,
@@ -44,11 +45,11 @@ export function ImportView() {
     try {
       const data = await loadSampleData();
       if (data.success) {
-        const storeBeams = applyMaterialOverrides(
+        const storeBeams: BeamCSVRow[] = applyMaterialOverrides(
           mapSampleBeamsToRows(data.beams),
           materialOverrides
         );
-        setBeams(storeBeams as any);
+        setBeams(storeBeams);
         setStep("preview");
       } else {
         setError(data.message);

@@ -27,7 +27,9 @@ router = APIRouter(
 class ExportBeamRequest(BaseModel):
     """Beam parameters for generating export artifacts."""
 
-    beam_id: str = Field(default="BEAM-1")
+    beam_id: str = Field(
+        default="BEAM-1", max_length=50, pattern=r"^[A-Za-z0-9_\-\.]{1,50}$"
+    )
     width: float = Field(..., gt=0, description="Beam width in mm")
     depth: float = Field(..., gt=0, description="Beam depth in mm")
     span_length: float = Field(default=0, ge=0, description="Span in mm")
@@ -47,7 +49,9 @@ class ExportBeamRequest(BaseModel):
 class ExportReportRequest(BaseModel):
     """Design results for report generation."""
 
-    beam_id: str = Field(default="BEAM-1")
+    beam_id: str = Field(
+        default="BEAM-1", max_length=50, pattern=r"^[A-Za-z0-9_\-\.]{1,50}$"
+    )
     width: float = Field(..., gt=0)
     depth: float = Field(..., gt=0)
     fck: float = Field(..., gt=0)
@@ -294,8 +298,10 @@ async def export_report(request: ExportReportRequest):
 class BatchBeamRow(BaseModel):
     """One beam in a building-level export."""
 
-    beam_id: str = "BEAM-1"
-    story: str = ""
+    beam_id: str = Field(
+        default="BEAM-1", max_length=50, pattern=r"^[A-Za-z0-9_\-\.]{1,50}$"
+    )
+    story: str = Field(default="", max_length=200)
     width: float = Field(..., gt=0)
     depth: float = Field(..., gt=0)
     span_length: float = Field(default=0, ge=0)
@@ -318,7 +324,7 @@ class BatchBeamRow(BaseModel):
 class BatchExportRequest(BaseModel):
     """Request for building-level export."""
 
-    project_name: str = Field(default="Building Project")
+    project_name: str = Field(default="Building Project", max_length=200)
     beams: list[BatchBeamRow]
     format: str = Field(default="html", pattern="^(html|pdf|csv)$")
 

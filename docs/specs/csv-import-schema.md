@@ -11,10 +11,10 @@ tags: []
 
 **Type:** Specification
 **Audience:** Developers, Users
-**Status:** Draft
+**Status:** Active
 **Importance:** High
 **Created:** 2026-01-20
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-04-04
 **Related Tasks:** TASK-CSV-01, TASK-CSV-02, TASK-3D-002
 
 ---

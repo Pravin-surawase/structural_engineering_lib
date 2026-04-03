@@ -11,10 +11,10 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Draft
+**Status:** Active
 **Importance:** Medium
 **Created:** 2025-12-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-04
 
 ---
 

@@ -229,12 +229,6 @@ function BuildingFrame() {
   const { camera } = useThree();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
-  // Debug logging for blank screen issue
-  console.log('[BuildingFrame] Rendering:', {
-    beamCount: beams.length,
-    selectedId,
-    selectedFloor
-  });
   const focusRef = useRef({
     target: new THREE.Vector3(0, 0, 0),
     position: new THREE.Vector3(0, 5, 10),
@@ -523,9 +517,6 @@ function BuildingFrame() {
 function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
   const { beams } = useImportedBeamsStore();
 
-  // Debug logging for blank screen issue
-  console.log('[SelectedBeamDetail] Rendering with beam:', beam?.id ?? 'null');
-
   // Find adjacent beams (share an endpoint with selected beam, within tolerance)
   const adjacentBeams = useMemo(() => {
     if (!beam?.point1 || !beam.point2) return [];
@@ -563,12 +554,10 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
 
   const detailParams = useMemo(() => {
     if (!beam || !astBase) {
-      console.log('[SelectedBeamDetail] No beam or astBase:', { beam: beam?.id, astBase });
       return null;
     }
     // Guard against missing dimensions
     if (!beam.b || !beam.D) {
-      console.log('[SelectedBeamDetail] Missing dimensions:', { b: beam.b, D: beam.D });
       return null;
     }
 
@@ -584,7 +573,6 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
 
     // Need valid span for geometry
     if (spanMm <= 0) {
-      console.log('[SelectedBeamDetail] Invalid span:', spanMm);
       return null;
     }
 
@@ -604,7 +592,6 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
       stirrup_spacing_end: stirrupSpacing,
       cover: beam.cover ?? 40,
     };
-    console.log('[SelectedBeamDetail] Built params:', params);
     return params;
   }, [astBase, beam]);
 
@@ -625,17 +612,10 @@ function SelectedBeamDetail({ beam }: { beam: BeamCSVRow | null }) {
     cover: 40,
   };
   const shouldShow = Boolean(beam && astBase && detailParams);
-  console.log('[SelectedBeamDetail] shouldShow:', shouldShow, { astBase, hasParams: !!detailParams });
   const { data: detailGeometry, error: geometryError } = useBeamGeometry(safeParams, { enabled: shouldShow });
 
   if (geometryError) {
     console.error('[SelectedBeamDetail] Geometry fetch error:', geometryError);
-  }
-  if (detailGeometry) {
-    console.log('[SelectedBeamDetail] Got geometry:', {
-      rebars: detailGeometry.rebars.length,
-      stirrups: detailGeometry.stirrups.length,
-    });
   }
 
   const placement = useMemo(() => {
@@ -885,14 +865,6 @@ function Scene({ overrideGeometry, overrideDimensions }: SceneProps) {
 
   const activeGeometry = overrideGeometry ?? geometry;
 
-  // Debug logging for geometry
-  if (activeGeometry) {
-    console.log('[Scene] Active geometry:', {
-      rebars: activeGeometry.rebars.length,
-      stirrups: activeGeometry.stirrups.length,
-    });
-  }
-
   return (
     <>
       {/* Camera - positioned based on beam dimensions */}
@@ -1020,8 +992,6 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
       : beams.length > 0 && beams.some((b) => b.point1 && b.point2)
         ? 'building'
         : 'design';
-
-  console.log('[Viewport3D] Rendering:', { mode, effectiveMode, beamCount: beams.length });
 
   return (
     <div className="w-full h-full relative" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>

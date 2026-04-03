@@ -10,7 +10,6 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-ro
 import { TopBar } from './components/layout/TopBar';
 import { FloatingDock } from './components/ui/FloatingDock';
 import { useImportedBeamsStore } from './store/importedBeamsStore';
-import './App.css';
 
 // Lazy-load route components for code splitting
 const HomePage = lazy(() => import('./components/pages/HomePage').then(m => ({ default: m.HomePage })));

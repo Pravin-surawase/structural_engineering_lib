@@ -5,6 +5,7 @@
  */
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { BeamCSVRow } from '../../types/csv';
 import {
   Play,
   Loader2,
@@ -82,9 +83,9 @@ export default function BatchDesignPage() {
         stirrup_spacing: r.shear?.stirrup_spacing,
         status: r.success ? 'pass' as const : 'fail' as const,
         is_valid: r.success,
-      };
+      } as BeamCSVRow;
     });
-    setBeams(updated as any);
+    setBeams(updated);
   };
 
   if (beams.length === 0) {

@@ -9,6 +9,7 @@ DO NOT DUPLICATE PARSING LOGIC!
 from __future__ import annotations
 
 import csv
+import logging
 import math
 from pathlib import Path
 from typing import Literal
@@ -20,6 +21,8 @@ router = APIRouter(
     prefix="/import",
     tags=["import"],
 )
+
+logger = logging.getLogger(__name__)
 
 
 # =============================================================================
@@ -38,8 +41,8 @@ class Point3D(BaseModel):
 class BeamRow(BaseModel):
     """Individual beam data from CSV import."""
 
-    id: str = Field(..., description="Beam identifier")
-    story: str | None = Field(None, description="Story/floor level")
+    id: str = Field(..., max_length=200, description="Beam identifier")
+    story: str | None = Field(None, max_length=200, description="Story/floor level")
     width_mm: float = Field(..., description="Beam width in mm")
     depth_mm: float = Field(..., description="Beam overall depth in mm")
     span_mm: float = Field(5000.0, description="Span length in mm")
@@ -76,7 +79,7 @@ class CSVImportResponse(BaseModel):
     beam_count: int
     beams: list[BeamRow]
     format_detected: str = Field(
-        ..., description="Detected format: ETABS, SAFE, STAAD, Generic"
+        ..., max_length=50, description="Detected format: ETABS, SAFE, STAAD, Generic"
     )
     warnings: list[str] = Field(default_factory=list)
 
@@ -89,7 +92,9 @@ class DualCSVImportResponse(BaseModel):
     beam_count: int
     beams: list[BeamWith3D]
     format_detected: str = Field(
-        ..., description="Detected format: ETABS, SAFE, STAAD, Generic, AUTO"
+        ...,
+        max_length=50,
+        description="Detected format: ETABS, SAFE, STAAD, Generic, AUTO",
     )
     warnings: list[str] = Field(default_factory=list)
     unmatched_beams: list[str] = Field(default_factory=list)
@@ -313,10 +318,11 @@ async def import_csv(
 
     except HTTPException:
         raise
-    except Exception as e:
+    except Exception:
+        logger.exception("CSV import failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Import failed: {e}",
+            detail="Import failed: unable to process the uploaded CSV file",
         )
 
 
@@ -456,10 +462,11 @@ async def import_dual_csv(
 
     except HTTPException:
         raise
-    except Exception as e:
+    except Exception:
+        logger.exception("Dual CSV import failed")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Could not parse dual CSV: {e}",
+            detail="Could not parse dual CSV files",
         )
 
 
@@ -590,15 +597,17 @@ async def batch_design(
             results=results,
         )
 
-    except ImportError as e:
+    except ImportError:
+        logger.exception("structural_lib not available for batch design")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail="structural_lib not available",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Batch design failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Batch design failed: {e}",
+            detail="Batch design failed",
         )
 
 
