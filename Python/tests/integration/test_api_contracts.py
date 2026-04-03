@@ -208,9 +208,9 @@ class TestSectionPropertiesContract:
         section = SectionProperties(
             width_mm=300,
             depth_mm=500,
-            cover_mm=40,  # d = 500 - 40 - 12.5 = 447.5
+            cover_mm=40,  # d = 500 - 40 - 8 - 20/2 = 442.0
         )
-        assert section.effective_depth_mm == pytest.approx(447.5)
+        assert section.effective_depth_mm == pytest.approx(442.0)
 
     def test_validation_rejects_zero_width(self):
         """Verify width_mm must be positive."""

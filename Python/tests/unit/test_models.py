@@ -112,8 +112,8 @@ class TestSectionProperties:
     def test_section_effective_depth(self):
         """Test effective depth calculation."""
         section = SectionProperties(width_mm=300, depth_mm=500, cover_mm=40)
-        # d = D - cover - bar_dia/2 = 500 - 40 - 12.5 = 447.5
-        assert section.effective_depth_mm == 447.5
+        # d = D - cover - stirrup_dia - bar_dia/2 = 500 - 40 - 8 - 20/2 = 442.0
+        assert section.effective_depth_mm == 442.0
 
     def test_section_width_must_be_positive(self):
         """Test that width must be positive."""

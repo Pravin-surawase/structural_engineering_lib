@@ -139,12 +139,18 @@ class SectionProperties(BaseModel):
     cover_mm: float = Field(
         40.0, gt=0, le=100, description="Clear cover in mm (20-100)"
     )
+    stirrup_dia_mm: float = Field(
+        default=8.0, gt=0, le=20, description="Stirrup diameter in mm"
+    )
+    bar_dia_mm: float = Field(
+        default=20.0, gt=0, le=40, description="Main bar diameter in mm"
+    )
 
     @computed_field
     @property
     def effective_depth_mm(self) -> float:
-        """Calculate effective depth (d = D - cover - bar_dia/2, assuming 25mm bar)."""
-        return self.depth_mm - self.cover_mm - 12.5  # Assuming 25mm bar
+        """Calculate effective depth (d = D - cover - stirrup - bar/2)."""
+        return self.depth_mm - self.cover_mm - self.stirrup_dia_mm - self.bar_dia_mm / 2
 
 
 class BeamGeometry(BaseModel):

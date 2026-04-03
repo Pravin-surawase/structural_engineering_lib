@@ -171,3 +171,9 @@ tags: []
 | 2026-04-03 | TASK-650 | test(footing): 79 tests (16 new — both-direction, Cl 34.3.1, min depth) | pending |
 | 2026-04-04 | TASK-660 | Standardize IS 456 variable naming — 21 field renames, 4 dataclasses, ~60 files, backward-compat aliases | — |
 | 2026-04-04 | TASK-670 | Fix calculation_report.py: 4 broken ShearResult fields + update templates + real-object tests | — |
+| 2026-04-03 | TASK-671 | Fix 1: Unified effective depth — canonical `compute_effective_depth()` in core/geometry.py, updated inputs.py, models.py, design.py router | feat |
+| 2026-04-03 | TASK-671 | Fix 2: Serviceability pipeline integration — `include_serviceability` opt-in flag in beam_pipeline.py, auto-constructs DeflectionParams | feat |
+| 2026-04-03 | TASK-671 | Fix 3: Multi-layer rebar — RebarLayer + RebarArrangement dataclasses in data_types.py, calculate_effective_depth_multilayer() in flexure.py | feat |
+| 2026-04-03 | TASK-671 | Fix 4: Failure story enhancement — ast_required_mm2 field in FailureScenario, redesign narrative in research_design_companion.py | feat |
+| 2026-04-03 | TASK-671 | Updated FastAPI models: stirrup_dia_mm, main_bar_dia_mm, include_serviceability, RebarLayerConfig, DeflectionCheckResult, CrackWidthCheckResult | feat |
+| 2026-04-03 | TASK-671 | Tests: 22 new tests, 4 fixed (effective depth assertions), 4193 Python + 180 FastAPI all passing | test |

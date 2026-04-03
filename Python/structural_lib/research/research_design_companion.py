@@ -154,6 +154,7 @@ class FailureScenario:
     is_ductile: bool
     capacity_remaining_pct: float  # How much more it can take
     description: str  # What's happening physically
+    ast_required_mm2: float = 0.0  # Steel area needed at this overload level (mm²)
 
 
 @dataclass
@@ -1017,7 +1018,10 @@ def _build_failure_story(
             xu = xu_max  # At limit
             xu_d = xu_max_d
             xu_xumax = 1.0
-            ast_calc = 0  # Placeholder
+            # Store the singly reinforced limit as the max possible
+            ast_calc = calculate_ast_required(b_mm, d_mm, mu_lim, fck, fy)
+            if ast_calc < 0:
+                ast_calc = 0.85 * b_mm * d_mm / fy  # Minimum steel
             mode = "brittle_crushing"
             is_ductile = False
             capacity_exceed = (mu_f - mu_lim) / mu_lim * 100
@@ -1041,6 +1045,7 @@ def _build_failure_story(
                 is_ductile=is_ductile,
                 capacity_remaining_pct=capacity_remaining,
                 description=desc,
+                ast_required_mm2=max(ast_calc, 0.0),
             )
         )
 
@@ -1090,6 +1095,20 @@ def _build_failure_story(
             f"Strongly recommend increasing section depth or adding "
             f"compression steel."
         )
+
+    # Add redesign insight
+    if len(scenarios) >= 2:
+        baseline_ast = scenarios[0].ast_required_mm2
+        for sc in scenarios[1:]:
+            if baseline_ast > 0 and sc.ast_required_mm2 > baseline_ast * 1.1:
+                increase_pct = (sc.ast_required_mm2 - baseline_ast) / baseline_ast * 100
+                narrative_parts.append(
+                    f"At {sc.overload_factor:.2f}× design load, "
+                    f"you would need {sc.ast_required_mm2:.0f} mm² steel "
+                    f"({increase_pct:.0f}% more than the {baseline_ast:.0f} mm² "
+                    f"required at design load)."
+                )
+                break  # Just show the first significant increase
 
     narrative_parts.append(
         "NOTE: All loads are FACTORED (IS 456 Table 18). "
