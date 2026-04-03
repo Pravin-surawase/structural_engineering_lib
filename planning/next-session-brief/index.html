@@ -1493,10 +1493,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#git-workflow-hardening-task-900-series-1314-tasks-complete" class="md-nav__link">
+  <a href="#phase-3-footing-design-47-tasks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Git Workflow Hardening (TASK-900 series — 13/14 tasks complete)
+        Phase 3: Footing Design (4/7 tasks)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files Changed
       
     </span>
   </a>
@@ -1552,55 +1563,47 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Updated:</strong> 2026-04-02
-<strong>Last Session:</strong> Git Workflow Hardening — All 4 Phases Implemented (13/14 tasks done)</p>
+<strong>Last Session:</strong> Phase 3 Footing Design — 4 tasks implemented (TASK-650/651/652/653)</p>
 <hr />
 <h2 id="what-was-done-this-session">What Was Done This Session<a class="headerlink" href="#what-was-done-this-session" title="Permanent link">&para;</a></h2>
-<h3 id="git-workflow-hardening-task-900-series-1314-tasks-complete">Git Workflow Hardening (TASK-900 series — 13/14 tasks complete)<a class="headerlink" href="#git-workflow-hardening-task-900-series-1314-tasks-complete" title="Permanent link">&para;</a></h3>
-<p><strong>Phase 1 — Emergency Fixes (4/4 done):</strong>
-- TASK-900: Fixed safe_push.sh Step 6 divergence detection — no more false "Push ready" for diverged branches
-- TASK-901: Blocked <code>--amend</code> on main/develop/release branches
-- TASK-902: Routed <code>--push</code> through safe_push.sh (was bypassing divergence detection)
-- TASK-903: Added pre-flight checks for rebase/cherry-pick/merge states in safe_push.sh</p>
-<p><strong>Phase 2 — Recovery &amp; Resilience (3/3 done):</strong>
-- TASK-904: Persist <code>--finish</code> state to <code>.git/FINISH_STATE</code> for recovery after terminal reset
-- TASK-905: Squash-merge divergence detection (merged into TASK-900/906 error messages)
-- TASK-906: Categorized push error messages (diverged, auth, protected, network) with specific recovery commands</p>
-<p><strong>Phase 3 — Observability &amp; Testing (3/4 done):</strong>
-- TASK-907: All bypass events now logged to <code>logs/git_workflow.log</code> (pre-push + pre-commit hooks)
-- TASK-909: Consolidated duplicated merge+cleanup blocks in finish_task_pr.sh into <code>merge_and_cleanup()</code> function
-- TASK-910: Added git script line budget check to check_all.py (2500 total, 700 per script)
-- TASK-908: bats-core tests DEFERRED (requires bats-core installation)</p>
-<p><strong>Phase 4 — Hardening (3/3 done):</strong>
-- TASK-911: Task ID format validation in create_task_pr.sh
-- TASK-912: Log rotation for git_workflow.log (&gt;1MB, keep 3 old copies)
-- TASK-913: Updated ops.agent.md, AGENTS.md, CLAUDE.md with new FORBIDDEN commands</p>
-<p><strong>Files Changed:</strong>
-- <code>scripts/safe_push.sh</code> — divergence detection, pre-flight checks, push-only mode, error categorization, log rotation
-- <code>scripts/ai_commit.sh</code> — --push routes through safe_push.sh, --amend branch guard, --status shows FINISH_STATE
-- <code>scripts/finish_task_pr.sh</code> — state persistence, merge_and_cleanup() dedup
-- <code>scripts/create_task_pr.sh</code> — task ID validation
-- <code>scripts/git-hooks/pre-push</code> — bypass event logging
-- <code>scripts/git-hooks/pre-commit</code> — bypass event logging
-- <code>scripts/check_git_script_budget.py</code> — NEW: line budget check
-- <code>scripts/check_all.py</code> — added script budget check to git category
-- <code>.github/agents/ops.agent.md</code> — new FORBIDDEN commands, error recovery rows, historical mistake #11
-- <code>AGENTS.md</code> — git rebase --skip FORBIDDEN, recovery guidance
-- <code>CLAUDE.md</code> — git rebase --skip FORBIDDEN, recovery guidance
-- <code>docs/_active/git-workflow-hardening-plan.md</code> — status: Active
-- <code>docs/TASKS.md</code> — TASK-900 series all marked done</p>
+<h3 id="phase-3-footing-design-47-tasks">Phase 3: Footing Design (4/7 tasks)<a class="headerlink" href="#phase-3-footing-design-47-tasks" title="Permanent link">&para;</a></h3>
+<p><strong>TASK-650: Footing types + errors</strong>
+- <code>FootingType</code> enum (ISOLATED_SQUARE, ISOLATED_RECTANGULAR)
+- 4 frozen result dataclasses: <code>FootingBearingResult</code>, <code>FootingFlexureResult</code>, <code>FootingOneWayShearResult</code>, <code>FootingPunchingResult</code>
+- 8 error codes (E_FOOTING_001 through E_FOOTING_008)
+- All with <code>to_dict()</code>, <code>summary()</code>, <code>is_safe</code>, <code>clause_ref</code>, <code>warnings</code></p>
+<p><strong>TASK-651: Isolated footing design (bearing + flexure)</strong>
+- <code>size_footing()</code> — sizing with SERVICE loads per Cl 34.1 (concentric/trapezoidal/partial contact)
+- <code>footing_flexure()</code> — bending at column face per Cl 34.2.3.1, reuses <code>calculate_ast_required</code>
+- <code>_common.py</code> — shared validators, pressure calc, punching geometry helpers</p>
+<p><strong>TASK-652: Punching shear check</strong>
+- <code>footing_punching_shear()</code> — Cl 31.6.1, τc = ks × 0.25 × √fck
+- Handles column aspect ratio (βc, ks), edge case when perimeter exceeds footing</p>
+<p><strong>TASK-653: One-way shear check</strong>
+- <code>footing_one_way_shear()</code> — Cl 34.2.4.1(a), reuses <code>get_tc_value</code> from Table 19
+- Handles edge case: cantilever ≤ d → auto-pass</p>
+<p><strong>Tests:</strong> 61 tests across 6 classes, all passing. Code review: APPROVED.</p>
+<p><strong>Also fixed:</strong> research_design_companion.py — scope limitation docs, cost_delta div-by-zero, input validation, plus 8 stress test scenarios.</p>
+<h3 id="files-changed">Files Changed<a class="headerlink" href="#files-changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>7 new files in <code>codes/is456/footing/</code> + <code>tests/test_footing.py</code></li>
+<li>3 modified: <code>__init__.py</code> (footing import), <code>data_types.py</code> (+175 lines), <code>errors.py</code> (+80 lines)</li>
+<li>2 research fixes: <code>research_design_companion.py</code>, <code>test_research_prototypes.py</code></li>
+</ul>
 <hr />
 <h2 id="what-to-do-next">What To Do Next<a class="headerlink" href="#what-to-do-next" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>PR #491 (Phase 2 Column Design)</strong> — still open. Check status: <code>gh pr view 491</code></li>
-<li><strong>TASK-908 (bats-core tests)</strong> — install bats-core and write tests for the git failure paths</li>
-<li><strong>Phase 3: Footing Design</strong> — TASK-650 through TASK-656 are next in the library expansion</li>
-<li><strong>Verify git workflow</strong> — test the new divergence detection by creating a temporary diverged state</li>
+<li><strong>TASK-654: Bearing at column-footing interface</strong> — Cl 34.4, load transfer between column and footing (NOT soil bearing — that's done in TASK-651)</li>
+<li><strong>TASK-655: Dowel bars</strong> — Cl 34.2.5, anchorage requirements at column-footing junction</li>
+<li><strong>TASK-656: Footing FastAPI endpoint</strong> — <code>POST /api/v1/design/footing</code>, wire up all 4 functions</li>
+<li><strong>PR #491 (Phase 2 Column Design)</strong> — still open, check status: <code>gh pr view 491</code></li>
 </ol>
 <hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>branch<span class="w"> </span>--show-current
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docs/TASKS.md<span class="w">                    </span><span class="c1"># Check priorities</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start<span class="w">           </span><span class="c1"># Verify environment</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>.venv/bin/pytest<span class="w"> </span>Python/tests/test_footing.py<span class="w"> </span>-v<span class="w">  </span><span class="c1"># Run footing tests</span>
 </code></pre></div>
 
 

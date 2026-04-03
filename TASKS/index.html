@@ -2110,6 +2110,12 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </thead>
 <tbody>
 <tr>
+<td>TASK-650/651/652/653</td>
+<td>Phase 3 Footing: types, bearing/flexure, one-way shear, punching shear (61 tests)</td>
+<td>Copilot</td>
+<td>✅ Done</td>
+</tr>
+<tr>
 <td>TASK-712</td>
 <td>Enhanced shear near supports (Cl 40.3) — shear.py + 14 tests + API endpoint (PR #468)</td>
 <td>Copilot</td>
@@ -2358,31 +2364,31 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-650</td>
-<td>Footing types + errors</td>
+<td>Footing types + errors (FootingType enum, 4 result dataclasses, 8 error codes)</td>
 <td>Types</td>
 <td>—</td>
-<td>📋</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>TASK-651</td>
-<td>Isolated footing design</td>
-<td><code>design_isolated_footing</code></td>
-<td>Cl 34</td>
-<td>📋</td>
+<td>Isolated footing design (bearing sizing + flexure)</td>
+<td><code>size_footing</code>, <code>footing_flexure</code></td>
+<td>Cl 34.1, 34.2.3.1</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>TASK-652</td>
 <td>Punching shear check</td>
-<td><code>punching_shear_check</code></td>
-<td>Cl 31.6</td>
-<td>📋</td>
+<td><code>footing_punching_shear</code></td>
+<td>Cl 31.6.1</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>TASK-653</td>
 <td>One-way shear check</td>
-<td><code>one_way_shear_check</code></td>
-<td>Cl 34.2.4</td>
-<td>📋</td>
+<td><code>footing_one_way_shear</code></td>
+<td>Cl 34.2.4.1(a)</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>TASK-654</td>
@@ -2407,6 +2413,9 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in <code>codes/is456/footing/</code>. 61 tests, 0 failures. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).</p>
+</blockquote>
 <h3 id="phase-4-6-slab-staircase-shear-wall-future">Phase 4-6: Slab, Staircase, Shear Wall (Future)<a class="headerlink" href="#phase-4-6-slab-staircase-shear-wall-future" title="Permanent link">&para;</a></h3>
 <p>See <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> for full multi-code, multi-element plan.</p>
 <h3 id="agent-evolver-infrastructure-task-800">Agent Evolver Infrastructure (TASK-800)<a class="headerlink" href="#agent-evolver-infrastructure-task-800" title="Permanent link">&para;</a></h3>
