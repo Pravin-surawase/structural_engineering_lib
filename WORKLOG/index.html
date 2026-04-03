@@ -2375,6 +2375,42 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <td>Fix calculation_report.py: 4 broken ShearResult fields + update templates + real-object tests</td>
 <td>—</td>
 </tr>
+<tr>
+<td>2026-04-03</td>
+<td>TASK-671</td>
+<td>Fix 1: Unified effective depth — canonical <code>compute_effective_depth()</code> in core/geometry.py, updated inputs.py, models.py, design.py router</td>
+<td>feat</td>
+</tr>
+<tr>
+<td>2026-04-03</td>
+<td>TASK-671</td>
+<td>Fix 2: Serviceability pipeline integration — <code>include_serviceability</code> opt-in flag in beam_pipeline.py, auto-constructs DeflectionParams</td>
+<td>feat</td>
+</tr>
+<tr>
+<td>2026-04-03</td>
+<td>TASK-671</td>
+<td>Fix 3: Multi-layer rebar — RebarLayer + RebarArrangement dataclasses in data_types.py, calculate_effective_depth_multilayer() in flexure.py</td>
+<td>feat</td>
+</tr>
+<tr>
+<td>2026-04-03</td>
+<td>TASK-671</td>
+<td>Fix 4: Failure story enhancement — ast_required_mm2 field in FailureScenario, redesign narrative in research_design_companion.py</td>
+<td>feat</td>
+</tr>
+<tr>
+<td>2026-04-03</td>
+<td>TASK-671</td>
+<td>Updated FastAPI models: stirrup_dia_mm, main_bar_dia_mm, include_serviceability, RebarLayerConfig, DeflectionCheckResult, CrackWidthCheckResult</td>
+<td>feat</td>
+</tr>
+<tr>
+<td>2026-04-03</td>
+<td>TASK-671</td>
+<td>Tests: 22 new tests, 4 fixed (effective depth assertions), 4193 Python + 180 FastAPI all passing</td>
+<td>test</td>
+</tr>
 </tbody>
 </table>
 

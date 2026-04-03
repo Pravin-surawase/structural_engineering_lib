@@ -1493,10 +1493,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#task-660-variable-naming-migration" class="md-nav__link">
+  <a href="#task-671-fix-4-known-limitations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TASK-660: Variable Naming Migration ✅
+        TASK-671: Fix 4 Known Limitations ✅
       
     </span>
   </a>
@@ -1508,6 +1508,17 @@
     <span class="md-ellipsis">
       
         TASK-670: Fix calculation_report.py Shear Bug ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Agent Review
       
     </span>
   </a>
@@ -1573,18 +1584,18 @@
 
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
-<p><strong>Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> TASK-660 Variable Naming Migration (complete)</p>
+<p><strong>Updated:</strong> 2026-04-03
+<strong>Last Session:</strong> TASK-671 Fix 4 Known Limitations (complete)</p>
 <hr />
 <h2 id="what-was-done-this-session">What Was Done This Session<a class="headerlink" href="#what-was-done-this-session" title="Permanent link">&para;</a></h2>
-<h3 id="task-660-variable-naming-migration">TASK-660: Variable Naming Migration ✅<a class="headerlink" href="#task-660-variable-naming-migration" title="Permanent link">&para;</a></h3>
+<h3 id="task-671-fix-4-known-limitations">TASK-671: Fix 4 Known Limitations ✅<a class="headerlink" href="#task-671-fix-4-known-limitations" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Renamed 21 dataclass fields across FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult to IS 456 convention</li>
-<li>Added @property backward-compat aliases with DeprecationWarning (removal in v1.0.0)</li>
-<li>Updated ~60 files: core code, services, tests, examples, FastAPI routers</li>
-<li>JSON API stays backward compatible (Pydantic field names unchanged)</li>
-<li>Fixed Pydantic field access bug in design.py (mixed up dataclass vs Pydantic field names)</li>
-<li>All tests pass: 4165 Python + 180 FastAPI</li>
+<li><strong>Fix 1 (P0):</strong> Unified effective depth — created canonical <code>compute_effective_depth()</code> in core/geometry.py. Formula: d = D - cover - stirrup_dia - bar_dia/2. Updated BeamGeometryInput, SectionProperties, RectangularSection, FastAPI router. Old D-cover overestimated capacity by 7-10%.</li>
+<li><strong>Fix 2 (P1):</strong> Serviceability pipeline integration — added <code>include_serviceability</code> opt-in flag + <code>_auto_construct_deflection_params()</code> in beam_pipeline.py. Level A deflection auto-runs when enabled.</li>
+<li><strong>Fix 3 (P2):</strong> Multi-layer rebar — added <code>RebarLayer</code>, <code>RebarArrangement</code> dataclasses in core/data_types.py + <code>calculate_effective_depth_multilayer()</code> in flexure.py. Supports area-weighted centroid for 2+ bar layers.</li>
+<li><strong>Fix 4 (P3):</strong> Failure story enhancement — added <code>ast_required_mm2</code> field to FailureScenario, redesign narrative showing steel requirements at each overload factor.</li>
+<li><strong>FastAPI:</strong> 3 new models (RebarLayerConfig, DeflectionCheckResult, CrackWidthCheckResult), 6 new request fields, 3 response fields. All backward compatible.</li>
+<li><strong>Tests:</strong> 22 new, 4 fixed, 4193+180 all passing.</li>
 </ul>
 <h3 id="task-670-fix-calculation_reportpy-shear-bug">TASK-670: Fix calculation_report.py Shear Bug ✅<a class="headerlink" href="#task-670-fix-calculation_reportpy-shear-bug" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1594,15 +1605,25 @@
 <li>Added integration test with real dataclass objects</li>
 <li>4175 Python + 180 FastAPI tests pass</li>
 </ul>
+<h3 id="multi-agent-review">Multi-Agent Review<a class="headerlink" href="#multi-agent-review" title="Permanent link">&para;</a></h3>
+<ul>
+<li>7 agents reviewed (structural-engineer, library-expert, reviewer, security, tester, backend, api-developer)</li>
+<li>Final reviewer: APPROVED WITH CONDITIONS (all 5 conditions addressed)</li>
+<li>Security finding: Limitations #1+#3 could compound to 25-35% capacity overestimate — now fixed</li>
+</ul>
 <h3 id="files-changed-key">Files Changed (key)<a class="headerlink" href="#files-changed-key" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>core/data_types.py</code> — 21 field renames + 21 @property aliases</li>
-<li><code>codes/is456/beam/flexure.py</code>, <code>shear.py</code>, <code>torsion.py</code> — construction sites</li>
-<li><code>codes/is456/compliance.py</code> — ComplianceCaseResult constructor</li>
+<li><code>core/geometry.py</code> — canonical compute_effective_depth()</li>
+<li><code>core/inputs.py</code> — stirrup_dia_mm, bar_dia_mm fields</li>
+<li><code>core/models.py</code> — SectionProperties updated</li>
+<li><code>codes/is456/beam/flexure.py</code> — calculate_effective_depth_multilayer()</li>
+<li><code>services/beam_pipeline.py</code> — include_serviceability, auto-construction</li>
+<li><code>research/research_design_companion.py</code> — ast_required_mm2</li>
+<li><code>fastapi_app/models/beam.py</code> — 3 new models, 6 request fields</li>
+<li><code>fastapi_app/routers/design.py</code> — effective depth fix</li>
 <li><code>services/*.py</code> — field accesses (~12 files)</li>
-<li><code>fastapi_app/routers/design.py</code> — Pydantic field access fix</li>
-<li><code>Python/tests/*</code> — ~25 test files updated</li>
-<li><code>Python/examples/*</code> — 8 example files updated</li>
+<li><code>Python/tests/*</code> — ~25 test files updated + 22 new</li>
 </ul>
 <hr />
 <h2 id="what-to-do-next">What To Do Next<a class="headerlink" href="#what-to-do-next" title="Permanent link">&para;</a></h2>
@@ -1611,6 +1632,8 @@
 <li><strong>TASK-655: Dowel bars</strong> — Cl 34.2.5, anchorage at column-footing junction</li>
 <li><strong>TASK-656: Footing FastAPI endpoint</strong> — <code>POST /api/v1/design/footing</code></li>
 <li><strong>TASK-519: Alternatives Panel (Pareto)</strong> — Pareto front in DesignView</li>
+<li><strong>Wire multi-layer rebar into detailing functions</strong> — Fix 3 types exist but not yet consumed by detailing pipeline</li>
+<li><strong>Add Level B/C deflection to auto-serviceability</strong> — Currently only Level A (span/depth ratio)</li>
 </ol>
 <hr />
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
