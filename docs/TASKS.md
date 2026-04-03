@@ -86,11 +86,12 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | Monitoring (burn-in) |
-| TASK-900 | Git workflow hardening — all phases complete (13/14 tasks) | Copilot | ✅ Done |
+
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-900 | Git workflow hardening — all phases complete (13/14 tasks) | Copilot | ✅ Done |
 | TASK-671 | Fix 4 known limitations (effective depth, serviceability, multi-layer rebar, failure story) | Copilot | ✅ Done |
 | TASK-670 | Fix calculation_report.py shear field bug (4 non-existent ShearResult fields, masked by MagicMock) | Copilot | ✅ Done |
 | TASK-660 | Standardize variable naming to IS 456 industry convention (21 fields, 4 dataclasses) | Copilot | ✅ Done |

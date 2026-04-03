@@ -8,8 +8,8 @@ from pydantic import BaseModel, Field
 class BeamMetadata(BaseModel):
     """Per-beam metadata for BOQ aggregation."""
 
-    beam_id: str = Field(description="Beam identifier")
-    story: str = Field(default="GF", description="Story/floor name")
+    beam_id: str = Field(max_length=200, description="Beam identifier")
+    story: str = Field(default="GF", max_length=200, description="Story/floor name")
     b_mm: float = Field(..., gt=0, description="Beam width in mm")
     D_mm: float = Field(..., gt=0, description="Overall depth in mm")
     span_mm: float = Field(..., gt=0, description="Span length in mm")
@@ -22,7 +22,9 @@ class BeamMetadata(BaseModel):
 class ProjectBOQRequest(BaseModel):
     """Request for project BOQ aggregation."""
 
-    project_name: str = Field(default="Project", description="Display name")
+    project_name: str = Field(
+        default="Project", max_length=200, description="Display name"
+    )
     beams: list[BeamMetadata] = Field(min_length=1, description="List of beam metadata")
     steel_cost_per_kg: float = Field(default=60.0, gt=0, description="Steel rate ₹/kg")
     concrete_costs: dict[int, float] | None = Field(

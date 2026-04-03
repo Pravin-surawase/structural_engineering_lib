@@ -11,10 +11,10 @@ tags: []
 
 **Type:** Guideline
 **Audience:** Developers
-**Status:** Draft
+**Status:** Active
 **Importance:** High
 **Created:** 2026-01-07
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-04
 
 ---
 

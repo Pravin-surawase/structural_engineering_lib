@@ -1,6 +1,8 @@
 # Structural Engineering Library - Consolidated Requirements
 # ============================================================
 # This file provides a unified installation for all dependencies.
+# Source of truth for library deps: Python/pyproject.toml
+# This file adds project-wide deps (FastAPI, scientific, docs).
 #
 # Quick Install (all features):
 #   pip install -r requirements.txt
@@ -11,16 +13,16 @@
 # For development, also install pre-commit hooks:
 #   pre-commit install
 #
-# Generated: 2026-01-23
+# Synced: 2026-04-04
 # ============================================================
 
 # ===========================================
-# Core Library (required)
+# Core Library (required — matches pyproject.toml)
 # ===========================================
 pydantic>=2.0
 
 # ===========================================
-# Development Tools
+# Development Tools (matches pyproject.toml [dev])
 # ===========================================
 pytest>=9.0
 pytest-cov>=7.0
@@ -34,59 +36,61 @@ isort>=7.0
 hypothesis>=6.0
 
 # ===========================================
-# DXF/CAD Export
+# DXF/CAD Export (matches pyproject.toml [dxf])
 # ===========================================
 ezdxf>=1.0
 
 # ===========================================
-# Rendering & Visualization
+# Rendering & Visualization (matches pyproject.toml [render])
 # ===========================================
 matplotlib>=3.5
 
 # ===========================================
-# Reports (HTML/PDF)
+# Reports (HTML/PDF — matches pyproject.toml [report] + [pdf])
 # ===========================================
 jinja2>=3.1
 reportlab>=4.0
-weasyprint>=60.0
+weasyprint>=62.0
 
 # ===========================================
-# Schema Validation
+# Schema Validation (matches pyproject.toml [validation])
 # ===========================================
 jsonschema>=4.21
 
 # ===========================================
-# 3D CAD & Visualization
+# 3D CAD & Visualization (matches pyproject.toml [cad])
 # ===========================================
 pyvista>=0.43
 stpyvista>=0.1.4
 
 # ===========================================
-# Data & Scientific (used by core + FastAPI)
+# Data & Scientific (project-wide, not in pyproject.toml)
 # ===========================================
 pandas>=2.0
-numpy>=1.24
-scipy>=1.10
+numpy>=2.0
+scipy>=1.14
 
 # ===========================================
-# FastAPI Backend (V3)
+# FastAPI Backend (project-wide, not in pyproject.toml)
 # ===========================================
-fastapi>=0.110
-uvicorn>=0.29
+fastapi>=0.115
+uvicorn>=0.34
 pydantic-settings>=2.0
-python-jose>=3.3
-python-multipart>=0.0.9
-sse-starlette>=1.6
+# NOTE: python-jose is in maintenance mode. Plan migration to PyJWT.
+# See: https://github.com/mpdavis/python-jose/issues/301
+python-jose[cryptography]>=3.3
+python-multipart>=0.0.18
+sse-starlette>=2.0
 httpx>=0.27
 
 # ===========================================
-# Documentation (MkDocs Material)
+# Documentation (matches pyproject.toml [docs])
 # ===========================================
 mkdocs-material>=9.5
 mkdocstrings[python]>=0.25
-websockets>=12.0
+websockets>=14.0
 
 # ===========================================
-# Typing (backports for Python 3.11)
+# Typing (backports for Python 3.11 compatibility)
 # ===========================================
-typing-extensions>=4.8
+typing-extensions>=4.12

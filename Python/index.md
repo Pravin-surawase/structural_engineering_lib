@@ -3,8 +3,8 @@
 IS 456 RC Beam Design Library (Python package).
 
 **Type:** Mixed
-**Last Updated:** 2026-03-25
-**Files:** 7
+**Last Updated:** 2026-04-04
+**Files:** 5
 
 ## Config Files
 
@@ -23,5 +23,5 @@ IS 456 RC Beam Design Library (Python package).
 |--------|-------|-------------|
 | [examples/](examples/) | 19 | > **Purpose:** Example scripts demonstrating library usage |
 | [scripts/](scripts/) | 2 |  |
-| [structural_lib/](structural_lib/) 📦 | 144 | > **Purpose:** IS 456:2000 RC beam design calculations |
-| [tests/](tests/) | 120 | This document describes the test taxonomy and structure for the structural_engin |
+| [structural_lib/](structural_lib/) 📦 | 184 | > **Purpose:** IS 456:2000 RC beam design calculations |
+| [tests/](tests/) | 156 | This document describes the test taxonomy and structure for the structural_engin |

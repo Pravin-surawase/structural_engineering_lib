@@ -14,6 +14,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materialOverrides";
+import type { BeamCSVRow } from '../types/csv';
 
 import { API_BASE_URL } from '../config';
 
@@ -250,7 +251,7 @@ export function useCSVFileImport() {
       setImporting(false);
       if (data.success && data.beams?.length) {
         // Convert to store format
-        const beams = data.beams.map((b) => ({
+        const beams: BeamCSVRow[] = data.beams.map((b) => ({
           id: b.id,
           story: b.story,
           b: b.width_mm,
@@ -264,7 +265,7 @@ export function useCSVFileImport() {
           cover: b.cover_mm,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
-        setBeams(overrideBeams as any); // Type cast for compatibility
+        setBeams(overrideBeams);
       } else {
         setError(data.message || 'No beams found in import response');
       }
@@ -310,7 +311,7 @@ export function useCSVTextImport() {
     onSuccess: (data, variables) => {
       setImporting(false);
       if (data.success && data.beams?.length) {
-        const beams = data.beams.map((b) => ({
+        const beams: BeamCSVRow[] = data.beams.map((b) => ({
           id: b.id,
           story: b.story,
           b: b.width_mm,
@@ -324,7 +325,7 @@ export function useCSVTextImport() {
           cover: b.cover_mm,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
-        setBeams(overrideBeams as any);
+        setBeams(overrideBeams);
       } else {
         setError(data.message || 'No beams found in import response');
       }
@@ -369,7 +370,7 @@ export function useDualCSVImport() {
     onSuccess: (data, variables) => {
       setImporting(false);
       if (data.success && data.beams?.length) {
-        const beams = data.beams.map((b) => ({
+        const beams: BeamCSVRow[] = data.beams.map((b) => ({
           id: b.id,
           story: b.story,
           b: b.width_mm,
@@ -385,7 +386,7 @@ export function useDualCSVImport() {
           point2: b.point2,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
-        setBeams(overrideBeams as any);
+        setBeams(overrideBeams);
       } else {
         setError(data.message || 'No beams found in import response');
       }

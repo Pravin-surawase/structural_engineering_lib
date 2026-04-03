@@ -13,6 +13,7 @@ import { ImportView } from "../import/ImportView";
 import { DesignView } from "../design/DesignView";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { loadSampleData } from "../../api/client";
+import type { BeamCSVRow } from '../../types/csv';
 import { mapSampleBeamsToRows } from "../../utils/sampleData";
 
 type ViewMode = "home" | "design" | "import" | "results" | "settings";
@@ -37,8 +38,8 @@ export function ModernAppLayout() {
     try {
       const data = await loadSampleData();
       if (data.success) {
-        const storeBeams = mapSampleBeamsToRows(data.beams);
-        setBeams(storeBeams as any);
+        const storeBeams: BeamCSVRow[] = mapSampleBeamsToRows(data.beams);
+        setBeams(storeBeams);
         setViewMode("results");
       } else {
         setError(data.message);

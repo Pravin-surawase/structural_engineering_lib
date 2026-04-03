@@ -67,7 +67,6 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
           retryCount: 0,
           lastConnectedAt: new Date(),
         }));
-        console.log('WebSocket connected');
       };
 
       ws.onclose = () => {
@@ -76,7 +75,6 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
           isConnected: false,
           status: enabled ? 'reconnecting' : 'disconnected',
         }));
-        console.log('WebSocket disconnected');
       };
 
       ws.onerror = () => {

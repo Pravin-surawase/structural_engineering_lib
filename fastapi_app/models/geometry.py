@@ -72,8 +72,8 @@ class BeamGeometryRequest(BaseModel):
     """Request model for beam 3D geometry generation using library API."""
 
     # Core beam identification
-    beam_id: str = Field(default="B1", description="Beam identifier")
-    story: str = Field(default="GF", description="Story/floor name")
+    beam_id: str = Field(default="B1", max_length=200, description="Beam identifier")
+    story: str = Field(default="GF", max_length=200, description="Story/floor name")
 
     # Section dimensions
     width: float = Field(gt=0, le=2000.0, description="Beam width b (mm)")
@@ -135,9 +135,11 @@ class BeamGeometryResponse(BaseModel):
 class BuildingBeamModel(BaseModel):
     """Single beam in building geometry (line representation)."""
 
-    beam_id: str = Field(description="Beam identifier")
-    story: str = Field(description="Story/floor identifier")
-    frame_type: str = Field(description="Frame type: beam, column, brace")
+    beam_id: str = Field(max_length=200, description="Beam identifier")
+    story: str = Field(max_length=200, description="Story/floor identifier")
+    frame_type: str = Field(
+        max_length=50, description="Frame type: beam, column, brace"
+    )
     start: Point3DModel = Field(description="Start point (mm)")
     end: Point3DModel = Field(description="End point (mm)")
 

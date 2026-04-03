@@ -32,8 +32,8 @@ router = APIRouter(
 class BeamResult(BaseModel):
     """A single beam design result for dashboard aggregation."""
 
-    beam_id: str = Field(description="Beam identifier")
-    story: str = Field(default="Unknown", description="Story/floor")
+    beam_id: str = Field(max_length=200, description="Beam identifier")
+    story: str = Field(default="Unknown", max_length=200, description="Story/floor")
     is_valid: bool = Field(default=True, description="Whether design passed")
     utilization: float = Field(
         default=0.0, ge=0.0, le=2.0, description="Utilization ratio"
@@ -139,7 +139,7 @@ class CodeChecksResponse(BaseModel):
 class RebarSuggestRequest(BaseModel):
     """Request model for rebar optimization suggestions."""
 
-    beam_id: str = Field(default="beam", description="Beam identifier")
+    beam_id: str = Field(default="beam", max_length=200, description="Beam identifier")
     ast_required: float = Field(ge=0, description="Required steel area (mm²)")
     ast_provided: float = Field(default=0.0, description="Current steel area (mm²)")
     bar_count: int = Field(default=0, description="Current bar count")

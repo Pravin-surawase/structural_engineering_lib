@@ -32,7 +32,12 @@ class Settings(BaseSettings):
     ]
     cors_allow_credentials: bool = True
     cors_allow_methods: list[str] = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    cors_allow_headers: list[str] = ["*"]
+    cors_allow_headers: list[str] = [
+        "Authorization",
+        "Content-Type",
+        "X-Request-ID",
+        "Accept",
+    ]
 
     # Logging
     log_level: str = "INFO"

@@ -89,7 +89,7 @@ jobs:
 
       - name: Core tests (fast subset)
         working-directory: Python
-        run: python -m pytest tests/integration/test_flexure_edges_additional.py tests/unit/test_shear.py tests/unit/test_detailing.py -v
+        run: python -m pytest tests/integration/test_flexure_edges_additional.py tests/unit/test_shear.py tests/unit/test_detailing.py -v --strict-markers
 
       - name: Code quality checks
         run: |

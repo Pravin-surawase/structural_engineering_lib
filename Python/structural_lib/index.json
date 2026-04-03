@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-04",
   "file_count": 51,
   "files": [
     {
@@ -497,7 +497,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 40,
+      "file_count": 51,
       "is_package": true
     },
     {
@@ -516,6 +516,12 @@
       "name": "reports",
       "path": "reports/",
       "file_count": 7,
+      "is_package": true
+    },
+    {
+      "name": "research",
+      "path": "research/",
+      "file_count": 4,
       "is_package": true
     },
     {
