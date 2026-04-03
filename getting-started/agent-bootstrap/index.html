@@ -2806,7 +2806,7 @@
 </tbody>
 </table>
 <h3 id="fastapi-endpoints-fastapi_approuters">FastAPI Endpoints (<code>fastapi_app/routers/</code>)<a class="headerlink" href="#fastapi-endpoints-fastapi_approuters" title="Permanent link">&para;</a></h3>
-<p>54 endpoints across 13 routers + 1 WebSocket:</p>
+<p>58 endpoints across 13 routers (57 REST + 1 WebSocket):</p>
 <table>
 <thead>
 <tr>
@@ -2833,6 +2833,36 @@
 </tr>
 <tr>
 <td></td>
+<td><code>POST /api/v1/design/beam/enhanced-shear</code></td>
+<td>Enhanced shear design</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/beam/ductility-check</code></td>
+<td>Ductility check</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/beam/slenderness-check</code></td>
+<td>Slenderness check</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/beam/deflection-check</code></td>
+<td>Deflection check</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/beam/crack-width-check</code></td>
+<td>Crack width check</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/beam/compliance</code></td>
+<td>Full compliance check</td>
+</tr>
+<tr>
+<td></td>
 <td><code>GET  /api/v1/design/limits</code></td>
 <td>Design parameter limits</td>
 </tr>
@@ -2852,14 +2882,24 @@
 <td>Development length calc</td>
 </tr>
 <tr>
+<td></td>
+<td><code>POST /api/v1/detailing/anchorage-check</code></td>
+<td>Anchorage check</td>
+</tr>
+<tr>
 <td><strong>analysis</strong></td>
+<td><code>POST /api/v1/analysis/loads/simple</code></td>
+<td>Simple load analysis</td>
+</tr>
+<tr>
+<td></td>
 <td><code>POST /api/v1/analysis/beam/smart</code></td>
 <td>Smart beam analysis</td>
 </tr>
 <tr>
 <td></td>
-<td><code>GET  /api/v1/analysis/code-clauses</code></td>
-<td>IS 456 code clauses reference</td>
+<td><code>GET  /api/v1/analysis/limiting-values</code></td>
+<td>IS 456 limiting values</td>
 </tr>
 <tr>
 <td><strong>imports</strong></td>
@@ -2903,8 +2943,8 @@
 </tr>
 <tr>
 <td></td>
-<td><code>GET  /api/v1/geometry/materials</code></td>
-<td>Material properties lookup</td>
+<td><code>POST /api/v1/geometry/reference-geometry</code></td>
+<td>Reference geometry</td>
 </tr>
 <tr>
 <td></td>
@@ -2928,8 +2968,13 @@
 </tr>
 <tr>
 <td></td>
-<td><code>POST /api/v1/insights/rebar-suggest</code></td>
+<td><code>POST /api/v1/insights/suggestions</code></td>
 <td>AI rebar suggestions</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/insights/project-boq</code></td>
+<td>Project bill of quantities</td>
 </tr>
 <tr>
 <td><strong>optimization</strong></td>
@@ -2965,6 +3010,11 @@
 <td></td>
 <td><code>POST /api/v1/export/report</code></td>
 <td>HTML report download</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/export/building-summary</code></td>
+<td>Building summary export</td>
 </tr>
 <tr>
 <td><strong>column</strong></td>
@@ -3005,6 +3055,26 @@
 <td></td>
 <td><code>POST /api/v1/design/column/additional-moment</code></td>
 <td>Additional moment for slender columns (Cl 39.7.1)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/long-column</code></td>
+<td>Long column design</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/helical-check</code></td>
+<td>Helical reinforcement check</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column</code></td>
+<td>Unified column design</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/design/column/detailing</code></td>
+<td>Column detailing</td>
 </tr>
 <tr>
 <td><strong>health</strong></td>
@@ -3234,7 +3304,7 @@
 <a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
 <a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1"># React is now at http://localhost:5173</span>
 </code></pre></div></p>
-<p>This builds and runs the FastAPI container with all Python dependencies + sample data (<code>Etabs_CSV/</code>). The <code>/docs</code> page auto-generates interactive Swagger UI for all 48 endpoints.</p>
+<p>This builds and runs the FastAPI container with all Python dependencies + sample data (<code>Etabs_CSV/</code>). The <code>/docs</code> page auto-generates interactive Swagger UI for all 58 endpoints.</p>
 <p>For development with hot-reload (code changes reflect without rebuild):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.dev.yml<span class="w"> </span>up<span class="w">          </span><span class="c1"># Mounts source + Etabs_CSV as volumes, auto-reloads</span>
 </code></pre></div></p>

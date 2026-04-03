@@ -1739,7 +1739,7 @@
 <strong>Status:</strong> Approved
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-01-19
-<strong>Last Updated:</strong> 2026-01-19
+<strong>Last Updated:</strong> 2026-04-04
 <strong>Related Tasks:</strong> TASK-3D-VIZ, TASK-AI-001</p>
 <hr />
 <h2 id="the-big-picture">The Big Picture<a class="headerlink" href="#the-big-picture" title="Permanent link">&para;</a></h2>
@@ -1833,16 +1833,20 @@
 <p><strong>"We can't just keep our main engine the same... it must be updated as we go ahead."</strong></p>
 </blockquote>
 <p><strong>Current library state (from research):</strong>
-- 36+ public API functions
-- 2,269 tests passing
-- 86% branch coverage
+- 36+ public API functions + 12 column + 4 footing functions
+- 4,237+ tests passing
+- 85% branch coverage
+- 58 FastAPI endpoints (13 routers)
 - 11 insights submodules
 - Enterprise-grade error handling (633 lines)</p>
+<blockquote>
+<p><strong>Detailed implementation plan:</strong> <a href="../library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> is the v5.0 blueprint covering multi-code, multi-element expansion (Pillar 4: Library Excellence).</p>
+</blockquote>
 <p><strong>Roadmap (from chat-ui-product-strategy-research.md v0.25.0):</strong>
 | Version | Module | Timeline |
 |---------|--------|----------|
-| v0.21.0 | Column design (IS 456) | Month 7+ |
-| v0.22.0 | Column detailing | Month 7+ |
+| v0.21.0 | Column design (IS 456) | ✅ DONE (Phase 2 complete: 14 column functions) |
+| v0.22.0 | Column detailing | ✅ DONE (TASK-645, 8 detailing functions) |
 | v0.23.0 | Slab design (IS 456) | Month 8+ |
 | v0.24.0 | Slab detailing | Month 8+ |
 | v0.25.0 | Multi-code (Eurocode, ACI) | Month 10+ |</p>
@@ -1881,10 +1885,11 @@
 <h3 id="current-tech-stack">Current Tech Stack<a class="headerlink" href="#current-tech-stack" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Backend:</strong> Python 3.10+, Pydantic v2, NumPy/SciPy</li>
-<li><strong>Frontend:</strong> Streamlit 1.30+</li>
-<li><strong>3D:</strong> Plotly.js (current), PyVista (planned)</li>
-<li><strong>Testing:</strong> pytest, 86% coverage</li>
-<li><strong>Automation:</strong> Pre-commit hooks, CI/CD</li>
+<li><strong>Frontend:</strong> React 19 + React-Three-Fiber (R3F) + Tailwind CSS (fully operational, 58 API endpoints)</li>
+<li><strong>API:</strong> FastAPI (13 routers, 58 endpoints, REST + WebSocket)</li>
+<li><strong>3D:</strong> React-Three-Fiber (web), PyVista (planned server-side)</li>
+<li><strong>Testing:</strong> pytest, 85% coverage, 4,237+ tests</li>
+<li><strong>Automation:</strong> Pre-commit hooks, CI/CD, MkDocs Material</li>
 </ul>
 <h3 id="future-tech-adoption">Future Tech Adoption<a class="headerlink" href="#future-tech-adoption" title="Permanent link">&para;</a></h3>
 <table>
@@ -1898,23 +1903,13 @@
 <tbody>
 <tr>
 <td><strong>PyVista</strong></td>
-<td>CAD-quality 3D rendering</td>
-<td>Phase 4 (Week 7)</td>
+<td>CAD-quality 3D rendering (server-side)</td>
+<td>V1.1+</td>
 </tr>
 <tr>
 <td><strong>Vercel AI SDK v6</strong></td>
 <td>Chat interface</td>
 <td>V1.1 (Month 4-5)</td>
-</tr>
-<tr>
-<td><strong>FastAPI</strong></td>
-<td>API backend for chat</td>
-<td>V1.1 (Month 4-5)</td>
-</tr>
-<tr>
-<td><strong>React-Three-Fiber</strong></td>
-<td>Advanced 3D (future web)</td>
-<td>V2.0</td>
 </tr>
 <tr>
 <td><strong>LangChain/LlamaIndex</strong></td>
@@ -1942,14 +1937,17 @@
 <ul>
 <li>[ ] AI chat MVP ("help me design a beam")</li>
 <li>[ ] Basic automation triggers</li>
-<li>[ ] Column design module started</li>
+<li>[x] Column design module (✅ Phase 2 complete — 14 functions, detailing, FastAPI endpoints)</li>
+<li>[x] Footing design module (Phase 3 — 4 functions, 79 tests)</li>
 <li>[ ] 10+ beta users providing feedback</li>
 </ul>
 <h3 id="v20-month-10">V2.0 (Month 10+)<a class="headerlink" href="#v20-month-10" title="Permanent link">&para;</a></h3>
 <ul>
 <li>[ ] Full conversational AI</li>
 <li>[ ] User automation platform</li>
-<li>[ ] Columns, slabs, foundations</li>
+<li>[x] Columns (✅ Done)</li>
+<li>[ ] Foundations (in progress — Phase 3, 4/7 tasks)</li>
+<li>[ ] Slabs (planned)</li>
 <li>[ ] Multi-code support (Eurocode, ACI)</li>
 <li>[ ] 100+ active users</li>
 </ul>
