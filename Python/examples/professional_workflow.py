@@ -100,7 +100,7 @@ def main() -> None:
         vu_kn=loads.vu_kn,
     )
 
-    print(f"   Flexure: Ast_req = {result.flexure.ast_required:.0f} mm²")
+    print(f"   Flexure: Ast_req = {result.flexure.Ast_required:.0f} mm²")
     print(f"   Shear: Stirrup spacing = {result.shear.spacing:.0f} mm")
     print(f"   Status: {'✅ SAFE' if result.is_ok else '❌ UNSAFE'}")
 
@@ -119,7 +119,7 @@ def main() -> None:
         "loads": loads.to_dict(),
     }
     outputs_dict = {
-        "ast_required": result.flexure.ast_required,
+        "ast_required": result.flexure.Ast_required,
         "pt_provided": result.flexure.pt_provided,
         "stirrup_spacing": result.shear.spacing,
         "is_ok": result.is_ok,
@@ -198,7 +198,7 @@ def main() -> None:
 
     # Demonstrate tolerance-based comparison
     print("\n   Tolerance comparisons:")
-    expected_ast = result.flexure.ast_required
+    expected_ast = result.flexure.Ast_required
     actual_ast = expected_ast * 1.0005  # 0.05% difference
     within_tolerance = AREA_TOLERANCE.is_close(actual_ast, expected_ast)
     print(f"      Area tolerance (0.1%): {AREA_TOLERANCE}")

@@ -21,7 +21,7 @@ def design_beam(*, b: float, d: float, D: float, mu_knm: float, fck: float, fy: 
 
 print("Generating Test Case 1: Simple residential beam...")
 beam1 = design_beam(b=300, d=450, D=500, mu_knm=120, fck=25, fy=500)
-print(f"  Ast required: {beam1.ast_required:.2f} mm^2")
+print(f"  Ast required: {beam1.Ast_required:.2f} mm^2")
 
 try:
     detailing_1 = detailing.create_beam_detailing(
@@ -33,9 +33,9 @@ try:
         cover=25,
         fck=25,
         fy=500,
-        ast_start=beam1.ast_required,
-        ast_mid=beam1.ast_required,
-        ast_end=beam1.ast_required,
+        ast_start=beam1.Ast_required,
+        ast_mid=beam1.Ast_required,
+        ast_end=beam1.Ast_required,
         stirrup_dia=8,
         stirrup_spacing_start=150,
         stirrup_spacing_mid=200,
@@ -56,7 +56,7 @@ except Exception as exc:
 
 print("\nGenerating Test Case 2: Commercial heavy beam...")
 beam2 = design_beam(b=400, d=600, D=650, mu_knm=300, fck=30, fy=500)
-print(f"  Ast required: {beam2.ast_required:.2f} mm^2")
+print(f"  Ast required: {beam2.Ast_required:.2f} mm^2")
 
 try:
     detailing_2 = detailing.create_beam_detailing(
@@ -68,9 +68,9 @@ try:
         cover=30,
         fck=30,
         fy=500,
-        ast_start=beam2.ast_required,
-        ast_mid=beam2.ast_required,
-        ast_end=beam2.ast_required,
+        ast_start=beam2.Ast_required,
+        ast_mid=beam2.Ast_required,
+        ast_end=beam2.Ast_required,
         stirrup_dia=10,
         stirrup_spacing_start=125,
         stirrup_spacing_mid=175,

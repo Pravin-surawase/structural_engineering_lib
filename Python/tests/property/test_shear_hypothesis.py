@@ -136,9 +136,11 @@ class TestShearDesign:
             pt=inputs["pt"],
         )
 
-        assert result.tv >= 0, f"tv should be non-negative, got {result.tv}"
-        assert result.tc >= 0, f"tc should be non-negative, got {result.tc}"
-        assert result.tc_max >= 0, f"tc_max should be non-negative, got {result.tc_max}"
+        assert result.tau_v >= 0, f"tv should be non-negative, got {result.tau_v}"
+        assert result.tau_c >= 0, f"tc should be non-negative, got {result.tau_c}"
+        assert (
+            result.tau_c_max >= 0
+        ), f"tc_max should be non-negative, got {result.tau_c_max}"
         assert (
             result.spacing >= 0
         ), f"spacing should be non-negative, got {result.spacing}"
@@ -157,8 +159,8 @@ class TestShearDesign:
         )
 
         assert (
-            result.tc <= result.tc_max
-        ), f"tc ({result.tc}) should not exceed tc_max ({result.tc_max})"
+            result.tau_c <= result.tau_c_max
+        ), f"tc ({result.tau_c}) should not exceed tc_max ({result.tau_c_max})"
 
     @given(inputs=shear_inputs())
     def test_tv_formula_consistency(self, inputs: dict) -> None:
@@ -175,8 +177,8 @@ class TestShearDesign:
 
         expected_tv = shear.calculate_tv(inputs["vu_kn"], inputs["b"], inputs["d"])
         assert (
-            abs(result.tv - expected_tv) < 0.001
-        ), f"tv should match calculate_tv: {result.tv} != {expected_tv}"
+            abs(result.tau_v - expected_tv) < 0.001
+        ), f"tv should match calculate_tv: {result.tau_v} != {expected_tv}"
 
     @given(section=beam_section(), fck=concrete_grade(), fy=steel_grade())
     def test_low_shear_is_safe(self, section: dict, fck: int, fy: int) -> None:
@@ -194,4 +196,4 @@ class TestShearDesign:
         )
 
         # For low shear, tv should be very small
-        assert result.tv < 0.5, f"tv for 10kN should be small, got {result.tv}"
+        assert result.tau_v < 0.5, f"tv for 10kN should be small, got {result.tau_v}"

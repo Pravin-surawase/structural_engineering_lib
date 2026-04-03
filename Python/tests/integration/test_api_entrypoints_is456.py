@@ -68,7 +68,7 @@ def test_design_beam_is456_converts_vu_kn_to_tv_nmm2():
         asv_mm2=100.0,
     )
 
-    assert res.shear.tv == pytest.approx(1.0, rel=0.0, abs=1e-6)
+    assert res.shear.tau_v == pytest.approx(1.0, rel=0.0, abs=1e-6)
 
 
 def test_check_beam_is456_runs_multi_case_report():
@@ -139,7 +139,7 @@ def test_design_and_detail_beam_is456_combines_design_and_detailing():
     assert result.design is not None
     assert hasattr(result.design, "flexure")
     assert hasattr(result.design, "shear")
-    assert result.design.flexure.ast_required > 0
+    assert result.design.flexure.Ast_required > 0
 
     # Check detailing result is present
     assert result.detailing is not None

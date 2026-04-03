@@ -153,12 +153,12 @@ def optimize_beam_cost(
                         continue
 
                     # Calculate cost
-                    steel_pct = 100 * design.ast_required / (b * d)
+                    steel_pct = 100 * design.Ast_required / (b * d)
                     cost = calculate_beam_cost(
                         b_mm=b,
                         D_mm=D,
                         span_mm=span_mm,
-                        ast_mm2=design.ast_required,
+                        ast_mm2=design.Ast_required,
                         fck_nmm2=fck,
                         steel_percentage=steel_pct,
                         cost_profile=cost_profile,
@@ -200,7 +200,7 @@ def optimize_beam_cost(
     )
 
     # If baseline fails with M25, try M30
-    if not baseline_design.is_safe or baseline_design.ast_required == 0:
+    if not baseline_design.is_safe or baseline_design.Ast_required == 0:
         baseline_fck = 30
         baseline_design = flexure.design_singly_reinforced(
             b=300,
@@ -212,7 +212,7 @@ def optimize_beam_cost(
         )
 
         # If still fails, increase depth until it works (span/10)
-        if not baseline_design.is_safe or baseline_design.ast_required == 0:
+        if not baseline_design.is_safe or baseline_design.Ast_required == 0:
             baseline_D = int(span_mm / 10)  # More conservative
             baseline_d = baseline_D - cover_mm
             baseline_design = flexure.design_singly_reinforced(
@@ -225,16 +225,16 @@ def optimize_beam_cost(
             )
 
     # Verify baseline is actually valid before using it
-    if not baseline_design.is_safe or baseline_design.ast_required == 0:
+    if not baseline_design.is_safe or baseline_design.Ast_required == 0:
         # Baseline itself is infeasible - use optimal cost as baseline (no savings)
         baseline_cost_breakdown = optimal.cost_breakdown
     else:
-        baseline_pct = 100 * baseline_design.ast_required / (300 * baseline_d)
+        baseline_pct = 100 * baseline_design.Ast_required / (300 * baseline_d)
         baseline_cost_breakdown = calculate_beam_cost(
             b_mm=300,
             D_mm=baseline_D,
             span_mm=span_mm,
-            ast_mm2=baseline_design.ast_required,
+            ast_mm2=baseline_design.Ast_required,
             fck_nmm2=baseline_fck,
             steel_percentage=baseline_pct,
             cost_profile=cost_profile,
@@ -290,12 +290,12 @@ def _check_compliance(
     violations = []
 
     # Check if design was successful
-    if design.ast_required <= 0 and design.mu_lim > 0:
+    if design.Ast_required <= 0 and design.Mu_lim > 0:
         violations.append("Design failed to provide steel area")
         return False, violations
 
     # Check minimum steel
-    pt = 100 * design.ast_required / (b * d)
+    pt = 100 * design.Ast_required / (b * d)
     pt_min = 100 * 0.85 / fy  # IS 456 Cl 26.5.1.1
     if pt < pt_min:
         violations.append(f"pt ({pt:.3f}%) < pt_min ({pt_min:.3f}%)")

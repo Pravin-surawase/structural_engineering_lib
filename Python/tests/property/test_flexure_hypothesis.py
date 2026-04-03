@@ -132,8 +132,8 @@ class TestSinglyReinforcedDesign:
         result = flexure.design_singly_reinforced(b, d, D, mu, fck, fy)
         # Result should always have positive Ast
         assert (
-            result.ast_required > 0
-        ), f"Ast should be positive, got {result.ast_required}"
+            result.Ast_required > 0
+        ), f"Ast should be positive, got {result.Ast_required}"
         # If design is safe, it means no ERROR severity issues
         # Note: Some edge cases (high fck + low fy) can hit max steel even for Mu < Mu_lim
 
@@ -160,8 +160,8 @@ class TestSinglyReinforcedDesign:
 
         result = flexure.design_singly_reinforced(b, d, D, mu, fck, fy)
         assert (
-            result.ast_required > 0
-        ), f"Ast should be positive, got {result.ast_required}"
+            result.Ast_required > 0
+        ), f"Ast should be positive, got {result.Ast_required}"
 
     @given(inputs=flexure_inputs())
     def test_pt_provided_is_positive(self, inputs: dict) -> None:

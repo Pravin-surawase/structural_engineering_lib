@@ -72,14 +72,14 @@ def test_flexure_singly(vector):
     # Check Mu,lim if expected
     if "mu_lim_knm" in exp:
         assert within_tolerance(
-            result.mu_lim, exp["mu_lim_knm"], "mu_knm"
-        ), f"Mu,lim mismatch: {result.mu_lim} vs {exp['mu_lim_knm']}"
+            result.Mu_lim, exp["mu_lim_knm"], "mu_knm"
+        ), f"Mu,lim mismatch: {result.Mu_lim} vs {exp['mu_lim_knm']}"
 
     # Check Ast
     if "ast_required_mm2" in exp:
         assert within_tolerance(
-            result.ast_required, exp["ast_required_mm2"], "ast_mm2"
-        ), f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
+            result.Ast_required, exp["ast_required_mm2"], "ast_mm2"
+        ), f"Ast mismatch: {result.Ast_required} vs {exp['ast_required_mm2']}"
 
     # Check section type
     if "section_type" in exp:
@@ -117,13 +117,13 @@ def test_flexure_doubly(vector):
 
     if "ast_required_mm2" in exp:
         assert within_tolerance(
-            result.ast_required, exp["ast_required_mm2"], "ast_mm2"
-        ), f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
+            result.Ast_required, exp["ast_required_mm2"], "ast_mm2"
+        ), f"Ast mismatch: {result.Ast_required} vs {exp['ast_required_mm2']}"
 
     if "asc_required_mm2" in exp:
         assert within_tolerance(
-            result.asc_required, exp["asc_required_mm2"], "asc_mm2"
-        ), f"Asc mismatch: {result.asc_required} vs {exp['asc_required_mm2']}"
+            result.Asc_required, exp["asc_required_mm2"], "asc_mm2"
+        ), f"Asc mismatch: {result.Asc_required} vs {exp['asc_required_mm2']}"
 
 
 # =============================================================================
@@ -156,8 +156,8 @@ def test_flexure_flanged(vector):
 
     if "ast_required_mm2" in exp:
         assert within_tolerance(
-            result.ast_required, exp["ast_required_mm2"], "ast_mm2"
-        ), f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
+            result.Ast_required, exp["ast_required_mm2"], "ast_mm2"
+        ), f"Ast mismatch: {result.Ast_required} vs {exp['ast_required_mm2']}"
 
 
 # =============================================================================
@@ -189,13 +189,13 @@ def test_shear(vector):
 
     if "tv_nmm2" in exp:
         assert within_tolerance(
-            result.tv, exp["tv_nmm2"], "stress_nmm2"
-        ), f"τv mismatch: {result.tv} vs {exp['tv_nmm2']}"
+            result.tau_v, exp["tv_nmm2"], "stress_nmm2"
+        ), f"τv mismatch: {result.tau_v} vs {exp['tv_nmm2']}"
 
     if "tc_nmm2" in exp:
         assert within_tolerance(
-            result.tc, exp["tc_nmm2"], "stress_nmm2"
-        ), f"τc mismatch: {result.tc} vs {exp['tc_nmm2']}"
+            result.tau_c, exp["tc_nmm2"], "stress_nmm2"
+        ), f"τc mismatch: {result.tau_c} vs {exp['tc_nmm2']}"
 
     if "spacing_mm" in exp:
         assert within_tolerance(

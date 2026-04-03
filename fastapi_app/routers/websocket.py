@@ -233,15 +233,15 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
             "latency_ms": round(latency_ms, 2),
             "data": {
                 "flexure": {
-                    "ast_required": result.flexure.ast_required,
-                    "mu_lim": result.flexure.mu_lim,
+                    "ast_required": result.flexure.Ast_required,
+                    "mu_lim": result.flexure.Mu_lim,
                     "xu": result.flexure.xu,
                     "xu_max": result.flexure.xu_max,
                     "is_safe": result.flexure.is_safe,
                 },
                 "shear": {
-                    "tv": result.shear.tv if result.shear else None,
-                    "tc": result.shear.tc if result.shear else None,
+                    "tv": result.shear.tau_v if result.shear else None,
+                    "tc": result.shear.tau_c if result.shear else None,
                     "spacing": result.shear.spacing if result.shear else None,
                     "is_safe": result.shear.is_safe if result.shear else None,
                 },

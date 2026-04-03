@@ -87,10 +87,10 @@ def main() -> None:
         fck=fck_nmm2,
         fy=fy_nmm2,
     )
-    print("Safe?", flex.is_safe, "| Mu_lim:", round(flex.mu_lim, 2), "kN-m")
+    print("Safe?", flex.is_safe, "| Mu_lim:", round(flex.Mu_lim, 2), "kN-m")
     print(
         "Ast_req:",
-        round(flex.ast_required, 1),
+        round(flex.Ast_required, 1),
         "mm2 | pt:",
         round(flex.pt_provided, 3),
         "%",
@@ -98,7 +98,7 @@ def main() -> None:
 
     # Pick bars (very simple)
     bar_area = math.pi * (main_bar_dia_mm / 2) ** 2
-    n_bars = max(2, math.ceil(flex.ast_required / bar_area))
+    n_bars = max(2, math.ceil(flex.Ast_required / bar_area))
     ast_prov = n_bars * bar_area
     pt_percent = ast_prov * 100 / (b_mm * d_mm)
     print(
@@ -128,11 +128,11 @@ def main() -> None:
     print("Safe?", shr.is_safe, "| spacing:", round(shr.spacing, 1), "mm")
     print(
         "tv:",
-        round(shr.tv, 3),
+        round(shr.tau_v, 3),
         "N/mm2 | tc:",
-        round(shr.tc, 3),
+        round(shr.tau_c, 3),
         "N/mm2 | tc_max:",
-        round(shr.tc_max, 3),
+        round(shr.tau_c_max, 3),
         "N/mm2",
     )
 
@@ -179,9 +179,9 @@ def main() -> None:
             cover=cover_mm,
             fck=fck_nmm2,
             fy=fy_nmm2,
-            ast_start=flex.ast_required,
-            ast_mid=flex.ast_required,
-            ast_end=flex.ast_required,
+            ast_start=flex.Ast_required,
+            ast_mid=flex.Ast_required,
+            ast_end=flex.Ast_required,
             asc_start=0.0,
             asc_mid=0.0,
             asc_end=0.0,

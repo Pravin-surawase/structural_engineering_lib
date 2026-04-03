@@ -448,7 +448,7 @@ class TestIntegrationWithApi:
         }
         outputs = {
             "is_ok": result.is_ok,
-            "ast_required": result.flexure.ast_required,
+            "ast_required": result.flexure.Ast_required,
         }
 
         entry = trail.log_design(

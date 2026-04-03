@@ -187,7 +187,7 @@ def demo_combined_workflow():
     )
 
     print(f"  Status: {'SAFE' if result.is_ok else 'UNSAFE'}")
-    print(f"  Ast required: {result.flexure.ast_required:.0f} mm²")
+    print(f"  Ast required: {result.flexure.Ast_required:.0f} mm²")
     print(f"  Utilization: {result.governing_utilization:.1%}")
 
     if result.is_ok:

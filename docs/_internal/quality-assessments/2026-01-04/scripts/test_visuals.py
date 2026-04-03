@@ -65,7 +65,7 @@ try:
 
     fig, ax = plt.subplots(figsize=(8, 5))
     labels = ["Mu (kNm)", "Ast Req (mm^2)"]
-    values = [120, result.ast_required]
+    values = [120, result.Ast_required]
 
     ax.bar(labels, values, color=["#1f77b4", "#ff7f0e"])
     ax.set_ylabel("Value")

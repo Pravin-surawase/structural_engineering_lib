@@ -92,14 +92,14 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
 
         # Build flexure result
         flexure = FlexureResult(
-            ast_required=flexure_result.ast_required,
+            ast_required=flexure_result.Ast_required,
             ast_min=ast_min,
             ast_max=ast_max,
             xu=flexure_result.xu,
             xu_max=flexure_result.xu_max,
             is_under_reinforced=flexure_result.xu <= flexure_result.xu_max,
-            moment_capacity=flexure_result.mu_lim,
-            asc_required=flexure_result.asc_required,
+            moment_capacity=flexure_result.Mu_lim,
+            asc_required=flexure_result.Asc_required,
         )
 
         # Build shear result if shear was provided
@@ -107,23 +107,23 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
         if request.shear > 0 and result.shear:
             shear = result.shear
             shear_result = ShearResult(
-                tau_v=shear.tv,
-                tau_c=shear.tc,
-                tau_c_max=shear.tc_max,
+                tau_v=shear.tau_v,
+                tau_c=shear.tau_c,
+                tau_c_max=shear.tau_c_max,
                 asv_required=(
-                    shear.vus / (0.87 * request.fy) * 1000 if shear.vus > 0 else 0.0
+                    shear.Vus / (0.87 * request.fy) * 1000 if shear.Vus > 0 else 0.0
                 ),
                 stirrup_spacing=shear.spacing,
                 sv_max=300.0,
                 shear_capacity=(
-                    shear.tc * request.width * effective_depth / 1000 + shear.vus
-                    if shear.vus > 0
+                    shear.tau_c * request.width * effective_depth / 1000 + shear.Vus
+                    if shear.Vus > 0
                     else request.shear
                 ),
             )
 
         # Calculate utilization
-        moment_capacity = flexure_result.mu_lim
+        moment_capacity = flexure_result.Mu_lim
         utilization = request.moment / moment_capacity if moment_capacity > 0 else 1.0
 
         # Collect warnings
@@ -219,9 +219,9 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
         flexure = case_result.flexure
         shear = case_result.shear
 
-        moment_capacity = flexure.mu_lim
+        moment_capacity = flexure.Mu_lim
         shear_capacity = (
-            shear.tc * request.width * effective_depth / 1000
+            shear.tau_c * request.width * effective_depth / 1000
             if shear
             else request.shear * 1.5
         )
@@ -373,7 +373,7 @@ async def design_beam_torsion(
         warnings: list[str] = []
         if not result.is_safe:
             warnings.append(
-                f"Section unsafe: τve ({result.tv_equiv:.2f}) > τc,max ({result.tc_max:.2f}). "
+                f"Section unsafe: τve ({result.tau_ve:.2f}) > τc,max ({result.tau_c_max:.2f}). "
                 "Increase section size."
             )
         if result.requires_closed_stirrups:
@@ -385,21 +385,21 @@ async def design_beam_torsion(
             success=result.is_safe,
             message=(
                 f"Torsion design {'safe' if result.is_safe else 'UNSAFE'}: "
-                f"Sv = {result.stirrup_spacing:.0f} mm, Al = {result.al_torsion:.0f} mm²"
+                f"Sv = {result.stirrup_spacing:.0f} mm, Al = {result.Al_torsion:.0f} mm²"
             ),
-            tu_knm=result.tu_knm,
-            vu_kn=result.vu_kn,
-            mu_knm=result.mu_knm,
-            ve_kn=round(result.ve_kn, 2),
-            me_knm=round(result.me_knm, 2),
-            tv_equiv=result.tv_equiv,
-            tc=result.tc,
-            tc_max=result.tc_max,
-            asv_torsion=result.asv_torsion,
-            asv_shear=result.asv_shear,
-            asv_total=result.asv_total,
+            tu_knm=result.Tu_knm,
+            vu_kn=result.Vu_kn,
+            mu_knm=result.Mu_knm,
+            ve_kn=round(result.Ve_kn, 2),
+            me_knm=round(result.Me_knm, 2),
+            tv_equiv=result.tau_ve,
+            tc=result.tau_c,
+            tc_max=result.tau_c_max,
+            asv_torsion=result.Asv_torsion,
+            asv_shear=result.Asv_shear,
+            asv_total=result.Asv_total,
             stirrup_spacing=result.stirrup_spacing,
-            al_torsion=result.al_torsion,
+            al_torsion=result.Al_torsion,
             is_safe=result.is_safe,
             requires_closed_stirrups=result.requires_closed_stirrups,
             warnings=warnings,
@@ -808,8 +808,8 @@ async def compliance_report(
             cases=[
                 ComplianceCaseOutput(
                     case_id=c.case_id,
-                    mu_knm=c.mu_knm,
-                    vu_kn=c.vu_kn,
+                    mu_knm=c.Mu_knm,
+                    vu_kn=c.Vu_kn,
                     is_ok=c.is_ok,
                     governing_utilization=c.governing_utilization,
                     utilizations=c.utilizations,

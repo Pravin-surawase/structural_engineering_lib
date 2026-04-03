@@ -115,7 +115,7 @@ def validate_sample_vectors():
         )
 
         print(f"  Status: {'SAFE' if result.is_ok else 'UNSAFE'}")
-        print(f"  Ast required: {result.flexure.ast_required:.1f} mm²")
+        print(f"  Ast required: {result.flexure.Ast_required:.1f} mm²")
         print(f"  Utilization: {result.governing_utilization:.1%}")
 
         if vec["id"] == "G2":

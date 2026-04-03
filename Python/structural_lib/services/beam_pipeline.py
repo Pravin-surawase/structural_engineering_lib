@@ -364,11 +364,11 @@ def design_single_beam(
 
     # Extract flexure output
     flexure = FlexureOutput(
-        ast_required_mm2=case_result.flexure.ast_required,
-        asc_required_mm2=case_result.flexure.asc_required,
+        ast_required_mm2=case_result.flexure.Ast_required,
+        asc_required_mm2=case_result.flexure.Asc_required,
         xu_mm=case_result.flexure.xu,
         xu_max_mm=case_result.flexure.xu_max,
-        mu_lim_knm=case_result.flexure.mu_lim,
+        mu_lim_knm=case_result.flexure.Mu_lim,
         xu_d_ratio=case_result.flexure.xu / d_mm if d_mm > 0 else 0.0,
         section_type=_section_type_str(case_result.flexure.section_type),
         is_safe=case_result.flexure.is_safe,
@@ -381,10 +381,10 @@ def design_single_beam(
 
     # Extract shear output
     shear = ShearOutput(
-        tau_v_nmm2=case_result.shear.tv,
-        tau_c_nmm2=case_result.shear.tc,
-        tau_c_max_nmm2=case_result.shear.tc_max,
-        vus_kn=case_result.shear.vus,
+        tau_v_nmm2=case_result.shear.tau_v,
+        tau_c_nmm2=case_result.shear.tau_c,
+        tau_c_max_nmm2=case_result.shear.tau_c_max,
+        vus_kn=case_result.shear.Vus,
         sv_required_mm=case_result.shear.spacing,
         is_safe=case_result.shear.is_safe,
         utilization=case_result.utilizations.get("shear", 0.0),
@@ -428,12 +428,12 @@ def design_single_beam(
                 cover=cover_mm,
                 fck=fck_nmm2,
                 fy=fy_nmm2,
-                ast_start=case_result.flexure.ast_required,
-                ast_mid=case_result.flexure.ast_required,
-                ast_end=case_result.flexure.ast_required,
-                asc_start=case_result.flexure.asc_required,
-                asc_mid=case_result.flexure.asc_required,
-                asc_end=case_result.flexure.asc_required,
+                ast_start=case_result.flexure.Ast_required,
+                ast_mid=case_result.flexure.Ast_required,
+                ast_end=case_result.flexure.Ast_required,
+                asc_start=case_result.flexure.Asc_required,
+                asc_mid=case_result.flexure.Asc_required,
+                asc_end=case_result.flexure.Asc_required,
                 stirrup_dia=stirrup_dia_mm,
                 stirrup_spacing_start=stirrup_spacing_start_mm,
                 stirrup_spacing_mid=stirrup_spacing_mid_mm,

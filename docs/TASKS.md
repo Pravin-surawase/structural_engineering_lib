@@ -91,6 +91,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-660 | Standardize variable naming to IS 456 industry convention (21 fields, 4 dataclasses) | Copilot | ✅ Done |
 | TASK-650/651/652/653 | Phase 3 Footing: types, bearing/flexure, one-way shear, punching shear (61 tests) | Copilot | ✅ Done |
 | TASK-712 | Enhanced shear near supports (Cl 40.3) — shear.py + 14 tests + API endpoint (PR #468) | Copilot | ✅ Done |
 | TASK-709 | Move ductile.py → codes/is13920/beam.py + shim (PR #467) | Copilot | ✅ Done |
@@ -165,9 +166,9 @@
 
 | ID | Task | Scope | Priority | Status |
 |----|------|-------|----------|--------|
-| TASK-660 | Standardize variable naming to IS 456 industry convention | FlexureResult, ShearResult, TorsionResult, LoadCase, ComplianceCaseResult | 🟡 Medium | 📋 |
+| TASK-660 | Standardize variable naming to IS 456 industry convention | FlexureResult, ShearResult, TorsionResult, LoadCase, ComplianceCaseResult | 🟡 Medium | ✅ Done |
 
-> **Breaking change:** Beam module result types use lowercase (`mu_lim`, `ast_required`, `tv`, `tc`, `vus`, `tu_knm`, `vu_kn`, `asv_torsion`) where IS 456 convention requires uppercase (`Mu_lim`, `Ast_required`, `Tv`, `Tc`, `Vus`, `Tu_knm`, `Vu_kn`, `Asv_torsion`). Column and footing modules already follow correct convention. Migration requires updating: data_types.py, beam/*.py, services/api.py, FastAPI models, React types, all tests. Needs deprecation shim for backward compat.
+> TASK-660 complete. 21 field renames across 4 dataclasses. @property backward-compat aliases added (deprecation warnings, removal in v1.0.0). ~60 files updated. JSON API backward compatible. 4165 Python + 180 FastAPI tests pass.
 
 ### Phase 4-6: Slab, Staircase, Shear Wall (Future)
 

@@ -206,17 +206,17 @@ class TestFlexureResult:
     def test_create_flexure_result(self):
         """FlexureResult can be instantiated with required fields."""
         r = FlexureResult(
-            mu_lim=150.0,
-            ast_required=1200.0,
+            Mu_lim=150.0,
+            Ast_required=1200.0,
             pt_provided=0.89,
             section_type=DesignSectionType.UNDER_REINFORCED,
             xu=120.0,
             xu_max=200.0,
             is_safe=True,
         )
-        assert r.mu_lim == 150.0
+        assert r.Mu_lim == 150.0
         assert r.is_safe is True
-        assert r.asc_required == 0.0
+        assert r.Asc_required == 0.0
         assert r.errors == []
 
 

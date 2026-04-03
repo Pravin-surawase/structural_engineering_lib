@@ -117,7 +117,7 @@ class TestDesignShear:
             vu_kn=20.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=1.0
         )
         assert result.is_safe is True
-        assert result.vus == 0.0
+        assert result.Vus == 0.0
         # Check for minimum shear reinforcement info in errors list
         assert _has_error_with_message(
             result.errors, "minimum"
@@ -129,7 +129,7 @@ class TestDesignShear:
             vu_kn=150.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
         )
         assert result.is_safe is True
-        assert result.vus > 0.0
+        assert result.Vus > 0.0
         # When reinforcement is required and provided, design is safe
         # No specific error message needed when design succeeds
 
@@ -139,7 +139,7 @@ class TestDesignShear:
             vu_kn=100.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
         )
         # For M25, pt=0.5%, tc ≈ 0.49 N/mm² (from Table 19)
-        assert result.tc == pytest.approx(0.49, rel=0.05)
+        assert result.tau_c == pytest.approx(0.49, rel=0.05)
 
     def test_tc_max_value_lookup(self):
         """Verify tc_max is looked up from Table 20."""
@@ -147,7 +147,7 @@ class TestDesignShear:
             vu_kn=100.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
         )
         # For M25, tc_max = 3.1 N/mm² (from Table 20)
-        assert result.tc_max == pytest.approx(3.1, rel=0.02)
+        assert result.tau_c_max == pytest.approx(3.1, rel=0.02)
 
     def test_spacing_within_limits(self):
         """Spacing should not exceed 0.75d or 300mm."""
@@ -179,7 +179,7 @@ class TestDesignShear:
         result_neg = shear.design_shear(
             vu_kn=-100.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
         )
-        assert result_pos.tv == result_neg.tv
+        assert result_pos.tau_v == result_neg.tau_v
         assert result_pos.spacing == result_neg.spacing
 
     def test_higher_pt_gives_higher_tc(self):
@@ -190,7 +190,7 @@ class TestDesignShear:
         result_high_pt = shear.design_shear(
             vu_kn=100.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=1.5
         )
-        assert result_high_pt.tc > result_low_pt.tc
+        assert result_high_pt.tau_c > result_low_pt.tau_c
 
     def test_higher_fck_gives_higher_tc_max(self):
         """Higher concrete grade should give higher tc_max."""
@@ -200,7 +200,7 @@ class TestDesignShear:
         result_m40 = shear.design_shear(
             vu_kn=100.0, b=250.0, d=450.0, fck=40.0, fy=415.0, asv=157.0, pt=0.5
         )
-        assert result_m40.tc_max > result_m20.tc_max
+        assert result_m40.tau_c_max > result_m20.tau_c_max
 
 
 class TestShearEdgeCases:
@@ -212,7 +212,7 @@ class TestShearEdgeCases:
             vu_kn=0.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
         )
         assert result.is_safe is True
-        assert result.tv == 0.0
+        assert result.tau_v == 0.0
 
     def test_very_small_shear(self):
         """Very small shear should be safe."""
@@ -247,8 +247,8 @@ class TestShearEdgeCases:
                 asv=157.0,
                 pt=0.5,
             )
-            assert result.tc_max > 0.0
-            assert result.tc > 0.0
+            assert result.tau_c_max > 0.0
+            assert result.tau_c > 0.0
 
 
 class TestPracticalSpacingRounding:
@@ -714,7 +714,7 @@ class TestEnhancedShearStrength:
             vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5
         )
         assert result.is_safe is True
-        assert result.tc == pytest.approx(0.49, rel=0.05)
+        assert result.tau_c == pytest.approx(0.49, rel=0.05)
 
     def test_design_shear_with_av(self):
         """Passing av_mm enhances τc, which should increase spacing or keep safe."""
@@ -725,5 +725,5 @@ class TestEnhancedShearStrength:
             vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5, av_mm=300
         )
         # Enhanced τc means concrete carries more shear → less stirrup demand
-        assert result_with_av.tc > result_no_av.tc
+        assert result_with_av.tau_c > result_no_av.tau_c
         assert result_with_av.spacing >= result_no_av.spacing

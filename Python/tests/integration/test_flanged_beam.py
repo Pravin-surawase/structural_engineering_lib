@@ -31,7 +31,7 @@ def test_flanged_beam_neutral_axis_in_flange():
     # Should match rectangular beam of width bf
     res_rect = design_singly_reinforced(bf, d, d_total, mu, fck, fy)
 
-    assert res.ast_required == pytest.approx(res_rect.ast_required, rel=1e-4)
+    assert res.Ast_required == pytest.approx(res_rect.Ast_required, rel=1e-4)
     assert res.xu == pytest.approx(res_rect.xu, rel=1e-4)
     assert res.xu <= Df
 
@@ -59,7 +59,7 @@ def test_flanged_beam_neutral_axis_in_web_singly_reinforced():
         res.section_type == DesignSectionType.UNDER_REINFORCED
         or res.section_type == DesignSectionType.BALANCED
     )
-    assert res.asc_required == 0.0
+    assert res.Asc_required == 0.0
 
     # Check equilibrium roughly
     # C = T
@@ -73,7 +73,7 @@ def test_flanged_beam_neutral_axis_in_web_singly_reinforced():
             yf = Df
 
     C = 0.36 * fck * bw * xu + 0.45 * fck * (bf - bw) * yf
-    T = 0.87 * fy * res.ast_required
+    T = 0.87 * fy * res.Ast_required
 
     assert C == pytest.approx(T, rel=1e-3)
 
@@ -96,8 +96,8 @@ def test_flanged_beam_doubly_reinforced():
     res = design_flanged_beam(bw, bf, d, Df, d_total, mu, fck, fy)
 
     assert res.section_type == DesignSectionType.OVER_REINFORCED  # Doubly Reinforced
-    assert res.asc_required > 0.0
-    assert res.ast_required > 0.0
+    assert res.Asc_required > 0.0
+    assert res.Ast_required > 0.0
     assert res.xu == pytest.approx(res.xu_max, rel=1e-4)
 
 

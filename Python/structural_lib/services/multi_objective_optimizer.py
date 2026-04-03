@@ -375,7 +375,7 @@ def _get_governing_clauses(
     if not design:
         return clauses
 
-    ast_required = design.ast_required
+    ast_required = design.Ast_required
     ast_min = 0.85 * b * d / fy
 
     # Check minimum steel governs
@@ -493,11 +493,11 @@ def optimize_pareto_front(
                 except Exception:
                     continue
 
-                if not design.is_safe or design.ast_required <= 0:
+                if not design.is_safe or design.Ast_required <= 0:
                     continue
 
                 # Check compliance
-                pt = 100 * design.ast_required / (b * d)
+                pt = 100 * design.Ast_required / (b * d)
                 pt_min = 100 * 0.85 / fy
                 pt_max = 4.0
                 if pt < pt_min or pt > pt_max:
@@ -505,7 +505,7 @@ def optimize_pareto_front(
 
                 # Get bar configuration
                 bar_config, ast_provided = _get_bar_configuration(
-                    design.ast_required, b
+                    design.Ast_required, b
                 )
 
                 # Calculate steel weight (kg)
@@ -517,12 +517,12 @@ def optimize_pareto_front(
                 utilization = min(utilization, 1.0)
 
                 # Calculate cost
-                steel_pct = 100 * design.ast_required / (b * d)
+                steel_pct = 100 * design.Ast_required / (b * d)
                 cost_breakdown = calculate_beam_cost(
                     b_mm=b,
                     D_mm=D,
                     span_mm=span_mm,
-                    ast_mm2=design.ast_required,
+                    ast_mm2=design.Ast_required,
                     fck_nmm2=fck,
                     steel_percentage=steel_pct,
                     cost_profile=cost_profile,
@@ -537,7 +537,7 @@ def optimize_pareto_front(
                     d_mm=d,
                     fck_nmm2=fck,
                     fy_nmm2=fy,
-                    ast_required=design.ast_required,
+                    ast_required=design.Ast_required,
                     ast_provided=ast_provided,
                     bar_config=bar_config,
                     cost=cost_breakdown.total_cost,

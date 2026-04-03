@@ -365,7 +365,7 @@ class BeamDesignInvariants:
                 name="ast_provided >= ast_required",
                 description="Provided steel must meet or exceed required",
                 check_fn=lambda r: (
-                    r.flexure.ast_provided >= r.flexure.ast_required
+                    r.flexure.ast_provided >= r.flexure.Ast_required
                     if hasattr(r, "flexure")
                     else True
                 ),

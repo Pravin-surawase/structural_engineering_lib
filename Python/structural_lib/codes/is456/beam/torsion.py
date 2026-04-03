@@ -61,37 +61,37 @@ class TorsionResult:
     """Result of torsion design per IS 456 Clause 41.
 
     Attributes:
-        tu_knm: Applied torsional moment (kN·m)
-        vu_kn: Applied shear force (kN)
-        mu_knm: Applied bending moment (kN·m)
-        ve_kn: Equivalent shear force (kN)
-        me_knm: Equivalent bending moment (kN·m)
-        tv_equiv: Equivalent shear stress (N/mm²)
-        tc: Design shear strength of concrete (N/mm²)
-        tc_max: Maximum shear stress limit (N/mm²)
-        asv_torsion: Area of stirrups for torsion per unit length (mm²/mm)
-        asv_shear: Area of stirrups for shear per unit length (mm²/mm)
-        asv_total: Total stirrup area per unit length (mm²/mm)
+        Tu_knm: Applied torsional moment (kN·m)
+        Vu_kn: Applied shear force (kN)
+        Mu_knm: Applied bending moment (kN·m)
+        Ve_kn: Equivalent shear force (kN)
+        Me_knm: Equivalent bending moment (kN·m)
+        tau_ve: Equivalent shear stress (N/mm²)
+        tau_c: Design shear strength of concrete (N/mm²)
+        tau_c_max: Maximum shear stress limit (N/mm²)
+        Asv_torsion: Area of stirrups for torsion per unit length (mm²/mm)
+        Asv_shear: Area of stirrups for shear per unit length (mm²/mm)
+        Asv_total: Total stirrup area per unit length (mm²/mm)
         stirrup_spacing: Designed stirrup spacing (mm)
-        al_torsion: Longitudinal steel for torsion (mm²)
+        Al_torsion: Longitudinal steel for torsion (mm²)
         is_safe: True if section is safe
         requires_closed_stirrups: True (always for torsion)
         errors: List of structured errors/warnings
     """
 
-    tu_knm: float
-    vu_kn: float
-    mu_knm: float
-    ve_kn: float
-    me_knm: float
-    tv_equiv: float
-    tc: float
-    tc_max: float
-    asv_torsion: float
-    asv_shear: float
-    asv_total: float
+    Tu_knm: float
+    Vu_kn: float
+    Mu_knm: float
+    Ve_kn: float
+    Me_knm: float
+    tau_ve: float
+    tau_c: float
+    tau_c_max: float
+    Asv_torsion: float
+    Asv_shear: float
+    Asv_total: float
     stirrup_spacing: float
-    al_torsion: float
+    Al_torsion: float
     is_safe: bool
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
@@ -466,19 +466,19 @@ def design_torsion(
         # Section is unsafe, return with zero reinforcement
         errors.append(E_TORSION_001)
         return TorsionResult(
-            tu_knm=tu_knm,
-            vu_kn=vu_kn,
-            mu_knm=mu_knm,
-            ve_kn=ve_kn,
-            me_knm=me_knm,
-            tv_equiv=tv_equiv,
-            tc=tc,
-            tc_max=tc_max,
-            asv_torsion=0,
-            asv_shear=0,
-            asv_total=0,
+            Tu_knm=tu_knm,
+            Vu_kn=vu_kn,
+            Mu_knm=mu_knm,
+            Ve_kn=ve_kn,
+            Me_knm=me_knm,
+            tau_ve=tv_equiv,
+            tau_c=tc,
+            tau_c_max=tc_max,
+            Asv_torsion=0,
+            Asv_shear=0,
+            Asv_total=0,
             stirrup_spacing=0,
-            al_torsion=0,
+            Al_torsion=0,
             is_safe=False,
             requires_closed_stirrups=True,
             errors=errors,
@@ -514,19 +514,19 @@ def design_torsion(
     al = calculate_longitudinal_torsion_steel(tu_knm, vu_kn, b1, d1, fy, sv)
 
     return TorsionResult(
-        tu_knm=tu_knm,
-        vu_kn=vu_kn,
-        mu_knm=mu_knm,
-        ve_kn=ve_kn,
-        me_knm=me_knm,
-        tv_equiv=round(tv_equiv, 3),
-        tc=round(tc, 3),
-        tc_max=round(tc_max, 3),
-        asv_torsion=round(asv_torsion, 4),
-        asv_shear=round(asv_shear, 4),
-        asv_total=round(asv_total, 4),
+        Tu_knm=tu_knm,
+        Vu_kn=vu_kn,
+        Mu_knm=mu_knm,
+        Ve_kn=ve_kn,
+        Me_knm=me_knm,
+        tau_ve=round(tv_equiv, 3),
+        tau_c=round(tc, 3),
+        tau_c_max=round(tc_max, 3),
+        Asv_torsion=round(asv_torsion, 4),
+        Asv_shear=round(asv_shear, 4),
+        Asv_total=round(asv_total, 4),
         stirrup_spacing=round(sv, 0),
-        al_torsion=round(al, 0),
+        Al_torsion=round(al, 0),
         is_safe=True,
         requires_closed_stirrups=True,
         errors=errors,

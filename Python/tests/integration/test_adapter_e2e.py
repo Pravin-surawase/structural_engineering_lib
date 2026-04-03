@@ -293,7 +293,7 @@ def test_full_pipeline_import_design():
                 {
                     "beam_id": force.id,
                     "result": result,
-                    "ast_required": result.flexure.ast_required,
+                    "ast_required": result.flexure.Ast_required,
                     "is_safe": result.flexure.is_safe,
                 }
             )
@@ -310,16 +310,16 @@ def test_full_pipeline_import_design():
 
         # Check flexure results
         assert (
-            result.flexure.ast_required >= 0
-        ), f"ast_required should be >= 0, got {result.flexure.ast_required}"
+            result.flexure.Ast_required >= 0
+        ), f"ast_required should be >= 0, got {result.flexure.Ast_required}"
         assert isinstance(result.flexure.is_safe, bool), "is_safe should be boolean"
 
         # Check shear results
-        assert result.shear.tv >= 0, f"tv should be >= 0, got {result.shear.tv}"
+        assert result.shear.tau_v >= 0, f"tv should be >= 0, got {result.shear.tau_v}"
         assert isinstance(result.shear.is_safe, bool), "is_safe should be boolean"
 
         print(
-            f"\n✅ Beam {result_data['beam_id']}: Ast={result.flexure.ast_required:.2f} mm², Safe={result.flexure.is_safe}"
+            f"\n✅ Beam {result_data['beam_id']}: Ast={result.flexure.Ast_required:.2f} mm², Safe={result.flexure.is_safe}"
         )
 
 
@@ -400,14 +400,14 @@ def test_batch_design_flow():
 
             # Calculate utilization ratio: Mu / Mu_lim
             utilization = (
-                mu_knm / result.flexure.mu_lim if result.flexure.mu_lim > 0 else 0
+                mu_knm / result.flexure.Mu_lim if result.flexure.Mu_lim > 0 else 0
             )
 
             batch_results.append(
                 {
                     "beam_id": force.id,
                     "mu_knm": mu_knm,
-                    "mu_lim": result.flexure.mu_lim,
+                    "mu_lim": result.flexure.Mu_lim,
                     "utilization": utilization,
                     "is_safe": result.flexure.is_safe,
                 }
