@@ -24,8 +24,13 @@ const BatchDesignPage = lazy(() => import('./components/pages/BatchDesignPage'))
 
 function RouteLoadingFallback() {
   return (
-    <div className="flex items-center justify-center h-full w-full">
+    <div
+      className="flex items-center justify-center h-full w-full"
+      role="status"
+      aria-live="polite"
+    >
       <div className="animate-spin rounded-full h-8 w-8 border-2 border-zinc-600 border-t-blue-500" />
+      <span className="sr-only">Loading page content...</span>
     </div>
   );
 }
@@ -123,20 +128,28 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <div className="h-screen w-screen bg-zinc-950 overflow-hidden">
+          <div className="h-screen w-screen bg-zinc-950 flex flex-col">
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:shadow-lg"
+            >
+              Skip to main content
+            </a>
             <TopBar />
-            <Suspense fallback={<RouteLoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/start" element={<HubPage />} />
-                <Route path="/design" element={<DesignView />} />
-                <Route path="/design/results" element={<BeamDetailPage />} />
-                <Route path="/import" element={<ImportView />} />
-                <Route path="/editor" element={<BuildingEditorPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/batch" element={<BatchDesignPage />} />
-              </Routes>
-            </Suspense>
+            <main id="main-content" className="flex-1 overflow-hidden">
+              <Suspense fallback={<RouteLoadingFallback />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/start" element={<HubPage />} />
+                  <Route path="/design" element={<DesignView />} />
+                  <Route path="/design/results" element={<BeamDetailPage />} />
+                  <Route path="/import" element={<ImportView />} />
+                  <Route path="/editor" element={<BuildingEditorPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/batch" element={<BatchDesignPage />} />
+                </Routes>
+              </Suspense>
+            </main>
             <AppDock />
           </div>
         </BrowserRouter>

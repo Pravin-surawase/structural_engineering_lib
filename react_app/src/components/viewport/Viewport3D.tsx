@@ -956,7 +956,14 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
         : 'design';
 
   return (
-    <div className="w-full h-full relative" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>
+    <div
+      className="w-full h-full relative"
+      style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}
+      role="img"
+      aria-label={effectiveMode === 'building'
+        ? `3D building visualization with ${beams?.length || 0} beams`
+        : '3D beam cross-section and reinforcement visualization'}
+    >
       <Viewport3DErrorBoundary>
         <Canvas shadows className="!w-full !h-full">
           <Suspense fallback={null}>

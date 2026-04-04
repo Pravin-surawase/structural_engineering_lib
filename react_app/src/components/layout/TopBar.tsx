@@ -63,7 +63,7 @@ export function TopBar() {
         <div className="hidden md:block w-px h-5 bg-white/10" />
 
         {/* Nav links */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
           {navLinks.map(link => {
             const isActive = location.pathname === link.path ||
               (link.path === "/design" && location.pathname.startsWith("/design"));
@@ -87,7 +87,7 @@ export function TopBar() {
         <div className="flex md:hidden items-center gap-1 text-sm">
           {breadcrumbs.map((crumb, i) => (
             <div key={crumb.path} className="flex items-center gap-1">
-              <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />
+              <ChevronRight className="w-3.5 h-3.5 text-zinc-500" aria-hidden="true" />
               {i === breadcrumbs.length - 1 ? (
                 <span className="text-white/60">{crumb.label}</span>
               ) : (
@@ -105,6 +105,7 @@ export function TopBar() {
 
       {/* Right: Settings */}
       <button
+        aria-label="Settings"
         onClick={() => navigate("/settings")}
         className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
       >
