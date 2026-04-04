@@ -719,7 +719,7 @@ async def get_sample_data() -> SampleDataResponse:
         )
 
     # Read forces CSV
-    forces_data: dict[str, dict[str, float]] = {}
+    forces_data: dict[str, dict[str, str | float]] = {}
     try:
         with open(forces_path, encoding="utf-8") as f:
             reader = csv.DictReader(f)

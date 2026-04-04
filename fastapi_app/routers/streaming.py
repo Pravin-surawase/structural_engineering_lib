@@ -229,45 +229,47 @@ async def stream_batch_design(
 
             # Send progress update
             job = job_manager.get_job(job_id)
-            yield {
-                "event": "progress",
-                "data": json.dumps(
-                    {
-                        "completed": job["completed"],
-                        "total": job["total"],
-                        "failed": job["failed"],
-                        "percent": round(job["completed"] / job["total"] * 100, 1),
-                    }
-                ),
-            }
+            if job is not None:
+                yield {
+                    "event": "progress",
+                    "data": json.dumps(
+                        {
+                            "completed": job["completed"],
+                            "total": job["total"],
+                            "failed": job["failed"],
+                            "percent": round(job["completed"] / job["total"] * 100, 1),
+                        }
+                    ),
+                }
 
             await asyncio.sleep(0)
 
         # Send complete event
         job = job_manager.get_job(job_id)
-        yield {
-            "event": "complete",
-            "data": json.dumps(
-                {
-                    "job_id": job_id,
-                    "total": job["total"],
-                    "completed": job["completed"],
-                    "failed": job["failed"],
-                    "duration_seconds": (
-                        (
-                            datetime.fromisoformat(
-                                job["completed_at"].replace("Z", "+00:00")
-                            )
-                            - datetime.fromisoformat(
-                                job["started_at"].replace("Z", "+00:00")
-                            )
-                        ).total_seconds()
-                        if job.get("completed_at")
-                        else None
-                    ),
-                }
-            ),
-        }
+        if job is not None:
+            yield {
+                "event": "complete",
+                "data": json.dumps(
+                    {
+                        "job_id": job_id,
+                        "total": job["total"],
+                        "completed": job["completed"],
+                        "failed": job["failed"],
+                        "duration_seconds": (
+                            (
+                                datetime.fromisoformat(
+                                    job["completed_at"].replace("Z", "+00:00")
+                                )
+                                - datetime.fromisoformat(
+                                    job["started_at"].replace("Z", "+00:00")
+                                )
+                            ).total_seconds()
+                            if job.get("completed_at")
+                            else None
+                        ),
+                    }
+                ),
+            }
 
     return EventSourceResponse(event_generator())
 
