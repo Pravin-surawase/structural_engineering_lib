@@ -102,7 +102,7 @@ _SP16_TABLE_I_C1: tuple[float, ...] = (
     0.802,
     0.811,
     0.816,
-    0.818,
+    1.0,
 )
 
 _SP16_TABLE_I_C2: tuple[float, ...] = (
@@ -125,7 +125,7 @@ _SP16_TABLE_I_C2: tuple[float, ...] = (
     0.356,
     0.366,
     0.376,
-    0.386,
+    0.42,
 )
 
 # Number of points to sweep for the P-M interaction envelope
@@ -210,13 +210,23 @@ def _pm_envelope_point(
         Cc_N = c1 * STRESS_BLOCK_FACTOR * fck * b_mm * D_mm
         y_cc = c2 * D_mm
 
-    # --- Steel layer 1: compression side at d_prime_mm from comp. face ---
-    if xu > _RADIAL_TOL:
-        # IS 456 Cl 38.1: strain at compression steel
-        # eps_sc = 0.0035 * (xu - d') / xu
-        eps_sc = EPSILON_CU * safe_divide(xu - d_prime_mm, xu, default=0.0)
-    else:
+    # --- Steel strains (compression and tension faces) ---
+    if xu <= _RADIAL_TOL:
         eps_sc = 0.0
+        eps_st = 0.0
+    elif xu <= D_mm:
+        # IS 456 Cl 38.1: standard strain profile (max 0.0035 at comp face, zero at NA)
+        eps_sc = EPSILON_CU * safe_divide(xu - d_prime_mm, xu, default=0.0)
+        eps_st = EPSILON_CU * safe_divide(xu - d_eff, xu, default=0.0)
+    else:
+        # IS 456 Cl 38.1: modified strain profile for xu > D (entire section in compression)
+        # Strain at far face (least compressed):
+        eps_far = EPSILON_CU * safe_divide(xu - D_mm, xu, default=0.0)
+        # Strain at compression face: 0.0035 - 0.75 * eps_far (IS 456 Cl 38.1)
+        eps_max = EPSILON_CU - 0.75 * eps_far
+        # Linear interpolation across section depth
+        eps_sc = eps_max - (eps_max - eps_far) * d_prime_mm / D_mm
+        eps_st = eps_max - (eps_max - eps_far) * d_eff / D_mm
 
     f_sc = steel_stress_from_strain_5point(eps_sc, fy)
     # IS 456 Cl 38.1: subtract displaced concrete (already counted in Cc)
@@ -226,15 +236,6 @@ def _pm_envelope_point(
     else:
         f_sc_net = f_sc
     F_sc_N = f_sc_net * Asc_half_mm2
-
-    # --- Steel layer 2: tension side at d_eff from comp. face ---
-    if xu > _RADIAL_TOL:
-        # IS 456 Cl 38.1: strain at tension steel
-        # eps_st = 0.0035 * (xu - d_eff) / xu
-        # Positive => compression, negative => tension
-        eps_st = EPSILON_CU * safe_divide(xu - d_eff, xu, default=0.0)
-    else:
-        eps_st = 0.0
 
     f_st = steel_stress_from_strain_5point(eps_st, fy)
     # Subtract displaced concrete only if bar is in compression zone
@@ -767,14 +768,28 @@ def pm_interaction_curve(
         COLUMN_CONCRETE_COEFF * fck * Ac_mm2 + COLUMN_STEEL_COEFF * fy * Asc_mm2
     ) / 1000.0
 
+    # Cap envelope at Pu_0 per IS 456 Cl 39.3
+    for i in range(len(envelope_P)):
+        if envelope_P[i] > Pu_0_kN:
+            envelope_P[i] = Pu_0_kN
+            envelope_M[i] = 0.0
+
+    # Ensure pure axial point (Pu_0, 0) is included
+    if not envelope_P or envelope_P[-1] != Pu_0_kN or envelope_M[-1] != 0.0:
+        envelope_P.append(Pu_0_kN)
+        envelope_M.append(0.0)
+
     # ===========================================================
     # 4. Balanced point detection
     # ===========================================================
     # IS 456 Cl 38.1: balanced xu when tension steel just yields
-    # xu_bal = d_eff * ε_cu / (ε_cu + fy / (1.15 * Es))
     Es = 2e5  # Steel modulus = 200,000 N/mm²
     d_eff = D_mm - d_prime_mm
-    xu_bal = d_eff * EPSILON_CU / (EPSILON_CU + fy / (1.15 * Es))
+    eps_sy_elastic = fy / (1.15 * Es)
+    # IS 456 Cl 38.1: HYSD bars (Fe 415, 500, 550) have 0.002 inelastic strain
+    # Mild steel (Fe 250) has no inelastic component
+    eps_sy = eps_sy_elastic + 0.002 if fy > 250 else eps_sy_elastic
+    xu_bal = d_eff * EPSILON_CU / (EPSILON_CU + eps_sy)
     Pu_bal_kN, Mu_bal_kNm = _pm_envelope_point(
         xu_bal, b_mm, D_mm, fck, fy, Asc_half, d_prime_mm
     )

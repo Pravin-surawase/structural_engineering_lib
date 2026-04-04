@@ -24,21 +24,29 @@ from structural_lib.codes.is456.column import (
     slenderness,  # noqa: E402
     uniaxial,  # noqa: E402
 )
+from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
 from structural_lib.codes.is456.column.detailing import create_column_detailing
 from structural_lib.codes.is456.column.helical import check_helical_reinforcement
 from structural_lib.codes.is456.column.long_column import design_long_column
 from structural_lib.codes.is456.column.slenderness import calculate_additional_moment
+from structural_lib.codes.is456.column.uniaxial import (
+    design_short_column_uniaxial,
+    pm_interaction_curve,
+)
 
 __all__ = [
     "axial",
     "biaxial",
+    "biaxial_bending_check",
     "calculate_additional_moment",
     "check_helical_reinforcement",
     "create_column_detailing",
-    "detailing",
     "design_long_column",
+    "design_short_column_uniaxial",
+    "detailing",
     "helical",
     "long_column",
+    "pm_interaction_curve",
     "slenderness",
     "uniaxial",
 ]

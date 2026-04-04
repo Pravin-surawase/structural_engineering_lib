@@ -62,7 +62,7 @@ docker compose -f docker-compose.dev.yml up            # Dev with hot reload
 grep -r "@router" fastapi_app/routers/ | head -30
 ```
 
-58 endpoints across 13 routers already exist. Do NOT duplicate.
+59 endpoints across 13 routers already exist. Do NOT duplicate.
 
 ## Existing Routers
 

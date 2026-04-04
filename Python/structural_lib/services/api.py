@@ -43,6 +43,7 @@ from structural_lib.codes.is456.column.uniaxial import (
     pm_interaction_curve,
 )
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
+from structural_lib.codes.is13920.column import check_column_ductility
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
@@ -172,6 +173,8 @@ __all__ = [
     "check_helical_reinforcement_is456",
     "design_column_is456",
     "detail_column_is456",
+    # IS 13920 Ductile Detailing
+    "check_column_ductility_is13920",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
@@ -2954,6 +2957,86 @@ def detail_column_is456(
     )
 
     return result.to_dict()
+
+
+def check_column_ductility_is13920(
+    *,
+    b_mm: float,
+    D_mm: float,
+    clear_height_mm: float,
+    bar_dia_mm: float,
+    fck: float,
+    fy: float,
+    Ag_mm2: float | None = None,
+    Ak_mm2: float | None = None,
+) -> dict:
+    """Check column ductile detailing per IS 13920:2016 Cl 7.
+
+    Validates geometry, longitudinal steel limits, special confining
+    reinforcement spacing, confinement zone length, and confining bar area.
+
+    Args:
+        b_mm: Column width — shorter dimension (mm). Range: 200–5000.
+        D_mm: Column depth — longer dimension (mm). Range: 200–5000.
+        clear_height_mm: Clear height of column between floors (mm).
+        bar_dia_mm: Smallest longitudinal bar diameter (mm). Range: 8–50.
+        fck: Concrete compressive strength (N/mm²). Range: 15–80.
+        fy: Steel yield strength (N/mm²). Range: 250–600.
+        Ag_mm2: Gross area of column (mm²). If None, computed as b_mm × D_mm.
+        Ak_mm2: Confined core area to hoop centerline (mm²). If None,
+            estimated as (b_mm - 80) × (D_mm - 80) assuming 40 mm cover.
+
+    Returns:
+        Dictionary with ductile detailing check results.
+
+    Raises:
+        ValueError: If parameters are outside plausible ranges.
+
+    References:
+        IS 13920:2016, Cl. 7
+
+    Examples:
+        >>> result = check_column_ductility_is13920(
+        ...     b_mm=400, D_mm=500, clear_height_mm=3000,
+        ...     bar_dia_mm=16, fck=25, fy=415,
+        ... )
+        >>> result['is_compliant']
+        True
+    """
+    # Boundary validation
+    if not (200 <= b_mm <= 5000):
+        raise ValueError(f"Column width b_mm should be 200–5000mm (got {b_mm}).")
+    if not (200 <= D_mm <= 5000):
+        raise ValueError(f"Column depth D_mm should be 200–5000mm (got {D_mm}).")
+    if clear_height_mm <= 0:
+        raise ValueError(f"clear_height_mm must be positive (got {clear_height_mm}).")
+    if not (8 <= bar_dia_mm <= 50):
+        raise ValueError(f"bar_dia_mm should be 8–50mm (got {bar_dia_mm}).")
+    if not (15 <= fck <= 80):
+        raise ValueError(f"fck should be 15–80 N/mm² (got {fck}).")
+    if not (250 <= fy <= 600):
+        raise ValueError(f"fy should be 250–600 N/mm² (got {fy}).")
+
+    # Default areas for rectangular section
+    if Ag_mm2 is None:
+        Ag_mm2 = b_mm * D_mm
+    if Ak_mm2 is None:
+        Ak_mm2 = (b_mm - 2 * 40) * (D_mm - 2 * 40)
+
+    result = check_column_ductility(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        clear_height_mm=clear_height_mm,
+        bar_dia_mm=bar_dia_mm,
+        fck=fck,
+        fy=fy,
+        Ag_mm2=Ag_mm2,
+        Ak_mm2=Ak_mm2,
+    )
+
+    from dataclasses import asdict
+
+    return asdict(result)
 
 
 def optimize_beam_cost(

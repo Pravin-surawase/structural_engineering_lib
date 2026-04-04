@@ -21,7 +21,7 @@ from __future__ import annotations
 import math
 
 from structural_lib.codes.is456.column._common import _calculate_puz
-from structural_lib.codes.is456.column.axial import classify_column
+from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.column.uniaxial import pm_interaction_curve
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
@@ -294,6 +294,27 @@ def biaxial_bending_check(
             "Additional moment per Cl 39.7 required. "
             "This function does NOT apply the slenderness moment."
         )
+
+    # ===========================================================
+    # 2b. Minimum eccentricity check (IS 456 Cl 25.4)
+    # ===========================================================
+    if l_unsupported_mm is not None:
+        e_min_x_mm = min_eccentricity(l_unsupported_mm, D_mm)
+        e_min_y_mm = min_eccentricity(l_unsupported_mm, b_mm)
+        Mu_emin_x_kNm = Pu_kN * e_min_x_mm / 1000.0
+        Mu_emin_y_kNm = Pu_kN * e_min_y_mm / 1000.0
+        if Mux_kNm < Mu_emin_x_kNm:
+            Mux_kNm = Mu_emin_x_kNm
+            warnings.append(
+                f"Mux amplified to {Mu_emin_x_kNm:.2f} kNm for "
+                f"e_min_x={e_min_x_mm:.1f}mm per Cl 25.4"
+            )
+        if Muy_kNm < Mu_emin_y_kNm:
+            Muy_kNm = Mu_emin_y_kNm
+            warnings.append(
+                f"Muy amplified to {Mu_emin_y_kNm:.2f} kNm for "
+                f"e_min_y={e_min_y_mm:.1f}mm per Cl 25.4"
+            )
 
     # ===========================================================
     # 3. Calculate Puz (IS 456 Cl 39.6a)

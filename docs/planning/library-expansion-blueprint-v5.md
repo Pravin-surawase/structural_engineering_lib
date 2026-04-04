@@ -237,7 +237,7 @@ class DesignEnvelope:
 
 | Element | Clauses | Priority |
 |---------|---------|----------|
-| Column | Cl 25, 39, Annex E/G | P1 🔄 — 9/11 functions done: classify ✅, min_ecc ✅, axial ✅, uniaxial ✅, biaxial ✅, P-M curve ✅, effective_length ✅, helical ✅, additional_moment ✅, long_column ✅ (410+ tests). Remaining: column_detailing, ductile_detailing |
+| Column | Cl 25, 39, Annex E/G | ✅ COMPLETE — 11/11 functions done: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1% |
 | One-way slab | Cl 24.1–24.2 | P1 |
 | Two-way slab | Cl 24.3, Annex D, Table 26 | P1 |
 | Footing | Cl 34, 31.6 | P1 |
@@ -335,8 +335,8 @@ warnings.warn(
 | 6 | `biaxial_bending_check()` | Cl 39.6 (Bresler) | ✅ Done | ✅ |
 | 7 | `slender_additional_moment()` | Cl 39.7 | ✅ Done | ✅ |
 | 8 | `pm_interaction_curve()` | Cl 39.5, SP:16 Table I | ✅ Done | ✅ |
-| 9 | `column_detailing()` | Cl 26.5.3 | Medium | 📋 |
-| 10 | `column_ductile_detailing()` | IS 13920 Cl 7 | Medium | 📋 |
+| 9 | `column_detailing()` | Cl 26.5.3 | ✅ Done | ✅ |
+| 10 | `column_ductile_detailing()` | IS 13920 Cl 7 | ✅ Done | ✅ |
 | 11 | `effective_length()` | Cl 25.2, Table 28 | ✅ Done | ✅ |
 
 **Quality Gate:** Each function goes through the 9-step function quality pipeline. SP:16 benchmarks required ±0.1%.
@@ -428,7 +428,7 @@ class LoadCombination(ABC):
 ```
 
 ### 5.7 Phase 1 Success Criteria
-- [x] IS 456 column design: 7/10 functions done (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length). 254+ column tests, SP:16 benchmarks passing ±0.1%. Remaining: additional_moment, helical, detailing
+- [x] IS 456 column design: 11/11 functions COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, detailing + IS 13920 ductile detailing). 500+ column tests, SP:16 benchmarks passing ±0.1%
 - [ ] IS 456 one-way slab: 4 functions
 - [ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases
 - [ ] IS 456 footing: 6 functions including punching shear
@@ -684,7 +684,7 @@ class LoadCombination:
 | 3 | **National Annex proliferation (EC2)** | 150 parameters × N countries | MEDIUM | Start with "recommended" + UK NA only |
 | 4 | **Variable strut inclination (EC2)** | No precedent in codebase | MEDIUM | Start with θ = 21.8° (conservative), add optimizer later |
 | 5 | **Enhanced shear NOT implemented** | IS 456 currently unconservative | ~~HIGH~~ RESOLVED | ✅ Fixed in TASK-712 (PR #468) |
-| 6 | **Column P-M interaction complexity** | Most complex IS 456 calculation | 🔄 PARTIALLY MITIGATED | Implemented incrementally as prescribed: axial → uniaxial → biaxial → P-M curve. 7/10 functions done. Remaining: slenderness, detailing |
+| 6 | **Column P-M interaction complexity** | Most complex IS 456 calculation | ✅ RESOLVED | Implemented incrementally: axial → uniaxial → biaxial → P-M curve → slenderness → detailing. 11/11 functions done. Phase 2 Column COMPLETE |
 | 7 | **Load combination explosion** | 50+ combinations per code | MEDIUM | Build combination engine early (Phase 2) |
 | 8 | **ACI/EC2 code review expertise** | Team has IS 456 expertise only | HIGH | Require professional review for non-IS 456 code |
 | 9 | **Test count explosion** | ~8000 tests, CI time grows | LOW | Parallelize by code in CI matrix |

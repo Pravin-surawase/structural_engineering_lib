@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- **Column P-M Interaction (TASK-690)** — SP:16 Table I continuity at k=1.0, Cl 38.1 modified strain for xu>D, xu_bal 0.002 inelastic strain for HYSD bars, Pu_0 envelope cap
+- **Column Biaxial e_min (TASK-691)** — Enforce Cl 25.4 minimum eccentricity on both axes before Bresler interaction check
+
+### Security
+- **Column Router (TASK-692)** — Sanitized 13 exception handlers removing internal error details (CWE-209)
+
 ### Added
 - **Column Design (IS 456)** — `classify_column` (Cl 25.1.2), `min_eccentricity` (Cl 25.4), `short_axial_capacity` (Cl 39.3) with ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 constants, 3 API wrappers, FastAPI column router with 3 POST endpoints, 75 tests (TASK-630/631/632)
 - **TASK-633:** Short column uniaxial bending (Cl 39.5) — design_short_column_uniaxial() + 57 tests + API + FastAPI endpoint

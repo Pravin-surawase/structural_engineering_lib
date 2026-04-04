@@ -10,12 +10,21 @@ applyTo: "**/fastapi_app/**"
 grep -r "@router" fastapi_app/routers/ | head -30
 ```
 
-Key existing routes (13 routers, 58 endpoints):
+Key existing routes (13 routers, 59 endpoints):
 - `POST /api/v1/design/beam` — Beam design
-- `POST /api/v1/design/column/biaxial-check` — Biaxial bending check
-- `POST /api/v1/design/column/effective-length` — Effective length
+- `POST /api/v1/design/column` — Unified column design
+- `POST /api/v1/design/column/effective-length` — Effective length per IS 456 Table 28
+- `POST /api/v1/design/column/classify` — Classify column (short/slender)
+- `POST /api/v1/design/column/eccentricity` — Minimum eccentricity
+- `POST /api/v1/design/column/axial` — Short column axial capacity
 - `POST /api/v1/design/column/uniaxial` — Uniaxial bending design
 - `POST /api/v1/design/column/interaction-curve` — P-M interaction curve
+- `POST /api/v1/design/column/biaxial-check` — Biaxial bending check (Cl 39.6)
+- `POST /api/v1/design/column/additional-moment` — Additional moment for slender columns (Cl 39.7.1)
+- `POST /api/v1/design/column/long-column` — Long column design
+- `POST /api/v1/design/column/helical-check` — Helical reinforcement check (Cl 39.4)
+- `POST /api/v1/design/column/detailing` — Column detailing (Cl 26.5.3)
+- `POST /api/v1/design/column/ductile-detailing` — IS 13920 ductile detailing
 - `POST /api/v1/import/csv` — CSV import with adapters
 - `POST /api/v1/geometry/beam/full` — 3D rebar/stirrup positions
 - `POST /api/v1/detailing/beam` — Rebar detailing

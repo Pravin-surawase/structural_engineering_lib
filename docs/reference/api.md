@@ -19,7 +19,7 @@ tags: []
 
 ---
 
-**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI, torsion, serviceability Level A/B/C, ETABS import). All APIs protected against accidental breaking changes.
+**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI, torsion, serviceability Level A/B/C, ETABS import, column design — axial/uniaxial/biaxial/P-M curves/slender/helical/detailing/ductile). All APIs protected against accidental breaking changes.
 
 ---
 
@@ -3295,3 +3295,237 @@ print(f"αn = {result['alpha_n']:.2f}, Classification: {result['classification']
 ```
 
 **FastAPI Endpoint:** `POST /api/v1/design/column/biaxial-check`
+
+---
+
+### `calculate_additional_moment_is456(Pu_kN, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm) → dict`
+
+Calculate additional moment for slender columns per IS 456 Cl 39.7.1. For columns with le/D ≥ 12, an additional moment Ma = Pu × e_add accounts for P-delta effects.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Factored axial load (kN). Must be ≥ 0 |
+| `b_mm` | `float` | Column width (mm). Must be > 0 |
+| `D_mm` | `float` | Column depth (mm). Must be > 0 |
+| `lex_mm` | `float` | Effective length about x-axis (mm). Must be > 0 |
+| `ley_mm` | `float` | Effective length about y-axis (mm). Must be > 0 |
+| `fck` | `float` | Concrete strength (N/mm²). IS 456 range: 15–80 |
+| `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
+| `Asc_mm2` | `float` | Total longitudinal steel area (mm²) |
+| `d_prime_mm` | `float` | Cover to centroid of reinforcement (mm) |
+
+**Returns:** `dict` with keys: `Ma_x_kNm`, `Ma_y_kNm`, `eadd_x_mm`, `eadd_y_mm`, `k_factor`, `slenderness_x`, `slenderness_y`, `is_slender_x`, `is_slender_y`
+
+**Reference:** IS 456 Cl 39.7.1, 39.7.1.1
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.calculate_additional_moment_is456(
+    Pu_kN=1200.0, b_mm=300.0, D_mm=450.0,
+    lex_mm=5400.0, ley_mm=3600.0,
+    fck=25.0, fy=415.0, Asc_mm2=2700.0, d_prime_mm=50.0,
+)
+print(f"Ma_x: {result['Ma_x_kNm']:.2f} kN·m, Ma_y: {result['Ma_y_kNm']:.2f} kN·m")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/additional-moment`
+
+---
+
+### `design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True) → dict`
+
+Design a long (slender) column per IS 456 Cl 39.7. Calculates additional moments (Cl 39.7.1), augments applied moments, and checks biaxial capacity with the Bresler formula.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Factored axial load (kN). Must be ≥ 0 |
+| `M1x_kNm` | `float` | End moment 1 about x-axis (kNm) |
+| `M2x_kNm` | `float` | End moment 2 about x-axis (kNm) |
+| `M1y_kNm` | `float` | End moment 1 about y-axis (kNm) |
+| `M2y_kNm` | `float` | End moment 2 about y-axis (kNm) |
+| `b_mm` | `float` | Column width (mm). Typical: 100–2000 |
+| `D_mm` | `float` | Column depth (mm). Typical: 100–2000 |
+| `lex_mm` | `float` | Effective length about x-axis (mm) |
+| `ley_mm` | `float` | Effective length about y-axis (mm) |
+| `fck` | `float` | Concrete strength (N/mm²). IS 456 range: 15–80 |
+| `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
+| `Asc_mm2` | `float` | Total longitudinal steel area (mm²), symmetrically placed |
+| `d_prime_mm` | `float` | Cover to centroid of reinforcement (mm) |
+| `braced` | `bool` | If True, braced frame (sway prevented). Default: True |
+
+**Returns:** `dict` with keys: `is_safe`, `classification`, `Pu_kN`, `M1x_kNm`, `M2x_kNm`, `M1y_kNm`, `M2y_kNm`, `Ma_x_kNm`, `Ma_y_kNm`, `Mx_design_kNm`, `My_design_kNm`, `biaxial_check`, `clause_ref`, `warnings`
+
+**Reference:** IS 456 Cl 39.7 (slender column design), Cl 39.7.1 (additional moment)
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.design_long_column_is456(
+    Pu_kN=1200.0,
+    M1x_kNm=60.0, M2x_kNm=80.0,
+    M1y_kNm=40.0, M2y_kNm=50.0,
+    b_mm=300.0, D_mm=450.0,
+    lex_mm=5400.0, ley_mm=3600.0,
+    fck=25.0, fy=415.0, Asc_mm2=2700.0, d_prime_mm=50.0,
+)
+print(f"Safe: {result['is_safe']}, Design Mx: {result['Mx_design_kNm']:.2f} kN·m")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/long-column`
+
+---
+
+### `check_helical_reinforcement_is456(D_mm, D_core_mm, fck, fy, d_helix_mm, pitch_mm, Pu_axial_kN) → dict`
+
+Check helical (spiral) reinforcement for circular column per IS 456 Cl 39.4. Validates pitch, bar diameter, volumetric ratio, and computes enhanced axial capacity with 1.05 factor.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `D_mm` | `float` | Overall column diameter (mm). Typical: 200–2000 |
+| `D_core_mm` | `float` | Core diameter to centerline of helix (mm). Must be < D_mm |
+| `fck` | `float` | Concrete strength (N/mm²). IS 456 range: 15–80 |
+| `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
+| `d_helix_mm` | `float` | Diameter of helical bar (mm). Typical: 8–20 |
+| `pitch_mm` | `float` | Pitch of helix (mm). Must satisfy: 25mm ≤ pitch ≤ 75mm per Cl 26.5.3.2(c) |
+| `Pu_axial_kN` | `float` | Applied factored axial load (kN). Must be ≥ 0 |
+
+**Returns:** `dict` with keys: `is_safe`, `Pu_capacity_kN`, `rho_h`, `Ah_mm2`, `pitch_ok`, `d_helix_ok`, `utilization`, `clause_ref`, `warnings`
+
+**Reference:** IS 456 Cl 39.4, Cl 26.5.3.2(c)
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.check_helical_reinforcement_is456(
+    D_mm=500.0, D_core_mm=440.0,
+    fck=25.0, fy=415.0,
+    d_helix_mm=10.0, pitch_mm=50.0, Pu_axial_kN=2000.0,
+)
+print(f"Safe: {result['is_safe']}, Capacity: {result['Pu_capacity_kN']:.1f} kN")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/helical-check`
+
+---
+
+### `detail_column_is456(*, b_mm, D_mm, cover_mm=40.0, fck=25.0, fy=415.0, num_bars, bar_dia_mm, tie_dia_mm=None, is_circular=False, at_lap_section=False) → dict`
+
+Check column detailing per IS 456 Cl 26.5.3. Validates longitudinal reinforcement limits (0.8–6%), bar spacing, tie diameter, tie spacing, and cross-tie requirements.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `b_mm` | `float` | Column width (mm). Range: 100–5000 |
+| `D_mm` | `float` | Column depth (mm). Range: 100–5000 |
+| `cover_mm` | `float` | Clear cover (mm). Range: 15–100. Default: 40.0 |
+| `fck` | `float` | Concrete strength (N/mm²). Default: 25.0 |
+| `fy` | `float` | Steel yield strength (N/mm²). Default: 415.0 |
+| `num_bars` | `int` | Number of longitudinal bars. Range: 3–60 |
+| `bar_dia_mm` | `float` | Longitudinal bar diameter (mm). Range: 8–50 |
+| `tie_dia_mm` | `float \| None` | Tie bar diameter (mm). Auto-selected if None |
+| `is_circular` | `bool` | True for circular columns. Default: False |
+| `at_lap_section` | `bool` | True if checking at lap splice. Default: False |
+
+**Returns:** `dict` with keys: `is_valid`, `steel_ratio_pct`, `min_spacing_mm`, `tie_dia_mm`, `tie_spacing_mm`, `cross_ties_required`, `warnings`, `errors`
+
+**Reference:** IS 456 Cl 26.5.3
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.detail_column_is456(
+    b_mm=300, D_mm=450, num_bars=6, bar_dia_mm=16,
+)
+print(f"Valid: {result['is_valid']}, Tie spacing: {result['tie_spacing_mm']} mm")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/detailing/column`
+
+---
+
+### `check_column_ductility_is13920(*, b_mm, D_mm, clear_height_mm, bar_dia_mm, fck, fy, Ag_mm2=None, Ak_mm2=None) → dict`
+
+Check column ductile detailing per IS 13920:2016 Cl 7. Validates geometry constraints, longitudinal steel limits, special confining reinforcement spacing, confinement zone length, and confining bar area.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `b_mm` | `float` | Column width — shorter dimension (mm). Range: 200–5000 |
+| `D_mm` | `float` | Column depth — longer dimension (mm). Range: 200–5000 |
+| `clear_height_mm` | `float` | Clear height between floors (mm) |
+| `bar_dia_mm` | `float` | Smallest longitudinal bar diameter (mm). Range: 8–50 |
+| `fck` | `float` | Concrete strength (N/mm²). Range: 15–80 |
+| `fy` | `float` | Steel yield strength (N/mm²). Range: 250–600 |
+| `Ag_mm2` | `float \| None` | Gross area (mm²). If None, computed as b×D |
+| `Ak_mm2` | `float \| None` | Confined core area to hoop centerline (mm²). If None, estimated with 40mm cover |
+
+**Returns:** `dict` with keys: `is_compliant`, `min_dimension_ok`, `aspect_ratio_ok`, `bar_spacing_max_mm`, `confinement_zone_mm`, `hoop_spacing_mm`, `Ash_required_mm2`, `warnings`, `errors`
+
+**Reference:** IS 13920:2016 Cl 7
+
+**Usage:**
+```python
+from structural_lib import api
+
+result = api.check_column_ductility_is13920(
+    b_mm=400, D_mm=500, clear_height_mm=3000,
+    bar_dia_mm=16, fck=25, fy=415,
+)
+print(f"Compliant: {result['is_compliant']}")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column/ductile-detailing`
+
+---
+
+### `design_column_is456(Pu_kN, Mux_kNm=0.0, Muy_kNm=0.0, b_mm=0.0, D_mm=0.0, l_mm=0.0, end_condition='FIXED_FIXED', fck=25.0, fy=415.0, Asc_mm2=0.0, d_prime_mm=50.0, l_unsupported_mm=None, braced=True, M1x_kNm=None, M2x_kNm=None, M1y_kNm=None, M2y_kNm=None) → dict`
+
+Master entry point for column design per IS 456:2000. Automatically routes to the appropriate design checks based on column classification:
+1. Effective length from end conditions (Cl 25.2, Table 28)
+2. Column classification as SHORT or SLENDER (Cl 25.1.2)
+3. Minimum eccentricity enforcement (Cl 25.4)
+4. Short column: uniaxial or biaxial checks (Cl 39.5, 39.6)
+5. Slender column: additional moments + biaxial (Cl 39.7)
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Factored axial load (kN). Must be ≥ 0 |
+| `Mux_kNm` | `float` | Moment about x-axis (kNm). Default: 0.0 |
+| `Muy_kNm` | `float` | Moment about y-axis (kNm). Default: 0.0 |
+| `b_mm` | `float` | Column width (mm). Typical: 100–2000 |
+| `D_mm` | `float` | Column depth (mm). Typical: 100–2000 |
+| `l_mm` | `float` | Unsupported length (mm) |
+| `end_condition` | `str` | End restraint: `'FIXED_FIXED'`, `'FIXED_HINGED'`, etc. |
+| `fck` | `float` | Concrete strength (N/mm²). Default: 25.0 |
+| `fy` | `float` | Steel yield strength (N/mm²). Default: 415.0 |
+| `Asc_mm2` | `float` | Total longitudinal steel area (mm²) |
+| `d_prime_mm` | `float` | Cover to centroid of reinforcement (mm). Default: 50.0 |
+| `l_unsupported_mm` | `float \| None` | Unsupported length for min eccentricity. If None, uses l_mm |
+| `braced` | `bool` | If True, braced frame. Default: True |
+| `M1x_kNm` | `float \| None` | End moment 1 x-axis (slender columns). If None, uses Mux |
+| `M2x_kNm` | `float \| None` | End moment 2 x-axis (slender columns). If None, uses Mux |
+| `M1y_kNm` | `float \| None` | End moment 1 y-axis (slender columns). If None, uses Muy |
+| `M2y_kNm` | `float \| None` | End moment 2 y-axis (slender columns). If None, uses Muy |
+
+**Returns:** `dict` with keys: `is_safe`, `classification`, `le_x_mm`, `le_y_mm`, `slenderness_x`, `slenderness_y`, `emin_x_mm`, `emin_y_mm`, `Mux_design_kNm`, `Muy_design_kNm`, `governing_check`, `checks`, `clause_refs`, `warnings`
+
+**Reference:** IS 456 Cl 25.1.2, 25.2, 25.4, 39.3, 39.5, 39.6, 39.7
+
+**Usage:**
+```python
+from structural_lib import api
+
+# Short column, uniaxial
+result = api.design_column_is456(
+    Pu_kN=800.0, Mux_kNm=120.0,
+    b_mm=300.0, D_mm=450.0, l_mm=3000.0,
+    fck=25.0, fy=415.0, Asc_mm2=2400.0,
+)
+print(f"Safe: {result['is_safe']}, Classification: {result['classification']}")
+print(f"Governing: {result['governing_check']}")
+```
+
+**FastAPI Endpoint:** `POST /api/v1/design/column`

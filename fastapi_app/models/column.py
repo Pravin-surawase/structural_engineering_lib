@@ -913,3 +913,67 @@ class ColumnDetailingResponse(BaseModel):
     is_valid: bool
     clause_ref: str
     warnings: list[str]
+
+
+# =============================================================================
+# Ductile Detailing Models (IS 13920:2016 Cl 7)
+# =============================================================================
+
+
+class ColumnDuctileDetailingRequest(BaseModel):
+    """Request for column ductile detailing check per IS 13920:2016 Cl 7."""
+
+    b_mm: float = Field(
+        ...,
+        ge=200,
+        le=5000,
+        description="Column width — shorter dimension (mm)",
+        examples=[300.0, 400.0, 500.0],
+    )
+    D_mm: float = Field(
+        ...,
+        ge=200,
+        le=5000,
+        description="Column depth — longer dimension (mm)",
+        examples=[400.0, 500.0, 600.0],
+    )
+    clear_height_mm: float = Field(
+        ...,
+        gt=0,
+        le=50000,
+        description="Clear height of column between floors (mm)",
+        examples=[3000.0, 4500.0],
+    )
+    bar_dia_mm: float = Field(
+        ...,
+        ge=8,
+        le=50,
+        description="Smallest longitudinal bar diameter (mm)",
+        examples=[16.0, 20.0, 25.0],
+    )
+    fck: float = Field(
+        ...,
+        ge=15,
+        le=80,
+        description="Characteristic concrete strength (N/mm²)",
+        examples=[20.0, 25.0, 30.0],
+    )
+    fy: float = Field(
+        ...,
+        ge=250,
+        le=600,
+        description="Yield strength of steel (N/mm²)",
+        examples=[415.0, 500.0],
+    )
+    Ag_mm2: float | None = Field(
+        None,
+        gt=0,
+        description="Gross area of column (mm²). Defaults to b×D if omitted.",
+        examples=[200000.0],
+    )
+    Ak_mm2: float | None = Field(
+        None,
+        gt=0,
+        description="Confined core area to hoop centerline (mm²). Estimated if omitted.",
+        examples=[102400.0],
+    )
