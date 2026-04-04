@@ -532,3 +532,35 @@ class TestValidateBeamInputs:
         )
         # Should have errors from multiple validators
         assert len(errors) >= 7  # Multiple sources of errors
+
+
+class TestBeamMinWidthWarning:
+    """IS-5: validate_beam_inputs emits warning for narrow beams per IS 456 Cl. 23.1.1."""
+
+    def test_narrow_beam_emits_warning(self):
+        """b=100mm (< 150mm) should emit a UserWarning about Cl. 23.1.1."""
+        import warnings as _w
+
+        with _w.catch_warnings(record=True) as caught:
+            _w.simplefilter("always")
+            validation.validate_beam_inputs(
+                b=100, d=450, D=500, cover=25, fck=25, fy=415, mu=120, vu=80
+            )
+        warn_msgs = [str(w.message) for w in caught]
+        assert any(
+            "23.1.1" in msg for msg in warn_msgs
+        ), f"Expected IS 456 Cl. 23.1.1 warning for b=100, got: {warn_msgs}"
+
+    def test_normal_beam_no_warning(self):
+        """b=200mm (>= 150mm) should NOT emit min-width warning."""
+        import warnings as _w
+
+        with _w.catch_warnings(record=True) as caught:
+            _w.simplefilter("always")
+            validation.validate_beam_inputs(
+                b=200, d=450, D=500, cover=25, fck=25, fy=415, mu=120, vu=80
+            )
+        warn_msgs = [str(w.message) for w in caught]
+        assert not any(
+            "23.1.1" in msg for msg in warn_msgs
+        ), f"Unexpected min-width warning for b=200: {warn_msgs}"

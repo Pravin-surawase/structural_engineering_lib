@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { TopBar } from './components/layout/TopBar';
 import { FloatingDock } from './components/ui/FloatingDock';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { useImportedBeamsStore } from './store/importedBeamsStore';
 
 // Lazy-load route components for code splitting
@@ -119,26 +120,28 @@ function AppDock() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <div className="h-screen w-screen bg-zinc-950 overflow-hidden">
-          <TopBar />
-          <Suspense fallback={<RouteLoadingFallback />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/start" element={<HubPage />} />
-              <Route path="/design" element={<DesignView />} />
-              <Route path="/design/results" element={<BeamDetailPage />} />
-              <Route path="/import" element={<ImportView />} />
-              <Route path="/editor" element={<BuildingEditorPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/batch" element={<BatchDesignPage />} />
-            </Routes>
-          </Suspense>
-          <AppDock />
-        </div>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <div className="h-screen w-screen bg-zinc-950 overflow-hidden">
+            <TopBar />
+            <Suspense fallback={<RouteLoadingFallback />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/start" element={<HubPage />} />
+                <Route path="/design" element={<DesignView />} />
+                <Route path="/design/results" element={<BeamDetailPage />} />
+                <Route path="/import" element={<ImportView />} />
+                <Route path="/editor" element={<BuildingEditorPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/batch" element={<BatchDesignPage />} />
+              </Routes>
+            </Suspense>
+            <AppDock />
+          </div>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

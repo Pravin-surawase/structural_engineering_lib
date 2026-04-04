@@ -34,7 +34,9 @@ from structural_lib.codes.is456.common.validation import (
     validate_beam_dimensions,
     validate_material_grades,
 )
+from structural_lib.codes.is456.materials import get_ec, get_fcr, get_xu_max_d
 from structural_lib.core.errors import DimensionError, MaterialError
+from structural_lib.services.api import _validate_plausibility
 
 # ===========================================================================
 # stress_blocks.py
@@ -582,3 +584,81 @@ class TestSteelStress5Point:
         assert result_bilinear == pytest.approx(0.87 * 415, rel=0.001)
         # They are different in the transition zone
         assert abs(result_5pt - result_bilinear) > 1.0
+
+
+# ===========================================================================
+# SM-1: fck=0 / fy=0 rejection guards
+# ===========================================================================
+
+
+class TestGetEcZeroGuard:
+    """SM-1: get_ec must reject fck <= 0."""
+
+    def test_fck_zero_raises(self):
+        """get_ec(0) must raise ValueError — division by zero guard."""
+        with pytest.raises(ValueError, match="fck must be positive"):
+            get_ec(0)
+
+    def test_fck_negative_raises(self):
+        """get_ec(-5) must raise ValueError."""
+        with pytest.raises(ValueError, match="fck must be positive"):
+            get_ec(-5)
+
+
+class TestGetFcrZeroGuard:
+    """SM-1: get_fcr must reject fck <= 0."""
+
+    def test_fck_zero_raises(self):
+        """get_fcr(0) must raise ValueError — sqrt(0) guard."""
+        with pytest.raises(ValueError, match="fck must be positive"):
+            get_fcr(0)
+
+    def test_fck_negative_raises(self):
+        """get_fcr(-5) must raise ValueError."""
+        with pytest.raises(ValueError, match="fck must be positive"):
+            get_fcr(-5)
+
+
+class TestValidatePlausibilityZeroGuards:
+    """SM-1: _validate_plausibility must reject zero/negative fck and fy."""
+
+    def test_fck_zero_raises(self):
+        """fck=0 must raise ValueError."""
+        with pytest.raises(ValueError, match="fck_nmm2=0"):
+            _validate_plausibility(fck_nmm2=0)
+
+    def test_fck_negative_raises(self):
+        """fck=-5 must raise ValueError."""
+        with pytest.raises(ValueError, match="fck_nmm2=-5"):
+            _validate_plausibility(fck_nmm2=-5)
+
+    def test_fy_zero_raises(self):
+        """fy=0 must raise ValueError."""
+        with pytest.raises(ValueError, match="fy_nmm2=0"):
+            _validate_plausibility(fy_nmm2=0)
+
+
+# ===========================================================================
+# SM-2: Float tolerance for fy dispatch in get_xu_max_d
+# ===========================================================================
+
+
+class TestXuMaxDFloatTolerance:
+    """SM-2: get_xu_max_d uses abs(fy - grade) < 0.5 tolerance."""
+
+    def test_fe415_tolerance_match(self):
+        """414.999 should match Fe 415 -> 0.48."""
+        assert get_xu_max_d(414.999) == get_xu_max_d(415.0)
+        assert get_xu_max_d(414.999) == 0.48
+
+    def test_fe500_tolerance_match(self):
+        """499.7 should match Fe 500 -> 0.46."""
+        assert get_xu_max_d(499.7) == get_xu_max_d(500.0)
+        assert get_xu_max_d(499.7) == 0.46
+
+    def test_fe415_outside_tolerance_general_formula(self):
+        """416.0 is outside ±0.5 of 415 -> falls to general formula."""
+        result = get_xu_max_d(416.0)
+        expected = 700 / (1100 + 0.87 * 416.0)
+        assert result == pytest.approx(expected)
+        assert result != 0.48  # Not the Fe 415 table value

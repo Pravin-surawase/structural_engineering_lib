@@ -19,6 +19,7 @@ References:
 from __future__ import annotations
 
 import math
+import warnings as _warnings_mod
 
 from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.common.constants import (
@@ -332,6 +333,18 @@ def design_short_column_uniaxial(
             f"Column depth D_mm must be > 0, got {D_mm}",
             details={"D_mm": D_mm},
             clause_ref="Cl. 39.5",
+        )
+    if b_mm < 200:
+        _warnings_mod.warn(
+            f"Column width b_mm={b_mm}mm is below recommended minimum 200mm. "
+            "Impractically small column sections may not be constructible.",
+            stacklevel=2,
+        )
+    if D_mm < 200:
+        _warnings_mod.warn(
+            f"Column depth D_mm={D_mm}mm is below recommended minimum 200mm. "
+            "Impractically small column sections may not be constructible.",
+            stacklevel=2,
         )
     if le_mm <= 0:
         raise DimensionError(

@@ -190,6 +190,62 @@ class TestLongitudinalTorsionSteel:
             )
 
 
+class TestTorsionZeroDimensionGuards:
+    """SM-3: torsion functions must reject b1=0, d1=0, d1<0."""
+
+    def test_stirrup_area_b1_zero_raises(self):
+        """calculate_torsion_stirrup_area(b1=0) must raise DimensionError."""
+        with pytest.raises(DimensionError):
+            calculate_torsion_stirrup_area(
+                tu_knm=10,
+                vu_kn=100,
+                b=300,
+                d=450,
+                b1=0,
+                d1=420,
+                fy=500,
+                tc=0.62,
+            )
+
+    def test_stirrup_area_d1_negative_raises(self):
+        """calculate_torsion_stirrup_area(d1=-5) must raise DimensionError."""
+        with pytest.raises(DimensionError):
+            calculate_torsion_stirrup_area(
+                tu_knm=10,
+                vu_kn=100,
+                b=300,
+                d=450,
+                b1=220,
+                d1=-5,
+                fy=500,
+                tc=0.62,
+            )
+
+    def test_longitudinal_steel_b1_zero_raises(self):
+        """calculate_longitudinal_torsion_steel(b1=0) must raise DimensionError."""
+        with pytest.raises(DimensionError):
+            calculate_longitudinal_torsion_steel(
+                tu_knm=10,
+                vu_kn=100,
+                b1=0,
+                d1=420,
+                fy=500,
+                sv=150,
+            )
+
+    def test_longitudinal_steel_d1_zero_raises(self):
+        """calculate_longitudinal_torsion_steel(d1=0) must raise DimensionError."""
+        with pytest.raises(DimensionError):
+            calculate_longitudinal_torsion_steel(
+                tu_knm=10,
+                vu_kn=100,
+                b1=220,
+                d1=0,
+                fy=500,
+                sv=150,
+            )
+
+
 class TestDesignTorsion:
     """Tests for complete torsion design function."""
 

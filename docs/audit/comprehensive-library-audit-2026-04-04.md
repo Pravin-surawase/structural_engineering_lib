@@ -44,9 +44,10 @@
 | @library-expert | B | 6.8/10 | Professional standards perspective |
 | @reviewer corrections | B- | 6.4/10 | Removed 3 invalid P0s, added 60+ findings from 4 new agents |
 | P0 Fixes Applied | B | 6.8/10 | All 5 P0s resolved; T-1 downgraded to P2 |
-| **Final (post-fix)** | **B** | **6.8/10** | **14-agent consensus + P0 fixes applied** |
+| P1 Fixes (6 items) | B+ | 7.0/10 | 6 P1s resolved: SM-1,2,3, IS-5,7, FE-6 |
+| **Final (post-fix)** | **B+** | **7.0/10** | **14-agent consensus + P0 fixes + 6 P1 fixes** |
 
-**Overall Library Grade: B (6.8/10) — up from B- (6.4/10) after P0 fixes**
+**Overall Library Grade: B+ (7.0/10) — up from B (6.8/10) after P1 fixes**
 
 ---
 
@@ -497,6 +498,23 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ---
 
+## P1 Fixes Applied (Session 2)
+
+6 P1 findings fixed on 2026-04-04 (post-audit session).
+
+| P1 | Fix Applied | Files Changed |
+|----|-------------|---------------|
+| SM-1 | Added fck/fy > 0 lower bound checks in `get_ec()`, `get_fcr()`, `_validate_plausibility()` | `materials.py`, `services/api.py` |
+| SM-2 | Replaced float `==` with `abs(fy - N) < 0.5` tolerance in `get_xu_max_d()`, `get_steel_stress()` | `materials.py` |
+| SM-3 | Added b1/d1 > 0 zero-guards in `calculate_torsion_stirrup_area()`, `calculate_longitudinal_torsion_steel()` | `torsion.py` |
+| IS-5 | Added `warnings.warn()` when beam width b < 150mm (IS 456 Cl. 23.1.1) | `core/validation.py` |
+| IS-7 | Added `warnings.warn()` when column b or D < 200mm | `column/uniaxial.py` |
+| FE-6 | Wrapped App.tsx with existing `<ErrorBoundary>` component | `App.tsx` |
+
+**Tests added:** 18 new tests (4,283 total passing). All reviewed and approved by @reviewer.
+
+---
+
 ## Consolidated Priority Matrix (Final)
 
 ### P0 — Must Fix (5 valid P0s — ALL FIXED ✅)
@@ -511,8 +529,8 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ### P1 — Should Fix (Top 20)
 
-| ID | Finding | Effort |
-|----|---------|--------|
+| ID | Finding | Effort | Status |
+|----|---------|--------|--------|
 | U-1 | Two conflicting API parameter styles | Medium |
 | A-1 | I/O in IS 456 math layer (clause_cli) | Low |
 | A-3 | IS 456 math in FastAPI router | Low |
@@ -521,14 +539,14 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 | API-5 | No OpenAPI examples on any endpoint | Medium |
 | API-6 | Stream job returns 200 for non-existent jobs | Low |
 | API-11 | Batch design unbounded list body | Low |
-| SM-1 | fck=0 passes validation — division by zero | Low |
-| SM-2 | float == for fy grade dispatch | Low |
-| SM-3 | Unguarded division by b1*d1 in torsion | Low |
+| SM-1 | fck=0 passes validation — division by zero | Low | ✅ Fixed |
+| SM-2 | float == for fy grade dispatch | Low | ✅ Fixed |
+| SM-3 | Unguarded division by b1*d1 in torsion | Low | ✅ Fixed |
 | FE-1 | Minimal accessibility (3 ARIA attrs) | High |
-| FE-6 | No ErrorBoundary in App.tsx | Low |
+| FE-6 | No ErrorBoundary in App.tsx | Low | ✅ Fixed |
 | FE-7 | No Three.js memory cleanup | Low |
-| IS-5 | No minimum dimension warning for beams | Low |
-| IS-7 | Column accepts impractically small sections | Low |
+| IS-5 | No minimum dimension warning for beams | Low | ✅ Fixed |
+| IS-7 | Column accepts impractically small sections | Low | ✅ Fixed |
 | OPS-3 | No Python dependency lock file | Low |
 | DOC-4 | api.md missing footing section | Low |
 | DOC-5 | No clause-to-function mapping | Medium |
