@@ -2165,7 +2165,7 @@
 <strong>Status:</strong> Active
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-04-04
-<strong>Last Updated:</strong> 2026-04-04</p>
+<strong>Last Updated:</strong> 2026-04-05</p>
 <h1 id="comprehensive-library-audit-v0210-final">Comprehensive Library Audit — v0.21.0 (Final)<a class="headerlink" href="#comprehensive-library-audit-v0210-final" title="Permanent link">&para;</a></h1>
 <p><strong>Date:</strong> 2026-04-04 | <strong>Version:</strong> v0.21.0 | <strong>Auditors:</strong> 14 agents (library-expert, structural-engineer, structural-math, backend, security, reviewer, tester, frontend, api-developer, governance, doc-master, agent-evolver, ui-designer, innovator) + external review by @library-expert and @reviewer</p>
 <h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
@@ -2379,14 +2379,20 @@
 <td>7 P2s resolved: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10</td>
 </tr>
 <tr>
+<td>P2 Fixes (Batch 2, 7 items + 2 closures)</td>
+<td>A-</td>
+<td>7.9/10</td>
+<td>7 P2s resolved: OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7. 2 P2s closed as invalid: S-16, S-22</td>
+</tr>
+<tr>
 <td><strong>Final (post-fix)</strong></td>
 <td><strong>A-</strong></td>
-<td><strong>7.7/10</strong></td>
-<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 7 P2 fixes resolved</strong></td>
+<td><strong>7.9/10</strong></td>
+<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 16 P2 fixes resolved</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Overall Library Grade: A- (7.7/10) — up from A- (7.5/10) after P2 Batch 1 fixes</strong></p>
+<p><strong>Overall Library Grade: A- (7.9/10) — up from A- (7.7/10) after P2 Batch 2 fixes</strong></p>
 <hr />
 <h2 id="1-library-usability-audit-score-395">1. Library Usability Audit (Score: 3.9/5)<a class="headerlink" href="#1-library-usability-audit-score-395" title="Permanent link">&para;</a></h2>
 <h3 id="scores-by-area">Scores by Area<a class="headerlink" href="#scores-by-area" title="Permanent link">&para;</a></h3>
@@ -2951,7 +2957,7 @@
 <td>FE-5</td>
 <td>Toast system defined but unused</td>
 <td>P2</td>
-<td>Connect to error handlers</td>
+<td>✅ Fixed — Connected to error handlers</td>
 </tr>
 </tbody>
 </table>
@@ -3061,7 +3067,7 @@
 <td><code>_calculate_puz()</code> no input validation</td>
 <td>P2</td>
 <td>Accepts any values including negative areas</td>
-<td>Add range checks</td>
+<td>✅ Fixed — Added range checks</td>
 </tr>
 <tr>
 <td>SM-8</td>
@@ -3075,7 +3081,7 @@
 <td><code>get_steel_stress()</code> zero input validation</td>
 <td>P2</td>
 <td>Strain=-0 or d=0 not guarded</td>
-<td>Add input guards</td>
+<td>✅ Fixed — Added input guards</td>
 </tr>
 <tr>
 <td>SM-10</td>
@@ -3132,7 +3138,7 @@
 <td><code>check_anchorage_at_simple_support()</code> not exported</td>
 <td>P2</td>
 <td>Not in <code>__all__</code></td>
-<td>Export or mark private</td>
+<td>✅ Fixed — Exported in <code>__all__</code></td>
 </tr>
 <tr>
 <td>BE-7</td>
@@ -3212,7 +3218,7 @@
 <td>DOC-7</td>
 <td>CHANGELOG v0.21.0 reads as internal task log</td>
 <td>P2</td>
-<td>Add "Highlights" section</td>
+<td>✅ Fixed — Added "Highlights" section</td>
 <td></td>
 </tr>
 </tbody>
@@ -3374,7 +3380,7 @@
 <td>P1</td>
 <td>A01</td>
 <td><code>output_dir</code> not path-validated</td>
-<td>Validate against allowed directories</td>
+<td>✅ Closed (INVALID — web API uses streaming, no disk I/O)</td>
 </tr>
 <tr>
 <td>S-18</td>
@@ -3390,7 +3396,7 @@
 <td>P2</td>
 <td>A01</td>
 <td>No path traversal check</td>
-<td>Validate input paths</td>
+<td>✅ Fixed — Added path containment validation</td>
 </tr>
 <tr>
 <td>S-19</td>
@@ -3422,7 +3428,7 @@
 <td>P2</td>
 <td>A01</td>
 <td><code>compute_report(source)</code> accepts any path</td>
-<td>Validate path scope</td>
+<td>✅ Closed (INVALID — web API uses streaming, no disk I/O)</td>
 </tr>
 <tr>
 <td>S-23</td>
@@ -3487,7 +3493,7 @@
 <td>Dockerfile IPv4 only (<code>--host 0.0.0.0</code>)</td>
 <td>P2</td>
 <td>Won't work in IPv6-only envs</td>
-<td>Bind to <code>::</code></td>
+<td>✅ Fixed — Bound to <code>::</code></td>
 </tr>
 <tr>
 <td>OPS-5</td>
@@ -4341,7 +4347,7 @@
 </tbody>
 </table>
 <h3 id="p2-nice-to-have-52-findings">P2 — Nice to Have (52 findings)<a class="headerlink" href="#p2-nice-to-have-52-findings" title="Permanent link">&para;</a></h3>
-<p>52 P2 findings across all sections (7 resolved in Batch 1: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10). Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).</p>
+<p>52 P2 findings across all sections (16 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Closed invalid — S-16, S-22). Key themes: Docs/Packaging (~~DOC-7~~, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (~~S-17~~, S-19–S-21, S-23, ~~OPS-4~~, OPS-5–OPS-6), Math quality (~~SM-6–SM-10~~, IS-1, IS-3, IS-6), Frontend polish (FE-3, FE-4, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).</p>
 <hr />
 <h2 id="appendix-audit-methodology">Appendix: Audit Methodology<a class="headerlink" href="#appendix-audit-methodology" title="Permanent link">&para;</a></h2>
 <h3 id="agents-used-14">Agents Used (14)<a class="headerlink" href="#agents-used-14" title="Permanent link">&para;</a></h3>

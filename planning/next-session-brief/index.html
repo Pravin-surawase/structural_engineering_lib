@@ -1545,25 +1545,28 @@
 
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
-<p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> P2 Batch 1 fixes — 7 items resolved (S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10)</p>
+<p><strong>Last Updated:</strong> 2026-04-05
+<strong>Last Session:</strong> P2 Batch 2 fixes — 7 items resolved + 2 closures (OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; S-16/S-22 closed invalid)</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>P2 Batch 1: 7 findings resolved</li>
-<li>S-15: WebSocket error sanitization (CWE-209)</li>
-<li>S-18: float("inf") replaced with null/sentinel in JSON responses</li>
-<li>SM-6: ShearResult made frozen (thread-safe)</li>
-<li>SM-8: Footing bearing float tolerance fix</li>
-<li>SM-10: ColumnAxialResult made frozen (thread-safe)</li>
-<li>API-8: BarAreasResponse typed Pydantic model</li>
-<li>API-10: DXF export MIME type corrected to application/octet-stream</li>
-<li>Grade: A- (7.7/10)</li>
+<li>P2 Batch 2: 7 fixes + 2 closures</li>
+<li>OPS-4: Dockerfile IPv6 binding (bound to <code>::</code>)</li>
+<li>SM-7: <code>_calculate_puz()</code> input validation (range checks)</li>
+<li>SM-9: <code>get_steel_stress()</code> zero-input guards</li>
+<li>FE-5: Toast system connected to error handlers</li>
+<li>BE-6: <code>check_anchorage_at_simple_support()</code> exported in <code>__all__</code></li>
+<li>S-17: DXF CLI path containment validation</li>
+<li>DOC-7: CHANGELOG v0.21.0 highlights section added</li>
+<li>S-16: Closed (INVALID — web API uses streaming, no disk I/O)</li>
+<li>S-22: Closed (INVALID — web API uses streaming, no disk I/O)</li>
+<li>Grade: A- (7.9/10)</li>
+<li>P2: 16/52 resolved (7 Batch 1 + 7 Batch 2 + 2 closures)</li>
 <li>ALL 20 P1 findings previously resolved</li>
-<li>Tests: 4,282 Python + 187 FastAPI passing, React build succeeds</li>
+<li>ALL 5 P0 findings previously resolved</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>P2 Batch 2 planning — pick next 5-7 highest-impact P2 items</li>
+<li>P2 Batch 3 — pick next 5-7 highest-impact P2 items from remaining 36</li>
 <li>Wire footing functions into services/api.py (discovered gap during DOC-4)</li>
 <li>Add @clause decorators to footing functions (IS-2)</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
@@ -1579,8 +1582,8 @@
 <ul>
 <li>P0: 5/5 resolved ✅</li>
 <li>P1: 20/20 resolved ✅</li>
-<li>P2: 7/52 resolved (Batch 1 complete)</li>
-<li>Overall grade: A- (7.7/10)</li>
+<li>P2: 16/52 resolved (Batch 1 + Batch 2 complete)</li>
+<li>Overall grade: A- (7.9/10)</li>
 </ul>
 
 
