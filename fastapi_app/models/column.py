@@ -7,7 +7,7 @@ All dimensions in mm, forces in kN, stresses in N/mm².
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # =============================================================================
 # Request Models
@@ -16,6 +16,18 @@ from pydantic import BaseModel, Field
 
 class EffectiveLengthRequest(BaseModel):
     """Request model for effective length calculation per IS 456 Cl 25.2, Table 28."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "l_mm": 3000.0,
+                    "end_condition": "FIXED_FIXED",
+                    "use_theoretical": False,
+                }
+            ]
+        }
+    )
 
     l_mm: float = Field(
         ...,
@@ -103,6 +115,19 @@ class ColumnEccentricityRequest(BaseModel):
 
 class ColumnAxialRequest(BaseModel):
     """Request model for short column axial capacity calculation."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "fck": 25.0,
+                    "fy": 415.0,
+                    "Ag_mm2": 120000.0,
+                    "Asc_mm2": 1884.96,
+                }
+            ]
+        }
+    )
 
     fck: float = Field(
         ...,

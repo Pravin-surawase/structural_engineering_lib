@@ -46,9 +46,10 @@
 | P0 Fixes Applied | B | 6.8/10 | All 5 P0s resolved; T-1 downgraded to P2 |
 | P1 Fixes (6 items) | B+ | 7.0/10 | 6 P1s resolved: SM-1,2,3, IS-5,7, FE-6 |
 | P1 Fixes (Batch 1, 9 items) | B+ | 7.2/10 | 9 more P1s resolved: U-1, API-1, API-2, API-11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed |
-| **Final (post-fix)** | **B+** | **7.2/10** | **14-agent consensus + P0 fixes + 15 P1 fixes** |
+| P1 Fixes (Batch 2, 4 items) | B+ | 7.4/10 | 4 more P1s resolved: API-5, OPS-3, DOC-4, DOC-5 |
+| **Final (post-fix)** | **B+** | **7.4/10** | **14-agent consensus + P0 fixes + 19 P1 fixes** |
 
-**Overall Library Grade: B+ (7.2/10) — up from B+ (7.0/10) after Batch 1 P1 fixes**
+**Overall Library Grade: B+ (7.4/10) — up from B+ (7.2/10) after Batch 2 P1 fixes**
 
 ---
 
@@ -557,7 +558,7 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 | A-3 | IS 456 math in FastAPI router | Low | ✅ Fixed |
 | API-1 | Inconsistent response shapes | Medium | ✅ Already valid |
 | API-2 | Missing cross-field validators | Low | ✅ Already valid |
-| API-5 | No OpenAPI examples on any endpoint | Medium |
+| API-5 | No OpenAPI examples on any endpoint | Medium | ✅ Fixed |
 | API-6 | Stream job returns 200 for non-existent jobs | Low | ✅ Fixed |
 | API-11 | Batch design unbounded list body | Low | ✅ Already fixed |
 | SM-1 | fck=0 passes validation — division by zero | Low | ✅ Fixed |
@@ -568,9 +569,9 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 | FE-7 | No Three.js memory cleanup | Low | ✅ Fixed |
 | IS-5 | No minimum dimension warning for beams | Low | ✅ Fixed |
 | IS-7 | Column accepts impractically small sections | Low | ✅ Fixed |
-| OPS-3 | No Python dependency lock file | Low |
-| DOC-4 | api.md missing footing section | Low |
-| DOC-5 | No clause-to-function mapping | Medium |
+| OPS-3 | No Python dependency lock file | Low | ✅ Fixed |
+| DOC-4 | api.md missing footing section | Low | ✅ Fixed |
+| DOC-5 | No clause-to-function mapping | Medium | ✅ Fixed |
 | GOV-5 | No security advisory process | Low | ✅ Already fixed |
 
 ### P2 — Nice to Have (52 findings)

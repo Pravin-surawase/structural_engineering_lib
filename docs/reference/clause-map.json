@@ -1,0 +1,583 @@
+{
+  "metadata": {
+    "standard": "IS 456:2000",
+    "additional_standards": ["IS 13920:2016"],
+    "generated": "2026-04-04",
+    "total_clauses_in_registry": 119,
+    "total_mapped": 63,
+    "not_implemented": 65
+  },
+  "mappings": [
+    {
+      "clause": "38.1",
+      "title": "Assumptions in Design",
+      "function": "calculate_mu_lim",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "Also covers 38.1.1"
+    },
+    {
+      "clause": "38.1.1",
+      "title": "Neutral Axis Depth",
+      "function": "calculate_mu_lim",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "With 38.1"
+    },
+    {
+      "clause": "38.2",
+      "title": "Singly Reinforced Sections",
+      "function": "calculate_ast_required",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "38.1+38.2",
+      "title": "Singly Reinforced Beam Design",
+      "function": "design_singly_reinforced",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "Combined flexure design"
+    },
+    {
+      "clause": "38.1+38.2+G-1.1",
+      "title": "Doubly Reinforced Beam Design",
+      "function": "design_doubly_reinforced",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "SP:16 charts"
+    },
+    {
+      "clause": "38.3",
+      "title": "Doubly Reinforced Sections",
+      "function": "design_doubly_reinforced",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "Via G-1.1"
+    },
+    {
+      "clause": "38.4",
+      "title": "Flanged Beams",
+      "function": "design_flanged_beam",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "With G-2.2"
+    },
+    {
+      "clause": "38.1+G-2.2",
+      "title": "Flanged Beam Mu_lim",
+      "function": "calculate_mu_lim_flanged",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "23.1.2",
+      "title": "Effective Span — Continuous",
+      "function": "calculate_effective_flange_width",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "With 36.4.2"
+    },
+    {
+      "clause": "36.4.2",
+      "title": "Effective Width of Flange",
+      "function": "calculate_effective_flange_width",
+      "module": "codes/is456/beam/flexure.py",
+      "decorator": "@clause",
+      "notes": "With 23.1.2"
+    },
+    {
+      "clause": "40.1",
+      "title": "Limit State of Collapse: Shear",
+      "function": "calculate_tv",
+      "module": "codes/is456/beam/shear.py",
+      "decorator": "@clause",
+      "notes": "Nominal shear stress"
+    },
+    {
+      "clause": "40.2",
+      "title": "Design Shear Strength of Concrete",
+      "function": "design_shear",
+      "module": "codes/is456/beam/shear.py",
+      "decorator": "@clause",
+      "notes": "Table 19 lookup"
+    },
+    {
+      "clause": "40.3",
+      "title": "Enhanced Shear Strength Near Supports",
+      "function": "enhanced_shear_strength",
+      "module": "codes/is456/beam/shear.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "40.4",
+      "title": "Shear Reinforcement Design",
+      "function": "design_shear",
+      "module": "codes/is456/beam/shear.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.5.1.5",
+      "title": "Stirrup Legs",
+      "function": "design_shear",
+      "module": "codes/is456/beam/shear.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.5.1.6",
+      "title": "Bent-up Bars",
+      "function": "design_shear",
+      "module": "codes/is456/beam/shear.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "41.1",
+      "title": "General — Design for Torsion",
+      "function": "design_torsion",
+      "module": "codes/is456/beam/torsion.py",
+      "decorator": "@clause",
+      "notes": "Master function"
+    },
+    {
+      "clause": "41.3",
+      "title": "Critical Section for Torsion",
+      "function": "calculate_torsion_shear_stress",
+      "module": "codes/is456/beam/torsion.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "41.3.1",
+      "title": "Equivalent Shear",
+      "function": "calculate_equivalent_shear",
+      "module": "codes/is456/beam/torsion.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "41.4",
+      "title": "Reinforcement for Torsion",
+      "function": "design_torsion",
+      "module": "codes/is456/beam/torsion.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "41.4.2",
+      "title": "Longitudinal Reinforcement for Torsion",
+      "function": "calculate_equivalent_moment, calculate_longitudinal_torsion_steel",
+      "module": "codes/is456/beam/torsion.py",
+      "decorator": "@clause",
+      "notes": "Two functions implement this clause"
+    },
+    {
+      "clause": "41.4.3",
+      "title": "Transverse Reinforcement for Torsion",
+      "function": "calculate_torsion_stirrup_area",
+      "module": "codes/is456/beam/torsion.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.1",
+      "title": "Development Length of Bars",
+      "function": "calculate_development_length",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.1.1",
+      "title": "Design Bond Stress",
+      "function": "get_bond_stress",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.2",
+      "title": "Anchoring Reinforcement",
+      "function": "calculate_standard_hook",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.2.1",
+      "title": "Minimum Bend Radius",
+      "function": "get_min_bend_radius",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.2.2",
+      "title": "Stirrup Anchorage",
+      "function": "calculate_stirrup_anchorage",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.3",
+      "title": "Standard Hooks and Bends",
+      "function": "calculate_anchorage_length",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.3.3",
+      "title": "Anchorage at Simple Supports",
+      "function": "check_anchorage_at_simple_support",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.2.5",
+      "title": "Lap Splices",
+      "function": "calculate_lap_length",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.5.1.3",
+      "title": "Side Face Reinforcement",
+      "function": "check_side_face_reinforcement",
+      "module": "codes/is456/beam/detailing.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "43.1",
+      "title": "Limit State of Serviceability: Deflection",
+      "function": "check_deflection_span_depth",
+      "module": "codes/is456/beam/serviceability.py",
+      "decorator": "implicit",
+      "notes": "Level A check"
+    },
+    {
+      "clause": "43.2",
+      "title": "Control of Deflection — Span/Depth Ratios",
+      "function": "check_deflection_span_depth",
+      "module": "codes/is456/beam/serviceability.py",
+      "decorator": "implicit",
+      "notes": "L/d method"
+    },
+    {
+      "clause": "43.2.1",
+      "title": "Modification Factors",
+      "function": "check_deflection_level_b",
+      "module": "codes/is456/beam/serviceability.py",
+      "decorator": "implicit",
+      "notes": "Level B (Ieff method)"
+    },
+    {
+      "clause": "43.3",
+      "title": "Crack Control",
+      "function": "check_crack_width",
+      "module": "codes/is456/beam/serviceability.py",
+      "decorator": "implicit",
+      "notes": ""
+    },
+    {
+      "clause": "Fig. 23",
+      "title": "Stress-Strain Curve for Steel",
+      "function": "steel_stress_from_strain_5point",
+      "module": "codes/is456/common/stress_blocks.py",
+      "decorator": "@clause",
+      "notes": "5-point linearization"
+    },
+    {
+      "clause": "25.1.2",
+      "title": "Slenderness Limits for Columns",
+      "function": "classify_column",
+      "module": "codes/is456/column/axial.py",
+      "decorator": "@clause",
+      "notes": "Short vs slender"
+    },
+    {
+      "clause": "25.2",
+      "title": "Effective Length",
+      "function": "effective_length",
+      "module": "codes/is456/column/axial.py",
+      "decorator": "@clause",
+      "notes": "Table 28"
+    },
+    {
+      "clause": "25.4",
+      "title": "Minimum Eccentricity",
+      "function": "min_eccentricity",
+      "module": "codes/is456/column/axial.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "39.3",
+      "title": "Short Axially Loaded Members",
+      "function": "short_axial_capacity",
+      "module": "codes/is456/column/axial.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "39.4",
+      "title": "Helical Reinforcement",
+      "function": "check_helical_reinforcement",
+      "module": "codes/is456/column/helical.py",
+      "decorator": "@clause",
+      "notes": "5% strength increase"
+    },
+    {
+      "clause": "39.5",
+      "title": "Uniaxial Bending",
+      "function": "design_short_column_uniaxial",
+      "module": "codes/is456/column/uniaxial.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "39.5",
+      "title": "P-M Interaction Curve",
+      "function": "pm_interaction_curve",
+      "module": "codes/is456/column/uniaxial.py",
+      "decorator": "@clause",
+      "notes": "Strain compatibility"
+    },
+    {
+      "clause": "39.6",
+      "title": "Biaxial Bending",
+      "function": "biaxial_bending_check",
+      "module": "codes/is456/column/biaxial.py",
+      "decorator": "@clause",
+      "notes": "Bresler equation"
+    },
+    {
+      "clause": "39.7",
+      "title": "Slender Compression Members",
+      "function": "design_long_column",
+      "module": "codes/is456/column/long_column.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "39.7.1",
+      "title": "Additional Moment in Slender Columns",
+      "function": "calculate_additional_moment",
+      "module": "codes/is456/column/slenderness.py",
+      "decorator": "@clause",
+      "notes": ""
+    },
+    {
+      "clause": "26.5.3",
+      "title": "Column Detailing",
+      "function": "create_column_detailing",
+      "module": "codes/is456/column/detailing.py",
+      "decorator": "@clause",
+      "notes": "Ties, spacing, cover"
+    },
+    {
+      "clause": "34.1",
+      "title": "General Requirements for Footings",
+      "function": "size_footing",
+      "module": "codes/is456/footing/bearing.py",
+      "decorator": "clause_ref",
+      "notes": "Service loads for sizing"
+    },
+    {
+      "clause": "34.2.3.1",
+      "title": "Bending at Column Face",
+      "function": "footing_flexure",
+      "module": "codes/is456/footing/flexure.py",
+      "decorator": "clause_ref",
+      "notes": "Factored loads"
+    },
+    {
+      "clause": "34.2.4.1(a)",
+      "title": "One-Way Shear",
+      "function": "footing_one_way_shear",
+      "module": "codes/is456/footing/one_way_shear.py",
+      "decorator": "clause_ref",
+      "notes": "Both directions"
+    },
+    {
+      "clause": "34.3.1",
+      "title": "Steel Distribution (Central Band)",
+      "function": "footing_flexure",
+      "module": "codes/is456/footing/flexure.py",
+      "decorator": "clause_ref",
+      "notes": "Rectangular footings"
+    },
+    {
+      "clause": "31.6.1",
+      "title": "Punching Shear Critical Section",
+      "function": "footing_punching_shear",
+      "module": "codes/is456/footing/punching_shear.py",
+      "decorator": "clause_ref",
+      "notes": "Two-way shear"
+    },
+    {
+      "clause": "31.6.3",
+      "title": "ks Factor",
+      "function": "footing_punching_shear",
+      "module": "codes/is456/footing/punching_shear.py",
+      "decorator": "clause_ref",
+      "notes": "Aspect ratio correction"
+    },
+    {
+      "clause": "26.5.2.1",
+      "title": "Minimum Steel",
+      "function": "footing_flexure",
+      "module": "codes/is456/footing/flexure.py",
+      "decorator": "clause_ref",
+      "notes": "Min reinforcement"
+    },
+    {
+      "clause": "IS13920_7.1",
+      "title": "Columns — General Requirements",
+      "function": "check_column_ductility",
+      "module": "codes/is13920/column.py",
+      "decorator": "implicit",
+      "notes": "Geometry constraints"
+    },
+    {
+      "clause": "IS13920_7.2",
+      "title": "Columns — Longitudinal Steel",
+      "function": "check_column_ductility",
+      "module": "codes/is13920/column.py",
+      "decorator": "implicit",
+      "notes": "Steel limits"
+    },
+    {
+      "clause": "IS13920_7.3",
+      "title": "Columns — Transverse Reinforcement",
+      "function": "check_column_ductility",
+      "module": "codes/is13920/column.py",
+      "decorator": "implicit",
+      "notes": "Spacing"
+    },
+    {
+      "clause": "IS13920_7.4",
+      "title": "Special Confining Reinforcement",
+      "function": "check_column_ductility",
+      "module": "codes/is13920/column.py",
+      "decorator": "implicit",
+      "notes": ""
+    },
+    {
+      "clause": "IS13920_7.4.1",
+      "title": "Area of Special Confining Reinforcement",
+      "function": "calculate_ash_required",
+      "module": "codes/is13920/column.py",
+      "decorator": "implicit",
+      "notes": "Ash formula"
+    },
+    {
+      "clause": "IS13920_6.1.1",
+      "title": "Flexural Members — Dimensional Limits",
+      "function": "check_beam_ductility",
+      "module": "codes/is13920/beam.py",
+      "decorator": "implicit",
+      "notes": "Geometry checks"
+    },
+    {
+      "clause": "IS13920_6.1.2",
+      "title": "Flexural Members — Longitudinal Steel",
+      "function": "check_beam_ductility",
+      "module": "codes/is13920/beam.py",
+      "decorator": "implicit",
+      "notes": "Steel limits"
+    },
+    {
+      "clause": "IS13920_6.2.1",
+      "title": "Flexural Members — Shear Reinforcement",
+      "function": "check_beam_ductility",
+      "module": "codes/is13920/beam.py",
+      "decorator": "implicit",
+      "notes": "Confinement spacing"
+    },
+    {
+      "clause": "IS13920_6.3",
+      "title": "Lap Splices in Flexural Members",
+      "function": "check_beam_ductility",
+      "module": "codes/is13920/beam.py",
+      "decorator": "implicit",
+      "notes": ""
+    }
+  ],
+  "not_implemented": [
+    {"clause": "5.1", "title": "Cement", "category": "materials"},
+    {"clause": "5.2", "title": "Mineral Admixtures", "category": "materials"},
+    {"clause": "5.3", "title": "Aggregates", "category": "materials"},
+    {"clause": "5.4", "title": "Water", "category": "materials"},
+    {"clause": "5.6", "title": "Reinforcement", "category": "materials"},
+    {"clause": "6.1", "title": "Grades of Concrete", "category": "materials"},
+    {"clause": "6.2", "title": "Properties of Concrete", "category": "materials"},
+    {"clause": "6.2.2", "title": "Modulus of Elasticity", "category": "materials"},
+    {"clause": "21.1", "title": "Cover to Reinforcement", "category": "cover"},
+    {"clause": "23.1", "title": "Effective Span", "category": "span"},
+    {"clause": "23.1.1", "title": "Effective Span — Simply Supported", "category": "span"},
+    {"clause": "23.2.1", "title": "Slenderness Limits — Beams", "category": "beams"},
+    {"clause": "24.1", "title": "Effective Span of Slabs", "category": "slabs"},
+    {"clause": "24.2", "title": "Slabs Continuous Over Supports", "category": "slabs"},
+    {"clause": "24.3", "title": "Slabs Spanning in Two Directions", "category": "slabs"},
+    {"clause": "24.3.1", "title": "Reinforcement in Slabs — Minimum", "category": "slabs"},
+    {"clause": "24.3.2", "title": "Maximum Diameter of Bars in Slabs", "category": "slabs"},
+    {"clause": "24.4", "title": "Spacing of Reinforcement in Slabs", "category": "slabs"},
+    {"clause": "25.1", "title": "General — Compression Members", "category": "columns"},
+    {"clause": "25.1.1", "title": "Unsupported Length", "category": "columns"},
+    {"clause": "25.3", "title": "Short and Long Column Classification", "category": "columns"},
+    {"clause": "26.3.2", "title": "Minimum Spacing of Reinforcement", "category": "detailing"},
+    {"clause": "26.3.3", "title": "Maximum Spacing of Reinforcement", "category": "detailing"},
+    {"clause": "26.5.1.1", "title": "Minimum Shear Reinforcement", "category": "shear"},
+    {"clause": "26.5.1.2", "title": "Stirrup Spacing", "category": "shear"},
+    {"clause": "26.5.3.1", "title": "Longitudinal Reinforcement in Columns", "category": "columns"},
+    {"clause": "26.5.3.2", "title": "Transverse Reinforcement in Columns", "category": "columns"},
+    {"clause": "31.6", "title": "Two-Way Shear (General)", "category": "punching"},
+    {"clause": "31.6.2", "title": "Nominal Shear Stress in Punching", "category": "punching"},
+    {"clause": "32.1", "title": "Empirical Design Method for Walls", "category": "walls"},
+    {"clause": "32.2", "title": "Design of Reinforced Concrete Walls", "category": "walls"},
+    {"clause": "32.3", "title": "Eccentricity of Vertical Load on Walls", "category": "walls"},
+    {"clause": "32.4", "title": "Reinforcement in Walls", "category": "walls"},
+    {"clause": "32.5", "title": "Maximum Axial Load Capacity of Wall", "category": "walls"},
+    {"clause": "33.1", "title": "Effective Span of Stairs", "category": "stairs"},
+    {"clause": "33.2", "title": "Distribution of Loading on Stairs", "category": "stairs"},
+    {"clause": "33.3", "title": "Depth of Section", "category": "stairs"},
+    {"clause": "34.2", "title": "Moments and Forces", "category": "footings"},
+    {"clause": "34.2.1", "title": "General — Footing Moment Computation", "category": "footings"},
+    {"clause": "34.2.2", "title": "Critical Sections for Bending Moment in Footings", "category": "footings"},
+    {"clause": "34.2.4", "title": "Shear in Footings", "category": "footings"},
+    {"clause": "34.3", "title": "Tensile Reinforcement in Footings", "category": "footings"},
+    {"clause": "34.4", "title": "Transfer of Load at Base of Column", "category": "footings"},
+    {"clause": "36.1", "title": "Limit State of Collapse — Flexure", "category": "flexure"},
+    {"clause": "38.1.2", "title": "Stress Block Parameters", "category": "flexure"},
+    {"clause": "39.1", "title": "Minimum Eccentricity for Column Design", "category": "columns"},
+    {"clause": "40.5.1", "title": "Maximum Shear Stress", "category": "shear"},
+    {"clause": "43.4", "title": "Minimum Reinforcement", "category": "serviceability"},
+    {"clause": "AnnexD-1", "title": "Restrained Slabs — Moment Coefficients", "category": "slabs"},
+    {"clause": "AnnexD-1.1", "title": "Conditions for Table 26 Coefficients", "category": "slabs"},
+    {"clause": "AnnexD-1.2", "title": "Division into Middle and Edge Strips", "category": "slabs"},
+    {"clause": "AnnexD-1.3", "title": "Maximum Moments in Middle Strip", "category": "slabs"},
+    {"clause": "AnnexD-1.4", "title": "Moments in Edge Strips", "category": "slabs"},
+    {"clause": "AnnexD-1.5", "title": "Negative Moments at Continuous Edge", "category": "slabs"},
+    {"clause": "AnnexD-1.6", "title": "Negative Moments at Discontinuous Edge", "category": "slabs"},
+    {"clause": "AnnexD-1.7", "title": "Torsion Reinforcement — Two Discontinuous Edges", "category": "slabs"},
+    {"clause": "AnnexD-1.8", "title": "Torsion Reinforcement — One Discontinuous Edge", "category": "slabs"},
+    {"clause": "AnnexD-2", "title": "Simply Supported Slabs Spanning in Two Directions", "category": "slabs"},
+    {"clause": "IS13920_5.1", "title": "General Requirements — IS 13920", "category": "ductile"},
+    {"clause": "IS13920_8.1", "title": "Beam-Column Joint Requirements", "category": "ductile"},
+    {"clause": "IS13920_9.1", "title": "Shear Walls — General", "category": "ductile"},
+    {"clause": "IS13920_9.2", "title": "Design Shear Strength of Walls", "category": "ductile"},
+    {"clause": "IS13920_9.3", "title": "Boundary Elements in Shear Walls", "category": "ductile"},
+    {"clause": "IS13920_9.4", "title": "Shear Walls — Boundary Elements", "category": "ductile"},
+    {"clause": "IS13920_10.1", "title": "Foundation — General", "category": "ductile"}
+  ]
+}
