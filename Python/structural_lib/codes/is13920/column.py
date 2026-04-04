@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.errors import (
     E_DUCTILE_COL_001,
     E_DUCTILE_COL_002,
@@ -53,6 +54,7 @@ class DuctileColumnResult:
     errors: list[DesignError] = field(default_factory=list)
 
 
+@clause("7.1.2", "7.1.3", standard="IS 13920")
 def check_column_geometry(
     b_mm: float, D_mm: float
 ) -> tuple[bool, str, list[DesignError]]:
@@ -102,6 +104,7 @@ def check_column_geometry(
     return True, "OK", errors
 
 
+@clause("7.2.1", standard="IS 13920")
 def get_min_longitudinal_steel() -> float:
     """
     IS 13920:2016 Cl 7.2.1: Minimum longitudinal steel for seismic columns.
@@ -112,6 +115,7 @@ def get_min_longitudinal_steel() -> float:
     return 0.8
 
 
+@clause("7.2.1", standard="IS 13920")
 def get_max_longitudinal_steel() -> float:
     """
     IS 13920:2016 Cl 7.2.1: Maximum longitudinal steel for seismic columns.
@@ -122,6 +126,7 @@ def get_max_longitudinal_steel() -> float:
     return 4.0
 
 
+@clause("7.4.6", standard="IS 13920")
 def calculate_special_confining_spacing(b_mm: float, bar_dia_mm: float) -> float:
     """
     IS 13920:2016 Cl 7.4.6: Spacing of special confining reinforcement.
@@ -154,6 +159,7 @@ def calculate_special_confining_spacing(b_mm: float, bar_dia_mm: float) -> float
     return min(s1, s2, s3)
 
 
+@clause("7.4.1", standard="IS 13920")
 def calculate_confining_length(D_mm: float, clear_height_mm: float) -> float:
     """
     IS 13920:2016 Cl 7.4.1: Length of special confinement zone (lo).
@@ -186,6 +192,7 @@ def calculate_confining_length(D_mm: float, clear_height_mm: float) -> float:
     return max(lo1, lo2, lo3)
 
 
+@clause("7.4.7", "7.4.8", standard="IS 13920")
 def calculate_ash_required(
     s_mm: float,
     h_mm: float,
@@ -242,6 +249,7 @@ def calculate_ash_required(
     return Ash
 
 
+@clause("7.1", "7.2.1", "7.4.1", "7.4.6", "7.4.7", "7.4.8", standard="IS 13920")
 def check_column_ductility(
     b_mm: float,
     D_mm: float,

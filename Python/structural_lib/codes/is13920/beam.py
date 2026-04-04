@@ -15,6 +15,7 @@ Migration: Phase 0 restructure (TASK-709) — moved from codes.is456.ductile
 import math
 from dataclasses import dataclass, field
 
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.errors import (
     E_DUCTILE_001,
     E_DUCTILE_002,
@@ -46,6 +47,7 @@ class DuctileBeamResult:
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
 
 
+@clause("6.1.1", "6.1.2", standard="IS 13920")
 def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:
     """
     Clause 6.1: Geometry requirements
@@ -75,6 +77,7 @@ def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:
     return True, "OK", errors
 
 
+@clause("6.2.1", standard="IS 13920")
 def get_min_tension_steel_percentage(fck: float, fy: float) -> float:
     """
     Clause 6.2.1 (b): Min tension steel ratio
@@ -92,6 +95,7 @@ def get_min_tension_steel_percentage(fck: float, fy: float) -> float:
     return rho * 100.0
 
 
+@clause("6.2.2", standard="IS 13920")
 def get_max_tension_steel_percentage() -> float:
     """
     Clause 6.2.2: Max tension steel ratio = 2.5%
@@ -99,6 +103,7 @@ def get_max_tension_steel_percentage() -> float:
     return 2.5
 
 
+@clause("6.3.5", standard="IS 13920")
 def calculate_confinement_spacing(d: float, min_long_bar_dia: float) -> float:
     """
     Clause 6.3.5: Hoop spacing in confinement zone (2d from face)
@@ -114,6 +119,7 @@ def calculate_confinement_spacing(d: float, min_long_bar_dia: float) -> float:
     return min(s1, s2, s3)
 
 
+@clause("6.1", "6.2.1", "6.2.2", "6.3.5", standard="IS 13920")
 def check_beam_ductility(
     b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float
 ) -> DuctileBeamResult:

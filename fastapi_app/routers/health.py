@@ -9,6 +9,7 @@ Provides system health and readiness endpoints for:
 
 import platform
 import sys
+import time
 from datetime import datetime, timezone
 from typing import Literal
 
@@ -84,6 +85,40 @@ def _check_structural_lib() -> bool:
 
 
 # =============================================================================
+# Smoke Test (cached computation check)
+# =============================================================================
+
+_smoke_cache: dict = {"timestamp": 0.0, "passed": False}
+_SMOKE_TTL = 30.0  # seconds
+
+
+def _run_smoke_test() -> bool:
+    """Run a minimal beam design to verify compute engine works."""
+    now = time.monotonic()
+    if now - _smoke_cache["timestamp"] < _SMOKE_TTL:
+        return _smoke_cache["passed"]
+    try:
+        from structural_lib.services.api import design_beam_is456
+
+        result = design_beam_is456(
+            units="IS456",
+            b_mm=230.0,
+            D_mm=450.0,
+            d_mm=400.0,
+            fck_nmm2=25.0,
+            fy_nmm2=415.0,
+            mu_knm=50.0,
+            vu_kn=30.0,
+        )
+        passed = result is not None and hasattr(result, "flexure")
+    except Exception:
+        passed = False
+    _smoke_cache["timestamp"] = now
+    _smoke_cache["passed"] = passed
+    return passed
+
+
+# =============================================================================
 # Health Endpoints
 # =============================================================================
 
@@ -136,9 +171,11 @@ async def readiness_check() -> ReadinessStatus:
     - Deployment zero-downtime verification
     """
     lib_available = _check_structural_lib()
+    compute_ok = _run_smoke_test()
 
     checks = {
         "structural_lib": lib_available,
+        "compute_engine": compute_ok,
         # Future: Add database, cache, external service checks
     }
 

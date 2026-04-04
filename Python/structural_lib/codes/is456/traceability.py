@@ -27,10 +27,10 @@ Version: 1.0.0
 from __future__ import annotations
 
 import functools
+import importlib.resources
 import json
 import logging
 from collections.abc import Callable
-from pathlib import Path
 from typing import Any, TypeVar
 
 _logger = logging.getLogger(__name__)
@@ -41,40 +41,19 @@ F = TypeVar("F", bound=Callable[..., Any])
 # Module-level registry for clause references
 _CLAUSE_REGISTRY: dict[str, list[str]] = {}
 
-# Cached clause database
-_CLAUSE_DB: dict[str, Any] | None = None
+# Eager module-level load (replaces lazy _load_clause_database)
+_CLAUSE_DB: dict[str, Any]
+try:
+    _CLAUSE_DB = json.loads(
+        importlib.resources.files("structural_lib.codes.is456")
+        .joinpath("clauses.json")
+        .read_text(encoding="utf-8")
+    )
+except Exception:
+    _CLAUSE_DB = {}
 
 
-def _load_clause_database() -> dict[str, Any]:
-    """Load the IS 456 clause database from JSON file.
-
-    Returns:
-        dict: The clause database containing all IS 456 clauses.
-
-    Raises:
-        FileNotFoundError: If clauses.json is not found.
-        json.JSONDecodeError: If clauses.json is invalid.
-    """
-    global _CLAUSE_DB
-
-    if _CLAUSE_DB is not None:
-        return _CLAUSE_DB
-
-    db_path = Path(__file__).parent / "clauses.json"
-    if not db_path.exists():
-        raise FileNotFoundError(
-            f"Clause database not found: {db_path}. "
-            "Ensure clauses.json exists in the is456 module directory."
-        )
-
-    with open(db_path, encoding="utf-8") as f:
-        _CLAUSE_DB = json.load(f)
-
-    _logger.debug("Loaded %d clauses from database", len(_CLAUSE_DB.get("clauses", {})))
-    return _CLAUSE_DB
-
-
-def clause(*clause_refs: str) -> Callable[[F], F]:
+def clause(*clause_refs: str, standard: str = "IS 456") -> Callable[[F], F]:
     """Decorator to mark a function with IS 456 clause references.
 
     This decorator adds traceability metadata to functions, linking them
@@ -103,17 +82,16 @@ def clause(*clause_refs: str) -> Callable[[F], F]:
         existing = getattr(func, "_is456_clauses", [])
         all_clauses = list(existing) + list(clause_refs)
         func._is456_clauses = all_clauses  # type: ignore[attr-defined]
+        func._clause_standard = standard  # type: ignore[attr-defined]
 
         # Register in module-level registry using qualified name
         func_key = f"{func.__module__}.{func.__qualname__}"
         _CLAUSE_REGISTRY[func_key] = all_clauses
 
-        # Validate clause references exist in database (warn only)
-        try:
-            db = _load_clause_database()
-            # Combine clauses and annexure keys for validation
-            known_clauses = set(db.get("clauses", {}).keys())
-            known_clauses.update(db.get("annexures", {}).keys())
+        # Validate clause references exist in database (warn only, IS 456 only)
+        if standard == "IS 456" and _CLAUSE_DB:
+            known_clauses = set(_CLAUSE_DB.get("clauses", {}).keys())
+            known_clauses.update(_CLAUSE_DB.get("annexures", {}).keys())
             for ref in clause_refs:
                 if ref not in known_clauses:
                     _logger.warning(
@@ -122,8 +100,6 @@ def clause(*clause_refs: str) -> Callable[[F], F]:
                         ref,
                         func_key,
                     )
-        except FileNotFoundError:
-            _logger.debug("Clause database not available for validation")
 
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -183,16 +159,14 @@ def get_clause_info(clause_ref: str) -> dict[str, Any] | None:
         >>> print(info["category"])
         'flexure'
     """
-    db = _load_clause_database()
-
     # First check in clauses
-    clauses: dict[str, Any] = db.get("clauses", {})
+    clauses: dict[str, Any] = _CLAUSE_DB.get("clauses", {})
     if clause_ref in clauses:
         result: dict[str, Any] = clauses[clause_ref]
         return result
 
     # Then check in annexures (for G-x.x references)
-    annexures: dict[str, Any] = db.get("annexures", {})
+    annexures: dict[str, Any] = _CLAUSE_DB.get("annexures", {})
     if clause_ref in annexures:
         result = annexures[clause_ref]
         return result
@@ -214,8 +188,7 @@ def list_clauses_by_category(category: str) -> list[dict[str, Any]]:
         >>> len(flexure_clauses)
         8
     """
-    db = _load_clause_database()
-    clauses = db.get("clauses", {})
+    clauses = _CLAUSE_DB.get("clauses", {})
     result = []
     for ref, info in clauses.items():
         if info.get("category") == category:
@@ -251,8 +224,7 @@ def search_clauses(keyword: str) -> list[dict[str, Any]]:
         >>> len(results)
         10
     """
-    db = _load_clause_database()
-    clauses = db.get("clauses", {})
+    clauses = _CLAUSE_DB.get("clauses", {})
     keyword_lower = keyword.lower()
     results = []
 
@@ -288,8 +260,7 @@ def generate_traceability_report() -> dict[str, Any]:
         >>> print(f"Functions: {len(report['functions'])}")
         >>> print(f"Clauses used: {len(report['clauses_used'])}")
     """
-    db = _load_clause_database()
-    all_clauses = set(db.get("clauses", {}).keys())
+    all_clauses = set(_CLAUSE_DB.get("clauses", {}).keys())
     used_clauses: set[str] = set()
     functions = []
 
@@ -320,8 +291,7 @@ def get_database_metadata() -> dict[str, Any]:
     Returns:
         Dictionary with database metadata (standard, version, etc.).
     """
-    db = _load_clause_database()
-    metadata: dict[str, Any] = db.get("metadata", {})
+    metadata: dict[str, Any] = _CLAUSE_DB.get("metadata", {})
     return metadata
 
 

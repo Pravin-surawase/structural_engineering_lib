@@ -27,6 +27,7 @@ jobs:
       docs: ${{ steps.filter.outputs.docs }}
       scripts: ${{ steps.filter.outputs.scripts }}
       fastapi: ${{ steps.filter.outputs.fastapi }}
+      react: ${{ steps.filter.outputs.react }}
     steps:
       - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v4
@@ -46,6 +47,8 @@ jobs:
             fastapi:
               - 'fastapi_app/**'
               - 'requirements.txt'
+            react:
+              - 'react_app/**'
 
   # Python validation - only when Python code changes
   python-validation:
@@ -209,6 +212,40 @@ jobs:
           python -m pip install --upgrade pip pytest
           python -m pytest tests/integration/test_migration_scripts.py -q
 
+  # React validation - only when React code changes
+  react-validation:
+    name: React Validation
+    needs: changes
+    if: needs.changes.outputs.react == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'react_app/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: react_app
+        run: npm ci
+
+      - name: Lint
+        working-directory: react_app
+        run: npm run lint
+
+      - name: Type check and Build
+        working-directory: react_app
+        run: npm run build
+
+      - name: Run tests
+        working-directory: react_app
+        run: npx vitest run
+
   # Always-run minimal check (for status reporting)
   quick-validation:
     name: Quick Validation (Python 3.11 only)
@@ -218,7 +255,8 @@ jobs:
       needs.changes.outputs.python != 'true' &&
       needs.changes.outputs.docs != 'true' &&
       needs.changes.outputs.scripts != 'true' &&
-      needs.changes.outputs.fastapi != 'true'
+      needs.changes.outputs.fastapi != 'true' &&
+      needs.changes.outputs.react != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
