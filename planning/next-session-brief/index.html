@@ -1546,25 +1546,25 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> P2 Batch 5 fixes — 7 items resolved (DOC-1, DOC-2, DOC-3, OPS-2, OPS-7, UX-7, FE-8)</p>
+<strong>Last Session:</strong> TASK-CIFIX — CI failure fixes + ops hardening + WORKLOG cleanup</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>P2 Batch 5: 7 fixes</li>
-<li>DOC-1: PyPI description updated (beams + columns + footings)</li>
-<li>DOC-2: Created MANIFEST.in for py.typed inclusion in sdist</li>
-<li>DOC-3: Examples README rewritten with 9 actual files (was listing 4 non-existent)</li>
-<li>OPS-2: Updated publish.yml + link-check.yml action versions (checkout@v6, setup-python@v6, upload/download-artifact@v7/v8)</li>
-<li>OPS-7: Docker compose JWT secret changed to fail-fast (no insecure default)</li>
-<li>UX-7: Added prefers-reduced-motion CSS + useReducedMotion hook + HomePage animation guards</li>
-<li>FE-8: Added WebGL context loss handling with useWebGLContextLoss hook + user-facing recovery UI</li>
-<li>Grade: A (8.5/10)</li>
-<li>P2: 38/52 resolved (73%) — Batches 1-5 + 3 closures</li>
+<li><strong>TASK-CIFIX: CI Fix Session</strong></li>
+<li>Fixed React Validation CI failure: added 5 hook mocks to DesignView.test.tsx (<code>useExportBBS</code>, <code>useExportDXF</code>, <code>useExportReport</code>, <code>useTorsionDesign</code>, <code>useLoadAnalysis</code>). All 118 tests pass.</li>
+<li>Fixed Docker Build CI failure: added <code>JWT_SECRET_KEY</code> env var to <code>docker-build.yml</code> validation step</li>
+<li>Updated <code>ops.agent.md</code>: 4 additions (FORBIDDEN rule, HARD RULE section, Error Recovery row, Historical Mistake #14) to prevent CI bypass</li>
+<li>Removed <code>finish_task_pr.sh</code> escape hatch at lines 253 and 410 — no longer recommends "Merge manually"</li>
+<li>Cleaned WORKLOG: 26 pending entries resolved with commit hashes</li>
+<li>Removed dead code: <code>createTestWrapper.tsx</code> (unused)</li>
 <li>ALL 20 P1 findings previously resolved</li>
 <li>ALL 5 P0 findings previously resolved</li>
+<li>P2: 38/52 resolved (73%) — Batches 1-5 + 3 closures</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>P2 Batch 6 — pick next 5-7 from remaining 14 P2 items</li>
+<li>P2 audit: 14 remaining items (was 20, minus 6 fixed in Batch 5 + 1 CI fix) — consider Batch 6 planning</li>
+<li>React test infrastructure: consider shared test utilities if future tests need <code>QueryClientProvider</code></li>
+<li>Release 0.22.0 planning</li>
 <li>Wire footing functions into services/api.py</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
