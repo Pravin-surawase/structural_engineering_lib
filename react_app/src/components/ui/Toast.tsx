@@ -26,6 +26,7 @@ interface ToastStore {
   clearAll: () => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useToastStore = create<ToastStore>((set) => ({
   toasts: [],
   addToast: (toast) => {
@@ -43,6 +44,7 @@ export const useToastStore = create<ToastStore>((set) => ({
 }));
 
 // Helper functions for creating toasts
+// eslint-disable-next-line react-refresh/only-export-components
 export const toast = {
   success: (title: string, message?: string, duration = 4000) =>
     useToastStore.getState().addToast({ type: 'success', title, message, duration }),

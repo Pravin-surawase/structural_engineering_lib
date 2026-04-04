@@ -329,7 +329,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
 /* ---- Preview Step ---- */
 
 interface PreviewStepProps {
-  beams: any[];
+  beams: BeamCSVRow[];
   onBack: () => void;
   onProceed: () => void;
 }
@@ -365,7 +365,7 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
       <div className="grid grid-cols-4 gap-3 mb-4">
         <SummaryCard label="Total Beams" value={beams.length.toString()} />
         <SummaryCard label="Stories" value={stories.length.toString()} />
-        <SummaryCard label="With 3D Pos" value={beams.filter((b: any) => b.point1).length.toString()} />
+        <SummaryCard label="With 3D Pos" value={beams.filter((b: BeamCSVRow) => b.point1).length.toString()} />
         <SummaryCard label="Format" value="ETABS" />
       </div>
 
@@ -380,7 +380,7 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
             </tr>
           </thead>
           <tbody>
-            {beams.slice(0, 50).map((b: any, i: number) => (
+            {beams.slice(0, 50).map((b: BeamCSVRow, i: number) => (
               <tr key={b.id || i} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors">
                 <td className="px-3 py-2 text-white/80 font-mono">{b.id}</td>
                 <td className="px-3 py-2 text-white/60">{b.story || "-"}</td>

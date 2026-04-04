@@ -86,8 +86,13 @@ export function BeamForm() {
       <div className="flex flex-col gap-2">
         <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Geometry</h3>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Width (mm)
+          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+            <span className="relative">
+              Width (mm)
+              <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
+                Beam width (b) — minimum 150mm per IS 456 Cl 23.1
+              </span>
+            </span>
             <input
               type="number"
               value={inputs.width}
@@ -100,8 +105,13 @@ export function BeamForm() {
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Depth (mm)
+          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+            <span className="relative">
+              Depth (mm)
+              <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
+                Overall depth of beam (D)
+              </span>
+            </span>
             <input
               type="number"
               value={inputs.depth}
@@ -132,8 +142,13 @@ export function BeamForm() {
       <div className="flex flex-col gap-2">
         <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Loading</h3>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Moment (kN·m)
+          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+            <span className="relative">
+              Moment (kN·m)
+              <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
+                Factored bending moment (Mu) in kN·m
+              </span>
+            </span>
             <input
               type="number"
               value={inputs.moment}
@@ -146,8 +161,13 @@ export function BeamForm() {
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Shear (kN)
+          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+            <span className="relative">
+              Shear (kN)
+              <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
+                Factored shear force (Vu) in kN
+              </span>
+            </span>
             <input
               type="number"
               value={inputs.shear ?? 0}
@@ -164,8 +184,13 @@ export function BeamForm() {
       <div className="flex flex-col gap-2">
         <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Materials</h3>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Concrete fck (N/mm²)
+          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+            <span className="relative">
+              Concrete fck (N/mm²)
+              <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
+                Characteristic compressive strength — IS 456 Table 2
+              </span>
+            </span>
             <select
               value={inputs.fck}
               onChange={(e) => handleInputChange('fck', Number(e.target.value))}
@@ -180,8 +205,13 @@ export function BeamForm() {
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Steel fy (N/mm²)
+          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+            <span className="relative">
+              Steel fy (N/mm²)
+              <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
+                Characteristic yield strength of steel — IS 456 Table 2
+              </span>
+            </span>
             <select
               value={inputs.fy}
               onChange={(e) => handleInputChange('fy', Number(e.target.value))}

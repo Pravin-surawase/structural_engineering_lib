@@ -10,10 +10,11 @@ services:
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret}
       - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}
       - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-60}
+    # Security: read-only mounts prevent container from modifying host source
     volumes:
-      - ./fastapi_app:/app/fastapi_app
-      - ./Python/structural_lib:/app/Python/structural_lib
-      - ./Etabs_CSV:/app/Etabs_CSV
+      - ./fastapi_app:/app/fastapi_app:ro
+      - ./Python/structural_lib:/app/Python/structural_lib:ro
+      - ./Etabs_CSV:/app/Etabs_CSV:ro
     security_opt:
       - no-new-privileges:true
     cap_drop:

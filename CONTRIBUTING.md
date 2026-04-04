@@ -207,6 +207,34 @@ This script uses AST analysis to detect:
 
 
 
+## Release Process
+
+This project follows [Semantic Versioning](https://semver.org/) (`major.minor.patch`):
+- **Patch** (0.X.Y → 0.X.Y+1): Bug fixes, doc corrections
+- **Minor** (0.X.Y → 0.X+1.0): New features, new IS 456 clauses, new endpoints
+- **Major** (X.Y.Z → X+1.0.0): Breaking API changes
+
+### Who Can Release
+
+Only repository **maintainers** can create releases. External contributors submit PRs.
+
+### Release Steps (Maintainers)
+
+1. **Preflight validation:** `./run.sh release preflight 0.X.Y`
+2. **Version bump + changelog:** `./run.sh release run 0.X.Y`
+3. **Tag + publish:** Automated via CI after version bump merges
+
+### PR Requirements for Contributions
+
+- Use [conventional commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, etc.)
+- All tests must pass (`./run.sh test`)
+- At least one maintainer review required
+- No force-pushes or `--no-verify` bypasses
+
+### Requesting a Release
+
+External contributors can request a release by opening an issue titled `release: <reason>` describing which merged PRs should be included.
+
 ## Reporting Issues
 
 When filing a bug, include:
