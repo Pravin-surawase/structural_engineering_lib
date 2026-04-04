@@ -9,18 +9,6 @@ import math
 
 from fastapi import APIRouter, HTTPException, status
 
-logger = logging.getLogger(__name__)
-
-
-def _sanitize_float(v: float) -> float:
-    """Replace non-finite floats for JSON safety (RFC 8259)."""
-    if math.isfinite(v):
-        return v
-    if math.isnan(v):
-        return 0.0
-    return 9999.0 if v > 0 else -9999.0
-
-
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
@@ -46,6 +34,18 @@ from fastapi_app.models.compliance import (
     ComplianceReportResponse,
     ComplianceCaseOutput,
 )
+
+logger = logging.getLogger(__name__)
+
+
+def _sanitize_float(v: float) -> float:
+    """Replace non-finite floats for JSON safety (RFC 8259)."""
+    if math.isfinite(v):
+        return v
+    if math.isnan(v):
+        return 0.0
+    return 9999.0 if v > 0 else -9999.0
+
 
 router = APIRouter(
     prefix="/design",
