@@ -11,6 +11,7 @@
   - Removed `finish_task_pr.sh` escape hatch at lines 253 and 410 — no longer recommends "Merge manually"
   - Cleaned WORKLOG: 26 pending entries resolved with commit hashes
   - Removed dead code: `createTestWrapper.tsx` (unused)
+- **TASK-CIFIX2 (PR #522, follow-up to #521):** Closed remaining CI bypass escape hatches in `finish_task_pr.sh` (warnings) and synced global FORBIDDEN commands across all instruction files
 - ALL 20 P1 findings previously resolved
 - ALL 5 P0 findings previously resolved
 - P2: 38/52 resolved (73%) — Batches 1-5 + 3 closures

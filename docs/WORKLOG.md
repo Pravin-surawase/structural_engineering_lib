@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2025-07-24 | TASK-CIFIX2 | Close remaining CI bypass escape hatches (finish_task_pr.sh warnings + global FORBIDDEN sync) | 47a44722 |
 | 2026-04-04 | TASK-681 | Migrated python-jose → PyJWT in auth.py, tests, CI | — |
 | 2026-04-04 | TASK-646 | IS 13920 Cl 7 column ductile detailing — completes Phase 2 Column (14/14) | — |
 | 2026-04-04 | maintenance | React test coverage: 5 component test files, 26 tests | — |
