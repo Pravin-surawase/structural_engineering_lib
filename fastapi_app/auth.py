@@ -21,6 +21,7 @@ Usage:
 
 from __future__ import annotations
 
+import logging
 import os
 import time
 from collections import defaultdict
@@ -32,6 +33,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 import jwt
 from jwt.exceptions import PyJWTError
 from pydantic import BaseModel
+
+auth_logger = logging.getLogger("auth.events")
 
 # =============================================================================
 # Configuration
@@ -138,13 +141,22 @@ def decode_token(token: str) -> TokenData:
     """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        auth_logger.info("auth.token_validated", extra={"sub": payload.get("sub")})
         return TokenData(
             user_id=payload.get("sub"),
             email=payload.get("email"),
             scopes=payload.get("scopes", []),
             exp=datetime.fromtimestamp(payload.get("exp", 0), tz=timezone.utc),
         )
+    except jwt.ExpiredSignatureError:
+        auth_logger.warning("auth.token_expired", extra={"sub": "unknown"})
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired authentication token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except PyJWTError:
+        auth_logger.warning("auth.token_invalid", extra={"reason": "decode_error"})
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired authentication token",
@@ -170,6 +182,7 @@ async def get_current_user(
     Raises HTTPException if token is invalid.
     """
     if not credentials:
+        auth_logger.warning("auth.no_credentials")
         return None
 
     token_data = decode_token(credentials.credentials)
@@ -341,6 +354,7 @@ def create_dev_token(user_id: str = "dev-user", email: str = "dev@example.com") 
 
     DO NOT use in production!
     """
+    auth_logger.info("auth.dev_token_used")
     return create_access_token(
         data={
             "sub": user_id,

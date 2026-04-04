@@ -207,3 +207,11 @@ tags: []
 | 2026-04-05 | P2-Batch3 | U-2: README package name callout prominence | pending |
 | 2026-04-05 | P2-Batch3 | PH-3: 3 stale doc version refs fixed to v0.21.0 | pending |
 | 2026-04-05 | P2-Batch3 | T-8: React validation job added to CI fast-checks.yml | pending |
+| 2026-04-05 | P2-Batch4 | S-20: Pinned upper bounds on security deps | pending |
+| 2026-04-05 | P2-Batch4 | S-21: Auth event audit logging | pending |
+| 2026-04-05 | P2-Batch4 | S-23: Docker dev read-only mounts | pending |
+| 2026-04-05 | P2-Batch4 | T-13: Serviceability Hypothesis tests (10 tests) | pending |
+| 2026-04-05 | P2-Batch4 | BE-2: Function count fixes in 4 docs | pending |
+| 2026-04-05 | P2-Batch4 | GOV-4: Release process in CONTRIBUTING.md | pending |
+| 2026-04-05 | P2-Batch4 | FE-4: Parameter tooltips in BeamForm | pending |
+| 2026-04-05 | P2-Batch4 | OPS-6: Closed (already done) | pending |

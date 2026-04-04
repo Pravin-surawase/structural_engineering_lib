@@ -51,9 +51,10 @@
 | P2 Fixes (Batch 1, 7 items) | A- | 7.7/10 | 7 P2s resolved: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10 |
 | P2 Fixes (Batch 2, 7 items + 2 closures) | A- | 7.9/10 | 7 P2s resolved: OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7. 2 P2s closed as invalid: S-16, S-22 |
 | P2 Fixes (Batch 3, 7 items) | A- | 8.1/10 | 7 P2s resolved: S-19, API-9, A-2, U-2, PH-3, IS-3, T-8 |
-| **Final (post-fix)** | **A-** | **8.1/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 23 P2 fixes resolved** |
+| P2 Fixes (Batch 4, 7 items + 1 closure) | A | 8.3/10 | 7 P2s resolved: S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4. 1 P2 closed as already done: OPS-6 |
+| **Final (post-fix)** | **A** | **8.3/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 31 P2 fixes resolved** |
 
-**Overall Library Grade: A- (8.1/10) — up from A- (7.9/10) after P2 Batch 3 fixes**
+**Overall Library Grade: A (8.3/10) — up from A- (8.1/10) after P2 Batch 4 fixes**
 
 ---
 
@@ -234,7 +235,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | FE-1 | Minimal accessibility — 3 ARIA attributes total, no focus trapping | P1 | Full a11y pass on interactive elements |
 | FE-2 | No custom form validation — only HTML5 min/max | P1 | Add validation error display |
 | FE-3 | Settings panel not implemented (TODO in CommandPalette) | P2 | Implement SettingsPanel |
-| FE-4 | No tooltips for engineering parameters (fck, fy) | P2 | Add IS 456 context tooltips |
+| FE-4 | No tooltips for engineering parameters (fck, fy) | P2 | ✅ Fixed — IS 456 parameter tooltips on 6 BeamForm fields |
 | FE-5 | Toast system defined but unused | P2 | ✅ Fixed — Connected to error handlers |
 
 ---
@@ -276,7 +277,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | ID | Finding | Priority | Description | Fix |
 |----|---------|----------|-------------|-----|
 | BE-1 | 6 column API functions not exported from `__init__.py` | P1 | `design_column_is456`, `biaxial_bending_check_is456`, etc. | Add to imports + `__all__` |
-| BE-2 | Audit says "37 functions" — actually 57+28 types=85 exports | P2 | Misleading metric | Correct documentation |
+| BE-2 | Audit says "37 functions" — actually 57+28 types=85 exports | P2 | Misleading metric | ✅ Fixed — Corrected function count in 4 docs |
 | BE-3 | `optimize_pareto_front()` not in API namespace | P1 | Only accessible via internal module path | Add to `services/api.py` + `__init__.py` |
 | BE-4 | `compute_critical()` doesn't accept `dict` | P1 | Inconsistent with `compute_report()` which accepts dict | Add `dict` support |
 | BE-6 | `check_anchorage_at_simple_support()` not exported | P2 | Not in `__all__` | ✅ Fixed — Exported in `__all__` |
@@ -340,10 +341,10 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | S-18 | `float("inf")` in JSON responses | P1 | — | Non-standard JSON; breaks parsers | ✅ Fixed — Replaced inf with null/sentinel |
 | S-17 | DXF CLI reads arbitrary paths | P2 | A01 | No path traversal check | ✅ Fixed — Added path containment validation |
 | S-19 | Content-Disposition header injection risk | P2 | A03 | Filename from user input | ✅ Fixed — Added sanitize_filename() helper |
-| S-20 | Unpinned upper bounds on security deps | P2 | A06 | `PyJWT>=2.0` allows untested versions | Pin upper bounds |
-| S-21 | No auth event logging | P2 | A09 | Failed login attempts not logged | Add auth event audit log |
+| S-20 | Unpinned upper bounds on security deps | P2 | A06 | `PyJWT>=2.0` allows untested versions | ✅ Fixed — Pinned upper bounds (PyJWT<3, pydantic<3, fastapi<1, cryptography<47) |
+| S-21 | No auth event logging | P2 | A09 | Failed login attempts not logged | ✅ Fixed — Added auth event audit logging |
 | S-22 | Report reads from arbitrary paths | P2 | A01 | `compute_report(source)` accepts any path | ✅ Closed (INVALID — web API uses streaming, no disk I/O) |
-| S-23 | Docker dev mounts host source | P2 | A05 | Dev compose `.:/app` | Document risk; read-only mount |
+| S-23 | Docker dev mounts host source | P2 | A05 | Dev compose `.:/app` | ✅ Fixed — Read-only mounts in docker-compose.dev.yml |
 
 ---
 
@@ -358,7 +359,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | OPS-8 | No React build in PR CI | P1 | React breakage undetected until merge | Add `npm run build` to PR workflow |
 | OPS-4 | Dockerfile IPv4 only (`--host 0.0.0.0`) | P2 | Won't work in IPv6-only envs | ✅ Fixed — Bound to `::` |
 | OPS-5 | SBOM only on release | P2 | Vulnerability gaps between releases | Run SBOM weekly |
-| OPS-6 | No Docker layer caching in CI | P2 | Slow CI builds | Add cache action |
+| OPS-6 | No Docker layer caching in CI | P2 | Slow CI builds | ✅ Fixed — GHA layer caching already configured |
 
 ---
 
@@ -399,7 +400,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | T-10 | No end-to-end pipeline test (design→BBS→DXF→report) | P1 | Full pipeline never tested as unit | Create integration test |
 | T-11 | Column edge cases not explicitly tested | P1 | e_min > 0.05D, slender+biaxial untested | Add parametrized edge case tests |
 | T-12 | Footing has no dedicated unit tests | P1 | 4 footing functions with no test file | Create `tests/codes/is456/footing/` |
-| T-13 | Serviceability has no property-based tests | P2 | Only unit tests; no Hypothesis fuzzing | Add Hypothesis tests |
+| T-13 | Serviceability has no property-based tests | P2 | Only unit tests; no Hypothesis fuzzing | ✅ Fixed — 10 Hypothesis property-based tests for 5 functions |
 
 ---
 
@@ -463,7 +464,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | GOV-1 | No CODEOWNERS file | P1 | No automatic review assignment | Create `.github/CODEOWNERS` |
 | GOV-2 | Branch protection rules incomplete | P1 | Force push not blocked on main | Enable branch protection |
 | GOV-3 | No contribution license agreement (CLA) | P2 | IP risk for contributions | Add CLA bot or DCO |
-| GOV-4 | Release process undocumented for external contributors | P2 | Only agents know how to release | Document in CONTRIBUTING.md |
+| GOV-4 | Release process undocumented for external contributors | P2 | Only agents know how to release | ✅ Fixed — Release process section added to CONTRIBUTING.md |
 | GOV-5 | No security advisory process (SECURITY.md placeholder) | P1 | No way to report vulnerabilities | Create proper SECURITY.md |
 
 ---
@@ -580,7 +581,7 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ### P2 — Nice to Have (52 findings)
 
-52 P2 findings across all sections (16 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Closed invalid — S-16, S-22). Key themes: Docs/Packaging (~~DOC-7~~, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (~~S-17~~, S-19–S-21, S-23, ~~OPS-4~~, OPS-5–OPS-6), Math quality (~~SM-6–SM-10~~, IS-1, IS-3, IS-6), Frontend polish (FE-3, FE-4, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).
+52 P2 findings across all sections (24 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Batch 3 — S-19, API-9, A-2, U-2, PH-3, IS-3, T-8; Batch 4 — S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4; Closed — S-16, S-22 invalid, OPS-6 already done). Key themes: Docs/Packaging (~~DOC-7~~, ~~PH-3~~, PH-4, PH-5, ~~U-2~~, GOV-3, ~~GOV-4~~), Security hardening (~~S-17~~, ~~S-19~~, ~~S-20~~, ~~S-21~~, ~~S-23~~, ~~OPS-4~~, OPS-5, ~~OPS-6~~), Math quality (~~SM-6–SM-10~~, IS-1, ~~IS-3~~, IS-6), Frontend polish (FE-3, ~~FE-4~~, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (~~T-8~~, ~~T-13~~, ~~BE-2~~, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).
 
 ---
 
