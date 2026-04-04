@@ -1513,6 +1513,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#audit-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit Progress
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1535,30 +1546,34 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> P1 Batch 2 fixes — 4 items implemented (API-5, OPS-3, DOC-4, DOC-5)</p>
+<strong>Last Session:</strong> P1 Batch 3 fix — FE-1a accessibility (9 WCAG 2.1 Level A fixes)</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>4 P1 audit findings resolved in Batch 2:</li>
-<li>API-5: Added json_schema_extra OpenAPI examples to 5 key Pydantic request models</li>
-<li>OPS-3: Generated requirements-lock.txt with 153 pinned dependencies</li>
-<li>DOC-4: Added §17 Footing Design to api.md documenting 4 footing functions</li>
-<li>DOC-5: Created clause-map.md + clause-map.json mapping 63 IS 456 clauses to functions</li>
-<li>Grade improved: B+ (7.2) → B+ (7.4)</li>
-<li>Tests: 4,282 passing + 187 FastAPI tests passing</li>
+<li>ALL 20 P1 audit findings now resolved (Batch 1: 4+5 verified, Batch 2: 4, Batch 3: 1)</li>
+<li>FE-1a: Added ARIA landmarks (<main>, <nav>), skip-to-content link, Canvas role="img", loading aria-live, icon aria-label/aria-hidden across 4 React files</li>
+<li>Grade improved: B+ (7.4) → A- (7.5)</li>
+<li>Tests: 4,282 Python + 187 FastAPI passing, React build succeeds</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>P1 Batch 3: FE-1a (accessibility — ARIA landmarks, skip-to-content, Canvas role="img")</li>
 <li>Wire footing functions into services/api.py (discovered gap during DOC-4)</li>
-<li>Add @clause decorators to footing functions (IS-2, discovered gap during DOC-5)</li>
+<li>Add @clause decorators to footing functions (IS-2)</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
 <li>TASK-516: Triangular + Moment loads</li>
-<li>Remaining P2 items from audit</li>
+<li>Begin P2 fixes — start with highest-impact: FE-2 (form validation), T-3 (FastAPI test coverage)</li>
+<li>Add eslint-plugin-jsx-a11y to CI for automated accessibility checking</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
 <li>None</li>
+</ul>
+<h2 id="audit-progress">Audit Progress<a class="headerlink" href="#audit-progress" title="Permanent link">&para;</a></h2>
+<ul>
+<li>P0: 5/5 resolved ✅</li>
+<li>P1: 20/20 resolved ✅</li>
+<li>P2: 0/52 started</li>
+<li>Overall grade: A- (7.5/10)</li>
 </ul>
 
 
