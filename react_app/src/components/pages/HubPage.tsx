@@ -67,6 +67,7 @@ export function HubPage() {
     // Prefer live store data; fall back to localStorage
     if (beamCount > 0) {
       const name = beams[0]?.story ? `Project · ${beams[0].story}` : "Untitled Project";
+      // eslint-disable-next-line react-hooks/purity
       return { projectName: name, beamCount, passRate, timestamp: Date.now() } as LastSession;
     }
     return loadSession();

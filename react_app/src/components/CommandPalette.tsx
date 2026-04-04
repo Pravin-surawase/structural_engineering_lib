@@ -239,6 +239,7 @@ export function CommandPalette({
 /**
  * Hook for command palette with custom commands.
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCommandPalette() {
   const [isOpen, setIsOpen] = useState(false);
   const [commands, setCommands] = useState<CommandItem[]>(defaultCommands);

@@ -107,7 +107,8 @@ export function BuildingEditorPage() {
   // Auto-open sidebar when a beam is selected
   useEffect(() => {
     if (selectedId && !showSidebar) setShowSidebar(true);
-  }, [selectedId]); // eslint-disable-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId]);
 
   const statusCounts = useMemo(() => {
     const counts = { pass: 0, fail: 0, warning: 0, pending: 0, designing: 0 };
@@ -173,13 +174,15 @@ export function BuildingEditorPage() {
     }));
 
     runBatchDesign(payload, {
-      onSuccess: (data: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onSuccess: (data: Record<string, any>) => {
         if (!data.success) {
           setError(data.message || "Batch design failed");
           return;
         }
         const resultMap = new Map(
-          (data.results as any[]).map((r: any) => [r.beam_id, r])
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (data.results as Record<string, any>[]).map((r) => [r.beam_id, r])
         );
         const updated = beams.map((beam) => {
           const result = resultMap.get(beam.id);
