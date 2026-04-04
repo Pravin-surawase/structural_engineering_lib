@@ -213,6 +213,32 @@ cd react_app && npm run build
 ./run.sh check --quick
 ```
 
+## CI Fix Review Protocol
+
+When @ops or any agent hands off CI fixes for review, apply extra scrutiny — CI fixes under pressure often introduce regressions.
+
+### CI Fix Review Checklist
+- [ ] **Root cause identified** — the fix addresses the actual failure, not a symptom
+- [ ] **No unrelated changes** — CI fix commits should ONLY fix the CI failure
+- [ ] **Tests still pass** — run `./run.sh diagnose --local` to verify all checks pass
+- [ ] **No bypasses** — confirm no `--force`, `--no-verify`, or `noqa` was added to suppress the real issue
+- [ ] **Formatting fixes are clean** — if black/ruff was auto-applied, verify no logic was changed
+- [ ] **Import fixes are safe** — removing imports can break runtime; verify with `validate_imports.py`
+- [ ] **Encoding fixes use utf-8** — all `Path.read_text()`/`.write_text()` must specify `encoding="utf-8"`
+
+### Common CI Fix Anti-Patterns (REJECT these)
+| Pattern | Why It's Bad |
+|---------|-------------|
+| Adding `# noqa` to suppress lint | Hides real issues |
+| Adding `# type: ignore` without comment | Masks type errors |
+| Deleting failing tests | Removes safety net |
+| Weakening assertions (e.g., `>=` instead of `==`) | Hides regression |
+| Catching broad `Exception` to suppress CI | Swallows real errors |
+
+### Handoff After CI Fix Review
+- **APPROVED** → hand off to @ops for commit: `./scripts/ai_commit.sh "fix: resolve CI failures"`
+- **REJECTED** → hand back to the fixing agent with specific issues to address
+
 ## Feedback to Orchestrator
 
 When reviewing, note patterns that should improve future work:
