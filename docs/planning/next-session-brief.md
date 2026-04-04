@@ -1,25 +1,25 @@
 # Next Session Brief
 
 **Last Updated:** 2026-04-04
-**Last Session:** P1 Batch 1 fixes — 4 implemented + 5 verified already resolved
+**Last Session:** P1 Batch 2 fixes — 4 items implemented (API-5, OPS-3, DOC-4, DOC-5)
 
 ## What Was Completed
-- 9 P1 audit findings resolved (5 verified already fixed + 4 newly implemented)
-- A-1: Moved clause_cli.py to cli/ package (architecture fix)
-- A-3: Added Ast_min/Ast_max to FlexureResult; removed inline IS 456 math from FastAPI router
-- API-6: Fixed streaming /job/{job_id} — proper 404 + Path validation
-- FE-7: Converted 4 Three.js material leaks to declarative R3F JSX
-- Grade improved: B+ (7.0) → B+ (7.2)
-- Tests: 4,236 passing, React build succeeds
+- 4 P1 audit findings resolved in Batch 2:
+  - API-5: Added json_schema_extra OpenAPI examples to 5 key Pydantic request models
+  - OPS-3: Generated requirements-lock.txt with 153 pinned dependencies
+  - DOC-4: Added §17 Footing Design to api.md documenting 4 footing functions
+  - DOC-5: Created clause-map.md + clause-map.json mapping 63 IS 456 clauses to functions
+- Grade improved: B+ (7.2) → B+ (7.4)
+- Tests: 4,282 passing + 187 FastAPI tests passing
 
 ## What's Next (Priority Order)
-1. P1 Batch 2: API-5 (OpenAPI examples), OPS-3 (pip lock file), DOC-4 (footing docs), DOC-5 (clause mapping)
-2. P1 Batch 3: FE-1a (accessibility — ARIA landmarks, Canvas wrapper)
-3. Regenerate folder indexes (codes/is456/index.json stale after clause_cli move)
+1. P1 Batch 3: FE-1a (accessibility — ARIA landmarks, skip-to-content, Canvas role="img")
+2. Wire footing functions into services/api.py (discovered gap during DOC-4)
+3. Add @clause decorators to footing functions (IS-2, discovered gap during DOC-5)
 4. TASK-527: TopBar context badges + SettingsPanel
 5. TASK-528: Workflow breadcrumb for batch flow
 6. TASK-516: Triangular + Moment loads
-7. Remaining P1 items from other audit sections
+7. Remaining P2 items from audit
 
 ## Blockers
 - None

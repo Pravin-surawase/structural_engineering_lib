@@ -3529,3 +3529,182 @@ print(f"Governing: {result['governing_check']}")
 ```
 
 **FastAPI Endpoint:** `POST /api/v1/design/column`
+
+---
+
+## 17. Footing Design Module (`codes/is456/footing/`) — v0.21+
+
+IS 456 isolated footing design functions. These functions are in the **IS 456 codes layer** (`codes/is456/footing/`). They are **not yet exposed** through the services API (`services/api.py`).
+
+**Import path:**
+```python
+from structural_lib.codes.is456.footing import (
+    size_footing,
+    footing_flexure,
+    footing_one_way_shear,
+    footing_punching_shear,
+)
+```
+
+### 17.1 Footing Sizing (`size_footing`)
+
+Size an isolated footing for safe bearing capacity per IS 456 Cl 34.1. Uses **service (unfactored)** loads for sizing as required by IS 456.
+
+```python
+def size_footing(
+    P_service_kN: float,
+    q_safe_kPa: float,
+    a_mm: float,
+    b_mm: float,
+    M_service_kNm: float = 0.0,
+    footing_type: FootingType = FootingType.ISOLATED_SQUARE,
+) -> FootingBearingResult
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `P_service_kN` | `float` | Service (unfactored) axial load (kN). Must be > 0 |
+| `q_safe_kPa` | `float` | Safe bearing capacity of soil (kPa = kN/m²). Must be > 0 |
+| `a_mm` | `float` | Column dimension parallel to footing length (mm) |
+| `b_mm` | `float` | Column dimension parallel to footing width (mm) |
+| `M_service_kNm` | `float` | Service moment (kN·m). Default: 0.0 (concentric) |
+| `footing_type` | `FootingType` | `ISOLATED_SQUARE` or `ISOLATED_RECTANGULAR` |
+
+**Returns:** `FootingBearingResult` with sized footing dimensions and bearing check.
+
+**Reference:** IS 456:2000, Cl. 34.1
+
+**File:** `codes/is456/footing/bearing.py`
+
+---
+
+### 17.2 Footing Flexure (`footing_flexure`)
+
+Calculate bending moment and required steel at column face per IS 456 Cl 34.2.3.1. Designs steel in **both directions** independently. For rectangular footings, applies Cl 34.3.1 steel distribution (central band). Uses **factored** loads.
+
+```python
+def footing_flexure(
+    Pu_kN: float,
+    L_mm: float,
+    B_mm: float,
+    d_mm: float,
+    a_mm: float,
+    b_mm: float,
+    fck: float,
+    fy: float,
+) -> FootingFlexureResult
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Factored axial load (kN) |
+| `L_mm` | `float` | Footing length (mm) |
+| `B_mm` | `float` | Footing width (mm) |
+| `d_mm` | `float` | Effective depth (mm) |
+| `a_mm` | `float` | Column dimension parallel to L (mm) |
+| `b_mm` | `float` | Column dimension parallel to B (mm) |
+| `fck` | `float` | Characteristic concrete strength (N/mm²) |
+| `fy` | `float` | Steel yield strength (N/mm²) |
+
+**Returns:** `FootingFlexureResult` with moment and steel area for both directions.
+
+**Reference:** IS 456:2000, Cl. 34.2.3.1, 34.3.1, 26.5.2.1
+
+**File:** `codes/is456/footing/flexure.py`
+
+---
+
+### 17.3 One-Way Shear (`footing_one_way_shear`)
+
+Check one-way shear at distance d from column face per IS 456 Cl 34.2.4.1(a). Checks **both directions** independently and reports the governing (worse utilization) direction. Uses **factored** loads.
+
+```python
+def footing_one_way_shear(
+    Pu_kN: float,
+    L_mm: float,
+    B_mm: float,
+    d_mm: float,
+    a_mm: float,
+    b_mm: float,
+    fck: float,
+    pt: float = 0.15,
+) -> FootingOneWayShearResult
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Factored axial load (kN) |
+| `L_mm` | `float` | Footing length (mm) |
+| `B_mm` | `float` | Footing width (mm) |
+| `d_mm` | `float` | Effective depth (mm) |
+| `a_mm` | `float` | Column dimension parallel to L (mm) |
+| `b_mm` | `float` | Column dimension parallel to B (mm) |
+| `fck` | `float` | Characteristic concrete strength (N/mm²) |
+| `pt` | `float` | Steel percentage for Table 19 lookup. Default: 0.15% |
+
+> **Note:** No `fy` or `direction` parameter. Takes `pt` (steel percentage) directly and checks **both directions** internally.
+
+**Returns:** `FootingOneWayShearResult` with governing direction info.
+
+**Reference:** IS 456:2000, Cl. 34.2.4.1(a)
+
+**File:** `codes/is456/footing/one_way_shear.py`
+
+---
+
+### 17.4 Punching Shear (`footing_punching_shear`)
+
+Check punching (two-way) shear per IS 456 Cl 31.6.1. Critical perimeter at d/2 from column face. Permissible stress: ks × 0.25 × √fck where ks = min(1.0, 0.5 + βc). Uses **factored** loads.
+
+```python
+def footing_punching_shear(
+    Pu_kN: float,
+    L_mm: float,
+    B_mm: float,
+    d_mm: float,
+    a_mm: float,
+    b_mm: float,
+    fck: float,
+) -> FootingPunchingResult
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `Pu_kN` | `float` | Factored axial load (kN) |
+| `L_mm` | `float` | Footing length (mm) |
+| `B_mm` | `float` | Footing width (mm) |
+| `d_mm` | `float` | Effective depth (mm) |
+| `a_mm` | `float` | Column dimension parallel to L (mm) |
+| `b_mm` | `float` | Column dimension parallel to B (mm) |
+| `fck` | `float` | Characteristic concrete strength (N/mm²) |
+
+> **Note:** No `fy` parameter — punching shear capacity depends only on concrete strength per Cl 31.6.3.
+
+**Returns:** `FootingPunchingResult` with punching shear check.
+
+**Reference:** IS 456:2000, Cl. 31.6.1, 31.6.3
+
+**File:** `codes/is456/footing/punching_shear.py`
+
+---
+
+### 17.5 Usage Example
+
+```python
+from structural_lib.codes.is456.footing import (
+    size_footing, footing_flexure, footing_one_way_shear, footing_punching_shear,
+)
+
+# Step 1: Size footing using SERVICE loads (Cl 34.1)
+bearing = size_footing(P_service_kN=600, q_safe_kPa=150, a_mm=400, b_mm=400)
+L, B = bearing.L_mm, bearing.B_mm
+
+# Step 2: Design for flexure using FACTORED loads
+flex = footing_flexure(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=400, fck=25, fy=415)
+
+# Step 3: Check one-way shear
+ows = footing_one_way_shear(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=400, fck=25)
+
+# Step 4: Check punching shear
+punch = footing_punching_shear(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=400, fck=25)
+```

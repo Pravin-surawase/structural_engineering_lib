@@ -7,7 +7,7 @@ All dimensions in mm, forces in kN, moments in kN·m, stresses in N/mm².
 
 from typing import Any
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 # =============================================================================
 # Design Request Models
@@ -24,6 +24,24 @@ class RebarLayerConfig(BaseModel):
 
 class BeamDesignRequest(BaseModel):
     """Request model for beam design calculation."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "width": 300.0,
+                    "depth": 500.0,
+                    "moment": 150.0,
+                    "shear": 75.0,
+                    "fck": 25.0,
+                    "fy": 415.0,
+                    "clear_cover": 25.0,
+                    "stirrup_dia_mm": 8.0,
+                    "main_bar_dia_mm": 20.0,
+                }
+            ]
+        }
+    )
 
     # Section dimensions
     width: float = Field(

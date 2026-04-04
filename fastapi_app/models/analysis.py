@@ -6,7 +6,7 @@ Models for AI-assisted design analysis API endpoints.
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # =============================================================================
 # Load Analysis Models
@@ -31,6 +31,25 @@ class LoadItem(BaseModel):
 
 class LoadAnalysisRequest(BaseModel):
     """Request model for simple load analysis (BMD/SFD)."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "span_mm": 6000.0,
+                    "support_condition": "simply_supported",
+                    "loads": [
+                        {
+                            "load_type": "udl",
+                            "magnitude": 20.0,
+                            "position_mm": 0.0,
+                        }
+                    ],
+                    "num_points": 51,
+                }
+            ]
+        }
+    )
 
     span_mm: float = Field(gt=0, le=30000, description="Beam span (mm)")
     support_condition: Literal["simply_supported", "cantilever"] = Field(

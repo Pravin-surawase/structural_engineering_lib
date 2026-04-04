@@ -4,7 +4,7 @@
 Models for 3D geometry generation API endpoints for visualization.
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # =============================================================================
 # Point/Segment Models (matching library's geometry_3d.py)
@@ -70,6 +70,30 @@ class Beam3DGeometryModel(BaseModel):
 
 class BeamGeometryRequest(BaseModel):
     """Request model for beam 3D geometry generation using library API."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "beam_id": "B1",
+                    "story": "GF",
+                    "width": 300.0,
+                    "depth": 500.0,
+                    "span": 6000.0,
+                    "fck": 25.0,
+                    "fy": 415.0,
+                    "ast_start": 603.0,
+                    "ast_mid": 402.0,
+                    "ast_end": 603.0,
+                    "stirrup_dia": 8.0,
+                    "stirrup_spacing_start": 100.0,
+                    "stirrup_spacing_mid": 150.0,
+                    "stirrup_spacing_end": 100.0,
+                    "cover": 25.0,
+                }
+            ]
+        }
+    )
 
     # Core beam identification
     beam_id: str = Field(default="B1", max_length=200, description="Beam identifier")
