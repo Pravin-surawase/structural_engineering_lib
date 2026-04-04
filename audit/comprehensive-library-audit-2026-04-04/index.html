@@ -1,0 +1,4548 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/audit/comprehensive-library-audit-2026-04-04/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Comprehensive library audit 2026 04 04 - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#comprehensive-library-audit-v0210-final" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Comprehensive library audit 2026 04 04
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Executive Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#revised-scoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revised Scoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-library-usability-audit-score-395" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Library Usability Audit (Score: 3.9/5)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Library Usability Audit (Score: 3.9/5)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scores-by-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scores by Area
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strengths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strengths
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-is-456-compliance-audit-score-810" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. IS 456 Compliance Audit (Score: 8/10)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. IS 456 Compliance Audit (Score: 8/10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implemented-clauses-42-is-456-8-is-13920" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented Clauses (42 IS 456 + 8 IS 13920)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formula-accuracy-all-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formula Accuracy — ALL CORRECT ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-security-audit-score-510" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Security Audit (Score: 5/10)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Security Audit (Score: 5/10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRITICAL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIGH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#medium" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MEDIUM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#low" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LOW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-positives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Positives ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-architecture-audit-score-710" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Architecture Audit (Score: 7/10)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Architecture Audit (Score: 7/10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-positives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Positives ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-test-coverage-audit-score-6510" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Test Coverage Audit (Score: 6.5/10)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Test Coverage Audit (Score: 6.5/10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-apiendpoint-quality-audit-score-710" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. API/Endpoint Quality Audit (Score: 7/10)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. API/Endpoint Quality Audit (Score: 7/10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-positives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Positives ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-frontend-ux-audit-score-510" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Frontend UX Audit (Score: 5/10)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-project-health-audit-score-7510" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Project Health Audit (Score: 7.5/10)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Project Health Audit (Score: 7.5/10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positives ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-structural-math-audit-structural-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Structural Math Audit (@structural-math)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-backend-services-layer-audit-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Backend / Services Layer Audit (@backend)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-documentation-audit-doc-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Documentation Audit (@doc-master)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-agent-meta-quality-audit-agent-evolver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Agent &amp; Meta-Quality Audit (@agent-evolver)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-is-456-deep-compliance-structural-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. IS 456 Deep Compliance (@structural-engineer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-security-deep-dive-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Security Deep Dive (@security)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-operationsci-audit-ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Operations/CI Audit (@ops)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-frontend-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Frontend Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-api-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. API Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-testing-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Testing Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-ux-design-audit-ui-designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. UX Design Audit (@ui-designer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-innovation-roadmap-innovator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Innovation &amp; Roadmap (@innovator)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-library-expert-assessment-library-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Library Expert Assessment (@library-expert)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-governance-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. Governance (@governance)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-external-review-cross-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. External Review Cross-Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23. External Review Cross-Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verified-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verified Claims
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#score-corrections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Score Corrections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p0-fix-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 Fix Log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p1-fixes-applied-session-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 Fixes Applied (Session 2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consolidated-priority-matrix-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consolidated Priority Matrix (Final)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consolidated Priority Matrix (Final)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p0-must-fix-5-valid-p0s-all-fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 — Must Fix (5 valid P0s — ALL FIXED ✅)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1-should-fix-top-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — Should Fix (Top 20)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2-nice-to-have-52-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — Nice to Have (52 findings)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-audit-methodology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Audit Methodology
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix: Audit Methodology">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agents-used-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents Used (14)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-totals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Totals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><strong>Type:</strong> Audit
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> Active
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-04-04
+<strong>Last Updated:</strong> 2026-04-04</p>
+<h1 id="comprehensive-library-audit-v0210-final">Comprehensive Library Audit — v0.21.0 (Final)<a class="headerlink" href="#comprehensive-library-audit-v0210-final" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-04-04 | <strong>Version:</strong> v0.21.0 | <strong>Auditors:</strong> 14 agents (library-expert, structural-engineer, structural-math, backend, security, reviewer, tester, frontend, api-developer, governance, doc-master, agent-evolver, ui-designer, innovator) + external review by @library-expert and @reviewer</p>
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Workstream</th>
+<th>Agent</th>
+<th>Score</th>
+<th>Key Finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Library Usability</td>
+<td>@library-expert</td>
+<td>3.9/5</td>
+<td>Two conflicting API parameter styles</td>
+</tr>
+<tr>
+<td>IS 456 Compliance</td>
+<td>@structural-engineer</td>
+<td>8/10</td>
+<td>Comprehensive, no incorrect formulas found</td>
+</tr>
+<tr>
+<td>IS 456 Deep Compliance</td>
+<td>@structural-engineer</td>
+<td>—</td>
+<td>Missing min dimension warnings, footing bearing stress</td>
+</tr>
+<tr>
+<td>Structural Math</td>
+<td>@structural-math</td>
+<td>5/10</td>
+<td>fck=0 passes validation; float == dispatch; mutable results</td>
+</tr>
+<tr>
+<td>Backend/Services</td>
+<td>@backend</td>
+<td>7/10</td>
+<td>6 column functions not exported; zero input already handled</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>@security</td>
+<td>5/10</td>
+<td>No auth enforcement on any endpoint</td>
+</tr>
+<tr>
+<td>Security Deep Dive</td>
+<td>@security</td>
+<td>—</td>
+<td>WebSocket info leak; job runner path traversal; float(inf) JSON</td>
+</tr>
+<tr>
+<td>Architecture</td>
+<td>@reviewer</td>
+<td>7/10</td>
+<td>3 architecture violations (I/O in math layer)</td>
+</tr>
+<tr>
+<td>Test Coverage</td>
+<td>@tester</td>
+<td>6.5/10</td>
+<td>stress_blocks.py untested; FastAPI 36% endpoint coverage</td>
+</tr>
+<tr>
+<td>Testing Deep Dive</td>
+<td>@tester</td>
+<td>—</td>
+<td>cmd_smart CLI zero tests; no e2e pipeline test</td>
+</tr>
+<tr>
+<td>API Quality</td>
+<td>@api-developer</td>
+<td>7/10</td>
+<td>Inconsistent response shapes across routers</td>
+</tr>
+<tr>
+<td>API Deep Dive</td>
+<td>@api-developer</td>
+<td>—</td>
+<td>SSE unbounded input (P0); no OpenAPI examples</td>
+</tr>
+<tr>
+<td>Frontend UX</td>
+<td>@frontend</td>
+<td>5/10</td>
+<td>No ErrorBoundary; weak validation; poor accessibility</td>
+</tr>
+<tr>
+<td>Frontend Deep Dive</td>
+<td>@frontend</td>
+<td>—</td>
+<td>No Three.js cleanup; no WebGL context loss handling</td>
+</tr>
+<tr>
+<td>UX Design</td>
+<td>@ui-designer</td>
+<td>4/10</td>
+<td>WCAG AA contrast failures (P0); no design system</td>
+</tr>
+<tr>
+<td>Operations/CI</td>
+<td>@ops</td>
+<td>5/10</td>
+<td>Nightly CI always passes (P0); no dep lockfile</td>
+</tr>
+<tr>
+<td>Project Health</td>
+<td>@governance</td>
+<td>7.5/10</td>
+<td>34MB vendor files tracked in git</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>@doc-master</td>
+<td>5/10</td>
+<td>Footing API undocumented, PyPI desc outdated</td>
+</tr>
+<tr>
+<td>Agent Meta-Quality</td>
+<td>@agent-evolver</td>
+<td>5/10</td>
+<td>No agent has "audit mode"; scorer uniform 6.77</td>
+</tr>
+<tr>
+<td>Innovation</td>
+<td>@innovator</td>
+<td>—</td>
+<td>23 innovation opportunities identified</td>
+</tr>
+<tr>
+<td>Library Expert</td>
+<td>@library-expert</td>
+<td>—</td>
+<td>9 professional practice gaps</td>
+</tr>
+<tr>
+<td>Governance</td>
+<td>@governance</td>
+<td>—</td>
+<td>5 governance findings</td>
+</tr>
+</tbody>
+</table>
+<h3 id="revised-scoring">Revised Scoring<a class="headerlink" href="#revised-scoring" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scorer</th>
+<th>Grade</th>
+<th>Score</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial (10-agent)</td>
+<td>B+</td>
+<td>7.1/10</td>
+<td>Before corrections</td>
+</tr>
+<tr>
+<td>@library-expert</td>
+<td>B</td>
+<td>6.8/10</td>
+<td>Professional standards perspective</td>
+</tr>
+<tr>
+<td>@reviewer corrections</td>
+<td>B-</td>
+<td>6.4/10</td>
+<td>Removed 3 invalid P0s, added 60+ findings from 4 new agents</td>
+</tr>
+<tr>
+<td>P0 Fixes Applied</td>
+<td>B</td>
+<td>6.8/10</td>
+<td>All 5 P0s resolved; T-1 downgraded to P2</td>
+</tr>
+<tr>
+<td>P1 Fixes (6 items)</td>
+<td>B+</td>
+<td>7.0/10</td>
+<td>6 P1s resolved: SM-1,2,3, IS-5,7, FE-6</td>
+</tr>
+<tr>
+<td><strong>Final (post-fix)</strong></td>
+<td><strong>B+</strong></td>
+<td><strong>7.0/10</strong></td>
+<td><strong>14-agent consensus + P0 fixes + 6 P1 fixes</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall Library Grade: B+ (7.0/10) — up from B (6.8/10) after P1 fixes</strong></p>
+<hr />
+<h2 id="1-library-usability-audit-score-395">1. Library Usability Audit (Score: 3.9/5)<a class="headerlink" href="#1-library-usability-audit-score-395" title="Permanent link">&para;</a></h2>
+<h3 id="scores-by-area">Scores by Area<a class="headerlink" href="#scores-by-area" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Installation &amp; First Use</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>API Ergonomics</td>
+<td>3.5/5</td>
+</tr>
+<tr>
+<td>Error Messages &amp; Validation</td>
+<td>4.5/5</td>
+</tr>
+<tr>
+<td>Documentation Quality</td>
+<td>3.5/5</td>
+</tr>
+<tr>
+<td>Common Usage Patterns</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>IS 456 Knowledge Accessibility</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>AI Agent Usability</td>
+<td>4/5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="findings">Findings<a class="headerlink" href="#findings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U-1</td>
+<td>Two conflicting API parameter styles (<code>b</code> vs <code>b_mm</code>)</td>
+<td>P1</td>
+<td>Document two API levels; standardize examples to <code>api.*</code></td>
+</tr>
+<tr>
+<td>U-2</td>
+<td>Package name (<code>structural-lib-is456</code>) vs import (<code>structural_lib</code>) mismatch poorly documented</td>
+<td>P2</td>
+<td>Add prominent callout in README</td>
+</tr>
+<tr>
+<td>U-4</td>
+<td><code>design_beam_is456()</code> requires <code>d_mm</code> — most users don't know effective depth</td>
+<td>P2</td>
+<td>Make <code>d_mm</code> optional with auto-calc from <code>D_mm - cover_mm</code></td>
+</tr>
+<tr>
+<td>U-5</td>
+<td>57 public functions + 28 types — hard to discover</td>
+<td>P2</td>
+<td>Add decision tree to docs</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Merged:</strong> U-3 = DOC-3 (stale examples README) — kept as DOC-3. U-6 = DOC-5 (no clause mapping) — kept as DOC-5.</p>
+</blockquote>
+<h3 id="strengths">Strengths<a class="headerlink" href="#strengths" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Explicit unit suffixes (<code>_mm</code>, <code>_knm</code>, <code>_nmm2</code>) are self-documenting</li>
+<li>World-class error framework with "Three Questions" pattern (What? Why? How to fix?)</li>
+<li><code>@clause</code> decorator provides code-to-IS 456 traceability</li>
+<li><code>llms.txt</code> and <code>index.json</code> enable AI agent discovery</li>
+<li>Plausibility guards catch unit confusion (fck &gt; 120 means "Expected N/mm², not Pa")</li>
+</ul>
+<hr />
+<h2 id="2-is-456-compliance-audit-score-810">2. IS 456 Compliance Audit (Score: 8/10)<a class="headerlink" href="#2-is-456-compliance-audit-score-810" title="Permanent link">&para;</a></h2>
+<h3 id="implemented-clauses-42-is-456-8-is-13920">Implemented Clauses (42 IS 456 + 8 IS 13920)<a class="headerlink" href="#implemented-clauses-42-is-456-8-is-13920" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Clause Group</th>
+<th>Clauses</th>
+<th>Quality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Beam Flexure</td>
+<td>Cl 23.1.2, 36.4.2, 38.1, 38.2, G-1.1, G-2.2</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Beam Shear</td>
+<td>Cl 40.1, 40.2, 40.3, 40.4, Table 19, Table 20</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Beam Torsion</td>
+<td>Cl 41.1, 41.3, 41.3.1, 41.4, 41.4.2, 41.4.3</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>Beam Detailing</td>
+<td>Cl 26.2.1, 26.2.2, 26.2.3, 26.2.5, 26.3.3, 26.5.1.3</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>Serviceability</td>
+<td>Cl 43 (L/d), Annex C (Level B/C), Annex F (crack)</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>Column Classification</td>
+<td>Cl 25.1.2, 25.2, 25.3.1, 25.4</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Column Capacity</td>
+<td>Cl 39.3, 39.4, 39.5, 39.6, 39.7, 39.7.1</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Column Detailing</td>
+<td>Cl 26.5.3</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Footing</td>
+<td>Cl 31.6.1, 34.1, 34.2.3.1, 34.2.4.1, 34.3.1</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>IS 13920 Beam</td>
+<td>Cl 6.1, 6.2, 6.3.5</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>IS 13920 Column</td>
+<td>Cl 7.1, 7.2.1, 7.4.1, 7.4.6, 7.4.7/8</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Materials/Tables</td>
+<td>Cl 5.6.3, 6.2.2, Fig. 23, Table 4.1, SP:16 Table I</td>
+<td>5/5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="formula-accuracy-all-correct">Formula Accuracy — ALL CORRECT ✅<a class="headerlink" href="#formula-accuracy-all-correct" title="Permanent link">&para;</a></h3>
+<p>Every formula spot-checked matches IS 456:2000 exactly: Mu_lim stress block (Cl 38.1), Ast (Cl 38.2), xu_max/d ratios, shear τv/τc/τc_max, column Pu (Cl 39.3), Bresler (Cl 39.6), P-M interaction (Cl 39.5), slender columns (Cl 39.7.1).</p>
+<h3 id="findings_1">Findings<a class="headerlink" href="#findings_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS-1</td>
+<td>Torsion Me uses estimated D=d+50 instead of taking D as parameter</td>
+<td>P2</td>
+<td>Accept D as parameter</td>
+</tr>
+<tr>
+<td>IS-2</td>
+<td>Footing modules lack @clause decorators — breaks traceability</td>
+<td>P1</td>
+<td>Add <code>@clause</code> to all footing functions</td>
+</tr>
+<tr>
+<td>IS-3</td>
+<td>IS 13920 modules lack @clause decorators</td>
+<td>P2</td>
+<td>Add <code>@clause</code> to all IS 13920 functions</td>
+</tr>
+<tr>
+<td>IS-4</td>
+<td>Strong-Column-Weak-Beam check missing (IS 13920 joint)</td>
+<td>P2</td>
+<td>Implement when needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-security-audit-score-510">3. Security Audit (Score: 5/10)<a class="headerlink" href="#3-security-audit-score-510" title="Permanent link">&para;</a></h2>
+<h3 id="critical">CRITICAL<a class="headerlink" href="#critical" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>OWASP</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-1</td>
+<td><strong>No auth enforcement on any REST endpoint</strong> — <code>require_auth</code> exists but never applied via <code>Depends()</code></td>
+<td>A01</td>
+<td>Apply <code>Depends(require_auth)</code> to all non-health endpoints</td>
+</tr>
+</tbody>
+</table>
+<h3 id="high">HIGH<a class="headerlink" href="#high" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>OWASP</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-3</td>
+<td>Rate limiting only on 2 of 59 endpoints</td>
+<td>A04</td>
+<td>Add rate limiter middleware</td>
+</tr>
+<tr>
+<td>S-4</td>
+<td>WebSocket input not validated via Pydantic</td>
+<td>A03/A04</td>
+<td>Add Pydantic model validation</td>
+</tr>
+<tr>
+<td>S-5</td>
+<td>Error messages leak internal details (15+ <code>str(e)</code> in column.py)</td>
+<td>CWE-209</td>
+<td>Sanitize error responses</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Merged:</strong> S-2 (no file upload size limits) ≈ API-7 ≈ API-11 (unbounded input) — consolidated as unbounded-input class. See API-7, API-11.</p>
+</blockquote>
+<h3 id="medium">MEDIUM<a class="headerlink" href="#medium" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>OWASP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-6</td>
+<td>In-memory rate limiter not production-ready (no Redis)</td>
+<td>A04</td>
+</tr>
+<tr>
+<td>S-7</td>
+<td>Batch design has no item count limit</td>
+<td>A04</td>
+</tr>
+<tr>
+<td>S-8</td>
+<td>Temp files written to default OS location</td>
+<td>A05</td>
+</tr>
+<tr>
+<td>S-9</td>
+<td>X-Forwarded-For header trusted without validation</td>
+<td>A01</td>
+</tr>
+<tr>
+<td>S-10</td>
+<td>CORS config hardcoded, not using Settings</td>
+<td>A05</td>
+</tr>
+</tbody>
+</table>
+<h3 id="low">LOW<a class="headerlink" href="#low" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>OWASP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-11</td>
+<td>Default JWT secret in docker-compose files</td>
+<td>A02</td>
+</tr>
+<tr>
+<td>S-12</td>
+<td><code>create_dev_token()</code> available in production code</td>
+<td>A07</td>
+</tr>
+<tr>
+<td>S-13</td>
+<td>OpenAPI/Swagger UI always exposed</td>
+<td>A05</td>
+</tr>
+<tr>
+<td>S-14</td>
+<td>Unpinned dependency versions</td>
+<td>A06</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-positives">Security Positives ✅<a class="headerlink" href="#security-positives" title="Permanent link">&para;</a></h3>
+<p>No SQL injection (no DB). No SSRF. No unsafe deserialization. Docker: non-root, cap_drop ALL. JWT production safeguard. Pydantic validation with ranges.</p>
+<hr />
+<h2 id="4-architecture-audit-score-710">4. Architecture Audit (Score: 7/10)<a class="headerlink" href="#4-architecture-audit-score-710" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A-1</td>
+<td>I/O in IS 456 pure math layer — <code>clause_cli.py</code> has 20+ <code>print()</code></td>
+<td>P1</td>
+<td>Move CLI outside <code>codes/is456/</code></td>
+</tr>
+<tr>
+<td>A-2</td>
+<td>File I/O in IS 456 layer — <code>traceability.py</code> uses <code>Path()</code>/<code>open()</code></td>
+<td>P2</td>
+<td>Move file loading to services layer</td>
+</tr>
+<tr>
+<td>A-3</td>
+<td>IS 456 math in FastAPI router — <code>ast_min</code>/<code>ast_max</code> formulas in <code>design.py</code></td>
+<td>P1</td>
+<td>Move to <code>services/api.py</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="architecture-positives">Architecture Positives ✅<a class="headerlink" href="#architecture-positives" title="Permanent link">&para;</a></h3>
+<p>Core types import boundary intact. IS 456 code import boundary intact. No FastAPI imports in structural_lib. Stub <code>api.py</code> is a clean backward-compat re-export. No dead code markers found.</p>
+<hr />
+<h2 id="5-test-coverage-audit-score-6510">5. Test Coverage Audit (Score: 6.5/10)<a class="headerlink" href="#5-test-coverage-audit-score-6510" title="Permanent link">&para;</a></h2>
+<h3 id="test-inventory">Test Inventory<a class="headerlink" href="#test-inventory" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Files</th>
+<th>Functions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python (all)</td>
+<td>127</td>
+<td>~2,721</td>
+</tr>
+<tr>
+<td>FastAPI</td>
+<td>13</td>
+<td>187</td>
+</tr>
+<tr>
+<td>React (Vitest)</td>
+<td>15</td>
+<td>~124</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>155</strong></td>
+<td><strong>~3,032</strong></td>
+</tr>
+</tbody>
+</table>
+<p>4,255 tests pass (parametrized expansion). 85% branch coverage enforced in CI.</p>
+<h3 id="findings_2">Findings<a class="headerlink" href="#findings_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T-1</td>
+<td><code>codes/is456/common/stress_blocks.py</code> — ZERO tests</td>
+<td><strong>P0</strong></td>
+<td>Create dedicated test file with unit + benchmark tests</td>
+</tr>
+<tr>
+<td>T-3</td>
+<td>FastAPI endpoint coverage at 36% (21/59)</td>
+<td>P1</td>
+<td>Test untested routers (Export 0%, Insights 0%, Rebar 0%)</td>
+</tr>
+<tr>
+<td>T-5</td>
+<td>No <code>tests/codes/is456/beam/</code> directory — beam tests scattered</td>
+<td>P1</td>
+<td>Mirror column test structure</td>
+</tr>
+<tr>
+<td>T-6</td>
+<td>Missing Hypothesis tests for torsion, serviceability, footing, detailing</td>
+<td>P1</td>
+<td>Add property-based test files</td>
+</tr>
+<tr>
+<td>T-7</td>
+<td>Missing SP:16 benchmarks for beams/footings</td>
+<td>P1</td>
+<td>Add labeled SP:16 chart verification tests</td>
+</tr>
+<tr>
+<td>T-8</td>
+<td>React tests not in CI</td>
+<td>P2</td>
+<td>Add Vitest to CI workflow</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>INVALID (removed):</strong> ~~T-2: IS 13920 beam.py has zero tests~~ — Tests exist in <code>tests/unit/test_ductile.py</code> and <code>tests/property/test_ductile_hypothesis.py</code>. <strong>VERIFIED by @reviewer.</strong></p>
+<p><strong>INVALID (removed):</strong> ~~T-4: FastAPI tests not in CI~~ — FastAPI tests ARE in CI via <code>fast-checks.yml</code>. <strong>VERIFIED by @reviewer.</strong></p>
+</blockquote>
+<hr />
+<h2 id="6-apiendpoint-quality-audit-score-710">6. API/Endpoint Quality Audit (Score: 7/10)<a class="headerlink" href="#6-apiendpoint-quality-audit-score-710" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API-1</td>
+<td>Inconsistent response shapes — design uses <code>success+message+data</code>, column returns direct</td>
+<td>P1</td>
+<td>Wrap all with <code>APIResponse&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>API-2</td>
+<td>Missing cross-field validators (<code>clear_cover &lt; depth</code>)</td>
+<td>P1</td>
+<td>Add Pydantic <code>model_validator</code></td>
+</tr>
+<tr>
+<td>API-3</td>
+<td>No timeout/cancellation for long operations</td>
+<td>P2</td>
+<td>Add timeout middleware</td>
+</tr>
+<tr>
+<td>API-4</td>
+<td>In-memory <code>BatchJobManager</code> — no production persistence</td>
+<td>P2</td>
+<td>Consider Redis for production</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-positives">API Positives ✅<a class="headerlink" href="#api-positives" title="Permanent link">&para;</a></h3>
+<p>Proper <code>/api/v1</code> versioning. All POST endpoints async. CPU-bound wrapped with <code>asyncio.to_thread()</code>. Request ID middleware. All 58 REST endpoints have <code>summary=</code> and <code>description=</code>. Proper <code>Content-Disposition</code> headers. CORS restricted to explicit origins.</p>
+<hr />
+<h2 id="7-frontend-ux-audit-score-510">7. Frontend UX Audit (Score: 5/10)<a class="headerlink" href="#7-frontend-ux-audit-score-510" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User Flow Completeness</td>
+<td>8/10</td>
+</tr>
+<tr>
+<td>Error Handling</td>
+<td>4/10</td>
+</tr>
+<tr>
+<td>Form Validation</td>
+<td>4/10</td>
+</tr>
+<tr>
+<td>Accessibility</td>
+<td>3/10</td>
+</tr>
+<tr>
+<td>Performance &amp; Memory</td>
+<td>5/10</td>
+</tr>
+<tr>
+<td>Mobile Responsiveness</td>
+<td>4/10</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FE-1</td>
+<td>Minimal accessibility — 3 ARIA attributes total, no focus trapping</td>
+<td>P1</td>
+<td>Full a11y pass on interactive elements</td>
+</tr>
+<tr>
+<td>FE-2</td>
+<td>No custom form validation — only HTML5 min/max</td>
+<td>P1</td>
+<td>Add validation error display</td>
+</tr>
+<tr>
+<td>FE-3</td>
+<td>Settings panel not implemented (TODO in CommandPalette)</td>
+<td>P2</td>
+<td>Implement SettingsPanel</td>
+</tr>
+<tr>
+<td>FE-4</td>
+<td>No tooltips for engineering parameters (fck, fy)</td>
+<td>P2</td>
+<td>Add IS 456 context tooltips</td>
+</tr>
+<tr>
+<td>FE-5</td>
+<td>Toast system defined but unused</td>
+<td>P2</td>
+<td>Connect to error handlers</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-project-health-audit-score-7510">8. Project Health Audit (Score: 7.5/10)<a class="headerlink" href="#8-project-health-audit-score-7510" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PH-1</td>
+<td>1,760 vendor files (34MB) tracked in git</td>
+<td>P1</td>
+<td><code>git rm -r --cached docs/reference/vendor/</code></td>
+</tr>
+<tr>
+<td>PH-2</td>
+<td>Missing <code>.env.example</code></td>
+<td>P1</td>
+<td>Create with documented env vars</td>
+</tr>
+<tr>
+<td>PH-3</td>
+<td>7 stale version references (v0.19/v0.20)</td>
+<td>P2</td>
+<td>Run <code>scripts/sync_numbers.py --fix</code></td>
+</tr>
+<tr>
+<td>PH-4</td>
+<td>Script sprawl — 111 scripts with potential redundancy</td>
+<td>P2</td>
+<td>Audit for deduplication</td>
+</tr>
+<tr>
+<td>PH-5</td>
+<td>No multi-stage Docker build</td>
+<td>P2</td>
+<td>Add builder stage</td>
+</tr>
+</tbody>
+</table>
+<h3 id="positives">Positives ✅<a class="headerlink" href="#positives" title="Permanent link">&para;</a></h3>
+<p>18 CI workflows. Smart path-filtered PR checks. Full security stack (CodeQL, Scorecard, SBOM, pip-audit, bandit). WIP limit enforced. 0 stale branches.</p>
+<hr />
+<h2 id="9-structural-math-audit-structural-math">9. Structural Math Audit (@structural-math)<a class="headerlink" href="#9-structural-math-audit-structural-math" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SM-1</td>
+<td>fck=0 passes validation</td>
+<td>P1</td>
+<td><code>_validate_plausibility()</code> has no lower bounds for material properties — division by zero downstream</td>
+<td>Add <code>fck &gt; 0</code>, <code>fy &gt; 0</code> checks</td>
+</tr>
+<tr>
+<td>SM-2</td>
+<td>float <code>==</code> for fy grade dispatch</td>
+<td>P1</td>
+<td><code>if fy == 415.0</code> risks floating-point mismatch</td>
+<td>Use tolerance: <code>abs(fy - 415) &lt; 0.5</code></td>
+</tr>
+<tr>
+<td>SM-3</td>
+<td>Unguarded division by b1*d1 in torsion</td>
+<td>P1</td>
+<td><code>calculate_equivalent_shear()</code> can divide by zero if b1 or d1 is 0</td>
+<td>Add zero-guard</td>
+</tr>
+<tr>
+<td>SM-4</td>
+<td>TorsionResult defined in TWO locations</td>
+<td>P1</td>
+<td>Duplicate dataclass in <code>torsion.py</code> and <code>torsion_design.py</code></td>
+<td>Consolidate to one location</td>
+</tr>
+<tr>
+<td>SM-5</td>
+<td>Division by zero when num_points=1</td>
+<td>P1</td>
+<td><code>generate_interaction_curve()</code> divides by <code>(num_points - 1)</code></td>
+<td>Guard <code>num_points &gt;= 2</code></td>
+</tr>
+<tr>
+<td>SM-6</td>
+<td>FlexureResult/ShearResult mutable</td>
+<td>P2</td>
+<td>Non-frozen dataclasses; thread-unsafe</td>
+<td>Make frozen</td>
+</tr>
+<tr>
+<td>SM-7</td>
+<td><code>_calculate_puz()</code> no input validation</td>
+<td>P2</td>
+<td>Accepts any values including negative areas</td>
+<td>Add range checks</td>
+</tr>
+<tr>
+<td>SM-8</td>
+<td>float <code>== 0.0</code> in footing bearing</td>
+<td>P2</td>
+<td><code>if bearing_pressure == 0.0</code> risks float mismatch</td>
+<td>Use tolerance</td>
+</tr>
+<tr>
+<td>SM-9</td>
+<td><code>get_steel_stress()</code> zero input validation</td>
+<td>P2</td>
+<td>Strain=-0 or d=0 not guarded</td>
+<td>Add input guards</td>
+</tr>
+<tr>
+<td>SM-10</td>
+<td>ColumnAxialResult mutable</td>
+<td>P2</td>
+<td>Non-frozen dataclass like SM-6</td>
+<td>Make frozen</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-backend-services-layer-audit-backend">10. Backend / Services Layer Audit (@backend)<a class="headerlink" href="#10-backend-services-layer-audit-backend" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BE-1</td>
+<td>6 column API functions not exported from <code>__init__.py</code></td>
+<td>P1</td>
+<td><code>design_column_is456</code>, <code>biaxial_bending_check_is456</code>, etc.</td>
+<td>Add to imports + <code>__all__</code></td>
+</tr>
+<tr>
+<td>BE-2</td>
+<td>Audit says "37 functions" — actually 57+28 types=85 exports</td>
+<td>P2</td>
+<td>Misleading metric</td>
+<td>Correct documentation</td>
+</tr>
+<tr>
+<td>BE-3</td>
+<td><code>optimize_pareto_front()</code> not in API namespace</td>
+<td>P1</td>
+<td>Only accessible via internal module path</td>
+<td>Add to <code>services/api.py</code> + <code>__init__.py</code></td>
+</tr>
+<tr>
+<td>BE-4</td>
+<td><code>compute_critical()</code> doesn't accept <code>dict</code></td>
+<td>P1</td>
+<td>Inconsistent with <code>compute_report()</code> which accepts dict</td>
+<td>Add <code>dict</code> support</td>
+</tr>
+<tr>
+<td>BE-6</td>
+<td><code>check_anchorage_at_simple_support()</code> not exported</td>
+<td>P2</td>
+<td>Not in <code>__all__</code></td>
+<td>Export or mark private</td>
+</tr>
+<tr>
+<td>BE-7</td>
+<td><code>cmd_smart</code> CLI has zero tests</td>
+<td>P1</td>
+<td>All other 9 CLI commands tested</td>
+<td>Add smart command tests</td>
+</tr>
+<tr>
+<td>BE-8</td>
+<td>No circular imports in services layer</td>
+<td>INFO</td>
+<td>Verified clean</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>INVALID (removed):</strong> ~~BE-5: <code>design_beam_is456()</code> accepts zero/negative dims~~ — The function <strong>does</strong> validate zero/negative inputs correctly via <code>_validate_plausibility()</code>. <strong>VERIFIED by @reviewer.</strong> Note: SM-1 separately flags that <code>fck=0</code> can pass — different issue at a different layer.</p>
+</blockquote>
+<hr />
+<h2 id="11-documentation-audit-doc-master">11. Documentation Audit (@doc-master)<a class="headerlink" href="#11-documentation-audit-doc-master" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOC-1</td>
+<td>PyPI description says "RC Beam Design" — now has columns + footings</td>
+<td>P1</td>
+<td>Update <code>pyproject.toml</code> description</td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-2</td>
+<td>Missing MANIFEST.in — <code>py.typed</code> excluded from sdist</td>
+<td>P1</td>
+<td>Create <code>Python/MANIFEST.in</code></td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-3</td>
+<td>Examples README lists 4 non-existent files; no column/footing examples</td>
+<td>P1</td>
+<td>Rewrite with actual files</td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-4</td>
+<td>api.md missing footing section (0/4 functions documented)</td>
+<td>P0</td>
+<td>Add Section 17 for footings</td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-5</td>
+<td>No clause-to-function mapping</td>
+<td>P1</td>
+<td>Create <code>clause_map.json</code></td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-6</td>
+<td>Quickstart doesn't cover columns/footings</td>
+<td>P1</td>
+<td>Update with new element examples</td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-7</td>
+<td>CHANGELOG v0.21.0 reads as internal task log</td>
+<td>P2</td>
+<td>Add "Highlights" section</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="12-agent-meta-quality-audit-agent-evolver">12. Agent &amp; Meta-Quality Audit (@agent-evolver)<a class="headerlink" href="#12-agent-meta-quality-audit-agent-evolver" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Fix Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AE-1</td>
+<td>Tester agent produced no audit output (no audit mode)</td>
+<td>P1</td>
+<td>tester.agent.md</td>
+</tr>
+<tr>
+<td>AE-2</td>
+<td>Governance agent produced no audit output</td>
+<td>P1</td>
+<td>governance.agent.md</td>
+</tr>
+<tr>
+<td>AE-3</td>
+<td>Frontend empty on React test task</td>
+<td>P2</td>
+<td>frontend.agent.md</td>
+</tr>
+<tr>
+<td>AE-4</td>
+<td>No agent has "Audit Mode" instructions</td>
+<td>P1</td>
+<td>8 agent files</td>
+</tr>
+<tr>
+<td>AE-5</td>
+<td>Scoring data uniform — all agents score 6.77</td>
+<td>P1</td>
+<td>agent_scorer.py</td>
+</tr>
+<tr>
+<td>AE-6</td>
+<td>Drift detection returns empty</td>
+<td>P1</td>
+<td>agent_session_collector.py</td>
+</tr>
+<tr>
+<td>AE-7</td>
+<td>No feedback logged for empty-result agents</td>
+<td>P2</td>
+<td>orchestrator workflow</td>
+</tr>
+<tr>
+<td>AE-8</td>
+<td>7 "missing lower bound" patterns across agents</td>
+<td>P1</td>
+<td>backend + api-developer .agent.md</td>
+</tr>
+<tr>
+<td>AE-9</td>
+<td>3 architecture violations — same layer-leak pattern</td>
+<td>P1</td>
+<td>pre-commit hook + agent warnings</td>
+</tr>
+<tr>
+<td>AE-10</td>
+<td>No agent enforces @clause decorators</td>
+<td>P2</td>
+<td>structural-math.agent.md</td>
+</tr>
+<tr>
+<td>AE-11</td>
+<td>8-workstream audit had overlaps + gaps (22% empty rate)</td>
+<td>P2</td>
+<td>Consolidate to 5 workstreams</td>
+</tr>
+<tr>
+<td>AE-12</td>
+<td>No deduplication step in audit pipeline</td>
+<td>P2</td>
+<td>Orchestrator post-audit step</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="13-is-456-deep-compliance-structural-engineer">13. IS 456 Deep Compliance (@structural-engineer)<a class="headerlink" href="#13-is-456-deep-compliance-structural-engineer" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS-5</td>
+<td>No minimum dimension warning for beams</td>
+<td>P1</td>
+<td>IS 456 Cl 23.1.1 specifies min widths; library accepts 10mm beams</td>
+<td>Warn when b &lt; 150mm</td>
+</tr>
+<tr>
+<td>IS-7</td>
+<td>Column accepts impractically small sections</td>
+<td>P1</td>
+<td>50×50mm column accepted without warning</td>
+<td>Warn when b or D &lt; 200mm</td>
+</tr>
+<tr>
+<td>IS-8</td>
+<td>No integrated column design routing for e_min &gt; 0.05D</td>
+<td>P1</td>
+<td>User must manually decide uniaxial/biaxial path</td>
+<td>Add routing in <code>design_column_is456()</code></td>
+</tr>
+<tr>
+<td>IS-6</td>
+<td>Footing missing Cl 34.4 bearing stress enhancement</td>
+<td>P2</td>
+<td>Enhancement factor for pedestal footings not implemented</td>
+<td>Implement bearing stress enhancement</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="14-security-deep-dive-security">14. Security Deep Dive (@security)<a class="headerlink" href="#14-security-deep-dive-security" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>OWASP</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-15</td>
+<td>WebSocket error leaks internal details</td>
+<td>P1</td>
+<td>CWE-209</td>
+<td>Exception messages sent raw to client</td>
+<td>Sanitize WS error messages</td>
+</tr>
+<tr>
+<td>S-16</td>
+<td>Job runner writes to arbitrary paths</td>
+<td>P1</td>
+<td>A01</td>
+<td><code>output_dir</code> not path-validated</td>
+<td>Validate against allowed directories</td>
+</tr>
+<tr>
+<td>S-18</td>
+<td><code>float("inf")</code> in JSON responses</td>
+<td>P1</td>
+<td>—</td>
+<td>Non-standard JSON; breaks parsers</td>
+<td>Replace inf with null/sentinel</td>
+</tr>
+<tr>
+<td>S-17</td>
+<td>DXF CLI reads arbitrary paths</td>
+<td>P2</td>
+<td>A01</td>
+<td>No path traversal check</td>
+<td>Validate input paths</td>
+</tr>
+<tr>
+<td>S-19</td>
+<td>Content-Disposition header injection risk</td>
+<td>P2</td>
+<td>A03</td>
+<td>Filename from user input</td>
+<td>Sanitize filename</td>
+</tr>
+<tr>
+<td>S-20</td>
+<td>Unpinned upper bounds on security deps</td>
+<td>P2</td>
+<td>A06</td>
+<td><code>PyJWT&gt;=2.0</code> allows untested versions</td>
+<td>Pin upper bounds</td>
+</tr>
+<tr>
+<td>S-21</td>
+<td>No auth event logging</td>
+<td>P2</td>
+<td>A09</td>
+<td>Failed login attempts not logged</td>
+<td>Add auth event audit log</td>
+</tr>
+<tr>
+<td>S-22</td>
+<td>Report reads from arbitrary paths</td>
+<td>P2</td>
+<td>A01</td>
+<td><code>compute_report(source)</code> accepts any path</td>
+<td>Validate path scope</td>
+</tr>
+<tr>
+<td>S-23</td>
+<td>Docker dev mounts host source</td>
+<td>P2</td>
+<td>A05</td>
+<td>Dev compose <code>.:/app</code></td>
+<td>Document risk; read-only mount</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="15-operationsci-audit-ops">15. Operations/CI Audit (@ops)<a class="headerlink" href="#15-operationsci-audit-ops" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OPS-1</td>
+<td><strong>Nightly CI refs non-existent paths, always passes</strong></td>
+<td><strong>P0</strong></td>
+<td>Decorative CI — never fails</td>
+<td>Fix paths or remove workflow</td>
+</tr>
+<tr>
+<td>OPS-2</td>
+<td><code>publish.yml</code> uses old action versions</td>
+<td>P1</td>
+<td>Security risk from outdated actions</td>
+<td>Update to latest versions</td>
+</tr>
+<tr>
+<td>OPS-3</td>
+<td>No Python dependency lock file</td>
+<td>P1</td>
+<td>Non-reproducible builds</td>
+<td>Add <code>requirements-lock.txt</code> or <code>pip-compile</code></td>
+</tr>
+<tr>
+<td>OPS-7</td>
+<td>Docker compose default JWT secret</td>
+<td>P1</td>
+<td>Insecure default</td>
+<td>Use env var with no default</td>
+</tr>
+<tr>
+<td>OPS-8</td>
+<td>No React build in PR CI</td>
+<td>P1</td>
+<td>React breakage undetected until merge</td>
+<td>Add <code>npm run build</code> to PR workflow</td>
+</tr>
+<tr>
+<td>OPS-4</td>
+<td>Dockerfile IPv4 only (<code>--host 0.0.0.0</code>)</td>
+<td>P2</td>
+<td>Won't work in IPv6-only envs</td>
+<td>Bind to <code>::</code></td>
+</tr>
+<tr>
+<td>OPS-5</td>
+<td>SBOM only on release</td>
+<td>P2</td>
+<td>Vulnerability gaps between releases</td>
+<td>Run SBOM weekly</td>
+</tr>
+<tr>
+<td>OPS-6</td>
+<td>No Docker layer caching in CI</td>
+<td>P2</td>
+<td>Slow CI builds</td>
+<td>Add cache action</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="16-frontend-deep-dive">16. Frontend Deep Dive<a class="headerlink" href="#16-frontend-deep-dive" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FE-6</td>
+<td>No ErrorBoundary in App.tsx</td>
+<td>P1</td>
+<td>Component exists but not used at top level</td>
+<td>Wrap with <code>&lt;ErrorBoundary&gt;</code></td>
+</tr>
+<tr>
+<td>FE-7</td>
+<td>No Three.js memory cleanup</td>
+<td>P1</td>
+<td>Materials/geometries never disposed on route switch</td>
+<td>Add <code>.dispose()</code> in cleanup</td>
+</tr>
+<tr>
+<td>FE-8</td>
+<td>No WebGL context loss handling</td>
+<td>P1</td>
+<td>GPU context loss breaks 3D viewport</td>
+<td>Add context loss/restore listeners</td>
+</tr>
+<tr>
+<td>FE-9</td>
+<td>No offline/network error handling</td>
+<td>P1</td>
+<td>No <code>navigator.onLine</code>; cryptic fetch errors</td>
+<td>Add offline banner</td>
+</tr>
+<tr>
+<td>FE-11</td>
+<td>High memory pressure during build (1536MB)</td>
+<td>P1</td>
+<td>Default Node memory insufficient</td>
+<td>Optimize dependency tree</td>
+</tr>
+<tr>
+<td>FE-12</td>
+<td>Limited keyboard navigation</td>
+<td>P1</td>
+<td>WCAG 2.1 Level A requires full keyboard operability</td>
+<td>Add tabIndex/onKeyDown</td>
+</tr>
+<tr>
+<td>FE-13</td>
+<td>Partial mobile responsiveness</td>
+<td>P1</td>
+<td>BeamForm fixed width; AG Grid not mobile-friendly</td>
+<td>Mobile-first audit</td>
+</tr>
+<tr>
+<td>FE-10</td>
+<td>No bundle size monitoring</td>
+<td>P2</td>
+<td>Three.js 37MB; final bundle unknown</td>
+<td>Add rollup-plugin-visualizer</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="17-api-deep-dive">17. API Deep Dive<a class="headerlink" href="#17-api-deep-dive" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API-7</td>
+<td><strong>SSE batch accepts unbounded GET input</strong></td>
+<td><strong>P0</strong></td>
+<td>Arbitrary-size JSON from query string; no max batch</td>
+<td>Add <code>max_items</code> (500); migrate to POST</td>
+</tr>
+<tr>
+<td>API-5</td>
+<td>No OpenAPI examples on any endpoint</td>
+<td>P1</td>
+<td>Zero endpoints have examples</td>
+<td>Add <code>json_schema_extra</code> to models</td>
+</tr>
+<tr>
+<td>API-6</td>
+<td><code>/stream/job/{job_id}</code> returns 200 for missing jobs</td>
+<td>P1</td>
+<td>Clients can't distinguish success/failure</td>
+<td>Return 404</td>
+</tr>
+<tr>
+<td>API-11</td>
+<td><code>/import/batch-design</code> unbounded <code>list[BeamRow]</code></td>
+<td>P1</td>
+<td>10,000+ beams blocks worker</td>
+<td>Add <code>max_length</code> + <code>asyncio.to_thread()</code></td>
+</tr>
+<tr>
+<td>API-8</td>
+<td><code>/detailing/bar-areas</code> returns untyped <code>dict</code></td>
+<td>P2</td>
+<td>No OpenAPI response schema</td>
+<td>Create typed Pydantic model</td>
+</tr>
+<tr>
+<td>API-9</td>
+<td>Health check shallow</td>
+<td>P2</td>
+<td>Always returns <code>healthy</code></td>
+<td>Add smoke calculation</td>
+</tr>
+<tr>
+<td>API-10</td>
+<td>Export DXF non-standard MIME type</td>
+<td>P2</td>
+<td><code>application/dxf</code> not IANA-registered</td>
+<td>Use <code>application/octet-stream</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="18-testing-deep-dive">18. Testing Deep Dive<a class="headerlink" href="#18-testing-deep-dive" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T-9</td>
+<td><code>cmd_smart</code> CLI has zero tests</td>
+<td>P1</td>
+<td>Complex branching with dict/design-result input</td>
+<td>Add smart command test suite</td>
+</tr>
+<tr>
+<td>T-10</td>
+<td>No end-to-end pipeline test (design→BBS→DXF→report)</td>
+<td>P1</td>
+<td>Full pipeline never tested as unit</td>
+<td>Create integration test</td>
+</tr>
+<tr>
+<td>T-11</td>
+<td>Column edge cases not explicitly tested</td>
+<td>P1</td>
+<td>e_min &gt; 0.05D, slender+biaxial untested</td>
+<td>Add parametrized edge case tests</td>
+</tr>
+<tr>
+<td>T-12</td>
+<td>Footing has no dedicated unit tests</td>
+<td>P1</td>
+<td>4 footing functions with no test file</td>
+<td>Create <code>tests/codes/is456/footing/</code></td>
+</tr>
+<tr>
+<td>T-13</td>
+<td>Serviceability has no property-based tests</td>
+<td>P2</td>
+<td>Only unit tests; no Hypothesis fuzzing</td>
+<td>Add Hypothesis tests</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="19-ux-design-audit-ui-designer">19. UX Design Audit (@ui-designer)<a class="headerlink" href="#19-ux-design-audit-ui-designer" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UX-6</td>
+<td><strong>Color contrast WCAG AA failures</strong></td>
+<td><strong>P0</strong></td>
+<td>Text/background combinations fail 4.5:1 ratio</td>
+<td>Audit and fix all contrast ratios</td>
+</tr>
+<tr>
+<td>UX-1</td>
+<td>No design system / token abstraction</td>
+<td>P1</td>
+<td>Colors, spacing, typography hardcoded</td>
+<td>Create Tailwind design tokens</td>
+</tr>
+<tr>
+<td>UX-2</td>
+<td>No design comparison view</td>
+<td>P1</td>
+<td>Can't compare two beam designs side-by-side</td>
+<td>Add comparison layout</td>
+</tr>
+<tr>
+<td>UX-3</td>
+<td>Inconsistent status color system</td>
+<td>P1</td>
+<td>"Safe" is green in one component, blue in another</td>
+<td>Standardize status palette</td>
+</tr>
+<tr>
+<td>UX-4</td>
+<td>No print/PDF-ready layout</td>
+<td>P1</td>
+<td>Browser print of results is unusable</td>
+<td>Add <code>@media print</code> styles</td>
+</tr>
+<tr>
+<td>UX-5</td>
+<td>Critical status buried in hierarchy</td>
+<td>P1</td>
+<td>Pass/fail not immediately visible</td>
+<td>Elevate status to top</td>
+</tr>
+<tr>
+<td>UX-7</td>
+<td>No reduced motion support</td>
+<td>P1</td>
+<td>Animations ignore <code>prefers-reduced-motion</code></td>
+<td>Add media query respect</td>
+</tr>
+<tr>
+<td>UX-10</td>
+<td>3D viewport has no non-visual alternative</td>
+<td>P1</td>
+<td>Screen readers get zero info from WebGL</td>
+<td>Add text description fallback</td>
+</tr>
+<tr>
+<td>UX-8</td>
+<td>No guided onboarding flow</td>
+<td>P2</td>
+<td>New users must discover workflow themselves</td>
+<td>Add first-use walkthrough</td>
+</tr>
+<tr>
+<td>UX-9</td>
+<td>Two competing design interfaces</td>
+<td>P2</td>
+<td>DesignView vs BuildingEditorPage unclear</td>
+<td>Consolidate or add routing</td>
+</tr>
+<tr>
+<td>UX-11</td>
+<td>Dashboard lacks visualization depth</td>
+<td>P2</td>
+<td>Only basic tables; no charts</td>
+<td>Add Chart.js/Recharts</td>
+</tr>
+<tr>
+<td>UX-12</td>
+<td>Export lacks professional formatting</td>
+<td>P2</td>
+<td>Raw data export; no report template</td>
+<td>Add formatted PDF template</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="20-innovation-roadmap-innovator">20. Innovation &amp; Roadmap (@innovator)<a class="headerlink" href="#20-innovation-roadmap-innovator" title="Permanent link">&para;</a></h2>
+<p>23 innovation opportunities identified (INN-1 through INN-23):</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Items</th>
+<th>Key Opportunities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI/ML Integration</td>
+<td>INN-1–4</td>
+<td>ML-assisted rebar optimization, AI design assistant, NLP code query</td>
+</tr>
+<tr>
+<td>Advanced Analysis</td>
+<td>INN-5–8</td>
+<td>Nonlinear analysis, pushover curves, response spectrum, time-history</td>
+</tr>
+<tr>
+<td>Interoperability</td>
+<td>INN-9–12</td>
+<td>IFC/BIM export, ETABS two-way sync, Revit plugin, OpenBIM</td>
+</tr>
+<tr>
+<td>Visualization</td>
+<td>INN-13–15</td>
+<td>AR rebar overlay, stress heatmap 3D, real-time deformation</td>
+</tr>
+<tr>
+<td>Multi-Code Support</td>
+<td>INN-16–18</td>
+<td>ACI 318, Eurocode 2, BS 8110 — multi-code comparison</td>
+</tr>
+<tr>
+<td>Professional Tools</td>
+<td>INN-19–21</td>
+<td>Cost estimation DB, constructability scoring, carbon footprint</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>INN-22–23</td>
+<td>Cloud computation API, collaborative design sessions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Priority recommendation:</strong> INN-9 (IFC export), INN-16 (ACI 318), INN-19 (cost DB) — highest user demand.</p>
+<hr />
+<h2 id="21-library-expert-assessment-library-expert">21. Library Expert Assessment (@library-expert)<a class="headerlink" href="#21-library-expert-assessment-library-expert" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LIB-1</td>
+<td>No professional report output suitable for submission</td>
+<td>P1</td>
+<td>Structural consultants need stamped calculation sheets</td>
+</tr>
+<tr>
+<td>LIB-2</td>
+<td>Missing load combination automation (IS 875)</td>
+<td>P1</td>
+<td>Users manually compute load combos</td>
+</tr>
+<tr>
+<td>LIB-3</td>
+<td>No seismic design integration (IS 1893 response spectrum)</td>
+<td>P1</td>
+<td>Only IS 13920 detailing; no force calculation</td>
+</tr>
+<tr>
+<td>LIB-4</td>
+<td>No wind load module (IS 875 Part 3)</td>
+<td>P2</td>
+<td>Load analysis incomplete without wind</td>
+</tr>
+<tr>
+<td>LIB-5</td>
+<td>No slab design (one-way, two-way, flat slab)</td>
+<td>P1</td>
+<td>Major structural element missing</td>
+</tr>
+<tr>
+<td>LIB-6</td>
+<td>No staircase design</td>
+<td>P2</td>
+<td>Common element missing</td>
+</tr>
+<tr>
+<td>LIB-7</td>
+<td>No retaining wall design</td>
+<td>P2</td>
+<td>Common element missing</td>
+</tr>
+<tr>
+<td>LIB-8</td>
+<td>No continuous beam analysis (moment redistribution)</td>
+<td>P1</td>
+<td>Most real beams are continuous</td>
+</tr>
+<tr>
+<td>LIB-9</td>
+<td>No design check summary for regulatory submission</td>
+<td>P1</td>
+<td>Need IS 456 Annex B compliance checklist</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="22-governance-governance">22. Governance (@governance)<a class="headerlink" href="#22-governance-governance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GOV-1</td>
+<td>No CODEOWNERS file</td>
+<td>P1</td>
+<td>No automatic review assignment</td>
+<td>Create <code>.github/CODEOWNERS</code></td>
+</tr>
+<tr>
+<td>GOV-2</td>
+<td>Branch protection rules incomplete</td>
+<td>P1</td>
+<td>Force push not blocked on main</td>
+<td>Enable branch protection</td>
+</tr>
+<tr>
+<td>GOV-3</td>
+<td>No contribution license agreement (CLA)</td>
+<td>P2</td>
+<td>IP risk for contributions</td>
+<td>Add CLA bot or DCO</td>
+</tr>
+<tr>
+<td>GOV-4</td>
+<td>Release process undocumented for external contributors</td>
+<td>P2</td>
+<td>Only agents know how to release</td>
+<td>Document in CONTRIBUTING.md</td>
+</tr>
+<tr>
+<td>GOV-5</td>
+<td>No security advisory process (SECURITY.md placeholder)</td>
+<td>P1</td>
+<td>No way to report vulnerabilities</td>
+<td>Create proper SECURITY.md</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="23-external-review-cross-check">23. External Review Cross-Check<a class="headerlink" href="#23-external-review-cross-check" title="Permanent link">&para;</a></h2>
+<h3 id="verified-claims">Verified Claims<a class="headerlink" href="#verified-claims" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ All IS 456 formulas verified correct (@structural-engineer + @library-expert)</li>
+<li>✅ 4,255 tests pass (@tester + @reviewer independently verified)</li>
+<li>✅ 85% branch coverage enforced in CI (@reviewer verified)</li>
+<li>❌ ~~BE-5: zero input not handled~~ → <strong>INVALID</strong> — @reviewer confirmed validation works</li>
+<li>❌ ~~T-2: IS 13920 beam.py zero tests~~ → <strong>INVALID</strong> — tests exist in <code>test_ductile.py</code> + <code>test_ductile_hypothesis.py</code></li>
+<li>❌ ~~T-4: FastAPI tests not in CI~~ → <strong>INVALID</strong> — present in <code>fast-checks.yml</code></li>
+</ul>
+<h3 id="score-corrections">Score Corrections<a class="headerlink" href="#score-corrections" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Original Finding</th>
+<th>Original Priority</th>
+<th>Corrected</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BE-5</td>
+<td>P0</td>
+<td>REMOVED</td>
+<td>Validation exists and works</td>
+</tr>
+<tr>
+<td>T-2</td>
+<td>P0</td>
+<td>REMOVED</td>
+<td>Tests exist in two files</td>
+</tr>
+<tr>
+<td>T-4</td>
+<td>P0</td>
+<td>REMOVED</td>
+<td>In CI via fast-checks.yml</td>
+</tr>
+<tr>
+<td>Grade</td>
+<td>B+ (7.1)</td>
+<td>B- (6.4)</td>
+<td>60+ new findings from deep dives offset removals</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="p0-fix-log">P0 Fix Log<a class="headerlink" href="#p0-fix-log" title="Permanent link">&para;</a></h2>
+<p>All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.</p>
+<table>
+<thead>
+<tr>
+<th>P0</th>
+<th>Verification</th>
+<th>Fix Applied</th>
+<th>Files Changed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-1</td>
+<td>VALID — <code>require_auth()</code> existed but applied to 0/59 endpoints</td>
+<td>Added <code>AuthMiddleware</code> in main.py, <code>auth_enabled</code> setting in config.py</td>
+<td><code>fastapi_app/config.py</code>, <code>fastapi_app/main.py</code></td>
+</tr>
+<tr>
+<td>T-1</td>
+<td>INVALID as P0 — 16+ tests exist in <code>test_is456_common.py</code></td>
+<td>Downgraded to P2; added 7 tests for <code>steel_stress_from_strain()</code> bilinear model</td>
+<td><code>Python/tests/test_is456_common.py</code></td>
+</tr>
+<tr>
+<td>OPS-1</td>
+<td>VALID — <code>tests/apptest/</code> and <code>scripts/check_streamlit.py</code> don't exist; <code>continue-on-error: true</code> masks all failures</td>
+<td>Removed 3 dead steps, removed <code>continue-on-error</code> from valid steps</td>
+<td><code>.github/workflows/nightly.yml</code></td>
+</tr>
+<tr>
+<td>UX-6</td>
+<td>VALID — <code>text-white/30</code> (2.5:1), <code>text-white/40</code> (3.9:1), <code>text-[#888]</code> (4.1:1) all fail WCAG AA 4.5:1</td>
+<td>Replaced with <code>text-zinc-400</code> (7.5:1) and <code>text-zinc-500</code> (5.2:1) across all components</td>
+<td><code>react_app/src/</code> (14 component files + <code>index.css</code>)</td>
+</tr>
+<tr>
+<td>API-7</td>
+<td>VALID — <code>GET /stream/batch-design</code> and <code>POST /import/batch-design</code> both accept unlimited items</td>
+<td>Added configurable <code>max_batch_size=500</code> in Settings; enforced in streaming.py and imports.py</td>
+<td><code>fastapi_app/config.py</code>, <code>fastapi_app/routers/streaming.py</code>, <code>fastapi_app/routers/imports.py</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reviewed by:</strong> @security, @api-developer, @ops, @frontend, @tester, @reviewer, @structural-engineer, @backend</p>
+<hr />
+<h2 id="p1-fixes-applied-session-2">P1 Fixes Applied (Session 2)<a class="headerlink" href="#p1-fixes-applied-session-2" title="Permanent link">&para;</a></h2>
+<p>6 P1 findings fixed on 2026-04-04 (post-audit session).</p>
+<table>
+<thead>
+<tr>
+<th>P1</th>
+<th>Fix Applied</th>
+<th>Files Changed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SM-1</td>
+<td>Added fck/fy &gt; 0 lower bound checks in <code>get_ec()</code>, <code>get_fcr()</code>, <code>_validate_plausibility()</code></td>
+<td><code>materials.py</code>, <code>services/api.py</code></td>
+</tr>
+<tr>
+<td>SM-2</td>
+<td>Replaced float <code>==</code> with <code>abs(fy - N) &lt; 0.5</code> tolerance in <code>get_xu_max_d()</code>, <code>get_steel_stress()</code></td>
+<td><code>materials.py</code></td>
+</tr>
+<tr>
+<td>SM-3</td>
+<td>Added b1/d1 &gt; 0 zero-guards in <code>calculate_torsion_stirrup_area()</code>, <code>calculate_longitudinal_torsion_steel()</code></td>
+<td><code>torsion.py</code></td>
+</tr>
+<tr>
+<td>IS-5</td>
+<td>Added <code>warnings.warn()</code> when beam width b &lt; 150mm (IS 456 Cl. 23.1.1)</td>
+<td><code>core/validation.py</code></td>
+</tr>
+<tr>
+<td>IS-7</td>
+<td>Added <code>warnings.warn()</code> when column b or D &lt; 200mm</td>
+<td><code>column/uniaxial.py</code></td>
+</tr>
+<tr>
+<td>FE-6</td>
+<td>Wrapped App.tsx with existing <code>&lt;ErrorBoundary&gt;</code> component</td>
+<td><code>App.tsx</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tests added:</strong> 18 new tests (4,283 total passing). All reviewed and approved by @reviewer.</p>
+<hr />
+<h2 id="consolidated-priority-matrix-final">Consolidated Priority Matrix (Final)<a class="headerlink" href="#consolidated-priority-matrix-final" title="Permanent link">&para;</a></h2>
+<h3 id="p0-must-fix-5-valid-p0s-all-fixed">P0 — Must Fix (5 valid P0s — ALL FIXED ✅)<a class="headerlink" href="#p0-must-fix-5-valid-p0s-all-fixed" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Effort</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-1</td>
+<td>No auth on REST endpoints</td>
+<td>Full unauthorized access</td>
+<td>Medium</td>
+<td>✅ Fixed — AuthMiddleware added, <code>AUTH_ENABLED</code> setting</td>
+</tr>
+<tr>
+<td>T-1</td>
+<td><code>stress_blocks.py</code> has zero tests</td>
+<td>Core math untested</td>
+<td>Low</td>
+<td>✅ Fixed — <strong>Downgraded to P2</strong> (16+ tests existed; added 7 more for bilinear model)</td>
+</tr>
+<tr>
+<td>OPS-1</td>
+<td>Nightly CI refs non-existent paths — always passes</td>
+<td>Decorative CI</td>
+<td>Low</td>
+<td>✅ Fixed — Removed dead steps, removed <code>continue-on-error</code> masking</td>
+</tr>
+<tr>
+<td>UX-6</td>
+<td>Color contrast WCAG AA failures</td>
+<td>Accessibility compliance</td>
+<td>Low</td>
+<td>✅ Fixed — Replaced low-opacity text with <code>text-zinc-400</code>/<code>text-zinc-500</code></td>
+</tr>
+<tr>
+<td>API-7</td>
+<td>SSE batch unbounded GET input</td>
+<td>DoS via memory exhaustion</td>
+<td>Low</td>
+<td>✅ Fixed — Added <code>max_batch_size=500</code> configurable limit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p1-should-fix-top-20">P1 — Should Fix (Top 20)<a class="headerlink" href="#p1-should-fix-top-20" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Effort</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U-1</td>
+<td>Two conflicting API parameter styles</td>
+<td>Medium</td>
+<td></td>
+</tr>
+<tr>
+<td>A-1</td>
+<td>I/O in IS 456 math layer (clause_cli)</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>A-3</td>
+<td>IS 456 math in FastAPI router</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>API-1</td>
+<td>Inconsistent response shapes</td>
+<td>Medium</td>
+<td></td>
+</tr>
+<tr>
+<td>API-2</td>
+<td>Missing cross-field validators</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>API-5</td>
+<td>No OpenAPI examples on any endpoint</td>
+<td>Medium</td>
+<td></td>
+</tr>
+<tr>
+<td>API-6</td>
+<td>Stream job returns 200 for non-existent jobs</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>API-11</td>
+<td>Batch design unbounded list body</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>SM-1</td>
+<td>fck=0 passes validation — division by zero</td>
+<td>Low</td>
+<td>✅ Fixed</td>
+</tr>
+<tr>
+<td>SM-2</td>
+<td>float == for fy grade dispatch</td>
+<td>Low</td>
+<td>✅ Fixed</td>
+</tr>
+<tr>
+<td>SM-3</td>
+<td>Unguarded division by b1*d1 in torsion</td>
+<td>Low</td>
+<td>✅ Fixed</td>
+</tr>
+<tr>
+<td>FE-1</td>
+<td>Minimal accessibility (3 ARIA attrs)</td>
+<td>High</td>
+<td></td>
+</tr>
+<tr>
+<td>FE-6</td>
+<td>No ErrorBoundary in App.tsx</td>
+<td>Low</td>
+<td>✅ Fixed</td>
+</tr>
+<tr>
+<td>FE-7</td>
+<td>No Three.js memory cleanup</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>IS-5</td>
+<td>No minimum dimension warning for beams</td>
+<td>Low</td>
+<td>✅ Fixed</td>
+</tr>
+<tr>
+<td>IS-7</td>
+<td>Column accepts impractically small sections</td>
+<td>Low</td>
+<td>✅ Fixed</td>
+</tr>
+<tr>
+<td>OPS-3</td>
+<td>No Python dependency lock file</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-4</td>
+<td>api.md missing footing section</td>
+<td>Low</td>
+<td></td>
+</tr>
+<tr>
+<td>DOC-5</td>
+<td>No clause-to-function mapping</td>
+<td>Medium</td>
+<td></td>
+</tr>
+<tr>
+<td>GOV-5</td>
+<td>No security advisory process</td>
+<td>Low</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="p2-nice-to-have-52-findings">P2 — Nice to Have (52 findings)<a class="headerlink" href="#p2-nice-to-have-52-findings" title="Permanent link">&para;</a></h3>
+<p>52 P2 findings across all sections. Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).</p>
+<hr />
+<h2 id="appendix-audit-methodology">Appendix: Audit Methodology<a class="headerlink" href="#appendix-audit-methodology" title="Permanent link">&para;</a></h2>
+<h3 id="agents-used-14">Agents Used (14)<a class="headerlink" href="#agents-used-14" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>@library-expert</strong> — User &amp; AI agent usability + professional practice gaps</li>
+<li><strong>@structural-engineer</strong> — IS 456 clause coverage, formula accuracy, deep compliance</li>
+<li><strong>@structural-math</strong> — Pure math modules: validation, thread safety, numeric precision</li>
+<li><strong>@backend</strong> — Services layer, API exports, CLI coverage</li>
+<li><strong>@security</strong> — OWASP Top 10, input validation, path traversal, WebSocket security</li>
+<li><strong>@reviewer</strong> — Architecture compliance, code quality, cross-check corrections</li>
+<li><strong>@tester</strong> — Test coverage, SP:16 benchmarks, CI integration, gap analysis</li>
+<li><strong>@frontend</strong> — React UX, accessibility, Three.js memory, WebGL handling</li>
+<li><strong>@api-developer</strong> — FastAPI design, OpenAPI quality, response consistency</li>
+<li><strong>@governance</strong> — CI/CD, Docker, dependency management, project health, governance</li>
+<li><strong>@doc-master</strong> — Documentation completeness, packaging, clause mapping</li>
+<li><strong>@agent-evolver</strong> — Agent meta-quality, scoring, drift detection, process improvement</li>
+<li><strong>@ui-designer</strong> — WCAG compliance, design system, visual hierarchy, mobile UX</li>
+<li><strong>@innovator</strong> — Innovation roadmap, capability gap analysis</li>
+</ol>
+<h3 id="coverage">Coverage<a class="headerlink" href="#coverage" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Entire Python structural_lib (core, codes/is456, services)</li>
+<li>All 13 FastAPI routers (59 endpoints)</li>
+<li>React frontend (hooks, components, stores, routing)</li>
+<li>CI/CD pipeline (18 workflows)</li>
+<li>Docker configuration (3 compose files)</li>
+<li>Documentation (243 active docs)</li>
+<li>Test suite (155 files, 4,255 passing tests)</li>
+<li>Agent infrastructure (16 agents, 10 skills)</li>
+</ul>
+<h3 id="finding-totals">Finding Totals<a class="headerlink" href="#finding-totals" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>P0</th>
+<th>P1</th>
+<th>P2</th>
+<th>Info</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usability (§1)</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>IS 456 (§2)</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Security (§3)</td>
+<td>1</td>
+<td>3</td>
+<td>5</td>
+<td>0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Architecture (§4)</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Testing (§5)</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>API (§6)</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Frontend (§7)</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Project Health (§8)</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Structural Math (§9)</td>
+<td>0</td>
+<td>5</td>
+<td>5</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Backend (§10)</td>
+<td>0</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Documentation (§11)</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>0</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Agent Quality (§12)</td>
+<td>0</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+<td>12</td>
+</tr>
+<tr>
+<td>IS 456 Deep (§13)</td>
+<td>0</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Security Deep (§14)</td>
+<td>0</td>
+<td>3</td>
+<td>6</td>
+<td>0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Operations (§15)</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+<td>0</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Frontend Deep (§16)</td>
+<td>0</td>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+<td>8</td>
+</tr>
+<tr>
+<td>API Deep (§17)</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>0</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Testing Deep (§18)</td>
+<td>0</td>
+<td>4</td>
+<td>1</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>UX Design (§19)</td>
+<td>1</td>
+<td>7</td>
+<td>4</td>
+<td>0</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Innovation (§20)</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>23</td>
+<td>23</td>
+</tr>
+<tr>
+<td>Library Expert (§21)</td>
+<td>0</td>
+<td>5</td>
+<td>4</td>
+<td>0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Governance (§22)</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>5</strong></td>
+<td><strong>74</strong></td>
+<td><strong>52</strong></td>
+<td><strong>24</strong></td>
+<td><strong>155</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>Next audit recommended: v0.22.0 release (focus on P0 fixes verification)</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

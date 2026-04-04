@@ -1513,28 +1513,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#key-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#required-reading" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Reading
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1557,42 +1535,30 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> v0.21.0 Release — Column design, footing, agent infra, security fixes</p>
+<strong>Last Session:</strong> P0 + P1 audit fixes — comprehensive library audit follow-up</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>v0.21.0 Released</strong> — Complete column design (14/14), footing design (4 modules), beam restructure, agent evolver, security fixes</li>
-<li><strong>CHANGELOG finalized</strong> — All 12+ missing entries added, proper release notes</li>
-<li><strong>Version bumped</strong> — 0.20.0 → 0.21.0 across 18+ files</li>
-<li><strong>Documentation updated</strong> — releases.md, TASKS.md, pre-release-checklist, quickstart, validation-pack, api-stability, WORKLOG</li>
-<li><strong>5-agent review completed</strong> — reviewer, structural-engineer, security, library-expert, governance</li>
-</ol>
+<ul>
+<li>All 5 P0 audit findings fixed (S-1 auth, T-1 tests, OPS-1 CI, UX-6 WCAG 17+ files, API-7 batch limits)</li>
+<li>6 P1 audit findings fixed (SM-1/2/3 validation, IS-5/7 dimension warnings, FE-6 ErrorBoundary)</li>
+<li>18 new tests added (4,283 total passing)</li>
+<li>Grade improved: B- (6.4) → B+ (7.0)</li>
+<li>Branch: task/TASK-AUDIT-P0 — needs PR merge</li>
+</ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>TASK-527: TopBar context badges + SettingsPanel</strong> — React UX improvement</li>
-<li><strong>TASK-528: Workflow breadcrumb</strong> — Batch flow navigation</li>
-<li><strong>TASK-516: Triangular + Moment loads</strong> — Extend load_analysis.py</li>
-<li><strong>TASK-519: Alternatives Panel (Pareto)</strong> — Pareto front in DesignView</li>
-<li><strong>TASK-520: Test coverage</strong> — report.py, geometry_3d.py, dashboard.py</li>
-<li><strong>TASK-521: Beam Rationalization</strong> — New algo + FastAPI + React</li>
-<li><strong>React column P-M diagram</strong> — Visualize P-M envelope in frontend</li>
-<li><strong>CWE-209 extension</strong> — Sanitize remaining 7 routers (24 handlers)</li>
-<li><strong>Footing @clause decorators</strong> — Add traceability to footing functions</li>
-<li><strong>v0.22 planning:</strong> AI assistant port, learning center, Streamlit full deprecation</li>
+<li>Merge task/TASK-AUDIT-P0 PR</li>
+<li>Continue P1 audit fixes: A-1 (clause_cli I/O), A-3 (math in router), API-1 (response shapes)</li>
+<li>TASK-527: TopBar context badges + SettingsPanel</li>
+<li>TASK-528: Workflow breadcrumb for batch flow</li>
+<li>TASK-516: Triangular + Moment loads</li>
+<li>TASK-520: Test coverage gaps (report.py, geometry_3d.py, dashboard.py)</li>
+<li>Remaining P1 items from audit (14 remaining)</li>
+<li>v0.22 planning: AI assistant port, learning center</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
-<p>None</p>
-<h2 id="key-files">Key Files<a class="headerlink" href="#key-files" title="Permanent link">&para;</a></h2>
 <ul>
-<li>TASKS.md — updated roadmap with v0.22 targets</li>
-<li>CHANGELOG.md — v0.21.0 release notes</li>
-<li>Blueprint: docs/planning/library-expansion-blueprint-v5.md</li>
+<li>None</li>
 </ul>
-<hr />
-<h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>branch<span class="w"> </span>--show-current
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docs/TASKS.md<span class="w">                    </span><span class="c1"># Check priorities</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start<span class="w">           </span><span class="c1"># Verify environment</span>
-</code></pre></div>
 
 
 
