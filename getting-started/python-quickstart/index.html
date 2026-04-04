@@ -697,10 +697,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-packaging-notes-contributors-only" class="md-nav__link">
+  <a href="#7-column-design-is-456" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7) Packaging notes (contributors only)
+        7) Column Design (IS 456)
       
     </span>
   </a>
@@ -708,10 +708,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-troubleshooting" class="md-nav__link">
+  <a href="#8-packaging-notes-contributors-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8) Troubleshooting
+        8) Packaging notes (contributors only)
       
     </span>
   </a>
@@ -719,10 +719,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#9-sample-files-examples" class="md-nav__link">
+  <a href="#9-troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9) Sample Files &amp; Examples
+        9) Troubleshooting
       
     </span>
   </a>
@@ -730,10 +730,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#10-further-reading" class="md-nav__link">
+  <a href="#10-sample-files-examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10) Further Reading
+        10) Sample Files &amp; Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11) Further Reading
       
     </span>
   </a>
@@ -1764,10 +1775,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-packaging-notes-contributors-only" class="md-nav__link">
+  <a href="#7-column-design-is-456" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7) Packaging notes (contributors only)
+        7) Column Design (IS 456)
       
     </span>
   </a>
@@ -1775,10 +1786,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-troubleshooting" class="md-nav__link">
+  <a href="#8-packaging-notes-contributors-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8) Troubleshooting
+        8) Packaging notes (contributors only)
       
     </span>
   </a>
@@ -1786,10 +1797,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#9-sample-files-examples" class="md-nav__link">
+  <a href="#9-troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9) Sample Files &amp; Examples
+        9) Troubleshooting
       
     </span>
   </a>
@@ -1797,10 +1808,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#10-further-reading" class="md-nav__link">
+  <a href="#10-sample-files-examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10) Further Reading
+        10) Sample Files &amp; Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11) Further Reading
       
     </span>
   </a>
@@ -1834,7 +1856,7 @@
 <strong>Importance:</strong> High
 <strong>Version:</strong> 1.0.0
 <strong>Created:</strong> 2025-12-15
-<strong>Last Updated:</strong> 2026-03-29</p>
+<strong>Last Updated:</strong> 2026-04-04</p>
 <hr />
 <p>This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required.</p>
 <blockquote>
@@ -1948,18 +1970,31 @@ This will create:
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="s">print(&quot;Shear OK?&quot;, res.is_safe, &quot;Spacing (mm):&quot;, res.spacing)</span>
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="s">PY</span>
 </code></pre></div>
-<h2 id="7-packaging-notes-contributors-only">7) Packaging notes (contributors only)<a class="headerlink" href="#7-packaging-notes-contributors-only" title="Permanent link">&para;</a></h2>
+<h2 id="7-column-design-is-456">7) Column Design (IS 456)<a class="headerlink" href="#7-column-design-is-456" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># Short column — axial capacity (IS 456 Cl 39.3)</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_column_axial_is456</span><span class="p">(</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>        <span class="c1"># Concrete grade (N/mm²)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>        <span class="c1"># Steel grade (N/mm²)</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">Ag_mm2</span><span class="o">=</span><span class="mi">90000</span><span class="p">,</span>  <span class="c1"># Gross area 300×300 mm</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">2412</span><span class="p">,</span>  <span class="c1"># 6 nos. 20mm dia</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="p">)</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axial capacity: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Pu_kN&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>For the full column API (uniaxial, biaxial, slender columns), see <a href="../../reference/api/">api.md</a>.</p>
+<h2 id="8-packaging-notes-contributors-only">8) Packaging notes (contributors only)<a class="headerlink" href="#8-packaging-notes-contributors-only" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Build a wheel: <code>cd Python &amp;&amp; python3 -m build</code>.</li>
 <li>Version source of truth: <code>Python/pyproject.toml</code>.</li>
 </ul>
-<h2 id="8-troubleshooting">8) Troubleshooting<a class="headerlink" href="#8-troubleshooting" title="Permanent link">&para;</a></h2>
+<h2 id="9-troubleshooting">9) Troubleshooting<a class="headerlink" href="#9-troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
 <li>"Module not found": ensure the venv is activated and you installed <code>structural-lib-is456</code>.</li>
 <li>DXF generation missing: install <code>structural-lib-is456[dxf]</code>.</li>
 <li>Tests failing on path issues: run commands from the repo root.</li>
 </ul>
-<h2 id="9-sample-files-examples">9) Sample Files &amp; Examples<a class="headerlink" href="#9-sample-files-examples" title="Permanent link">&para;</a></h2>
+<h2 id="10-sample-files-examples">10) Sample Files &amp; Examples<a class="headerlink" href="#10-sample-files-examples" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>Python/examples/simple_examples.py</code> - 7 beginner examples with explanations</li>
 <li><code>Python/examples/complete_beam_design.py</code> - Full design workflow</li>
@@ -1967,7 +2002,7 @@ This will create:
 <li><code>Python/examples/sample_beam_design.csv</code> - Simple 5-beam sample</li>
 <li><code>Python/examples/sample_building_beams.csv</code> - Complete 12-beam building</li>
 </ul>
-<h2 id="10-further-reading">10) Further Reading<a class="headerlink" href="#10-further-reading" title="Permanent link">&para;</a></h2>
+<h2 id="11-further-reading">11) Further Reading<a class="headerlink" href="#11-further-reading" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../beginners-guide/">beginners-guide.md</a> - Comprehensive tutorial (Python + Excel)</li>
 <li><a href="../colab-workflow/">colab-workflow.md</a> - Step-by-step Colab workflow (full pipeline + batch)</li>

@@ -1525,17 +1525,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#latest-handoff-auto" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Latest Handoff (auto)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#required-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1568,66 +1557,37 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> Column P-M math fixes, biaxial e_min, security sanitization, test updates</p>
+<strong>Last Session:</strong> v0.21.0 Release — Column design, footing, agent infra, security fixes</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>TASK-690: Column P-M interaction math fixes</strong> — DONE</li>
-<li>SP:16 Table I continuity: C1(k=1.0) → 1.0, C2 → 0.42 at xu=D boundary</li>
-<li>IS 456 Cl 38.1: modified strain profile for xu&gt;D (eps_max = 0.0035 − 0.75·eps_far)</li>
-<li>xu_bal: includes 0.002 inelastic strain for HYSD bars (Fe 415/500/550)</li>
-<li>
-<p>P-M envelope capped at Pu_0 per Cl 39.3</p>
-</li>
-<li>
-<p><strong>TASK-691: Column biaxial e_min enforcement</strong> — DONE</p>
-</li>
-<li>
-<p>Cl 25.4 minimum eccentricity now enforced for both axes before Bresler check</p>
-</li>
-<li>
-<p><strong>TASK-692: Column router exception sanitization</strong> — DONE</p>
-</li>
-<li>
-<p>13 generic exception handlers sanitized (OWASP CWE-209)</p>
-</li>
-<li>
-<p><strong>Code quality: column <strong>init</strong>.py exports</strong> — DONE</p>
-</li>
-<li>
-<p><code>design_short_column_uniaxial</code>, <code>pm_interaction_curve</code>, <code>biaxial_bending_check</code> added to <code>__all__</code></p>
-</li>
-<li>
-<p><strong>Tests: 7 updated + 6 new, 4258 total passing (0 failures)</strong></p>
-</li>
+<li><strong>v0.21.0 Released</strong> — Complete column design (14/14), footing design (4 modules), beam restructure, agent evolver, security fixes</li>
+<li><strong>CHANGELOG finalized</strong> — All 12+ missing entries added, proper release notes</li>
+<li><strong>Version bumped</strong> — 0.20.0 → 0.21.0 across 18+ files</li>
+<li><strong>Documentation updated</strong> — releases.md, TASKS.md, pre-release-checklist, quickstart, validation-pack, api-stability, WORKLOG</li>
+<li><strong>5-agent review completed</strong> — reviewer, structural-engineer, security, library-expert, governance</li>
 </ol>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>React P-M interaction diagram</strong> — Visualize column P-M envelope in frontend (R3F or 2D chart)</li>
-<li><strong>Quantitative SP:16 benchmarks</strong> — Add numerical SP:16 Table I benchmark tests for uniaxial column design</li>
-<li><strong>TASK-643: Verify SP:16 Table I normalization</strong> — Check against physical publication</li>
-<li><strong>Phase 3 planning: Slab design</strong> (IS 456 Cl 24) — research clauses, define tasks, create blueprint section</li>
+<li><strong>TASK-527: TopBar context badges + SettingsPanel</strong> — React UX improvement</li>
+<li><strong>TASK-528: Workflow breadcrumb</strong> — Batch flow navigation</li>
+<li><strong>TASK-516: Triangular + Moment loads</strong> — Extend load_analysis.py</li>
 <li><strong>TASK-519: Alternatives Panel (Pareto)</strong> — Pareto front in DesignView</li>
 <li><strong>TASK-520: Test coverage</strong> — report.py, geometry_3d.py, dashboard.py</li>
-<li><strong>TASK-521: Beam Rationalization</strong> — new algo + FastAPI + React</li>
-<li><strong>Minor follow-up:</strong> Add <code>is_safe</code> property alias to <code>ColumnDetailingResult</code> for consistency</li>
+<li><strong>TASK-521: Beam Rationalization</strong> — New algo + FastAPI + React</li>
+<li><strong>React column P-M diagram</strong> — Visualize P-M envelope in frontend</li>
+<li><strong>CWE-209 extension</strong> — Sanitize remaining 7 routers (24 handlers)</li>
+<li><strong>Footing @clause decorators</strong> — Add traceability to footing functions</li>
+<li><strong>v0.22 planning:</strong> AI assistant port, learning center, Streamlit full deprecation</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <p>None</p>
 <h2 id="key-files">Key Files<a class="headerlink" href="#key-files" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Blueprint: <code>docs/planning/library-expansion-blueprint-v5.md</code></li>
-<li>Column module: <code>Python/structural_lib/codes/is456/column/</code></li>
-<li>IS 13920 column: <code>Python/structural_lib/codes/is13920/column.py</code></li>
-<li>Column tests: <code>Python/tests/codes/is456/column/</code>, <code>Python/tests/codes/is13920/</code></li>
+<li>TASKS.md — updated roadmap with v0.22 targets</li>
+<li>CHANGELOG.md — v0.21.0 release notes</li>
+<li>Blueprint: docs/planning/library-expansion-blueprint-v5.md</li>
 </ul>
 <hr />
-<h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
-<!-- HANDOFF:START -->
-<ul>
-<li>Date: 2026-04-04</li>
-</ul>
-<!-- HANDOFF:END -->
-
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>branch<span class="w"> </span>--show-current
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docs/TASKS.md<span class="w">                    </span><span class="c1"># Check priorities</span>

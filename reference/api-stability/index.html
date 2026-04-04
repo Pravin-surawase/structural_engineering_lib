@@ -1657,6 +1657,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#column-design-api-added-v0210" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column Design API (Added v0.21.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1712,6 +1723,17 @@
     <span class="md-ellipsis">
       
         ETABS Integration (v0.17.6+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#footing-design-api-added-v0210-experimental" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Footing Design API (Added v0.21.0 — Experimental)
       
     </span>
   </a>
@@ -1849,7 +1871,7 @@
 <strong>Status:</strong> Production Ready
 <strong>Importance:</strong> High
 <strong>Created:</strong> 2025-01-01
-<strong>Last Updated:</strong> 2026-03-29</p>
+<strong>Last Updated:</strong> 2026-04-04</p>
 <hr />
 <blockquote>
 <p>This document defines which parts of the library are safe to depend on and which may change.</p>
@@ -2064,17 +2086,42 @@ you want unit validation at the API boundary.</p>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">api</span><span class="o">.</span><span class="n">ETABSForceRow</span>        <span class="c1"># Dataclass: beam_id, story, forces</span>
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">api</span><span class="o">.</span><span class="n">ETABSEnvelopeResult</span>  <span class="c1"># Dataclass: beam_id, story, envelope data</span>
 </code></pre></div>
+<h3 id="column-design-api-added-v0210">Column Design API (Added v0.21.0)<a class="headerlink" href="#column-design-api-added-v0210" title="Permanent link">&para;</a></h3>
+<p>The following column design functions are <strong>stable</strong> and safe to depend on:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># Short column axial capacity (IS 456 Cl 39.3)</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">api</span><span class="o">.</span><span class="n">design_column_axial_is456</span><span class="p">(</span><span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">Ag_mm2</span><span class="p">,</span> <span class="n">Asc_mm2</span><span class="p">)</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Uniaxial bending design (IS 456 Cl 39.5)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="n">api</span><span class="o">.</span><span class="n">design_short_column_uniaxial_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># Slender column design (IS 456 Cl 39.7)</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="n">api</span><span class="o">.</span><span class="n">design_long_column_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="c1"># Unified column design orchestrator</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="n">api</span><span class="o">.</span><span class="n">design_column_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="c1"># Column classification — short vs slender (IS 456 Cl 25.1.2)</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="n">api</span><span class="o">.</span><span class="n">classify_column_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="c1"># Biaxial bending check (IS 456 Cl 39.6)</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="n">api</span><span class="o">.</span><span class="n">biaxial_bending_check_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="c1"># Column detailing (IS 456 Cl 26.5.3)</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="n">api</span><span class="o">.</span><span class="n">column_detailing_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
 <hr />
 <h2 id="stable-api-v012">Stable API (v0.12)<a class="headerlink" href="#stable-api-v012" title="Permanent link">&para;</a></h2>
 <p>These library-first helpers are stable once released.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_detailing</span><span class="p">(</span><span class="n">design_results</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_bbs</span><span class="p">(</span><span class="n">detailing_list</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;Beam BBS&quot;</span><span class="p">)</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">api</span><span class="o">.</span><span class="n">export_bbs</span><span class="p">(</span><span class="n">bbs_doc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_dxf</span><span class="p">(</span><span class="n">detailing_list</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">multi</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_report</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="p">)</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_critical</span><span class="p">(</span><span class="n">job_out</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_detailing</span><span class="p">(</span><span class="n">design_results</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_bbs</span><span class="p">(</span><span class="n">detailing_list</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;Beam BBS&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">api</span><span class="o">.</span><span class="n">export_bbs</span><span class="p">(</span><span class="n">bbs_doc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_dxf</span><span class="p">(</span><span class="n">detailing_list</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">multi</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_report</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">api</span><span class="o">.</span><span class="n">compute_critical</span><span class="p">(</span><span class="n">job_out</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="planned-api-v012-target">Planned API (v0.12 Target)<a class="headerlink" href="#planned-api-v012-target" title="Permanent link">&para;</a></h2>
 <p>These helpers are planned next (see <code>docs/planning/v0.12-plan.md</code>).
@@ -2084,36 +2131,53 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 <h2 id="experimental-api-preview-features">Experimental API (Preview Features)<a class="headerlink" href="#experimental-api-preview-features" title="Permanent link">&para;</a></h2>
 <p>These features are available for testing but API may change before v1.0.</p>
 <h3 id="advisory-insights-v0130">Advisory Insights (v0.13.0+)<a class="headerlink" href="#advisory-insights-v0130" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.insights</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">quick_precheck</span><span class="p">,</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">sensitivity_analysis</span><span class="p">,</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">calculate_constructability_score</span><span class="p">,</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">)</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># Heuristic precheck</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">precheck</span> <span class="o">=</span> <span class="n">quick_precheck</span><span class="p">(</span><span class="n">span_mm</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># Sensitivity analysis</span>
-<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="n">sensitivities</span><span class="p">,</span> <span class="n">robustness</span> <span class="o">=</span> <span class="n">sensitivity_analysis</span><span class="p">(</span><span class="n">design_function</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
-<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="c1"># Constructability scoring</span>
-<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="n">score</span> <span class="o">=</span> <span class="n">calculate_constructability_score</span><span class="p">(</span><span class="n">design_result</span><span class="p">,</span> <span class="n">detailing</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.insights</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">quick_precheck</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">sensitivity_analysis</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">calculate_constructability_score</span><span class="p">,</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="p">)</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># Heuristic precheck</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="n">precheck</span> <span class="o">=</span> <span class="n">quick_precheck</span><span class="p">(</span><span class="n">span_mm</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1"># Sensitivity analysis</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="n">sensitivities</span><span class="p">,</span> <span class="n">robustness</span> <span class="o">=</span> <span class="n">sensitivity_analysis</span><span class="p">(</span><span class="n">design_function</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="c1"># Constructability scoring</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="n">score</span> <span class="o">=</span> <span class="n">calculate_constructability_score</span><span class="p">(</span><span class="n">design_result</span><span class="p">,</span> <span class="n">detailing</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Status:</strong> Preview - API signatures and scoring algorithms may change.</p>
 <p>See: <a href="../../getting-started/insights-guide/">Insights Guide</a>, <a href="../insights-api/">Insights API Reference</a></p>
 <h3 id="etabs-integration-v0176">ETABS Integration (v0.17.6+)<a class="headerlink" href="#etabs-integration-v0176" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Validate ETABS CSV export</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">is_valid</span><span class="p">,</span> <span class="n">issues</span><span class="p">,</span> <span class="n">col_map</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">validate_etabs_csv</span><span class="p">(</span><span class="s2">&quot;ETABS_export.csv&quot;</span><span class="p">)</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1"># Normalize ETABS force envelopes</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="n">envelope</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">normalize_etabs_forces</span><span class="p">(</span><span class="s2">&quot;ETABS_export.csv&quot;</span><span class="p">)</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># Create design job from ETABS data</span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="n">job</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">create_job_from_etabs</span><span class="p">(</span><span class="n">envelope_row</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># Validate ETABS CSV export</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">is_valid</span><span class="p">,</span> <span class="n">issues</span><span class="p">,</span> <span class="n">col_map</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">validate_etabs_csv</span><span class="p">(</span><span class="s2">&quot;ETABS_export.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># Normalize ETABS force envelopes</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="n">envelope</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">normalize_etabs_forces</span><span class="p">(</span><span class="s2">&quot;ETABS_export.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="c1"># Create design job from ETABS data</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="n">job</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">create_job_from_etabs</span><span class="p">(</span><span class="n">envelope_row</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Status:</strong> Preview - CSV column mapping and normalization may change.</p>
+<h3 id="footing-design-api-added-v0210-experimental">Footing Design API (Added v0.21.0 — Experimental)<a class="headerlink" href="#footing-design-api-added-v0210-experimental" title="Permanent link">&para;</a></h3>
+<p>Footing functions are in <strong>experimental</strong> status. API may change in v0.22:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456</span><span class="w"> </span><span class="kn">import</span> <span class="n">footing</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># Footing sizing (IS 456 Cl 34.1)</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="n">footing</span><span class="o">.</span><span class="n">size_footing</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1"># Flexural check (IS 456 Cl 34.2.3.1)</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="n">footing</span><span class="o">.</span><span class="n">footing_flexure</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="c1"># One-way shear (IS 456 Cl 34.2.4.1a)</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="n">footing</span><span class="o">.</span><span class="n">footing_one_way_shear</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="c1"># Punching shear (IS 456 Cl 31.6.1)</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="n">footing</span><span class="o">.</span><span class="n">footing_punching_shear</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Status:</strong> Preview - Function signatures and return types may change before v1.0.</p>
 <hr />
 <h2 id="internal-api-may-change-without-notice">Internal API (May Change Without Notice)<a class="headerlink" href="#internal-api-may-change-without-notice" title="Permanent link">&para;</a></h2>
 <p>These modules are implementation details. Do not depend on them directly.</p>
@@ -2180,16 +2244,16 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 </table>
 <h3 id="how-to-use-internal-modules-safely">How to Use Internal Modules Safely<a class="headerlink" href="#how-to-use-internal-modules-safely" title="Permanent link">&para;</a></h3>
 <p>If you must use an internal module:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Pin to exact version</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># requirements.txt</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">structural</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">is456</span><span class="o">==</span><span class="mf">0.20.0</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># Or wrap with try/except</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tau_c</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="c1"># Fallback or error handling</span>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="k">pass</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Pin to exact version</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># requirements.txt</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">structural</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">is456</span><span class="o">==</span><span class="mf">0.21.0</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Or wrap with try/except</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tau_c</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    <span class="c1"># Fallback or error handling</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>    <span class="k">pass</span>
 </code></pre></div>
 <hr />
 <h2 id="deprecated-api-will-be-removed">Deprecated API (Will Be Removed)<a class="headerlink" href="#deprecated-api-will-be-removed" title="Permanent link">&para;</a></h2>
@@ -2218,37 +2282,37 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 <hr />
 <h2 id="cli-stability">CLI Stability<a class="headerlink" href="#cli-stability" title="Permanent link">&para;</a></h2>
 <p>The CLI interface (<code>python -m structural_lib</code>) is considered <strong>stable</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># These commands are stable</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>design<span class="w"> </span>input.csv<span class="w"> </span>-o<span class="w"> </span>results.json
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>bbs<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>bbs.csv
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>detail<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>detailing.json
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>dxf<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>drawings.dxf
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>job<span class="w"> </span>job.json<span class="w"> </span>-o<span class="w"> </span>output/
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>validate<span class="w"> </span>job.json
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>critical<span class="w"> </span>output/<span class="w"> </span>--top<span class="w"> </span><span class="m">10</span><span class="w"> </span>--format<span class="o">=</span>csv<span class="w"> </span>-o<span class="w"> </span>critical.csv
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>report<span class="w"> </span>output/<span class="w"> </span>--format<span class="o">=</span>html<span class="w"> </span>-o<span class="w"> </span>report.html
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>mark-diff<span class="w"> </span>--bbs<span class="w"> </span>schedule.csv<span class="w"> </span>--dxf<span class="w"> </span>drawings.dxf
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># These commands are stable</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>design<span class="w"> </span>input.csv<span class="w"> </span>-o<span class="w"> </span>results.json
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>bbs<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>bbs.csv
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>detail<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>detailing.json
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>dxf<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>drawings.dxf
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>job<span class="w"> </span>job.json<span class="w"> </span>-o<span class="w"> </span>output/
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>validate<span class="w"> </span>job.json
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>critical<span class="w"> </span>output/<span class="w"> </span>--top<span class="w"> </span><span class="m">10</span><span class="w"> </span>--format<span class="o">=</span>csv<span class="w"> </span>-o<span class="w"> </span>critical.csv
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>report<span class="w"> </span>output/<span class="w"> </span>--format<span class="o">=</span>html<span class="w"> </span>-o<span class="w"> </span>report.html
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>mark-diff<span class="w"> </span>--bbs<span class="w"> </span>schedule.csv<span class="w"> </span>--dxf<span class="w"> </span>drawings.dxf
 </code></pre></div>
 <p>Output JSON schema is versioned via <code>schema_version</code> field.</p>
 <hr />
 <h2 id="output-schema-stability">Output Schema Stability<a class="headerlink" href="#output-schema-stability" title="Permanent link">&para;</a></h2>
 <h3 id="schema-version-1-current">Schema Version 1 (Current)<a class="headerlink" href="#schema-version-1-current" title="Permanent link">&para;</a></h3>
 <p>The <code>BeamDesignOutput</code> schema is stable:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">&quot;units&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">&quot;beam_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B1&quot;</span><span class="p">,</span>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">&quot;story&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Story1&quot;</span><span class="p">,</span>
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">  </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;b_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;D_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">  </span><span class="nt">&quot;materials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;fck_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fy_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">  </span><span class="nt">&quot;flexure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ast_required_mm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">  </span><span class="nt">&quot;shear&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">  </span><span class="nt">&quot;serviceability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">  </span><span class="nt">&quot;detailing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">  </span><span class="nt">&quot;is_ok&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="w">  </span><span class="nt">&quot;governing_check&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;flexure&quot;</span>
-<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">&quot;units&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">  </span><span class="nt">&quot;beam_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="nt">&quot;story&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Story1&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">  </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;b_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;D_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="nt">&quot;materials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;fck_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fy_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">  </span><span class="nt">&quot;flexure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ast_required_mm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">  </span><span class="nt">&quot;shear&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">  </span><span class="nt">&quot;serviceability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">  </span><span class="nt">&quot;detailing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">  </span><span class="nt">&quot;is_ok&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="w">  </span><span class="nt">&quot;governing_check&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;flexure&quot;</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="p">}</span>
 </code></pre></div>
 <p><strong>Guarantees:</strong>
 - Existing fields will not be removed
@@ -2265,6 +2329,7 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 <hr />
 <h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h2>
 <ul>
+<li><strong>2026-04-04</strong>: Added Column Design API (stable) and Footing Design API (experimental) for v0.21.0</li>
 <li><strong>2025-12-27</strong>: Initial API stability document (v0.9.6)</li>
 <li><strong>2025-12-29</strong>: Added planned API targets (library-first expansion)</li>
 </ul>

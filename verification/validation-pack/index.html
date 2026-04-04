@@ -23,7 +23,7 @@
     
     
       
-        <title>Validation Pack — Benchmark Beams - structural_engineering_lib</title>
+        <title>Validation Pack — Benchmark Beams & Columns - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#validation-pack-benchmark-beams" class="md-skip">
+        <a href="#validation-pack-benchmark-beams-columns" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Validation Pack — Benchmark Beams
+              Validation Pack — Benchmark Beams &amp; Columns
             
           </span>
         </div>
@@ -1564,6 +1564,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#column-design-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column Design Benchmarks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Column Design Benchmarks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quick-column-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Column Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c1-short-column-axial-capacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C1: Short Column Axial Capacity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c2-short-column-uniaxial-bending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C2: Short Column Uniaxial Bending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c3-biaxial-bending-check-bresler-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C3: Biaxial Bending Check (Bresler Formula)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#additional-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1605,10 +1666,10 @@
   
 
 
-<h1 id="validation-pack-benchmark-beams">Validation Pack — Benchmark Beams<a class="headerlink" href="#validation-pack-benchmark-beams" title="Permanent link">&para;</a></h1>
-<p><strong>Version:</strong> 0.20.0
-<strong>Purpose:</strong> Engineers can verify library accuracy using these benchmark beams</p>
-<p>This pack provides 5 benchmark beams with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trusted software.</p>
+<h1 id="validation-pack-benchmark-beams-columns">Validation Pack — Benchmark Beams &amp; Columns<a class="headerlink" href="#validation-pack-benchmark-beams-columns" title="Permanent link">&para;</a></h1>
+<p><strong>Version:</strong> 0.21.0
+<strong>Purpose:</strong> Engineers can verify library accuracy using these benchmark beams and columns</p>
+<p>This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trusted software.</p>
 <hr />
 <h2 id="quick-validation-5-minutes">Quick Validation (5 minutes)<a class="headerlink" href="#quick-validation-5-minutes" title="Permanent link">&para;</a></h2>
 <p>Run this command to validate all benchmark beams:</p>
@@ -2040,6 +2101,364 @@
 </tbody>
 </table>
 <hr />
+<h2 id="column-design-benchmarks">Column Design Benchmarks<a class="headerlink" href="#column-design-benchmarks" title="Permanent link">&para;</a></h2>
+<h3 id="quick-column-validation">Quick Column Validation<a class="headerlink" href="#quick-column-validation" title="Permanent link">&para;</a></h3>
+<p>Run this command to validate all column benchmark cases:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s2">from structural_lib.services.api import (</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s2">    design_column_axial_is456,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s2">    design_short_column_uniaxial_is456,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s2">    biaxial_bending_check_is456,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s2">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s2">import math</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s2"># Benchmark C1: Short Column Axial Capacity (SP:16 Chart 27)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="s2"># 300x300 mm, M25, Fe415, 4-20mm bars (Asc = 1257 mm²)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s2"># Pu = 0.4*25*(90000-1257) + 0.67*415*1257 = 887.43 + 349.57 ≈ 1706 kN (unfactored)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="s2"># IS 456 Cl 39.3 formula: 0.4*fck*Ac + 0.67*fy*Asc → result in kN</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="s2">r = design_column_axial_is456(fck=25.0, fy=415.0, Ag_mm2=90000.0, Asc_mm2=1257.0)</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="s2">expected_Pu = (0.4 * 25 * (90000 - 1257) + 0.67 * 415 * 1257) / 1000</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="s2">print(f&#39;C1 Axial: Pu={r[\&quot;Pu_kN\&quot;]:.1f} kN (exp: {expected_Pu:.1f}) ✓&#39; if abs(r[&#39;Pu_kN&#39;] - expected_Pu) &lt; 2 else f&#39;C1 FAIL: got {r[\&quot;Pu_kN\&quot;]:.1f}, exp {expected_Pu:.1f}&#39;)</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="s2"># Benchmark C2: Short Column Uniaxial Bending (SP:16 Chart 44)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="s2"># 300x500 mm, M25, Fe415, 6-20mm bars (Asc = 1885 mm²), d&#39; = 50mm</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="s2"># Pu = 800 kN — check if within P-M interaction envelope</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="s2">r = design_short_column_uniaxial_is456(</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="s2">    Pu_kN=800.0, Mu_kNm=120.0, b_mm=300.0, D_mm=500.0,</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="s2">    le_mm=3000.0, fck=25.0, fy=415.0, Asc_mm2=1885.0,</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="s2">    d_prime_mm=50.0, l_unsupported_mm=3000.0,</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="s2">)</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="s2">print(f&#39;C2 Uniaxial: ok={r[\&quot;ok\&quot;]}, util={r[\&quot;utilization\&quot;]:.1%}, Mu_cap={r[\&quot;Mu_cap_kNm\&quot;]:.1f} kNm ✓&#39; if r[&#39;ok&#39;] else f&#39;C2 FAIL: util={r[\&quot;utilization\&quot;]:.1%}&#39;)</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="s2"># Benchmark C3: Biaxial Bending Check (IS 456 Cl 39.6)</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="s2"># 400x400 mm, M30, Fe415, 8-20mm bars (Asc = 2513 mm²)</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="s2"># Pu = 1200 kN, Mux = 80 kNm, Muy = 60 kNm — Bresler check</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="s2">r = biaxial_bending_check_is456(</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="s2">    Pu_kN=1200.0, Mux_kNm=80.0, Muy_kNm=60.0,</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="s2">    b_mm=400.0, D_mm=400.0, le_mm=3000.0,</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="s2">    fck=30.0, fy=415.0, Asc_mm2=2513.0, d_prime_mm=50.0,</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="s2">    l_unsupported_mm=3000.0,</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="s2">)</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="s2">print(f&#39;C3 Biaxial: safe={r[\&quot;is_safe\&quot;]}, ratio={r[\&quot;interaction_ratio\&quot;]:.3f}, αn={r[\&quot;alpha_n\&quot;]:.2f} ✓&#39; if r[&#39;is_safe&#39;] else f&#39;C3 FAIL: ratio={r[\&quot;interaction_ratio\&quot;]:.3f}&#39;)</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="s2">&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="c1-short-column-axial-capacity">C1: Short Column Axial Capacity<a class="headerlink" href="#c1-short-column-axial-capacity" title="Permanent link">&para;</a></h3>
+<p><strong>IS 456 Reference:</strong> Cl 39.3, SP:16 Chart 27</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>300</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>D</td>
+<td>300</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>Ag</td>
+<td>90,000</td>
+<td>mm²</td>
+</tr>
+<tr>
+<td>Asc (4-20φ)</td>
+<td>1,257</td>
+<td>mm²</td>
+</tr>
+<tr>
+<td>fck</td>
+<td>M25</td>
+<td>N/mm²</td>
+</tr>
+<tr>
+<td>fy</td>
+<td>Fe415</td>
+<td>N/mm²</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Hand Calculation (IS 456 Cl 39.3):</strong></p>
+<div class="arithmatex">\[P_u = 0.4 \cdot f_{ck} \cdot A_c + 0.67 \cdot f_y \cdot A_{sc}\]</div>
+<div class="arithmatex">\[P_u = 0.4 \times 25 \times (90000 - 1257) + 0.67 \times 415 \times 1257\]</div>
+<div class="arithmatex">\[P_u = 887{,}430 + 349{,}565 = 1{,}236{,}995 \text{ N} \approx 1237.0 \text{ kN}\]</div>
+<table>
+<thead>
+<tr>
+<th>Expected Result</th>
+<th>Value</th>
+<th>Tolerance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pu</td>
+<td>1237.0</td>
+<td>±2 kN</td>
+</tr>
+<tr>
+<td>Steel ratio</td>
+<td>1.40%</td>
+<td>±0.01%</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_column_axial_is456</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_column_axial_is456</span><span class="p">(</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">fck</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">fy</span><span class="o">=</span><span class="mf">415.0</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">Ag_mm2</span><span class="o">=</span><span class="mf">90000.0</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mf">1257.0</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pu = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Pu_kN&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Steel ratio = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;steel_ratio&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Pu_kN&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1237.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Axial capacity mismatch&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="c2-short-column-uniaxial-bending">C2: Short Column Uniaxial Bending<a class="headerlink" href="#c2-short-column-uniaxial-bending" title="Permanent link">&para;</a></h3>
+<p><strong>IS 456 Reference:</strong> Cl 39.5 (P-M Interaction), SP:16 Chart 44</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>300</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>D</td>
+<td>500</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>le</td>
+<td>3,000</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>Asc (6-20φ)</td>
+<td>1,885</td>
+<td>mm²</td>
+</tr>
+<tr>
+<td>d'</td>
+<td>50</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>d'/D</td>
+<td>0.10</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Pu (applied)</td>
+<td>800</td>
+<td>kN</td>
+</tr>
+<tr>
+<td>Mu (applied)</td>
+<td>120</td>
+<td>kN·m</td>
+</tr>
+<tr>
+<td>fck</td>
+<td>M25</td>
+<td>N/mm²</td>
+</tr>
+<tr>
+<td>fy</td>
+<td>Fe415</td>
+<td>N/mm²</td>
+</tr>
+</tbody>
+</table>
+<p>The (Pu, Mu) point must lie within the P-M interaction envelope for the section.
+With d'/D = 0.10, the section has adequate moment capacity at Pu = 800 kN.</p>
+<table>
+<thead>
+<tr>
+<th>Expected Result</th>
+<th>Value</th>
+<th>Tolerance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ok (within envelope)</td>
+<td>True</td>
+<td>—</td>
+</tr>
+<tr>
+<td>utilization</td>
+<td>&lt; 1.0</td>
+<td>—</td>
+</tr>
+<tr>
+<td>classification</td>
+<td>SHORT</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_short_column_uniaxial_is456</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_short_column_uniaxial_is456</span><span class="p">(</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mf">800.0</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">Mu_kNm</span><span class="o">=</span><span class="mf">120.0</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">D_mm</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">le_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">fck</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">fy</span><span class="o">=</span><span class="mf">415.0</span><span class="p">,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mf">1885.0</span><span class="p">,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">)</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ok = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;ok&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Utilization = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;utilization&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mu capacity = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Mu_cap_kNm&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN·m&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Classification = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;ok&#39;</span><span class="p">],</span> <span class="s2">&quot;Section should be adequate for applied loads&quot;</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;utilization&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;Utilization should be &lt; 100%&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="c3-biaxial-bending-check-bresler-formula">C3: Biaxial Bending Check (Bresler Formula)<a class="headerlink" href="#c3-biaxial-bending-check-bresler-formula" title="Permanent link">&para;</a></h3>
+<p><strong>IS 456 Reference:</strong> Cl 39.6 (Bresler Load Contour), Cl 39.6a (Puz)</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>400</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>D</td>
+<td>400</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>le</td>
+<td>3,000</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>Asc (8-20φ)</td>
+<td>2,513</td>
+<td>mm²</td>
+</tr>
+<tr>
+<td>d'</td>
+<td>50</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>Pu (applied)</td>
+<td>1,200</td>
+<td>kN</td>
+</tr>
+<tr>
+<td>Mux (applied)</td>
+<td>80</td>
+<td>kN·m</td>
+</tr>
+<tr>
+<td>Muy (applied)</td>
+<td>60</td>
+<td>kN·m</td>
+</tr>
+<tr>
+<td>fck</td>
+<td>M30</td>
+<td>N/mm²</td>
+</tr>
+<tr>
+<td>fy</td>
+<td>Fe415</td>
+<td>N/mm²</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bresler Formula (IS 456 Cl 39.6):</strong></p>
+<div class="arithmatex">\[\left(\frac{M_{ux}}{M_{ux1}}\right)^{\alpha_n} + \left(\frac{M_{uy}}{M_{uy1}}\right)^{\alpha_n} \leq 1.0\]</div>
+<p>where <span class="arithmatex">\(\alpha_n\)</span> varies linearly from 1.0 (at <span class="arithmatex">\(P_u/P_{uz} = 0.2\)</span>) to 2.0 (at <span class="arithmatex">\(P_u/P_{uz} = 0.8\)</span>).</p>
+<table>
+<thead>
+<tr>
+<th>Expected Result</th>
+<th>Value</th>
+<th>Tolerance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>is_safe</td>
+<td>True</td>
+<td>—</td>
+</tr>
+<tr>
+<td>interaction_ratio</td>
+<td>≤ 1.0</td>
+<td>—</td>
+</tr>
+<tr>
+<td>alpha_n</td>
+<td>1.0–2.0</td>
+<td>Per Pu/Puz</td>
+</tr>
+<tr>
+<td>classification</td>
+<td>SHORT</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">biaxial_bending_check_is456</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">biaxial_bending_check_is456</span><span class="p">(</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mf">1200.0</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">Mux_kNm</span><span class="o">=</span><span class="mf">80.0</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">Muy_kNm</span><span class="o">=</span><span class="mf">60.0</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">D_mm</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">le_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">fck</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">fy</span><span class="o">=</span><span class="mf">415.0</span><span class="p">,</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mf">2513.0</span><span class="p">,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="p">)</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is_safe = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;is_safe&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interaction ratio = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;interaction_ratio&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;alpha_n = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;alpha_n&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mux1 = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Mux1_kNm&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN·m&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Muy1 = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Muy1_kNm&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN·m&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Puz = </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Puz_kN&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;is_safe&#39;</span><span class="p">],</span> <span class="s2">&quot;Bresler check should pass&quot;</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;interaction_ratio&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;Interaction ratio must be ≤ 1.0&quot;</span>
+</code></pre></div>
+<hr />
 <h2 id="additional-verification">Additional Verification<a class="headerlink" href="#additional-verification" title="Permanent link">&para;</a></h2>
 <p>For more detailed verification examples with hand calculations and textbook references, see:</p>
 <ul>
@@ -2076,6 +2495,21 @@
 <td>Dimensions (xu, spacing)</td>
 <td>±1 mm</td>
 <td>Practical rounding</td>
+</tr>
+<tr>
+<td>Axial capacity (Pu)</td>
+<td>±2 kN</td>
+<td>Rounding in concrete/steel contributions</td>
+</tr>
+<tr>
+<td>Interaction ratio</td>
+<td>±0.01</td>
+<td>Numerical interpolation on P-M curves</td>
+</tr>
+<tr>
+<td>Bresler exponent (αn)</td>
+<td>±0.01</td>
+<td>Linear interpolation on Pu/Puz</td>
 </tr>
 </tbody>
 </table>

@@ -1520,6 +1520,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0210" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0170" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2209,6 +2220,45 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0210">v0.21.0<a class="headerlink" href="#v0210" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-04-04
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Complete Column Design + Footing Foundation + Security Hardening</p>
+<p><strong>Key Changes:</strong></p>
+<p><strong>Added - Complete Column Design (IS 456 Cl 25-39, IS 13920 Cl 7):</strong>
+- 14 column design functions covering short, long, uniaxial, biaxial, helical, and ductile detailing
+- IS 13920 Cl 7 seismic ductile detailing for columns
+- P-M interaction curve generation, effective length, classification, and eccentricity
+- 515+ column-specific tests passing</p>
+<p><strong>Added - Footing Design Foundation (IS 456 Cl 31.6, 34):</strong>
+- 4 footing design modules for isolated footing analysis
+- One-way shear, two-way punching shear, and bearing pressure checks
+- 61 footing-specific tests passing</p>
+<p><strong>Added - IS 456 Beam Restructure (Phase 1.5):</strong>
+- Modular beam code organization for maintainability
+- Enhanced Shear design per Cl 40.3
+- Steel stress-strain model per IS 456 Fig 23</p>
+<p><strong>Added - Agent Evolver Infrastructure:</strong>
+- 16 custom VS Code agents with role-based permissions
+- 10 agent skills (session management, safe file ops, API discovery, etc.)
+- NLP-based prompt router for task → agent routing
+- Parity dashboard for IS 456 clause/endpoint/test coverage</p>
+<p><strong>Changed - Security Hardening:</strong>
+- CWE-209 error message sanitization across all endpoints
+- PyJWT migration replacing deprecated JWT dependencies
+- Input validation audit across system boundaries</p>
+<p><strong>Changed - Git Workflow Hardening (13/14 Phases):</strong>
+- Comprehensive commit hook enforcement
+- Safe push/pull with conflict detection
+- PR requirement enforcement with bypass prevention</p>
+<p><strong>Changed - Variable Naming Standardization:</strong>
+- 21 field names standardized across Python core, FastAPI models, and React types
+- Consistent naming: <code>b_mm</code>, <code>d_mm</code>, <code>fck</code>, <code>fy</code> across all layers</p>
+<p><strong>Stats:</strong>
+- 3,401+ tests passing
+- 59 API endpoints across 13 routers
+- 36 public API functions + 7 private helpers</p>
 <hr />
 <h2 id="v0170">v0.17.0<a class="headerlink" href="#v0170" title="Permanent link">&para;</a></h2>
 <p><strong>Date:</strong> 2026-01-13
