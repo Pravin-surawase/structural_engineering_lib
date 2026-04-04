@@ -72,6 +72,8 @@ If stale branches or open PRs are found, **list them and ask user** before clean
 | Check if PR needed | `./scripts/ai_commit.sh --pr-check` |
 | Check project state | `./scripts/ai_commit.sh --status` |
 | Undo last commit (unpushed) | `./scripts/ai_commit.sh --undo` |
+| Diagnose CI failures | `.venv/bin/python scripts/diagnose_ci.py --pr N` |
+| Auto-fix CI lint/format | `.venv/bin/python scripts/diagnose_ci.py --local --fix` |
 | Push only (no new commit) | `./scripts/ai_commit.sh --push` |
 | Amend last commit | `./scripts/ai_commit.sh --amend` |
 | DCO sign-off | `./scripts/ai_commit.sh "msg" --signoff` |
@@ -136,6 +138,27 @@ Based on categorization:
 If >50 files across multiple categories, consider splitting into logical commits:
 - Commit 1: docs/configs (direct)
 - Commit 2: production code (PR)
+
+### Step 2b: PR Planning (In-Depth)
+
+Before creating a PR, plan it completely:
+
+| Planning Item | What to Do |
+|---------------|------------|
+| **Title** | `type(scope): clear description` matching commit convention |
+| **Branch name** | `task/TASK-XXX` — always use `--branch` to create |
+| **CI readiness** | Run `diagnose_ci.py --local` BEFORE pushing |
+| **File scope** | List all files that will be changed — avoid mixing unrelated changes |
+| **Expected CI time** | ~5 min (fast-checks), ~15 min (full test suite) |
+| **Merge strategy** | Always squash merge (default) |
+| **Post-merge cleanup** | `--finish` handles branch deletion automatically |
+
+**Pre-PR Checklist:**
+- [ ] All changes belong to one logical task
+- [ ] Local CI passes (`diagnose_ci.py --local`)
+- [ ] No unrelated formatting changes mixed in
+- [ ] Commit message is clear and descriptive
+- [ ] Branch name follows `task/TASK-XXX` convention
 
 ### Step 3: Validate Before Committing
 ```bash
@@ -265,6 +288,49 @@ NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh p
 | `--finish` interrupted | `./scripts/ai_commit.sh --continue PR_NUM` or check `.git/FINISH_STATE` |
 | `--finish` PR number lost | `gh pr list --head $(git branch --show-current)` or check `.git/FINISH_STATE` |
 | Stash pop fails (CRLF normalization) | Automatic — safe_push.sh now has 3-tier recovery (pop → checkout+pop → patch apply) |
+
+## CI Failure Diagnosis & Fix Workflow
+
+**New tool:** `scripts/diagnose_ci.py` — diagnose, reproduce, and auto-fix CI failures.
+
+### Quick Commands
+```bash
+.venv/bin/python scripts/diagnose_ci.py              # Check current branch CI
+.venv/bin/python scripts/diagnose_ci.py --pr 42      # Check specific PR
+.venv/bin/python scripts/diagnose_ci.py --local      # Run checks locally
+.venv/bin/python scripts/diagnose_ci.py --local --fix # Auto-fix formatting + lint
+.venv/bin/python scripts/diagnose_ci.py --last        # Last CI run on current branch
+```
+
+### CI Failure Fix Protocol (MANDATORY)
+
+When CI fails on a PR, follow this exact sequence — no shortcuts:
+
+1. **Diagnose:** Run `diagnose_ci.py --pr <N>` to identify what failed
+2. **Reproduce locally:** Run `diagnose_ci.py --local` to confirm the failure
+3. **Auto-fix first:** Run `diagnose_ci.py --local --fix` for formatting/lint issues
+4. **Manual fix:** For test failures or import errors, fix the code carefully
+5. **Verify locally:** Run `diagnose_ci.py --local` again to confirm all pass
+6. **Review:** Hand off fixes to @reviewer before committing — CI fixes can introduce regressions
+7. **Commit:** `./scripts/ai_commit.sh "fix: resolve CI failures"`
+8. **Re-check:** Verify CI passes on the PR
+
+### Common CI Failures Quick Reference
+
+| Failure | Auto-fixable? | Fix Command |
+|---------|:---:|-------------|
+| Black formatting | Yes | `diagnose_ci.py --local --fix` |
+| Ruff lint | Yes | `diagnose_ci.py --local --fix` |
+| Python tests | No | Read failure output, fix code, run `pytest -x -q` |
+| Import validation | No | Run `validate_imports.py`, fix imports manually |
+| React build | No | `cd react_app && npm run build`, fix TS errors |
+| mypy type errors | No | Fix type annotations |
+| CRLF/encoding | No | Add `encoding="utf-8"` to file operations |
+
+### IMPORTANT: Never bypass CI failures
+- Do NOT use `--force` or `--no-verify` to push past failures
+- Do NOT merge with `--admin` to skip checks
+- Fix the root cause, verify locally, get review, then commit
 
 ### Git System Architecture (for debugging only)
 

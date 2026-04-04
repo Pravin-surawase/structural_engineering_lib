@@ -747,6 +747,7 @@ _print_usage() {
     echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
+    echo -e "  ${GREEN}diagnose${NC}    Diagnose CI failures (--pr N, --local, --fix)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
     echo -e "  ${DIM}./run.sh session start${NC}              # Begin work"
@@ -899,6 +900,7 @@ main() {
         route)    _cmd_route "$@" ;;
         tools)    _cmd_tools "$@" ;;
         coverage) _cmd_coverage "$@" ;;
+        diagnose) _require_venv; "$VENV" "$SCRIPTS/diagnose_ci.py" "$@" ;;
         pipeline) _cmd_pipeline "$@" ;;
         *)
             _error "Unknown command: $cmd"

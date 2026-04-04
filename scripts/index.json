@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-04-03",
-  "file_count": 112,
+  "last_updated": "2026-04-04",
+  "file_count": 113,
   "files": [
     {
       "name": "README.md",
@@ -2567,6 +2567,29 @@
         }
       ],
       "content_hash": "3620935b3e2d"
+    },
+    {
+      "name": "diagnose_ci.py",
+      "type": "python",
+      "size_lines": 278,
+      "last_updated": "2026-04-04",
+      "description": "CI failure diagnosis, local reproduction, and auto-fix tool.",
+      "functions": [
+        {
+          "name": "get_pr_checks",
+          "description": "Fetch CI check status for a PR.",
+          "params": ["pr_number"]
+        },
+        {
+          "name": "run_local_checks",
+          "description": "Run CI checks locally.",
+          "params": ["fix"]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "new"
     },
     {
       "name": "discover_api_signatures.py",
