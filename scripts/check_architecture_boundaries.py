@@ -88,8 +88,7 @@ LAYERS = {
             "dataclasses",
             "typing",
         ],
-        "forbidden_imports": [
-        ],
+        "forbidden_imports": [],
     },
     "ui": {
         "paths": [
@@ -149,7 +148,6 @@ EXCLUDE_PATTERNS = [
     "_test.py",
     "test_",
     "_cli.py",  # CLI files are allowed to do I/O
-    "clause_cli.py",  # Specific CLI file
     "traceability.py",  # Infrastructure module (V3: move to infrastructure/)
 ]
 
@@ -283,10 +281,15 @@ def check_imports(
     for imp in extract_imports(file_path):
         # Check if import is forbidden for this layer
         for forbidden_pattern in forbidden:
-            if imp.module.startswith(forbidden_pattern) or forbidden_pattern in imp.names:
+            if (
+                imp.module.startswith(forbidden_pattern)
+                or forbidden_pattern in imp.names
+            ):
                 fix_hint = ""
                 if layer == "core" and forbidden_pattern == "pandas":
-                    fix_hint = "Use pure Python in core; pandas belongs in application layer"
+                    fix_hint = (
+                        "Use pure Python in core; pandas belongs in application layer"
+                    )
                 elif layer == "ui" and "services." in forbidden_pattern:
                     fix_hint = (
                         f"Import from structural_lib.services.api instead of "
@@ -407,7 +410,9 @@ def format_console_report(report: ArchitectureReport, show_fix: bool = False) ->
     lines.append("Layers analyzed:")
     for layer, stats in report.layers_analyzed.items():
         status = "✅" if stats["violations"] == 0 else "❌"
-        lines.append(f"  {status} {layer}: {stats['files']} files, {stats['violations']} violations")
+        lines.append(
+            f"  {status} {layer}: {stats['files']} files, {stats['violations']} violations"
+        )
     lines.append("")
 
     # Violations by layer
@@ -469,9 +474,7 @@ def format_json_report(report: ArchitectureReport) -> str:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Check architecture layer boundaries"
-    )
+    parser = argparse.ArgumentParser(description="Check architecture layer boundaries")
     parser.add_argument(
         "--fix",
         action="store_true",

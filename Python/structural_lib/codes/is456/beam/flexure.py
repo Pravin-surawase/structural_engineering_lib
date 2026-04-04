@@ -419,6 +419,8 @@ def design_singly_reinforced(
         xu_max=xu_max,
         is_safe=is_safe,
         errors=design_errors,
+        Ast_min=ast_min,
+        Ast_max=ast_max,
     )
 
 
@@ -580,6 +582,8 @@ def design_doubly_reinforced(
     # Calculate Pt
     pt_provided = (ast_total * 100.0) / (b * d)
 
+    ast_min = 0.85 * b * d / fy
+
     return FlexureResult(
         Mu_lim=mu_lim,
         Ast_required=ast_total,
@@ -590,6 +594,8 @@ def design_doubly_reinforced(
         is_safe=is_safe,
         Asc_required=asc,
         errors=design_errors,
+        Ast_min=ast_min,
+        Ast_max=ast_max,
     )
 
 
@@ -819,6 +825,8 @@ def design_flanged_beam(
             if not any(err.code == E_FLEXURE_003.code for err in design_errors):
                 design_errors.append(E_FLEXURE_003)
 
+        ast_min = 0.85 * bw * d / fy
+
         return FlexureResult(
             Mu_lim=mu_lim_t,
             Ast_required=total_ast,
@@ -829,6 +837,8 @@ def design_flanged_beam(
             is_safe=is_safe,
             Asc_required=web_result.Asc_required,
             errors=design_errors,
+            Ast_min=ast_min,
+            Ast_max=ast_max,
         )
 
     # 3. Singly Reinforced T-Beam (Df < xu <= xu_max)
@@ -921,6 +931,8 @@ def design_flanged_beam(
         is_safe=is_safe,
         Asc_required=0.0,
         errors=design_errors,
+        Ast_min=ast_min,
+        Ast_max=ast_max,
     )
 
 

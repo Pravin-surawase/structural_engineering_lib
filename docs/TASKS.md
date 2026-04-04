@@ -93,6 +93,7 @@
 |----|------|-------|--------|
 | AUDIT-P0 | All 5 P0 audit findings fixed (auth, CI, WCAG, batch limits, bilinear tests) | Copilot | ✅ Done |
 | AUDIT-P1 (partial) | 6 P1 audit findings fixed (SM-1/2/3, IS-5/7, FE-6) | Copilot | ✅ Done |
+| AUDIT-P1-B1 | 9 P1 audit findings resolved (U-1, API-1/2/11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed) | Copilot | ✅ Done |
 | TASK-681 | Migrate python-jose → PyJWT in auth.py | Copilot | ✅ Done |
 | TASK-690 | Column P-M interaction math fixes (SP:16 Table I continuity, Cl 38.1 modified strain, xu_bal inelastic strain, Pu_0 cap) | Copilot | ✅ Done |
 | TASK-691 | Column biaxial e_min enforcement (Cl 25.4 both axes before Bresler) | Copilot | ✅ Done |
@@ -109,6 +110,18 @@
 | TASK-800.P2-P11 | Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh | Copilot | ✅ Done |
 
 ## Up Next
+
+### Audit P1 Fixes — Batch 1 ✅
+| A-1 | Move clause_cli.py to cli/ | ✅ Done |
+| A-3 | Ast_min/Ast_max in FlexureResult | ✅ Done |
+| API-6 | Streaming 404 + job_id validation | ✅ Done |
+| FE-7 | Three.js material memory cleanup | ✅ Done |
+
+### Audit P1 Fixes — Batch 2 (Next)
+| API-5 | OpenAPI examples on Pydantic models | 🔄 Planned |
+| OPS-3 | Python dependency lock file | 🔄 Planned |
+| DOC-4 | Footing section in api.md | 🔄 Planned |
+| DOC-5 | Clause-to-function mapping | 🔄 Planned |
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|

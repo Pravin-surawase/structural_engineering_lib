@@ -89,15 +89,11 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
         # Extract flexure results directly from ComplianceCaseResult
         flexure_result = result.flexure
 
-        # Calculate min/max steel per IS 456
-        ast_min = 0.85 * request.width * effective_depth / request.fy
-        ast_max = 0.04 * request.width * request.depth
-
         # Build flexure result
         flexure = FlexureResult(
             ast_required=flexure_result.Ast_required,
-            ast_min=ast_min,
-            ast_max=ast_max,
+            ast_min=flexure_result.Ast_min,
+            ast_max=flexure_result.Ast_max,
             xu=flexure_result.xu,
             xu_max=flexure_result.xu_max,
             is_under_reinforced=flexure_result.xu <= flexure_result.xu_max,
