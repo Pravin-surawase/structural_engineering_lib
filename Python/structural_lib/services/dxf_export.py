@@ -1776,10 +1776,23 @@ def quick_dxf_bytes(
 # =============================================================================
 
 
+def _validate_cli_path(path: Path, label: str = "path") -> Path:
+    """Resolve path and block relative path traversal outside cwd."""
+    from pathlib import Path as _Path
+
+    resolved = _Path(path).resolve()
+    if not _Path(path).is_absolute():
+        cwd = _Path.cwd().resolve()
+        if not str(resolved).startswith(str(cwd)):
+            raise ValueError(f"{label} must be within working directory: {path}")
+    return resolved
+
+
 def main() -> None:
     """Command-line interface for DXF generation."""
     import argparse
     import json
+    from pathlib import Path
 
     parser = argparse.ArgumentParser(description="Generate beam detail DXF")
     parser.add_argument("input", help="JSON file with beam detailing data")
@@ -1789,8 +1802,11 @@ def main() -> None:
 
     args = parser.parse_args()
 
+    input_path = _validate_cli_path(Path(args.input), "input")
+    output_path = _validate_cli_path(Path(args.output), "output")
+
     # Load detailing data from JSON
-    with open(args.input) as f:
+    with open(str(input_path)) as f:
         data = json.load(f)
 
     # Convert JSON to BeamDetailingResult via create_beam_detailing
@@ -1808,8 +1824,8 @@ def main() -> None:
         ast_end=data.get("ast_end", 800),
     )
 
-    output_path = generate_beam_dxf(detailing, args.output)
-    print(f"DXF generated: {output_path}")
+    result_path = generate_beam_dxf(detailing, str(output_path))
+    print(f"DXF generated: {result_path}")
 
 
 if __name__ == "__main__":

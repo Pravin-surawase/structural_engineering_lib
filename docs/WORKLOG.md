@@ -199,3 +199,4 @@ tags: []
 | 2026-04-04 | AUDIT-P0 | Fixed all 5 P0 audit findings: auth middleware, nightly CI, WCAG contrast, batch limits, bilinear tests | 2c8a2a9c |
 | 2026-04-04 | AUDIT-P1 | Fixed 6 P1 findings: fck/fy validation, float tolerance, torsion guards, beam/column warnings, ErrorBoundary | pending |
 | 2026-04-04 | AUDIT-P2-B1 | P2 Batch 1: 7 fixes (S-15 error sanitize, S-18 float-inf JSON, SM-6 ShearResult frozen, SM-8 bearing tolerance, SM-10 ColumnAxialResult frozen, API-8 BarAreasResponse model, API-10 DXF MIME) | — |
+| 2026-04-05 | AUDIT-P2-B2 | P2 Batch 2: 7 fixes + 2 closures (OPS-4 IPv6, SM-7 puz validation, SM-9 steel_stress guards, FE-5 toast activation, BE-6 anchorage export, S-17 CLI path containment, DOC-7 CHANGELOG highlights; S-16/S-22 closed invalid) | — |

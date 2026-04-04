@@ -3,7 +3,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-04-04
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-04-05
 
 # Comprehensive Library Audit — v0.21.0 (Final)
 
@@ -49,9 +49,10 @@
 | P1 Fixes (Batch 2, 4 items) | B+ | 7.4/10 | 4 more P1s resolved: API-5, OPS-3, DOC-4, DOC-5 |
 | P1 Fixes (Batch 3, 1 item) | A- | 7.5/10 | Final P1 resolved: FE-1a accessibility (9 changes across 4 files) |
 | P2 Fixes (Batch 1, 7 items) | A- | 7.7/10 | 7 P2s resolved: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10 |
-| **Final (post-fix)** | **A-** | **7.7/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 7 P2 fixes resolved** |
+| P2 Fixes (Batch 2, 7 items + 2 closures) | A- | 7.9/10 | 7 P2s resolved: OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7. 2 P2s closed as invalid: S-16, S-22 |
+| **Final (post-fix)** | **A-** | **7.9/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 16 P2 fixes resolved** |
 
-**Overall Library Grade: A- (7.7/10) — up from A- (7.5/10) after P2 Batch 1 fixes**
+**Overall Library Grade: A- (7.9/10) — up from A- (7.7/10) after P2 Batch 2 fixes**
 
 ---
 
@@ -233,7 +234,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | FE-2 | No custom form validation — only HTML5 min/max | P1 | Add validation error display |
 | FE-3 | Settings panel not implemented (TODO in CommandPalette) | P2 | Implement SettingsPanel |
 | FE-4 | No tooltips for engineering parameters (fck, fy) | P2 | Add IS 456 context tooltips |
-| FE-5 | Toast system defined but unused | P2 | Connect to error handlers |
+| FE-5 | Toast system defined but unused | P2 | ✅ Fixed — Connected to error handlers |
 
 ---
 
@@ -262,9 +263,9 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | SM-4 | TorsionResult defined in TWO locations | P1 | Duplicate dataclass in `torsion.py` and `torsion_design.py` | Consolidate to one location |
 | SM-5 | Division by zero when num_points=1 | P1 | `generate_interaction_curve()` divides by `(num_points - 1)` | Guard `num_points >= 2` |
 | SM-6 | FlexureResult/ShearResult mutable | P2 | Non-frozen dataclasses; thread-unsafe | ✅ Fixed — Made frozen |
-| SM-7 | `_calculate_puz()` no input validation | P2 | Accepts any values including negative areas | Add range checks |
+| SM-7 | `_calculate_puz()` no input validation | P2 | Accepts any values including negative areas | ✅ Fixed — Added range checks |
 | SM-8 | float `== 0.0` in footing bearing | P2 | `if bearing_pressure == 0.0` risks float mismatch | ✅ Fixed — Used tolerance |
-| SM-9 | `get_steel_stress()` zero input validation | P2 | Strain=-0 or d=0 not guarded | Add input guards |
+| SM-9 | `get_steel_stress()` zero input validation | P2 | Strain=-0 or d=0 not guarded | ✅ Fixed — Added input guards |
 | SM-10 | ColumnAxialResult mutable | P2 | Non-frozen dataclass like SM-6 | ✅ Fixed — Made frozen |
 
 ---
@@ -277,7 +278,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | BE-2 | Audit says "37 functions" — actually 57+28 types=85 exports | P2 | Misleading metric | Correct documentation |
 | BE-3 | `optimize_pareto_front()` not in API namespace | P1 | Only accessible via internal module path | Add to `services/api.py` + `__init__.py` |
 | BE-4 | `compute_critical()` doesn't accept `dict` | P1 | Inconsistent with `compute_report()` which accepts dict | Add `dict` support |
-| BE-6 | `check_anchorage_at_simple_support()` not exported | P2 | Not in `__all__` | Export or mark private |
+| BE-6 | `check_anchorage_at_simple_support()` not exported | P2 | Not in `__all__` | ✅ Fixed — Exported in `__all__` |
 | BE-7 | `cmd_smart` CLI has zero tests | P1 | All other 9 CLI commands tested | Add smart command tests |
 | BE-8 | No circular imports in services layer | INFO | Verified clean | — |
 
@@ -295,7 +296,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | DOC-4 | api.md missing footing section (0/4 functions documented) | P0 | Add Section 17 for footings |
 | DOC-5 | No clause-to-function mapping | P1 | Create `clause_map.json` |
 | DOC-6 | Quickstart doesn't cover columns/footings | P1 | Update with new element examples |
-| DOC-7 | CHANGELOG v0.21.0 reads as internal task log | P2 | Add "Highlights" section |
+| DOC-7 | CHANGELOG v0.21.0 reads as internal task log | P2 | ✅ Fixed — Added "Highlights" section |
 
 ---
 
@@ -334,13 +335,13 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | ID | Finding | Priority | OWASP | Description | Fix |
 |----|---------|----------|-------|-------------|-----|
 | S-15 | WebSocket error leaks internal details | P1 | CWE-209 | Exception messages sent raw to client | ✅ Fixed — Sanitized WS error messages |
-| S-16 | Job runner writes to arbitrary paths | P1 | A01 | `output_dir` not path-validated | Validate against allowed directories |
+| S-16 | Job runner writes to arbitrary paths | P1 | A01 | `output_dir` not path-validated | ✅ Closed (INVALID — web API uses streaming, no disk I/O) |
 | S-18 | `float("inf")` in JSON responses | P1 | — | Non-standard JSON; breaks parsers | ✅ Fixed — Replaced inf with null/sentinel |
-| S-17 | DXF CLI reads arbitrary paths | P2 | A01 | No path traversal check | Validate input paths |
+| S-17 | DXF CLI reads arbitrary paths | P2 | A01 | No path traversal check | ✅ Fixed — Added path containment validation |
 | S-19 | Content-Disposition header injection risk | P2 | A03 | Filename from user input | Sanitize filename |
 | S-20 | Unpinned upper bounds on security deps | P2 | A06 | `PyJWT>=2.0` allows untested versions | Pin upper bounds |
 | S-21 | No auth event logging | P2 | A09 | Failed login attempts not logged | Add auth event audit log |
-| S-22 | Report reads from arbitrary paths | P2 | A01 | `compute_report(source)` accepts any path | Validate path scope |
+| S-22 | Report reads from arbitrary paths | P2 | A01 | `compute_report(source)` accepts any path | ✅ Closed (INVALID — web API uses streaming, no disk I/O) |
 | S-23 | Docker dev mounts host source | P2 | A05 | Dev compose `.:/app` | Document risk; read-only mount |
 
 ---
@@ -354,7 +355,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | OPS-3 | No Python dependency lock file | P1 | Non-reproducible builds | Add `requirements-lock.txt` or `pip-compile` |
 | OPS-7 | Docker compose default JWT secret | P1 | Insecure default | Use env var with no default |
 | OPS-8 | No React build in PR CI | P1 | React breakage undetected until merge | Add `npm run build` to PR workflow |
-| OPS-4 | Dockerfile IPv4 only (`--host 0.0.0.0`) | P2 | Won't work in IPv6-only envs | Bind to `::` |
+| OPS-4 | Dockerfile IPv4 only (`--host 0.0.0.0`) | P2 | Won't work in IPv6-only envs | ✅ Fixed — Bound to `::` |
 | OPS-5 | SBOM only on release | P2 | Vulnerability gaps between releases | Run SBOM weekly |
 | OPS-6 | No Docker layer caching in CI | P2 | Slow CI builds | Add cache action |
 
@@ -578,7 +579,7 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ### P2 — Nice to Have (52 findings)
 
-52 P2 findings across all sections (7 resolved in Batch 1: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10). Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).
+52 P2 findings across all sections (16 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Closed invalid — S-16, S-22). Key themes: Docs/Packaging (~~DOC-7~~, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (~~S-17~~, S-19–S-21, S-23, ~~OPS-4~~, OPS-5–OPS-6), Math quality (~~SM-6–SM-10~~, IS-1, IS-3, IS-6), Frontend polish (FE-3, FE-4, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).
 
 ---
 

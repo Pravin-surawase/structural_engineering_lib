@@ -548,6 +548,16 @@ def cmd_detail(args: argparse.Namespace) -> int:
         return 1
 
 
+def _validate_cli_path(path: Path, label: str = "path") -> Path:
+    """Resolve path and block relative path traversal outside cwd."""
+    resolved = path.resolve()
+    if not path.is_absolute():
+        cwd = Path.cwd().resolve()
+        if not str(resolved).startswith(str(cwd)):
+            raise ValueError(f"{label} must be within working directory: {path}")
+    return resolved
+
+
 def cmd_dxf(args: argparse.Namespace) -> int:
     """
     Generate DXF drawings from design results JSON.
@@ -555,7 +565,7 @@ def cmd_dxf(args: argparse.Namespace) -> int:
     Creates detailed reinforcement drawings in DXF format suitable
     for CAD software and fabrication.
     """
-    input_path = Path(args.input)
+    input_path = _validate_cli_path(Path(args.input), "input")
 
     if not input_path.exists():
         _print_error(f"Input file not found: {input_path}")
@@ -643,7 +653,7 @@ def cmd_dxf(args: argparse.Namespace) -> int:
             )
             return 1
 
-        output_path = Path(args.output)
+        output_path = _validate_cli_path(Path(args.output), "output")
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         print("Generating DXF drawings...", file=sys.stderr)

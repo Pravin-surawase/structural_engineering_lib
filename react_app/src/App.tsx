@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-ro
 import { TopBar } from './components/layout/TopBar';
 import { FloatingDock } from './components/ui/FloatingDock';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { ToastContainer } from './components/ui/Toast';
 import { useImportedBeamsStore } from './store/importedBeamsStore';
 
 // Lazy-load route components for code splitting
@@ -151,6 +152,7 @@ function App() {
               </Suspense>
             </main>
             <AppDock />
+            <ToastContainer />
           </div>
         </BrowserRouter>
       </QueryClientProvider>

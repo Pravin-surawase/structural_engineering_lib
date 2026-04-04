@@ -14,6 +14,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materialOverrides";
+import { toast } from "../components/ui/Toast";
 import type { BeamCSVRow } from '../types/csv';
 
 import { API_BASE_URL } from '../config';
@@ -266,6 +267,7 @@ export function useCSVFileImport() {
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams);
+        toast.success("Import Complete", `${data.beams.length} beams imported successfully`);
       } else {
         setError(data.message || 'No beams found in import response');
       }
@@ -273,6 +275,7 @@ export function useCSVFileImport() {
     onError: (error: Error) => {
       setImporting(false);
       setError(error.message);
+      toast.error("Import Failed", error.message);
     },
   });
 

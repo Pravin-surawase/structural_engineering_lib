@@ -10,6 +10,8 @@ References:
 
 from __future__ import annotations
 
+import math
+
 from structural_lib.codes.is456.common.constants import (
     ES_STEEL_MPA,
     FLANGE_STRESS_FACTOR,
@@ -101,10 +103,20 @@ def steel_stress_from_strain(strain: float, fy: float) -> float:
     Returns:
         Design steel stress (N/mm²), with sign matching input strain.
 
+    Raises:
+        ValueError: If fy is not positive or inputs are not finite.
+
     References:
         IS 456:2000 Fig. 23
         SP:16:1980 Table F
     """
+    if fy <= 0:
+        raise ValueError(f"fy must be positive, got {fy}")
+    if not math.isfinite(strain):
+        raise ValueError(f"strain must be finite, got {strain}")
+    if not math.isfinite(fy):
+        raise ValueError(f"fy must be finite, got {fy}")
+
     # IS 456 Fig. 23: design yield stress = 0.87 * fy
     f_yd = STRESS_RATIO * fy
 
@@ -160,10 +172,20 @@ def steel_stress_from_strain_5point(strain: float, fy: float) -> float:
     Returns:
         Design steel stress (N/mm²), with sign matching input strain.
 
+    Raises:
+        ValueError: If fy is not positive or inputs are not finite.
+
     References:
         IS 456:2000 Fig. 23
         SP:16:1980 Table F
     """
+    if fy <= 0:
+        raise ValueError(f"fy must be positive, got {fy}")
+    if not math.isfinite(strain):
+        raise ValueError(f"strain must be finite, got {strain}")
+    if not math.isfinite(fy):
+        raise ValueError(f"fy must be finite, got {fy}")
+
     if strain == 0.0:
         return 0.0
 

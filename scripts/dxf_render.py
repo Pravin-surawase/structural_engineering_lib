@@ -17,6 +17,16 @@ from pathlib import Path
 from typing import Optional
 
 
+def _validate_cli_path(path: Path, label: str = "path") -> Path:
+    """Resolve path and block relative path traversal outside cwd."""
+    resolved = path.resolve()
+    if not path.is_absolute():
+        cwd = Path.cwd().resolve()
+        if not str(resolved).startswith(str(cwd)):
+            raise ValueError(f"{label} must be within working directory: {path}")
+    return resolved
+
+
 def _resolve_output_path(output: str, fmt: Optional[str]) -> Path:
     path = Path(output)
     suffix = path.suffix.lower().lstrip(".")
@@ -112,9 +122,12 @@ def main() -> int:
 
     args = parser.parse_args()
     try:
-        output_path = _resolve_output_path(args.output, args.format)
+        input_path = _validate_cli_path(Path(args.input), "input")
+        output_path = _validate_cli_path(
+            _resolve_output_path(args.output, args.format), "output"
+        )
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        render_dxf(Path(args.input), output_path, dpi=args.dpi, pad_mm=args.pad_mm)
+        render_dxf(input_path, output_path, dpi=args.dpi, pad_mm=args.pad_mm)
     except Exception as exc:
         print(f"[ERROR] {exc}", file=sys.stderr)
         return 2

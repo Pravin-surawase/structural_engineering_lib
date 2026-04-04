@@ -8,6 +8,14 @@ All notable changes to this project will be documented in this file.
 
 Complete column design system (IS 456 Cl 25–39, IS 13920 Cl 7), footing design foundation (Cl 31.6, 34), IS 456 beam restructure, agent infrastructure maturity.
 
+### Highlights
+
+- **Complete column design** — 14 IS 456 column functions covering axial capacity, uniaxial/biaxial bending, P-M interaction curves, slenderness effects, and IS 13920 ductile detailing for seismic zones
+- **Footing design** — Isolated footing calculations for bearing capacity, punching shear, one-way shear, and flexural reinforcement per IS 456 Cl 31.6 & 34
+- **IS 456 beam restructure** — Beam modules reorganized into a clean subpackage with ductile detailing separated into IS 13920
+- **59 REST + WebSocket endpoints** — Full API coverage for all structural calculations including 13 new column design endpoints
+- **3,400+ tests passing** — 515+ column-specific tests ensuring code-level compliance with IS 456 and SP:16
+
 ### Added
 - **Column Design (IS 456)** — `classify_column` (Cl 25.1.2), `min_eccentricity` (Cl 25.4), `short_axial_capacity` (Cl 39.3) with ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 constants, 3 API wrappers, FastAPI column router with 3 POST endpoints, 75 tests (TASK-630/631/632)
 - **TASK-633:** Short column uniaxial bending (Cl 39.5) — design_short_column_uniaxial() + 57 tests + API + FastAPI endpoint
