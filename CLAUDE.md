@@ -61,7 +61,7 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (13 routers)
-grep "^def " Python/structural_lib/services/api.py | head -20   # 36 public + 7 private helpers
+grep "^def " Python/structural_lib/services/api.py | head -20   # 37 public + 7 private helpers
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
 ```
 
