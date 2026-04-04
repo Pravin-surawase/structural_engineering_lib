@@ -789,6 +789,57 @@ E_FOOTING_008 = DesignError(
     recovery="Increase reinforcement to at least 0.12% of b\u00d7d for HYSD (Fe 415/500) bars.",
 )
 
+# Ductile Column Errors --- IS 13920:2016 Cl. 7
+E_DUCTILE_COL_001 = DesignError(
+    code="E_DUCTILE_COL_001",
+    severity=Severity.ERROR,
+    message="Column width < 300 mm",
+    field="b_mm",
+    hint="Increase column width to \u2265 300 mm for seismic resistance.",
+    clause="IS 13920 Cl. 7.1.2",
+    recovery="Increase column minimum dimension to \u2265 300 mm per IS 13920 Cl 7.1.2.",
+)
+
+E_DUCTILE_COL_002 = DesignError(
+    code="E_DUCTILE_COL_002",
+    severity=Severity.ERROR,
+    message="Column aspect ratio b/D < 0.4",
+    field="b_mm",
+    hint="Adjust column dimensions so that shorter/longer \u2265 0.4.",
+    clause="IS 13920 Cl. 7.1.3",
+    recovery="Adjust column dimensions so shorter/longer dimension ratio \u2265 0.4 per IS 13920 Cl 7.1.3.",
+)
+
+E_DUCTILE_COL_003 = DesignError(
+    code="E_DUCTILE_COL_003",
+    severity=Severity.ERROR,
+    message="Longitudinal steel below seismic minimum 0.8%",
+    field="pt",
+    hint="Increase longitudinal reinforcement to \u2265 0.8% of Ag.",
+    clause="IS 13920 Cl. 7.2.1",
+    recovery="Increase longitudinal steel to \u2265 0.8% of gross area per IS 13920 Cl 7.2.1.",
+)
+
+E_DUCTILE_COL_004 = DesignError(
+    code="E_DUCTILE_COL_004",
+    severity=Severity.ERROR,
+    message="Longitudinal steel exceeds seismic maximum 4%",
+    field="pt",
+    hint="Reduce longitudinal reinforcement to \u2264 4% of Ag.",
+    clause="IS 13920 Cl. 7.2.1",
+    recovery="Reduce longitudinal steel to \u2264 4% of gross area per IS 13920 Cl 7.2.1.",
+)
+
+E_DUCTILE_COL_005 = DesignError(
+    code="E_DUCTILE_COL_005",
+    severity=Severity.ERROR,
+    message="Confining reinforcement area insufficient",
+    field="Ash",
+    hint="Increase confining hoop bar diameter or reduce spacing.",
+    clause="IS 13920 Cl. 7.4.7",
+    recovery="Increase confining hoop area Ash to meet IS 13920 Cl 7.4.7/7.4.8 requirements.",
+)
+
 
 def make_error(
     code: str,

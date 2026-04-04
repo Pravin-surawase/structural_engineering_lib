@@ -11,7 +11,7 @@ from unittest.mock import MagicMock
 
 import pytest
 from fastapi import HTTPException
-from jose import jwt
+import jwt
 
 from fastapi_app.auth import (
     ALGORITHM,

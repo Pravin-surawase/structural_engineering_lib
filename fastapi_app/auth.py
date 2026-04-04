@@ -29,7 +29,8 @@ from typing import Any
 
 from fastapi import Depends, HTTPException, Query, Request, Response, WebSocket, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from jose import JWTError, jwt
+import jwt
+from jwt.exceptions import PyJWTError
 from pydantic import BaseModel
 
 # =============================================================================
@@ -143,7 +144,7 @@ def decode_token(token: str) -> TokenData:
             scopes=payload.get("scopes", []),
             exp=datetime.fromtimestamp(payload.get("exp", 0), tz=timezone.utc),
         )
-    except JWTError:
+    except PyJWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired authentication token",

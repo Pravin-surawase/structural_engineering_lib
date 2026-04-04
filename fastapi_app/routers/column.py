@@ -5,6 +5,8 @@ Endpoints for column classification, eccentricity, and axial capacity
 calculations per IS 456:2000.
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException, status
 
 from fastapi_app.models.column import (
@@ -20,6 +22,7 @@ from fastapi_app.models.column import (
     ColumnDesignResponse,
     ColumnDetailingRequest,
     ColumnDetailingResponse,
+    ColumnDuctileDetailingRequest,
     ColumnEccentricityRequest,
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
@@ -34,6 +37,8 @@ from fastapi_app.models.column import (
     PMInteractionResponse,
     PMPoint,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/design/column",
@@ -86,10 +91,11 @@ async def calculate_effective_length(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column effective-length calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Effective length calculation failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -129,10 +135,11 @@ async def classify_column(request: ColumnClassifyRequest) -> ColumnClassifyRespo
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column classification failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Column classification failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -170,10 +177,11 @@ async def column_eccentricity(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column eccentricity calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Eccentricity calculation failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -228,10 +236,11 @@ async def column_axial_capacity(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column axial capacity design failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Column axial design failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -293,10 +302,11 @@ async def design_column_uniaxial(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column uniaxial design failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Column uniaxial design failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -354,10 +364,11 @@ async def pm_interaction_curve(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column P-M interaction curve generation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"P-M interaction curve generation failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -426,10 +437,11 @@ async def biaxial_check(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column biaxial bending check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Biaxial bending check failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -466,10 +478,11 @@ async def additional_moment(request: AdditionalMomentRequest):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column additional moment calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Additional moment calculation failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -519,10 +532,11 @@ async def design_long_column(request: LongColumnRequest) -> LongColumnResponse:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column long (slender) column design failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Long column design failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -562,10 +576,11 @@ async def helical_check(request: HelicalCheckRequest) -> HelicalCheckResponse:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column helical reinforcement check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Helical check failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -615,10 +630,41 @@ async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column unified design failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Column design failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
+        )
+
+
+@router.post(
+    "/ductile-detailing",
+    summary="IS 13920 Column Ductile Detailing Check",
+    description=(
+        "Check column ductile detailing per IS 13920:2016 Cl 7. "
+        "Validates geometry, longitudinal steel limits, special confining "
+        "reinforcement spacing, confinement zone length, and confining bar area."
+    ),
+)
+async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
+    """Check column ductile detailing per IS 13920:2016 Cl 7."""
+    try:
+        from structural_lib import check_column_ductility_is13920
+
+        result = check_column_ductility_is13920(**request.model_dump())
+        return result
+
+    except (ValueError, TypeError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception:
+        logger.exception("Column ductile detailing check failed")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal calculation error. Please check inputs and try again.",
         )
 
 
@@ -662,8 +708,9 @@ async def column_detailing(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Column detailing check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Column detailing check failed: {e}",
+            detail="Internal calculation error. Please check inputs and try again.",
         )

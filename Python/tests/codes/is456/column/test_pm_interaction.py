@@ -63,14 +63,22 @@ class TestPMInteractionCurveUnit:
             result.Pu_0_kN = 999.0  # type: ignore[misc]
 
     def test_num_points_default(self):
-        """Default n_points=50 gives 51 envelope points."""
+        """Default n_points=50 gives 51 or 52 envelope points.
+
+        The extra point occurs when a (Pu_0, 0) cap point is appended
+        because no swept point naturally coincides with Pu_0.
+        """
         result = pm_interaction_curve(**STD)
-        assert len(result.points) == 51
+        assert len(result.points) in (51, 52)
 
     def test_num_points_custom(self):
-        """Custom n_points gives n_points+1 envelope points."""
+        """Custom n_points gives n_points+1 or n_points+2 points.
+
+        +1 from the Pu_0 cap point appended when the last swept point
+        doesn't coincide with (Pu_0, 0).
+        """
         result = pm_interaction_curve(**STD, n_points=30)
-        assert len(result.points) == 31
+        assert len(result.points) in (31, 32)
 
     def test_pu_0_positive(self):
         """Pu_0_kN (pure axial capacity) > 0."""
@@ -104,7 +112,7 @@ class TestPMInteractionCurveUnit:
         assert "Pu_bal_kN" in d
         assert "warnings" in d
         assert isinstance(d["points"], list)
-        assert len(d["points"]) == 51
+        assert len(d["points"]) in (51, 52)
 
     def test_to_dict_point_structure(self):
         """Each point in to_dict has Pu_kN and Mu_kNm keys."""
@@ -191,7 +199,7 @@ class TestPMInteractionCurveEdge:
     def test_coarse_points(self):
         """n_points=10 (coarse) — still valid curve."""
         result = pm_interaction_curve(**STD, n_points=10)
-        assert len(result.points) == 11
+        assert len(result.points) in (11, 12)
         assert result.Pu_0_kN > 0.0
         assert result.Mu_0_kNm > 0.0
 
@@ -199,7 +207,7 @@ class TestPMInteractionCurveEdge:
         """n_points=200 (fine) — more points, Pu_0 identical (analytical)."""
         result_coarse = pm_interaction_curve(**STD, n_points=20)
         result_fine = pm_interaction_curve(**STD, n_points=200)
-        assert len(result_fine.points) == 201
+        assert len(result_fine.points) in (201, 202)
         # Pu_0 is computed analytically, so must be identical
         assert result_fine.Pu_0_kN == pytest.approx(result_coarse.Pu_0_kN, rel=1e-10)
 
@@ -422,11 +430,16 @@ class TestPMInteractionCurveConsistency:
         assert result.Mu_bal_kNm == pytest.approx(max_moment, rel=0.15)
 
     def test_envelope_point_matches_balanced(self):
-        """Direct _pm_envelope_point call matches result.Pu_bal, Mu_bal."""
+        """Direct _pm_envelope_point call matches result.Pu_bal, Mu_bal.
+
+        IS 456 Cl 38.1: xu_bal uses eps_sy = fy/(1.15*Es) + 0.002 for HYSD bars.
+        """
         result = pm_interaction_curve(**STD, n_points=50)
         d_eff = 500.0 - 50.0
         e_s = 2e5
-        xu_bal = d_eff * 0.0035 / (0.0035 + 415.0 / (1.15 * e_s))
+        # IS 456 Cl 38.1: HYSD bars (fy > 250) include 0.002 inelastic strain
+        eps_sy = 415.0 / (1.15 * e_s) + 0.002
+        xu_bal = d_eff * 0.0035 / (0.0035 + eps_sy)
         pu, mu = _pm_envelope_point(
             xu_bal,
             300.0,
@@ -477,9 +490,13 @@ class TestPMInteractionCurveHypothesis:
     )
     @settings(max_examples=15, deadline=None)
     def test_num_points_matches(self, n):
-        """len(points) == n_points + 1 for any valid n_points."""
+        """len(points) in (n+1, n+2) for any valid n_points.
+
+        n+2 when the Pu_0 cap point is appended because the last swept
+        point doesn't naturally coincide with (Pu_0, 0).
+        """
         result = pm_interaction_curve(**STD, n_points=n)
-        assert len(result.points) == n + 1
+        assert len(result.points) in (n + 1, n + 2)
 
     @given(
         fck=st.sampled_from([20.0, 25.0, 30.0, 40.0]),
@@ -497,3 +514,165 @@ class TestPMInteractionCurveHypothesis:
             d_prime_mm=50.0,
         )
         assert result.Pu_bal_kN < result.Pu_0_kN
+
+
+# =============================================================================
+# 7. New Tests — Math Fix Validation
+# =============================================================================
+
+
+class TestPMInteractionMathFixes:
+    """Tests validating the corrected math formulas.
+
+    These tests verify:
+    1. xu=D continuity (SP:16 Table I matches standard formula at boundary)
+    2. xu_bal includes 0.002 inelastic strain for HYSD bars (IS 456 Cl 38.1)
+    3. Pu_0 cap: no envelope point exceeds Pu_0 (IS 456 Cl 39.3)
+    """
+
+    def test_xu_d_continuity(self):
+        """xu=D boundary: standard and SP:16 formulas give continuous results.
+
+        At xu=D, the standard formula (xu <= D) and SP:16 Table I (xu > D)
+        should produce Pu and Mu values within 1% of each other.
+        IS 456 Cl 38.1 + SP:16 Table I continuity requirement.
+        """
+        D = 500.0
+        delta = 0.01  # 0.01 mm offset from boundary
+        Asc_half = 1500.0  # half of 3000
+
+        pu_below, mu_below = _pm_envelope_point(
+            xu=D - delta,
+            b_mm=300.0,
+            D_mm=D,
+            fck=25.0,
+            fy=415.0,
+            Asc_half_mm2=Asc_half,
+            d_prime_mm=50.0,
+        )
+        pu_above, mu_above = _pm_envelope_point(
+            xu=D + delta,
+            b_mm=300.0,
+            D_mm=D,
+            fck=25.0,
+            fy=415.0,
+            Asc_half_mm2=Asc_half,
+            d_prime_mm=50.0,
+        )
+
+        # Pu and Mu should be within 1% at the xu=D boundary
+        assert pu_below == pytest.approx(
+            pu_above, rel=0.01
+        ), f"Pu discontinuity at xu=D: below={pu_below:.2f}, above={pu_above:.2f}"
+        assert abs(mu_below) == pytest.approx(
+            abs(mu_above), rel=0.01
+        ), f"Mu discontinuity at xu=D: below={mu_below:.2f}, above={mu_above:.2f}"
+
+    def test_xu_bal_fe415_matches_is456(self):
+        """xu_bal/d for Fe 415 ≈ 0.48 per IS 456 Cl 38.1.
+
+        IS 456 Cl 38.1: For HYSD bars, yield strain includes 0.002
+        inelastic component: eps_sy = fy/(1.15*Es) + 0.002
+        For Fe 415: eps_sy = 415/(1.15*200000) + 0.002 = 0.003804
+        xu_bal/d = 0.0035 / (0.0035 + 0.003804) = 0.479
+        """
+        Es = 2e5
+        d_eff = 450.0  # D=500, d'=50
+        eps_sy = 415.0 / (1.15 * Es) + 0.002  # HYSD inelastic strain
+        xu_bal = d_eff * 0.0035 / (0.0035 + eps_sy)
+        xu_bal_ratio = xu_bal / d_eff
+
+        # IS 456 Table: xu_bal/d ≈ 0.48 for Fe 415 (with 0.002 inelastic)
+        assert xu_bal_ratio == pytest.approx(
+            0.48, abs=0.01
+        ), f"xu_bal/d = {xu_bal_ratio:.4f}, expected ~0.48 for Fe 415"
+
+        # Verify via pm_interaction_curve balanced point
+        result = pm_interaction_curve(**STD)
+        # Pu_bal should correspond to xu_bal ≈ 0.48*d
+        assert result.Pu_bal_kN > 0
+        assert result.Mu_bal_kNm > 0
+        # The balanced point from the curve should match direct calculation
+        pu_direct, mu_direct = _pm_envelope_point(
+            xu_bal,
+            300.0,
+            500.0,
+            25.0,
+            415.0,
+            1500.0,
+            50.0,
+        )
+        assert pu_direct == pytest.approx(result.Pu_bal_kN, rel=1e-6)
+
+    def test_xu_bal_fe250_no_inelastic_strain(self):
+        """xu_bal for Fe 250 (mild steel) has NO 0.002 inelastic component.
+
+        IS 456 Cl 38.1: Only HYSD bars (fy > 250) include inelastic strain.
+        For Fe 250: eps_sy = 250/(1.15*200000) = 0.001087
+        xu_bal/d = 0.0035 / (0.0035 + 0.001087) = 0.763
+        """
+        result = pm_interaction_curve(
+            b_mm=300.0,
+            D_mm=500.0,
+            fck=25.0,
+            fy=250.0,
+            Asc_mm2=3000.0,
+            d_prime_mm=50.0,
+        )
+        d_eff = 450.0
+        Es = 2e5
+        eps_sy_fe250 = 250.0 / (1.15 * Es)  # No 0.002 for mild steel
+        xu_bal_expected = d_eff * 0.0035 / (0.0035 + eps_sy_fe250)
+
+        pu_direct, _ = _pm_envelope_point(
+            xu_bal_expected,
+            300.0,
+            500.0,
+            25.0,
+            250.0,
+            1500.0,
+            50.0,
+        )
+        assert pu_direct == pytest.approx(result.Pu_bal_kN, rel=1e-6)
+
+    def test_pu_0_cap_no_point_exceeds_pu_0(self):
+        """No envelope point should have Pu > Pu_0.
+
+        IS 456 Cl 39.3: The maximum axial load on a compression member
+        is limited by Pu_0 = 0.4*fck*Ac + 0.67*fy*Asc.
+        Points exceeding this are capped to (Pu_0, 0).
+        """
+        result = pm_interaction_curve(**STD, n_points=100)
+        for pu, _mu in result.points:
+            assert (
+                pu <= result.Pu_0_kN + 1e-6
+            ), f"Envelope point Pu={pu:.2f} exceeds Pu_0={result.Pu_0_kN:.2f}"
+
+    def test_pu_0_cap_last_point_is_pu_0(self):
+        """Last envelope point should be (Pu_0, 0) — pure compression.
+
+        The Pu_0 cap ensures the envelope terminates at the
+        analytically computed Cl 39.3 pure axial capacity.
+        """
+        result = pm_interaction_curve(**STD)
+        last_pu, last_mu = result.points[-1]
+        assert last_pu == pytest.approx(result.Pu_0_kN, rel=1e-6)
+        assert last_mu == pytest.approx(0.0, abs=1e-6)
+
+    @given(
+        fck=st.sampled_from([20.0, 25.0, 30.0, 40.0]),
+        fy=st.sampled_from([250.0, 415.0, 500.0]),
+    )
+    @settings(max_examples=20, deadline=None)
+    def test_pu_0_cap_holds_for_all_materials(self, fck, fy):
+        """Property: no envelope point exceeds Pu_0 for any material combo."""
+        result = pm_interaction_curve(
+            b_mm=300.0,
+            D_mm=500.0,
+            fck=fck,
+            fy=fy,
+            Asc_mm2=3000.0,
+            d_prime_mm=50.0,
+        )
+        for pu, _mu in result.points:
+            assert pu <= result.Pu_0_kN + 1e-6

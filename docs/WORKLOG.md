@@ -34,6 +34,9 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-04 | TASK-681 | Migrated python-jose → PyJWT in auth.py, tests, CI | pending |
+| 2026-04-04 | TASK-646 | IS 13920 Cl 7 column ductile detailing — completes Phase 2 Column (14/14) | pending |
+| 2026-04-04 | maintenance | React test coverage: 5 component test files, 26 tests | pending |
 | 2026-04-04 | TASK-647 | fix: should_use_pr.sh now detects fastapi_app + react_app + Docker as production code | `37d9ed77` |
 | 2026-04-04 | TASK-647 | fix: ai_commit.sh removes --force suggestion from PR-blocked message, suggests --branch instead | `37d9ed77` |
 | 2026-04-04 | TASK-647 | fix: pyproject.toml replaces 11 individual IS 456 per-file-ignores with 2 glob patterns + 9 new ignore-names | `37d9ed77` |
@@ -181,3 +184,8 @@ tags: []
 | 2026-04-03 | TASK-671 | Fix 4: Failure story enhancement — ast_required_mm2 field in FailureScenario, redesign narrative in research_design_companion.py | feat |
 | 2026-04-03 | TASK-671 | Updated FastAPI models: stirrup_dia_mm, main_bar_dia_mm, include_serviceability, RebarLayerConfig, DeflectionCheckResult, CrackWidthCheckResult | feat |
 | 2026-04-03 | TASK-671 | Tests: 22 new tests, 4 fixed (effective depth assertions), 4193 Python + 180 FastAPI all passing | test |
+| 2026-04-04 | TASK-690 | fix(column): SP:16 Table I continuity (C1/C2 at k=1.0), Cl 38.1 modified strain for xu>D, xu_bal with 0.002 inelastic strain, Pu_0 envelope cap | — |
+| 2026-04-04 | TASK-691 | fix(column): Cl 25.4 e_min enforcement in biaxial_bending_check for both axes | — |
+| 2026-04-04 | TASK-692 | fix(security): Sanitize 13 exception handlers in column.py router (CWE-209) | — |
+| 2026-04-04 | TASK-690 | fix(column): Add design_short_column_uniaxial, pm_interaction_curve, biaxial_bending_check to __all__ exports | — |
+| 2026-04-04 | TASK-690 | test(column): 7 updated + 6 new tests, 4258 total passing (0 failures) | — |
