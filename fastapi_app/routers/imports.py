@@ -526,6 +526,15 @@ async def batch_design(
     Uses structural_lib.api.design_beam_is456 for each beam.
     Returns aggregated results.
     """
+    from fastapi_app.config import get_settings
+
+    settings = get_settings()
+    if len(beams) > settings.max_batch_size:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Batch size {len(beams)} exceeds maximum of {settings.max_batch_size}. Send at most {settings.max_batch_size} beams per request.",
+        )
+
     try:
         from structural_lib.services.api import design_beam_is456
 
@@ -710,7 +719,7 @@ async def get_sample_data() -> SampleDataResponse:
         )
 
     # Read forces CSV
-    forces_data: dict[str, dict[str, float]] = {}
+    forces_data: dict[str, dict[str, str | float]] = {}
     try:
         with open(forces_path, encoding="utf-8") as f:
             reader = csv.DictReader(f)

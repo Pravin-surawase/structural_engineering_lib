@@ -1006,7 +1006,7 @@ export function Viewport3D({ mode = 'design', overrideGeometry = null, forceMode
           </Suspense>
         </Canvas>
       </Viewport3DErrorBoundary>
-      <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/50 rounded text-[11px] text-[#888] pointer-events-none">
+      <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/50 rounded text-[11px] text-zinc-400 pointer-events-none">
         <span>
           {effectiveMode === 'building'
             ? `Building Frame (${beams.length} beams) • Click to select`

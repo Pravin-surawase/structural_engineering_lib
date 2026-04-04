@@ -69,7 +69,7 @@ export function CSVImportPanel() {
 
   return (
     <div className="p-3 flex flex-col gap-3 h-full overflow-y-auto bg-[#1e1e1e] text-[#e0e0e0]">
-      <h3 className="m-0 text-sm text-[#888] uppercase tracking-wide">CSV Import</h3>
+      <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">CSV Import</h3>
 
       {/* Drop zone */}
       <div
@@ -80,8 +80,8 @@ export function CSVImportPanel() {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <span className="text-[#888] text-[13px]">Drop CSV here</span>
-        <span className="text-[11px] text-[#666]">or</span>
+        <span className="text-zinc-400 text-[13px]">Drop CSV here</span>
+        <span className="text-[11px] text-zinc-400">or</span>
         <label className="text-[#0078d4] cursor-pointer text-[13px] hover:underline">
           Browse
           <input type="file" accept=".csv" onChange={handleFileInput} className="hidden" />
@@ -97,7 +97,7 @@ export function CSVImportPanel() {
       {/* Imported beams list */}
       {beams.length > 0 && (
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between items-center text-xs text-[#888]">
+          <div className="flex justify-between items-center text-xs text-zinc-400">
             <span>{beams.length} beams imported</span>
             <button
               className="bg-transparent border-none text-red-500 cursor-pointer text-[11px] px-1.5 py-0.5 hover:underline"
@@ -118,13 +118,13 @@ export function CSVImportPanel() {
                 onClick={() => selectBeam(beam.id)}
               >
                 <span className="font-medium text-white">{beam.id}</span>
-                <span className="text-[#888]">
+                <span className="text-zinc-400">
                   {beam.b}×{beam.D}mm
                 </span>
               </div>
             ))}
             {beams.length > 20 && (
-              <div className="text-center text-[11px] text-[#666] p-1">+{beams.length - 20} more</div>
+              <div className="text-center text-[11px] text-zinc-400 p-1">+{beams.length - 20} more</div>
             )}
           </div>
         </div>

@@ -91,7 +91,7 @@ export default function BatchDesignPage() {
   if (beams.length === 0) {
     return (
       <div className="h-screen pt-14 flex flex-col items-center justify-center bg-zinc-950 text-white/60">
-        <BarChart3 className="w-12 h-12 mb-4 text-white/20" />
+        <BarChart3 className="w-12 h-12 mb-4 text-white/20" aria-hidden="true" />
         <p className="text-lg mb-2">No beams imported</p>
         <p className="text-sm mb-6">Import beams from CSV first, then run batch design.</p>
         <button
@@ -117,7 +117,7 @@ export default function BatchDesignPage() {
           </button>
           <div>
             <h1 className="text-lg font-semibold">Batch Design</h1>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-zinc-400">
               Design {selectedBeamIds.size} of {beams.length} beams per IS 456:2000
             </p>
           </div>
@@ -203,7 +203,7 @@ export default function BatchDesignPage() {
               </div>
             )}
             {duration != null && (
-              <span className="text-white/40">
+              <span className="text-zinc-400">
                 Completed in {duration.toFixed(1)}s
               </span>
             )}
@@ -272,14 +272,14 @@ function BeamSelectionTable({
         >
           {allSelected ? 'Deselect All' : 'Select All'}
         </button>
-        <span className="text-xs text-white/40">
+        <span className="text-xs text-zinc-400">
           {selectedIds.size} of {beams.length} selected
         </span>
       </div>
 
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-left text-white/40 border-b border-white/8">
+          <tr className="text-left text-zinc-400 border-b border-white/8">
             <th className="py-2 px-3 w-10"></th>
             <th className="py-2 px-3">Beam ID</th>
             <th className="py-2 px-3">Story</th>
@@ -329,7 +329,7 @@ function BeamSelectionTable({
 function ResultsTable({ results }: { results: BatchResult[] }) {
   if (results.length === 0) {
     return (
-      <div className="flex items-center justify-center h-32 text-white/40 text-sm">
+      <div className="flex items-center justify-center h-32 text-zinc-400 text-sm">
         <Loader2 className="w-4 h-4 animate-spin mr-2" />
         Waiting for results...
       </div>
@@ -339,7 +339,7 @@ function ResultsTable({ results }: { results: BatchResult[] }) {
   return (
     <table className="w-full text-sm">
       <thead>
-        <tr className="text-left text-white/40 border-b border-white/8">
+        <tr className="text-left text-zinc-400 border-b border-white/8">
           <th className="py-2 px-3 w-10">Status</th>
           <th className="py-2 px-3">Beam ID</th>
           <th className="py-2 px-3 text-right">Ast Required (mm²)</th>
@@ -379,7 +379,7 @@ function ResultsTable({ results }: { results: BatchResult[] }) {
 }
 
 function UtilizationBadge({ value }: { value?: number }) {
-  if (value == null) return <span className="text-white/30">—</span>;
+  if (value == null) return <span className="text-zinc-500">—</span>;
   const pct = (value * 100).toFixed(0);
   const color =
     value < 0.7 ? 'text-green-400' :

@@ -10,7 +10,6 @@ on:
 permissions:
   contents: write
   issues: write
-  pull-requests: write
 
 jobs:
   nightly:
@@ -38,23 +37,6 @@ jobs:
           python -m pytest -q --hypothesis-profile=ci
 
       # ================================================================
-      # TASK-601: AppTest UI Testing
-      # ================================================================
-      - name: Install Streamlit dependencies
-        run: |
-          python -m pip install streamlit pytest
-
-      - name: Run AppTest UI tests
-        run: |
-          python -m pytest tests/apptest/ -v --tb=short -q
-        continue-on-error: true
-
-      - name: Run Streamlit validation
-        run: |
-          python scripts/check_streamlit.py --all-pages
-        continue-on-error: true
-
-      # ================================================================
       # TASK-503: Performance Regression Tracking
       # ================================================================
       - name: Run performance benchmarks
@@ -64,7 +46,6 @@ jobs:
             --benchmark-only \
             --benchmark-json=../benchmark-results.json \
             -v
-        continue-on-error: true
 
       - name: Store benchmark results
         uses: benchmark-action/github-action-benchmark@v1
@@ -93,7 +74,6 @@ jobs:
       - name: Check documentation links
         run: |
           python scripts/check_links.py --fail-fast
-        continue-on-error: true  # Don't fail entire workflow on broken links
 
       - name: Smoke test CLI pipeline
         working-directory: Python

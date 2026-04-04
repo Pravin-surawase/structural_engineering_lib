@@ -39,6 +39,12 @@ class Settings(BaseSettings):
         "Accept",
     ]
 
+    # Authentication
+    auth_enabled: bool = False
+
+    # Batch Processing
+    max_batch_size: int = 500
+
     # Logging
     log_level: str = "INFO"
 

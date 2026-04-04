@@ -238,10 +238,20 @@ def _validate_plausibility(
     The goal is to catch Pa-vs-MPa and μm-vs-mm mistakes, not to
     enforce IS 456 material limits.
     """
+    if fck_nmm2 is not None and fck_nmm2 <= 0:
+        raise ValueError(
+            f"fck_nmm2={fck_nmm2} must be positive. "
+            "Concrete strength cannot be zero or negative."
+        )
     if fck_nmm2 is not None and fck_nmm2 > 120:
         raise ValueError(
             f"fck_nmm2={fck_nmm2} seems too large. "
             "Expected N/mm² (e.g., 25), not Pa or kPa."
+        )
+    if fy_nmm2 is not None and fy_nmm2 <= 0:
+        raise ValueError(
+            f"fy_nmm2={fy_nmm2} must be positive. "
+            "Steel strength cannot be zero or negative."
         )
     if fy_nmm2 is not None and fy_nmm2 > 700:
         raise ValueError(

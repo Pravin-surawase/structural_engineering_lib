@@ -74,7 +74,7 @@ export function TopBar() {
                 className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
                   isActive
                     ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white/70 hover:bg-white/5"
+                    : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
                 }`}
               >
                 {link.label}
@@ -87,13 +87,13 @@ export function TopBar() {
         <div className="flex md:hidden items-center gap-1 text-sm">
           {breadcrumbs.map((crumb, i) => (
             <div key={crumb.path} className="flex items-center gap-1">
-              <ChevronRight className="w-3.5 h-3.5 text-white/30" />
+              <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />
               {i === breadcrumbs.length - 1 ? (
                 <span className="text-white/60">{crumb.label}</span>
               ) : (
                 <Link
                   to={crumb.path}
-                  className="text-white/40 hover:text-white/70 transition-colors"
+                  className="text-zinc-400 hover:text-zinc-200 transition-colors"
                 >
                   {crumb.label}
                 </Link>
@@ -106,7 +106,7 @@ export function TopBar() {
       {/* Right: Settings */}
       <button
         onClick={() => navigate("/settings")}
-        className="p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors"
+        className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
       >
         <Settings className="w-4.5 h-4.5" />
       </button>

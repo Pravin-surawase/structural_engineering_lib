@@ -281,6 +281,18 @@ def calculate_torsion_stirrup_area(
             details={"fy": fy, "minimum": 0, "maximum": 600},
             clause_ref="Cl. 41.4.3",
         )
+    if b1 <= 0:
+        raise DimensionError(
+            dimension_too_small("core width b1", b1, 0, "Cl. 41.4.3"),
+            details={"b1": b1, "minimum": 0},
+            clause_ref="Cl. 41.4.3",
+        )
+    if d1 <= 0:
+        raise DimensionError(
+            dimension_too_small("core depth d1", d1, 0, "Cl. 41.4.3"),
+            details={"d1": d1, "minimum": 0},
+            clause_ref="Cl. 41.4.3",
+        )
 
     # Torsion component: Asv/sv = Tu / (b1 × d1 × 0.87 × fy)
     # Tu in kN·m, convert to N·mm
@@ -340,6 +352,18 @@ def calculate_longitudinal_torsion_steel(
                 "steel yield strength fy", fy, 0, 600, "Cl. 41.4.2"
             ),
             details={"fy": fy, "minimum": 0, "maximum": 600},
+            clause_ref="Cl. 41.4.2",
+        )
+    if b1 <= 0:
+        raise DimensionError(
+            dimension_too_small("core width b1", b1, 0, "Cl. 41.4.2"),
+            details={"b1": b1, "minimum": 0},
+            clause_ref="Cl. 41.4.2",
+        )
+    if d1 <= 0:
+        raise DimensionError(
+            dimension_too_small("core depth d1", d1, 0, "Cl. 41.4.2"),
+            details={"d1": d1, "minimum": 0},
             clause_ref="Cl. 41.4.2",
         )
 

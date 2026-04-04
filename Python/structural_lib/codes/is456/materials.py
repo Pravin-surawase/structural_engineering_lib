@@ -17,11 +17,11 @@ def get_xu_max_d(fy: float) -> float:
     """
     if fy <= 0:
         raise ValueError(f"fy must be positive, got {fy}")
-    if fy == 250:
+    if abs(fy - 250) < 0.5:
         return 0.53
-    elif fy == 415:
+    elif abs(fy - 415) < 0.5:
         return 0.48
-    elif fy == 500:
+    elif abs(fy - 500) < 0.5:
         return 0.46
     else:
         # For other grades, use formula: 700 / (1100 + 0.87*fy)
@@ -32,10 +32,10 @@ def get_ec(fck: float) -> float:
     """Modulus of Elasticity of Concrete (IS 456 Cl. 6.2.3.1)
 
     Raises:
-        ValueError: If fck < 0
+        ValueError: If fck <= 0
     """
-    if fck < 0:
-        raise ValueError(f"fck must be non-negative, got {fck}")
+    if fck <= 0:
+        raise ValueError(f"fck must be positive (> 0), got {fck}")
     return 5000 * math.sqrt(fck)
 
 
@@ -43,10 +43,10 @@ def get_fcr(fck: float) -> float:
     """Flexural Strength of Concrete (IS 456 Cl. 6.2.2)
 
     Raises:
-        ValueError: If fck < 0
+        ValueError: If fck <= 0
     """
-    if fck < 0:
-        raise ValueError(f"fck must be non-negative, got {fck}")
+    if fck <= 0:
+        raise ValueError(f"fck must be positive (> 0), got {fck}")
     return 0.7 * math.sqrt(fck)
 
 
@@ -58,7 +58,7 @@ def get_steel_stress(strain: float, fy: float) -> float:
     """
     es = 200000.0  # Modulus of Elasticity (N/mm^2)
 
-    if fy == 250:
+    if abs(fy - 250) < 0.5:
         yield_strain = 0.87 * fy / es
         if strain >= yield_strain:
             return 0.87 * fy
@@ -71,7 +71,7 @@ def get_steel_stress(strain: float, fy: float) -> float:
     # Data from SP:16 Table A
 
     points = []
-    if fy == 415:
+    if abs(fy - 415) < 0.5:
         points = [
             (0.00144, 288.7),
             (0.00163, 306.7),
@@ -79,7 +79,7 @@ def get_steel_stress(strain: float, fy: float) -> float:
             (0.00241, 342.8),
             (0.00380, 360.9),
         ]
-    elif fy == 500:
+    elif abs(fy - 500) < 0.5:
         points = [
             (0.00174, 347.8),
             (0.00195, 369.6),

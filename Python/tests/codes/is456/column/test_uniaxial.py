@@ -801,3 +801,50 @@ class TestUniaxialPropertyBased:
         assert result.is_safe == (
             result.utilization_ratio <= 1.0
         ), f"is_safe={result.is_safe} but utilization={result.utilization_ratio}"
+
+
+# =============================================================================
+# IS-7: Column minimum dimension warning
+# =============================================================================
+
+
+class TestColumnMinDimensionWarning:
+    """IS-7: design_short_column_uniaxial emits warning for small columns."""
+
+    def test_small_column_emits_warning(self):
+        """b_mm=150, D_mm=150 (< 200mm) should emit a UserWarning."""
+        import warnings as _w
+
+        with _w.catch_warnings(record=True) as caught:
+            _w.simplefilter("always")
+            design_short_column_uniaxial(
+                Pu_kN=200.0,
+                Mu_kNm=10.0,
+                b_mm=150.0,
+                D_mm=150.0,
+                le_mm=2000.0,
+                fck=25.0,
+                fy=415.0,
+                Asc_mm2=900.0,
+                d_prime_mm=40.0,
+            )
+        warn_msgs = [str(w.message) for w in caught]
+        assert any(
+            "below recommended minimum 200mm" in msg for msg in warn_msgs
+        ), f"Expected min-dimension warning for b=150, D=150, got: {warn_msgs}"
+
+    def test_normal_column_no_warning(self):
+        """b_mm=300, D_mm=300 (>= 200mm) should NOT emit min-dimension warning."""
+        import warnings as _w
+
+        with _w.catch_warnings(record=True) as caught:
+            _w.simplefilter("always")
+            design_short_column_uniaxial(
+                Pu_kN=500.0,
+                Mu_kNm=100.0,
+                **STD,
+            )
+        warn_msgs = [str(w.message) for w in caught]
+        assert not any(
+            "below recommended minimum 200mm" in msg for msg in warn_msgs
+        ), f"Unexpected min-dimension warning for b=300, D=500: {warn_msgs}"

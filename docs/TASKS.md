@@ -91,6 +91,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| AUDIT-P0 | All 5 P0 audit findings fixed (auth, CI, WCAG, batch limits, bilinear tests) | Copilot | ✅ Done |
+| AUDIT-P1 (partial) | 6 P1 audit findings fixed (SM-1/2/3, IS-5/7, FE-6) | Copilot | ✅ Done |
 | TASK-681 | Migrate python-jose → PyJWT in auth.py | Copilot | ✅ Done |
 | TASK-690 | Column P-M interaction math fixes (SP:16 Table I continuity, Cl 38.1 modified strain, xu_bal inelastic strain, Pu_0 cap) | Copilot | ✅ Done |
 | TASK-691 | Column biaxial e_min enforcement (Cl 25.4 both axes before Bresler) | Copilot | ✅ Done |

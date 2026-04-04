@@ -30,6 +30,7 @@ from sse_starlette.sse import EventSourceResponse
 
 from structural_lib import batch
 from fastapi_app.auth import check_rate_limit
+from fastapi_app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -178,6 +179,21 @@ async def stream_batch_design(
 
         return EventSourceResponse(error_generator())
 
+    settings = get_settings()
+    if len(beam_list) > settings.max_batch_size:
+
+        async def error_response():
+            yield {
+                "event": "error",
+                "data": json.dumps(
+                    {
+                        "error": f"Batch size {len(beam_list)} exceeds maximum of {settings.max_batch_size}"
+                    }
+                ),
+            }
+
+        return EventSourceResponse(error_response())
+
     async def event_generator() -> AsyncGenerator[dict, None]:
         """Generate SSE events for batch design."""
         job_id = job_manager.create_job(len(beam_list))
@@ -213,45 +229,47 @@ async def stream_batch_design(
 
             # Send progress update
             job = job_manager.get_job(job_id)
-            yield {
-                "event": "progress",
-                "data": json.dumps(
-                    {
-                        "completed": job["completed"],
-                        "total": job["total"],
-                        "failed": job["failed"],
-                        "percent": round(job["completed"] / job["total"] * 100, 1),
-                    }
-                ),
-            }
+            if job is not None:
+                yield {
+                    "event": "progress",
+                    "data": json.dumps(
+                        {
+                            "completed": job["completed"],
+                            "total": job["total"],
+                            "failed": job["failed"],
+                            "percent": round(job["completed"] / job["total"] * 100, 1),
+                        }
+                    ),
+                }
 
             await asyncio.sleep(0)
 
         # Send complete event
         job = job_manager.get_job(job_id)
-        yield {
-            "event": "complete",
-            "data": json.dumps(
-                {
-                    "job_id": job_id,
-                    "total": job["total"],
-                    "completed": job["completed"],
-                    "failed": job["failed"],
-                    "duration_seconds": (
-                        (
-                            datetime.fromisoformat(
-                                job["completed_at"].replace("Z", "+00:00")
-                            )
-                            - datetime.fromisoformat(
-                                job["started_at"].replace("Z", "+00:00")
-                            )
-                        ).total_seconds()
-                        if job.get("completed_at")
-                        else None
-                    ),
-                }
-            ),
-        }
+        if job is not None:
+            yield {
+                "event": "complete",
+                "data": json.dumps(
+                    {
+                        "job_id": job_id,
+                        "total": job["total"],
+                        "completed": job["completed"],
+                        "failed": job["failed"],
+                        "duration_seconds": (
+                            (
+                                datetime.fromisoformat(
+                                    job["completed_at"].replace("Z", "+00:00")
+                                )
+                                - datetime.fromisoformat(
+                                    job["started_at"].replace("Z", "+00:00")
+                                )
+                            ).total_seconds()
+                            if job.get("completed_at")
+                            else None
+                        ),
+                    }
+                ),
+            }
 
     return EventSourceResponse(event_generator())
 

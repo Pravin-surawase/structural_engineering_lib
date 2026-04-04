@@ -12,6 +12,8 @@ See docs/research/cs-best-practices-audit.md for design rationale.
 
 from __future__ import annotations
 
+import warnings
+
 from .errors import (
     E_INPUT_001,
     E_INPUT_002,
@@ -601,6 +603,14 @@ def validate_beam_inputs(
         ...     return FlexureResult(..., errors=errors)
     """
     errors: list[DesignError] = []
+
+    # IS 456 Cl. 23.1.1: Warn for impractically narrow beams
+    if b > 0 and b < 150:
+        warnings.warn(
+            f"Beam width b={b}mm is below recommended minimum 150mm "
+            "(IS 456 Cl. 23.1.1). Consider increasing beam width.",
+            stacklevel=2,
+        )
 
     # Run all validators
     errors.extend(validate_dimensions(b, d, D))

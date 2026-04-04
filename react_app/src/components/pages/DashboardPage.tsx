@@ -71,7 +71,7 @@ export function DashboardPage() {
     return (
       <div className="flex flex-col items-center justify-center h-screen pt-14 gap-4">
         <BarChart3 className="w-12 h-12 text-white/10" />
-        <p className="text-white/30 text-sm">No beams imported. Import CSV first.</p>
+        <p className="text-zinc-500 text-sm">No beams imported. Import CSV first.</p>
         <button
           onClick={() => navigate("/import")}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-lg transition-colors"
@@ -94,7 +94,7 @@ export function DashboardPage() {
             </button>
             <div>
               <h1 className="text-lg font-bold text-white">Design Dashboard</h1>
-              <p className="text-xs text-white/40">{beams.length} beams &middot; IS 456:2000</p>
+              <p className="text-xs text-zinc-400">{beams.length} beams · IS 456:2000</p>
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export function DashboardPage() {
         {dashboard.isPending ? (
           <div className="flex items-center justify-center py-20 gap-3">
             <Loader2 className="w-6 h-6 text-blue-400 animate-spin" />
-            <span className="text-white/40">Generating dashboard…</span>
+            <span className="text-zinc-400">Generating dashboard…</span>
           </div>
         ) : dashboard.error ? (
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3">
@@ -171,7 +171,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
         <p className={`text-4xl font-bold tabular-nums mt-1 ${passColor}`}>
           {data.pass_rate.toFixed(0)}%
         </p>
-        <p className="text-xs text-white/40 mt-1">
+        <p className="text-xs text-zinc-400 mt-1">
           {data.passed} passed &middot; {data.failed} failed &middot; {data.total_beams} total
         </p>
       </BentoCard>
@@ -188,7 +188,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
             style={{ width: `${Math.min(data.avg_utilization * 100, 100)}%` }}
           />
         </div>
-        <p className="text-[10px] text-white/30 mt-1">max {(data.max_utilization * 100).toFixed(0)}%</p>
+        <p className="text-[10px] text-zinc-500 mt-1">max {(data.max_utilization * 100).toFixed(0)}%</p>
       </BentoCard>
 
       {/* Pass / Fail visual bar */}
@@ -212,7 +212,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
             </div>
           )}
         </div>
-        <div className="flex justify-between mt-2 text-[10px] text-white/40">
+        <div className="flex justify-between mt-2 text-[10px] text-zinc-400">
           <span className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-emerald-500/60" />{data.passed} passed
           </span>
@@ -253,17 +253,17 @@ function DashboardContent({ data }: { data: DashboardData }) {
         <BentoCardHeader title="Materials" icon={<BarChart3 className="w-4 h-4" />} />
         <div className="grid grid-cols-2 gap-3 mt-1">
           <div>
-            <p className="text-[9px] text-white/30 uppercase tracking-wider">Steel</p>
+            <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Steel</p>
             <p className="text-xl font-bold text-blue-400 tabular-nums">
               {data.total_steel_kg.toFixed(0)}
-              <span className="text-xs text-white/30 ml-1">kg</span>
+              <span className="text-xs text-zinc-500 ml-1">kg</span>
             </p>
           </div>
           <div>
-            <p className="text-[9px] text-white/30 uppercase tracking-wider">Concrete</p>
+            <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Concrete</p>
             <p className="text-xl font-bold text-blue-400 tabular-nums">
               {data.total_concrete_m3.toFixed(1)}
-              <span className="text-xs text-white/30 ml-1">m³</span>
+              <span className="text-xs text-zinc-500 ml-1">m³</span>
             </p>
           </div>
         </div>

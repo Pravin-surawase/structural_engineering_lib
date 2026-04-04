@@ -196,3 +196,5 @@ tags: []
 | 2026-04-04 | TASK-640-641 | Column orchestrator + 13 FastAPI endpoints | pending |
 | 2026-04-04 | TASK-850-872 | Agent infrastructure: registry, router, permissions, hooks, pipeline | pending |
 | 2026-04-04 | TASK-900 | Git workflow hardening (13/14 phases) | pending |
+| 2026-04-04 | AUDIT-P0 | Fixed all 5 P0 audit findings: auth middleware, nightly CI, WCAG contrast, batch limits, bilinear tests | 2c8a2a9c |
+| 2026-04-04 | AUDIT-P1 | Fixed 6 P1 findings: fck/fy validation, float tolerance, torsion guards, beam/column warnings, ErrorBoundary | pending |

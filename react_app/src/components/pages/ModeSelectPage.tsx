@@ -42,7 +42,7 @@ function ModeCard({ icon, title, subtitle, description, onClick, delay, gradient
       <p className="text-sm text-white/50 mb-4">{subtitle}</p>
 
       {/* Description */}
-      <p className="text-xs text-white/30 leading-relaxed">{description}</p>
+      <p className="text-xs text-zinc-500 leading-relaxed">{description}</p>
 
       {/* Arrow indicator */}
       <div className="mt-6 px-4 py-2 rounded-xl bg-white/5 group-hover:bg-white/10 text-sm text-white/50 group-hover:text-white/80 transition-all">
@@ -64,7 +64,7 @@ export function ModeSelectPage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
         onClick={() => navigate("/")}
-        className="absolute top-20 left-6 p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors"
+        className="absolute top-20 left-6 p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
       </motion.button>
@@ -79,7 +79,7 @@ export function ModeSelectPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
           What would you like to do?
         </h1>
-        <p className="text-white/40">Choose your workflow</p>
+        <p className="text-zinc-400">Choose your workflow</p>
       </motion.div>
 
       {/* Cards */}
@@ -113,7 +113,7 @@ export function ModeSelectPage() {
           transition={{ delay: 0.6 }}
           className="flex items-center gap-3 mt-8"
         >
-          <span className="text-xs text-white/30">{beamCount} beams loaded</span>
+          <span className="text-xs text-zinc-500">{beamCount} beams loaded</span>
           <div className="w-px h-4 bg-white/10" />
           <button
             onClick={() => navigate("/editor")}
@@ -144,7 +144,7 @@ export function ModeSelectPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-12 text-sm text-white/30"
+        className="mt-12 text-sm text-zinc-500"
       >
         No data?{" "}
         <button

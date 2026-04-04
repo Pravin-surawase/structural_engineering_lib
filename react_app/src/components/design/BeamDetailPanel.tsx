@@ -212,7 +212,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
     pass:      { label: "✓ SAFE",    cls: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" },
     fail:      { label: "✕ FAIL",    cls: "text-rose-400 bg-rose-500/10 border-rose-500/30" },
     warning:   { label: "⚠ CHECK",   cls: "text-amber-400 bg-amber-500/10 border-amber-500/30" },
-    pending:   { label: "PENDING",   cls: "text-white/40 bg-white/5 border-white/10" },
+    pending:   { label: "PENDING",   cls: "text-zinc-400 bg-white/5 border-white/10" },
     designing: { label: "DESIGNING", cls: "text-blue-400 bg-blue-500/10 border-blue-500/30 animate-pulse" },
   };
 
@@ -235,10 +235,10 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
       {/* ── Header ── */}
       <div className="flex items-start justify-between px-4 pt-3 pb-2.5 border-b border-white/5 shrink-0">
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] text-white/30 uppercase tracking-widest mb-0.5">{beam.story ?? "—"}</p>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-0.5">{beam.story ?? "—"}</p>
           <p className="text-sm font-semibold text-white truncate">{beam.id}</p>
-          <p className="text-xs text-white/40 mt-0.5 font-mono">{beam.b}×{beam.D} mm &middot; {beam.span ? `${beam.span} mm` : "span —"}</p>
-          <p className="text-[10px] text-white/25 mt-0.5">M{beam.fck ?? 25} &middot; Fe{beam.fy ?? 500} &middot; {beam.cover ?? 40}mm cover</p>
+          <p className="text-xs text-zinc-400 mt-0.5 font-mono">{beam.b}×{beam.D} mm &middot; {beam.span ? `${beam.span} mm` : "span —"}</p>
+          <p className="text-[10px] text-zinc-500 mt-0.5">M{beam.fck ?? 25} &middot; Fe{beam.fy ?? 500} &middot; {beam.cover ?? 40}mm cover</p>
         </div>
         <div className="flex items-center gap-1.5 mt-0.5 shrink-0">
           {beam.ast_required != null && (
@@ -260,13 +260,13 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
             className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-all
               ${editMode
                 ? "bg-amber-500/20 border border-amber-500/40 text-amber-300"
-                : "bg-white/5 border border-white/10 text-white/40 hover:text-white/70 hover:bg-white/10"
+                : "bg-white/5 border border-white/10 text-zinc-400 hover:text-zinc-200 hover:bg-white/10"
               }`}
           >
             <Pencil className="w-3 h-3" />
             {editMode ? "Editing" : "Edit Rebar"}
           </button>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-white/25 hover:text-white/60 transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-zinc-200 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -285,18 +285,18 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
         ) : (
           <div className="flex flex-col items-center justify-center h-full gap-1.5">
             {beam.ast_required != null
-              ? <p className="text-xs text-white/30 animate-pulse">Loading 3D rebar…</p>
+              ? <p className="text-xs text-zinc-500 animate-pulse">Loading 3D rebar…</p>
               : <>
                   <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center mb-1">
-                    <Ruler className="w-4 h-4 text-white/20" />
+                    <Ruler className="w-4 h-4 text-white/20" aria-hidden="true" />
                   </div>
-                  <p className="text-xs text-white/25">Design beam to see reinforcement</p>
+                  <p className="text-xs text-zinc-500">Design beam to see reinforcement</p>
                 </>
             }
           </div>
         )}
         {geometry && (
-          <div className="absolute bottom-2 right-2 text-[9px] text-white/20 font-mono">
+          <div className="absolute bottom-2 right-2 text-[9px] text-zinc-500 font-mono">
             {geometry.rebars.length}b &middot; {geometry.stirrups.length}s
           </div>
         )}
@@ -354,7 +354,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
             {statusConfig[status]?.label ?? status.toUpperCase()}
           </span>
           {utilPct != null && (
-            <span className="text-xs text-white/40 tabular-nums">{utilPct}% Mu/Mu_cap</span>
+            <span className="text-xs text-zinc-400 tabular-nums">{utilPct}% Mu/Mu_cap</span>
           )}
         </div>
         {utilPct != null && (
@@ -372,7 +372,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
       {/* ── Cross-Section ── */}
       {beam.ast_required != null && (
         <div className="px-4 py-3 border-b border-white/5 shrink-0">
-          <p className="text-[10px] text-white/30 uppercase tracking-widest mb-3">Cross-Section</p>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-3">Cross-Section</p>
           <CrossSectionView
             width={beam.b} depth={beam.D}
             cover={beam.cover ?? 40}
@@ -389,7 +389,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
 
       {/* ── IS 456 Checks ── */}
       <div className="px-4 py-3 border-b border-white/5 space-y-2 shrink-0">
-        <p className="text-[10px] text-white/30 uppercase tracking-widest">IS 456 Checks</p>
+        <p className="text-[10px] text-zinc-500 uppercase tracking-widest">IS 456 Checks</p>
         <CheckRow
           label="Flexure" clause="Cl. 38.1"
           status={status === "fail" ? "fail" : beam.ast_required != null ? "pass" : "pending"}
@@ -422,7 +422,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
       {/* ── Export ── */}
       {beam.ast_required != null && (
         <div className="px-4 py-3 shrink-0">
-          <p className="text-[10px] text-white/30 uppercase tracking-widest mb-2.5">Export</p>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2.5">Export</p>
           <div className="flex gap-2">
             <ExportBtn label="BBS" icon={<Download className="w-3.5 h-3.5" />} loading={bbsPending} onClick={() => exportBBS(exportParams)} />
             <ExportBtn label="DXF" icon={<Ruler className="w-3.5 h-3.5" />} loading={dxfPending} onClick={() => exportDXF(exportParams)} />
@@ -448,10 +448,10 @@ function Spinner() {
 function Metric({ label, value, unit = "" }: { label: string; value: string; unit?: string }) {
   return (
     <div className="p-2 rounded-lg bg-white/[0.03] border border-white/[0.06]">
-      <p className="text-[9px] text-white/30 uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-[9px] text-zinc-500 uppercase tracking-wider mb-0.5">{label}</p>
       <p className="text-xs font-medium text-white tabular-nums">
         {value}
-        {unit && <span className="text-[10px] text-white/40 ml-0.5">{unit}</span>}
+        {unit && <span className="text-[10px] text-zinc-400 ml-0.5">{unit}</span>}
       </p>
     </div>
   );
@@ -470,9 +470,9 @@ function CheckRow({ label, clause, status, detail, warn }: {
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
           <span className="text-xs text-white/70 font-medium">{label}</span>
-          <span className="text-[9px] text-white/25">{clause}</span>
+          <span className="text-[9px] text-zinc-500">{clause}</span>
         </div>
-        <p className="text-[10px] text-white/40 mt-0.5 truncate">{detail}</p>
+        <p className="text-[10px] text-zinc-400 mt-0.5 truncate">{detail}</p>
         {warn && <p className="text-[10px] text-rose-400/70 mt-0.5">{warn}</p>}
       </div>
     </div>
@@ -501,7 +501,7 @@ function EditField({ label, value, onChange, min, max, options }: {
   if (options) {
     return (
       <div>
-        <p className="text-[9px] text-white/30 uppercase tracking-wider mb-1">{label}</p>
+        <p className="text-[9px] text-zinc-500 uppercase tracking-wider mb-1">{label}</p>
         <select
           value={value} onChange={(e) => onChange(Number(e.target.value))}
           className="w-full px-2 py-1 text-xs text-white bg-white/[0.05] border border-white/10 rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-amber-500/50"
@@ -513,7 +513,7 @@ function EditField({ label, value, onChange, min, max, options }: {
   }
   return (
     <div>
-      <p className="text-[9px] text-white/30 uppercase tracking-wider mb-1">{label}</p>
+      <p className="text-[9px] text-zinc-500 uppercase tracking-wider mb-1">{label}</p>
       <input
         type="number" value={value} min={min} max={max}
         onChange={(e) => onChange(Number(e.target.value))}

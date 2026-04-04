@@ -125,7 +125,7 @@ export function DesignView() {
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
           <div>
             <h2 className="text-sm font-bold text-white">Beam Design</h2>
-            <p className="text-[10px] text-white/40">IS 456:2000</p>
+            <p className="text-[10px] text-zinc-400">IS 456:2000</p>
           </div>
           <ConnectionStatus
             status={state.connectionStatus}
@@ -315,7 +315,7 @@ export function DesignView() {
         >
           <Viewport3D mode="design" forceMode />
           {state.isConnected && state.latency !== null && (
-            <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-black/50 text-[10px] text-white/40 backdrop-blur">
+            <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-black/50 text-[10px] text-zinc-400 backdrop-blur">
               {state.latency}ms
             </div>
           )}
@@ -345,7 +345,7 @@ export function DesignView() {
               onClick={() => setResultsCollapsed(false)}
             >
               <CompactResultsBar result={state.result} />
-              <ChevronUp className="w-3.5 h-3.5 text-white/30" />
+              <ChevronUp className="w-3.5 h-3.5 text-zinc-500" />
             </div>
           ) : (
             /* Expanded results panel */
@@ -354,7 +354,7 @@ export function DesignView() {
                 onClick={() => setResultsCollapsed(true)}
                 className="h-7 shrink-0 flex items-center justify-end px-3 hover:bg-white/[0.02] transition-colors"
               >
-                <ChevronDown className="w-3.5 h-3.5 text-white/20" />
+                <ChevronDown className="w-3.5 h-3.5 text-white/20" aria-hidden="true" />
               </button>
               <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
                 <CompactResults result={state.result} />
@@ -393,15 +393,15 @@ function CompactResultsBar({ result }: { result: BeamDesignResponse }) {
         <div className="w-20 h-1.5 bg-zinc-800 rounded-full overflow-hidden shrink-0">
           <div className={`h-full rounded-full ${barColor}`} style={{ width: `${Math.min(pct, 100)}%` }} />
         </div>
-        <span className="text-xs text-white/40 tabular-nums">{pct}%</span>
+        <span className="text-xs text-zinc-400 tabular-nums">{pct}%</span>
       </div>
       {result.flexure?.ast_required && (
-        <span className="text-xs text-white/40 tabular-nums shrink-0">
+        <span className="text-xs text-zinc-400 tabular-nums shrink-0">
           Ast {Math.round(result.flexure.ast_required)} mm²
         </span>
       )}
       {result.shear?.stirrup_spacing && (
-        <span className="text-xs text-white/30 tabular-nums shrink-0">
+        <span className="text-xs text-zinc-500 tabular-nums shrink-0">
           Sv {result.shear.stirrup_spacing}
         </span>
       )}
@@ -424,7 +424,7 @@ function CompactResults({ result }: { result: BeamDesignResponse }) {
         </div>
         <div className="ml-auto text-right">
           <p className="text-lg font-bold text-white">{(result.utilization_ratio * 100).toFixed(0)}%</p>
-          <p className="text-[10px] text-white/40">utilization</p>
+          <p className="text-[10px] text-zinc-400">utilization</p>
         </div>
       </div>
 
@@ -466,7 +466,7 @@ function ResultMiniCard({ title, items }: { title: string; items: { l: string; v
       <div className="space-y-1.5">
         {items.map((item) => (
           <div key={item.l} className="flex justify-between text-xs">
-            <span className="text-white/40">{item.l}</span>
+            <span className="text-zinc-400">{item.l}</span>
             <span className="text-white font-medium">{item.v}</span>
           </div>
         ))}
@@ -483,7 +483,7 @@ function CodeChecksPanel({ data, isPending }: { data: ReturnType<typeof useCodeC
     return (
       <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
         <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />
-        <span className="text-xs text-white/40">Running code checks...</span>
+        <span className="text-xs text-zinc-400">Running code checks...</span>
       </div>
     );
   }
@@ -504,9 +504,9 @@ function CodeChecksPanel({ data, isPending }: { data: ReturnType<typeof useCodeC
           Code Checks: {passCount}/{totalCount} passed
         </span>
         {data.governing_check && (
-          <span className="ml-auto text-[10px] text-white/40 mr-2">Gov: {data.governing_check}</span>
+          <span className="ml-auto text-[10px] text-zinc-400 mr-2">Gov: {data.governing_check}</span>
         )}
-        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-white/40" /> : <ChevronRight className="w-3.5 h-3.5 text-white/40" />}
+        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-zinc-400" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />}
       </button>
       {expanded && (
         <div className="px-3 pb-3 space-y-1.5">
@@ -518,7 +518,7 @@ function CodeChecksPanel({ data, isPending }: { data: ReturnType<typeof useCodeC
                 <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
               )}
               <span className="text-white/70 flex-1">{check.name}</span>
-              <span className="text-[10px] text-white/30">{check.clause}</span>
+              <span className="text-[10px] text-zinc-500">{check.clause}</span>
               {check.utilization != null && (
                 <span className={`text-[10px] font-medium ${check.utilization <= 1 ? "text-green-400/70" : "text-red-400/70"}`}>
                   {(check.utilization * 100).toFixed(0)}%
@@ -548,7 +548,7 @@ function RebarSuggestionsPanel({ data, isPending }: { data: ReturnType<typeof us
     return (
       <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
         <Loader2 className="w-3.5 h-3.5 text-purple-400 animate-spin" />
-        <span className="text-xs text-white/40">Finding rebar options...</span>
+        <span className="text-xs text-zinc-400">Finding rebar options...</span>
       </div>
     );
   }
@@ -569,7 +569,7 @@ function RebarSuggestionsPanel({ data, isPending }: { data: ReturnType<typeof us
             up to {data.max_savings_percent.toFixed(0)}% saving
           </span>
         )}
-        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-white/40 ml-auto" /> : <ChevronRight className="w-3.5 h-3.5 text-white/40 ml-auto" />}
+        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-zinc-400 ml-auto" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-400 ml-auto" />}
       </button>
       {expanded && (
         <div className="px-3 pb-3 space-y-2">
@@ -589,7 +589,7 @@ function RebarSuggestionsPanel({ data, isPending }: { data: ReturnType<typeof us
                 )}
               </div>
               <p className="text-[10px] text-white/50 mb-1">{s.description}</p>
-              <div className="flex gap-3 text-[10px] text-white/40">
+              <div className="flex gap-3 text-[10px] text-zinc-400">
                 <span>{s.suggested_config.bar_count}Ø{s.suggested_config.bar_dia_mm}mm</span>
                 <span>Ast: {s.suggested_config.ast_provided_mm2.toFixed(0)} mm²</span>
                 {s.suggested_config.excess_mm2 > 0 && (
@@ -612,7 +612,7 @@ function InputField({ label, value, onChange, unit, min, max, step = 1, disabled
 }) {
   return (
     <div>
-      <label className="block text-[10px] text-white/40 mb-0.5">{label}</label>
+      <label className="block text-[10px] text-zinc-400 mb-0.5">{label}</label>
       <div className="relative">
         <input
           type="number"
@@ -621,7 +621,7 @@ function InputField({ label, value, onChange, unit, min, max, step = 1, disabled
           min={min} max={max} step={step} disabled={disabled}
           className="w-full px-2.5 py-1.5 pr-10 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50 disabled:opacity-40"
         />
-        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-white/30">{unit}</span>
+        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500">{unit}</span>
       </div>
     </div>
   );
@@ -632,7 +632,7 @@ function DropdownField<T extends string | number>({ label, value, onChange, opti
 }) {
   return (
     <div>
-      <label className="block text-[10px] text-white/40 mb-0.5">{label}</label>
+      <label className="block text-[10px] text-zinc-400 mb-0.5">{label}</label>
       <select
         value={String(value)}
         onChange={(e) => {
@@ -659,7 +659,7 @@ function TorsionResultsPanel({ data, isPending }: { data: TorsionDesignResponse 
     return (
       <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
         <Loader2 className="w-3.5 h-3.5 text-purple-400 animate-spin" />
-        <span className="text-xs text-white/40">Calculating torsion...</span>
+        <span className="text-xs text-zinc-400">Calculating torsion...</span>
       </div>
     );
   }
@@ -675,10 +675,10 @@ function TorsionResultsPanel({ data, isPending }: { data: TorsionDesignResponse 
         <span className="text-xs font-semibold text-white/80">
           Torsion (IS 456 Cl 41) — {data.is_safe ? "Safe" : "UNSAFE"}
         </span>
-        <span className="ml-auto text-[10px] text-white/40 mr-2">
+        <span className="ml-auto text-[10px] text-zinc-400 mr-2">
           Sv {data.stirrup_spacing}mm · Al {data.al_torsion} mm²
         </span>
-        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-white/40" /> : <ChevronRight className="w-3.5 h-3.5 text-white/40" />}
+        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-zinc-400" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />}
       </button>
       {expanded && (
         <div className="px-3 pb-3 space-y-2.5">
@@ -687,16 +687,16 @@ function TorsionResultsPanel({ data, isPending }: { data: TorsionDesignResponse 
             <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
               <h5 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Equivalent Forces</h5>
               <div className="space-y-1">
-                <div className="flex justify-between text-xs"><span className="text-white/40">Ve</span><span className="text-white font-medium">{data.ve_kn.toFixed(1)} kN</span></div>
-                <div className="flex justify-between text-xs"><span className="text-white/40">Me</span><span className="text-white font-medium">{data.me_knm.toFixed(1)} kN·m</span></div>
+                <div className="flex justify-between text-xs"><span className="text-zinc-400">Ve</span><span className="text-white font-medium">{data.ve_kn.toFixed(1)} kN</span></div>
+                <div className="flex justify-between text-xs"><span className="text-zinc-400">Me</span><span className="text-white font-medium">{data.me_knm.toFixed(1)} kN·m</span></div>
               </div>
             </div>
             <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
               <h5 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Shear Stress</h5>
               <div className="space-y-1">
-                <div className="flex justify-between text-xs"><span className="text-white/40">τve</span><span className={`font-medium ${data.tv_equiv <= data.tc_max ? "text-white" : "text-red-400"}`}>{data.tv_equiv.toFixed(3)} MPa</span></div>
-                <div className="flex justify-between text-xs"><span className="text-white/40">τc</span><span className="text-white font-medium">{data.tc.toFixed(3)} MPa</span></div>
-                <div className="flex justify-between text-xs"><span className="text-white/40">τc,max</span><span className="text-white font-medium">{data.tc_max.toFixed(2)} MPa</span></div>
+                <div className="flex justify-between text-xs"><span className="text-zinc-400">τve</span><span className={`font-medium ${data.tv_equiv <= data.tc_max ? "text-white" : "text-red-400"}`}>{data.tv_equiv.toFixed(3)} MPa</span></div>
+                <div className="flex justify-between text-xs"><span className="text-zinc-400">τc</span><span className="text-white font-medium">{data.tc.toFixed(3)} MPa</span></div>
+                <div className="flex justify-between text-xs"><span className="text-zinc-400">τc,max</span><span className="text-white font-medium">{data.tc_max.toFixed(2)} MPa</span></div>
               </div>
             </div>
           </div>
@@ -705,13 +705,13 @@ function TorsionResultsPanel({ data, isPending }: { data: TorsionDesignResponse 
           <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
             <h5 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Reinforcement (Closed Stirrups)</h5>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-              <div className="flex justify-between text-xs"><span className="text-white/40">Asv (torsion)</span><span className="text-white font-medium">{data.asv_torsion.toFixed(4)} mm²/mm</span></div>
-              <div className="flex justify-between text-xs"><span className="text-white/40">Asv (shear)</span><span className="text-white font-medium">{data.asv_shear.toFixed(4)} mm²/mm</span></div>
-              <div className="flex justify-between text-xs"><span className="text-white/40">Asv (total)</span><span className="text-purple-300 font-semibold">{data.asv_total.toFixed(4)} mm²/mm</span></div>
-              <div className="flex justify-between text-xs"><span className="text-white/40">Spacing Sv</span><span className="text-purple-300 font-semibold">{data.stirrup_spacing} mm</span></div>
+              <div className="flex justify-between text-xs"><span className="text-zinc-400">Asv (torsion)</span><span className="text-white font-medium">{data.asv_torsion.toFixed(4)} mm²/mm</span></div>
+              <div className="flex justify-between text-xs"><span className="text-zinc-400">Asv (shear)</span><span className="text-white font-medium">{data.asv_shear.toFixed(4)} mm²/mm</span></div>
+              <div className="flex justify-between text-xs"><span className="text-zinc-400">Asv (total)</span><span className="text-purple-300 font-semibold">{data.asv_total.toFixed(4)} mm²/mm</span></div>
+              <div className="flex justify-between text-xs"><span className="text-zinc-400">Spacing Sv</span><span className="text-purple-300 font-semibold">{data.stirrup_spacing} mm</span></div>
             </div>
             <div className="mt-2 pt-2 border-t border-white/5">
-              <div className="flex justify-between text-xs"><span className="text-white/40">Longitudinal Al</span><span className="text-purple-300 font-semibold">{data.al_torsion} mm²</span></div>
+              <div className="flex justify-between text-xs"><span className="text-zinc-400">Longitudinal Al</span><span className="text-purple-300 font-semibold">{data.al_torsion} mm²</span></div>
             </div>
           </div>
 
@@ -750,7 +750,7 @@ function MiniDiagram({ data }: { data: LoadAnalysisResponse }) {
 
   return (
     <div className="col-span-2 rounded-lg bg-white/[0.03] border border-white/8 p-2 space-y-1">
-      <div className="flex justify-between text-[10px] text-white/40 px-1">
+      <div className="flex justify-between text-[10px] text-zinc-400 px-1">
         <span>Mu,max = <span className="text-cyan-300 font-semibold">{Math.abs(data.max_bm_knm).toFixed(1)}</span> kN·m</span>
         <span>Vu,max = <span className="text-cyan-300 font-semibold">{Math.abs(data.max_sf_kn).toFixed(1)}</span> kN</span>
       </div>
