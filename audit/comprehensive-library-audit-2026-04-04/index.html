@@ -2373,14 +2373,20 @@
 <td>Final P1 resolved: FE-1a accessibility (9 changes across 4 files)</td>
 </tr>
 <tr>
+<td>P2 Fixes (Batch 1, 7 items)</td>
+<td>A-</td>
+<td>7.7/10</td>
+<td>7 P2s resolved: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10</td>
+</tr>
+<tr>
 <td><strong>Final (post-fix)</strong></td>
 <td><strong>A-</strong></td>
-<td><strong>7.5/10</strong></td>
-<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes resolved</strong></td>
+<td><strong>7.7/10</strong></td>
+<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 7 P2 fixes resolved</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Overall Library Grade: A- (7.5/10) — up from B+ (7.4/10) after all P1 fixes complete</strong></p>
+<p><strong>Overall Library Grade: A- (7.7/10) — up from A- (7.5/10) after P2 Batch 1 fixes</strong></p>
 <hr />
 <h2 id="1-library-usability-audit-score-395">1. Library Usability Audit (Score: 3.9/5)<a class="headerlink" href="#1-library-usability-audit-score-395" title="Permanent link">&para;</a></h2>
 <h3 id="scores-by-area">Scores by Area<a class="headerlink" href="#scores-by-area" title="Permanent link">&para;</a></h3>
@@ -3048,7 +3054,7 @@
 <td>FlexureResult/ShearResult mutable</td>
 <td>P2</td>
 <td>Non-frozen dataclasses; thread-unsafe</td>
-<td>Make frozen</td>
+<td>✅ Fixed — Made frozen</td>
 </tr>
 <tr>
 <td>SM-7</td>
@@ -3062,7 +3068,7 @@
 <td>float <code>== 0.0</code> in footing bearing</td>
 <td>P2</td>
 <td><code>if bearing_pressure == 0.0</code> risks float mismatch</td>
-<td>Use tolerance</td>
+<td>✅ Fixed — Used tolerance</td>
 </tr>
 <tr>
 <td>SM-9</td>
@@ -3076,7 +3082,7 @@
 <td>ColumnAxialResult mutable</td>
 <td>P2</td>
 <td>Non-frozen dataclass like SM-6</td>
-<td>Make frozen</td>
+<td>✅ Fixed — Made frozen</td>
 </tr>
 </tbody>
 </table>
@@ -3360,7 +3366,7 @@
 <td>P1</td>
 <td>CWE-209</td>
 <td>Exception messages sent raw to client</td>
-<td>Sanitize WS error messages</td>
+<td>✅ Fixed — Sanitized WS error messages</td>
 </tr>
 <tr>
 <td>S-16</td>
@@ -3376,7 +3382,7 @@
 <td>P1</td>
 <td>—</td>
 <td>Non-standard JSON; breaks parsers</td>
-<td>Replace inf with null/sentinel</td>
+<td>✅ Fixed — Replaced inf with null/sentinel</td>
 </tr>
 <tr>
 <td>S-17</td>
@@ -3616,7 +3622,7 @@
 <td><code>/detailing/bar-areas</code> returns untyped <code>dict</code></td>
 <td>P2</td>
 <td>No OpenAPI response schema</td>
-<td>Create typed Pydantic model</td>
+<td>✅ Fixed — Created BarAreasResponse model</td>
 </tr>
 <tr>
 <td>API-9</td>
@@ -3630,7 +3636,7 @@
 <td>Export DXF non-standard MIME type</td>
 <td>P2</td>
 <td><code>application/dxf</code> not IANA-registered</td>
-<td>Use <code>application/octet-stream</code></td>
+<td>✅ Fixed — Changed to <code>application/octet-stream</code></td>
 </tr>
 </tbody>
 </table>
@@ -4335,7 +4341,7 @@
 </tbody>
 </table>
 <h3 id="p2-nice-to-have-52-findings">P2 — Nice to Have (52 findings)<a class="headerlink" href="#p2-nice-to-have-52-findings" title="Permanent link">&para;</a></h3>
-<p>52 P2 findings across all sections. Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).</p>
+<p>52 P2 findings across all sections (7 resolved in Batch 1: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10). Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).</p>
 <hr />
 <h2 id="appendix-audit-methodology">Appendix: Audit Methodology<a class="headerlink" href="#appendix-audit-methodology" title="Permanent link">&para;</a></h2>
 <h3 id="agents-used-14">Agents Used (14)<a class="headerlink" href="#agents-used-14" title="Permanent link">&para;</a></h3>

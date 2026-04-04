@@ -1546,22 +1546,29 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> P1 Batch 3 fix — FE-1a accessibility (9 WCAG 2.1 Level A fixes)</p>
+<strong>Last Session:</strong> P2 Batch 1 fixes — 7 items resolved (S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10)</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>ALL 20 P1 audit findings now resolved (Batch 1: 4+5 verified, Batch 2: 4, Batch 3: 1)</li>
-<li>FE-1a: Added ARIA landmarks (<main>, <nav>), skip-to-content link, Canvas role="img", loading aria-live, icon aria-label/aria-hidden across 4 React files</li>
-<li>Grade improved: B+ (7.4) → A- (7.5)</li>
+<li>P2 Batch 1: 7 findings resolved</li>
+<li>S-15: WebSocket error sanitization (CWE-209)</li>
+<li>S-18: float("inf") replaced with null/sentinel in JSON responses</li>
+<li>SM-6: ShearResult made frozen (thread-safe)</li>
+<li>SM-8: Footing bearing float tolerance fix</li>
+<li>SM-10: ColumnAxialResult made frozen (thread-safe)</li>
+<li>API-8: BarAreasResponse typed Pydantic model</li>
+<li>API-10: DXF export MIME type corrected to application/octet-stream</li>
+<li>Grade: A- (7.7/10)</li>
+<li>ALL 20 P1 findings previously resolved</li>
 <li>Tests: 4,282 Python + 187 FastAPI passing, React build succeeds</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
+<li>P2 Batch 2 planning — pick next 5-7 highest-impact P2 items</li>
 <li>Wire footing functions into services/api.py (discovered gap during DOC-4)</li>
 <li>Add @clause decorators to footing functions (IS-2)</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
 <li>TASK-516: Triangular + Moment loads</li>
-<li>Begin P2 fixes — start with highest-impact: FE-2 (form validation), T-3 (FastAPI test coverage)</li>
 <li>Add eslint-plugin-jsx-a11y to CI for automated accessibility checking</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
@@ -1572,8 +1579,8 @@
 <ul>
 <li>P0: 5/5 resolved ✅</li>
 <li>P1: 20/20 resolved ✅</li>
-<li>P2: 0/52 started</li>
-<li>Overall grade: A- (7.5/10)</li>
+<li>P2: 7/52 resolved (Batch 1 complete)</li>
+<li>Overall grade: A- (7.7/10)</li>
 </ul>
 
 
