@@ -15,6 +15,7 @@ Manual git causes 10-30min conflicts. The script handles staging, hooks, pull, a
 **FORBIDDEN commands (all agents):**
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
+NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
 NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
 NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks

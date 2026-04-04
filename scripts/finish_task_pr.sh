@@ -138,7 +138,7 @@ merge_and_cleanup() {
         sleep 5
         gh pr merge "$pr_number" --squash --delete-branch 2>&1 || {
             echo -e "${RED}✗ Merge failed after retry${NC}"
-            echo "  Manual merge: gh pr merge $pr_number --squash --delete-branch"
+            echo "  Manual merge (only if ALL CI checks pass): gh pr merge $pr_number --squash --delete-branch"
             return 1
         }
     fi
@@ -419,7 +419,7 @@ case "$MODE" in
     skip)
         echo -e "${YELLOW}PR created but not monitored${NC}"
         echo "View:  gh pr view $PR_NUMBER --web"
-        echo "Merge: gh pr merge $PR_NUMBER --squash --delete-branch"
+        echo "Merge (only after ALL CI checks pass): gh pr merge $PR_NUMBER --squash --delete-branch"
         ;;
 
     *)
@@ -430,7 +430,7 @@ case "$MODE" in
         echo "Monitor and merge:"
         echo "  View:   gh pr view $PR_NUMBER --web"
         echo "  Status: gh pr checks $PR_NUMBER"
-        echo "  Merge:  gh pr merge $PR_NUMBER --squash --delete-branch"
+        echo "  Merge (only after ALL CI checks pass):  gh pr merge $PR_NUMBER --squash --delete-branch"
         echo ""
 
         # Return to main
