@@ -39,20 +39,21 @@ export function FloatingDock({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className={cn(
-        "fixed z-50 flex items-center gap-2 p-2",
-        "bg-zinc-900/80 backdrop-blur-2xl",
-        "border border-white/10 rounded-2xl",
-        "shadow-2xl shadow-black/50",
-        positionClasses[position],
-        className
-      )}
-    >
-      {items.map((item, index) => (
+    <nav aria-label="Quick navigation">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className={cn(
+          "fixed z-50 flex items-center gap-2 p-2",
+          "bg-zinc-900/80 backdrop-blur-2xl",
+          "border border-white/10 rounded-2xl",
+          "shadow-2xl shadow-black/50",
+          positionClasses[position],
+          className
+        )}
+      >
+        {items.map((item, index) => (
         <DockIcon
           key={item.id}
           item={item}
@@ -66,7 +67,8 @@ export function FloatingDock({
           onLeave={() => setHoveredId(null)}
         />
       ))}
-    </motion.div>
+      </motion.div>
+    </nav>
   );
 }
 
@@ -90,6 +92,7 @@ function DockIcon({
 
   return (
     <motion.button
+      aria-label={item.label}
       onClick={item.onClick}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}

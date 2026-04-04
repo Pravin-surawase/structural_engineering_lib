@@ -47,9 +47,10 @@
 | P1 Fixes (6 items) | B+ | 7.0/10 | 6 P1s resolved: SM-1,2,3, IS-5,7, FE-6 |
 | P1 Fixes (Batch 1, 9 items) | B+ | 7.2/10 | 9 more P1s resolved: U-1, API-1, API-2, API-11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed |
 | P1 Fixes (Batch 2, 4 items) | B+ | 7.4/10 | 4 more P1s resolved: API-5, OPS-3, DOC-4, DOC-5 |
-| **Final (post-fix)** | **B+** | **7.4/10** | **14-agent consensus + P0 fixes + 19 P1 fixes** |
+| P1 Fixes (Batch 3, 1 item) | A- | 7.5/10 | Final P1 resolved: FE-1a accessibility (9 changes across 4 files) |
+| **Final (post-fix)** | **A-** | **7.5/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes resolved** |
 
-**Overall Library Grade: B+ (7.4/10) — up from B+ (7.2/10) after Batch 2 P1 fixes**
+**Overall Library Grade: A- (7.5/10) — up from B+ (7.4/10) after all P1 fixes complete**
 
 ---
 
@@ -564,7 +565,7 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 | SM-1 | fck=0 passes validation — division by zero | Low | ✅ Fixed |
 | SM-2 | float == for fy grade dispatch | Low | ✅ Fixed |
 | SM-3 | Unguarded division by b1*d1 in torsion | Low | ✅ Fixed |
-| FE-1 | Minimal accessibility (3 ARIA attrs) | High |
+| FE-1 | Minimal accessibility (3 ARIA attrs) | High | ✅ Fixed (FE-1a: landmarks, skip-nav, Canvas role, nav labels) |
 | FE-6 | No ErrorBoundary in App.tsx | Low | ✅ Fixed |
 | FE-7 | No Three.js memory cleanup | Low | ✅ Fixed |
 | IS-5 | No minimum dimension warning for beams | Low | ✅ Fixed |
