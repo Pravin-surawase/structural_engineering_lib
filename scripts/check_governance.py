@@ -128,6 +128,7 @@ DEFAULT_RULES = {
             "docs/research",
             "docs/architecture",
             "docs/reference",
+            "docs/audit",
         ],
         "pattern": r"-202[0-9]-",
     },
