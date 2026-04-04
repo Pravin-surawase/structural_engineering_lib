@@ -250,7 +250,7 @@ if [[ -n "$CONTINUE_PR" ]]; then
         echo ""
         echo -e "${YELLOW}Recovery options:${NC}"
         echo "  1. Fix issues, commit, push — then re-run: ./scripts/finish_task_pr.sh --continue $CONTINUE_PR"
-        echo "  2. Merge manually: gh pr merge $CONTINUE_PR --squash --delete-branch"
+        echo "  2. ⚠️  NEVER merge manually with failing checks — fix the failures first"
         echo "  3. Close PR: gh pr close $CONTINUE_PR"
         echo "  4. Or auto-resume: ./scripts/ai_commit.sh --finish  # reads .git/FINISH_STATE"
         exit 1
@@ -407,7 +407,7 @@ case "$MODE" in
             echo ""
             echo -e "${YELLOW}Recovery options:${NC}"
             echo "  1. Fix issues, commit, push — then re-run: ./scripts/finish_task_pr.sh --continue $PR_NUMBER"
-            echo "  2. Merge manually: gh pr merge $PR_NUMBER --squash --delete-branch"
+            echo "  2. ⚠️  NEVER merge manually with failing checks — fix the failures first"
             echo "  3. Close PR: gh pr close $PR_NUMBER"
             echo "  4. Or auto-resume: ./scripts/ai_commit.sh --finish  # reads .git/FINISH_STATE"
             echo ""

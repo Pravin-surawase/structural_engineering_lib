@@ -264,6 +264,8 @@ NEVER: git push origin --delete (without user approval)
 NEVER: GIT_HOOKS_BYPASS=1 / --no-verify / --force   ← causes rework
 NEVER: git rebase --skip                             ← silently drops conflicting commits
 NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh protections
+NEVER: gh pr merge <N> --squash (when any CI check shows FAILURE)
+       ← merging despite CI failures normalizes deviance; fix the failures first
 ```
 
 **Destructive GitHub operations require explicit user confirmation.** Regular commits and PRs via `ai_commit.sh` are autonomous — proceed immediately when delegated.
@@ -288,6 +290,16 @@ NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh p
 | `--finish` interrupted | `./scripts/ai_commit.sh --continue PR_NUM` or check `.git/FINISH_STATE` |
 | `--finish` PR number lost | `gh pr list --head $(git branch --show-current)` or check `.git/FINISH_STATE` |
 | Stash pop fails (CRLF normalization) | Automatic — safe_push.sh now has 3-tier recovery (pop → checkout+pop → patch apply) |
+| CI checks failed on PR | Fix the failures, push fix, re-run `--finish` — NEVER manually merge with `gh pr merge` |
+
+### HARD RULE: CI Failures Block Merge (No Exceptions)
+
+When `--finish` stops due to CI failures:
+1. **Fix the failures** — follow CI Failure Fix Protocol below
+2. NEVER manually call `gh pr merge` when any check shows FAILURE status
+3. "Non-required check" does NOT mean "ignorable" — all checks must pass
+4. If you believe a check is a false positive, escalate to the user — do NOT merge
+5. Pattern detected: PRs #519-520 were merged despite React Validation + Docker Build failures — this is the incident this rule prevents
 
 ## CI Failure Diagnosis & Fix Workflow
 
@@ -355,6 +367,7 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 11. **`git rebase --skip` to resolve conflicts (Session 119)** → Silently drops commits. ALWAYS use `recover_git_state.sh` instead. Added as FORBIDDEN command.
 12. **CRLF stash pop loop blocking all commits** → `.gitattributes` normalizes CRLF→LF; `git stash pop` sees conflict and fails. Fixed in `safe_push.sh` with Tier 0 CRLF detection (`--ignore-cr-at-eol`) + 3-tier recovery. Step 0 now skips stash entirely for CRLF-only diffs.
 13. **Post-merge CRLF artifacts blocking main pull (Session ~125)** → After `--finish` squash-merged PR, CRLF artifacts in working tree blocked `git pull --ff-only` on main. `finish_task_pr.sh` silently swallowed the error (`|| true`), leaving main 1 commit behind remote. Fixed: added `git checkout -- .` cleanup before pull + `git reset --hard origin/main` fallback. Also fixed `recover_git_state.sh` to handle this case.
+14. **CI Bypass (Session ~140)** → PRs #519 and #520 were merged with failing CI checks (React Validation + Docker Build) by using `gh pr merge --squash` after `--finish` correctly blocked. The `finish_task_pr.sh` script's recovery menu Option 2 ("Merge manually") provided the bypass instructions. Fixed by adding explicit FORBIDDEN rule and removing the escape hatch.
 
 ## Release Procedure
 

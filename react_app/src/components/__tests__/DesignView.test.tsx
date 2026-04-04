@@ -32,6 +32,23 @@ vi.mock('../../hooks/useInsights', () => ({
   useRebarSuggestions: vi.fn(() => ({ mutate: vi.fn(), data: null })),
 }));
 
+// Mock export hooks (they use useMutation which requires QueryClientProvider)
+vi.mock('../../hooks/useExport', () => ({
+  useExportBBS: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
+  useExportDXF: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
+  useExportReport: vi.fn(() => ({ mutate: vi.fn(), isPending: false })),
+}));
+
+// Mock torsion design hook
+vi.mock('../../hooks/useTorsionDesign', () => ({
+  useTorsionDesign: vi.fn(() => ({ mutate: vi.fn(), data: null, isPending: false })),
+}));
+
+// Mock load analysis hook
+vi.mock('../../hooks/useLoadAnalysis', () => ({
+  useLoadAnalysis: vi.fn(() => ({ mutate: vi.fn(), data: null, isPending: false })),
+}));
+
 // Mock Viewport3D (Three.js cannot run in jsdom)
 vi.mock('../../components/viewport/Viewport3D', () => ({
   Viewport3D: () => React.createElement('div', { 'data-testid': 'viewport-3d' }, 'Viewport3D'),
