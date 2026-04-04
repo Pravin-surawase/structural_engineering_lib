@@ -133,12 +133,11 @@ class TestJobStatus:
     def test_get_job_status_not_found(self):
         """Test getting status of non-existent job."""
         client = TestClient(app)
-        response = client.get("/stream/job/nonexistent123")
+        response = client.get("/stream/job/abcd1234")
 
-        assert response.status_code == 200
+        assert response.status_code == 404
         data = response.json()
-        assert "error" in data
-        assert data["error"] == "Job not found"
+        assert data["detail"] == "Job not found"
 
     def test_get_job_status_after_batch(self):
         """Test getting job status after running a batch."""
