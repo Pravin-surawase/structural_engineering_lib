@@ -149,7 +149,7 @@ export function CrossSectionView({
 
         {/* Cover dimension */}
         <line x1={bX} y1={barY_bottom} x2={bX + coverScaled + stirrupR + barR} y2={barY_bottom} stroke="#666" strokeWidth={0.5} strokeDasharray="3,3" />
-        <text x={bX + 4} y={barY_bottom - 4} fill="#888" fontSize={9}>
+        <text x={bX + 4} y={barY_bottom - 4} fill="#a1a1aa" fontSize={9}>
           {cover}mm cover
         </text>
 

@@ -491,7 +491,7 @@ export function BuildingEditorPage() {
             options={[415, 500, 550]} format={(v) => `Fe${v}`} />
           <MaterialSelect label="Cover" value={globalCover} onChange={(v) => handleGlobalMaterialChange("cover", v)}
             options={[25, 30, 35, 40, 45, 50]} format={(v) => `${v}mm`} />
-          <span className="text-[10px] text-white/25 ml-1">IS 456:2000</span>
+          <span className="text-[10px] text-zinc-500 ml-1">IS 456:2000</span>
         </div>
 
         <div className="flex items-center gap-3">

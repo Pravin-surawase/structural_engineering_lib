@@ -266,7 +266,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
             <Pencil className="w-3 h-3" />
             {editMode ? "Editing" : "Edit Rebar"}
           </button>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-white/25 hover:text-white/60 transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-zinc-200 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -296,7 +296,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           </div>
         )}
         {geometry && (
-          <div className="absolute bottom-2 right-2 text-[9px] text-white/20 font-mono">
+          <div className="absolute bottom-2 right-2 text-[9px] text-zinc-500 font-mono">
             {geometry.rebars.length}b &middot; {geometry.stirrups.length}s
           </div>
         )}
