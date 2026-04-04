@@ -200,3 +200,10 @@ tags: []
 | 2026-04-04 | AUDIT-P1 | Fixed 6 P1 findings: fck/fy validation, float tolerance, torsion guards, beam/column warnings, ErrorBoundary | pending |
 | 2026-04-04 | AUDIT-P2-B1 | P2 Batch 1: 7 fixes (S-15 error sanitize, S-18 float-inf JSON, SM-6 ShearResult frozen, SM-8 bearing tolerance, SM-10 ColumnAxialResult frozen, API-8 BarAreasResponse model, API-10 DXF MIME) | — |
 | 2026-04-05 | AUDIT-P2-B2 | P2 Batch 2: 7 fixes + 2 closures (OPS-4 IPv6, SM-7 puz validation, SM-9 steel_stress guards, FE-5 toast activation, BE-6 anchorage export, S-17 CLI path containment, DOC-7 CHANGELOG highlights; S-16/S-22 closed invalid) | — |
+| 2026-04-05 | P2-Batch3 | S-19: sanitize_filename() for Content-Disposition headers | pending |
+| 2026-04-05 | P2-Batch3 | API-9: Smoke calc in /health/ready with 30s cache | pending |
+| 2026-04-05 | P2-Batch3 | A-2: importlib.resources in traceability.py (removed Path/open) | pending |
+| 2026-04-05 | P2-Batch3 | IS-3: @clause decorators for 12 IS 13920 functions | pending |
+| 2026-04-05 | P2-Batch3 | U-2: README package name callout prominence | pending |
+| 2026-04-05 | P2-Batch3 | PH-3: 3 stale doc version refs fixed to v0.21.0 | pending |
+| 2026-04-05 | P2-Batch3 | T-8: React validation job added to CI fast-checks.yml | pending |

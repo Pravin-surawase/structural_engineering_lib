@@ -15,8 +15,8 @@ from typing import Any
 import pytest
 
 from structural_lib.codes.is456.traceability import (
+    _CLAUSE_DB,
     _CLAUSE_REGISTRY,
-    _load_clause_database,
     clause,
     generate_traceability_report,
     get_all_registered_functions,
@@ -70,20 +70,20 @@ class TestClauseDatabaseLoading:
 
     def test_database_loads_successfully(self):
         """Verify database loads without errors."""
-        db = _load_clause_database()
+        db = _CLAUSE_DB
         assert db is not None
         assert isinstance(db, dict)
 
     def test_database_has_required_keys(self):
         """Verify database has required structure."""
-        db = _load_clause_database()
+        db = _CLAUSE_DB
         assert "metadata" in db
         assert "clauses" in db
         assert "tables" in db
 
     def test_database_metadata_valid(self):
         """Verify metadata contains required fields."""
-        db = _load_clause_database()
+        db = _CLAUSE_DB
         metadata = db["metadata"]
         assert metadata["standard"] == "IS 456:2000"
         assert "total_clauses" in metadata
@@ -91,7 +91,7 @@ class TestClauseDatabaseLoading:
 
     def test_clauses_have_required_fields(self):
         """Verify each clause has required fields."""
-        db = _load_clause_database()
+        db = _CLAUSE_DB
         for clause_ref, info in db["clauses"].items():
             assert "title" in info, f"Clause {clause_ref} missing 'title'"
             assert "text" in info, f"Clause {clause_ref} missing 'text'"

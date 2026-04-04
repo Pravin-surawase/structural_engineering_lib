@@ -50,9 +50,10 @@
 | P1 Fixes (Batch 3, 1 item) | A- | 7.5/10 | Final P1 resolved: FE-1a accessibility (9 changes across 4 files) |
 | P2 Fixes (Batch 1, 7 items) | A- | 7.7/10 | 7 P2s resolved: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10 |
 | P2 Fixes (Batch 2, 7 items + 2 closures) | A- | 7.9/10 | 7 P2s resolved: OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7. 2 P2s closed as invalid: S-16, S-22 |
-| **Final (post-fix)** | **A-** | **7.9/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 16 P2 fixes resolved** |
+| P2 Fixes (Batch 3, 7 items) | A- | 8.1/10 | 7 P2s resolved: S-19, API-9, A-2, U-2, PH-3, IS-3, T-8 |
+| **Final (post-fix)** | **A-** | **8.1/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 23 P2 fixes resolved** |
 
-**Overall Library Grade: A- (7.9/10) — up from A- (7.7/10) after P2 Batch 2 fixes**
+**Overall Library Grade: A- (8.1/10) — up from A- (7.9/10) after P2 Batch 3 fixes**
 
 ---
 
@@ -74,7 +75,7 @@
 | ID | Finding | Priority | Fix |
 |----|---------|----------|-----|
 | U-1 | Two conflicting API parameter styles (`b` vs `b_mm`) | P1 | Document two API levels; standardize examples to `api.*` |
-| U-2 | Package name (`structural-lib-is456`) vs import (`structural_lib`) mismatch poorly documented | P2 | Add prominent callout in README |
+| U-2 | Package name (`structural-lib-is456`) vs import (`structural_lib`) mismatch poorly documented | P2 | ✅ Fixed — Added prominent callout in README |
 | U-4 | `design_beam_is456()` requires `d_mm` — most users don't know effective depth | P2 | Make `d_mm` optional with auto-calc from `D_mm - cover_mm` |
 | U-5 | 57 public functions + 28 types — hard to discover | P2 | Add decision tree to docs |
 
@@ -118,7 +119,7 @@ Every formula spot-checked matches IS 456:2000 exactly: Mu_lim stress block (Cl 
 |----|---------|----------|-----|
 | IS-1 | Torsion Me uses estimated D=d+50 instead of taking D as parameter | P2 | Accept D as parameter |
 | IS-2 | Footing modules lack @clause decorators — breaks traceability | P1 | Add `@clause` to all footing functions |
-| IS-3 | IS 13920 modules lack @clause decorators | P2 | Add `@clause` to all IS 13920 functions |
+| IS-3 | IS 13920 modules lack @clause decorators | P2 | ✅ Fixed — Added @clause to all 12 IS 13920 functions |
 | IS-4 | Strong-Column-Weak-Beam check missing (IS 13920 joint) | P2 | Implement when needed |
 
 ---
@@ -166,7 +167,7 @@ No SQL injection (no DB). No SSRF. No unsafe deserialization. Docker: non-root, 
 | ID | Finding | Priority | Fix |
 |----|---------|----------|-----|
 | A-1 | I/O in IS 456 pure math layer — `clause_cli.py` has 20+ `print()` | P1 | Move CLI outside `codes/is456/` |
-| A-2 | File I/O in IS 456 layer — `traceability.py` uses `Path()`/`open()` | P2 | Move file loading to services layer |
+| A-2 | File I/O in IS 456 layer — `traceability.py` uses `Path()`/`open()` | P2 | ✅ Fixed — Replaced with importlib.resources |
 | A-3 | IS 456 math in FastAPI router — `ast_min`/`ast_max` formulas in `design.py` | P1 | Move to `services/api.py` |
 
 ### Architecture Positives ✅
@@ -195,7 +196,7 @@ Core types import boundary intact. IS 456 code import boundary intact. No FastAP
 | T-5 | No `tests/codes/is456/beam/` directory — beam tests scattered | P1 | Mirror column test structure |
 | T-6 | Missing Hypothesis tests for torsion, serviceability, footing, detailing | P1 | Add property-based test files |
 | T-7 | Missing SP:16 benchmarks for beams/footings | P1 | Add labeled SP:16 chart verification tests |
-| T-8 | React tests not in CI | P2 | Add Vitest to CI workflow |
+| T-8 | React tests not in CI | P2 | ✅ Fixed — Added react-validation job to fast-checks.yml |
 
 > **INVALID (removed):** ~~T-2: IS 13920 beam.py has zero tests~~ — Tests exist in `tests/unit/test_ductile.py` and `tests/property/test_ductile_hypothesis.py`. **VERIFIED by @reviewer.**
 >
@@ -244,7 +245,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 |----|---------|----------|-----|
 | PH-1 | 1,760 vendor files (34MB) tracked in git | P1 | `git rm -r --cached docs/reference/vendor/` |
 | PH-2 | Missing `.env.example` | P1 | Create with documented env vars |
-| PH-3 | 7 stale version references (v0.19/v0.20) | P2 | Run `scripts/sync_numbers.py --fix` |
+| PH-3 | 7 stale version references (v0.19/v0.20) | P2 | ✅ Fixed — Updated 3 stale doc files to v0.21.0 |
 | PH-4 | Script sprawl — 111 scripts with potential redundancy | P2 | Audit for deduplication |
 | PH-5 | No multi-stage Docker build | P2 | Add builder stage |
 
@@ -338,7 +339,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | S-16 | Job runner writes to arbitrary paths | P1 | A01 | `output_dir` not path-validated | ✅ Closed (INVALID — web API uses streaming, no disk I/O) |
 | S-18 | `float("inf")` in JSON responses | P1 | — | Non-standard JSON; breaks parsers | ✅ Fixed — Replaced inf with null/sentinel |
 | S-17 | DXF CLI reads arbitrary paths | P2 | A01 | No path traversal check | ✅ Fixed — Added path containment validation |
-| S-19 | Content-Disposition header injection risk | P2 | A03 | Filename from user input | Sanitize filename |
+| S-19 | Content-Disposition header injection risk | P2 | A03 | Filename from user input | ✅ Fixed — Added sanitize_filename() helper |
 | S-20 | Unpinned upper bounds on security deps | P2 | A06 | `PyJWT>=2.0` allows untested versions | Pin upper bounds |
 | S-21 | No auth event logging | P2 | A09 | Failed login attempts not logged | Add auth event audit log |
 | S-22 | Report reads from arbitrary paths | P2 | A01 | `compute_report(source)` accepts any path | ✅ Closed (INVALID — web API uses streaming, no disk I/O) |
@@ -385,7 +386,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | API-6 | `/stream/job/{job_id}` returns 200 for missing jobs | P1 | Clients can't distinguish success/failure | Return 404 |
 | API-11 | `/import/batch-design` unbounded `list[BeamRow]` | P1 | 10,000+ beams blocks worker | Add `max_length` + `asyncio.to_thread()` |
 | API-8 | `/detailing/bar-areas` returns untyped `dict` | P2 | No OpenAPI response schema | ✅ Fixed — Created BarAreasResponse model |
-| API-9 | Health check shallow | P2 | Always returns `healthy` | Add smoke calculation |
+| API-9 | Health check shallow | P2 | Always returns `healthy` | ✅ Fixed — Added smoke calculation with 30s cache |
 | API-10 | Export DXF non-standard MIME type | P2 | `application/dxf` not IANA-registered | ✅ Fixed — Changed to `application/octet-stream` |
 
 ---

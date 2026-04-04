@@ -7,11 +7,28 @@ using StreamingResponse for efficient delivery.
 
 import html as html_lib
 import io
+import re
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
+
+
+def sanitize_filename(name: str) -> str:
+    """Sanitize a string for safe use in Content-Disposition headers."""
+    name = (
+        name.replace("\r", "")
+        .replace("\n", "")
+        .replace('"', "")
+        .replace(";", "")
+        .replace("\0", "")
+    )
+    name = name.replace("..", "_")
+    name = re.sub(r"[^A-Za-z0-9_\-\.]", "", name)
+    name = name[:50]
+    return name or "export"
+
 
 router = APIRouter(
     prefix="/export",
@@ -154,7 +171,7 @@ async def export_bbs(request: ExportBeamRequest):
         buf,
         media_type="text/csv",
         headers={
-            "Content-Disposition": f'attachment; filename="BBS_{request.beam_id}.csv"'
+            "Content-Disposition": f'attachment; filename="BBS_{sanitize_filename(request.beam_id)}.csv"'
         },
     )
 
@@ -191,7 +208,7 @@ async def export_dxf(request: ExportBeamRequest):
         io.BytesIO(dxf_bytes),
         media_type="application/octet-stream",
         headers={
-            "Content-Disposition": f'attachment; filename="{request.beam_id}.dxf"'
+            "Content-Disposition": f'attachment; filename="{sanitize_filename(request.beam_id)}.dxf"'
         },
     )
 
@@ -267,7 +284,7 @@ async def export_report(request: ExportReportRequest):
             io.BytesIO(pdf_bytes),
             media_type="application/pdf",
             headers={
-                "Content-Disposition": f'attachment; filename="Report_{request.beam_id}.pdf"'
+                "Content-Disposition": f'attachment; filename="Report_{sanitize_filename(request.beam_id)}.pdf"'
             },
         )
     elif request.format == "html":
@@ -276,7 +293,7 @@ async def export_report(request: ExportReportRequest):
             io.BytesIO(content.encode("utf-8")),
             media_type="text/html",
             headers={
-                "Content-Disposition": f'attachment; filename="Report_{request.beam_id}.html"'
+                "Content-Disposition": f'attachment; filename="Report_{sanitize_filename(request.beam_id)}.html"'
             },
         )
     else:
@@ -285,7 +302,7 @@ async def export_report(request: ExportReportRequest):
             io.BytesIO(content.encode("utf-8")),
             media_type="application/json",
             headers={
-                "Content-Disposition": f'attachment; filename="Report_{request.beam_id}.json"'
+                "Content-Disposition": f'attachment; filename="Report_{sanitize_filename(request.beam_id)}.json"'
             },
         )
 

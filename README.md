@@ -93,7 +93,7 @@ pip install "structural-lib-is456[validation]" # Input validation
 pip install "structural-lib-is456[render]"     # DXF render to image
 ```
 
-Package naming: install `structural-lib-is456`, import `structural_lib`, CLI `python3 -m structural_lib`.
+> **💡 Package Naming:** Install with `pip install structural-lib-is456`, but import as `structural_lib` in Python code. CLI: `python3 -m structural_lib`.
 
 </details>
 
