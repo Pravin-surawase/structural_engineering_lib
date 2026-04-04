@@ -215,3 +215,10 @@ tags: []
 | 2026-04-05 | P2-Batch4 | GOV-4: Release process in CONTRIBUTING.md | pending |
 | 2026-04-05 | P2-Batch4 | FE-4: Parameter tooltips in BeamForm | pending |
 | 2026-04-05 | P2-Batch4 | OPS-6: Closed (already done) | pending |
+2026-04-05 | P2-B5 | DOC-1: Updated PyPI description (beams + columns + footings) | —
+2026-04-05 | P2-B5 | DOC-2: Created MANIFEST.in for py.typed in sdist | —
+2026-04-05 | P2-B5 | DOC-3: Fixed examples README (9 actual files, was 4 non-existent) | —
+2026-04-05 | P2-B5 | OPS-2: Updated publish.yml + link-check.yml action versions | —
+2026-04-05 | P2-B5 | OPS-7: Docker JWT secret fail-fast (no insecure default) | —
+2026-04-05 | P2-B5 | UX-7: Added prefers-reduced-motion support (CSS + hook + HomePage guards) | —
+2026-04-05 | P2-B5 | FE-8: WebGL context loss handling (hook + recovery UI in Viewport3D) | —
