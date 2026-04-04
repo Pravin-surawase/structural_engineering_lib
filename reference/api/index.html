@@ -2995,6 +2995,78 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#17-footing-design-module-codesis456footing-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Footing Design Module (codes/is456/footing/) — v0.21+
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Footing Design Module (codes/is456/footing/) — v0.21+">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171-footing-sizing-size_footing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Footing Sizing (size_footing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-footing-flexure-footing_flexure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 Footing Flexure (footing_flexure)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-one-way-shear-footing_one_way_shear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 One-Way Shear (footing_one_way_shear)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#174-punching-shear-footing_punching_shear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 Punching Shear (footing_punching_shear)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#175-usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 Usage Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5572,6 +5644,78 @@
     <span class="md-ellipsis">
       
         design_column_is456(Pu_kN, Mux_kNm=0.0, Muy_kNm=0.0, b_mm=0.0, D_mm=0.0, l_mm=0.0, end_condition='FIXED_FIXED', fck=25.0, fy=415.0, Asc_mm2=0.0, d_prime_mm=50.0, l_unsupported_mm=None, braced=True, M1x_kNm=None, M2x_kNm=None, M1y_kNm=None, M2y_kNm=None) → dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-footing-design-module-codesis456footing-v021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Footing Design Module (codes/is456/footing/) — v0.21+
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Footing Design Module (codes/is456/footing/) — v0.21+">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171-footing-sizing-size_footing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Footing Sizing (size_footing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-footing-flexure-footing_flexure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 Footing Flexure (footing_flexure)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-one-way-shear-footing_one_way_shear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 One-Way Shear (footing_one_way_shear)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#174-punching-shear-footing_punching_shear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 Punching Shear (footing_punching_shear)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#175-usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 Usage Example
       
     </span>
   </a>
@@ -9285,6 +9429,295 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <a id="__codelineno-139-10" name="__codelineno-139-10" href="#__codelineno-139-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Governing: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;governing_check&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column</code></p>
+<hr />
+<h2 id="17-footing-design-module-codesis456footing-v021">17. Footing Design Module (<code>codes/is456/footing/</code>) — v0.21+<a class="headerlink" href="#17-footing-design-module-codesis456footing-v021" title="Permanent link">&para;</a></h2>
+<p>IS 456 isolated footing design functions. These functions are in the <strong>IS 456 codes layer</strong> (<code>codes/is456/footing/</code>). They are <strong>not yet exposed</strong> through the services API (<code>services/api.py</code>).</p>
+<p><strong>Import path:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-140-1" name="__codelineno-140-1" href="#__codelineno-140-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.footing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-140-2" name="__codelineno-140-2" href="#__codelineno-140-2"></a>    <span class="n">size_footing</span><span class="p">,</span>
+<a id="__codelineno-140-3" name="__codelineno-140-3" href="#__codelineno-140-3"></a>    <span class="n">footing_flexure</span><span class="p">,</span>
+<a id="__codelineno-140-4" name="__codelineno-140-4" href="#__codelineno-140-4"></a>    <span class="n">footing_one_way_shear</span><span class="p">,</span>
+<a id="__codelineno-140-5" name="__codelineno-140-5" href="#__codelineno-140-5"></a>    <span class="n">footing_punching_shear</span><span class="p">,</span>
+<a id="__codelineno-140-6" name="__codelineno-140-6" href="#__codelineno-140-6"></a><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="171-footing-sizing-size_footing">17.1 Footing Sizing (<code>size_footing</code>)<a class="headerlink" href="#171-footing-sizing-size_footing" title="Permanent link">&para;</a></h3>
+<p>Size an isolated footing for safe bearing capacity per IS 456 Cl 34.1. Uses <strong>service (unfactored)</strong> loads for sizing as required by IS 456.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-141-1" name="__codelineno-141-1" href="#__codelineno-141-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">size_footing</span><span class="p">(</span>
+<a id="__codelineno-141-2" name="__codelineno-141-2" href="#__codelineno-141-2"></a>    <span class="n">P_service_kN</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-141-3" name="__codelineno-141-3" href="#__codelineno-141-3"></a>    <span class="n">q_safe_kPa</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-141-4" name="__codelineno-141-4" href="#__codelineno-141-4"></a>    <span class="n">a_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-141-5" name="__codelineno-141-5" href="#__codelineno-141-5"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-141-6" name="__codelineno-141-6" href="#__codelineno-141-6"></a>    <span class="n">M_service_kNm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<a id="__codelineno-141-7" name="__codelineno-141-7" href="#__codelineno-141-7"></a>    <span class="n">footing_type</span><span class="p">:</span> <span class="n">FootingType</span> <span class="o">=</span> <span class="n">FootingType</span><span class="o">.</span><span class="n">ISOLATED_SQUARE</span><span class="p">,</span>
+<a id="__codelineno-141-8" name="__codelineno-141-8" href="#__codelineno-141-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FootingBearingResult</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>P_service_kN</code></td>
+<td><code>float</code></td>
+<td>Service (unfactored) axial load (kN). Must be &gt; 0</td>
+</tr>
+<tr>
+<td><code>q_safe_kPa</code></td>
+<td><code>float</code></td>
+<td>Safe bearing capacity of soil (kPa = kN/m²). Must be &gt; 0</td>
+</tr>
+<tr>
+<td><code>a_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to footing length (mm)</td>
+</tr>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to footing width (mm)</td>
+</tr>
+<tr>
+<td><code>M_service_kNm</code></td>
+<td><code>float</code></td>
+<td>Service moment (kN·m). Default: 0.0 (concentric)</td>
+</tr>
+<tr>
+<td><code>footing_type</code></td>
+<td><code>FootingType</code></td>
+<td><code>ISOLATED_SQUARE</code> or <code>ISOLATED_RECTANGULAR</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>FootingBearingResult</code> with sized footing dimensions and bearing check.</p>
+<p><strong>Reference:</strong> IS 456:2000, Cl. 34.1</p>
+<p><strong>File:</strong> <code>codes/is456/footing/bearing.py</code></p>
+<hr />
+<h3 id="172-footing-flexure-footing_flexure">17.2 Footing Flexure (<code>footing_flexure</code>)<a class="headerlink" href="#172-footing-flexure-footing_flexure" title="Permanent link">&para;</a></h3>
+<p>Calculate bending moment and required steel at column face per IS 456 Cl 34.2.3.1. Designs steel in <strong>both directions</strong> independently. For rectangular footings, applies Cl 34.3.1 steel distribution (central band). Uses <strong>factored</strong> loads.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-142-1" name="__codelineno-142-1" href="#__codelineno-142-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">footing_flexure</span><span class="p">(</span>
+<a id="__codelineno-142-2" name="__codelineno-142-2" href="#__codelineno-142-2"></a>    <span class="n">Pu_kN</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-3" name="__codelineno-142-3" href="#__codelineno-142-3"></a>    <span class="n">L_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-4" name="__codelineno-142-4" href="#__codelineno-142-4"></a>    <span class="n">B_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-5" name="__codelineno-142-5" href="#__codelineno-142-5"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-6" name="__codelineno-142-6" href="#__codelineno-142-6"></a>    <span class="n">a_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-7" name="__codelineno-142-7" href="#__codelineno-142-7"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-8" name="__codelineno-142-8" href="#__codelineno-142-8"></a>    <span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-9" name="__codelineno-142-9" href="#__codelineno-142-9"></a>    <span class="n">fy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-142-10" name="__codelineno-142-10" href="#__codelineno-142-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FootingFlexureResult</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pu_kN</code></td>
+<td><code>float</code></td>
+<td>Factored axial load (kN)</td>
+</tr>
+<tr>
+<td><code>L_mm</code></td>
+<td><code>float</code></td>
+<td>Footing length (mm)</td>
+</tr>
+<tr>
+<td><code>B_mm</code></td>
+<td><code>float</code></td>
+<td>Footing width (mm)</td>
+</tr>
+<tr>
+<td><code>d_mm</code></td>
+<td><code>float</code></td>
+<td>Effective depth (mm)</td>
+</tr>
+<tr>
+<td><code>a_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to L (mm)</td>
+</tr>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to B (mm)</td>
+</tr>
+<tr>
+<td><code>fck</code></td>
+<td><code>float</code></td>
+<td>Characteristic concrete strength (N/mm²)</td>
+</tr>
+<tr>
+<td><code>fy</code></td>
+<td><code>float</code></td>
+<td>Steel yield strength (N/mm²)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>FootingFlexureResult</code> with moment and steel area for both directions.</p>
+<p><strong>Reference:</strong> IS 456:2000, Cl. 34.2.3.1, 34.3.1, 26.5.2.1</p>
+<p><strong>File:</strong> <code>codes/is456/footing/flexure.py</code></p>
+<hr />
+<h3 id="173-one-way-shear-footing_one_way_shear">17.3 One-Way Shear (<code>footing_one_way_shear</code>)<a class="headerlink" href="#173-one-way-shear-footing_one_way_shear" title="Permanent link">&para;</a></h3>
+<p>Check one-way shear at distance d from column face per IS 456 Cl 34.2.4.1(a). Checks <strong>both directions</strong> independently and reports the governing (worse utilization) direction. Uses <strong>factored</strong> loads.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-143-1" name="__codelineno-143-1" href="#__codelineno-143-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">footing_one_way_shear</span><span class="p">(</span>
+<a id="__codelineno-143-2" name="__codelineno-143-2" href="#__codelineno-143-2"></a>    <span class="n">Pu_kN</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-3" name="__codelineno-143-3" href="#__codelineno-143-3"></a>    <span class="n">L_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-4" name="__codelineno-143-4" href="#__codelineno-143-4"></a>    <span class="n">B_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-5" name="__codelineno-143-5" href="#__codelineno-143-5"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-6" name="__codelineno-143-6" href="#__codelineno-143-6"></a>    <span class="n">a_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-7" name="__codelineno-143-7" href="#__codelineno-143-7"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-8" name="__codelineno-143-8" href="#__codelineno-143-8"></a>    <span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-143-9" name="__codelineno-143-9" href="#__codelineno-143-9"></a>    <span class="n">pt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
+<a id="__codelineno-143-10" name="__codelineno-143-10" href="#__codelineno-143-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FootingOneWayShearResult</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pu_kN</code></td>
+<td><code>float</code></td>
+<td>Factored axial load (kN)</td>
+</tr>
+<tr>
+<td><code>L_mm</code></td>
+<td><code>float</code></td>
+<td>Footing length (mm)</td>
+</tr>
+<tr>
+<td><code>B_mm</code></td>
+<td><code>float</code></td>
+<td>Footing width (mm)</td>
+</tr>
+<tr>
+<td><code>d_mm</code></td>
+<td><code>float</code></td>
+<td>Effective depth (mm)</td>
+</tr>
+<tr>
+<td><code>a_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to L (mm)</td>
+</tr>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to B (mm)</td>
+</tr>
+<tr>
+<td><code>fck</code></td>
+<td><code>float</code></td>
+<td>Characteristic concrete strength (N/mm²)</td>
+</tr>
+<tr>
+<td><code>pt</code></td>
+<td><code>float</code></td>
+<td>Steel percentage for Table 19 lookup. Default: 0.15%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> No <code>fy</code> or <code>direction</code> parameter. Takes <code>pt</code> (steel percentage) directly and checks <strong>both directions</strong> internally.</p>
+</blockquote>
+<p><strong>Returns:</strong> <code>FootingOneWayShearResult</code> with governing direction info.</p>
+<p><strong>Reference:</strong> IS 456:2000, Cl. 34.2.4.1(a)</p>
+<p><strong>File:</strong> <code>codes/is456/footing/one_way_shear.py</code></p>
+<hr />
+<h3 id="174-punching-shear-footing_punching_shear">17.4 Punching Shear (<code>footing_punching_shear</code>)<a class="headerlink" href="#174-punching-shear-footing_punching_shear" title="Permanent link">&para;</a></h3>
+<p>Check punching (two-way) shear per IS 456 Cl 31.6.1. Critical perimeter at d/2 from column face. Permissible stress: ks × 0.25 × √fck where ks = min(1.0, 0.5 + βc). Uses <strong>factored</strong> loads.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-144-1" name="__codelineno-144-1" href="#__codelineno-144-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">footing_punching_shear</span><span class="p">(</span>
+<a id="__codelineno-144-2" name="__codelineno-144-2" href="#__codelineno-144-2"></a>    <span class="n">Pu_kN</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-3" name="__codelineno-144-3" href="#__codelineno-144-3"></a>    <span class="n">L_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-4" name="__codelineno-144-4" href="#__codelineno-144-4"></a>    <span class="n">B_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-5" name="__codelineno-144-5" href="#__codelineno-144-5"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-6" name="__codelineno-144-6" href="#__codelineno-144-6"></a>    <span class="n">a_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-7" name="__codelineno-144-7" href="#__codelineno-144-7"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-8" name="__codelineno-144-8" href="#__codelineno-144-8"></a>    <span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-144-9" name="__codelineno-144-9" href="#__codelineno-144-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FootingPunchingResult</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pu_kN</code></td>
+<td><code>float</code></td>
+<td>Factored axial load (kN)</td>
+</tr>
+<tr>
+<td><code>L_mm</code></td>
+<td><code>float</code></td>
+<td>Footing length (mm)</td>
+</tr>
+<tr>
+<td><code>B_mm</code></td>
+<td><code>float</code></td>
+<td>Footing width (mm)</td>
+</tr>
+<tr>
+<td><code>d_mm</code></td>
+<td><code>float</code></td>
+<td>Effective depth (mm)</td>
+</tr>
+<tr>
+<td><code>a_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to L (mm)</td>
+</tr>
+<tr>
+<td><code>b_mm</code></td>
+<td><code>float</code></td>
+<td>Column dimension parallel to B (mm)</td>
+</tr>
+<tr>
+<td><code>fck</code></td>
+<td><code>float</code></td>
+<td>Characteristic concrete strength (N/mm²)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> No <code>fy</code> parameter — punching shear capacity depends only on concrete strength per Cl 31.6.3.</p>
+</blockquote>
+<p><strong>Returns:</strong> <code>FootingPunchingResult</code> with punching shear check.</p>
+<p><strong>Reference:</strong> IS 456:2000, Cl. 31.6.1, 31.6.3</p>
+<p><strong>File:</strong> <code>codes/is456/footing/punching_shear.py</code></p>
+<hr />
+<h3 id="175-usage-example">17.5 Usage Example<a class="headerlink" href="#175-usage-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-145-1" name="__codelineno-145-1" href="#__codelineno-145-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.footing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-145-2" name="__codelineno-145-2" href="#__codelineno-145-2"></a>    <span class="n">size_footing</span><span class="p">,</span> <span class="n">footing_flexure</span><span class="p">,</span> <span class="n">footing_one_way_shear</span><span class="p">,</span> <span class="n">footing_punching_shear</span><span class="p">,</span>
+<a id="__codelineno-145-3" name="__codelineno-145-3" href="#__codelineno-145-3"></a><span class="p">)</span>
+<a id="__codelineno-145-4" name="__codelineno-145-4" href="#__codelineno-145-4"></a>
+<a id="__codelineno-145-5" name="__codelineno-145-5" href="#__codelineno-145-5"></a><span class="c1"># Step 1: Size footing using SERVICE loads (Cl 34.1)</span>
+<a id="__codelineno-145-6" name="__codelineno-145-6" href="#__codelineno-145-6"></a><span class="n">bearing</span> <span class="o">=</span> <span class="n">size_footing</span><span class="p">(</span><span class="n">P_service_kN</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">q_safe_kPa</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">a_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<a id="__codelineno-145-7" name="__codelineno-145-7" href="#__codelineno-145-7"></a><span class="n">L</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">bearing</span><span class="o">.</span><span class="n">L_mm</span><span class="p">,</span> <span class="n">bearing</span><span class="o">.</span><span class="n">B_mm</span>
+<a id="__codelineno-145-8" name="__codelineno-145-8" href="#__codelineno-145-8"></a>
+<a id="__codelineno-145-9" name="__codelineno-145-9" href="#__codelineno-145-9"></a><span class="c1"># Step 2: Design for flexure using FACTORED loads</span>
+<a id="__codelineno-145-10" name="__codelineno-145-10" href="#__codelineno-145-10"></a><span class="n">flex</span> <span class="o">=</span> <span class="n">footing_flexure</span><span class="p">(</span><span class="n">Pu_kN</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">L_mm</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">B_mm</span><span class="o">=</span><span class="n">B</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">a_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">)</span>
+<a id="__codelineno-145-11" name="__codelineno-145-11" href="#__codelineno-145-11"></a>
+<a id="__codelineno-145-12" name="__codelineno-145-12" href="#__codelineno-145-12"></a><span class="c1"># Step 3: Check one-way shear</span>
+<a id="__codelineno-145-13" name="__codelineno-145-13" href="#__codelineno-145-13"></a><span class="n">ows</span> <span class="o">=</span> <span class="n">footing_one_way_shear</span><span class="p">(</span><span class="n">Pu_kN</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">L_mm</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">B_mm</span><span class="o">=</span><span class="n">B</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">a_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<a id="__codelineno-145-14" name="__codelineno-145-14" href="#__codelineno-145-14"></a>
+<a id="__codelineno-145-15" name="__codelineno-145-15" href="#__codelineno-145-15"></a><span class="c1"># Step 4: Check punching shear</span>
+<a id="__codelineno-145-16" name="__codelineno-145-16" href="#__codelineno-145-16"></a><span class="n">punch</span> <span class="o">=</span> <span class="n">footing_punching_shear</span><span class="p">(</span><span class="n">Pu_kN</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">L_mm</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">B_mm</span><span class="o">=</span><span class="n">B</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">a_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div>
 
 
 
