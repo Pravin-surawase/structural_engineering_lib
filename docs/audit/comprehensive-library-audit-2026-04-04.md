@@ -292,9 +292,9 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 
 | ID | Finding | Priority | Description | Fix |
 |----|---------|----------|-------------|-----|
-| DOC-1 | PyPI description says "RC Beam Design" — now has columns + footings | P1 | Update `pyproject.toml` description |
-| DOC-2 | Missing MANIFEST.in — `py.typed` excluded from sdist | P1 | Create `Python/MANIFEST.in` |
-| DOC-3 | Examples README lists 4 non-existent files; no column/footing examples | P1 | Rewrite with actual files |
+| DOC-1 | PyPI description says "RC Beam Design" — now has columns + footings | P1 | Update `pyproject.toml` description | ✅ Fixed — Updated description to include columns & footings |
+| DOC-2 | Missing MANIFEST.in — `py.typed` excluded from sdist | P1 | Create `Python/MANIFEST.in` | ✅ Fixed — Created MANIFEST.in |
+| DOC-3 | Examples README lists 4 non-existent files; no column/footing examples | P1 | Rewrite with actual files | ✅ Fixed — Rewritten with actual example files |
 | DOC-4 | api.md missing footing section (0/4 functions documented) | P0 | Add Section 17 for footings |
 | DOC-5 | No clause-to-function mapping | P1 | Create `clause_map.json` |
 | DOC-6 | Quickstart doesn't cover columns/footings | P1 | Update with new element examples |
@@ -353,9 +353,9 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | ID | Finding | Priority | Description | Fix |
 |----|---------|----------|-------------|-----|
 | OPS-1 | **Nightly CI refs non-existent paths, always passes** | **P0** | Decorative CI — never fails | Fix paths or remove workflow |
-| OPS-2 | `publish.yml` uses old action versions | P1 | Security risk from outdated actions | Update to latest versions |
+| OPS-2 | `publish.yml` uses old action versions | P1 | Security risk from outdated actions | Update to latest versions | ✅ Fixed — Updated to checkout@v6, setup-python@v6, upload-artifact@v7, download-artifact@v8 |
 | OPS-3 | No Python dependency lock file | P1 | Non-reproducible builds | Add `requirements-lock.txt` or `pip-compile` |
-| OPS-7 | Docker compose default JWT secret | P1 | Insecure default | Use env var with no default |
+| OPS-7 | Docker compose default JWT secret | P1 | Insecure default | Use env var with no default | ✅ Fixed — Changed to fail-fast ${JWT_SECRET_KEY:?} syntax |
 | OPS-8 | No React build in PR CI | P1 | React breakage undetected until merge | Add `npm run build` to PR workflow |
 | OPS-4 | Dockerfile IPv4 only (`--host 0.0.0.0`) | P2 | Won't work in IPv6-only envs | ✅ Fixed — Bound to `::` |
 | OPS-5 | SBOM only on release | P2 | Vulnerability gaps between releases | Run SBOM weekly |
@@ -369,7 +369,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 |----|---------|----------|-------------|-----|
 | FE-6 | No ErrorBoundary in App.tsx | P1 | Component exists but not used at top level | Wrap with `<ErrorBoundary>` |
 | FE-7 | No Three.js memory cleanup | P1 | Materials/geometries never disposed on route switch | Add `.dispose()` in cleanup |
-| FE-8 | No WebGL context loss handling | P1 | GPU context loss breaks 3D viewport | Add context loss/restore listeners |
+| FE-8 | No WebGL context loss handling | P1 | GPU context loss breaks 3D viewport | Add context loss/restore listeners | ✅ Fixed — Added useWebGLContextLoss hook + context loss UI |
 | FE-9 | No offline/network error handling | P1 | No `navigator.onLine`; cryptic fetch errors | Add offline banner |
 | FE-11 | High memory pressure during build (1536MB) | P1 | Default Node memory insufficient | Optimize dependency tree |
 | FE-12 | Limited keyboard navigation | P1 | WCAG 2.1 Level A requires full keyboard operability | Add tabIndex/onKeyDown |
@@ -414,7 +414,7 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | UX-3 | Inconsistent status color system | P1 | "Safe" is green in one component, blue in another | Standardize status palette |
 | UX-4 | No print/PDF-ready layout | P1 | Browser print of results is unusable | Add `@media print` styles |
 | UX-5 | Critical status buried in hierarchy | P1 | Pass/fail not immediately visible | Elevate status to top |
-| UX-7 | No reduced motion support | P1 | Animations ignore `prefers-reduced-motion` | Add media query respect |
+| UX-7 | No reduced motion support | P1 | Animations ignore `prefers-reduced-motion` | Add media query respect | ✅ Fixed — Added prefers-reduced-motion CSS + useReducedMotion hook |
 | UX-10 | 3D viewport has no non-visual alternative | P1 | Screen readers get zero info from WebGL | Add text description fallback |
 | UX-8 | No guided onboarding flow | P2 | New users must discover workflow themselves | Add first-use walkthrough |
 | UX-9 | Two competing design interfaces | P2 | DesignView vs BuildingEditorPage unclear | Consolidate or add routing |
@@ -581,7 +581,7 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ### P2 — Nice to Have (52 findings)
 
-52 P2 findings across all sections (24 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Batch 3 — S-19, API-9, A-2, U-2, PH-3, IS-3, T-8; Batch 4 — S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4; Closed — S-16, S-22 invalid, OPS-6 already done). Key themes: Docs/Packaging (~~DOC-7~~, ~~PH-3~~, PH-4, PH-5, ~~U-2~~, GOV-3, ~~GOV-4~~), Security hardening (~~S-17~~, ~~S-19~~, ~~S-20~~, ~~S-21~~, ~~S-23~~, ~~OPS-4~~, OPS-5, ~~OPS-6~~), Math quality (~~SM-6–SM-10~~, IS-1, ~~IS-3~~, IS-6), Frontend polish (FE-3, ~~FE-4~~, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (~~T-8~~, ~~T-13~~, ~~BE-2~~, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).
+52 P2 findings across all sections (38 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Batch 3 — S-19, API-9, A-2, U-2, PH-3, IS-3, T-8; Batch 4 — S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4; Batch 5 — DOC-1, DOC-2, DOC-3, OPS-2, OPS-7, UX-7, FE-8; Closed — S-16, S-22 invalid, OPS-6 already done). Key themes: Docs/Packaging (~~DOC-7~~, ~~PH-3~~, PH-4, PH-5, ~~U-2~~, GOV-3, ~~GOV-4~~), Security hardening (~~S-17~~, ~~S-19~~, ~~S-20~~, ~~S-21~~, ~~S-23~~, ~~OPS-4~~, OPS-5, ~~OPS-6~~), Math quality (~~SM-6–SM-10~~, IS-1, ~~IS-3~~, IS-6), Frontend polish (FE-3, ~~FE-4~~, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (~~T-8~~, ~~T-13~~, ~~BE-2~~, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).
 
 ---
 

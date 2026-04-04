@@ -7,7 +7,7 @@ services:
       - "8000:8000"
     environment:
       # WARNING: Set JWT_SECRET_KEY in .env before deploying. See .env.example.
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-change-me-in-production}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set - see .env.example}
       - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}
       - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-60}
     security_opt:

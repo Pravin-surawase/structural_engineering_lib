@@ -17,6 +17,7 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { useDesignStore } from '../../store/designStore';
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
 import { useBeamGeometry } from '../../hooks/useBeamGeometry';
+import { useWebGLContextLoss } from '../../hooks/useWebGLContextLoss';
 import type { RebarPath, StirrupLoop } from '../../hooks/useBeamGeometry';
 import { deriveBeamStatus } from '../../utils/beamStatus';
 import type { BeamCSVRow } from '../../types/csv';
@@ -200,6 +201,7 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
  * Supports color-coding by design status.
  */
 function BuildingFrame() {
+  const contextLost = useWebGLContextLoss();
   const { beams, selectedId, selectedFloor, selectBeam } = useImportedBeamsStore();
   const { camera } = useThree();
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
@@ -366,6 +368,23 @@ function BuildingFrame() {
       transition.active = false;
     }
   });
+
+  if (contextLost) {
+    return (
+      <Html center>
+        <div className="px-4 py-3 bg-zinc-900/95 border border-zinc-700 rounded-lg text-white text-sm text-center">
+          <p className="font-semibold mb-1">3D View Interrupted</p>
+          <p className="text-xs text-zinc-400">WebGL context lost. The view will restore automatically.</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded text-xs"
+          >
+            Reload Page
+          </button>
+        </div>
+      </Html>
+    );
+  }
 
   return (
     <>
@@ -772,6 +791,7 @@ interface SceneProps {
 }
 
 function Scene({ overrideGeometry, overrideDimensions }: SceneProps) {
+  const contextLost = useWebGLContextLoss();
   const { inputs, length, result } = useDesignStore();
 
   // Use override dimensions when provided (e.g. from BeamDetailPanel in Editor)
@@ -826,6 +846,23 @@ function Scene({ overrideGeometry, overrideDimensions }: SceneProps) {
   const { data: geometry } = useBeamGeometry(geometryParams, { enabled: result !== null });
 
   const activeGeometry = overrideGeometry ?? geometry;
+
+  if (contextLost) {
+    return (
+      <Html center>
+        <div className="px-4 py-3 bg-zinc-900/95 border border-zinc-700 rounded-lg text-white text-sm text-center">
+          <p className="font-semibold mb-1">3D View Interrupted</p>
+          <p className="text-xs text-zinc-400">WebGL context lost. The view will restore automatically.</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded text-xs"
+          >
+            Reload Page
+          </button>
+        </div>
+      </Html>
+    );
+  }
 
   return (
     <>

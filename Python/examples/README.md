@@ -1,34 +1,31 @@
-# Examples - Python Usage Examples
+# Examples — Python Usage Examples
 
-> **Purpose:** Example scripts demonstrating library usage
-> **Last Updated:** 2026-01-10
+> **Purpose:** Example scripts demonstrating structural_lib usage
+> **Last Updated:** 2026-04-05
 
 ## Contents
 
 | File | Demonstrates |
-|------|--------------|
-| `basic_beam_design.py` | Simple beam design workflow |
-| `batch_design.py` | Processing multiple beams |
-| `excel_integration.py` | Excel input/output |
-| `dxf_export.py` | DXF drawing generation |
+|------|-------------|
+| `simple_examples.py` | Quick-start beam design snippets |
+| `complete_beam_design.py` | Full beam design workflow |
+| `professional_workflow.py` | Production-grade beam design |
+| `bmd_sfd_example.py` | Bending moment & shear force diagrams |
+| `canonical_data_workflow.py` | Pydantic-based canonical data pipeline |
+| `full_pipeline_synthetic.py` | End-to-end pipeline with synthetic data |
+| `colab_workflow.py` | Google Colab notebook workflow |
+| `demo_intelligence.py` | Design intelligence features |
+| `validate_intelligence.py` | Intelligence validation checks |
+
+## Missing Examples (TODO)
+
+- [ ] Column design example (`column_design.py`)
+- [ ] Footing design example (`footing_design.py`)
+- [ ] DXF export example (`dxf_export.py`)
+- [ ] Batch multi-beam design (`batch_design.py`)
 
 ## Running Examples
 
 ```bash
-cd Python
-.venv/bin/python examples/basic_beam_design.py
+.venv/bin/python Python/examples/simple_examples.py
 ```
-
-## Guidelines
-
-1. **Keep examples simple** - Focus on one concept per file
-2. **Add comments** - Explain what's happening
-3. **Use realistic values** - IS 456 standard cases
-4. **Show output** - Include expected output in comments
-
-## For AI Agents
-
-When adding examples:
-- Test that example runs without errors
-- Don't duplicate existing examples
-- Follow naming: `<feature>_example.py`

@@ -8,9 +8,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Float } from "@react-three/drei";
 import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 /** Animated beam construction (12s build + continuous rotation) */
 function AnimatedBeamConstruction() {
+  const prefersReducedMotion = useReducedMotion();
   const elapsed = useRef(0);
   const groupRef = useRef<THREE.Group>(null);
   const constructionComplete = useRef(false);
@@ -90,6 +92,45 @@ function AnimatedBeamConstruction() {
   }, []);
 
   useFrame((_, delta) => {
+    // Skip animations if user prefers reduced motion
+    if (prefersReducedMotion) {
+      // Show final state - all elements visible, construction complete
+      if (formworkRef.current) {
+        formworkRef.current.scale.setScalar(1);
+        (formworkRef.current.material as THREE.LineBasicMaterial).opacity = 0.3;
+      }
+      if (concreteRef.current) {
+        (concreteRef.current.material as THREE.MeshPhysicalMaterial).opacity = 0.45;
+      }
+      if (bottomRebarsRef.current) {
+        bottomRebarsRef.current.children.forEach((rebar) => {
+          rebar.position.x = 0;
+          ((rebar as THREE.Mesh).material as THREE.MeshStandardMaterial).opacity = 0.85;
+        });
+      }
+      if (topRebarsRef.current) {
+        topRebarsRef.current.children.forEach((rebar) => {
+          rebar.position.x = 0;
+          ((rebar as THREE.Mesh).material as THREE.MeshStandardMaterial).opacity = 0.85;
+        });
+      }
+      if (stirrupsRef.current) {
+        stirrupsRef.current.children.forEach((stirrup) => {
+          stirrup.scale.set(1, 1, 1);
+          ((stirrup as THREE.LineSegments).material as THREE.LineBasicMaterial).opacity = 0.75;
+        });
+      }
+      if (loadsRef.current) {
+        loadsRef.current.children.forEach((load) => {
+          load.scale.setScalar(1);
+          load.children.forEach((child) => {
+            ((child as THREE.Mesh).material as THREE.MeshStandardMaterial).opacity = 0.85;
+          });
+        });
+      }
+      return;
+    }
+
     elapsed.current += delta;
     const t = elapsed.current;
 
@@ -273,6 +314,7 @@ function AnimatedBeamConstruction() {
 
 export function HomePage() {
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div className="relative w-screen h-screen bg-zinc-950 overflow-hidden">
@@ -284,7 +326,7 @@ export function HomePage() {
             <directionalLight position={[5, 5, 5]} intensity={0.5} />
             <pointLight position={[-5, -5, -5]} intensity={0.3} color="#a78bfa" />
             <AnimatedBeamConstruction />
-            <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.3} />
+            <OrbitControls enableZoom={false} enablePan={false} autoRotate={!prefersReducedMotion} autoRotateSpeed={0.3} />
           </Suspense>
         </Canvas>
       </div>
@@ -300,7 +342,7 @@ export function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: prefersReducedMotion ? 0 : 0.3 }}
           className="flex flex-col items-center text-center px-6 py-8 rounded-2xl max-w-xl pointer-events-auto"
           style={{
             background: "rgba(0, 0, 0, 0.25)",
@@ -312,7 +354,7 @@ export function HomePage() {
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
             className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6"
           >
             <svg
@@ -329,7 +371,7 @@ export function HomePage() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.7 }}
             className="text-4xl font-bold text-white tracking-tight mb-3"
           >
             StructLib
@@ -339,7 +381,7 @@ export function HomePage() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.9 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.9 }}
             className="text-sm text-white/60 mb-8"
           >
             IS 456:2000 Beam Design — Precision. Visualization. Export.
@@ -349,19 +391,19 @@ export function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.1 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : 1.1 }}
             className="flex items-center gap-4"
           >
             {/* Primary CTA */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
               onClick={() => navigate("/design")}
               className="group relative px-8 py-3 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-shadow flex items-center gap-2 overflow-hidden"
             >
               <div
                 className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-600 to-blue-500 bg-[length:200%_100%]"
-                style={{ animation: "shimmer 3s linear infinite" }}
+                style={{ animation: prefersReducedMotion ? 'none' : 'shimmer 3s linear infinite' }}
               />
               <span className="relative z-10 flex items-center gap-2">
                 Start Designing
@@ -371,8 +413,8 @@ export function HomePage() {
 
             {/* Secondary CTA - Ghost Button */}
             <motion.button
-              whileHover={{ scale: 1.05, borderColor: "rgba(255, 255, 255, 0.25)" }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05, borderColor: "rgba(255, 255, 255, 0.25)" }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
               onClick={() => navigate("/import")}
               className="px-8 py-3 text-white font-semibold rounded-xl border-2 border-white/15 hover:bg-white/5 transition-all"
             >

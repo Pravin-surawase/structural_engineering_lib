@@ -1,0 +1,3 @@
+include structural_lib/py.typed
+include LICENSE
+include README.md
