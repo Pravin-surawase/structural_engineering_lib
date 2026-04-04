@@ -25,7 +25,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, AsyncGenerator
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
 from sse_starlette.sse import EventSourceResponse
 
 from structural_lib import batch
@@ -276,7 +276,7 @@ async def stream_batch_design(
 
 @router.get("/job/{job_id}")
 async def get_job_status(
-    job_id: str,
+    job_id: str = Path(..., pattern=r"^[a-f0-9]{8}$", description="Batch job ID"),
     _: None = Depends(check_rate_limit),
 ) -> dict:
     """
@@ -286,7 +286,7 @@ async def get_job_status(
     """
     job = job_manager.get_job(job_id)
     if not job:
-        return {"error": "Job not found", "job_id": job_id}
+        raise HTTPException(status_code=404, detail="Job not found")
 
     return {
         "job_id": job["id"],

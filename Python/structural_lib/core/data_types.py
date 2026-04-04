@@ -280,6 +280,8 @@ class FlexureResult:
     Asc_required: float = 0.0  # Area of compression steel required (mm^2)
     error_message: str = ""  # Deprecated: Use errors list instead
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
+    Ast_min: float = 0.0  # Min tension steel per Cl. 26.5.1.1 (mm²)
+    Ast_max: float = 0.0  # Max tension steel per Cl. 26.5.1.2 (mm²)
 
     def __post_init__(self) -> None:
         if self.error_message:

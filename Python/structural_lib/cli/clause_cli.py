@@ -7,11 +7,11 @@ IS 456 Clause CLI
 Command-line interface for IS 456 clause lookups and traceability.
 
 Usage:
-    python -m structural_lib.codes.is456.clause_cli --clause 38.1
-    python -m structural_lib.codes.is456.clause_cli --search shear
-    python -m structural_lib.codes.is456.clause_cli --category flexure
-    python -m structural_lib.codes.is456.clause_cli --report
-    python -m structural_lib.codes.is456.clause_cli --stats
+    python -m structural_lib.cli.clause_cli --clause 38.1
+    python -m structural_lib.cli.clause_cli --search shear
+    python -m structural_lib.cli.clause_cli --category flexure
+    python -m structural_lib.cli.clause_cli --report
+    python -m structural_lib.cli.clause_cli --stats
 """
 
 from __future__ import annotations

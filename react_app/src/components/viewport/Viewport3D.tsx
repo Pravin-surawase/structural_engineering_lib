@@ -36,23 +36,18 @@ function BeamMesh({ width, depth, length, isDesigned }: BeamMeshProps) {
   const d = depth * SCALE;
   const l = length * SCALE;
 
-  const material = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: isDesigned ? '#b0b0b0' : '#909090',
-        metalness: 0.1,
-        roughness: 0.85,
-        transparent: true,
-        opacity: isDesigned ? 0.7 : 0.9, // Semi-transparent when designed to show rebar
-      }),
-    [isDesigned]
-  );
-
   // Center beam at origin for better camera framing
   // Beam extends from -l/2 to +l/2 along X, 0 to d along Y
   return (
-    <mesh position={[0, d / 2, 0]} material={material}>
+    <mesh position={[0, d / 2, 0]}>
       <boxGeometry args={[l, d, w]} />
+      <meshStandardMaterial
+        color={isDesigned ? '#b0b0b0' : '#909090'}
+        metalness={0.1}
+        roughness={0.85}
+        transparent
+        opacity={isDesigned ? 0.7 : 0.9}
+      />
     </mesh>
   );
 }
@@ -68,16 +63,6 @@ interface RebarProps {
  * instead of manual calculations.
  */
 function RebarVisualization({ rebars }: RebarProps) {
-  const rebarMaterial = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: '#c87533',
-        metalness: 0.7,
-        roughness: 0.35,
-      }),
-    []
-  );
-
   return (
     <group>
       {rebars.map((rebar) =>
@@ -119,9 +104,9 @@ function RebarVisualization({ rebars }: RebarProps) {
               key={`${rebar.barId}-${segIdx}`}
               position={midpoint}
               rotation={[euler.x, euler.y, euler.z]}
-              material={rebarMaterial}
             >
               <cylinderGeometry args={[radius, radius, length, 12]} />
+              <meshStandardMaterial color="#c87533" metalness={0.7} roughness={0.35} />
             </mesh>
           );
         })
@@ -140,16 +125,6 @@ interface StirrupsProps {
  * Uses accurate stirrup positions and paths from library.
  */
 function StirrupVisualization({ stirrups }: StirrupsProps) {
-  const stirrupMaterial = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: '#a06020',
-        metalness: 0.6,
-        roughness: 0.4,
-      }),
-    []
-  );
-
   return (
     <group>
       {stirrups.map((stirrup, i) => {
@@ -204,9 +179,9 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
                   key={`${i}-${j}`}
                   position={midpoint}
                   rotation={[euler.x, euler.y, euler.z]}
-                  material={stirrupMaterial}
                 >
                   <cylinderGeometry args={[radius, radius, segmentLength, 8]} />
+                  <meshStandardMaterial color="#a06020" metalness={0.6} roughness={0.4} />
                 </mesh>
               );
             })}
@@ -736,19 +711,6 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
     return { start, quat };
   }, [beam]);
 
-  // MUST be before any conditional return to satisfy Rules of Hooks
-  const fadedRebarMaterial = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: '#a06838',
-        metalness: 0.5,
-        roughness: 0.5,
-        transparent: true,
-        opacity: 0.5,
-      }),
-    []
-  );
-
   if (!geom || !placement) return null;
 
   return (
@@ -788,9 +750,9 @@ function AdjacentBeamRebar({ beam }: { beam: BeamCSVRow }) {
               key={`adj-${beam.id}-${rebar.barId}-${segIdx}`}
               position={midpoint}
               rotation={[adjEuler.x, adjEuler.y, adjEuler.z]}
-              material={fadedRebarMaterial}
             >
               <cylinderGeometry args={[radius, radius, length, 8]} />
+              <meshStandardMaterial color="#a06838" metalness={0.5} roughness={0.5} transparent opacity={0.5} />
             </mesh>
           );
         })

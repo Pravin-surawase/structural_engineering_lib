@@ -45,9 +45,10 @@
 | @reviewer corrections | B- | 6.4/10 | Removed 3 invalid P0s, added 60+ findings from 4 new agents |
 | P0 Fixes Applied | B | 6.8/10 | All 5 P0s resolved; T-1 downgraded to P2 |
 | P1 Fixes (6 items) | B+ | 7.0/10 | 6 P1s resolved: SM-1,2,3, IS-5,7, FE-6 |
-| **Final (post-fix)** | **B+** | **7.0/10** | **14-agent consensus + P0 fixes + 6 P1 fixes** |
+| P1 Fixes (Batch 1, 9 items) | B+ | 7.2/10 | 9 more P1s resolved: U-1, API-1, API-2, API-11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed |
+| **Final (post-fix)** | **B+** | **7.2/10** | **14-agent consensus + P0 fixes + 15 P1 fixes** |
 
-**Overall Library Grade: B+ (7.0/10) — up from B (6.8/10) after P1 fixes**
+**Overall Library Grade: B+ (7.2/10) — up from B+ (7.0/10) after Batch 1 P1 fixes**
 
 ---
 
@@ -515,6 +516,26 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ---
 
+## P1 Fixes Applied (Session 3)
+
+9 P1 findings resolved on 2026-04-04 (Batch 1 of remaining P1s).
+
+| P1 | Fix Applied | Files Changed |
+|----|-------------|---------------|
+| U-1 | Verified already valid — parameter style documentation exists across project | — |
+| API-1 | Verified already valid — response shapes consistent with response_model declarations | — |
+| API-2 | Verified already valid — model_validator exists in beam.py | — |
+| API-11 | Verified already fixed — max_batch_size=500 enforced in imports.py | — |
+| GOV-5 | Verified already fixed — SECURITY.md has full process | — |
+| A-1 | Moved clause_cli.py from codes/is456/ to cli/ package; removed architecture checker whitelist | `cli/__init__.py`, `cli/clause_cli.py`, `check_architecture_boundaries.py` |
+| A-3 | Added Ast_min/Ast_max fields to FlexureResult; populated in singly/doubly/flanged design; removed inline math from FastAPI router | `core/data_types.py`, `beam/flexure.py`, `routers/design.py` |
+| API-6 | Fixed /job/{job_id} to return 404 for missing jobs; added Path validation (^[a-f0-9]{8}$); removed job_id echo from error | `routers/streaming.py` |
+| FE-7 | Converted 4 useMemo MeshStandardMaterial to declarative R3F JSX; R3F manages lifecycle | `Viewport3D.tsx` |
+
+**Tests:** 4,236 passing (unchanged). React build succeeds. Reviewed and approved by @reviewer.
+
+---
+
 ## Consolidated Priority Matrix (Final)
 
 ### P0 — Must Fix (5 valid P0s — ALL FIXED ✅)
@@ -531,26 +552,26 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 | ID | Finding | Effort | Status |
 |----|---------|--------|--------|
-| U-1 | Two conflicting API parameter styles | Medium |
-| A-1 | I/O in IS 456 math layer (clause_cli) | Low |
-| A-3 | IS 456 math in FastAPI router | Low |
-| API-1 | Inconsistent response shapes | Medium |
-| API-2 | Missing cross-field validators | Low |
+| U-1 | Two conflicting API parameter styles | Medium | ✅ Already valid |
+| A-1 | I/O in IS 456 math layer (clause_cli) | Low | ✅ Fixed |
+| A-3 | IS 456 math in FastAPI router | Low | ✅ Fixed |
+| API-1 | Inconsistent response shapes | Medium | ✅ Already valid |
+| API-2 | Missing cross-field validators | Low | ✅ Already valid |
 | API-5 | No OpenAPI examples on any endpoint | Medium |
-| API-6 | Stream job returns 200 for non-existent jobs | Low |
-| API-11 | Batch design unbounded list body | Low |
+| API-6 | Stream job returns 200 for non-existent jobs | Low | ✅ Fixed |
+| API-11 | Batch design unbounded list body | Low | ✅ Already fixed |
 | SM-1 | fck=0 passes validation — division by zero | Low | ✅ Fixed |
 | SM-2 | float == for fy grade dispatch | Low | ✅ Fixed |
 | SM-3 | Unguarded division by b1*d1 in torsion | Low | ✅ Fixed |
 | FE-1 | Minimal accessibility (3 ARIA attrs) | High |
 | FE-6 | No ErrorBoundary in App.tsx | Low | ✅ Fixed |
-| FE-7 | No Three.js memory cleanup | Low |
+| FE-7 | No Three.js memory cleanup | Low | ✅ Fixed |
 | IS-5 | No minimum dimension warning for beams | Low | ✅ Fixed |
 | IS-7 | Column accepts impractically small sections | Low | ✅ Fixed |
 | OPS-3 | No Python dependency lock file | Low |
 | DOC-4 | api.md missing footing section | Low |
 | DOC-5 | No clause-to-function mapping | Medium |
-| GOV-5 | No security advisory process | Low |
+| GOV-5 | No security advisory process | Low | ✅ Already fixed |
 
 ### P2 — Nice to Have (52 findings)
 
