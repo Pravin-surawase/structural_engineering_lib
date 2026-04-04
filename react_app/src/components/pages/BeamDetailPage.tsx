@@ -24,7 +24,7 @@ export function BeamDetailPage() {
     return (
       <div className="h-screen pt-14 flex items-center justify-center bg-zinc-950">
         <div className="text-center">
-          <p className="text-white/40 mb-4">No design results yet</p>
+          <p className="text-zinc-400 mb-4">No design results yet</p>
           <button
             onClick={() => navigate("/design")}
             className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium"
@@ -57,13 +57,13 @@ export function BeamDetailPage() {
           <div className="flex bg-white/5 rounded-lg p-0.5">
             <button
               onClick={() => setActiveTab("3d")}
-              className={`px-3 py-1 text-xs rounded-md transition-colors ${activeTab === "3d" ? "bg-white/10 text-white" : "text-white/40 hover:text-white/70"}`}
+              className={`px-3 py-1 text-xs rounded-md transition-colors ${activeTab === "3d" ? "bg-white/10 text-white" : "text-zinc-400 hover:text-zinc-200"}`}
             >
               3D View
             </button>
             <button
               onClick={() => setActiveTab("section")}
-              className={`px-3 py-1 text-xs rounded-md transition-colors ${activeTab === "section" ? "bg-white/10 text-white" : "text-white/40 hover:text-white/70"}`}
+              className={`px-3 py-1 text-xs rounded-md transition-colors ${activeTab === "section" ? "bg-white/10 text-white" : "text-zinc-400 hover:text-zinc-200"}`}
             >
               Cross Section
             </button>
@@ -71,7 +71,7 @@ export function BeamDetailPage() {
 
           <button
             onClick={() => setShowPanels(!showPanels)}
-            className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-white/70 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-400 hover:text-zinc-200 transition-colors"
           >
             {showPanels ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
@@ -81,7 +81,7 @@ export function BeamDetailPage() {
       {/* Main content */}
       <div className="flex-1 relative">
         {activeTab === "3d" ? (
-          <Suspense fallback={<div className="flex items-center justify-center h-full"><p className="text-white/40 animate-pulse">Loading 3D viewport...</p></div>}>
+          <Suspense fallback={<div className="flex items-center justify-center h-full"><p className="text-zinc-400 animate-pulse">Loading 3D viewport...</p></div>}>
             <Viewport3D mode="design" />
           </Suspense>
         ) : (
@@ -152,7 +152,7 @@ function FloatingCard({ title, items, accent }: {
       <div className="space-y-1">
         {items.map((item) => (
           <div key={item.l} className="flex justify-between text-xs">
-            <span className="text-white/40">{item.l}</span>
+            <span className="text-zinc-400">{item.l}</span>
             <span className="text-white font-medium">{item.v}</span>
           </div>
         ))}

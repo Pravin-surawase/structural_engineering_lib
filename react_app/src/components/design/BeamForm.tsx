@@ -84,7 +84,7 @@ export function BeamForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="m-0 text-sm text-[#888] uppercase tracking-wide">Geometry</h3>
+        <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Geometry</h3>
         <div className="flex flex-col gap-1">
           <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
             Width (mm)
@@ -130,7 +130,7 @@ export function BeamForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="m-0 text-sm text-[#888] uppercase tracking-wide">Loading</h3>
+        <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Loading</h3>
         <div className="flex flex-col gap-1">
           <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
             Moment (kN·m)
@@ -162,7 +162,7 @@ export function BeamForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="m-0 text-sm text-[#888] uppercase tracking-wide">Materials</h3>
+        <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Materials</h3>
         <div className="flex flex-col gap-1">
           <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
             Concrete fck (N/mm²)

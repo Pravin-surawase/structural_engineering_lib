@@ -104,7 +104,7 @@ export function HubPage() {
                   <span className="mr-2">{a.emoji}</span>
                   {a.label}
                 </span>
-                <span className="text-white/30">→</span>
+                <span className="text-zinc-500">→</span>
               </button>
             ))}
           </div>
@@ -121,7 +121,7 @@ export function HubPage() {
                 <p className="text-lg font-medium text-white truncate">
                   {lastSession.projectName}
                 </p>
-                <p className="text-sm text-white/40 mt-1">
+                <p className="text-sm text-zinc-400 mt-1">
                   {lastSession.beamCount} beam{lastSession.beamCount !== 1 ? "s" : ""} ·{" "}
                   {lastSession.passRate}% pass · {timeAgo(lastSession.timestamp)}
                 </p>
@@ -136,7 +136,7 @@ export function HubPage() {
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <p className="text-white/70 text-sm font-medium mb-1">Welcome!</p>
-              <p className="text-white/30 text-xs leading-relaxed">
+              <p className="text-zinc-500 text-xs leading-relaxed">
                 Design RC beams to IS&nbsp;456:2000. Start by designing a single beam or importing
                 a CSV batch.
               </p>

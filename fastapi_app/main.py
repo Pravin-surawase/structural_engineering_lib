@@ -24,8 +24,10 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse as StarletteJSONResponse
 
 from fastapi_app import __version__
+from fastapi_app.config import get_settings
 from fastapi_app.routers import (
     analysis,
     column,
@@ -142,6 +144,47 @@ app = FastAPI(
         "url": "https://github.com/yourusername/structural_engineering_lib",
     },
 )
+
+# =============================================================================
+# Auth Middleware (opt-in via AUTH_ENABLED=True)
+# =============================================================================
+
+
+class AuthMiddleware(BaseHTTPMiddleware):
+    """Enforce Bearer-token auth on all endpoints when AUTH_ENABLED=True."""
+
+    PUBLIC_PATHS = frozenset({"/", "/health", "/docs", "/openapi.json", "/redoc"})
+
+    async def dispatch(self, request: Request, call_next):
+        settings = get_settings()
+        if not settings.auth_enabled:
+            return await call_next(request)
+
+        path = request.url.path
+        if path in self.PUBLIC_PATHS or path.startswith("/ws/"):
+            return await call_next(request)
+
+        auth_header = request.headers.get("authorization", "")
+        if not auth_header.startswith("Bearer "):
+            return StarletteJSONResponse(
+                status_code=401, content={"detail": "Not authenticated"}
+            )
+
+        token = auth_header.removeprefix("Bearer ")
+        try:
+            from fastapi_app.auth import decode_token
+
+            decode_token(token)
+        except Exception:
+            return StarletteJSONResponse(
+                status_code=401,
+                content={"detail": "Invalid or expired token"},
+            )
+
+        return await call_next(request)
+
+
+app.add_middleware(AuthMiddleware)
 
 # =============================================================================
 # CORS Middleware Configuration
@@ -400,8 +443,12 @@ async def startup_event():
 
     Initializes any required resources or connections.
     """
-    # Future: Initialize database connections, cache, etc.
-    pass
+    settings = get_settings()
+    if not settings.auth_enabled:
+        logger.warning(
+            "AUTH_ENABLED=False — all endpoints are PUBLIC. "
+            "Set AUTH_ENABLED=True for production."
+        )
 
 
 @app.on_event("shutdown")

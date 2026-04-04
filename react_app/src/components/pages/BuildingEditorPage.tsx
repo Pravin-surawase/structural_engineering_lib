@@ -401,7 +401,7 @@ export function BuildingEditorPage() {
     return (
       <div className="h-screen pt-14 flex items-center justify-center bg-zinc-950">
         <div className="text-center">
-          <p className="text-white/40 mb-4">No beams loaded</p>
+          <p className="text-zinc-400 mb-4">No beams loaded</p>
           <button onClick={() => navigate("/import")}
             className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium">
             Import Beams
@@ -420,7 +420,7 @@ export function BuildingEditorPage() {
             <ArrowLeft className="w-4 h-4" />
           </button>
           <span className="text-sm font-medium text-white">Building Editor</span>
-          <span className="text-xs text-white/40">
+          <span className="text-xs text-zinc-400">
             {beams.length} beams &middot; {stories.length} stories
           </span>
           {isDesigning && <span className="text-xs text-blue-300 animate-pulse">Designing…</span>}
@@ -428,7 +428,7 @@ export function BuildingEditorPage() {
 
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-white/40" />
+            <Layers className="w-3.5 h-3.5 text-zinc-400" />
             <select value={floorFilter} onChange={(e) => handleFloorChange(e.target.value)}
               className="px-2 py-1 text-xs text-white bg-white/5 border border-white/10 rounded-lg appearance-none cursor-pointer">
               <option value="all" className="bg-zinc-900">All Floors</option>
@@ -443,7 +443,7 @@ export function BuildingEditorPage() {
           </button>
           <button onClick={() => setShowAdvanced((prev) => !prev)}
             className={`px-2 py-1 rounded-lg text-[10px] uppercase tracking-wide border transition-colors ${
-              showAdvanced ? "bg-blue-500/20 text-blue-300 border-blue-500/40" : "bg-white/5 text-white/40 border-white/10 hover:text-white/70"
+              showAdvanced ? "bg-blue-500/20 text-blue-300 border-blue-500/40" : "bg-white/5 text-zinc-400 border-white/10 hover:text-zinc-200"
             }`}>
             {showAdvanced ? "Advanced" : "Simple"}
           </button>
@@ -451,7 +451,7 @@ export function BuildingEditorPage() {
             <button
               onClick={() => setShowExportMenu(!showExportMenu)}
               disabled={exportPending}
-              className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-white/70 transition-colors disabled:opacity-40 flex items-center gap-1"
+              className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-400 hover:text-zinc-200 transition-colors disabled:opacity-40 flex items-center gap-1"
               title="Export building summary"
             >
               <Download className={`w-4 h-4 ${exportPending ? "animate-pulse" : ""}`} />
@@ -475,7 +475,7 @@ export function BuildingEditorPage() {
             )}
           </div>
           <button onClick={() => setShowSidebar(!showSidebar)}
-            className={`p-1.5 rounded-lg transition-colors ${showSidebar ? "bg-blue-500/20 text-blue-400" : "hover:bg-white/5 text-white/40 hover:text-white/70"}`}
+            className={`p-1.5 rounded-lg transition-colors ${showSidebar ? "bg-blue-500/20 text-blue-400" : "hover:bg-white/5 text-zinc-400 hover:text-zinc-200"}`}
             title="Toggle checks panel">
             {showSidebar ? <PanelRightClose className="w-4 h-4" /> : <PanelRightOpen className="w-4 h-4" />}
           </button>
@@ -502,7 +502,7 @@ export function BuildingEditorPage() {
             {statusCounts.pass > 0 && <span className="px-1.5 py-0.5 rounded-full bg-green-500/20 text-green-300">{statusCounts.pass}</span>}
             {statusCounts.warning > 0 && <span className="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300">{statusCounts.warning}</span>}
             {statusCounts.fail > 0 && <span className="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300">{statusCounts.fail}</span>}
-            {statusCounts.pending > 0 && <span className="px-1.5 py-0.5 rounded-full bg-white/10 text-white/40">{statusCounts.pending}</span>}
+            {statusCounts.pending > 0 && <span className="px-1.5 py-0.5 rounded-full bg-white/10 text-zinc-400">{statusCounts.pending}</span>}
             {statusCounts.designing > 0 && <span className="px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 animate-pulse">{statusCounts.designing}</span>}
           </div>
         </div>
@@ -513,7 +513,7 @@ export function BuildingEditorPage() {
         <div className="flex-1 flex flex-col min-w-0">
           {/* 3D Building View (top 30%) */}
           <div className="h-[30%] min-h-[200px] border-b border-white/5 relative">
-            <Suspense fallback={<div className="flex items-center justify-center h-full bg-zinc-900"><p className="text-white/40 animate-pulse">Loading 3D...</p></div>}>
+            <Suspense fallback={<div className="flex items-center justify-center h-full bg-zinc-900"><p className="text-zinc-400 animate-pulse">Loading 3D...</p></div>}>
               <Viewport3D mode="building" forceMode />
             </Suspense>
 
@@ -584,13 +584,13 @@ function MaterialSelect({ label, value, onChange, options, format }: {
 }) {
   return (
     <div className="flex items-center gap-1.5">
-      <span className="text-[10px] text-white/40">{label}</span>
+      <span className="text-[10px] text-zinc-400">{label}</span>
       <div className="relative">
         <select value={value} onChange={(e) => onChange(Number(e.target.value))}
           className="px-2 py-0.5 pr-5 text-xs text-white bg-white/[0.04] border border-white/10 rounded-md appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500/50">
           {options.map((opt) => <option key={opt} value={opt} className="bg-zinc-900">{format(opt)}</option>)}
         </select>
-        <ChevronDown className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-white/30 pointer-events-none" />
+        <ChevronDown className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-500 pointer-events-none" />
       </div>
     </div>
   );

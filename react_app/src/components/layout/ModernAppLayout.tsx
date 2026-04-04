@@ -197,9 +197,9 @@ function SettingsView({ onBack }: SettingsViewProps) {
 
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <Settings className="w-16 h-16 text-white/20 mx-auto mb-4" />
-          <p className="text-white/40">Settings panel coming soon</p>
-          <p className="text-sm text-white/30 mt-2">
+          <Settings className="w-16 h-16 text-white/20 mx-auto mb-4" aria-hidden="true" />
+          <p className="text-zinc-400">Settings panel coming soon</p>
+          <p className="text-sm text-zinc-500 mt-2">
             API configuration, units, export preferences
           </p>
         </div>

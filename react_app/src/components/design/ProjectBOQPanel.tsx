@@ -52,7 +52,7 @@ export function ProjectBOQPanel({ data, isLoading, error }: ProjectBOQPanelProps
     return (
       <div className="flex items-center justify-center py-10 gap-2">
         <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
-        <span className="text-sm text-white/40">Generating BOQ…</span>
+        <span className="text-sm text-zinc-400">Generating BOQ…</span>
       </div>
     );
   }
@@ -69,7 +69,7 @@ export function ProjectBOQPanel({ data, isLoading, error }: ProjectBOQPanelProps
     return (
       <div className="flex flex-col items-center justify-center py-10 gap-2">
         <Package className="w-8 h-8 text-white/10" />
-        <p className="text-xs text-white/30">No BOQ data yet</p>
+        <p className="text-xs text-zinc-500">No BOQ data yet</p>
       </div>
     );
   }
@@ -79,21 +79,21 @@ export function ProjectBOQPanel({ data, isLoading, error }: ProjectBOQPanelProps
       {/* Grand Totals */}
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <p className="text-[9px] text-white/30 uppercase tracking-wider">Total Steel</p>
+          <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Total Steel</p>
           <p className="text-xl font-bold text-blue-400 tabular-nums">
             {formatNum(data.grand_total_steel_kg)}
-            <span className="text-xs text-white/30 ml-1">kg</span>
+            <span className="text-xs text-zinc-500 ml-1">kg</span>
           </p>
         </div>
         <div>
-          <p className="text-[9px] text-white/30 uppercase tracking-wider">Total Concrete</p>
+          <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Total Concrete</p>
           <p className="text-xl font-bold text-blue-400 tabular-nums">
             {formatNum(data.grand_total_concrete_m3, 1)}
-            <span className="text-xs text-white/30 ml-1">m³</span>
+            <span className="text-xs text-zinc-500 ml-1">m³</span>
           </p>
         </div>
         <div>
-          <p className="text-[9px] text-white/30 uppercase tracking-wider">Est. Cost</p>
+          <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Est. Cost</p>
           <p className="text-xl font-bold text-emerald-400 tabular-nums">
             {formatINR(data.grand_total_cost_inr)}
           </p>
@@ -105,7 +105,7 @@ export function ProjectBOQPanel({ data, isLoading, error }: ProjectBOQPanelProps
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="text-white/40 border-b border-white/5">
+              <tr className="text-zinc-400 border-b border-white/5">
                 <th className="text-left py-1.5 font-medium">Story</th>
                 <th className="text-right py-1.5 font-medium">Beams</th>
                 <th className="text-right py-1.5 font-medium">Steel kg</th>

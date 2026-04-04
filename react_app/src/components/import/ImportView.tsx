@@ -121,7 +121,7 @@ function StepPill({ active, done, label }: { active: boolean; done: boolean; lab
     <div className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
       active ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" :
       done ? "bg-green-500/20 text-green-400 border border-green-500/30" :
-      "bg-white/5 text-white/30 border border-white/8"
+      "bg-white/5 text-zinc-500 border border-white/8"
     }`}>
       {done && <CheckCircle className="w-3 h-3 inline mr-1" />}
       {label}
@@ -178,7 +178,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
       <div className="flex-1 max-w-2xl space-y-5">
         <div>
           <h2 className="text-xl font-bold text-white mb-1">Import Beam Data</h2>
-          <p className="text-sm text-white/40">Upload CSV from ETABS, SAFE, STAAD, or generic format</p>
+          <p className="text-sm text-zinc-400">Upload CSV from ETABS, SAFE, STAAD, or generic format</p>
         </div>
 
         {/* Import mode tabs */}
@@ -188,7 +188,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
               importMode === "single"
                 ? "bg-blue-500/20 text-blue-400"
-                : "text-white/40 hover:text-white/60"
+                : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
@@ -199,7 +199,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
               importMode === "dual"
                 ? "bg-blue-500/20 text-blue-400"
-                : "text-white/40 hover:text-white/60"
+                : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -232,7 +232,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
                     <FileSpreadsheet className="w-8 h-8 text-blue-400" />
                     <div className="text-center">
                       <p className="text-sm text-white font-medium">Sample Building</p>
-                      <p className="text-[11px] text-white/40">154 beams from ETABS</p>
+                      <p className="text-[11px] text-zinc-400">154 beams from ETABS</p>
                     </div>
                   </>
                 )}
@@ -278,7 +278,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
                 {isDualImporting ? "Importing..." : "Import & Merge"}
               </button>
               {geometryFile && forcesFile && !isDualImporting && (
-                <p className="text-xs text-white/40">
+                <p className="text-xs text-zinc-400">
                   Ready: {geometryFile.name} + {forcesFile.name}
                 </p>
               )}
@@ -309,7 +309,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
       <div className="w-64 shrink-0">
         <div className="p-5 rounded-xl bg-white/[0.03] border border-white/8">
           <h3 className="text-sm text-white font-semibold mb-1">Material Settings</h3>
-          <p className="text-[10px] text-white/40 mb-4">Applied to all imported beams</p>
+          <p className="text-[10px] text-zinc-400 mb-4">Applied to all imported beams</p>
 
           <div className="space-y-3">
             <DropdownField label="Concrete Grade" value={fck} onChange={setFck} options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
@@ -318,7 +318,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
           </div>
 
           <div className="mt-4 pt-4 border-t border-white/8">
-            <p className="text-[10px] text-white/30">Code: IS 456:2000</p>
+            <p className="text-[10px] text-zinc-500">Code: IS 456:2000</p>
           </div>
         </div>
       </div>
@@ -343,7 +343,7 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-xl font-bold text-white">Preview Import</h2>
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-zinc-400">
             {beams.length} beams across {stories.length} stories
           </p>
         </div>
@@ -396,7 +396,7 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
           </tbody>
         </table>
         {beams.length > 50 && (
-          <p className="text-center py-3 text-xs text-white/30">
+          <p className="text-center py-3 text-xs text-zinc-500">
             Showing 50 of {beams.length} beams. Full data in Building Editor.
           </p>
         )}
@@ -408,7 +408,7 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="p-3 rounded-xl bg-white/[0.03] border border-white/8">
-      <p className="text-[10px] text-white/40 uppercase tracking-wider">{label}</p>
+      <p className="text-[10px] text-zinc-400 uppercase tracking-wider">{label}</p>
       <p className="text-lg font-bold text-white mt-1">{value}</p>
     </div>
   );
@@ -419,7 +419,7 @@ function DropdownField({ label, value, onChange, options, format }: {
 }) {
   return (
     <div>
-      <label className="block text-[10px] text-white/50 mb-1">{label}</label>
+      <label className="block text-[10px] text-zinc-400 mb-1">{label}</label>
       <div className="relative">
         <select
           value={value}
@@ -430,7 +430,7 @@ function DropdownField({ label, value, onChange, options, format }: {
             <option key={opt} value={opt} className="bg-zinc-900">{format(opt)}</option>
           ))}
         </select>
-        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
+        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500 pointer-events-none" />
       </div>
     </div>
   );
@@ -467,13 +467,13 @@ function DualFileZone({ label, description, file, onFileChange, accept, inputId 
           <>
             <CheckCircle className="w-6 h-6 text-green-400" />
             <p className="text-sm text-green-400 font-medium">{file.name}</p>
-            <p className="text-[10px] text-white/30">Click to replace</p>
+            <p className="text-[10px] text-zinc-500">Click to replace</p>
           </>
         ) : (
           <>
-            <Upload className="w-6 h-6 text-white/30" />
-            <p className="text-xs text-white/50 text-center px-4">{description}</p>
-            <p className="text-[10px] text-white/30">Click to browse</p>
+            <Upload className="w-6 h-6 text-zinc-500" aria-hidden="true" />
+            <p className="text-xs text-zinc-400 text-center px-4">{description}</p>
+            <p className="text-[10px] text-zinc-500">Click to browse</p>
           </>
         )}
       </label>

@@ -274,6 +274,54 @@ class TestValidateMaterialGrades:
 
 
 # ===========================================================================
+# steel_stress_from_strain() — bilinear model, IS 456 Fig. 23
+# ===========================================================================
+
+
+class TestSteelStressFromStrain:
+    """Tests for bilinear steel stress-strain model (IS 456 Fig. 23)."""
+
+    def test_zero_strain_gives_zero(self):
+        """Zero strain should give zero stress."""
+        result = steel_stress_from_strain(0.0, 415.0)
+        assert result == 0.0
+
+    def test_elastic_region_fe415(self):
+        """Strain in elastic region: stress = E_s × strain."""
+        # E_s = 200000, strain = 0.001 → stress = 200.0
+        result = steel_stress_from_strain(0.001, 415.0)
+        assert abs(result - 200.0) < 0.01
+
+    def test_yield_plateau_fe415(self):
+        """Strain beyond yield: stress = 0.87 × fy = 361.05."""
+        result = steel_stress_from_strain(0.003, 415.0)
+        assert abs(result - 361.05) < 0.01
+
+    def test_exact_yield_strain_boundary_fe415(self):
+        """At exactly yield strain, stress should equal f_yd."""
+        # f_yd = 0.87 * 415 = 361.05
+        # eps_yd = 361.05 / 200000 = 0.00180525
+        eps_yd = 0.87 * 415.0 / 200000.0
+        result = steel_stress_from_strain(eps_yd, 415.0)
+        assert abs(result - 361.05) < 0.01
+
+    def test_negative_strain_elastic(self):
+        """Negative strain in elastic region: negative stress."""
+        result = steel_stress_from_strain(-0.001, 415.0)
+        assert abs(result - (-200.0)) < 0.01
+
+    def test_negative_strain_yield(self):
+        """Negative strain beyond yield: negative f_yd."""
+        result = steel_stress_from_strain(-0.003, 415.0)
+        assert abs(result - (-361.05)) < 0.01
+
+    def test_fe500_yield_plateau(self):
+        """Fe 500 steel: f_yd = 0.87 * 500 = 435.0."""
+        result = steel_stress_from_strain(0.003, 500.0)
+        assert abs(result - 435.0) < 0.01
+
+
+# ===========================================================================
 # steel_stress_from_strain_5point() — IS 456 Fig. 23 / SP:16 Table F
 # TASK-642
 # ===========================================================================

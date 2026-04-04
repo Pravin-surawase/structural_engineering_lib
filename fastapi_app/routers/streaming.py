@@ -30,6 +30,7 @@ from sse_starlette.sse import EventSourceResponse
 
 from structural_lib import batch
 from fastapi_app.auth import check_rate_limit
+from fastapi_app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -177,6 +178,21 @@ async def stream_batch_design(
             }
 
         return EventSourceResponse(error_generator())
+
+    settings = get_settings()
+    if len(beam_list) > settings.max_batch_size:
+
+        async def error_response():
+            yield {
+                "event": "error",
+                "data": json.dumps(
+                    {
+                        "error": f"Batch size {len(beam_list)} exceeds maximum of {settings.max_batch_size}"
+                    }
+                ),
+            }
+
+        return EventSourceResponse(error_response())
 
     async def event_generator() -> AsyncGenerator[dict, None]:
         """Generate SSE events for batch design."""
