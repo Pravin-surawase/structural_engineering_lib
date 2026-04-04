@@ -95,7 +95,7 @@ def size_footing(
     # Bearing pressure check (at service loads)
     A_provided_mm2 = L_mm * B_mm
 
-    if M_service_kNm == 0.0:
+    if abs(M_service_kNm) < 1e-3:
         # Concentric: uniform pressure
         q_max_kPa = (P_service_kN / A_provided_mm2) * 1e6  # kN/mm² → kPa
         q_min_kPa = q_max_kPa

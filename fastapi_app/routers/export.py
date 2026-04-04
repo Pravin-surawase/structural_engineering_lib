@@ -189,7 +189,7 @@ async def export_dxf(request: ExportBeamRequest):
 
     return StreamingResponse(
         io.BytesIO(dxf_bytes),
-        media_type="application/dxf",
+        media_type="application/octet-stream",
         headers={
             "Content-Disposition": f'attachment; filename="{request.beam_id}.dxf"'
         },

@@ -568,3 +568,25 @@ class EnhancedShearResponse(BaseModel):
     tau_c_max: float = Field(description="Maximum shear stress τc,max (N/mm²)")
     is_capped: bool = Field(description="Whether τc' was capped at τc,max")
     clause: str = Field(default="IS 456 Cl 40.3", description="Governing clause")
+
+
+# =============================================================================
+# Bar Areas Response Model
+# =============================================================================
+
+
+class BarInfo(BaseModel):
+    """Information about a single standard reinforcement bar."""
+
+    diameter_mm: int = Field(description="Nominal diameter in mm")
+    area_mm2: float = Field(description="Cross-sectional area in mm²")
+    weight_kg_per_m: float = Field(description="Unit weight in kg/m")
+
+
+class BarAreasResponse(BaseModel):
+    """Response model for standard bar areas endpoint."""
+
+    bars: dict[str, BarInfo] = Field(
+        description="Standard bars keyed by designation (e.g. T16)"
+    )
+    note: str = Field(description="Reference standard")

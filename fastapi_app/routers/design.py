@@ -4,7 +4,22 @@ Beam Design Router.
 Endpoints for beam flexure and shear design calculations.
 """
 
+import logging
+import math
+
 from fastapi import APIRouter, HTTPException, status
+
+logger = logging.getLogger(__name__)
+
+
+def _sanitize_float(v: float) -> float:
+    """Replace non-finite floats for JSON safety (RFC 8259)."""
+    if math.isfinite(v):
+        return v
+    if math.isnan(v):
+        return 0.0
+    return 9999.0 if v > 0 else -9999.0
+
 
 from fastapi_app.models.beam import (
     BeamDesignRequest,
@@ -156,10 +171,11 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Design calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Design calculation failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -265,10 +281,11 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Check calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Check calculation failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -415,10 +432,11 @@ async def design_beam_torsion(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Torsion design calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Torsion design calculation failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -492,10 +510,11 @@ async def enhanced_shear(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Enhanced shear calculation failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Enhanced shear calculation failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -556,10 +575,11 @@ async def check_ductility(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Ductility check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Ductility check failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -614,10 +634,11 @@ async def check_slenderness(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Slenderness check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Slenderness check failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -675,10 +696,11 @@ async def check_deflection(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Deflection check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Deflection check failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -738,10 +760,11 @@ async def check_crack_width_endpoint(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Crack width check failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Crack width check failed: {e}",
+            detail="Internal calculation error",
         )
 
 
@@ -804,15 +827,17 @@ async def compliance_report(
         return ComplianceReportResponse(
             is_ok=result.is_ok,
             governing_case_id=result.governing_case_id,
-            governing_utilization=result.governing_utilization,
+            governing_utilization=_sanitize_float(result.governing_utilization),
             cases=[
                 ComplianceCaseOutput(
                     case_id=c.case_id,
                     mu_knm=c.Mu_knm,
                     vu_kn=c.Vu_kn,
                     is_ok=c.is_ok,
-                    governing_utilization=c.governing_utilization,
-                    utilizations=c.utilizations,
+                    governing_utilization=_sanitize_float(c.governing_utilization),
+                    utilizations={
+                        k: _sanitize_float(v) for k, v in c.utilizations.items()
+                    },
                     failed_checks=c.failed_checks,
                     remarks=c.remarks,
                 )
@@ -831,8 +856,9 @@ async def compliance_report(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Compliance report failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Compliance report failed: {e}",
+            detail="Internal calculation error",
         )

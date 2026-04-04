@@ -268,6 +268,7 @@ class ExposureClass(Enum):
     VERY_SEVERE = auto()
 
 
+# TODO(SM-6): Freeze FlexureResult after flexure.py:507 refactor
 @dataclass
 class FlexureResult:
     Mu_lim: float  # Limiting moment of resistance (kN-m)
@@ -333,7 +334,7 @@ class FlexureResult:
         return self.Asc_required
 
 
-@dataclass
+@dataclass(frozen=True)
 class ShearResult:
     tau_v: float  # Nominal shear stress (N/mm^2)
     tau_c: float  # Design shear strength of concrete (N/mm^2)
@@ -342,7 +343,7 @@ class ShearResult:
     spacing: float  # Calculated spacing (mm)
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
-    errors: list[DesignError] = field(default_factory=list)  # Structured errors
+    errors: tuple[DesignError, ...] = field(default_factory=tuple)  # Structured errors
 
     def __post_init__(self) -> None:
         if self.remarks:
@@ -797,7 +798,7 @@ class EndCondition(Enum):
     HINGED_PARTIAL = auto()  # Case 7: One hinged, partial restraint at other
 
 
-@dataclass
+@dataclass(frozen=True)
 class ColumnAxialResult:
     """Result of short column axial capacity check per IS 456 Cl 39.3.
 
@@ -811,8 +812,8 @@ class ColumnAxialResult:
         steel_ratio: Asc/Ag
         classification: Column classification (short or slender)
         is_safe: True if capacity >= applied load (when load provided)
-        warnings: List of design warnings
-        errors: List of structured design errors
+        warnings: Tuple of design warnings
+        errors: Tuple of structured design errors
     """
 
     Pu_kN: float
@@ -824,8 +825,8 @@ class ColumnAxialResult:
     steel_ratio: float
     classification: ColumnClassification
     is_safe: bool
-    warnings: list[str] = field(default_factory=list)
-    errors: list[DesignError] = field(default_factory=list)
+    warnings: tuple[str, ...] = field(default_factory=tuple)
+    errors: tuple[DesignError, ...] = field(default_factory=tuple)
 
 
 @dataclass(frozen=True)

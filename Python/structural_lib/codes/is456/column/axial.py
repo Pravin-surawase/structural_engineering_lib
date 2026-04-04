@@ -338,5 +338,5 @@ def short_axial_capacity(
         steel_ratio=steel_ratio,
         classification=ColumnClassification.SHORT,
         is_safe=True,
-        warnings=warnings,
+        warnings=tuple(warnings),
     )

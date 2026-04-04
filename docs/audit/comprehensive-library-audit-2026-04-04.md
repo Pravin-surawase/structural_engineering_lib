@@ -48,9 +48,10 @@
 | P1 Fixes (Batch 1, 9 items) | B+ | 7.2/10 | 9 more P1s resolved: U-1, API-1, API-2, API-11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed |
 | P1 Fixes (Batch 2, 4 items) | B+ | 7.4/10 | 4 more P1s resolved: API-5, OPS-3, DOC-4, DOC-5 |
 | P1 Fixes (Batch 3, 1 item) | A- | 7.5/10 | Final P1 resolved: FE-1a accessibility (9 changes across 4 files) |
-| **Final (post-fix)** | **A-** | **7.5/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes resolved** |
+| P2 Fixes (Batch 1, 7 items) | A- | 7.7/10 | 7 P2s resolved: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10 |
+| **Final (post-fix)** | **A-** | **7.7/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 7 P2 fixes resolved** |
 
-**Overall Library Grade: A- (7.5/10) — up from B+ (7.4/10) after all P1 fixes complete**
+**Overall Library Grade: A- (7.7/10) — up from A- (7.5/10) after P2 Batch 1 fixes**
 
 ---
 
@@ -260,11 +261,11 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | SM-3 | Unguarded division by b1*d1 in torsion | P1 | `calculate_equivalent_shear()` can divide by zero if b1 or d1 is 0 | Add zero-guard |
 | SM-4 | TorsionResult defined in TWO locations | P1 | Duplicate dataclass in `torsion.py` and `torsion_design.py` | Consolidate to one location |
 | SM-5 | Division by zero when num_points=1 | P1 | `generate_interaction_curve()` divides by `(num_points - 1)` | Guard `num_points >= 2` |
-| SM-6 | FlexureResult/ShearResult mutable | P2 | Non-frozen dataclasses; thread-unsafe | Make frozen |
+| SM-6 | FlexureResult/ShearResult mutable | P2 | Non-frozen dataclasses; thread-unsafe | ✅ Fixed — Made frozen |
 | SM-7 | `_calculate_puz()` no input validation | P2 | Accepts any values including negative areas | Add range checks |
-| SM-8 | float `== 0.0` in footing bearing | P2 | `if bearing_pressure == 0.0` risks float mismatch | Use tolerance |
+| SM-8 | float `== 0.0` in footing bearing | P2 | `if bearing_pressure == 0.0` risks float mismatch | ✅ Fixed — Used tolerance |
 | SM-9 | `get_steel_stress()` zero input validation | P2 | Strain=-0 or d=0 not guarded | Add input guards |
-| SM-10 | ColumnAxialResult mutable | P2 | Non-frozen dataclass like SM-6 | Make frozen |
+| SM-10 | ColumnAxialResult mutable | P2 | Non-frozen dataclass like SM-6 | ✅ Fixed — Made frozen |
 
 ---
 
@@ -332,9 +333,9 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 
 | ID | Finding | Priority | OWASP | Description | Fix |
 |----|---------|----------|-------|-------------|-----|
-| S-15 | WebSocket error leaks internal details | P1 | CWE-209 | Exception messages sent raw to client | Sanitize WS error messages |
+| S-15 | WebSocket error leaks internal details | P1 | CWE-209 | Exception messages sent raw to client | ✅ Fixed — Sanitized WS error messages |
 | S-16 | Job runner writes to arbitrary paths | P1 | A01 | `output_dir` not path-validated | Validate against allowed directories |
-| S-18 | `float("inf")` in JSON responses | P1 | — | Non-standard JSON; breaks parsers | Replace inf with null/sentinel |
+| S-18 | `float("inf")` in JSON responses | P1 | — | Non-standard JSON; breaks parsers | ✅ Fixed — Replaced inf with null/sentinel |
 | S-17 | DXF CLI reads arbitrary paths | P2 | A01 | No path traversal check | Validate input paths |
 | S-19 | Content-Disposition header injection risk | P2 | A03 | Filename from user input | Sanitize filename |
 | S-20 | Unpinned upper bounds on security deps | P2 | A06 | `PyJWT>=2.0` allows untested versions | Pin upper bounds |
@@ -382,9 +383,9 @@ Proper `/api/v1` versioning. All POST endpoints async. CPU-bound wrapped with `a
 | API-5 | No OpenAPI examples on any endpoint | P1 | Zero endpoints have examples | Add `json_schema_extra` to models |
 | API-6 | `/stream/job/{job_id}` returns 200 for missing jobs | P1 | Clients can't distinguish success/failure | Return 404 |
 | API-11 | `/import/batch-design` unbounded `list[BeamRow]` | P1 | 10,000+ beams blocks worker | Add `max_length` + `asyncio.to_thread()` |
-| API-8 | `/detailing/bar-areas` returns untyped `dict` | P2 | No OpenAPI response schema | Create typed Pydantic model |
+| API-8 | `/detailing/bar-areas` returns untyped `dict` | P2 | No OpenAPI response schema | ✅ Fixed — Created BarAreasResponse model |
 | API-9 | Health check shallow | P2 | Always returns `healthy` | Add smoke calculation |
-| API-10 | Export DXF non-standard MIME type | P2 | `application/dxf` not IANA-registered | Use `application/octet-stream` |
+| API-10 | Export DXF non-standard MIME type | P2 | `application/dxf` not IANA-registered | ✅ Fixed — Changed to `application/octet-stream` |
 
 ---
 
@@ -577,7 +578,7 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 
 ### P2 — Nice to Have (52 findings)
 
-52 P2 findings across all sections. Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).
+52 P2 findings across all sections (7 resolved in Batch 1: S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10). Key themes: Docs/Packaging (DOC-7, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (S-17, S-19–S-23, OPS-4–OPS-6), Math quality (SM-6–SM-10, IS-1, IS-3, IS-6), Frontend polish (FE-3–FE-5, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, BE-6), API (API-3, API-4, API-8–API-10).
 
 ---
 
