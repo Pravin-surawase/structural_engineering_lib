@@ -84,6 +84,56 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.0
+**Date:** 2026-04-04
+**Status:** ✅ Locked & Verified
+**Mindset:** Complete Column Design + Footing Foundation + Security Hardening
+
+**Key Changes:**
+
+**Added - Complete Column Design (IS 456 Cl 25-39, IS 13920 Cl 7):**
+- 14 column design functions covering short, long, uniaxial, biaxial, helical, and ductile detailing
+- IS 13920 Cl 7 seismic ductile detailing for columns
+- P-M interaction curve generation, effective length, classification, and eccentricity
+- 515+ column-specific tests passing
+
+**Added - Footing Design Foundation (IS 456 Cl 31.6, 34):**
+- 4 footing design modules for isolated footing analysis
+- One-way shear, two-way punching shear, and bearing pressure checks
+- 61 footing-specific tests passing
+
+**Added - IS 456 Beam Restructure (Phase 1.5):**
+- Modular beam code organization for maintainability
+- Enhanced Shear design per Cl 40.3
+- Steel stress-strain model per IS 456 Fig 23
+
+**Added - Agent Evolver Infrastructure:**
+- 16 custom VS Code agents with role-based permissions
+- 10 agent skills (session management, safe file ops, API discovery, etc.)
+- NLP-based prompt router for task → agent routing
+- Parity dashboard for IS 456 clause/endpoint/test coverage
+
+**Changed - Security Hardening:**
+- CWE-209 error message sanitization across all endpoints
+- PyJWT migration replacing deprecated JWT dependencies
+- Input validation audit across system boundaries
+
+**Changed - Git Workflow Hardening (13/14 Phases):**
+- Comprehensive commit hook enforcement
+- Safe push/pull with conflict detection
+- PR requirement enforcement with bypass prevention
+
+**Changed - Variable Naming Standardization:**
+- 21 field names standardized across Python core, FastAPI models, and React types
+- Consistent naming: `b_mm`, `d_mm`, `fck`, `fy` across all layers
+
+**Stats:**
+- 3,401+ tests passing
+- 59 API endpoints across 13 routers
+- 36 public API functions + 7 private helpers
+
+---
+
 ## v0.17.0
 **Date:** 2026-01-13
 **Status:** ✅ Locked & Verified

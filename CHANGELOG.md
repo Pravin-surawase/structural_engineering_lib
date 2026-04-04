@@ -4,12 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Fixed
-- **Column P-M Interaction (TASK-690)** — SP:16 Table I continuity at k=1.0, Cl 38.1 modified strain for xu>D, xu_bal 0.002 inelastic strain for HYSD bars, Pu_0 envelope cap
-- **Column Biaxial e_min (TASK-691)** — Enforce Cl 25.4 minimum eccentricity on both axes before Bresler interaction check
+## [0.21.0] - 2026-04-04
 
-### Security
-- **Column Router (TASK-692)** — Sanitized 13 exception handlers removing internal error details (CWE-209)
+Complete column design system (IS 456 Cl 25–39, IS 13920 Cl 7), footing design foundation (Cl 31.6, 34), IS 456 beam restructure, agent infrastructure maturity.
 
 ### Added
 - **Column Design (IS 456)** — `classify_column` (Cl 25.1.2), `min_eccentricity` (Cl 25.4), `short_axial_capacity` (Cl 39.3) with ColumnClassification enum, ColumnAxialResult dataclass, E_COLUMN_001–005 error codes, 7 constants, 3 API wrappers, FastAPI column router with 3 POST endpoints, 75 tests (TASK-630/631/632)
@@ -18,15 +15,46 @@ All notable changes to this project will be documented in this file.
 - **TASK-635:** Biaxial bending check (Cl 39.6) — biaxial_bending_check() + 84 tests + API + endpoint
 - **TASK-636:** Effective length per Table 28 (Cl 25.2) — calculate_effective_length() + EndCondition enum + 69 tests + API + endpoint
 - **TASK-637:** Additional moment for slender columns (Cl 39.7.1) — calculate_additional_moment() + 24 tests + API + endpoint
+- **TASK-638:** Long column design (IS 456 Cl 39.7) — `design_long_column()` with braced/unbraced support, k-factor reduction, additional moments, 23 tests
+- **TASK-639:** Helical reinforcement check (IS 456 Cl 39.4) — `check_helical_reinforcement()` with 1.05 enhancement factor, pitch limits, 14 tests
+- **TASK-640:** Column design orchestrator — unified `design_column_is456()` in services/api.py routing short/slender columns
+- **TASK-641:** Column FastAPI endpoints — 13 POST endpoints at `/api/v1/design/column/*` with Pydantic models and 89 API tests
+- **TASK-645:** Column detailing (IS 456 Cl 26.5.3) — `column_detailing()` with 8 functions, longitudinal/tie requirements, 47 tests
+- **TASK-646:** IS 13920 column ductile detailing (Cl 7) — `column_ductile_detailing()` with confining reinforcement, seismic spacing, 18 tests
+- **TASK-650–653:** Phase 3 Footing Design — `size_footing` (Cl 34.1), `footing_flexure` (Cl 34.2.3.1), `footing_one_way_shear` (Cl 34.2.4.1a), `footing_punching_shear` (Cl 31.6.1), 61 tests
 - **Enhanced Shear Near Supports** — `enhanced_shear_strength` (Cl 40.3) with 14 tests and API endpoint (TASK-712)
-- **Steel Stress-Strain**
 - **TASK-642:** Five-point steel stress-strain curve (IS 456 Fig 23) — stress_strain_steel_5pt() in stress_blocks.py + 26 tests
+- **TASK-671:** Fix 4 known limitations — unified effective depth, serviceability opt-in, multi-layer rebar support, failure story field
+- **TASK-800:** Agent evolver infrastructure — 10 scripts (scorer, drift detector, compliance checker, trend analysis, session collector, instruction evolution), P12 burn-in
+- **TASK-850–872:** Agent Infrastructure — agent registry JSON, prompt router (14 rules), tool permissions (3 levels), pipeline state, hooks framework (6 hooks), parity dashboard, skill tiers, config precedence, CLI smoke tests
 - **Foundation Cleanup (Phase 1 Complete)**
 - **TASK-621:** Added `recovery` field to DesignError — step-by-step fix instructions for all 39 error codes
 - **TASK-622:** Created check_function_quality.py — 12-point AST-based IS 456 function quality checker
 - **TASK-623:** Created check_clause_coverage.py — IS 456 clause gap detection (119 clauses tracked)
 - **TASK-624:** Created check_new_element_completeness.py — 7-layer element completeness matrix
 - **TASK-625:** Created docs/governance/maintenance-playbook.md — governance playbook (11 sections)
+
+### Changed
+- **TASK-660:** Variable naming standardization to IS 456 convention — 21 field renames across 4 dataclasses with backward-compat aliases
+- **TASK-700–712:** IS 456 Beam Restructure (Phase 1.5) — beam modules organized into `codes/is456/beam/` subpackage, ductile detailing moved to `codes/is13920/beam.py`, backward-compat shims
+- **Agent count:** 14 → 16 agents, 8 → 10 skills, 15 → 16 prompt files
+- **Endpoint count:** 43 → 59 REST endpoints across 13 routers
+
+### Fixed
+- **Column P-M Interaction (TASK-690)** — SP:16 Table I continuity at k=1.0, Cl 38.1 modified strain for xu>D, xu_bal 0.002 inelastic strain for HYSD bars, Pu_0 envelope cap
+- **Column Biaxial e_min (TASK-691)** — Enforce Cl 25.4 minimum eccentricity on both axes before Bresler interaction check
+- **TASK-670:** Fix calculation_report.py ShearResult field bug — corrected 4 non-existent field accesses
+- **TASK-900:** Git workflow hardening — safe_push.sh divergence detection, --amend blocking, actionable error messages (13/14 phases complete)
+
+### Security
+- **Column Router (TASK-692)** — Sanitized 13 exception handlers removing internal error details (CWE-209)
+- **TASK-681:** Migrated python-jose → PyJWT — removed legacy JWT library with full test coverage
+
+### Developer
+- 56+ commits since v0.20.0
+- 3,401 tests passing (515+ column-specific)
+- Sessions 103–current logged
+- Innovation prototypes: sustainability scoring, generative design, structural companion
 
 ## [0.20.0] - 2026-03-30
 

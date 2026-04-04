@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-04-04
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-04
 
 ---
 
@@ -280,6 +280,35 @@ api.ETABSForceRow        # Dataclass: beam_id, story, forces
 api.ETABSEnvelopeResult  # Dataclass: beam_id, story, envelope data
 ```
 
+### Column Design API (Added v0.21.0)
+
+The following column design functions are **stable** and safe to depend on:
+
+```python
+from structural_lib import api
+
+# Short column axial capacity (IS 456 Cl 39.3)
+api.design_column_axial_is456(fck, fy, Ag_mm2, Asc_mm2)
+
+# Uniaxial bending design (IS 456 Cl 39.5)
+api.design_short_column_uniaxial_is456(...)
+
+# Slender column design (IS 456 Cl 39.7)
+api.design_long_column_is456(...)
+
+# Unified column design orchestrator
+api.design_column_is456(...)
+
+# Column classification — short vs slender (IS 456 Cl 25.1.2)
+api.classify_column_is456(...)
+
+# Biaxial bending check (IS 456 Cl 39.6)
+api.biaxial_bending_check_is456(...)
+
+# Column detailing (IS 456 Cl 26.5.3)
+api.column_detailing_is456(...)
+```
+
 ---
 
 ## Stable API (v0.12)
@@ -350,6 +379,28 @@ job = api.create_job_from_etabs(envelope_row, b_mm=300, D_mm=500, ...)
 
 **Status:** Preview - CSV column mapping and normalization may change.
 
+### Footing Design API (Added v0.21.0 — Experimental)
+
+Footing functions are in **experimental** status. API may change in v0.22:
+
+```python
+from structural_lib.codes.is456 import footing
+
+# Footing sizing (IS 456 Cl 34.1)
+footing.size_footing(...)
+
+# Flexural check (IS 456 Cl 34.2.3.1)
+footing.footing_flexure(...)
+
+# One-way shear (IS 456 Cl 34.2.4.1a)
+footing.footing_one_way_shear(...)
+
+# Punching shear (IS 456 Cl 31.6.1)
+footing.footing_punching_shear(...)
+```
+
+**Status:** Preview - Function signatures and return types may change before v1.0.
+
 ---
 
 ## Internal API (May Change Without Notice)
@@ -376,7 +427,7 @@ If you must use an internal module:
 ```python
 # Pin to exact version
 # requirements.txt
-structural-lib-is456==0.20.0
+structural-lib-is456==0.21.0
 
 # Or wrap with try/except
 try:
@@ -465,5 +516,6 @@ If you find a breaking change:
 
 ## Changelog
 
+- **2026-04-04**: Added Column Design API (stable) and Footing Design API (experimental) for v0.21.0
 - **2025-12-27**: Initial API stability document (v0.9.6)
 - **2025-12-29**: Added planned API targets (library-first expansion)

@@ -16,9 +16,9 @@
 
 ## Current Release
 
-- **Version:** v0.19.1 ✅ Complete → v0.20 (V3 Foundation) → v0.21 (Library Expansion)
-- **Focus:** Library expansion — new Python modules + FastAPI endpoints + React UI
-- **Target:** v0.21 — PDF export, load calculator, BOQ, torsion API, Pareto panel, rationalization
+- **Version:** v0.21.0 ✅ Released → v0.22 (Full React + AI Assistant)
+- **Focus:** Full React migration + AI assistant + remaining UX tasks
+- **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Detailed Plan:** [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) — code-level specs for all 8 tasks
 
@@ -28,8 +28,8 @@
 |---------|-------|--------|------------------|
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
-| **v0.21** | React UX + Library Expansion | 🔄 ACTIVE | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
-| **v0.22** | Full React | 📋 NEXT | AI assistant port, learning center, Streamlit deprecation |
+| **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
+| **v0.22** | Full React | 🔄 ACTIVE | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)
 
@@ -91,6 +91,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-681 | Migrate python-jose → PyJWT in auth.py | Copilot | ✅ Done |
 | TASK-690 | Column P-M interaction math fixes (SP:16 Table I continuity, Cl 38.1 modified strain, xu_bal inelastic strain, Pu_0 cap) | Copilot | ✅ Done |
 | TASK-691 | Column biaxial e_min enforcement (Cl 25.4 both axes before Bresler) | Copilot | ✅ Done |
 | TASK-692 | Column router exception sanitization (OWASP CWE-209) | Copilot | ✅ Done |
@@ -116,7 +117,6 @@
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
 | TASK-643 | Verify SP:16 Table I normalization convention against physical publication | — | 0.5d | 🟡 Medium | 📋 |
-| TASK-681 | Migrate python-jose → PyJWT in auth.py | — | 0.5d | 🟡 Medium | ✅ Done |
 
 ## Library Expansion — Multi-Code, Multi-Element
 
