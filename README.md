@@ -117,6 +117,12 @@ print(result.summary())
 print(result.is_ok)
 ```
 
+Column and footing design are also available:
+
+```python
+result = api.design_column_is456(b_mm=300, D_mm=450, fck=25, fy=415, pu_kn=1200, mux_knm=60)
+```
+
 The API uses explicit engineering parameter names: `b_mm`, `D_mm`, `mu_knm`, `fck_nmm2`.
 
 ### CLI Pipeline

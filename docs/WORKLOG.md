@@ -189,3 +189,10 @@ tags: []
 | 2026-04-04 | TASK-692 | fix(security): Sanitize 13 exception handlers in column.py router (CWE-209) | 832ec45f |
 | 2026-04-04 | TASK-690 | fix(column): Add design_short_column_uniaxial, pm_interaction_curve, biaxial_bending_check to __all__ exports | 832ec45f |
 | 2026-04-04 | TASK-690 | test(column): 7 updated + 6 new tests, 4258 total passing (0 failures) | 832ec45f |
+| 2026-04-04 | RELEASE | v0.21.0 release — CHANGELOG finalized, version bump, 11+ docs updated | pending |
+| 2026-04-04 | TASK-650-653 | Phase 3 Footing: bearing, flexure, one-way shear, punching shear (61 tests) | pending |
+| 2026-04-04 | TASK-638 | Long column design (IS 456 Cl 39.7) — braced/unbraced, 23 tests | pending |
+| 2026-04-04 | TASK-639 | Helical reinforcement (IS 456 Cl 39.4) — 1.05 enhancement, 14 tests | pending |
+| 2026-04-04 | TASK-640-641 | Column orchestrator + 13 FastAPI endpoints | pending |
+| 2026-04-04 | TASK-850-872 | Agent infrastructure: registry, router, permissions, hooks, pipeline | pending |
+| 2026-04-04 | TASK-900 | Git workflow hardening (13/14 phases) | pending |

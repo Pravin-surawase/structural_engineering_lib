@@ -1,0 +1,171 @@
+{
+  "folder": "Python/structural_lib/codes/is456/footing",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-04-04",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 35,
+      "last_updated": "2026-04-03",
+      "description": "IS 456:2000 — Footing design modules.",
+      "content_hash": "44288887fdd0"
+    },
+    {
+      "name": "_common.py",
+      "type": "python",
+      "size_lines": 112,
+      "last_updated": "2026-04-03",
+      "description": "IS 456:2000 — Footing shared utilities.",
+      "functions": [
+        {
+          "name": "validate_footing_inputs",
+          "description": "Validate footing geometry inputs.",
+          "params": [
+            "L_mm",
+            "B_mm",
+            "d_mm",
+            "a_mm",
+            "b_mm"
+          ]
+        },
+        {
+          "name": "net_upward_pressure_nmm2",
+          "description": "Calculate net upward factored pressure on footing.",
+          "params": [
+            "Pu_kN",
+            "L_mm",
+            "B_mm"
+          ]
+        },
+        {
+          "name": "punching_perimeter_mm",
+          "description": "Critical perimeter for punching shear at d/2 from column face per Cl 31.6.1.",
+          "params": [
+            "a_mm",
+            "b_mm",
+            "d_mm"
+          ]
+        },
+        {
+          "name": "punching_area_mm2",
+          "description": "Area within punching perimeter at d/2 from column face.",
+          "params": [
+            "a_mm",
+            "b_mm",
+            "d_mm"
+          ]
+        }
+      ],
+      "content_hash": "58294b647e55"
+    },
+    {
+      "name": "bearing.py",
+      "type": "python",
+      "size_lines": 154,
+      "last_updated": "2026-04-03",
+      "description": "IS 456:2000 — Footing bearing capacity and sizing per Cl. 34.1.",
+      "functions": [
+        {
+          "name": "size_footing",
+          "description": "Size an isolated footing for safe bearing capacity per IS 456 Cl 34.1.",
+          "params": [
+            "P_service_kN",
+            "q_safe_kPa",
+            "a_mm",
+            "b_mm",
+            "M_service_kNm",
+            "footing_type"
+          ]
+        }
+      ],
+      "content_hash": "6427703de185"
+    },
+    {
+      "name": "flexure.py",
+      "type": "python",
+      "size_lines": 174,
+      "last_updated": "2026-04-03",
+      "description": "IS 456:2000 — Footing flexural design per Cl. 34.2.3.1.",
+      "functions": [
+        {
+          "name": "footing_flexure",
+          "description": "Calculate bending moment and required steel at column face per IS 456 Cl 34.2.3.1.",
+          "params": [
+            "Pu_kN",
+            "L_mm",
+            "B_mm",
+            "d_mm",
+            "a_mm",
+            "b_mm",
+            "fck",
+            "fy"
+          ]
+        }
+      ],
+      "content_hash": "c111bb0c993a"
+    },
+    {
+      "name": "one_way_shear.py",
+      "type": "python",
+      "size_lines": 156,
+      "last_updated": "2026-04-03",
+      "description": "IS 456:2000 — Footing one-way shear check per Cl. 34.2.4.1(a).",
+      "functions": [
+        {
+          "name": "footing_one_way_shear",
+          "description": "Check one-way shear at distance d from column face per IS 456 Cl 34.2.4.1(a).",
+          "params": [
+            "Pu_kN",
+            "L_mm",
+            "B_mm",
+            "d_mm",
+            "a_mm",
+            "b_mm",
+            "fck",
+            "pt"
+          ]
+        }
+      ],
+      "content_hash": "9b219877bfa2"
+    },
+    {
+      "name": "punching_shear.py",
+      "type": "python",
+      "size_lines": 145,
+      "last_updated": "2026-04-03",
+      "description": "IS 456:2000 — Footing punching shear check per Cl. 31.6.1.",
+      "functions": [
+        {
+          "name": "footing_punching_shear",
+          "description": "Check punching (two-way) shear per IS 456 Cl 31.6.1.",
+          "params": [
+            "Pu_kN",
+            "L_mm",
+            "B_mm",
+            "d_mm",
+            "a_mm",
+            "b_mm",
+            "fck"
+          ]
+        }
+      ],
+      "content_hash": "3f403b41201c"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "c053fa3a31d5c9f3",
+  "has_init": true,
+  "public_api": [
+    "bearing",
+    "flexure",
+    "one_way_shear",
+    "punching_shear",
+    "size_footing",
+    "footing_flexure",
+    "footing_one_way_shear",
+    "footing_punching_shear"
+  ]
+}

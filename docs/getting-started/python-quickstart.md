@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-04-04
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** High
 **Version:** 1.0.0
 **Created:** 2025-12-15
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-04-04
 
 ---
 
@@ -158,22 +158,39 @@ print("Shear OK?", res.is_safe, "Spacing (mm):", res.spacing)
 PY
 ```
 
-## 7) Packaging notes (contributors only)
+## 7) Column Design (IS 456)
+
+```python
+from structural_lib import api
+
+# Short column — axial capacity (IS 456 Cl 39.3)
+result = api.design_column_axial_is456(
+    fck=25,        # Concrete grade (N/mm²)
+    fy=415,        # Steel grade (N/mm²)
+    Ag_mm2=90000,  # Gross area 300×300 mm
+    Asc_mm2=2412,  # 6 nos. 20mm dia
+)
+print(f"Axial capacity: {result['Pu_kN']:.1f} kN")
+```
+
+For the full column API (uniaxial, biaxial, slender columns), see [api.md](../reference/api.md).
+
+## 8) Packaging notes (contributors only)
 - Build a wheel: `cd Python && python3 -m build`.
 - Version source of truth: `Python/pyproject.toml`.
 
-## 8) Troubleshooting
+## 9) Troubleshooting
 - "Module not found": ensure the venv is activated and you installed `structural-lib-is456`.
 - DXF generation missing: install `structural-lib-is456[dxf]`.
 - Tests failing on path issues: run commands from the repo root.
-## 9) Sample Files & Examples
+## 10) Sample Files & Examples
 - `Python/examples/simple_examples.py` - 7 beginner examples with explanations
 - `Python/examples/complete_beam_design.py` - Full design workflow
 - `Python/examples/full_pipeline_synthetic.py` - Generates 50-500 beams and runs full CLI pipeline
 - `Python/examples/sample_beam_design.csv` - Simple 5-beam sample
 - `Python/examples/sample_building_beams.csv` - Complete 12-beam building
 
-## 10) Further Reading
+## 11) Further Reading
 - [beginners-guide.md](beginners-guide.md) - Comprehensive tutorial (Python + Excel)
 - [colab-workflow.md](colab-workflow.md) - Step-by-step Colab workflow (full pipeline + batch)
 - [../reference/api.md](../reference/api.md) - Full API documentation
