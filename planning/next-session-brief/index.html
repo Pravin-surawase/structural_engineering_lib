@@ -1535,25 +1535,26 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> P0 + P1 audit fixes — comprehensive library audit follow-up</p>
+<strong>Last Session:</strong> P1 Batch 1 fixes — 4 implemented + 5 verified already resolved</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>All 5 P0 audit findings fixed (S-1 auth, T-1 tests, OPS-1 CI, UX-6 WCAG 17+ files, API-7 batch limits)</li>
-<li>6 P1 audit findings fixed (SM-1/2/3 validation, IS-5/7 dimension warnings, FE-6 ErrorBoundary)</li>
-<li>18 new tests added (4,283 total passing)</li>
-<li>Grade improved: B- (6.4) → B+ (7.0)</li>
-<li>Branch: task/TASK-AUDIT-P0 — needs PR merge</li>
+<li>9 P1 audit findings resolved (5 verified already fixed + 4 newly implemented)</li>
+<li>A-1: Moved clause_cli.py to cli/ package (architecture fix)</li>
+<li>A-3: Added Ast_min/Ast_max to FlexureResult; removed inline IS 456 math from FastAPI router</li>
+<li>API-6: Fixed streaming /job/{job_id} — proper 404 + Path validation</li>
+<li>FE-7: Converted 4 Three.js material leaks to declarative R3F JSX</li>
+<li>Grade improved: B+ (7.0) → B+ (7.2)</li>
+<li>Tests: 4,236 passing, React build succeeds</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Merge task/TASK-AUDIT-P0 PR</li>
-<li>Continue P1 audit fixes: A-1 (clause_cli I/O), A-3 (math in router), API-1 (response shapes)</li>
+<li>P1 Batch 2: API-5 (OpenAPI examples), OPS-3 (pip lock file), DOC-4 (footing docs), DOC-5 (clause mapping)</li>
+<li>P1 Batch 3: FE-1a (accessibility — ARIA landmarks, Canvas wrapper)</li>
+<li>Regenerate folder indexes (codes/is456/index.json stale after clause_cli move)</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
 <li>TASK-516: Triangular + Moment loads</li>
-<li>TASK-520: Test coverage gaps (report.py, geometry_3d.py, dashboard.py)</li>
-<li>Remaining P1 items from audit (14 remaining)</li>
-<li>v0.22 planning: AI assistant port, learning center</li>
+<li>Remaining P1 items from other audit sections</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
