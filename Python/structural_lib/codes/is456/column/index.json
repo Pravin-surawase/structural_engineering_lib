@@ -1,0 +1,307 @@
+{
+  "folder": "Python/structural_lib/codes/is456/column",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-04-04",
+  "file_count": 9,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 53,
+      "last_updated": "2026-04-04",
+      "description": "IS 456:2000 — Column design modules.",
+      "content_hash": "ebeecc787d39"
+    },
+    {
+      "name": "_common.py",
+      "type": "python",
+      "size_lines": 53,
+      "last_updated": "2026-04-03",
+      "description": "Module:       _common",
+      "content_hash": "5161dc5ec594"
+    },
+    {
+      "name": "axial.py",
+      "type": "python",
+      "size_lines": 343,
+      "last_updated": "2026-04-01",
+      "description": "Module:       axial",
+      "functions": [
+        {
+          "name": "effective_length",
+          "description": "Calculate effective length of column per IS 456 Cl 25.2, Table 28.",
+          "params": [
+            "l_mm",
+            "end_condition",
+            "use_theoretical"
+          ]
+        },
+        {
+          "name": "classify_column",
+          "description": "Classify column as short or slender per IS 456 Cl 25.1.2.",
+          "params": [
+            "le_mm",
+            "D_mm"
+          ]
+        },
+        {
+          "name": "min_eccentricity",
+          "description": "Calculate minimum eccentricity per IS 456 Cl 25.4.",
+          "params": [
+            "l_unsupported_mm",
+            "D_mm"
+          ]
+        },
+        {
+          "name": "short_axial_capacity",
+          "description": "Calculate axial load capacity of a short column per IS 456 Cl 39.3.",
+          "params": [
+            "fck",
+            "fy",
+            "Ag_mm2",
+            "Asc_mm2"
+          ]
+        }
+      ],
+      "content_hash": "84d1c996f20e"
+    },
+    {
+      "name": "biaxial.py",
+      "type": "python",
+      "size_lines": 496,
+      "last_updated": "2026-04-04",
+      "description": "Module:       biaxial",
+      "functions": [
+        {
+          "name": "biaxial_bending_check",
+          "description": "Check column under biaxial bending per IS 456 Cl 39.6.",
+          "params": [
+            "Pu_kN",
+            "Mux_kNm",
+            "Muy_kNm",
+            "b_mm",
+            "D_mm",
+            "le_mm",
+            "fck",
+            "fy"
+          ]
+        }
+      ],
+      "content_hash": "c4a8472bd2a1"
+    },
+    {
+      "name": "detailing.py",
+      "type": "python",
+      "size_lines": 620,
+      "last_updated": "2026-04-04",
+      "description": "Module:       detailing",
+      "functions": [
+        {
+          "name": "check_longitudinal_limits",
+          "description": "Check longitudinal steel ratio limits per IS 456 Cl 26.5.3.1(a).",
+          "params": [
+            "Ag_mm2",
+            "Asc_mm2",
+            "at_lap_section"
+          ]
+        },
+        {
+          "name": "get_min_bar_count",
+          "description": "Return minimum number of longitudinal bars per IS 456 Cl 26.5.3.1(b).",
+          "params": [
+            "is_circular"
+          ]
+        },
+        {
+          "name": "check_min_bar_diameter",
+          "description": "Check if bar diameter meets minimum per IS 456 Cl 26.5.3.1(b).",
+          "params": [
+            "bar_dia_mm"
+          ]
+        },
+        {
+          "name": "calculate_tie_diameter",
+          "description": "Calculate required lateral tie diameter per IS 456 Cl 26.5.3.2(a).",
+          "params": [
+            "max_long_bar_dia_mm"
+          ]
+        },
+        {
+          "name": "calculate_tie_spacing",
+          "description": "Calculate maximum lateral tie spacing per IS 456 Cl 26.5.3.2(b).",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "smallest_long_bar_dia_mm"
+          ]
+        },
+        {
+          "name": "check_bar_spacing",
+          "description": "Check clear spacing between longitudinal bars per IS 456 Cl 26.5.3.1(c).",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "cover_mm",
+            "bar_dia_mm",
+            "num_bars",
+            "is_circular"
+          ]
+        },
+        {
+          "name": "needs_cross_ties",
+          "description": "Check if cross-ties are needed per IS 456 Cl 26.5.3.2(c).",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "cover_mm",
+            "bar_dia_mm",
+            "num_bars"
+          ]
+        },
+        {
+          "name": "create_column_detailing",
+          "description": "Assemble all column detailing checks per IS 456 Cl 26.5.3.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "cover_mm",
+            "fck",
+            "fy",
+            "num_bars",
+            "bar_dia_mm",
+            "tie_dia_mm"
+          ]
+        }
+      ],
+      "content_hash": "e86728dd3f8e"
+    },
+    {
+      "name": "helical.py",
+      "type": "python",
+      "size_lines": 237,
+      "last_updated": "2026-04-03",
+      "description": "Module:       helical",
+      "functions": [
+        {
+          "name": "check_helical_reinforcement",
+          "description": "Check helical reinforcement for circular column per IS 456 Cl 39.4.",
+          "params": [
+            "D_mm",
+            "D_core_mm",
+            "fck",
+            "fy",
+            "d_helix_mm",
+            "pitch_mm",
+            "Pu_axial_kN"
+          ]
+        }
+      ],
+      "content_hash": "00a245c37498"
+    },
+    {
+      "name": "long_column.py",
+      "type": "python",
+      "size_lines": 395,
+      "last_updated": "2026-04-03",
+      "description": "Module:       long_column",
+      "functions": [
+        {
+          "name": "design_long_column",
+          "description": "Design a long (slender) column per IS 456 Cl 39.7.",
+          "params": [
+            "Pu_kN",
+            "M1x_kNm",
+            "M2x_kNm",
+            "M1y_kNm",
+            "M2y_kNm",
+            "b_mm",
+            "D_mm",
+            "lex_mm"
+          ]
+        }
+      ],
+      "content_hash": "f51a7ff5c05a"
+    },
+    {
+      "name": "slenderness.py",
+      "type": "python",
+      "size_lines": 225,
+      "last_updated": "2026-04-03",
+      "description": "Module:       slenderness",
+      "functions": [
+        {
+          "name": "calculate_additional_moment",
+          "description": "Calculate additional moment for slender columns per IS 456 Cl 39.7.1.",
+          "params": [
+            "Pu_kN",
+            "b_mm",
+            "D_mm",
+            "lex_mm",
+            "ley_mm",
+            "fck",
+            "fy",
+            "Asc_mm2"
+          ]
+        }
+      ],
+      "content_hash": "ac7aa8dfc284"
+    },
+    {
+      "name": "uniaxial.py",
+      "type": "python",
+      "size_lines": 837,
+      "last_updated": "2026-04-04",
+      "description": "Module:       uniaxial",
+      "functions": [
+        {
+          "name": "design_short_column_uniaxial",
+          "description": "Check short column under uniaxial bending per IS 456 Cl 39.5.",
+          "params": [
+            "Pu_kN",
+            "Mu_kNm",
+            "b_mm",
+            "D_mm",
+            "le_mm",
+            "fck",
+            "fy",
+            "Asc_mm2"
+          ]
+        },
+        {
+          "name": "pm_interaction_curve",
+          "description": "Generate the P-M interaction curve for a rectangular column section.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "fck",
+            "fy",
+            "Asc_mm2",
+            "d_prime_mm",
+            "n_points"
+          ]
+        }
+      ],
+      "content_hash": "da71f355a08b"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "585f2cecbb987ab3",
+  "has_init": true,
+  "public_api": [
+    "axial",
+    "biaxial",
+    "biaxial_bending_check",
+    "calculate_additional_moment",
+    "check_helical_reinforcement",
+    "create_column_detailing",
+    "design_long_column",
+    "design_short_column_uniaxial",
+    "detailing",
+    "helical",
+    "long_column",
+    "pm_interaction_curve",
+    "slenderness",
+    "uniaxial"
+  ]
+}
