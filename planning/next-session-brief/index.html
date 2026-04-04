@@ -1525,6 +1525,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#latest-handoff-auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Latest Handoff (auto)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#required-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1557,34 +1568,48 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-04
-<strong>Last Session:</strong> Maintenance session (multi-agent)</p>
+<strong>Last Session:</strong> Column P-M math fixes, biaxial e_min, security sanitization, test updates</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Maintenance audit completed covering: security, frontend, testing, governance, agent evolution</li>
-<li>TASK-645: Column detailing per IS 456 Cl 26.5.3 — FULLY DONE</li>
-<li><code>Python/structural_lib/codes/is456/column/detailing.py</code> (617 lines, 8 functions)</li>
-<li><code>ColumnDetailingResult</code> dataclass in <code>core/data_types.py</code></li>
-<li>Error codes E_COLUMN_012-016 in <code>core/errors.py</code></li>
-<li>API wrapper <code>detail_column_is456()</code> in <code>services/api.py</code></li>
-<li>FastAPI endpoint <code>POST /api/v1/design/column/detailing</code></li>
-<li>40 unit tests + 7 FastAPI tests — all passing</li>
-<li>Reviewed and APPROVED by @reviewer</li>
-</ul>
+<ol>
+<li><strong>TASK-690: Column P-M interaction math fixes</strong> — DONE</li>
+<li>SP:16 Table I continuity: C1(k=1.0) → 1.0, C2 → 0.42 at xu=D boundary</li>
+<li>IS 456 Cl 38.1: modified strain profile for xu&gt;D (eps_max = 0.0035 − 0.75·eps_far)</li>
+<li>xu_bal: includes 0.002 inelastic strain for HYSD bars (Fe 415/500/550)</li>
+<li>
+<p>P-M envelope capped at Pu_0 per Cl 39.3</p>
+</li>
+<li>
+<p><strong>TASK-691: Column biaxial e_min enforcement</strong> — DONE</p>
+</li>
+<li>
+<p>Cl 25.4 minimum eccentricity now enforced for both axes before Bresler check</p>
+</li>
+<li>
+<p><strong>TASK-692: Column router exception sanitization</strong> — DONE</p>
+</li>
+<li>
+<p>13 generic exception handlers sanitized (OWASP CWE-209)</p>
+</li>
+<li>
+<p><strong>Code quality: column <strong>init</strong>.py exports</strong> — DONE</p>
+</li>
+<li>
+<p><code>design_short_column_uniaxial</code>, <code>pm_interaction_curve</code>, <code>biaxial_bending_check</code> added to <code>__all__</code></p>
+</li>
+<li>
+<p><strong>Tests: 7 updated + 6 new, 4258 total passing (0 failures)</strong></p>
+</li>
+</ol>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>TASK-646: Column ductile detailing</strong> (IS 13920 Cl 7) — seismic confinement rules</li>
-<li>Create <code>Python/structural_lib/codes/is13920/column.py</code></li>
-<li>6 sub-functions + orchestrator (same pattern as detailing.py)</li>
-<li>~25 tests needed</li>
-<li>
-<p>This is the LAST remaining column function (11/11 will complete Phase 2 Column)</p>
-</li>
-<li>
-<p><strong>Minor follow-up:</strong> Add <code>is_safe</code> property alias to <code>ColumnDetailingResult</code> for consistency with other column result types (reviewer note, non-blocking)</p>
-</li>
-<li>
-<p><strong>After Column complete:</strong> Phase 3 planning (Slab design per IS 456 Cl 24)</p>
-</li>
+<li><strong>React P-M interaction diagram</strong> — Visualize column P-M envelope in frontend (R3F or 2D chart)</li>
+<li><strong>Quantitative SP:16 benchmarks</strong> — Add numerical SP:16 Table I benchmark tests for uniaxial column design</li>
+<li><strong>TASK-643: Verify SP:16 Table I normalization</strong> — Check against physical publication</li>
+<li><strong>Phase 3 planning: Slab design</strong> (IS 456 Cl 24) — research clauses, define tasks, create blueprint section</li>
+<li><strong>TASK-519: Alternatives Panel (Pareto)</strong> — Pareto front in DesignView</li>
+<li><strong>TASK-520: Test coverage</strong> — report.py, geometry_3d.py, dashboard.py</li>
+<li><strong>TASK-521: Beam Rationalization</strong> — new algo + FastAPI + React</li>
+<li><strong>Minor follow-up:</strong> Add <code>is_safe</code> property alias to <code>ColumnDetailingResult</code> for consistency</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <p>None</p>
@@ -1592,11 +1617,17 @@
 <ul>
 <li>Blueprint: <code>docs/planning/library-expansion-blueprint-v5.md</code></li>
 <li>Column module: <code>Python/structural_lib/codes/is456/column/</code></li>
-<li>Column tests: <code>Python/tests/codes/is456/column/</code></li>
-<li><strong>Wire multi-layer rebar into detailing functions</strong> — Fix 3 types exist but not yet consumed by detailing pipeline</li>
-<li><strong>Add Level B/C deflection to auto-serviceability</strong> — Currently only Level A (span/depth ratio)</li>
+<li>IS 13920 column: <code>Python/structural_lib/codes/is13920/column.py</code></li>
+<li>Column tests: <code>Python/tests/codes/is456/column/</code>, <code>Python/tests/codes/is13920/</code></li>
 </ul>
 <hr />
+<h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
+<!-- HANDOFF:START -->
+<ul>
+<li>Date: 2026-04-04</li>
+</ul>
+<!-- HANDOFF:END -->
+
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>branch<span class="w"> </span>--show-current
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docs/TASKS.md<span class="w">                    </span><span class="c1"># Check priorities</span>

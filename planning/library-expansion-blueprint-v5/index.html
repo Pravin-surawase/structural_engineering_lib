@@ -3023,7 +3023,7 @@
 <tr>
 <td>Column</td>
 <td>Cl 25, 39, Annex E/G</td>
-<td>P1 🔄 — 9/11 functions done: classify ✅, min_ecc ✅, axial ✅, uniaxial ✅, biaxial ✅, P-M curve ✅, effective_length ✅, helical ✅, additional_moment ✅, long_column ✅ (410+ tests). Remaining: column_detailing, ductile_detailing</td>
+<td>✅ COMPLETE — 11/11 functions done: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1%</td>
 </tr>
 <tr>
 <td>One-way slab</td>
@@ -3347,15 +3347,15 @@
 <td>9</td>
 <td><code>column_detailing()</code></td>
 <td>Cl 26.5.3</td>
-<td>Medium</td>
-<td>📋</td>
+<td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>10</td>
 <td><code>column_ductile_detailing()</code></td>
 <td>IS 13920 Cl 7</td>
-<td>Medium</td>
-<td>📋</td>
+<td>✅ Done</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>11</td>
@@ -3563,7 +3563,7 @@
 </code></pre></div>
 <h3 id="57-phase-1-success-criteria">5.7 Phase 1 Success Criteria<a class="headerlink" href="#57-phase-1-success-criteria" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[x] IS 456 column design: 7/10 functions done (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length). 254+ column tests, SP:16 benchmarks passing ±0.1%. Remaining: additional_moment, helical, detailing</li>
+<li>[x] IS 456 column design: 11/11 functions COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, detailing + IS 13920 ductile detailing). 500+ column tests, SP:16 benchmarks passing ±0.1%</li>
 <li>[ ] IS 456 one-way slab: 4 functions</li>
 <li>[ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases</li>
 <li>[ ] IS 456 footing: 6 functions including punching shear</li>
@@ -4208,8 +4208,8 @@
 <td>6</td>
 <td><strong>Column P-M interaction complexity</strong></td>
 <td>Most complex IS 456 calculation</td>
-<td>🔄 PARTIALLY MITIGATED</td>
-<td>Implemented incrementally as prescribed: axial → uniaxial → biaxial → P-M curve. 7/10 functions done. Remaining: slenderness, detailing</td>
+<td>✅ RESOLVED</td>
+<td>Implemented incrementally: axial → uniaxial → biaxial → P-M curve → slenderness → detailing. 11/11 functions done. Phase 2 Column COMPLETE</td>
 </tr>
 <tr>
 <td>7</td>
