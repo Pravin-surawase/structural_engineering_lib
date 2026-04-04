@@ -42,14 +42,15 @@ F = TypeVar("F", bound=Callable[..., Any])
 _CLAUSE_REGISTRY: dict[str, list[str]] = {}
 
 # Eager module-level load (replaces lazy _load_clause_database)
+_CLAUSE_DB: dict[str, Any]
 try:
-    _CLAUSE_DB: dict[str, Any] = json.loads(
+    _CLAUSE_DB = json.loads(
         importlib.resources.files("structural_lib.codes.is456")
         .joinpath("clauses.json")
         .read_text(encoding="utf-8")
     )
 except Exception:
-    _CLAUSE_DB: dict[str, Any] = {}
+    _CLAUSE_DB = {}
 
 
 def clause(*clause_refs: str, standard: str = "IS 456") -> Callable[[F], F]:
