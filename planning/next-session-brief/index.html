@@ -1546,26 +1546,25 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> P2 Batch 4 fixes — 7 items resolved + 1 closure (S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4; OPS-6 closed as already done)</p>
+<strong>Last Session:</strong> P2 Batch 5 fixes — 7 items resolved (DOC-1, DOC-2, DOC-3, OPS-2, OPS-7, UX-7, FE-8)</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>P2 Batch 4: 7 fixes + 1 closure</li>
-<li>S-20: Pinned upper bounds on security deps (PyJWT&lt;3, pydantic&lt;3, fastapi&lt;1, cryptography&lt;47)</li>
-<li>S-21: Auth event audit logging (5 structured log points in auth.py)</li>
-<li>S-23: Docker dev mounts → read-only (:ro) for security</li>
-<li>T-13: 10 Hypothesis property-based tests for serviceability (5 functions)</li>
-<li>BE-2: Corrected function count in 4 doc files (37 public + 7 private)</li>
-<li>GOV-4: Release process documentation added to CONTRIBUTING.md</li>
-<li>FE-4: IS 456 parameter tooltips on 6 BeamForm fields</li>
-<li>OPS-6: Closed (already done — GHA cache configured in docker-build.yml)</li>
-<li>Grade: A (8.3/10)</li>
-<li>P2: 31/52 resolved (Batch 1-4 + 3 closures)</li>
+<li>P2 Batch 5: 7 fixes</li>
+<li>DOC-1: PyPI description updated (beams + columns + footings)</li>
+<li>DOC-2: Created MANIFEST.in for py.typed inclusion in sdist</li>
+<li>DOC-3: Examples README rewritten with 9 actual files (was listing 4 non-existent)</li>
+<li>OPS-2: Updated publish.yml + link-check.yml action versions (checkout@v6, setup-python@v6, upload/download-artifact@v7/v8)</li>
+<li>OPS-7: Docker compose JWT secret changed to fail-fast (no insecure default)</li>
+<li>UX-7: Added prefers-reduced-motion CSS + useReducedMotion hook + HomePage animation guards</li>
+<li>FE-8: Added WebGL context loss handling with useWebGLContextLoss hook + user-facing recovery UI</li>
+<li>Grade: A (8.5/10)</li>
+<li>P2: 38/52 resolved (73%) — Batches 1-5 + 3 closures</li>
 <li>ALL 20 P1 findings previously resolved</li>
 <li>ALL 5 P0 findings previously resolved</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>P2 Batch 5 — pick next 5-7 from remaining 21 P2 items</li>
+<li>P2 Batch 6 — pick next 5-7 from remaining 14 P2 items</li>
 <li>Wire footing functions into services/api.py</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
@@ -1579,8 +1578,8 @@
 <ul>
 <li>P0: 5/5 resolved ✅</li>
 <li>P1: 20/20 resolved ✅</li>
-<li>P2: 31/52 resolved (60%)</li>
-<li>Overall grade: A (8.3/10)</li>
+<li>P2: 38/52 resolved (73%)</li>
+<li>Overall grade: A (8.5/10)</li>
 </ul>
 
 
