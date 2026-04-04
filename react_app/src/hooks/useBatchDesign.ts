@@ -5,6 +5,7 @@
  * on multiple beams with live progress tracking.
  */
 import { useState, useCallback, useRef } from 'react';
+import { toast } from '../components/ui/Toast';
 import type { BeamCSVRow } from '../types/csv';
 
 import { API_BASE_URL } from '../config';
@@ -135,11 +136,13 @@ export function useBatchDesign() {
         // Connection error
         es.close();
         eventSourceRef.current = null;
+        const errorMsg = 'Connection to server lost';
         setState(prev => ({
           ...prev,
           status: 'error',
-          error: 'Connection to server lost',
+          error: errorMsg,
         }));
+        toast.error('Batch Design Failed', errorMsg);
       }
     });
 

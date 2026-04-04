@@ -55,7 +55,17 @@ def get_steel_stress(strain: float, fy: float) -> float:
     Calculate stress in steel for a given strain and yield strength.
     Uses IS 456 Figure 23 curve for HYSD bars (Fe415, Fe500).
     For Fe250, assumes elasto-plastic behavior.
+
+    Raises:
+        ValueError: If fy is not positive or inputs are not finite.
     """
+    if fy <= 0:
+        raise ValueError(f"fy must be positive, got {fy}")
+    if not math.isfinite(strain):
+        raise ValueError(f"strain must be finite, got {strain}")
+    if not math.isfinite(fy):
+        raise ValueError(f"fy must be finite, got {fy}")
+
     es = 200000.0  # Modulus of Elasticity (N/mm^2)
 
     if abs(fy - 250) < 0.5:

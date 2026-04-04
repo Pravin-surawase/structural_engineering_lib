@@ -5,6 +5,7 @@
  * from the /api/v1/export/* endpoints.
  */
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "../components/ui/Toast";
 
 import { API_BASE_URL } from '../config';
 
@@ -94,6 +95,12 @@ export function useExportBBS() {
     mutationFn: (params: ExportBeamParams) =>
       fetchExport("bbs", params, `BBS_${params.beam_id || "BEAM-1"}.csv`),
     mutationKey: ["export-bbs"],
+    onSuccess: (filename) => {
+      toast.success("Export Complete", `${filename} downloaded successfully`);
+    },
+    onError: (error: Error) => {
+      toast.error("Export Failed", error.message);
+    },
   });
 }
 

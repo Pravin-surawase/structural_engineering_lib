@@ -41,7 +41,22 @@ def _calculate_puz(
 
     Returns:
         Puz in kN.
+
+    Raises:
+        ValueError: If dimensions, materials, or steel area are invalid.
     """
+    if b_mm <= 0 or D_mm <= 0:
+        raise ValueError(f"Dimensions must be positive: b_mm={b_mm}, D_mm={D_mm}")
+    if fck <= 0 or fy <= 0:
+        raise ValueError(f"Material strengths must be positive: fck={fck}, fy={fy}")
+    if Asc_mm2 < 0:
+        raise ValueError(f"Steel area must be non-negative: Asc_mm2={Asc_mm2}")
+    Ag_mm2 = b_mm * D_mm
+    if Asc_mm2 >= Ag_mm2:
+        raise ValueError(
+            f"Steel area ({Asc_mm2:.1f} mm²) must be less than gross area ({Ag_mm2:.1f} mm²)"
+        )
+
     # IS 456 Cl 39.6a: Ac = b * D - Asc (net concrete area)
     Ag_mm2 = b_mm * D_mm
     Ac_mm2 = Ag_mm2 - Asc_mm2

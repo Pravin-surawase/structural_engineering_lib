@@ -149,6 +149,7 @@ __all__ = [
     "generate_calculation_report",
     # Outputs
     "compute_detailing",
+    "check_anchorage_at_simple_support",
     "compute_bbs",
     "export_bbs",
     "compute_dxf",
