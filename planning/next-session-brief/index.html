@@ -1546,33 +1546,30 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> P2 Batch 2 fixes — 7 items resolved + 2 closures (OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; S-16/S-22 closed invalid)</p>
+<strong>Last Session:</strong> P2 Batch 3 fixes — 7 items resolved (S-19, API-9, A-2, U-2, PH-3, IS-3, T-8)</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li>P2 Batch 2: 7 fixes + 2 closures</li>
-<li>OPS-4: Dockerfile IPv6 binding (bound to <code>::</code>)</li>
-<li>SM-7: <code>_calculate_puz()</code> input validation (range checks)</li>
-<li>SM-9: <code>get_steel_stress()</code> zero-input guards</li>
-<li>FE-5: Toast system connected to error handlers</li>
-<li>BE-6: <code>check_anchorage_at_simple_support()</code> exported in <code>__all__</code></li>
-<li>S-17: DXF CLI path containment validation</li>
-<li>DOC-7: CHANGELOG v0.21.0 highlights section added</li>
-<li>S-16: Closed (INVALID — web API uses streaming, no disk I/O)</li>
-<li>S-22: Closed (INVALID — web API uses streaming, no disk I/O)</li>
-<li>Grade: A- (7.9/10)</li>
-<li>P2: 16/52 resolved (7 Batch 1 + 7 Batch 2 + 2 closures)</li>
+<li>P2 Batch 3: 7 fixes</li>
+<li>S-19: sanitize_filename() for Content-Disposition headers (defense-in-depth)</li>
+<li>API-9: Smoke calculation in /health/ready with 30s TTL cache</li>
+<li>A-2: Replaced Path()/open() with importlib.resources in traceability.py</li>
+<li>U-2: Package name callout prominence in README</li>
+<li>PH-3: 3 stale doc version references fixed to v0.21.0</li>
+<li>IS-3: @clause decorators added to all 12 IS 13920 functions (extended decorator with standard= kwarg)</li>
+<li>T-8: React validation (lint + build + test) added to fast-checks.yml CI</li>
+<li>Grade: A- (8.1/10)</li>
+<li>P2: 23/52 resolved (Batch 1: 7 + Batch 2: 7 + 2 closures + Batch 3: 7)</li>
 <li>ALL 20 P1 findings previously resolved</li>
 <li>ALL 5 P0 findings previously resolved</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>P2 Batch 3 — pick next 5-7 highest-impact P2 items from remaining 36</li>
+<li>P2 Batch 4 — pick next 5-7 highest-impact P2 items from remaining 29</li>
 <li>Wire footing functions into services/api.py (discovered gap during DOC-4)</li>
 <li>Add @clause decorators to footing functions (IS-2)</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
 <li>TASK-516: Triangular + Moment loads</li>
-<li>Add eslint-plugin-jsx-a11y to CI for automated accessibility checking</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1582,8 +1579,8 @@
 <ul>
 <li>P0: 5/5 resolved ✅</li>
 <li>P1: 20/20 resolved ✅</li>
-<li>P2: 16/52 resolved (Batch 1 + Batch 2 complete)</li>
-<li>Overall grade: A- (7.9/10)</li>
+<li>P2: 23/52 resolved (Batch 1 + Batch 2 + Batch 3 complete)</li>
+<li>Overall grade: A- (8.1/10)</li>
 </ul>
 
 

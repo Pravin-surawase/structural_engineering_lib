@@ -2385,14 +2385,20 @@
 <td>7 P2s resolved: OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7. 2 P2s closed as invalid: S-16, S-22</td>
 </tr>
 <tr>
+<td>P2 Fixes (Batch 3, 7 items)</td>
+<td>A-</td>
+<td>8.1/10</td>
+<td>7 P2s resolved: S-19, API-9, A-2, U-2, PH-3, IS-3, T-8</td>
+</tr>
+<tr>
 <td><strong>Final (post-fix)</strong></td>
 <td><strong>A-</strong></td>
-<td><strong>7.9/10</strong></td>
-<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 16 P2 fixes resolved</strong></td>
+<td><strong>8.1/10</strong></td>
+<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 23 P2 fixes resolved</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Overall Library Grade: A- (7.9/10) — up from A- (7.7/10) after P2 Batch 2 fixes</strong></p>
+<p><strong>Overall Library Grade: A- (8.1/10) — up from A- (7.9/10) after P2 Batch 3 fixes</strong></p>
 <hr />
 <h2 id="1-library-usability-audit-score-395">1. Library Usability Audit (Score: 3.9/5)<a class="headerlink" href="#1-library-usability-audit-score-395" title="Permanent link">&para;</a></h2>
 <h3 id="scores-by-area">Scores by Area<a class="headerlink" href="#scores-by-area" title="Permanent link">&para;</a></h3>
@@ -2455,7 +2461,7 @@
 <td>U-2</td>
 <td>Package name (<code>structural-lib-is456</code>) vs import (<code>structural_lib</code>) mismatch poorly documented</td>
 <td>P2</td>
-<td>Add prominent callout in README</td>
+<td>✅ Fixed — Added prominent callout in README</td>
 </tr>
 <tr>
 <td>U-4</td>
@@ -2585,7 +2591,7 @@
 <td>IS-3</td>
 <td>IS 13920 modules lack @clause decorators</td>
 <td>P2</td>
-<td>Add <code>@clause</code> to all IS 13920 functions</td>
+<td>✅ Fixed — Added @clause to all 12 IS 13920 functions</td>
 </tr>
 <tr>
 <td>IS-4</td>
@@ -2743,7 +2749,7 @@
 <td>A-2</td>
 <td>File I/O in IS 456 layer — <code>traceability.py</code> uses <code>Path()</code>/<code>open()</code></td>
 <td>P2</td>
-<td>Move file loading to services layer</td>
+<td>✅ Fixed — Replaced with importlib.resources</td>
 </tr>
 <tr>
 <td>A-3</td>
@@ -2835,7 +2841,7 @@
 <td>T-8</td>
 <td>React tests not in CI</td>
 <td>P2</td>
-<td>Add Vitest to CI workflow</td>
+<td>✅ Fixed — Added react-validation job to fast-checks.yml</td>
 </tr>
 </tbody>
 </table>
@@ -2989,7 +2995,7 @@
 <td>PH-3</td>
 <td>7 stale version references (v0.19/v0.20)</td>
 <td>P2</td>
-<td>Run <code>scripts/sync_numbers.py --fix</code></td>
+<td>✅ Fixed — Updated 3 stale doc files to v0.21.0</td>
 </tr>
 <tr>
 <td>PH-4</td>
@@ -3404,7 +3410,7 @@
 <td>P2</td>
 <td>A03</td>
 <td>Filename from user input</td>
-<td>Sanitize filename</td>
+<td>✅ Fixed — Added sanitize_filename() helper</td>
 </tr>
 <tr>
 <td>S-20</td>
@@ -3635,7 +3641,7 @@
 <td>Health check shallow</td>
 <td>P2</td>
 <td>Always returns <code>healthy</code></td>
-<td>Add smoke calculation</td>
+<td>✅ Fixed — Added smoke calculation with 30s cache</td>
 </tr>
 <tr>
 <td>API-10</td>
