@@ -47,7 +47,8 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 ## Features
 
 - 🏗️ **Beam Design** — Design and check RC beams to IS 456:2000 (flexure, shear, torsion)
-- 🏛️ **Column Design** — Full column design per IS 456 + IS 13920 ductile detailing
+- 🏛️ **Column Design** — Classification, effective length (Table 28), axial capacity (Cl 39.3), uniaxial bending (Cl 39.5), P-M interaction curves, biaxial check (Cl 39.6), slender columns (Cl 39.7), helical reinforcement (Cl 39.4), detailing (Cl 26.5.3), IS 13920 Cl 7 ductile detailing
+- 🧱 **Footing Design** — Bearing pressure sizing (Cl 34.1), flexure (Cl 34.2.3), one-way shear (Cl 34.2.4), punching shear (Cl 31.6.1)
 - 📋 **Bar Bending Schedules** — Auto-generate BBS from design results
 - 📐 **DXF Export** — CAD-ready reinforcement drawings
 - 📊 **Batch Processing** — Design hundreds of beams from CSV/JSON inputs
@@ -62,12 +63,12 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 
 | Metric | Value |
 |--------|-------|
-| **Python tests** | 3,401 tests across Ubuntu, Windows, macOS |
+| **Python tests** | 4,200+ tests across Ubuntu, Windows, macOS |
 | **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
-| **API functions** | 36 public functions in `structural_lib.api` |
+| **API functions** | 37 public functions in `structural_lib.api` |
 | **REST endpoints** | 59 endpoints across 13 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
-| **IS 456 clauses** | Flexure, shear, torsion, detailing, serviceability, column design |
+| **IS 456 clauses** | Flexure (Cl 38), shear (Cl 40), torsion (Cl 41), detailing (Cl 26), serviceability (Cl 43), columns (Cl 39), footings (Cl 34) + IS 13920 ductile detailing |
 | **AI agents** | 16 VS Code Copilot agents with 10 skills |
 | **CSV column mappings** | 40+ column names auto-detected |
 | **Export formats** | BBS CSV, DXF drawings, HTML/PDF reports |
@@ -206,7 +207,7 @@ Units are explicit at the API boundary: `mm`, `kN`, `kN·m`, and `N/mm²`.
 
 ## API Surface
 
-The Python library exposes 27 public functions through `structural_lib.api`. The FastAPI backend provides 44 REST/WebSocket/SSE endpoints across 13 routers.
+The Python library exposes 37 public functions through `structural_lib.api`. The FastAPI backend provides 59 REST/WebSocket/SSE endpoints across 13 routers.
 
 - [Python API Reference](docs/reference/api.md)
 - [FastAPI Swagger UI](http://localhost:8000/docs) (when running locally)
@@ -239,12 +240,14 @@ structural_engineering_lib/
 
 ## Roadmap
 
-- [x] Beam flexure, shear, and torsion design (IS 456)
+- [x] Beam flexure, shear, and torsion design (IS 456 Cl 38, 40, 41)
 - [x] Column classification and short-column axial capacity (IS 456 Cl 39.3)
-- [x] PDF export, load calculator, project BOQ
 - [x] Column biaxial bending and P-M interaction (IS 456 Cl 39.5–39.6)
+- [x] Column slender/long column design, helical reinforcement, detailing (IS 456 Cl 39.7, 39.4, 26.5.3)
+- [x] IS 13920 ductile detailing — beam (Cl 6) and column (Cl 7)
+- [x] Footing design — bearing, flexure, one-way shear, punching shear (IS 456 Cl 31.6, 34)
+- [x] PDF export, load calculator, project BOQ
 - [ ] Slab design module
-- [ ] Footing design module
 
 See [docs/TASKS.md](docs/TASKS.md) for the full task board.
 
@@ -287,6 +290,6 @@ MIT for the software. See [LICENSE](LICENSE) and [LICENSE_ENGINEERING.md](LICENS
 
 - IS 456:2000, Plain and Reinforced Concrete — Code of Practice
 - SP:16, Design Aids for Reinforced Concrete to IS 456
-- IS 13920:2016, ductile detailing requirements used by the detailing layer
+- IS 13920:2016, Ductile Design and Detailing of RC Structures (Cl 6 beams, Cl 7 columns)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
