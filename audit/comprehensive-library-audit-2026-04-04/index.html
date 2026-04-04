@@ -2391,14 +2391,20 @@
 <td>7 P2s resolved: S-19, API-9, A-2, U-2, PH-3, IS-3, T-8</td>
 </tr>
 <tr>
+<td>P2 Fixes (Batch 4, 7 items + 1 closure)</td>
+<td>A</td>
+<td>8.3/10</td>
+<td>7 P2s resolved: S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4. 1 P2 closed as already done: OPS-6</td>
+</tr>
+<tr>
 <td><strong>Final (post-fix)</strong></td>
-<td><strong>A-</strong></td>
-<td><strong>8.1/10</strong></td>
-<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 23 P2 fixes resolved</strong></td>
+<td><strong>A</strong></td>
+<td><strong>8.3/10</strong></td>
+<td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 31 P2 fixes resolved</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Overall Library Grade: A- (8.1/10) — up from A- (7.9/10) after P2 Batch 3 fixes</strong></p>
+<p><strong>Overall Library Grade: A (8.3/10) — up from A- (8.1/10) after P2 Batch 4 fixes</strong></p>
 <hr />
 <h2 id="1-library-usability-audit-score-395">1. Library Usability Audit (Score: 3.9/5)<a class="headerlink" href="#1-library-usability-audit-score-395" title="Permanent link">&para;</a></h2>
 <h3 id="scores-by-area">Scores by Area<a class="headerlink" href="#scores-by-area" title="Permanent link">&para;</a></h3>
@@ -2957,7 +2963,7 @@
 <td>FE-4</td>
 <td>No tooltips for engineering parameters (fck, fy)</td>
 <td>P2</td>
-<td>Add IS 456 context tooltips</td>
+<td>✅ Fixed — IS 456 parameter tooltips on 6 BeamForm fields</td>
 </tr>
 <tr>
 <td>FE-5</td>
@@ -3123,7 +3129,7 @@
 <td>Audit says "37 functions" — actually 57+28 types=85 exports</td>
 <td>P2</td>
 <td>Misleading metric</td>
-<td>Correct documentation</td>
+<td>✅ Fixed — Corrected function count in 4 docs</td>
 </tr>
 <tr>
 <td>BE-3</td>
@@ -3418,7 +3424,7 @@
 <td>P2</td>
 <td>A06</td>
 <td><code>PyJWT&gt;=2.0</code> allows untested versions</td>
-<td>Pin upper bounds</td>
+<td>✅ Fixed — Pinned upper bounds (PyJWT&lt;3, pydantic&lt;3, fastapi&lt;1, cryptography&lt;47)</td>
 </tr>
 <tr>
 <td>S-21</td>
@@ -3426,7 +3432,7 @@
 <td>P2</td>
 <td>A09</td>
 <td>Failed login attempts not logged</td>
-<td>Add auth event audit log</td>
+<td>✅ Fixed — Added auth event audit logging</td>
 </tr>
 <tr>
 <td>S-22</td>
@@ -3442,7 +3448,7 @@
 <td>P2</td>
 <td>A05</td>
 <td>Dev compose <code>.:/app</code></td>
-<td>Document risk; read-only mount</td>
+<td>✅ Fixed — Read-only mounts in docker-compose.dev.yml</td>
 </tr>
 </tbody>
 </table>
@@ -3513,7 +3519,7 @@
 <td>No Docker layer caching in CI</td>
 <td>P2</td>
 <td>Slow CI builds</td>
-<td>Add cache action</td>
+<td>✅ Fixed — GHA layer caching already configured</td>
 </tr>
 </tbody>
 </table>
@@ -3698,7 +3704,7 @@
 <td>Serviceability has no property-based tests</td>
 <td>P2</td>
 <td>Only unit tests; no Hypothesis fuzzing</td>
-<td>Add Hypothesis tests</td>
+<td>✅ Fixed — 10 Hypothesis property-based tests for 5 functions</td>
 </tr>
 </tbody>
 </table>
@@ -3958,7 +3964,7 @@
 <td>Release process undocumented for external contributors</td>
 <td>P2</td>
 <td>Only agents know how to release</td>
-<td>Document in CONTRIBUTING.md</td>
+<td>✅ Fixed — Release process section added to CONTRIBUTING.md</td>
 </tr>
 <tr>
 <td>GOV-5</td>
@@ -4353,7 +4359,7 @@
 </tbody>
 </table>
 <h3 id="p2-nice-to-have-52-findings">P2 — Nice to Have (52 findings)<a class="headerlink" href="#p2-nice-to-have-52-findings" title="Permanent link">&para;</a></h3>
-<p>52 P2 findings across all sections (16 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Closed invalid — S-16, S-22). Key themes: Docs/Packaging (~~DOC-7~~, PH-3, PH-4, PH-5, U-2, GOV-3, GOV-4), Security hardening (~~S-17~~, S-19–S-21, S-23, ~~OPS-4~~, OPS-5–OPS-6), Math quality (~~SM-6–SM-10~~, IS-1, IS-3, IS-6), Frontend polish (FE-3, FE-4, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (T-8, T-13, BE-2, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).</p>
+<p>52 P2 findings across all sections (24 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Batch 3 — S-19, API-9, A-2, U-2, PH-3, IS-3, T-8; Batch 4 — S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4; Closed — S-16, S-22 invalid, OPS-6 already done). Key themes: Docs/Packaging (~~DOC-7~~, ~~PH-3~~, PH-4, PH-5, ~~U-2~~, GOV-3, ~~GOV-4~~), Security hardening (~~S-17~~, ~~S-19~~, ~~S-20~~, ~~S-21~~, ~~S-23~~, ~~OPS-4~~, OPS-5, ~~OPS-6~~), Math quality (~~SM-6–SM-10~~, IS-1, ~~IS-3~~, IS-6), Frontend polish (FE-3, ~~FE-4~~, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (~~T-8~~, ~~T-13~~, ~~BE-2~~, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).</p>
 <hr />
 <h2 id="appendix-audit-methodology">Appendix: Audit Methodology<a class="headerlink" href="#appendix-audit-methodology" title="Permanent link">&para;</a></h2>
 <h3 id="agents-used-14">Agents Used (14)<a class="headerlink" href="#agents-used-14" title="Permanent link">&para;</a></h3>
