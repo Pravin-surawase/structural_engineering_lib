@@ -34,9 +34,9 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
-| 2026-04-04 | TASK-681 | Migrated python-jose → PyJWT in auth.py, tests, CI | pending |
-| 2026-04-04 | TASK-646 | IS 13920 Cl 7 column ductile detailing — completes Phase 2 Column (14/14) | pending |
-| 2026-04-04 | maintenance | React test coverage: 5 component test files, 26 tests | pending |
+| 2026-04-04 | TASK-681 | Migrated python-jose → PyJWT in auth.py, tests, CI | — |
+| 2026-04-04 | TASK-646 | IS 13920 Cl 7 column ductile detailing — completes Phase 2 Column (14/14) | — |
+| 2026-04-04 | maintenance | React test coverage: 5 component test files, 26 tests | — |
 | 2026-04-04 | TASK-647 | fix: should_use_pr.sh now detects fastapi_app + react_app + Docker as production code | `37d9ed77` |
 | 2026-04-04 | TASK-647 | fix: ai_commit.sh removes --force suggestion from PR-blocked message, suggests --branch instead | `37d9ed77` |
 | 2026-04-04 | TASK-647 | fix: pyproject.toml replaces 11 individual IS 456 per-file-ignores with 2 glob patterns + 9 new ignore-names | `37d9ed77` |
@@ -189,32 +189,32 @@ tags: []
 | 2026-04-04 | TASK-692 | fix(security): Sanitize 13 exception handlers in column.py router (CWE-209) | 832ec45f |
 | 2026-04-04 | TASK-690 | fix(column): Add design_short_column_uniaxial, pm_interaction_curve, biaxial_bending_check to __all__ exports | 832ec45f |
 | 2026-04-04 | TASK-690 | test(column): 7 updated + 6 new tests, 4258 total passing (0 failures) | 832ec45f |
-| 2026-04-04 | RELEASE | v0.21.0 release — CHANGELOG finalized, version bump, 11+ docs updated | pending |
-| 2026-04-04 | TASK-650-653 | Phase 3 Footing: bearing, flexure, one-way shear, punching shear (61 tests) | pending |
-| 2026-04-04 | TASK-638 | Long column design (IS 456 Cl 39.7) — braced/unbraced, 23 tests | pending |
-| 2026-04-04 | TASK-639 | Helical reinforcement (IS 456 Cl 39.4) — 1.05 enhancement, 14 tests | pending |
-| 2026-04-04 | TASK-640-641 | Column orchestrator + 13 FastAPI endpoints | pending |
-| 2026-04-04 | TASK-850-872 | Agent infrastructure: registry, router, permissions, hooks, pipeline | pending |
-| 2026-04-04 | TASK-900 | Git workflow hardening (13/14 phases) | pending |
+| 2026-04-04 | RELEASE | v0.21.0 release — CHANGELOG finalized, version bump, 11+ docs updated | — |
+| 2026-04-04 | TASK-650-653 | Phase 3 Footing: bearing, flexure, one-way shear, punching shear (61 tests) | — |
+| 2026-04-04 | TASK-638 | Long column design (IS 456 Cl 39.7) — braced/unbraced, 23 tests | — |
+| 2026-04-04 | TASK-639 | Helical reinforcement (IS 456 Cl 39.4) — 1.05 enhancement, 14 tests | — |
+| 2026-04-04 | TASK-640-641 | Column orchestrator + 13 FastAPI endpoints | — |
+| 2026-04-04 | TASK-850-872 | Agent infrastructure: registry, router, permissions, hooks, pipeline | — |
+| 2026-04-04 | TASK-900 | Git workflow hardening (13/14 phases) | — |
 | 2026-04-04 | AUDIT-P0 | Fixed all 5 P0 audit findings: auth middleware, nightly CI, WCAG contrast, batch limits, bilinear tests | 2c8a2a9c |
-| 2026-04-04 | AUDIT-P1 | Fixed 6 P1 findings: fck/fy validation, float tolerance, torsion guards, beam/column warnings, ErrorBoundary | pending |
+| 2026-04-04 | AUDIT-P1 | Fixed 6 P1 findings: fck/fy validation, float tolerance, torsion guards, beam/column warnings, ErrorBoundary | — |
 | 2026-04-04 | AUDIT-P2-B1 | P2 Batch 1: 7 fixes (S-15 error sanitize, S-18 float-inf JSON, SM-6 ShearResult frozen, SM-8 bearing tolerance, SM-10 ColumnAxialResult frozen, API-8 BarAreasResponse model, API-10 DXF MIME) | — |
 | 2026-04-05 | AUDIT-P2-B2 | P2 Batch 2: 7 fixes + 2 closures (OPS-4 IPv6, SM-7 puz validation, SM-9 steel_stress guards, FE-5 toast activation, BE-6 anchorage export, S-17 CLI path containment, DOC-7 CHANGELOG highlights; S-16/S-22 closed invalid) | — |
-| 2026-04-05 | P2-Batch3 | S-19: sanitize_filename() for Content-Disposition headers | pending |
-| 2026-04-05 | P2-Batch3 | API-9: Smoke calc in /health/ready with 30s cache | pending |
-| 2026-04-05 | P2-Batch3 | A-2: importlib.resources in traceability.py (removed Path/open) | pending |
-| 2026-04-05 | P2-Batch3 | IS-3: @clause decorators for 12 IS 13920 functions | pending |
-| 2026-04-05 | P2-Batch3 | U-2: README package name callout prominence | pending |
-| 2026-04-05 | P2-Batch3 | PH-3: 3 stale doc version refs fixed to v0.21.0 | pending |
-| 2026-04-05 | P2-Batch3 | T-8: React validation job added to CI fast-checks.yml | pending |
-| 2026-04-05 | P2-Batch4 | S-20: Pinned upper bounds on security deps | pending |
-| 2026-04-05 | P2-Batch4 | S-21: Auth event audit logging | pending |
-| 2026-04-05 | P2-Batch4 | S-23: Docker dev read-only mounts | pending |
-| 2026-04-05 | P2-Batch4 | T-13: Serviceability Hypothesis tests (10 tests) | pending |
-| 2026-04-05 | P2-Batch4 | BE-2: Function count fixes in 4 docs | pending |
-| 2026-04-05 | P2-Batch4 | GOV-4: Release process in CONTRIBUTING.md | pending |
-| 2026-04-05 | P2-Batch4 | FE-4: Parameter tooltips in BeamForm | pending |
-| 2026-04-05 | P2-Batch4 | OPS-6: Closed (already done) | pending |
+| 2026-04-05 | P2-Batch3 | S-19: sanitize_filename() for Content-Disposition headers | `54b7e2d8` |
+| 2026-04-05 | P2-Batch3 | API-9: Smoke calc in /health/ready with 30s cache | `54b7e2d8` |
+| 2026-04-05 | P2-Batch3 | A-2: importlib.resources in traceability.py (removed Path/open) | `54b7e2d8` |
+| 2026-04-05 | P2-Batch3 | IS-3: @clause decorators for 12 IS 13920 functions | `54b7e2d8` |
+| 2026-04-05 | P2-Batch3 | U-2: README package name callout prominence | `54b7e2d8` |
+| 2026-04-05 | P2-Batch3 | PH-3: 3 stale doc version refs fixed to v0.21.0 | `54b7e2d8` |
+| 2026-04-05 | P2-Batch3 | T-8: React validation job added to CI fast-checks.yml | `54b7e2d8` |
+| 2026-04-05 | P2-Batch4 | S-20: Pinned upper bounds on security deps | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | S-21: Auth event audit logging | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | S-23: Docker dev read-only mounts | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | T-13: Serviceability Hypothesis tests (10 tests) | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | BE-2: Function count fixes in 4 docs | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | GOV-4: Release process in CONTRIBUTING.md | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | FE-4: Parameter tooltips in BeamForm | `e658ea6e` |
+| 2026-04-05 | P2-Batch4 | OPS-6: Closed (already done) | `e658ea6e` |
 2026-04-05 | P2-B5 | DOC-1: Updated PyPI description (beams + columns + footings) | —
 2026-04-05 | P2-B5 | DOC-2: Created MANIFEST.in for py.typed in sdist | —
 2026-04-05 | P2-B5 | DOC-3: Fixed examples README (9 actual files, was 4 non-existent) | —
@@ -222,3 +222,4 @@ tags: []
 2026-04-05 | P2-B5 | OPS-7: Docker JWT secret fail-fast (no insecure default) | —
 2026-04-05 | P2-B5 | UX-7: Added prefers-reduced-motion support (CSS + hook + HomePage guards) | —
 2026-04-05 | P2-B5 | FE-8: WebGL context loss handling (hook + recovery UI in Viewport3D) | —
+2026-04-05 | CIFIX | Fix React test (DesignView export hook mocks), Docker CI (JWT env), ops agent CI bypass rule | —

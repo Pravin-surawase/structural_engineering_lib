@@ -91,6 +91,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| TASK-CIFIX | CI fix: React test mocks (5 hooks), Docker JWT_SECRET_KEY, ops hardening, finish_task_pr.sh escape hatch removal, WORKLOG cleanup, dead code removal | Copilot | ✅ Done |
 | AUDIT-P0 | All 5 P0 audit findings fixed (auth, CI, WCAG, batch limits, bilinear tests) | Copilot | ✅ Done |
 | AUDIT-P1 (partial) | 6 P1 audit findings fixed (SM-1/2/3, IS-5/7, FE-6) | Copilot | ✅ Done |
 | AUDIT-P1-B1 | 9 P1 audit findings resolved (U-1, API-1/2/11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed) | Copilot | ✅ Done |

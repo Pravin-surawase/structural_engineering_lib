@@ -78,6 +78,8 @@ jobs:
           docker rm test-api
 
       - name: Validate docker-compose syntax
+        env:
+          JWT_SECRET_KEY: ci-test-secret
         run: |
           echo "Validating docker-compose.yml..."
           docker compose -f docker-compose.yml config --quiet
