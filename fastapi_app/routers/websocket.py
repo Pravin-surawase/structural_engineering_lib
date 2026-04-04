@@ -161,10 +161,15 @@ async def design_websocket(
                         },
                     )
 
-            except Exception as e:
-                logger.exception(f"Error handling message type {message_type}")
+            except (ValueError, TypeError) as e:
                 await manager.send_json(
                     session_id, {"type": "error", "message": str(e)}
+                )
+            except Exception:
+                logger.exception("WebSocket handler error for session %s", session_id)
+                await manager.send_json(
+                    session_id,
+                    {"type": "error", "message": "Internal error processing request"},
                 )
 
     except WebSocketDisconnect:

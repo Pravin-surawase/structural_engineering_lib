@@ -334,7 +334,7 @@ def design_shear(
             Vus=0.0,
             spacing=0.0,
             is_safe=False,
-            errors=input_errors,
+            errors=tuple(input_errors),
         )
 
     material_errors = []
@@ -351,7 +351,7 @@ def design_shear(
             Vus=0.0,
             spacing=0.0,
             is_safe=False,
-            errors=material_errors,
+            errors=tuple(material_errors),
         )
 
     if asv <= 0:
@@ -362,7 +362,7 @@ def design_shear(
             Vus=0.0,
             spacing=0.0,
             is_safe=False,
-            errors=[E_INPUT_008],
+            errors=(E_INPUT_008,),
         )
 
     if pt < 0:
@@ -373,7 +373,7 @@ def design_shear(
             Vus=0.0,
             spacing=0.0,
             is_safe=False,
-            errors=[E_INPUT_009],
+            errors=(E_INPUT_009,),
         )
 
     warning_errors = []
@@ -395,7 +395,7 @@ def design_shear(
             Vus=0.0,
             spacing=0.0,
             is_safe=False,
-            errors=warning_errors + [E_SHEAR_001],
+            errors=tuple(warning_errors + [E_SHEAR_001]),
         )
 
     # 3. Get Tc (with optional Cl. 40.3 enhancement)
@@ -447,5 +447,5 @@ def design_shear(
         Vus=vus,
         spacing=spacing,
         is_safe=True,
-        errors=design_errors,
+        errors=tuple(design_errors),
     )

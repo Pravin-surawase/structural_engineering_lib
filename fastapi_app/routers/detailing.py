@@ -7,6 +7,7 @@ Endpoints for reinforcement detailing calculations.
 from fastapi import APIRouter, HTTPException, status
 
 from fastapi_app.models.beam import (
+    BarAreasResponse,
     BeamDetailingRequest,
     BeamDetailingResponse,
     BarArrangement,
@@ -209,10 +210,11 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
 
 @router.get(
     "/bar-areas",
+    response_model=BarAreasResponse,
     summary="Get Standard Bar Areas",
     description="Get cross-sectional areas for standard reinforcement bars.",
 )
-async def get_bar_areas() -> dict:
+async def get_bar_areas() -> BarAreasResponse:
     """
     Get standard reinforcement bar areas.
 
