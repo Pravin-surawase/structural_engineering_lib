@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-04-02",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "109/109 scripts mapped",
+  "_coverage": "110/110 scripts mapped",
   "tasks": {
     "run all checks": {
       "group": "Quality",
@@ -21,6 +21,17 @@
       "group": "Quality",
       "script": ".venv/bin/python scripts/validate_script_refs.py",
       "description": "Detect stale script references across docs and instruction files"
+    },
+    "diagnose ci failures": {
+      "group": "Quality",
+      "script": ".venv/bin/python scripts/diagnose_ci.py",
+      "description": "Diagnose, reproduce, and auto-fix CI failures locally or for a specific PR",
+      "options": {
+        "--pr N": "Check specific PR CI status",
+        "--local": "Run checks locally",
+        "--local --fix": "Auto-fix formatting and lint issues",
+        "--last": "Last CI run on current branch"
+      }
     },
     "commit code": {
       "group": "Git",
