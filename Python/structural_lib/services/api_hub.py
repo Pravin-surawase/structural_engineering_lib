@@ -24,13 +24,10 @@ from structural_lib.codes.is456.beam.torsion import (  # noqa: F401
 )
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd  # noqa: F401
 from structural_lib.core.data_types import (  # noqa: F401
-    ComplianceCaseResult,
-    ComplianceReport,
     CriticalPoint,
     LoadDefinition,
     LoadDiagramResult,
     LoadType,
-    ValidationReport,
 )
 from structural_lib.core.inputs import (  # noqa: F401
     BeamGeometryInput,
@@ -115,7 +112,6 @@ from structural_lib.visualization.geometry_3d import (  # noqa: F401
     compute_stirrup_positions,
 )
 
-from .api_results import DesignAndDetailResult  # noqa: F401
 from .audit import (  # noqa: F401
     AuditLogEntry,
     AuditTrail,
@@ -181,8 +177,6 @@ __all__ = [
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
-    # Validation
-    "ValidationReport",
     # Column Design (IS 456 Clause 39)
     "calculate_effective_length_is456",
     "calculate_additional_moment_is456",

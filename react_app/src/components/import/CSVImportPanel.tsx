@@ -84,9 +84,19 @@ export function CSVImportPanel() {
         <span className="text-[11px] text-zinc-400">or</span>
         <label className="text-[#0078d4] cursor-pointer text-[13px] hover:underline">
           Browse
-          <input type="file" accept=".csv" onChange={handleFileInput} className="hidden" />
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleFileInput}
+            aria-label="Upload CSV file with beam data"
+            aria-describedby="csv-import-description"
+            className="hidden"
+          />
         </label>
       </div>
+      <p id="csv-import-description" className="sr-only">
+        Upload a CSV file containing beam geometry, forces, and design parameters
+      </p>
 
       {/* Loading state */}
       {isImporting && <div className="text-[#0078d4] text-center text-[13px]">Importing...</div>}

@@ -12,6 +12,7 @@ Tests cover:
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 client = TestClient(app)
 
@@ -35,7 +36,7 @@ class TestColumnDetailingValidInput:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert "is_valid" in data
         assert isinstance(data["is_valid"], bool)
         assert data["b_mm"] == 300.0
@@ -102,7 +103,7 @@ class TestColumnDetailingDefaults:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["is_valid"] is not None
         assert data["tie_dia_mm"] > 0
         assert data["tie_spacing_mm"] > 0
@@ -123,7 +124,7 @@ class TestColumnDetailingCircular:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert isinstance(data["is_valid"], bool)
         assert isinstance(data["cross_ties_needed"], bool)
 
@@ -143,6 +144,6 @@ class TestColumnDetailingAtLap:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert isinstance(data["is_valid"], bool)
         assert data["max_tie_spacing_mm"] > 0

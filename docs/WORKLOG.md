@@ -48,6 +48,14 @@ tags: []
 | 2026-04-05 | EA-3,4,5 | API consistency: compute_report docs, to_dict(), build_detailing_input | b1a4351b |
 | 2026-04-05 | EA-7 | E2E pipeline test: 8 tests in test_full_pipeline_e2e.py | b1a4351b |
 | 2026-04-05 | EA-17,18 | Security: RateLimitMiddleware, str(e) sanitization (7 routers) | b1a4351b |
+| 2026-04-05 | T-NEW-01 | Replace 17 MagicMock with real dataclass fixtures (test_calculation_report, test_testing_strategies) | — |
+| 2026-04-05 | IS-NEW-01/02 | Add 18 @clause decorators (4 footing + 14 serviceability functions) | — |
+| 2026-04-05 | T-NEW-08 | Add 62 FastAPI router tests (6 new test files, 7 routers covered) | — |
+| 2026-04-05 | ARCH-NEW-09 | Replace 49 bare except Exception blocks with specific types across 11 routers | — |
+| 2026-04-05 | UX-05 | Add clause_refs field to FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult | — |
+| 2026-04-05 | FE-NEW-02 | WCAG AA form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend (4 components) | — |
+| 2026-04-05 | API-NEW-01 | Standardize all API responses with success_response()/error_response() wrapper (9 routers) | — |
+| 2026-04-05 | ARCH-NEW-12 | Split services/api.py God module: beam_api.py(1895L), column_api.py(1387L), common_api.py(230L) | — |
 | 2026-04-05 | EA-15 | Frontend: BeamForm validation with cross-field checks | b1a4351b |
 | 2026-04-05 | EA-12,13 | Docs: API levels guide, e2e workflow example | b1a4351b |
 | 2025-07-24 | TASK-CIFIX2 | Close remaining CI bypass escape hatches (finish_task_pr.sh warnings + global FORBIDDEN sync) | 47a44722 |

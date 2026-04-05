@@ -498,12 +498,18 @@ function EditField({ label, value, onChange, min, max, options }: {
   label: string; value: number; onChange: (v: number) => void;
   min?: number; max?: number; options?: number[];
 }) {
+  const fieldId = `edit-${label.toLowerCase().replace(/\s+/g, '-')}`;
   if (options) {
     return (
       <div>
-        <p className="text-[9px] text-zinc-500 uppercase tracking-wider mb-1">{label}</p>
+        <label htmlFor={fieldId} className="text-[9px] text-zinc-500 uppercase tracking-wider mb-1 block">
+          {label}
+        </label>
         <select
-          value={value} onChange={(e) => onChange(Number(e.target.value))}
+          id={fieldId}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          aria-label={label}
           className="w-full px-2 py-1 text-xs text-white bg-white/[0.05] border border-white/10 rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-amber-500/50"
         >
           {options.map((o) => <option key={o} value={o} className="bg-zinc-900">{o}</option>)}
@@ -513,10 +519,17 @@ function EditField({ label, value, onChange, min, max, options }: {
   }
   return (
     <div>
-      <p className="text-[9px] text-zinc-500 uppercase tracking-wider mb-1">{label}</p>
+      <label htmlFor={fieldId} className="text-[9px] text-zinc-500 uppercase tracking-wider mb-1 block">
+        {label}
+      </label>
       <input
-        type="number" value={value} min={min} max={max}
+        id={fieldId}
+        type="number"
+        value={value}
+        min={min}
+        max={max}
         onChange={(e) => onChange(Number(e.target.value))}
+        aria-label={label}
         className="w-full px-2 py-1 text-xs text-white bg-white/[0.05] border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-amber-500/50"
       />
     </div>

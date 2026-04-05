@@ -20,6 +20,8 @@ import logging
 import traceback
 import uuid
 
+import jwt
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -176,7 +178,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             from fastapi_app.auth import decode_token
 
             decode_token(token)
-        except Exception:
+        except (jwt.PyJWTError, KeyError, AttributeError):
             return StarletteJSONResponse(
                 status_code=401,
                 content={"detail": "Invalid or expired token"},

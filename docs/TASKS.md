@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-05 — v0.21.4 released, all 5 P0 findings resolved
+**Updated:** 2026-04-05 — v0.22.0 in progress, Sprint 2 complete (8 P1 fixes shipped)
 
 ---
 
@@ -30,7 +30,8 @@
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.21.4** | P0 Sprint | ✅ Released | 5 P0 fixes: CSV limits, error sanitization, d_mm validation, Three.js dispose, column return types |
-| **v0.22** | Full React | 🔄 ACTIVE | AI assistant port, learning center, Streamlit deprecation |
+| **v0.22.0** | Sprint 2 P1 Fixes | 🔄 ACTIVE | 8 P1s: MagicMock, @clause decorators, FastAPI tests, except blocks, clause_refs, WCAG, response shapes, god module split |
+| **v0.22** | Full React | 🔄 NEXT | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)
 

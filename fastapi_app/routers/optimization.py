@@ -6,9 +6,11 @@ Endpoints for beam cost optimization calculations.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.optimization import (
     CostOptimizationRequest,
     CostOptimizationResponse,
@@ -31,13 +33,12 @@ router = APIRouter(
 
 @router.post(
     "/beam/cost",
-    response_model=CostOptimizationResponse,
     summary="Optimize Beam Cost",
     description="Find the most cost-effective beam section for given loading.",
 )
 async def optimize_beam_cost(
     request: CostOptimizationRequest,
-) -> CostOptimizationResponse:
+):
     """
     Optimize beam section for minimum cost.
 
@@ -130,37 +131,39 @@ async def optimize_beam_cost(
                 }
                 alternatives.append(_parse_optimal_design(alt_data, rank=i))
 
-        return CostOptimizationResponse(
-            success=True,
-            message=f"Optimal: {optimal.width:.0f}×{optimal.depth:.0f} mm @ ₹{optimal.cost_breakdown.total_cost:.0f}/m",
-            optimal=optimal,
-            alternatives=alternatives,
-            total_combinations_evaluated=result.candidates_evaluated,
-            valid_solutions_found=result.candidates_valid,
-            savings_vs_min_section=result.savings_percent,
-            warnings=[],
+        return success_response(
+            CostOptimizationResponse(
+                success=True,
+                message=f"Optimal: {optimal.width:.0f}×{optimal.depth:.0f} mm @ ₹{optimal.cost_breakdown.total_cost:.0f}/m",
+                optimal=optimal,
+                alternatives=alternatives,
+                total_combinations_evaluated=result.candidates_evaluated,
+                valid_solutions_found=result.candidates_valid,
+                savings_vs_min_section=result.savings_percent,
+                warnings=[],
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "cost optimization"),
+            content=error_response(sanitize_error(e, "cost optimization")),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for cost optimization")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Internal error in optimize_beam_cost")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
-def _parse_optimal_design(data: dict, rank: int) -> OptimalDesign:
+def _parse_optimal_design(data: dict, rank: int):
     """Parse optimization result into OptimalDesign model."""
     cost_data = data.get("cost_breakdown", {})
 
@@ -193,43 +196,45 @@ def _parse_optimal_design(data: dict, rank: int) -> OptimalDesign:
     summary="Get Default Cost Rates",
     description="Get default material and labor cost rates.",
 )
-async def get_cost_rates() -> dict:
+async def get_cost_rates():
     """
     Get default cost rates for optimization.
 
     Returns typical Indian market rates (can be overridden in requests).
     """
-    return {
-        "materials": {
-            "concrete": {
-                "M20": 5500.0,
-                "M25": 6000.0,
-                "M30": 6800.0,
-                "M40": 7500.0,
-                "unit": "₹/m³",
-                "note": "Ready-mix concrete delivered",
+    return success_response(
+        {
+            "materials": {
+                "concrete": {
+                    "M20": 5500.0,
+                    "M25": 6000.0,
+                    "M30": 6800.0,
+                    "M40": 7500.0,
+                    "unit": "₹/m³",
+                    "note": "Ready-mix concrete delivered",
+                },
+                "steel": {
+                    "Fe415": 55.0,
+                    "Fe500": 60.0,
+                    "Fe550": 65.0,
+                    "unit": "₹/kg",
+                    "note": "TMT bars including cutting/bending",
+                },
+                "formwork": {
+                    "beam_sides": 400.0,
+                    "beam_bottom": 450.0,
+                    "unit": "₹/m²",
+                    "note": "Steel formwork with 4 reuses",
+                },
             },
-            "steel": {
-                "Fe415": 55.0,
-                "Fe500": 60.0,
-                "Fe550": 65.0,
+            "labor": {
+                "bar_bending": 8.0,
+                "bar_binding": 12.0,
                 "unit": "₹/kg",
-                "note": "TMT bars including cutting/bending",
+                "note": "Typical labor rates",
             },
-            "formwork": {
-                "beam_sides": 400.0,
-                "beam_bottom": 450.0,
-                "unit": "₹/m²",
-                "note": "Steel formwork with 4 reuses",
-            },
-        },
-        "labor": {
-            "bar_bending": 8.0,
-            "bar_binding": 12.0,
-            "unit": "₹/kg",
-            "note": "Typical labor rates",
-        },
-        "location": "India (Metro cities)",
-        "year": 2024,
-        "note": "Rates are indicative. Override with actual project rates.",
-    }
+            "location": "India (Metro cities)",
+            "year": 2024,
+            "note": "Rates are indicative. Override with actual project rates.",
+        }
+    )

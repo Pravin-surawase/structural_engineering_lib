@@ -421,6 +421,13 @@ def design_singly_reinforced(
         errors=design_errors,
         Ast_min=ast_min,
         Ast_max=ast_max,
+        clause_refs={
+            "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
+            "Ast": "IS 456 Cl 38.2, Annex G-2.2",
+            "xu_max_d": "IS 456 Table J",
+            "Ast_min": "IS 456 Cl 26.5.1.1",
+            "Ast_max": "IS 456 Cl 26.5.1.2",
+        },
     )
 
 
@@ -596,6 +603,14 @@ def design_doubly_reinforced(
         errors=design_errors,
         Ast_min=ast_min,
         Ast_max=ast_max,
+        clause_refs={
+            "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
+            "Ast": "IS 456 Cl 38.2, Annex G-2.2",
+            "Asc": "IS 456 Cl 38.2, Annex G-1.2",
+            "xu_max_d": "IS 456 Table J",
+            "Ast_min": "IS 456 Cl 26.5.1.1",
+            "Ast_max": "IS 456 Cl 26.5.1.2",
+        },
     )
 
 
@@ -839,6 +854,15 @@ def design_flanged_beam(
             errors=design_errors,
             Ast_min=ast_min,
             Ast_max=ast_max,
+            clause_refs={
+                "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
+                "Ast": "IS 456 Cl 38.2, Annex G-2.2",
+                "Asc": "IS 456 Cl 38.2, Annex G-1.2",
+                "xu_max_d": "IS 456 Table J",
+                "Ast_min": "IS 456 Cl 26.5.1.1",
+                "Ast_max": "IS 456 Cl 26.5.1.2",
+                "bf": "IS 456 Cl 23.1.2",
+            },
         )
 
     # 3. Singly Reinforced T-Beam (Df < xu <= xu_max)
@@ -933,6 +957,14 @@ def design_flanged_beam(
         errors=design_errors,
         Ast_min=ast_min,
         Ast_max=ast_max,
+        clause_refs={
+            "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
+            "Ast": "IS 456 Cl 38.2, Annex G-2.2",
+            "xu_max_d": "IS 456 Table J",
+            "Ast_min": "IS 456 Cl 26.5.1.1",
+            "Ast_max": "IS 456 Cl 26.5.1.2",
+            "bf": "IS 456 Cl 23.1.2",
+        },
     )
 
 

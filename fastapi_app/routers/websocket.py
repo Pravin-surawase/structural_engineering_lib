@@ -77,7 +77,7 @@ class DesignConnectionManager:
         for websocket in self.active_connections.values():
             try:
                 await websocket.send_json(data)
-            except Exception:
+            except (RuntimeError, ConnectionError, OSError):
                 pass  # Client may have disconnected
 
 
@@ -168,7 +168,7 @@ async def design_websocket(
                     session_id,
                     {"type": "error", "message": sanitize_error(e, "live design")},
                 )
-            except Exception:
+            except (RuntimeError, KeyError, AttributeError):
                 logger.exception("WebSocket handler error for session %s", session_id)
                 await manager.send_json(
                     session_id,
@@ -177,7 +177,7 @@ async def design_websocket(
 
     except WebSocketDisconnect:
         manager.disconnect(session_id)
-    except Exception:
+    except (RuntimeError, ConnectionError, OSError):
         logger.exception(f"WebSocket error for session {session_id}")
         manager.disconnect(session_id)
 

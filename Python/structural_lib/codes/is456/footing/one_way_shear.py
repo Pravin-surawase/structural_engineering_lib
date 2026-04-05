@@ -14,6 +14,7 @@ from structural_lib.codes.is456.footing._common import (
     validate_footing_inputs,
 )
 from structural_lib.codes.is456.tables import get_tc_value
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import FootingOneWayShearResult
 from structural_lib.core.errors import ValidationError
 
@@ -73,6 +74,7 @@ def _check_direction(
     return tau_v, tau_c, Vu_kN, utilization, is_safe, warnings
 
 
+@clause("34.2.4.1")
 def footing_one_way_shear(
     Pu_kN: float,
     L_mm: float,

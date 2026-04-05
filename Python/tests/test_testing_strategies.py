@@ -14,8 +14,8 @@ Tests cover:
 from __future__ import annotations
 
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
-from unittest.mock import MagicMock
 
 import pytest
 
@@ -37,6 +37,47 @@ from structural_lib.services.testing_strategies import (
     assert_beam_design_valid,
     create_test_case_id,
 )
+
+# =============================================================================
+# Test Fixture Dataclasses (replaces MagicMock — TE-3)
+# =============================================================================
+
+
+@dataclass
+class _InvariantFlexure:
+    """Explicit fixture for flexure attrs used by BeamDesignInvariants."""
+
+    Ast_required: float
+    ast_provided: float
+    ast_min: float = 0.0
+    ast_max: float = float("inf")
+
+
+@dataclass
+class _InvariantShear:
+    """Explicit fixture for shear attrs used by BeamDesignInvariants."""
+
+    is_ok: bool = True
+    vn_kn: float = 0.0
+    vu_kn: float = 0.0
+
+
+@dataclass
+class _InvariantDetailing:
+    """Explicit fixture for detailing attrs used by BeamDesignInvariants."""
+
+    main_bar_dia: float = 16.0
+    stirrup_dia: float = 8.0
+
+
+@dataclass
+class _InvariantResult:
+    """Explicit fixture for beam design result — replaces MagicMock."""
+
+    flexure: _InvariantFlexure
+    shear: _InvariantShear
+    detailing: _InvariantDetailing
+
 
 # =============================================================================
 # Test ToleranceSpec
@@ -375,30 +416,29 @@ class TestBeamDesignInvariants:
 
     def test_check_all_passing(self):
         """Test check_all with passing result."""
-        # Create mock result that passes all invariants
-        result = MagicMock()
-        result.flexure.ast_provided = 1000
-        result.flexure.Ast_required = 800
-        result.flexure.ast_min = 500
-        result.flexure.ast_max = 2000
-        result.shear.is_ok = True
-        result.shear.vn_kn = 150
-        result.shear.vu_kn = 100
-        result.detailing.main_bar_dia = 16
-        result.detailing.stirrup_dia = 8
+        result = _InvariantResult(
+            flexure=_InvariantFlexure(
+                Ast_required=800, ast_provided=1000, ast_min=500, ast_max=2000
+            ),
+            shear=_InvariantShear(is_ok=True, vn_kn=150, vu_kn=100),
+            detailing=_InvariantDetailing(main_bar_dia=16, stirrup_dia=8),
+        )
 
         results = BeamDesignInvariants.check_all(result)
         assert len(results) > 0
-        # All should pass (or be skipped for missing attrs)
+        # All should pass
         failures = [msg for passed, msg in results if not passed]
         assert len(failures) == 0
 
     def test_check_all_failing(self):
         """Test check_all with failing invariant."""
-        # Create mock result that fails ast_provided >= ast_required
-        result = MagicMock()
-        result.flexure.ast_provided = 500
-        result.flexure.Ast_required = 800  # More than provided - FAIL
+        result = _InvariantResult(
+            flexure=_InvariantFlexure(
+                Ast_required=800, ast_provided=500, ast_min=300, ast_max=2000
+            ),
+            shear=_InvariantShear(is_ok=True, vn_kn=150, vu_kn=100),
+            detailing=_InvariantDetailing(main_bar_dia=16, stirrup_dia=8),
+        )
 
         results = BeamDesignInvariants.check_all(result)
         failures = [msg for passed, msg in results if not passed]
@@ -410,32 +450,26 @@ class TestAssertBeamDesignValid:
 
     def test_valid_design_passes(self):
         """Test that valid design doesn't raise."""
-        result = MagicMock()
-        result.flexure.ast_provided = 1000
-        result.flexure.Ast_required = 800
-        result.flexure.ast_min = 500  # Add all attributes to avoid MagicMock comparison
-        result.flexure.ast_max = 2000
-        result.shear.is_ok = True
-        result.shear.vn_kn = 150
-        result.shear.vu_kn = 100
-        result.detailing.main_bar_dia = 16
-        result.detailing.stirrup_dia = 8
+        result = _InvariantResult(
+            flexure=_InvariantFlexure(
+                Ast_required=800, ast_provided=1000, ast_min=500, ast_max=2000
+            ),
+            shear=_InvariantShear(is_ok=True, vn_kn=150, vu_kn=100),
+            detailing=_InvariantDetailing(main_bar_dia=16, stirrup_dia=8),
+        )
 
         # Should not raise
         assert_beam_design_valid(result)
 
     def test_invalid_design_raises(self):
         """Test that invalid design raises AssertionError."""
-        result = MagicMock()
-        result.flexure.ast_provided = 500
-        result.flexure.Ast_required = 800  # FAIL
-        result.flexure.ast_min = 300  # Add to avoid MagicMock comparison errors
-        result.flexure.ast_max = 2000
-        result.shear.is_ok = True
-        result.shear.vn_kn = 150
-        result.shear.vu_kn = 100
-        result.detailing.main_bar_dia = 16
-        result.detailing.stirrup_dia = 8
+        result = _InvariantResult(
+            flexure=_InvariantFlexure(
+                Ast_required=800, ast_provided=500, ast_min=300, ast_max=2000
+            ),
+            shear=_InvariantShear(is_ok=True, vn_kn=150, vu_kn=100),
+            detailing=_InvariantDetailing(main_bar_dia=16, stirrup_dia=8),
+        )
 
         with pytest.raises(AssertionError, match="invariant violations"):
             assert_beam_design_valid(result)

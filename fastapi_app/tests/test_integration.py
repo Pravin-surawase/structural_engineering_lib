@@ -16,6 +16,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 
 @pytest.fixture
@@ -48,10 +49,9 @@ class TestDesignWorkflow:
         )
 
         assert design_response.status_code == 200
-        result = design_response.json()
+        result = unwrap(design_response)
 
         # Verify complete response structure
-        assert "success" in result
         assert "message" in result
         assert "flexure" in result
 
@@ -74,7 +74,7 @@ class TestDesignWorkflow:
         )
 
         assert response.status_code == 200
-        result = response.json()
+        result = unwrap(response)
 
         # Verify flexure metrics are present
         assert "flexure" in result
@@ -118,7 +118,7 @@ class TestDesignWorkflow:
         for _ in range(3):
             response = client.post("/api/v1/design/beam", json=payload)
             assert response.status_code == 200
-            results.append(response.json())
+            results.append(unwrap(response))
 
         # Verify consistency
         for i in range(1, len(results)):
@@ -126,7 +126,6 @@ class TestDesignWorkflow:
                 results[i]["flexure"]["ast_required"]
                 == results[0]["flexure"]["ast_required"]
             )
-            assert results[i]["success"] == results[0]["success"]
 
 
 # =============================================================================
@@ -149,7 +148,7 @@ class TestBatchProcessing:
         for beam in beams:
             response = client.post("/api/v1/design/beam", json=beam)
             assert response.status_code == 200
-            results.append(response.json())
+            results.append(unwrap(response))
 
         # Verify all designs completed
         assert len(results) == 3
@@ -305,10 +304,9 @@ class TestCrossEndpointConsistency:
             response = client.post("/api/v1/design/beam", json=payload)
             assert response.status_code == 200
 
-            result = response.json()
+            result = unwrap(response)
 
             # All results should have same structure
-            assert "success" in result
             assert "flexure" in result
             assert "ast_required" in result["flexure"]
             assert "ast_min" in result["flexure"]

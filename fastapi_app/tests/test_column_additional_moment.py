@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 client = TestClient(app)
 
@@ -30,7 +31,7 @@ class TestAdditionalMomentEndpoint:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert pytest.approx(data["eadd_x_mm"], rel=0.01) == 40.0
         assert pytest.approx(data["Max_kNm"], rel=0.01) == 60.0
         assert data["is_slender_x"] is True
@@ -52,7 +53,7 @@ class TestAdditionalMomentEndpoint:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         required = [
             "eadd_x_mm",
             "Max_kNm",
@@ -95,7 +96,7 @@ class TestAdditionalMomentEndpoint:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["Max_kNm"] == 0.0
         assert data["May_kNm"] == 0.0
         assert data["is_slender_x"] is False
@@ -118,7 +119,7 @@ class TestAdditionalMomentEndpoint:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["Max_kNm"] == 0.0
         assert data["May_kNm"] == 0.0
 
@@ -175,7 +176,7 @@ class TestAdditionalMomentEndpoint:
             },
         )
         assert resp.status_code == 200
-        assert resp.json()["clause_ref"] == "Cl. 39.7.1"
+        assert unwrap(resp)["clause_ref"] == "Cl. 39.7.1"
 
     def test_k_factor_in_response(self):
         """Response includes k-factor and reduced moments."""
@@ -194,7 +195,7 @@ class TestAdditionalMomentEndpoint:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert "k" in data
         assert 0 <= data["k"] <= 1.0
         assert "Max_reduced_kNm" in data

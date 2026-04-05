@@ -14,6 +14,19 @@ from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
 
+
+def unwrap(response):
+    """Extract data from APIResponse wrapper.
+
+    All non-health, non-export endpoints now wrap responses in:
+        {"success": true, "data": {...}}
+    This helper asserts success and returns the inner data dict.
+    """
+    body = response.json()
+    assert body["success"] is True, f"Expected success=True, got {body}"
+    return body["data"]
+
+
 # Configure pytest-asyncio
 pytest_plugins = ["pytest_asyncio"]
 

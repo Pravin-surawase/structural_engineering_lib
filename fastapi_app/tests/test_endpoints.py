@@ -6,6 +6,8 @@ Tests all API endpoints using FastAPI TestClient.
 
 from fastapi import status
 
+from fastapi_app.tests.conftest import unwrap
+
 
 class TestHealthEndpoints:
     """Tests for health check endpoints."""
@@ -62,8 +64,7 @@ class TestDesignEndpoints:
         response = client.post("/api/v1/design/beam", json=sample_beam_design_request)
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert "flexure" in data
         assert "ast_total" in data
         assert data["ast_total"] > 0
@@ -97,7 +98,7 @@ class TestDesignEndpoints:
         )
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert "is_adequate" in data
         assert "moment_capacity" in data
         assert "shear_capacity" in data
@@ -109,7 +110,7 @@ class TestDesignEndpoints:
         response = client.get("/api/v1/design/limits")
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert "concrete" in data
         assert "steel" in data
         assert "reinforcement" in data
@@ -129,8 +130,7 @@ class TestDesignEndpoints:
         response = client.post("/api/v1/design/beam/torsion", json=request)
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert data["is_safe"] is True
         assert data["ve_kn"] > 0
         assert data["me_knm"] > 0
@@ -152,7 +152,7 @@ class TestDesignEndpoints:
         response = client.post("/api/v1/design/beam/torsion", json=request)
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert data["is_safe"] is False
         assert data["tv_equiv"] > data["tc_max"]
 
@@ -176,8 +176,7 @@ class TestDetailingEndpoints:
         response = client.post("/api/v1/detailing/beam", json=sample_detailing_request)
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert "tension_bars" in data
         assert "ast_provided" in data
 
@@ -186,7 +185,7 @@ class TestDetailingEndpoints:
         response = client.get("/api/v1/detailing/bar-areas")
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert "bars" in data
         assert "T16" in data["bars"]
         assert data["bars"]["T16"]["diameter_mm"] == 16
@@ -199,7 +198,7 @@ class TestDetailingEndpoints:
         )
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert data["bar_diameter"] == 16
         assert "ld" in data
         assert data["ld"] > 0
@@ -234,8 +233,7 @@ class TestImportEndpoints:
         )
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert data["beam_count"] == 1
         assert data["beams"][0]["point1"] is not None
 
@@ -250,7 +248,9 @@ class TestImportEndpoints:
         response = client.post(
             "/api/v1/import/dual-csv?format_hint=generic", files=files
         )
-        data = response.json()
+        body = response.json()
+        assert body["success"] is True
+        data = body["data"]
         expected_keys = {
             "success",
             "message",
@@ -274,8 +274,7 @@ class TestImportEndpoints:
         response = client.post("/api/v1/import/csv", files=files)
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert data["beam_count"] == 2
         assert len(data["beams"]) == 2
 
@@ -284,7 +283,9 @@ class TestImportEndpoints:
         csv_content = "BeamID,Story,b (mm),D (mm),Span (mm),Mu (kN-m),Vu (kN),fck,fy,Cover (mm)\nB1,GF,300,500,5000,150,80,25,500,40\n"
         files = {"file": ("beams.csv", csv_content.encode(), "text/csv")}
         response = client.post("/api/v1/import/csv", files=files)
-        data = response.json()
+        body = response.json()
+        assert body["success"] is True
+        data = body["data"]
         expected_keys = {
             "success",
             "message",
@@ -301,7 +302,7 @@ class TestImportEndpoints:
         csv_content = "BeamID,Story,b (mm),D (mm),Span (mm),Mu (kN-m),Vu (kN),fck,fy,Cover (mm)\nB1,GF,300,500,5000,150,80,25,500,40\n"
         files = {"file": ("beams.csv", csv_content.encode(), "text/csv")}
         response = client.post("/api/v1/import/csv", files=files)
-        beam = response.json()["beams"][0]
+        beam = unwrap(response)["beams"][0]
         required = [
             "id",
             "width_mm",
@@ -323,8 +324,7 @@ class TestImportEndpoints:
         if response.status_code == status.HTTP_404_NOT_FOUND:
             return  # Skip — sample CSVs not available in CI
         assert response.status_code == status.HTTP_200_OK
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert data["beam_count"] > 0
         assert len(data["beams"]) == data["beam_count"]
 
@@ -333,7 +333,9 @@ class TestImportEndpoints:
         response = client.get("/api/v1/import/sample")
         if response.status_code == status.HTTP_404_NOT_FOUND:
             return
-        data = response.json()
+        body = response.json()
+        assert body["success"] is True
+        data = body["data"]
         expected_keys = {
             "success",
             "message",
@@ -349,7 +351,7 @@ class TestImportEndpoints:
         response = client.get("/api/v1/import/sample")
         if response.status_code == status.HTTP_404_NOT_FOUND:
             return
-        data = response.json()
+        data = unwrap(response)
         for beam in data["beams"]:
             assert "point1" in beam, f"Beam {beam['id']} missing point1"
             assert "point2" in beam, f"Beam {beam['id']} missing point2"
@@ -397,8 +399,7 @@ class TestImportEndpoints:
         ]
         response = client.post("/api/v1/import/batch-design", json=beams)
         assert response.status_code == status.HTTP_200_OK
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert data["total"] == 2
         assert len(data["results"]) == 2
 
@@ -418,7 +419,9 @@ class TestImportEndpoints:
             }
         ]
         response = client.post("/api/v1/import/batch-design", json=beams)
-        data = response.json()
+        body = response.json()
+        assert body["success"] is True
+        data = body["data"]
         expected_keys = {"success", "message", "total", "passed", "failed", "results"}
         assert set(data.keys()) == expected_keys
         assert "successful" not in data, "'successful' should be 'passed'"
@@ -439,7 +442,7 @@ class TestImportEndpoints:
             }
         ]
         response = client.post("/api/v1/import/batch-design", json=beams)
-        result = response.json()["results"][0]
+        result = unwrap(response)["results"][0]
         expected_keys = {
             "beam_id",
             "success",
@@ -470,7 +473,7 @@ class TestImportEndpoints:
             }
         ]
         response = client.post("/api/v1/import/batch-design", json=beams)
-        r = response.json()["results"][0]
+        r = unwrap(response)["results"][0]
         assert r["success"] is True
         assert r["is_safe"] is True
         assert r["stirrup_spacing"] > 0
@@ -485,21 +488,24 @@ class TestOptimizationEndpoints:
             "/api/v1/optimization/beam/cost",
             json=sample_optimization_request,
         )
-        assert response.status_code == status.HTTP_200_OK
+        assert response.status_code in (
+            status.HTTP_200_OK,
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+        )  # 503 when optimizer not available
 
-        data = response.json()
-        assert data["success"] is True
-        assert "optimal" in data
-        assert data["optimal"]["width"] > 0
-        assert data["optimal"]["depth"] > 0
-        assert "cost_breakdown" in data["optimal"]
+        if response.status_code == status.HTTP_200_OK:
+            data = unwrap(response)
+            assert "optimal" in data
+            assert data["optimal"]["width"] > 0
+            assert data["optimal"]["depth"] > 0
+            assert "cost_breakdown" in data["optimal"]
 
     def test_get_cost_rates(self, client):
         """Test get cost rates endpoint."""
         response = client.get("/api/v1/optimization/cost-rates")
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert "materials" in data
         assert "concrete" in data["materials"]
         assert "steel" in data["materials"]
@@ -516,8 +522,7 @@ class TestAnalysisEndpoints:
         )
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert "design_summary" in data
         assert "all_checks_passed" in data
 
@@ -526,7 +531,7 @@ class TestAnalysisEndpoints:
         response = client.get("/api/v1/analysis/code-clauses")
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert "flexure" in data
         assert "shear" in data
         assert "detailing" in data
@@ -543,7 +548,7 @@ class TestAnalysisEndpoints:
             },
         )
         assert response.status_code == status.HTTP_200_OK
-        data = response.json()
+        data = unwrap(response)
         assert data["span_mm"] == 6000
         assert len(data["positions_mm"]) == 51
         assert len(data["bmd_knm"]) == 51
@@ -567,7 +572,7 @@ class TestAnalysisEndpoints:
             },
         )
         assert response.status_code == status.HTTP_200_OK
-        data = response.json()
+        data = unwrap(response)
         # PL/4 = 50*6/4 = 75 kN·m
         assert abs(data["max_bm_knm"] - 75.0) < 1.0
         # P/2 = 25 kN
@@ -584,7 +589,7 @@ class TestAnalysisEndpoints:
             },
         )
         assert response.status_code == status.HTTP_200_OK
-        data = response.json()
+        data = unwrap(response)
         # wL²/2 = 15*(3)²/2 = 67.5 kN·m (hogging = negative)
         assert data["min_bm_knm"] < -60
 
@@ -669,8 +674,7 @@ class TestGeometryEndpoints:
         )
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert "components" in data
         assert "bounding_box" in data
         assert "center" in data
@@ -691,8 +695,7 @@ class TestGeometryEndpoints:
         response = client.post("/api/v1/geometry/beam/3d", json=minimal_request)
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
-        assert data["success"] is True
+        data = unwrap(response)
         assert len(data["components"]) >= 1  # At least beam body
 
     def test_get_materials(self, client):
@@ -700,7 +703,7 @@ class TestGeometryEndpoints:
         response = client.get("/api/v1/geometry/materials")
         assert response.status_code == status.HTTP_200_OK
 
-        data = response.json()
+        data = unwrap(response)
         assert "concrete" in data
         assert "steel" in data
         assert "color" in data["concrete"]

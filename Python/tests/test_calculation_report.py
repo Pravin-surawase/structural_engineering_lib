@@ -17,11 +17,11 @@ import json
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from unittest.mock import MagicMock
 
 import pytest
 
 from structural_lib.core.data_types import ShearResult
+from structural_lib.services.api_results import DesignAndDetailResult
 from structural_lib.services.calculation_report import (
     CalculationReport,
     InputSection,
@@ -30,6 +30,30 @@ from structural_lib.services.calculation_report import (
     _format_number,
     generate_calculation_report,
 )
+
+# =============================================================================
+# Test Fixture Dataclasses (replaces MagicMock — TE-3)
+# =============================================================================
+
+
+@dataclass
+class _FlexureFixture:
+    """Explicit fixture for flexure results — replaces MagicMock (TE-3)."""
+
+    Ast_required: float
+    ast_provided: float
+    beam_type: str
+    pt_provided: float = 0.0
+
+
+@dataclass
+class _DesignFixture:
+    """Explicit fixture for design (ComplianceCaseResult-like) objects."""
+
+    flexure: _FlexureFixture
+    shear: ShearResult
+    Vu_kn: float
+
 
 # =============================================================================
 # Fixtures
@@ -93,22 +117,16 @@ def sample_result_section() -> ResultSection:
 
 
 @pytest.fixture
-def mock_design_result(sample_input_section, sample_result_section) -> MagicMock:
-    """Mock design result with all expected attributes."""
-    result = MagicMock()
-
-    # Geometry and materials
-    result.geometry = sample_input_section.geometry
-    result.materials = sample_input_section.materials
-
-    # Design object with flexure and shear
-    result.design = MagicMock()
-    result.design.flexure = MagicMock()
-    result.design.flexure.Ast_required = 942.48
-    result.design.flexure.ast_provided = 1017.88
-    result.design.flexure.beam_type = "singly reinforced"
-
-    result.design.shear = ShearResult(
+def mock_design_result(
+    sample_input_section, sample_result_section
+) -> DesignAndDetailResult:
+    """Design result with real objects — no MagicMock (TE-3)."""
+    flexure = _FlexureFixture(
+        Ast_required=942.48,
+        ast_provided=1017.88,
+        beam_type="singly reinforced",
+    )
+    shear = ShearResult(
         tau_v=1.45,
         tau_c=0.36,
         tau_c_max=2.8,
@@ -116,12 +134,17 @@ def mock_design_result(sample_input_section, sample_result_section) -> MagicMock
         spacing=150.0,
         is_safe=True,
     )
-    result.design.Vu_kn = 100.0  # V_u lives on ComplianceCaseResult, not ShearResult
+    design = _DesignFixture(flexure=flexure, shear=shear, Vu_kn=100.0)
 
-    result.is_ok = True
-    result.summary = MagicMock(return_value="Design OK")
-
-    return result
+    return DesignAndDetailResult(
+        beam_id="B1",
+        story="GF",
+        design=design,
+        detailing=None,
+        geometry=sample_input_section.geometry,
+        materials=sample_input_section.materials,
+        is_ok=True,
+    )
 
 
 # =============================================================================
@@ -549,15 +572,8 @@ class TestEdgeCases:
 
     def test_empty_result(self):
         """Test handling of minimal/empty result."""
-        result = MagicMock()
-        result.geometry = {}
-        result.materials = {}
-        result.design = MagicMock()
-        result.design.flexure = MagicMock()
-        result.design.flexure.Ast_required = 0
-        result.design.flexure.ast_provided = 0
-        result.design.flexure.beam_type = "unknown"
-        result.design.shear = ShearResult(
+        flexure = _FlexureFixture(Ast_required=0, ast_provided=0, beam_type="unknown")
+        shear = ShearResult(
             tau_v=0.0,
             tau_c=0.0,
             tau_c_max=0.0,
@@ -565,9 +581,16 @@ class TestEdgeCases:
             spacing=0.0,
             is_safe=True,
         )
-        result.design.Vu_kn = 0.0
-        result.is_ok = True
-        result.summary = MagicMock(return_value="")
+        design = _DesignFixture(flexure=flexure, shear=shear, Vu_kn=0.0)
+        result = DesignAndDetailResult(
+            beam_id="B1",
+            story="GF",
+            design=design,
+            detailing=None,
+            geometry={},
+            materials={},
+            is_ok=True,
+        )
 
         report = CalculationReport.from_design_result(result=result)
         # Should not raise
@@ -587,10 +610,17 @@ class TestEdgeCases:
             spacing: float = 150.0
             is_safe: bool = True
 
-        result = MagicMock(spec=["flexure", "shear", "is_ok"])
-        result.flexure = MockFlexure()
-        result.shear = MockShear()
-        result.is_ok = True
+        @dataclass
+        class MockResult:
+            flexure: MockFlexure
+            shear: MockShear
+            is_ok: bool = True
+
+        result = MockResult(
+            flexure=MockFlexure(),
+            shear=MockShear(),
+            is_ok=True,
+        )
 
         # Should handle this case
         report = CalculationReport.from_design_result(result=result)
@@ -638,32 +668,35 @@ class TestWithRealObjects:
     """Tests using real dataclass objects instead of MagicMock."""
 
     def test_from_design_result_real_shear(self):
-        """Verify from_design_result works with real ShearResult (not MagicMock)."""
-        result = MagicMock()
-        result.geometry = {
-            "b_mm": 300,
-            "D_mm": 500,
-            "d_mm": 460,
-            "span_mm": 6000,
-            "cover_mm": 40,
-        }
-        result.materials = {"fck_nmm2": 25, "fy_nmm2": 500}
-        result.is_ok = True
-        result.summary = MagicMock(return_value="Design OK")
-
-        result.design = MagicMock()
-        result.design.Vu_kn = 100.0
-        result.design.flexure = MagicMock()
-        result.design.flexure.Ast_required = 942.48
-        result.design.flexure.ast_provided = 1017.88
-        result.design.flexure.beam_type = "singly reinforced"
-        result.design.shear = ShearResult(
+        """Verify from_design_result works with real dataclass objects."""
+        flexure = _FlexureFixture(
+            Ast_required=942.48,
+            ast_provided=1017.88,
+            beam_type="singly reinforced",
+        )
+        shear = ShearResult(
             tau_v=1.45,
             tau_c=0.36,
             tau_c_max=2.8,
             Vus=50.0,
             spacing=150.0,
             is_safe=True,
+        )
+        design = _DesignFixture(flexure=flexure, shear=shear, Vu_kn=100.0)
+        result = DesignAndDetailResult(
+            beam_id="B1",
+            story="GF",
+            design=design,
+            detailing=None,
+            geometry={
+                "b_mm": 300,
+                "D_mm": 500,
+                "d_mm": 460,
+                "span_mm": 6000,
+                "cover_mm": 40,
+            },
+            materials={"fck_nmm2": 25, "fy_nmm2": 500},
+            is_ok=True,
         )
 
         report = CalculationReport.from_design_result(result=result, beam_id="B1")

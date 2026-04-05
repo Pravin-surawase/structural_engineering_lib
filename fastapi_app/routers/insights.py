@@ -9,7 +9,8 @@ Uses structural_lib.dashboard for canonical computations.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from fastapi_app.models.boq import (
     ConcreteSummaryResponse,
@@ -18,6 +19,8 @@ from fastapi_app.models.boq import (
     SteelSummaryResponse,
     StorySummaryResponse,
 )
+
+from fastapi_app.models.response import error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -183,11 +186,10 @@ class RebarSuggestResponse(BaseModel):
 
 @router.post(
     "/dashboard",
-    response_model=DashboardResponse,
     summary="Generate Dashboard Summary",
     description="Generate aggregated statistics from multiple beam design results.",
 )
-async def generate_dashboard(request: DashboardRequest) -> DashboardResponse:
+async def generate_dashboard(request: DashboardRequest):
     """
     Generate an aggregated dashboard from beam design results.
 
@@ -216,42 +218,43 @@ async def generate_dashboard(request: DashboardRequest) -> DashboardResponse:
             for story, stats in summary_dict.get("by_story", {}).items()
         }
 
-        return DashboardResponse(
-            success=True,
-            message=f"Dashboard generated for {summary.total_beams} beams",
-            total_beams=summary.total_beams,
-            passed=summary.passed,
-            failed=summary.failed,
-            pass_rate=summary_dict.get("pass_rate", 0.0),
-            warnings_count=summary.warnings_count,
-            avg_utilization=summary_dict.get("avg_utilization", 0.0),
-            max_utilization=summary_dict.get("max_utilization", 0.0),
-            min_utilization=summary_dict.get("min_utilization", 0.0),
-            total_steel_kg=summary_dict.get("total_steel_kg", 0.0),
-            total_concrete_m3=summary_dict.get("total_concrete_m3", 0.0),
-            critical_beams=summary.critical_beams[:10],
-            by_story=by_story_models,
+        return success_response(
+            DashboardResponse(
+                success=True,
+                message=f"Dashboard generated for {summary.total_beams} beams",
+                total_beams=summary.total_beams,
+                passed=summary.passed,
+                failed=summary.failed,
+                pass_rate=summary_dict.get("pass_rate", 0.0),
+                warnings_count=summary.warnings_count,
+                avg_utilization=summary_dict.get("avg_utilization", 0.0),
+                max_utilization=summary_dict.get("max_utilization", 0.0),
+                min_utilization=summary_dict.get("min_utilization", 0.0),
+                total_steel_kg=summary_dict.get("total_steel_kg", 0.0),
+                total_concrete_m3=summary_dict.get("total_concrete_m3", 0.0),
+                critical_beams=summary.critical_beams[:10],
+                by_story=by_story_models,
+            )
         )
     except ImportError:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Dashboard module not available",
+            content=error_response("Dashboard module not available"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in generate_dashboard")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/code-checks",
-    response_model=CodeChecksResponse,
     summary="Live IS 456 Code Checks",
     description="Perform fast code checks for real-time UI updates during editing.",
 )
-async def code_checks_live(request: CodeChecksRequest) -> CodeChecksResponse:
+async def code_checks_live(request: CodeChecksRequest):
     """
     Perform live IS 456 code checks on a beam.
 
@@ -292,36 +295,37 @@ async def code_checks_live(request: CodeChecksRequest) -> CodeChecksResponse:
             else f"{len(result.critical_failures)} check(s) failed"
         )
 
-        return CodeChecksResponse(
-            success=True,
-            message=status_msg,
-            passed=result.passed,
-            checks=check_models,
-            critical_failures=result.critical_failures,
-            warnings=result.warnings,
-            utilization=result_dict.get("utilization", 0.0),
-            governing_check=result.governing_check,
+        return success_response(
+            CodeChecksResponse(
+                success=True,
+                message=status_msg,
+                passed=result.passed,
+                checks=check_models,
+                critical_failures=result.critical_failures,
+                warnings=result.warnings,
+                utilization=result_dict.get("utilization", 0.0),
+                governing_check=result.governing_check,
+            )
         )
     except ImportError:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Dashboard module not available",
+            content=error_response("Dashboard module not available"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in code_checks_live")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/rebar-suggest",
-    response_model=RebarSuggestResponse,
     summary="Suggest Rebar Optimizations",
     description="Generate optimized rebar configuration suggestions for a beam.",
 )
-async def suggest_rebar_options(request: RebarSuggestRequest) -> RebarSuggestResponse:
+async def suggest_rebar_options(request: RebarSuggestRequest):
     """
     Suggest optimized rebar configurations for a beam.
 
@@ -362,36 +366,37 @@ async def suggest_rebar_options(request: RebarSuggestRequest) -> RebarSuggestRes
             else "No optimization opportunities found"
         )
 
-        return RebarSuggestResponse(
-            success=True,
-            message=msg,
-            beam_id=result.beam_id,
-            suggestion_count=count,
-            suggestions=suggestion_models,
-            current_ast_mm2=result_dict.get("current_ast_mm2", 0.0),
-            min_ast_mm2=result_dict.get("min_ast_mm2", 0.0),
-            max_savings_percent=result_dict.get("max_savings_percent", 0.0),
+        return success_response(
+            RebarSuggestResponse(
+                success=True,
+                message=msg,
+                beam_id=result.beam_id,
+                suggestion_count=count,
+                suggestions=suggestion_models,
+                current_ast_mm2=result_dict.get("current_ast_mm2", 0.0),
+                min_ast_mm2=result_dict.get("min_ast_mm2", 0.0),
+                max_savings_percent=result_dict.get("max_savings_percent", 0.0),
+            )
         )
     except ImportError:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Dashboard module not available",
+            content=error_response("Dashboard module not available"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in suggest_rebar_options")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/project-boq",
-    response_model=ProjectBOQResponse,
     summary="Project Bill of Quantities",
     description="Aggregate project BOQ from beam metadata with steel/concrete costs.",
 )
-async def project_boq(request: ProjectBOQRequest) -> ProjectBOQResponse:
+async def project_boq(request: ProjectBOQRequest):
     """Aggregate project Bill of Quantities from beam metadata.
 
     Calculates total steel weight, concrete volume, and costs
@@ -480,20 +485,22 @@ async def project_boq(request: ProjectBOQRequest) -> ProjectBOQResponse:
             for s, d in sorted(story_acc.items())
         ]
 
-        return ProjectBOQResponse(
-            success=True,
-            project_name=request.project_name,
-            total_beams=len(request.beams),
-            steel=steel_list,
-            concrete=concrete_list,
-            by_story=story_list,
-            grand_total_steel_kg=round(total_steel, 2),
-            grand_total_concrete_m3=round(total_concrete, 4),
-            grand_total_cost_inr=round(total_cost, 2),
+        return success_response(
+            ProjectBOQResponse(
+                success=True,
+                project_name=request.project_name,
+                total_beams=len(request.beams),
+                steel=steel_list,
+                concrete=concrete_list,
+                by_story=story_list,
+                grand_total_steel_kg=round(total_steel, 2),
+                grand_total_concrete_m3=round(total_concrete, 4),
+                grand_total_cost_inr=round(total_cost, 2),
+            )
         )
-    except Exception:
+    except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in project_boq")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )

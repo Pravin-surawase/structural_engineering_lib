@@ -305,6 +305,12 @@ def check_compliance_case(
         utilizations=utilizations,
         failed_checks=failed_checks,
         remarks=remarks,
+        clause_refs={
+            "flexure": "IS 456 Cl 38.1",
+            "shear": "IS 456 Cl 40",
+            "deflection": "IS 456 Cl 23.2",
+            "crack_width": "IS 456 Cl 35.3.2",
+        },
     )
 
 

@@ -32,7 +32,7 @@ from . import (
     beam_pipeline,
     detailing,
 )
-from .core.data_types import CrackWidthParams, DeflectionParams
+from .core.data_types import CrackWidthParams, DeflectionParams, ValidationReport
 from .services import api, dxf_export, excel_integration, job_runner, report
 
 
@@ -61,7 +61,7 @@ def _print_error(message: str, hint: str | None = None) -> None:
         print(f"Hint: {hint}", file=sys.stderr)
 
 
-def _format_validation_text(report: api.ValidationReport) -> str:
+def _format_validation_text(report: ValidationReport) -> str:
     status = "OK" if report.ok else "FAIL"
     lines = [f"Validation: {status}"]
 

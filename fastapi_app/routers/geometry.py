@@ -7,9 +7,11 @@ Uses structural_lib.visualization.geometry_3d for accurate calculations.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.geometry import (
     Geometry3DRequest,
     Geometry3DResponse,
@@ -45,13 +47,12 @@ router = APIRouter(
 
 @router.post(
     "/beam/3d",
-    response_model=Geometry3DResponse,
     summary="Generate 3D Beam Geometry",
     description="Generate 3D mesh geometry for beam visualization.",
 )
 async def generate_beam_geometry(
     request: Geometry3DRequest,
-) -> Geometry3DResponse:
+):
     """
     Generate 3D geometry for a beam section.
 
@@ -135,18 +136,20 @@ async def generate_beam_geometry(
         center = [request.width / 2, request.depth / 2, request.length / 2]
         diagonal = math.sqrt(request.width**2 + request.depth**2 + request.length**2)
 
-        return Geometry3DResponse(
-            success=True,
-            message=f"Generated beam geometry with {len(mesh.vertices)} vertices",
-            components=[beam_component],
-            bounding_box=bounding_box,
-            center=center,
-            suggested_camera_distance=diagonal * 1.5,
-            total_vertices=len(mesh.vertices),
-            total_faces=len(mesh.faces),
-            stl_base64=None,
-            gltf_json=None,
-            warnings=[],
+        return success_response(
+            Geometry3DResponse(
+                success=True,
+                message=f"Generated beam geometry with {len(mesh.vertices)} vertices",
+                components=[beam_component],
+                bounding_box=bounding_box,
+                center=center,
+                suggested_camera_distance=diagonal * 1.5,
+                total_vertices=len(mesh.vertices),
+                total_faces=len(mesh.faces),
+                stl_base64=None,
+                gltf_json=None,
+                warnings=[],
+            )
         )
 
     except ImportError:
@@ -155,15 +158,15 @@ async def generate_beam_geometry(
     except (ValueError, AttributeError, TypeError):
         # Fallback on errors
         return _generate_fallback_geometry(request)
-    except Exception:
+    except (RuntimeError, KeyError, IndexError):
         logger.exception("Internal error in generate_beam_geometry")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
-def _generate_fallback_geometry(request: Geometry3DRequest) -> Geometry3DResponse:
+def _generate_fallback_geometry(request: Geometry3DRequest):
     """Generate simple box geometry as fallback."""
     import math
 
@@ -219,18 +222,20 @@ def _generate_fallback_geometry(request: Geometry3DRequest) -> Geometry3DRespons
     center = [w / 2, d / 2, length_val / 2]
     diagonal = math.sqrt(w**2 + d**2 + length_val**2)
 
-    return Geometry3DResponse(
-        success=True,
-        message="Generated fallback geometry (structural_lib not available)",
-        components=[beam_component],
-        bounding_box=bounding_box,
-        center=center,
-        suggested_camera_distance=diagonal * 1.5,
-        total_vertices=8,
-        total_faces=12,
-        stl_base64=None,
-        gltf_json=None,
-        warnings=["Using fallback geometry - structural_lib not available"],
+    return success_response(
+        Geometry3DResponse(
+            success=True,
+            message="Generated fallback geometry (structural_lib not available)",
+            components=[beam_component],
+            bounding_box=bounding_box,
+            center=center,
+            suggested_camera_distance=diagonal * 1.5,
+            total_vertices=8,
+            total_faces=12,
+            stl_base64=None,
+            gltf_json=None,
+            warnings=["Using fallback geometry - structural_lib not available"],
+        )
     )
 
 
@@ -241,7 +246,6 @@ def _generate_fallback_geometry(request: Geometry3DRequest) -> Geometry3DRespons
 
 @router.post(
     "/beam/full",
-    response_model=BeamGeometryResponse,
     summary="Generate Full Beam 3D Geometry",
     description="""
 Generate complete 3D geometry with rebars and stirrups using structural_lib.
@@ -256,7 +260,7 @@ Ideal for React Three Fiber rendering with cylinder/tube primitives.
 )
 async def generate_full_beam_geometry(
     request: BeamGeometryRequest,
-) -> BeamGeometryResponse:
+):
     """
     Generate complete 3D geometry for beam visualization.
 
@@ -350,31 +354,33 @@ async def generate_full_beam_geometry(
             version=geometry_dict.get("version", "1.0.0"),
         )
 
-        return BeamGeometryResponse(
-            success=True,
-            message=(
-                f"Generated geometry with {len(rebars)} rebars "
-                f"and {len(stirrups)} stirrups"
-            ),
-            geometry=geometry_model,
-            warnings=[],
+        return success_response(
+            BeamGeometryResponse(
+                success=True,
+                message=(
+                    f"Generated geometry with {len(rebars)} rebars "
+                    f"and {len(stirrups)} stirrups"
+                ),
+                geometry=geometry_model,
+                warnings=[],
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=sanitize_error(e, "full beam geometry"),
+            content=error_response(sanitize_error(e, "full beam geometry")),
         )
     except ValueError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=sanitize_error(e, "full beam geometry"),
+            content=error_response(sanitize_error(e, "full beam geometry")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, IndexError):
         logger.exception("Internal error in generate_full_beam_geometry")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
@@ -383,38 +389,40 @@ async def generate_full_beam_geometry(
     summary="Get Material Appearance",
     description="Get material colors and properties for visualization.",
 )
-async def get_materials() -> dict:
+async def get_materials():
     """
     Get standard material appearances for visualization.
 
     Returns RGBA colors and material hints for different components.
     """
-    return {
-        "concrete": {
-            "color": [0.75, 0.75, 0.75, 1.0],
-            "roughness": 0.9,
-            "metalness": 0.0,
-            "description": "Standard concrete gray",
-        },
-        "steel": {
-            "color": [0.3, 0.3, 0.35, 1.0],
-            "roughness": 0.4,
-            "metalness": 0.8,
-            "description": "Reinforcement steel",
-        },
-        "formwork": {
-            "color": [0.6, 0.4, 0.2, 0.5],
-            "roughness": 0.7,
-            "metalness": 0.0,
-            "description": "Timber formwork (semi-transparent)",
-        },
-        "highlight": {
-            "color": [1.0, 0.8, 0.0, 1.0],
-            "roughness": 0.3,
-            "metalness": 0.0,
-            "description": "Highlight color for selection",
-        },
-    }
+    return success_response(
+        {
+            "concrete": {
+                "color": [0.75, 0.75, 0.75, 1.0],
+                "roughness": 0.9,
+                "metalness": 0.0,
+                "description": "Standard concrete gray",
+            },
+            "steel": {
+                "color": [0.3, 0.3, 0.35, 1.0],
+                "roughness": 0.4,
+                "metalness": 0.8,
+                "description": "Reinforcement steel",
+            },
+            "formwork": {
+                "color": [0.6, 0.4, 0.2, 0.5],
+                "roughness": 0.7,
+                "metalness": 0.0,
+                "description": "Timber formwork (semi-transparent)",
+            },
+            "highlight": {
+                "color": [1.0, 0.8, 0.0, 1.0],
+                "roughness": 0.3,
+                "metalness": 0.0,
+                "description": "Highlight color for selection",
+            },
+        }
+    )
 
 
 # =============================================================================
@@ -424,7 +432,6 @@ async def get_materials() -> dict:
 
 @router.post(
     "/building",
-    response_model=BuildingGeometryResponse,
     summary="Generate Building 3D Geometry",
     description="""
 Generate 3D line geometry for a multi-beam building view.
@@ -435,7 +442,7 @@ Ideal for React Three Fiber with LineSegments or Tubes.
 )
 async def generate_building_geometry(
     request: BuildingGeometryRequest,
-) -> BuildingGeometryResponse:
+):
     """
     Generate building-level 3D geometry for visualization.
 
@@ -481,14 +488,16 @@ async def generate_building_geometry(
                 continue  # Skip invalid beams
 
         if not beam_objects:
-            return BuildingGeometryResponse(
-                success=False,
-                message="No valid beams could be parsed from request",
-                beams=[],
-                bounding_box={},
-                center=Point3DModel(x=0, y=0, z=0),
-                metadata={},
-                warnings=["No beams parsed - check input format"],
+            return success_response(
+                BuildingGeometryResponse(
+                    success=False,
+                    message="No valid beams could be parsed from request",
+                    beams=[],
+                    bounding_box={},
+                    center=Point3DModel(x=0, y=0, z=0),
+                    metadata={},
+                    warnings=["No beams parsed - check input format"],
+                )
             )
 
         from structural_lib.visualization.geometry_3d import building_to_3d_geometry
@@ -515,35 +524,37 @@ async def generate_building_geometry(
             for b in geometry.beams
         ]
 
-        return BuildingGeometryResponse(
-            success=True,
-            message=f"Generated geometry for {len(beam_models)} members",
-            beams=beam_models,
-            bounding_box=geometry.bounding_box,
-            center=Point3DModel(
-                x=geometry.center.x,
-                y=geometry.center.y,
-                z=geometry.center.z,
-            ),
-            metadata=geometry.metadata,
-            warnings=[],
+        return success_response(
+            BuildingGeometryResponse(
+                success=True,
+                message=f"Generated geometry for {len(beam_models)} members",
+                beams=beam_models,
+                bounding_box=geometry.bounding_box,
+                center=Point3DModel(
+                    x=geometry.center.x,
+                    y=geometry.center.y,
+                    z=geometry.center.z,
+                ),
+                metadata=geometry.metadata,
+                warnings=[],
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=sanitize_error(e, "building geometry"),
+            content=error_response(sanitize_error(e, "building geometry")),
         )
     except ValueError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=sanitize_error(e, "building geometry"),
+            content=error_response(sanitize_error(e, "building geometry")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, IndexError):
         logger.exception("Internal error in generate_building_geometry")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
@@ -554,7 +565,6 @@ async def generate_building_geometry(
 
 @router.post(
     "/cross-section",
-    response_model=CrossSectionResponse,
     summary="Generate 2D Cross-Section Geometry",
     description="""
 Generate 2D cross-section geometry for beam section view.
@@ -565,7 +575,7 @@ Ideal for React SVG or Canvas 2D rendering.
 )
 async def generate_cross_section_geometry(
     request: CrossSectionRequest,
-) -> CrossSectionResponse:
+):
     """
     Generate 2D cross-section geometry for beam visualization.
 
@@ -615,20 +625,22 @@ async def generate_cross_section_geometry(
             Point3DModel(x=inner_cover, y=inner_cover, z=0),  # Close loop
         ]
 
-        return CrossSectionResponse(
-            success=True,
-            message=f"Generated cross-section with {len(tension_bars)} tension + {len(compression_bars)} compression bars",
-            outline=outline,
-            tension_bars=tension_bars,
-            compression_bars=compression_bars,
-            stirrup_path=stirrup_path,
-            dimensions={"width": w, "depth": d, "cover": cover},
-            warnings=[],
+        return success_response(
+            CrossSectionResponse(
+                success=True,
+                message=f"Generated cross-section with {len(tension_bars)} tension + {len(compression_bars)} compression bars",
+                outline=outline,
+                tension_bars=tension_bars,
+                compression_bars=compression_bars,
+                stirrup_path=stirrup_path,
+                dimensions={"width": w, "depth": d, "cover": cover},
+                warnings=[],
+            )
         )
 
-    except Exception:
+    except (RuntimeError, KeyError, IndexError):
         logger.exception("Internal error in generate_cross_section_geometry")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )

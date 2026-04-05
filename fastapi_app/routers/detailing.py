@@ -6,11 +6,12 @@ Endpoints for reinforcement detailing calculations.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.beam import (
-    BarAreasResponse,
     BeamDetailingRequest,
     BeamDetailingResponse,
     BarArrangement,
@@ -36,11 +37,10 @@ router = APIRouter(
 
 @router.post(
     "/beam",
-    response_model=BeamDetailingResponse,
     summary="Detail Beam Reinforcement",
     description="Generate reinforcement detailing for a beam section.",
 )
-async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
+async def detail_beam(request: BeamDetailingRequest):
     """
     Generate reinforcement detailing for a beam.
 
@@ -181,47 +181,48 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
         tau_bd = 1.4 * 1.6  # M25, deformed bars
         ld_tension = 16 * 0.87 * request.fy / (4 * tau_bd)  # For 16mm bar
 
-        return BeamDetailingResponse(
-            success=True,
-            message=f"Detailing complete: {len(tension_bars)} tension layer(s)",
-            tension_bars=tension_bars,
-            ast_provided=ast_provided,
-            compression_bars=compression_bars,
-            asc_provided=asc_provided,
-            stirrups=stirrups,
-            ld_tension=ld_tension,
-            ld_compression=ld_tension * 0.8 if request.asc_required > 0 else 0.0,
-            anchorage_length=ld_tension,
-            curtailment_points=[],
-            warnings=[],
+        return success_response(
+            BeamDetailingResponse(
+                success=True,
+                message=f"Detailing complete: {len(tension_bars)} tension layer(s)",
+                tension_bars=tension_bars,
+                ast_provided=ast_provided,
+                compression_bars=compression_bars,
+                asc_provided=asc_provided,
+                stirrups=stirrups,
+                ld_tension=ld_tension,
+                ld_compression=ld_tension * 0.8 if request.asc_required > 0 else 0.0,
+                anchorage_length=ld_tension,
+                curtailment_points=[],
+                warnings=[],
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "beam detailing"),
+            content=error_response(sanitize_error(e, "beam detailing")),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for beam detailing")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, IndexError):
         logger.exception("Internal error in detail_beam")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.get(
     "/bar-areas",
-    response_model=BarAreasResponse,
     summary="Get Standard Bar Areas",
     description="Get cross-sectional areas for standard reinforcement bars.",
 )
-async def get_bar_areas() -> BarAreasResponse:
+async def get_bar_areas():
     """
     Get standard reinforcement bar areas.
 
@@ -240,10 +241,12 @@ async def get_bar_areas() -> BarAreasResponse:
             "weight_kg_per_m": round(area * 7850 / 1e6, 3),
         }
 
-    return {
-        "bars": bar_areas,
-        "note": "T = HYSD bars (TMT/CTD), areas per IS 1786",
-    }
+    return success_response(
+        {
+            "bars": bar_areas,
+            "note": "T = HYSD bars (TMT/CTD), areas per IS 1786",
+        }
+    )
 
 
 @router.get(
@@ -256,7 +259,7 @@ async def calculate_development_length(
     fck: float = 25.0,
     fy: float = 500.0,
     bar_type: str = "deformed",
-) -> dict:
+):
     """
     Calculate development length for a bar.
 
@@ -278,18 +281,20 @@ async def calculate_development_length(
             bar_type=bar_type,
         )
 
-        return {
-            "bar_diameter": bar_diameter,
-            "fck": fck,
-            "fy": fy,
-            "bar_type": bar_type,
-            "tau_bd": result.get("tau_bd", 0.0),
-            "ld": result.get("ld", 0.0),
-            "ld_in_diameters": (
-                result.get("ld", 0.0) / bar_diameter if bar_diameter > 0 else 0
-            ),
-            "clause": "IS 456:2000 Cl. 26.2.1",
-        }
+        return success_response(
+            {
+                "bar_diameter": bar_diameter,
+                "fck": fck,
+                "fy": fy,
+                "bar_type": bar_type,
+                "tau_bd": result.get("tau_bd", 0.0),
+                "ld": result.get("ld", 0.0),
+                "ld_in_diameters": (
+                    result.get("ld", 0.0) / bar_diameter if bar_diameter > 0 else 0
+                ),
+                "clause": "IS 456:2000 Cl. 26.2.1",
+            }
+        )
 
     except ImportError:
         # Fallback calculation if structural_lib not available
@@ -318,16 +323,20 @@ async def calculate_development_length(
         sigma_s = 0.87 * fy
         ld = bar_diameter * sigma_s / (4 * tau_bd)
 
-        return {
-            "bar_diameter": bar_diameter,
-            "fck": fck,
-            "fy": fy,
-            "bar_type": bar_type,
-            "tau_bd": round(tau_bd, 2),
-            "ld": round(ld, 0),
-            "ld_in_diameters": round(ld / bar_diameter, 1) if bar_diameter > 0 else 0,
-            "clause": "IS 456:2000 Cl. 26.2.1 (fallback calculation)",
-        }
+        return success_response(
+            {
+                "bar_diameter": bar_diameter,
+                "fck": fck,
+                "fy": fy,
+                "bar_type": bar_type,
+                "tau_bd": round(tau_bd, 2),
+                "ld": round(ld, 0),
+                "ld_in_diameters": (
+                    round(ld / bar_diameter, 1) if bar_diameter > 0 else 0
+                ),
+                "clause": "IS 456:2000 Cl. 26.2.1 (fallback calculation)",
+            }
+        )
 
 
 # =============================================================================
@@ -337,7 +346,6 @@ async def calculate_development_length(
 
 @router.post(
     "/anchorage-check",
-    response_model=AnchorageCheckResponse,
     summary="Anchorage Check at Simple Support (IS 456 Cl 26.2.3.3)",
     description=(
         "Check anchorage of bottom bars at simple supports per IS 456:2000 Cl 26.2.3.3. "
@@ -346,7 +354,7 @@ async def calculate_development_length(
 )
 async def check_anchorage(
     request: AnchorageCheckRequest,
-) -> AnchorageCheckResponse:
+):
     """Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3."""
     try:
         from structural_lib.services.api import check_anchorage_at_simple_support
@@ -362,30 +370,32 @@ async def check_anchorage(
             has_standard_bend=request.has_standard_bend,
         )
 
-        return AnchorageCheckResponse(
-            is_adequate=result.is_adequate,
-            ld_required=result.ld_required,
-            ld_available=result.ld_available,
-            m1_enhancement=result.m1_enhancement,
-            utilization=result.utilization,
-            errors=result.errors,
-            warnings=result.warnings,
+        return success_response(
+            AnchorageCheckResponse(
+                is_adequate=result.is_adequate,
+                ld_required=result.ld_required,
+                ld_available=result.ld_available,
+                m1_enhancement=result.m1_enhancement,
+                utilization=result.utilization,
+                errors=result.errors,
+                warnings=result.warnings,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "anchorage check"),
+            content=error_response(sanitize_error(e, "anchorage check")),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for anchorage check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, IndexError):
         logger.exception("Internal error in check_anchorage")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )

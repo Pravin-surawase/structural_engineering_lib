@@ -7,9 +7,11 @@ Endpoints for beam flexure and shear design calculations.
 import logging
 import math
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
@@ -61,11 +63,10 @@ router = APIRouter(
 
 @router.post(
     "/beam",
-    response_model=BeamDesignResponse,
     summary="Design Beam Section",
     description="Calculate required reinforcement for a beam section under given loading.",
 )
-async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
+async def design_beam(request: BeamDesignRequest):
     """
     Design a beam section for flexure and shear.
 
@@ -150,44 +151,45 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
         if flexure_result.xu > flexure_result.xu_max:
             warnings.append("Section is over-reinforced - consider increasing depth")
 
-        return BeamDesignResponse(
-            success=True,
-            message=f"Design complete: Ast = {flexure.ast_required:.0f} mm²",
-            flexure=flexure,
-            shear=shear_result,
-            ast_total=flexure.ast_required,
-            asc_total=flexure.asc_required,
-            utilization_ratio=min(utilization, 2.0),
-            effective_depth_used=effective_depth,
-            warnings=warnings,
+        return success_response(
+            BeamDesignResponse(
+                success=True,
+                message=f"Design complete: Ast = {flexure.ast_required:.0f} mm²",
+                flexure=flexure,
+                shear=shear_result,
+                ast_total=flexure.ast_required,
+                asc_total=flexure.asc_required,
+                utilization_ratio=min(utilization, 2.0),
+                effective_depth_used=effective_depth,
+                warnings=warnings,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "beam design"),
+            content=error_response(sanitize_error(e, "beam design")),
         )
-    except (ValueError, AttributeError, TypeError):
+    except (ValueError, AttributeError, TypeError) as e:
         logger.exception("Invalid input for beam design")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "beam design")),
         )
-    except Exception:
+    except (RuntimeError, KeyError) as e:
         logger.exception("Design calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "beam design")),
         )
 
 
 @router.post(
     "/beam/check",
-    response_model=BeamCheckResponse,
     summary="Check Beam Adequacy",
     description="Check if a beam with given reinforcement is adequate for the applied loads.",
 )
-async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
+async def check_beam(request: BeamCheckRequest):
     """
     Check adequacy of a beam section with provided reinforcement.
 
@@ -256,39 +258,41 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
         if shear_util > 0.9:
             warnings.append("Shear utilization >90% - limited reserve capacity")
 
-        return BeamCheckResponse(
-            is_adequate=flexure_ok and shear_ok,
-            success=True,
-            message=(
-                "Beam is adequate"
-                if (flexure_ok and shear_ok)
-                else "Beam is NOT adequate"
-            ),
-            moment_capacity=moment_capacity,
-            shear_capacity=shear_capacity,
-            moment_utilization=min(moment_util, 2.0),
-            shear_utilization=min(shear_util, 2.0),
-            flexure_adequate=flexure_ok,
-            shear_adequate=shear_ok,
-            warnings=warnings,
+        return success_response(
+            BeamCheckResponse(
+                is_adequate=flexure_ok and shear_ok,
+                success=True,
+                message=(
+                    "Beam is adequate"
+                    if (flexure_ok and shear_ok)
+                    else "Beam is NOT adequate"
+                ),
+                moment_capacity=moment_capacity,
+                shear_capacity=shear_capacity,
+                moment_utilization=min(moment_util, 2.0),
+                shear_utilization=min(shear_util, 2.0),
+                flexure_adequate=flexure_ok,
+                shear_adequate=shear_ok,
+                warnings=warnings,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "beam check"),
+            content=error_response(sanitize_error(e, "beam check")),
         )
-    except (ValueError, AttributeError, TypeError):
+    except (ValueError, AttributeError, TypeError) as e:
         logger.exception("Invalid input for beam check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "beam check")),
         )
-    except Exception:
+    except (RuntimeError, KeyError) as e:
         logger.exception("Check calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "beam check")),
         )
 
 
@@ -297,7 +301,7 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
     summary="Get Design Limits",
     description="Get IS 456 design limits and constraints.",
 )
-async def get_design_limits() -> dict:
+async def get_design_limits():
     """
     Get IS 456 design limits and typical values.
 
@@ -307,42 +311,44 @@ async def get_design_limits() -> dict:
     - Clear cover requirements
     - Shear stress limits
     """
-    return {
-        "concrete": {
-            "fck_min": 15.0,
-            "fck_max": 80.0,
-            "typical_grades": [20, 25, 30, 40, 50],
-            "unit": "N/mm²",
-        },
-        "steel": {
-            "fy_min": 250.0,
-            "fy_max": 600.0,
-            "typical_grades": [415, 500, 550],
-            "unit": "N/mm²",
-        },
-        "reinforcement": {
-            "pt_min": 0.12,
-            "pt_max": 4.0,
-            "unit": "% of bd",
-            "note": "Minimum is 0.12% for Fe 500, 0.085As/bd else",
-        },
-        "clear_cover": {
-            "mild": 20,
-            "moderate": 30,
-            "severe": 45,
-            "very_severe": 50,
-            "extreme": 75,
-            "unit": "mm",
-        },
-        "tau_c_max": {
-            "M20": 2.8,
-            "M25": 3.1,
-            "M30": 3.5,
-            "M35": 3.7,
-            "M40": 4.0,
-            "unit": "N/mm²",
-        },
-    }
+    return success_response(
+        {
+            "concrete": {
+                "fck_min": 15.0,
+                "fck_max": 80.0,
+                "typical_grades": [20, 25, 30, 40, 50],
+                "unit": "N/mm²",
+            },
+            "steel": {
+                "fy_min": 250.0,
+                "fy_max": 600.0,
+                "typical_grades": [415, 500, 550],
+                "unit": "N/mm²",
+            },
+            "reinforcement": {
+                "pt_min": 0.12,
+                "pt_max": 4.0,
+                "unit": "% of bd",
+                "note": "Minimum is 0.12% for Fe 500, 0.085As/bd else",
+            },
+            "clear_cover": {
+                "mild": 20,
+                "moderate": 30,
+                "severe": 45,
+                "very_severe": 50,
+                "extreme": 75,
+                "unit": "mm",
+            },
+            "tau_c_max": {
+                "M20": 2.8,
+                "M25": 3.1,
+                "M30": 3.5,
+                "M35": 3.7,
+                "M40": 4.0,
+                "unit": "N/mm²",
+            },
+        }
+    )
 
 
 # =============================================================================
@@ -352,13 +358,12 @@ async def get_design_limits() -> dict:
 
 @router.post(
     "/beam/torsion",
-    response_model=TorsionDesignResponse,
     summary="Design Beam for Torsion",
     description="Design a beam for combined torsion, shear, and bending per IS 456 Cl 41.",
 )
 async def design_beam_torsion(
     request: TorsionDesignRequest,
-) -> TorsionDesignResponse:
+):
     """
     Design beam for combined torsion + shear + bending.
 
@@ -401,46 +406,48 @@ async def design_beam_torsion(
         for err in result.errors:
             warnings.append(str(err))
 
-        return TorsionDesignResponse(
-            success=result.is_safe,
-            message=(
-                f"Torsion design {'safe' if result.is_safe else 'UNSAFE'}: "
-                f"Sv = {result.stirrup_spacing:.0f} mm, Al = {result.Al_torsion:.0f} mm²"
-            ),
-            tu_knm=result.Tu_knm,
-            vu_kn=result.Vu_kn,
-            mu_knm=result.Mu_knm,
-            ve_kn=round(result.Ve_kn, 2),
-            me_knm=round(result.Me_knm, 2),
-            tv_equiv=result.tau_ve,
-            tc=result.tau_c,
-            tc_max=result.tau_c_max,
-            asv_torsion=result.Asv_torsion,
-            asv_shear=result.Asv_shear,
-            asv_total=result.Asv_total,
-            stirrup_spacing=result.stirrup_spacing,
-            al_torsion=result.Al_torsion,
-            is_safe=result.is_safe,
-            requires_closed_stirrups=result.requires_closed_stirrups,
-            warnings=warnings,
+        return success_response(
+            TorsionDesignResponse(
+                success=result.is_safe,
+                message=(
+                    f"Torsion design {'safe' if result.is_safe else 'UNSAFE'}: "
+                    f"Sv = {result.stirrup_spacing:.0f} mm, Al = {result.Al_torsion:.0f} mm²"
+                ),
+                tu_knm=result.Tu_knm,
+                vu_kn=result.Vu_kn,
+                mu_knm=result.Mu_knm,
+                ve_kn=round(result.Ve_kn, 2),
+                me_knm=round(result.Me_knm, 2),
+                tv_equiv=result.tau_ve,
+                tc=result.tau_c,
+                tc_max=result.tau_c_max,
+                asv_torsion=result.Asv_torsion,
+                asv_shear=result.Asv_shear,
+                asv_total=result.Asv_total,
+                stirrup_spacing=result.stirrup_spacing,
+                al_torsion=result.Al_torsion,
+                is_safe=result.is_safe,
+                requires_closed_stirrups=result.requires_closed_stirrups,
+                warnings=warnings,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "torsion design"),
+            content=error_response(sanitize_error(e, "torsion design")),
         )
-    except (ValueError, AttributeError, TypeError):
+    except (ValueError, AttributeError, TypeError) as e:
         logger.exception("Invalid input for torsion design")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "torsion design")),
         )
-    except Exception:
+    except (RuntimeError, KeyError) as e:
         logger.exception("Torsion design calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "torsion design")),
         )
 
 
@@ -451,7 +458,6 @@ async def design_beam_torsion(
 
 @router.post(
     "/beam/enhanced-shear",
-    response_model=EnhancedShearResponse,
     summary="Enhanced Shear Strength Near Supports",
     description=(
         "Calculate enhanced design shear strength τc' for sections close to supports "
@@ -461,7 +467,7 @@ async def design_beam_torsion(
 )
 async def enhanced_shear(
     request: EnhancedShearRequest,
-) -> EnhancedShearResponse:
+):
     """
     Enhanced shear strength for sections near supports.
 
@@ -495,31 +501,33 @@ async def enhanced_shear(
 
         is_capped = (enhancement_factor * tau_c_base) > tau_c_max
 
-        return EnhancedShearResponse(
-            tau_c_enhanced=round(tau_c_enhanced, 4),
-            tau_c_base=round(tau_c_base, 4),
-            enhancement_factor=round(enhancement_factor, 4),
-            tau_c_max=round(tau_c_max, 4),
-            is_capped=is_capped,
-            clause="IS 456 Cl 40.3",
+        return success_response(
+            EnhancedShearResponse(
+                tau_c_enhanced=round(tau_c_enhanced, 4),
+                tau_c_base=round(tau_c_base, 4),
+                enhancement_factor=round(enhancement_factor, 4),
+                tau_c_max=round(tau_c_max, 4),
+                is_capped=is_capped,
+                clause="IS 456 Cl 40.3",
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "enhanced shear"),
+            content=error_response(sanitize_error(e, "enhanced shear")),
         )
-    except (ValueError, AttributeError, TypeError):
+    except (ValueError, AttributeError, TypeError) as e:
         logger.exception("Invalid input for enhanced shear")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "enhanced shear")),
         )
-    except Exception:
+    except (RuntimeError, KeyError) as e:
         logger.exception("Enhanced shear calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "enhanced shear")),
         )
 
 
@@ -530,7 +538,6 @@ async def enhanced_shear(
 
 @router.post(
     "/beam/ductility-check",
-    response_model=DuctilityCheckResponse,
     summary="Beam Ductility Check (IS 13920)",
     description=(
         "Run IS 13920 beam ductility checks for a single section. "
@@ -540,7 +547,7 @@ async def enhanced_shear(
 )
 async def check_ductility(
     request: DuctilityCheckRequest,
-) -> DuctilityCheckResponse:
+):
     """Check beam ductility per IS 13920 for seismic design."""
     try:
         from structural_lib.services.api import check_beam_ductility
@@ -554,38 +561,40 @@ async def check_ductility(
             min_long_bar_dia=request.min_long_bar_dia,
         )
 
-        return DuctilityCheckResponse(
-            is_geometry_valid=result.is_geometry_valid,
-            min_pt=result.min_pt,
-            max_pt=result.max_pt,
-            confinement_spacing=result.confinement_spacing,
-            remarks=result.remarks,
-            errors=[
-                (
-                    {"code": str(e.code), "message": e.message}
-                    if hasattr(e, "code")
-                    else {"message": sanitize_error(e, "ductility check")}
-                )
-                for e in result.errors
-            ],
+        return success_response(
+            DuctilityCheckResponse(
+                is_geometry_valid=result.is_geometry_valid,
+                min_pt=result.min_pt,
+                max_pt=result.max_pt,
+                confinement_spacing=result.confinement_spacing,
+                remarks=result.remarks,
+                errors=[
+                    (
+                        {"code": str(e.code), "message": e.message}
+                        if hasattr(e, "code")
+                        else {"message": sanitize_error(e, "ductility check")}
+                    )
+                    for e in result.errors
+                ],
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "ductility check"),
+            content=error_response(sanitize_error(e, "ductility check")),
         )
-    except (ValueError, TypeError):
+    except (ValueError, TypeError) as e:
         logger.exception("Invalid input for ductility check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "ductility check")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError) as e:
         logger.exception("Ductility check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "ductility check")),
         )
 
 
@@ -596,7 +605,6 @@ async def check_ductility(
 
 @router.post(
     "/beam/slenderness-check",
-    response_model=SlendernessCheckResponse,
     summary="Beam Slenderness Check (IS 456 Cl 23.3)",
     description=(
         "Check beam slenderness for lateral stability per IS 456:2000 Cl 23.3. "
@@ -605,7 +613,7 @@ async def check_ductility(
 )
 async def check_slenderness(
     request: SlendernessCheckRequest,
-) -> SlendernessCheckResponse:
+):
     """Check beam slenderness / lateral stability per IS 456 Cl 23.3."""
     try:
         from structural_lib.services.api import check_beam_slenderness
@@ -618,34 +626,36 @@ async def check_slenderness(
             has_lateral_restraint=request.has_lateral_restraint,
         )
 
-        return SlendernessCheckResponse(
-            is_ok=result.is_ok,
-            is_slender=result.is_slender,
-            slenderness_ratio=result.slenderness_ratio,
-            slenderness_limit=result.slenderness_limit,
-            utilization=result.utilization,
-            depth_to_width_ratio=result.depth_to_width_ratio,
-            remarks=result.remarks,
-            errors=result.errors,
-            warnings=result.warnings,
+        return success_response(
+            SlendernessCheckResponse(
+                is_ok=result.is_ok,
+                is_slender=result.is_slender,
+                slenderness_ratio=result.slenderness_ratio,
+                slenderness_limit=result.slenderness_limit,
+                utilization=result.utilization,
+                depth_to_width_ratio=result.depth_to_width_ratio,
+                remarks=result.remarks,
+                errors=result.errors,
+                warnings=result.warnings,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "slenderness check"),
+            content=error_response(sanitize_error(e, "slenderness check")),
         )
-    except (ValueError, TypeError):
+    except (ValueError, TypeError) as e:
         logger.exception("Invalid input for slenderness check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "slenderness check")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError) as e:
         logger.exception("Slenderness check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "slenderness check")),
         )
 
 
@@ -656,7 +666,6 @@ async def check_slenderness(
 
 @router.post(
     "/beam/deflection-check",
-    response_model=DeflectionCheckResponse,
     summary="Deflection Span/Depth Check (IS 456 Cl 23.2)",
     description=(
         "Check deflection using span/depth ratio (Level A) per IS 456:2000 Cl 23.2. "
@@ -665,7 +674,7 @@ async def check_slenderness(
 )
 async def check_deflection(
     request: DeflectionCheckRequest,
-) -> DeflectionCheckResponse:
+):
     """Check deflection via span/depth ratio per IS 456 Cl 23.2."""
     try:
         from structural_lib.services.api import check_deflection_span_depth
@@ -680,35 +689,37 @@ async def check_deflection(
             mf_flanged=request.mf_flanged,
         )
 
-        return DeflectionCheckResponse(
-            is_ok=result.is_ok,
-            remarks=result.remarks,
-            support_condition=(
-                result.support_condition.value
-                if hasattr(result.support_condition, "value")
-                else str(result.support_condition)
-            ),
-            assumptions=result.assumptions,
-            inputs=result.inputs,
-            computed=result.computed,
+        return success_response(
+            DeflectionCheckResponse(
+                is_ok=result.is_ok,
+                remarks=result.remarks,
+                support_condition=(
+                    result.support_condition.value
+                    if hasattr(result.support_condition, "value")
+                    else str(result.support_condition)
+                ),
+                assumptions=result.assumptions,
+                inputs=result.inputs,
+                computed=result.computed,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "deflection check"),
+            content=error_response(sanitize_error(e, "deflection check")),
         )
-    except (ValueError, TypeError):
+    except (ValueError, TypeError) as e:
         logger.exception("Invalid input for deflection check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "deflection check")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError) as e:
         logger.exception("Deflection check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "deflection check")),
         )
 
 
@@ -719,7 +730,6 @@ async def check_deflection(
 
 @router.post(
     "/beam/crack-width-check",
-    response_model=CrackWidthCheckResponse,
     summary="Crack Width Check (IS 456 Annex F)",
     description=(
         "Check crack width using an Annex-F-style estimate per IS 456:2000. "
@@ -728,7 +738,7 @@ async def check_deflection(
 )
 async def check_crack_width_endpoint(
     request: CrackWidthCheckRequest,
-) -> CrackWidthCheckResponse:
+):
     """Check crack width per IS 456 Annex F."""
     try:
         from structural_lib.services.api import check_crack_width
@@ -745,35 +755,37 @@ async def check_crack_width_endpoint(
             es_nmm2=request.es_nmm2,
         )
 
-        return CrackWidthCheckResponse(
-            is_ok=result.is_ok,
-            remarks=result.remarks,
-            exposure_class=(
-                result.exposure_class.value
-                if hasattr(result.exposure_class, "value")
-                else str(result.exposure_class)
-            ),
-            assumptions=result.assumptions,
-            inputs=result.inputs,
-            computed=result.computed,
+        return success_response(
+            CrackWidthCheckResponse(
+                is_ok=result.is_ok,
+                remarks=result.remarks,
+                exposure_class=(
+                    result.exposure_class.value
+                    if hasattr(result.exposure_class, "value")
+                    else str(result.exposure_class)
+                ),
+                assumptions=result.assumptions,
+                inputs=result.inputs,
+                computed=result.computed,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "crack width check"),
+            content=error_response(sanitize_error(e, "crack width check")),
         )
-    except (ValueError, TypeError):
+    except (ValueError, TypeError) as e:
         logger.exception("Invalid input for crack width check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "crack width check")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError) as e:
         logger.exception("Crack width check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "crack width check")),
         )
 
 
@@ -784,7 +796,6 @@ async def check_crack_width_endpoint(
 
 @router.post(
     "/beam/compliance",
-    response_model=ComplianceReportResponse,
     summary="Multi-case Compliance Report",
     description=(
         "Run a multi-case IS 456 compliance report. "
@@ -794,7 +805,7 @@ async def check_crack_width_endpoint(
 )
 async def compliance_report(
     request: ComplianceReportRequest,
-) -> ComplianceReportResponse:
+):
     """Run multi-case IS 456 compliance report."""
     try:
         from structural_lib.services.api import check_compliance_report
@@ -833,42 +844,44 @@ async def compliance_report(
             crack_width_defaults=crack_width_defaults,
         )
 
-        return ComplianceReportResponse(
-            is_ok=result.is_ok,
-            governing_case_id=result.governing_case_id,
-            governing_utilization=_sanitize_float(result.governing_utilization),
-            cases=[
-                ComplianceCaseOutput(
-                    case_id=c.case_id,
-                    mu_knm=c.Mu_knm,
-                    vu_kn=c.Vu_kn,
-                    is_ok=c.is_ok,
-                    governing_utilization=_sanitize_float(c.governing_utilization),
-                    utilizations={
-                        k: _sanitize_float(v) for k, v in c.utilizations.items()
-                    },
-                    failed_checks=c.failed_checks,
-                    remarks=c.remarks,
-                )
-                for c in result.cases
-            ],
-            summary=result.summary,
+        return success_response(
+            ComplianceReportResponse(
+                is_ok=result.is_ok,
+                governing_case_id=result.governing_case_id,
+                governing_utilization=_sanitize_float(result.governing_utilization),
+                cases=[
+                    ComplianceCaseOutput(
+                        case_id=c.case_id,
+                        mu_knm=c.Mu_knm,
+                        vu_kn=c.Vu_kn,
+                        is_ok=c.is_ok,
+                        governing_utilization=_sanitize_float(c.governing_utilization),
+                        utilizations={
+                            k: _sanitize_float(v) for k, v in c.utilizations.items()
+                        },
+                        failed_checks=c.failed_checks,
+                        remarks=c.remarks,
+                    )
+                    for c in result.cases
+                ],
+                summary=result.summary,
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "compliance report"),
+            content=error_response(sanitize_error(e, "compliance report")),
         )
-    except (ValueError, TypeError):
+    except (ValueError, TypeError) as e:
         logger.exception("Invalid input for compliance report")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response(sanitize_error(e, "compliance report")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError) as e:
         logger.exception("Compliance report failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error",
+            content=error_response(sanitize_error(e, "compliance report")),
         )

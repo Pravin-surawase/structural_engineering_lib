@@ -55,8 +55,9 @@
 | **Final (post-fix)** | **A** | **8.3/10** | **14-agent consensus + P0 fixes + all 20 P1 fixes + 31 P2 fixes resolved** |
 | External Audit (v0.21.2) | A- | 8.0/10 | 23 new findings from external review; 3 claims disproven |
 | EA Fixes (23 items) | A+ | 9.0/10 | All 23 EA findings resolved: packaging, import, API, security, structural, frontend, docs |
+| Sprint 2 (8 P1 items) | A+ | ~8.7/10 | 8 P1s resolved: T-NEW-01 MagicMock, IS-NEW-01/02 @clause(18), T-NEW-08 FastAPI tests(62), ARCH-NEW-09 except blocks(49), UX-05 clause_refs, FE-NEW-02 WCAG, API-NEW-01 response shapes, ARCH-NEW-12 god module split |
 
-**Overall Library Grade: A (8.7/10) — all 23 external audit findings resolved**
+**Overall Library Grade: A+ (8.7/10) — all P0 + P1 findings resolved**
 
 ---
 

@@ -157,6 +157,7 @@ classmethod-decorators = ["classmethod"]
 "tests/test_footing.py" = ["N802", "N806"]  # Structural engineering naming in test methods + variables
 "tests/test_research_prototypes.py" = ["C408"]  # dict() for readability in test scenario definitions
 "structural_lib/services/api.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mux, Muy, M1x, M2y)
+"structural_lib/services/column_api.py" = ["N803", "N806"]  # Structural engineering naming (Pu, Mux, Muy, M1x, M2y)
 
 [tool.mypy]
 python_version = "3.11"
