@@ -1481,6 +1481,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#2026-04-05-external-pypi-audit-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-04-05 — External PyPI Audit Resolution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2026-04-05 — External PyPI Audit Resolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixes-applied" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixes Applied
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#2026-04-05-session" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1827,6 +1855,22 @@
 <p>Append-only decision log for AI agent sessions.
 Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/">SESSION_LOG_through_session_100.md</a></p>
 </blockquote>
+<hr />
+<h2 id="2026-04-05-external-pypi-audit-resolution">2026-04-05 — External PyPI Audit Resolution<a class="headerlink" href="#2026-04-05-external-pypi-audit-resolution" title="Permanent link">&para;</a></h2>
+<p><strong>Agent:</strong> orchestrator → backend → reviewer → tester → ops
+<strong>Duration:</strong> ~1 session
+<strong>Changes:</strong> 6 fixes for external PyPI v0.21.3 audit (DXF CLI, clause warnings, column exports, README, sdist, clause DB)
+<strong>Tests:</strong> 4491 passed, clean import (zero warnings)
+<strong>Commit:</strong> ea4baf3b (PR #532, 17/17 CI checks)</p>
+<h3 id="fixes-applied">Fixes Applied<a class="headerlink" href="#fixes-applied" title="Permanent link">&para;</a></h3>
+<ol>
+<li>DXF CLI <code>KeyError: 'story'</code> — moved schema extraction before <code>beam['story']</code> access</li>
+<li>Traceability logger — switched to centralized <code>get_logger()</code>, added figures/tables lookup</li>
+<li>Column exports — 6 functions + <code>EndCondition</code> enum added to top-level <code>__init__.py</code></li>
+<li>README examples — fixed <code>compute_dxf</code>, <code>optimize_beam_cost</code> signatures</li>
+<li>Sdist hygiene — <code>global-exclude</code>/<code>prune</code> in MANIFEST.in, <code>repo_only</code> marker</li>
+<li>Clause DB — 7 missing clause/annex/figure entries added</li>
+</ol>
 <hr />
 <h2 id="2026-04-05-session">2026-04-05 — Session<a class="headerlink" href="#2026-04-05-session" title="Permanent link">&para;</a></h2>
 <h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>

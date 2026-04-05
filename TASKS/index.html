@@ -1697,6 +1697,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0213-external-pypi-audit-post-ea-fixes-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.3 External PyPI Audit — Post-EA Fixes ✅ Complete
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recently-done" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2609,6 +2620,58 @@ See <a href="../audit/comprehensive-library-audit-2026-04-04/">comprehensive-lib
 <td>SCWB joint check (IS 13920 Cl 7.2.1)</td>
 <td>P2</td>
 <td>@structural-math</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h2 id="v0213-external-pypi-audit-post-ea-fixes-complete">v0.21.3 External PyPI Audit — Post-EA Fixes ✅ Complete<a class="headerlink" href="#v0213-external-pypi-audit-post-ea-fixes-complete" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Second external audit of PyPI v0.21.3 found 6 additional issues (DXF CLI, traceability, column exports, README examples, sdist hygiene, clause DB gaps). All 6 resolved in PR #532 (ea4baf3b). 4491 tests pass, zero import warnings.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Fix</th>
+<th>Severity</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>DXF CLI <code>KeyError: 'story'</code> — moved schema extraction before field access in <code>__main__.py</code></td>
+<td>P1</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Traceability logger — switched to centralized <code>get_logger()</code>, added figures/tables lookup</td>
+<td>P1</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Column exports — added 6 functions + <code>EndCondition</code> enum to top-level <code>__init__.py</code></td>
+<td>P1</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>4</td>
+<td>README examples — fixed <code>compute_dxf</code>, <code>optimize_beam_cost</code> signatures, examples link</td>
+<td>P2</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Sdist hygiene — <code>global-exclude</code>/<code>prune</code> in MANIFEST.in, <code>repo_only</code> marker</td>
+<td>P2</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Clause DB — added 7 missing clause/annex/figure entries, updated total count</td>
+<td>P2</td>
 <td>✅ Done</td>
 </tr>
 </tbody>
