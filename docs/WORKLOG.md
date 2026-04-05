@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-04-05
 
 ---
 
@@ -62,6 +62,7 @@ tags: []
 | 2026-04-05 | FE-NEW-02 | WCAG AA form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend (4 components) | — |
 | 2026-04-05 | API-NEW-01 | Standardize all API responses with success_response()/error_response() wrapper (9 routers) | — |
 | 2026-04-05 | ARCH-NEW-12 | Split services/api.py God module: beam_api.py(1895L), column_api.py(1387L), common_api.py(230L) | — |
+| 2026-04-05 | RELEASE | v0.21.4 released — P0/P1 sprint + external audit fixes, 4758 tests pass | — |
 | 2026-04-05 | EA-15 | Frontend: BeamForm validation with cross-field checks | b1a4351b |
 | 2026-04-05 | EA-12,13 | Docs: API levels guide, e2e workflow example | b1a4351b |
 | 2025-07-24 | TASK-CIFIX2 | Close remaining CI bypass escape hatches (finish_task_pr.sh warnings + global FORBIDDEN sync) | 47a44722 |

@@ -9,7 +9,7 @@
 
 ## Current State
 
-- **Version:** 0.21.3
+- **Version:** 0.21.4
 - **Branch:** main
 - **CI Status:** All workflows passing
 

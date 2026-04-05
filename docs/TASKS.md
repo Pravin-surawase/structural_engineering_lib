@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-05 — v0.22.0 in progress, Sprint 2 complete (8 P1 fixes shipped)
+**Updated:** 2026-04-05 — v0.21.4 released, v0.22.0 planning next
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.4 ✅ Released → v0.22 (Full React + AI Assistant)
+- **Version:** v0.21.4 ✅ Released (2026-04-05) → v0.22 (Full React + AI Assistant)
 - **Focus:** Full React migration + AI assistant + remaining UX tasks
 - **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
@@ -29,8 +29,8 @@
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
-| **v0.21.4** | P0 Sprint | ✅ Released | 5 P0 fixes: CSV limits, error sanitization, d_mm validation, Three.js dispose, column return types |
-| **v0.22.0** | Sprint 2 P1 Fixes | 🔄 ACTIVE | 8 P1s: MagicMock, @clause decorators, FastAPI tests, except blocks, clause_refs, WCAG, response shapes, god module split |
+| **v0.21.4** | P0/P1 Sprint + External Audit Fixes | ✅ Released | 49 bare excepts fixed, 18 @clause decorators, 62 FastAPI tests, god module split, WCAG AA, API response standardization, column exports, clause DB completion |
+| **v0.22.0** | Full React + AI Assistant | 🔄 NEXT | AI assistant port, learning center, Streamlit deprecation, TopBar badges, workflow breadcrumb |
 | **v0.22** | Full React | 🔄 NEXT | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)

@@ -84,6 +84,25 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.4
+**Date:** 2026-04-05
+**Status:** ✅ Released
+**Mindset:** P0/P1 Sprint + External Audit Fixes
+
+### v0.21.4 — 2026-04-05 (P0/P1 Sprint + External Audit Fixes)
+- **49 bare except blocks fixed** — replaced with specific exception types across 11 routers
+- **18 @clause decorators** added to footing + serviceability functions for IS 456 traceability
+- **62 FastAPI tests** added across 6 new test files covering 7 routers
+- **God module split** — services/api.py split into beam_api.py (1895L), column_api.py (1387L), common_api.py (230L)
+- **WCAG AA** — form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend across 4 components
+- **API response standardization** — all endpoints return `{"success": true, "data": {...}}` via success_response()/error_response() wrappers (9 routers)
+- **Column exports** — 6 column functions + EndCondition enum now at top-level package
+- **Clause DB completion** — 7 missing clause/annex/figure entries added, clause_refs field on result dataclasses
+- **17 MagicMock replacements** — real dataclass fixtures in test_calculation_report, test_testing_strategies
+- 4758 tests passing, zero import warnings, 17/17 CI checks green
+
+---
+
 ## v0.21.3
 **Date:** 2026-04-05
 **Status:** ✅ Locked & Verified

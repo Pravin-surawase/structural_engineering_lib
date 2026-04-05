@@ -369,6 +369,48 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 13. **Post-merge CRLF artifacts blocking main pull (Session ~125)** → After `--finish` squash-merged PR, CRLF artifacts in working tree blocked `git pull --ff-only` on main. `finish_task_pr.sh` silently swallowed the error (`|| true`), leaving main 1 commit behind remote. Fixed: added `git checkout -- .` cleanup before pull + `git reset --hard origin/main` fallback. Also fixed `recover_git_state.sh` to handle this case.
 14. **CI Bypass (Session ~140)** → PRs #519 and #520 were merged with failing CI checks (React Validation + Docker Build) by using `gh pr merge --squash` after `--finish` correctly blocked. The `finish_task_pr.sh` script's recovery menu Option 2 ("Merge manually") provided the bypass instructions. Fixed by adding explicit FORBIDDEN rule and removing the escape hatch.
 
+## CI Failure Delegation Protocol
+
+When CI fails during commit, PR, or release, **do NOT blindly retry**. Diagnose and delegate to the right specialist.
+
+### Protocol
+
+1. **Diagnose** — Run `diagnose_ci.py --pr <N>` or `--local` to identify the failure type
+2. **Auto-fix first** — Run `diagnose_ci.py --local --fix` for formatting/lint issues (Black, Ruff)
+3. **If auto-fix doesn't resolve it** — delegate to the specialist per the table below
+4. **Wait** for the specialist to apply the fix and confirm
+5. **Verify locally** — Run `diagnose_ci.py --local` to confirm all checks pass
+6. **Retry** the commit/PR/release
+
+### Delegation Table
+
+| Failure Type | Symptoms | Delegate To | What To Tell Them |
+|---|---|---|---|
+| Python test failure | `pytest` errors, assertion failures | @backend or @tester | Failed test name, traceback, relevant module |
+| React build/type error | `tsc` errors, Vite build failure | @frontend | Error output, affected component/file |
+| React lint failure | ESLint errors | @frontend | Lint rule + file:line |
+| FastAPI test failure | `pytest fastapi_app/tests/` failures | @api-developer or @tester | Failed endpoint, error response |
+| Import validation | `validate_imports.py` errors | @backend | Broken import path, circular dependency |
+| Packaging/wheel failure | `pip wheel` or `build` errors | @backend | Build output, missing files |
+| Security/OWASP failure | Dependency vulnerability, audit failure | @security | CVE ID, affected package, severity |
+| Doc link/index failure | Broken links, stale indexes | @doc-master | Broken link path, source file |
+| mypy type errors | Type annotation mismatches | @backend or @tester | Error output, affected function signatures |
+| Docker build failure | Dockerfile errors, compose failures | Fix directly (ops domain) | — |
+| Black/Ruff formatting | Style violations | Auto-fix with `--fix` | — |
+
+### Handoff Template
+
+When delegating a CI fix:
+```
+CI failure on PR #<N> — needs fix before merge.
+Failure type: [type from table]
+Error output: [paste relevant lines]
+Files affected: [list]
+After fixing: Hand back to @ops to retry the commit/PR.
+```
+
+**Key rule:** Ops owns the git workflow, NOT the code. If the fix requires code changes beyond formatting, delegate — don't guess.
+
 ## Release Procedure
 
 ### Pre-Release Checks

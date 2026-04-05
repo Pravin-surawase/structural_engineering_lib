@@ -5,9 +5,9 @@
 **Created:** 2026-04-04
 **Last Updated:** 2026-04-05
 
-# Comprehensive Library Audit — v0.21.2 / v0.21.3
+# Comprehensive Library Audit — v0.21.2 / v0.21.3 / v0.21.4
 
-**Date:** 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external + v0.21.3 deep) | **Version:** v0.21.2 → v0.21.3 | **Auditors:** 14 agents + external auditor + 7 deep audit agents
+**Date:** 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external + v0.21.3 deep + v0.21.4 fixes) | **Version:** v0.21.2 → v0.21.4 | **Auditors:** 14 agents + external auditor + 7 deep audit agents
 
 ## Executive Summary
 

@@ -4,16 +4,31 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Fixed
-- DXF CLI: Fixed `KeyError: 'story'` when processing `build_detailing_input()` output (#532)
-- Import: Eliminated 16 warning messages on package import by fixing clause database
-- README: Corrected `compute_dxf` and `optimize_beam_cost` example signatures
-- Sdist: Fixed packaging to exclude test files properly (global-exclude/prune in MANIFEST.in)
+_No changes yet._
+
+## [0.21.4] — 2026-04-05
+
+### Security
+- Replaced 49 bare `except Exception` blocks with specific exception types across 11 FastAPI routers (ARCH-NEW-09)
+- WCAG AA form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend in 4 components (FE-NEW-02)
 
 ### Added
-- Column API: 6 additional column functions exported at top-level (`design_column_is456`, `detail_column_is456`, etc.)
-- Column API: `EndCondition` enum now available at top-level
+- Column API: 6 additional column functions exported at top-level (`design_column_is456`, `detail_column_is456`, etc.) + `EndCondition` enum
 - Clause DB: Added 7 missing IS 456 clause/annex/figure references
+- 18 `@clause` decorators added to footing + serviceability functions (IS-NEW-01/02)
+- `clause_refs` field added to FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult (UX-05)
+- 62 new FastAPI router tests across 6 test files, 7 routers covered (T-NEW-08)
+- Standardized all API responses with `success_response()`/`error_response()` wrapper across 9 routers (API-NEW-01)
+- Split `services/api.py` god module: `beam_api.py` (1895L), `column_api.py` (1387L), `common_api.py` (230L) (ARCH-NEW-12)
+- CI failure delegation protocol added to ops agent instructions
+
+### Fixed
+- DXF CLI: Fixed `KeyError: 'story'` when processing `build_detailing_input()` output
+- Eliminated 16 warning messages on package import by fixing clause database loading
+- README: Corrected `compute_dxf` and `optimize_beam_cost` example signatures
+- Sdist: Fixed packaging to exclude test files properly (global-exclude/prune in MANIFEST.in)
+- Replaced 17 MagicMock instances with real dataclass fixtures in tests (T-NEW-01)
+- Traceability logger switched to centralized `get_logger()`, added figures/tables lookup
 
 ## [0.21.3] — 2026-04-05
 
@@ -1313,3 +1328,5 @@ V3 Foundation release — everything built since v0.19.1. Full-stack maturity mi
 ---
 
 Format: Keep a section per release with Added/Changed/Fixed as needed. Tag releases as `vX.Y.Z`.
+
+[0.21.4]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.3...HEAD
