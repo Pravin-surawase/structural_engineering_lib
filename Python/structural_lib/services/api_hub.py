@@ -24,8 +24,6 @@ from structural_lib.codes.is456.beam.torsion import (  # noqa: F401
 )
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd  # noqa: F401
 from structural_lib.core.data_types import (  # noqa: F401
-    ComplianceCaseResult,
-    ComplianceReport,
     CriticalPoint,
     LoadDefinition,
     LoadDiagramResult,
@@ -114,7 +112,6 @@ from structural_lib.visualization.geometry_3d import (  # noqa: F401
     compute_stirrup_positions,
 )
 
-from .api_results import DesignAndDetailResult  # noqa: F401
 from .audit import (  # noqa: F401
     AuditLogEntry,
     AuditTrail,

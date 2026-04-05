@@ -24,6 +24,8 @@ router = APIRouter(
     tags=["import"],
 )
 
+from fastapi_app.models.response import error_response, success_response
+
 logger = logging.getLogger(__name__)
 
 
@@ -134,7 +136,6 @@ class BatchDesignResponse(BaseModel):
 
 @router.post(
     "/csv",
-    response_model=CSVImportResponse,
     summary="Import CSV File",
     description="Import beam data from CSV using structural_lib adapters.",
 )
@@ -143,7 +144,7 @@ async def import_csv(
     format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
         "auto", description="Optional format override for CSV import"
     ),
-) -> CSVImportResponse:
+):
     """
     Import beam data from CSV file.
 
@@ -316,7 +317,7 @@ async def import_csv(
                             logger.warning("Geometry loading note: %s", e)
                             warnings = adapter_warnings
                             break  # Success with forces only
-                    except Exception as force_err:
+                    except (ValueError, TypeError, KeyError, IOError) as force_err:
                         last_error = f"{last_error}; forces: {force_err}"
 
                     # This adapter failed completely — try next one
@@ -337,13 +338,15 @@ async def import_csv(
                     detail="No beam data found in CSV",
                 )
 
-            return CSVImportResponse(
-                success=True,
-                message=f"Imported {len(beams_out)} beams using {detected_format} adapter",
-                beam_count=len(beams_out),
-                beams=beams_out,
-                format_detected=detected_format,
-                warnings=warnings,
+            return success_response(
+                CSVImportResponse(
+                    success=True,
+                    message=f"Imported {len(beams_out)} beams using {detected_format} adapter",
+                    beam_count=len(beams_out),
+                    beams=beams_out,
+                    format_detected=detected_format,
+                    warnings=warnings,
+                )
             )
 
         finally:
@@ -352,17 +355,16 @@ async def import_csv(
 
     except HTTPException:
         raise
-    except Exception:
+    except (IOError, ValueError, KeyError, csv.Error):
         logger.exception("CSV import failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Import failed: unable to process the uploaded CSV file",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/dual-csv",
-    response_model=DualCSVImportResponse,
     summary="Import Dual CSV Files",
     description="Import beam geometry + forces from separate CSV files.",
 )
@@ -372,7 +374,7 @@ async def import_dual_csv(
     format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
         "auto", description="Optional format override for dual CSV import"
     ),
-) -> DualCSVImportResponse:
+):
     """
     Import beam data from two CSV files (geometry + forces).
 
@@ -471,7 +473,7 @@ async def import_dual_csv(
                     forces_path,
                     format_hint=format_hint,
                 )
-            except Exception as exc:
+            except (ValueError, TypeError, KeyError, IOError) as exc:
                 if format_hint != "generic":
                     batch, import_warnings = parse_dual_csv(
                         geometry_path,
@@ -526,15 +528,17 @@ async def import_dual_csv(
                 format_hint.upper() if format_hint and format_hint != "auto" else "AUTO"
             )
 
-            return DualCSVImportResponse(
-                success=True,
-                message=f"Imported {len(beams_out)} beams from dual CSV files",
-                beam_count=len(beams_out),
-                beams=beams_out,
-                format_detected=detected,
-                warnings=merged_warnings,
-                unmatched_beams=import_warnings.unmatched_beams,
-                unmatched_forces=import_warnings.unmatched_forces,
+            return success_response(
+                DualCSVImportResponse(
+                    success=True,
+                    message=f"Imported {len(beams_out)} beams from dual CSV files",
+                    beam_count=len(beams_out),
+                    beams=beams_out,
+                    format_detected=detected,
+                    warnings=merged_warnings,
+                    unmatched_beams=import_warnings.unmatched_beams,
+                    unmatched_forces=import_warnings.unmatched_forces,
+                )
             )
         finally:
             import os
@@ -546,17 +550,16 @@ async def import_dual_csv(
 
     except HTTPException:
         raise
-    except Exception:
+    except (IOError, ValueError, KeyError, csv.Error):
         logger.exception("Dual CSV import failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Could not parse dual CSV files",
+            content=error_response("Could not parse dual CSV files"),
         )
 
 
 @router.post(
     "/csv/text",
-    response_model=CSVImportResponse,
     summary="Import CSV Text",
     description="Import beam data from CSV text content.",
 )
@@ -565,7 +568,7 @@ async def import_csv_text(
     format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
         "auto", description="Optional format override for CSV text import"
     ),
-) -> CSVImportResponse:
+):
     """
     Import beam data from CSV text content.
 
@@ -601,7 +604,7 @@ async def import_csv_text(
             filename = "data.csv"
             size = None  # Unknown size; import_csv checks `if file.size`
 
-            async def read(self, size: int = -1) -> bytes:
+            async def read(self, size: int = -1):
                 return csv_text.encode("utf-8")
 
         return await import_csv(MockUploadFile(), format_hint)  # type: ignore
@@ -611,13 +614,12 @@ async def import_csv_text(
 
 @router.post(
     "/batch-design",
-    response_model=BatchDesignResponse,
     summary="Batch Design Beams",
     description="Design multiple beams from imported data.",
 )
 async def batch_design(
     beams: list[BeamRow],
-) -> BatchDesignResponse:
+):
     """
     Design multiple beams in batch.
 
@@ -695,7 +697,7 @@ async def batch_design(
                     )
                 )
                 failed += 1
-            except Exception:
+            except (RuntimeError, KeyError, AttributeError):
                 logger.exception("Batch design failed for beam %s", beam.id)
                 results.append(
                     BatchDesignResult(
@@ -706,26 +708,28 @@ async def batch_design(
                 )
                 failed += 1
 
-        return BatchDesignResponse(
-            success=True,
-            message=f"Designed {len(beams)} beams: {passed} passed, {failed} failed",
-            total=len(beams),
-            passed=passed,
-            failed=failed,
-            results=results,
+        return success_response(
+            BatchDesignResponse(
+                success=True,
+                message=f"Designed {len(beams)} beams: {passed} passed, {failed} failed",
+                total=len(beams),
+                passed=passed,
+                failed=failed,
+                results=results,
+            )
         )
 
     except ImportError:
         logger.exception("structural_lib not available for batch design")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="structural_lib not available",
+            content=error_response("structural_lib not available"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Batch design failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Batch design failed",
+            content=error_response("Internal calculation error"),
         )
 
 
@@ -734,61 +738,62 @@ async def batch_design(
     summary="Get Supported Formats",
     description="Get list of supported CSV import formats.",
 )
-async def get_supported_formats() -> dict:
+async def get_supported_formats():
     """Get information about supported CSV formats."""
-    return {
-        "formats": [
-            {
-                "name": "ETABS",
-                "description": "CSI ETABS beam forces and geometry exports",
-                "indicators": ["UniqueName", "Story", "M3", "V2", "Output Case"],
-                "columns": {
-                    "required": ["Label", "Story"],
-                    "forces": ["M3", "V2"],
-                    "geometry": ["XI", "YI", "ZI", "XJ", "YJ", "ZJ"],
+    return success_response(
+        {
+            "formats": [
+                {
+                    "name": "ETABS",
+                    "description": "CSI ETABS beam forces and geometry exports",
+                    "indicators": ["UniqueName", "Story", "M3", "V2", "Output Case"],
+                    "columns": {
+                        "required": ["Label", "Story"],
+                        "forces": ["M3", "V2"],
+                        "geometry": ["XI", "YI", "ZI", "XJ", "YJ", "ZJ"],
+                    },
                 },
-            },
-            {
-                "name": "SAFE",
-                "description": "CSI SAFE slab strip forces",
-                "indicators": ["Strip", "SpanName", "M22", "V23"],
-                "columns": {
-                    "required": ["Strip/SpanName"],
-                    "forces": ["M22", "V23"],
+                {
+                    "name": "SAFE",
+                    "description": "CSI SAFE slab strip forces",
+                    "indicators": ["Strip", "SpanName", "M22", "V23"],
+                    "columns": {
+                        "required": ["Strip/SpanName"],
+                        "forces": ["M22", "V23"],
+                    },
                 },
-            },
-            {
-                "name": "STAAD",
-                "description": "STAAD.Pro member forces",
-                "indicators": ["Member", "My", "Fy", "Dist"],
-                "columns": {
-                    "required": ["Member"],
-                    "forces": ["My", "Fy"],
+                {
+                    "name": "STAAD",
+                    "description": "STAAD.Pro member forces",
+                    "indicators": ["Member", "My", "Fy", "Dist"],
+                    "columns": {
+                        "required": ["Member"],
+                        "forces": ["My", "Fy"],
+                    },
                 },
-            },
-            {
-                "name": "Generic",
-                "description": "Generic/Excel beam schedule",
-                "indicators": ["beam_id", "BeamID", "Mu", "Vu"],
-                "columns": {
-                    "required": ["beam_id/BeamID"],
-                    "optional": ["b_mm", "D_mm", "Mu", "Vu", "fck", "fy"],
+                {
+                    "name": "Generic",
+                    "description": "Generic/Excel beam schedule",
+                    "indicators": ["beam_id", "BeamID", "Mu", "Vu"],
+                    "columns": {
+                        "required": ["beam_id/BeamID"],
+                        "optional": ["b_mm", "D_mm", "Mu", "Vu", "fck", "fy"],
+                    },
+                    "example": "beam_id,b_mm,D_mm,mu_knm,vu_kn,fck,fy\nB1,300,500,150,80,25,500",
                 },
-                "example": "beam_id,b_mm,D_mm,mu_knm,vu_kn,fck,fy\nB1,300,500,150,80,25,500",
-            },
-        ],
-        "auto_detection": True,
-        "note": "Use format_hint parameter to override auto-detection",
-    }
+            ],
+            "auto_detection": True,
+            "note": "Use format_hint parameter to override auto-detection",
+        }
+    )
 
 
 @router.get(
     "/sample",
-    response_model=SampleDataResponse,
     summary="Get Sample Data with 3D Geometry",
     description="Load 154 real beams from ETABS export with 3D positions for visualization.",
 )
-async def get_sample_data() -> SampleDataResponse:
+async def get_sample_data():
     """
     Load sample building data from actual ETABS export CSV files.
 
@@ -846,7 +851,7 @@ async def get_sample_data() -> SampleDataResponse:
                         "mu_min": abs(float(row.get("Mu_min_kNm", 0))),
                         "vu_max": abs(float(row.get("Vu_max_kN", 0))),
                     }
-    except Exception as e:
+    except (IOError, ValueError, KeyError, csv.Error) as e:
         logger.warning("Error reading forces CSV: %s", e)
         warnings_list.append("Error reading forces data")
 
@@ -867,7 +872,7 @@ async def get_sample_data() -> SampleDataResponse:
                             "point2_y": float(row.get("Point2Y", 0)),
                             "point2_z": float(row.get("Point2Z", 0)),
                         }
-    except Exception as e:
+    except (IOError, ValueError, KeyError, csv.Error) as e:
         logger.warning("Error reading geometry CSV: %s", e)
         warnings_list.append("Error reading geometry data")
 
@@ -912,11 +917,13 @@ async def get_sample_data() -> SampleDataResponse:
         )
         sample_beams.append(beam)
 
-    return SampleDataResponse(
-        success=True,
-        message=f"Loaded {len(sample_beams)} beams with 3D positions from ETABS export",
-        beam_count=len(sample_beams),
-        beams=sample_beams,
-        format_detected="ETABS",
-        warnings=warnings_list,
+    return success_response(
+        SampleDataResponse(
+            success=True,
+            message=f"Loaded {len(sample_beams)} beams with 3D positions from ETABS export",
+            beam_count=len(sample_beams),
+            beams=sample_beams,
+            format_detected="ETABS",
+            warnings=warnings_list,
+        )
     )

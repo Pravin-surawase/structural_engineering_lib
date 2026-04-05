@@ -5,6 +5,7 @@ Tests for POST /api/v1/design/column/biaxial-check endpoint.
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 client = TestClient(app)
 ENDPOINT = "/api/v1/design/column/biaxial-check"
@@ -32,13 +33,13 @@ class TestBiaxialCheckHappyPath:
 
     def test_safe_case_is_safe(self):
         resp = client.post(ENDPOINT, json=SAFE_PAYLOAD)
-        data = resp.json()
+        data = unwrap(resp)
         assert data["is_safe"] is True
         assert data["interaction_ratio"] < 1.0
 
     def test_safe_case_response_fields(self):
         resp = client.post(ENDPOINT, json=SAFE_PAYLOAD)
-        data = resp.json()
+        data = unwrap(resp)
         expected_keys = {
             "Pu_kN",
             "Mux_kNm",
@@ -57,12 +58,12 @@ class TestBiaxialCheckHappyPath:
 
     def test_safe_case_clause_ref(self):
         resp = client.post(ENDPOINT, json=SAFE_PAYLOAD)
-        data = resp.json()
+        data = unwrap(resp)
         assert data["clause_ref"] == "Cl. 39.6"
 
     def test_safe_case_capacities_positive(self):
         resp = client.post(ENDPOINT, json=SAFE_PAYLOAD)
-        data = resp.json()
+        data = unwrap(resp)
         assert data["Mux1_kNm"] > 0
         assert data["Muy1_kNm"] > 0
         assert data["Puz_kN"] > 0
@@ -70,12 +71,12 @@ class TestBiaxialCheckHappyPath:
     def test_alpha_n_range(self):
         """alpha_n should be between 1.0 and 2.0 per IS 456 Cl 39.6."""
         resp = client.post(ENDPOINT, json=SAFE_PAYLOAD)
-        data = resp.json()
+        data = unwrap(resp)
         assert 1.0 <= data["alpha_n"] <= 2.0
 
     def test_echoes_input_loads(self):
         resp = client.post(ENDPOINT, json=SAFE_PAYLOAD)
-        data = resp.json()
+        data = unwrap(resp)
         assert data["Pu_kN"] == 1500.0
         assert data["Mux_kNm"] == 120.0
         assert data["Muy_kNm"] == 80.0
@@ -99,7 +100,7 @@ class TestBiaxialCheckUnsafe:
         }
         resp = client.post(ENDPOINT, json=payload)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["is_safe"] is False
         assert data["interaction_ratio"] > 1.0
 
@@ -112,7 +113,7 @@ class TestBiaxialCheckEdgeCases:
         payload = {**SAFE_PAYLOAD, "Mux_kNm": 0.0, "Muy_kNm": 0.0}
         resp = client.post(ENDPOINT, json=payload)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["interaction_ratio"] == 0.0
         assert data["is_safe"] is True
 
@@ -121,7 +122,7 @@ class TestBiaxialCheckEdgeCases:
         payload = {**SAFE_PAYLOAD, "le_mm": 8000.0}
         resp = client.post(ENDPOINT, json=payload)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["classification"] == 2
         assert len(data["warnings"]) > 0
 
@@ -130,7 +131,7 @@ class TestBiaxialCheckEdgeCases:
         payload = {**SAFE_PAYLOAD, "l_unsupported_mm": 3500.0}
         resp = client.post(ENDPOINT, json=payload)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert "is_safe" in data
 
     def test_without_l_unsupported(self):

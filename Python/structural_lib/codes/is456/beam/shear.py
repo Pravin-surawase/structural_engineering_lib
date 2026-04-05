@@ -448,4 +448,12 @@ def design_shear(
         spacing=spacing,
         is_safe=True,
         errors=tuple(design_errors),
+        clause_refs={
+            "tau_v": "IS 456 Cl 40.1",
+            "tau_c": "IS 456 Table 19",
+            "tau_c_max": "IS 456 Table 20",
+            "Asv": "IS 456 Cl 40.4",
+            "sv_max": "IS 456 Cl 26.5.1.5",
+            "sv_min": "IS 456 Cl 26.5.1.6",
+        },
     )

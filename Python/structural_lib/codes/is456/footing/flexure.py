@@ -15,6 +15,7 @@ from structural_lib.codes.is456.footing._common import (
     net_upward_pressure_nmm2,
     validate_footing_inputs,
 )
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import FootingFlexureResult
 from structural_lib.core.errors import ValidationError
 
@@ -76,6 +77,7 @@ def _design_direction(
     return Mu_kNm, Ast_mm2, pt, warnings
 
 
+@clause("34.2.3.1")
 def footing_flexure(
     Pu_kN: float,
     L_mm: float,

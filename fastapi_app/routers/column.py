@@ -7,7 +7,10 @@ calculations per IS 456:2000.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
+
+from fastapi_app.models.response import error_response, success_response
 
 from fastapi_app.models.column import (
     AdditionalMomentRequest,
@@ -53,7 +56,6 @@ router = APIRouter(
 
 @router.post(
     "/effective-length",
-    response_model=EffectiveLengthResponse,
     summary="Effective Length per IS 456 Table 28",
     description=(
         "Calculate the effective length of a column based on end restraint "
@@ -63,7 +65,7 @@ router = APIRouter(
 )
 async def calculate_effective_length(
     request: EffectiveLengthRequest,
-) -> EffectiveLengthResponse:
+):
     """
     Calculate effective length per IS 456 Cl 25.2, Table 28.
 
@@ -79,37 +81,38 @@ async def calculate_effective_length(
             use_theoretical=request.use_theoretical,
         )
 
-        return EffectiveLengthResponse(
-            le_mm=round(result["le_mm"], 2),
-            ratio=round(result["ratio"], 4),
-            end_condition=result["end_condition"],
-            method=result["method"],
+        return success_response(
+            EffectiveLengthResponse(
+                le_mm=round(result["le_mm"], 2),
+                ratio=round(result["ratio"], 4),
+                end_condition=result["end_condition"],
+                method=result["method"],
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for effective-length calculation")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column effective-length calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/classify",
-    response_model=ColumnClassifyResponse,
     summary="Classify Column (Short/Slender)",
     description=(
         "Classify a column as SHORT or SLENDER based on its slenderness ratio "
         "le/D per IS 456:2000 Cl. 25.1.2. Short columns have le/D < 12."
     ),
 )
-async def classify_column(request: ColumnClassifyRequest) -> ColumnClassifyResponse:
+async def classify_column(request: ColumnClassifyRequest):
     """
     Classify a column as short or slender.
 
@@ -126,28 +129,29 @@ async def classify_column(request: ColumnClassifyRequest) -> ColumnClassifyRespo
 
         slenderness_ratio = request.le_mm / request.D_mm
 
-        return ColumnClassifyResponse(
-            classification=classification,
-            slenderness_ratio=round(slenderness_ratio, 2),
+        return success_response(
+            ColumnClassifyResponse(
+                classification=classification,
+                slenderness_ratio=round(slenderness_ratio, 2),
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for column classification")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column classification failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/eccentricity",
-    response_model=ColumnEccentricityResponse,
     summary="Minimum Eccentricity",
     description=(
         "Calculate the minimum eccentricity for a column per IS 456:2000 "
@@ -156,7 +160,7 @@ async def classify_column(request: ColumnClassifyRequest) -> ColumnClassifyRespo
 )
 async def column_eccentricity(
     request: ColumnEccentricityRequest,
-) -> ColumnEccentricityResponse:
+):
     """
     Calculate minimum eccentricity per IS 456 Cl. 25.4.
 
@@ -170,27 +174,28 @@ async def column_eccentricity(
             D_mm=request.D_mm,
         )
 
-        return ColumnEccentricityResponse(
-            e_min_mm=round(e_min, 2),
+        return success_response(
+            ColumnEccentricityResponse(
+                e_min_mm=round(e_min, 2),
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for eccentricity calculation")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column eccentricity calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/axial",
-    response_model=ColumnAxialResponse,
     summary="Short Column Axial Capacity",
     description=(
         "Calculate the axial load capacity of a short column under pure axial "
@@ -200,7 +205,7 @@ async def column_eccentricity(
 )
 async def column_axial_capacity(
     request: ColumnAxialRequest,
-) -> ColumnAxialResponse:
+):
     """
     Calculate axial capacity for a short column per IS 456 Cl. 39.3.
 
@@ -222,35 +227,36 @@ async def column_axial_capacity(
         steel_ratio = result["steel_ratio"]
         is_safe = len(result["warnings"]) == 0
 
-        return ColumnAxialResponse(
-            Pu_kN=round(result["Pu_kN"], 2),
-            fck=request.fck,
-            fy=request.fy,
-            Ag_mm2=request.Ag_mm2,
-            Asc_mm2=request.Asc_mm2,
-            Ac_mm2=round(Ac_mm2, 2),
-            steel_ratio=round(steel_ratio, 4),
-            is_safe=is_safe,
-            warnings=result["warnings"],
+        return success_response(
+            ColumnAxialResponse(
+                Pu_kN=round(result["Pu_kN"], 2),
+                fck=request.fck,
+                fy=request.fy,
+                Ag_mm2=request.Ag_mm2,
+                Asc_mm2=request.Asc_mm2,
+                Ac_mm2=round(Ac_mm2, 2),
+                steel_ratio=round(steel_ratio, 4),
+                is_safe=is_safe,
+                warnings=result["warnings"],
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for axial capacity calculation")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column axial capacity design failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/uniaxial",
-    response_model=ColumnUniaxialResponse,
     summary="Short Column Uniaxial Bending Design",
     description=(
         "Design a short column for uniaxial bending per IS 456:2000 Cl. 39.5. "
@@ -260,7 +266,7 @@ async def column_axial_capacity(
 )
 async def design_column_uniaxial(
     request: ColumnUniaxialRequest,
-) -> ColumnUniaxialResponse:
+):
     """
     Design short column for uniaxial bending per IS 456 Cl. 39.5.
 
@@ -286,42 +292,43 @@ async def design_column_uniaxial(
             l_unsupported_mm=request.l_unsupported_mm,
         )
 
-        return ColumnUniaxialResponse(
-            ok=result["is_safe"],
-            utilization=round(result["utilization_ratio"], 4),
-            Pu_cap_kN=round(result["Pu_cap_kN"], 2),
-            Mu_cap_kNm=round(result["Mu_cap_kNm"], 2),
-            classification=(
-                result["classification"].name
-                if hasattr(result["classification"], "name")
-                else str(result["classification"])
-            ),
-            eccentricity_mm=round(result["eccentricity_mm"], 2),
-            e_min_mm=(
-                round(result["e_min_mm"], 2)
-                if result.get("e_min_mm") is not None
-                else None
-            ),
-            warnings=list(result["warnings"]),
+        return success_response(
+            ColumnUniaxialResponse(
+                ok=result["is_safe"],
+                utilization=round(result["utilization_ratio"], 4),
+                Pu_cap_kN=round(result["Pu_cap_kN"], 2),
+                Mu_cap_kNm=round(result["Mu_cap_kNm"], 2),
+                classification=(
+                    result["classification"].name
+                    if hasattr(result["classification"], "name")
+                    else str(result["classification"])
+                ),
+                eccentricity_mm=round(result["eccentricity_mm"], 2),
+                e_min_mm=(
+                    round(result["e_min_mm"], 2)
+                    if result.get("e_min_mm") is not None
+                    else None
+                ),
+                warnings=list(result["warnings"]),
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for uniaxial design")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column uniaxial design failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/interaction-curve",
-    response_model=PMInteractionResponse,
     summary="P-M Interaction Curve",
     description=(
         "Generate the P-M interaction diagram for a rectangular column "
@@ -331,7 +338,7 @@ async def design_column_uniaxial(
 )
 async def pm_interaction_curve(
     request: PMInteractionRequest,
-) -> PMInteractionResponse:
+):
     """
     Generate P-M interaction curve per IS 456 Cl. 39.5.
 
@@ -352,39 +359,40 @@ async def pm_interaction_curve(
             n_points=request.n_points,
         )
 
-        return PMInteractionResponse(
-            points=[PMPoint(Pu_kN=pt[0], Mu_kNm=pt[1]) for pt in result["points"]],
-            Pu_0_kN=round(result["Pu_0_kN"], 2),
-            Mu_0_kNm=round(result["Mu_0_kNm"], 2),
-            Pu_bal_kN=round(result["Pu_bal_kN"], 2),
-            Mu_bal_kNm=round(result["Mu_bal_kNm"], 2),
-            fck=result["fck"],
-            fy=result["fy"],
-            b_mm=result["b_mm"],
-            D_mm=result["D_mm"],
-            Asc_mm2=result["Asc_mm2"],
-            d_prime_mm=result["d_prime_mm"],
-            clause_ref=result.get("clause_ref", "Cl. 39.5"),
-            warnings=result.get("warnings", []),
+        return success_response(
+            PMInteractionResponse(
+                points=[PMPoint(Pu_kN=pt[0], Mu_kNm=pt[1]) for pt in result["points"]],
+                Pu_0_kN=round(result["Pu_0_kN"], 2),
+                Mu_0_kNm=round(result["Mu_0_kNm"], 2),
+                Pu_bal_kN=round(result["Pu_bal_kN"], 2),
+                Mu_bal_kNm=round(result["Mu_bal_kNm"], 2),
+                fck=result["fck"],
+                fy=result["fy"],
+                b_mm=result["b_mm"],
+                D_mm=result["D_mm"],
+                Asc_mm2=result["Asc_mm2"],
+                d_prime_mm=result["d_prime_mm"],
+                clause_ref=result.get("clause_ref", "Cl. 39.5"),
+                warnings=result.get("warnings", []),
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for P-M interaction curve")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column P-M interaction curve generation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/biaxial-check",
-    response_model=BiaxialCheckResponse,
     summary="Biaxial Bending Check per IS 456 Cl 39.6",
     description=(
         "Check a column section under biaxial bending using the Bresler load "
@@ -394,7 +402,7 @@ async def pm_interaction_curve(
 )
 async def biaxial_check(
     request: BiaxialCheckRequest,
-) -> BiaxialCheckResponse:
+):
     """
     Biaxial bending check per IS 456 Cl 39.6 (Bresler load contour).
 
@@ -427,38 +435,39 @@ async def biaxial_check(
         if math.isinf(ratio) or math.isnan(ratio):
             ratio = 9999.0
 
-        return BiaxialCheckResponse(
-            Pu_kN=result["Pu_kN"],
-            Mux_kNm=result["Mux_kNm"],
-            Muy_kNm=result["Muy_kNm"],
-            Mux1_kNm=round(result["Mux1_kNm"], 2),
-            Muy1_kNm=round(result["Muy1_kNm"], 2),
-            Puz_kN=round(result["Puz_kN"], 2),
-            alpha_n=round(result["alpha_n"], 4),
-            interaction_ratio=round(ratio, 4),
-            is_safe=result["is_safe"],
-            classification=result["classification"],
-            clause_ref=result.get("clause_ref", "Cl. 39.6"),
-            warnings=result.get("warnings", []),
+        return success_response(
+            BiaxialCheckResponse(
+                Pu_kN=result["Pu_kN"],
+                Mux_kNm=result["Mux_kNm"],
+                Muy_kNm=result["Muy_kNm"],
+                Mux1_kNm=round(result["Mux1_kNm"], 2),
+                Muy1_kNm=round(result["Muy1_kNm"], 2),
+                Puz_kN=round(result["Puz_kN"], 2),
+                alpha_n=round(result["alpha_n"], 4),
+                interaction_ratio=round(ratio, 4),
+                is_safe=result["is_safe"],
+                classification=result["classification"],
+                clause_ref=result.get("clause_ref", "Cl. 39.6"),
+                warnings=result.get("warnings", []),
+            )
         )
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for biaxial bending check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column biaxial bending check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/additional-moment",
-    response_model=AdditionalMomentResponse,
     summary="Additional Moment for Slender Columns per IS 456 Cl 39.7.1",
     description=(
         "Calculate additional moment Ma = Pu × eadd for slender columns, "
@@ -483,24 +492,24 @@ async def additional_moment(request: AdditionalMomentRequest):
             d_prime_mm=request.d_prime_mm,
         )
 
-        return AdditionalMomentResponse(**result)
+        return success_response(AdditionalMomentResponse(**result))
+
     except (ValueError, TypeError):
         logger.exception("Invalid input for additional moment calculation")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column additional moment calculation failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/long-column",
-    response_model=LongColumnResponse,
     summary="Long (Slender) Column Design per IS 456 Cl 39.7",
     description=(
         "Design a slender column with augmented moments for P-delta effects. "
@@ -508,7 +517,7 @@ async def additional_moment(request: AdditionalMomentRequest):
         "k-factor reduction, and checks biaxial interaction."
     ),
 )
-async def design_long_column(request: LongColumnRequest) -> LongColumnResponse:
+async def design_long_column(request: LongColumnRequest):
     """
     Design a long (slender) column per IS 456 Cl 39.7.
 
@@ -537,25 +546,24 @@ async def design_long_column(request: LongColumnRequest) -> LongColumnResponse:
         # Convert ColumnClassification enum to string
         result["classification_x"] = str(result.get("classification_x", ""))
         result["classification_y"] = str(result.get("classification_y", ""))
-        return LongColumnResponse(**result)
+        return success_response(LongColumnResponse(**result))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for long column design")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column long (slender) column design failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/helical-check",
-    response_model=HelicalCheckResponse,
     summary="Helical Reinforcement Check per IS 456 Cl 39.4",
     description=(
         "Check helical reinforcement adequacy for circular columns. "
@@ -563,7 +571,7 @@ async def design_long_column(request: LongColumnRequest) -> LongColumnResponse:
         "per IS 456 Cl 39.4."
     ),
 )
-async def helical_check(request: HelicalCheckRequest) -> HelicalCheckResponse:
+async def helical_check(request: HelicalCheckRequest):
     """
     Check helical reinforcement per IS 456 Cl 39.4.
 
@@ -582,25 +590,24 @@ async def helical_check(request: HelicalCheckRequest) -> HelicalCheckResponse:
             pitch_mm=request.pitch_mm,
             Pu_axial_kN=request.Pu_axial_kN,
         )
-        return HelicalCheckResponse(**result)
+        return success_response(HelicalCheckResponse(**result))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for helical reinforcement check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column helical reinforcement check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "",
-    response_model=ColumnDesignResponse,
     summary="Unified Column Design per IS 456",
     description=(
         "Complete column design check — classifies the column, computes "
@@ -608,7 +615,7 @@ async def helical_check(request: HelicalCheckRequest) -> HelicalCheckResponse:
         "bending capacity per the appropriate IS 456 clause."
     ),
 )
-async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
+async def design_column(request: ColumnDesignRequest):
     """
     Unified column design per IS 456.
 
@@ -637,19 +644,19 @@ async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
             M1y_kNm=request.M1y_kNm,
             M2y_kNm=request.M2y_kNm,
         )
-        return ColumnDesignResponse(**result)
+        return success_response(ColumnDesignResponse(**result))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for unified column design")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column unified design failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
@@ -668,25 +675,24 @@ async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
         from structural_lib import check_column_ductility_is13920
 
         result = check_column_ductility_is13920(**request.model_dump())
-        return result
+        return success_response(result)
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for ductile detailing check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column ductile detailing check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/detailing",
-    response_model=ColumnDetailingResponse,
     summary="Column Detailing per IS 456 Cl 26.5.3",
     description=(
         "Check longitudinal bar limits, tie sizing, spacing, and cross-tie "
@@ -695,7 +701,7 @@ async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
 )
 async def column_detailing(
     request: ColumnDetailingRequest,
-) -> ColumnDetailingResponse:
+):
     """
     Column detailing check per IS 456 Cl 26.5.3.
 
@@ -717,17 +723,17 @@ async def column_detailing(
             is_circular=request.is_circular,
             at_lap_section=request.at_lap_section,
         )
-        return ColumnDetailingResponse(**result)
+        return success_response(ColumnDetailingResponse(**result))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for column detailing check")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, AttributeError):
         logger.exception("Column detailing check failed")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal calculation error. Please check inputs and try again.",
+            content=error_response("Internal calculation error"),
         )

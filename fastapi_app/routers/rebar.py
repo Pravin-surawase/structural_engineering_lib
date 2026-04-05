@@ -9,10 +9,12 @@ Uses structural_lib.rebar for IS 456 compliant checks.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.response import error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +114,6 @@ class RebarApplyResponse(BaseModel):
 
 @router.post(
     "/validate",
-    response_model=RebarValidateResponse,
     summary="Validate Rebar Configuration",
     description="""
 Validate a rebar configuration against IS 456 requirements.
@@ -121,7 +122,7 @@ Returns validation results with errors, warnings, and computed spacing.
 Use this before applying configuration to check for issues.
 """,
 )
-async def validate_rebar(request: RebarValidateRequest) -> RebarValidateResponse:
+async def validate_rebar(request: RebarValidateRequest):
     """
     Validate rebar configuration against geometry and code requirements.
 
@@ -153,33 +154,36 @@ async def validate_rebar(request: RebarValidateRequest) -> RebarValidateResponse
 
         report = validate_rebar_config(beam_dict, config_dict)
 
-        return RebarValidateResponse(
-            success=True,
-            message="Valid configuration" if report.ok else "Configuration has issues",
-            validation=ValidationResult(
-                ok=report.ok,
-                errors=report.errors,
-                warnings=report.warnings,
-                details=report.details,
-            ),
+        return success_response(
+            RebarValidateResponse(
+                success=True,
+                message=(
+                    "Valid configuration" if report.ok else "Configuration has issues"
+                ),
+                validation=ValidationResult(
+                    ok=report.ok,
+                    errors=report.errors,
+                    warnings=report.warnings,
+                    details=report.details,
+                ),
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=sanitize_error(e, "rebar validation"),
+            content=error_response(sanitize_error(e, "rebar validation")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in validate_rebar")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
 @router.post(
     "/apply",
-    response_model=RebarApplyResponse,
     summary="Apply Rebar Configuration",
     description="""
 Apply a rebar configuration and get geometry for visualization.
@@ -192,7 +196,7 @@ Validates first, then computes:
 Returns geometry suitable for React Three Fiber rendering.
 """,
 )
-async def apply_rebar(request: RebarApplyRequest) -> RebarApplyResponse:
+async def apply_rebar(request: RebarApplyRequest):
     """
     Apply rebar configuration and generate 3D geometry.
 
@@ -228,27 +232,29 @@ async def apply_rebar(request: RebarApplyRequest) -> RebarApplyResponse:
 
         validation_data = result.get("validation", {})
 
-        return RebarApplyResponse(
-            success=result.get("success", False),
-            message=result.get("message", ""),
-            ast_provided_mm2=result.get("ast_provided_mm2"),
-            validation=ValidationResult(
-                ok=validation_data.get("ok", False),
-                errors=validation_data.get("errors", []),
-                warnings=validation_data.get("warnings", []),
-                details=validation_data.get("details", {}),
-            ),
-            geometry=result.get("geometry"),
+        return success_response(
+            RebarApplyResponse(
+                success=result.get("success", False),
+                message=result.get("message", ""),
+                ast_provided_mm2=result.get("ast_provided_mm2"),
+                validation=ValidationResult(
+                    ok=validation_data.get("ok", False),
+                    errors=validation_data.get("errors", []),
+                    warnings=validation_data.get("warnings", []),
+                    details=validation_data.get("details", {}),
+                ),
+                geometry=result.get("geometry"),
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=sanitize_error(e, "rebar apply"),
+            content=error_response(sanitize_error(e, "rebar apply")),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ImportError):
         logger.exception("Internal error in apply_rebar")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )

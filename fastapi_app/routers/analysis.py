@@ -6,9 +6,11 @@ Endpoints for AI-assisted design analysis and load calculations.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
+from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.analysis import (
     LoadAnalysisRequest,
     LoadAnalysisResponse,
@@ -36,12 +38,11 @@ router = APIRouter(
 
 @router.post(
     "/loads/simple",
-    response_model=LoadAnalysisResponse,
     summary="Simple Load Analysis (BMD/SFD)",
     description="Compute BMD and SFD for a beam with UDL and/or point loads. "
     "Returns discretized diagrams + critical points (max moment, max shear).",
 )
-async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
+async def analyze_loads(request: LoadAnalysisRequest):
     """Compute bending moment and shear force diagrams.
 
     Supports simply supported and cantilever beams with UDL / point loads.
@@ -54,9 +55,9 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
             LoadType,
         )
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "load analysis"),
+            content=error_response(sanitize_error(e, "load analysis")),
         )
 
     # Map request loads to library LoadDefinition objects
@@ -80,36 +81,38 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
         )
     except ValueError:
         logger.exception("Invalid input for load analysis")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ZeroDivisionError):
         logger.exception("Internal error in analyze_loads")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
-    return LoadAnalysisResponse(
-        span_mm=result.span_mm,
-        support_condition=result.support_condition,
-        positions_mm=result.positions_mm,
-        bmd_knm=result.bmd_knm,
-        sfd_kn=result.sfd_kn,
-        max_bm_knm=result.max_bm_knm,
-        min_bm_knm=result.min_bm_knm,
-        max_sf_kn=result.max_sf_kn,
-        min_sf_kn=result.min_sf_kn,
-        critical_points=[
-            CriticalPointResponse(
-                position_mm=cp.position_mm,
-                point_type=cp.point_type,
-                bm_knm=cp.bm_knm,
-                sf_kn=cp.sf_kn,
-            )
-            for cp in result.critical_points
-        ],
+    return success_response(
+        LoadAnalysisResponse(
+            span_mm=result.span_mm,
+            support_condition=result.support_condition,
+            positions_mm=result.positions_mm,
+            bmd_knm=result.bmd_knm,
+            sfd_kn=result.sfd_kn,
+            max_bm_knm=result.max_bm_knm,
+            min_bm_knm=result.min_bm_knm,
+            max_sf_kn=result.max_sf_kn,
+            min_sf_kn=result.min_sf_kn,
+            critical_points=[
+                CriticalPointResponse(
+                    position_mm=cp.position_mm,
+                    point_type=cp.point_type,
+                    bm_knm=cp.bm_knm,
+                    sf_kn=cp.sf_kn,
+                )
+                for cp in result.critical_points
+            ],
+        )
     )
 
 
@@ -120,13 +123,12 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
 
 @router.post(
     "/beam/smart",
-    response_model=SmartAnalysisResponse,
     summary="Smart Beam Analysis",
     description="Get AI-assisted analysis with suggestions for beam design.",
 )
 async def smart_analyze_beam(
     request: SmartAnalysisRequest,
-) -> SmartAnalysisResponse:
+):
     """
     Perform smart analysis on a beam design.
 
@@ -248,35 +250,37 @@ async def smart_analyze_beam(
             "fy_nmm2": request.fy,
         }
 
-        return SmartAnalysisResponse(
-            success=True,
-            message=f"{'All checks passed' if all_passed else 'Some checks failed'}. {len(suggestions)} suggestions.",
-            design_summary=design_summary,
-            code_checks=code_checks,
-            all_checks_passed=all_passed,
-            suggestions=suggestions,
-            critical_suggestions=critical_count,
-            efficiency=efficiency,
-            cost_estimate=cost_estimate,
-            warnings=[],
+        return success_response(
+            SmartAnalysisResponse(
+                success=True,
+                message=f"{'All checks passed' if all_passed else 'Some checks failed'}. {len(suggestions)} suggestions.",
+                design_summary=design_summary,
+                code_checks=code_checks,
+                all_checks_passed=all_passed,
+                suggestions=suggestions,
+                critical_suggestions=critical_count,
+                efficiency=efficiency,
+                cost_estimate=cost_estimate,
+                warnings=[],
+            )
         )
 
     except ImportError as e:
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=sanitize_error(e, "smart analysis"),
+            content=error_response(sanitize_error(e, "smart analysis")),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for smart analysis")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid input parameters",
+            content=error_response("Invalid input parameters"),
         )
-    except Exception:
+    except (RuntimeError, KeyError, ZeroDivisionError):
         logger.exception("Internal error in smart_analyze_beam")
-        raise HTTPException(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred. Please check your input parameters.",
+            content=error_response("Internal calculation error"),
         )
 
 
@@ -285,43 +289,45 @@ async def smart_analyze_beam(
     summary="Get Code Clause References",
     description="Get IS 456 clause references for common checks.",
 )
-async def get_code_clauses() -> dict:
+async def get_code_clauses():
     """
     Get IS 456:2000 code clause references.
 
     Useful for understanding which code provisions apply to various checks.
     """
-    return {
-        "flexure": {
-            "assumptions": "Cl. 38.1",
-            "stress_block": "Cl. 38.1 & Annex G",
-            "limiting_xu": "Cl. 38.1(c)",
-            "minimum_steel": "Cl. 26.5.1.1",
-            "maximum_steel": "Cl. 26.5.1.2",
-        },
-        "shear": {
-            "nominal_stress": "Cl. 40.1",
-            "design_stress": "Cl. 40.2 & Table 19",
-            "maximum_stress": "Cl. 40.2.3 & Table 20",
-            "stirrup_requirements": "Cl. 40.4",
-            "spacing_limits": "Cl. 26.5.1.5",
-        },
-        "detailing": {
-            "development_length": "Cl. 26.2.1",
-            "bond_stress": "Cl. 26.2.1.1 & Table 26",
-            "bar_spacing": "Cl. 26.3.2",
-            "cover": "Cl. 26.4 & Table 16",
-            "curtailment": "Cl. 26.2.3",
-            "anchorage": "Cl. 26.2.2",
-        },
-        "serviceability": {
-            "deflection": "Cl. 23.2",
-            "span_depth_ratio": "Cl. 23.2.1 & Table 5",
-            "crack_width": "Cl. 35.3.2 & Annex F",
-        },
-        "seismic": {
-            "ductile_detailing": "IS 13920",
-            "beam_requirements": "IS 13920 Cl. 6",
-            "confinement": "IS 13920 Cl. 6.3",
-        },
-    }
+    return success_response(
+        {
+            "flexure": {
+                "assumptions": "Cl. 38.1",
+                "stress_block": "Cl. 38.1 & Annex G",
+                "limiting_xu": "Cl. 38.1(c)",
+                "minimum_steel": "Cl. 26.5.1.1",
+                "maximum_steel": "Cl. 26.5.1.2",
+            },
+            "shear": {
+                "nominal_stress": "Cl. 40.1",
+                "design_stress": "Cl. 40.2 & Table 19",
+                "maximum_stress": "Cl. 40.2.3 & Table 20",
+                "stirrup_requirements": "Cl. 40.4",
+                "spacing_limits": "Cl. 26.5.1.5",
+            },
+            "detailing": {
+                "development_length": "Cl. 26.2.1",
+                "bond_stress": "Cl. 26.2.1.1 & Table 26",
+                "bar_spacing": "Cl. 26.3.2",
+                "cover": "Cl. 26.4 & Table 16",
+                "curtailment": "Cl. 26.2.3",
+                "anchorage": "Cl. 26.2.2",
+            },
+            "serviceability": {
+                "deflection": "Cl. 23.2",
+                "span_depth_ratio": "Cl. 23.2.1 & Table 5",
+                "crack_width": "Cl. 35.3.2 & Annex F",
+            },
+            "seismic": {
+                "ductile_detailing": "IS 13920",
+                "beam_requirements": "IS 13920 Cl. 6",
+                "confinement": "IS 13920 Cl. 6.3",
+            },
+        }
+    )

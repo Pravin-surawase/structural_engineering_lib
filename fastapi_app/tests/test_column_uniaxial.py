@@ -11,6 +11,7 @@ Tests cover:
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 client = TestClient(app)
 
@@ -38,7 +39,7 @@ class TestColumnUniaxialHappyPath:
         """Safe design returns 200 with ok=True."""
         resp = client.post(ENDPOINT, json=SAFE_REQUEST)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["ok"] is True
         assert data["utilization"] < 1.0
         assert data["classification"] == "SHORT"
@@ -48,7 +49,7 @@ class TestColumnUniaxialHappyPath:
     def test_response_contains_all_fields(self):
         """Response includes all expected fields."""
         resp = client.post(ENDPOINT, json=SAFE_REQUEST)
-        data = resp.json()
+        data = unwrap(resp)
         expected_fields = {
             "ok",
             "utilization",
@@ -64,7 +65,7 @@ class TestColumnUniaxialHappyPath:
     def test_eccentricity_values(self):
         """Eccentricity is computed correctly."""
         resp = client.post(ENDPOINT, json=SAFE_REQUEST)
-        data = resp.json()
+        data = unwrap(resp)
         assert data["eccentricity_mm"] > 0
         # e_min should be present when l_unsupported_mm is provided
         assert data["e_min_mm"] is not None
@@ -76,7 +77,7 @@ class TestColumnUniaxialHappyPath:
         del req["l_unsupported_mm"]
         resp = client.post(ENDPOINT, json=req)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["ok"] is True
 
     def test_pure_bending_pu_zero(self):
@@ -94,7 +95,7 @@ class TestColumnUniaxialUnsafe:
         req = {**SAFE_REQUEST, "Pu_kN": 50000.0, "Mu_kNm": 5000.0}
         resp = client.post(ENDPOINT, json=req)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["ok"] is False
         assert data["utilization"] > 1.0
 

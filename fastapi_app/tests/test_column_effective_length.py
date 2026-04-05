@@ -11,6 +11,7 @@ Tests cover:
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 client = TestClient(app)
 
@@ -29,7 +30,7 @@ class TestEffectiveLengthHappyPath:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["le_mm"] == 1950.0
         assert data["ratio"] == 0.65
         assert data["end_condition"] == "FIXED_FIXED"
@@ -44,7 +45,7 @@ class TestEffectiveLengthHappyPath:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["le_mm"] == 4000.0
         assert data["ratio"] == 1.0
         assert data["method"] == "recommended"
@@ -58,7 +59,7 @@ class TestEffectiveLengthHappyPath:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["le_mm"] == 6000.0
         assert data["ratio"] == 2.0
 
@@ -72,7 +73,7 @@ class TestEffectiveLengthHappyPath:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["method"] == "theoretical"
         assert data["ratio"] == 1.0
 
@@ -85,7 +86,7 @@ class TestEffectiveLengthHappyPath:
             },
         )
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         assert data["end_condition"] == "FIXED_HINGED"
         assert data["le_mm"] > 0
         assert data["ratio"] > 0
@@ -98,7 +99,7 @@ class TestEffectiveLengthHappyPath:
                 "end_condition": "FIXED_FIXED",
             },
         )
-        data = resp.json()
+        data = unwrap(resp)
         expected_fields = {"le_mm", "ratio", "end_condition", "method"}
         assert expected_fields == set(data.keys())
 
@@ -164,4 +165,4 @@ class TestEffectiveLengthValidation:
             },
         )
         assert resp.status_code == 200
-        assert resp.json()["method"] == "recommended"
+        assert unwrap(resp)["method"] == "recommended"

@@ -182,17 +182,18 @@ export function BeamForm() {
         </label>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Geometry</h3>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Geometry</legend>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+          <label htmlFor="beam-width" className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
             <span className="relative">
-              Width (mm)
+              Width (mm) <span aria-hidden="true">*</span>
               <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
                 Beam width (b) — minimum 150mm per IS 456 Cl 23.1
               </span>
             </span>
             <input
+              id="beam-width"
               type="number"
               value={inputs.width}
               min={150}
@@ -200,22 +201,26 @@ export function BeamForm() {
               step={10}
               onChange={(e) => handleInputChange('width', Number(e.target.value))}
               onBlur={() => handleBlur('width')}
+              aria-required="true"
+              aria-invalid={!!errors.width}
+              aria-describedby={errors.width ? "beam-width-error" : undefined}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
             {errors.width && (
-              <p className="text-amber-400 text-xs mt-1 leading-tight">{errors.width}</p>
+              <p id="beam-width-error" role="alert" className="text-amber-400 text-xs mt-1 leading-tight">{errors.width}</p>
             )}
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+          <label htmlFor="beam-depth" className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
             <span className="relative">
-              Depth (mm)
+              Depth (mm) <span aria-hidden="true">*</span>
               <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
                 Overall depth of beam (D)
               </span>
             </span>
             <input
+              id="beam-depth"
               type="number"
               value={inputs.depth}
               min={200}
@@ -223,17 +228,21 @@ export function BeamForm() {
               step={10}
               onChange={(e) => handleInputChange('depth', Number(e.target.value))}
               onBlur={() => handleBlur('depth')}
+              aria-required="true"
+              aria-invalid={!!errors.depth}
+              aria-describedby={errors.depth ? "beam-depth-error" : undefined}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
             {errors.depth && (
-              <p className="text-amber-400 text-xs mt-1 leading-tight">{errors.depth}</p>
+              <p id="beam-depth-error" role="alert" className="text-amber-400 text-xs mt-1 leading-tight">{errors.depth}</p>
             )}
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc]">
-            Length (mm)
+          <label htmlFor="beam-length" className="flex flex-col gap-1 text-[13px] text-[#ccc]">
+            Length (mm) <span aria-hidden="true">*</span>
             <input
+              id="beam-length"
               type="number"
               value={length}
               min={1000}
@@ -241,26 +250,30 @@ export function BeamForm() {
               step={100}
               onChange={(e) => handleInputChange('length', Number(e.target.value))}
               onBlur={() => handleBlur('length')}
+              aria-required="true"
+              aria-invalid={!!errors.length}
+              aria-describedby={errors.length ? "beam-length-error" : undefined}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
             {errors.length && (
-              <p className="text-amber-400 text-xs mt-1 leading-tight">{errors.length}</p>
+              <p id="beam-length-error" role="alert" className="text-amber-400 text-xs mt-1 leading-tight">{errors.length}</p>
             )}
           </label>
         </div>
-      </div>
+      </fieldset>
 
-      <div className="flex flex-col gap-2">
-        <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Loading</h3>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Loading</legend>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+          <label htmlFor="beam-moment" className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
             <span className="relative">
-              Moment (kN·m)
+              Moment (kN·m) <span aria-hidden="true">*</span>
               <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
                 Factored bending moment (Mu) in kN·m
               </span>
             </span>
             <input
+              id="beam-moment"
               type="number"
               value={inputs.moment}
               min={0}
@@ -268,15 +281,18 @@ export function BeamForm() {
               step={5}
               onChange={(e) => handleInputChange('moment', Number(e.target.value))}
               onBlur={() => handleBlur('moment')}
+              aria-required="true"
+              aria-invalid={!!errors.moment}
+              aria-describedby={errors.moment ? "beam-moment-error" : undefined}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
             {errors.moment && (
-              <p className="text-red-400 text-xs mt-1 leading-tight">{errors.moment}</p>
+              <p id="beam-moment-error" role="alert" className="text-red-400 text-xs mt-1 leading-tight">{errors.moment}</p>
             )}
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+          <label htmlFor="beam-shear" className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
             <span className="relative">
               Shear (kN)
               <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
@@ -284,6 +300,7 @@ export function BeamForm() {
               </span>
             </span>
             <input
+              id="beam-shear"
               type="number"
               value={inputs.shear ?? 0}
               min={0}
@@ -291,28 +308,32 @@ export function BeamForm() {
               step={5}
               onChange={(e) => handleInputChange('shear', Number(e.target.value))}
               onBlur={() => handleBlur('shear')}
+              aria-invalid={!!errors.shear}
+              aria-describedby={errors.shear ? "beam-shear-error" : undefined}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
             {errors.shear && (
-              <p className="text-red-400 text-xs mt-1 leading-tight">{errors.shear}</p>
+              <p id="beam-shear-error" role="alert" className="text-red-400 text-xs mt-1 leading-tight">{errors.shear}</p>
             )}
           </label>
         </div>
-      </div>
+      </fieldset>
 
-      <div className="flex flex-col gap-2">
-        <h3 className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Materials</h3>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="m-0 text-sm text-zinc-400 uppercase tracking-wide">Materials</legend>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+          <label htmlFor="beam-fck" className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
             <span className="relative">
-              Concrete fck (N/mm²)
+              Concrete fck (N/mm²) <span aria-hidden="true">*</span>
               <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
                 Characteristic compressive strength — IS 456 Table 2
               </span>
             </span>
             <select
+              id="beam-fck"
               value={inputs.fck}
               onChange={(e) => handleInputChange('fck', Number(e.target.value))}
+              aria-required="true"
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             >
               <option value={20}>M20</option>
@@ -324,16 +345,18 @@ export function BeamForm() {
           </label>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
+          <label htmlFor="beam-fy" className="flex flex-col gap-1 text-[13px] text-[#ccc] group relative">
             <span className="relative">
-              Steel fy (N/mm²)
+              Steel fy (N/mm²) <span aria-hidden="true">*</span>
               <span className="absolute left-0 -top-8 hidden group-hover:block bg-zinc-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 border border-white/10 shadow-lg">
                 Characteristic yield strength of steel — IS 456 Table 2
               </span>
             </span>
             <select
+              id="beam-fy"
               value={inputs.fy}
               onChange={(e) => handleInputChange('fy', Number(e.target.value))}
+              aria-required="true"
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             >
               <option value={415}>Fe415</option>
@@ -342,7 +365,7 @@ export function BeamForm() {
             </select>
           </label>
         </div>
-      </div>
+      </fieldset>
 
       {/* Manual design button (hidden in auto mode) */}
       {!autoDesign && (

@@ -19,6 +19,7 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any
 
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
     CrackWidthResult,
     DeflectionLevelBResult,
@@ -124,6 +125,7 @@ def _normalize_exposure_class(
     )
 
 
+@clause("23.2.1")
 def check_deflection_span_depth(
     *,
     span_mm: float,
@@ -221,6 +223,7 @@ def check_deflection_span_depth(
     )
 
 
+@clause("43.1")
 def check_crack_width(
     *,
     exposure_class: ExposureClass | str = ExposureClass.MODERATE,
@@ -393,6 +396,7 @@ def _as_dict(result: DeflectionResult | CrackWidthResult) -> dict[str, Any]:
 # =============================================================================
 
 
+@clause("C-2")
 def calculate_cracking_moment(
     *,
     b_mm: float,
@@ -444,6 +448,7 @@ def calculate_cracking_moment(
     return mcr_knm
 
 
+@clause("C-2")
 def calculate_gross_moment_of_inertia(
     *,
     b_mm: float,
@@ -471,6 +476,7 @@ def calculate_gross_moment_of_inertia(
     return b_mm * (D_mm**3) / 12
 
 
+@clause("C-2")
 def calculate_cracked_moment_of_inertia(
     *,
     b_mm: float,
@@ -542,6 +548,7 @@ def calculate_cracked_moment_of_inertia(
     return icr
 
 
+@clause("C-2")
 def calculate_effective_moment_of_inertia(
     *,
     mcr_knm: float,
@@ -593,6 +600,7 @@ def calculate_effective_moment_of_inertia(
     return max(ieff, icr_mm4)
 
 
+@clause("23.2.1")
 def get_long_term_deflection_factor(
     *,
     duration_months: int = 60,
@@ -651,6 +659,7 @@ def get_long_term_deflection_factor(
     return lambda_factor
 
 
+@clause("23.2")
 def calculate_short_term_deflection(
     *,
     ma_knm: float,
@@ -708,6 +717,7 @@ def calculate_short_term_deflection(
     return delta
 
 
+@clause("23.2")
 def check_deflection_level_b(
     *,
     b_mm: float,
@@ -899,6 +909,7 @@ def check_deflection_level_b(
 # =============================================================================
 
 
+@clause("C-2")
 def get_creep_coefficient(
     *,
     age_at_loading_days: int = 28,
@@ -957,6 +968,7 @@ def get_creep_coefficient(
     return result
 
 
+@clause("C-3")
 def calculate_shrinkage_curvature(
     *,
     eps_cs: float = 0.0003,
@@ -1022,6 +1034,7 @@ def calculate_shrinkage_curvature(
     return result
 
 
+@clause("C-2")
 def calculate_creep_deflection(
     *,
     delta_sustained_mm: float,
@@ -1049,6 +1062,7 @@ def calculate_creep_deflection(
     return delta_sustained_mm * creep_coefficient
 
 
+@clause("C-3")
 def calculate_shrinkage_deflection(
     *,
     phi_sh: float,
@@ -1095,6 +1109,7 @@ def calculate_shrinkage_deflection(
     return delta_sh
 
 
+@clause("C-2", "C-3")
 def check_deflection_level_c(
     *,
     b_mm: float,

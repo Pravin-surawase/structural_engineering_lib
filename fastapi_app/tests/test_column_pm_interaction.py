@@ -10,6 +10,7 @@ Tests cover:
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+from fastapi_app.tests.conftest import unwrap
 
 client = TestClient(app)
 
@@ -32,7 +33,7 @@ class TestPMInteractionCurveHappyPath:
         """Valid request returns 200 with curve data."""
         resp = client.post(ENDPOINT, json=VALID_REQUEST)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
 
         # Points array present and non-empty
         assert "points" in data
@@ -63,7 +64,7 @@ class TestPMInteractionCurveHappyPath:
         req = {**VALID_REQUEST, "n_points": 100}
         resp = client.post(ENDPOINT, json=req)
         assert resp.status_code == 200
-        data = resp.json()
+        data = unwrap(resp)
         # Sweep generates n_points+1 points; pure axial cap (Pu_0, 0) may be
         # appended if the last sweep point doesn't already match it.
         assert len(data["points"]) >= 101

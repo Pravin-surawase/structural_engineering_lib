@@ -283,6 +283,9 @@ class FlexureResult:
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
     Ast_min: float = 0.0  # Min tension steel per Cl. 26.5.1.1 (mm²)
     Ast_max: float = 0.0  # Max tension steel per Cl. 26.5.1.2 (mm²)
+    clause_refs: dict[str, str] = field(
+        default_factory=dict
+    )  # IS 456 clause references
 
     def __post_init__(self) -> None:
         if self.error_message:
@@ -348,6 +351,9 @@ class ShearResult:
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
     errors: tuple[DesignError, ...] = field(default_factory=tuple)  # Structured errors
+    clause_refs: dict[str, str] = field(
+        default_factory=dict
+    )  # IS 456 clause references
 
     def __post_init__(self) -> None:
         if self.remarks:
@@ -455,6 +461,9 @@ class TorsionResult:
     is_safe: bool
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
+    clause_refs: dict[str, str] = field(
+        default_factory=dict
+    )  # IS 456 clause references
 
     @property
     def tu_knm(self) -> float:
@@ -708,6 +717,9 @@ class ComplianceCaseResult:
     utilizations: dict[str, float] = field(default_factory=dict)
     failed_checks: list[str] = field(default_factory=list)
     remarks: str = ""
+    clause_refs: dict[str, str] = field(
+        default_factory=dict
+    )  # IS 456 clause references
 
     @property
     def mu_knm(self) -> float:

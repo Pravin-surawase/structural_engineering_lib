@@ -20,10 +20,12 @@ from structural_lib.codes.is456.footing._common import (
     punching_perimeter_mm,
     validate_footing_inputs,
 )
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import FootingPunchingResult
 from structural_lib.core.errors import ValidationError
 
 
+@clause("31.6.1")
 def footing_punching_shear(
     Pu_kN: float,
     L_mm: float,

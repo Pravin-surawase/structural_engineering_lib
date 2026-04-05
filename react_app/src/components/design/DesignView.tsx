@@ -626,18 +626,28 @@ function InputField({ label, value, onChange, unit, min, max, step = 1, disabled
   label: string; value: number; onChange: (v: number) => void; unit: string;
   min?: number; max?: number; step?: number; disabled?: boolean;
 }) {
+  const fieldId = `design-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
     <div>
-      <label className="block text-[10px] text-zinc-400 mb-0.5">{label}</label>
+      <label htmlFor={fieldId} className="block text-[10px] text-zinc-400 mb-0.5">
+        {label}
+      </label>
       <div className="relative">
         <input
+          id={fieldId}
           type="number"
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          min={min} max={max} step={step} disabled={disabled}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+          aria-label={`${label} in ${unit}`}
           className="w-full px-2.5 py-1.5 pr-10 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50 disabled:opacity-40"
         />
-        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500">{unit}</span>
+        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500" aria-hidden="true">
+          {unit}
+        </span>
       </div>
     </div>
   );
@@ -646,10 +656,14 @@ function InputField({ label, value, onChange, unit, min, max, step = 1, disabled
 function DropdownField<T extends string | number>({ label, value, onChange, options, format }: {
   label: string; value: T; onChange: (v: T) => void; options: T[]; format: (v: T) => string;
 }) {
+  const fieldId = `design-dropdown-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
     <div>
-      <label className="block text-[10px] text-zinc-400 mb-0.5">{label}</label>
+      <label htmlFor={fieldId} className="block text-[10px] text-zinc-400 mb-0.5">
+        {label}
+      </label>
       <select
+        id={fieldId}
         value={String(value)}
         onChange={(e) => {
           const raw = e.target.value;
@@ -657,6 +671,7 @@ function DropdownField<T extends string | number>({ label, value, onChange, opti
           const parsed = typeof options[0] === 'number' ? Number(raw) : raw;
           onChange(parsed as T);
         }}
+        aria-label={label}
         className="w-full px-2.5 py-1.5 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500/50"
       >
         {options.map((opt) => (

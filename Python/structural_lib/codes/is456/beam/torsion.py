@@ -95,6 +95,9 @@ class TorsionResult:
     is_safe: bool
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
+    clause_refs: dict[str, str] = field(
+        default_factory=dict
+    )  # IS 456 clause references
 
 
 # =============================================================================
@@ -571,4 +574,12 @@ def design_torsion(
         is_safe=True,
         requires_closed_stirrups=True,
         errors=errors,
+        clause_refs={
+            "Ve": "IS 456 Cl 41.3.1",
+            "Me": "IS 456 Cl 41.4.2",
+            "tau_ve": "IS 456 Cl 41.3.1",
+            "Asv_torsion": "IS 456 Cl 41.4.3",
+            "Al_torsion": "IS 456 Cl 41.4.2",
+            "sv_max": "IS 456 Cl 41.4.3, Cl 26.5.1.5",
+        },
     )
