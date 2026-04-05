@@ -30,6 +30,7 @@ from structural_lib.core.data_types import (  # noqa: F401
     LoadDefinition,
     LoadDiagramResult,
     LoadType,
+    ValidationReport,
 )
 from structural_lib.core.inputs import (  # noqa: F401
     BeamGeometryInput,
@@ -180,6 +181,8 @@ __all__ = [
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
+    # Validation
+    "ValidationReport",
     # Column Design (IS 456 Clause 39)
     "calculate_effective_length_is456",
     "calculate_additional_moment_is456",

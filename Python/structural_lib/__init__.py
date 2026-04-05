@@ -73,6 +73,7 @@ from .services.api import (
     ResultSection,
     # Torsion Design
     TorsionResult,
+    ValidationReport,
     build_detailing_input,
     # Column Design
     calculate_additional_moment_is456,
@@ -242,6 +243,8 @@ __all__ = [
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
+    # Validation
+    "ValidationReport",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features

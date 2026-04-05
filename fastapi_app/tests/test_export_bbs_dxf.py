@@ -8,6 +8,8 @@ Covers:
 """
 
 import pytest
+
+pytest.importorskip("ezdxf")
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
