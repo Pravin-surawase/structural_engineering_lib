@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-05 | AUDIT | v0.21.3 deep audit: 7 agents, 90 findings (3 CRITICAL, 18 HIGH, 34 MEDIUM, 35 LOW), score 8.0/10, audit doc updated (§25-§32) | — |
 | 2026-04-05 | EA-20,16 | Security: CORS from settings, auth production docs | — |
 | 2026-04-05 | EA-19 | Security: WebSocket Pydantic validation (WSDesignParams, WSCheckParams) | — |
 | 2026-04-05 | EA-9 | Testing: 105 API stability tests for __all__ exports | — |

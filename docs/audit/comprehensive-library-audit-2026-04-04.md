@@ -5,9 +5,9 @@
 **Created:** 2026-04-04
 **Last Updated:** 2026-04-05
 
-# Comprehensive Library Audit — v0.21.2
+# Comprehensive Library Audit — v0.21.2 / v0.21.3
 
-**Date:** 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external) | **Version:** v0.21.2 | **Auditors:** 14 agents + external auditor
+**Date:** 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external + v0.21.3 deep) | **Version:** v0.21.2 → v0.21.3 | **Auditors:** 14 agents + external auditor + 7 deep audit agents
 
 ## Executive Summary
 
@@ -701,4 +701,365 @@ All 5 P0 findings were verified, reviewed by 8 agents, and fixed on 2026-04-04.
 | External Audit (§24) | 1 | 11 | 11 | 0 | 23 |
 | **TOTAL** | **6** | **85** | **63** | **24** | **178** |
 
-*Next audit recommended: v0.22.0 release (focus on P0 fixes verification)*
+
+---
+
+# V0.21.3 Deep Audit — 2026-04-05
+
+**Date:** 2026-04-05 | **Version:** v0.21.3 | **Auditors:** 7 specialist agents (security, structural-engineer, library-expert, api-developer, tester, reviewer, frontend)
+
+## Executive Summary — v0.21.3
+
+| Workstream | Agent | v0.21.2 Score | v0.21.3 Score | Key Finding |
+|-----------|-------|:---:|:---:|-------------|
+| Security | @security | 5/10 | 7/10 | Auth middleware works; 22 info-leak instances remain; no per-endpoint scope checking |
+| IS 456 Compliance | @structural-engineer | 8/10 | 8.5/10 | All 17 formula spot-checks exact; 21 functions missing @clause decorators |
+| Library Usability | @library-expert | 3.9/5 | 3.5/5 | Silent failure on d_mm > D_mm; beam vs column API inconsistency widened |
+| API Quality | @api-developer | 7/10 | 7/10 | 3 response patterns coexist; 22 str(e) leaks; missing cross-field validators |
+| Test Coverage | @tester | 6.5/10 | 7.5/10 | 4,255 tests pass; MagicMock still in 2 files; FastAPI only 6/13 routers tested |
+| Architecture | @reviewer | 7/10 | 7.5/10 | Clean upward imports; 49 bare except blocks; 3610-line God module |
+| Frontend UX | @frontend | 5/10 | 6.5/10 | ErrorBoundary + validation added; no Three.js cleanup; settings placeholder |
+
+### Overall Grade: A- (8.0/10)
+
+Progression: v0.21.2 initial (7.1) → fixes (8.7) → v0.21.3 deep audit refactored (8.0)
+
+The score adjustment from 8.7 to 8.0 reflects the deeper audit uncovering issues that the initial fix-focused pass missed. The library is fundamentally sound — all formulas are correct, architecture is clean, and test suite is comprehensive. But information leaks, API inconsistency, and code quality (God module) prevent a higher score.
+
+---
+
+## §25. Security Audit — v0.21.3
+
+### Previous Fix Verification
+
+| Fix | Status | Notes |
+|-----|--------|-------|
+| S-1: Auth enforcement | ✅ VERIFIED | AuthMiddleware global, auth_enabled configurable |
+| S-4: WebSocket validation | ✅ VERIFIED | WSDesignParams/WSCheckParams with Pydantic |
+| S-5: Error sanitization | ⚠️ PARTIAL | Generic handler exists, but 22 ImportError leaks remain |
+| S-3: Rate limiting | ✅ VERIFIED | RateLimitMiddleware global, configurable |
+| EA-20: CORS from settings | ✅ VERIFIED | Settings.cors_origins, env-var overridable |
+
+### New Findings
+
+| ID | Severity | Category | Description | Location |
+|----|----------|----------|-------------|----------|
+| S-NEW-01 | MEDIUM | CWE-209 | 22 ImportError messages leak internal paths via f"structural_lib not available: {e}" | design.py, geometry.py, rebar.py, analysis.py, detailing.py, optimization.py |
+| S-NEW-02 | MEDIUM | CWE-209 | ValueError details leak via f"Invalid parameters: {e}" | geometry.py:369, 538 |
+| S-NEW-03 | HIGH | A04 | No file upload size limit on CSV imports — OOM risk | imports.py:161 |
+| S-NEW-04 | LOW | CWE-209 | WebSocket TypeError leaks via str(e) | websocket.py:167 |
+| S-NEW-05 | MEDIUM | A07 | create_dev_token() importable in production — can forge tokens | auth.py:351 |
+| S-NEW-06 | MEDIUM | A01 | No per-endpoint scope checking — any valid token = full access | All routers |
+| S-NEW-07 | LOW | A04 | Missing cross-field validators (clear_cover < depth) | models/beam.py |
+| S-NEW-08 | LOW | A04 | In-memory rate limiter not multi-process safe | auth.py:280 |
+| S-NEW-09 | LOW | A02 | Docker dev compose uses weak default JWT secret | docker-compose.dev.yml:10 |
+| S-NEW-10 | LOW | A05 | Sample data endpoint exposes search paths | imports.py:732 |
+
+### Security Positives ✅
+- JWT production safeguard (RuntimeError on default key)
+- Docker non-root, cap_drop ALL, no-new-privileges
+- No SQL injection, SSRF, unsafe deserialization
+- Export filename sanitization with regex validation
+- Temp file cleanup in finally blocks
+- All dependencies current, no known CVEs
+
+**Updated Security Score: 7/10** (up from 5/10)
+
+---
+
+## §26. IS 456 Compliance — v0.21.3
+
+### Formula Verification (17 Spot Checks — ALL EXACT)
+
+| Formula | Clause | Status |
+|---------|--------|--------|
+| Mu_lim stress block | Cl 38.1 | EXACT |
+| xu_max/d ratios (Fe250/415/500) | Cl 38.1 | EXACT |
+| τc Table 19 (M25, pt=1.0%) | Table 19 | EXACT |
+| τc_max Table 20 (M20-M40) | Table 20 | EXACT |
+| Pu = 0.4fck·Ac + 0.67fy·Asc | Cl 39.3 | EXACT |
+| e_min = max(l/500+D/30, 20) | Cl 25.4 | EXACT |
+| Bresler αn interpolation | Cl 39.6 | EXACT |
+| Ve = Vu + 1.6Tu/b | Cl 41.3.1 | EXACT |
+| Me = Mu + Tu(1+D/b)/1.7 | Cl 41.4.2 | EXACT |
+| eadd = le²/(2000D) | Cl 39.7.1 | EXACT |
+| Table 28 (7 end conditions) | Cl 25.2 | EXACT |
+| γc=1.5, γs=1.15 | Cl 36.4.2 | EXACT |
+| Ast formula | Cl 38.2 | CORRECT |
+| Min steel 0.85bd/fy | Cl 26.5.1.1 | EXACT |
+| T-beam flange width | Cl 23.1.2 | CORRECT |
+| Effective length factors | Table 28 | EXACT |
+| 5-point steel stress-strain | IS 456 | EXACT |
+
+### @clause Coverage
+
+| Module | Decorated | Missing | Status |
+|--------|-----------|---------|--------|
+| beam/flexure.py | 8 | 0 | ✅ |
+| beam/shear.py | 5 | 0 | ✅ |
+| beam/torsion.py | 6 | 0 | ✅ |
+| beam/detailing.py | 8+ | 0 | ✅ |
+| column/* | All | 0 | ✅ |
+| is13920/* | All | 0 | ✅ |
+| footing/* | 1 | 4 | ⚠️ IS-NEW-01 |
+| beam/serviceability.py | 0 | 17 | ❌ IS-NEW-02 |
+
+### New Findings
+
+| ID | Severity | Clause | Description |
+|----|----------|--------|-------------|
+| IS-NEW-01 | MEDIUM | Cl 34.x | 4 footing functions lack @clause decorators |
+| IS-NEW-02 | MEDIUM | Cl 23.2.1, Annex C/F | All 17 serviceability functions lack @clause decorators |
+| IS-NEW-03 | LOW | Fig 23, 26.5.3 | clauses.json missing entries — import warnings |
+| IS-NEW-04 | MEDIUM | Cl 26.3 | Curtailment of tension reinforcement not implemented |
+| IS-NEW-05 | LOW | Cl 23.2.1 | Modification factors (Fig 4-6) require manual input |
+| IS-NEW-06 | LOW | Cl 34.3.1 | Rectangular footing banding distribution needs verification |
+| IS-NEW-07 | MEDIUM | Convention | Beam module uses bare b/d vs column's b_mm/D_mm |
+| IS-NEW-08 | LOW | Cl 38.1 | xu_max/d hardcoded vs formula — correct per IS 456 table |
+| IS-NEW-09 | LOW | Cl 41.x | Torsion D_mm fallback should be removed in future version |
+| IS-NEW-10 | LOW | Cl 40.2.1 | Table 19 nearest-lower-grade lookup (conservative, acceptable) |
+
+### Known Issues Status
+
+| Issue | Status |
+|-------|--------|
+| IS-1: Torsion D_mm parameter | ✅ FIXED — kwarg with deprecation fallback |
+| IS-2: Footing @clause decorators | ⚠️ PARTIAL — bearing.py done, 4 others remain |
+| IS-3: IS 13920 @clause decorators | ✅ FIXED — all 13 functions decorated |
+| IS-4: SCWB check | ✅ FIXED — check_scwb() in joint.py |
+| bearing_stress_enhancement() | ✅ VERIFIED — Cl 34.4, √(A1/A2), cap at 2.0 |
+
+**Updated IS 456 Score: 8.5/10** (up from 8/10)
+
+---
+
+## §27. Library Usability — v0.21.3
+
+### Key Findings
+
+| ID | Severity | Category | Description |
+|----|----------|----------|-------------|
+| UX-01 | CRITICAL | Error Handling | d_mm > D_mm (impossible geometry) accepted silently — returns Ast=0 with no explanation |
+| UX-02 | CRITICAL | API Consistency | Column API returns raw dict (fck, fy); Beam API returns typed dataclass (fck_nmm2, fy_nmm2). TypeError on cross-use. |
+| UX-03 | HIGH | Usability | Negative moments accepted silently — no sign convention guidance |
+| UX-04 | HIGH | Discoverability | ComplianceCaseResult has no .summary() or .is_safe; DesignAndDetailResult does |
+| UX-05 | HIGH | Professional Standards | Design results don't include IS 456 clause references — not auditable |
+| UX-06 | HIGH | Error Handling | FastAPI swallows excellent library error messages, returns generic "Invalid input" |
+| UX-07 | MEDIUM | Usability | 9 deprecation warnings on import (pyparsing + internal moves) |
+| UX-08 | MEDIUM | Documentation | simple_examples.py uses low-level API; README uses high-level API — confusing |
+| UX-09 | MEDIUM | API | units="IS456" mandatory on every call but does nothing — pure boilerplate |
+| UX-10 | MEDIUM | Professional Standards | Results at 15-decimal precision — unprofessional display |
+| UX-11 | MEDIUM | Discoverability | 105 exports in __all__, no sub-namespaces |
+| UX-12 | MEDIUM | Error Handling | Wrong param names (fck vs fck_nmm2) give raw TypeError, no suggestions |
+| UX-13 | LOW | Documentation | API docs and clause map are comprehensive — STRENGTH |
+| UX-14 | LOW | Usability | Import time 0.39s — acceptable |
+| UX-15 | LOW | Professional Standards | No governing_check field in results |
+
+### Strengths
+- 5-line beam design works as documented
+- Unit plausibility guards catch fck=25000 ("Expected N/mm², not Pa")
+- DesignAndDetailResult.summary() returns "B1@GF: 300×500mm, Ast=856mm², OK"
+- Clause-to-function mapping comprehensive (clause-map.md)
+- Structured inputs (BeamInput, MaterialsInput.m25_fe500()) are professional
+- Exception hierarchy with details/suggestion/clause_ref fields
+
+**Updated Usability Score: 3.5/5** (down from 3.9)
+
+---
+
+## §28. API Quality — v0.21.3
+
+### Response Patterns (3 coexist — inconsistent)
+
+| Pattern | Routers | Example |
+|---------|---------|--------|
+| A: {success, message, ...data} | design, imports, insights, geometry, rebar, optimization | Wrapped |
+| B: Raw typed model | column, analysis, health | Direct Pydantic |
+| C: Raw dict/untyped | design /limits, geometry /materials, export | Untyped |
+
+### Key Findings
+
+| ID | Severity | Category | Description |
+|----|----------|----------|-------------|
+| API-NEW-01 | HIGH | Consistency | Column router returns raw models; design wraps in {success, message}. Clients need two handlers. |
+| API-NEW-02 | MEDIUM | Consistency | APIResponse[T] defined in common.py but never used — dead code |
+| API-NEW-03 | MEDIUM | Consistency | 3 GET endpoints return untyped dict without response_model |
+| API-NEW-04 | HIGH | Consistency | /ductile-detailing returns raw library object, no response_model |
+| API-NEW-06 | MEDIUM | Validation | No cross-field validator: clear_cover < depth in BeamDesignRequest |
+| API-NEW-07 | MEDIUM | Validation | No cross-field validator: Asc_mm2 < Ag_mm2 in ColumnAxialRequest |
+| API-NEW-09 | LOW | Validation | AdditionalMomentRequest allows fck=1 (should be ge=15) |
+| API-NEW-12 | HIGH | Security | WebSocket sends str(e) to client for ValueError/TypeError |
+| API-NEW-13 | HIGH | Security | 21 endpoints expose ImportError via f"...not available: {e}" |
+| API-NEW-21 | MEDIUM | Coverage | design_and_detail_beam_is456() has no endpoint (most useful single-call) |
+| API-NEW-24 | MEDIUM | Consistency | BeamDesignRequest uses "width/depth"; ColumnDesignRequest uses "b_mm/D_mm" |
+| API-NEW-25 | MEDIUM | Code Quality | All routers use lazy imports inside handlers — repeated per-request cost |
+
+**Total API findings: 26** (4 HIGH, 9 MEDIUM, 13 LOW)
+
+**Updated API Score: 7/10** (unchanged)
+
+---
+
+## §29. Test Coverage — v0.21.3
+
+### Metrics
+
+| Metric | v0.21.2 | v0.21.3 |
+|--------|---------|--------|
+| Total Python tests | ~3,500 | 4,255 |
+| FastAPI tests | Unknown | 187 |
+| Hypothesis @given | Unknown | 65 (6 files) |
+| E2E pipeline tests | 0 | 8 |
+| Packaging tests | 0 | 14 |
+| SP:16 reference files | Unknown | 27 |
+| Golden tests | Unknown | 6 |
+| Pass rate | — | 100% (0 failures) |
+
+### Module Coverage Map — All covered ✅
+
+Every structural module (beam, column, footing, IS 13920) has test files. Key counts: column 359 tests across 9 files, footing 91 tests, IS 13920 38+ tests.
+
+### Gaps
+
+| ID | Severity | Category | Description |
+|----|----------|----------|-------------|
+| T-NEW-01 | HIGH | Quality Issue | MagicMock in test_calculation_report.py (17) and test_testing_strategies.py (5) — violates TE-3, caused v0.21.0 ShearResult bug |
+| T-NEW-02 | MEDIUM | Coverage Gap | core/stress_blocks.py has no dedicated test file (indirect only) |
+| T-NEW-03 | MEDIUM | Missing Test Type | No Hypothesis tests for column or footing modules |
+| T-NEW-04 | MEDIUM | Missing Test Type | Only 6 golden tests — no SP:16 beam/column/footing golden benchmarks |
+| T-NEW-07 | LOW | Missing Test Type | No Hypothesis tests for torsion or beam detailing |
+| T-NEW-08 | HIGH | Coverage Gap | FastAPI tests cover only ~6/13 routers. No tests for: beam design, detailing, geometry, insights, export, import, optimization |
+| T-NEW-09 | LOW | Quality Issue | test_property_invariants.py is empty stub (0 @given decorators) |
+
+**Updated Test Score: 7.5/10** (up from 6.5/10)
+
+---
+
+## §30. Architecture & Code Quality — v0.21.3
+
+### Layer Violations
+
+| Check | Status |
+|-------|--------|
+| codes/is456/ → services/ imports | ✅ CLEAN — no upward imports |
+| core/ → codes/ imports | ✅ CLEAN |
+| services/ → fastapi/ imports | ✅ CLEAN |
+| I/O in math layer | ⚠️ traceability.py has 13 print() calls |
+| Filesystem access in math | ✅ CLEAN — no os/sys/pathlib in codes/is456/ |
+
+### Key Findings
+
+| ID | Severity | Category | Description |
+|----|----------|----------|-------------|
+| ARCH-NEW-01 | MEDIUM | Layer Violation | traceability.py has 13 print() calls in math layer |
+| ARCH-NEW-06 | MEDIUM | Duplication | FastAPI Pydantic models use different field names than lib types — drift risk |
+| ARCH-NEW-07 | HIGH | Security CWE-209 | 20 str(e) leaks in HTTP responses (overlaps S-NEW-01) |
+| ARCH-NEW-08 | MEDIUM | Security CWE-209 | WebSocket str(e) leaks (overlaps S-NEW-04) |
+| ARCH-NEW-09 | HIGH | Error Handling | 49 bare except Exception blocks across all routers |
+| ARCH-NEW-10 | MEDIUM | Error Handling | 7 silent swallows in services/adapters.py |
+| ARCH-NEW-12 | HIGH | Code Quality | services/api.py is 3,610 lines — God module with 45 functions |
+| ARCH-NEW-13 | MEDIUM | Code Quality | 11 column functions return dict instead of typed dataclass |
+
+### Positives ✅
+- Clean upward imports (no layer violations)
+- 105/105 __all__ exports resolve correctly
+- No mutable default arguments
+- api.py stub is minimal (14 lines, wildcard re-export)
+- Validation properly layered (codes/ vs services/)
+
+**Updated Architecture Score: 7.5/10** (up from 7/10)
+
+---
+
+## §31. Frontend UX — v0.21.3
+
+### Improvements Since v0.21.2
+
+| Area | Before | After |
+|------|--------|-------|
+| Error Boundaries | None | ✅ Implemented + tested |
+| Form Validation | HTML5 only | ✅ Cross-field validation (cover < depth, span/depth ratios) |
+| Error States | None | ✅ Toast notifications |
+| WebGL Context Loss | No handling | ✅ Custom hook exists |
+
+### Key Findings
+
+| ID | Severity | Category | Description |
+|----|----------|----------|-------------|
+| FE-NEW-01 | CRITICAL | Memory Leak | No Three.js geometry/material/texture dispose() on unmount |
+| FE-NEW-02 | HIGH | Accessibility | Form inputs missing WCAG AA labels (aria-describedby, aria-invalid, aria-required) |
+| FE-NEW-03 | HIGH | Functionality | Settings panel is placeholder ("coming soon") — reachable but empty |
+| FE-NEW-04 | HIGH | UX Consistency | Loading states use 4 different patterns (skeleton, pulse, loader, nothing) |
+| FE-NEW-05 | HIGH | Accessibility | FloatingDock has no keyboard navigation |
+| FE-NEW-06 | MEDIUM | UX | Toast no dismiss-all button when multiple stack |
+| FE-NEW-07 | MEDIUM | UX | Error messages show dev commands ("./run.sh dev") to end users |
+| FE-NEW-08 | MEDIUM | Missing Feature | Cover field disabled at 40mm — should be editable per IS 456 Table 16 |
+| FE-NEW-09 | MEDIUM | Discoverability | Cmd+K command palette not documented in UI |
+| FE-NEW-10 | LOW | Performance | No FPS counter or performance warnings for large buildings |
+| FE-NEW-11 | LOW | UX | Dark theme hardcoded, no light mode toggle |
+
+**Updated Frontend Score: 6.5/10** (up from 5/10)
+
+---
+
+## §32. Combined v0.21.3 Findings Summary
+
+### By Severity
+
+| Severity | Security | IS 456 | UX | API | Tests | Arch | Frontend | Total |
+|----------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| CRITICAL | 0 | 0 | 2 | 0 | 0 | 0 | 1 | **3** |
+| HIGH | 1 | 0 | 4 | 4 | 2 | 3 | 4 | **18** |
+| MEDIUM | 4 | 4 | 6 | 9 | 3 | 4 | 4 | **34** |
+| LOW | 5 | 6 | 2 | 13 | 4 | 3 | 2 | **35** |
+| **Total** | **10** | **10** | **14** | **26** | **9** | **10** | **11** | **90** |
+
+### Cross-Cutting Themes
+
+| Theme | Count | Agents Reporting | Priority |
+|-------|-------|-----------------|----------|
+| **CWE-209 info leaks (str(e) in responses)** | 22+ instances | Security, API, Architecture | HIGH — fix all |
+| **API consistency (beam vs column)** | 5 findings | UX, API | HIGH — unify patterns |
+| **Missing @clause decorators** | 21 functions | IS 456 | MEDIUM — quick wins |
+| **MagicMock in tests** | 22 instances | Tester | HIGH — TE-3 violation |
+| **API God module** | 3,610 lines | Architecture | HIGH — split into domain modules |
+| **Three.js memory leaks** | no dispose() | Frontend | CRITICAL — fix immediately |
+| **Cross-field validation** | missing | Security, API, UX | MEDIUM — add validators |
+
+### Scoring Progression
+
+| Version | Security | IS 456 | UX | API | Tests | Arch | Frontend | Overall |
+|---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| v0.21.2 (initial) | 5/10 | 8/10 | 3.9/5 | 7/10 | 6.5/10 | 7/10 | 5/10 | 7.1/10 |
+| v0.21.2 (post-fix) | — | — | — | — | — | — | — | 8.7/10 |
+| **v0.21.3 (deep)** | **7/10** | **8.5/10** | **3.5/5** | **7/10** | **7.5/10** | **7.5/10** | **6.5/10** | **8.0/10** |
+
+### Priority Action Plan
+
+**P0 — Fix This Release (v0.21.4):**
+1. FE-NEW-01: Three.js dispose() calls — memory leak (CRITICAL)
+2. UX-01: Validate d_mm < D_mm — silent calculation failure (CRITICAL)
+3. UX-02: Unify beam/column return types — API consistency (CRITICAL)
+4. S-NEW-01 + ARCH-NEW-07: Replace 22 str(e) leaks with generic messages (HIGH)
+5. S-NEW-03: Add CSV upload file size limit (HIGH)
+
+**P1 — Fix Next Release (v0.22.0):**
+6. ARCH-NEW-12: Split services/api.py God module into domain files
+7. T-NEW-01: Replace MagicMock with real result objects
+8. T-NEW-08: Add FastAPI tests for 7 untested routers
+9. IS-NEW-01 + IS-NEW-02: Add @clause decorators (21 functions)
+10. UX-05: Add clause references to design results
+11. FE-NEW-02: WCAG AA form accessibility
+12. API-NEW-01: Standardize response shapes
+13. ARCH-NEW-09: Replace bare except Exception blocks with specific types
+
+**P2 — Backlog:**
+14. API-NEW-21: Add /design/beam/full endpoint
+15. IS-NEW-04: Implement curtailment rules (Cl 26.3)
+16. UX-12: Add did-you-mean for wrong parameter names
+17. ARCH-NEW-13: Create typed result dataclasses for column functions
+18. T-NEW-03: Hypothesis tests for column/footing
+19. FE-NEW-03: Settings panel (implement or remove)
+20. UX-10: Engineering-precision display (round to 2-3 decimals)
+
+*Next audit recommended: v0.22.0 release*

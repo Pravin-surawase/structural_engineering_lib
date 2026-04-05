@@ -202,6 +202,18 @@
 | API-6 | Streaming 404 + job_id validation | ✅ Done |
 | FE-7 | Three.js material memory cleanup | ✅ Done |
 
+### v0.21.3 Deep Audit Findings (90 findings, 3 CRITICAL)
+
+- [ ] P0-FE: Three.js dispose() calls — memory leak (FE-NEW-01) — CRITICAL
+- [ ] P0-UX: Validate d_mm < D_mm in design_beam_is456 (UX-01) — CRITICAL
+- [ ] P0-UX: Unify beam/column API return types (UX-02) — CRITICAL
+- [ ] P0-SEC: Replace 22 str(e) info leaks in routers (S-NEW-01) — HIGH
+- [ ] P0-SEC: Add CSV upload file size limit (S-NEW-03) — HIGH
+- [ ] P1-ARCH: Split services/api.py God module into domain files (ARCH-NEW-12)
+- [ ] P1-TEST: Replace MagicMock with real objects (T-NEW-01)
+- [ ] P1-TEST: Add FastAPI tests for 7 untested routers (T-NEW-08)
+- [ ] P1-IS456: Add @clause decorators to 21 functions (IS-NEW-01, IS-NEW-02)
+
 ### Audit P1 Fixes — Batch 2 (Next)
 | API-5 | OpenAPI examples on Pydantic models | 🔄 Planned |
 | OPS-3 | Python dependency lock file | 🔄 Planned |
