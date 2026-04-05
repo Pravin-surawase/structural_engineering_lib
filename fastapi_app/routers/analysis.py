@@ -76,10 +76,11 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
             loads=load_defs,
             num_points=request.num_points,
         )
-    except ValueError as e:
+    except ValueError:
+        logger.exception("Invalid input for load analysis")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Internal error in analyze_loads")
@@ -263,10 +264,11 @@ async def smart_analyze_beam(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for smart analysis")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Internal error in smart_analyze_beam")

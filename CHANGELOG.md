@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.21.3] — 2026-04-05
+
+### Security
+- **Global rate limiter middleware** — 120 req/min per-IP, configurable via `RATE_LIMIT_PER_MINUTE` env var (EA-17)
+- **Sanitized error responses** — removed 28 `str(e)` instances across 6 routers, preventing internal detail leakage (CWE-209) (EA-18)
+- **WebSocket Pydantic validation** — `WSDesignParams`/`WSCheckParams` models enforce input validation (EA-19)
+- **CORS from settings** — origins configurable via `CORS_ORIGINS` env var instead of hardcoded (EA-20)
+- **Production auth warning** — config.py warns when `AUTH_ENABLED=False` in production (EA-16)
+
+### Added
+- **API stability tests** — 4 tests verifying all `__all__` exports importable (EA-9)
+- **Import silence test** — verifies `import structural_lib` emits zero warnings (EA-6)
+- **E2E pipeline test** — design→detailing→BBS→DXF→report chain tested (EA-7)
+- **`repo_only` pytest marker** — separates repo-dependent tests from package tests (EA-8)
+- **`build_detailing_input()` factory** — validated builder for detailing input dicts (EA-5)
+- **`.to_dict()` on core dataclasses** — consistent serialization across result types (EA-4)
+- **Lazy module loading** — 7 modules lazy-loaded via `__getattr__`, ~3x faster import (EA-10)
+- **WorkflowHint component** — contextual guidance on Import, Editor, Dashboard pages (EA-11)
+- **"Which API?" decision doc** — [api-levels.md](docs/reference/api-levels.md) (EA-12)
+- **E2E example script** — `examples/end_to_end_workflow.py` (EA-13)
+- **BeamForm validation** — custom cross-field validation (depth > cover, range checks) (EA-15)
+- **Torsion `D_mm` parameter** — accepts actual total depth instead of estimating `d+50` (EA-21)
+- **`bearing_stress_enhancement()`** — IS 456 Cl 34.4 bearing pressure check (EA-22)
+- **`check_scwb()`** — IS 13920 Cl 7.2.1 Strong Column Weak Beam joint check (EA-23)
+
+### Fixed
+- **CI publish workflow** — added `tests/__init__.py` + `pythonpath = .` to fix import errors in CI (PR #526)
+- **Task-oriented README** — rewritten around "If you want X, call Y" pattern (EA-14)
+- **`compute_report()` documented** — return type `str|Path|list[Path]` clarified in docstring (EA-3)
+- **Import-time warning cleanup** — lazy clause DB loading, deprecation stubs gated (EA-2)
+- **sdist test isolation** — `repo_only` marker prevents false failures in distributed packages (EA-1)
+
 ## [0.21.2] - 2026-04-05
 
 Packaging quality release addressing external audit findings. All design calculations are unchanged — fixes are distribution and documentation only.

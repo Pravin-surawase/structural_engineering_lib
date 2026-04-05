@@ -5,6 +5,53 @@
 
 ---
 
+## 2026-04-05 — Session
+
+### Summary
+**21 commits**, **145 files changed**
+
+**Chores:**
+- release v0.21.2 — packaging fixes from external audit (#524)
+- release v0.21.1 (#523)
+
+**Documentation:**
+- session end — worklog entries for EA fixes
+- mark TASK-PKG-6 done, update session brief
+- post-release v0.21.1 session end
+- session end — CIFIX worklog and next-session-brief updates
+
+**Bug Fixes:**
+- add tests __init__.py and pytest pythonpath for CI imports (#526)
+- close remaining CI bypass escape hatches in finish_task_pr.sh and global instructions (#522)
+- CI failures and ops agent CI bypass prevention (#521)
+- FE-1a accessibility — ARIA landmarks, skip-to-content, Canvas role, nav labels (#514)
+
+**Other:**
+- EA-FIXES: Resolve remaining 9 external audit findings (EA-9, EA-11, EA-14, EA-16, EA-19–EA-23): CORS config, auth warnings, WebSocket validation, API stability tests, torsion D_mm, bearing stress, SCWB check, WorkflowHint component, README rewrite (#528)
+- TASK-EA-FIXES: Resolve 14 external audit findings (EA-1 through EA-18): test infra, import cleanup, API consistency, security hardening, frontend validation, docs (#527)
+- TASK-PKG-6: wheel content tests + doc version sync to v0.21.2 (TASK-PKG-6) (#525)
+- TASK-P2B5: P2 Batch 5 — DOC-1, DOC-2, DOC-3, OPS-2, OPS-7, UX-7, FE-8 (#520)
+- TASK-P2B4: P2 Batch 4: S-20 dep pins, S-21 auth logging, S-23 Docker ro, T-13 Hypothesis tests, BE-2 function counts, GOV-4 release docs, FE-4 tooltips, OPS-6 closure (#519)
+- ... and 6 more
+
+**New/Changed Artifacts:**
+- Hooks: useBatchDesign, useCSVImport, useExport, useReducedMotion, useWebGLContextLoss
+- Endpoints: analysis, design, detailing, export, geometry
+- Components: BatchDesignPage, BeamDetailPage, BeamDetailPanel, BeamForm, BuildingEditorPage
+- Tests: __init__, test_api_stability, test_api_surface_snapshot, test_clause_traceability, test_footing
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #XX | - |
+
+### Key Deliverables
+-
+
+### Notes
+-
+
+
 ## 2026-04-04 — Session
 
 ### Summary

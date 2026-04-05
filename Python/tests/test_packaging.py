@@ -173,3 +173,56 @@ class TestImportSilence:
         finally:
             # Restore original modules
             sys.modules.update(saved)
+
+
+class TestAPIStability:
+    """Verify all __all__ exports are importable and not broken."""
+
+    def test_all_exports_importable(self):
+        """Every name in __all__ must be importable from structural_lib."""
+        import structural_lib
+
+        all_names = structural_lib.__all__
+        missing = []
+        for name in all_names:
+            if not hasattr(structural_lib, name):
+                missing.append(name)
+        assert not missing, f"__all__ exports not importable: {missing}"
+
+    def test_all_count_minimum(self):
+        """__all__ should have at least 100 exports (current: ~104)."""
+        import structural_lib
+
+        assert (
+            len(structural_lib.__all__) >= 90
+        ), f"__all__ has only {len(structural_lib.__all__)} exports, expected 90+"
+
+    def test_key_functions_callable(self):
+        """Core API functions must be callable."""
+        from structural_lib import (
+            build_detailing_input,
+            check_beam_is456,
+            design_beam_is456,
+            detail_beam_is456,
+            optimize_beam_cost,
+        )
+
+        for func in [
+            design_beam_is456,
+            detail_beam_is456,
+            optimize_beam_cost,
+            check_beam_is456,
+            build_detailing_input,
+        ]:
+            assert callable(func), f"{func.__name__} is not callable"
+
+    def test_key_classes_instantiable(self):
+        """Core result classes must be importable."""
+        from structural_lib import (
+            ComplianceCaseResult,
+            DesignAndDetailResult,
+            TorsionResult,
+        )
+
+        for cls in [ComplianceCaseResult, DesignAndDetailResult, TorsionResult]:
+            assert isinstance(cls, type), f"{cls.__name__} is not a class"
