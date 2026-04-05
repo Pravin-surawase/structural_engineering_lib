@@ -840,6 +840,27 @@ E_DUCTILE_COL_005 = DesignError(
     recovery="Increase confining hoop area Ash to meet IS 13920 Cl 7.4.7/7.4.8 requirements.",
 )
 
+# Strong Column Weak Beam (SCWB) Errors --- IS 13920:2016 Cl. 7.2.1
+E_SCWB_001 = DesignError(
+    code="E_SCWB_001",
+    severity=Severity.ERROR,
+    message="Moment capacity must be positive",
+    field="moment_capacity",
+    hint="All moment capacities at the joint must be > 0.",
+    clause="IS 13920 Cl. 7.2.1",
+    recovery="Provide valid positive moment capacities for columns and beams at the joint.",
+)
+
+E_SCWB_002 = DesignError(
+    code="E_SCWB_002",
+    severity=Severity.ERROR,
+    message="Strong Column Weak Beam check failed: ΣMc < 1.1 × ΣMb",
+    field="sum_column_capacity_knm",
+    hint="Increase column moment capacity or reduce beam moment capacity at joint.",
+    clause="IS 13920 Cl. 7.2.1",
+    recovery="Increase column sections or reinforcement so that ΣMc ≥ 1.1 × ΣMb at every joint.",
+)
+
 
 def make_error(
     code: str,

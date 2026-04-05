@@ -1402,6 +1402,43 @@ class FootingBearingResult:
 
 
 @dataclass(frozen=True)
+class BearingStressEnhancementResult:
+    """Bearing stress enhancement per IS 456 Cl 34.4.
+
+    When the loaded area (column footprint) is smaller than the
+    supporting area (frustum of footing), permissible bearing stress
+    may be increased by a factor √(A1/A2), capped at 2.0.
+    """
+
+    basic_stress_mpa: float  # 0.45 × fck (N/mm²)
+    enhancement_factor: float  # √(A1/A2), capped at 2.0
+    permissible_stress_mpa: float  # basic × enhancement_factor (N/mm²)
+    A1_mm2: float  # Supporting area — largest frustum (mm²)
+    A2_mm2: float  # Loaded area — column footprint (mm²)
+    clause_ref: str = "Cl. 34.4"
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "basic_stress_mpa": self.basic_stress_mpa,
+            "enhancement_factor": self.enhancement_factor,
+            "permissible_stress_mpa": self.permissible_stress_mpa,
+            "A1_mm2": self.A1_mm2,
+            "A2_mm2": self.A2_mm2,
+            "clause_ref": self.clause_ref,
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        return (
+            f"Bearing Enhancement (Cl 34.4): "
+            f"basic={self.basic_stress_mpa:.2f}MPa, "
+            f"factor={self.enhancement_factor:.2f}, "
+            f"permissible={self.permissible_stress_mpa:.2f}MPa"
+        )
+
+
+@dataclass(frozen=True)
 class FootingFlexureResult:
     """Flexural design per IS 456 Cl 34.2.3.1 — both directions."""
 

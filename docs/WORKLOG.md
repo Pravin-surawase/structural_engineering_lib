@@ -34,6 +34,14 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-05 | EA-20,16 | Security: CORS from settings, auth production docs | — |
+| 2026-04-05 | EA-19 | Security: WebSocket Pydantic validation (WSDesignParams, WSCheckParams) | — |
+| 2026-04-05 | EA-9 | Testing: 105 API stability tests for __all__ exports | — |
+| 2026-04-05 | EA-21 | IS 456: Torsion D_mm parameter (Cl 41.4.2), deprecation warning | — |
+| 2026-04-05 | EA-22 | IS 456: bearing_stress_enhancement() per Cl 34.4 | — |
+| 2026-04-05 | EA-23 | IS 13920: check_scwb() joint check per Cl 7.2.1 | — |
+| 2026-04-05 | EA-11 | Frontend: WorkflowHint component on DesignView, ImportView, BuildingEditorPage | — |
+| 2026-04-05 | EA-14 | Docs: Task-oriented README rewrite | — |
 | 2026-04-05 | EA-1,6,8 | Test infra: repo_only marker, import silence test | b1a4351b |
 | 2026-04-05 | EA-2,10 | Import cleanup: lazy clause DB, lazy __init__ (7 modules) | b1a4351b |
 | 2026-04-05 | EA-3,4,5 | API consistency: compute_report docs, to_dict(), build_detailing_input | b1a4351b |

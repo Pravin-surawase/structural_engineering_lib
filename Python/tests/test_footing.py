@@ -24,11 +24,15 @@ from structural_lib.codes.is456.footing._common import (
     punching_perimeter_mm,
     validate_footing_inputs,
 )
-from structural_lib.codes.is456.footing.bearing import size_footing
+from structural_lib.codes.is456.footing.bearing import (
+    bearing_stress_enhancement,
+    size_footing,
+)
 from structural_lib.codes.is456.footing.flexure import footing_flexure
 from structural_lib.codes.is456.footing.one_way_shear import footing_one_way_shear
 from structural_lib.codes.is456.footing.punching_shear import footing_punching_shear
 from structural_lib.core.data_types import (
+    BearingStressEnhancementResult,
     FootingBearingResult,
     FootingFlexureResult,
     FootingOneWayShearResult,
@@ -222,6 +226,129 @@ class TestFootingBearing:
         )
         assert result.L_mm > 400
         assert result.B_mm > 400
+
+
+# ===========================================================================
+# 1b. Bearing Stress Enhancement Tests — Cl 34.4
+# ===========================================================================
+
+
+class TestBearingStressEnhancement:
+    """Tests for bearing_stress_enhancement: IS 456 Cl 34.4."""
+
+    def test_basic_no_enhancement(self):
+        """IS 456 Cl 34.4: A1 == A2 → factor = 1.0, no enhancement.
+        fck=25, A1=A2=160000 mm² (400×400 column on same-sized pedestal).
+        Basic stress = 0.45 × 25 = 11.25 MPa.
+        """
+        result = bearing_stress_enhancement(
+            fck=25.0,
+            A1_mm2=160_000.0,
+            A2_mm2=160_000.0,
+        )
+        assert isinstance(result, BearingStressEnhancementResult)
+        assert result.basic_stress_mpa == pytest.approx(11.25)
+        assert result.enhancement_factor == pytest.approx(1.0)
+        assert result.permissible_stress_mpa == pytest.approx(11.25)
+        assert result.clause_ref == "Cl. 34.4"
+
+    def test_enhancement_factor_normal(self):
+        """IS 456 Cl 34.4: A1=640000, A2=160000 → √4 = 2.0 (at cap).
+        fck=25 → basic=11.25 MPa, enhanced=22.5 MPa.
+        """
+        result = bearing_stress_enhancement(
+            fck=25.0,
+            A1_mm2=640_000.0,  # 800×800
+            A2_mm2=160_000.0,  # 400×400
+        )
+        assert result.enhancement_factor == pytest.approx(2.0)
+        assert result.permissible_stress_mpa == pytest.approx(22.5)
+
+    def test_enhancement_factor_capped_at_2(self):
+        """IS 456 Cl 34.4: √(A1/A2) > 2.0 → capped at 2.0.
+        A1=1600000, A2=160000 → √10 ≈ 3.16 → capped to 2.0.
+        """
+        result = bearing_stress_enhancement(
+            fck=20.0,
+            A1_mm2=1_600_000.0,
+            A2_mm2=160_000.0,
+        )
+        assert result.enhancement_factor == pytest.approx(2.0)
+        assert result.permissible_stress_mpa == pytest.approx(0.45 * 20.0 * 2.0)
+
+    def test_intermediate_enhancement(self):
+        """IS 456 Cl 34.4: Intermediate ratio → factor between 1.0 and 2.0.
+        A1=360000, A2=160000 → √2.25 = 1.5.
+        fck=30 → basic=13.5 MPa, enhanced=20.25 MPa.
+        """
+        result = bearing_stress_enhancement(
+            fck=30.0,
+            A1_mm2=360_000.0,
+            A2_mm2=160_000.0,
+        )
+        assert result.enhancement_factor == pytest.approx(1.5)
+        assert result.basic_stress_mpa == pytest.approx(13.5)
+        assert result.permissible_stress_mpa == pytest.approx(20.25)
+
+    def test_validation_negative_fck(self):
+        """Validation: Negative fck → ValidationError."""
+        with pytest.raises(ValidationError, match="positive"):
+            bearing_stress_enhancement(fck=-25.0, A1_mm2=640_000.0, A2_mm2=160_000.0)
+
+    def test_validation_zero_fck(self):
+        """Validation: Zero fck → ValidationError."""
+        with pytest.raises(ValidationError, match="positive"):
+            bearing_stress_enhancement(fck=0.0, A1_mm2=640_000.0, A2_mm2=160_000.0)
+
+    def test_validation_negative_area(self):
+        """Validation: Negative area → ValidationError."""
+        with pytest.raises(ValidationError, match="positive"):
+            bearing_stress_enhancement(fck=25.0, A1_mm2=-640_000.0, A2_mm2=160_000.0)
+
+    def test_validation_zero_area(self):
+        """Validation: Zero loaded area → ValidationError."""
+        with pytest.raises(ValidationError, match="positive"):
+            bearing_stress_enhancement(fck=25.0, A1_mm2=640_000.0, A2_mm2=0.0)
+
+    def test_validation_A1_less_than_A2(self):
+        """Validation: A1 < A2 → ValidationError."""
+        with pytest.raises(ValidationError, match="A1.*A2"):
+            bearing_stress_enhancement(fck=25.0, A1_mm2=100_000.0, A2_mm2=160_000.0)
+
+    def test_result_is_frozen(self):
+        """Result type: BearingStressEnhancementResult is frozen dataclass."""
+        result = bearing_stress_enhancement(
+            fck=25.0, A1_mm2=640_000.0, A2_mm2=160_000.0
+        )
+        with pytest.raises(AttributeError):
+            result.enhancement_factor = 9.9  # type: ignore[misc]
+
+    def test_result_to_dict(self):
+        """Result type: to_dict() returns dict with all expected keys."""
+        result = bearing_stress_enhancement(
+            fck=25.0, A1_mm2=640_000.0, A2_mm2=160_000.0
+        )
+        d = result.to_dict()
+        assert isinstance(d, dict)
+        for key in (
+            "basic_stress_mpa",
+            "enhancement_factor",
+            "permissible_stress_mpa",
+            "A1_mm2",
+            "A2_mm2",
+            "clause_ref",
+        ):
+            assert key in d
+
+    def test_result_summary(self):
+        """Result type: summary() returns non-empty descriptive string."""
+        result = bearing_stress_enhancement(
+            fck=25.0, A1_mm2=640_000.0, A2_mm2=160_000.0
+        )
+        s = result.summary()
+        assert isinstance(s, str)
+        assert len(s) > 10
+        assert "34.4" in s
 
 
 # ===========================================================================

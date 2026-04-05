@@ -7,99 +7,157 @@ IS 456 RC Beam Design Library (Python package).
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
 
-For full project overview and usage examples, see the repository root `README.md`.
-
 ## Install
 
 ```bash
-# Recommended (pinned to release tag)
+pip install structural-lib-is456           # from PyPI
+pip install "structural-lib-is456[dxf]"    # with DXF export support
+
+# Or pin to a release tag
 pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.2#subdirectory=Python"
-
-# With DXF support (pinned)
-pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.2#subdirectory=Python"
-
-# PyPI (latest — may differ from pinned tag)
-pip install structural-lib-is456
-
-# PyPI with DXF support
-pip install "structural-lib-is456[dxf]"
 ```
 
-> **Requires Python 3.11+.** On Python 3.9–3.10, pip will install the older v0.16.x which has a smaller API (beam-only, no column/footing support).
+> **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).
 
-## Extras
+---
 
-- `dxf`: DXF export support (`ezdxf`)
-- `render`: planned DXF render to PNG/PDF (`matplotlib`) — not implemented yet
-- `dev`: tooling for tests/formatting/linting
+## If You Want To…
 
-## Quick Start: CLI Usage
-
-The library provides a unified command-line interface:
-
-```bash
-# Run beam design from CSV input
-python -m structural_lib design input.csv -o results.json
-
-# Generate bar bending schedule
-python -m structural_lib bbs results.json -o bbs.csv
-
-# Generate DXF drawings (requires ezdxf)
-python -m structural_lib dxf results.json -o drawings.dxf
-
-# Run complete job from specification
-python -m structural_lib job job.json -o output/
-
-# Critical set + report from job outputs
-python -m structural_lib critical output/ --top 10 --format=csv -o critical.csv
-python -m structural_lib report output/ --format=html -o report.html
-```
-The HTML report includes a cross-section SVG, input sanity heatmap, stability scorecard,
-and units sentinel.
-
-You can also generate reports directly from `design_results.json`:
-```bash
-python -m structural_lib report results.json --format=html -o report/ --batch-threshold 80
-```
-
-Run `python -m structural_lib --help` for more options.
-
-## Insights export (v0.13.0+)
-
-```bash
-python -m structural_lib design input.csv -o results.json --insights
-# Writes: results.json + <output_stem>_insights.json
-```
-
-Note: CLI insights currently export precheck + sensitivity + robustness; constructability may be null until CLI integration is completed.
-
-## Quick Start: Python API
+### Design a Beam (IS 456 flexure + shear)
 
 ```python
-from structural_lib import flexure, shear, api
+from structural_lib import design_beam_is456
 
-# Single beam design
-result = flexure.design_singly_reinforced(
-    b=230, d=450, d_total=500, mu_knm=100, fck=25, fy=500
-)
-print(f"Ast required: {result.ast_required:.0f} mm²")
-
-# Multi-case compliance check
-report = api.check_beam_is456(
-    units="IS456",
-    b_mm=230, D_mm=500, d_mm=450,
+result = design_beam_is456(
+    units="IS456", b_mm=300, D_mm=500, d_mm=450,
     fck_nmm2=25, fy_nmm2=500,
-    cases=[{"case_id": "ULS-1", "mu_knm": 100, "vu_kn": 80}]
+    mu_knm=150, vu_kn=100,
+)
+print(f"Ast = {result.flexure.Ast_required:.0f} mm²")
+print(f"Safe? {result.flexure.is_safe}")
+```
+
+### Get Detailing (bar sizes, stirrups, cut lengths)
+
+```python
+from structural_lib import build_detailing_input, compute_detailing
+
+detailing_input = build_detailing_input(
+    result, beam_id="B1", b_mm=300, D_mm=500, d_mm=450,
+    span_mm=6000, cover_mm=30, fck_nmm2=25, fy_nmm2=500,
+)
+detailed = compute_detailing(detailing_input)
+
+for beam in detailed:
+    print(f"{beam.beam_id}: {len(beam.top_bars)} top, {len(beam.bottom_bars)} bottom zones")
+```
+
+### Generate a Bar Bending Schedule (BBS)
+
+```python
+from structural_lib import compute_bbs
+
+bbs = compute_bbs(detailed, project_name="My Project")
+print(f"Total weight: {bbs.summary.total_weight_kg:.1f} kg")
+for item in bbs.items:
+    print(f"  {item.bar_mark}: ø{item.diameter_mm:.0f} × {item.no_of_bars} nos")
+```
+
+### Export DXF Drawings
+
+```python
+from structural_lib import compute_dxf
+
+dxf_bytes = compute_dxf(detailed)  # returns bytes — write to file
+with open("beam.dxf", "wb") as f:
+    f.write(dxf_bytes)
+```
+
+> Requires the `dxf` extra: `pip install "structural-lib-is456[dxf]"`
+
+### Generate an HTML Report
+
+```python
+from structural_lib import compute_report
+
+html = compute_report(detailing_input, format="html")
+with open("report.html", "w") as f:
+    f.write(html)
+```
+
+### Batch Design from CSV
+
+```python
+from structural_lib.services.adapters import GenericCSVAdapter
+from structural_lib import design_beam_is456
+
+adapter = GenericCSVAdapter()
+beams = adapter.parse_file("beams.csv")
+results = [design_beam_is456(**beam) for beam in beams]
+```
+
+### Run the Full Pipeline (design → detail → BBS → report)
+
+See [examples/end_to_end_workflow.py](examples/end_to_end_workflow.py) for a complete working script.
+
+### Cost-Optimize a Beam
+
+```python
+from structural_lib import optimize_beam_cost
+
+optimized = optimize_beam_cost(
+    b_mm=300, D_mm=500, d_mm=450,
+    mu_knm=150, vu_kn=100, fck_nmm2=25, fy_nmm2=500,
+)
+```
+
+### Check Multi-Case Compliance
+
+```python
+from structural_lib import check_beam_is456
+
+report = check_beam_is456(
+    units="IS456", b_mm=230, D_mm=500, d_mm=450,
+    fck_nmm2=25, fy_nmm2=500,
+    cases=[{"case_id": "ULS-1", "mu_knm": 100, "vu_kn": 80}],
 )
 print(f"Governing case: {report.governing_case_id}")
 ```
 
-## New in v0.21.0
+---
 
-- **Cost Optimization:** `optimize_beam_cost()` for cost-optimized beam design.
-- **API Contract Testing:** `check_api.py --signatures` for preventing API mismatches.
-- **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
-- **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.
-- **DXF/BBS quality gates:** mark consistency checks + DXF content tests + title block context.
-- **Batch packaging (V08):** `report` accepts design results JSON and supports folder output with `--batch-threshold`.
-- **Golden fixtures (V09):** Deterministic report outputs verified via golden-file tests.
+## CLI Usage
+
+```bash
+python -m structural_lib design input.csv -o results.json        # Beam design
+python -m structural_lib bbs results.json -o bbs.csv             # Bar bending schedule
+python -m structural_lib dxf results.json -o drawings.dxf        # DXF drawings
+python -m structural_lib report results.json --format=html -o report.html  # HTML report
+python -m structural_lib job job.json -o output/                 # Full job from spec
+python -m structural_lib --help                                  # All options
+```
+
+---
+
+## What's Available
+
+| Category | Functions | Description |
+|----------|-----------|-------------|
+| **Beam Design** | `design_beam_is456`, `design_and_detail_beam_is456`, `design_from_input` | IS 456 flexure + shear |
+| **Detailing** | `build_detailing_input`, `compute_detailing`, `detail_beam_is456` | Bar sizes, stirrups, cut lengths |
+| **BBS / Export** | `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report` | BBS, DXF, HTML reports |
+| **Column Design** | `design_column_axial_is456`, `design_short_column_uniaxial_is456`, `classify_column_is456` | Axial, uniaxial, biaxial |
+| **Optimization** | `optimize_beam_cost`, `smart_analyze_design`, `suggest_beam_design_improvements` | Cost optimization, smart analysis |
+| **Compliance** | `check_beam_is456`, `check_compliance_report`, `check_beam_slenderness` | Multi-case IS 456 checks |
+| **Torsion** | `design_torsion`, `calculate_equivalent_shear`, `calculate_torsion_shear_stress` | IS 456 torsion design |
+| **Serviceability** | `check_deflection_span_depth`, `check_crack_width` | Deflection + crack width |
+| **CSV Import** | `GenericCSVAdapter` (via `structural_lib.services.adapters`) | 40+ column mappings |
+| **ETABS Integration** | `load_etabs_csv`, `create_job_from_etabs`, `validate_etabs_csv` | ETABS CSV import |
+| **3D Geometry** | `beam_to_3d_geometry`, `compute_rebar_positions`, `compute_stirrup_positions` | 3D rebar visualization |
+| **Validation** | `validate_job_spec`, `validate_design_results`, `verify_calculation` | Input/output validation |
+
+> Full API reference: see [docs/reference/api.md](../docs/reference/api.md)
+
+## License
+
+MIT — see [LICENSE](LICENSE).

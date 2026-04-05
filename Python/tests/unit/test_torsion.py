@@ -65,26 +65,56 @@ class TestEquivalentMoment:
         # D ≈ d + 50 = 500 mm
         # Mt = 10 × (1 + 500/300) / 1.7 = 10 × 2.67 / 1.7 = 15.69 kN·m
         # Me = 150 + 15.69 = 165.69 kN·m
-        me = calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=450, b=300)
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            me = calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=450, b=300)
         D = 500
         mt = 10 * (1 + D / 300) / 1.7
         expected = 150 + mt
         assert me == pytest.approx(expected, rel=0.01)
 
+    def test_explicit_d_mm(self):
+        """Me with explicit D_mm uses actual overall depth, no deprecation warning."""
+        import warnings
+
+        # D_mm = 550 mm (different from d + 50 = 500)
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", DeprecationWarning)
+            me = calculate_equivalent_moment(
+                mu_knm=150, tu_knm=10, d=450, b=300, D_mm=550
+            )
+        # Mt = 10 × (1 + 550/300) / 1.7
+        mt = 10 * (1 + 550 / 300) / 1.7
+        expected = 150 + mt
+        assert me == pytest.approx(expected, rel=0.01)
+
+    def test_d_mm_none_emits_deprecation_warning(self):
+        """Omitting D_mm emits a DeprecationWarning."""
+        import warnings
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=450, b=300)
+            dep_warnings = [x for x in w if issubclass(x.category, DeprecationWarning)]
+            assert len(dep_warnings) >= 1
+            assert "D_mm not provided" in str(dep_warnings[0].message)
+
     def test_zero_torsion(self):
         """With Tu = 0, Me = Mu."""
-        me = calculate_equivalent_moment(mu_knm=150, tu_knm=0, d=450, b=300)
+        me = calculate_equivalent_moment(mu_knm=150, tu_knm=0, d=450, b=300, D_mm=500)
         assert me == pytest.approx(150, rel=0.01)
 
     def test_zero_width_raises(self):
         """Zero beam width should raise DimensionError."""
         with pytest.raises(DimensionError):
-            calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=450, b=0)
+            calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=450, b=0, D_mm=500)
 
     def test_zero_depth_raises(self):
         """Zero depth should raise DimensionError."""
         with pytest.raises(DimensionError):
-            calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=0, b=300)
+            calculate_equivalent_moment(mu_knm=150, tu_knm=10, d=0, b=300, D_mm=500)
 
 
 class TestTorsionShearStress:

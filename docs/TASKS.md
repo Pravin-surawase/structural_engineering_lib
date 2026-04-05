@@ -134,7 +134,7 @@
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
 | EA-7 | **Add e2e pipeline test** — `test_full_pipeline_e2e.py`: design → detailing → BBS → DXF → report chain. | P1 | @tester | ✅ Done |
-| EA-9 | **Add wheel API stability test** — Build wheel, install in temp venv, verify all `__all__` members importable. | P2 | @tester | 📋 |
+| EA-9 | **Add wheel API stability test** — Build wheel, install in temp venv, verify all `__all__` members importable. | P2 | @tester | ✅ Done |
 
 ### Batch 5 — Security Hardening
 
@@ -155,19 +155,19 @@
 |----|------|----------|-------|--------|
 | EA-12 | **"Which API?" decision doc** — Document when to use `api.design_beam_is456()` vs `flexure.design_singly_reinforced()` vs module-level imports. | P2 | @doc-master | ✅ Done |
 | EA-13 | **Copy-pasteable e2e example** — Python script: design → detailing → BBS → report in one file. | P2 | @doc-master | ✅ Done |
-| EA-14 | **Task-oriented README** — Rewrite around "If you want X, call Y" structure. | P2 | @doc-master | 📋 |
+| EA-14 | **Task-oriented README** — Rewrite around "If you want X, call Y" structure. | P2 | @doc-master | ✅ Done |
 
 ### Deferred (lower priority, future versions)
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
-| EA-11 | Canonical workflow guidance in UI | P2 | @frontend | Deferred to v0.22 |
-| EA-16 | Auth enabled by default in production deployments | P1 | @ops | Deferred — needs deployment strategy |
-| EA-19 | WebSocket Pydantic validation | P2 | @api-developer | Deferred |
-| EA-20 | Wire CORS Settings to middleware | P2 | @api-developer | Deferred |
-| EA-21 | Torsion D parameter fix (IS-1) | P2 | @structural-math | Deferred |
-| EA-22 | Footing Cl 34.4 bearing enhancement (IS-6) | P2 | @structural-math | Deferred |
-| EA-23 | SCWB joint check (IS 13920 Cl 7.2.1) | P2 | @structural-math | Deferred |
+| EA-11 | Canonical workflow guidance in UI | P2 | @frontend | ✅ Done |
+| EA-16 | Auth enabled by default in production deployments | P1 | @ops | ✅ Done |
+| EA-19 | WebSocket Pydantic validation | P2 | @api-developer | ✅ Done |
+| EA-20 | Wire CORS Settings to middleware | P2 | @api-developer | ✅ Done |
+| EA-21 | Torsion D parameter fix (IS-1) | P2 | @structural-math | ✅ Done |
+| EA-22 | Footing Cl 34.4 bearing enhancement (IS-6) | P2 | @structural-math | ✅ Done |
+| EA-23 | SCWB joint check (IS 13920 Cl 7.2.1) | P2 | @structural-math | ✅ Done |
 
 ## Recently Done
 

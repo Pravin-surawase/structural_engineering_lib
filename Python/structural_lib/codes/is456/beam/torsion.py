@@ -144,7 +144,11 @@ def calculate_equivalent_shear(vu_kn: float, tu_knm: float, b: float) -> float:
 
 @clause("41.4.2")
 def calculate_equivalent_moment(
-    mu_knm: float, tu_knm: float, d: float, b: float
+    mu_knm: float,
+    tu_knm: float,
+    d: float,
+    b: float,
+    D_mm: float | None = None,
 ) -> float:
     """
     Calculate equivalent bending moment per IS 456 Cl 41.4.2.
@@ -157,6 +161,8 @@ def calculate_equivalent_moment(
         tu_knm: Factored torsional moment (kN·m)
         d: Effective depth (mm)
         b: Beam width (mm)
+        D_mm: Overall depth (mm). If None, falls back to d + 50
+            (deprecated — always pass the actual overall depth).
 
     Returns:
         Equivalent moment Me (kN·m)
@@ -184,13 +190,24 @@ def calculate_equivalent_moment(
             clause_ref="Cl. 41.4.2",
         )
 
-    # Estimate D from d (assume cover ≈ 50mm)
-    D = d + 50
+    # IS 456 Cl 41.4.2: D is the overall depth of the beam
+    if D_mm is not None:
+        D = D_mm
+    else:
+        import warnings
 
-    # Mt = Tu × (1 + D/b) / 1.7
+        warnings.warn(
+            "calculate_equivalent_moment(): D_mm not provided, falling back "
+            "to D = d + 50. Pass the actual overall depth D_mm explicitly.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        D = d + 50
+
+    # IS 456 Cl 41.4.2: Mt = Tu × (1 + D/b) / 1.7
     mt = abs(tu_knm) * (1 + D / b) / 1.7
 
-    # Me = Mu + Mt
+    # IS 456 Cl 41.4.2: Me = Mu + Mt
     me = abs(mu_knm) + mt
 
     return me
@@ -474,7 +491,7 @@ def design_torsion(
     ve_kn = calculate_equivalent_shear(vu_kn, tu_knm, b)
 
     # Step 2: Calculate equivalent moment (Cl 41.4.2)
-    me_knm = calculate_equivalent_moment(mu_knm, tu_knm, d, b)
+    me_knm = calculate_equivalent_moment(mu_knm, tu_knm, d, b, D_mm=D)
 
     # Step 3: Calculate equivalent shear stress
     tv_equiv = calculate_torsion_shear_stress(ve_kn, b, d)

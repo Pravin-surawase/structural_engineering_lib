@@ -17,6 +17,7 @@ import { useCodeChecks, useRebarSuggestions } from "../../hooks/useInsights";
 import type { CheckDetail, SuggestionItem } from "../../hooks/useInsights";
 import { ConnectionStatus } from "../ui/ConnectionStatus";
 import { Viewport3D } from "../viewport/Viewport3D";
+import { WorkflowHint } from "../ui/WorkflowHint";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -276,6 +277,21 @@ export function DesignView() {
 
       {/* Right: 3D Viewport + Results — dynamic layout */}
       <div className="flex-1 flex flex-col bg-zinc-900/30 relative">
+        {/* Workflow hint */}
+        <div className="px-4 pt-3 pb-2">
+          <WorkflowHint
+            stepNumber={state.result ? 3 : 1}
+            totalSteps={4}
+            title={state.result ? "Review Results" : "Enter Beam Dimensions"}
+            description={
+              state.result
+                ? "Check the design results above. Adjust inputs if needed, or export BBS/DXF."
+                : "Fill in dimensions, materials, and forces in the left panel, then click 'Design Beam'."
+            }
+            nextAction={state.result ? "Export → BBS/DXF/Report" : "Design Beam"}
+            storageKey="workflow_hint_design_view"
+          />
+        </div>
 
         {/* Export dropdown (top-right corner, shown when result exists) */}
         {state.result && (
