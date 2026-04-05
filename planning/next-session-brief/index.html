@@ -1503,10 +1503,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-next-priority-order" class="md-nav__link">
+  <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's Next (Priority Order)
+        What's Next
       
     </span>
   </a>
@@ -1575,44 +1575,43 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> v0.21.4 Sprint 1 — 5 P0 fixes shipped (PR #530, commit 06ec1b68)</p>
+<strong>Last Session:</strong> v0.22.0 Sprint 2 — 8 P1 fixes shipped</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>v0.21.4 Sprint 1 — All 5 P0 fixes shipped (commit 06ec1b68, PR #530):</strong></li>
-<li>S-NEW-03: CSV upload 10MB file size limit (<code>max_upload_size_bytes</code> in config, HTTP 413)</li>
-<li>S-NEW-01: 26 str(e) info leaks sanitized (new <code>error_utils.py</code> with <code>sanitize_error()</code>)</li>
-<li>UX-01: d_mm &gt;= D_mm validation at API entry + Pydantic models</li>
-<li>FE-NEW-01: Three.js dispose() cleanup in HomePage animation</li>
-<li>UX-02 Phase 1: Column functions return typed dataclasses with DictCompatMixin</li>
-<li>All 3 CRITICAL findings resolved. Audit score improved to ~8.4/10.</li>
+<li><strong>v0.22.0 Sprint 2 — All 8 P1 fixes:</strong></li>
+<li>T-NEW-01: 17 MagicMock instances replaced with real dataclass fixtures</li>
+<li>IS-NEW-01/02: 18 @clause decorators added (4 footing + 14 serviceability)</li>
+<li>T-NEW-08: 62 new FastAPI tests across 6 test files</li>
+<li>ARCH-NEW-09: 49 bare except Exception blocks replaced with specific types</li>
+<li>UX-05: clause_refs field added to 4 result dataclasses, populated with IS 456 references</li>
+<li>FE-NEW-02: WCAG AA form accessibility (4 React components enhanced)</li>
+<li>API-NEW-01: Standardized response shapes with success_response()/error_response()</li>
+<li>ARCH-NEW-12: services/api.py God module split into beam_api.py, column_api.py, common_api.py</li>
+<li>All P1 findings resolved. Audit score ~8.7/10.</li>
 </ul>
-<h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
+<h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>P1: ARCH-NEW-12</strong> Split services/api.py God module into domain files</li>
-<li><strong>P1: T-NEW-01</strong> Replace MagicMock with real result objects</li>
-<li><strong>P1: T-NEW-08</strong> Add FastAPI tests for 7 untested routers</li>
-<li><strong>P1: IS-NEW-01 + IS-NEW-02</strong> Add @clause decorators (21 functions)</li>
-<li><strong>P1: UX-05</strong> Add clause references to design results</li>
-<li><strong>P1: FE-NEW-02</strong> WCAG AA form accessibility</li>
-<li><strong>P1: API-NEW-01</strong> Standardize response shapes</li>
-<li><strong>P1: ARCH-NEW-09</strong> Replace bare except Exception blocks</li>
+<li>Consider P2 items from audit (lower priority)</li>
+<li>Version release v0.22.0</li>
+<li>WCAG testing of remaining components</li>
+<li>Footing API wrappers in services/ (currently only pure math layer)</li>
+<li>Clause registry update for new Annex C/serviceability clauses</li>
 </ol>
 <h2 id="notes-for-next-agent">Notes for Next Agent<a class="headerlink" href="#notes-for-next-agent" title="Permanent link">&para;</a></h2>
 <ul>
-<li>All 5 P0 fixes are merged (PR #530). Zero CRITICAL findings remain.</li>
-<li>P1 items are the next priority — start with ARCH-NEW-12 (split api.py God module)</li>
-<li>New skills (<code>/quality-gate</code>, <code>/release-preflight</code>, <code>/user-acceptance-test</code>, <code>/development-rules</code>) should be invoked during PR and release workflows</li>
-<li>Agent evolver integration is mandatory every session (<code>./run.sh evolve --status</code>)</li>
+<li>All P0 + P1 findings resolved from v0.21.3 audit</li>
+<li>God module split: api.py is now a re-export hub — new functions go to beam_api.py, column_api.py, etc.</li>
+<li>APIResponse wrapper: all endpoints return {"success": true, "data": {...}} — update any client code</li>
+<li>2 pre-existing FastAPI test failures: column uniaxial inf/NaN, cost optimizer 503</li>
 </ul>
 <h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
 <ul>
-<li>v0.21.4: ~8.4/10, all P0 resolved, P1 items next</li>
-<li>v0.21.3 deep: A- (8.0/10), 90 total findings — 5 P0 resolved in v0.21.4</li>
-<li>External audit (prior): 23/23 resolved ✅</li>
+<li>v0.22.0: ~8.7/10, all P0 + P1 resolved</li>
+<li>Total: 90 findings from v0.21.3 deep audit — 5 P0 + 8 P1 = 13 resolved</li>
 </ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
-<li>None — all CRITICAL findings resolved in v0.21.4</li>
+<li>None</li>
 </ul>
 
 

@@ -74,6 +74,13 @@
         "insights",
         "visualization"
       ],
+      "services/api_hub.py": [
+        "insights",
+        "visualization"
+      ],
+      "services/beam_api.py": [
+        "insights"
+      ],
       "services/intelligence.py": [
         "insights"
       ],
