@@ -11,13 +11,12 @@
 - React Validation CI and Docker Build CI failures fixed
 
 ## What's Next (Priority Order)
-1. **v0.22 planning** — Full React migration + AI assistant + remaining UX tasks
-2. P2 audit: 14 remaining items — consider Batch 6 planning
-3. Wire footing functions into services/api.py
-4. TASK-527: TopBar context badges + SettingsPanel
-5. TASK-528: Workflow breadcrumb for batch flow
-6. TASK-516: Triangular + Moment loads
-7. React test infrastructure: consider shared test utilities
+1. **v0.22.0 planning** — AI assistant port, learning center, Streamlit deprecation
+2. **P2 audit** — 14 remaining items, consider Batch 6 planning
+3. **TASK-527:** TopBar context badges + SettingsPanel
+4. **TASK-528:** Workflow breadcrumb for batch flow
+5. **TASK-516:** Triangular + Moment loads
+6. **Wire footing functions** into services/api.py
 
 ## Blockers
 - None
