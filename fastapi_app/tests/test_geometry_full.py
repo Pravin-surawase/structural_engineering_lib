@@ -73,7 +73,7 @@ class TestFullBeamGeometry:
         }
         resp = client.post("/api/v1/geometry/beam/full", json=payload)
         assert resp.status_code == 200
-        data = unwrap(resp)
+        unwrap(resp)
 
     def test_full_geometry_invalid_width(self, client):
         """Zero width should fail."""
