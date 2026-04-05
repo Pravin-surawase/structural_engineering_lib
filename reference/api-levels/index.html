@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/planning/next-session-brief/">
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/reference/api-levels/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Next Session Brief - structural_engineering_lib</title>
+        <title>Which API Should I Use? - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#next-session-brief" class="md-skip">
+        <a href="#which-api-should-i-use" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Next Session Brief
+              Which API Should I Use?
             
           </span>
         </div>
@@ -286,7 +286,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../reference/api/" class="md-tabs__link">
+        <a href="../api/" class="md-tabs__link">
           
   
   
@@ -893,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/api/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -928,7 +928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/is456-formulas/" class="md-nav__link">
+      <a href="../is456-formulas/" class="md-nav__link">
         
   
   
@@ -963,7 +963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/error-codes/" class="md-nav__link">
+      <a href="../error-codes/" class="md-nav__link">
         
   
   
@@ -998,7 +998,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   
@@ -1481,10 +1481,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#latest-handoff-auto" class="md-nav__link">
+  <a href="#level-1-high-level-service-api-recommended" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Latest Handoff (auto)
+        Level 1: High-Level Service API (recommended)
       
     </span>
   </a>
@@ -1492,10 +1492,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-was-completed" class="md-nav__link">
+  <a href="#level-2-module-level-functions-custom-workflows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What Was Completed
+        Level 2: Module-Level Functions (custom workflows)
       
     </span>
   </a>
@@ -1503,10 +1503,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-next-priority-order" class="md-nav__link">
+  <a href="#level-3-fastapi-rest-api-webmobile-apps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's Next (Priority Order)
+        Level 3: FastAPI REST API (web/mobile apps)
       
     </span>
   </a>
@@ -1514,10 +1514,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#audit-status" class="md-nav__link">
+  <a href="#decision-tree" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Audit Status
+        Decision Tree
       
     </span>
   </a>
@@ -1525,10 +1525,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#blockers" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Blockers
+        See Also
       
     </span>
   </a>
@@ -1555,48 +1555,104 @@
   
 
 
-<h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
-<h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
-<!-- HANDOFF:START -->
+<h1 id="which-api-should-i-use">Which API Should I Use?<a class="headerlink" href="#which-api-should-i-use" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference | <strong>Audience:</strong> Developers | <strong>Status:</strong> Active
+<strong>Importance:</strong> High | <strong>Created:</strong> 2026-04-05 | <strong>Last Updated:</strong> 2026-04-05</p>
+<hr />
+<p>structural_lib exposes three API levels. Pick the one that matches your use case.</p>
+<h2 id="level-1-high-level-service-api-recommended">Level 1: High-Level Service API (recommended)<a class="headerlink" href="#level-1-high-level-service-api-recommended" title="Permanent link">&para;</a></h2>
+<p><strong>Module:</strong> <code>structural_lib</code> (top-level) or <code>structural_lib.services.api</code>
+<strong>Best for:</strong> Complete design workflows with all IS 456 compliance checks.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sl</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Beam design (flexure + shear + serviceability)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">design_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">fck_nmm2</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Column axial capacity</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">col</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">design_column_axial_is456</span><span class="p">(</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">Ast_mm2</span><span class="o">=</span><span class="mi">2412</span><span class="p">,</span> <span class="n">unsupported_length_mm</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># Design + detailing + BBS in one call</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">full</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">design_and_detail_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">beam_id</span><span class="o">=</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="n">story</span><span class="o">=</span><span class="s2">&quot;GF&quot;</span><span class="p">,</span> <span class="n">span_mm</span><span class="o">=</span><span class="mi">6000</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">)</span>
+</code></pre></div>
+<p><strong>Returns:</strong> Typed dataclasses (<code>ComplianceCaseResult</code>, <code>DesignAndDetailResult</code>) with <code>.is_safe()</code>, <code>.to_dict()</code>, <code>.summary()</code>.</p>
+<h2 id="level-2-module-level-functions-custom-workflows">Level 2: Module-Level Functions (custom workflows)<a class="headerlink" href="#level-2-module-level-functions-custom-workflows" title="Permanent link">&para;</a></h2>
+<p><strong>Module:</strong> <code>structural_lib.codes.is456.beam.flexure</code>, <code>.shear</code>, etc.
+<strong>Best for:</strong> Individual calculations without the full pipeline.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.beam.flexure</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_singly_reinforced</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.beam.shear</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_shear</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Just flexure</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">flexure</span> <span class="o">=</span> <span class="n">design_singly_reinforced</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">d_total</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Just shear</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">shear</span> <span class="o">=</span> <span class="n">design_shear</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Returns:</strong> Individual result dataclasses (<code>FlexureResult</code>, <code>ShearResult</code>).</p>
+<blockquote>
+<p><strong>Parameter names differ between levels.</strong> Level 1 uses <code>b_mm</code>, <code>fck_nmm2</code>; Level 2 uses <code>b</code>, <code>fck</code>. Always run <code>discover_api_signatures.py &lt;func&gt;</code> to confirm.</p>
+</blockquote>
+<h2 id="level-3-fastapi-rest-api-webmobile-apps">Level 3: FastAPI REST API (web/mobile apps)<a class="headerlink" href="#level-3-fastapi-rest-api-webmobile-apps" title="Permanent link">&para;</a></h2>
+<p><strong>Base URL:</strong> <code>http://localhost:8000/api/v1/</code>
+<strong>Best for:</strong> Web frontends, mobile apps, microservice integration.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/design/beam<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;b_mm&quot;: 300, &quot;D_mm&quot;: 500, &quot;d_mm&quot;: 450,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s1">       &quot;fck&quot;: 25, &quot;fy&quot;: 500, &quot;Mu_kNm&quot;: 150, &quot;Vu_kN&quot;: 100}&#39;</span>
+</code></pre></div>
+<p><strong>Key endpoints:</strong> <code>POST /design/beam</code>, <code>POST /design/column</code>, <code>POST /detailing/beam</code>, <code>POST /export/bbs</code>
+<strong>API docs:</strong> <code>http://localhost:8000/docs</code> (auto-generated OpenAPI)</p>
+<h2 id="decision-tree">Decision Tree<a class="headerlink" href="#decision-tree" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>I want to...</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Design a complete beam</td>
+<td>Level 1: <code>design_beam_is456()</code></td>
+</tr>
+<tr>
+<td>Design a column</td>
+<td>Level 1: <code>design_column_axial_is456()</code></td>
+</tr>
+<tr>
+<td>Get only flexure capacity</td>
+<td>Level 2: <code>flexure.design_singly_reinforced()</code></td>
+</tr>
+<tr>
+<td>Build a web frontend</td>
+<td>Level 3: <code>POST /api/v1/design/beam</code></td>
+</tr>
+<tr>
+<td>Run a full pipeline (design → detail → BBS → report)</td>
+<td>Level 1: <code>design_and_detail_beam_is456()</code> + <code>compute_bbs()</code></td>
+</tr>
+<tr>
+<td>Import ETABS CSV and batch-design</td>
+<td>Level 1: <code>create_jobs_from_etabs_csv()</code></td>
+</tr>
+<tr>
+<td>Get xu_max/d for Fe500</td>
+<td>Level 2: <code>materials.get_xu_max_d(500)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Date: 2026-04-05</li>
-</ul>
-<!-- HANDOFF:END -->
-
-<p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> v0.21.3 released — ALL 23 EA findings resolved, docs updated</p>
-<h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>v0.21.3 released</strong> — External Audit Fixes release</li>
-<li><strong>All 23 external audit findings fixed</strong> (EA-1 through EA-23):</li>
-<li>Security: rate limiter, error sanitization, WS validation, CORS settings, auth warning</li>
-<li>Testing: API stability tests, import silence, e2e pipeline, repo_only marker</li>
-<li>API: <code>build_detailing_input()</code>, <code>.to_dict()</code>, <code>compute_report()</code> documented</li>
-<li>IS 456: torsion D_mm, bearing_stress_enhancement (Cl 34.4), check_scwb (IS 13920 Cl 7.2.1)</li>
-<li>Frontend: WorkflowHint, BeamForm validation</li>
-<li>Docs: api-levels.md, task-oriented README, e2e example script</li>
-<li>Infra: lazy module loading, CI publish fix</li>
-<li><strong>Full doc update:</strong> CHANGELOG, releases.md, TASKS.md, version refs synced to 0.21.3</li>
-</ul>
-<h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>v0.22 work:</strong> AI assistant port, learning center, Streamlit deprecation</li>
-<li><strong>TASK-526:</strong> TopBar context badges + settings panel</li>
-<li><strong>TASK-527:</strong> Workflow breadcrumb for batch flow</li>
-<li><strong>Library expansion:</strong> Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)</li>
-<li><strong>Test coverage:</strong> Report/3D tests (TASK-520)</li>
-</ol>
-<h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
-<ul>
-<li>All P0: ✅ resolved</li>
-<li>All P1: ✅ resolved</li>
-<li>P2: ✅ resolved</li>
-<li>External audit: 23/23 resolved ✅</li>
-<li>Overall grade: A (8.7/10)</li>
-</ul>
-<h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
-<ul>
-<li>None — clean state, all tests pass</li>
+<li><a href="../api/">API Reference</a> — full function signatures</li>
+<li><a href="../../Python/examples/end_to_end_workflow.py">End-to-end example</a> — complete workflow</li>
 </ul>
 
 

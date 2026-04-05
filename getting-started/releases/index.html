@@ -1520,6 +1520,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0213" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.21.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v0213-2026-04-05-external-audit-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.3 — 2026-04-05 (External Audit Fixes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0212" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2242,6 +2270,21 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0213">v0.21.3<a class="headerlink" href="#v0213" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-04-05
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> External Audit Fixes — Security, Testing, API Ergonomics</p>
+<h3 id="v0213-2026-04-05-external-audit-fixes">v0.21.3 — 2026-04-05 (External Audit Fixes)<a class="headerlink" href="#v0213-2026-04-05-external-audit-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>23 external audit findings resolved</strong> — security hardening, API ergonomics, testing infrastructure</li>
+<li>Security: global rate limiter, error sanitization (28 str(e)), WebSocket validation, CORS from settings</li>
+<li>Testing: API stability tests, import silence test, e2e pipeline test, repo_only marker</li>
+<li>IS 456: torsion D_mm parameter (Cl 14.3), bearing stress enhancement (Cl 34.4), SCWB check (IS 13920 Cl 7.2.1)</li>
+<li>New: <code>build_detailing_input()</code> factory, <code>.to_dict()</code> on core dataclasses, lazy module loading</li>
+<li>Docs: "Which API?" decision doc, task-oriented README, e2e example script</li>
+<li>Fix: CI publish workflow test imports</li>
+</ul>
 <hr />
 <h2 id="v0212">v0.21.2<a class="headerlink" href="#v0212" title="Permanent link">&para;</a></h2>
 <p><strong>Date:</strong> 2026-04-05
