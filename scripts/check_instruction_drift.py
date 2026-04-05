@@ -38,7 +38,7 @@ def _strip_frontmatter(text: str) -> str:
     if text.startswith("---"):
         end = text.find("---", 3)
         if end != -1:
-            text = text[end + 3:].lstrip("\n")
+            text = text[end + 3 :].lstrip("\n")
     return text
 
 
@@ -145,7 +145,9 @@ def check_pair(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--verbose", "-v", action="store_true", help="Show diff details")
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Show diff details"
+    )
     parser.add_argument("--json", action="store_true", help="Machine-readable output")
     args = parser.parse_args()
 
@@ -167,7 +169,7 @@ def main() -> int:
     print("=" * 60)
     print("🔍 Instruction Drift Check")
     print("=" * 60)
-    print(f"  .github/instructions/ ↔ .claude/rules/\n")
+    print("  .github/instructions/ ↔ .claude/rules/\n")
 
     status_icons = {
         "ok": "✅",
@@ -202,7 +204,14 @@ def main() -> int:
     else:
         print(f"⚠️  {issues} file(s) have diverged — consider syncing content")
 
-    return 1 if any(r["status"] in ("high_drift", "github_missing", "claude_missing") for r in results) else 0
+    return (
+        1
+        if any(
+            r["status"] in ("high_drift", "github_missing", "claude_missing")
+            for r in results
+        )
+        else 0
+    )
 
 
 if __name__ == "__main__":

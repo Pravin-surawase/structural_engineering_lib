@@ -35,7 +35,7 @@ def check_openapi_spec() -> dict:
         print(f"❌ OpenAPI spec not found: {OPENAPI_SPEC}")
         print("   Run the FastAPI server first to generate it:")
         print("   uvicorn fastapi_app.main:app --reload")
-        print('   Then visit http://localhost:8000/openapi.json and save it')
+        print("   Then visit http://localhost:8000/openapi.json and save it")
         sys.exit(1)
 
     with open(OPENAPI_SPEC) as f:
@@ -309,43 +309,46 @@ def generate_basic_typescript_client(output_dir: Path) -> bool:
     client_dir.mkdir(parents=True, exist_ok=True)
 
     # package.json
-    (client_dir / "package.json").write_text(json.dumps({
-        "name": "@structural-lib/api-client",
-        "version": "0.1.0",
-        "description": "TypeScript client for Structural Design API",
-        "main": "dist/index.js",
-        "types": "dist/index.d.ts",
-        "scripts": {
-            "build": "tsc",
-            "test": "jest"
-        },
-        "dependencies": {},
-        "devDependencies": {
-            "typescript": "^5.0.0"
-        },
-        "peerDependencies": {
-            "typescript": ">=4.7"
-        }
-    }, indent=2))
+    (client_dir / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@structural-lib/api-client",
+                "version": "0.1.0",
+                "description": "TypeScript client for Structural Design API",
+                "main": "dist/index.js",
+                "types": "dist/index.d.ts",
+                "scripts": {"build": "tsc", "test": "jest"},
+                "dependencies": {},
+                "devDependencies": {"typescript": "^5.0.0"},
+                "peerDependencies": {"typescript": ">=4.7"},
+            },
+            indent=2,
+        )
+    )
 
     # tsconfig.json
-    (client_dir / "tsconfig.json").write_text(json.dumps({
-        "compilerOptions": {
-            "target": "ES2020",
-            "module": "commonjs",
-            "declaration": True,
-            "outDir": "./dist",
-            "strict": True,
-            "esModuleInterop": True
-        },
-        "include": ["src/**/*"]
-    }, indent=2))
+    (client_dir / "tsconfig.json").write_text(
+        json.dumps(
+            {
+                "compilerOptions": {
+                    "target": "ES2020",
+                    "module": "commonjs",
+                    "declaration": True,
+                    "outDir": "./dist",
+                    "strict": True,
+                    "esModuleInterop": True,
+                },
+                "include": ["src/**/*"],
+            },
+            indent=2,
+        )
+    )
 
     # src/index.ts
     src_dir = client_dir / "src"
     src_dir.mkdir(exist_ok=True)
 
-    (src_dir / "index.ts").write_text('''/**
+    (src_dir / "index.ts").write_text("""/**
  * Structural Design API Client
  *
  * Auto-generated TypeScript client for the FastAPI structural design API.
@@ -465,7 +468,7 @@ export class StructuralDesignClient {
 }
 
 export default StructuralDesignClient;
-''')
+""")
 
     print(f"✅ TypeScript client generated: {client_dir}")
     return True
@@ -507,7 +510,9 @@ def main():
         results["python"] = generate_python_client(args.output_dir, OPENAPI_SPEC)
 
     if "typescript" in languages:
-        results["typescript"] = generate_typescript_client(args.output_dir, OPENAPI_SPEC)
+        results["typescript"] = generate_typescript_client(
+            args.output_dir, OPENAPI_SPEC
+        )
 
     # Summary
     print("\n" + "=" * 60)

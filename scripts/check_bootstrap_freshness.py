@@ -17,8 +17,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import subprocess
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -58,7 +56,9 @@ def _scan_fastapi_routers() -> dict[str, int]:
             text = path.read_text(encoding="utf-8")
         except OSError:
             continue
-        count = len(re.findall(r"@router\.(get|post|put|delete|patch|websocket)\(", text))
+        count = len(
+            re.findall(r"@router\.(get|post|put|delete|patch|websocket)\(", text)
+        )
         if count > 0:
             name = path.stem
             routers[name] = count
@@ -103,7 +103,9 @@ def _extract_documented_routers(text: str) -> set[str]:
     """Extract router names from bootstrap doc router table."""
     names: set[str] = set()
     # Only match router names in the endpoint table (bold name | endpoint pattern)
-    for match in re.finditer(r"\*\*(\w+)\*\*\s*\|\s*`?(?:POST|GET|PUT|DELETE|WS|PATCH)", text):
+    for match in re.finditer(
+        r"\*\*(\w+)\*\*\s*\|\s*`?(?:POST|GET|PUT|DELETE|WS|PATCH)", text
+    ):
         names.add(match.group(1))
     return names
 
@@ -121,7 +123,9 @@ def check_hooks(bootstrap_text: str, json_mode: bool = False) -> list[dict]:
     # Only flag stale if the documented name doesn't match any prefix of actual hooks
     # OR the filename of a hook file (e.g. "useInsights" -> useInsights.ts)
     hooks_dir = REPO_ROOT / "react_app" / "src" / "hooks"
-    hook_files = {p.stem for p in hooks_dir.glob("*.ts")} if hooks_dir.exists() else set()
+    hook_files = (
+        {p.stem for p in hooks_dir.glob("*.ts")} if hooks_dir.exists() else set()
+    )
     stale = []
     for name in sorted(documented - actual):
         if any(a.startswith(name) for a in actual):
@@ -138,10 +142,14 @@ def check_hooks(bootstrap_text: str, json_mode: bool = False) -> list[dict]:
 
     if not json_mode:
         if issues:
-            print(f"\nReact Hooks: {len(actual)} actual, {len(documented & actual)} documented")
+            print(
+                f"\nReact Hooks: {len(actual)} actual, {len(documented & actual)} documented"
+            )
             for issue in issues:
                 if issue["status"] == "undocumented":
-                    print(f"  + {issue['name']} — exists in code but not in bootstrap docs")
+                    print(
+                        f"  + {issue['name']} — exists in code but not in bootstrap docs"
+                    )
                 else:
                     print(f"  - {issue['name']} — in docs but not found in code")
         else:
@@ -162,25 +170,33 @@ def check_routers(bootstrap_text: str, json_mode: bool = False) -> list[dict]:
 
     issues = []
     for name in missing:
-        issues.append({
-            "type": "router",
-            "status": "undocumented",
-            "name": name,
-            "endpoints": actual[name],
-        })
+        issues.append(
+            {
+                "type": "router",
+                "status": "undocumented",
+                "name": name,
+                "endpoints": actual[name],
+            }
+        )
     for name in stale:
         issues.append({"type": "router", "status": "stale_reference", "name": name})
 
     if not json_mode:
         if issues:
-            print(f"\nFastAPI Routers: {len(actual)} routers, {total_endpoints} endpoints")
+            print(
+                f"\nFastAPI Routers: {len(actual)} routers, {total_endpoints} endpoints"
+            )
             for issue in issues:
                 if issue["status"] == "undocumented":
-                    print(f"  + {issue['name']} ({issue['endpoints']} endpoints) — not in bootstrap docs")
+                    print(
+                        f"  + {issue['name']} ({issue['endpoints']} endpoints) — not in bootstrap docs"
+                    )
                 else:
                     print(f"  - {issue['name']} — in docs but router not found")
         else:
-            print(f"✓ FastAPI Routers: {len(actual)} routers, {total_endpoints} endpoints, all documented")
+            print(
+                f"✓ FastAPI Routers: {len(actual)} routers, {total_endpoints} endpoints, all documented"
+            )
 
     return issues
 
@@ -199,7 +215,9 @@ def check_components(bootstrap_text: str, json_mode: bool = False) -> list[dict]
 
     if not json_mode:
         if issues:
-            print(f"\nReact Components: {len(significant_actual)} actual, {len(documented & significant_actual)} documented")
+            print(
+                f"\nReact Components: {len(significant_actual)} actual, {len(documented & significant_actual)} documented"
+            )
             # Only show first 10 to avoid noise
             shown = issues[:10]
             for issue in shown:
@@ -207,7 +225,9 @@ def check_components(bootstrap_text: str, json_mode: bool = False) -> list[dict]
             if len(issues) > 10:
                 print(f"  ... and {len(issues) - 10} more")
         else:
-            print(f"✓ React Components: {len(significant_actual)} components, all documented")
+            print(
+                f"✓ React Components: {len(significant_actual)} components, all documented"
+            )
 
     return issues
 
@@ -215,9 +235,15 @@ def check_components(bootstrap_text: str, json_mode: bool = False) -> list[dict]
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--hooks", action="store_true", help="Check React hooks only")
-    parser.add_argument("--routes", action="store_true", help="Check FastAPI routes only")
-    parser.add_argument("--components", action="store_true", help="Check React components only")
-    parser.add_argument("--json", action="store_true", help="Machine-readable JSON output")
+    parser.add_argument(
+        "--routes", action="store_true", help="Check FastAPI routes only"
+    )
+    parser.add_argument(
+        "--components", action="store_true", help="Check React components only"
+    )
+    parser.add_argument(
+        "--json", action="store_true", help="Machine-readable JSON output"
+    )
     args = parser.parse_args()
 
     check_all = not (args.hooks or args.routes or args.components)
@@ -252,7 +278,9 @@ def main() -> int:
     else:
         undocumented = [i for i in all_issues if i["status"] == "undocumented"]
         stale = [i for i in all_issues if i["status"] == "stale_reference"]
-        print(f"\nSummary: {len(undocumented)} undocumented, {len(stale)} stale references")
+        print(
+            f"\nSummary: {len(undocumented)} undocumented, {len(stale)} stale references"
+        )
 
     return 1 if any(i["status"] == "stale_reference" for i in all_issues) else 0
 

@@ -17,6 +17,7 @@ This script implements Phase 1 of the documentation consolidation plan:
 - Runs check_links.py after completion
 - Git tracks all changes (easy rollback)
 """
+
 from __future__ import annotations
 
 import argparse

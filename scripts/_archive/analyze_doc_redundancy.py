@@ -12,6 +12,7 @@ This script analyzes 524+ markdown files in docs/ to identify:
 **Purpose:** Reduce cognitive load for AI agents by consolidating redundant docs
 **Context:** 100% AI-driven development requires streamlined documentation
 """
+
 from __future__ import annotations
 
 import re

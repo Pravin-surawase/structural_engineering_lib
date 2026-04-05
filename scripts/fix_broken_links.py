@@ -13,6 +13,7 @@ Usage:
     python scripts/fix_broken_links.py               # Apply fixes
     python scripts/fix_broken_links.py --verbose     # Show details
 """
+
 from __future__ import annotations
 
 import argparse
@@ -92,8 +93,10 @@ def is_table_separator(line: str) -> bool:
 def is_list_item(line: str) -> bool:
     """Check if line is a markdown list item."""
     stripped = line.lstrip()
-    return stripped.startswith("- ") or stripped.startswith("* ") or bool(
-        re.match(r"^\d+\.\s", stripped)
+    return (
+        stripped.startswith("- ")
+        or stripped.startswith("* ")
+        or bool(re.match(r"^\d+\.\s", stripped))
     )
 
 
@@ -118,7 +121,9 @@ def fix_file(filepath: Path, dry_run: bool = False, verbose: bool = False) -> in
     while i < len(lines):
         line = lines[i]
         links = LINK_RE.findall(line)
-        broken_links = [(text, target) for text, target in links if is_broken_target(target)]
+        broken_links = [
+            (text, target) for text, target in links if is_broken_target(target)
+        ]
 
         if not broken_links:
             new_lines.append(line)
@@ -130,7 +135,9 @@ def fix_file(filepath: Path, dry_run: bool = False, verbose: bool = False) -> in
             # Count non-broken content in the row
             # If ALL links in the row are broken, remove the row
             # EXCEPT in SESSION_LOG.md — always convert to plain text (preserve history)
-            all_links_broken = all(is_broken_target(t) for _, t in links) if links else False
+            all_links_broken = (
+                all(is_broken_target(t) for _, t in links) if links else False
+            )
 
             if all_links_broken and not is_session_log:
                 if verbose or dry_run:
@@ -146,7 +153,9 @@ def fix_file(filepath: Path, dry_run: bool = False, verbose: bool = False) -> in
                     fixed_line = fixed_line.replace(f"[{text}]({target})", text)
                 new_lines.append(fixed_line)
                 if verbose or dry_run:
-                    print(f"  ✏️  PLAIN TEXT: {filepath.relative_to(REPO_ROOT)}:{i + 1}")
+                    print(
+                        f"  ✏️  PLAIN TEXT: {filepath.relative_to(REPO_ROOT)}:{i + 1}"
+                    )
                     print(f"      [{broken_links[0][0]}](...) → {broken_links[0][0]}")
                 fixes += 1
                 i += 1
@@ -161,7 +170,9 @@ def fix_file(filepath: Path, dry_run: bool = False, verbose: bool = False) -> in
             # and it's not in SESSION_LOG, remove the line
             if not is_session_log and len(broken_links) == len(links):
                 if verbose or dry_run:
-                    print(f"  🗑  REMOVE item: {filepath.relative_to(REPO_ROOT)}:{i + 1}")
+                    print(
+                        f"  🗑  REMOVE item: {filepath.relative_to(REPO_ROOT)}:{i + 1}"
+                    )
                     print(f"      {line.strip()[:100]}")
                 fixes += 1
                 i += 1
@@ -173,7 +184,9 @@ def fix_file(filepath: Path, dry_run: bool = False, verbose: bool = False) -> in
                     fixed_line = fixed_line.replace(f"[{text}]({target})", text)
                 new_lines.append(fixed_line)
                 if verbose or dry_run:
-                    print(f"  ✏️  PLAIN TEXT: {filepath.relative_to(REPO_ROOT)}:{i + 1}")
+                    print(
+                        f"  ✏️  PLAIN TEXT: {filepath.relative_to(REPO_ROOT)}:{i + 1}"
+                    )
                 fixes += 1
                 i += 1
                 continue
@@ -203,8 +216,12 @@ def fix_file(filepath: Path, dry_run: bool = False, verbose: bool = False) -> in
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Fix broken markdown links")
-    parser.add_argument("--dry-run", action="store_true", help="Preview changes without writing")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Show detailed changes")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Preview changes without writing"
+    )
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Show detailed changes"
+    )
     args = parser.parse_args()
 
     docs_dir = REPO_ROOT / "docs"

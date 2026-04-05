@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Validate docs/TASKS.md structure and WIP rules.
 
-When to use: After editing TASKS.md. Validates structure, WIP limits, and formatting rules."""
+When to use: After editing TASKS.md. Validates structure, WIP limits, and formatting rules.
+"""
 
 from __future__ import annotations
 

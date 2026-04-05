@@ -30,12 +30,12 @@ import json
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 
 @dataclass
 class Issue:
     """Represents a detected issue."""
+
     file: str
     line: int
     severity: str  # critical, high, medium, low
@@ -47,6 +47,7 @@ class Issue:
 @dataclass
 class ScanResult:
     """Result of scanning a file."""
+
     file: str
     issues: list[Issue] = field(default_factory=list)
 
@@ -72,14 +73,16 @@ class FastAPIIssueScanner(ast.NodeVisitor):
         suggestion: str = "",
     ) -> None:
         """Add an issue to the list."""
-        self.issues.append(Issue(
-            file=self.filename,
-            line=node.lineno,
-            severity=severity,
-            category=category,
-            message=message,
-            suggestion=suggestion,
-        ))
+        self.issues.append(
+            Issue(
+                file=self.filename,
+                line=node.lineno,
+                severity=severity,
+                category=category,
+                message=message,
+                suggestion=suggestion,
+            )
+        )
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Check function definitions for issues."""
@@ -170,7 +173,9 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                         "Use 'except Exception as e:' and log the error",
                     )
 
-    def _check_hardcoded_secrets(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
+    def _check_hardcoded_secrets(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef
+    ) -> None:
         """Check for hardcoded secrets in function body."""
         secret_patterns = ["secret", "password", "api_key", "token", "private_key"]
 
@@ -180,7 +185,9 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                     if isinstance(target, ast.Name):
                         name_lower = target.id.lower()
                         if any(pattern in name_lower for pattern in secret_patterns):
-                            if isinstance(child.value, ast.Constant) and isinstance(child.value.value, str):
+                            if isinstance(child.value, ast.Constant) and isinstance(
+                                child.value.value, str
+                            ):
                                 if len(child.value.value) > 5:  # Likely a real secret
                                     self.add_issue(
                                         child,
@@ -190,7 +197,9 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                                         "Use environment variables: os.getenv('SECRET_KEY')",
                                     )
 
-    def _check_websocket_handler(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
+    def _check_websocket_handler(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef
+    ) -> None:
         """Check WebSocket handlers for proper disconnect handling."""
         has_try = False
         has_disconnect_catch = False
@@ -206,7 +215,10 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                             type_name = handler.type.id
                         elif isinstance(handler.type, ast.Attribute):
                             type_name = handler.type.attr
-                        if "Disconnect" in type_name or "disconnect" in type_name.lower():
+                        if (
+                            "Disconnect" in type_name
+                            or "disconnect" in type_name.lower()
+                        ):
                             has_disconnect_catch = True
 
         if not has_try or not has_disconnect_catch:
@@ -232,7 +244,7 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                     "high",
                     "async",
                     f"Blocking call '{func_name}' in async handler",
-                    f"Use async alternatives: asyncio.sleep, aiofiles.open, httpx.AsyncClient",
+                    "Use async alternatives: asyncio.sleep, aiofiles.open, httpx.AsyncClient",
                 )
 
         # Check for missing await
@@ -267,7 +279,7 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                         node,
                         "low",
                         "config",
-                        f"Hardcoded localhost address found",
+                        "Hardcoded localhost address found",
                         "Use environment variable for host configuration",
                     )
 
@@ -285,21 +297,25 @@ def scan_file(filepath: Path) -> ScanResult:
         scanner.visit(tree)
         result.issues = scanner.issues
     except SyntaxError as e:
-        result.issues.append(Issue(
-            file=str(filepath),
-            line=e.lineno or 0,
-            severity="critical",
-            category="syntax",
-            message=f"Syntax error: {e.msg}",
-        ))
+        result.issues.append(
+            Issue(
+                file=str(filepath),
+                line=e.lineno or 0,
+                severity="critical",
+                category="syntax",
+                message=f"Syntax error: {e.msg}",
+            )
+        )
     except Exception as e:
-        result.issues.append(Issue(
-            file=str(filepath),
-            line=0,
-            severity="critical",
-            category="scan_error",
-            message=f"Failed to scan: {str(e)}",
-        ))
+        result.issues.append(
+            Issue(
+                file=str(filepath),
+                line=0,
+                severity="critical",
+                category="scan_error",
+                message=f"Failed to scan: {str(e)}",
+            )
+        )
 
     return result
 
@@ -319,7 +335,9 @@ def scan_directory(directory: Path) -> list[ScanResult]:
     return results
 
 
-def print_results(results: list[ScanResult], json_output: bool = False) -> dict[str, int]:
+def print_results(
+    results: list[ScanResult], json_output: bool = False
+) -> dict[str, int]:
     """Print scan results and return summary counts."""
     counts = {"critical": 0, "high": 0, "medium": 0, "low": 0}
 
@@ -331,14 +349,16 @@ def print_results(results: list[ScanResult], json_output: bool = False) -> dict[
         for result in results:
             for issue in result.issues:
                 counts[issue.severity] += 1
-                output["issues"].append({
-                    "file": issue.file,
-                    "line": issue.line,
-                    "severity": issue.severity,
-                    "category": issue.category,
-                    "message": issue.message,
-                    "suggestion": issue.suggestion,
-                })
+                output["issues"].append(
+                    {
+                        "file": issue.file,
+                        "line": issue.line,
+                        "severity": issue.severity,
+                        "category": issue.category,
+                        "message": issue.message,
+                        "suggestion": issue.suggestion,
+                    }
+                )
         output["summary"] = counts
         print(json.dumps(output, indent=2))
     else:
@@ -357,7 +377,9 @@ def print_results(results: list[ScanResult], json_output: bool = False) -> dict[
                     "medium": "🟡",
                     "low": "🔵",
                 }[issue.severity]
-                print(f"  {severity_icon} Line {issue.line}: [{issue.category}] {issue.message}")
+                print(
+                    f"  {severity_icon} Line {issue.line}: [{issue.category}] {issue.message}"
+                )
                 if issue.suggestion:
                     print(f"     💡 {issue.suggestion}")
             print()
@@ -386,10 +408,16 @@ def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(description="FastAPI issues AST scanner")
     parser.add_argument("--file", type=str, help="Scan a specific file")
-    parser.add_argument("--dir", type=str, default="fastapi_app", help="Directory to scan")
+    parser.add_argument(
+        "--dir", type=str, default="fastapi_app", help="Directory to scan"
+    )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
-    parser.add_argument("--fail-on-critical", action="store_true", help="Exit 1 if critical issues")
-    parser.add_argument("--fail-on-high", action="store_true", help="Exit 1 if high+ issues")
+    parser.add_argument(
+        "--fail-on-critical", action="store_true", help="Exit 1 if critical issues"
+    )
+    parser.add_argument(
+        "--fail-on-high", action="store_true", help="Exit 1 if high+ issues"
+    )
 
     args = parser.parse_args()
 

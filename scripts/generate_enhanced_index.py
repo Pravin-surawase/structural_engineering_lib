@@ -152,7 +152,9 @@ def analyze_python_file(file_path: Path) -> dict[str, Any]:
                 cls_info["public_methods"] = methods[:10]
             classes.append(cls_info)
 
-        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and not node.name.startswith("_"):
+        elif isinstance(
+            node, (ast.FunctionDef, ast.AsyncFunctionDef)
+        ) and not node.name.startswith("_"):
             doc = ast.get_docstring(node)
             fn_info = {"name": node.name}
             if doc:
@@ -277,7 +279,11 @@ def analyze_md_file(file_path: Path) -> dict[str, Any]:
         if stripped.startswith("# "):
             found_title = True
             continue
-        if found_title and stripped and not stripped.startswith(("#", "---", "===", "**")):
+        if (
+            found_title
+            and stripped
+            and not stripped.startswith(("#", "---", "===", "**"))
+        ):
             desc_lines.append(stripped)
             if len(desc_lines) >= 2:
                 break
@@ -300,9 +306,9 @@ def analyze_config_file(file_path: Path) -> dict[str, Any]:
     info: dict[str, Any] = {
         "name": file_path.name,
         "type": "config",
-        "last_updated": datetime.fromtimestamp(
-            file_path.stat().st_mtime
-        ).strftime("%Y-%m-%d"),
+        "last_updated": datetime.fromtimestamp(file_path.stat().st_mtime).strftime(
+            "%Y-%m-%d"
+        ),
     }
 
     ext = file_path.suffix
@@ -347,9 +353,9 @@ def analyze_file(file_path: Path) -> dict[str, Any] | None:
             "name": file_path.name,
             "type": "stylesheet",
             "size_lines": len(file_path.read_text(encoding="utf-8").split("\n")),
-            "last_updated": datetime.fromtimestamp(
-                file_path.stat().st_mtime
-            ).strftime("%Y-%m-%d"),
+            "last_updated": datetime.fromtimestamp(file_path.stat().st_mtime).strftime(
+                "%Y-%m-%d"
+            ),
         }
     else:
         return None
@@ -403,9 +409,7 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     subfolders = sorted(
         d
         for d in folder_path.iterdir()
-        if d.is_dir()
-        and not d.name.startswith((".", "_"))
-        and d.name not in SKIP_DIRS
+        if d.is_dir() and not d.name.startswith((".", "_")) and d.name not in SKIP_DIRS
     )
 
     # Read README for folder description
@@ -518,12 +522,16 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
                     for node in ast.walk(tree):
                         if isinstance(node, ast.Assign):
                             for target in node.targets:
-                                if isinstance(target, ast.Name) and target.id == "__all__":
+                                if (
+                                    isinstance(target, ast.Name)
+                                    and target.id == "__all__"
+                                ):
                                     if isinstance(node.value, (ast.List, ast.Tuple)):
                                         exports = [
                                             elt.value
                                             for elt in node.value.elts
-                                            if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
+                                            if isinstance(elt, ast.Constant)
+                                            and isinstance(elt.value, str)
                                         ]
                                         index["public_api"] = exports[:20]
                 except SyntaxError:
@@ -559,12 +567,14 @@ def generate_markdown(index: dict, output_path: Path) -> None:
         lines.extend([index["description"], ""])
 
     type_label = index.get("type", "mixed").replace("-", " ").title()
-    lines.extend([
-        f"**Type:** {type_label}  ",
-        f"**Last Updated:** {index['last_updated']}  ",
-        f"**Files:** {index['file_count']}",
-        "",
-    ])
+    lines.extend(
+        [
+            f"**Type:** {type_label}  ",
+            f"**Last Updated:** {index['last_updated']}  ",
+            f"**Files:** {index['file_count']}",
+            "",
+        ]
+    )
 
     # Public API summary (for Python packages)
     if "public_api" in index:
@@ -584,10 +594,12 @@ def generate_markdown(index: dict, output_path: Path) -> None:
         lines.extend([f"## {section_title} Files", ""])
 
         if ft == "python":
-            lines.extend([
-                "| File | Description | Classes | Functions | Lines |",
-                "|------|-------------|---------|-----------|-------|",
-            ])
+            lines.extend(
+                [
+                    "| File | Description | Classes | Functions | Lines |",
+                    "|------|-------------|---------|-----------|-------|",
+                ]
+            )
             for f in files:
                 desc = f.get("description", "")[:60]
                 n_cls = len(f.get("classes", []))
@@ -598,23 +610,25 @@ def generate_markdown(index: dict, output_path: Path) -> None:
                     f"| [{f['name']}]({f['name']}) | {desc}{stub} | {n_cls} | {n_fn} | {n_lines} |"
                 )
         elif ft in ("react-component", "typescript", "react-hook"):
-            lines.extend([
-                "| File | Exports | Lines |",
-                "|------|---------|-------|",
-            ])
+            lines.extend(
+                [
+                    "| File | Exports | Lines |",
+                    "|------|---------|-------|",
+                ]
+            )
             for f in files:
                 exports = ", ".join(f.get("exports", [])[:5])
                 if len(f.get("exports", [])) > 5:
                     exports += f" (+{len(f['exports']) - 5})"
                 n_lines = f.get("size_lines", "?")
-                lines.append(
-                    f"| [{f['name']}]({f['name']}) | {exports} | {n_lines} |"
-                )
+                lines.append(f"| [{f['name']}]({f['name']}) | {exports} | {n_lines} |")
         elif ft == "documentation":
-            lines.extend([
-                "| File | Title | Description | Lines |",
-                "|------|-------|-------------|-------|",
-            ])
+            lines.extend(
+                [
+                    "| File | Title | Description | Lines |",
+                    "|------|-------|-------------|-------|",
+                ]
+            )
             for f in files:
                 title = f.get("title", "")[:40]
                 desc = f.get("description", "")[:60]
@@ -633,10 +647,12 @@ def generate_markdown(index: dict, output_path: Path) -> None:
     # Subfolders
     if index["subfolders"]:
         lines.extend(["## Subfolders", ""])
-        lines.extend([
-            "| Folder | Files | Description |",
-            "|--------|-------|-------------|",
-        ])
+        lines.extend(
+            [
+                "| Folder | Files | Description |",
+                "|--------|-------|-------------|",
+            ]
+        )
         for sf in index["subfolders"]:
             desc = sf.get("description", "")[:80]
             pkg = " 📦" if sf.get("is_package") else ""
@@ -658,9 +674,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Generate enhanced folder indexes for AI agents"
     )
-    parser.add_argument(
-        "folder", nargs="?", help="Folder to index (or use --all)"
-    )
+    parser.add_argument("folder", nargs="?", help="Folder to index (or use --all)")
     parser.add_argument(
         "--all", action="store_true", help="Generate indexes for all key folders"
     )
@@ -673,15 +687,14 @@ def main():
     parser.add_argument(
         "--json-only", action="store_true", help="Generate only index.json"
     )
-    parser.add_argument(
-        "--md-only", action="store_true", help="Generate only index.md"
-    )
+    parser.add_argument("--md-only", action="store_true", help="Generate only index.md")
     parser.add_argument(
         "--dry-run", action="store_true", help="Show what would be generated"
     )
     parser.add_argument(
-        "--check", action="store_true",
-        help="Check if existing indexes are stale (exit 1 if any are)"
+        "--check",
+        action="store_true",
+        help="Check if existing indexes are stale (exit 1 if any are)",
     )
     args = parser.parse_args()
 
@@ -712,6 +725,7 @@ def main():
         folders.append(folder)
 
         if args.recursive:
+
             def collect_subfolders(parent: Path, depth: int):
                 if depth <= 0:
                     return
@@ -757,7 +771,9 @@ def main():
             except Exception:
                 pass
         if stale_count:
-            print(f"\n{stale_count}/{checked} index(es) are stale — regenerate with --all")
+            print(
+                f"\n{stale_count}/{checked} index(es) are stale — regenerate with --all"
+            )
             sys.exit(1)
         else:
             print(f"✓ All {checked} index(es) with hashes are current")

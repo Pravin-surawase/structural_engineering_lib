@@ -646,25 +646,25 @@ class TestValidatePlausibilityZeroGuards:
 class TestValidatePlausibilityDepthGuards:
     """UX-01: _validate_plausibility must reject d_mm >= D_mm."""
 
-    def test_d_mm_greater_than_D_mm_raises(self):
+    def test_d_mm_greater_than_depth_raises(self):
         """UX-01: d_mm > D_mm must raise ValueError."""
         with pytest.raises(ValueError, match="must be less than overall depth"):
             _validate_plausibility(d_mm=500, D_mm=400)
 
-    def test_d_mm_equal_to_D_mm_raises(self):
+    def test_d_mm_equal_to_overall_depth_raises(self):
         """UX-01: d_mm == D_mm must also raise (zero cover impossible)."""
         with pytest.raises(ValueError, match="must be less than overall depth"):
             _validate_plausibility(d_mm=400, D_mm=400)
 
-    def test_d_mm_less_than_D_mm_passes(self):
+    def test_d_mm_less_than_overall_depth_passes(self):
         """Normal case: d_mm < D_mm should not raise."""
         _validate_plausibility(d_mm=450, D_mm=500)  # Should not raise
 
-    def test_d_mm_only_no_D_mm_passes(self):
+    def test_d_mm_only_no_overall_depth_passes(self):
         """d_mm alone (no D_mm) should not raise."""
         _validate_plausibility(d_mm=450)  # Should not raise
 
-    def test_D_mm_only_no_d_mm_passes(self):
+    def test_overall_depth_only_no_d_mm_passes(self):
         """D_mm alone (no d_mm) should not raise."""
         _validate_plausibility(D_mm=500)  # Should not raise
 
@@ -677,7 +677,7 @@ class TestValidatePlausibilityDepthGuards:
 class TestDesignBeamDepthValidation:
     """UX-01: design_beam_is456 must reject d_mm >= D_mm at the API level."""
 
-    def test_design_beam_rejects_d_mm_greater_than_D_mm(self):
+    def test_design_beam_rejects_d_greater_than_overall_depth(self):
         """UX-01: d_mm > D_mm must raise ValueError, not return Ast=0 silently."""
         with pytest.raises(ValueError, match="must be less than overall depth"):
             design_beam_is456(
@@ -691,7 +691,7 @@ class TestDesignBeamDepthValidation:
                 fy_nmm2=500,
             )
 
-    def test_design_beam_rejects_d_mm_equal_to_D_mm(self):
+    def test_design_beam_rejects_d_equal_to_overall_depth(self):
         """UX-01: d_mm == D_mm must also raise (zero cover impossible)."""
         with pytest.raises(ValueError, match="must be less than overall depth"):
             design_beam_is456(

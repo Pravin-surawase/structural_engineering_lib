@@ -46,7 +46,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 TOOL_SCRIPTS = {
@@ -382,7 +381,9 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
         1 for op in summary["operations"] if op.get("status") == "failed"
     )
     summary["summary_file"] = str((run_root / "run-summary.json"))
-    (run_root / "run-summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    (run_root / "run-summary.json").write_text(
+        json.dumps(summary, indent=2), encoding="utf-8"
+    )
     return (0 if summary["success"] else 1), summary
 
 
@@ -428,7 +429,9 @@ def main() -> int:
     print()
     print("Batch migration summary:")
     print(f"  Success: {payload['success']}")
-    print(f"  Completed: {payload['operations_completed']}/{payload['operations_total']}")
+    print(
+        f"  Completed: {payload['operations_completed']}/{payload['operations_total']}"
+    )
     print(f"  Failed: {payload['operations_failed']}")
     print(f"  Summary: {payload['summary_file']}")
     return exit_code

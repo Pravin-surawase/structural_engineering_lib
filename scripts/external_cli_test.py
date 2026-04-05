@@ -42,7 +42,6 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-
 SAMPLE_JOB_IS456_JSON = """{
   \"schema_version\": 1,
   \"job_id\": \"external_cli_test_job_001\",
@@ -145,9 +144,7 @@ def _log_block(f, title: str, body: str) -> None:
 
 def _format_cmd_result(r: CmdResult) -> str:
     cmd_str = " ".join(r.cmd)
-    return (
-        textwrap.dedent(
-            f"""
+    return textwrap.dedent(f"""
         $ {cmd_str}
         returncode: {r.returncode}
         seconds: {r.seconds:.3f}
@@ -157,10 +154,7 @@ def _format_cmd_result(r: CmdResult) -> str:
 
         --- stderr ---
         {r.stderr.rstrip()}
-        """
-        ).strip()
-        + "\n"
-    )
+        """).strip() + "\n"
 
 
 def main() -> int:
@@ -314,9 +308,7 @@ def main() -> int:
             ]
         )
 
-    header = (
-        textwrap.dedent(
-            f"""
+    header = textwrap.dedent(f"""
         External CLI Test (S-007)
 
         Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}
@@ -329,10 +321,7 @@ def main() -> int:
         - Required steps: {len(required_steps)}
         - Optional steps: {len(optional_steps)}
         - Repo mode: {'yes' if repo_root else 'no'}
-        """
-        ).strip()
-        + "\n"
-    )
+        """).strip() + "\n"
 
     with log_path.open("w", encoding="utf-8") as f:
         f.write(header)

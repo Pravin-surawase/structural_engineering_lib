@@ -23,7 +23,7 @@ import json
 import subprocess
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -45,6 +45,7 @@ TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
+
 def _run_script(name: str, args: list[str] | None = None) -> tuple[int, str]:
     """Run a script from scripts/ dir."""
     cmd = [str(VENV_PYTHON), str(SCRIPTS_DIR / name)]
@@ -52,7 +53,10 @@ def _run_script(name: str, args: list[str] | None = None) -> tuple[int, str]:
         cmd.extend(args)
     try:
         result = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=120,
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=120,
             cwd=str(REPO_ROOT),
         )
         return result.returncode, result.stdout + result.stderr
@@ -90,7 +94,9 @@ def _auto_commit(message: str) -> bool:
     try:
         result = subprocess.run(
             ["bash", str(AI_COMMIT), message],
-            capture_output=True, text=True, timeout=60,
+            capture_output=True,
+            text=True,
+            timeout=60,
             cwd=str(REPO_ROOT),
         )
         return result.returncode == 0
@@ -124,6 +130,7 @@ def _append_tasks(tasks: list[str]) -> None:
 
 
 # ─── Evolution Steps ─────────────────────────────────────────────────────────
+
 
 def step_health_scan(fix: bool = False) -> dict:
     """Step 1: Run project health scan."""
@@ -173,7 +180,8 @@ def step_regenerate_indexes(fix: bool = False) -> dict:
         if gen_script.exists():
             subprocess.run(
                 ["bash", str(gen_script)],
-                capture_output=True, timeout=120,
+                capture_output=True,
+                timeout=120,
                 cwd=str(REPO_ROOT),
             )
             return {"step": "regenerate_indexes", "regenerated": True}
@@ -251,7 +259,8 @@ def step_archive_stale_docs(fix: bool = False) -> dict:
         if archive_script.exists():
             subprocess.run(
                 ["bash", str(archive_script)],
-                capture_output=True, timeout=60,
+                capture_output=True,
+                timeout=60,
                 cwd=str(REPO_ROOT),
             )
 
@@ -282,12 +291,15 @@ def step_generate_todo_items(evolution_data: dict) -> list[str]:
     # From instruction drift
     drift = evolution_data.get("instruction_drift", {})
     if drift.get("drifted"):
-        todos.append("[agents] Sync instruction drift between .github/instructions/ and .claude/rules/")
+        todos.append(
+            "[agents] Sync instruction drift between .github/instructions/ and .claude/rules/"
+        )
 
     return todos[:10]  # Cap at 10
 
 
 # ─── Review Modes ────────────────────────────────────────────────────────────
+
 
 def review_weekly(fix: bool = False) -> dict:
     """Quick weekly review: numbers, links, feedback trends."""
@@ -334,6 +346,7 @@ def review_monthly(fix: bool = False) -> dict:
 
 
 # ─── Full Evolution Cycle ────────────────────────────────────────────────────
+
 
 def run_evolution(fix: bool = False, report_only: bool = False) -> dict:
     """Run full evolution cycle."""
@@ -387,10 +400,9 @@ def run_evolution(fix: bool = False, report_only: bool = False) -> dict:
 
     # Auto-commit if fixes were applied
     if fix:
-        fixes = (
-            evolution["steps"]["health_scan"].get("fixes_applied", 0)
-            + evolution["steps"]["sync_numbers"].get("drift_found", 0)
-        )
+        fixes = evolution["steps"]["health_scan"].get("fixes_applied", 0) + evolution[
+            "steps"
+        ]["sync_numbers"].get("drift_found", 0)
         if fixes > 0:
             StatusLine.ok(f"Auto-committing {fixes} fix(es)...")
             _auto_commit(f"chore: evolve - auto-fix {fixes} issue(s)")
@@ -433,7 +445,7 @@ def _print_evolution_summary(evolution: dict, report_path: Path) -> None:
 
     mode = evolution.get("mode", "dry-run")
     if mode == "dry-run":
-        print(f"\n  \033[1;33mThis was a dry run. Use --fix to apply changes.\033[0m")
+        print("\n  \033[1;33mThis was a dry run. Use --fix to apply changes.\033[0m")
     print()
 
 
@@ -453,7 +465,9 @@ def cmd_status(args: argparse.Namespace) -> int:
     print(f"  Mode:        {last.get('mode', 'unknown')}")
 
     # Health trend
-    health_reports = sorted(EVOLUTION_DIR.glob("health_*.json")) if EVOLUTION_DIR.exists() else []
+    health_reports = (
+        sorted(EVOLUTION_DIR.glob("health_*.json")) if EVOLUTION_DIR.exists() else []
+    )
     if len(health_reports) >= 2:
         try:
             prev = json.loads(health_reports[-2].read_text(encoding="utf-8"))
@@ -472,11 +486,15 @@ def cmd_status(args: argparse.Namespace) -> int:
         last_dt = datetime.strptime(last_date, "%Y-%m-%d")
         days_since = (datetime.now() - last_dt).days
         if days_since >= 30:
-            print(f"\n  \033[1;33m⚠️  {days_since} days since last run. Monthly review recommended.\033[0m")
-            print(f"     Run: ./run.sh evolve --review monthly --fix")
+            print(
+                f"\n  \033[1;33m⚠️  {days_since} days since last run. Monthly review recommended.\033[0m"
+            )
+            print("     Run: ./run.sh evolve --review monthly --fix")
         elif days_since >= 7:
-            print(f"\n  \033[1;33m⚠️  {days_since} days since last run. Weekly review recommended.\033[0m")
-            print(f"     Run: ./run.sh evolve --review weekly --fix")
+            print(
+                f"\n  \033[1;33m⚠️  {days_since} days since last run. Weekly review recommended.\033[0m"
+            )
+            print("     Run: ./run.sh evolve --review weekly --fix")
         else:
             print(f"\n  ✅ Last run was {days_since} day(s) ago. System is current.")
     except ValueError:
@@ -487,6 +505,7 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(
@@ -501,16 +520,21 @@ Examples:
   %(prog)s --status                Last run info + recommendations
         """,
     )
-    parser.add_argument("--fix", action="store_true",
-                       help="Apply auto-fixes and commit")
-    parser.add_argument("--report", action="store_true",
-                       help="Generate evolution report only (no fixes)")
-    parser.add_argument("--review", choices=["weekly", "monthly"],
-                       help="Run periodic review")
-    parser.add_argument("--status", action="store_true",
-                       help="Show last run and recommendations")
-    parser.add_argument("--json", action="store_true",
-                       help="JSON output")
+    parser.add_argument(
+        "--fix", action="store_true", help="Apply auto-fixes and commit"
+    )
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Generate evolution report only (no fixes)",
+    )
+    parser.add_argument(
+        "--review", choices=["weekly", "monthly"], help="Run periodic review"
+    )
+    parser.add_argument(
+        "--status", action="store_true", help="Show last run and recommendations"
+    )
+    parser.add_argument("--json", action="store_true", help="JSON output")
 
     args = parser.parse_args()
 

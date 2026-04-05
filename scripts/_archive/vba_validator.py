@@ -234,7 +234,9 @@ class VBAValidator:
         if not has_errors and not has_warnings:
             print("✅ No issues found!")
 
-        status = "❌ FAIL" if has_errors else ("⚠️  WARN" if has_warnings else "✅ PASS")
+        status = (
+            "❌ FAIL" if has_errors else ("⚠️  WARN" if has_warnings else "✅ PASS")
+        )
         print(f"\nStatus: {status}")
 
         return not has_errors  # Pass if no errors (warnings OK)

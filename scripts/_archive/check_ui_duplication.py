@@ -374,7 +374,9 @@ def find_duplicates(functions: list[FunctionInfo]) -> DuplicationReport:
     # Find commonly duplicated custom imports
     for imp, files in import_locations.items():
         unique_files = list(set(files))
-        if len(unique_files) >= 5 and not imp.startswith(("streamlit", "pandas", "numpy")):
+        if len(unique_files) >= 5 and not imp.startswith(
+            ("streamlit", "pandas", "numpy")
+        ):
             report.import_duplicates[imp] = unique_files
 
     # Summary
@@ -404,9 +406,13 @@ def format_console_report(report: DuplicationReport, show_similar: bool = False)
 
     # Summary
     lines.append("Summary:")
-    lines.append(f"  Total functions analyzed: {report.summary.get('total_functions', 0)}")
+    lines.append(
+        f"  Total functions analyzed: {report.summary.get('total_functions', 0)}"
+    )
     lines.append(f"  Exact duplicates: {report.summary.get('exact_duplicates', 0)}")
-    lines.append(f"  Near duplicates (≥{SIMILARITY_THRESHOLD*100:.0f}% similar): {report.summary.get('near_duplicates', 0)}")
+    lines.append(
+        f"  Near duplicates (≥{SIMILARITY_THRESHOLD*100:.0f}% similar): {report.summary.get('near_duplicates', 0)}"
+    )
     lines.append(f"  Similar names: {report.summary.get('similar_names', 0)}")
     lines.append("")
 
@@ -431,7 +437,9 @@ def format_console_report(report: DuplicationReport, show_similar: bool = False)
         lines.append("-" * 60)
         lines.append("🟡 NEAR DUPLICATES (similar code)")
         lines.append("-" * 60)
-        for func1, func2, sim in sorted(report.near_duplicates, key=lambda x: -x[2])[:10]:
+        for func1, func2, sim in sorted(report.near_duplicates, key=lambda x: -x[2])[
+            :10
+        ]:
             lines.append(f"  {func1.name}() ↔ {func2.name()}  ({sim*100:.0f}% similar)")
             lines.append(f"    📍 {func1.file}:{func1.line}")
             lines.append(f"    📍 {func2.file}:{func2.line}")

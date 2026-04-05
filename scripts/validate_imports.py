@@ -18,7 +18,6 @@ from __future__ import annotations
 import argparse
 import ast
 import importlib.util
-import re
 import sys
 from pathlib import Path
 
@@ -43,29 +42,93 @@ SEARCH_DIRS = {
 
 # Known external packages (don't report these as broken)
 EXTERNAL_PACKAGES = {
-    "numpy", "scipy", "pandas", "matplotlib", "plotly",
-    "fastapi", "uvicorn", "pydantic",
-    "pytest", "hypothesis", "coverage", "ruff",
-    "requests", "httpx", "aiohttp",
-    "typing", "typing_extensions", "dataclasses",
-    "pathlib", "os", "sys", "re", "ast", "json",
-    "math", "decimal", "fractions", "collections",
-    "functools", "itertools", "operator",
-    "subprocess", "argparse", "shutil", "tempfile",
-    "io", "csv", "logging", "warnings", "copy",
-    "abc", "enum", "contextlib", "textwrap",
-    "datetime", "time", "hashlib", "inspect",
-    "importlib", "pkgutil", "unittest",
-    "docker", "yaml", "toml", "tomli", "tomllib",
-    "starlette", "jose", "passlib", "multipart",
-    "dotenv", "jinja2", "markupsafe",
-    "rich", "click", "typer",
-    "__future__", "builtins", "types",
-    "concurrent", "threading", "multiprocessing",
-    "socket", "http", "urllib", "email",
-    "xml", "html", "string", "struct",
-    "openpyxl", "xlrd", "xlsxwriter",
-    "PIL", "cv2", "sklearn", "torch",
+    "numpy",
+    "scipy",
+    "pandas",
+    "matplotlib",
+    "plotly",
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "pytest",
+    "hypothesis",
+    "coverage",
+    "ruff",
+    "requests",
+    "httpx",
+    "aiohttp",
+    "typing",
+    "typing_extensions",
+    "dataclasses",
+    "pathlib",
+    "os",
+    "sys",
+    "re",
+    "ast",
+    "json",
+    "math",
+    "decimal",
+    "fractions",
+    "collections",
+    "functools",
+    "itertools",
+    "operator",
+    "subprocess",
+    "argparse",
+    "shutil",
+    "tempfile",
+    "io",
+    "csv",
+    "logging",
+    "warnings",
+    "copy",
+    "abc",
+    "enum",
+    "contextlib",
+    "textwrap",
+    "datetime",
+    "time",
+    "hashlib",
+    "inspect",
+    "importlib",
+    "pkgutil",
+    "unittest",
+    "docker",
+    "yaml",
+    "toml",
+    "tomli",
+    "tomllib",
+    "starlette",
+    "jose",
+    "passlib",
+    "multipart",
+    "dotenv",
+    "jinja2",
+    "markupsafe",
+    "rich",
+    "click",
+    "typer",
+    "__future__",
+    "builtins",
+    "types",
+    "concurrent",
+    "threading",
+    "multiprocessing",
+    "socket",
+    "http",
+    "urllib",
+    "email",
+    "xml",
+    "html",
+    "string",
+    "struct",
+    "openpyxl",
+    "xlrd",
+    "xlsxwriter",
+    "PIL",
+    "cv2",
+    "sklearn",
+    "torch",
 }
 
 SKIP_PATTERNS = {"__pycache__", ".pytest_cache", ".mypy_cache", "node_modules", ".venv"}
@@ -109,7 +172,11 @@ def can_resolve_module(module_str: str) -> bool:
         return True
 
     # Try as module file
-    candidate = python_dir / Path(*parts[:-1]) / (parts[-1] + ".py") if len(parts) > 1 else python_dir / (parts[0] + ".py")
+    candidate = (
+        python_dir / Path(*parts[:-1]) / (parts[-1] + ".py")
+        if len(parts) > 1
+        else python_dir / (parts[0] + ".py")
+    )
     if candidate.exists():
         return True
 
@@ -166,9 +233,7 @@ def extract_imports(file_path: Path) -> list[tuple[int, str, str]]:
     return imports
 
 
-def _resolve_relative_import(
-    file_path: Path, module: str, level: int
-) -> str | None:
+def _resolve_relative_import(file_path: Path, module: str, level: int) -> str | None:
     """Resolve a relative import to an absolute module path for validation.
 
     E.g., in structural_lib/services/api.py:
@@ -184,7 +249,9 @@ def _resolve_relative_import(
         return None
 
     # Get the package path of the file
-    parts = list(rel.parts[:-1])  # directory parts (e.g. ["structural_lib", "services"])
+    parts = list(
+        rel.parts[:-1]
+    )  # directory parts (e.g. ["structural_lib", "services"])
 
     # Go up 'level' directories (level=1 means current package)
     up = level - 1
@@ -266,7 +333,7 @@ def main():
                 broken_imports.append((py_file, line_num, module_str, imp_type))
 
     # Report
-    print(f"📊 Import Statistics:")
+    print("📊 Import Statistics:")
     print(f"   Total imports:    {total_imports}")
     print(f"   Internal imports: {internal_imports}")
     print(f"   Broken imports:   {len(broken_imports)}")

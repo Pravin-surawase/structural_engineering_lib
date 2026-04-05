@@ -48,7 +48,9 @@ def check_dockerfile(path: Path) -> list[str]:
 
     # Check for latest tag (anti-pattern)
     if ":latest" in content and "python:latest" in content:
-        issues.append("⚠️ Using :latest tag - prefer specific version (e.g., python:3.11-slim)")
+        issues.append(
+            "⚠️ Using :latest tag - prefer specific version (e.g., python:3.11-slim)"
+        )
 
     # Check for WORKDIR
     if "WORKDIR" not in content:
@@ -70,7 +72,9 @@ def check_dockerfile(path: Path) -> list[str]:
     # Check for efficient layer ordering
     copy_count = content.count("COPY ")
     if copy_count > 5:
-        issues.append("ℹ️ Many COPY instructions - consider consolidating for smaller layers")
+        issues.append(
+            "ℹ️ Many COPY instructions - consider consolidating for smaller layers"
+        )
 
     # Check for pip cache disable
     if "pip install" in content and "--no-cache-dir" not in content:
@@ -90,21 +94,27 @@ def _check_hardcoded_secrets(compose_path: Path, issues: list[str]) -> None:
     if "password:" in raw:
         # Check if password value uses env var syntax
         idx = raw.find("password:")
-        after = raw[idx + 9:idx + 109]
+        after = raw[idx + 9 : idx + 109]
         if "${" not in after and ":-" not in after:
-            issues.append("⚠️ Possible hardcoded secret near 'password:' - use environment variables")
+            issues.append(
+                "⚠️ Possible hardcoded secret near 'password:' - use environment variables"
+            )
 
     if "secret:" in raw:
         idx = raw.find("secret:")
-        after = raw[idx + 7:idx + 107]
+        after = raw[idx + 7 : idx + 107]
         if "${" not in after and ":-" not in after:
-            issues.append("⚠️ Possible hardcoded secret near 'secret:' - use environment variables")
+            issues.append(
+                "⚠️ Possible hardcoded secret near 'secret:' - use environment variables"
+            )
 
     if "api_key:" in raw:
         idx = raw.find("api_key:")
-        after = raw[idx + 8:idx + 108]
+        after = raw[idx + 8 : idx + 108]
         if "${" not in after and ":-" not in after:
-            issues.append("⚠️ Possible hardcoded secret near 'api_key:' - use environment variables")
+            issues.append(
+                "⚠️ Possible hardcoded secret near 'api_key:' - use environment variables"
+            )
 
 
 def check_docker_compose(path: Path) -> list[str]:
@@ -179,17 +189,14 @@ def check_env_documentation() -> list[str]:
     """Check if environment variables are documented."""
     issues = []
 
-    compose_files = [
-        ROOT / "docker-compose.yml",
-        ROOT / "docker-compose.dev.yml"
-    ]
+    compose_files = [ROOT / "docker-compose.yml", ROOT / "docker-compose.dev.yml"]
 
     env_vars = set()
     for compose_file in compose_files:
         if compose_file.exists():
             content = compose_file.read_text()
             # Find ${VAR:-default} patterns
-            env_vars.update(re.findall(r'\$\{(\w+)(?::-[^}]*)?\}', content))
+            env_vars.update(re.findall(r"\$\{(\w+)(?::-[^}]*)?\}", content))
 
     if env_vars:
         # Check if there's an .env.example or README documenting these
@@ -197,13 +204,17 @@ def check_env_documentation() -> list[str]:
         docker_readme = ROOT / "docs" / "learning" / "docker-fundamentals-guide.md"
 
         if not env_example.exists():
-            issues.append(f"ℹ️ Consider creating .env.example with: {', '.join(sorted(env_vars))}")
+            issues.append(
+                f"ℹ️ Consider creating .env.example with: {', '.join(sorted(env_vars))}"
+            )
 
         if docker_readme.exists():
             readme_content = docker_readme.read_text()
             for var in env_vars:
                 if var not in readme_content:
-                    issues.append(f"ℹ️ Environment variable '{var}' not documented in Docker guide")
+                    issues.append(
+                        f"ℹ️ Environment variable '{var}' not documented in Docker guide"
+                    )
 
     return issues
 
@@ -265,7 +276,9 @@ def main() -> int:
 
     # Check docker-compose files
     issues["docker-compose.yml"] = check_docker_compose(ROOT / "docker-compose.yml")
-    issues["docker-compose.dev.yml"] = check_docker_compose(ROOT / "docker-compose.dev.yml")
+    issues["docker-compose.dev.yml"] = check_docker_compose(
+        ROOT / "docker-compose.dev.yml"
+    )
 
     # Check .dockerignore
     issues[".dockerignore"] = check_dockerignore(ROOT / ".dockerignore")

@@ -8,12 +8,12 @@ Usage:
     python scripts/check_links.py --map links.json     # Use migration mapping
     python scripts/check_links.py --fix --map links.json  # Auto-fix broken links
 """
+
 import re
 import json
 import argparse
 from pathlib import Path
 from typing import Dict
-
 
 # Skip these patterns - they are placeholders/examples, not real links
 SKIP_LINK_PATTERNS = [

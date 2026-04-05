@@ -14,6 +14,7 @@ Usage:
 Output:
     docs/docs-index.json
 """
+
 from __future__ import annotations
 
 import argparse

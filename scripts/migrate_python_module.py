@@ -359,7 +359,9 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     print("🔍 Step 1: Finding import references...")
     all_files = find_python_files()
     references = find_import_references(old_module, all_files)
-    print(f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} files")
+    print(
+        f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} files"
+    )
     result["references_count"] = len(references)
     result["references"] = [
         {
@@ -403,7 +405,9 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
 
     # Step 3: Update imports
     print("🔗 Step 3: Updating imports...")
-    updated, updated_files = update_imports(old_module, new_module, all_files, args.dry_run)
+    updated, updated_files = update_imports(
+        old_module, new_module, all_files, args.dry_run
+    )
     print(f"   Updated {updated} file(s)")
     result["updated_count"] = updated
     result["updated_files"] = updated_files
@@ -461,10 +465,12 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         print("  3. Commit: ./scripts/ai_commit.sh 'refactor: move module'")
     print("=" * 60)
     changed_files = set(updated_files)
-    changed_files.update({
-        str(source.relative_to(PROJECT_ROOT)),
-        str(destination.relative_to(PROJECT_ROOT)),
-    })
+    changed_files.update(
+        {
+            str(source.relative_to(PROJECT_ROOT)),
+            str(destination.relative_to(PROJECT_ROOT)),
+        }
+    )
     if created_init:
         changed_files.add(created_init)
     if stub_file:
@@ -479,14 +485,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Migrate Python module with import updates"
     )
-    parser.add_argument("source", help="Source module path (e.g., structural_lib/api.py)")
+    parser.add_argument(
+        "source", help="Source module path (e.g., structural_lib/api.py)"
+    )
     parser.add_argument(
         "destination",
         help="Destination module path (e.g., structural_lib/services/api.py)",
     )
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Show what would happen"
-    )
+    parser.add_argument("--dry-run", action="store_true", help="Show what would happen")
     parser.add_argument(
         "--no-stub", action="store_true", help="Don't create backward-compat stub"
     )

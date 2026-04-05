@@ -246,7 +246,11 @@ def collect_testing_evidence(report: AuditReport) -> None:
             status="PASS" if coverage_configured else "WARN",
             required=True,
             source="pytest.ini / pyproject.toml",
-            details="Coverage reporting configured" if coverage_configured else "No coverage config found",
+            details=(
+                "Coverage reporting configured"
+                if coverage_configured
+                else "No coverage config found"
+            ),
         )
     )
 
@@ -268,7 +272,9 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "FAIL",
                 required=True,
                 source=str(circular_checker),
-                details="No circular imports" if passed else "Circular imports detected",
+                details=(
+                    "No circular imports" if passed else "Circular imports detected"
+                ),
             )
         )
 
@@ -284,7 +290,11 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "WARN",
                 required=True,
                 source=str(type_checker),
-                details="≥50% type annotation rate" if passed else "<50% type annotation rate",
+                details=(
+                    "≥50% type annotation rate"
+                    if passed
+                    else "<50% type annotation rate"
+                ),
             )
         )
 
@@ -300,7 +310,11 @@ def collect_static_analysis_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "FAIL",
                 required=True,
                 source=str(api_checker),
-                details="All API signatures valid" if passed else "API signature issues found",
+                details=(
+                    "All API signatures valid"
+                    if passed
+                    else "API signature issues found"
+                ),
             )
         )
 
@@ -335,7 +349,11 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "WARN",
                 required=True,
                 source=str(gov_script),
-                details="All governance rules satisfied" if passed else "Some governance issues",
+                details=(
+                    "All governance rules satisfied"
+                    if passed
+                    else "Some governance issues"
+                ),
             )
         )
 
@@ -351,7 +369,11 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "WARN",
                 required=True,
                 source=str(doc_checker),
-                details="All docs have required metadata" if passed else "Some docs missing metadata",
+                details=(
+                    "All docs have required metadata"
+                    if passed
+                    else "Some docs missing metadata"
+                ),
             )
         )
 
@@ -367,7 +389,9 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "WARN",
                 required=True,
                 source=str(link_checker),
-                details="All internal links valid" if passed else "Some broken links found",
+                details=(
+                    "All internal links valid" if passed else "Some broken links found"
+                ),
             )
         )
 
@@ -383,7 +407,11 @@ def collect_governance_evidence(report: AuditReport) -> None:
                 status="PASS" if passed else "WARN",
                 required=True,
                 source=str(api_sync),
-                details="API docs match implementation" if passed else "API docs may be outdated",
+                details=(
+                    "API docs match implementation"
+                    if passed
+                    else "API docs may be outdated"
+                ),
             )
         )
 
@@ -414,7 +442,11 @@ def collect_governance_evidence(report: AuditReport) -> None:
             status="PASS" if version_present else "FAIL",
             required=True,
             source=str(version_file),
-            details="__version__ defined in package" if version_present else "No __version__ found",
+            details=(
+                "__version__ defined in package"
+                if version_present
+                else "No __version__ found"
+            ),
         )
     )
 
@@ -431,7 +463,11 @@ def collect_security_evidence(report: AuditReport) -> None:
             status="PASS" if codeql.exists() else "WARN",
             required=True,
             source=str(codeql),
-            details="CodeQL workflow configured" if codeql.exists() else "No CodeQL workflow",
+            details=(
+                "CodeQL workflow configured"
+                if codeql.exists()
+                else "No CodeQL workflow"
+            ),
         )
     )
 
@@ -444,7 +480,11 @@ def collect_security_evidence(report: AuditReport) -> None:
             status="PASS" if security.exists() else "WARN",
             required=True,
             source=str(security),
-            details="Security workflow configured" if security.exists() else "No security workflow",
+            details=(
+                "Security workflow configured"
+                if security.exists()
+                else "No security workflow"
+            ),
         )
     )
 
@@ -463,7 +503,11 @@ def collect_security_evidence(report: AuditReport) -> None:
             status="PASS" if deps_pinned else "WARN",
             required=True,
             source=str(pyproject),
-            details="Dependencies have version constraints" if deps_pinned else "Check version pinning",
+            details=(
+                "Dependencies have version constraints"
+                if deps_pinned
+                else "Check version pinning"
+            ),
         )
     )
 
@@ -476,7 +520,9 @@ def collect_security_evidence(report: AuditReport) -> None:
             status="PASS" if security_md.exists() else "WARN",
             required=False,
             source=str(security_md),
-            details="SECURITY.md present" if security_md.exists() else "No SECURITY.md file",
+            details=(
+                "SECURITY.md present" if security_md.exists() else "No SECURITY.md file"
+            ),
         )
     )
 
@@ -519,7 +565,11 @@ def collect_change_control_evidence(report: AuditReport) -> None:
             status="PASS" if fast_checks.exists() else "WARN",
             required=True,
             source=str(fast_checks),
-            details="fast-checks.yml validates PRs" if fast_checks.exists() else "No PR validation workflow",
+            details=(
+                "fast-checks.yml validates PRs"
+                if fast_checks.exists()
+                else "No PR validation workflow"
+            ),
         )
     )
 
@@ -533,7 +583,9 @@ def collect_change_control_evidence(report: AuditReport) -> None:
             status="PASS" if hook_exists else "WARN",
             required=False,
             source=str(commit_hook),
-            details="commit-msg hook installed" if hook_exists else "No commit-msg hook",
+            details=(
+                "commit-msg hook installed" if hook_exists else "No commit-msg hook"
+            ),
         )
     )
 
@@ -546,7 +598,7 @@ def collect_change_control_evidence(report: AuditReport) -> None:
 def format_markdown(report: AuditReport) -> str:
     """Format report as Markdown."""
     lines = [
-        f"# Audit Readiness Report",
+        "# Audit Readiness Report",
         "",
         f"**Generated:** {report.generated}",
         f"**Branch:** {report.branch or 'unknown'}",
@@ -556,8 +608,8 @@ def format_markdown(report: AuditReport) -> str:
         "",
         "## Summary",
         "",
-        f"| Metric | Count |",
-        f"|--------|-------|",
+        "| Metric | Count |",
+        "|--------|-------|",
         f"| Total Checks | {report.total_checks} |",
         f"| Passed | {report.passed} |",
         f"| Failed | {report.failed} |",
@@ -591,7 +643,9 @@ def format_markdown(report: AuditReport) -> str:
                 "SKIP": "⏭️",
             }.get(item.status, "❓")
             req = "Yes" if item.required else "No"
-            lines.append(f"| {item.name} | {status_icon} {item.status} | {req} | {item.details} |")
+            lines.append(
+                f"| {item.name} | {status_icon} {item.status} | {req} | {item.details} |"
+            )
 
         lines.append("")
 

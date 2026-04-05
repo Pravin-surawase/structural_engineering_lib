@@ -52,23 +52,27 @@ def get_remote_branches() -> list[str]:
 def is_merged(branch: str) -> bool:
     """Check if branch is merged into main."""
     # Get commits in branch that aren't in main
-    output = run_git([
-        "log",
-        "--oneline",
-        f"origin/main..{branch}",
-        "--",
-    ])
+    output = run_git(
+        [
+            "log",
+            "--oneline",
+            f"origin/main..{branch}",
+            "--",
+        ]
+    )
     return len(output.strip()) == 0
 
 
 def get_branch_age_days(branch: str) -> int:
     """Get age of last commit on branch in days."""
-    output = run_git([
-        "log",
-        "-1",
-        "--format=%ci",
-        branch,
-    ])
+    output = run_git(
+        [
+            "log",
+            "-1",
+            "--format=%ci",
+            branch,
+        ]
+    )
     if not output:
         return 999  # Very old if we can't get date
 
@@ -115,9 +119,7 @@ def cleanup_branches(delete: bool = False, min_age_days: int = 30) -> None:
         # 2. Task branch older than min_age_days, OR
         # 3. Any branch older than 90 days
         is_stale = (
-            (merged and age > 7) or
-            (is_task and age > min_age_days) or
-            (age > 90)
+            (merged and age > 7) or (is_task and age > min_age_days) or (age > 90)
         )
 
         if is_stale:
@@ -163,9 +165,7 @@ def cleanup_branches(delete: bool = False, min_age_days: int = 30) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Cleanup stale remote branches"
-    )
+    parser = argparse.ArgumentParser(description="Cleanup stale remote branches")
     parser.add_argument(
         "--delete",
         action="store_true",

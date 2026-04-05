@@ -12,6 +12,7 @@ Usage:
     python scripts/pre_migration_check.py
     python scripts/pre_migration_check.py --fix  # Auto-fix issues if possible
 """
+
 from __future__ import annotations
 
 import subprocess

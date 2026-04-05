@@ -234,7 +234,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.sig_registry = sig_registry  # Phase 3: API signature checking
 
         # Module-level definitions (collected in preprocess pass)
-        self.module_level_defs: Set[str] = set()  # Functions/classes defined at module level
+        self.module_level_defs: Set[str] = (
+            set()
+        )  # Functions/classes defined at module level
 
         # Scope tracking for NameError detection
         self.scopes: List[Set[str]] = [set()]  # Stack of scopes (sets of defined vars)
@@ -299,13 +301,19 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         # Phase 7: Widget key conflict detection (TASK-XXX)
         # Track widget keys to detect session_state modification after widget instantiation
-        self.widget_keys: Dict[str, int] = {}  # key -> line number where widget was created
+        self.widget_keys: Dict[str, int] = (
+            {}
+        )  # key -> line number where widget was created
 
         # Phase 9: Fixed-size container tracking
         # Track containers built with guaranteed minimum lengths
         # e.g., corners = [] followed by 2×2×2 nested loops with .append()
-        self.fixed_size_containers: Dict[str, int] = {}  # container_name -> guaranteed_min_length
-        self.empty_list_assignments: Dict[str, int] = {}  # container_name -> line_number (for tracking)
+        self.fixed_size_containers: Dict[str, int] = (
+            {}
+        )  # container_name -> guaranteed_min_length
+        self.empty_list_assignments: Dict[str, int] = (
+            {}
+        )  # container_name -> line_number (for tracking)
 
         # Function tracking
         self.in_function = False
@@ -1527,11 +1535,27 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         # All Streamlit widgets that accept key= parameter
         widgets_with_keys = {
-            "number_input", "text_input", "text_area", "selectbox", "multiselect",
-            "slider", "radio", "checkbox", "button", "toggle", "select_slider",
-            "date_input", "time_input", "file_uploader", "color_picker",
-            "data_editor", "download_button", "form_submit_button",
-            "camera_input", "chat_input", "audio_input",
+            "number_input",
+            "text_input",
+            "text_area",
+            "selectbox",
+            "multiselect",
+            "slider",
+            "radio",
+            "checkbox",
+            "button",
+            "toggle",
+            "select_slider",
+            "date_input",
+            "time_input",
+            "file_uploader",
+            "color_picker",
+            "data_editor",
+            "download_button",
+            "form_submit_button",
+            "camera_input",
+            "chat_input",
+            "audio_input",
         }
 
         if widget_name not in widgets_with_keys:
@@ -1541,7 +1565,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         for kw in node.keywords:
             if kw.arg == "key":
                 # Extract the key value if it's a string constant
-                if isinstance(kw.value, ast.Constant) and isinstance(kw.value.value, str):
+                if isinstance(kw.value, ast.Constant) and isinstance(
+                    kw.value.value, str
+                ):
                     key_value = kw.value.value
                     self.widget_keys[key_value] = node.lineno
 
@@ -1583,14 +1609,24 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Find all .append() calls in the loop body
             for stmt in ast.walk(node):
                 if isinstance(stmt, ast.Call):
-                    if isinstance(stmt.func, ast.Attribute) and stmt.func.attr == "append":
+                    if (
+                        isinstance(stmt.func, ast.Attribute)
+                        and stmt.func.attr == "append"
+                    ):
                         container_name = self._extract_var_name(stmt.func.value)
-                        if container_name and container_name in self.empty_list_assignments:
+                        if (
+                            container_name
+                            and container_name in self.empty_list_assignments
+                        ):
                             # Multiply by nested loop count
-                            total_appends = iteration_count * self._count_nested_fixed_loops(node)
+                            total_appends = (
+                                iteration_count * self._count_nested_fixed_loops(node)
+                            )
                             # Update or set the guaranteed size
                             current = self.fixed_size_containers.get(container_name, 0)
-                            self.fixed_size_containers[container_name] = max(current, total_appends)
+                            self.fixed_size_containers[container_name] = max(
+                                current, total_appends
+                            )
 
         self.generic_visit(node)
 
@@ -1619,7 +1655,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     if isinstance(iter_node.args[0], ast.Constant):
                         return int(iter_node.args[0].value)
                 elif len(iter_node.args) >= 2:
-                    if isinstance(iter_node.args[0], ast.Constant) and isinstance(iter_node.args[1], ast.Constant):
+                    if isinstance(iter_node.args[0], ast.Constant) and isinstance(
+                        iter_node.args[1], ast.Constant
+                    ):
                         start = int(iter_node.args[0].value)
                         end = int(iter_node.args[1].value)
                         return max(0, end - start)

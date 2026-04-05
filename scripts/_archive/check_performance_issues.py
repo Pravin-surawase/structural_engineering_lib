@@ -27,6 +27,7 @@ Exit Codes:
 
 Created: 2026-01-12 (Session 18, TASK-405)
 """
+
 from __future__ import annotations
 
 import ast
@@ -37,7 +38,6 @@ from pathlib import Path
 from typing import Dict, List, Set, Any, Optional
 from dataclasses import dataclass, asdict
 from enum import Enum
-
 
 # =============================================================================
 # DATA STRUCTURES

@@ -360,7 +360,9 @@ class FolderValidator:
         """
         lib_root = self.project_root / "Python" / "structural_lib"
         if not lib_root.exists():
-            self.warnings.append("Python/structural_lib/ not found — skipping lib checks")
+            self.warnings.append(
+                "Python/structural_lib/ not found — skipping lib checks"
+            )
             return
 
         # Required folders
@@ -370,7 +372,9 @@ class FolderValidator:
             if path.exists() and path.is_dir():
                 self.info.append(f"✅ structural_lib/{folder}/")
             else:
-                self.errors.append(f"Missing required lib folder: structural_lib/{folder}/")
+                self.errors.append(
+                    f"Missing required lib folder: structural_lib/{folder}/"
+                )
 
         # Optional folders (info only)
         for folder in ("codes/aci318", "codes/ec2", "integration", "utils"):
@@ -380,7 +384,11 @@ class FolderValidator:
 
         # Required files and exports
         required_files = {
-            "core/__init__.py": ["CodeRegistry", "RectangularSection", "MaterialFactory"],
+            "core/__init__.py": [
+                "CodeRegistry",
+                "RectangularSection",
+                "MaterialFactory",
+            ],
             "core/base.py": ["DesignCode", "DesignResult", "FlexureDesigner"],
             "core/materials.py": ["Concrete", "Steel", "MaterialFactory"],
             "core/geometry.py": ["Section", "RectangularSection", "TSection"],
@@ -405,6 +413,7 @@ class FolderValidator:
             sys.path.insert(0, str(self.project_root / "Python"))
             from structural_lib.core import CodeRegistry
             from structural_lib.codes import is456  # noqa: F401
+
             if CodeRegistry.is_registered("IS456"):
                 self.info.append("✅ IS456 registered in CodeRegistry")
             else:

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate or validate the public API manifest for structural_lib.api.
 
-When to use: After adding/removing functions from api.py. Generates or validates the public API manifest."""
+When to use: After adding/removing functions from api.py. Generates or validates the public API manifest.
+"""
 
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+
 DEFAULT_OUT = REPO_ROOT / "docs/reference/api-manifest.json"
 
 

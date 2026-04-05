@@ -20,19 +20,17 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import subprocess
 import sys
 import time
 from dataclasses import dataclass, field, asdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib.utils import REPO_ROOT, DOCS_DIR, SCRIPTS_DIR, run_command
-from _lib.output import StatusLine, print_json, print_summary
-
+from _lib.utils import REPO_ROOT, DOCS_DIR, SCRIPTS_DIR
+from _lib.output import print_json
 
 # ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -56,9 +54,11 @@ WEIGHTS = {
 
 # ─── Data Classes ────────────────────────────────────────────────────────────
 
+
 @dataclass
 class Issue:
     """A single health issue."""
+
     category: str
     severity: str  # "error", "warning", "info"
     message: str
@@ -70,6 +70,7 @@ class Issue:
 @dataclass
 class CategoryResult:
     """Health result for one category."""
+
     name: str
     score: int = 100  # 0-100
     issues: list[Issue] = field(default_factory=list)
@@ -85,6 +86,7 @@ class CategoryResult:
 @dataclass
 class HealthReport:
     """Complete health report."""
+
     timestamp: str = ""
     overall_score: int = 100
     categories: dict[str, CategoryResult] = field(default_factory=dict)
@@ -96,14 +98,20 @@ class HealthReport:
 
 # ─── Utility ─────────────────────────────────────────────────────────────────
 
-def _run_check_script(script_name: str, args: list[str] | None = None) -> tuple[int, str]:
+
+def _run_check_script(
+    script_name: str, args: list[str] | None = None
+) -> tuple[int, str]:
     """Run a check script and return (exit_code, output)."""
     cmd = [str(VENV_PYTHON), str(SCRIPTS_DIR / script_name)]
     if args:
         cmd.extend(args)
     try:
         result = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=60,
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=60,
             cwd=str(REPO_ROOT),
         )
         return result.returncode, result.stdout + result.stderr
@@ -119,7 +127,9 @@ def _file_age_days(path: Path) -> int:
     return (datetime.now() - mtime).days
 
 
-def _count_pattern(directory: Path, pattern: str, extensions: list[str] | None = None) -> int:
+def _count_pattern(
+    directory: Path, pattern: str, extensions: list[str] | None = None
+) -> int:
     """Count files matching a glob in a directory."""
     if not directory.exists():
         return 0
@@ -132,6 +142,7 @@ def _count_pattern(directory: Path, pattern: str, extensions: list[str] | None =
 
 
 # ─── Category Scanners ───────────────────────────────────────────────────────
+
 
 def scan_docs(fix: bool = False) -> CategoryResult:
     """Scan documentation health."""
@@ -149,19 +160,30 @@ def scan_docs(fix: bool = False) -> CategoryResult:
         result.fixes_applied += drift_count
         result.checks_passed += 1
         if drift_count > 0:
-            result.issues.append(Issue(
-                category="docs", severity="info",
-                message=f"Fixed {drift_count} stale number(s) in docs",
-                fixable=True, fix_applied=True,
-            ))
+            result.issues.append(
+                Issue(
+                    category="docs",
+                    severity="info",
+                    message=f"Fixed {drift_count} stale number(s) in docs",
+                    fixable=True,
+                    fix_applied=True,
+                )
+            )
     else:
         # Count drift items from output
-        drift_lines = [l for l in output.splitlines() if "drift" in l.lower() or "stale" in l.lower()]
-        result.issues.append(Issue(
-            category="docs", severity="warning",
-            message=f"Number drift detected ({len(drift_lines)} items). Run with --fix to resolve.",
-            fixable=True,
-        ))
+        drift_lines = [
+            l
+            for l in output.splitlines()
+            if "drift" in l.lower() or "stale" in l.lower()
+        ]
+        result.issues.append(
+            Issue(
+                category="docs",
+                severity="warning",
+                message=f"Number drift detected ({len(drift_lines)} items). Run with --fix to resolve.",
+                fixable=True,
+            )
+        )
 
     # Check 2: Broken links (check_links.py)
     result.checks_run += 1
@@ -170,12 +192,17 @@ def scan_docs(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        broken = len([l for l in output.splitlines() if "broken" in l.lower() or "FAIL" in l])
-        result.issues.append(Issue(
-            category="docs", severity="warning",
-            message=f"Broken links detected ({broken} issues). Run: check_links.py --fix",
-            fixable=True,
-        ))
+        broken = len(
+            [l for l in output.splitlines() if "broken" in l.lower() or "FAIL" in l]
+        )
+        result.issues.append(
+            Issue(
+                category="docs",
+                severity="warning",
+                message=f"Broken links detected ({broken} issues). Run: check_links.py --fix",
+                fixable=True,
+            )
+        )
 
     # Check 3: Doc metadata (check_docs.py)
     result.checks_run += 1
@@ -184,11 +211,14 @@ def scan_docs(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        result.issues.append(Issue(
-            category="docs", severity="info",
-            message="Doc metadata/frontmatter issues found. Run: check_docs.py --fix",
-            fixable=True,
-        ))
+        result.issues.append(
+            Issue(
+                category="docs",
+                severity="info",
+                message="Doc metadata/frontmatter issues found. Run: check_docs.py --fix",
+                fixable=True,
+            )
+        )
 
     # Check 4: Stale docs (age check)
     result.checks_run += 1
@@ -200,10 +230,13 @@ def scan_docs(fix: bool = False) -> CategoryResult:
             if age > STALENESS_DAYS:
                 stale_docs.append(f"{md.relative_to(REPO_ROOT)} ({age}d)")
     if stale_docs:
-        result.issues.append(Issue(
-            category="docs", severity="info",
-            message=f"{len(stale_docs)} doc(s) in _active/ older than {STALENESS_DAYS} days",
-        ))
+        result.issues.append(
+            Issue(
+                category="docs",
+                severity="info",
+                message=f"{len(stale_docs)} doc(s) in _active/ older than {STALENESS_DAYS} days",
+            )
+        )
     else:
         result.checks_passed += 1
 
@@ -218,10 +251,13 @@ def scan_docs(fix: bool = False) -> CategoryResult:
             missing = data.get("missing_count", 0)
         except (json.JSONDecodeError, AttributeError):
             missing = "unknown"
-        result.issues.append(Issue(
-            category="docs", severity="warning",
-            message=f"Bootstrap docs stale: {missing} items in code not reflected in bootstrap docs",
-        ))
+        result.issues.append(
+            Issue(
+                category="docs",
+                severity="warning",
+                message=f"Bootstrap docs stale: {missing} items in code not reflected in bootstrap docs",
+            )
+        )
 
     # Calculate score
     if result.checks_run > 0:
@@ -241,10 +277,13 @@ def scan_code(fix: bool = False) -> CategoryResult:
         result.checks_passed += 1
     else:
         violations = len([l for l in output.splitlines() if "violation" in l.lower()])
-        result.issues.append(Issue(
-            category="code", severity="error",
-            message=f"Architecture boundary violations: {violations} found",
-        ))
+        result.issues.append(
+            Issue(
+                category="code",
+                severity="error",
+                message=f"Architecture boundary violations: {violations} found",
+            )
+        )
 
     # Check 2: Circular imports
     result.checks_run += 1
@@ -252,21 +291,29 @@ def scan_code(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        result.issues.append(Issue(
-            category="code", severity="error",
-            message="Circular imports detected in structural_lib",
-        ))
+        result.issues.append(
+            Issue(
+                category="code",
+                severity="error",
+                message="Circular imports detected in structural_lib",
+            )
+        )
 
     # Check 3: Import validation
     result.checks_run += 1
-    code, output = _run_check_script("validate_imports.py", ["--scope", "structural_lib"])
+    code, output = _run_check_script(
+        "validate_imports.py", ["--scope", "structural_lib"]
+    )
     if code == 0:
         result.checks_passed += 1
     else:
-        result.issues.append(Issue(
-            category="code", severity="error",
-            message="Broken imports detected. Run: validate_imports.py --scope structural_lib",
-        ))
+        result.issues.append(
+            Issue(
+                category="code",
+                severity="error",
+                message="Broken imports detected. Run: validate_imports.py --scope structural_lib",
+            )
+        )
 
     # Check 4: API contract stability
     result.checks_run += 1
@@ -274,10 +321,13 @@ def scan_code(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        result.issues.append(Issue(
-            category="code", severity="warning",
-            message="API contract issues. Run: check_api.py for details",
-        ))
+        result.issues.append(
+            Issue(
+                category="code",
+                severity="warning",
+                message="API contract issues. Run: check_api.py for details",
+            )
+        )
 
     if result.checks_run > 0:
         result.score = int((result.checks_passed / result.checks_run) * 100)
@@ -295,10 +345,13 @@ def scan_agents(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        result.issues.append(Issue(
-            category="agents", severity="warning",
-            message="Instruction drift between .github/instructions/ and .claude/rules/",
-        ))
+        result.issues.append(
+            Issue(
+                category="agents",
+                severity="warning",
+                message="Instruction drift between .github/instructions/ and .claude/rules/",
+            )
+        )
 
     # Check 2: Agent file references validity
     result.checks_run += 1
@@ -310,7 +363,7 @@ def scan_agents(fix: bool = False) -> CategoryResult:
             except OSError:
                 continue
             # Check referenced files exist
-            for match in re.finditer(r'`([^`]+\.(?:py|ts|tsx|sh|md))`', content):
+            for match in re.finditer(r"`([^`]+\.(?:py|ts|tsx|sh|md))`", content):
                 ref_path = match.group(1)
                 # Skip if it looks like a command or pattern, not a path
                 if ref_path.startswith("-") or "*" in ref_path or " " in ref_path:
@@ -319,11 +372,14 @@ def scan_agents(fix: bool = False) -> CategoryResult:
                 if not full.exists() and not ref_path.startswith("scripts/"):
                     invalid_refs.append(f"{agent_file.name}: {ref_path}")
     if invalid_refs:
-        result.issues.append(Issue(
-            category="agents", severity="warning",
-            message=f"{len(invalid_refs)} invalid file reference(s) in agent instructions",
-            fixable=fix,
-        ))
+        result.issues.append(
+            Issue(
+                category="agents",
+                severity="warning",
+                message=f"{len(invalid_refs)} invalid file reference(s) in agent instructions",
+                fixable=fix,
+            )
+        )
     else:
         result.checks_passed += 1
 
@@ -343,15 +399,20 @@ def scan_agents(fix: bool = False) -> CategoryResult:
             except OSError:
                 continue
             # Check referenced scripts exist
-            for match in re.finditer(r'scripts/(\S+\.py)', content):
+            for match in re.finditer(r"scripts/(\S+\.py)", content):
                 script = SCRIPTS_DIR / match.group(1)
                 if not script.exists():
-                    skill_issues.append(f"{skill_dir.name}: references missing {match.group(0)}")
+                    skill_issues.append(
+                        f"{skill_dir.name}: references missing {match.group(0)}"
+                    )
     if skill_issues:
-        result.issues.append(Issue(
-            category="agents", severity="warning",
-            message=f"{len(skill_issues)} skill reference issue(s): {'; '.join(skill_issues[:3])}",
-        ))
+        result.issues.append(
+            Issue(
+                category="agents",
+                severity="warning",
+                message=f"{len(skill_issues)} skill reference issue(s): {'; '.join(skill_issues[:3])}",
+            )
+        )
     else:
         result.checks_passed += 1
 
@@ -365,15 +426,20 @@ def scan_agents(fix: bool = False) -> CategoryResult:
         try:
             text = agents_md.read_text(encoding="utf-8")
             # Look for "11 agents" or similar
-            for match in re.finditer(r'(\d+)\s+(?:custom\s+)?agents?', text, re.IGNORECASE):
+            for match in re.finditer(
+                r"(\d+)\s+(?:custom\s+)?agents?", text, re.IGNORECASE
+            ):
                 doc_count = int(match.group(1))
                 if doc_count != actual_agents:
                     count_mismatch = True
-                    result.issues.append(Issue(
-                        category="agents", severity="warning",
-                        message=f"AGENTS.md says {doc_count} agents but found {actual_agents}",
-                        fixable=True,
-                    ))
+                    result.issues.append(
+                        Issue(
+                            category="agents",
+                            severity="warning",
+                            message=f"AGENTS.md says {doc_count} agents but found {actual_agents}",
+                            fixable=True,
+                        )
+                    )
                 break
         except OSError:
             pass
@@ -392,10 +458,13 @@ def scan_agents(fix: bool = False) -> CategoryResult:
             except OSError:
                 empty_prompts.append(prompt_file.name)
     if empty_prompts:
-        result.issues.append(Issue(
-            category="agents", severity="info",
-            message=f"{len(empty_prompts)} nearly-empty prompt file(s)",
-        ))
+        result.issues.append(
+            Issue(
+                category="agents",
+                severity="info",
+                message=f"{len(empty_prompts)} nearly-empty prompt file(s)",
+            )
+        )
     else:
         result.checks_passed += 1
 
@@ -422,31 +491,45 @@ def scan_infra(fix: bool = False) -> CategoryResult:
             missing.append("pre-commit")
         if not post_commit.exists():
             missing.append("post-commit")
-        result.issues.append(Issue(
-            category="infra", severity="error",
-            message=f"Git hooks missing: {', '.join(missing)}. Run: scripts/install_git_hooks.sh",
-            fixable=True,
-        ))
+        result.issues.append(
+            Issue(
+                category="infra",
+                severity="error",
+                message=f"Git hooks missing: {', '.join(missing)}. Run: scripts/install_git_hooks.sh",
+                fixable=True,
+            )
+        )
 
     # Check 2: Python venv active and has key deps
     result.checks_run += 1
     if VENV_PYTHON.exists():
-        code, output = subprocess.run(
-            [str(VENV_PYTHON), "-c", "import pydantic, pandas, numpy; print('ok')"],
-            capture_output=True, text=True, timeout=15,
-        ).returncode, ""
+        code, output = (
+            subprocess.run(
+                [str(VENV_PYTHON), "-c", "import pydantic, pandas, numpy; print('ok')"],
+                capture_output=True,
+                text=True,
+                timeout=15,
+            ).returncode,
+            "",
+        )
         if code == 0:
             result.checks_passed += 1
         else:
-            result.issues.append(Issue(
-                category="infra", severity="error",
-                message="Python venv missing key dependencies (pydantic/pandas/numpy)",
-            ))
+            result.issues.append(
+                Issue(
+                    category="infra",
+                    severity="error",
+                    message="Python venv missing key dependencies (pydantic/pandas/numpy)",
+                )
+            )
     else:
-        result.issues.append(Issue(
-            category="infra", severity="error",
-            message="Python venv not found at .venv/",
-        ))
+        result.issues.append(
+            Issue(
+                category="infra",
+                severity="error",
+                message="Python venv not found at .venv/",
+            )
+        )
 
     # Check 3: Scripts are syntactically valid (shell scripts)
     result.checks_run += 1
@@ -454,15 +537,20 @@ def scan_infra(fix: bool = False) -> CategoryResult:
     for sh_file in SCRIPTS_DIR.glob("*.sh"):
         check = subprocess.run(
             ["bash", "-n", str(sh_file)],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         if check.returncode != 0:
             broken_scripts.append(sh_file.name)
     if broken_scripts:
-        result.issues.append(Issue(
-            category="infra", severity="error",
-            message=f"Shell syntax errors in: {', '.join(broken_scripts)}",
-        ))
+        result.issues.append(
+            Issue(
+                category="infra",
+                severity="error",
+                message=f"Shell syntax errors in: {', '.join(broken_scripts)}",
+            )
+        )
     else:
         result.checks_passed += 1
 
@@ -472,10 +560,13 @@ def scan_infra(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        result.issues.append(Issue(
-            category="infra", severity="info",
-            message="Docker config issues detected. Run: check_docker_config.py",
-        ))
+        result.issues.append(
+            Issue(
+                category="infra",
+                severity="info",
+                message="Docker config issues detected. Run: check_docker_config.py",
+            )
+        )
 
     # Check 5: OpenAPI baseline current
     result.checks_run += 1
@@ -483,11 +574,14 @@ def scan_infra(fix: bool = False) -> CategoryResult:
     if baseline.exists():
         age = _file_age_days(baseline)
         if age > 30:
-            result.issues.append(Issue(
-                category="infra", severity="info",
-                message=f"OpenAPI baseline is {age} days old. Run: check_openapi_snapshot.py --update",
-                fixable=True,
-            ))
+            result.issues.append(
+                Issue(
+                    category="infra",
+                    severity="info",
+                    message=f"OpenAPI baseline is {age} days old. Run: check_openapi_snapshot.py --update",
+                    fixable=True,
+                )
+            )
         else:
             result.checks_passed += 1
     else:
@@ -511,20 +605,28 @@ def scan_feedback(fix: bool = False) -> CategoryResult:
             try:
                 data = json.loads(fb_file.read_text(encoding="utf-8"))
                 items = data.get("items", [])
-                pending_count += sum(1 for item in items if item.get("status") != "resolved")
+                pending_count += sum(
+                    1 for item in items if item.get("status") != "resolved"
+                )
             except (json.JSONDecodeError, OSError):
                 continue
 
     if pending_count > 10:
-        result.issues.append(Issue(
-            category="feedback", severity="warning",
-            message=f"{pending_count} unresolved feedback items. Run: ./run.sh feedback summary",
-        ))
+        result.issues.append(
+            Issue(
+                category="feedback",
+                severity="warning",
+                message=f"{pending_count} unresolved feedback items. Run: ./run.sh feedback summary",
+            )
+        )
     elif pending_count > 0:
-        result.issues.append(Issue(
-            category="feedback", severity="info",
-            message=f"{pending_count} pending feedback item(s)",
-        ))
+        result.issues.append(
+            Issue(
+                category="feedback",
+                severity="info",
+                message=f"{pending_count} pending feedback item(s)",
+            )
+        )
         result.checks_passed += 1
     else:
         result.checks_passed += 1
@@ -543,10 +645,13 @@ def scan_feedback(fix: bool = False) -> CategoryResult:
                 continue
     recurring = {k: v for k, v in issue_counts.items() if v >= 3}
     if recurring:
-        result.issues.append(Issue(
-            category="feedback", severity="warning",
-            message=f"{len(recurring)} recurring issue(s) need systemic fix",
-        ))
+        result.issues.append(
+            Issue(
+                category="feedback",
+                severity="warning",
+                message=f"{len(recurring)} recurring issue(s) need systemic fix",
+            )
+        )
     else:
         result.checks_passed += 1
 
@@ -589,17 +694,19 @@ def run_health_scan(
             cat_result = scanner(fix=fix)
         except Exception as e:
             cat_result = CategoryResult(name=cat_name, score=0)
-            cat_result.issues.append(Issue(
-                category=cat_name, severity="error",
-                message=f"Scanner failed: {e}",
-            ))
+            cat_result.issues.append(
+                Issue(
+                    category=cat_name,
+                    severity="error",
+                    message=f"Scanner failed: {e}",
+                )
+            )
         report.categories[cat_name] = cat_result
 
     # Calculate overall score
     total_weight = sum(WEIGHTS.get(c, 0.1) for c in report.categories)
     weighted_score = sum(
-        report.categories[c].score * WEIGHTS.get(c, 0.1)
-        for c in report.categories
+        report.categories[c].score * WEIGHTS.get(c, 0.1) for c in report.categories
     )
     report.overall_score = int(weighted_score / total_weight) if total_weight > 0 else 0
 
@@ -623,7 +730,9 @@ def _score_indicator(score: int) -> str:
         return f"\033[0;31m{score}/100 ○\033[0m"  # Red
 
 
-def print_report(report: HealthReport, json_output: bool = False, score_only: bool = False) -> None:
+def print_report(
+    report: HealthReport, json_output: bool = False, score_only: bool = False
+) -> None:
     """Print health report."""
     if json_output:
         # Serialize for JSON
@@ -655,17 +764,27 @@ def print_report(report: HealthReport, json_output: bool = False, score_only: bo
     print()
     print("\033[1m\033[36m━━━ Project Health Report ━━━\033[0m")
     print(f"  Overall: {_score_indicator(report.overall_score)}")
-    print(f"  Scanned: {datetime.now().strftime('%Y-%m-%d %H:%M')} ({report.scan_duration_ms}ms)")
+    print(
+        f"  Scanned: {datetime.now().strftime('%Y-%m-%d %H:%M')} ({report.scan_duration_ms}ms)"
+    )
     print()
 
     for name, cat in report.categories.items():
         icon = "✅" if cat.score >= 90 else ("⚠️" if cat.score >= 70 else "❌")
-        print(f"  {icon} {name.upper():10s} {_score_indicator(cat.score)}  "
-              f"({cat.checks_passed}/{cat.checks_run} checks passed)")
+        print(
+            f"  {icon} {name.upper():10s} {_score_indicator(cat.score)}  "
+            f"({cat.checks_passed}/{cat.checks_run} checks passed)"
+        )
 
         for issue in cat.issues:
-            sev_icon = {"error": "❌", "warning": "⚠️", "info": "ℹ️"}.get(issue.severity, "·")
-            fix_tag = " [FIXED]" if issue.fix_applied else (" [FIXABLE]" if issue.fixable else "")
+            sev_icon = {"error": "❌", "warning": "⚠️", "info": "ℹ️"}.get(
+                issue.severity, "·"
+            )
+            fix_tag = (
+                " [FIXED]"
+                if issue.fix_applied
+                else (" [FIXABLE]" if issue.fixable else "")
+            )
             print(f"      {sev_icon} {issue.message}{fix_tag}")
 
     print()
@@ -679,8 +798,10 @@ def print_report(report: HealthReport, json_output: bool = False, score_only: bo
 
     if report.fixable_issues > report.fixes_applied:
         unfixed = report.fixable_issues - report.fixes_applied
-        print(f"\n  \033[1;33mTip:\033[0m {unfixed} issue(s) can be auto-fixed. "
-              f"Run: ./run.sh health --fix")
+        print(
+            f"\n  \033[1;33mTip:\033[0m {unfixed} issue(s) can be auto-fixed. "
+            f"Run: ./run.sh health --fix"
+        )
     print()
 
 
@@ -703,6 +824,7 @@ def save_report(report: HealthReport) -> None:
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Unified project health scanner",
@@ -713,7 +835,8 @@ def main() -> None:
     parser.add_argument("--quick", action="store_true", help="Quick scan (docs only)")
     parser.add_argument("--json", action="store_true", help="JSON output")
     parser.add_argument(
-        "--category", choices=list(SCANNERS.keys()),
+        "--category",
+        choices=list(SCANNERS.keys()),
         help="Scan specific category",
     )
     args = parser.parse_args()

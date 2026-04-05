@@ -56,7 +56,9 @@ def _scan_script_files() -> set[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--json", action="store_true", help="Machine-readable JSON output")
+    parser.add_argument(
+        "--json", action="store_true", help="Machine-readable JSON output"
+    )
     args = parser.parse_args()
 
     errors = 0
@@ -67,7 +69,10 @@ def main() -> int:
     if not INDEX_PATH.exists():
         if not args.json:
             print("WARNING: scripts/index.json not found (skipping)")
-        report["checks"]["index_json"] = {"status": "skipped", "reason": "file not found"}
+        report["checks"]["index_json"] = {
+            "status": "skipped",
+            "reason": "file not found",
+        }
     else:
         indexed = _load_indexed_scripts()
         missing = sorted(actual - indexed)
@@ -95,7 +100,10 @@ def main() -> int:
     if not AUTOMATION_MAP_PATH.exists():
         if not args.json:
             print("WARNING: scripts/automation-map.json not found (skipping)")
-        report["checks"]["automation_map"] = {"status": "skipped", "reason": "file not found"}
+        report["checks"]["automation_map"] = {
+            "status": "skipped",
+            "reason": "file not found",
+        }
     else:
         data = json.loads(AUTOMATION_MAP_PATH.read_text(encoding="utf-8"))
         mapped_scripts: set[str] = set()
@@ -122,12 +130,16 @@ def main() -> int:
             errors += 1
         if phantom:
             if not args.json:
-                print(f"ERROR: {len(phantom)} phantom script(s) in automation-map.json:")
+                print(
+                    f"ERROR: {len(phantom)} phantom script(s) in automation-map.json:"
+                )
                 for name in phantom:
                     print(f"    - {name}")
             errors += 1
         if not unmapped and not phantom and not args.json:
-            print(f"✓ automation-map.json: {len(mapped_scripts)}/{len(actual)} scripts covered")
+            print(
+                f"✓ automation-map.json: {len(mapped_scripts)}/{len(actual)} scripts covered"
+            )
 
     # Check "When to use:" in Python script docstrings
     py_scripts = sorted(s for s in actual if s.endswith(".py"))
@@ -148,9 +160,13 @@ def main() -> int:
     }
     if not args.json:
         if missing_when:
-            print(f"INFO: {len(missing_when)}/{len(py_scripts)} Python scripts missing 'When to use:' in docstring")
+            print(
+                f"INFO: {len(missing_when)}/{len(py_scripts)} Python scripts missing 'When to use:' in docstring"
+            )
         else:
-            print(f"✓ All {len(py_scripts)} Python scripts have 'When to use:' in docstring")
+            print(
+                f"✓ All {len(py_scripts)} Python scripts have 'When to use:' in docstring"
+            )
 
     if args.json:
         report["errors"] = errors

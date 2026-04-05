@@ -44,7 +44,9 @@ from structural_lib.models import (
     SectionProperties,
 )
 
-SNAPSHOT_FILE = Path(__file__).parent.parent / "Python/tests/integration/schema_snapshots.json"
+SNAPSHOT_FILE = (
+    Path(__file__).parent.parent / "Python/tests/integration/schema_snapshots.json"
+)
 
 MODELS = {
     "Point3D": Point3D,
@@ -85,9 +87,7 @@ def get_enum_values(enum_class) -> list[str]:
 
 
 def compare_schemas(
-    current: dict[str, Any],
-    snapshot: dict[str, Any],
-    model_name: str
+    current: dict[str, Any], snapshot: dict[str, Any], model_name: str
 ) -> list[str]:
     """Compare current schema against snapshot, return list of differences."""
     diffs = []
@@ -182,6 +182,7 @@ def update_snapshots(current_schemas: dict[str, Any]) -> None:
 
     # Update generated date
     from datetime import datetime, timezone
+
     snapshots["generated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     # Update models

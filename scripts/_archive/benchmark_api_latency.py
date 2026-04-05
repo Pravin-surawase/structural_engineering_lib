@@ -56,6 +56,7 @@ sys.path.insert(0, str(PYTHON_DIR))
 @dataclass
 class BenchmarkConfig:
     """Configuration for a benchmark test."""
+
     name: str
     function: str
     inputs: dict
@@ -67,6 +68,7 @@ class BenchmarkConfig:
 @dataclass
 class BenchmarkResult:
     """Result of a benchmark test."""
+
     name: str
     function: str
     min_ms: float
@@ -83,12 +85,12 @@ class BenchmarkResult:
 
 # V3 Latency Requirements
 V3_THRESHOLDS = {
-    "design_beam_is456": 50.0,        # Real-time design feedback
-    "check_shear_is456": 30.0,        # Live validation
-    "detail_beam_is456": 80.0,        # Detailing calculation
-    "beam_to_3d_geometry": 100.0,     # 3D rendering
-    "optimize_beam_cost": 200.0,      # Optimization (can be slower)
-    "default": 100.0                  # Default threshold
+    "design_beam_is456": 50.0,  # Real-time design feedback
+    "check_shear_is456": 30.0,  # Live validation
+    "detail_beam_is456": 80.0,  # Detailing calculation
+    "beam_to_3d_geometry": 100.0,  # 3D rendering
+    "optimize_beam_cost": 200.0,  # Optimization (can be slower)
+    "default": 100.0,  # Default threshold
 }
 
 # Standard benchmark configurations
@@ -105,9 +107,9 @@ STANDARD_BENCHMARKS = [
             "D_mm": 450.0,
             "d_mm": 420.0,  # D - cover - bar/2
             "fck_nmm2": 25.0,
-            "fy_nmm2": 500.0
+            "fy_nmm2": 500.0,
         },
-        threshold_ms=50.0
+        threshold_ms=50.0,
     ),
     BenchmarkConfig(
         name="Design beam - complex case",
@@ -121,9 +123,9 @@ STANDARD_BENCHMARKS = [
             "D_mm": 750.0,
             "d_mm": 700.0,
             "fck_nmm2": 35.0,
-            "fy_nmm2": 500.0
+            "fy_nmm2": 500.0,
         },
-        threshold_ms=75.0
+        threshold_ms=75.0,
     ),
     BenchmarkConfig(
         name="Design beam - minimum steel",
@@ -137,9 +139,9 @@ STANDARD_BENCHMARKS = [
             "D_mm": 400.0,
             "d_mm": 370.0,
             "fck_nmm2": 20.0,
-            "fy_nmm2": 415.0
+            "fy_nmm2": 415.0,
         },
-        threshold_ms=50.0
+        threshold_ms=50.0,
     ),
 ]
 
@@ -148,6 +150,7 @@ def load_api():
     """Load the structural_lib.api module."""
     try:
         from structural_lib import api
+
         return api
     except ImportError as e:
         print(f"❌ Cannot import structural_lib.services.api: {e}")
@@ -187,7 +190,7 @@ def run_benchmark(api, config: BenchmarkConfig) -> BenchmarkResult:
             p99_ms=float("inf"),
             threshold_ms=config.threshold_ms,
             passed=False,
-            iterations=0
+            iterations=0,
         )
 
     # Warmup runs
@@ -223,7 +226,7 @@ def run_benchmark(api, config: BenchmarkConfig) -> BenchmarkResult:
             p99_ms=float("inf"),
             threshold_ms=config.threshold_ms,
             passed=False,
-            iterations=0
+            iterations=0,
         )
 
     # Calculate statistics
@@ -246,7 +249,7 @@ def run_benchmark(api, config: BenchmarkConfig) -> BenchmarkResult:
         p99_ms=sorted_times[p99_idx] if p99_idx < len(sorted_times) else max(times),
         threshold_ms=config.threshold_ms,
         passed=median <= config.threshold_ms,  # Use median for pass/fail
-        iterations=len(times)
+        iterations=len(times),
     )
 
 
@@ -260,7 +263,9 @@ def print_result(result: BenchmarkResult):
     print(f"   Threshold:  {result.threshold_ms:.1f}ms")
     print(f"   ├── Min:    {result.min_ms:.3f}ms")
     print(f"   ├── Mean:   {result.mean_ms:.3f}ms")
-    print(f"   ├── Median: {result.median_ms:.3f}ms {'✅' if result.median_ms <= result.threshold_ms else '⚠️'}")
+    print(
+        f"   ├── Median: {result.median_ms:.3f}ms {'✅' if result.median_ms <= result.threshold_ms else '⚠️'}"
+    )
     print(f"   ├── P95:    {result.p95_ms:.3f}ms")
     print(f"   ├── P99:    {result.p99_ms:.3f}ms")
     print(f"   ├── Max:    {result.max_ms:.3f}ms")
@@ -286,7 +291,9 @@ def print_summary(results: list[BenchmarkResult]):
     print("-" * 65)
     for r in results:
         status = "✅ PASS" if r.passed else "❌ FAIL"
-        print(f"{r.function:<30} {r.median_ms:>10.2f}ms   {r.threshold_ms:>8.1f}ms   {status}")
+        print(
+            f"{r.function:<30} {r.median_ms:>10.2f}ms   {r.threshold_ms:>8.1f}ms   {status}"
+        )
 
     print()
     if failed == 0:
@@ -304,7 +311,7 @@ def generate_report(results: list[BenchmarkResult]):
         "summary": {
             "total": len(results),
             "passed": sum(1 for r in results if r.passed),
-            "failed": sum(1 for r in results if not r.passed)
+            "failed": sum(1 for r in results if not r.passed),
         },
         "results": [
             {
@@ -319,12 +326,12 @@ def generate_report(results: list[BenchmarkResult]):
                     "p95_ms": round(r.p95_ms, 3),
                     "p99_ms": round(r.p99_ms, 3),
                     "max_ms": round(r.max_ms, 3),
-                    "std_ms": round(r.std_ms, 3)
+                    "std_ms": round(r.std_ms, 3),
                 },
-                "passed": r.passed
+                "passed": r.passed,
             }
             for r in results
-        ]
+        ],
     }
 
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -338,16 +345,19 @@ def main():
     parser = argparse.ArgumentParser(
         description="Benchmark API latency for V3 requirements"
     )
-    parser.add_argument("--function", "-f",
-                       help="Benchmark specific function only")
-    parser.add_argument("--iterations", "-n", type=int, default=50,
-                       help="Number of iterations per benchmark")
-    parser.add_argument("--threshold", "-t", type=float,
-                       help="Override latency threshold (ms)")
-    parser.add_argument("--report", action="store_true",
-                       help="Generate JSON report")
-    parser.add_argument("--verbose", "-v", action="store_true",
-                       help="Verbose output")
+    parser.add_argument("--function", "-f", help="Benchmark specific function only")
+    parser.add_argument(
+        "--iterations",
+        "-n",
+        type=int,
+        default=50,
+        help="Number of iterations per benchmark",
+    )
+    parser.add_argument(
+        "--threshold", "-t", type=float, help="Override latency threshold (ms)"
+    )
+    parser.add_argument("--report", action="store_true", help="Generate JSON report")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
 
@@ -366,7 +376,7 @@ def main():
                 inputs=b.inputs,
                 threshold_ms=args.threshold if args.threshold else b.threshold_ms,
                 warmup_runs=b.warmup_runs,
-                iterations=args.iterations
+                iterations=args.iterations,
             )
             for b in benchmarks
         ]
@@ -391,7 +401,7 @@ def main():
                     function=args.function,
                     inputs={},  # Requires manual input specification
                     threshold_ms=threshold,
-                    iterations=args.iterations or 50
+                    iterations=args.iterations or 50,
                 )
             ]
             print(f"⚠️  Created adhoc benchmark for {args.function}")

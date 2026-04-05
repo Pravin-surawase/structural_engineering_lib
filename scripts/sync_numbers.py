@@ -18,17 +18,14 @@ Part of the "Simplify Agent Documentation Work" initiative (Session 91).
 from __future__ import annotations
 
 import argparse
-import json
 import re
-import subprocess
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT, run_command
-from _lib.output import StatusLine, print_json, print_summary
-
+from _lib.output import StatusLine, print_json
 
 # ─── Targets ─────────────────────────────────────────────────────────────────
 
@@ -42,6 +39,7 @@ DOCS_TO_SYNC = [
 
 
 # ─── Data ────────────────────────────────────────────────────────────────────
+
 
 @dataclass
 class Metrics:
@@ -88,6 +86,7 @@ class Update:
 
 # ─── Scanners ────────────────────────────────────────────────────────────────
 
+
 def scan_tests() -> int:
     """Count tests via pytest --co (collection only, fast)."""
     python_dir = REPO_ROOT / "Python"
@@ -128,7 +127,9 @@ def scan_hooks() -> tuple[int, int]:
     hook_count = 0
     for f in hook_files:
         content = f.read_text(encoding="utf-8", errors="ignore")
-        hook_count += len(re.findall(r"^export\s+function\s+use", content, re.MULTILINE))
+        hook_count += len(
+            re.findall(r"^export\s+function\s+use", content, re.MULTILINE)
+        )
 
     return hook_count, len(hook_files)
 
@@ -140,16 +141,17 @@ def scan_endpoints() -> tuple[int, int]:
         return 0, 0
 
     router_files = [
-        f for f in routers_dir.iterdir()
+        f
+        for f in routers_dir.iterdir()
         if f.suffix == ".py" and f.name not in ("__init__.py",)
     ]
 
     endpoint_count = 0
     for f in router_files:
         content = f.read_text(encoding="utf-8", errors="ignore")
-        endpoint_count += len(re.findall(
-            r"@router\.(get|post|put|delete|patch|websocket)\b", content
-        ))
+        endpoint_count += len(
+            re.findall(r"@router\.(get|post|put|delete|patch|websocket)\b", content)
+        )
 
     return endpoint_count, len(router_files)
 
@@ -203,27 +205,82 @@ def get_update_rules() -> list[UpdateRule]:
     """
     return [
         # README.md — test count in "Quality" line
-        ("README.md", r"Contract-tested APIs, (\d+) tests,", "Contract-tested APIs, {value} tests,", "test_count"),
+        (
+            "README.md",
+            r"Contract-tested APIs, (\d+) tests,",
+            "Contract-tested APIs, {value} tests,",
+            "test_count",
+        ),
         # README.md — test count in "Comprehensive Testing" line
-        ("README.md", r"\*\*Comprehensive Testing:\*\* (\d+) tests,", "**Comprehensive Testing:** {value} tests,", "test_count"),
+        (
+            "README.md",
+            r"\*\*Comprehensive Testing:\*\* (\d+) tests,",
+            "**Comprehensive Testing:** {value} tests,",
+            "test_count",
+        ),
         # README.md — test count in Trust table
-        ("README.md", r"\*\*Test Coverage\*\* \| (\d+) tests,", "**Test Coverage** | {value} tests,", "test_count"),
+        (
+            "README.md",
+            r"\*\*Test Coverage\*\* \| (\d+) tests,",
+            "**Test Coverage** | {value} tests,",
+            "test_count",
+        ),
         # README.md — script count
-        ("README.md", r"(\d+) automation scripts", "{value} automation scripts", "script_count"),
+        (
+            "README.md",
+            r"(\d+) automation scripts",
+            "{value} automation scripts",
+            "script_count",
+        ),
         # CLAUDE.md — router count in grep hint
-        ("CLAUDE.md", r"FastAPI endpoints \((\d+) routers\)", "FastAPI endpoints ({value} routers)", "router_count"),
+        (
+            "CLAUDE.md",
+            r"FastAPI endpoints \((\d+) routers\)",
+            "FastAPI endpoints ({value} routers)",
+            "router_count",
+        ),
         # CLAUDE.md — function count hint
-        ("CLAUDE.md", r"(\d+) public \+ (\d+) private helpers", "{public} public + {private} private helpers", "api_functions"),
+        (
+            "CLAUDE.md",
+            r"(\d+) public \+ (\d+) private helpers",
+            "{public} public + {private} private helpers",
+            "api_functions",
+        ),
         # copilot-instructions.md — router count
-        (".github/copilot-instructions.md", r"FastAPI routes \((\d+) routers\)", "FastAPI routes ({value} routers)", "router_count"),
+        (
+            ".github/copilot-instructions.md",
+            r"FastAPI routes \((\d+) routers\)",
+            "FastAPI routes ({value} routers)",
+            "router_count",
+        ),
         # copilot-instructions.md — function count
-        (".github/copilot-instructions.md", r"(\d+) public \+ (\d+) private helpers", "{public} public + {private} private helpers", "api_functions"),
+        (
+            ".github/copilot-instructions.md",
+            r"(\d+) public \+ (\d+) private helpers",
+            "{public} public + {private} private helpers",
+            "api_functions",
+        ),
         # llms.txt — endpoint count
-        ("llms.txt", r"(\d+) endpoints across (\d+) routers", "{endpoints} endpoints across {routers} routers", "endpoint_router"),
+        (
+            "llms.txt",
+            r"(\d+) endpoints across (\d+) routers",
+            "{endpoints} endpoints across {routers} routers",
+            "endpoint_router",
+        ),
         # agent-bootstrap.md — endpoint/router count
-        ("docs/getting-started/agent-bootstrap.md", r"(\d+) endpoints across (\d+) routers", "{endpoints} endpoints across {routers} routers", "endpoint_router"),
+        (
+            "docs/getting-started/agent-bootstrap.md",
+            r"(\d+) endpoints across (\d+) routers",
+            "{endpoints} endpoints across {routers} routers",
+            "endpoint_router",
+        ),
         # agent-bootstrap.md — function count
-        ("docs/getting-started/agent-bootstrap.md", r"(\d+) public functions \+ (\d+) private helpers", "{public} public functions + {private} private helpers", "api_functions"),
+        (
+            "docs/getting-started/agent-bootstrap.md",
+            r"(\d+) public functions \+ (\d+) private helpers",
+            "{public} public functions + {private} private helpers",
+            "api_functions",
+        ),
     ]
 
 
@@ -250,32 +307,47 @@ def find_updates(metrics: Metrics) -> list[Update]:
                 new_val = metrics.test_count
                 if old_val == new_val:
                     continue
-                new_text = line[:match.start()] + template.format(value=new_val) + line[match.end():]
+                new_text = (
+                    line[: match.start()]
+                    + template.format(value=new_val)
+                    + line[match.end() :]
+                )
 
             elif metric_name == "script_count":
                 old_val = int(match.group(1))
                 new_val = metrics.script_count
                 if old_val == new_val:
                     continue
-                new_text = line[:match.start()] + template.format(value=new_val) + line[match.end():]
+                new_text = (
+                    line[: match.start()]
+                    + template.format(value=new_val)
+                    + line[match.end() :]
+                )
 
             elif metric_name == "router_count":
                 old_val = int(match.group(1))
                 new_val = metrics.router_count
                 if old_val == new_val:
                     continue
-                new_text = line[:match.start()] + template.format(value=new_val) + line[match.end():]
+                new_text = (
+                    line[: match.start()]
+                    + template.format(value=new_val)
+                    + line[match.end() :]
+                )
 
             elif metric_name == "api_functions":
                 old_pub = int(match.group(1))
                 old_priv = int(match.group(2))
-                if old_pub == metrics.api_public_count and old_priv == metrics.api_private_count:
+                if (
+                    old_pub == metrics.api_public_count
+                    and old_priv == metrics.api_private_count
+                ):
                     continue
                 replacement = template.format(
                     public=metrics.api_public_count,
                     private=metrics.api_private_count,
                 )
-                new_text = line[:match.start()] + replacement + line[match.end():]
+                new_text = line[: match.start()] + replacement + line[match.end() :]
 
             elif metric_name == "endpoint_router":
                 old_ep = int(match.group(1))
@@ -286,18 +358,20 @@ def find_updates(metrics: Metrics) -> list[Update]:
                     endpoints=metrics.endpoint_count,
                     routers=metrics.router_count,
                 )
-                new_text = line[:match.start()] + replacement + line[match.end():]
+                new_text = line[: match.start()] + replacement + line[match.end() :]
 
             else:
                 continue
 
-            updates.append(Update(
-                file=filepath,
-                line_num=i + 1,
-                old_text=line.strip(),
-                new_text=new_text.strip(),
-                metric=metric_name,
-            ))
+            updates.append(
+                Update(
+                    file=filepath,
+                    line_num=i + 1,
+                    old_text=line.strip(),
+                    new_text=new_text.strip(),
+                    metric=metric_name,
+                )
+            )
 
     return updates
 
@@ -323,13 +397,18 @@ def apply_updates(updates: list[Update]) -> int:
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="sync_numbers.py",
         description="Scan codebase and sync stale numbers across documentation files.",
     )
-    parser.add_argument("--fix", action="store_true", help="Apply updates to files (default: dry run)")
-    parser.add_argument("--json", action="store_true", help="Output metrics and updates as JSON")
+    parser.add_argument(
+        "--fix", action="store_true", help="Apply updates to files (default: dry run)"
+    )
+    parser.add_argument(
+        "--json", action="store_true", help="Output metrics and updates as JSON"
+    )
     args = parser.parse_args()
 
     # Scan
@@ -342,8 +421,13 @@ def main() -> int:
         result = {
             **metrics.as_dict(),
             "updates": [
-                {"file": u.file_rel, "line": u.line_num, "metric": u.metric,
-                 "old": u.old_text, "new": u.new_text}
+                {
+                    "file": u.file_rel,
+                    "line": u.line_num,
+                    "metric": u.metric,
+                    "old": u.old_text,
+                    "new": u.new_text,
+                }
                 for u in updates
             ],
         }
@@ -356,8 +440,12 @@ def main() -> int:
     print(f"  Tests:       {metrics.test_count}")
     print(f"  Scripts:     {metrics.script_count}")
     print(f"  Hooks:       {metrics.hook_count} (in {metrics.hook_file_count} files)")
-    print(f"  Endpoints:   {metrics.endpoint_count} across {metrics.router_count} routers")
-    print(f"  API funcs:   {metrics.api_public_count} public + {metrics.api_private_count} private")
+    print(
+        f"  Endpoints:   {metrics.endpoint_count} across {metrics.router_count} routers"
+    )
+    print(
+        f"  API funcs:   {metrics.api_public_count} public + {metrics.api_private_count} private"
+    )
     print(f"  Components:  {metrics.component_count}")
     print()
 
@@ -379,7 +467,9 @@ def main() -> int:
         changed = apply_updates(updates)
         StatusLine.ok(f"Updated {changed} file(s) with {len(updates)} change(s)")
     else:
-        StatusLine.warn(f"{len(updates)} stale number(s) found. Run with --fix to update.")
+        StatusLine.warn(
+            f"{len(updates)} stale number(s) found. Run with --fix to update."
+        )
 
     return 0
 

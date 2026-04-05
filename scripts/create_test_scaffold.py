@@ -22,7 +22,6 @@ Date: 2026-01-09
 """
 
 import argparse
-import sys
 from pathlib import Path
 from datetime import datetime
 
@@ -203,7 +202,10 @@ def main():
         ),
     )
     parser.add_argument("class_name", help="Name of the class to generate tests for")
-    parser.add_argument("module_path", help="Dotted Python module path (e.g. structural_lib.core.caching)")
+    parser.add_argument(
+        "module_path",
+        help="Dotted Python module path (e.g. structural_lib.core.caching)",
+    )
 
     args = parser.parse_args()
 

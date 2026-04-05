@@ -38,6 +38,7 @@ from structural_lib.models import DesignDefaults
 # Import the design function
 try:
     from utils.api_wrapper import cached_design
+
     DESIGN_AVAILABLE = True
 except ImportError:
     DESIGN_AVAILABLE = False
@@ -115,14 +116,16 @@ def main() -> int:
                     fck_nmm2=beam.section.fck_mpa,
                     fy_nmm2=beam.section.fy_mpa,
                 )
-                design_results.append({
-                    "id": beam.id,
-                    "beam": beam,
-                    "mu": mu,
-                    "vu": vu,
-                    "result": result,
-                    "is_safe": result.get("is_safe", False),
-                })
+                design_results.append(
+                    {
+                        "id": beam.id,
+                        "beam": beam,
+                        "mu": mu,
+                        "vu": vu,
+                        "result": result,
+                        "is_safe": result.get("is_safe", False),
+                    }
+                )
             except Exception as e:
                 print(f"⚠️ Design failed for {beam.id}: {e}")
 
@@ -141,21 +144,23 @@ def main() -> int:
     beam_data = []
     for beam in beams:
         mu, vu = force_lookup.get(beam.id, (0, 0))
-        beam_data.append({
-            "id": beam.id,
-            "story": beam.story,
-            "label": beam.label,
-            "x1": beam.point1.x * 1000,
-            "y1": beam.point1.y * 1000,
-            "z1": beam.point1.z * 1000,
-            "x2": beam.point2.x * 1000,
-            "y2": beam.point2.y * 1000,
-            "z2": beam.point2.z * 1000,
-            "width": beam.section.width_mm,
-            "depth": beam.section.depth_mm,
-            "mu_knm": mu,
-            "vu_kn": vu,
-        })
+        beam_data.append(
+            {
+                "id": beam.id,
+                "story": beam.story,
+                "label": beam.label,
+                "x1": beam.point1.x * 1000,
+                "y1": beam.point1.y * 1000,
+                "z1": beam.point1.z * 1000,
+                "x2": beam.point2.x * 1000,
+                "y2": beam.point2.y * 1000,
+                "z2": beam.point2.z * 1000,
+                "width": beam.section.width_mm,
+                "depth": beam.section.depth_mm,
+                "mu_knm": mu,
+                "vu_kn": vu,
+            }
+        )
     data_prep_time = (time.perf_counter() - start) * 1000
 
     print(f"✅ Prepared 3D data for {len(beam_data)} beams in {data_prep_time:.0f}ms")
@@ -176,6 +181,7 @@ def main() -> int:
     except Exception as e:
         print(f"❌ 3D figure generation failed: {e}")
         import traceback
+
         traceback.print_exc()
         return 1
 
@@ -189,7 +195,9 @@ def main() -> int:
     print(f"✅ 3D Data Prep: {data_prep_time:.0f}ms")
     print()
     print("📊 Performance Estimates for 153 beams:")
-    print(f"   Design: ~{design_time * 15:.0f}ms ({design_time / len(sample_beams):.1f}ms/beam)")
+    print(
+        f"   Design: ~{design_time * 15:.0f}ms ({design_time / len(sample_beams):.1f}ms/beam)"
+    )
     print("   3D Render: ~150ms (3ms/beam)")
     print()
     print("🎉 Pipeline test passed!")

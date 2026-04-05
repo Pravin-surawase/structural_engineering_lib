@@ -44,11 +44,12 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, get_type_hints
+from typing import Any
 
 # Add scripts path for _lib, then Python path for structural_lib
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+
 sys.path.insert(0, str(REPO_ROOT / "Python"))
 
 
@@ -159,9 +160,15 @@ def discover_signature(func: Any, func_name: str) -> SignatureInfo:
         if name in ("self", "cls"):
             continue
 
-        annotation = str(param.annotation) if param.annotation != inspect.Parameter.empty else "Any"
+        annotation = (
+            str(param.annotation)
+            if param.annotation != inspect.Parameter.empty
+            else "Any"
+        )
         # Clean up annotation string
-        annotation = annotation.replace("typing.", "").replace("<class '", "").replace("'>", "")
+        annotation = (
+            annotation.replace("typing.", "").replace("<class '", "").replace("'>", "")
+        )
 
         default = None
         is_required = True
@@ -182,17 +189,25 @@ def discover_signature(func: Any, func_name: str) -> SignatureInfo:
         elif name == "units":
             description = 'Must be "IS456"'
 
-        parameters.append(ParameterInfo(
-            name=name,
-            annotation=annotation,
-            default=default,
-            is_required=is_required,
-            description=description,
-        ))
+        parameters.append(
+            ParameterInfo(
+                name=name,
+                annotation=annotation,
+                default=default,
+                is_required=is_required,
+                description=description,
+            )
+        )
 
     return_annotation = sig.return_annotation
-    return_type = str(return_annotation) if return_annotation != inspect.Parameter.empty else "None"
-    return_type = return_type.replace("typing.", "").replace("<class '", "").replace("'>", "")
+    return_type = (
+        str(return_annotation)
+        if return_annotation != inspect.Parameter.empty
+        else "None"
+    )
+    return_type = (
+        return_type.replace("typing.", "").replace("<class '", "").replace("'>", "")
+    )
 
     return_attrs = get_return_type_attributes(return_annotation)
 
@@ -309,7 +324,8 @@ def main() -> None:
         help="Output as JSON",
     )
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Include docstrings",
     )
@@ -331,8 +347,7 @@ def main() -> None:
         target_names = sorted(all_functions.keys())
     elif args.filter:
         target_names = sorted(
-            name for name in all_functions.keys()
-            if args.filter.lower() in name.lower()
+            name for name in all_functions.keys() if args.filter.lower() in name.lower()
         )
     else:
         target_names = args.functions
@@ -357,18 +372,18 @@ def main() -> None:
         output = [format_signature_json(info) for info in results]
         print(json.dumps(output, indent=2))
     else:
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("🔍 API SIGNATURE DISCOVERY")
-        print("="*60)
+        print("=" * 60)
         print("Run this BEFORE implementing API wrappers!")
         print("See: docs/research/api-integration-mistakes-analysis.md")
 
         for info in results:
             print(format_signature_text(info, verbose=args.verbose))
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print(f"✅ Discovered {len(results)} function(s)")
-        print("="*60)
+        print("=" * 60)
 
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ Usage:
     python scripts/migrate_module.py flexure
     python scripts/migrate_module.py flexure --validate-only
 """
+
 from __future__ import annotations
 
 import argparse
