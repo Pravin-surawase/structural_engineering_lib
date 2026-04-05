@@ -288,6 +288,22 @@ grep -r "class.*Input" Python/structural_lib/core/inputs.py | head -20
 - `/new-structural-element` — step-by-step workflow for new elements (column, slab, footing)
 - `/is456-verification` — run IS 456 compliance tests
 
+## Development Rules Quick Reference
+
+These are the MOST CRITICAL rules from `/development-rules` for structural-math work:
+
+| Rule | Description |
+|------|-------------|
+| U-1 | NEVER commit without `./scripts/ai_commit.sh` |
+| U-2 | ALWAYS search before creating — check hooks, routes, API functions |
+| U-7 | ALWAYS use `.venv/bin/python`, never bare `python` |
+| PY-1 | NEVER import upward across architecture layers |
+| PY-2 | NEVER guess parameter names — run `discover_api_signatures.py` first |
+| PY-3 | ALWAYS use explicit units in function signatures (mm, N/mm², kN, kNm) |
+| PY-5 | NEVER duplicate existing functions — check `services/api.py` first |
+| PY-6 | ALWAYS validate at system boundaries, not deep in math code |
+| PY-8 | ALWAYS include standard benchmark values in tests (SP:16, textbook) |
+
 ## ⚠️ MANDATORY: Function Quality Pipeline
 
 **Every new function MUST go through the 9-step quality pipeline.** Use `/function-quality-pipeline` skill.

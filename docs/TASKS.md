@@ -172,6 +172,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| QC-OVERHAUL | Quality control overhaul: 4 new skills (release-preflight, UAT, quality-gate, dev-rules), 12 agent updates, 46 development rules, 3-level quality gates, mandatory evolve | Copilot | ✅ Done |
 | TASK-CIFIX | CI fix: React test mocks (5 hooks), Docker JWT_SECRET_KEY, ops hardening, finish_task_pr.sh escape hatch removal, WORKLOG cleanup, dead code removal | Copilot | ✅ Done |
 | AUDIT-P0 | All 5 P0 audit findings fixed (auth, CI, WCAG, batch limits, bilinear tests) | Copilot | ✅ Done |
 | AUDIT-P1 (partial) | 6 P1 audit findings fixed (SM-1/2/3, IS-5/7, FE-6) | Copilot | ✅ Done |

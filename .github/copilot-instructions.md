@@ -174,7 +174,7 @@ Every AI agent session MUST follow this workflow. Skipping these steps breaks co
 2. Run `./run.sh feedback log --agent <name>` — log stale docs, missing info, issues found
 3. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
 4. Run `./run.sh session sync` — fixes stale numbers in docs
-5. Run `./run.sh evolve --status` — P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+5. Run `./run.sh evolve --status` — Agent evolution check (MANDATORY every session)
 6. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
 7. Update `docs/TASKS.md` — mark completed items, add new items discovered
 8. Run `./run.sh commit "docs: session end"` — commit all doc updates
@@ -220,6 +220,84 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 - **Last session:** [next-session-brief.md](../docs/planning/next-session-brief.md)
 - **API reference:** [api.md](../docs/reference/api.md)
 - **Command cheat sheet:** [agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)
+
+## VS Code Copilot Agents & Skills
+
+### 16 Custom Agents (`.github/agents/`)
+
+| Agent | Role | Tools |
+|-------|------|-------|
+| `orchestrator` | Planning, delegation | read-only + subagents |
+| `frontend` | React 19, R3F, Tailwind | full edit |
+| `backend` | Python structural_lib, IS 456 | full edit |
+| `structural-math` | IS 456 pure math modules, core types, new elements | full edit |
+| `api-developer` | FastAPI routers, endpoints | full edit |
+| `ui-designer` | Visual design (design-only) | read-only |
+| `agent-evolver` | Meta-agent: performance scoring, drift detection, instruction evolution | read + terminal |
+| `structural-engineer` | IS 456 compliance | read + terminal |
+| `reviewer` | Code review, testing | read + terminal |
+| `tester` | Test creation, coverage, benchmarks | full edit |
+| `doc-master` | Docs, archives, session logs | full edit |
+| `ops` | Git, CI/CD, Docker | full edit |
+| `governance` | Project health, maintenance, metrics | full edit |
+| `security` | Security auditing, OWASP, dependency scanning | read + terminal |
+| `library-expert` | Library domain expert, IS 456 knowledge, professional standards | read + terminal + web |
+| `innovator` | Research & innovation — discovers missing capabilities, proposes novel approaches | read + edit + web |
+
+### 14 Agent Skills (`.github/skills/`)
+
+| Skill | Slash Command | Purpose |
+|-------|--------------|--------|
+| `session-management` | `/session-management` | Session start/end automation |
+| `safe-file-ops` | `/safe-file-ops` | File move/delete preserving 870+ links |
+| `api-discovery` | `/api-discovery` | API function signature lookup |
+| `is456-verification` | `/is456-verification` | IS 456 test runner by category |
+| `new-structural-element` | `/new-structural-element` | New element workflow (column, slab, footing) |
+| `react-validation` | `/react-validation` | React build, lint, type-check, tests |
+| `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
+| `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
+| `innovation-research` | `/innovation-research` | Guided innovation research cycle |
+| `agent-evolution` | `/agent-evolution` | Agent scoring, drift detection, instruction evolution (MANDATORY every session) |
+| `development-rules` | `/development-rules` | 46 hard-learned rules by domain (Python, FastAPI, React, testing, security) |
+| `quality-gate` | `/quality-gate` | 3-level pre-merge quality checks (commit, PR, release) |
+| `release-preflight` | `/release-preflight` | 5-phase pre-release validation (packaging, UAT, security, API/doc, CI) |
+| `user-acceptance-test` | `/user-acceptance-test` | End-user perspective testing (pip install + all workflows) |
+
+### 16 Prompt Files (`.github/prompts/`)
+
+| Prompt | Purpose |
+|--------|--------|
+| `new-feature` | New feature workflow |
+| `bug-fix` | Bug fix workflow |
+| `code-review` | Review checklist |
+| `add-api-endpoint` | FastAPI endpoint workflow |
+| `add-is456-clause` | IS 456 clause implementation workflow |
+| `add-structural-element` | New structural element (column, slab, footing) workflow |
+| `function-quality-gate` | IS 456 function quality gate (9-step pipeline) |
+| `fix-test-failure` | Test failure diagnosis & fix |
+| `performance-optimization` | Profile, optimize, benchmark |
+| `session-start` | Session start checklist |
+| `session-end` | Session end (mandatory) |
+| `file-move` | Safe file migration |
+| `is456-verify` | IS 456 formula verification |
+| `context-recovery` | Resume after context overflow |
+| `master-workflow` | Master workflow orchestration |
+| `innovation-research` | Innovation research cycle workflow |
+
+### Handoff Chains
+
+- **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
+- **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops
+- **New structural element:** orchestrator → structural-engineer (research) → structural-math (types + math) → tester → backend → api-developer → frontend → reviewer → doc-master → ops
+- **Bug fix:** orchestrator → backend/frontend → tester → reviewer → doc-master → ops
+- **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
+- **Session end:** any agent → doc-master → ops
+- **Maintenance:** orchestrator → governance → doc-master → ops
+- **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
+- **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops
+- **Agent evolution:** orchestrator → agent-evolver → governance → doc-master → ops
+- **Innovation research:** orchestrator → innovator → structural-engineer (gate) → structural-math → tester → reviewer → doc-master → ops
+- **Release:** orchestrator → tester (UAT) → reviewer (quality gate) → ops (preflight + release) → tester (post-release verify) → doc-master (CHANGELOG + docs) → agent-evolver (metrics) → ops (commit)
 
 ## Context Recovery (When LLM Loses Context)
 

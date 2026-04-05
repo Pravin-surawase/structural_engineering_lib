@@ -113,6 +113,21 @@ cd react_app && npx tsc --noEmit                       # Type check only
 
 ## After Work: Hand off to @reviewer with files changed, what was added/modified, how to test, build status.
 
+## Skills: Use `/react-validation` for build/lint/type-check, `/development-rules` for React rules (RE-1 through RE-6).
+
+## Development Rules Quick Reference
+
+Before writing React code, review these rules from `/development-rules`:
+
+| Rule | Description |
+|------|-------------|
+| RE-1 | Forms must have cross-field validation (not just HTML5) |
+| RE-2 | All computations through FastAPI — no local JS math |
+| RE-3 | Check `hooks/` before creating new hooks |
+| RE-4 | Check `components/` before creating new components |
+| RE-5 | Tailwind only — no custom CSS files |
+| RE-6 | WorkflowHint on key pages |
+
 ## Rules
 
 1. **Tailwind only** — never create `.css` files for components

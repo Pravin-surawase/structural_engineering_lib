@@ -93,6 +93,7 @@ After every review, report in this format:
 **Checks Passed:** [list which checks passed]
 **Issues Found:** [list issues or "None"]
 **Tests Run:** [which tests, pass/fail]
+**Quality Gate:** [Level 1/2/3 — which checks ran and results]
 **Verdict:** APPROVED | NEEDS CHANGES | BLOCKED
 
 [If NEEDS CHANGES: specific issues and how to fix them]
@@ -122,6 +123,29 @@ After every review, report in this format:
 - `codes/is456/footing/` — 4 modules: flexure, one_way_shear, punching_shear, bearing
 - `codes/is456/compliance.py` — compliance checks
 - `codes/is13920/beam.py` — seismic detailing (IS 13920)
+
+### Security & Quality Gate Checks (Added post-v0.21.3 audit)
+
+These checks prevent the specific failures that shipped in v0.21.0-v0.21.3:
+
+- [ ] No `str(e)` in HTTP error responses (CWE-209 — leaked 32 times in v0.21.3)
+- [ ] No bare `except Exception:` without specific handling
+- [ ] No MagicMock on structural Result types in tests (masked ShearResult bug in v0.21.0)
+- [ ] Rate limiting middleware active on all endpoints
+- [ ] WebSocket inputs validated via Pydantic models
+- [ ] CORS configured from environment, not hardcoded
+- [ ] Import-time side effects: ZERO warnings on `import structural_lib`
+- [ ] All `__all__` exports are importable (no phantom API claims)
+- [ ] README code examples match actual API
+
+### Pre-Release Review (when reviewing release PRs)
+
+- [ ] Wheel content: no tests/, scripts/, examples/ leaked
+- [ ] All data files in pyproject.toml package-data
+- [ ] Version consistent across pyproject.toml, package.json, CITATION.cff
+- [ ] CHANGELOG entry added for all changes
+- [ ] User acceptance test passed (see `/user-acceptance-test` skill)
+- [ ] Security scan passed (see `/release-preflight` skill)
 
 ### Code Quality
 - [ ] No duplicate hooks/components (check `react_app/src/hooks/`)
@@ -188,7 +212,7 @@ Both passes must be APPROVED before handing off to @doc-master.
 - [ ] Degenerate case tests exist (Mu=0, Vu=0, pt=0)
 - [ ] Monotonicity tests exist (↑fck → ↑capacity)
 
-## Skills: Use `/architecture-check` for boundaries, `/react-validation` for frontend changes.
+## Skills: Use `/quality-gate` for automated checks, `/development-rules` for domain-specific rules, `/architecture-check` for boundary validation, `/release-preflight` for release reviews.
 
 ## ⚠ DO NOT Over-Explore
 

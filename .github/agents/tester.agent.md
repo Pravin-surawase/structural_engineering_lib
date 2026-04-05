@@ -109,6 +109,65 @@ cd react_app && npx vitest run --reporter=verbose              # Verbose output
    ```
 3. **Read the source code** being tested
 
+## Mandatory Test Types (Learned from v0.21.x failures)
+
+### Tests That MUST Exist (non-negotiable)
+
+| Test Type | File | What It Catches | Added Because |
+|-----------|------|-----------------|---------------|
+| Import silence | `test_full_pipeline_e2e.py` | Import-time warnings | v0.21.3 EA-6: warnings broke users |
+| API stability | `test_full_pipeline_e2e.py` | `__all__` exports broken | v0.21.3 EA-9: phantom functions |
+| E2E pipeline | `test_full_pipeline_e2e.py` | Design→detail→BBS→report chain | v0.21.3 EA-7: no chain testing |
+| Packaging | `test_packaging.py` | Wheel contents, data files | v0.21.2: missing clauses.json |
+| Repo isolation | (marker) | Tests work in sdist context | v0.21.3 EA-1/8: broken sdist |
+
+### Rules for Test Quality
+
+1. **NEVER use MagicMock for structural Result types** (FlexureResult, ShearResult, ColumnAxialResult, BBSDocument, etc.)
+   - **Why:** In v0.21.0, tests used `MagicMock()` for ShearResult which auto-creates any attribute. The test passed even though `calculation_report.py` accessed 4 non-existent fields. The bug was only caught by manual review.
+   - **Instead:** Create real instances with test data, or use simple dataclass factories.
+
+2. **Use `repo_only` marker for repo-dependent tests**
+   ```python
+   @pytest.mark.repo_only
+   def test_needs_full_repo():
+       ...
+   ```
+   Tests that need scripts/, docs/, or .git/ must be marked. They're skipped in sdist/wheel contexts.
+
+3. **SP:16 benchmarks must match within ±0.1%**
+   ```python
+   assert abs(result - expected) / expected < 0.001, f"SP:16 mismatch: {result} vs {expected}"
+   ```
+
+4. **Every new structural element needs these 6 test types:**
+   - Unit tests (individual functions)
+   - Edge case tests (zero, max, boundary values)
+   - Degenerate case tests (what happens with bad input)
+   - SP:16 benchmark tests (match textbook values)
+   - Textbook examples (known problems with known answers)
+   - Hypothesis property-based tests (invariants)
+
+### Pre-Release Test Checklist
+
+Before any release, the tester agent must verify:
+```bash
+# 1. Full Python suite
+.venv/bin/pytest Python/tests/ -v --tb=short
+
+# 2. API tests
+.venv/bin/pytest fastapi_app/tests/ -v --tb=short
+
+# 3. React tests
+cd react_app && npx vitest run
+
+# 4. User acceptance test (see /user-acceptance-test skill)
+# Run all 6 scenarios from the skill
+
+# 5. Packaging verification
+.venv/bin/pytest Python/tests/test_packaging.py -v
+```
+
 ## Test Writing Standards
 
 ### Python tests:
@@ -130,7 +189,7 @@ cd react_app && npx vitest run --reporter=verbose              # Verbose output
 
 ## After Work: Hand off to @reviewer with tests added/modified, coverage before/after, results, edge cases covered, regressions found.
 
-## Skills: Use `/is456-verification` for IS 456 tests, `/api-discovery` for function signatures.
+## Skills: Use `/is456-verification` for compliance tests, `/function-quality-pipeline` for IS 456 function quality, `/user-acceptance-test` for pre-release validation, `/quality-gate` for automated checks, `/development-rules` for testing rules (TE-1 through TE-7).
 
 ## MANDATORY: Function Quality Pipeline Testing
 

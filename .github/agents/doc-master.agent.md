@@ -35,6 +35,51 @@ You are the documentation steward for **structural_engineering_lib**. You mainta
 5. Run `./run.sh feedback log --agent <name>` — log stale docs, issues found
 6. Hand off to **ops** agent for commit
 
+### Mandatory Docs Checklist (VERIFY EACH ONE)
+
+**Problem:** Doc-master has historically missed updating required docs, leading to stale briefs, missing WORKLOG entries, and broken session continuity. This checklist makes every required update explicit.
+
+**After EVERY code change reviewed by @reviewer, you MUST update ALL of these (not just some):**
+
+| # | Doc | What to Update | Verify |
+|---|-----|---------------|--------|
+| 1 | `docs/WORKLOG.md` | Add one line per change: `\| date \| task-id \| what changed \| commit \|` | ✅ Line added? |
+| 2 | `docs/TASKS.md` | Mark completed tasks ✅, add newly discovered tasks | ✅ Status updated? |
+| 3 | `docs/planning/next-session-brief.md` | Update "What Was Completed" and "What's Next" sections | ✅ Both sections current? |
+| 4 | `docs/SESSION_LOG.md` | Run `./run.sh session summary` to auto-generate entry | ✅ Entry exists for today? |
+| 5 | `CHANGELOG.md` | Add entry if this is a feature, fix, or breaking change | ✅ Entry added (if applicable)? |
+| 6 | Agent feedback | Run `./run.sh feedback log --agent <name>` | ✅ Feedback logged? |
+
+**Self-verification (run before handing off to @ops):**
+```bash
+# Check WORKLOG has today's date
+grep "$(date +%Y-%m-%d)" docs/WORKLOG.md || echo "❌ MISSING: WORKLOG entry for today"
+
+# Check TASKS has been modified
+git diff --name-only | grep "TASKS.md" || echo "⚠️ WARNING: TASKS.md not modified"
+
+# Check next-session-brief has been modified
+git diff --name-only | grep "next-session-brief" || echo "❌ MISSING: next-session-brief not updated"
+```
+
+**Report format (MANDATORY — include in every handoff to @ops):**
+```
+## Docs Update Verification
+
+| Doc | Updated? | Details |
+|-----|----------|--------|
+| WORKLOG.md | ✅/❌ | [line added or why skipped] |
+| TASKS.md | ✅/❌ | [what changed] |
+| next-session-brief.md | ✅/❌ | [what sections updated] |
+| SESSION_LOG.md | ✅/❌ | [auto-generated or manual] |
+| CHANGELOG.md | ✅/N/A | [entry or not applicable] |
+| Agent feedback | ✅/❌ | [agent name logged] |
+
+All 6 docs verified: YES/NO
+```
+
+**If any doc is marked ❌, explain why. "I forgot" is not an acceptable reason.**
+
 ### Ongoing Maintenance
 
 | Task | Command | Frequency |
@@ -45,7 +90,7 @@ You are the documentation steward for **structural_engineering_lib**. You mainta
 | Check duplicates | `.venv/bin/python scripts/find_automation.py "topic"` | Before creating docs |
 | Sync numbers | `./run.sh session sync` | Session end |
 
-## Skills: Use `/safe-file-ops` for file moves, `/session-management` for session workflow.
+## Skills: Use `/safe-file-ops` for file moves, `/session-management` for session workflow, `/development-rules` for domain-specific doc rules (DO-1 through DO-6), `/quality-gate` for pre-merge doc verification.
 
 ## After EVERY Task (not just session end)
 

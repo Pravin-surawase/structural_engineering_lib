@@ -61,6 +61,22 @@ git diff
 - [ ] OWASP A09 — Logging Failures (no sensitive data in logs)
 - [ ] OWASP A10 — SSRF (no unvalidated URL fetching)
 
+## Skills: Use `/development-rules` for security rules (SE-1 through SE-5), `/quality-gate` for automated security checks.
+
+## Development Rules Quick Reference
+
+Security-specific rules from `/development-rules`:
+
+| Rule | Description |
+|------|-------------|
+| SE-1 | No internal error details in HTTP responses (CWE-209) |
+| SE-2 | Rate limiting on all public endpoints |
+| SE-3 | Input validation at system boundaries (Pydantic) |
+| SE-4 | Dependencies audited before release |
+| SE-5 | Auth must warn in production when disabled |
+| FA-1 | NEVER `str(e)` in responses |
+| U-1 | Never swallow exceptions silently |
+
 ## Key Files to Audit
 
 - `fastapi_app/auth.py` — Authentication

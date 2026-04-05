@@ -239,3 +239,4 @@ tags: []
 2026-04-05 | P2-B5 | UX-7: Added prefers-reduced-motion support (CSS + hook + HomePage guards) | —
 2026-04-05 | P2-B5 | FE-8: WebGL context loss handling (hook + recovery UI in Viewport3D) | —
 2026-04-05 | CIFIX | Fix React test (DesignView export hook mocks), Docker CI (JWT env), ops agent CI bypass rule | —
+| 2026-04-05 | QC-OVERHAUL | Quality control overhaul: 4 new skills (release-preflight, UAT, quality-gate, dev-rules), 12 agent updates, 46 dev rules, 3-level quality gates, mandatory evolve | docs-only |

@@ -80,6 +80,22 @@ grep "^def " Python/structural_lib/services/api.py | head -20
 .venv/bin/pytest Python/tests/ -k "test_flexure"  # Specific tests
 ```
 
+## Skills: Use `/api-discovery` for param lookup, `/is456-verification` for compliance tests, `/development-rules` for Python core rules (PY-1 through PY-8, U-1 through U-7).
+
+## Development Rules Quick Reference
+
+Before writing any Python code in `structural_lib/`, review these critical rules from `/development-rules`:
+
+| Rule | Description |
+|------|-------------|
+| U-1 | Never swallow exceptions silently — log or re-raise |
+| U-2 | No `except Exception:` without specific handling |
+| U-7 | No import-time side effects (warnings, I/O) |
+| PY-1 | Explicit units: `b_mm`, `d_mm`, `fck_nmm2`, `Mu_knm` |
+| PY-5 | Return dataclasses, not dicts (with `.to_dict()`) |
+| PY-6 | Lazy imports for non-core modules |
+| PY-8 | Deprecation warnings gated behind function call, not module load |
+
 ## ⚠ DO NOT Over-Explore
 
 **Act on what you know — don't rediscover the project structure every time.**

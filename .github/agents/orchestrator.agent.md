@@ -78,18 +78,19 @@ When delegating, tell the specialist which skills to use:
 
 | Agent | Skills They Should Use |
 |-------|----------------------|
-| `@backend` | `/api-discovery` (param lookup), `/is456-verification` (tests) |
-| `@structural-math` | `/api-discovery`, `/is456-verification`, `/new-structural-element`, `/function-quality-pipeline` |
-| `@api-developer` | `/api-discovery` (param lookup) |
-| `@frontend` | `/react-validation` (build, lint, type-check) |
-| `@structural-engineer` | `/is456-verification` (compliance tests), `/api-discovery` |
-| `@tester` | `/is456-verification`, `/api-discovery`, `/function-quality-pipeline` |
-| `@reviewer` | `/architecture-check`, `/react-validation`, `/function-quality-pipeline` |
-| `@doc-master` | `/safe-file-ops` (file moves), `/session-management` (session end) |
-| `@ops` | `/session-management` (session workflow) |
-| `@governance` | `/safe-file-ops` (archival), `/session-management` (maintenance) |
-| `@security` | Security auditing (OWASP, dependency scanning, input validation review) |
-| `@library-expert` | Library domain expertise (IS 456 knowledge, professional standards, usage guidance) |
+| `@backend` | `/api-discovery`, `/is456-verification`, `/development-rules` (PY-1 through PY-8) |
+| `@structural-math` | `/api-discovery`, `/is456-verification`, `/new-structural-element`, `/function-quality-pipeline`, `/development-rules` |
+| `@api-developer` | `/api-discovery`, `/development-rules` (FA-1 through FA-7) |
+| `@frontend` | `/react-validation`, `/development-rules` (RE-1 through RE-6) |
+| `@structural-engineer` | `/is456-verification`, `/api-discovery` |
+| `@tester` | `/is456-verification`, `/api-discovery`, `/function-quality-pipeline`, `/user-acceptance-test`, `/quality-gate`, `/development-rules` (TE-1 through TE-7) |
+| `@reviewer` | `/architecture-check`, `/react-validation`, `/function-quality-pipeline`, `/quality-gate`, `/development-rules`, `/release-preflight` |
+| `@doc-master` | `/safe-file-ops`, `/session-management`, `/development-rules` (DO-1 through DO-6) |
+| `@ops` | `/session-management`, `/release-preflight`, `/quality-gate` |
+| `@governance` | `/safe-file-ops`, `/session-management`, `/quality-gate` |
+| `@security` | `/development-rules` (SE-1 through SE-5), `/quality-gate` |
+| `@library-expert` | Library domain expertise, IS 456 knowledge, professional standards |
+| `@agent-evolver` | `/agent-evolution` (MANDATORY every session) |
 
 ## Session Start
 
@@ -222,6 +223,43 @@ After each session, review what happened:
 
 Update agent instructions based on observed issues — don't wait for problems to recur.
 
+## Session End — Agent Evolution (MANDATORY)
+
+Before handing off to @doc-master for session end, the orchestrator MUST invoke @agent-evolver:
+
+```
+Task: Run session-end evolution check for this session.
+Agents active this session: [list them]
+Issues observed: [any agent struggles, wrong approaches, missed checks]
+Report back: quality scores, drift violations, recurring patterns, proposed improvements.
+```
+
+**Why this matters:** Without evolution tracking, agent mistakes repeat indefinitely. v0.21.0-v0.21.3 had 70+ issues because nobody tracked which agents were making which mistakes.
+
+### Session End Pipeline (Updated)
+
+```
+1. All code work complete
+2. @reviewer approves changes
+3. @agent-evolver runs evolution check ← NEW
+4. @doc-master updates ALL docs (verified with checklist) ← STRENGTHENED
+5. @ops commits via ai_commit.sh
+```
+
+### Release Pipeline (for version releases)
+
+```
+1. All code + tests complete
+2. @reviewer runs Level 2 quality gate (/quality-gate)
+3. @tester runs user acceptance test (/user-acceptance-test)
+4. @ops runs release preflight (/release-preflight)
+5. @reviewer verifies preflight report
+6. @ops executes release
+7. @tester runs post-release verification
+8. @doc-master updates CHANGELOG, releases, version refs
+9. @agent-evolver captures release quality metrics
+```
+
 ## Governance Cadence
 
 ### Every Session
@@ -282,3 +320,8 @@ This file is read by `agent_brief.sh --handoff` for the next agent's context.
 - **Track failure patterns** — when @ops reports a commit failure, document it in the governance log
 - **Don't bypass the pipeline under time pressure** — historical data shows `--force` PR bypasses cause 10+ hours of rework
 - **Hand off to @ops with specific commit type — ops executes autonomously** — e.g., "Commit as `feat: add xu_max check`" — ops proceeds immediately, no user approval needed for commits/PRs
+- **EVERY session MUST include agent-evolver check** — skip this and mistakes repeat forever
+- **Reviewer MUST run quality gate** for PRs touching production code (Level 2 minimum)
+- **Releases MUST pass all 5 preflight phases** — packaging, UAT, security, API/doc consistency, CI
+- **Doc-master MUST verify all 6 docs** with the mandatory checklist — partial updates are not acceptable
+- **All agents read `/development-rules`** for their domain before writing code — these rules come from real failures

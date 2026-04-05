@@ -41,6 +41,69 @@ You are the meta-agent for **structural_engineering_lib**'s self-evolving agent 
 | Monthly | `./run.sh evolve --review monthly` | Full audit + paper export |
 | On demand | `./run.sh evolve --fix` | Apply approved fixes |
 
+## Every Session Integration (MANDATORY)
+
+The agent-evolver is no longer just an on-demand tool. It must be invoked at the END of every session to capture feedback and track agent quality over time.
+
+### What Happens Every Session
+
+1. **Orchestrator invokes evolve at session end** (after all code work is done)
+2. **Collect session artifacts** — commits, files changed, terminal issues reported
+3. **Score the agents that worked this session** — based on observed behavior
+4. **Log feedback** — stale docs, wrong instructions, agent struggles
+5. **Detect drift** — did any agent violate their rules this session?
+6. **Propose improvements** — if patterns repeat 3+ times, draft `.agent.md` change
+
+### Session-End Evolve Workflow
+
+```bash
+# Step 1: Collect artifacts from this session
+.venv/bin/python scripts/agent_session_collector.py
+
+# Step 2: Quick score for agents active this session
+.venv/bin/python scripts/agent_scorer.py --session-latest
+
+# Step 3: Check for drift violations
+.venv/bin/python scripts/agent_drift_detector.py --session-latest
+
+# Step 4: Log findings
+./run.sh feedback log --agent agent-evolver
+
+# Step 5: Status report
+./run.sh evolve --status
+```
+
+### What the Orchestrator Should Delegate
+
+At session end, the orchestrator should invoke agent-evolver with:
+
+```
+Task: Run session-end evolution check
+Report back:
+1. Which agents worked this session and their observed quality
+2. Any rule violations detected
+3. Any recurring patterns (same mistake 3+ times)
+4. Proposed .agent.md improvements (if any)
+5. Overall session quality score
+```
+
+### Evolution History Tracking
+
+After every session, append to `logs/agent-performance/session-evolution.jsonl`:
+```json
+{
+  "date": "YYYY-MM-DD",
+  "session_id": "N",
+  "agents_active": ["backend", "tester", "reviewer"],
+  "scores": {"backend": 7.5, "tester": 8.0, "reviewer": 7.0},
+  "drift_violations": [],
+  "improvements_proposed": 0,
+  "overall_quality": "B+"
+}
+```
+
+This data feeds into weekly and monthly trend analysis.
+
 ## 11 Scoring Dimensions
 
 | # | Dimension | Weight | Source |
@@ -117,3 +180,4 @@ Use `/agent-evolution` for guided evolution workflows.
 4. Propose changes with evidence (score data, drift events, feedback)
 5. Keep evolution log updated in `logs/agent-performance/evolution-log.json`
 6. Rate limits are non-negotiable: 3 edits/week, 1 self-mod/month
+7. **MUST be invoked every session** — orchestrator delegates evolve check at session end, before final commit

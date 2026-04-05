@@ -242,7 +242,7 @@ These scripts are to be created as part of Phase 1 foundation:
 
 When created, add these to `check_all.py` for automated CI.
 
-## Skills: Use `/safe-file-ops` for archival, `/session-management` for session workflow.
+## Skills: Use `/safe-file-ops` for archival, `/session-management` for session workflow, `/quality-gate` for pre-merge quality checks, `/architecture-check` for architecture validation.
 
 ## Rules
 

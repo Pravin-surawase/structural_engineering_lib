@@ -181,7 +181,7 @@ Every AI agent session MUST follow this workflow. Skipping these steps breaks co
 2. Run `./run.sh feedback log --agent <name>` — log stale docs, missing info, issues found
 3. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
 4. Run `./run.sh session sync` — fixes stale numbers in docs
-5. Run `./run.sh evolve --status` — P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+5. Run `./run.sh evolve --status` — Agent evolution check (MANDATORY every session)
 6. Append to `docs/WORKLOG.md` — one line per change (date | task | what | commit)
 7. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
 8. Update `docs/TASKS.md` — mark completed items, add new items discovered

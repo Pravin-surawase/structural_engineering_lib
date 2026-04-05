@@ -416,4 +416,4 @@ ai_commit.sh → should_use_pr.sh (PR decision) → safe_push.sh (7-step workflo
 - **Execute scripts, don't create them** — delegate script creation to @backend
 - **One diagnostic command max** before acting — don't over-explore
 - **Always finish PRs** — never leave them open
-- Skills: `/session-management` for session workflow, `/safe-file-ops` for file operations
+- Skills: `/session-management` for session workflow, `/safe-file-ops` for file operations, `/release-preflight` for pre-release validation, `/quality-gate` for pre-merge checks

@@ -224,10 +224,10 @@ docs/TASKS.md                                   # Task board
 | `library-expert` | Library domain expert, IS 456 knowledge, professional standards | read + terminal + web |
 | `innovator` | Research & innovation — discovers missing capabilities, proposes novel approaches | read + edit + web |
 
-### 10 Agent Skills (`.github/skills/`)
+### 14 Agent Skills (`.github/skills/`)
 
 | Skill | Slash Command | Purpose |
-|-------|--------------|---------|
+|-------|--------------|--------|
 | `session-management` | `/session-management` | Session start/end automation |
 | `safe-file-ops` | `/safe-file-ops` | File move/delete preserving 870+ links |
 | `api-discovery` | `/api-discovery` | API function signature lookup |
@@ -237,6 +237,11 @@ docs/TASKS.md                                   # Task board
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
 | `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
 | `innovation-research` | `/innovation-research` | Guided innovation research cycle |
+| `agent-evolution` | `/agent-evolution` | Agent scoring, drift detection, instruction evolution (MANDATORY every session) |
+| `development-rules` | `/development-rules` | 46 hard-learned rules by domain (Python, FastAPI, React, testing, security) |
+| `quality-gate` | `/quality-gate` | 3-level pre-merge quality checks (commit, PR, release) |
+| `release-preflight` | `/release-preflight` | 5-phase pre-release validation (packaging, UAT, security, API/doc, CI) |
+| `user-acceptance-test` | `/user-acceptance-test` | End-user perspective testing (pip install + all workflows) |
 
 ### 16 Prompt Files (`.github/prompts/`)
 
@@ -272,3 +277,4 @@ docs/TASKS.md                                   # Task board
 - **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops
 - **Agent evolution:** orchestrator → agent-evolver → governance → doc-master → ops
 - **Innovation research:** orchestrator → innovator → structural-engineer (gate) → structural-math → tester → reviewer → doc-master → ops
+- **Release:** orchestrator → tester (UAT) → reviewer (quality gate) → ops (preflight + release) → tester (post-release verify) → doc-master (CHANGELOG + docs) → agent-evolver (metrics) → ops (commit)

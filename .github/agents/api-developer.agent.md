@@ -84,6 +84,21 @@ grep -r "@router" fastapi_app/routers/ | head -30
 
 ## After Work: Hand off to @reviewer with files changed, endpoints added/modified, Pydantic models, curl example.
 
+## Skills: Use `/api-discovery` for param lookup, `/development-rules` for FastAPI rules (FA-1 through FA-7).
+
+## Development Rules Quick Reference
+
+Before writing any FastAPI code, review these critical rules from `/development-rules`:
+
+| Rule | Description |
+|------|-------------|
+| FA-1 | NEVER use `str(e)` in error responses — generic messages only |
+| FA-2 | All endpoints must have rate limiting |
+| FA-3 | WebSocket inputs validated via Pydantic |
+| FA-4 | CORS from config/env, never hardcoded |
+| FA-6 | Routers import from `structural_lib` — never reimplement math |
+| FA-7 | No internal paths or stack traces in responses |
+
 ## Rules
 
 1. **Routers import from `structural_lib`** — never duplicate math logic

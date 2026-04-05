@@ -9,26 +9,30 @@
 
 
 **Last Updated:** 2026-04-05
-**Last Session:** v0.21.3 released — ALL 23 EA findings resolved, docs updated
+**Last Session:** Quality control overhaul — 4 new skills, 12 agent updates, 46 dev rules, 3-level quality gates
 
 ## What Was Completed
-- **v0.21.3 released** — External Audit Fixes release
-- **All 23 external audit findings fixed** (EA-1 through EA-23):
-  - Security: rate limiter, error sanitization, WS validation, CORS settings, auth warning
-  - Testing: API stability tests, import silence, e2e pipeline, repo_only marker
-  - API: `build_detailing_input()`, `.to_dict()`, `compute_report()` documented
-  - IS 456: torsion D_mm, bearing_stress_enhancement (Cl 34.4), check_scwb (IS 13920 Cl 7.2.1)
-  - Frontend: WorkflowHint, BeamForm validation
-  - Docs: api-levels.md, task-oriented README, e2e example script
-  - Infra: lazy module loading, CI publish fix
-- **Full doc update:** CHANGELOG, releases.md, TASKS.md, version refs synced to 0.21.3
+- **Quality control overhaul** (docs-only, root cause analysis of 70+ issues across v0.21.0-v0.21.3):
+  - 4 new skills: `release-preflight`, `user-acceptance-test`, `quality-gate`, `development-rules`
+  - 12 agent files updated with development rules + skill references (orchestrator, doc-master, agent-evolver, reviewer, tester, backend, api-developer, frontend, security, structural-math, ops, governance)
+  - 46 hard-learned development rules across 7 domains (Python, FastAPI, React, testing, security, git, docs)
+  - 3-level quality gates (commit, PR, release) codified in skill
+  - `session-end.prompt.md` upgraded to 9 steps with mandatory evolution check
+  - Global configs updated: `AGENTS.md`, `copilot-instructions.md`, `CLAUDE.md`, `agent-bootstrap.md`, `skill_tiers.json`
+- **v0.21.3 released** (prior session) — all 23 EA findings resolved
 
 ## What's Next (Priority Order)
-1. **v0.22 work:** AI assistant port, learning center, Streamlit deprecation
-2. **TASK-526:** TopBar context badges + settings panel
-3. **TASK-527:** Workflow breadcrumb for batch flow
-4. **Library expansion:** Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)
-5. **Test coverage:** Report/3D tests (TASK-520)
+1. **Begin coding work per TASKS.md** — use new quality gates in practice
+2. **v0.22 work:** AI assistant port, learning center, Streamlit deprecation
+3. **TASK-526:** TopBar context badges + settings panel
+4. **TASK-527:** Workflow breadcrumb for batch flow
+5. **Library expansion:** Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)
+6. **Test coverage:** Report/3D tests (TASK-520)
+
+## Notes for Next Agent
+- All 12 agent files now have development rules — verify they're being followed in the next coding session
+- New skills (`/quality-gate`, `/release-preflight`, `/user-acceptance-test`, `/development-rules`) should be invoked during PR and release workflows
+- Agent evolver integration is mandatory every session (`./run.sh evolve --status`)
 
 ## Audit Status
 - All P0: ✅ resolved

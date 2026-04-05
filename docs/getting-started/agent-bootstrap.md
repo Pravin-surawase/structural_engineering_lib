@@ -622,10 +622,10 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `@agent-evolver` | Meta-agent: instruction evolution | Performance scoring, drift detection |
 | `@innovator` | Research & innovation | Discover missing capabilities, prototype breakthroughs |
 
-### 10 Skills (`/skill-name` in Copilot Chat)
+### 14 Skills (`/skill-name` in Copilot Chat)
 
 | Skill | Purpose |
-|-------|---------|
+|-------|--------|
 | `/session-management` | Automate session start/end workflow |
 | `/safe-file-ops` | Move/delete files preserving 870+ links |
 | `/api-discovery` | Look up exact API function signatures |
@@ -636,6 +636,10 @@ These rules auto-load via `.claude/rules/` and `.github/instructions/` for Claud
 | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for IS 456 functions |
 | `/agent-evolution` | Agent self-evolution cycle |
 | `/innovation-research` | Guided innovation research cycle |
+| `/development-rules` | Hard-learned development rules by domain (Python, FastAPI, React, testing, security) |
+| `/quality-gate` | 3-level pre-merge quality checks (commit, PR, release) |
+| `/release-preflight` | 5-phase pre-release validation (packaging, UAT, security, API/doc, CI) |
+| `/user-acceptance-test` | End-user perspective testing (pip install + all workflows) |
 
 ### 16 Prompt Files (`#prompt-name` in Copilot Chat)
 
