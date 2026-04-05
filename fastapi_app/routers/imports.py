@@ -292,9 +292,12 @@ async def import_csv(
                     continue
 
             if not beams_out:
+                logger.warning(
+                    "CSV import failed with all adapters. Last error: %s", last_error
+                )
                 raise HTTPException(
                     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                    detail=f"Could not parse CSV with any adapter. Last error: {last_error}",
+                    detail="Could not parse CSV with any adapter. Please check file format.",
                 )
 
             if not beams_out:
@@ -587,12 +590,22 @@ async def batch_design(
                 else:
                     failed += 1
 
-            except Exception as e:
+            except (ValueError, TypeError) as e:
                 results.append(
                     BatchDesignResult(
                         beam_id=beam.id,
                         success=False,
                         error=str(e),
+                    )
+                )
+                failed += 1
+            except Exception:
+                logger.exception("Batch design failed for beam %s", beam.id)
+                results.append(
+                    BatchDesignResult(
+                        beam_id=beam.id,
+                        success=False,
+                        error="Internal calculation error",
                     )
                 )
                 failed += 1
@@ -737,7 +750,8 @@ async def get_sample_data() -> SampleDataResponse:
                         "vu_max": abs(float(row.get("Vu_max_kN", 0))),
                     }
     except Exception as e:
-        warnings_list.append(f"Error reading forces: {e}")
+        logger.warning("Error reading forces CSV: %s", e)
+        warnings_list.append("Error reading forces data")
 
     # Read geometry CSV (filter beams only)
     geometry_data: dict[str, dict[str, float]] = {}
@@ -757,7 +771,8 @@ async def get_sample_data() -> SampleDataResponse:
                             "point2_z": float(row.get("Point2Z", 0)),
                         }
     except Exception as e:
-        warnings_list.append(f"Error reading geometry: {e}")
+        logger.warning("Error reading geometry CSV: %s", e)
+        warnings_list.append("Error reading geometry data")
 
     # Merge forces with geometry
     sample_beams: list[BeamWith3D] = []

@@ -3708,3 +3708,68 @@ ows = footing_one_way_shear(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=
 # Step 4: Check punching shear
 punch = footing_punching_shear(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=400, fck=25)
 ```
+
+---
+
+## API Levels — Which Should I Use?
+
+structural_lib provides three API levels. Choose based on your use case:
+
+### Level 1: High-Level API (`api.*`) — Recommended for most users
+
+```python
+from structural_lib.services import api
+
+# Single-case design (flexure + shear + optional serviceability)
+result = api.design_beam_is456(
+    units="IS456", b_mm=300, D_mm=500, d_mm=450,
+    fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
+)
+
+# Design + detailing in one call
+full = api.design_and_detail_beam_is456(
+    units="IS456", beam_id="B1", story="GF", span_mm=6000,
+    b_mm=300, D_mm=500, mu_knm=150, vu_kn=100,
+)
+```
+
+**Use when:** You want complete beam/column design with all IS 456 checks.
+**Returns:** Typed dataclasses (`ComplianceCaseResult`, `DesignAndDetailResult`).
+
+### Level 2: Module-Level Functions — For specific calculations
+
+```python
+from structural_lib.codes.is456.beam.flexure import design_singly_reinforced
+from structural_lib.codes.is456.beam.shear import design_shear
+
+# Just flexure design
+flexure = design_singly_reinforced(b_mm=300, d_mm=450, mu_knm=150, fck=25, fy=500)
+
+# Just shear check
+shear = design_shear(b_mm=300, d_mm=450, vu_kn=100, fck=25, fy=500)
+```
+
+**Use when:** You need a specific IS 456 calculation without the full pipeline.
+**Returns:** Individual result dataclasses (`FlexureResult`, `ShearResult`).
+
+### Level 3: Direct Code Functions — For advanced/research use
+
+```python
+from structural_lib.codes.is456.materials import get_xu_max_d
+
+ratio = get_xu_max_d(fy=500)  # Returns 0.46 for Fe500
+```
+
+**Use when:** You need low-level IS 456 constants or helper functions.
+**Returns:** Primitive values (float, dict).
+
+### Decision Tree
+
+| Question | → API Level |
+|----------|-------------|
+| "I want to design a beam/column" | Level 1: `api.design_beam_is456()` |
+| "I want design + detailing + BBS + report" | Level 1: `api.design_and_detail_beam_is456()` + `api.compute_bbs()` |
+| "I just need shear capacity" | Level 2: `shear.design_shear()` |
+| "I need xu_max/d ratio for Fe500" | Level 3: `materials.get_xu_max_d(500)` |
+| "I'm importing from ETABS CSV" | Level 1: `api.create_jobs_from_etabs_csv()` |
+| "I want end-to-end with report" | See `Python/examples/end_to_end_workflow.py` |

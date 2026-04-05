@@ -27,6 +27,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse as StarletteJSONResponse
 
 from fastapi_app import __version__
+from fastapi_app.auth import RateLimiter
 from fastapi_app.config import get_settings
 from fastapi_app.routers import (
     analysis,
@@ -185,6 +186,52 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
 
 app.add_middleware(AuthMiddleware)
+
+# =============================================================================
+# Rate Limit Middleware — applies to all non-health endpoints (EA-17)
+# =============================================================================
+
+
+class RateLimitMiddleware(BaseHTTPMiddleware):
+    """Global rate limiter — applies to all non-health endpoints."""
+
+    SKIP_PREFIXES = ("/health", "/docs", "/openapi.json", "/redoc", "/ws/")
+
+    def __init__(self, app, requests_per_minute: int = 120, enabled: bool = True):
+        super().__init__(app)
+        self.enabled = enabled
+        self.limiter = RateLimiter(
+            requests_per_window=requests_per_minute, window_seconds=60
+        )
+
+    async def dispatch(self, request: Request, call_next):
+        if not self.enabled:
+            return await call_next(request)
+
+        path = request.url.path
+        if path.startswith(self.SKIP_PREFIXES):
+            return await call_next(request)
+
+        allowed, headers = self.limiter.is_allowed(request)
+
+        if not allowed:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Too many requests. Please try again later."},
+                headers=headers,
+            )
+
+        response = await call_next(request)
+        response.headers.update(headers)
+        return response
+
+
+_settings = get_settings()
+app.add_middleware(
+    RateLimitMiddleware,
+    requests_per_minute=_settings.rate_limit_per_minute,
+    enabled=_settings.rate_limit_enabled,
+)
 
 # =============================================================================
 # CORS Middleware Configuration

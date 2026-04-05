@@ -4,7 +4,11 @@ Cost Optimization Router.
 Endpoints for beam cost optimization calculations.
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException, status
+
+logger = logging.getLogger(__name__)
 
 from fastapi_app.models.optimization import (
     CostOptimizationRequest,
@@ -141,15 +145,16 @@ async def optimize_beam_cost(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, TypeError) as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in optimize_beam_cost")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Optimization failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 

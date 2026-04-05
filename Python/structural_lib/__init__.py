@@ -24,26 +24,30 @@ except PackageNotFoundError:
 
 # Expose key modules
 from . import (
-    adapters,
     api,
-    audit,
-    batch,
     compliance,
-    costing,
     detailing,
-    etabs_import,
     flexure,
     imports,
     inputs,
     models,
     rebar,
     result_base,
-    serialization,
     serviceability,
     shear,
-    testing_strategies,
     types,
 )
+
+# Lazy-loaded modules (imported on first access, not at package load)
+_LAZY_MODULES = {
+    "adapters",
+    "etabs_import",
+    "batch",
+    "costing",
+    "testing_strategies",
+    "audit",
+    "serialization",
+}
 
 # Import geometry and frame types from core.models
 from .core.models import BeamGeometry, DesignDefaults, FrameType
@@ -80,6 +84,7 @@ from .services.api import (
     ResultSection,
     # Torsion Design
     TorsionResult,
+    build_detailing_input,
     # Column Design
     calculate_additional_moment_is456,
     calculate_equivalent_moment,
@@ -225,6 +230,7 @@ __all__ = [
     "generate_calculation_report",
     # Outputs
     "compute_detailing",
+    "build_detailing_input",
     "compute_bbs",
     "export_bbs",
     "compute_dxf",
@@ -288,3 +294,11 @@ __all__ = [
     # IS 13920 Ductile Detailing
     "check_column_ductility_is13920",
 ]
+
+
+def __getattr__(name: str):
+    if name in _LAZY_MODULES:
+        mod = importlib.import_module(f".{name}", __name__)
+        globals()[name] = mod
+        return mod
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

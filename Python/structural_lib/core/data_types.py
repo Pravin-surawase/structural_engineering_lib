@@ -8,7 +8,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field, fields
+from dataclasses import asdict, dataclass, field, fields
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, TypedDict
 
@@ -333,6 +333,10 @@ class FlexureResult:
         )
         return self.Asc_required
 
+    def to_dict(self) -> dict[str, Any]:
+        """Convert result to a plain dictionary for serialization."""
+        return asdict(self)
+
 
 @dataclass(frozen=True)
 class ShearResult:
@@ -406,6 +410,10 @@ class ShearResult:
             stacklevel=2,
         )
         return self.Vus
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert result to a plain dictionary for serialization."""
+        return asdict(self)
 
 
 @dataclass
@@ -727,6 +735,10 @@ class ComplianceCaseResult:
         )
         return self.Vu_kn
 
+    def to_dict(self) -> dict[str, Any]:
+        """Convert result to a plain dictionary for serialization."""
+        return asdict(self)
+
 
 @dataclass
 class ComplianceReport:
@@ -735,6 +747,10 @@ class ComplianceReport:
     governing_utilization: float
     cases: list[ComplianceCaseResult]
     summary: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert result to a plain dictionary for serialization."""
+        return asdict(self)
 
 
 @dataclass
@@ -827,6 +843,10 @@ class ColumnAxialResult:
     is_safe: bool
     warnings: tuple[str, ...] = field(default_factory=tuple)
     errors: tuple[DesignError, ...] = field(default_factory=tuple)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert result to a plain dictionary for serialization."""
+        return asdict(self)
 
 
 @dataclass(frozen=True)

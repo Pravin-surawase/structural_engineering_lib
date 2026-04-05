@@ -4,6 +4,11 @@ Test Fixtures for FastAPI Tests.
 Provides shared test fixtures and configuration.
 """
 
+import os
+
+# Disable global rate limiter during tests to avoid interference with load tests
+os.environ.setdefault("RATE_LIMIT_ENABLED", "false")
+
 import pytest
 from fastapi.testclient import TestClient
 

@@ -129,3 +129,47 @@ class TestWheelContents:
         assert (
             len(lib_files) > 10
         ), f"Only {len(lib_files)} structural_lib files in wheel — expected 50+"
+
+
+class TestImportSilence:
+    """EA-6: Importing structural_lib must produce zero user-facing warnings.
+
+    Tests marked @pytest.mark.repo_only are excluded when running from sdist:
+      pytest -m "not repo_only" Python/tests/
+    """
+
+    def test_import_no_warnings(self):
+        """Import structural_lib and assert no warnings are emitted."""
+        import importlib
+        import warnings
+
+        # Temporarily remove structural_lib from sys.modules to force re-import
+        mods_to_remove = [k for k in sys.modules if k.startswith("structural_lib")]
+        saved = {k: sys.modules.pop(k) for k in mods_to_remove}
+
+        try:
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                importlib.import_module("structural_lib")
+                # Filter to only our package warnings
+                pkg_warnings = [
+                    w
+                    for w in caught
+                    if "structural_lib" in str(w.filename)
+                    and not any(
+                        skip in str(w.message)
+                        for skip in [
+                            "ezdxf",  # third-party
+                            "pyparsing",  # third-party
+                            "has moved to",  # intentional backward-compat shims
+                        ]
+                    )
+                ]
+            assert (
+                len(pkg_warnings) == 0
+            ), f"Import produced {len(pkg_warnings)} warning(s):\n" + "\n".join(
+                f"  - {w.category.__name__}: {w.message}" for w in pkg_warnings
+            )
+        finally:
+            # Restore original modules
+            sys.modules.update(saved)

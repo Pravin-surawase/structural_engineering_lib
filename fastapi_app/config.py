@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     # Authentication
     auth_enabled: bool = False
 
+    # Rate Limiting
+    rate_limit_per_minute: int = 120  # Global API rate limit per client IP
+    rate_limit_enabled: bool = True  # Set to False in tests or dev
+
     # Batch Processing
     max_batch_size: int = 500
 
