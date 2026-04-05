@@ -819,19 +819,19 @@ class DictCompatMixin:
 
     def keys(self) -> list[str]:
         """Return field names, like ``dict.keys()``."""
-        return [f.name for f in fields(self)]
+        return [f.name for f in fields(self)]  # type: ignore[arg-type]
 
     def values(self) -> list[Any]:
         """Return field values, like ``dict.values()``."""
-        return [getattr(self, f.name) for f in fields(self)]
+        return [getattr(self, f.name) for f in fields(self)]  # type: ignore[arg-type]
 
     def items(self) -> list[tuple[str, Any]]:
         """Return (name, value) pairs, like ``dict.items()``."""
-        return [(f.name, getattr(self, f.name)) for f in fields(self)]
+        return [(f.name, getattr(self, f.name)) for f in fields(self)]  # type: ignore[arg-type]
 
-    def __iter__(self):
+    def __iter__(self) -> Any:
         """Iterate over field names (like iterating a dict)."""
-        return iter(f.name for f in fields(self))
+        return iter(f.name for f in fields(self))  # type: ignore[arg-type]
 
 
 class ColumnClassification(Enum):
