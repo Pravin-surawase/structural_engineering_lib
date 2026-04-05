@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-03-30",
-    "total_clauses": 119,
+    "total_clauses": 123,
     "includes_references": [
       "IS 13920:2016"
     ]
@@ -163,6 +163,18 @@
         "continuous",
         "effective span",
         "interior span"
+      ]
+    },
+    "23.2": {
+      "title": "Assumptions in Design for Flexure",
+      "section": "23 - Structural Members",
+      "text": "Design for the limit state of collapse in flexure shall be based on the assumptions given in 38.1.",
+      "category": "flexure",
+      "keywords": [
+        "flexure",
+        "assumptions",
+        "design",
+        "limit state"
       ]
     },
     "23.2.1": {
@@ -553,6 +565,18 @@
         "shear resistance"
       ]
     },
+    "26.5.3": {
+      "title": "Columns",
+      "section": "26 - Detailing",
+      "text": "Reinforcement and detailing requirements for columns including longitudinal and transverse reinforcement.",
+      "category": "columns",
+      "keywords": [
+        "column",
+        "detailing",
+        "reinforcement",
+        "ties"
+      ]
+    },
     "26.5.3.1": {
       "title": "Longitudinal Reinforcement in Columns",
       "section": "26 - Detailing",
@@ -838,6 +862,19 @@
         "face of column"
       ]
     },
+    "34.2.3.1": {
+      "title": "Critical Section for Bending — Column Footings",
+      "section": "34 - Footings",
+      "text": "For footings under concrete columns, the critical section for bending moment shall be at the face of the column, pedestal, or wall. Applies when footing is restrained at both ends.",
+      "category": "footings",
+      "keywords": [
+        "critical section",
+        "bending moment",
+        "footing",
+        "column face",
+        "restrained"
+      ]
+    },
     "34.2.4": {
       "title": "Shear in Footings",
       "section": "34 - Footings",
@@ -849,6 +886,19 @@
         "footing",
         "one-way shear",
         "critical section"
+      ]
+    },
+    "34.2.4.1": {
+      "title": "One-Way Shear in Footings — Unsupported Length",
+      "section": "34 - Footings",
+      "text": "For one-way shear in footings, the critical section shall be taken at a distance equal to effective depth from the face of the column or pedestal.",
+      "category": "footings",
+      "keywords": [
+        "one-way shear",
+        "footing",
+        "critical section",
+        "effective depth",
+        "unsupported length"
       ]
     },
     "34.3": {
@@ -1792,6 +1842,13 @@
       "referenced_in": [
         "43.2.1"
       ]
+    },
+    "Fig. 23": {
+      "title": "Representative Stress-Strain Curve for Steel",
+      "description": "Idealised stress-strain curve for reinforcement steel (5-point piecewise linear), used for column interaction and detailed flexure analysis",
+      "referenced_in": [
+        "38.1"
+      ]
     }
   },
   "annexures": {
@@ -1836,6 +1893,31 @@
         "Mu = Muf + Muw",
         "Muf = 0.36 × fck × (bf - bw) × yf × (d - yf/2)",
         "yf = 0.15xu + 0.65Df ≤ Df"
+      ]
+    },
+    "C-2": {
+      "title": "Concrete Stress Block Parameters — Creep and Shrinkage",
+      "section": "Annex C - Serviceability Calculations",
+      "text": "Annex C-2 provides parameters for concrete stress block including creep coefficients for long-term deflection calculations. Creep coefficient depends on age of loading and relative humidity.",
+      "category": "serviceability",
+      "keywords": [
+        "creep",
+        "creep coefficient",
+        "stress block",
+        "long-term deflection",
+        "moment of inertia"
+      ]
+    },
+    "C-3": {
+      "title": "Shrinkage",
+      "section": "Annex C - Serviceability Calculations",
+      "text": "Annex C-3 provides shrinkage strain values and method for calculating shrinkage curvature and resulting deflection in reinforced concrete members.",
+      "category": "serviceability",
+      "keywords": [
+        "shrinkage",
+        "shrinkage strain",
+        "shrinkage curvature",
+        "shrinkage deflection"
       ]
     }
   }

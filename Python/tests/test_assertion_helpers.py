@@ -4,6 +4,8 @@
 
 import pytest
 
+pytestmark = pytest.mark.repo_only
+
 from tests.helpers.is456_assertions import (
     assert_capacity_exceeds_demand,
     assert_dimensions_positive,

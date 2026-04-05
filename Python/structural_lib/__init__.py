@@ -38,6 +38,9 @@ from . import (
     types,
 )
 
+# Import EndCondition enum (needed for calculate_effective_length_is456)
+from .core.data_types import EndCondition
+
 # Import geometry and frame types from core.models
 from .core.models import BeamGeometry, DesignDefaults, FrameType
 
@@ -74,9 +77,11 @@ from .services.api import (
     # Torsion Design
     TorsionResult,
     ValidationReport,
-    build_detailing_input,
     # Column Design
+    biaxial_bending_check_is456,
+    build_detailing_input,
     calculate_additional_moment_is456,
+    calculate_effective_length_is456,
     calculate_equivalent_moment,
     calculate_equivalent_shear,
     calculate_longitudinal_torsion_steel,
@@ -90,6 +95,7 @@ from .services.api import (
     check_compliance_report,
     check_crack_width,
     check_deflection_span_depth,
+    check_helical_reinforcement_is456,
     classify_column_is456,
     compute_bbs,
     compute_bmd_sfd,
@@ -106,10 +112,13 @@ from .services.api import (
     design_and_detail_beam_is456,
     design_beam_is456,
     design_column_axial_is456,
+    design_column_is456,
     design_from_input,
+    design_long_column_is456,
     design_short_column_uniaxial_is456,
     design_torsion,
     detail_beam_is456,
+    detail_column_is456,
     # Shear
     enhanced_shear_strength_is456,
     export_bbs,
@@ -289,11 +298,18 @@ __all__ = [
     "beam_to_3d_geometry",
     # Column Design (IS 456 Cl 25, 39.3, 39.5, 39.7)
     "calculate_additional_moment_is456",
+    "calculate_effective_length_is456",
     "classify_column_is456",
     "min_eccentricity_is456",
     "design_column_axial_is456",
+    "design_column_is456",
+    "design_long_column_is456",
     "design_short_column_uniaxial_is456",
     "pm_interaction_curve_is456",
+    "biaxial_bending_check_is456",
+    "check_helical_reinforcement_is456",
+    "detail_column_is456",
+    "EndCondition",
     # IS 13920 Ductile Detailing
     "check_column_ductility_is13920",
 ]
