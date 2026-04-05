@@ -6,6 +6,12 @@ and does not include test/dev artifacts.
 
 import importlib.resources
 import json
+import subprocess
+import sys
+import zipfile
+from pathlib import Path
+
+import pytest
 
 
 class TestPackageDataFiles:
@@ -48,14 +54,6 @@ class TestPackageScope:
 
         # Verify structural_lib itself is importable
         assert hasattr(structural_lib, "__version__") or hasattr(structural_lib, "api")
-
-
-import subprocess
-import sys
-import zipfile
-from pathlib import Path
-
-import pytest
 
 
 class TestWheelContents:
