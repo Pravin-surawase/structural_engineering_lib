@@ -1329,4 +1329,4 @@ V3 Foundation release — everything built since v0.19.1. Full-stack maturity mi
 
 Format: Keep a section per release with Added/Changed/Fixed as needed. Tag releases as `vX.Y.Z`.
 
-[0.21.4]: https://github.com/pravinsurawase/structural_engineering_lib/compare/v0.21.3...HEAD
+[0.21.4]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.3...HEAD
