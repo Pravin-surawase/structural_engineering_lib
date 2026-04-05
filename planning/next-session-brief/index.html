@@ -1575,40 +1575,44 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> External PyPI Audit Resolution — 6 post-EA fixes (PR #532)</p>
+<strong>Last Session:</strong> v0.21.4 Release — P0/P1 Sprint + External Audit Fixes</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>v0.22.0 Sprint 2 — All 8 P1 fixes</strong> (previous session)</li>
-<li><strong>External PyPI v0.21.3 Audit — 6 additional fixes (PR #532, ea4baf3b):</strong></li>
-<li>DXF CLI <code>KeyError: 'story'</code> — moved schema extraction before field access in <code>__main__.py</code></li>
-<li>Traceability logger — switched to centralized <code>get_logger()</code>, added figures/tables lookup</li>
-<li>Column exports — 6 column functions + <code>EndCondition</code> enum now at top-level (<code>__init__.py</code>)</li>
-<li>README examples — fixed <code>compute_dxf</code>, <code>optimize_beam_cost</code> signatures and examples link</li>
-<li>Sdist hygiene — <code>global-exclude</code>/<code>prune</code> in MANIFEST.in, <code>repo_only</code> marker in test helpers</li>
-<li>Clause DB — 7 missing clause/annex/figure entries added to <code>clauses.json</code></li>
-<li>All external audit issues resolved. 4491 tests pass, zero import warnings. 17/17 CI checks green.</li>
+<li><strong>v0.21.4 released</strong> (2026-04-05) — comprehensive P0/P1 sprint + external audit resolution:</li>
+<li>49 bare except blocks → specific exception types (11 routers)</li>
+<li>18 @clause decorators on footing + serviceability functions</li>
+<li>62 FastAPI tests across 6 new test files (7 routers)</li>
+<li>God module split: api.py → beam_api.py + column_api.py + common_api.py</li>
+<li>WCAG AA form accessibility (4 components)</li>
+<li>API response standardization (9 routers)</li>
+<li>Column exports at top-level (6 functions + EndCondition)</li>
+<li>Clause DB completion (7 missing entries + clause_refs fields)</li>
+<li>17 MagicMock → real dataclass fixtures</li>
+<li>4758 tests pass, zero import warnings, 17/17 CI green</li>
 </ul>
 <h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>v0.22.0 release preparation</strong> — version bump, CHANGELOG finalize, release preflight</li>
-<li>Consider P2 items from audit (lower priority)</li>
+<li><strong>v0.22.0 planning</strong> — scope AI assistant port, learning center, Streamlit deprecation</li>
+<li><strong>TopBar context badges + SettingsPanel</strong> (TASK-527) — remaining React UX</li>
+<li><strong>Workflow breadcrumb</strong> (TASK-528) — batch flow navigation</li>
+<li><strong>Footing API wrappers</strong> in services/ (TASK-654/655/656) — currently only pure math layer</li>
+<li>Consider P2 audit items (lower priority)</li>
 <li>WCAG testing of remaining components</li>
-<li>Footing API wrappers in services/ (currently only pure math layer)</li>
 <li>Clause registry update for new Annex C/serviceability clauses</li>
 </ol>
 <h2 id="notes-for-next-agent">Notes for Next Agent<a class="headerlink" href="#notes-for-next-agent" title="Permanent link">&para;</a></h2>
 <ul>
-<li>All P0 + P1 + external audit findings resolved</li>
+<li>All P0 + P1 + external audit findings resolved in v0.21.4</li>
 <li>Import is clean — zero warnings on <code>import structural_lib</code></li>
 <li>13 column functions now exported at top-level (6 new + existing), plus <code>EndCondition</code> enum</li>
-<li>God module split: api.py is now a re-export hub — new functions go to beam_api.py, column_api.py, etc.</li>
+<li>God module split complete: api.py is now a re-export hub — new functions go to beam_api.py, column_api.py, etc.</li>
 <li>APIResponse wrapper: all endpoints return {"success": true, "data": {...}} — update any client code</li>
 <li>2 pre-existing FastAPI test failures: column uniaxial inf/NaN, cost optimizer 503</li>
 </ul>
 <h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
 <ul>
-<li>v0.22.0: ~9.0/10, all P0 + P1 + external audit resolved</li>
-<li>Total: 90 findings from v0.21.3 deep audit — 13 P0/P1 resolved + 6 external audit fixes</li>
+<li>v0.21.4: All P0 + P1 + external audit resolved, 4758 tests passing</li>
+<li>Total: 90 findings from deep audit — all critical/high resolved</li>
 </ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>

@@ -1520,6 +1520,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0214" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.21.4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v0214-2026-04-05-p0p1-sprint-external-audit-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.4 — 2026-04-05 (P0/P1 Sprint + External Audit Fixes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0213" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2270,6 +2298,24 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0214">v0.21.4<a class="headerlink" href="#v0214" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-04-05
+<strong>Status:</strong> ✅ Released
+<strong>Mindset:</strong> P0/P1 Sprint + External Audit Fixes</p>
+<h3 id="v0214-2026-04-05-p0p1-sprint-external-audit-fixes">v0.21.4 — 2026-04-05 (P0/P1 Sprint + External Audit Fixes)<a class="headerlink" href="#v0214-2026-04-05-p0p1-sprint-external-audit-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>49 bare except blocks fixed</strong> — replaced with specific exception types across 11 routers</li>
+<li><strong>18 @clause decorators</strong> added to footing + serviceability functions for IS 456 traceability</li>
+<li><strong>62 FastAPI tests</strong> added across 6 new test files covering 7 routers</li>
+<li><strong>God module split</strong> — services/api.py split into beam_api.py (1895L), column_api.py (1387L), common_api.py (230L)</li>
+<li><strong>WCAG AA</strong> — form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend across 4 components</li>
+<li><strong>API response standardization</strong> — all endpoints return <code>{"success": true, "data": {...}}</code> via success_response()/error_response() wrappers (9 routers)</li>
+<li><strong>Column exports</strong> — 6 column functions + EndCondition enum now at top-level package</li>
+<li><strong>Clause DB completion</strong> — 7 missing clause/annex/figure entries added, clause_refs field on result dataclasses</li>
+<li><strong>17 MagicMock replacements</strong> — real dataclass fixtures in test_calculation_report, test_testing_strategies</li>
+<li>4758 tests passing, zero import warnings, 17/17 CI checks green</li>
+</ul>
 <hr />
 <h2 id="v0213">v0.21.3<a class="headerlink" href="#v0213" title="Permanent link">&para;</a></h2>
 <p><strong>Date:</strong> 2026-04-05
