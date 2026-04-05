@@ -84,6 +84,31 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.2
+**Date:** 2026-04-05
+**Status:** ✅ Locked & Verified
+**Mindset:** Packaging Quality + External Audit Fixes
+
+**Key Changes:**
+
+Packaging quality release addressing external audit findings. All design calculations are unchanged — fixes are distribution and documentation only.
+
+**Fixed - PyPI Wheel:**
+- Missing `clauses.json` in wheel — IS 456 clause traceability now works from pip-installed package (was silently degrading to empty results)
+- Silent exception swallowing in traceability.py — bare `except Exception` narrowed to specific exceptions with `warnings.warn()` on fallback
+- Over-broad package discovery — `tests/`, `examples/`, `scripts/` excluded from wheel via explicit `include`/`exclude` patterns in pyproject.toml
+
+**Fixed - Documentation:**
+- Inaccurate README claims — replaced `optimize_pareto_front()` reference (not in public API) with accurate `optimize_beam_cost()` entry
+- Duplicate README heading — merged two `## New in v0.21.0` sections
+
+**Added:**
+- Packaging verification tests (`test_packaging.py`) — validates `clauses.json` accessibility, clause lookup, and package scope
+- Python version guidance — README now notes Python 3.11+ requirement
+- MANIFEST.in update — `clauses.json` included for sdist builds
+
+---
+
 ## v0.21.1
 **Date:** 2026-04-05
 **Status:** ✅ Locked & Verified

@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.1 ✅ Released → v0.22 (Full React + AI Assistant)
+- **Version:** v0.21.2 ✅ Released → v0.22 (Full React + AI Assistant)
 - **Focus:** Full React migration + AI assistant + remaining UX tasks
 - **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
@@ -86,6 +86,19 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | Monitoring (burn-in) |
+
+## v0.21.2 Packaging Fixes (External Audit)
+
+> External audit of PyPI v0.21.1 found packaging issues. All calculations are correct — these are distribution/packaging problems.
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| TASK-PKG-1 | **Fix missing clauses.json in wheel** — Add `codes/is456/clauses.json` to pyproject.toml package-data. Without this, clause traceability silently returns empty results. | HIGH | @backend | ✅ Done |
+| TASK-PKG-2 | **Add warning for missing clause DB** — In traceability.py, narrow `except Exception` to `except (FileNotFoundError, json.JSONDecodeError)` and add `warnings.warn()` when fallback to `{}` | HIGH | @backend | ✅ Done |
+| TASK-PKG-3 | **Scope package discovery** — Add `exclude = ["tests*", "examples*", "scripts*"]` to pyproject.toml packages.find. Remove internal packages from wheel. | HIGH | @backend | ✅ Done |
+| TASK-PKG-4 | **Fix optimize_pareto_front API gap** — Either add to api.py __all__ or remove from Python/README.md claims. Auditor found README advertises it but it's not importable from top-level. | MEDIUM | @backend | ✅ Done |
+| TASK-PKG-5 | **Add Python version note to README** — State "Requires Python 3.11+. Users on 3.9-3.10 get older v0.16.5." | LOW | @doc-master | ✅ Done |
+| TASK-PKG-6 | **Add CI wheel content test** — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level | MEDIUM | @tester | 📋 |
 
 ## Recently Done
 

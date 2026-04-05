@@ -49,7 +49,13 @@ try:
         .joinpath("clauses.json")
         .read_text(encoding="utf-8")
     )
-except Exception:
+except (FileNotFoundError, json.JSONDecodeError, ModuleNotFoundError) as exc:
+    import warnings
+
+    warnings.warn(
+        f"clauses.json not found in package data — clause traceability features are unavailable: {exc}",
+        stacklevel=1,
+    )
     _CLAUSE_DB = {}
 
 

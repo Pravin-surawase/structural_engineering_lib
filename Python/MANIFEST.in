@@ -1,3 +1,4 @@
 include structural_lib/py.typed
+include structural_lib/codes/is456/clauses.json
 include LICENSE
 include README.md

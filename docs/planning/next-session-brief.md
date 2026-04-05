@@ -1,14 +1,17 @@
 # Next Session Brief
 
 **Last Updated:** 2026-04-05
-**Last Session:** v0.21.1 release — audit fixes, accessibility, CI hardening, column bug fix
+**Last Session:** v0.21.2 release — packaging quality fixes from external audit
 
 ## What Was Completed
-- **v0.21.1 Released** — Patch release with audit fixes (B- → B+), accessibility, CI hardening, column `is_safe` rounding fix
-- All P0 (5/5) and P1 (20/20) audit findings resolved
-- P2: 38/52 resolved (73%) — Batches 1-5 complete
-- CI bypass escape hatches closed in `finish_task_pr.sh`
-- React Validation CI and Docker Build CI failures fixed
+- **v0.21.2 Released** — Packaging quality release addressing external audit findings
+- Fixed missing `clauses.json` in PyPI wheel (TASK-PKG-1)
+- Narrowed exception handling in traceability.py with `warnings.warn()` (TASK-PKG-2)
+- Scoped package discovery to exclude tests/examples/scripts from wheel (TASK-PKG-3)
+- Fixed inaccurate README `optimize_pareto_front()` claim (TASK-PKG-4)
+- Added Python 3.11+ version note to README (TASK-PKG-5)
+- Added packaging verification tests (`test_packaging.py`)
+- Merged duplicate README headings, updated MANIFEST.in
 
 ## What's Next (Priority Order)
 1. **v0.22.0 planning** — AI assistant port, learning center, Streamlit deprecation

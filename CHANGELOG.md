@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.21.2] - 2026-04-05
+
+Packaging quality release addressing external audit findings. All design calculations are unchanged — fixes are distribution and documentation only.
+
+### Fixed
+- **Missing `clauses.json` in PyPI wheel** — IS 456 clause traceability now works from pip-installed package (was silently degrading to empty results)
+- **Silent exception swallowing in traceability.py** — Bare `except Exception` narrowed to specific exceptions with `warnings.warn()` on fallback
+- **Over-broad package discovery** — `tests/`, `examples/`, `scripts/` excluded from wheel via explicit `include`/`exclude` patterns in pyproject.toml
+- **Inaccurate README claims** — Replaced `optimize_pareto_front()` reference (not in public API) with accurate `optimize_beam_cost()` entry
+- **Duplicate README heading** — Merged two `## New in v0.21.0` sections
+
+### Added
+- **Packaging verification tests** — `test_packaging.py` validates `clauses.json` accessibility, clause lookup, and package scope
+- **Python version guidance** — README now notes Python 3.11+ requirement and behavior for older Python versions
+- **MANIFEST.in update** — `clauses.json` included for sdist builds
+
 ## [0.21.1] - 2026-04-05
 
 Patch release with audit fixes, accessibility improvements, CI hardening, and a column design bug fix.

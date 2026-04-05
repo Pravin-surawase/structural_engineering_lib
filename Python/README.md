@@ -25,6 +25,8 @@ pip install structural-lib-is456
 pip install "structural-lib-is456[dxf]"
 ```
 
+> **Requires Python 3.11+.** On Python 3.9–3.10, pip will install the older v0.16.x which has a smaller API (beam-only, no column/footing support).
+
 ## Extras
 
 - `dxf`: DXF export support (`ezdxf`)
@@ -94,12 +96,8 @@ print(f"Governing case: {report.governing_case_id}")
 
 ## New in v0.21.0
 
-- **NSGA-II Multi-Objective Pareto Optimization:** `optimize_pareto_front()` for multi-objective beam optimization with IS 456 clause references.
+- **Cost Optimization:** `optimize_beam_cost()` for cost-optimized beam design.
 - **API Contract Testing:** `check_api.py --signatures` for preventing API mismatches.
-- **Enhanced Cost Optimizer UI:** Interactive Pareto visualization with WHY explanations.
-
-## New in v0.21.0
-
 - **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
 - **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.
 - **DXF/BBS quality gates:** mark consistency checks + DXF content tests + title block context.
