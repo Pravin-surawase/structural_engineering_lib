@@ -48,6 +48,12 @@ tags: []
 | 2026-04-05 | EA-3,4,5 | API consistency: compute_report docs, to_dict(), build_detailing_input | b1a4351b |
 | 2026-04-05 | EA-7 | E2E pipeline test: 8 tests in test_full_pipeline_e2e.py | b1a4351b |
 | 2026-04-05 | EA-17,18 | Security: RateLimitMiddleware, str(e) sanitization (7 routers) | b1a4351b |
+| 2026-04-05 | EXT-AUDIT | fix: DXF CLI KeyError — moved schema extraction before beam['story'] access | ea4baf3b |
+| 2026-04-05 | EXT-AUDIT | fix: traceability logger switched to centralized get_logger(), figures/tables lookup | ea4baf3b |
+| 2026-04-05 | EXT-AUDIT | feat: 6 column functions + EndCondition enum exported at top-level package | ea4baf3b |
+| 2026-04-05 | EXT-AUDIT | docs: README examples fixed (compute_dxf, optimize_beam_cost signatures) | ea4baf3b |
+| 2026-04-05 | EXT-AUDIT | fix: sdist packaging — global-exclude tests, repo_only marker | ea4baf3b |
+| 2026-04-05 | EXT-AUDIT | fix: clauses.json — 7 missing clause/annex/figure entries added | ea4baf3b |
 | 2026-04-05 | T-NEW-01 | Replace 17 MagicMock with real dataclass fixtures (test_calculation_report, test_testing_strategies) | — |
 | 2026-04-05 | IS-NEW-01/02 | Add 18 @clause decorators (4 footing + 14 serviceability functions) | — |
 | 2026-04-05 | T-NEW-08 | Add 62 FastAPI router tests (6 new test files, 7 routers covered) | — |

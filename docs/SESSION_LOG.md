@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-04-05 — External PyPI Audit Resolution
+
+**Agent:** orchestrator → backend → reviewer → tester → ops
+**Duration:** ~1 session
+**Changes:** 6 fixes for external PyPI v0.21.3 audit (DXF CLI, clause warnings, column exports, README, sdist, clause DB)
+**Tests:** 4491 passed, clean import (zero warnings)
+**Commit:** ea4baf3b (PR #532, 17/17 CI checks)
+
+### Fixes Applied
+1. DXF CLI `KeyError: 'story'` — moved schema extraction before `beam['story']` access
+2. Traceability logger — switched to centralized `get_logger()`, added figures/tables lookup
+3. Column exports — 6 functions + `EndCondition` enum added to top-level `__init__.py`
+4. README examples — fixed `compute_dxf`, `optimize_beam_cost` signatures
+5. Sdist hygiene — `global-exclude`/`prune` in MANIFEST.in, `repo_only` marker
+6. Clause DB — 7 missing clause/annex/figure entries added
+
+---
+
 ## 2026-04-05 — Session
 
 ### Summary

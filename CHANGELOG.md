@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- DXF CLI: Fixed `KeyError: 'story'` when processing `build_detailing_input()` output (#532)
+- Import: Eliminated 16 warning messages on package import by fixing clause database
+- README: Corrected `compute_dxf` and `optimize_beam_cost` example signatures
+- Sdist: Fixed packaging to exclude test files properly (global-exclude/prune in MANIFEST.in)
+
+### Added
+- Column API: 6 additional column functions exported at top-level (`design_column_is456`, `detail_column_is456`, etc.)
+- Column API: `EndCondition` enum now available at top-level
+- Clause DB: Added 7 missing IS 456 clause/annex/figure references
+
 ## [0.21.3] — 2026-04-05
 
 ### Security

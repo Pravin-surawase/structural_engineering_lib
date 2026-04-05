@@ -56,8 +56,9 @@
 | External Audit (v0.21.2) | A- | 8.0/10 | 23 new findings from external review; 3 claims disproven |
 | EA Fixes (23 items) | A+ | 9.0/10 | All 23 EA findings resolved: packaging, import, API, security, structural, frontend, docs |
 | Sprint 2 (8 P1 items) | A+ | ~8.7/10 | 8 P1s resolved: T-NEW-01 MagicMock, IS-NEW-01/02 @clause(18), T-NEW-08 FastAPI tests(62), ARCH-NEW-09 except blocks(49), UX-05 clause_refs, FE-NEW-02 WCAG, API-NEW-01 response shapes, ARCH-NEW-12 god module split |
+| Post-EA Fixes (6 items) | A+ | ~9.0/10 | 6 additional external audit fixes: DXF CLI KeyError, traceability logger, 6 column exports + EndCondition enum, README examples, sdist hygiene, 7 clause DB entries (PR #532, ea4baf3b) |
 
-**Overall Library Grade: A+ (8.7/10) — all P0 + P1 findings resolved**
+**Overall Library Grade: A+ (9.0/10) — all P0 + P1 + external audit findings resolved**
 
 ---
 

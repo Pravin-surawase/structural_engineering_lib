@@ -170,6 +170,19 @@
 | EA-22 | Footing Cl 34.4 bearing enhancement (IS-6) | P2 | @structural-math | ✅ Done |
 | EA-23 | SCWB joint check (IS 13920 Cl 7.2.1) | P2 | @structural-math | ✅ Done |
 
+## v0.21.3 External PyPI Audit — Post-EA Fixes ✅ Complete
+
+> Second external audit of PyPI v0.21.3 found 6 additional issues (DXF CLI, traceability, column exports, README examples, sdist hygiene, clause DB gaps). All 6 resolved in PR #532 (ea4baf3b). 4491 tests pass, zero import warnings.
+
+| # | Fix | Severity | Status |
+|---|-----|----------|--------|
+| 1 | DXF CLI `KeyError: 'story'` — moved schema extraction before field access in `__main__.py` | P1 | ✅ Done |
+| 2 | Traceability logger — switched to centralized `get_logger()`, added figures/tables lookup | P1 | ✅ Done |
+| 3 | Column exports — added 6 functions + `EndCondition` enum to top-level `__init__.py` | P1 | ✅ Done |
+| 4 | README examples — fixed `compute_dxf`, `optimize_beam_cost` signatures, examples link | P2 | ✅ Done |
+| 5 | Sdist hygiene — `global-exclude`/`prune` in MANIFEST.in, `repo_only` marker | P2 | ✅ Done |
+| 6 | Clause DB — added 7 missing clause/annex/figure entries, updated total count | P2 | ✅ Done |
+
 ## Recently Done
 
 | ID | Task | Agent | Status |
