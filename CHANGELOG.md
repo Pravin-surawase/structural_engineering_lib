@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.21.1] - 2026-04-05
+
+Patch release with audit fixes, accessibility improvements, CI hardening, and a column design bug fix.
+
+### Fixed
+- **Column uniaxial `is_safe` rounding consistency** — `is_safe` flag now computed from the same rounded `utilization_ratio` value displayed to users, preventing edge-case inconsistency at utilization ≈ 1.0
+- **CI bypass prevention** — Closed remaining escape hatches in `finish_task_pr.sh` that could allow merging with failing CI checks
+- **CI failure fixes** — Fixed React Validation CI (added hook mocks) and Docker Build CI (JWT_SECRET_KEY env var)
+
+### Improved
+- **Audit grade B- → B+** — Resolved all 5 P0 findings, all 20 P1 findings, and 38/52 P2 findings
+- **Input validation hardening** — Enhanced boundary checks and error messages across structural modules
+- **Accessibility** — Added ARIA labels, skip-to-content link, improved keyboard navigation
+- **Code quality** — P2 batch fixes covering error handling, documentation, test coverage improvements
+
 ## [0.21.0] - 2026-04-04
 
 Complete column design system (IS 456 Cl 25–39, IS 13920 Cl 7), footing design foundation (Cl 31.6, 34), IS 456 beam restructure, agent infrastructure maturity.

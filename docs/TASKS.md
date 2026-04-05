@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.0 ✅ Released → v0.22 (Full React + AI Assistant)
+- **Version:** v0.21.1 ✅ Released → v0.22 (Full React + AI Assistant)
 - **Focus:** Full React migration + AI assistant + remaining UX tasks
 - **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
