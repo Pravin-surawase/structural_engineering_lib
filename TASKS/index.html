@@ -1581,6 +1581,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0212-packaging-fixes-external-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.2 Packaging Fixes (External Audit)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recently-done" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1815,7 +1826,7 @@
 <hr />
 <h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Version:</strong> v0.21.1 ✅ Released → v0.22 (Full React + AI Assistant)</li>
+<li><strong>Version:</strong> v0.21.2 ✅ Released → v0.22 (Full React + AI Assistant)</li>
 <li><strong>Focus:</strong> Full React migration + AI assistant + remaining UX tasks</li>
 <li><strong>Target:</strong> v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)</li>
 <li><strong>Vision:</strong> <a href="../planning/democratization-vision/">democratization-vision.md</a> — AI chat, automation, library evolution</li>
@@ -2134,6 +2145,65 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <td>Agent evolver infrastructure (P3-P11 done, P12 burn-in)</td>
 <td>Copilot</td>
 <td>Monitoring (burn-in)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="v0212-packaging-fixes-external-audit">v0.21.2 Packaging Fixes (External Audit)<a class="headerlink" href="#v0212-packaging-fixes-external-audit" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>External audit of PyPI v0.21.1 found packaging issues. All calculations are correct — these are distribution/packaging problems.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-PKG-1</td>
+<td><strong>Fix missing clauses.json in wheel</strong> — Add <code>codes/is456/clauses.json</code> to pyproject.toml package-data. Without this, clause traceability silently returns empty results.</td>
+<td>HIGH</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-PKG-2</td>
+<td><strong>Add warning for missing clause DB</strong> — In traceability.py, narrow <code>except Exception</code> to <code>except (FileNotFoundError, json.JSONDecodeError)</code> and add <code>warnings.warn()</code> when fallback to <code>{}</code></td>
+<td>HIGH</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-PKG-3</td>
+<td><strong>Scope package discovery</strong> — Add <code>exclude = ["tests*", "examples*", "scripts*"]</code> to pyproject.toml packages.find. Remove internal packages from wheel.</td>
+<td>HIGH</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-PKG-4</td>
+<td><strong>Fix optimize_pareto_front API gap</strong> — Either add to api.py <strong>all</strong> or remove from Python/README.md claims. Auditor found README advertises it but it's not importable from top-level.</td>
+<td>MEDIUM</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-PKG-5</td>
+<td><strong>Add Python version note to README</strong> — State "Requires Python 3.11+. Users on 3.9-3.10 get older v0.16.5."</td>
+<td>LOW</td>
+<td>@doc-master</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>TASK-PKG-6</td>
+<td><strong>Add CI wheel content test</strong> — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level</td>
+<td>MEDIUM</td>
+<td>@tester</td>
+<td>📋</td>
 </tr>
 </tbody>
 </table>

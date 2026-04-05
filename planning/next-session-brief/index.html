@@ -1546,14 +1546,17 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> v0.21.1 release — audit fixes, accessibility, CI hardening, column bug fix</p>
+<strong>Last Session:</strong> v0.21.2 release — packaging quality fixes from external audit</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>v0.21.1 Released</strong> — Patch release with audit fixes (B- → B+), accessibility, CI hardening, column <code>is_safe</code> rounding fix</li>
-<li>All P0 (5/5) and P1 (20/20) audit findings resolved</li>
-<li>P2: 38/52 resolved (73%) — Batches 1-5 complete</li>
-<li>CI bypass escape hatches closed in <code>finish_task_pr.sh</code></li>
-<li>React Validation CI and Docker Build CI failures fixed</li>
+<li><strong>v0.21.2 Released</strong> — Packaging quality release addressing external audit findings</li>
+<li>Fixed missing <code>clauses.json</code> in PyPI wheel (TASK-PKG-1)</li>
+<li>Narrowed exception handling in traceability.py with <code>warnings.warn()</code> (TASK-PKG-2)</li>
+<li>Scoped package discovery to exclude tests/examples/scripts from wheel (TASK-PKG-3)</li>
+<li>Fixed inaccurate README <code>optimize_pareto_front()</code> claim (TASK-PKG-4)</li>
+<li>Added Python 3.11+ version note to README (TASK-PKG-5)</li>
+<li>Added packaging verification tests (<code>test_packaging.py</code>)</li>
+<li>Merged duplicate README headings, updated MANIFEST.in</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>

@@ -1520,6 +1520,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0212" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0211" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2231,6 +2242,24 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0212">v0.21.2<a class="headerlink" href="#v0212" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-04-05
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Packaging Quality + External Audit Fixes</p>
+<p><strong>Key Changes:</strong></p>
+<p>Packaging quality release addressing external audit findings. All design calculations are unchanged — fixes are distribution and documentation only.</p>
+<p><strong>Fixed - PyPI Wheel:</strong>
+- Missing <code>clauses.json</code> in wheel — IS 456 clause traceability now works from pip-installed package (was silently degrading to empty results)
+- Silent exception swallowing in traceability.py — bare <code>except Exception</code> narrowed to specific exceptions with <code>warnings.warn()</code> on fallback
+- Over-broad package discovery — <code>tests/</code>, <code>examples/</code>, <code>scripts/</code> excluded from wheel via explicit <code>include</code>/<code>exclude</code> patterns in pyproject.toml</p>
+<p><strong>Fixed - Documentation:</strong>
+- Inaccurate README claims — replaced <code>optimize_pareto_front()</code> reference (not in public API) with accurate <code>optimize_beam_cost()</code> entry
+- Duplicate README heading — merged two <code>## New in v0.21.0</code> sections</p>
+<p><strong>Added:</strong>
+- Packaging verification tests (<code>test_packaging.py</code>) — validates <code>clauses.json</code> accessibility, clause lookup, and package scope
+- Python version guidance — README now notes Python 3.11+ requirement
+- MANIFEST.in update — <code>clauses.json</code> included for sdist builds</p>
 <hr />
 <h2 id="v0211">v0.21.1<a class="headerlink" href="#v0211" title="Permanent link">&para;</a></h2>
 <p><strong>Date:</strong> 2026-04-05
