@@ -7,4 +7,4 @@ wrapping the structural_lib.api module for React frontend consumption.
 Part of V3 React Migration - Week 2-3: FastAPI Backend
 """
 
-__version__ = "0.21.0"
+__version__ = "0.21.1"

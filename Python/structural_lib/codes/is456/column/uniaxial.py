@@ -598,7 +598,8 @@ def design_short_column_uniaxial(
             clause_ref="Cl. 39.5",
         )
 
-    is_safe = utilization <= 1.0
+    utilization_ratio = round(utilization, 4)
+    is_safe = utilization_ratio <= 1.0
 
     # Determine governing check description
     if not is_safe:
@@ -619,7 +620,7 @@ def design_short_column_uniaxial(
         Mu_kNm=Mu_design_kNm,
         Pu_cap_kN=round(best_P_cap, 2),
         Mu_cap_kNm=round(abs(best_M_cap), 2),
-        utilization_ratio=round(utilization, 4),
+        utilization_ratio=utilization_ratio,
         eccentricity_mm=eccentricity_out,
         e_min_mm=round(e_min_mm, 1) if e_min_mm is not None else None,
         is_safe=is_safe,

@@ -84,6 +84,28 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.1
+**Date:** 2026-04-05
+**Status:** ✅ Locked & Verified
+**Mindset:** Audit Hardening + Accessibility + CI Reliability
+
+**Key Changes:**
+
+**Fixed - Column Design Bug:**
+- Column uniaxial `is_safe` rounding consistency — flag now computed from the same rounded `utilization_ratio` displayed to users, preventing edge-case inconsistency at utilization ≈ 1.0
+
+**Fixed - CI Hardening:**
+- Closed remaining escape hatches in `finish_task_pr.sh` that could allow merging with failing CI checks
+- Fixed React Validation CI (added hook mocks) and Docker Build CI (JWT_SECRET_KEY env var)
+
+**Improved - Audit Grade B- → B+:**
+- Resolved all 5 P0 findings, all 20 P1 findings, and 38/52 P2 findings
+- Input validation hardening with enhanced boundary checks across structural modules
+- Accessibility improvements: ARIA labels, skip-to-content link, keyboard navigation
+- P2 batch fixes (Batches 1-5) covering error handling, documentation, test coverage
+
+---
+
 ## v0.21.0
 **Date:** 2026-04-04
 **Status:** ✅ Locked & Verified
