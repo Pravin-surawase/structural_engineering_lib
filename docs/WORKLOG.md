@@ -34,6 +34,13 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-05 | EA-1,6,8 | Test infra: repo_only marker, import silence test | b1a4351b |
+| 2026-04-05 | EA-2,10 | Import cleanup: lazy clause DB, lazy __init__ (7 modules) | b1a4351b |
+| 2026-04-05 | EA-3,4,5 | API consistency: compute_report docs, to_dict(), build_detailing_input | b1a4351b |
+| 2026-04-05 | EA-7 | E2E pipeline test: 8 tests in test_full_pipeline_e2e.py | b1a4351b |
+| 2026-04-05 | EA-17,18 | Security: RateLimitMiddleware, str(e) sanitization (7 routers) | b1a4351b |
+| 2026-04-05 | EA-15 | Frontend: BeamForm validation with cross-field checks | b1a4351b |
+| 2026-04-05 | EA-12,13 | Docs: API levels guide, e2e workflow example | b1a4351b |
 | 2025-07-24 | TASK-CIFIX2 | Close remaining CI bypass escape hatches (finish_task_pr.sh warnings + global FORBIDDEN sync) | 47a44722 |
 | 2026-04-04 | TASK-681 | Migrated python-jose → PyJWT in auth.py, tests, CI | — |
 | 2026-04-04 | TASK-646 | IS 13920 Cl 7 column ductile detailing — completes Phase 2 Column (14/14) | — |
