@@ -78,7 +78,7 @@ def test_compare_three_designs():
     """Compare three design alternatives."""
     params1 = _base_params()
     params2 = {**_base_params(), "b_mm": 350.0}
-    params3 = {**_base_params(), "d_mm": 500.0}
+    params3 = {**_base_params(), "d_mm": 460.0}
 
     result1 = design_beam_is456(**params1)
     result2 = design_beam_is456(**params2)

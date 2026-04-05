@@ -50,6 +50,9 @@ class Settings(BaseSettings):
     # Batch Processing
     max_batch_size: int = 500
 
+    # Upload Limits
+    max_upload_size_bytes: int = 10 * 1024 * 1024  # 10 MB
+
     # Logging
     log_level: str = "INFO"
 

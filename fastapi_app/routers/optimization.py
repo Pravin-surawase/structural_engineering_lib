@@ -7,6 +7,8 @@ Endpoints for beam cost optimization calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
+
+from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.optimization import (
     CostOptimizationRequest,
     CostOptimizationResponse,
@@ -142,7 +144,7 @@ async def optimize_beam_cost(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "cost optimization"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for cost optimization")

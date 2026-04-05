@@ -8,6 +8,8 @@ Uses structural_lib.visualization.geometry_3d for accurate calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
+
+from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.geometry import (
     Geometry3DRequest,
     Geometry3DResponse,
@@ -361,12 +363,12 @@ async def generate_full_beam_geometry(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "full beam geometry"),
         )
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid parameters: {e}",
+            detail=sanitize_error(e, "full beam geometry"),
         )
     except Exception:
         logger.exception("Internal error in generate_full_beam_geometry")
@@ -530,12 +532,12 @@ async def generate_building_geometry(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "building geometry"),
         )
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid parameters: {e}",
+            detail=sanitize_error(e, "building geometry"),
         )
     except Exception:
         logger.exception("Internal error in generate_building_geometry")

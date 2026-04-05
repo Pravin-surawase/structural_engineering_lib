@@ -795,6 +795,45 @@ class CuttingPlan:
 # =============================================================================
 
 
+class DictCompatMixin:
+    """Allow dict-style access on dataclasses for backward compatibility.
+
+    This mixin enables ``result['key']`` access alongside ``result.key``,
+    making dataclass return types a drop-in replacement for raw dicts.
+    """
+
+    def __getitem__(self, key: str) -> Any:
+        """Support ``result['key']`` access."""
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            raise KeyError(key) from None
+
+    def __contains__(self, key: str) -> bool:
+        """Support ``'key' in result``."""
+        return hasattr(self, key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Support ``result.get('key', default)``."""
+        return getattr(self, key, default)
+
+    def keys(self) -> list[str]:
+        """Return field names, like ``dict.keys()``."""
+        return [f.name for f in fields(self)]
+
+    def values(self) -> list[Any]:
+        """Return field values, like ``dict.values()``."""
+        return [getattr(self, f.name) for f in fields(self)]
+
+    def items(self) -> list[tuple[str, Any]]:
+        """Return (name, value) pairs, like ``dict.items()``."""
+        return [(f.name, getattr(self, f.name)) for f in fields(self)]
+
+    def __iter__(self):
+        """Iterate over field names (like iterating a dict)."""
+        return iter(f.name for f in fields(self))
+
+
 class ColumnClassification(Enum):
     """Column classification per IS 456 Cl 25.1.2."""
 
@@ -815,7 +854,7 @@ class EndCondition(Enum):
 
 
 @dataclass(frozen=True)
-class ColumnAxialResult:
+class ColumnAxialResult(DictCompatMixin):
     """Result of short column axial capacity check per IS 456 Cl 39.3.
 
     Attributes:
@@ -850,7 +889,7 @@ class ColumnAxialResult:
 
 
 @dataclass(frozen=True)
-class ColumnUniaxialResult:
+class ColumnUniaxialResult(DictCompatMixin):
     """Result of short column uniaxial bending check per IS 456 Cl 39.5.
 
     Attributes:
@@ -914,7 +953,7 @@ class ColumnUniaxialResult:
 
 
 @dataclass(frozen=True)
-class PMInteractionResult:
+class PMInteractionResult(DictCompatMixin):
     """P-M interaction curve for a column section per IS 456 Cl 39.5.
 
     Note: Unlike single-point result types (ColumnAxialResult, ColumnUniaxialResult),
@@ -979,7 +1018,7 @@ class PMInteractionResult:
 
 
 @dataclass(frozen=True)
-class ColumnBiaxialResult:
+class ColumnBiaxialResult(DictCompatMixin):
     """Result of biaxial bending check per IS 456 Cl 39.6.
 
     Attributes:
@@ -1043,7 +1082,7 @@ class ColumnBiaxialResult:
 
 
 @dataclass(frozen=True)
-class AdditionalMomentResult:
+class AdditionalMomentResult(DictCompatMixin):
     """Additional moment for slender columns per IS 456 Cl 39.7.1.
 
     For slender columns (le/D >= 12), IS 456 requires an additional moment
@@ -1121,7 +1160,7 @@ class AdditionalMomentResult:
 
 
 @dataclass(frozen=True)
-class LongColumnResult:
+class LongColumnResult(DictCompatMixin):
     """Result of long (slender) column design per IS 456 Cl 39.7.
 
     For slender columns (le/D >= 12), IS 456 requires augmenting the
@@ -1218,7 +1257,7 @@ class LongColumnResult:
 
 
 @dataclass(frozen=True)
-class HelicalReinforcementResult:
+class HelicalReinforcementResult(DictCompatMixin):
     """Result of helical reinforcement check per IS 456 Cl 39.4.
 
     For circular columns with helical reinforcement, IS 456 permits a
@@ -1271,7 +1310,7 @@ class HelicalReinforcementResult:
 
 
 @dataclass(frozen=True)
-class ColumnDetailingResult:
+class ColumnDetailingResult(DictCompatMixin):
     """Column detailing result per IS 456 Cl 26.5.3.
 
     Attributes:

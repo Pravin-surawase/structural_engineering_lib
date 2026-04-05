@@ -27,6 +27,7 @@ from pydantic import BaseModel, Field, ValidationError
 # See: scripts/discover_api_signatures.py design_beam_is456
 from structural_lib import api
 from fastapi_app.auth import verify_ws_token
+from fastapi_app.error_utils import sanitize_error
 
 logger = logging.getLogger(__name__)
 
@@ -164,7 +165,8 @@ async def design_websocket(
 
             except (ValueError, TypeError) as e:
                 await manager.send_json(
-                    session_id, {"type": "error", "message": str(e)}
+                    session_id,
+                    {"type": "error", "message": sanitize_error(e, "live design")},
                 )
             except Exception:
                 logger.exception("WebSocket handler error for session %s", session_id)
@@ -243,7 +245,10 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     try:
         validated = WSDesignParams(**params)
     except ValidationError as e:
-        await manager.send_json(session_id, {"type": "error", "message": str(e)})
+        await manager.send_json(
+            session_id,
+            {"type": "error", "message": sanitize_error(e, "live design input")},
+        )
         return
 
     # Calculate effective depth
@@ -304,7 +309,10 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
     try:
         validated = WSCheckParams(**params)
     except ValidationError as e:
-        await manager.send_json(session_id, {"type": "error", "message": str(e)})
+        await manager.send_json(
+            session_id,
+            {"type": "error", "message": sanitize_error(e, "live check input")},
+        )
         return
 
     if not validated.cases:

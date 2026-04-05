@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Float } from "@react-three/drei";
-import { Suspense, useMemo, useRef } from "react";
+import { Suspense, useMemo, useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
@@ -32,10 +32,11 @@ function AnimatedBeamConstruction() {
   const stirrupsRef = useRef<THREE.Group>(null);
   const loadsRef = useRef<THREE.Group>(null);
 
-  // Geometries
-  const formworkGeometry = useMemo(() => {
-    const geo = new THREE.BoxGeometry(beamLength, beamDepth, beamWidth);
-    return new THREE.EdgesGeometry(geo);
+  // Geometries - imperatively created, need manual disposal
+  const { formworkGeometry, formworkBaseGeometry } = useMemo(() => {
+    const baseGeo = new THREE.BoxGeometry(beamLength, beamDepth, beamWidth);
+    const edgesGeo = new THREE.EdgesGeometry(baseGeo);
+    return { formworkGeometry: edgesGeo, formworkBaseGeometry: baseGeo };
   }, []);
 
   const concreteGeometry = useMemo(() => {
@@ -61,6 +62,17 @@ function AnimatedBeamConstruction() {
     const count = 8;
     return Array.from({ length: count }, () => stirrupGeometry.clone());
   }, [stirrupGeometry]);
+
+  // Dispose Three.js geometries on unmount to prevent GPU memory leaks
+  useEffect(() => {
+    return () => {
+      formworkGeometry.dispose();
+      formworkBaseGeometry.dispose(); // Dispose the BoxGeometry used to create EdgesGeometry
+      concreteGeometry.dispose();
+      stirrupGeometry.dispose();
+      stirrupGeometries.forEach((geo) => geo.dispose());
+    };
+  }, [formworkGeometry, formworkBaseGeometry, concreteGeometry, stirrupGeometry, stirrupGeometries]);
 
   // Bottom rebars: 4 bars
   const bottomRebarPositions = useMemo(() => {

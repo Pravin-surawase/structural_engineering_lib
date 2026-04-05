@@ -17,6 +17,8 @@ from typing import Literal
 from fastapi import APIRouter, File, HTTPException, Query, UploadFile, status
 from pydantic import BaseModel, Field
 
+from fastapi_app.config import get_settings
+
 router = APIRouter(
     prefix="/import",
     tags=["import"],
@@ -157,8 +159,34 @@ async def import_csv(
         )
 
     try:
-        # Read file content
-        content = await file.read()
+        settings = get_settings()
+        max_size = settings.max_upload_size_bytes
+
+        # Fast-path: check declared size if available
+        if file.size and file.size > max_size:
+            logger.warning(
+                "CSV upload rejected: declared size %d exceeds limit %d",
+                file.size,
+                max_size,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"File too large. Maximum size: {max_size // (1024 * 1024)}MB",
+            )
+
+        # Read with size guard (handles spoofed content-length)
+        content = await file.read(max_size + 1)
+        if len(content) > max_size:
+            logger.warning(
+                "CSV upload rejected: actual size %d exceeds limit %d",
+                len(content),
+                max_size,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"File too large. Maximum size: {max_size // (1024 * 1024)}MB",
+            )
+
         text = content.decode("utf-8-sig")
 
         # Import adapters from library
@@ -282,7 +310,10 @@ async def import_csv(
                                 )
                             )
                         if beams_out:
-                            adapter_warnings.append(f"Geometry loading note: {e}")
+                            adapter_warnings.append(
+                                "Geometry loading encountered a non-critical issue"
+                            )
+                            logger.warning("Geometry loading note: %s", e)
                             warnings = adapter_warnings
                             break  # Success with forces only
                     except Exception as force_err:
@@ -366,10 +397,60 @@ async def import_dual_csv(
 
         from structural_lib.services.imports import parse_dual_csv, validate_import
 
+        settings = get_settings()
+        max_size = settings.max_upload_size_bytes
+
+        # Validate geometry file size
+        if geometry_file.size and geometry_file.size > max_size:
+            logger.warning(
+                "Geometry CSV rejected: declared size %d exceeds limit %d",
+                geometry_file.size,
+                max_size,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"Geometry file too large. Maximum size: {max_size // (1024 * 1024)}MB",
+            )
+        # Validate forces file size
+        if forces_file.size and forces_file.size > max_size:
+            logger.warning(
+                "Forces CSV rejected: declared size %d exceeds limit %d",
+                forces_file.size,
+                max_size,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"Forces file too large. Maximum size: {max_size // (1024 * 1024)}MB",
+            )
+
         geometry_path = None
         forces_path = None
-        geometry_text = (await geometry_file.read()).decode("utf-8-sig")
-        forces_text = (await forces_file.read()).decode("utf-8-sig")
+
+        geometry_content = await geometry_file.read(max_size + 1)
+        if len(geometry_content) > max_size:
+            logger.warning(
+                "Geometry CSV rejected: actual size %d exceeds limit %d",
+                len(geometry_content),
+                max_size,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"Geometry file too large. Maximum size: {max_size // (1024 * 1024)}MB",
+            )
+        forces_content = await forces_file.read(max_size + 1)
+        if len(forces_content) > max_size:
+            logger.warning(
+                "Forces CSV rejected: actual size %d exceeds limit %d",
+                len(forces_content),
+                max_size,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"Forces file too large. Maximum size: {max_size // (1024 * 1024)}MB",
+            )
+
+        geometry_text = geometry_content.decode("utf-8-sig")
+        forces_text = forces_content.decode("utf-8-sig")
 
         with tempfile.NamedTemporaryFile(
             mode="w", suffix=".csv", delete=False, encoding="utf-8"
@@ -494,6 +575,19 @@ async def import_csv_text(
     import os
     import tempfile
 
+    settings = get_settings()
+    max_size = settings.max_upload_size_bytes
+    if len(csv_text.encode("utf-8")) > max_size:
+        logger.warning(
+            "CSV text rejected: size %d exceeds limit %d",
+            len(csv_text.encode("utf-8")),
+            max_size,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"CSV text too large. Maximum size: {max_size // (1024 * 1024)}MB",
+        )
+
     # Create temp file from text
     with tempfile.NamedTemporaryFile(
         mode="w", suffix=".csv", delete=False, encoding="utf-8"
@@ -505,8 +599,9 @@ async def import_csv_text(
         # Create a mock file for the main import function
         class MockUploadFile:
             filename = "data.csv"
+            size = None  # Unknown size; import_csv checks `if file.size`
 
-            async def read(self) -> bytes:
+            async def read(self, size: int = -1) -> bytes:
                 return csv_text.encode("utf-8")
 
         return await import_csv(MockUploadFile(), format_hint)  # type: ignore
@@ -727,9 +822,10 @@ async def get_sample_data() -> SampleDataResponse:
 
     if not forces_path or not geometry_path:
         searched = ", ".join(str(d) for d in candidate_dirs)
+        logger.warning("Sample files not found. Searched: %s", searched)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Sample files not found. Searched: {searched}",
+            detail="Sample files not found",
         )
 
     # Read forces CSV

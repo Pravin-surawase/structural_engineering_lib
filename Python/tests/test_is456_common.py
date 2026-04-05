@@ -36,7 +36,7 @@ from structural_lib.codes.is456.common.validation import (
 )
 from structural_lib.codes.is456.materials import get_ec, get_fcr, get_xu_max_d
 from structural_lib.core.errors import DimensionError, MaterialError
-from structural_lib.services.api import _validate_plausibility
+from structural_lib.services.api import _validate_plausibility, design_beam_is456
 
 # ===========================================================================
 # stress_blocks.py
@@ -636,6 +636,88 @@ class TestValidatePlausibilityZeroGuards:
         """fy=0 must raise ValueError."""
         with pytest.raises(ValueError, match="fy_nmm2=0"):
             _validate_plausibility(fy_nmm2=0)
+
+
+# ===========================================================================
+# UX-01: _validate_plausibility rejects d_mm >= D_mm
+# ===========================================================================
+
+
+class TestValidatePlausibilityDepthGuards:
+    """UX-01: _validate_plausibility must reject d_mm >= D_mm."""
+
+    def test_d_mm_greater_than_D_mm_raises(self):
+        """UX-01: d_mm > D_mm must raise ValueError."""
+        with pytest.raises(ValueError, match="must be less than overall depth"):
+            _validate_plausibility(d_mm=500, D_mm=400)
+
+    def test_d_mm_equal_to_D_mm_raises(self):
+        """UX-01: d_mm == D_mm must also raise (zero cover impossible)."""
+        with pytest.raises(ValueError, match="must be less than overall depth"):
+            _validate_plausibility(d_mm=400, D_mm=400)
+
+    def test_d_mm_less_than_D_mm_passes(self):
+        """Normal case: d_mm < D_mm should not raise."""
+        _validate_plausibility(d_mm=450, D_mm=500)  # Should not raise
+
+    def test_d_mm_only_no_D_mm_passes(self):
+        """d_mm alone (no D_mm) should not raise."""
+        _validate_plausibility(d_mm=450)  # Should not raise
+
+    def test_D_mm_only_no_d_mm_passes(self):
+        """D_mm alone (no d_mm) should not raise."""
+        _validate_plausibility(D_mm=500)  # Should not raise
+
+
+# ===========================================================================
+# UX-01: design_beam_is456 integration — d_mm >= D_mm rejected
+# ===========================================================================
+
+
+class TestDesignBeamDepthValidation:
+    """UX-01: design_beam_is456 must reject d_mm >= D_mm at the API level."""
+
+    def test_design_beam_rejects_d_mm_greater_than_D_mm(self):
+        """UX-01: d_mm > D_mm must raise ValueError, not return Ast=0 silently."""
+        with pytest.raises(ValueError, match="must be less than overall depth"):
+            design_beam_is456(
+                units="IS456",
+                b_mm=230,
+                d_mm=500,
+                D_mm=400,  # d > D — impossible
+                mu_knm=100,
+                vu_kn=50,
+                fck_nmm2=25,
+                fy_nmm2=500,
+            )
+
+    def test_design_beam_rejects_d_mm_equal_to_D_mm(self):
+        """UX-01: d_mm == D_mm must also raise (zero cover impossible)."""
+        with pytest.raises(ValueError, match="must be less than overall depth"):
+            design_beam_is456(
+                units="IS456",
+                b_mm=230,
+                d_mm=400,
+                D_mm=400,  # d == D — no cover
+                mu_knm=100,
+                vu_kn=50,
+                fck_nmm2=25,
+                fy_nmm2=500,
+            )
+
+    def test_design_beam_accepts_valid_d_mm(self):
+        """Normal case: d < D should work fine."""
+        result = design_beam_is456(
+            units="IS456",
+            b_mm=230,
+            d_mm=450,
+            D_mm=500,  # d < D — valid
+            mu_knm=100,
+            vu_kn=50,
+            fck_nmm2=25,
+            fy_nmm2=500,
+        )
+        assert result is not None
 
 
 # ===========================================================================

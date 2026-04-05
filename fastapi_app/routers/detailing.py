@@ -7,6 +7,8 @@ Endpoints for reinforcement detailing calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
+
+from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.beam import (
     BarAreasResponse,
     BeamDetailingRequest,
@@ -197,7 +199,7 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "beam detailing"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for beam detailing")
@@ -373,7 +375,7 @@ async def check_anchorage(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "anchorage check"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for anchorage check")

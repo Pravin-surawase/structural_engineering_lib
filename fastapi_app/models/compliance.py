@@ -14,7 +14,7 @@ All dimensions in mm, forces in kN, moments in kN·m, stresses in N/mm².
 
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 # =============================================================================
 # 1. Ductility Check (IS 13920)
@@ -32,6 +32,16 @@ class DuctilityCheckRequest(BaseModel):
     min_long_bar_dia: float = Field(
         ..., ge=6, le=40, description="Minimum longitudinal bar diameter (mm)"
     )
+
+    @model_validator(mode="after")
+    def validate_depth_relationships(self) -> "DuctilityCheckRequest":
+        """Validate effective depth < overall depth."""
+        if self.d >= self.D:
+            raise ValueError(
+                f"effective depth d ({self.d}mm) must be less than "
+                f"overall depth D ({self.D}mm). Typical: d = D - 40 to 60mm"
+            )
+        return self
 
 
 class DuctilityCheckResponse(BaseModel):

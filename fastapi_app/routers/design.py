@@ -9,6 +9,7 @@ import math
 
 from fastapi import APIRouter, HTTPException, status
 
+from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
@@ -164,7 +165,7 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "beam design"),
         )
     except (ValueError, AttributeError, TypeError):
         logger.exception("Invalid input for beam design")
@@ -275,7 +276,7 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "beam check"),
         )
     except (ValueError, AttributeError, TypeError):
         logger.exception("Invalid input for beam check")
@@ -427,7 +428,7 @@ async def design_beam_torsion(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "torsion design"),
         )
     except (ValueError, AttributeError, TypeError):
         logger.exception("Invalid input for torsion design")
@@ -506,7 +507,7 @@ async def enhanced_shear(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "enhanced shear"),
         )
     except (ValueError, AttributeError, TypeError):
         logger.exception("Invalid input for enhanced shear")
@@ -563,7 +564,7 @@ async def check_ductility(
                 (
                     {"code": str(e.code), "message": e.message}
                     if hasattr(e, "code")
-                    else {"message": str(e)}
+                    else {"message": sanitize_error(e, "ductility check")}
                 )
                 for e in result.errors
             ],
@@ -572,7 +573,7 @@ async def check_ductility(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "ductility check"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for ductility check")
@@ -632,7 +633,7 @@ async def check_slenderness(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "slenderness check"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for slenderness check")
@@ -695,7 +696,7 @@ async def check_deflection(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "deflection check"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for deflection check")
@@ -760,7 +761,7 @@ async def check_crack_width_endpoint(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "crack width check"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for crack width check")
@@ -857,7 +858,7 @@ async def compliance_report(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "compliance report"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for compliance report")
