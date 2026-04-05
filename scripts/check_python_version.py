@@ -19,6 +19,7 @@ Usage:
 
 Created: 2026-01-12 (Session 19, TASK-453)
 """
+
 from __future__ import annotations
 
 import argparse

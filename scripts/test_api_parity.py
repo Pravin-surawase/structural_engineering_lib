@@ -35,7 +35,6 @@ Created: 2026-01-24
 from __future__ import annotations
 
 import argparse
-import dataclasses
 import json
 import sys
 from dataclasses import dataclass, is_dataclass, asdict
@@ -57,6 +56,7 @@ sys.path.insert(0, str(PYTHON_DIR))
 @dataclass
 class ParityTestCase:
     """A test case for API parity testing."""
+
     name: str
     function: str
     inputs: dict
@@ -67,6 +67,7 @@ class ParityTestCase:
 @dataclass
 class ParityResult:
     """Result of a parity test."""
+
     test_name: str
     passed: bool
     library_result: dict | None
@@ -88,9 +89,9 @@ STANDARD_TEST_CASES = [
             "D_mm": 450.0,
             "d_mm": 420.0,
             "fck_nmm2": 25.0,
-            "fy_nmm2": 500.0
+            "fy_nmm2": 500.0,
         },
-        expected_keys=["flexure", "shear", "is_ok", "case_id"]
+        expected_keys=["flexure", "shear", "is_ok", "case_id"],
     ),
     ParityTestCase(
         name="High moment beam",
@@ -104,9 +105,9 @@ STANDARD_TEST_CASES = [
             "D_mm": 600.0,
             "d_mm": 560.0,
             "fck_nmm2": 30.0,
-            "fy_nmm2": 500.0
+            "fy_nmm2": 500.0,
         },
-        expected_keys=["flexure", "shear", "is_ok", "case_id"]
+        expected_keys=["flexure", "shear", "is_ok", "case_id"],
     ),
     ParityTestCase(
         name="Minimum reinforcement case",
@@ -120,9 +121,9 @@ STANDARD_TEST_CASES = [
             "D_mm": 400.0,
             "d_mm": 370.0,
             "fck_nmm2": 20.0,
-            "fy_nmm2": 415.0
+            "fy_nmm2": 415.0,
         },
-        expected_keys=["flexure", "shear", "is_ok", "case_id"]
+        expected_keys=["flexure", "shear", "is_ok", "case_id"],
     ),
 ]
 
@@ -131,6 +132,7 @@ def load_api():
     """Load the structural_lib.api module."""
     try:
         from structural_lib import api
+
         return api
     except ImportError as e:
         print(f"❌ Cannot import structural_lib.api: {e}")
@@ -154,7 +156,10 @@ def compare_values(v1: Any, v2: Any, precision: float = 0.001) -> tuple[bool, st
     if isinstance(v1, (int, float, Decimal)) and isinstance(v2, (int, float, Decimal)):
         if abs(float(v1) - float(v2)) <= precision:
             return True, ""
-        return False, f"Value diff: {v1} vs {v2} (delta={abs(float(v1) - float(v2)):.6f})"
+        return (
+            False,
+            f"Value diff: {v1} vs {v2} (delta={abs(float(v1) - float(v2)):.6f})",
+        )
 
     # Handle strings
     if isinstance(v1, str) and isinstance(v2, str):
@@ -208,7 +213,10 @@ def compare_values(v1: Any, v2: Any, precision: float = 0.001) -> tuple[bool, st
     # Default: direct comparison
     if v1 == v2:
         return True, ""
-    return False, f"Type/value mismatch: {type(v1).__name__}({v1}) vs {type(v2).__name__}({v2})"
+    return (
+        False,
+        f"Type/value mismatch: {type(v1).__name__}({v1}) vs {type(v2).__name__}({v2})",
+    )
 
 
 def result_to_dict(result: Any) -> dict:
@@ -217,7 +225,9 @@ def result_to_dict(result: Any) -> dict:
         return {}
     if isinstance(result, dict):
         # Recursively convert any nested dataclasses in dict values
-        return {k: result_to_dict(v) if is_dataclass(v) else v for k, v in result.items()}
+        return {
+            k: result_to_dict(v) if is_dataclass(v) else v for k, v in result.items()
+        }
     if is_dataclass(result):
         # Use asdict for proper deep conversion of nested dataclasses
         return asdict(result)
@@ -267,7 +277,7 @@ def run_parity_test(api, test_case: ParityTestCase) -> ParityResult:
                 passed=False,
                 library_result=None,
                 api_result=None,
-                differences=[f"Function '{test_case.function}' not found"]
+                differences=[f"Function '{test_case.function}' not found"],
             )
 
         raw_result = func(**test_case.inputs)
@@ -296,11 +306,13 @@ def run_parity_test(api, test_case: ParityTestCase) -> ParityResult:
         passed=len(differences) == 0,
         library_result=library_result,
         api_result=api_result,
-        differences=differences
+        differences=differences,
     )
 
 
-def run_all_tests(api, test_cases: list[ParityTestCase], verbose: bool = False) -> list[ParityResult]:
+def run_all_tests(
+    api, test_cases: list[ParityTestCase], verbose: bool = False
+) -> list[ParityResult]:
     """Run all parity tests."""
     results = []
 
@@ -322,13 +334,15 @@ def generate_test_cases_file():
     """Generate a JSON file with test cases for customization."""
     cases = []
     for tc in STANDARD_TEST_CASES:
-        cases.append({
-            "name": tc.name,
-            "function": tc.function,
-            "inputs": tc.inputs,
-            "expected_keys": tc.expected_keys,
-            "precision": tc.precision
-        })
+        cases.append(
+            {
+                "name": tc.name,
+                "function": tc.function,
+                "inputs": tc.inputs,
+                "expected_keys": tc.expected_keys,
+                "precision": tc.precision,
+            }
+        )
 
     # Ensure directory exists
     TEST_CASES_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -354,7 +368,7 @@ def load_custom_test_cases() -> list[ParityTestCase] | None:
                 function=tc["function"],
                 inputs=tc["inputs"],
                 expected_keys=tc.get("expected_keys", []),
-                precision=tc.get("precision", 0.001)
+                precision=tc.get("precision", 0.001),
             )
             for tc in data.get("test_cases", [])
         ]
@@ -393,12 +407,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="Test API parity between library and FastAPI (V3 preparation)"
     )
-    parser.add_argument("--function", "-f",
-                       help="Test specific function only")
-    parser.add_argument("--generate-cases", action="store_true",
-                       help="Generate test cases JSON file")
-    parser.add_argument("--verbose", "-v", action="store_true",
-                       help="Verbose output")
+    parser.add_argument("--function", "-f", help="Test specific function only")
+    parser.add_argument(
+        "--generate-cases", action="store_true", help="Generate test cases JSON file"
+    )
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
 

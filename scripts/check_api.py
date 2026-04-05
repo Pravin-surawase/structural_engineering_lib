@@ -26,6 +26,7 @@ Exit Codes:
     0: All checks pass
     1: One or more checks failed
 """
+
 from __future__ import annotations
 
 import argparse
@@ -44,21 +45,39 @@ from _lib.utils import REPO_ROOT
 API_SIGNATURES = {
     "cached_design": {
         "required_params": [
-            "mu_knm", "vu_kn", "b_mm", "D_mm", "d_mm", "fck_nmm2", "fy_nmm2",
+            "mu_knm",
+            "vu_kn",
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
         ],
         "optional_params": ["exposure", "span_mm"],
     },
     "cached_smart_analysis": {
         "required_params": [
-            "mu_knm", "vu_kn", "b_mm", "D_mm", "d_mm",
-            "fck_nmm2", "fy_nmm2", "span_mm",
+            "mu_knm",
+            "vu_kn",
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "span_mm",
         ],
         "optional_params": ["include_cost", "include_suggestions"],
     },
     "build_design_params": {
         "required_params": [
-            "mu_knm", "vu_kn", "b_mm", "D_mm", "d_mm",
-            "fck_nmm2", "fy_nmm2", "cover_mm",
+            "mu_knm",
+            "vu_kn",
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "cover_mm",
         ],
         "optional_params": [],
     },
@@ -106,15 +125,21 @@ class APISignatureChecker(ast.NodeVisitor):
             if key in RESPONSE_KEY_MAPPINGS:
                 if isinstance(node.value, ast.Name):
                     var_name = node.value.id.lower()
-                    if any(p in var_name for p in ["df", "data", "result", "row", "record"]):
+                    if any(
+                        p in var_name for p in ["df", "data", "result", "row", "record"]
+                    ):
                         self.generic_visit(node)
                         return
                 correct_key = RESPONSE_KEY_MAPPINGS[key]
-                self.issues.append({
-                    "type": "wrong_key", "line": node.lineno,
-                    "key": key, "correct_key": correct_key,
-                    "message": f"Use '{correct_key}' instead of '{key}'",
-                })
+                self.issues.append(
+                    {
+                        "type": "wrong_key",
+                        "line": node.lineno,
+                        "key": key,
+                        "correct_key": correct_key,
+                        "message": f"Use '{correct_key}' instead of '{key}'",
+                    }
+                )
         self.generic_visit(node)
 
     def _get_func_name(self, node: ast.Call) -> str:
@@ -132,12 +157,16 @@ class APISignatureChecker(ast.NodeVisitor):
         for kwarg in used_kwargs:
             if kwarg in PARAM_NAME_MAPPINGS:
                 correct = PARAM_NAME_MAPPINGS[kwarg]
-                self.issues.append({
-                    "type": "wrong_param", "line": node.lineno,
-                    "function": func_name, "param": kwarg,
-                    "correct_param": correct,
-                    "message": f"Use '{correct}' instead of '{kwarg}' in {func_name}()",
-                })
+                self.issues.append(
+                    {
+                        "type": "wrong_param",
+                        "line": node.lineno,
+                        "function": func_name,
+                        "param": kwarg,
+                        "correct_param": correct,
+                        "message": f"Use '{correct}' instead of '{kwarg}' in {func_name}()",
+                    }
+                )
 
         if used_kwargs:
             missing = required - used_kwargs
@@ -147,11 +176,15 @@ class APISignatureChecker(ast.NodeVisitor):
                 covered_by_positional = set(required_list[:positional_count])
                 still_missing = missing - covered_by_positional
                 if still_missing:
-                    self.issues.append({
-                        "type": "missing_params", "line": node.lineno,
-                        "function": func_name, "missing": list(still_missing),
-                        "message": f"Missing required parameters: {still_missing}",
-                    })
+                    self.issues.append(
+                        {
+                            "type": "missing_params",
+                            "line": node.lineno,
+                            "function": func_name,
+                            "missing": list(still_missing),
+                            "message": f"Missing required parameters: {still_missing}",
+                        }
+                    )
 
 
 def _check_file_signatures(filepath: Path) -> list[dict]:
@@ -160,7 +193,13 @@ def _check_file_signatures(filepath: Path) -> list[dict]:
         source = filepath.read_text(encoding="utf-8")
         tree = ast.parse(source)
     except SyntaxError as e:
-        return [{"type": "syntax_error", "line": e.lineno or 0, "message": f"Syntax error: {e.msg}"}]
+        return [
+            {
+                "type": "syntax_error",
+                "line": e.lineno or 0,
+                "message": f"Syntax error: {e.msg}",
+            }
+        ]
     checker = APISignatureChecker(str(filepath))
     checker.visit(tree)
     return checker.issues
@@ -201,10 +240,14 @@ def check_signatures(
             print(f"\n📄 {filename}:")
             for issue in issues:
                 total += 1
-                icon = {"wrong_key": "🔑", "wrong_param": "⚙️", "missing_params": "❓"}.get(
-                    issue.get("type", ""), "⚠️"
+                icon = {
+                    "wrong_key": "🔑",
+                    "wrong_param": "⚙️",
+                    "missing_params": "❓",
+                }.get(issue.get("type", ""), "⚠️")
+                print(
+                    f"   {icon} Line {issue.get('line', 0)}: {issue.get('message', '')}"
                 )
-                print(f"   {icon} Line {issue.get('line', 0)}: {issue.get('message', '')}")
                 if show_fix and issue["type"] in ("wrong_key", "wrong_param"):
                     correct = issue.get("correct_key") or issue.get("correct_param")
                     wrong = issue.get("key") or issue.get("param")
@@ -220,6 +263,7 @@ def check_signatures(
 # CHECK 2: DOCS — api.__all__ symbols documented in api.md
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def check_docs() -> int:
     """Ensure api.__all__ functions are documented in docs/reference/api.md."""
     doc_path = REPO_ROOT / "docs" / "reference" / "api.md"
@@ -233,7 +277,9 @@ def check_docs() -> int:
     documented: set[str] = set()
     for match in re.finditer(r"\bapi\.([a-zA-Z_][a-zA-Z0-9_]*)", doc_text):
         documented.add(match.group(1))
-    for match in re.finditer(r"^\s*def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", doc_text, re.M):
+    for match in re.finditer(
+        r"^\s*def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", doc_text, re.M
+    ):
         documented.add(match.group(1))
 
     # Load API module
@@ -244,7 +290,9 @@ def check_docs() -> int:
         print(f"ERROR: Cannot import structural_lib.api: {e}")
         return 1
 
-    exported = [name for name in getattr(api, "__all__", []) if not name.startswith("_")]
+    exported = [
+        name for name in getattr(api, "__all__", []) if not name.startswith("_")
+    ]
     missing = [name for name in exported if name not in documented]
 
     if missing:
@@ -319,6 +367,7 @@ def check_sync() -> int:
 # CLI
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Unified API validation (signatures, docs, sync)",
@@ -334,15 +383,25 @@ def main() -> int:
     )
 
     group = parser.add_argument_group("Check selectors (default: --all)")
-    group.add_argument("--signatures", action="store_true", help="Check Streamlit API signatures")
-    group.add_argument("--docs", action="store_true", help="Check api.__all__ in api.md")
-    group.add_argument("--sync", action="store_true", help="Check api.md ↔ api-stability.md sync")
+    group.add_argument(
+        "--signatures", action="store_true", help="Check Streamlit API signatures"
+    )
+    group.add_argument(
+        "--docs", action="store_true", help="Check api.__all__ in api.md"
+    )
+    group.add_argument(
+        "--sync", action="store_true", help="Check api.md ↔ api-stability.md sync"
+    )
     group.add_argument("--all", action="store_true", help="Run all checks (default)")
 
     sig_group = parser.add_argument_group("Signature options")
     sig_group.add_argument("--fix", action="store_true", help="Show suggested fixes")
-    sig_group.add_argument("--pages-dir", default="react_app/src", help="Source directory")
-    sig_group.add_argument("files", nargs="*", help="Specific files to check (signatures)")
+    sig_group.add_argument(
+        "--pages-dir", default="react_app/src", help="Source directory"
+    )
+    sig_group.add_argument(
+        "files", nargs="*", help="Specific files to check (signatures)"
+    )
 
     args = parser.parse_args()
     run_all = args.all or not any([args.signatures, args.docs, args.sync])
@@ -351,7 +410,9 @@ def main() -> int:
 
     if run_all or args.signatures:
         print("⚙️  Checking API signatures...")
-        rc = check_signatures(files=args.files or None, pages_dir=args.pages_dir, show_fix=args.fix)
+        rc = check_signatures(
+            files=args.files or None, pages_dir=args.pages_dir, show_fix=args.fix
+        )
         results.append(rc)
 
     if run_all or args.docs:
@@ -366,7 +427,9 @@ def main() -> int:
 
     if any(rc != 0 for rc in results):
         print(f"\n{'='*40}")
-        print(f"❌ {sum(1 for rc in results if rc != 0)}/{len(results)} check(s) failed")
+        print(
+            f"❌ {sum(1 for rc in results if rc != 0)}/{len(results)} check(s) failed"
+        )
         return 1
     else:
         print(f"\n{'='*40}")

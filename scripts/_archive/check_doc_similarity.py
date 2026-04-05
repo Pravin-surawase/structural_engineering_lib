@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import sys
 from difflib import SequenceMatcher
@@ -26,6 +25,7 @@ from typing import NamedTuple
 
 class SimilarDoc(NamedTuple):
     """A document that may be similar to the query."""
+
     path: str
     title: str
     similarity: float
@@ -55,7 +55,7 @@ def normalize_text(text: str) -> str:
     # Remove common prefixes/suffixes
     for prefix in ["guide-", "research-", "reference-", "decision-", "adr-"]:
         if text.startswith(prefix):
-            text = text[len(prefix):]
+            text = text[len(prefix) :]
     # Remove file extension
     text = re.sub(r"\.md$", "", text)
     # Replace separators with spaces
@@ -70,12 +70,56 @@ def extract_keywords(text: str) -> set[str]:
     text = normalize_text(text)
     # Common stopwords to exclude
     stopwords = {
-        "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
-        "of", "with", "by", "from", "as", "is", "was", "are", "were", "been",
-        "be", "have", "has", "had", "do", "does", "did", "will", "would",
-        "could", "should", "may", "might", "must", "shall", "can", "this",
-        "that", "these", "those", "it", "its", "guide", "reference", "research",
-        "document", "documentation", "docs", "md"
+        "the",
+        "a",
+        "an",
+        "and",
+        "or",
+        "but",
+        "in",
+        "on",
+        "at",
+        "to",
+        "for",
+        "of",
+        "with",
+        "by",
+        "from",
+        "as",
+        "is",
+        "was",
+        "are",
+        "were",
+        "been",
+        "be",
+        "have",
+        "has",
+        "had",
+        "do",
+        "does",
+        "did",
+        "will",
+        "would",
+        "could",
+        "should",
+        "may",
+        "might",
+        "must",
+        "shall",
+        "can",
+        "this",
+        "that",
+        "these",
+        "those",
+        "it",
+        "its",
+        "guide",
+        "reference",
+        "research",
+        "document",
+        "documentation",
+        "docs",
+        "md",
     }
     words = set(text.split())
     return words - stopwords
@@ -122,17 +166,21 @@ def check_canonical_match(query: str, canonical_data: dict) -> list[SimilarDoc]:
     for topic_name, topic_info in topics.items():
         topic_keywords = extract_keywords(topic_name)
         if query_keywords & topic_keywords:
-            matches.append(SimilarDoc(
-                path=topic_info.get("canonical", ""),
-                title=topic_name,
-                similarity=1.0,
-                reason=f"Matches canonical topic '{topic_name}'"
-            ))
+            matches.append(
+                SimilarDoc(
+                    path=topic_info.get("canonical", ""),
+                    title=topic_name,
+                    similarity=1.0,
+                    reason=f"Matches canonical topic '{topic_name}'",
+                )
+            )
 
     return matches
 
 
-def find_similar_docs(query: str, project_root: Path, threshold: float = 0.4) -> list[SimilarDoc]:
+def find_similar_docs(
+    query: str, project_root: Path, threshold: float = 0.4
+) -> list[SimilarDoc]:
     """Find documents similar to the query."""
     similar = []
     docs_dir = project_root / "docs"
@@ -156,12 +204,14 @@ def find_similar_docs(query: str, project_root: Path, threshold: float = 0.4) ->
         if best_sim >= threshold:
             rel_path = md_file.relative_to(project_root)
             reason = "Title match" if title_sim > filename_sim else "Filename match"
-            similar.append(SimilarDoc(
-                path=str(rel_path),
-                title=title,
-                similarity=best_sim,
-                reason=f"{reason} ({best_sim:.0%})"
-            ))
+            similar.append(
+                SimilarDoc(
+                    path=str(rel_path),
+                    title=title,
+                    similarity=best_sim,
+                    reason=f"{reason} ({best_sim:.0%})",
+                )
+            )
 
     # Sort by similarity descending
     similar.sort(key=lambda x: x.similarity, reverse=True)
@@ -173,25 +223,18 @@ def main():
         description="Check for similar documents before creating a new one"
     )
     parser.add_argument(
-        "query",
-        nargs="?",
-        help="Title or topic to check for duplicates"
+        "query", nargs="?", help="Title or topic to check for duplicates"
     )
     parser.add_argument(
-        "--check-file",
-        help="Check a specific file for potential duplicates"
+        "--check-file", help="Check a specific file for potential duplicates"
     )
     parser.add_argument(
         "--threshold",
         type=float,
         default=0.4,
-        help="Similarity threshold (0-1, default 0.4)"
+        help="Similarity threshold (0-1, default 0.4)",
     )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output as JSON"
-    )
+    parser.add_argument("--json", action="store_true", help="Output as JSON")
 
     args = parser.parse_args()
 
@@ -226,13 +269,18 @@ def main():
                 for m in canonical_matches
             ],
             "similar_docs": [
-                {"path": m.path, "title": m.title, "similarity": m.similarity, "reason": m.reason}
+                {
+                    "path": m.path,
+                    "title": m.title,
+                    "similarity": m.similarity,
+                    "reason": m.reason,
+                }
                 for m in similar_docs
-            ]
+            ],
         }
         print(json.dumps(result, indent=2))
     else:
-        print(f"\n🔍 Checking for duplicates: \"{query}\"\n")
+        print(f'\n🔍 Checking for duplicates: "{query}"\n')
 
         if canonical_matches:
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -241,7 +289,7 @@ def main():
             for match in canonical_matches:
                 print(f"  Topic: {match.title}")
                 print(f"  Path:  {match.path}")
-                print(f"  → Update this file instead of creating a new one!")
+                print("  → Update this file instead of creating a new one!")
             print()
 
         if similar_docs:
@@ -249,7 +297,11 @@ def main():
             print("📄 Similar Documents Found:")
             print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             for doc in similar_docs[:5]:
-                emoji = "🔴" if doc.similarity > 0.7 else "🟡" if doc.similarity > 0.5 else "🟢"
+                emoji = (
+                    "🔴"
+                    if doc.similarity > 0.7
+                    else "🟡" if doc.similarity > 0.5 else "🟢"
+                )
                 print(f"  {emoji} {doc.path}")
                 print(f"     Title: {doc.title}")
                 print(f"     {doc.reason}")

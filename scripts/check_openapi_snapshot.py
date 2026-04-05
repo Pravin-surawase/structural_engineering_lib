@@ -37,7 +37,11 @@ def _extract_endpoints(spec: dict) -> dict[str, set[str]]:
     """Extract {path: set(methods)} from an OpenAPI spec."""
     endpoints: dict[str, set[str]] = {}
     for path, methods in spec.get("paths", {}).items():
-        endpoints[path] = {m.upper() for m in methods if m.upper() in {"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"}}
+        endpoints[path] = {
+            m.upper()
+            for m in methods
+            if m.upper() in {"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"}
+        }
     return endpoints
 
 
@@ -108,19 +112,25 @@ def _diff_specs(baseline: dict, current: dict) -> dict:
 
 def _has_changes(diff: dict) -> bool:
     """Check if any changes were detected."""
-    return any([
-        diff["endpoints"]["added"],
-        diff["endpoints"]["removed"],
-        diff["schemas"]["added"],
-        diff["schemas"]["removed"],
-        diff["schemas"]["changed"],
-    ])
+    return any(
+        [
+            diff["endpoints"]["added"],
+            diff["endpoints"]["removed"],
+            diff["schemas"]["added"],
+            diff["schemas"]["removed"],
+            diff["schemas"]["changed"],
+        ]
+    )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--update", action="store_true", help="Update baseline to current spec")
-    parser.add_argument("--json", action="store_true", help="Machine-readable JSON output")
+    parser.add_argument(
+        "--update", action="store_true", help="Update baseline to current spec"
+    )
+    parser.add_argument(
+        "--json", action="store_true", help="Machine-readable JSON output"
+    )
     args = parser.parse_args()
 
     # Generate current spec
@@ -142,15 +152,21 @@ def main() -> int:
         if args.json:
             endpoints = _extract_endpoints(current)
             schemas = _extract_schemas(current)
-            print(json.dumps({
-                "status": "updated",
-                "endpoints": sum(len(v) for v in endpoints.values()),
-                "schemas": len(schemas),
-            }))
+            print(
+                json.dumps(
+                    {
+                        "status": "updated",
+                        "endpoints": sum(len(v) for v in endpoints.values()),
+                        "schemas": len(schemas),
+                    }
+                )
+            )
         else:
             endpoints = _extract_endpoints(current)
             schemas = _extract_schemas(current)
-            print(f"✓ Baseline updated: {sum(len(v) for v in endpoints.values())} endpoints, {len(schemas)} schemas")
+            print(
+                f"✓ Baseline updated: {sum(len(v) for v in endpoints.values())} endpoints, {len(schemas)} schemas"
+            )
         return 0
 
     # Check mode — compare against baseline
@@ -172,7 +188,9 @@ def main() -> int:
 
     # Human-readable output
     if not _has_changes(diff):
-        print(f"✓ OpenAPI spec matches baseline ({diff['current_endpoints']} endpoints, {diff['current_schemas']} schemas)")
+        print(
+            f"✓ OpenAPI spec matches baseline ({diff['current_endpoints']} endpoints, {diff['current_schemas']} schemas)"
+        )
         return 0
 
     print("OpenAPI spec has drifted from baseline:")
@@ -195,10 +213,16 @@ def main() -> int:
         print(f"  Changed schemas: {', '.join(diff['schemas']['changed'])}")
 
     print()
-    print(f"  Baseline: {diff['baseline_endpoints']} endpoints, {diff['baseline_schemas']} schemas")
-    print(f"  Current:  {diff['current_endpoints']} endpoints, {diff['current_schemas']} schemas")
+    print(
+        f"  Baseline: {diff['baseline_endpoints']} endpoints, {diff['baseline_schemas']} schemas"
+    )
+    print(
+        f"  Current:  {diff['current_endpoints']} endpoints, {diff['current_schemas']} schemas"
+    )
     print()
-    print("  To update baseline: .venv/bin/python scripts/check_openapi_snapshot.py --update")
+    print(
+        "  To update baseline: .venv/bin/python scripts/check_openapi_snapshot.py --update"
+    )
     return 1
 
 

@@ -30,9 +30,18 @@ SOURCE_TO_TEST_MAP = [
     ("Python/structural_lib/codes/is456/", lambda f: _is456_test(f)),
     ("Python/structural_lib/services/", lambda f: _services_test(f)),
     ("Python/structural_lib/core/", lambda f: _glob_tests(f, "Python/tests/test_*")),
-    ("Python/structural_lib/insights/", lambda f: _glob_tests(f, "Python/tests/test_insights*")),
-    ("Python/structural_lib/visualization/", lambda f: _glob_tests(f, "Python/tests/test_geometry*")),
-    ("Python/structural_lib/reports/", lambda f: _glob_tests(f, "Python/tests/test_report*")),
+    (
+        "Python/structural_lib/insights/",
+        lambda f: _glob_tests(f, "Python/tests/test_insights*"),
+    ),
+    (
+        "Python/structural_lib/visualization/",
+        lambda f: _glob_tests(f, "Python/tests/test_geometry*"),
+    ),
+    (
+        "Python/structural_lib/reports/",
+        lambda f: _glob_tests(f, "Python/tests/test_report*"),
+    ),
     ("fastapi_app/routers/", lambda f: _fastapi_test(f)),
     ("fastapi_app/", lambda f: _glob_tests(f, "fastapi_app/tests/test_*")),
 ]
@@ -54,7 +63,7 @@ def _is456_test(filepath: str) -> list[str]:
     name = _basename_no_ext(filepath)
     patterns = [
         f"Python/tests/test_{name}*",
-        f"Python/tests/test_is456*",
+        "Python/tests/test_is456*",
     ]
     results = []
     for p in patterns:
@@ -67,8 +76,8 @@ def _services_test(filepath: str) -> list[str]:
     name = _basename_no_ext(filepath)
     patterns = [
         f"Python/tests/test_{name}*",
-        f"Python/tests/test_api*",
-        f"Python/tests/test_adapter*",
+        "Python/tests/test_api*",
+        "Python/tests/test_adapter*",
     ]
     results = []
     for p in patterns:
@@ -81,7 +90,7 @@ def _fastapi_test(filepath: str) -> list[str]:
     name = _basename_no_ext(filepath)
     patterns = [
         f"fastapi_app/tests/test_{name}*",
-        f"fastapi_app/tests/test_routers*",
+        "fastapi_app/tests/test_routers*",
     ]
     results = []
     for p in patterns:
@@ -104,9 +113,7 @@ def get_changed_files(mode: str = "diff") -> list[str]:
         # Changes vs current HEAD (uncommitted)
         cmd = ["git", "diff", "--name-only", "HEAD"]
 
-    result = subprocess.run(
-        cmd, capture_output=True, text=True, cwd=REPO_ROOT
-    )
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO_ROOT)
     if result.returncode != 0:
         return []
 
@@ -169,9 +176,12 @@ def main() -> None:
 
     # If too many files changed, just run everything
     if len(changed) > 30:
-        print(f"\n\033[33m30+ files changed — running full test suite\033[0m")
+        print("\n\033[33m30+ files changed — running full test suite\033[0m")
         os.chdir(os.path.join(REPO_ROOT, "Python"))
-        os.execv(VENV_PYTHON, [VENV_PYTHON, "-m", "pytest", "tests/", "-v"] + extra_pytest_args)
+        os.execv(
+            VENV_PYTHON,
+            [VENV_PYTHON, "-m", "pytest", "tests/", "-v"] + extra_pytest_args,
+        )
         return
 
     test_files = map_to_tests(changed)
@@ -182,8 +192,7 @@ def main() -> None:
 
     # Deduplicate and filter to existing files
     existing = sorted(
-        t for t in test_files
-        if os.path.exists(os.path.join(REPO_ROOT, t))
+        t for t in test_files if os.path.exists(os.path.join(REPO_ROOT, t))
     )
 
     if not existing:

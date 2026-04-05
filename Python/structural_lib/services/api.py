@@ -45,15 +45,23 @@ from structural_lib.codes.is456.column.uniaxial import (
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
 from structural_lib.codes.is13920.column import check_column_ductility
 from structural_lib.core.data_types import (
+    AdditionalMomentResult,
+    ColumnAxialResult,
+    ColumnBiaxialResult,
+    ColumnDetailingResult,
+    ColumnUniaxialResult,
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
     CriticalPoint,
     DeflectionParams,
     EndCondition,
+    HelicalReinforcementResult,
     LoadDefinition,
     LoadDiagramResult,
     LoadType,
+    LongColumnResult,
+    PMInteractionResult,
     ValidationReport,
 )
 from structural_lib.core.inputs import (
@@ -271,6 +279,13 @@ def _validate_plausibility(
     if D_mm is not None and D_mm > 5000:
         raise ValueError(
             f"D_mm={D_mm} seems too large. " "Expected mm (e.g., 500), not μm or m."
+        )
+    if d_mm is not None and D_mm is not None and d_mm >= D_mm:
+        raise ValueError(
+            f"Effective depth d_mm ({d_mm}) must be less than overall depth "
+            f"D_mm ({D_mm}). Per IS 456 Cl 26.4.1, "
+            f"d = D − clear_cover − stirrup_dia − bar_dia/2. "
+            f"Typical: d ≈ D − 40 to D − 60 mm."
         )
 
 
@@ -1913,7 +1928,7 @@ def design_column_axial_is456(
     fy: float,
     Ag_mm2: float,
     Asc_mm2: float,
-) -> dict[str, Any]:
+) -> ColumnAxialResult:
     """Calculate axial load capacity for a short column (IS 456 Cl 39.3).
 
     For a short column under pure axial load (or minimum eccentricity),
@@ -1961,7 +1976,6 @@ def design_column_axial_is456(
         >>> result['steel_ratio']
         0.02
     """
-    from structural_lib.core.data_types import ColumnAxialResult
 
     result: ColumnAxialResult = short_axial_capacity(
         fck=fck,
@@ -1970,11 +1984,7 @@ def design_column_axial_is456(
         Asc_mm2=Asc_mm2,
     )
 
-    return {
-        "Pu_kN": result.Pu_kN,
-        "steel_ratio": result.steel_ratio,
-        "warnings": result.warnings,
-    }
+    return result
 
 
 def design_short_column_uniaxial_is456(
@@ -1988,7 +1998,7 @@ def design_short_column_uniaxial_is456(
     Asc_mm2: float,
     d_prime_mm: float,
     l_unsupported_mm: float | None = None,
-) -> dict[str, Any]:
+) -> ColumnUniaxialResult:
     """Design short column for uniaxial bending per IS 456 Cl 39.5.
 
     Generates the P-M interaction envelope for the given section and
@@ -2056,7 +2066,6 @@ def design_short_column_uniaxial_is456(
         - design_column_axial_is456: Pure axial capacity (no moment)
         - codes.is456.column.uniaxial.design_short_column_uniaxial: Core implementation
     """
-    from structural_lib.core.data_types import ColumnUniaxialResult
 
     # Plausibility guards (aligned with existing api.py patterns)
     if Pu_kN < 0:
@@ -2102,17 +2111,8 @@ def design_short_column_uniaxial_is456(
         l_unsupported_mm=l_unsupported_mm,
     )
 
-    # Return serializable dict (not dataclass)
-    return {
-        "ok": result.is_safe,
-        "utilization": result.utilization_ratio,
-        "Pu_cap_kN": result.Pu_cap_kN,
-        "Mu_cap_kNm": result.Mu_cap_kNm,
-        "classification": result.classification.name,
-        "eccentricity_mm": result.eccentricity_mm,
-        "e_min_mm": result.e_min_mm,
-        "warnings": list(result.warnings),
-    }
+    # Return dataclass (DictCompatMixin provides result["key"] access)
+    return result
 
 
 def pm_interaction_curve_is456(
@@ -2123,10 +2123,8 @@ def pm_interaction_curve_is456(
     Asc_mm2: float,  # noqa: N803
     d_prime_mm: float,
     n_points: int = 50,
-) -> dict[str, Any]:
-    """Generate P-M interaction curve for column per IS 456 Cl 39.5.
-
-    Produces the complete P-M interaction diagram for a rectangular column
+) -> PMInteractionResult:
+    """Produces the complete P-M interaction diagram for a rectangular column
     section with symmetrically placed reinforcement. Returns key points
     (pure axial, balanced, pure bending) and the full curve data.
 
@@ -2166,7 +2164,6 @@ def pm_interaction_curve_is456(
     See Also:
         - codes.is456.column.uniaxial.pm_interaction_curve: Core implementation
     """
-    from structural_lib.core.data_types import PMInteractionResult
 
     result: PMInteractionResult = pm_interaction_curve(
         b_mm=b_mm,
@@ -2177,7 +2174,7 @@ def pm_interaction_curve_is456(
         d_prime_mm=d_prime_mm,
         n_points=n_points,
     )
-    return result.to_dict()
+    return result
 
 
 def biaxial_bending_check_is456(
@@ -2192,7 +2189,7 @@ def biaxial_bending_check_is456(
     Asc_mm2: float,
     d_prime_mm: float,
     l_unsupported_mm: float | None = None,
-) -> dict[str, Any]:
+) -> ColumnBiaxialResult:
     """Check column under biaxial bending per IS 456 Cl 39.6.
 
     Implements the Bresler load contour formula to check if a column section
@@ -2278,7 +2275,6 @@ def biaxial_bending_check_is456(
         - classify_column_is456: Check if column is short or slender
         - codes.is456.column.biaxial.biaxial_bending_check: Core implementation
     """
-    from structural_lib.core.data_types import ColumnBiaxialResult
 
     # Plausibility guards (aligned with existing api.py patterns)
     if Pu_kN < 0:
@@ -2327,8 +2323,8 @@ def biaxial_bending_check_is456(
         l_unsupported_mm=l_unsupported_mm,
     )
 
-    # Return serializable dict (not dataclass)
-    return result.to_dict()
+    # Return dataclass (DictCompatMixin provides result["key"] access)
+    return result
 
 
 def calculate_additional_moment_is456(
@@ -2341,7 +2337,7 @@ def calculate_additional_moment_is456(
     fy: float,
     Asc_mm2: float,
     d_prime_mm: float,
-) -> dict[str, Any]:
+) -> AdditionalMomentResult:
     """Calculate additional moment for slender columns per IS 456 Cl 39.7.1.
 
     For slender columns (le/D >= 12), IS 456 requires an additional moment
@@ -2418,7 +2414,7 @@ def calculate_additional_moment_is456(
         d_prime_mm=d_prime_mm,
     )
 
-    return result.to_dict()
+    return result
 
 
 def design_long_column_is456(
@@ -2436,10 +2432,8 @@ def design_long_column_is456(
     Asc_mm2: float,
     d_prime_mm: float,
     braced: bool = True,
-) -> dict[str, Any]:
-    """Design a long (slender) column per IS 456 Cl 39.7.
-
-    For slender columns (le/D >= 12), the design must account for additional
+) -> LongColumnResult:
+    """For slender columns (le/D >= 12), the design must account for additional
     moments due to P-delta effects. This function:
     1. Calculates additional moment Ma per Cl 39.7.1
     2. Augments applied moments: Mx_design = Mx + Ma_x
@@ -2515,7 +2509,6 @@ def design_long_column_is456(
         - codes.is456.column.long_column.design_long_column: Core implementation
     """
     from structural_lib.codes.is456.column.long_column import design_long_column
-    from structural_lib.core.data_types import LongColumnResult
 
     # Plausibility guards (unit confusion detection)
     if Pu_kN < 0:
@@ -2559,8 +2552,8 @@ def design_long_column_is456(
         braced=braced,
     )
 
-    # Return serializable dict (not dataclass)
-    return result.to_dict()
+    # Return dataclass (DictCompatMixin provides result["key"] access)
+    return result
 
 
 def check_helical_reinforcement_is456(
@@ -2571,10 +2564,8 @@ def check_helical_reinforcement_is456(
     d_helix_mm: float,
     pitch_mm: float,
     Pu_axial_kN: float,
-) -> dict[str, Any]:
-    """Check helical reinforcement for circular column per IS 456 Cl 39.4.
-
-    For circular columns with helical (spiral) reinforcement, IS 456 Cl 39.4
+) -> HelicalReinforcementResult:
+    """For circular columns with helical (spiral) reinforcement, IS 456 Cl 39.4
     provides an alternative design approach where the helically reinforced
     core can carry significantly higher loads than a tied column.
 
@@ -2639,7 +2630,6 @@ def check_helical_reinforcement_is456(
         - codes.is456.column.helical.check_helical_reinforcement: Core implementation
     """
     from structural_lib.codes.is456.column.helical import check_helical_reinforcement
-    from structural_lib.core.data_types import HelicalReinforcementResult
 
     # Plausibility guards (unit confusion detection)
     if D_mm > 5000:
@@ -2670,8 +2660,8 @@ def check_helical_reinforcement_is456(
         Pu_axial_kN=Pu_axial_kN,
     )
 
-    # Return serializable dict (not dataclass)
-    return result.to_dict()
+    # Return dataclass (DictCompatMixin provides result["key"] access)
+    return result
 
 
 def design_column_is456(
@@ -2985,10 +2975,8 @@ def detail_column_is456(
     tie_dia_mm: float | None = None,
     is_circular: bool = False,
     at_lap_section: bool = False,
-) -> dict:
-    """Check column detailing per IS 456 Cl 26.5.3.
-
-    Validates longitudinal reinforcement limits, bar spacing, tie diameter,
+) -> ColumnDetailingResult:
+    """Validates longitudinal reinforcement limits, bar spacing, tie diameter,
     tie spacing, and cross-tie requirements for a column section.
 
     Args:
@@ -3048,7 +3036,7 @@ def detail_column_is456(
         at_lap_section=at_lap_section,
     )
 
-    return result.to_dict()
+    return result
 
 
 def check_column_ductility_is13920(

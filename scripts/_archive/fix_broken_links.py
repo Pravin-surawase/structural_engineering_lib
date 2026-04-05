@@ -12,6 +12,7 @@ Usage:
     python scripts/fix_broken_links.py --fix          # Apply fixes
     python scripts/fix_broken_links.py --fix --verbose # Apply fixes with details
 """
+
 import re
 import argparse
 from pathlib import Path

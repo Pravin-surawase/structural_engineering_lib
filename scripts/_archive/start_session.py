@@ -306,7 +306,9 @@ def main():
     else:
         print("Ready to work! Pick a task from Active or Up Next.")
     print()
-    print("🧭 Automation lookup: .venv/bin/python scripts/find_automation.py \"your task\"")
+    print(
+        '🧭 Automation lookup: .venv/bin/python scripts/find_automation.py "your task"'
+    )
     print("📚 Context routing: scripts/automation-map.json (context_docs per task)")
     print(
         "📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md"

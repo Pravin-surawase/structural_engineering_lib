@@ -218,8 +218,7 @@ def main():
             status = "Active"
         archive_after = (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
         lifecycle_block = (
-            f"**Lifecycle:** Session\n"
-            f"**Archive After:** {archive_after}\n"
+            f"**Lifecycle:** Session\n" f"**Archive After:** {archive_after}\n"
         )
 
     # Generate content

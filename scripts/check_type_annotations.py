@@ -32,6 +32,7 @@ Exit Codes:
 
 Created: 2026-01-12 (Session 18, TASK-402)
 """
+
 from __future__ import annotations
 
 import ast

@@ -12,6 +12,7 @@ Usage:
 Created: 2026-01-10
 Author: AI Agent (Phase C.2)
 """
+
 from __future__ import annotations
 
 import argparse

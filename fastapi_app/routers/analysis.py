@@ -7,6 +7,8 @@ Endpoints for AI-assisted design analysis and load calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
+
+from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.analysis import (
     LoadAnalysisRequest,
     LoadAnalysisResponse,
@@ -54,7 +56,7 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "load analysis"),
         )
 
     # Map request loads to library LoadDefinition objects
@@ -262,7 +264,7 @@ async def smart_analyze_beam(
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "smart analysis"),
         )
     except (ValueError, TypeError):
         logger.exception("Invalid input for smart analysis")

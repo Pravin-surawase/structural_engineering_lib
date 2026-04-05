@@ -23,7 +23,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterator
 
-
 # ---------------------------------------------------------------------------
 # Safe parsing
 # ---------------------------------------------------------------------------
@@ -54,7 +53,9 @@ def parse_python_file(
             print(f"  ⚠️  Skipping {filepath}: SyntaxError: {e}", file=sys.stderr)
     except UnicodeDecodeError as e:
         if not quiet:
-            print(f"  ⚠️  Skipping {filepath}: UnicodeDecodeError: {e}", file=sys.stderr)
+            print(
+                f"  ⚠️  Skipping {filepath}: UnicodeDecodeError: {e}", file=sys.stderr
+            )
     except OSError as e:
         if not quiet:
             print(f"  ⚠️  Cannot read {filepath}: {e}", file=sys.stderr)
@@ -116,7 +117,9 @@ def extract_imports(tree: ast.Module) -> Iterator[ImportInfo]:
             )
 
 
-def extract_imports_from_file(filepath: Path, *, quiet: bool = False) -> list[ImportInfo]:
+def extract_imports_from_file(
+    filepath: Path, *, quiet: bool = False
+) -> list[ImportInfo]:
     """Convenience: parse a file and extract its imports in one call.
 
     Args:
@@ -227,9 +230,7 @@ def find_functions(
             if not include_private and node.name.startswith("_"):
                 continue
             params = [
-                arg.arg
-                for arg in node.args.args
-                if arg.arg not in ("self", "cls")
+                arg.arg for arg in node.args.args if arg.arg not in ("self", "cls")
             ]
             results.append(
                 FunctionInfo(

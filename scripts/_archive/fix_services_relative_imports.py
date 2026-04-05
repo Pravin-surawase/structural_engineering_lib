@@ -7,6 +7,7 @@ relative imports like `from .models import X` now resolve to
 
 This script converts those broken relative imports to absolute imports.
 """
+
 from __future__ import annotations
 
 import re
@@ -17,16 +18,37 @@ SERVICES = LIB / "services"
 
 # Modules that actually live in services/
 SERVICES_MODULES = {
-    "api", "api_results", "beam_pipeline", "adapters", "batch", "imports",
-    "etabs_import", "rebar", "rebar_optimizer", "optimization",
-    "multi_objective_optimizer", "audit", "intelligence", "costing",
-    "serialization", "dashboard", "testing_strategies",
+    "api",
+    "api_results",
+    "beam_pipeline",
+    "adapters",
+    "batch",
+    "imports",
+    "etabs_import",
+    "rebar",
+    "rebar_optimizer",
+    "optimization",
+    "multi_objective_optimizer",
+    "audit",
+    "intelligence",
+    "costing",
+    "serialization",
+    "dashboard",
+    "testing_strategies",
 }
 
 # Modules that moved to core/
 CORE_MODULES = {
-    "constants", "types", "data_types", "models", "errors", "error_messages",
-    "validation", "inputs", "result_base", "utilities",
+    "constants",
+    "types",
+    "data_types",
+    "models",
+    "errors",
+    "error_messages",
+    "validation",
+    "inputs",
+    "result_base",
+    "utilities",
 }
 
 # Subpackages that stay in root
@@ -34,9 +56,17 @@ ROOT_SUBPACKAGES = {"codes", "insights", "visualization"}
 
 # Root modules (not moved)
 ROOT_MODULES = {
-    "calculation_report", "torsion", "detailing", "materials",
-    "serviceability", "slenderness", "flexure", "shear", "ductile",
-    "tables", "compliance",
+    "calculation_report",
+    "torsion",
+    "detailing",
+    "materials",
+    "serviceability",
+    "slenderness",
+    "flexure",
+    "shear",
+    "ductile",
+    "tables",
+    "compliance",
 }
 
 
@@ -63,21 +93,27 @@ def fix_file(filepath: Path) -> int:
                 new_line = f"{indent}from structural_lib.core.{module}{rest}"
                 fixed_lines.append(new_line)
                 fixes += 1
-                print(f"  {filepath.name}:{len(fixed_lines)}: .{module} -> core.{module}")
+                print(
+                    f"  {filepath.name}:{len(fixed_lines)}: .{module} -> core.{module}"
+                )
                 continue
             elif module in ROOT_SUBPACKAGES:
                 # Subpackage at root level
                 new_line = f"{indent}from structural_lib.{module}{rest}"
                 fixed_lines.append(new_line)
                 fixes += 1
-                print(f"  {filepath.name}:{len(fixed_lines)}: .{module} -> structural_lib.{module}")
+                print(
+                    f"  {filepath.name}:{len(fixed_lines)}: .{module} -> structural_lib.{module}"
+                )
                 continue
             elif module in ROOT_MODULES:
                 # Root module (shim or real)
                 new_line = f"{indent}from structural_lib.{module}{rest}"
                 fixed_lines.append(new_line)
                 fixes += 1
-                print(f"  {filepath.name}:{len(fixed_lines)}: .{module} -> structural_lib.{module}")
+                print(
+                    f"  {filepath.name}:{len(fixed_lines)}: .{module} -> structural_lib.{module}"
+                )
                 continue
 
         fixed_lines.append(line)

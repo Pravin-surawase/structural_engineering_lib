@@ -4,6 +4,7 @@
 This is Phase 1 of the scripts consolidation plan.
 See docs/_active/scripts-consolidation-plan.md for full details.
 """
+
 from __future__ import annotations
 
 import shutil
@@ -15,14 +16,13 @@ ARCHIVE_DIR = SCRIPTS_DIR / "_archive"
 # Scripts to archive — all verified as deprecated, superseded, or one-off
 TO_ARCHIVE = [
     # Deprecated/superseded
-    "quick_push.sh",              # Already deprecated, prints error
-    "install_enforcement_hook.sh", # Self-labeled DEPRECATED
-    "install_hooks.sh",           # Superseded by install_git_hooks.sh
-    "migrate_module.py",          # Superseded by migrate_python_module.py
-    "generate_folder_index.py",   # Superseded by generate_enhanced_index.py
+    "quick_push.sh",  # Already deprecated, prints error
+    "install_enforcement_hook.sh",  # Self-labeled DEPRECATED
+    "install_hooks.sh",  # Superseded by install_git_hooks.sh
+    "migrate_module.py",  # Superseded by migrate_python_module.py
+    "generate_folder_index.py",  # Superseded by generate_enhanced_index.py
     "cleanup_stale_branches.sh",  # Duplicate of .py version
-    "pre-push-hook.sh",          # Superseded by scripts/git-hooks/
-
+    "pre-push-hook.sh",  # Superseded by scripts/git-hooks/
     # Migration one-offs (Phase 1/2 complete)
     "create_reexport_stub.py",
     "fix_services_relative_imports.py",
@@ -30,14 +30,12 @@ TO_ARCHIVE = [
     "update_is456_init.py",
     "update_redirect_refs.py",
     "validate_migration.py",
-
     # Research/analysis one-offs
     "analyze_doc_redundancy.py",
     "analyze_navigation_data.py",
     "analyze_release_cadence.py",
     "predict_velocity.py",
     "measure_agent_navigation.sh",
-
     # Agent-specific tooling (agent-8/agent-9)
     "git_ops.sh",
     "git_automation_health.sh",
@@ -53,14 +51,12 @@ TO_ARCHIVE = [
     "test_merge_conflicts.sh",
     "test_should_use_pr.sh",
     "verify_git_fix.sh",
-
     # Streamlit-era one-offs
     "auto_fix_page.py",
     "autonomous_fixer.py",
     "pylint_streamlit.sh",
     "streamlit_preflight.sh",
     "test_page.sh",
-
     # Doc one-offs
     "consolidate_docs.py",
     "enhance_readme.py",
@@ -68,7 +64,6 @@ TO_ARCHIVE = [
     "archive_deprecated_docs.py",
     "archive_old_sessions.sh",
     "batch_archive.py",
-
     # Code one-offs
     "add_license_headers.py",
     "add_future_annotations.py",

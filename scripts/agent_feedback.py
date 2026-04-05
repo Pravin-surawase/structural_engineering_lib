@@ -24,7 +24,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import uuid
 from datetime import datetime
@@ -34,22 +33,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine, print_json
 
-
 # ─── Config ──────────────────────────────────────────────────────────────────
 
 FEEDBACK_DIR = REPO_ROOT / "logs" / "feedback"
 VALID_AGENTS = [
-    "orchestrator", "backend", "frontend", "api-developer",
-    "structural-engineer", "reviewer", "tester", "doc-master",
-    "ops", "governance", "ui-designer",
+    "orchestrator",
+    "backend",
+    "frontend",
+    "api-developer",
+    "structural-engineer",
+    "reviewer",
+    "tester",
+    "doc-master",
+    "ops",
+    "governance",
+    "ui-designer",
 ]
 FEEDBACK_CATEGORIES = [
-    "stale-doc", "missing", "wrong-instruction",
-    "time-wasted", "fix-applied", "suggestion",
+    "stale-doc",
+    "missing",
+    "wrong-instruction",
+    "time-wasted",
+    "fix-applied",
+    "suggestion",
 ]
 
 
 # ─── Data ────────────────────────────────────────────────────────────────────
+
 
 def _make_item(category: str, message: str, agent: str) -> dict:
     """Create a feedback item."""
@@ -85,6 +96,7 @@ def _save_feedback_file(filepath: Path, data: dict) -> None:
 
 
 # ─── Commands ────────────────────────────────────────────────────────────────
+
 
 def cmd_log(args: argparse.Namespace) -> int:
     """Log feedback items from current session."""
@@ -158,20 +170,24 @@ def cmd_summary(args: argparse.Namespace) -> int:
     recurring = {k: v for k, v in msg_counts.items() if v >= 2}
 
     if args.json:
-        print_json({
-            "total": len(items),
-            "pending": len(pending),
-            "resolved": len(resolved),
-            "by_category": by_category,
-            "by_agent": by_agent,
-            "recurring_count": len(recurring),
-        })
+        print_json(
+            {
+                "total": len(items),
+                "pending": len(pending),
+                "resolved": len(resolved),
+                "by_category": by_category,
+                "by_agent": by_agent,
+                "recurring_count": len(recurring),
+            }
+        )
         return 0
 
     # Human output
     print()
     print("\033[1m\033[36m━━━ Feedback Summary ━━━\033[0m")
-    print(f"  Total: {len(items)} | Pending: {len(pending)} | Resolved: {len(resolved)}")
+    print(
+        f"  Total: {len(items)} | Pending: {len(pending)} | Resolved: {len(resolved)}"
+    )
     print()
 
     if by_category:
@@ -199,8 +215,10 @@ def cmd_summary(args: argparse.Namespace) -> int:
         print("  Recent Pending:")
         for item in recent:
             date = item.get("timestamp", "")[:10]
-            print(f"    {date} [{item.get('category', '?'):15s}] "
-                  f"{item.get('message', '')[:60]}")
+            print(
+                f"    {date} [{item.get('category', '?'):15s}] "
+                f"{item.get('message', '')[:60]}"
+            )
         print()
 
     return 0
@@ -229,10 +247,12 @@ def cmd_pending(args: argparse.Namespace) -> int:
     print(f"\n\033[1mPending Feedback ({len(pending)} items):\033[0m\n")
     for item in sorted(pending, key=lambda x: x.get("timestamp", ""), reverse=True):
         date = item.get("timestamp", "")[:10]
-        print(f"  {item.get('id', '?'):8s} {date} [{item.get('agent', '?'):15s}] "
-              f"[{item.get('category', '?'):15s}] {item.get('message', '')}")
+        print(
+            f"  {item.get('id', '?'):8s} {date} [{item.get('agent', '?'):15s}] "
+            f"[{item.get('category', '?'):15s}] {item.get('message', '')}"
+        )
     print()
-    print(f"  \033[2mResolve with: ./run.sh feedback resolve <id>\033[0m\n")
+    print("  \033[2mResolve with: ./run.sh feedback resolve <id>\033[0m\n")
     return 0
 
 
@@ -299,7 +319,9 @@ def cmd_stats(args: argparse.Namespace) -> int:
         "resolved": resolved,
         "pending": len(items) - resolved,
         "resolution_rate": f"{resolution_rate:.0f}%",
-        "date_range": f"{unique_dates[0]} to {unique_dates[-1]}" if unique_dates else "N/A",
+        "date_range": (
+            f"{unique_dates[0]} to {unique_dates[-1]}" if unique_dates else "N/A"
+        ),
         "sessions_with_feedback": len(unique_dates),
         "top_category": max(cat_counts, key=cat_counts.get) if cat_counts else "N/A",
         "agents_reporting": len(set(i.get("agent", "") for i in items)),
@@ -319,6 +341,7 @@ def cmd_stats(args: argparse.Namespace) -> int:
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Agent feedback collection and analysis",
@@ -328,20 +351,40 @@ def main() -> int:
 
     # log
     p_log = sub.add_parser("log", help="Log feedback from session")
-    p_log.add_argument("--agent", required=True, choices=VALID_AGENTS,
-                       help="Agent that encountered the issue")
-    p_log.add_argument("--stale-doc", dest="stale_doc", action="append",
-                       help="Doc with stale/wrong info")
-    p_log.add_argument("--missing", action="append",
-                       help="Missing documentation or info")
-    p_log.add_argument("--wrong-instruction", dest="wrong_instruction", action="append",
-                       help="Incorrect agent instruction")
-    p_log.add_argument("--time-wasted", dest="time_wasted", action="append",
-                       help="Time lost due to info gap")
-    p_log.add_argument("--fix-applied", dest="fix_applied", action="append",
-                       help="Fix the agent applied")
-    p_log.add_argument("--suggestion", action="append",
-                       help="Improvement suggestion")
+    p_log.add_argument(
+        "--agent",
+        required=True,
+        choices=VALID_AGENTS,
+        help="Agent that encountered the issue",
+    )
+    p_log.add_argument(
+        "--stale-doc",
+        dest="stale_doc",
+        action="append",
+        help="Doc with stale/wrong info",
+    )
+    p_log.add_argument(
+        "--missing", action="append", help="Missing documentation or info"
+    )
+    p_log.add_argument(
+        "--wrong-instruction",
+        dest="wrong_instruction",
+        action="append",
+        help="Incorrect agent instruction",
+    )
+    p_log.add_argument(
+        "--time-wasted",
+        dest="time_wasted",
+        action="append",
+        help="Time lost due to info gap",
+    )
+    p_log.add_argument(
+        "--fix-applied",
+        dest="fix_applied",
+        action="append",
+        help="Fix the agent applied",
+    )
+    p_log.add_argument("--suggestion", action="append", help="Improvement suggestion")
 
     # summary
     p_summary = sub.add_parser("summary", help="Show feedback summary")

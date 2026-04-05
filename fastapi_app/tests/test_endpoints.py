@@ -758,3 +758,92 @@ class TestCORSHeaders:
 
         # Check CORS headers are present
         assert "access-control-allow-origin" in response.headers
+
+
+# ===========================================================================
+# UX-01: Cross-field depth validation (d < D)
+# ===========================================================================
+
+
+class TestDepthValidationUX01:
+    """UX-01: Pydantic model_validators reject effective_depth >= depth."""
+
+    def test_beam_design_rejects_effective_depth_gt_depth(self, client):
+        """UX-01: BeamDesignRequest rejects effective_depth > depth."""
+        response = client.post(
+            "/api/v1/design/beam",
+            json={
+                "width": 230,
+                "depth": 400,
+                "effective_depth": 500,  # > depth
+                "moment": 100,
+                "shear": 50,
+                "fck": 25,
+                "fy": 500,
+            },
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_beam_design_rejects_effective_depth_eq_depth(self, client):
+        """UX-01: BeamDesignRequest rejects effective_depth == depth."""
+        response = client.post(
+            "/api/v1/design/beam",
+            json={
+                "width": 230,
+                "depth": 400,
+                "effective_depth": 400,  # == depth
+                "moment": 100,
+                "shear": 50,
+                "fck": 25,
+                "fy": 500,
+            },
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_beam_design_accepts_valid_effective_depth(self, client):
+        """UX-01: BeamDesignRequest accepts effective_depth < depth."""
+        response = client.post(
+            "/api/v1/design/beam",
+            json={
+                "width": 300,
+                "depth": 500,
+                "effective_depth": 450,
+                "moment": 100,
+                "shear": 50,
+                "fck": 25,
+                "fy": 500,
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_torsion_design_rejects_effective_depth_gt_depth(self, client):
+        """UX-01: TorsionDesignRequest rejects effective_depth > depth."""
+        response = client.post(
+            "/api/v1/design/beam/torsion",
+            json={
+                "width": 300,
+                "depth": 400,
+                "effective_depth": 500,  # > depth
+                "torsion": 10,
+                "moment": 100,
+                "shear": 50,
+                "fck": 25,
+                "fy": 500,
+            },
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_ductility_check_rejects_d_gte_D(self, client):
+        """UX-01: DuctilityCheckRequest rejects d >= D."""
+        response = client.post(
+            "/api/v1/design/beam/ductility-check",
+            json={
+                "b": 300,
+                "D": 400,
+                "d": 500,  # > D
+                "fck": 25,
+                "fy": 415,
+                "min_long_bar_dia": 12,
+            },
+        )
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

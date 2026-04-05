@@ -227,12 +227,8 @@ def update_imports(
 
         for old_import, new_import in replacements:
             # Replace in import strings (preserve quotes)
-            content = content.replace(
-                f"'{old_import}'", f"'{new_import}'"
-            )
-            content = content.replace(
-                f'"{old_import}"', f'"{new_import}"'
-            )
+            content = content.replace(f"'{old_import}'", f"'{new_import}'")
+            content = content.replace(f'"{old_import}"', f'"{new_import}"')
 
         if content != original:
             if dry_run:
@@ -263,7 +259,9 @@ def ensure_barrel_export(
     """Ensure the target directory has an index.ts with the component exported."""
     index_file = directory / "index.ts"
 
-    export_line = f"export {{ default as {component_name} }} from './{component_name}';\n"
+    export_line = (
+        f"export {{ default as {component_name} }} from './{component_name}';\n"
+    )
 
     if index_file.exists():
         content = index_file.read_text(encoding="utf-8")
@@ -334,14 +332,20 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
             css_dest = destination.parent / css_source.name
             print(f"📎 Co-located CSS: {css_source.name}")
     print()
-    result["css_source"] = str(css_source.relative_to(PROJECT_ROOT)) if css_source else None
-    result["css_destination"] = str(css_dest.relative_to(PROJECT_ROOT)) if css_dest else None
+    result["css_source"] = (
+        str(css_source.relative_to(PROJECT_ROOT)) if css_source else None
+    )
+    result["css_destination"] = (
+        str(css_dest.relative_to(PROJECT_ROOT)) if css_dest else None
+    )
 
     # Step 2: Find all import references
     print("🔍 Step 1: Finding import references...")
     all_files = find_react_files()
     references = find_import_references(source, all_files)
-    print(f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} file(s)")
+    print(
+        f"   Found {len(references)} reference(s) in {len(set(r[0] for r in references))} file(s)"
+    )
     result["references_count"] = len(references)
     result["references"] = [
         {"file": str(ref_file.relative_to(PROJECT_ROOT)), "line": line_num}
@@ -374,7 +378,9 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
 
     # Step 4: Update imports
     print("🔗 Step 3: Updating imports...")
-    updated, updated_files = update_imports(source, destination, references, args.dry_run)
+    updated, updated_files = update_imports(
+        source, destination, references, args.dry_run
+    )
     print(f"   Updated {updated} file(s)")
     print()
     result["updated_count"] = updated
@@ -397,7 +403,9 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     # Step 6: Barrel export
     print("📋 Step 5: Ensuring barrel export...")
     component_name = destination.stem
-    barrel_status = ensure_barrel_export(destination.parent, component_name, args.dry_run)
+    barrel_status = ensure_barrel_export(
+        destination.parent, component_name, args.dry_run
+    )
     print()
     result["barrel_status"] = barrel_status
 
@@ -419,10 +427,12 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     print("=" * 60)
 
     changed_files = set(updated_files)
-    changed_files.update({
-        str(source.relative_to(PROJECT_ROOT)),
-        str(destination.relative_to(PROJECT_ROOT)),
-    })
+    changed_files.update(
+        {
+            str(source.relative_to(PROJECT_ROOT)),
+            str(destination.relative_to(PROJECT_ROOT)),
+        }
+    )
     if css_source and css_dest:
         changed_files.add(str(css_source.relative_to(PROJECT_ROOT)))
         changed_files.add(str(css_dest.relative_to(PROJECT_ROOT)))
@@ -443,9 +453,7 @@ def main() -> int:
         "destination",
         help="Destination path (e.g., src/components/import/ImportView.tsx)",
     )
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Show what would happen"
-    )
+    parser.add_argument("--dry-run", action="store_true", help="Show what would happen")
     parser.add_argument(
         "--no-css", action="store_true", help="Don't move co-located CSS"
     )

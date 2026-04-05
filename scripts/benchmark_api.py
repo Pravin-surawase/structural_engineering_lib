@@ -101,11 +101,11 @@ class BenchmarkSuite:
             "failures": self.failures,
             "summary": {
                 "total_endpoints": len(self.results),
-                "avg_p95_ms": round(
-                    sum(r.p95_ms for r in self.results) / len(self.results), 2
-                )
-                if self.results
-                else 0,
+                "avg_p95_ms": (
+                    round(sum(r.p95_ms for r in self.results) / len(self.results), 2)
+                    if self.results
+                    else 0
+                ),
                 "total_requests_per_sec": round(
                     sum(r.requests_per_sec for r in self.results), 2
                 ),
@@ -284,7 +284,11 @@ def get_test_cases() -> list[dict[str, Any]]:
             "json_data": optimization_payload,
             "iterations": 100,
         },
-        {"method": "GET", "endpoint": "/api/v1/optimization/cost-rates", "iterations": 200},
+        {
+            "method": "GET",
+            "endpoint": "/api/v1/optimization/cost-rates",
+            "iterations": 200,
+        },
         # Analysis endpoints
         {
             "method": "POST",
@@ -292,7 +296,11 @@ def get_test_cases() -> list[dict[str, Any]]:
             "json_data": smart_analysis_payload,
             "iterations": 100,
         },
-        {"method": "GET", "endpoint": "/api/v1/analysis/code-clauses", "iterations": 200},
+        {
+            "method": "GET",
+            "endpoint": "/api/v1/analysis/code-clauses",
+            "iterations": 200,
+        },
         # Geometry endpoints
         {
             "method": "POST",
@@ -357,7 +365,10 @@ def run_benchmarks(
         json_data = case.get("json_data")
 
         if verbose:
-            print(f"Benchmarking {method} {endpoint} ({iterations} iterations)...", end=" ")
+            print(
+                f"Benchmarking {method} {endpoint} ({iterations} iterations)...",
+                end=" ",
+            )
 
         result = benchmark_endpoint(
             client=client,
@@ -398,7 +409,9 @@ def print_summary(suite: BenchmarkSuite) -> None:
     print(f"\n{'Endpoint':<45} {'p95 (ms)':<10} {'mean (ms)':<10} {'RPS':<10}")
     print("-" * 75)
     for r in suite.results:
-        print(f"{r.method} {r.endpoint:<40} {r.p95_ms:<10.2f} {r.mean_ms:<10.2f} {r.requests_per_sec:<10.2f}")
+        print(
+            f"{r.method} {r.endpoint:<40} {r.p95_ms:<10.2f} {r.mean_ms:<10.2f} {r.requests_per_sec:<10.2f}"
+        )
 
     if suite.threshold_ms:
         print(f"\nThreshold: {suite.threshold_ms}ms")
@@ -413,9 +426,11 @@ def print_summary(suite: BenchmarkSuite) -> None:
 # DIRECT LIBRARY BENCHMARKS (absorbed from benchmark_api_latency.py)
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 @dataclass
 class DirectBenchmarkConfig:
     """Configuration for a direct library benchmark test."""
+
     name: str
     function: str
     inputs: dict
@@ -427,6 +442,7 @@ class DirectBenchmarkConfig:
 @dataclass
 class DirectBenchmarkResult:
     """Result of a direct library benchmark."""
+
     name: str
     function: str
     min_ms: float
@@ -507,6 +523,7 @@ def _load_direct_api():
     """Load structural_lib.api module for direct benchmarking."""
     try:
         from structural_lib import api
+
         return api
     except ImportError as e:
         print(f"❌ Cannot import structural_lib.api: {e}")
@@ -530,11 +547,18 @@ def _run_direct_benchmark(api, config: DirectBenchmarkConfig) -> DirectBenchmark
     func = getattr(api, config.function, None)
     if func is None:
         return DirectBenchmarkResult(
-            name=config.name, function=config.function,
-            min_ms=float("inf"), max_ms=float("inf"),
-            mean_ms=float("inf"), median_ms=float("inf"),
-            std_ms=0.0, p95_ms=float("inf"), p99_ms=float("inf"),
-            threshold_ms=config.threshold_ms, passed=False, iterations=0,
+            name=config.name,
+            function=config.function,
+            min_ms=float("inf"),
+            max_ms=float("inf"),
+            mean_ms=float("inf"),
+            median_ms=float("inf"),
+            std_ms=0.0,
+            p95_ms=float("inf"),
+            p99_ms=float("inf"),
+            threshold_ms=config.threshold_ms,
+            passed=False,
+            iterations=0,
         )
 
     # Warmup
@@ -555,11 +579,18 @@ def _run_direct_benchmark(api, config: DirectBenchmarkConfig) -> DirectBenchmark
 
     if not times:
         return DirectBenchmarkResult(
-            name=config.name, function=config.function,
-            min_ms=float("inf"), max_ms=float("inf"),
-            mean_ms=float("inf"), median_ms=float("inf"),
-            std_ms=0.0, p95_ms=float("inf"), p99_ms=float("inf"),
-            threshold_ms=config.threshold_ms, passed=False, iterations=0,
+            name=config.name,
+            function=config.function,
+            min_ms=float("inf"),
+            max_ms=float("inf"),
+            mean_ms=float("inf"),
+            median_ms=float("inf"),
+            std_ms=0.0,
+            p95_ms=float("inf"),
+            p99_ms=float("inf"),
+            threshold_ms=config.threshold_ms,
+            passed=False,
+            iterations=0,
         )
 
     sorted_times = sorted(times)
@@ -622,8 +653,10 @@ def run_direct_benchmarks(
         results.append(result)
         if verbose:
             status = "✅" if result.passed else "❌"
-            print(f"   {status} median={result.median_ms:.3f}ms "
-                  f"p95={result.p95_ms:.3f}ms (threshold={result.threshold_ms}ms)")
+            print(
+                f"   {status} median={result.median_ms:.3f}ms "
+                f"p95={result.p95_ms:.3f}ms (threshold={result.threshold_ms}ms)"
+            )
 
     all_passed = all(r.passed for r in results)
     return results, all_passed
@@ -644,7 +677,9 @@ def print_direct_summary(results: list[DirectBenchmarkResult]) -> None:
     print("-" * 65)
     for r in results:
         status = "✅ PASS" if r.passed else "❌ FAIL"
-        print(f"{r.function:<30} {r.median_ms:>10.2f}ms   {r.threshold_ms:>8.1f}ms   {status}")
+        print(
+            f"{r.function:<30} {r.median_ms:>10.2f}ms   {r.threshold_ms:>8.1f}ms   {status}"
+        )
 
     if failed == 0:
         print("\n✅ All functions meet V3 latency requirements!")
@@ -692,6 +727,7 @@ def _save_direct_report(results: list[DirectBenchmarkResult]) -> None:
 # CLI
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(
@@ -735,13 +771,15 @@ def main() -> int:
     )
     # Direct-mode options
     parser.add_argument(
-        "--iterations", "-n",
+        "--iterations",
+        "-n",
         type=int,
         default=50,
         help="Number of iterations per benchmark (direct mode)",
     )
     parser.add_argument(
-        "--function", "-f",
+        "--function",
+        "-f",
         type=str,
         help="Benchmark a specific function only (direct mode)",
     )

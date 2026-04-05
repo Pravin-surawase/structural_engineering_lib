@@ -287,18 +287,22 @@ async def design_column_uniaxial(
         )
 
         return ColumnUniaxialResponse(
-            ok=result["ok"],
-            utilization=round(result["utilization"], 4),
+            ok=result["is_safe"],
+            utilization=round(result["utilization_ratio"], 4),
             Pu_cap_kN=round(result["Pu_cap_kN"], 2),
             Mu_cap_kNm=round(result["Mu_cap_kNm"], 2),
-            classification=result["classification"],
+            classification=(
+                result["classification"].name
+                if hasattr(result["classification"], "name")
+                else str(result["classification"])
+            ),
             eccentricity_mm=round(result["eccentricity_mm"], 2),
             e_min_mm=(
                 round(result["e_min_mm"], 2)
                 if result.get("e_min_mm") is not None
                 else None
             ),
-            warnings=result["warnings"],
+            warnings=list(result["warnings"]),
         )
 
     except (ValueError, TypeError):
@@ -349,7 +353,7 @@ async def pm_interaction_curve(
         )
 
         return PMInteractionResponse(
-            points=[PMPoint(**pt) for pt in result["points"]],
+            points=[PMPoint(Pu_kN=pt[0], Mu_kNm=pt[1]) for pt in result["points"]],
             Pu_0_kN=round(result["Pu_0_kN"], 2),
             Mu_0_kNm=round(result["Mu_0_kNm"], 2),
             Pu_bal_kN=round(result["Pu_bal_kN"], 2),

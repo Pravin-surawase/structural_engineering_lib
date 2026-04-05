@@ -134,11 +134,21 @@ class BeamDesignRequest(BaseModel):
     )
 
     @model_validator(mode="after")
-    def validate_depth_ratio(self) -> "BeamDesignRequest":
-        """Validate practical depth-to-width ratio."""
+    def validate_depth_relationships(self) -> "BeamDesignRequest":
+        """Validate practical depth-to-width ratio and cross-field depth constraints."""
         if self.depth / self.width > 6:
             raise ValueError(
                 f"Depth/width ratio {self.depth / self.width:.1f} exceeds practical limit of 6"
+            )
+        if self.effective_depth is not None and self.effective_depth >= self.depth:
+            raise ValueError(
+                f"effective_depth ({self.effective_depth}mm) must be less than "
+                f"depth ({self.depth}mm). Typical: effective_depth = depth - 40 to 60mm"
+            )
+        if self.clear_cover is not None and self.clear_cover >= self.depth:
+            raise ValueError(
+                f"clear_cover ({self.clear_cover}mm) must be less than "
+                f"depth ({self.depth}mm)"
             )
         return self
 
@@ -482,6 +492,21 @@ class TorsionDesignRequest(BaseModel):
         gt=0,
         description="Effective depth d (mm). Auto-calculated if not provided.",
     )
+
+    @model_validator(mode="after")
+    def validate_depth_relationships(self) -> "TorsionDesignRequest":
+        """Validate cross-field depth constraints."""
+        if self.effective_depth is not None and self.effective_depth >= self.depth:
+            raise ValueError(
+                f"effective_depth ({self.effective_depth}mm) must be less than "
+                f"depth ({self.depth}mm). Typical: effective_depth = depth - 40 to 60mm"
+            )
+        if self.clear_cover is not None and self.clear_cover >= self.depth:
+            raise ValueError(
+                f"clear_cover ({self.clear_cover}mm) must be less than "
+                f"depth ({self.depth}mm)"
+            )
+        return self
 
 
 class TorsionDesignResponse(BaseModel):

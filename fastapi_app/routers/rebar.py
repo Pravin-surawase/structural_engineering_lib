@@ -12,6 +12,8 @@ import logging
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
+from fastapi_app.error_utils import sanitize_error
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
@@ -165,7 +167,7 @@ async def validate_rebar(request: RebarValidateRequest) -> RebarValidateResponse
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "rebar validation"),
         )
     except Exception:
         logger.exception("Internal error in validate_rebar")
@@ -242,7 +244,7 @@ async def apply_rebar(request: RebarApplyRequest) -> RebarApplyResponse:
     except ImportError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"structural_lib not available: {e}",
+            detail=sanitize_error(e, "rebar apply"),
         )
     except Exception:
         logger.exception("Internal error in apply_rebar")

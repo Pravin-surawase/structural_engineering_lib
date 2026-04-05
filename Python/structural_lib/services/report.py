@@ -525,8 +525,8 @@ def get_input_sanity(data: ReportData) -> list[SanityCheck]:
             _make_sanity_check(
                 field="d_mm",
                 value=d_mm,
-                status="WARN",
-                message="d_mm should be <= D_mm",
+                status="ERROR",
+                message="d_mm must be < D_mm (d > D is physically impossible)",
                 json_path="beam.d_mm",
             )
         )

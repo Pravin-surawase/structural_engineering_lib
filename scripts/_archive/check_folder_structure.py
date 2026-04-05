@@ -12,6 +12,7 @@ Usage:
     python scripts/check_folder_structure.py          # Check structure
     python scripts/check_folder_structure.py --json   # JSON output
 """
+
 from __future__ import annotations
 
 import argparse

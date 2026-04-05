@@ -138,9 +138,20 @@ def _find_references_python(
 
     # Directories to exclude (performance optimization)
     exclude_dirs = {
-        ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache",
-        "build", "dist", "htmlcov", ".mypy_cache", ".ruff_cache",
-        "*.egg-info", ".git", "logs", "tmp"
+        ".venv",
+        "venv",
+        "node_modules",
+        "__pycache__",
+        ".pytest_cache",
+        "build",
+        "dist",
+        "htmlcov",
+        ".mypy_cache",
+        ".ruff_cache",
+        "*.egg-info",
+        ".git",
+        "logs",
+        "tmp",
     }
 
     for search_dir in search_dirs:
@@ -263,7 +274,9 @@ This document has been moved to a new location.
     print(f"  Created redirect stub at: {old_path}")
 
 
-def get_broken_link_count(project_root: Path, *, print_output: bool = False) -> int | None:
+def get_broken_link_count(
+    project_root: Path, *, print_output: bool = False
+) -> int | None:
     """Run link checker and return broken-link count if parsable."""
     check_script = project_root / "scripts" / "check_links.py"
     if not check_script.exists():
@@ -381,7 +394,9 @@ def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     # Step 3: Update links
     print()
     print("🔗 Step 3: Updating links...")
-    updated, updated_files = update_links(source, destination, project_root, args.dry_run)
+    updated, updated_files = update_links(
+        source, destination, project_root, args.dry_run
+    )
     print(f"   Updated {updated} file(s)")
     result["updated_count"] = updated
     result["updated_files"] = updated_files
@@ -411,9 +426,7 @@ def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         elif baseline_broken is None:
             print(f"   Broken links after move: {broken_after}")
         elif broken_after > baseline_broken:
-            print(
-                f"   ❌ Broken links increased ({baseline_broken} → {broken_after})."
-            )
+            print(f"   ❌ Broken links increased ({baseline_broken} → {broken_after}).")
             print("   Review and fix links before committing.")
             print()
             print("=" * 60)
@@ -422,12 +435,17 @@ def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
             result["broken_links_after"] = broken_after
             result["changed_files"] = sorted(
                 set(updated_files)
-                | {str(source.relative_to(project_root)), str(destination.relative_to(project_root))}
+                | {
+                    str(source.relative_to(project_root)),
+                    str(destination.relative_to(project_root)),
+                }
             )
             result["success"] = False
             return 1, result
         else:
-            print(f"   ✅ Broken links unchanged/improved ({baseline_broken} → {broken_after})")
+            print(
+                f"   ✅ Broken links unchanged/improved ({baseline_broken} → {broken_after})"
+            )
     result["broken_links_after"] = broken_after
 
     print()
@@ -443,7 +461,10 @@ def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
     print("=" * 60)
     result["changed_files"] = sorted(
         set(updated_files)
-        | {str(source.relative_to(project_root)), str(destination.relative_to(project_root))}
+        | {
+            str(source.relative_to(project_root)),
+            str(destination.relative_to(project_root)),
+        }
     )
     result["success"] = True
     return 0, result

@@ -13,6 +13,7 @@ Usage:
     python scripts/validate_migration.py --verbose
     python scripts/validate_migration.py --run-tests
 """
+
 from __future__ import annotations
 
 import argparse

@@ -34,7 +34,6 @@ from __future__ import annotations
 
 import argparse
 import inspect
-import re
 import sys
 from dataclasses import is_dataclass, fields
 from enum import Enum
@@ -55,6 +54,7 @@ def load_api():
     """Load the structural_lib.api module."""
     try:
         from structural_lib import api
+
         return api
     except ImportError as e:
         print(f"❌ Cannot import structural_lib.services.api: {e}")
@@ -91,7 +91,9 @@ def get_python_type_str(type_hint: Any) -> str:
     if origin is dict:
         args = get_args(type_hint)
         if len(args) == 2:
-            return f"dict[{get_python_type_str(args[0])}, {get_python_type_str(args[1])}]"
+            return (
+                f"dict[{get_python_type_str(args[0])}, {get_python_type_str(args[1])}]"
+            )
         return "dict"
 
     # Handle Enum
@@ -127,7 +129,9 @@ def get_pydantic_field_type(type_hint: Any) -> str:
     return type_str
 
 
-def generate_request_model(func_name: str, sig: inspect.Signature, type_hints: dict) -> str:
+def generate_request_model(
+    func_name: str, sig: inspect.Signature, type_hints: dict
+) -> str:
     """Generate Pydantic request model for a function."""
     lines = []
     lines.append(f"class {func_name.title().replace('_', '')}Request(BaseModel):")
@@ -237,9 +241,7 @@ def generate_route(func_name: str, func: callable, type_hints: dict) -> str:
 
     # Function body
     params_call = ", ".join(
-        f"{p}={p}"
-        for p in sig.parameters.keys()
-        if p not in ("self", "cls")
+        f"{p}={p}" for p in sig.parameters.keys() if p not in ("self", "cls")
     )
     lines.append(f"    result = api.{func_name}({params_call})")
     lines.append("    return result")
@@ -297,26 +299,26 @@ def main():
         description="Generate FastAPI routes from structural_lib API"
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
-        help="Output directory for generated files"
+        help="Output directory for generated files",
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Preview generated code without writing files"
+        help="Preview generated code without writing files",
     )
     parser.add_argument(
-        "--function", "-f",
+        "--function",
+        "-f",
         action="append",
         dest="functions",
-        help="Generate routes for specific function(s) only"
+        help="Generate routes for specific function(s) only",
     )
     parser.add_argument(
-        "--verbose", "-v",
-        action="store_true",
-        help="Show detailed output"
+        "--verbose", "-v", action="store_true", help="Show detailed output"
     )
 
     args = parser.parse_args()

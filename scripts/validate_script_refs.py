@@ -19,26 +19,26 @@ ARCHIVE_DIR = SCRIPTS_DIR / "_archive"
 
 # Patterns that indicate documentation, not runtime calls
 DOC_PATTERNS = [
-    r"^\s*#",          # Comments
-    r"Replaces:",      # Consolidation docs
+    r"^\s*#",  # Comments
+    r"Replaces:",  # Consolidation docs
     r"Consolidates:",  # Consolidation docs
-    r"Previously:",    # History notes
-    r"replaced:",      # History notes
-    r"was:",           # History notes
-    r"→.*archived",    # Archive notes
-    r"merged into",    # Consolidation notes
+    r"Previously:",  # History notes
+    r"replaced:",  # History notes
+    r"was:",  # History notes
+    r"→.*archived",  # Archive notes
+    r"merged into",  # Consolidation notes
 ]
 
 # Patterns that indicate actual runtime references
 RUNTIME_PATTERNS_PY = [
-    r'Path\(["\']scripts/',           # Path("scripts/foo.py")
-    r'_run_script\(["\']',            # _run_script("foo.py")
-    r'subprocess\.run\(.*scripts/',   # subprocess.run(["scripts/..."])
-    r'run_script\(["\']',             # run_script("foo.py")
+    r'Path\(["\']scripts/',  # Path("scripts/foo.py")
+    r'_run_script\(["\']',  # _run_script("foo.py")
+    r"subprocess\.run\(.*scripts/",  # subprocess.run(["scripts/..."])
+    r'run_script\(["\']',  # run_script("foo.py")
 ]
 
 RUNTIME_PATTERNS_SH = [
-    r'scripts/\S+\.(py|sh)',          # Direct script invocation in bash
+    r"scripts/\S+\.(py|sh)",  # Direct script invocation in bash
 ]
 
 
@@ -96,13 +96,15 @@ def check_file(filepath: Path, archived_names: set[str]) -> list[dict]:
             if "echo " in line or "print(" in line:
                 severity = "warning"
 
-            issues.append({
-                "file": str(filepath.relative_to(REPO_ROOT)),
-                "line": i,
-                "archived": name,
-                "severity": severity,
-                "text": line.strip()[:120],
-            })
+            issues.append(
+                {
+                    "file": str(filepath.relative_to(REPO_ROOT)),
+                    "line": i,
+                    "archived": name,
+                    "severity": severity,
+                    "text": line.strip()[:120],
+                }
+            )
 
     return issues
 

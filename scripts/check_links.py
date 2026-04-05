@@ -24,6 +24,7 @@ Exit Codes:
     0: No broken links
     1: Broken links found (or fixed)
 """
+
 from __future__ import annotations
 
 import argparse
@@ -39,9 +40,16 @@ from _lib.utils import REPO_ROOT
 
 # Skip these patterns — placeholders/examples in docs
 SKIP_LINK_PATTERNS = [
-    r"^text$", r"^Link \d+$", r"^\$\w+$", r"^\.\*",
-    r"^\'.*\'$", r"^path/to/", r"^target\.md$",
-    r"^old-file\.md", r"^Old_File\.md", r"^file\.md",
+    r"^text$",
+    r"^Link \d+$",
+    r"^\$\w+$",
+    r"^\.\*",
+    r"^\'.*\'$",
+    r"^path/to/",
+    r"^target\.md$",
+    r"^old-file\.md",
+    r"^Old_File\.md",
+    r"^file\.md",
 ]
 
 # Skip files in these directories
@@ -55,7 +63,9 @@ SKIP_DIRECTORIES = [
 def _is_placeholder(text: str, target: str) -> bool:
     """Check if a link is a placeholder/example."""
     for pattern in SKIP_LINK_PATTERNS:
-        if re.search(pattern, text, re.IGNORECASE) or re.search(pattern, target, re.IGNORECASE):
+        if re.search(pattern, text, re.IGNORECASE) or re.search(
+            pattern, target, re.IGNORECASE
+        ):
             return True
     return False
 
@@ -79,6 +89,7 @@ def _find_links(content: str) -> list[tuple[str, str, int]]:
 # FUZZY FILE MATCHING (from fix_broken_links.py)
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def _build_file_index() -> dict[str, list[Path]]:
     """Build index of all files by lowercase filename."""
     index: dict[str, list[Path]] = defaultdict(list)
@@ -99,7 +110,9 @@ def _normalize(name: str) -> str:
 
 
 def _find_best_match(
-    target_path: str, source_file: Path, file_index: dict[str, list[Path]],
+    target_path: str,
+    source_file: Path,
+    file_index: dict[str, list[Path]],
 ) -> Optional[Path]:
     """Find the best matching file for a broken link target using fuzzy matching."""
     target = Path(target_path)
@@ -170,6 +183,7 @@ def _relative_path(from_file: Path, to_file: Path) -> str:
 # MAIN CHECK/FIX LOGIC
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def check_and_fix(
     fix: bool = False,
     verbose: bool = False,
@@ -232,15 +246,17 @@ def check_and_fix(
                 if match:
                     suggestion = _relative_path(md_file, match)
 
-            broken_links.append({
-                "file": str(md_file.relative_to(REPO_ROOT)),
-                "file_path": md_file,
-                "link_text": text,
-                "target": target,
-                "target_path": target_path,
-                "anchor": anchor,
-                "suggestion": suggestion,
-            })
+            broken_links.append(
+                {
+                    "file": str(md_file.relative_to(REPO_ROOT)),
+                    "file_path": md_file,
+                    "link_text": text,
+                    "target": target,
+                    "target_path": target_path,
+                    "anchor": anchor,
+                    "suggestion": suggestion,
+                }
+            )
 
     # Report
     print(f"\n🔍 Checked {file_count} markdown files")
@@ -283,7 +299,9 @@ def check_and_fix(
             print("⚠️  No links could be auto-fixed (no matches found)")
     else:
         fixable = sum(1 for bl in broken_links if bl.get("suggestion"))
-        print(f"💡 Run with --fix to auto-fix {fixable if fixable else 'fixable'} links:")
+        print(
+            f"💡 Run with --fix to auto-fix {fixable if fixable else 'fixable'} links:"
+        )
         print("   python scripts/check_links.py --fix")
 
     return 1
@@ -301,10 +319,16 @@ def main() -> int:
             "  python scripts/check_links.py --map links.json --fix  # Use migration map\n"
         ),
     )
-    parser.add_argument("--fix", action="store_true", help="Auto-fix broken links using fuzzy matching")
+    parser.add_argument(
+        "--fix", action="store_true", help="Auto-fix broken links using fuzzy matching"
+    )
     parser.add_argument("--map", help="Path to link mapping JSON (old → new paths)")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Show detailed output")
-    parser.add_argument("--exclude-archive", action="store_true", help="Skip _archive directories")
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Show detailed output"
+    )
+    parser.add_argument(
+        "--exclude-archive", action="store_true", help="Skip _archive directories"
+    )
 
     args = parser.parse_args()
 

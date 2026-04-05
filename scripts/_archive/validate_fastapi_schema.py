@@ -53,6 +53,7 @@ sys.path.insert(0, str(PYTHON_DIR))
 @dataclass
 class APIFunction:
     """Represents a public API function."""
+
     name: str
     signature: str
     parameters: dict
@@ -65,6 +66,7 @@ class APIFunction:
 @dataclass
 class ValidationResult:
     """Result of API validation."""
+
     total_functions: int
     compatible_count: int
     incompatible_count: int
@@ -77,6 +79,7 @@ def load_api_module():
     """Load the structural_lib.api module."""
     try:
         from structural_lib import api
+
         return api
     except ImportError as e:
         print(f"❌ Cannot import structural_lib.services.api: {e}")
@@ -137,12 +140,22 @@ def analyze_function(func) -> APIFunction:
     for param_name, param in sig.parameters.items():
         if param_name == "self":
             continue
-        param_type = get_type_name(param.annotation) if param.annotation is not inspect.Parameter.empty else "Any"
-        default = None if param.default is inspect.Parameter.empty else repr(param.default)
+        param_type = (
+            get_type_name(param.annotation)
+            if param.annotation is not inspect.Parameter.empty
+            else "Any"
+        )
+        default = (
+            None if param.default is inspect.Parameter.empty else repr(param.default)
+        )
         params[param_name] = {"type": param_type, "default": default}
 
     # Get return type
-    return_type = get_type_name(sig.return_annotation) if sig.return_annotation is not inspect.Parameter.empty else "Any"
+    return_type = (
+        get_type_name(sig.return_annotation)
+        if sig.return_annotation is not inspect.Parameter.empty
+        else "Any"
+    )
 
     # Check compatibility
     is_compatible, issues = check_fastapi_compatibility(func)
@@ -154,7 +167,7 @@ def analyze_function(func) -> APIFunction:
         return_type=return_type,
         docstring=inspect.getdoc(func),
         is_fastapi_compatible=is_compatible,
-        issues=issues
+        issues=issues,
     )
 
 
@@ -205,7 +218,7 @@ def validate_api() -> ValidationResult:
         incompatible_count=len(analyzed) - compatible_count,
         missing_types=missing_types,
         functions=analyzed,
-        issues=all_issues
+        issues=all_issues,
     )
 
 
@@ -230,7 +243,9 @@ def generate_route_stubs(result: ValidationResult) -> str:
     for func in result.functions:
         # Generate request model if needed
         if func.parameters:
-            lines.append(f"class {func.name.title().replace('_', '')}Request(BaseModel):")
+            lines.append(
+                f"class {func.name.title().replace('_', '')}Request(BaseModel):"
+            )
             for param_name, param_info in func.parameters.items():
                 py_type = param_info["type"]
                 default = param_info["default"]
@@ -243,17 +258,21 @@ def generate_route_stubs(result: ValidationResult) -> str:
         # Generate route
         endpoint = func.name.replace("_", "-")
         lines.append(f'@app.post("/api/{endpoint}")')
-        lines.append(f"async def {func.name}(request: {func.name.title().replace('_', '')}Request):")
-        lines.append(f'    """')
+        lines.append(
+            f"async def {func.name}(request: {func.name.title().replace('_', '')}Request):"
+        )
+        lines.append('    """')
         if func.docstring:
             lines.append(f"    {func.docstring.split(chr(10))[0]}")
-        lines.append(f'    """')
-        lines.append(f"    try:")
+        lines.append('    """')
+        lines.append("    try:")
         params = ", ".join([f"{p}=request.{p}" for p in func.parameters.keys()])
         lines.append(f"        result = api.{func.name}({params})")
-        lines.append(f"        return result.to_dict() if hasattr(result, 'to_dict') else result")
-        lines.append(f"    except Exception as e:")
-        lines.append(f'        raise HTTPException(status_code=400, detail=str(e))')
+        lines.append(
+            "        return result.to_dict() if hasattr(result, 'to_dict') else result"
+        )
+        lines.append("    except Exception as e:")
+        lines.append("        raise HTTPException(status_code=400, detail=str(e))")
         lines.append("")
 
     return "\n".join(lines)
@@ -299,7 +318,11 @@ def print_report(result: ValidationResult, verbose: bool = False):
     print()
 
     # Summary
-    pct = (result.compatible_count / result.total_functions * 100) if result.total_functions > 0 else 0
+    pct = (
+        (result.compatible_count / result.total_functions * 100)
+        if result.total_functions > 0
+        else 0
+    )
     print(f"Total API functions: {result.total_functions}")
     print(f"FastAPI compatible:  {result.compatible_count} ({pct:.1f}%)")
     print(f"Need attention:      {result.incompatible_count}")
@@ -334,14 +357,16 @@ def main():
     parser = argparse.ArgumentParser(
         description="Validate API for FastAPI compatibility (V3 preparation)"
     )
-    parser.add_argument("--generate", action="store_true",
-                       help="Generate FastAPI route stubs")
-    parser.add_argument("--manifest", action="store_true",
-                       help="Compare with API manifest")
-    parser.add_argument("--verbose", "-v", action="store_true",
-                       help="Verbose output")
-    parser.add_argument("--output", "-o", type=Path,
-                       help="Output file for generated routes")
+    parser.add_argument(
+        "--generate", action="store_true", help="Generate FastAPI route stubs"
+    )
+    parser.add_argument(
+        "--manifest", action="store_true", help="Compare with API manifest"
+    )
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
+    parser.add_argument(
+        "--output", "-o", type=Path, help="Output file for generated routes"
+    )
 
     args = parser.parse_args()
 

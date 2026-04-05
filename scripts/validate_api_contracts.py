@@ -44,7 +44,9 @@ from typing import Any, get_type_hints
 
 # Baseline contract file location
 BASELINE_PATH = Path(__file__).parent.parent / "fastapi_app" / "openapi_baseline.json"
-MANIFEST_PATH = Path(__file__).parent.parent / "docs" / "reference" / "api-manifest.json"
+MANIFEST_PATH = (
+    Path(__file__).parent.parent / "docs" / "reference" / "api-manifest.json"
+)
 
 # Add project root for imports
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -245,9 +247,7 @@ def validate_contracts(save: bool = False, diff: bool = False) -> int:
     print_comparison(breaking, warnings, info, verbose=diff)
 
     # Count endpoints
-    total_endpoints = sum(
-        len(methods) for methods in current_sig["endpoints"].values()
-    )
+    total_endpoints = sum(len(methods) for methods in current_sig["endpoints"].values())
     total_schemas = len(current_sig["schemas"])
     print(f"\nCurrent API: {total_endpoints} endpoints, {total_schemas} schemas")
 
@@ -260,9 +260,11 @@ def validate_contracts(save: bool = False, diff: bool = False) -> int:
 # SCHEMA VALIDATION (absorbed from validate_fastapi_schema.py)
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 @dataclass
 class APIFunction:
     """Represents a public API function."""
+
     name: str
     signature: str
     parameters: dict
@@ -275,6 +277,7 @@ class APIFunction:
 @dataclass
 class SchemaValidationResult:
     """Result of API schema validation."""
+
     total_functions: int
     compatible_count: int
     incompatible_count: int
@@ -287,6 +290,7 @@ def _load_api_module():
     """Load the structural_lib.api module."""
     try:
         from structural_lib import api
+
         return api
     except ImportError as e:
         print(f"❌ Cannot import structural_lib.api: {e}")
@@ -335,7 +339,9 @@ def _analyze_function(func) -> APIFunction:
             if param.annotation is not inspect.Parameter.empty
             else "Any"
         )
-        default = None if param.default is inspect.Parameter.empty else repr(param.default)
+        default = (
+            None if param.default is inspect.Parameter.empty else repr(param.default)
+        )
         params[param_name] = {"type": param_type, "default": default}
     return_type = (
         _get_type_name(sig.return_annotation)
@@ -357,9 +363,11 @@ def _analyze_function(func) -> APIFunction:
 def _get_public_functions(module) -> list:
     """Get all public functions from a module."""
     functions = []
-    names = module.__all__ if hasattr(module, "__all__") else [
-        n for n in dir(module) if not n.startswith("_")
-    ]
+    names = (
+        module.__all__
+        if hasattr(module, "__all__")
+        else [n for n in dir(module) if not n.startswith("_")]
+    )
     for name in names:
         obj = getattr(module, name, None)
         if obj is not None and callable(obj) and not isinstance(obj, type):
@@ -413,7 +421,9 @@ def _generate_route_stubs(result: SchemaValidationResult) -> str:
     ]
     for func in result.functions:
         if func.parameters:
-            lines.append(f"class {func.name.title().replace('_', '')}Request(BaseModel):")
+            lines.append(
+                f"class {func.name.title().replace('_', '')}Request(BaseModel):"
+            )
             for pname, pinfo in func.parameters.items():
                 py_type = pinfo["type"]
                 default = pinfo["default"]
@@ -580,12 +590,14 @@ def main() -> int:
         help="Compare with API manifest (requires --schema)",
     )
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Verbose output",
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         help="Output file for generated routes",
     )

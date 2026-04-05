@@ -19,7 +19,6 @@ import argparse
 import ast
 import re
 import shutil
-import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
@@ -36,8 +35,13 @@ SEARCH_DIRS = [
 ]
 
 SKIP_PATTERNS = {
-    "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache",
-    "node_modules", ".venv", ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "node_modules",
+    ".venv",
+    ".git",
 }
 
 # ─── Phase Definitions ──────────────────────────────────────────
@@ -189,18 +193,41 @@ def fix_relative_imports_in_moved_files(
     # Known locations of all modules (build from project structure)
     # Modules in core/
     core_mods = {
-        "constants", "types", "data_types", "models", "errors", "error_messages",
-        "validation", "inputs", "result_base", "utilities",
-        "base", "geometry", "materials", "registry",
+        "constants",
+        "types",
+        "data_types",
+        "models",
+        "errors",
+        "error_messages",
+        "validation",
+        "inputs",
+        "result_base",
+        "utilities",
+        "base",
+        "geometry",
+        "materials",
+        "registry",
     }
     # Subpackages at root level
     root_subpkgs = {"codes", "insights", "visualization", "reports"}
     # Root modules (shims and real)
     root_mods = {
-        "calculation_report", "torsion", "detailing", "materials",
-        "serviceability", "slenderness", "flexure", "shear", "ductile",
-        "tables", "compliance", "bbs", "dxf_export", "excel_integration",
-        "job_runner", "report",
+        "calculation_report",
+        "torsion",
+        "detailing",
+        "materials",
+        "serviceability",
+        "slenderness",
+        "flexure",
+        "shear",
+        "ductile",
+        "tables",
+        "compliance",
+        "bbs",
+        "dxf_export",
+        "excel_integration",
+        "job_runner",
+        "report",
     }
 
     fixed_count = 0
@@ -230,7 +257,9 @@ def fix_relative_imports_in_moved_files(
                 if module in sibling_mods:
                     fixed_lines.append(line)  # Valid sibling import
                 elif module in core_mods:
-                    fixed_lines.append(f"{indent}from structural_lib.core.{module}{rest}")
+                    fixed_lines.append(
+                        f"{indent}from structural_lib.core.{module}{rest}"
+                    )
                 elif module in root_subpkgs:
                     fixed_lines.append(f"{indent}from structural_lib.{module}{rest}")
                 elif module in root_mods:
@@ -253,9 +282,13 @@ def fix_relative_imports_in_moved_files(
                 non_sibling_names = [n for n in names if n not in sibling_mods]
                 result_lines = []
                 if sibling_names:
-                    result_lines.append(f"{indent}from . import {', '.join(sibling_names)}")
+                    result_lines.append(
+                        f"{indent}from . import {', '.join(sibling_names)}"
+                    )
                 if non_sibling_names:
-                    result_lines.append(f"{indent}from structural_lib import {', '.join(non_sibling_names)}")
+                    result_lines.append(
+                        f"{indent}from structural_lib import {', '.join(non_sibling_names)}"
+                    )
                 if result_lines:
                     fixed_lines.extend(result_lines)
                 else:
@@ -359,9 +392,7 @@ def create_stubs(
                 stub_lines.append(f"    {name},")
             stub_lines.append(")")
         else:
-            stub_lines.append(
-                f"from {new_module} import *  # noqa: F401, F403, E402"
-            )
+            stub_lines.append(f"from {new_module} import *  # noqa: F401, F403, E402")
 
         stub_lines.append("")
         src_path.write_text("\n".join(stub_lines), encoding="utf-8")
@@ -401,7 +432,8 @@ def _extract_public_names(file_path: Path) -> list[str]:
                         return [
                             elt.value
                             for elt in node.value.elts
-                            if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
+                            if isinstance(elt, ast.Constant)
+                            and isinstance(elt.value, str)
                         ]
 
     return names
@@ -502,13 +534,17 @@ def main():
     if args.dry_run:
         print("✨ Dry run complete. No changes made.")
         print()
-        print(f"To apply: .venv/bin/python scripts/batch_migrate_modules.py --phase {args.phase}")
+        print(
+            f"To apply: .venv/bin/python scripts/batch_migrate_modules.py --phase {args.phase}"
+        )
     else:
         print(f"✨ Phase {args.phase} migration complete!")
         print()
         print("Next steps:")
         print("  1. Run: cd Python && ../.venv/bin/pytest tests/ -v")
-        print("  2. Run: .venv/bin/python scripts/validate_imports.py --scope structural_lib")
+        print(
+            "  2. Run: .venv/bin/python scripts/validate_imports.py --scope structural_lib"
+        )
         print("  3. Commit: ./scripts/ai_commit.sh 'refactor: phase X migration'")
     print("=" * 60)
 
