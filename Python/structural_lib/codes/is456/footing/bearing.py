@@ -1,19 +1,25 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2024-2026 Pravin Surawase
-"""IS 456:2000 — Footing bearing capacity and sizing per Cl. 34.1.
+"""IS 456:2000 — Footing bearing capacity and sizing per Cl. 34.1, 34.4.
 
 IMPORTANT: Footing SIZING uses SERVICE (unfactored) loads per IS 456 Cl 34.1.
 Structural design (flexure, shear) uses FACTORED loads.
 
 Functions:
     size_footing: Calculate required footing dimensions for bearing capacity
+    bearing_stress_enhancement: Enhanced permissible bearing stress per Cl 34.4
 """
 
 from __future__ import annotations
 
 import math
 
-from structural_lib.core.data_types import FootingBearingResult, FootingType
+from structural_lib.codes.is456.traceability import clause
+from structural_lib.core.data_types import (
+    BearingStressEnhancementResult,
+    FootingBearingResult,
+    FootingType,
+)
 from structural_lib.core.errors import (
     DimensionError,
     ValidationError,
@@ -150,4 +156,75 @@ def size_footing(
         utilization_ratio=utilization,
         is_safe=is_safe,
         warnings=tuple(warnings),
+    )
+
+
+@clause("34.4")
+def bearing_stress_enhancement(
+    fck: float,
+    A1_mm2: float,
+    A2_mm2: float,
+) -> BearingStressEnhancementResult:
+    """Enhanced permissible bearing stress per IS 456 Cl 34.4.
+
+    When the supporting area (largest frustum of the footing) is larger
+    than the loaded area (column footprint), the permissible bearing
+    stress may be enhanced by a factor √(A1/A2), capped at 2.0.
+
+    Args:
+        fck: Characteristic compressive strength of concrete (N/mm²).
+        A1_mm2: Supporting area — largest frustum of the pyramid that fits
+                within the footing and has the loaded area as its upper
+                base (mm²).
+        A2_mm2: Loaded area — column footprint at the footing top (mm²).
+
+    Returns:
+        BearingStressEnhancementResult with enhancement factor and
+        permissible bearing stress.
+
+    Raises:
+        ValidationError: If fck is non-positive.
+        ValidationError: If areas are non-positive.
+        ValidationError: If A1 < A2 (supporting area must be ≥ loaded area).
+
+    References:
+        IS 456:2000 Cl 34.4
+        SP 16:1980 §3.5 — Bearing stress on concrete
+    """
+    # --- Input validation ---
+    if fck <= 0:
+        raise ValidationError(
+            "Concrete strength fck must be positive",
+            details={"fck": fck},
+            clause_ref="Cl. 34.4",
+        )
+    if A1_mm2 <= 0 or A2_mm2 <= 0:
+        raise ValidationError(
+            "Areas A1 and A2 must be positive",
+            details={"A1_mm2": A1_mm2, "A2_mm2": A2_mm2},
+            clause_ref="Cl. 34.4",
+        )
+    if A1_mm2 < A2_mm2:
+        raise ValidationError(
+            "Supporting area A1 must be ≥ loaded area A2",
+            details={"A1_mm2": A1_mm2, "A2_mm2": A2_mm2},
+            clause_ref="Cl. 34.4",
+        )
+
+    # IS 456 Cl 34.4: Basic permissible bearing stress = 0.45 × fck
+    basic_stress_mpa = 0.45 * fck
+
+    # IS 456 Cl 34.4: Enhancement factor = √(A1/A2), capped at 2.0
+    ratio = A1_mm2 / A2_mm2
+    enhancement_factor = min(math.sqrt(ratio), 2.0)
+
+    # IS 456 Cl 34.4: Enhanced permissible bearing stress
+    permissible_stress_mpa = basic_stress_mpa * enhancement_factor
+
+    return BearingStressEnhancementResult(
+        basic_stress_mpa=basic_stress_mpa,
+        enhancement_factor=enhancement_factor,
+        permissible_stress_mpa=permissible_stress_mpa,
+        A1_mm2=A1_mm2,
+        A2_mm2=A2_mm2,
     )

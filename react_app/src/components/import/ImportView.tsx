@@ -24,6 +24,7 @@ import { loadSampleData } from "../../api/client";
 import { mapSampleBeamsToRows } from "../../utils/sampleData";
 import { applyMaterialOverrides } from "../../utils/materialOverrides";
 import { useDualCSVImport } from "../../hooks/useCSVImport";
+import { WorkflowHint } from "../ui/WorkflowHint";
 
 type ImportStep = "upload" | "preview";
 
@@ -92,6 +93,22 @@ export function ImportView() {
         <StepPill active={step === "preview"} done={false} label="2. Preview & Design" />
         <ArrowRight className="w-4 h-4 text-white/20" />
         <StepPill active={false} done={false} label="3. Building Editor" />
+      </div>
+
+      {/* Workflow hint */}
+      <div className="px-6 pb-2">
+        <WorkflowHint
+          stepNumber={step === "upload" ? 1 : 2}
+          totalSteps={3}
+          title={step === "upload" ? "Upload Beam Data" : "Review & Proceed"}
+          description={
+            step === "upload"
+              ? "Upload CSV from ETABS, SAFE, STAAD, or generic format. Use sample data to explore quickly."
+              : "Review imported beams in the table. Proceed to the Building Editor to design all beams."
+          }
+          nextAction={step === "upload" ? "Upload CSV or Load Sample" : "Go to Building Editor"}
+          storageKey="workflow_hint_import_view"
+        />
       </div>
 
       {step === "upload" ? (

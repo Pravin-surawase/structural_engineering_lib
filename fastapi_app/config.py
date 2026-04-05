@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     ]
 
     # Authentication
+    # WARNING: Set AUTH_ENABLED=true in production deployments
     auth_enabled: bool = False
 
     # Rate Limiting

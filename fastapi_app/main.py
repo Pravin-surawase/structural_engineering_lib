@@ -237,22 +237,13 @@ app.add_middleware(
 # CORS Middleware Configuration
 # =============================================================================
 
-# Allow all origins in development; restrict in production
-ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React dev server
-    "http://localhost:5173",  # Vite dev server
-    "http://localhost:8080",  # Alternative dev server
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:8080",
-]
-
+# Origins are configurable via CORS_ORIGINS env var; defaults defined in config.py
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type", "X-Request-ID", "Accept"],
+    allow_origins=_settings.cors_origins,
+    allow_credentials=_settings.cors_allow_credentials,
+    allow_methods=_settings.cors_allow_methods,
+    allow_headers=_settings.cors_allow_headers,
     expose_headers=["X-Request-ID", "X-Process-Time"],
     max_age=600,  # Cache preflight requests for 10 minutes
 )

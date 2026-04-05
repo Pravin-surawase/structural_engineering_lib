@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
+from pydantic import BaseModel, Field, ValidationError
 
 # Import structural_lib API with proper signature discovery
 # See: scripts/discover_api_signatures.py design_beam_is456
@@ -180,6 +181,46 @@ async def design_websocket(
 
 
 # =============================================================================
+# WebSocket Message Pydantic Models
+# =============================================================================
+
+
+class WSDesignParams(BaseModel):
+    """Validated parameters for design_beam WebSocket messages."""
+
+    width: float = Field(default=300, ge=100, le=2000, description="Beam width in mm")
+    depth: float = Field(
+        default=500, ge=150, le=3000, description="Overall beam depth in mm"
+    )
+    moment: float = Field(default=100, ge=0, description="Factored moment Mu in kN·m")
+    shear: float = Field(default=50, ge=0, description="Factored shear Vu in kN")
+    fck: float = Field(
+        default=25, ge=15, le=80, description="Concrete strength fck in N/mm²"
+    )
+    fy: float = Field(
+        default=500, ge=250, le=600, description="Steel yield strength fy in N/mm²"
+    )
+    cover: float = Field(default=40, ge=20, le=75, description="Clear cover in mm")
+
+
+class WSCheckParams(BaseModel):
+    """Validated parameters for check_beam WebSocket messages."""
+
+    width: float = Field(default=300, ge=100, le=2000, description="Beam width in mm")
+    depth: float = Field(
+        default=500, ge=150, le=3000, description="Overall beam depth in mm"
+    )
+    fck: float = Field(
+        default=25, ge=15, le=80, description="Concrete strength fck in N/mm²"
+    )
+    fy: float = Field(
+        default=500, ge=250, le=600, description="Steel yield strength fy in N/mm²"
+    )
+    cover: float = Field(default=40, ge=20, le=75, description="Clear cover in mm")
+    cases: list[dict[str, Any]] = Field(default_factory=list, description="Load cases")
+
+
+# =============================================================================
 # Message Handlers
 # =============================================================================
 
@@ -198,32 +239,27 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     """
     start_time = datetime.now(timezone.utc)
 
-    # Map user-friendly params to library params
-    # User sends: width, depth, moment, fck, fy
-    # Library needs: b_mm, D_mm, d_mm, mu_knm, vu_kn, fck_nmm2, fy_nmm2
-
-    width = params.get("width", 300)
-    depth = params.get("depth", 500)
-    moment = params.get("moment", 100)
-    shear = params.get("shear", 50)
-    fck = params.get("fck", 25)
-    fy = params.get("fy", 500)
-    cover = params.get("cover", 40)
+    # Validate input with Pydantic
+    try:
+        validated = WSDesignParams(**params)
+    except ValidationError as e:
+        await manager.send_json(session_id, {"type": "error", "message": str(e)})
+        return
 
     # Calculate effective depth
-    d_mm = depth - cover - 8  # Assuming 8mm stirrup + half bar
+    d_mm = validated.depth - validated.cover - 8  # Assuming 8mm stirrup + half bar
 
     # Run design calculation in thread pool (non-blocking)
     result = await asyncio.to_thread(
         api.design_beam_is456,
         units="IS456",
-        b_mm=float(width),
-        D_mm=float(depth),
+        b_mm=float(validated.width),
+        D_mm=float(validated.depth),
         d_mm=float(d_mm),
-        mu_knm=float(moment),
-        vu_kn=float(shear),
-        fck_nmm2=float(fck),
-        fy_nmm2=float(fy),
+        mu_knm=float(validated.moment),
+        vu_kn=float(validated.shear),
+        fck_nmm2=float(validated.fck),
+        fy_nmm2=float(validated.fy),
     )
 
     # Calculate response time
@@ -264,31 +300,31 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
     """
     start_time = datetime.now(timezone.utc)
 
-    width = params.get("width", 300)
-    depth = params.get("depth", 500)
-    fck = params.get("fck", 25)
-    fy = params.get("fy", 500)
-    cover = params.get("cover", 40)
-    cases = params.get("cases", [])
+    # Validate input with Pydantic
+    try:
+        validated = WSCheckParams(**params)
+    except ValidationError as e:
+        await manager.send_json(session_id, {"type": "error", "message": str(e)})
+        return
 
-    if not cases:
+    if not validated.cases:
         await manager.send_json(
             session_id, {"type": "error", "message": "No load cases provided"}
         )
         return
 
-    d_mm = depth - cover - 8
+    d_mm = validated.depth - validated.cover - 8
 
     # Run check in thread pool
     result = await asyncio.to_thread(
         api.check_beam_is456,
         units="IS456",
-        cases=cases,
-        b_mm=float(width),
-        D_mm=float(depth),
+        cases=validated.cases,
+        b_mm=float(validated.width),
+        D_mm=float(validated.depth),
         d_mm=float(d_mm),
-        fck_nmm2=float(fck),
-        fy_nmm2=float(fy),
+        fck_nmm2=float(validated.fck),
+        fy_nmm2=float(validated.fy),
     )
 
     end_time = datetime.now(timezone.utc)

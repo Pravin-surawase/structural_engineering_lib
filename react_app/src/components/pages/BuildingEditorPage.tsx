@@ -34,6 +34,7 @@ import { BeamDetailPanel } from "../design/BeamDetailPanel";
 import { useSimpleBatchDesign, useExportBuildingSummary } from "../../hooks";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
+import { WorkflowHint } from "../ui/WorkflowHint";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -483,6 +484,22 @@ export function BuildingEditorPage() {
             {showSidebar ? <PanelRightClose className="w-4 h-4" /> : <PanelRightOpen className="w-4 h-4" />}
           </button>
         </div>
+      </div>
+
+      {/* Workflow hint */}
+      <div className="px-4 pt-3 pb-2">
+        <WorkflowHint
+          stepNumber={selectedId ? 3 : 1}
+          totalSteps={3}
+          title={selectedId ? "View Beam Details" : "Select & Design Beams"}
+          description={
+            selectedId
+              ? "Click a beam in the table to view details. Use 'Design All' to batch-design all beams, or click individual rows."
+              : "Select global materials (M-grade, Fe-grade) above. Click 'Design All' to run batch design on all beams."
+          }
+          nextAction={selectedId ? "Export → BBS/DXF/Report" : "Click 'Design All'"}
+          storageKey="workflow_hint_building_editor"
+        />
       </div>
 
       {/* Material strip + progress */}
