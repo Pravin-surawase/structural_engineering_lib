@@ -1514,6 +1514,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#notes-for-next-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes for Next Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#audit-status" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1564,28 +1575,33 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> v0.21.3 released — ALL 23 EA findings resolved, docs updated</p>
+<strong>Last Session:</strong> Quality control overhaul — 4 new skills, 12 agent updates, 46 dev rules, 3-level quality gates</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>v0.21.3 released</strong> — External Audit Fixes release</li>
-<li><strong>All 23 external audit findings fixed</strong> (EA-1 through EA-23):</li>
-<li>Security: rate limiter, error sanitization, WS validation, CORS settings, auth warning</li>
-<li>Testing: API stability tests, import silence, e2e pipeline, repo_only marker</li>
-<li>API: <code>build_detailing_input()</code>, <code>.to_dict()</code>, <code>compute_report()</code> documented</li>
-<li>IS 456: torsion D_mm, bearing_stress_enhancement (Cl 34.4), check_scwb (IS 13920 Cl 7.2.1)</li>
-<li>Frontend: WorkflowHint, BeamForm validation</li>
-<li>Docs: api-levels.md, task-oriented README, e2e example script</li>
-<li>Infra: lazy module loading, CI publish fix</li>
-<li><strong>Full doc update:</strong> CHANGELOG, releases.md, TASKS.md, version refs synced to 0.21.3</li>
+<li><strong>Quality control overhaul</strong> (docs-only, root cause analysis of 70+ issues across v0.21.0-v0.21.3):</li>
+<li>4 new skills: <code>release-preflight</code>, <code>user-acceptance-test</code>, <code>quality-gate</code>, <code>development-rules</code></li>
+<li>12 agent files updated with development rules + skill references (orchestrator, doc-master, agent-evolver, reviewer, tester, backend, api-developer, frontend, security, structural-math, ops, governance)</li>
+<li>46 hard-learned development rules across 7 domains (Python, FastAPI, React, testing, security, git, docs)</li>
+<li>3-level quality gates (commit, PR, release) codified in skill</li>
+<li><code>session-end.prompt.md</code> upgraded to 9 steps with mandatory evolution check</li>
+<li>Global configs updated: <code>AGENTS.md</code>, <code>copilot-instructions.md</code>, <code>CLAUDE.md</code>, <code>agent-bootstrap.md</code>, <code>skill_tiers.json</code></li>
+<li><strong>v0.21.3 released</strong> (prior session) — all 23 EA findings resolved</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
+<li><strong>Begin coding work per TASKS.md</strong> — use new quality gates in practice</li>
 <li><strong>v0.22 work:</strong> AI assistant port, learning center, Streamlit deprecation</li>
 <li><strong>TASK-526:</strong> TopBar context badges + settings panel</li>
 <li><strong>TASK-527:</strong> Workflow breadcrumb for batch flow</li>
 <li><strong>Library expansion:</strong> Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)</li>
 <li><strong>Test coverage:</strong> Report/3D tests (TASK-520)</li>
 </ol>
+<h2 id="notes-for-next-agent">Notes for Next Agent<a class="headerlink" href="#notes-for-next-agent" title="Permanent link">&para;</a></h2>
+<ul>
+<li>All 12 agent files now have development rules — verify they're being followed in the next coding session</li>
+<li>New skills (<code>/quality-gate</code>, <code>/release-preflight</code>, <code>/user-acceptance-test</code>, <code>/development-rules</code>) should be invoked during PR and release workflows</li>
+<li>Agent evolver integration is mandatory every session (<code>./run.sh evolve --status</code>)</li>
+</ul>
 <h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
 <ul>
 <li>All P0: ✅ resolved</li>
