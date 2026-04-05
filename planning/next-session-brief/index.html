@@ -1546,30 +1546,24 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> TASK-CIFIX — CI failure fixes + ops hardening + WORKLOG cleanup</p>
+<strong>Last Session:</strong> v0.21.1 release — audit fixes, accessibility, CI hardening, column bug fix</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>TASK-CIFIX: CI Fix Session</strong></li>
-<li>Fixed React Validation CI failure: added 5 hook mocks to DesignView.test.tsx (<code>useExportBBS</code>, <code>useExportDXF</code>, <code>useExportReport</code>, <code>useTorsionDesign</code>, <code>useLoadAnalysis</code>). All 118 tests pass.</li>
-<li>Fixed Docker Build CI failure: added <code>JWT_SECRET_KEY</code> env var to <code>docker-build.yml</code> validation step</li>
-<li>Updated <code>ops.agent.md</code>: 4 additions (FORBIDDEN rule, HARD RULE section, Error Recovery row, Historical Mistake #14) to prevent CI bypass</li>
-<li>Removed <code>finish_task_pr.sh</code> escape hatch at lines 253 and 410 — no longer recommends "Merge manually"</li>
-<li>Cleaned WORKLOG: 26 pending entries resolved with commit hashes</li>
-<li>Removed dead code: <code>createTestWrapper.tsx</code> (unused)</li>
-<li><strong>TASK-CIFIX2 (PR #522, follow-up to #521):</strong> Closed remaining CI bypass escape hatches in <code>finish_task_pr.sh</code> (warnings) and synced global FORBIDDEN commands across all instruction files</li>
-<li>ALL 20 P1 findings previously resolved</li>
-<li>ALL 5 P0 findings previously resolved</li>
-<li>P2: 38/52 resolved (73%) — Batches 1-5 + 3 closures</li>
+<li><strong>v0.21.1 Released</strong> — Patch release with audit fixes (B- → B+), accessibility, CI hardening, column <code>is_safe</code> rounding fix</li>
+<li>All P0 (5/5) and P1 (20/20) audit findings resolved</li>
+<li>P2: 38/52 resolved (73%) — Batches 1-5 complete</li>
+<li>CI bypass escape hatches closed in <code>finish_task_pr.sh</code></li>
+<li>React Validation CI and Docker Build CI failures fixed</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>P2 audit: 14 remaining items (was 20, minus 6 fixed in Batch 5 + 1 CI fix) — consider Batch 6 planning</li>
-<li>React test infrastructure: consider shared test utilities if future tests need <code>QueryClientProvider</code></li>
-<li>Release 0.22.0 planning</li>
+<li><strong>v0.22 planning</strong> — Full React migration + AI assistant + remaining UX tasks</li>
+<li>P2 audit: 14 remaining items — consider Batch 6 planning</li>
 <li>Wire footing functions into services/api.py</li>
 <li>TASK-527: TopBar context badges + SettingsPanel</li>
 <li>TASK-528: Workflow breadcrumb for batch flow</li>
 <li>TASK-516: Triangular + Moment loads</li>
+<li>React test infrastructure: consider shared test utilities</li>
 </ol>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1580,7 +1574,7 @@
 <li>P0: 5/5 resolved ✅</li>
 <li>P1: 20/20 resolved ✅</li>
 <li>P2: 38/52 resolved (73%)</li>
-<li>Overall grade: A (8.5/10)</li>
+<li>Overall grade: B+ (audit), A (8.5/10 health)</li>
 </ul>
 
 

@@ -1520,6 +1520,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0211" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0210" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2220,6 +2231,22 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0211">v0.21.1<a class="headerlink" href="#v0211" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-04-05
+<strong>Status:</strong> ✅ Locked &amp; Verified
+<strong>Mindset:</strong> Audit Hardening + Accessibility + CI Reliability</p>
+<p><strong>Key Changes:</strong></p>
+<p><strong>Fixed - Column Design Bug:</strong>
+- Column uniaxial <code>is_safe</code> rounding consistency — flag now computed from the same rounded <code>utilization_ratio</code> displayed to users, preventing edge-case inconsistency at utilization ≈ 1.0</p>
+<p><strong>Fixed - CI Hardening:</strong>
+- Closed remaining escape hatches in <code>finish_task_pr.sh</code> that could allow merging with failing CI checks
+- Fixed React Validation CI (added hook mocks) and Docker Build CI (JWT_SECRET_KEY env var)</p>
+<p><strong>Improved - Audit Grade B- → B+:</strong>
+- Resolved all 5 P0 findings, all 20 P1 findings, and 38/52 P2 findings
+- Input validation hardening with enhanced boundary checks across structural modules
+- Accessibility improvements: ARIA labels, skip-to-content link, keyboard navigation
+- P2 batch fixes (Batches 1-5) covering error handling, documentation, test coverage</p>
 <hr />
 <h2 id="v0210">v0.21.0<a class="headerlink" href="#v0210" title="Permanent link">&para;</a></h2>
 <p><strong>Date:</strong> 2026-04-04
