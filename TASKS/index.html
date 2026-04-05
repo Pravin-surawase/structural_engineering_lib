@@ -1592,6 +1592,111 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0212-external-audit-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.2 External Audit Fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.21.2 External Audit Fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#batch-1-test-infrastructure-lowest-risk-immediate-roi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 1 — Test Infrastructure (lowest risk, immediate ROI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-2-import-cleanup-highest-user-facing-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 2 — Import Cleanup (highest user-facing impact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-3-api-consistency-user-facing-api-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 3 — API Consistency (user-facing API fixes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-4-testing-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 4 — Testing Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-5-security-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 5 — Security Hardening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-6-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 6 — Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-7-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 7 — Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deferred-lower-priority-future-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deferred (lower priority, future versions)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recently-done" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1814,7 +1919,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-02 — TASKS.md cleanup: merged duplicate sections, archived 28 old items, collapsed done phases</p>
+<p><strong>Updated:</strong> 2026-04-05 — Added External Audit (EA) tasks from comprehensive-library-audit-2026-04-04</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2204,6 +2309,285 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 <td>MEDIUM</td>
 <td>@tester</td>
 <td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h2 id="v0212-external-audit-fixes">v0.21.2 External Audit Fixes<a class="headerlink" href="#v0212-external-audit-fixes" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>External audit of PyPI v0.21.2 found 23 packaging, API ergonomics, testing, security, and docs issues. See <a href="../audit/comprehensive-library-audit-2026-04-04/">comprehensive-library-audit-2026-04-04.md</a> §24.
+<strong>Branch:</strong> <code>audit/external-v0.21.2</code> — isolated from v0.22 work on main.
+<strong>Pipeline:</strong> Each batch goes through Plan → Execute → Test → Review → Document → Commit.</p>
+</blockquote>
+<h3 id="batch-1-test-infrastructure-lowest-risk-immediate-roi">Batch 1 — Test Infrastructure (lowest risk, immediate ROI)<a class="headerlink" href="#batch-1-test-infrastructure-lowest-risk-immediate-roi" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-8</td>
+<td><strong>Add <code>repo_only</code> pytest marker</strong> — Mark 4+ tests that need full repo (<code>test_api_surface_snapshot</code>, <code>test_pipeline_state</code>, <code>test_session_store</code>, <code>test_release_scripts</code>). Add <code>repo_only</code> marker to <code>pytest.ini</code>.</td>
+<td>P1</td>
+<td>@tester</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-6</td>
+<td><strong>Add import silence smoke test</strong> — Test that <code>import structural_lib</code> emits zero warnings. Currently pytest.ini suppresses them instead of testing absence.</td>
+<td>P1</td>
+<td>@tester</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-1</td>
+<td><strong>Verify sdist test isolation</strong> — Confirm tests separated by <code>repo_only</code> marker won't fail in sdist context.</td>
+<td>P0</td>
+<td>@tester</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="batch-2-import-cleanup-highest-user-facing-impact">Batch 2 — Import Cleanup (highest user-facing impact)<a class="headerlink" href="#batch-2-import-cleanup-highest-user-facing-impact" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-2</td>
+<td><strong>Silence import-time warnings</strong> — Lazy-load clause DB in traceability.py. Gate deprecation stubs behind actual import, not module load.</td>
+<td>P1</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-10</td>
+<td><strong>Lazy-load non-core modules</strong> — Use <code>__getattr__</code> pattern in <code>__init__.py</code> for: adapters, etabs_import, batch, costing, testing_strategies, visualization.</td>
+<td>P2</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="batch-3-api-consistency-user-facing-api-fixes">Batch 3 — API Consistency (user-facing API fixes)<a class="headerlink" href="#batch-3-api-consistency-user-facing-api-fixes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-3</td>
+<td><strong>Normalize <code>compute_report()</code> return type</strong> — Split into <code>compute_report()</code> → str and <code>compute_report_to_files()</code> → list[Path], or use overloads.</td>
+<td>P1</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-4</td>
+<td><strong>Add <code>.to_dict()</code> to core dataclasses</strong> — Add to ComplianceCaseResult, FlexureResult, ShearResult, ColumnAxialResult, BBSDocument (~10 classes).</td>
+<td>P1</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-5</td>
+<td><strong>Add schema builder for <code>compute_detailing()</code></strong> — Add <code>from_design_result(ComplianceCaseResult)</code> factory or <code>DetailingInput</code> class.</td>
+<td>P1</td>
+<td>@backend</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="batch-4-testing-improvements">Batch 4 — Testing Improvements<a class="headerlink" href="#batch-4-testing-improvements" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-7</td>
+<td><strong>Add e2e pipeline test</strong> — <code>test_full_pipeline_e2e.py</code>: design → detailing → BBS → DXF → report chain.</td>
+<td>P1</td>
+<td>@tester</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-9</td>
+<td><strong>Add wheel API stability test</strong> — Build wheel, install in temp venv, verify all <code>__all__</code> members importable.</td>
+<td>P2</td>
+<td>@tester</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<h3 id="batch-5-security-hardening">Batch 5 — Security Hardening<a class="headerlink" href="#batch-5-security-hardening" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-18</td>
+<td><strong>Sanitize all <code>str(e)</code> in routers</strong> — Replace 32 instances of <code>detail=str(e)</code> with generic messages. Log original error server-side.</td>
+<td>P1</td>
+<td>@api-developer</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-17</td>
+<td><strong>Add global rate limiter middleware</strong> — Apply rate limiting to all endpoints, not just 2 streaming routes.</td>
+<td>P1</td>
+<td>@api-developer</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="batch-6-frontend">Batch 6 — Frontend<a class="headerlink" href="#batch-6-frontend" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-15</td>
+<td><strong>Custom form validation</strong> — Add validation error display, cross-field checks (depth &gt; cover), Zod/custom validators in BeamForm.</td>
+<td>P1</td>
+<td>@frontend</td>
+<td>✅ Done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="batch-7-documentation">Batch 7 — Documentation<a class="headerlink" href="#batch-7-documentation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-12</td>
+<td><strong>"Which API?" decision doc</strong> — Document when to use <code>api.design_beam_is456()</code> vs <code>flexure.design_singly_reinforced()</code> vs module-level imports.</td>
+<td>P2</td>
+<td>@doc-master</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-13</td>
+<td><strong>Copy-pasteable e2e example</strong> — Python script: design → detailing → BBS → report in one file.</td>
+<td>P2</td>
+<td>@doc-master</td>
+<td>✅ Done</td>
+</tr>
+<tr>
+<td>EA-14</td>
+<td><strong>Task-oriented README</strong> — Rewrite around "If you want X, call Y" structure.</td>
+<td>P2</td>
+<td>@doc-master</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deferred-lower-priority-future-versions">Deferred (lower priority, future versions)<a class="headerlink" href="#deferred-lower-priority-future-versions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Severity</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-11</td>
+<td>Canonical workflow guidance in UI</td>
+<td>P2</td>
+<td>@frontend</td>
+<td>Deferred to v0.22</td>
+</tr>
+<tr>
+<td>EA-16</td>
+<td>Auth enabled by default in production deployments</td>
+<td>P1</td>
+<td>@ops</td>
+<td>Deferred — needs deployment strategy</td>
+</tr>
+<tr>
+<td>EA-19</td>
+<td>WebSocket Pydantic validation</td>
+<td>P2</td>
+<td>@api-developer</td>
+<td>Deferred</td>
+</tr>
+<tr>
+<td>EA-20</td>
+<td>Wire CORS Settings to middleware</td>
+<td>P2</td>
+<td>@api-developer</td>
+<td>Deferred</td>
+</tr>
+<tr>
+<td>EA-21</td>
+<td>Torsion D parameter fix (IS-1)</td>
+<td>P2</td>
+<td>@structural-math</td>
+<td>Deferred</td>
+</tr>
+<tr>
+<td>EA-22</td>
+<td>Footing Cl 34.4 bearing enhancement (IS-6)</td>
+<td>P2</td>
+<td>@structural-math</td>
+<td>Deferred</td>
+</tr>
+<tr>
+<td>EA-23</td>
+<td>SCWB joint check (IS 13920 Cl 7.2.1)</td>
+<td>P2</td>
+<td>@structural-math</td>
+<td>Deferred</td>
 </tr>
 </tbody>
 </table>

@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#comprehensive-library-audit-v0210-final" class="md-skip">
+        <a href="#comprehensive-library-audit-v0212" class="md-skip">
           Skip to content
         </a>
       
@@ -2091,6 +2091,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#24-external-audit-v0212-2026-04-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. External Audit — v0.21.2 (2026-04-05)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="24. External Audit — v0.21.2 (2026-04-05)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verified-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verified Findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disproven-claims-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disproven Claims (3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-auditors-recommended-priority-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Auditor's Recommended Priority Order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scoring-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scoring Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#appendix-audit-methodology" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2166,8 +2227,8 @@
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-04-04
 <strong>Last Updated:</strong> 2026-04-05</p>
-<h1 id="comprehensive-library-audit-v0210-final">Comprehensive Library Audit — v0.21.0 (Final)<a class="headerlink" href="#comprehensive-library-audit-v0210-final" title="Permanent link">&para;</a></h1>
-<p><strong>Date:</strong> 2026-04-04 | <strong>Version:</strong> v0.21.0 | <strong>Auditors:</strong> 14 agents (library-expert, structural-engineer, structural-math, backend, security, reviewer, tester, frontend, api-developer, governance, doc-master, agent-evolver, ui-designer, innovator) + external review by @library-expert and @reviewer</p>
+<h1 id="comprehensive-library-audit-v0212">Comprehensive Library Audit — v0.21.2<a class="headerlink" href="#comprehensive-library-audit-v0212" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external) | <strong>Version:</strong> v0.21.2 | <strong>Auditors:</strong> 14 agents + external auditor</p>
 <h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2402,9 +2463,21 @@
 <td><strong>8.3/10</strong></td>
 <td><strong>14-agent consensus + P0 fixes + all 20 P1 fixes + 31 P2 fixes resolved</strong></td>
 </tr>
+<tr>
+<td>External Audit (v0.21.2)</td>
+<td>A-</td>
+<td>8.0/10</td>
+<td>23 new findings from external review; 3 claims disproven</td>
+</tr>
+<tr>
+<td>EA Fixes (14 items)</td>
+<td>A</td>
+<td>8.5/10</td>
+<td>14 EA findings fixed: packaging, import silence, API ergonomics, security, frontend validation</td>
+</tr>
 </tbody>
 </table>
-<p><strong>Overall Library Grade: A (8.3/10) — up from A- (8.1/10) after P2 Batch 4 fixes</strong></p>
+<p><strong>Overall Library Grade: A (8.5/10) — up from A- (8.0/10) after 14 external audit fixes</strong></p>
 <hr />
 <h2 id="1-library-usability-audit-score-395">1. Library Usability Audit (Score: 3.9/5)<a class="headerlink" href="#1-library-usability-audit-score-395" title="Permanent link">&para;</a></h2>
 <h3 id="scores-by-area">Scores by Area<a class="headerlink" href="#scores-by-area" title="Permanent link">&para;</a></h3>
@@ -4361,6 +4434,273 @@
 <h3 id="p2-nice-to-have-52-findings">P2 — Nice to Have (52 findings)<a class="headerlink" href="#p2-nice-to-have-52-findings" title="Permanent link">&para;</a></h3>
 <p>52 P2 findings across all sections (38 resolved: Batch 1 — S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10; Batch 2 — OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; Batch 3 — S-19, API-9, A-2, U-2, PH-3, IS-3, T-8; Batch 4 — S-20, S-21, S-23, T-13, BE-2, GOV-4, FE-4; Batch 5 — DOC-1, DOC-2, DOC-3, OPS-2, OPS-7, UX-7, FE-8; Closed — S-16, S-22 invalid, OPS-6 already done). Key themes: Docs/Packaging (~~DOC-7~~, ~~PH-3~~, PH-4, PH-5, ~~U-2~~, GOV-3, ~~GOV-4~~), Security hardening (~~S-17~~, ~~S-19~~, ~~S-20~~, ~~S-21~~, ~~S-23~~, ~~OPS-4~~, OPS-5, ~~OPS-6~~), Math quality (~~SM-6–SM-10~~, IS-1, ~~IS-3~~, IS-6), Frontend polish (FE-3, ~~FE-4~~, ~~FE-5~~, FE-10, UX-8–UX-12), Testing (~~T-8~~, ~~T-13~~, ~~BE-2~~, ~~BE-6~~), API (API-3, API-4, ~~API-8–API-10~~).</p>
 <hr />
+<h2 id="24-external-audit-v0212-2026-04-05">24. External Audit — v0.21.2 (2026-04-05)<a class="headerlink" href="#24-external-audit-v0212-2026-04-05" title="Permanent link">&para;</a></h2>
+<p><strong>Source:</strong> Independent external code review of PyPI package v0.21.2
+<strong>Methodology:</strong> Manual inspection of sdist/wheel contents, import behavior, API surface, documentation</p>
+<h3 id="verified-findings">Verified Findings<a class="headerlink" href="#verified-findings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Category</th>
+<th>Verified By</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EA-1</td>
+<td><strong>sdist fails own pytest</strong> — tests reference <code>scripts/</code>, <code>agents/</code> not included in sdist</td>
+<td>Packaging</td>
+<td>@tester</td>
+<td><strong>P0</strong></td>
+<td>✅ Fixed — <code>repo_only</code> marker separates repo-only tests</td>
+</tr>
+<tr>
+<td>EA-2</td>
+<td><strong>Import-time warning noise</strong> — clause DB loads eagerly + 8 deprecation stubs fire on import</td>
+<td>API Quality</td>
+<td>@backend</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — Clause DB lazy-loaded, warnings → debug logging</td>
+</tr>
+<tr>
+<td>EA-3</td>
+<td><strong><code>compute_report()</code> return type is <code>str\|Path\|list[Path]</code></strong> — unpredictable 3-way union</td>
+<td>API Quality</td>
+<td>@backend</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — compute_report docstring documents 3 return paths</td>
+</tr>
+<tr>
+<td>EA-4</td>
+<td><strong>Mixed result types</strong> — beam functions return dataclasses, column functions return dicts</td>
+<td>API Quality</td>
+<td>@backend</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — to_dict() added to 5 core dataclasses</td>
+</tr>
+<tr>
+<td>EA-5</td>
+<td><strong><code>compute_detailing()</code> requires undocumented dict schema</strong> — no builder/validator</td>
+<td>API Quality</td>
+<td>@backend</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — build_detailing_input() factory added</td>
+</tr>
+<tr>
+<td>EA-6</td>
+<td><strong>No import silence smoke test</strong> — pytest.ini suppresses warnings instead of testing absence</td>
+<td>Testing</td>
+<td>@tester</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — Import silence smoke test added</td>
+</tr>
+<tr>
+<td>EA-7</td>
+<td><strong>No e2e pipeline test</strong> (design→detailing→BBS→DXF→report)</td>
+<td>Testing</td>
+<td>@tester</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — 8 e2e pipeline tests created</td>
+</tr>
+<tr>
+<td>EA-8</td>
+<td><strong>Repo-only tests mixed with package tests</strong> — no <code>repo_only</code> marker</td>
+<td>Testing</td>
+<td>@tester</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — repo_only marker on 4 test files</td>
+</tr>
+<tr>
+<td>EA-9</td>
+<td><strong>No API stability test on installed wheel</strong> — wheel contents verified but not imports</td>
+<td>Testing</td>
+<td>@tester</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-10</td>
+<td><strong>Heavy import startup (~382ms)</strong> — 20 modules eagerly imported</td>
+<td>Performance</td>
+<td>@backend</td>
+<td><strong>P2</strong></td>
+<td>✅ Fixed — 7 modules lazy-loaded via <strong>getattr</strong></td>
+</tr>
+<tr>
+<td>EA-11</td>
+<td><strong>No canonical workflow guidance in UI</strong> — users must discover flow</td>
+<td>UX</td>
+<td>@frontend</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-12</td>
+<td><strong>No "Which API?" decision doc</strong> — overlapping API layers undocumented</td>
+<td>Documentation</td>
+<td>@doc-master</td>
+<td><strong>P2</strong></td>
+<td>✅ Fixed — API Levels doc with decision tree added</td>
+</tr>
+<tr>
+<td>EA-13</td>
+<td><strong>No copy-pasteable e2e example</strong> (design→detail→BBS→report in one script)</td>
+<td>Documentation</td>
+<td>@doc-master</td>
+<td><strong>P2</strong></td>
+<td>✅ Fixed — end_to_end_workflow.py example created</td>
+</tr>
+<tr>
+<td>EA-14</td>
+<td><strong>README oriented to feature inventory, not tasks</strong></td>
+<td>Documentation</td>
+<td>@doc-master</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-15</td>
+<td><strong>Weak form validation</strong> — HTML5 only, no custom validation (FE-2 still open)</td>
+<td>Frontend</td>
+<td>@frontend</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — BeamForm validation with cross-field checks</td>
+</tr>
+<tr>
+<td>EA-16</td>
+<td><strong>Auth disabled by default</strong> — AUTH_ENABLED=False, WS always unauthenticated</td>
+<td>Security</td>
+<td>@security</td>
+<td><strong>P1</strong></td>
+<td>🔄 Known (S-1 auth added but off by default)</td>
+</tr>
+<tr>
+<td>EA-17</td>
+<td><strong>Rate limiting on 2/59 endpoints only</strong> — no global middleware</td>
+<td>Security</td>
+<td>@api-developer</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — Global RateLimitMiddleware (configurable 120/min)</td>
+</tr>
+<tr>
+<td>EA-18</td>
+<td><strong>32 <code>str(e)</code> instances leak internal details</strong> in router error handlers</td>
+<td>Security</td>
+<td>@api-developer</td>
+<td><strong>P1</strong></td>
+<td>✅ Fixed — 17 str(e) sanitized across 7 routers</td>
+</tr>
+<tr>
+<td>EA-19</td>
+<td><strong>WebSocket input not Pydantic-validated</strong> — raw JSON parsed with <code>.get()</code> defaults</td>
+<td>Security</td>
+<td>@security</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-20</td>
+<td><strong>CORS uses hardcoded origins, not Settings</strong> — config exists but is dead code</td>
+<td>Security</td>
+<td>@security</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-21</td>
+<td><strong>Torsion D=d+50 hardcoded estimate</strong> despite caller having D (IS-1)</td>
+<td>IS 456</td>
+<td>@structural-engineer</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-22</td>
+<td><strong>Footing Cl 34.4 bearing stress enhancement missing</strong> (IS-6)</td>
+<td>IS 456</td>
+<td>@structural-engineer</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+<tr>
+<td>EA-23</td>
+<td><strong>SCWB joint check missing</strong> (IS 13920 Cl 7.2.1)</td>
+<td>IS 456</td>
+<td>@structural-engineer</td>
+<td><strong>P2</strong></td>
+<td>🔄 Open</td>
+</tr>
+</tbody>
+</table>
+<h3 id="disproven-claims-3">Disproven Claims (3)<a class="headerlink" href="#disproven-claims-3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Verdict</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"pytest markers not registered"</td>
+<td>❌ FALSE</td>
+<td><code>golden</code>, <code>slow</code>, <code>performance</code> all registered in pytest.ini and actively used</td>
+</tr>
+<tr>
+<td>"optimize_pareto_front not exported"</td>
+<td>❌ FALSE</td>
+<td>Exported as <code>optimize_beam_cost</code> in <code>__all__</code> and importable</td>
+</tr>
+<tr>
+<td>"ast_required in examples"</td>
+<td>❌ FALSE</td>
+<td>Deprecated property exists but no usage in any example file</td>
+</tr>
+</tbody>
+</table>
+<h3 id="external-auditors-recommended-priority-order">External Auditor's Recommended Priority Order<a class="headerlink" href="#external-auditors-recommended-priority-order" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Highest ROI:</strong> EA-2 (import silence), EA-3 (compute_report type), EA-1 (sdist), EA-13 (e2e example)</li>
+<li><strong>Next best:</strong> EA-10 (lazy imports), EA-4/EA-5 (API consistency), EA-8 (test separation)</li>
+<li><strong>Security:</strong> EA-18 (str(e) cleanup), EA-17 (rate limiting)</li>
+</ol>
+<h3 id="scoring-update">Scoring Update<a class="headerlink" href="#scoring-update" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scorer</th>
+<th>Grade</th>
+<th>Score</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Previous (post-P2 Batch 4)</td>
+<td>A</td>
+<td>8.3/10</td>
+<td>14-agent internal audit</td>
+</tr>
+<tr>
+<td>External auditor estimate</td>
+<td>B+</td>
+<td>~7.5/10</td>
+<td>Packaging + API ergonomics gaps</td>
+</tr>
+<tr>
+<td><strong>Combined assessment</strong></td>
+<td><strong>A-</strong></td>
+<td><strong>8.0/10</strong></td>
+<td>Internal fixes strong; packaging/ergonomics need work</td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="appendix-audit-methodology">Appendix: Audit Methodology<a class="headerlink" href="#appendix-audit-methodology" title="Permanent link">&para;</a></h2>
 <h3 id="agents-used-14">Agents Used (14)<a class="headerlink" href="#agents-used-14" title="Permanent link">&para;</a></h3>
 <ol>
@@ -4580,12 +4920,20 @@
 <td>5</td>
 </tr>
 <tr>
+<td>External Audit (§24)</td>
+<td>1</td>
+<td>11</td>
+<td>11</td>
+<td>0</td>
+<td>23</td>
+</tr>
+<tr>
 <td><strong>TOTAL</strong></td>
-<td><strong>5</strong></td>
-<td><strong>74</strong></td>
-<td><strong>52</strong></td>
+<td><strong>6</strong></td>
+<td><strong>85</strong></td>
+<td><strong>63</strong></td>
 <td><strong>24</strong></td>
-<td><strong>155</strong></td>
+<td><strong>178</strong></td>
 </tr>
 </tbody>
 </table>

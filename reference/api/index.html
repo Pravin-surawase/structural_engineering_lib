@@ -3067,6 +3067,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api-levels-which-should-i-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Levels — Which Should I Use?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Levels — Which Should I Use?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#level-1-high-level-api-api-recommended-for-most-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1: High-Level API (api.*) — Recommended for most users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-2-module-level-functions-for-specific-calculations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2: Module-Level Functions — For specific calculations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-3-direct-code-functions-for-advancedresearch-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3: Direct Code Functions — For advanced/research use
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5716,6 +5777,67 @@
     <span class="md-ellipsis">
       
         17.5 Usage Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-levels-which-should-i-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Levels — Which Should I Use?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Levels — Which Should I Use?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#level-1-high-level-api-api-recommended-for-most-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1: High-Level API (api.*) — Recommended for most users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-2-module-level-functions-for-specific-calculations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2: Module-Level Functions — For specific calculations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-3-direct-code-functions-for-advancedresearch-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3: Direct Code Functions — For advanced/research use
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Tree
       
     </span>
   </a>
@@ -9718,6 +9840,80 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <a id="__codelineno-145-15" name="__codelineno-145-15" href="#__codelineno-145-15"></a><span class="c1"># Step 4: Check punching shear</span>
 <a id="__codelineno-145-16" name="__codelineno-145-16" href="#__codelineno-145-16"></a><span class="n">punch</span> <span class="o">=</span> <span class="n">footing_punching_shear</span><span class="p">(</span><span class="n">Pu_kN</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">L_mm</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">B_mm</span><span class="o">=</span><span class="n">B</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">a_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="api-levels-which-should-i-use">API Levels — Which Should I Use?<a class="headerlink" href="#api-levels-which-should-i-use" title="Permanent link">&para;</a></h2>
+<p>structural_lib provides three API levels. Choose based on your use case:</p>
+<h3 id="level-1-high-level-api-api-recommended-for-most-users">Level 1: High-Level API (<code>api.*</code>) — Recommended for most users<a class="headerlink" href="#level-1-high-level-api-api-recommended-for-most-users" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-146-1" name="__codelineno-146-1" href="#__codelineno-146-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-146-2" name="__codelineno-146-2" href="#__codelineno-146-2"></a>
+<a id="__codelineno-146-3" name="__codelineno-146-3" href="#__codelineno-146-3"></a><span class="c1"># Single-case design (flexure + shear + optional serviceability)</span>
+<a id="__codelineno-146-4" name="__codelineno-146-4" href="#__codelineno-146-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-146-5" name="__codelineno-146-5" href="#__codelineno-146-5"></a>    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+<a id="__codelineno-146-6" name="__codelineno-146-6" href="#__codelineno-146-6"></a>    <span class="n">fck_nmm2</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-146-7" name="__codelineno-146-7" href="#__codelineno-146-7"></a><span class="p">)</span>
+<a id="__codelineno-146-8" name="__codelineno-146-8" href="#__codelineno-146-8"></a>
+<a id="__codelineno-146-9" name="__codelineno-146-9" href="#__codelineno-146-9"></a><span class="c1"># Design + detailing in one call</span>
+<a id="__codelineno-146-10" name="__codelineno-146-10" href="#__codelineno-146-10"></a><span class="n">full</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_and_detail_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-146-11" name="__codelineno-146-11" href="#__codelineno-146-11"></a>    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">beam_id</span><span class="o">=</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="n">story</span><span class="o">=</span><span class="s2">&quot;GF&quot;</span><span class="p">,</span> <span class="n">span_mm</span><span class="o">=</span><span class="mi">6000</span><span class="p">,</span>
+<a id="__codelineno-146-12" name="__codelineno-146-12" href="#__codelineno-146-12"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-146-13" name="__codelineno-146-13" href="#__codelineno-146-13"></a><span class="p">)</span>
+</code></pre></div>
+<p><strong>Use when:</strong> You want complete beam/column design with all IS 456 checks.
+<strong>Returns:</strong> Typed dataclasses (<code>ComplianceCaseResult</code>, <code>DesignAndDetailResult</code>).</p>
+<h3 id="level-2-module-level-functions-for-specific-calculations">Level 2: Module-Level Functions — For specific calculations<a class="headerlink" href="#level-2-module-level-functions-for-specific-calculations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-147-1" name="__codelineno-147-1" href="#__codelineno-147-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.beam.flexure</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_singly_reinforced</span>
+<a id="__codelineno-147-2" name="__codelineno-147-2" href="#__codelineno-147-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.beam.shear</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_shear</span>
+<a id="__codelineno-147-3" name="__codelineno-147-3" href="#__codelineno-147-3"></a>
+<a id="__codelineno-147-4" name="__codelineno-147-4" href="#__codelineno-147-4"></a><span class="c1"># Just flexure design</span>
+<a id="__codelineno-147-5" name="__codelineno-147-5" href="#__codelineno-147-5"></a><span class="n">flexure</span> <span class="o">=</span> <span class="n">design_singly_reinforced</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<a id="__codelineno-147-6" name="__codelineno-147-6" href="#__codelineno-147-6"></a>
+<a id="__codelineno-147-7" name="__codelineno-147-7" href="#__codelineno-147-7"></a><span class="c1"># Just shear check</span>
+<a id="__codelineno-147-8" name="__codelineno-147-8" href="#__codelineno-147-8"></a><span class="n">shear</span> <span class="o">=</span> <span class="n">design_shear</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Use when:</strong> You need a specific IS 456 calculation without the full pipeline.
+<strong>Returns:</strong> Individual result dataclasses (<code>FlexureResult</code>, <code>ShearResult</code>).</p>
+<h3 id="level-3-direct-code-functions-for-advancedresearch-use">Level 3: Direct Code Functions — For advanced/research use<a class="headerlink" href="#level-3-direct-code-functions-for-advancedresearch-use" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-148-1" name="__codelineno-148-1" href="#__codelineno-148-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_xu_max_d</span>
+<a id="__codelineno-148-2" name="__codelineno-148-2" href="#__codelineno-148-2"></a>
+<a id="__codelineno-148-3" name="__codelineno-148-3" href="#__codelineno-148-3"></a><span class="n">ratio</span> <span class="o">=</span> <span class="n">get_xu_max_d</span><span class="p">(</span><span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>  <span class="c1"># Returns 0.46 for Fe500</span>
+</code></pre></div>
+<p><strong>Use when:</strong> You need low-level IS 456 constants or helper functions.
+<strong>Returns:</strong> Primitive values (float, dict).</p>
+<h3 id="decision-tree">Decision Tree<a class="headerlink" href="#decision-tree" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>→ API Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"I want to design a beam/column"</td>
+<td>Level 1: <code>api.design_beam_is456()</code></td>
+</tr>
+<tr>
+<td>"I want design + detailing + BBS + report"</td>
+<td>Level 1: <code>api.design_and_detail_beam_is456()</code> + <code>api.compute_bbs()</code></td>
+</tr>
+<tr>
+<td>"I just need shear capacity"</td>
+<td>Level 2: <code>shear.design_shear()</code></td>
+</tr>
+<tr>
+<td>"I need xu_max/d ratio for Fe500"</td>
+<td>Level 3: <code>materials.get_xu_max_d(500)</code></td>
+</tr>
+<tr>
+<td>"I'm importing from ETABS CSV"</td>
+<td>Level 1: <code>api.create_jobs_from_etabs_csv()</code></td>
+</tr>
+<tr>
+<td>"I want end-to-end with report"</td>
+<td>See <code>Python/examples/end_to_end_workflow.py</code></td>
+</tr>
+</tbody>
+</table>
 
 
 
