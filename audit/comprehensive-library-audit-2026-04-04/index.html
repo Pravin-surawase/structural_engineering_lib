@@ -6149,15 +6149,26 @@
 <td style="text-align: center;"><strong>6.5/10</strong></td>
 <td style="text-align: center;"><strong>8.0/10</strong></td>
 </tr>
+<tr>
+<td><strong>v0.21.4 (P0 sprint)</strong></td>
+<td style="text-align: center;"><strong>8/10</strong></td>
+<td style="text-align: center;"><strong>8.5/10</strong></td>
+<td style="text-align: center;"><strong>4.0/5</strong></td>
+<td style="text-align: center;"><strong>7.5/10</strong></td>
+<td style="text-align: center;"><strong>7.5/10</strong></td>
+<td style="text-align: center;"><strong>7.5/10</strong></td>
+<td style="text-align: center;"><strong>7/10</strong></td>
+<td style="text-align: center;"><strong>8.4/10</strong></td>
+</tr>
 </tbody>
 </table>
 <h3 id="priority-action-plan">Priority Action Plan<a class="headerlink" href="#priority-action-plan" title="Permanent link">&para;</a></h3>
-<p><strong>P0 — Fix This Release (v0.21.4):</strong>
-1. FE-NEW-01: Three.js dispose() calls — memory leak (CRITICAL)
-2. UX-01: Validate d_mm &lt; D_mm — silent calculation failure (CRITICAL)
-3. UX-02: Unify beam/column return types — API consistency (CRITICAL)
-4. S-NEW-01 + ARCH-NEW-07: Replace 22 str(e) leaks with generic messages (HIGH)
-5. S-NEW-03: Add CSV upload file size limit (HIGH)</p>
+<p><strong>P0 — Fix This Release (v0.21.4): ✅ ALL DONE (commit 06ec1b68)</strong>
+1. ✅ FE-NEW-01: Three.js dispose() cleanup in HomePage animation — GPU memory leak fixed (06ec1b68)
+2. ✅ UX-01: d_mm &gt;= D_mm validation at API entry + Pydantic models — silent Ast=0 prevented (06ec1b68)
+3. ✅ UX-02 Phase 1: Column functions return typed dataclasses with DictCompatMixin — backward compatible (06ec1b68)
+4. ✅ S-NEW-01: 26 str(e) info leaks sanitized — new error_utils.py with sanitize_error() (06ec1b68)
+5. ✅ S-NEW-03: CSV upload 10MB file size limit — max_upload_size_bytes in config, HTTP 413 (06ec1b68)</p>
 <p><strong>P1 — Fix Next Release (v0.22.0):</strong>
 6. ARCH-NEW-12: Split services/api.py God module into domain files
 7. T-NEW-01: Replace MagicMock with real result objects
