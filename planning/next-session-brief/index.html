@@ -1575,44 +1575,39 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> Quality control overhaul — 4 new skills, 12 agent updates, 46 dev rules, 3-level quality gates</p>
+<strong>Last Session:</strong> v0.21.3 deep audit — 7 agents, 90 findings, score 8.0/10</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Quality control overhaul</strong> (docs-only, root cause analysis of 70+ issues across v0.21.0-v0.21.3):</li>
-<li>4 new skills: <code>release-preflight</code>, <code>user-acceptance-test</code>, <code>quality-gate</code>, <code>development-rules</code></li>
-<li>12 agent files updated with development rules + skill references (orchestrator, doc-master, agent-evolver, reviewer, tester, backend, api-developer, frontend, security, structural-math, ops, governance)</li>
-<li>46 hard-learned development rules across 7 domains (Python, FastAPI, React, testing, security, git, docs)</li>
-<li>3-level quality gates (commit, PR, release) codified in skill</li>
-<li><code>session-end.prompt.md</code> upgraded to 9 steps with mandatory evolution check</li>
-<li>Global configs updated: <code>AGENTS.md</code>, <code>copilot-instructions.md</code>, <code>CLAUDE.md</code>, <code>agent-bootstrap.md</code>, <code>skill_tiers.json</code></li>
-<li><strong>v0.21.3 released</strong> (prior session) — all 23 EA findings resolved</li>
+<li><strong>Deep audit of v0.21.3 across 7 workstreams.</strong> Audit doc updated with 360+ lines of findings §25-§32.</li>
+<li>90 total findings: 3 CRITICAL, 18 HIGH, 34 MEDIUM, 35 LOW</li>
+<li>Audit score: 8.0/10 (A-)</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Begin coding work per TASKS.md</strong> — use new quality gates in practice</li>
-<li><strong>v0.22 work:</strong> AI assistant port, learning center, Streamlit deprecation</li>
-<li><strong>TASK-526:</strong> TopBar context badges + settings panel</li>
-<li><strong>TASK-527:</strong> Workflow breadcrumb for batch flow</li>
-<li><strong>Library expansion:</strong> Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)</li>
-<li><strong>Test coverage:</strong> Report/3D tests (TASK-520)</li>
+<li><strong>P0: FE-NEW-01</strong> Three.js dispose() — memory leak (CRITICAL)</li>
+<li><strong>P0: UX-01</strong> Validate d_mm &lt; D_mm — silent failure (CRITICAL)</li>
+<li><strong>P0: UX-02</strong> Unify beam/column return types (CRITICAL)</li>
+<li><strong>P0: S-NEW-01</strong> Replace 22 str(e) leaks with generic messages (HIGH)</li>
+<li><strong>P0: S-NEW-03</strong> Add CSV upload file size limit (HIGH)</li>
+<li><strong>P1: ARCH-NEW-12</strong> Split services/api.py God module</li>
+<li><strong>P1: T-NEW-01</strong> Replace MagicMock violations</li>
+<li><strong>P1: T-NEW-08</strong> FastAPI router test coverage</li>
 </ol>
 <h2 id="notes-for-next-agent">Notes for Next Agent<a class="headerlink" href="#notes-for-next-agent" title="Permanent link">&para;</a></h2>
 <ul>
 <li>All 12 agent files now have development rules — verify they're being followed in the next coding session</li>
 <li>New skills (<code>/quality-gate</code>, <code>/release-preflight</code>, <code>/user-acceptance-test</code>, <code>/development-rules</code>) should be invoked during PR and release workflows</li>
 <li>Agent evolver integration is mandatory every session (<code>./run.sh evolve --status</code>)</li>
+<li>Fix the 3 CRITICAL findings before any new feature work</li>
 </ul>
 <h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
 <ul>
-<li>All P0: ✅ resolved</li>
-<li>All P1: ✅ resolved</li>
-<li>P2: ✅ resolved</li>
-<li>External audit: 23/23 resolved ✅</li>
-<li>Overall grade: A (8.7/10)</li>
+<li>v0.21.3 deep: A- (8.0/10), 90 total findings, 3 CRITICAL</li>
+<li>External audit (prior): 23/23 resolved ✅</li>
 </ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
-<li>None — clean state, all tests pass</li>
+<li>3 CRITICAL findings must be resolved before v0.22 feature work</li>
 </ul>
 
 

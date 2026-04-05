@@ -1731,6 +1731,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#v0213-deep-audit-findings-90-findings-3-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.3 Deep Audit Findings (90 findings, 3 CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#audit-p1-fixes-batch-2-next" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2735,6 +2746,18 @@ See <a href="../audit/comprehensive-library-audit-2026-04-04/">comprehensive-lib
 | A-3 | Ast_min/Ast_max in FlexureResult | ✅ Done |
 | API-6 | Streaming 404 + job_id validation | ✅ Done |
 | FE-7 | Three.js material memory cleanup | ✅ Done |</p>
+<h3 id="v0213-deep-audit-findings-90-findings-3-critical">v0.21.3 Deep Audit Findings (90 findings, 3 CRITICAL)<a class="headerlink" href="#v0213-deep-audit-findings-90-findings-3-critical" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] P0-FE: Three.js dispose() calls — memory leak (FE-NEW-01) — CRITICAL</li>
+<li>[ ] P0-UX: Validate d_mm &lt; D_mm in design_beam_is456 (UX-01) — CRITICAL</li>
+<li>[ ] P0-UX: Unify beam/column API return types (UX-02) — CRITICAL</li>
+<li>[ ] P0-SEC: Replace 22 str(e) info leaks in routers (S-NEW-01) — HIGH</li>
+<li>[ ] P0-SEC: Add CSV upload file size limit (S-NEW-03) — HIGH</li>
+<li>[ ] P1-ARCH: Split services/api.py God module into domain files (ARCH-NEW-12)</li>
+<li>[ ] P1-TEST: Replace MagicMock with real objects (T-NEW-01)</li>
+<li>[ ] P1-TEST: Add FastAPI tests for 7 untested routers (T-NEW-08)</li>
+<li>[ ] P1-IS456: Add @clause decorators to 21 functions (IS-NEW-01, IS-NEW-02)</li>
+</ul>
 <h3 id="audit-p1-fixes-batch-2-next">Audit P1 Fixes — Batch 2 (Next)<a class="headerlink" href="#audit-p1-fixes-batch-2-next" title="Permanent link">&para;</a></h3>
 <p>| API-5 | OpenAPI examples on Pydantic models | 🔄 Planned |
 | OPS-3 | Python dependency lock file | 🔄 Planned |

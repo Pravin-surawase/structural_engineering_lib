@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#comprehensive-library-audit-v0212" class="md-skip">
+        <a href="#comprehensive-library-audit-v0212-v0213" class="md-skip">
           Skip to content
         </a>
       
@@ -2227,8 +2227,8 @@
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-04-04
 <strong>Last Updated:</strong> 2026-04-05</p>
-<h1 id="comprehensive-library-audit-v0212">Comprehensive Library Audit — v0.21.2<a class="headerlink" href="#comprehensive-library-audit-v0212" title="Permanent link">&para;</a></h1>
-<p><strong>Date:</strong> 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external) | <strong>Version:</strong> v0.21.2 | <strong>Auditors:</strong> 14 agents + external auditor</p>
+<h1 id="comprehensive-library-audit-v0212-v0213">Comprehensive Library Audit — v0.21.2 / v0.21.3<a class="headerlink" href="#comprehensive-library-audit-v0212-v0213" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-04-04 (initial) / 2026-04-05 (v0.21.2 external + v0.21.3 deep) | <strong>Version:</strong> v0.21.2 → v0.21.3 | <strong>Auditors:</strong> 14 agents + external auditor + 7 deep audit agents</p>
 <h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -4943,7 +4943,1239 @@
 </tr>
 </tbody>
 </table>
-<p><em>Next audit recommended: v0.22.0 release (focus on P0 fixes verification)</em></p>
+<hr />
+<h1 id="v0213-deep-audit-2026-04-05">V0.21.3 Deep Audit — 2026-04-05<a class="headerlink" href="#v0213-deep-audit-2026-04-05" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-04-05 | <strong>Version:</strong> v0.21.3 | <strong>Auditors:</strong> 7 specialist agents (security, structural-engineer, library-expert, api-developer, tester, reviewer, frontend)</p>
+<h2 id="executive-summary-v0213">Executive Summary — v0.21.3<a class="headerlink" href="#executive-summary-v0213" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Workstream</th>
+<th>Agent</th>
+<th style="text-align: center;">v0.21.2 Score</th>
+<th style="text-align: center;">v0.21.3 Score</th>
+<th>Key Finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Security</td>
+<td>@security</td>
+<td style="text-align: center;">5/10</td>
+<td style="text-align: center;">7/10</td>
+<td>Auth middleware works; 22 info-leak instances remain; no per-endpoint scope checking</td>
+</tr>
+<tr>
+<td>IS 456 Compliance</td>
+<td>@structural-engineer</td>
+<td style="text-align: center;">8/10</td>
+<td style="text-align: center;">8.5/10</td>
+<td>All 17 formula spot-checks exact; 21 functions missing @clause decorators</td>
+</tr>
+<tr>
+<td>Library Usability</td>
+<td>@library-expert</td>
+<td style="text-align: center;">3.9/5</td>
+<td style="text-align: center;">3.5/5</td>
+<td>Silent failure on d_mm &gt; D_mm; beam vs column API inconsistency widened</td>
+</tr>
+<tr>
+<td>API Quality</td>
+<td>@api-developer</td>
+<td style="text-align: center;">7/10</td>
+<td style="text-align: center;">7/10</td>
+<td>3 response patterns coexist; 22 str(e) leaks; missing cross-field validators</td>
+</tr>
+<tr>
+<td>Test Coverage</td>
+<td>@tester</td>
+<td style="text-align: center;">6.5/10</td>
+<td style="text-align: center;">7.5/10</td>
+<td>4,255 tests pass; MagicMock still in 2 files; FastAPI only 6/13 routers tested</td>
+</tr>
+<tr>
+<td>Architecture</td>
+<td>@reviewer</td>
+<td style="text-align: center;">7/10</td>
+<td style="text-align: center;">7.5/10</td>
+<td>Clean upward imports; 49 bare except blocks; 3610-line God module</td>
+</tr>
+<tr>
+<td>Frontend UX</td>
+<td>@frontend</td>
+<td style="text-align: center;">5/10</td>
+<td style="text-align: center;">6.5/10</td>
+<td>ErrorBoundary + validation added; no Three.js cleanup; settings placeholder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="overall-grade-a-8010">Overall Grade: A- (8.0/10)<a class="headerlink" href="#overall-grade-a-8010" title="Permanent link">&para;</a></h3>
+<p>Progression: v0.21.2 initial (7.1) → fixes (8.7) → v0.21.3 deep audit refactored (8.0)</p>
+<p>The score adjustment from 8.7 to 8.0 reflects the deeper audit uncovering issues that the initial fix-focused pass missed. The library is fundamentally sound — all formulas are correct, architecture is clean, and test suite is comprehensive. But information leaks, API inconsistency, and code quality (God module) prevent a higher score.</p>
+<hr />
+<h2 id="25-security-audit-v0213">§25. Security Audit — v0.21.3<a class="headerlink" href="#25-security-audit-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="previous-fix-verification">Previous Fix Verification<a class="headerlink" href="#previous-fix-verification" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Fix</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-1: Auth enforcement</td>
+<td>✅ VERIFIED</td>
+<td>AuthMiddleware global, auth_enabled configurable</td>
+</tr>
+<tr>
+<td>S-4: WebSocket validation</td>
+<td>✅ VERIFIED</td>
+<td>WSDesignParams/WSCheckParams with Pydantic</td>
+</tr>
+<tr>
+<td>S-5: Error sanitization</td>
+<td>⚠️ PARTIAL</td>
+<td>Generic handler exists, but 22 ImportError leaks remain</td>
+</tr>
+<tr>
+<td>S-3: Rate limiting</td>
+<td>✅ VERIFIED</td>
+<td>RateLimitMiddleware global, configurable</td>
+</tr>
+<tr>
+<td>EA-20: CORS from settings</td>
+<td>✅ VERIFIED</td>
+<td>Settings.cors_origins, env-var overridable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="new-findings">New Findings<a class="headerlink" href="#new-findings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Category</th>
+<th>Description</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-NEW-01</td>
+<td>MEDIUM</td>
+<td>CWE-209</td>
+<td>22 ImportError messages leak internal paths via f"structural_lib not available: {e}"</td>
+<td>design.py, geometry.py, rebar.py, analysis.py, detailing.py, optimization.py</td>
+</tr>
+<tr>
+<td>S-NEW-02</td>
+<td>MEDIUM</td>
+<td>CWE-209</td>
+<td>ValueError details leak via f"Invalid parameters: {e}"</td>
+<td>geometry.py:369, 538</td>
+</tr>
+<tr>
+<td>S-NEW-03</td>
+<td>HIGH</td>
+<td>A04</td>
+<td>No file upload size limit on CSV imports — OOM risk</td>
+<td>imports.py:161</td>
+</tr>
+<tr>
+<td>S-NEW-04</td>
+<td>LOW</td>
+<td>CWE-209</td>
+<td>WebSocket TypeError leaks via str(e)</td>
+<td>websocket.py:167</td>
+</tr>
+<tr>
+<td>S-NEW-05</td>
+<td>MEDIUM</td>
+<td>A07</td>
+<td>create_dev_token() importable in production — can forge tokens</td>
+<td>auth.py:351</td>
+</tr>
+<tr>
+<td>S-NEW-06</td>
+<td>MEDIUM</td>
+<td>A01</td>
+<td>No per-endpoint scope checking — any valid token = full access</td>
+<td>All routers</td>
+</tr>
+<tr>
+<td>S-NEW-07</td>
+<td>LOW</td>
+<td>A04</td>
+<td>Missing cross-field validators (clear_cover &lt; depth)</td>
+<td>models/beam.py</td>
+</tr>
+<tr>
+<td>S-NEW-08</td>
+<td>LOW</td>
+<td>A04</td>
+<td>In-memory rate limiter not multi-process safe</td>
+<td>auth.py:280</td>
+</tr>
+<tr>
+<td>S-NEW-09</td>
+<td>LOW</td>
+<td>A02</td>
+<td>Docker dev compose uses weak default JWT secret</td>
+<td>docker-compose.dev.yml:10</td>
+</tr>
+<tr>
+<td>S-NEW-10</td>
+<td>LOW</td>
+<td>A05</td>
+<td>Sample data endpoint exposes search paths</td>
+<td>imports.py:732</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-positives_1">Security Positives ✅<a class="headerlink" href="#security-positives_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>JWT production safeguard (RuntimeError on default key)</li>
+<li>Docker non-root, cap_drop ALL, no-new-privileges</li>
+<li>No SQL injection, SSRF, unsafe deserialization</li>
+<li>Export filename sanitization with regex validation</li>
+<li>Temp file cleanup in finally blocks</li>
+<li>All dependencies current, no known CVEs</li>
+</ul>
+<p><strong>Updated Security Score: 7/10</strong> (up from 5/10)</p>
+<hr />
+<h2 id="26-is-456-compliance-v0213">§26. IS 456 Compliance — v0.21.3<a class="headerlink" href="#26-is-456-compliance-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="formula-verification-17-spot-checks-all-exact">Formula Verification (17 Spot Checks — ALL EXACT)<a class="headerlink" href="#formula-verification-17-spot-checks-all-exact" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Formula</th>
+<th>Clause</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mu_lim stress block</td>
+<td>Cl 38.1</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>xu_max/d ratios (Fe250/415/500)</td>
+<td>Cl 38.1</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>τc Table 19 (M25, pt=1.0%)</td>
+<td>Table 19</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>τc_max Table 20 (M20-M40)</td>
+<td>Table 20</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>Pu = 0.4fck·Ac + 0.67fy·Asc</td>
+<td>Cl 39.3</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>e_min = max(l/500+D/30, 20)</td>
+<td>Cl 25.4</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>Bresler αn interpolation</td>
+<td>Cl 39.6</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>Ve = Vu + 1.6Tu/b</td>
+<td>Cl 41.3.1</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>Me = Mu + Tu(1+D/b)/1.7</td>
+<td>Cl 41.4.2</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>eadd = le²/(2000D)</td>
+<td>Cl 39.7.1</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>Table 28 (7 end conditions)</td>
+<td>Cl 25.2</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>γc=1.5, γs=1.15</td>
+<td>Cl 36.4.2</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>Ast formula</td>
+<td>Cl 38.2</td>
+<td>CORRECT</td>
+</tr>
+<tr>
+<td>Min steel 0.85bd/fy</td>
+<td>Cl 26.5.1.1</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>T-beam flange width</td>
+<td>Cl 23.1.2</td>
+<td>CORRECT</td>
+</tr>
+<tr>
+<td>Effective length factors</td>
+<td>Table 28</td>
+<td>EXACT</td>
+</tr>
+<tr>
+<td>5-point steel stress-strain</td>
+<td>IS 456</td>
+<td>EXACT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="clause-coverage">@clause Coverage<a class="headerlink" href="#clause-coverage" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Decorated</th>
+<th>Missing</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>beam/flexure.py</td>
+<td>8</td>
+<td>0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>beam/shear.py</td>
+<td>5</td>
+<td>0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>beam/torsion.py</td>
+<td>6</td>
+<td>0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>beam/detailing.py</td>
+<td>8+</td>
+<td>0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>column/*</td>
+<td>All</td>
+<td>0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>is13920/*</td>
+<td>All</td>
+<td>0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>footing/*</td>
+<td>1</td>
+<td>4</td>
+<td>⚠️ IS-NEW-01</td>
+</tr>
+<tr>
+<td>beam/serviceability.py</td>
+<td>0</td>
+<td>17</td>
+<td>❌ IS-NEW-02</td>
+</tr>
+</tbody>
+</table>
+<h3 id="new-findings_1">New Findings<a class="headerlink" href="#new-findings_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS-NEW-01</td>
+<td>MEDIUM</td>
+<td>Cl 34.x</td>
+<td>4 footing functions lack @clause decorators</td>
+</tr>
+<tr>
+<td>IS-NEW-02</td>
+<td>MEDIUM</td>
+<td>Cl 23.2.1, Annex C/F</td>
+<td>All 17 serviceability functions lack @clause decorators</td>
+</tr>
+<tr>
+<td>IS-NEW-03</td>
+<td>LOW</td>
+<td>Fig 23, 26.5.3</td>
+<td>clauses.json missing entries — import warnings</td>
+</tr>
+<tr>
+<td>IS-NEW-04</td>
+<td>MEDIUM</td>
+<td>Cl 26.3</td>
+<td>Curtailment of tension reinforcement not implemented</td>
+</tr>
+<tr>
+<td>IS-NEW-05</td>
+<td>LOW</td>
+<td>Cl 23.2.1</td>
+<td>Modification factors (Fig 4-6) require manual input</td>
+</tr>
+<tr>
+<td>IS-NEW-06</td>
+<td>LOW</td>
+<td>Cl 34.3.1</td>
+<td>Rectangular footing banding distribution needs verification</td>
+</tr>
+<tr>
+<td>IS-NEW-07</td>
+<td>MEDIUM</td>
+<td>Convention</td>
+<td>Beam module uses bare b/d vs column's b_mm/D_mm</td>
+</tr>
+<tr>
+<td>IS-NEW-08</td>
+<td>LOW</td>
+<td>Cl 38.1</td>
+<td>xu_max/d hardcoded vs formula — correct per IS 456 table</td>
+</tr>
+<tr>
+<td>IS-NEW-09</td>
+<td>LOW</td>
+<td>Cl 41.x</td>
+<td>Torsion D_mm fallback should be removed in future version</td>
+</tr>
+<tr>
+<td>IS-NEW-10</td>
+<td>LOW</td>
+<td>Cl 40.2.1</td>
+<td>Table 19 nearest-lower-grade lookup (conservative, acceptable)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="known-issues-status">Known Issues Status<a class="headerlink" href="#known-issues-status" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS-1: Torsion D_mm parameter</td>
+<td>✅ FIXED — kwarg with deprecation fallback</td>
+</tr>
+<tr>
+<td>IS-2: Footing @clause decorators</td>
+<td>⚠️ PARTIAL — bearing.py done, 4 others remain</td>
+</tr>
+<tr>
+<td>IS-3: IS 13920 @clause decorators</td>
+<td>✅ FIXED — all 13 functions decorated</td>
+</tr>
+<tr>
+<td>IS-4: SCWB check</td>
+<td>✅ FIXED — check_scwb() in joint.py</td>
+</tr>
+<tr>
+<td>bearing_stress_enhancement()</td>
+<td>✅ VERIFIED — Cl 34.4, √(A1/A2), cap at 2.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Updated IS 456 Score: 8.5/10</strong> (up from 8/10)</p>
+<hr />
+<h2 id="27-library-usability-v0213">§27. Library Usability — v0.21.3<a class="headerlink" href="#27-library-usability-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="key-findings">Key Findings<a class="headerlink" href="#key-findings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UX-01</td>
+<td>CRITICAL</td>
+<td>Error Handling</td>
+<td>d_mm &gt; D_mm (impossible geometry) accepted silently — returns Ast=0 with no explanation</td>
+</tr>
+<tr>
+<td>UX-02</td>
+<td>CRITICAL</td>
+<td>API Consistency</td>
+<td>Column API returns raw dict (fck, fy); Beam API returns typed dataclass (fck_nmm2, fy_nmm2). TypeError on cross-use.</td>
+</tr>
+<tr>
+<td>UX-03</td>
+<td>HIGH</td>
+<td>Usability</td>
+<td>Negative moments accepted silently — no sign convention guidance</td>
+</tr>
+<tr>
+<td>UX-04</td>
+<td>HIGH</td>
+<td>Discoverability</td>
+<td>ComplianceCaseResult has no .summary() or .is_safe; DesignAndDetailResult does</td>
+</tr>
+<tr>
+<td>UX-05</td>
+<td>HIGH</td>
+<td>Professional Standards</td>
+<td>Design results don't include IS 456 clause references — not auditable</td>
+</tr>
+<tr>
+<td>UX-06</td>
+<td>HIGH</td>
+<td>Error Handling</td>
+<td>FastAPI swallows excellent library error messages, returns generic "Invalid input"</td>
+</tr>
+<tr>
+<td>UX-07</td>
+<td>MEDIUM</td>
+<td>Usability</td>
+<td>9 deprecation warnings on import (pyparsing + internal moves)</td>
+</tr>
+<tr>
+<td>UX-08</td>
+<td>MEDIUM</td>
+<td>Documentation</td>
+<td>simple_examples.py uses low-level API; README uses high-level API — confusing</td>
+</tr>
+<tr>
+<td>UX-09</td>
+<td>MEDIUM</td>
+<td>API</td>
+<td>units="IS456" mandatory on every call but does nothing — pure boilerplate</td>
+</tr>
+<tr>
+<td>UX-10</td>
+<td>MEDIUM</td>
+<td>Professional Standards</td>
+<td>Results at 15-decimal precision — unprofessional display</td>
+</tr>
+<tr>
+<td>UX-11</td>
+<td>MEDIUM</td>
+<td>Discoverability</td>
+<td>105 exports in <strong>all</strong>, no sub-namespaces</td>
+</tr>
+<tr>
+<td>UX-12</td>
+<td>MEDIUM</td>
+<td>Error Handling</td>
+<td>Wrong param names (fck vs fck_nmm2) give raw TypeError, no suggestions</td>
+</tr>
+<tr>
+<td>UX-13</td>
+<td>LOW</td>
+<td>Documentation</td>
+<td>API docs and clause map are comprehensive — STRENGTH</td>
+</tr>
+<tr>
+<td>UX-14</td>
+<td>LOW</td>
+<td>Usability</td>
+<td>Import time 0.39s — acceptable</td>
+</tr>
+<tr>
+<td>UX-15</td>
+<td>LOW</td>
+<td>Professional Standards</td>
+<td>No governing_check field in results</td>
+</tr>
+</tbody>
+</table>
+<h3 id="strengths_1">Strengths<a class="headerlink" href="#strengths_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>5-line beam design works as documented</li>
+<li>Unit plausibility guards catch fck=25000 ("Expected N/mm², not Pa")</li>
+<li>DesignAndDetailResult.summary() returns "B1@GF: 300×500mm, Ast=856mm², OK"</li>
+<li>Clause-to-function mapping comprehensive (clause-map.md)</li>
+<li>Structured inputs (BeamInput, MaterialsInput.m25_fe500()) are professional</li>
+<li>Exception hierarchy with details/suggestion/clause_ref fields</li>
+</ul>
+<p><strong>Updated Usability Score: 3.5/5</strong> (down from 3.9)</p>
+<hr />
+<h2 id="28-api-quality-v0213">§28. API Quality — v0.21.3<a class="headerlink" href="#28-api-quality-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="response-patterns-3-coexist-inconsistent">Response Patterns (3 coexist — inconsistent)<a class="headerlink" href="#response-patterns-3-coexist-inconsistent" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Routers</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="..data" message_="message," success_="success,">A:</td>
+<td>design, imports, insights, geometry, rebar, optimization</td>
+<td>Wrapped</td>
+</tr>
+<tr>
+<td>B: Raw typed model</td>
+<td>column, analysis, health</td>
+<td>Direct Pydantic</td>
+</tr>
+<tr>
+<td>C: Raw dict/untyped</td>
+<td>design /limits, geometry /materials, export</td>
+<td>Untyped</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-findings_1">Key Findings<a class="headerlink" href="#key-findings_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API-NEW-01</td>
+<td>HIGH</td>
+<td>Consistency</td>
+<td>Column router returns raw models; design wraps in {success, message}. Clients need two handlers.</td>
+</tr>
+<tr>
+<td>API-NEW-02</td>
+<td>MEDIUM</td>
+<td>Consistency</td>
+<td>APIResponse[T] defined in common.py but never used — dead code</td>
+</tr>
+<tr>
+<td>API-NEW-03</td>
+<td>MEDIUM</td>
+<td>Consistency</td>
+<td>3 GET endpoints return untyped dict without response_model</td>
+</tr>
+<tr>
+<td>API-NEW-04</td>
+<td>HIGH</td>
+<td>Consistency</td>
+<td>/ductile-detailing returns raw library object, no response_model</td>
+</tr>
+<tr>
+<td>API-NEW-06</td>
+<td>MEDIUM</td>
+<td>Validation</td>
+<td>No cross-field validator: clear_cover &lt; depth in BeamDesignRequest</td>
+</tr>
+<tr>
+<td>API-NEW-07</td>
+<td>MEDIUM</td>
+<td>Validation</td>
+<td>No cross-field validator: Asc_mm2 &lt; Ag_mm2 in ColumnAxialRequest</td>
+</tr>
+<tr>
+<td>API-NEW-09</td>
+<td>LOW</td>
+<td>Validation</td>
+<td>AdditionalMomentRequest allows fck=1 (should be ge=15)</td>
+</tr>
+<tr>
+<td>API-NEW-12</td>
+<td>HIGH</td>
+<td>Security</td>
+<td>WebSocket sends str(e) to client for ValueError/TypeError</td>
+</tr>
+<tr>
+<td>API-NEW-13</td>
+<td>HIGH</td>
+<td>Security</td>
+<td>21 endpoints expose ImportError via f"...not available: {e}"</td>
+</tr>
+<tr>
+<td>API-NEW-21</td>
+<td>MEDIUM</td>
+<td>Coverage</td>
+<td>design_and_detail_beam_is456() has no endpoint (most useful single-call)</td>
+</tr>
+<tr>
+<td>API-NEW-24</td>
+<td>MEDIUM</td>
+<td>Consistency</td>
+<td>BeamDesignRequest uses "width/depth"; ColumnDesignRequest uses "b_mm/D_mm"</td>
+</tr>
+<tr>
+<td>API-NEW-25</td>
+<td>MEDIUM</td>
+<td>Code Quality</td>
+<td>All routers use lazy imports inside handlers — repeated per-request cost</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total API findings: 26</strong> (4 HIGH, 9 MEDIUM, 13 LOW)</p>
+<p><strong>Updated API Score: 7/10</strong> (unchanged)</p>
+<hr />
+<h2 id="29-test-coverage-v0213">§29. Test Coverage — v0.21.3<a class="headerlink" href="#29-test-coverage-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>v0.21.2</th>
+<th>v0.21.3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total Python tests</td>
+<td>~3,500</td>
+<td>4,255</td>
+</tr>
+<tr>
+<td>FastAPI tests</td>
+<td>Unknown</td>
+<td>187</td>
+</tr>
+<tr>
+<td>Hypothesis @given</td>
+<td>Unknown</td>
+<td>65 (6 files)</td>
+</tr>
+<tr>
+<td>E2E pipeline tests</td>
+<td>0</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Packaging tests</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>SP:16 reference files</td>
+<td>Unknown</td>
+<td>27</td>
+</tr>
+<tr>
+<td>Golden tests</td>
+<td>Unknown</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Pass rate</td>
+<td>—</td>
+<td>100% (0 failures)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-coverage-map-all-covered">Module Coverage Map — All covered ✅<a class="headerlink" href="#module-coverage-map-all-covered" title="Permanent link">&para;</a></h3>
+<p>Every structural module (beam, column, footing, IS 13920) has test files. Key counts: column 359 tests across 9 files, footing 91 tests, IS 13920 38+ tests.</p>
+<h3 id="gaps">Gaps<a class="headerlink" href="#gaps" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T-NEW-01</td>
+<td>HIGH</td>
+<td>Quality Issue</td>
+<td>MagicMock in test_calculation_report.py (17) and test_testing_strategies.py (5) — violates TE-3, caused v0.21.0 ShearResult bug</td>
+</tr>
+<tr>
+<td>T-NEW-02</td>
+<td>MEDIUM</td>
+<td>Coverage Gap</td>
+<td>core/stress_blocks.py has no dedicated test file (indirect only)</td>
+</tr>
+<tr>
+<td>T-NEW-03</td>
+<td>MEDIUM</td>
+<td>Missing Test Type</td>
+<td>No Hypothesis tests for column or footing modules</td>
+</tr>
+<tr>
+<td>T-NEW-04</td>
+<td>MEDIUM</td>
+<td>Missing Test Type</td>
+<td>Only 6 golden tests — no SP:16 beam/column/footing golden benchmarks</td>
+</tr>
+<tr>
+<td>T-NEW-07</td>
+<td>LOW</td>
+<td>Missing Test Type</td>
+<td>No Hypothesis tests for torsion or beam detailing</td>
+</tr>
+<tr>
+<td>T-NEW-08</td>
+<td>HIGH</td>
+<td>Coverage Gap</td>
+<td>FastAPI tests cover only ~6/13 routers. No tests for: beam design, detailing, geometry, insights, export, import, optimization</td>
+</tr>
+<tr>
+<td>T-NEW-09</td>
+<td>LOW</td>
+<td>Quality Issue</td>
+<td>test_property_invariants.py is empty stub (0 @given decorators)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Updated Test Score: 7.5/10</strong> (up from 6.5/10)</p>
+<hr />
+<h2 id="30-architecture-code-quality-v0213">§30. Architecture &amp; Code Quality — v0.21.3<a class="headerlink" href="#30-architecture-code-quality-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="layer-violations">Layer Violations<a class="headerlink" href="#layer-violations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>codes/is456/ → services/ imports</td>
+<td>✅ CLEAN — no upward imports</td>
+</tr>
+<tr>
+<td>core/ → codes/ imports</td>
+<td>✅ CLEAN</td>
+</tr>
+<tr>
+<td>services/ → fastapi/ imports</td>
+<td>✅ CLEAN</td>
+</tr>
+<tr>
+<td>I/O in math layer</td>
+<td>⚠️ traceability.py has 13 print() calls</td>
+</tr>
+<tr>
+<td>Filesystem access in math</td>
+<td>✅ CLEAN — no os/sys/pathlib in codes/is456/</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-findings_2">Key Findings<a class="headerlink" href="#key-findings_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARCH-NEW-01</td>
+<td>MEDIUM</td>
+<td>Layer Violation</td>
+<td>traceability.py has 13 print() calls in math layer</td>
+</tr>
+<tr>
+<td>ARCH-NEW-06</td>
+<td>MEDIUM</td>
+<td>Duplication</td>
+<td>FastAPI Pydantic models use different field names than lib types — drift risk</td>
+</tr>
+<tr>
+<td>ARCH-NEW-07</td>
+<td>HIGH</td>
+<td>Security CWE-209</td>
+<td>20 str(e) leaks in HTTP responses (overlaps S-NEW-01)</td>
+</tr>
+<tr>
+<td>ARCH-NEW-08</td>
+<td>MEDIUM</td>
+<td>Security CWE-209</td>
+<td>WebSocket str(e) leaks (overlaps S-NEW-04)</td>
+</tr>
+<tr>
+<td>ARCH-NEW-09</td>
+<td>HIGH</td>
+<td>Error Handling</td>
+<td>49 bare except Exception blocks across all routers</td>
+</tr>
+<tr>
+<td>ARCH-NEW-10</td>
+<td>MEDIUM</td>
+<td>Error Handling</td>
+<td>7 silent swallows in services/adapters.py</td>
+</tr>
+<tr>
+<td>ARCH-NEW-12</td>
+<td>HIGH</td>
+<td>Code Quality</td>
+<td>services/api.py is 3,610 lines — God module with 45 functions</td>
+</tr>
+<tr>
+<td>ARCH-NEW-13</td>
+<td>MEDIUM</td>
+<td>Code Quality</td>
+<td>11 column functions return dict instead of typed dataclass</td>
+</tr>
+</tbody>
+</table>
+<h3 id="positives_1">Positives ✅<a class="headerlink" href="#positives_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Clean upward imports (no layer violations)</li>
+<li>105/105 <strong>all</strong> exports resolve correctly</li>
+<li>No mutable default arguments</li>
+<li>api.py stub is minimal (14 lines, wildcard re-export)</li>
+<li>Validation properly layered (codes/ vs services/)</li>
+</ul>
+<p><strong>Updated Architecture Score: 7.5/10</strong> (up from 7/10)</p>
+<hr />
+<h2 id="31-frontend-ux-v0213">§31. Frontend UX — v0.21.3<a class="headerlink" href="#31-frontend-ux-v0213" title="Permanent link">&para;</a></h2>
+<h3 id="improvements-since-v0212">Improvements Since v0.21.2<a class="headerlink" href="#improvements-since-v0212" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Error Boundaries</td>
+<td>None</td>
+<td>✅ Implemented + tested</td>
+</tr>
+<tr>
+<td>Form Validation</td>
+<td>HTML5 only</td>
+<td>✅ Cross-field validation (cover &lt; depth, span/depth ratios)</td>
+</tr>
+<tr>
+<td>Error States</td>
+<td>None</td>
+<td>✅ Toast notifications</td>
+</tr>
+<tr>
+<td>WebGL Context Loss</td>
+<td>No handling</td>
+<td>✅ Custom hook exists</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-findings_3">Key Findings<a class="headerlink" href="#key-findings_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FE-NEW-01</td>
+<td>CRITICAL</td>
+<td>Memory Leak</td>
+<td>No Three.js geometry/material/texture dispose() on unmount</td>
+</tr>
+<tr>
+<td>FE-NEW-02</td>
+<td>HIGH</td>
+<td>Accessibility</td>
+<td>Form inputs missing WCAG AA labels (aria-describedby, aria-invalid, aria-required)</td>
+</tr>
+<tr>
+<td>FE-NEW-03</td>
+<td>HIGH</td>
+<td>Functionality</td>
+<td>Settings panel is placeholder ("coming soon") — reachable but empty</td>
+</tr>
+<tr>
+<td>FE-NEW-04</td>
+<td>HIGH</td>
+<td>UX Consistency</td>
+<td>Loading states use 4 different patterns (skeleton, pulse, loader, nothing)</td>
+</tr>
+<tr>
+<td>FE-NEW-05</td>
+<td>HIGH</td>
+<td>Accessibility</td>
+<td>FloatingDock has no keyboard navigation</td>
+</tr>
+<tr>
+<td>FE-NEW-06</td>
+<td>MEDIUM</td>
+<td>UX</td>
+<td>Toast no dismiss-all button when multiple stack</td>
+</tr>
+<tr>
+<td>FE-NEW-07</td>
+<td>MEDIUM</td>
+<td>UX</td>
+<td>Error messages show dev commands ("./run.sh dev") to end users</td>
+</tr>
+<tr>
+<td>FE-NEW-08</td>
+<td>MEDIUM</td>
+<td>Missing Feature</td>
+<td>Cover field disabled at 40mm — should be editable per IS 456 Table 16</td>
+</tr>
+<tr>
+<td>FE-NEW-09</td>
+<td>MEDIUM</td>
+<td>Discoverability</td>
+<td>Cmd+K command palette not documented in UI</td>
+</tr>
+<tr>
+<td>FE-NEW-10</td>
+<td>LOW</td>
+<td>Performance</td>
+<td>No FPS counter or performance warnings for large buildings</td>
+</tr>
+<tr>
+<td>FE-NEW-11</td>
+<td>LOW</td>
+<td>UX</td>
+<td>Dark theme hardcoded, no light mode toggle</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Updated Frontend Score: 6.5/10</strong> (up from 5/10)</p>
+<hr />
+<h2 id="32-combined-v0213-findings-summary">§32. Combined v0.21.3 Findings Summary<a class="headerlink" href="#32-combined-v0213-findings-summary" title="Permanent link">&para;</a></h2>
+<h3 id="by-severity">By Severity<a class="headerlink" href="#by-severity" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th style="text-align: center;">Security</th>
+<th style="text-align: center;">IS 456</th>
+<th style="text-align: center;">UX</th>
+<th style="text-align: center;">API</th>
+<th style="text-align: center;">Tests</th>
+<th style="text-align: center;">Arch</th>
+<th style="text-align: center;">Frontend</th>
+<th style="text-align: center;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CRITICAL</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>3</strong></td>
+</tr>
+<tr>
+<td>HIGH</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><strong>18</strong></td>
+</tr>
+<tr>
+<td>MEDIUM</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><strong>34</strong></td>
+</tr>
+<tr>
+<td>LOW</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><strong>35</strong></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: center;"><strong>10</strong></td>
+<td style="text-align: center;"><strong>10</strong></td>
+<td style="text-align: center;"><strong>14</strong></td>
+<td style="text-align: center;"><strong>26</strong></td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;"><strong>10</strong></td>
+<td style="text-align: center;"><strong>11</strong></td>
+<td style="text-align: center;"><strong>90</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-cutting-themes">Cross-Cutting Themes<a class="headerlink" href="#cross-cutting-themes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>Count</th>
+<th>Agents Reporting</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CWE-209 info leaks (str(e) in responses)</strong></td>
+<td>22+ instances</td>
+<td>Security, API, Architecture</td>
+<td>HIGH — fix all</td>
+</tr>
+<tr>
+<td><strong>API consistency (beam vs column)</strong></td>
+<td>5 findings</td>
+<td>UX, API</td>
+<td>HIGH — unify patterns</td>
+</tr>
+<tr>
+<td><strong>Missing @clause decorators</strong></td>
+<td>21 functions</td>
+<td>IS 456</td>
+<td>MEDIUM — quick wins</td>
+</tr>
+<tr>
+<td><strong>MagicMock in tests</strong></td>
+<td>22 instances</td>
+<td>Tester</td>
+<td>HIGH — TE-3 violation</td>
+</tr>
+<tr>
+<td><strong>API God module</strong></td>
+<td>3,610 lines</td>
+<td>Architecture</td>
+<td>HIGH — split into domain modules</td>
+</tr>
+<tr>
+<td><strong>Three.js memory leaks</strong></td>
+<td>no dispose()</td>
+<td>Frontend</td>
+<td>CRITICAL — fix immediately</td>
+</tr>
+<tr>
+<td><strong>Cross-field validation</strong></td>
+<td>missing</td>
+<td>Security, API, UX</td>
+<td>MEDIUM — add validators</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scoring-progression">Scoring Progression<a class="headerlink" href="#scoring-progression" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th style="text-align: center;">Security</th>
+<th style="text-align: center;">IS 456</th>
+<th style="text-align: center;">UX</th>
+<th style="text-align: center;">API</th>
+<th style="text-align: center;">Tests</th>
+<th style="text-align: center;">Arch</th>
+<th style="text-align: center;">Frontend</th>
+<th style="text-align: center;">Overall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0.21.2 (initial)</td>
+<td style="text-align: center;">5/10</td>
+<td style="text-align: center;">8/10</td>
+<td style="text-align: center;">3.9/5</td>
+<td style="text-align: center;">7/10</td>
+<td style="text-align: center;">6.5/10</td>
+<td style="text-align: center;">7/10</td>
+<td style="text-align: center;">5/10</td>
+<td style="text-align: center;">7.1/10</td>
+</tr>
+<tr>
+<td>v0.21.2 (post-fix)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">8.7/10</td>
+</tr>
+<tr>
+<td><strong>v0.21.3 (deep)</strong></td>
+<td style="text-align: center;"><strong>7/10</strong></td>
+<td style="text-align: center;"><strong>8.5/10</strong></td>
+<td style="text-align: center;"><strong>3.5/5</strong></td>
+<td style="text-align: center;"><strong>7/10</strong></td>
+<td style="text-align: center;"><strong>7.5/10</strong></td>
+<td style="text-align: center;"><strong>7.5/10</strong></td>
+<td style="text-align: center;"><strong>6.5/10</strong></td>
+<td style="text-align: center;"><strong>8.0/10</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="priority-action-plan">Priority Action Plan<a class="headerlink" href="#priority-action-plan" title="Permanent link">&para;</a></h3>
+<p><strong>P0 — Fix This Release (v0.21.4):</strong>
+1. FE-NEW-01: Three.js dispose() calls — memory leak (CRITICAL)
+2. UX-01: Validate d_mm &lt; D_mm — silent calculation failure (CRITICAL)
+3. UX-02: Unify beam/column return types — API consistency (CRITICAL)
+4. S-NEW-01 + ARCH-NEW-07: Replace 22 str(e) leaks with generic messages (HIGH)
+5. S-NEW-03: Add CSV upload file size limit (HIGH)</p>
+<p><strong>P1 — Fix Next Release (v0.22.0):</strong>
+6. ARCH-NEW-12: Split services/api.py God module into domain files
+7. T-NEW-01: Replace MagicMock with real result objects
+8. T-NEW-08: Add FastAPI tests for 7 untested routers
+9. IS-NEW-01 + IS-NEW-02: Add @clause decorators (21 functions)
+10. UX-05: Add clause references to design results
+11. FE-NEW-02: WCAG AA form accessibility
+12. API-NEW-01: Standardize response shapes
+13. ARCH-NEW-09: Replace bare except Exception blocks with specific types</p>
+<p><strong>P2 — Backlog:</strong>
+14. API-NEW-21: Add /design/beam/full endpoint
+15. IS-NEW-04: Implement curtailment rules (Cl 26.3)
+16. UX-12: Add did-you-mean for wrong parameter names
+17. ARCH-NEW-13: Create typed result dataclasses for column functions
+18. T-NEW-03: Hypothesis tests for column/footing
+19. FE-NEW-03: Settings panel (implement or remove)
+20. UX-10: Engineering-precision display (round to 2-3 decimals)</p>
+<p><em>Next audit recommended: v0.22.0 release</em></p>
 
 
 
