@@ -13,7 +13,7 @@ tags: []
 **Audience:** Developers
 **Status:** Production Ready
 **Importance:** Critical
-**Version:** 0.20.0
+**Version:** 0.21.2
 **Created:** 2025-01-01
 **Last Updated:** 2026-04-04<br>
 
