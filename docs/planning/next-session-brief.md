@@ -1,17 +1,14 @@
 # Next Session Brief
 
 **Last Updated:** 2026-04-05
-**Last Session:** v0.21.2 release — packaging quality fixes from external audit
+**Last Session:** v0.21.2 packaging audit — all TASK-PKG items closed
 
 ## What Was Completed
-- **v0.21.2 Released** — Packaging quality release addressing external audit findings
-- Fixed missing `clauses.json` in PyPI wheel (TASK-PKG-1)
-- Narrowed exception handling in traceability.py with `warnings.warn()` (TASK-PKG-2)
-- Scoped package discovery to exclude tests/examples/scripts from wheel (TASK-PKG-3)
-- Fixed inaccurate README `optimize_pareto_front()` claim (TASK-PKG-4)
-- Added Python 3.11+ version note to README (TASK-PKG-5)
-- Added packaging verification tests (`test_packaging.py`)
-- Merged duplicate README headings, updated MANIFEST.in
+- **v0.21.2 Fully Released** — Tag pushed, PyPI published, all packaging audit items resolved
+- TASK-PKG-1 through TASK-PKG-5 completed in PR #524 (v0.21.2 release)
+- TASK-PKG-6 completed in PR #525 — CI wheel content verification test (`Python/tests/test_packaging.py`, 5 tests: clauses.json in wheel, no tests/examples/scripts dirs, structural_lib present)
+- Doc version references synced to v0.21.2 (PR #525)
+- All 6 packaging audit items are ✅ DONE — no remaining packaging work
 
 ## What's Next (Priority Order)
 1. **v0.22.0 planning** — AI assistant port, learning center, Streamlit deprecation

@@ -98,7 +98,7 @@
 | TASK-PKG-3 | **Scope package discovery** — Add `exclude = ["tests*", "examples*", "scripts*"]` to pyproject.toml packages.find. Remove internal packages from wheel. | HIGH | @backend | ✅ Done |
 | TASK-PKG-4 | **Fix optimize_pareto_front API gap** — Either add to api.py __all__ or remove from Python/README.md claims. Auditor found README advertises it but it's not importable from top-level. | MEDIUM | @backend | ✅ Done |
 | TASK-PKG-5 | **Add Python version note to README** — State "Requires Python 3.11+. Users on 3.9-3.10 get older v0.16.5." | LOW | @doc-master | ✅ Done |
-| TASK-PKG-6 | **Add CI wheel content test** — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level | MEDIUM | @tester | 📋 |
+| TASK-PKG-6 | **Add CI wheel content test** — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level. Implemented in `Python/tests/test_packaging.py` (5 tests). PR #525. | MEDIUM | @tester | ✅ Done |
 
 ## Recently Done
 
