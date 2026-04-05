@@ -166,10 +166,11 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, AttributeError, TypeError):
+        logger.exception("Invalid input for beam design")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Design calculation failed")
@@ -276,10 +277,11 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, AttributeError, TypeError):
+        logger.exception("Invalid input for beam check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Check calculation failed")
@@ -427,10 +429,11 @@ async def design_beam_torsion(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, AttributeError, TypeError):
+        logger.exception("Invalid input for torsion design")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Torsion design calculation failed")
@@ -505,10 +508,11 @@ async def enhanced_shear(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, AttributeError, TypeError):
+        logger.exception("Invalid input for enhanced shear")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Enhanced shear calculation failed")
@@ -570,10 +574,11 @@ async def check_ductility(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for ductility check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Ductility check failed")
@@ -629,10 +634,11 @@ async def check_slenderness(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for slenderness check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Slenderness check failed")
@@ -691,10 +697,11 @@ async def check_deflection(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for deflection check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Deflection check failed")
@@ -755,10 +762,11 @@ async def check_crack_width_endpoint(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for crack width check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Crack width check failed")
@@ -851,10 +859,11 @@ async def compliance_report(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for compliance report")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Compliance report failed")

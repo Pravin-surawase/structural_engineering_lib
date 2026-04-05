@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.21.2 (development preview)
+**Version:** 0.21.3 (development preview)
 **Status:** [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -14,7 +14,7 @@ pip install structural-lib-is456           # from PyPI
 pip install "structural-lib-is456[dxf]"    # with DXF export support
 
 # Or pin to a release tag
-pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.2#subdirectory=Python"
+pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.3#subdirectory=Python"
 ```
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).

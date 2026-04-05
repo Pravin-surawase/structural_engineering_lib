@@ -84,6 +84,22 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.3
+**Date:** 2026-04-05
+**Status:** ✅ Locked & Verified
+**Mindset:** External Audit Fixes — Security, Testing, API Ergonomics
+
+### v0.21.3 — 2026-04-05 (External Audit Fixes)
+- **23 external audit findings resolved** — security hardening, API ergonomics, testing infrastructure
+- Security: global rate limiter, error sanitization (28 str(e)), WebSocket validation, CORS from settings
+- Testing: API stability tests, import silence test, e2e pipeline test, repo_only marker
+- IS 456: torsion D_mm parameter (Cl 14.3), bearing stress enhancement (Cl 34.4), SCWB check (IS 13920 Cl 7.2.1)
+- New: `build_detailing_input()` factory, `.to_dict()` on core dataclasses, lazy module loading
+- Docs: "Which API?" decision doc, task-oriented README, e2e example script
+- Fix: CI publish workflow test imports
+
+---
+
 ## v0.21.2
 **Date:** 2026-04-05
 **Status:** ✅ Locked & Verified

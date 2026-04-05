@@ -590,12 +590,13 @@ async def batch_design(
                 else:
                     failed += 1
 
-            except (ValueError, TypeError) as e:
+            except (ValueError, TypeError):
+                logger.exception("Invalid input for beam %s", beam.id)
                 results.append(
                     BatchDesignResult(
                         beam_id=beam.id,
                         success=False,
-                        error=str(e),
+                        error="Invalid input parameters",
                     )
                 )
                 failed += 1

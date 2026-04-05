@@ -144,10 +144,11 @@ async def optimize_beam_cost(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for cost optimization")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Internal error in optimize_beam_cost")

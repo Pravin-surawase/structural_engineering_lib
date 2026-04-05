@@ -86,10 +86,11 @@ async def calculate_effective_length(
             method=result["method"],
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for effective-length calculation")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column effective-length calculation failed")
@@ -130,10 +131,11 @@ async def classify_column(request: ColumnClassifyRequest) -> ColumnClassifyRespo
             slenderness_ratio=round(slenderness_ratio, 2),
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for column classification")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column classification failed")
@@ -172,10 +174,11 @@ async def column_eccentricity(
             e_min_mm=round(e_min, 2),
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for eccentricity calculation")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column eccentricity calculation failed")
@@ -231,10 +234,11 @@ async def column_axial_capacity(
             warnings=result["warnings"],
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for axial capacity calculation")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column axial capacity design failed")
@@ -297,10 +301,11 @@ async def design_column_uniaxial(
             warnings=result["warnings"],
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for uniaxial design")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column uniaxial design failed")
@@ -359,10 +364,11 @@ async def pm_interaction_curve(
             warnings=result.get("warnings", []),
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for P-M interaction curve")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column P-M interaction curve generation failed")
@@ -432,10 +438,11 @@ async def biaxial_check(
             warnings=result.get("warnings", []),
         )
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for biaxial bending check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column biaxial bending check failed")
@@ -473,10 +480,11 @@ async def additional_moment(request: AdditionalMomentRequest):
         )
 
         return AdditionalMomentResponse(**result)
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for additional moment calculation")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column additional moment calculation failed")
@@ -527,10 +535,11 @@ async def design_long_column(request: LongColumnRequest) -> LongColumnResponse:
         result["classification_y"] = str(result.get("classification_y", ""))
         return LongColumnResponse(**result)
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for long column design")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column long (slender) column design failed")
@@ -571,10 +580,11 @@ async def helical_check(request: HelicalCheckRequest) -> HelicalCheckResponse:
         )
         return HelicalCheckResponse(**result)
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for helical reinforcement check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column helical reinforcement check failed")
@@ -625,10 +635,11 @@ async def design_column(request: ColumnDesignRequest) -> ColumnDesignResponse:
         )
         return ColumnDesignResponse(**result)
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for unified column design")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column unified design failed")
@@ -655,10 +666,11 @@ async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
         result = check_column_ductility_is13920(**request.model_dump())
         return result
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for ductile detailing check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column ductile detailing check failed")
@@ -703,10 +715,11 @@ async def column_detailing(
         )
         return ColumnDetailingResponse(**result)
 
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for column detailing check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Column detailing check failed")

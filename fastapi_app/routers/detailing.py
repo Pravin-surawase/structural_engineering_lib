@@ -199,10 +199,11 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for beam detailing")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Internal error in detail_beam")
@@ -374,10 +375,11 @@ async def check_anchorage(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for anchorage check")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e),
+            detail="Invalid input parameters",
         )
     except Exception:
         logger.exception("Internal error in check_anchorage")

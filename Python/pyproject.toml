@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "structural-lib-is456"
-version = "0.21.2"
+version = "0.21.3"
 description = "IS 456 RC Design Library — beams, columns & footings (flexure, shear, axial, ductile detailing, DXF export)"
 readme = "README.md"
 requires-python = ">=3.11"

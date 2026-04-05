@@ -17,7 +17,12 @@
     "api-reference": {
       "canonical": "docs/reference/api.md",
       "description": "Public API documentation",
-      "also_see": ["docs/reference/api-stability.md"]
+      "also_see": ["docs/reference/api-stability.md", "docs/reference/api-levels.md"]
+    },
+    "api-levels": {
+      "canonical": "docs/reference/api-levels.md",
+      "description": "Which API level to use — decision tree for service API vs module-level vs REST",
+      "also_see": ["docs/reference/api.md"]
     },
     "coding-standards": {
       "canonical": "docs/contributing/agent-coding-standards.md",
