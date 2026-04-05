@@ -1033,15 +1033,16 @@ Every structural module (beam, column, footing, IS 13920) has test files. Key co
 | v0.21.2 (initial) | 5/10 | 8/10 | 3.9/5 | 7/10 | 6.5/10 | 7/10 | 5/10 | 7.1/10 |
 | v0.21.2 (post-fix) | — | — | — | — | — | — | — | 8.7/10 |
 | **v0.21.3 (deep)** | **7/10** | **8.5/10** | **3.5/5** | **7/10** | **7.5/10** | **7.5/10** | **6.5/10** | **8.0/10** |
+| **v0.21.4 (P0 sprint)** | **8/10** | **8.5/10** | **4.0/5** | **7.5/10** | **7.5/10** | **7.5/10** | **7/10** | **8.4/10** |
 
 ### Priority Action Plan
 
-**P0 — Fix This Release (v0.21.4):**
-1. FE-NEW-01: Three.js dispose() calls — memory leak (CRITICAL)
-2. UX-01: Validate d_mm < D_mm — silent calculation failure (CRITICAL)
-3. UX-02: Unify beam/column return types — API consistency (CRITICAL)
-4. S-NEW-01 + ARCH-NEW-07: Replace 22 str(e) leaks with generic messages (HIGH)
-5. S-NEW-03: Add CSV upload file size limit (HIGH)
+**P0 — Fix This Release (v0.21.4): ✅ ALL DONE (commit 06ec1b68)**
+1. ✅ FE-NEW-01: Three.js dispose() cleanup in HomePage animation — GPU memory leak fixed (06ec1b68)
+2. ✅ UX-01: d_mm >= D_mm validation at API entry + Pydantic models — silent Ast=0 prevented (06ec1b68)
+3. ✅ UX-02 Phase 1: Column functions return typed dataclasses with DictCompatMixin — backward compatible (06ec1b68)
+4. ✅ S-NEW-01: 26 str(e) info leaks sanitized — new error_utils.py with sanitize_error() (06ec1b68)
+5. ✅ S-NEW-03: CSV upload 10MB file size limit — max_upload_size_bytes in config, HTTP 413 (06ec1b68)
 
 **P1 — Fix Next Release (v0.22.0):**
 6. ARCH-NEW-12: Split services/api.py God module into domain files

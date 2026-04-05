@@ -241,3 +241,8 @@ tags: []
 2026-04-05 | P2-B5 | FE-8: WebGL context loss handling (hook + recovery UI in Viewport3D) | —
 2026-04-05 | CIFIX | Fix React test (DesignView export hook mocks), Docker CI (JWT env), ops agent CI bypass rule | —
 | 2026-04-05 | QC-OVERHAUL | Quality control overhaul: 4 new skills (release-preflight, UAT, quality-gate, dev-rules), 12 agent updates, 46 dev rules, 3-level quality gates, mandatory evolve | docs-only |
+| 2026-04-05 | TASK-P0 | S-NEW-03: Add CSV upload 10MB size limit | 06ec1b68 |
+| 2026-04-05 | TASK-P0 | S-NEW-01: Sanitize 26 str(e) info leaks with error_utils.py | 06ec1b68 |
+| 2026-04-05 | TASK-P0 | UX-01: Add d_mm < D_mm validation to design_beam_is456 | 06ec1b68 |
+| 2026-04-05 | TASK-P0 | FE-NEW-01: Three.js dispose() cleanup in HomePage | 06ec1b68 |
+| 2026-04-05 | TASK-P0 | UX-02: Column return types → dataclass with DictCompatMixin | 06ec1b68 |

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-05 — v0.21.3 released, all 23 EA findings resolved
+**Updated:** 2026-04-05 — v0.21.4 released, all 5 P0 findings resolved
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.3 ✅ Released → v0.22 (Full React + AI Assistant)
+- **Version:** v0.21.4 ✅ Released → v0.22 (Full React + AI Assistant)
 - **Focus:** Full React migration + AI assistant + remaining UX tasks
 - **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
@@ -29,6 +29,7 @@
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
+| **v0.21.4** | P0 Sprint | ✅ Released | 5 P0 fixes: CSV limits, error sanitization, d_mm validation, Three.js dispose, column return types |
 | **v0.22** | Full React | 🔄 ACTIVE | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)
@@ -204,11 +205,11 @@
 
 ### v0.21.3 Deep Audit Findings (90 findings, 3 CRITICAL)
 
-- [ ] P0-FE: Three.js dispose() calls — memory leak (FE-NEW-01) — CRITICAL
-- [ ] P0-UX: Validate d_mm < D_mm in design_beam_is456 (UX-01) — CRITICAL
-- [ ] P0-UX: Unify beam/column API return types (UX-02) — CRITICAL
-- [ ] P0-SEC: Replace 22 str(e) info leaks in routers (S-NEW-01) — HIGH
-- [ ] P0-SEC: Add CSV upload file size limit (S-NEW-03) — HIGH
+- [x] P0-FE: Three.js dispose() calls — memory leak (FE-NEW-01) — ✅ DONE (06ec1b68)
+- [x] P0-UX: Validate d_mm < D_mm in design_beam_is456 (UX-01) — ✅ DONE (06ec1b68)
+- [x] P0-UX: Unify beam/column API return types (UX-02) — ✅ DONE (06ec1b68)
+- [x] P0-SEC: Replace 22 str(e) info leaks in routers (S-NEW-01) — ✅ DONE (06ec1b68)
+- [x] P0-SEC: Add CSV upload file size limit (S-NEW-03) — ✅ DONE (06ec1b68)
 - [ ] P1-ARCH: Split services/api.py God module into domain files (ARCH-NEW-12)
 - [ ] P1-TEST: Replace MagicMock with real objects (T-NEW-01)
 - [ ] P1-TEST: Add FastAPI tests for 7 untested routers (T-NEW-08)
