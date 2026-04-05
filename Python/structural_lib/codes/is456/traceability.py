@@ -41,22 +41,27 @@ F = TypeVar("F", bound=Callable[..., Any])
 # Module-level registry for clause references
 _CLAUSE_REGISTRY: dict[str, list[str]] = {}
 
-# Eager module-level load (replaces lazy _load_clause_database)
-_CLAUSE_DB: dict[str, Any]
-try:
-    _CLAUSE_DB = json.loads(
-        importlib.resources.files("structural_lib.codes.is456")
-        .joinpath("clauses.json")
-        .read_text(encoding="utf-8")
-    )
-except (FileNotFoundError, json.JSONDecodeError, ModuleNotFoundError) as exc:
-    import warnings
+# Lazy-loaded clause database (loaded on first access, not at import time)
+_CLAUSE_DB: dict[str, Any] | None = None
 
-    warnings.warn(
-        f"clauses.json not found in package data — clause traceability features are unavailable: {exc}",
-        stacklevel=1,
-    )
-    _CLAUSE_DB = {}
+
+def _get_clause_db() -> dict[str, Any]:
+    """Lazy-load clause database on first access."""
+    global _CLAUSE_DB
+    if _CLAUSE_DB is None:
+        try:
+            _CLAUSE_DB = json.loads(
+                importlib.resources.files("structural_lib.codes.is456")
+                .joinpath("clauses.json")
+                .read_text(encoding="utf-8")
+            )
+        except (FileNotFoundError, json.JSONDecodeError, ModuleNotFoundError) as exc:
+            _logger.debug(
+                "clauses.json not found in package data — clause traceability unavailable: %s",
+                exc,
+            )
+            _CLAUSE_DB = {}
+    return _CLAUSE_DB
 
 
 def clause(*clause_refs: str, standard: str = "IS 456") -> Callable[[F], F]:
@@ -95,9 +100,10 @@ def clause(*clause_refs: str, standard: str = "IS 456") -> Callable[[F], F]:
         _CLAUSE_REGISTRY[func_key] = all_clauses
 
         # Validate clause references exist in database (warn only, IS 456 only)
-        if standard == "IS 456" and _CLAUSE_DB:
-            known_clauses = set(_CLAUSE_DB.get("clauses", {}).keys())
-            known_clauses.update(_CLAUSE_DB.get("annexures", {}).keys())
+        db = _get_clause_db()
+        if standard == "IS 456" and db:
+            known_clauses = set(db.get("clauses", {}).keys())
+            known_clauses.update(db.get("annexures", {}).keys())
             for ref in clause_refs:
                 if ref not in known_clauses:
                     _logger.warning(
@@ -166,13 +172,14 @@ def get_clause_info(clause_ref: str) -> dict[str, Any] | None:
         'flexure'
     """
     # First check in clauses
-    clauses: dict[str, Any] = _CLAUSE_DB.get("clauses", {})
+    db = _get_clause_db()
+    clauses: dict[str, Any] = db.get("clauses", {})
     if clause_ref in clauses:
         result: dict[str, Any] = clauses[clause_ref]
         return result
 
     # Then check in annexures (for G-x.x references)
-    annexures: dict[str, Any] = _CLAUSE_DB.get("annexures", {})
+    annexures: dict[str, Any] = db.get("annexures", {})
     if clause_ref in annexures:
         result = annexures[clause_ref]
         return result
@@ -194,7 +201,7 @@ def list_clauses_by_category(category: str) -> list[dict[str, Any]]:
         >>> len(flexure_clauses)
         8
     """
-    clauses = _CLAUSE_DB.get("clauses", {})
+    clauses = _get_clause_db().get("clauses", {})
     result = []
     for ref, info in clauses.items():
         if info.get("category") == category:
@@ -230,7 +237,7 @@ def search_clauses(keyword: str) -> list[dict[str, Any]]:
         >>> len(results)
         10
     """
-    clauses = _CLAUSE_DB.get("clauses", {})
+    clauses = _get_clause_db().get("clauses", {})
     keyword_lower = keyword.lower()
     results = []
 
@@ -266,7 +273,8 @@ def generate_traceability_report() -> dict[str, Any]:
         >>> print(f"Functions: {len(report['functions'])}")
         >>> print(f"Clauses used: {len(report['clauses_used'])}")
     """
-    all_clauses = set(_CLAUSE_DB.get("clauses", {}).keys())
+    db = _get_clause_db()
+    all_clauses = set(db.get("clauses", {}).keys())
     used_clauses: set[str] = set()
     functions = []
 
@@ -297,7 +305,7 @@ def get_database_metadata() -> dict[str, Any]:
     Returns:
         Dictionary with database metadata (standard, version, etc.).
     """
-    metadata: dict[str, Any] = _CLAUSE_DB.get("metadata", {})
+    metadata: dict[str, Any] = _get_clause_db().get("metadata", {})
     return metadata
 
 

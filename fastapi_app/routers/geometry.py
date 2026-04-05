@@ -5,8 +5,9 @@ Endpoints for geometry generation for visualization.
 Uses structural_lib.visualization.geometry_3d for accurate calculations.
 """
 
-from fastapi import APIRouter, HTTPException, status
+import logging
 
+from fastapi import APIRouter, HTTPException, status
 from fastapi_app.models.geometry import (
     Geometry3DRequest,
     Geometry3DResponse,
@@ -26,6 +27,8 @@ from fastapi_app.models.geometry import (
     CrossSectionRequest,
     CrossSectionResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/geometry",
@@ -150,10 +153,11 @@ async def generate_beam_geometry(
     except (ValueError, AttributeError, TypeError):
         # Fallback on errors
         return _generate_fallback_geometry(request)
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in generate_beam_geometry")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Geometry generation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -364,10 +368,11 @@ async def generate_full_beam_geometry(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Invalid parameters: {e}",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in generate_full_beam_geometry")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Geometry generation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -532,10 +537,11 @@ async def generate_building_geometry(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Invalid parameters: {e}",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in generate_building_geometry")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Building geometry generation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -618,8 +624,9 @@ async def generate_cross_section_geometry(
             warnings=[],
         )
 
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in generate_cross_section_geometry")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Cross-section generation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )

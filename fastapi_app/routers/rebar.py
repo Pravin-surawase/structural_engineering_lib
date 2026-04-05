@@ -7,8 +7,12 @@ Endpoints for rebar configuration validation and preview.
 Uses structural_lib.rebar for IS 456 compliant checks.
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/rebar",
@@ -163,10 +167,11 @@ async def validate_rebar(request: RebarValidateRequest) -> RebarValidateResponse
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"structural_lib not available: {e}",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in validate_rebar")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Validation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -239,8 +244,9 @@ async def apply_rebar(request: RebarApplyRequest) -> RebarApplyResponse:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"structural_lib not available: {e}",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in apply_rebar")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Apply failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )

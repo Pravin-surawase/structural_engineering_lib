@@ -149,6 +149,7 @@ __all__ = [
     "generate_calculation_report",
     # Outputs
     "compute_detailing",
+    "build_detailing_input",
     "check_anchorage_at_simple_support",
     "compute_bbs",
     "export_bbs",
@@ -525,6 +526,80 @@ def _detailing_result_to_dict(
     }
 
 
+def build_detailing_input(
+    result: ComplianceCaseResult,
+    *,
+    beam_id: str = "B1",
+    b_mm: float = 300.0,
+    D_mm: float = 500.0,
+    d_mm: float = 450.0,
+    span_mm: float = 4000.0,
+    cover_mm: float = 40.0,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+) -> dict[str, Any]:
+    """Build the dict schema expected by compute_detailing() from a design result.
+
+    Since ComplianceCaseResult stores only design outputs (Ast, shear spacing, etc.)
+    and not the original geometry/material inputs, you must pass those explicitly.
+
+    Args:
+        result: A ComplianceCaseResult from design_beam_is456().
+        beam_id: Beam identifier for the detailing output.
+        b_mm: Beam width (mm) — same value used in design_beam_is456().
+        D_mm: Overall depth (mm) — same value used in design_beam_is456().
+        d_mm: Effective depth (mm) — same value used in design_beam_is456().
+        span_mm: Beam span (mm).
+        cover_mm: Clear cover (mm).
+        fck_nmm2: Concrete grade (N/mm²) — same value used in design_beam_is456().
+        fy_nmm2: Steel yield strength (N/mm²) — same value used in design_beam_is456().
+
+    Returns:
+        dict: A dictionary with the schema expected by compute_detailing().
+
+    Example:
+        >>> result = design_beam_is456(
+        ...     units="IS456", b_mm=300, D_mm=500, d_mm=450,
+        ...     fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
+        ... )
+        >>> detailing_input = build_detailing_input(
+        ...     result, b_mm=300, D_mm=500, d_mm=450, fck_nmm2=25, fy_nmm2=500,
+        ... )
+        >>> detailed = compute_detailing(detailing_input)
+    """
+    flexure = result.flexure
+    shear = result.shear
+
+    beam_dict: dict[str, Any] = {
+        "beam_id": beam_id,
+        "geometry": {
+            "b_mm": b_mm,
+            "D_mm": D_mm,
+            "d_mm": d_mm,
+            "span_mm": span_mm,
+            "cover_mm": cover_mm,
+        },
+        "materials": {
+            "fck_nmm2": fck_nmm2,
+            "fy_nmm2": fy_nmm2,
+        },
+        "flexure": {
+            "ast_required_mm2": flexure.Ast_required,
+            "asc_required_mm2": flexure.Asc_required,
+        },
+        "shear": {
+            "tau_v": shear.tau_v,
+            "tau_c": shear.tau_c,
+            "tau_c_max": shear.tau_c_max,
+            "Vus": shear.Vus,
+            "spacing": shear.spacing,
+            "is_safe": shear.is_safe,
+        },
+    }
+
+    return {"beams": [beam_dict]}
+
+
 def compute_detailing(
     design_results: dict[str, Any],
     *,
@@ -809,9 +884,15 @@ def compute_report(
         batch_threshold: Number of beams threshold for batch report mode (default: 80)
 
     Returns:
-        - str: HTML or JSON string if output_path is None
-        - Path: Output file path if output_path provided (single report)
-        - list[Path]: List of output paths if batch report with multiple files
+        str: When no output_path is given — returns the report content as a string.
+        Path: When output_path is given and input has fewer than batch_threshold beams.
+        list[Path]: When output_path is given and input has batch_threshold+ beams
+            (split reports).
+
+    Note:
+        For predictable typing, prefer specifying output_path (returns Path or
+        list[Path]) or omitting it (always returns str). Check isinstance() on
+        the result if you accept both patterns.
 
     Raises:
         ValueError: If format not in {"html", "json"}

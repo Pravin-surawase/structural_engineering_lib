@@ -4,8 +4,9 @@ Smart Analysis Router.
 Endpoints for AI-assisted design analysis and load calculations.
 """
 
-from fastapi import APIRouter, HTTPException, status
+import logging
 
+from fastapi import APIRouter, HTTPException, status
 from fastapi_app.models.analysis import (
     LoadAnalysisRequest,
     LoadAnalysisResponse,
@@ -17,6 +18,8 @@ from fastapi_app.models.analysis import (
     EfficiencyMetrics,
     CostEstimate,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/analysis",
@@ -78,10 +81,11 @@ async def analyze_loads(request: LoadAnalysisRequest) -> LoadAnalysisResponse:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in analyze_loads")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Load analysis failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
     return LoadAnalysisResponse(
@@ -259,15 +263,16 @@ async def smart_analyze_beam(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, TypeError) as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in smart_analyze_beam")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Analysis failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 

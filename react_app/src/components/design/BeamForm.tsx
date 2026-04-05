@@ -4,11 +4,15 @@
  * Input form for beam design parameters with live validation.
  * Supports auto-design mode with debounced updates.
  */
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDesignStore } from '../../store/designStore';
 import { useMutation } from '@tanstack/react-query';
 import { designBeam } from '../../api/client';
 import { useAutoDesign } from '../../hooks/useAutoDesign';
+
+interface ValidationErrors {
+  [fieldName: string]: string | undefined;
+}
 
 export function BeamForm() {
   const {
@@ -24,6 +28,86 @@ export function BeamForm() {
     setAutoDesign,
     wsLatency,
   } = useDesignStore();
+
+  const [errors, setErrors] = useState<ValidationErrors>({});
+
+  // Validation function
+  const validate = useCallback((field?: string) => {
+    const errs: ValidationErrors = {};
+
+    // Width validation
+    if (!field || field === 'width') {
+      if (inputs.width < 150) {
+        errs.width = 'Width < 150mm not recommended (IS 456 Cl 23.1.1)';
+      } else if (inputs.width > 1000) {
+        errs.width = 'Width exceeds typical beam range (max 1000mm)';
+      } else if (inputs.width < 100) {
+        errs.width = 'Width too small for structural beam';
+      }
+    }
+
+    // Depth validation
+    if (!field || field === 'depth') {
+      if (inputs.depth < 200) {
+        errs.depth = 'Depth < 200mm not recommended for beams';
+      } else if (inputs.depth > 1500) {
+        errs.depth = 'Depth exceeds typical beam range (max 1500mm)';
+      }
+
+      // Cross-field: depth should be reasonable w.r.t width (span-to-depth ratio)
+      if (inputs.depth < inputs.width * 0.8) {
+        errs.depth = 'Depth typically ≥ 0.8 × width for beams';
+      }
+    }
+
+    // Length validation
+    if (!field || field === 'length') {
+      if (length < 1000) {
+        errs.length = 'Span too short for structural beam';
+      } else if (length > 12000) {
+        errs.length = 'Span exceeds typical beam range (max 12m)';
+      }
+
+      // Span-to-depth ratio check (typical 10-20)
+      const spanToDepth = length / inputs.depth;
+      if (spanToDepth > 25) {
+        errs.length = `High span/depth ratio (${spanToDepth.toFixed(1)}), consider deeper section`;
+      } else if (spanToDepth < 5) {
+        errs.length = `Low span/depth ratio (${spanToDepth.toFixed(1)}), section may be over-designed`;
+      }
+    }
+
+    // Moment validation
+    if (!field || field === 'moment') {
+      if (inputs.moment < 0) {
+        errs.moment = 'Moment cannot be negative';
+      } else if (inputs.moment === 0) {
+        errs.moment = 'Zero moment — check loading';
+      } else if (inputs.moment > 2000) {
+        errs.moment = 'Moment exceeds typical range (max 2000 kN·m)';
+      }
+    }
+
+    // Shear validation
+    if (!field || field === 'shear') {
+      const shearValue = inputs.shear ?? 0;
+      if (shearValue < 0) {
+        errs.shear = 'Shear cannot be negative';
+      } else if (shearValue > 1000) {
+        errs.shear = 'Shear exceeds typical range (max 1000 kN)';
+      }
+    }
+
+    // Update errors (only update the field being validated, or all if no field specified)
+    setErrors((prev) => {
+      if (field) {
+        return { ...prev, [field]: errs[field] };
+      }
+      return errs;
+    });
+
+    return Object.keys(errs).length === 0;
+  }, [inputs.width, inputs.depth, inputs.moment, inputs.shear, length]);
 
   // Auto-design hook (debounced REST calls)
   useAutoDesign(autoDesign);
@@ -47,6 +131,9 @@ export function BeamForm() {
 
   const handleInputChange = useCallback(
     (field: string, value: number) => {
+      // Clear error for this field when user starts typing
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+
       if (field === 'length') {
         setLength(value);
       } else {
@@ -56,9 +143,21 @@ export function BeamForm() {
     [setInputs, setLength]
   );
 
+  const handleBlur = useCallback(
+    (field: string) => {
+      // Validate this field on blur
+      validate(field);
+    },
+    [validate]
+  );
+
   const handleDesign = useCallback(() => {
-    designMutation.mutate(inputs);
-  }, [inputs, designMutation]);
+    // Validate all fields before submission
+    const isValid = validate();
+    if (isValid) {
+      designMutation.mutate(inputs);
+    }
+  }, [inputs, designMutation, validate]);
 
   return (
     <div className="p-4 flex flex-col gap-4 h-full overflow-y-auto bg-[#1e1e1e] text-[#e0e0e0]">
@@ -100,8 +199,12 @@ export function BeamForm() {
               max={1000}
               step={10}
               onChange={(e) => handleInputChange('width', Number(e.target.value))}
+              onBlur={() => handleBlur('width')}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
+            {errors.width && (
+              <p className="text-amber-400 text-xs mt-1 leading-tight">{errors.width}</p>
+            )}
           </label>
         </div>
         <div className="flex flex-col gap-1">
@@ -119,8 +222,12 @@ export function BeamForm() {
               max={1500}
               step={10}
               onChange={(e) => handleInputChange('depth', Number(e.target.value))}
+              onBlur={() => handleBlur('depth')}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
+            {errors.depth && (
+              <p className="text-amber-400 text-xs mt-1 leading-tight">{errors.depth}</p>
+            )}
           </label>
         </div>
         <div className="flex flex-col gap-1">
@@ -133,8 +240,12 @@ export function BeamForm() {
               max={12000}
               step={100}
               onChange={(e) => handleInputChange('length', Number(e.target.value))}
+              onBlur={() => handleBlur('length')}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
+            {errors.length && (
+              <p className="text-amber-400 text-xs mt-1 leading-tight">{errors.length}</p>
+            )}
           </label>
         </div>
       </div>
@@ -156,8 +267,12 @@ export function BeamForm() {
               max={2000}
               step={5}
               onChange={(e) => handleInputChange('moment', Number(e.target.value))}
+              onBlur={() => handleBlur('moment')}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
+            {errors.moment && (
+              <p className="text-red-400 text-xs mt-1 leading-tight">{errors.moment}</p>
+            )}
           </label>
         </div>
         <div className="flex flex-col gap-1">
@@ -175,8 +290,12 @@ export function BeamForm() {
               max={1000}
               step={5}
               onChange={(e) => handleInputChange('shear', Number(e.target.value))}
+              onBlur={() => handleBlur('shear')}
               className="px-3 py-2 border border-[#444] rounded bg-[#2d2d2d] text-white text-sm w-full box-border focus:outline-none focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30"
             />
+            {errors.shear && (
+              <p className="text-red-400 text-xs mt-1 leading-tight">{errors.shear}</p>
+            )}
           </label>
         </div>
       </div>

@@ -7,9 +7,10 @@ Endpoints for dashboard aggregation, code checks, and optimization suggestions.
 Uses structural_lib.dashboard for canonical computations.
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
-
 from fastapi_app.models.boq import (
     ConcreteSummaryResponse,
     ProjectBOQRequest,
@@ -17,6 +18,8 @@ from fastapi_app.models.boq import (
     SteelSummaryResponse,
     StorySummaryResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/insights",
@@ -234,10 +237,11 @@ async def generate_dashboard(request: DashboardRequest) -> DashboardResponse:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Dashboard module not available",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in generate_dashboard")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Dashboard generation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -303,10 +307,11 @@ async def code_checks_live(request: CodeChecksRequest) -> CodeChecksResponse:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Dashboard module not available",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in code_checks_live")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Code checks failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -372,10 +377,11 @@ async def suggest_rebar_options(request: RebarSuggestRequest) -> RebarSuggestRes
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Dashboard module not available",
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in suggest_rebar_options")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Suggestion generation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -485,8 +491,9 @@ async def project_boq(request: ProjectBOQRequest) -> ProjectBOQResponse:
             grand_total_concrete_m3=round(total_concrete, 4),
             grand_total_cost_inr=round(total_cost, 2),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in project_boq")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"BOQ aggregation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )

@@ -4,8 +4,9 @@ Beam Detailing Router.
 Endpoints for reinforcement detailing calculations.
 """
 
-from fastapi import APIRouter, HTTPException, status
+import logging
 
+from fastapi import APIRouter, HTTPException, status
 from fastapi_app.models.beam import (
     BarAreasResponse,
     BeamDetailingRequest,
@@ -17,6 +18,8 @@ from fastapi_app.models.compliance import (
     AnchorageCheckRequest,
     AnchorageCheckResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/detailing",
@@ -196,15 +199,16 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"structural_lib not available: {e}",
         )
-    except (ValueError, AttributeError, TypeError) as e:
+    except (ValueError, TypeError) as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in detail_beam")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Detailing calculation failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )
 
 
@@ -375,8 +379,9 @@ async def check_anchorage(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(e),
         )
-    except Exception as e:
+    except Exception:
+        logger.exception("Internal error in check_anchorage")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Anchorage check failed: {e}",
+            detail="An internal error occurred. Please check your input parameters.",
         )

@@ -11,6 +11,8 @@ from pathlib import Path
 
 import pytest
 
+pytestmark = pytest.mark.repo_only
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PYTHON = sys.executable  # Use current Python interpreter
 BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"

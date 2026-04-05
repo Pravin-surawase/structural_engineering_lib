@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-02 — TASKS.md cleanup: merged duplicate sections, archived 28 old items, collapsed done phases
+**Updated:** 2026-04-05 — Added External Audit (EA) tasks from comprehensive-library-audit-2026-04-04
 
 ---
 
@@ -99,6 +99,75 @@
 | TASK-PKG-4 | **Fix optimize_pareto_front API gap** — Either add to api.py __all__ or remove from Python/README.md claims. Auditor found README advertises it but it's not importable from top-level. | MEDIUM | @backend | ✅ Done |
 | TASK-PKG-5 | **Add Python version note to README** — State "Requires Python 3.11+. Users on 3.9-3.10 get older v0.16.5." | LOW | @doc-master | ✅ Done |
 | TASK-PKG-6 | **Add CI wheel content test** — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level. Implemented in `Python/tests/test_packaging.py` (5 tests). PR #525. | MEDIUM | @tester | ✅ Done |
+
+## v0.21.2 External Audit Fixes
+
+> External audit of PyPI v0.21.2 found 23 packaging, API ergonomics, testing, security, and docs issues. See [comprehensive-library-audit-2026-04-04.md](audit/comprehensive-library-audit-2026-04-04.md) §24.
+> **Branch:** `audit/external-v0.21.2` — isolated from v0.22 work on main.
+> **Pipeline:** Each batch goes through Plan → Execute → Test → Review → Document → Commit.
+
+### Batch 1 — Test Infrastructure (lowest risk, immediate ROI)
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-8 | **Add `repo_only` pytest marker** — Mark 4+ tests that need full repo (`test_api_surface_snapshot`, `test_pipeline_state`, `test_session_store`, `test_release_scripts`). Add `repo_only` marker to `pytest.ini`. | P1 | @tester | ✅ Done |
+| EA-6 | **Add import silence smoke test** — Test that `import structural_lib` emits zero warnings. Currently pytest.ini suppresses them instead of testing absence. | P1 | @tester | ✅ Done |
+| EA-1 | **Verify sdist test isolation** — Confirm tests separated by `repo_only` marker won't fail in sdist context. | P0 | @tester | ✅ Done |
+
+### Batch 2 — Import Cleanup (highest user-facing impact)
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-2 | **Silence import-time warnings** — Lazy-load clause DB in traceability.py. Gate deprecation stubs behind actual import, not module load. | P1 | @backend | ✅ Done |
+| EA-10 | **Lazy-load non-core modules** — Use `__getattr__` pattern in `__init__.py` for: adapters, etabs_import, batch, costing, testing_strategies, visualization. | P2 | @backend | ✅ Done |
+
+### Batch 3 — API Consistency (user-facing API fixes)
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-3 | **Normalize `compute_report()` return type** — Split into `compute_report()` → str and `compute_report_to_files()` → list[Path], or use overloads. | P1 | @backend | ✅ Done |
+| EA-4 | **Add `.to_dict()` to core dataclasses** — Add to ComplianceCaseResult, FlexureResult, ShearResult, ColumnAxialResult, BBSDocument (~10 classes). | P1 | @backend | ✅ Done |
+| EA-5 | **Add schema builder for `compute_detailing()`** — Add `from_design_result(ComplianceCaseResult)` factory or `DetailingInput` class. | P1 | @backend | ✅ Done |
+
+### Batch 4 — Testing Improvements
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-7 | **Add e2e pipeline test** — `test_full_pipeline_e2e.py`: design → detailing → BBS → DXF → report chain. | P1 | @tester | ✅ Done |
+| EA-9 | **Add wheel API stability test** — Build wheel, install in temp venv, verify all `__all__` members importable. | P2 | @tester | 📋 |
+
+### Batch 5 — Security Hardening
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-18 | **Sanitize all `str(e)` in routers** — Replace 32 instances of `detail=str(e)` with generic messages. Log original error server-side. | P1 | @api-developer | ✅ Done |
+| EA-17 | **Add global rate limiter middleware** — Apply rate limiting to all endpoints, not just 2 streaming routes. | P1 | @api-developer | ✅ Done |
+
+### Batch 6 — Frontend
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-15 | **Custom form validation** — Add validation error display, cross-field checks (depth > cover), Zod/custom validators in BeamForm. | P1 | @frontend | ✅ Done |
+
+### Batch 7 — Documentation
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-12 | **"Which API?" decision doc** — Document when to use `api.design_beam_is456()` vs `flexure.design_singly_reinforced()` vs module-level imports. | P2 | @doc-master | ✅ Done |
+| EA-13 | **Copy-pasteable e2e example** — Python script: design → detailing → BBS → report in one file. | P2 | @doc-master | ✅ Done |
+| EA-14 | **Task-oriented README** — Rewrite around "If you want X, call Y" structure. | P2 | @doc-master | 📋 |
+
+### Deferred (lower priority, future versions)
+
+| ID | Task | Severity | Agent | Status |
+|----|------|----------|-------|--------|
+| EA-11 | Canonical workflow guidance in UI | P2 | @frontend | Deferred to v0.22 |
+| EA-16 | Auth enabled by default in production deployments | P1 | @ops | Deferred — needs deployment strategy |
+| EA-19 | WebSocket Pydantic validation | P2 | @api-developer | Deferred |
+| EA-20 | Wire CORS Settings to middleware | P2 | @api-developer | Deferred |
+| EA-21 | Torsion D parameter fix (IS-1) | P2 | @structural-math | Deferred |
+| EA-22 | Footing Cl 34.4 bearing enhancement (IS-6) | P2 | @structural-math | Deferred |
+| EA-23 | SCWB joint check (IS 13920 Cl 7.2.1) | P2 | @structural-math | Deferred |
 
 ## Recently Done
 
