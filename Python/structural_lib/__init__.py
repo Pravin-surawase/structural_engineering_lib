@@ -296,7 +296,7 @@ __all__ = [
 ]
 
 
-def __getattr__(name: str):
+def __getattr__(name: str) -> _ModuleType:
     if name in _LAZY_MODULES:
         mod = importlib.import_module(f".{name}", __name__)
         globals()[name] = mod
