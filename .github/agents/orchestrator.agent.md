@@ -149,6 +149,8 @@ Every task — no exceptions — flows through this pipeline:
 
 **Step 8 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
 
+**CI Failure Delegation:** If CI fails at Step 7 (COMMIT) or Step 8, @ops diagnoses the failure type and delegates the fix to the appropriate specialist (Python failures → @backend/@tester, React failures → @frontend, FastAPI failures → @api-developer, etc.) before retrying. Ops does NOT blindly retry or attempt code fixes outside its domain. See the CI Failure Delegation Protocol in `ops.agent.md` for the full decision table.
+
 **No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
 
 ### IS 456 Function Pipeline (ADDITIONAL — for structural math tasks)
@@ -168,6 +170,8 @@ When the task involves adding/modifying IS 456 functions (`codes/is456/`), enfor
 ```
 
 **Step 9 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
+
+**CI Failure Delegation:** Same rule as the main pipeline — if CI fails at Step 9, @ops diagnoses and delegates to the right specialist before retrying. See `ops.agent.md` CI Failure Delegation Protocol.
 
 **Quality Gates:**
 - Step 2 → 3: Formula approved by @structural-engineer
