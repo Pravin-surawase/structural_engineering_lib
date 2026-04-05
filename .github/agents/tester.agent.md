@@ -123,6 +123,8 @@ cd react_app && npx vitest run --reporter=verbose              # Verbose output
 
 ### Rules for Test Quality
 
+0. **After validation tightening, audit ALL existing tests** — New constraints (e.g., `d_mm < D_mm`) will reject previously-accepted test data. Search tests for the tightened parameter and fix any violations BEFORE committing. (Sprint 1 v0.21.4: `test_compare_three_designs` used `d_mm=500` with `D_mm=500`, caught by reviewer.)
+
 1. **NEVER use MagicMock for structural Result types** (FlexureResult, ShearResult, ColumnAxialResult, BBSDocument, etc.)
    - **Why:** In v0.21.0, tests used `MagicMock()` for ShearResult which auto-creates any attribute. The test passed even though `calculation_report.py` accessed 4 non-existent fields. The bug was only caught by manual review.
    - **Instead:** Create real instances with test data, or use simple dataclass factories.

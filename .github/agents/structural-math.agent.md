@@ -57,6 +57,7 @@ You are the **structural engineering math specialist** for **structural_engineer
 | ⚠️ Always cite clause | Every formula gets `@clause("XX.X")` decorator or `# IS 456 Cl XX.X` comment |
 | ⚠️ Use existing patterns | Study `flexure.py` and `shear.py` before writing — match their style exactly |
 | ⚠️ Always `.venv/bin/python` | Never bare `python` |
+| ⚠️ Large file editing | When editing `services/api.py` (3600+ lines), verify ALL docstring `"""` delimiters after changes. Watch for `²` and other Unicode in docstrings — these cause SyntaxError. Run `.venv/bin/python -c "import structural_lib"` after every edit. (Sprint 1 v0.21.4: 4 syntax errors from damaged docstrings.) |
 
 ## Module Pattern (follow exactly)
 
