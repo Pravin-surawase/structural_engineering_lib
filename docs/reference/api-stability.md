@@ -427,7 +427,7 @@ If you must use an internal module:
 ```python
 # Pin to exact version
 # requirements.txt
-structural-lib-is456==0.21.0
+structural-lib-is456==0.21.2
 
 # Or wrap with try/except
 try:
@@ -517,5 +517,6 @@ If you find a breaking change:
 ## Changelog
 
 - **2026-04-04**: Added Column Design API (stable) and Footing Design API (experimental) for v0.21.0
+- **2026-04-05**: Version references updated to v0.21.2
 - **2025-12-27**: Initial API stability document (v0.9.6)
 - **2025-12-29**: Added planned API targets (library-first expansion)

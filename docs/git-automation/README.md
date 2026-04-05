@@ -3,7 +3,7 @@
 **Type:** Hub
 **Audience:** All Agents
 **Status:** Production Ready
-**Version:** 0.21.0
+**Version:** 0.21.2
 **Last Updated:** 2026-03-24
 
 ---
