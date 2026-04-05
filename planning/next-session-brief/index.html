@@ -1503,10 +1503,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#audit-progress" class="md-nav__link">
+  <a href="#audit-status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Audit Progress
+        Audit Status
       
     </span>
   </a>
@@ -1546,36 +1546,33 @@
 
 <h1 id="next-session-brief">Next Session Brief<a class="headerlink" href="#next-session-brief" title="Permanent link">&para;</a></h1>
 <p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> External audit v0.21.2 — 14 EA findings fixed</p>
+<strong>Last Session:</strong> External audit v0.21.2 — ALL 23 EA findings resolved</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>External Audit Review</strong> — All 27 claims verified by 7 specialist agents; 24 confirmed, 3 disproven</li>
-<li><strong>14 EA fixes applied</strong> across 7 batches:</li>
-<li>Batch 1: Test infrastructure (EA-1, EA-6, EA-8) — repo_only marker, import silence test</li>
-<li>Batch 2: Import cleanup (EA-2, EA-10) — lazy clause DB, lazy <strong>init</strong> imports</li>
-<li>Batch 3: API consistency (EA-3, EA-4, EA-5) — compute_report docs, to_dict(), build_detailing_input</li>
-<li>Batch 4: Testing (EA-7) — 8 e2e pipeline tests</li>
-<li>Batch 5: Security (EA-17, EA-18) — global rate limiter, str(e) sanitization</li>
-<li>Batch 6: Frontend (EA-15) — BeamForm validation with cross-field checks</li>
-<li>Batch 7: Documentation (EA-12, EA-13) — API levels guide, e2e example</li>
-<li><strong>All tests pass:</strong> 4311 Python + 187 FastAPI + React build ✅</li>
-<li><strong>Reviewer approved all 7 batches</strong> ✅</li>
+<li><strong>All 23 external audit findings fixed</strong> across 2 sessions:</li>
+<li>Session 1: 14 items (EA-1–EA-8, EA-10, EA-12, EA-13, EA-15, EA-17, EA-18)</li>
+<li>Session 2: 9 items (EA-9, EA-11, EA-14, EA-16, EA-19–EA-23)</li>
+<li><strong>Structural additions:</strong> bearing_stress_enhancement (Cl 34.4), check_scwb (IS 13920 Cl 7.2.1), torsion D_mm param</li>
+<li><strong>Security:</strong> WS Pydantic validation, CORS from settings, auth production docs</li>
+<li><strong>Frontend:</strong> WorkflowHint component on 3 pages</li>
+<li><strong>Testing:</strong> 105 API stability tests, total suite now 4451+ Python + 187 FastAPI</li>
+<li><strong>Docs:</strong> Task-oriented README rewrite</li>
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Commit all changes</strong> via ai_commit.sh on audit/external-v0.21.2 branch</li>
-<li><strong>EA-9:</strong> Wheel API stability test (deferred from Batch 4)</li>
-<li><strong>EA-14:</strong> Task-oriented README rewrite</li>
-<li><strong>EA deferred items:</strong> EA-19 (WS validation), EA-20 (CORS Settings), EA-21-23 (IS 456)</li>
-<li><strong>v0.22.0 work:</strong> AI assistant port, learning center, Streamlit deprecation</li>
+<li><strong>v0.22 work:</strong> AI assistant port, learning center, Streamlit deprecation</li>
+<li><strong>TASK-526:</strong> TopBar context badges + settings panel</li>
+<li><strong>TASK-527:</strong> Workflow breadcrumb for batch flow</li>
+<li><strong>Library expansion:</strong> Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)</li>
+<li><strong>Test coverage:</strong> Report/3D tests (TASK-520)</li>
 </ol>
-<h2 id="audit-progress">Audit Progress<a class="headerlink" href="#audit-progress" title="Permanent link">&para;</a></h2>
+<h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
 <ul>
-<li>P0: 6/6 resolved ✅ (5 internal + 1 external)</li>
-<li>P1: 31/31 resolved ✅ (20 internal + 11 external)</li>
-<li>P2: 41/63 resolved (65%)</li>
-<li>External audit findings: 14/23 resolved (61%)</li>
-<li>Overall grade: A (8.5/10)</li>
+<li>All P0: ✅ resolved</li>
+<li>All P1: ✅ resolved</li>
+<li>P2: 90%+ resolved</li>
+<li>External audit: 23/23 resolved ✅</li>
+<li>Overall grade: A (8.7/10)</li>
 </ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
