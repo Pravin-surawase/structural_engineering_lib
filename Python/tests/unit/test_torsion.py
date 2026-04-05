@@ -75,7 +75,7 @@ class TestEquivalentMoment:
         expected = 150 + mt
         assert me == pytest.approx(expected, rel=0.01)
 
-    def test_explicit_D_mm(self):
+    def test_explicit_d_mm(self):
         """Me with explicit D_mm uses actual overall depth, no deprecation warning."""
         import warnings
 
@@ -90,7 +90,7 @@ class TestEquivalentMoment:
         expected = 150 + mt
         assert me == pytest.approx(expected, rel=0.01)
 
-    def test_D_mm_none_emits_deprecation_warning(self):
+    def test_d_mm_none_emits_deprecation_warning(self):
         """Omitting D_mm emits a DeprecationWarning."""
         import warnings
 

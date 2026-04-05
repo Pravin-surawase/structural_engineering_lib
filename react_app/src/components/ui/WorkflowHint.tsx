@@ -4,7 +4,7 @@
  * Displays dismissible hints for user guidance on key pages.
  * Dismissal state persists in localStorage.
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { X, Info, ArrowRight } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -34,13 +34,9 @@ export function WorkflowHint({
   nextAction,
   className,
 }: WorkflowHintProps) {
-  const [dismissed, setDismissed] = useState(false);
-
-  // Load dismiss state from localStorage
-  useEffect(() => {
-    const isDismissed = localStorage.getItem(storageKey) === 'true';
-    setDismissed(isDismissed);
-  }, [storageKey]);
+  const [dismissed, setDismissed] = useState(() => {
+    return localStorage.getItem(storageKey) === 'true';
+  });
 
   const handleDismiss = () => {
     localStorage.setItem(storageKey, 'true');
