@@ -7,9 +7,6 @@ Endpoints for AI-assisted design analysis and load calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
-
-logger = logging.getLogger(__name__)
-
 from fastapi_app.models.analysis import (
     LoadAnalysisRequest,
     LoadAnalysisResponse,
@@ -21,6 +18,8 @@ from fastapi_app.models.analysis import (
     EfficiencyMetrics,
     CostEstimate,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/analysis",

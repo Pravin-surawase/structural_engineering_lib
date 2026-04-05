@@ -38,17 +38,6 @@ from . import (
     types,
 )
 
-# Lazy-loaded modules (imported on first access, not at package load)
-_LAZY_MODULES = {
-    "adapters",
-    "etabs_import",
-    "batch",
-    "costing",
-    "testing_strategies",
-    "audit",
-    "serialization",
-}
-
 # Import geometry and frame types from core.models
 from .core.models import BeamGeometry, DesignDefaults, FrameType
 
@@ -154,6 +143,17 @@ from .visualization.geometry_3d import (
     compute_stirrup_path,
     compute_stirrup_positions,
 )
+
+# Lazy-loaded modules (imported on first access, not at package load)
+_LAZY_MODULES = {
+    "adapters",
+    "etabs_import",
+    "batch",
+    "costing",
+    "testing_strategies",
+    "audit",
+    "serialization",
+}
 
 # DXF export is optional (requires ezdxf)
 dxf_export: _ModuleType | None

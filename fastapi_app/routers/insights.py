@@ -11,9 +11,6 @@ import logging
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
-
-logger = logging.getLogger(__name__)
-
 from fastapi_app.models.boq import (
     ConcreteSummaryResponse,
     ProjectBOQRequest,
@@ -21,6 +18,8 @@ from fastapi_app.models.boq import (
     SteelSummaryResponse,
     StorySummaryResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/insights",

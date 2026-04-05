@@ -7,9 +7,6 @@ Endpoints for reinforcement detailing calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
-
-logger = logging.getLogger(__name__)
-
 from fastapi_app.models.beam import (
     BarAreasResponse,
     BeamDetailingRequest,
@@ -21,6 +18,8 @@ from fastapi_app.models.compliance import (
     AnchorageCheckRequest,
     AnchorageCheckResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/detailing",

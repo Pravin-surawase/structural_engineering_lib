@@ -7,15 +7,14 @@ Endpoints for beam cost optimization calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
-
-logger = logging.getLogger(__name__)
-
 from fastapi_app.models.optimization import (
     CostOptimizationRequest,
     CostOptimizationResponse,
     OptimalDesign,
     CostBreakdown,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/optimization",

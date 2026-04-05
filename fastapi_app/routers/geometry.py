@@ -8,9 +8,6 @@ Uses structural_lib.visualization.geometry_3d for accurate calculations.
 import logging
 
 from fastapi import APIRouter, HTTPException, status
-
-logger = logging.getLogger(__name__)
-
 from fastapi_app.models.geometry import (
     Geometry3DRequest,
     Geometry3DResponse,
@@ -30,6 +27,8 @@ from fastapi_app.models.geometry import (
     CrossSectionRequest,
     CrossSectionResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/geometry",
