@@ -2,3 +2,10 @@ include structural_lib/py.typed
 include structural_lib/codes/is456/clauses.json
 include LICENSE
 include README.md
+
+# Exclude non-distribution files from sdist
+global-exclude tests
+global-exclude *.pyc
+prune tests
+prune examples
+prune scripts

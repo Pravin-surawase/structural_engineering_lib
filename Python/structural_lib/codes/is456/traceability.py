@@ -29,11 +29,12 @@ from __future__ import annotations
 import functools
 import importlib.resources
 import json
-import logging
 from collections.abc import Callable
 from typing import Any, TypeVar
 
-_logger = logging.getLogger(__name__)
+from structural_lib.core.logging_config import get_logger
+
+_logger = get_logger(__name__)
 
 # Type variable for decorated functions
 F = TypeVar("F", bound=Callable[..., Any])
@@ -104,6 +105,8 @@ def clause(*clause_refs: str, standard: str = "IS 456") -> Callable[[F], F]:
         if standard == "IS 456" and db:
             known_clauses = set(db.get("clauses", {}).keys())
             known_clauses.update(db.get("annexures", {}).keys())
+            known_clauses.update(db.get("figures", {}).keys())
+            known_clauses.update(db.get("tables", {}).keys())
             for ref in clause_refs:
                 if ref not in known_clauses:
                     _logger.warning(

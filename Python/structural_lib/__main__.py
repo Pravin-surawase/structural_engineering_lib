@@ -604,10 +604,13 @@ def cmd_dxf(args: argparse.Namespace) -> int:
         # Generate detailing results for DXF
         detailing_list = []
         for beam in beams:
-            print(f"  Processing {beam['story']}/{beam['beam_id']}...", file=sys.stderr)
-
             # Extract parameters using schema-agnostic helper
             params = api._extract_beam_params_from_schema(beam)
+
+            print(
+                f"  Processing {params['story']}/{params['beam_id']}...",
+                file=sys.stderr,
+            )
             det = params["detailing"]
 
             detailing_result = detailing.create_beam_detailing(

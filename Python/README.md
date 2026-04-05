@@ -68,9 +68,8 @@ for item in bbs.items:
 ```python
 from structural_lib import compute_dxf
 
-dxf_bytes = compute_dxf(detailed)  # returns bytes — write to file
-with open("beam.dxf", "wb") as f:
-    f.write(dxf_bytes)
+output_path = compute_dxf(detailed, "beam.dxf")  # returns Path
+print(f"DXF saved to {output_path}")
 ```
 
 > Requires the `dxf` extra: `pip install "structural-lib-is456[dxf]"`
@@ -98,7 +97,7 @@ results = [design_beam_is456(**beam) for beam in beams]
 
 ### Run the Full Pipeline (design → detail → BBS → report)
 
-See [examples/end_to_end_workflow.py](examples/end_to_end_workflow.py) for a complete working script.
+See [examples/end_to_end_workflow.py](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/Python/examples/end_to_end_workflow.py) for a complete working script (available in the source repository).
 
 ### Cost-Optimize a Beam
 
@@ -106,9 +105,9 @@ See [examples/end_to_end_workflow.py](examples/end_to_end_workflow.py) for a com
 from structural_lib import optimize_beam_cost
 
 optimized = optimize_beam_cost(
-    b_mm=300, D_mm=500, d_mm=450,
-    mu_knm=150, vu_kn=100, fck_nmm2=25, fy_nmm2=500,
+    units="IS456", span_mm=6000, mu_knm=150, vu_kn=100,
 )
+print(f"Optimal: {optimized.optimal_design.b_mm}×{optimized.optimal_design.D_mm} mm")
 ```
 
 ### Check Multi-Case Compliance

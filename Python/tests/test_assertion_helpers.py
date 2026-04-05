@@ -10,6 +10,8 @@ from tests.helpers.is456_assertions import (
     assert_spacing_valid,
 )
 
+pytestmark = pytest.mark.repo_only
+
 
 class TestAssertCapacityExceedsDemand:
     def test_capacity_greater_passes(self):
