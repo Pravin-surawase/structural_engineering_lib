@@ -15,6 +15,8 @@ from structural_lib.services.costing import (
     calculate_beam_cost,
 )
 
+_PT_MIN_COEFF = 0.85  # IS 456 Cl 26.5.1.1
+
 
 @dataclass
 class OptimizationCandidate:
@@ -296,7 +298,7 @@ def _check_compliance(
 
     # Check minimum steel
     pt = 100 * design.Ast_required / (b * d)
-    pt_min = 100 * 0.85 / fy  # IS 456 Cl 26.5.1.1
+    pt_min = 100 * _PT_MIN_COEFF / fy  # IS 456 Cl 26.5.1.1
     if pt < pt_min:
         violations.append(f"pt ({pt:.3f}%) < pt_min ({pt_min:.3f}%)")
 

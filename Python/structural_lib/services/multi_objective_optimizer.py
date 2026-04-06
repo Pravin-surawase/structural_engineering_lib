@@ -35,6 +35,10 @@ from typing import Any
 from structural_lib import flexure
 from structural_lib.services.costing import CostProfile, calculate_beam_cost
 
+_PT_MIN_COEFF = 0.85  # IS 456 Cl 26.5.1.1
+_MU_LIM_WARNING_RATIO = 0.9
+_HIGH_UTILIZATION_THRESHOLD = 0.85
+
 
 @dataclass
 class ParetoCandidate:
@@ -376,7 +380,7 @@ def _get_governing_clauses(
         return clauses
 
     ast_required = design.Ast_required
-    ast_min = 0.85 * b * d / fy
+    ast_min = _PT_MIN_COEFF * b * d / fy
 
     # Check minimum steel governs
     if ast_required <= ast_min * 1.1:  # Within 10% of minimum
@@ -396,7 +400,7 @@ def _get_governing_clauses(
     # Check if Mu limit governs (singly vs doubly reinforced)
     mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
     if hasattr(design, "mu_knm") and design.mu_knm:
-        if design.mu_knm > mu_lim * 0.9:  # Close to limit
+        if design.mu_knm > mu_lim * _MU_LIM_WARNING_RATIO:  # Close to limit
             clause_info = GOVERNING_CLAUSES["mu_limit"]
             clauses.append(f"Cl. {clause_info['clause']}: {clause_info['title']}")
 
@@ -498,7 +502,7 @@ def optimize_pareto_front(
 
                 # Check compliance
                 pt = 100 * design.Ast_required / (b * d)
-                pt_min = 100 * 0.85 / fy
+                pt_min = 100 * _PT_MIN_COEFF / fy
                 pt_max = 4.0
                 if pt < pt_min or pt > pt_max:
                     continue
@@ -619,7 +623,7 @@ def get_design_explanation(candidate: ParetoCandidate) -> str:
     # Add optimization context
     lines.append("**Design Characteristics:**")
 
-    if candidate.utilization > 0.85:
+    if candidate.utilization > _HIGH_UTILIZATION_THRESHOLD:
         lines.append("- ✅ High utilization (>85%) - Efficient use of materials")
     elif candidate.utilization > 0.7:
         lines.append("- ✅ Good utilization (70-85%) - Balanced design")

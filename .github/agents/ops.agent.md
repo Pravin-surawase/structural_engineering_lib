@@ -455,6 +455,7 @@ After fixing: Hand back to @ops to retry the commit/PR.
 
 ## Rules
 
+- **⚠️ EXECUTE FIRST, analyze later** — When delegated a commit/finish task, EXECUTE the git operation FIRST before reading files or doing analysis. Ops has returned without completing commits because it spent its context reading files instead of running `ai_commit.sh`. Action comes first.
 - **Execute scripts, don't create them** — delegate script creation to @backend
 - **One diagnostic command max** before acting — don't over-explore
 - **Always finish PRs** — never leave them open

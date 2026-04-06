@@ -315,6 +315,13 @@ class ExposureClass(Enum):
 # TODO(SM-6): Freeze FlexureResult after flexure.py:507 refactor
 @dataclass
 class FlexureResult:
+    """Result of IS 456 flexure design.
+
+    Note: ``Ast_required=0.0`` with ``is_safe=False`` indicates a design failure,
+    not a valid zero-steel design.  Always check :attr:`is_safe` and :attr:`errors`
+    before consuming the steel area.
+    """
+
     Mu_lim: float  # Limiting moment of resistance (kN-m)
     Ast_required: float  # Area of tension steel required/provided (mm^2)
     pt_provided: float  # Percentage of steel provided

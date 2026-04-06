@@ -135,6 +135,7 @@ Before writing React code, review these rules from `/development-rules`:
 3. **Check hooks before creating new ones** — duplication is the #1 agent mistake
 4. **Zustand stores:** `useDesignStore` (single beam), `useImportedBeamsStore` (CSV beams)
 5. **Build check:** `cd react_app && npm run build` before committing
+6. **Update test mocks with new imports** — When adding a component that uses a new import from a mocked library (framer-motion, react-router-dom, etc.), update the corresponding test mock in the SAME commit. CI failures from missing mock exports are a recurring pattern.
 
 ## Architecture
 
