@@ -18,3 +18,4 @@ export { ErrorBoundary, useErrorHandler } from './ErrorBoundary';
 export { ToastContainer, toast, useToastStore } from './Toast';
 export { WorkflowHint } from './WorkflowHint';
 export type { WorkflowHintProps } from './WorkflowHint';
+export { WorkflowBreadcrumb } from './WorkflowBreadcrumb';

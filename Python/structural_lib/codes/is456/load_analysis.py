@@ -234,6 +234,175 @@ def compute_cantilever_point_load_bmd_sfd(
     return positions_mm, bmd_knm, sfd_kn
 
 
+def compute_triangular_load_bmd_sfd(
+    span_mm: float,
+    w_max_kn_per_m: float,
+    ascending: bool = True,
+    num_points: int = DEFAULT_NUM_POINTS,
+) -> tuple[list[float], list[float], list[float], float]:
+    """Compute BMD and SFD for triangular load on simply supported beam.
+
+    Linearly varying load from zero at one end to w_max at the other.
+
+    Ascending (0 -> w_max, left to right):
+    - w(x) = w_max * x / L
+    - Total load W = w_max * L / 2
+    - R_A = w_max * L / 6,  R_B = w_max * L / 3
+    - V(x) = R_A - w_max * x^2 / (2L)
+    - M(x) = R_A * x - w_max * x^3 / (6L)
+    - M_max at x = L / sqrt(3),  M_max = w_max * L^2 / (9 * sqrt(3))
+
+    Descending (w_max -> 0, left to right):
+    - w(x) = w_max * (1 - x/L)
+    - R_A = w_max * L / 3,  R_B = w_max * L / 6
+    - V(x) = R_A - w_max * x + w_max * x^2 / (2L)
+    - M(x) = R_A * x - w_max * x^2 / 2 + w_max * x^3 / (6L)
+    - M_max at x = L * (1 - 1/sqrt(3))
+
+    Args:
+        span_mm: Span length (mm), must be > 0
+        w_max_kn_per_m: Maximum load intensity (kN/m), must be > 0
+        ascending: If True, load increases left to right (0 -> w_max).
+                   If False, load decreases left to right (w_max -> 0).
+        num_points: Number of discretization points
+
+    Returns:
+        Tuple of (positions_mm, bmd_knm, sfd_kn, x_mmax_mm) where
+        x_mmax_mm is the position of maximum bending moment (mm).
+
+    Raises:
+        ValueError: If span_mm <= 0 or w_max_kn_per_m <= 0
+    """
+    if span_mm <= 0:
+        raise ValueError(f"Span must be positive, got {span_mm}")
+    if w_max_kn_per_m <= 0:
+        raise ValueError(f"w_max must be positive, got {w_max_kn_per_m}")
+
+    import math
+
+    span_m = span_mm / 1000.0
+
+    positions_mm = [span_mm * i / (num_points - 1) for i in range(num_points)]
+    bmd_knm: list[float] = []
+    sfd_kn: list[float] = []
+
+    if ascending:
+        # Ascending: load goes from 0 at left to w_max at right
+        # R_A = w_max * L / 6, R_B = w_max * L / 3
+        r_a_kn = w_max_kn_per_m * span_m / 6.0
+
+        for x_mm in positions_mm:
+            x_m = x_mm / 1000.0
+
+            # V(x) = R_A - w_max * x^2 / (2L)
+            shear = r_a_kn - w_max_kn_per_m * x_m * x_m / (2.0 * span_m)
+            sfd_kn.append(shear)
+
+            # M(x) = R_A * x - w_max * x^3 / (6L)
+            moment = r_a_kn * x_m - w_max_kn_per_m * x_m**3 / (6.0 * span_m)
+            bmd_knm.append(moment)
+
+        # M_max at x = L / sqrt(3)
+        x_mmax_mm = span_mm / math.sqrt(3.0)
+
+    else:
+        # Descending: load goes from w_max at left to 0 at right
+        # R_A = w_max * L / 3, R_B = w_max * L / 6
+        r_a_kn = w_max_kn_per_m * span_m / 3.0
+
+        for x_mm in positions_mm:
+            x_m = x_mm / 1000.0
+
+            # V(x) = R_A - w_max * x + w_max * x^2 / (2L)
+            shear = (
+                r_a_kn
+                - w_max_kn_per_m * x_m
+                + w_max_kn_per_m * x_m * x_m / (2.0 * span_m)
+            )
+            sfd_kn.append(shear)
+
+            # M(x) = R_A * x - w_max * x^2 / 2 + w_max * x^3 / (6L)
+            moment = (
+                r_a_kn * x_m
+                - w_max_kn_per_m * x_m * x_m / 2.0
+                + w_max_kn_per_m * x_m**3 / (6.0 * span_m)
+            )
+            bmd_knm.append(moment)
+
+        # M_max at x = L * (1 - 1/sqrt(3))
+        x_mmax_mm = span_mm * (1.0 - 1.0 / math.sqrt(3.0))
+
+    return positions_mm, bmd_knm, sfd_kn, x_mmax_mm
+
+
+def compute_applied_moment_bmd_sfd(
+    span_mm: float,
+    m_knm: float,
+    a_mm: float | None = None,
+    num_points: int = DEFAULT_NUM_POINTS,
+) -> tuple[list[float], list[float], list[float]]:
+    """Compute BMD and SFD for applied concentrated moment on simply supported beam.
+
+    A clockwise moment M applied at distance a from left support.
+
+    Standard formulas:
+    - Reactions: R_A = -M/L (down), R_B = M/L (up)
+    - V(x) = R_A = -M/L  (constant, no discontinuity)
+    - M(x) = R_A * x = -M*x/L            for 0 <= x < a
+    - M(x) = R_A * x + M = M*(1 - x/L)   for a <= x <= L
+
+    The BMD is piecewise linear with a jump of magnitude M at x = a.
+
+    Args:
+        span_mm: Span length (mm), must be > 0
+        m_knm: Applied moment magnitude (kN*m). Positive = clockwise.
+        a_mm: Position from left support (mm). Defaults to midspan (L/2).
+              Must satisfy 0 <= a_mm <= span_mm.
+        num_points: Number of discretization points
+
+    Returns:
+        Tuple of (positions_mm, bmd_knm, sfd_kn)
+
+    Raises:
+        ValueError: If span_mm <= 0 or a_mm outside [0, span_mm]
+    """
+    if span_mm <= 0:
+        raise ValueError(f"Span must be positive, got {span_mm}")
+
+    if a_mm is None:
+        a_mm = span_mm / 2.0
+
+    if a_mm < 0 or a_mm > span_mm:
+        raise ValueError(f"Moment position a_mm must be in [0, {span_mm}], got {a_mm}")
+
+    span_m = span_mm / 1000.0
+    a_m = a_mm / 1000.0
+
+    # R_A = -M/L (downward), R_B = M/L (upward)
+    r_a_kn = -m_knm / span_m  # kN (negative = downward)
+
+    positions_mm = [span_mm * i / (num_points - 1) for i in range(num_points)]
+    bmd_knm: list[float] = []
+    sfd_kn: list[float] = []
+
+    for x_mm in positions_mm:
+        x_m = x_mm / 1000.0
+
+        # Shear is constant: V(x) = R_A = -M/L
+        sfd_kn.append(r_a_kn)
+
+        if x_m < a_m:
+            # BM(x) = R_A * x = -M*x/L
+            moment = r_a_kn * x_m
+        else:
+            # BM(x) = R_A * x + M = M*(1 - x/L)
+            moment = r_a_kn * x_m + m_knm
+
+        bmd_knm.append(moment)
+
+    return positions_mm, bmd_knm, sfd_kn
+
+
 # =============================================================================
 # Combined Load Analysis
 # =============================================================================
@@ -412,13 +581,17 @@ def compute_bmd_sfd(
                 )
 
         elif load.load_type == LoadType.TRIANGULAR:
-            # Triangular load approximated as series of point loads
-            # Future: implement proper closed-form solution
-            raise NotImplementedError("Triangular load not yet implemented")
+            # Ascending by default; position_mm=0 → ascending, else descending
+            ascending = load.position_mm == 0.0
+            _, bmd, sfd, _ = compute_triangular_load_bmd_sfd(
+                span_mm, load.magnitude, ascending=ascending, num_points=num_points
+            )
 
         elif load.load_type == LoadType.MOMENT:
-            # Applied moment (future implementation)
-            raise NotImplementedError("Applied moment not yet implemented")
+            position = load.position_mm if load.position_mm > 0 else None
+            _, bmd, sfd = compute_applied_moment_bmd_sfd(
+                span_mm, load.magnitude, a_mm=position, num_points=num_points
+            )
 
         else:
             raise ValueError(f"Unknown load type: {load.load_type}")

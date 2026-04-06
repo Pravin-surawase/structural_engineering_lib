@@ -17,6 +17,10 @@ from __future__ import annotations
 
 import pytest
 
+from structural_lib.codes.is456.load_analysis import (
+    compute_applied_moment_bmd_sfd,
+    compute_triangular_load_bmd_sfd,
+)
 from structural_lib.services.api import (
     LoadDefinition,
     LoadDiagramResult,
@@ -256,17 +260,23 @@ class TestInputValidation:
         with pytest.raises(ValueError, match="At least one load"):
             compute_bmd_sfd(6000, "simply_supported", [])
 
-    def test_triangular_load_not_implemented(self) -> None:
-        """Triangular load should raise NotImplementedError."""
+    def test_triangular_load_works(self) -> None:
+        """Triangular load should compute valid results."""
         loads = [LoadDefinition(LoadType.TRIANGULAR, magnitude=20.0)]
-        with pytest.raises(NotImplementedError, match="Triangular load"):
-            compute_bmd_sfd(6000, "simply_supported", loads)
+        result = compute_bmd_sfd(6000, "simply_supported", loads)
 
-    def test_moment_load_not_implemented(self) -> None:
-        """Applied moment should raise NotImplementedError."""
-        loads = [LoadDefinition(LoadType.MOMENT, magnitude=25.0, position_mm=0.0)]
-        with pytest.raises(NotImplementedError, match="Applied moment"):
-            compute_bmd_sfd(6000, "simply_supported", loads)
+        # w_max * L^2 / (9*sqrt(3)) ≈ 46.19 kNm
+        assert result.max_bm_knm > 40.0
+        assert len(result.bmd_knm) == 101
+
+    def test_moment_load_works(self) -> None:
+        """Applied moment should compute valid results."""
+        loads = [LoadDefinition(LoadType.MOMENT, magnitude=25.0, position_mm=3000.0)]
+        result = compute_bmd_sfd(6000, "simply_supported", loads)
+
+        # Max |BM| = M/2 = 12.5 for midspan moment
+        assert abs(result.max_bm_knm - 12.5) < 0.1
+        assert len(result.bmd_knm) == 101
 
 
 class TestCustomNumPoints:
@@ -289,3 +299,218 @@ class TestCustomNumPoints:
         # Max moment should still be accurate (at midspan)
         expected_max_m = 20.0 * 6.0**2 / 8.0
         assert abs(result.max_bm_knm - expected_max_m) < 0.5
+
+
+# =============================================================================
+# Triangular Load Tests
+# =============================================================================
+
+
+class TestTriangularLoadAscending:
+    """Tests for simply supported beam with ascending triangular load (0 → w_max)."""
+
+    def test_reactions(self) -> None:
+        """R_A = wL/6, R_B = wL/3 for ascending triangular load."""
+        span_mm, w = 6000.0, 20.0
+        span_m = span_mm / 1000.0
+        pos, bmd, sfd, _ = compute_triangular_load_bmd_sfd(span_mm, w, ascending=True)
+
+        # R_A = V(0) = wL/6
+        assert abs(sfd[0] - w * span_m / 6.0) < 0.01
+        # R_B = -V(L) = wL/3 → V(L) = -wL/3
+        assert abs(sfd[-1] - (-w * span_m / 3.0)) < 0.01
+
+    def test_max_moment_value(self) -> None:
+        """M_max = wL^2 / (9*sqrt(3))."""
+        import math
+
+        span_mm, w = 6000.0, 20.0
+        span_m = span_mm / 1000.0
+        pos, bmd, sfd, x_mmax = compute_triangular_load_bmd_sfd(
+            span_mm, w, ascending=True
+        )
+
+        expected_mmax = w * span_m**2 / (9.0 * math.sqrt(3.0))
+        # Discretization gives slight undershoot; 0.1% tolerance
+        assert abs(max(bmd) - expected_mmax) < expected_mmax * 0.002
+
+    def test_max_moment_location(self) -> None:
+        """M_max occurs at x = L / sqrt(3)."""
+        import math
+
+        span_mm = 8000.0
+        _, _, _, x_mmax = compute_triangular_load_bmd_sfd(span_mm, 15.0, ascending=True)
+        expected_x = span_mm / math.sqrt(3.0)
+        assert abs(x_mmax - expected_x) < 0.01
+
+    def test_moment_zero_at_supports(self) -> None:
+        """Moment should be zero at both supports."""
+        pos, bmd, sfd, _ = compute_triangular_load_bmd_sfd(6000, 20.0, ascending=True)
+        assert abs(bmd[0]) < 1e-10
+        assert abs(bmd[-1]) < 1e-10
+
+    def test_total_load_equilibrium(self) -> None:
+        """R_A + R_B should equal total load W = wL/2."""
+        span_mm, w = 6000.0, 20.0
+        span_m = span_mm / 1000.0
+        pos, bmd, sfd, _ = compute_triangular_load_bmd_sfd(span_mm, w, ascending=True)
+
+        r_a = sfd[0]  # V(0) = R_A
+        r_b = -sfd[-1]  # V(L) = R_A - W = -(R_B), so R_B = -V(L)
+        total_load = w * span_m / 2.0
+        assert abs(r_a + r_b - total_load) < 0.01
+
+
+class TestTriangularLoadDescending:
+    """Tests for simply supported beam with descending triangular load (w_max → 0)."""
+
+    def test_reactions(self) -> None:
+        """R_A = wL/3, R_B = wL/6 for descending triangular load."""
+        span_mm, w = 6000.0, 20.0
+        span_m = span_mm / 1000.0
+        pos, bmd, sfd, _ = compute_triangular_load_bmd_sfd(span_mm, w, ascending=False)
+
+        assert abs(sfd[0] - w * span_m / 3.0) < 0.01
+
+    def test_max_moment_matches_ascending(self) -> None:
+        """M_max descending should equal M_max ascending (by symmetry)."""
+        span_mm, w = 6000.0, 20.0
+        _, bmd_asc, _, _ = compute_triangular_load_bmd_sfd(span_mm, w, ascending=True)
+        _, bmd_desc, _, _ = compute_triangular_load_bmd_sfd(span_mm, w, ascending=False)
+        assert abs(max(bmd_asc) - max(bmd_desc)) < 0.01
+
+    def test_max_moment_location_mirrored(self) -> None:
+        """M_max location for descending = L - (L/sqrt(3)) = L*(1 - 1/sqrt(3))."""
+        import math
+
+        span_mm = 6000.0
+        _, _, _, x_mmax = compute_triangular_load_bmd_sfd(
+            span_mm, 20.0, ascending=False
+        )
+        expected_x = span_mm * (1.0 - 1.0 / math.sqrt(3.0))
+        assert abs(x_mmax - expected_x) < 0.01
+
+    def test_moment_zero_at_supports(self) -> None:
+        """Moment should be zero at both supports."""
+        pos, bmd, sfd, _ = compute_triangular_load_bmd_sfd(6000, 20.0, ascending=False)
+        assert abs(bmd[0]) < 1e-10
+        assert abs(bmd[-1]) < 1e-10
+
+
+class TestTriangularLoadValidation:
+    """Input validation tests for triangular load."""
+
+    def test_negative_span_raises(self) -> None:
+        with pytest.raises(ValueError, match="Span must be positive"):
+            compute_triangular_load_bmd_sfd(-1000, 20.0)
+
+    def test_zero_span_raises(self) -> None:
+        with pytest.raises(ValueError, match="Span must be positive"):
+            compute_triangular_load_bmd_sfd(0, 20.0)
+
+    def test_negative_load_raises(self) -> None:
+        with pytest.raises(ValueError, match="w_max must be positive"):
+            compute_triangular_load_bmd_sfd(6000, -10.0)
+
+    def test_zero_load_raises(self) -> None:
+        with pytest.raises(ValueError, match="w_max must be positive"):
+            compute_triangular_load_bmd_sfd(6000, 0.0)
+
+
+# =============================================================================
+# Applied Moment Tests
+# =============================================================================
+
+
+class TestAppliedMoment:
+    """Tests for simply supported beam with applied concentrated moment."""
+
+    def test_constant_shear(self) -> None:
+        """V(x) = -M/L is constant for all x."""
+        span_mm, moment_val = 6000.0, 30.0
+        span_m = span_mm / 1000.0
+        pos, bmd, sfd = compute_applied_moment_bmd_sfd(span_mm, moment_val, a_mm=3000.0)
+
+        expected_v = -moment_val / span_m
+        for v in sfd:
+            assert abs(v - expected_v) < 1e-10
+
+    def test_moment_jump_at_application_point(self) -> None:
+        """BMD should jump by M at the application point."""
+        span_mm, moment_val = 6000.0, 30.0
+        pos, bmd, sfd = compute_applied_moment_bmd_sfd(span_mm, moment_val, a_mm=3000.0)
+
+        # Find the index closest to a=3000 from left and right
+        a_loc = 3000.0
+        left_idx = max(i for i, x in enumerate(pos) if x < a_loc)
+        right_idx = min(i for i, x in enumerate(pos) if x >= a_loc)
+
+        # The jump should be approximately M
+        jump = bmd[right_idx] - bmd[left_idx]
+        # Jump depends on grid spacing; for 101 points it's close to M
+        assert (
+            abs(jump - moment_val) < moment_val * 0.02
+        )  # 2% tolerance for grid effects
+
+    def test_moment_zero_at_supports(self) -> None:
+        """Moment should be zero at both supports."""
+        pos, bmd, sfd = compute_applied_moment_bmd_sfd(6000, 30.0, a_mm=3000.0)
+        assert abs(bmd[0]) < 1e-10
+        assert abs(bmd[-1]) < 1e-10
+
+    def test_midspan_default(self) -> None:
+        """a_mm=None should default to midspan."""
+        span_mm, moment_val = 6000.0, 30.0
+        pos1, bmd1, sfd1 = compute_applied_moment_bmd_sfd(
+            span_mm, moment_val, a_mm=None
+        )
+        pos2, bmd2, sfd2 = compute_applied_moment_bmd_sfd(
+            span_mm, moment_val, a_mm=3000.0
+        )
+
+        for m1, m2 in zip(bmd1, bmd2, strict=True):
+            assert abs(m1 - m2) < 1e-10
+
+    def test_max_bm_at_midspan(self) -> None:
+        """For moment at midspan, max |BM| = M/2."""
+        span_mm, moment_val = 6000.0, 30.0
+        pos, bmd, sfd = compute_applied_moment_bmd_sfd(span_mm, moment_val)
+
+        max_abs_bm = max(abs(m) for m in bmd)
+        assert abs(max_abs_bm - moment_val / 2.0) < 0.1
+
+    def test_moment_at_left_support(self) -> None:
+        """Applied moment at left support: BM jumps at x=0."""
+        span_mm, moment_val = 6000.0, 30.0
+        pos, bmd, sfd = compute_applied_moment_bmd_sfd(span_mm, moment_val, a_mm=0.0)
+
+        # At x=0: M(0) = R_A*0 + M = M (since x >= a=0 for all points)
+        assert abs(bmd[0] - moment_val) < 0.01
+        # At x=L: M(L) = M*(1 - 1) = 0
+        assert abs(bmd[-1]) < 0.01
+
+    def test_moment_at_right_support(self) -> None:
+        """Applied moment at right support."""
+        span_mm, moment_val = 6000.0, 30.0
+        pos, bmd, sfd = compute_applied_moment_bmd_sfd(span_mm, moment_val, a_mm=6000.0)
+
+        # At x=0: M(0) = -M*0/L = 0 (all points x < a=L)
+        assert abs(bmd[0]) < 0.01
+        # At x=L: M(L) = -M*L/L + M = 0 (last point is x=a)
+        assert abs(bmd[-1]) < 0.01
+
+
+class TestAppliedMomentValidation:
+    """Input validation tests for applied moment."""
+
+    def test_negative_span_raises(self) -> None:
+        with pytest.raises(ValueError, match="Span must be positive"):
+            compute_applied_moment_bmd_sfd(-1000, 30.0)
+
+    def test_position_out_of_range_raises(self) -> None:
+        with pytest.raises(ValueError, match="Moment position"):
+            compute_applied_moment_bmd_sfd(6000, 30.0, a_mm=7000.0)
+
+    def test_negative_position_raises(self) -> None:
+        with pytest.raises(ValueError, match="Moment position"):
+            compute_applied_moment_bmd_sfd(6000, 30.0, a_mm=-100.0)

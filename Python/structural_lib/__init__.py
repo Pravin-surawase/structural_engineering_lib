@@ -79,6 +79,9 @@ from .services.api import (
     LoadsInput,
     LoadType,
     MaterialsInput,
+    # Multi-objective optimization
+    ParetoCandidate,
+    ParetoOptimizationResult,
     ProjectInfo,
     ResultSection,
     # Torsion Design
@@ -142,6 +145,7 @@ from .services.api import (
     normalize_etabs_forces,
     # Smart features
     optimize_beam_cost,
+    optimize_pareto_front,
     pm_interaction_curve_is456,
     # Footing Design (IS 456 Cl 34)
     size_footing,
@@ -275,6 +279,10 @@ __all__ = [
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",
+    # Multi-objective optimization
+    "optimize_pareto_front",
+    "ParetoOptimizationResult",
+    "ParetoCandidate",
     # Torsion Design (IS 456 Clause 41)
     "design_torsion",
     "calculate_equivalent_shear",

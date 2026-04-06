@@ -9,13 +9,16 @@ import logging
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from fastapi_app.error_utils import sanitize_error
+from fastapi_app.error_utils import sanitize_error, sanitize_float
 from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.optimization import (
     CostOptimizationRequest,
     CostOptimizationResponse,
     OptimalDesign,
     CostBreakdown,
+    ParetoRequest,
+    ParetoResponse,
+    ParetoCandidateResponse,
 )
 
 logger = logging.getLogger(__name__)
@@ -238,3 +241,86 @@ async def get_cost_rates():
             "note": "Rates are indicative. Override with actual project rates.",
         }
     )
+
+
+@router.post(
+    "/beam/pareto",
+    summary="Pareto Multi-Objective Beam Optimization",
+    description="Find Pareto-optimal beam designs balancing cost, weight, and utilization using NSGA-II inspired algorithm.",
+)
+async def optimize_beam_pareto(
+    request: ParetoRequest,
+):
+    """
+    Multi-objective Pareto optimization for beam design.
+
+    Generates diverse beam designs varying width, depth, and material grades,
+    then identifies the Pareto front for the specified objectives.
+
+    Returns:
+    - Pareto-optimal designs (rank 1 front)
+    - Best design by each objective
+    - Total candidates evaluated
+    """
+    try:
+        from structural_lib import optimize_pareto_front, CostProfile
+
+        result = optimize_pareto_front(
+            span_mm=request.span_mm,
+            mu_knm=request.mu_knm,
+            vu_kn=request.vu_kn,
+            objectives=request.objectives,
+            cost_profile=CostProfile(),
+            cover_mm=request.cover_mm,
+            max_candidates=request.max_candidates,
+        )
+
+        def _candidate_to_response(c) -> ParetoCandidateResponse:
+            d = c.to_dict()
+            d["crowding_distance"] = sanitize_float(d["crowding_distance"])
+            return ParetoCandidateResponse(**d)
+
+        pareto_front = [_candidate_to_response(c) for c in result.pareto_front]
+
+        response = ParetoResponse(
+            pareto_front=pareto_front,
+            pareto_count=len(result.pareto_front),
+            total_candidates=len(result.all_candidates),
+            objectives_used=result.objectives_used,
+            computation_time_sec=round(result.computation_time_sec, 3),
+            best_by_cost=(
+                _candidate_to_response(result.best_by_cost)
+                if result.best_by_cost
+                else None
+            ),
+            best_by_utilization=(
+                _candidate_to_response(result.best_by_utilization)
+                if result.best_by_utilization
+                else None
+            ),
+            best_by_weight=(
+                _candidate_to_response(result.best_by_weight)
+                if result.best_by_weight
+                else None
+            ),
+        )
+
+        return success_response(response.model_dump())
+
+    except ImportError as e:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=error_response(sanitize_error(e, "pareto optimization")),
+        )
+    except (ValueError, TypeError):
+        logger.exception("Invalid input for pareto optimization")
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=error_response("Invalid input parameters"),
+        )
+    except (RuntimeError, KeyError, AttributeError):
+        logger.exception("Internal error in optimize_pareto_front")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=error_response("Internal calculation error"),
+        )

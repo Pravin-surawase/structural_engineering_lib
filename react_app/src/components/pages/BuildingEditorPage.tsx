@@ -35,6 +35,7 @@ import { useSimpleBatchDesign, useExportBuildingSummary } from "../../hooks";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { WorkflowHint } from "../ui/WorkflowHint";
+import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -417,6 +418,9 @@ export function BuildingEditorPage() {
 
   return (
     <div className="h-screen pt-14 flex flex-col bg-zinc-950">
+      {/* Workflow Breadcrumb */}
+      <WorkflowBreadcrumb />
+
       {/* Toolbar */}
       <div className="h-11 flex items-center justify-between px-4 border-b border-white/5 shrink-0">
         <div className="flex items-center gap-3">

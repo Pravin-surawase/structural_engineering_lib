@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-06 — Fix stale version, defer AI assistant, library expansion focus
+**Updated:** 2026-04-06 — TASK-527, TASK-528, TASK-516, TASK-519 completed (v0.22 sprint)
 
 ---
 
@@ -59,8 +59,8 @@
 | A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx` | ✅ Done (`a242878`) |
 | A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | new `HubPage.tsx`, update `App.tsx` | ✅ Done |
 | A5 | TASK-526 | Cross-section annotations — utilization color, actual barDia/barCount, ascRequired | `CrossSectionView.tsx` | ✅ Done (`a242878`, `a5612b0`) |
-| A6 | TASK-527 | TopBar context badges + fix settings button (SettingsPanel slide-over) | `TopBar.tsx`, new `SettingsPanel.tsx` | 📋 |
-| A7 | TASK-528 | Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard) | new `WorkflowBreadcrumb.tsx`, 4 page files | 📋 |
+| A6 | TASK-527 | TopBar context badges + SettingsPanel slide-over (replaces /settings route) | `TopBar.tsx`, new `SettingsPanel.tsx` | ✅ Done |
+| A7 | TASK-528 | Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard) | new `WorkflowBreadcrumb.tsx`, 4 page files | ✅ Done |
 
 > **Design principle:** Editor is the workstation. Manual beam form lives only in `/design`. No redundant forms in batch flow.
 > Full UX spec: [react-ux-improvement-plan.md](planning/react-ux-improvement-plan.md)
@@ -71,10 +71,10 @@
 |---|---------|---------|--------|---------|-------|-------|--------|
 | 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | ✅ Done |
 | 2 | TASK-515 | Load Calculator | — (existing) | new `/analysis/loads/simple` | new `useLoadAnalysis` + panel | 7 | ✅ Done |
-| 3 | TASK-516 | Triangular + Moment loads | `load_analysis.py` +120 lines | — (extends TASK-515) | — | 6 | 📋 |
+| 3 | TASK-516 | Triangular + Moment loads | `load_analysis.py` +120 lines | — (extends TASK-515) | — | 23 | ✅ Done |
 | 4 | TASK-517 | Project BOQ | new `boq.py` ~120 lines | new `/insights/project-boq` | new `useProjectBOQ` + panel | 5 | ✅ Done |
 | 5 | TASK-518 | Torsion API + React | `api.py` +60 lines | new `/design/beam/torsion` | new `useTorsionDesign` + toggle | 5 | ✅ Done |
-| 6 | TASK-519 | Alternatives Panel (Pareto) | — (existing) | new `/optimization/beam/pareto` | new `useParetoDesign` + panel | 3 | 📋 |
+| 6 | TASK-519 | Alternatives Panel (Pareto) | wired `optimize_pareto_front` to API | new `/optimization/beam/pareto` | new `useParetoDesign` + `ParetoPanel` | 3 | ✅ Done |
 | 7 | TASK-520 | Report/3D Test Coverage | — | — | — | ~15 | 📋 |
 | 8 | TASK-521 | Beam Rationalization | new `rationalization.py` ~250 lines | new `/insights/rationalize` | new panel in BuildingEditor | 4 | 📋 |
 
@@ -224,10 +224,10 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| TASK-527 | TopBar context badges + SettingsPanel slide-over | — | 2h | 🟡 Medium | 📋 |
-| TASK-528 | Workflow breadcrumb for batch flow | — | 1h | 🟢 Low | 📋 |
-| TASK-516 | Triangular + Moment load stubs in load_analysis.py | — | 1d | 🟡 Medium | 📋 |
-| TASK-519 | Alternatives Panel — Pareto front in DesignView | — | 3–4d | 🟡 Medium | 📋 |
+| TASK-527 | TopBar context badges + SettingsPanel slide-over | — | 2h | 🟡 Medium | ✅ Done |
+| TASK-528 | Workflow breadcrumb for batch flow | — | 1h | 🟢 Low | ✅ Done |
+| TASK-516 | Triangular + Moment load stubs in load_analysis.py | — | 1d | 🟡 Medium | ✅ Done |
+| TASK-519 | Alternatives Panel — Pareto front in DesignView | — | 3–4d | 🟡 Medium | ✅ Done |
 | TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
 | TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
 | TASK-643 | Verify SP:16 Table I normalization convention against physical publication | — | 0.5d | 🟡 Medium | 📋 |

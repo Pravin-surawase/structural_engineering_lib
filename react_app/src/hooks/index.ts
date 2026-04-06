@@ -41,6 +41,7 @@ export {
 } from './useExport';
 export { useTorsionDesign } from './useTorsionDesign';
 export { useLoadAnalysis } from './useLoadAnalysis';
+export { useParetoDesign } from './useParetoDesign';
 
 // Type exports
 export type {
