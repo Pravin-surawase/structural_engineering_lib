@@ -2806,7 +2806,7 @@
 </tbody>
 </table>
 <h3 id="fastapi-endpoints-fastapi_approuters">FastAPI Endpoints (<code>fastapi_app/routers/</code>)<a class="headerlink" href="#fastapi-endpoints-fastapi_approuters" title="Permanent link">&para;</a></h3>
-<p>59 endpoints across 13 routers (58 REST + 1 WebSocket):</p>
+<p>60 endpoints across 13 routers (59 REST + 1 WebSocket):</p>
 <table>
 <thead>
 <tr>
@@ -2985,6 +2985,11 @@
 <td></td>
 <td><code>GET  /api/v1/optimization/cost-rates</code></td>
 <td>Material cost rates</td>
+</tr>
+<tr>
+<td></td>
+<td><code>POST /api/v1/optimization/beam/pareto</code></td>
+<td>Pareto multi-objective design alternatives</td>
 </tr>
 <tr>
 <td><strong>rebar</strong></td>
@@ -3309,7 +3314,7 @@
 <a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
 <a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1"># React is now at http://localhost:5173</span>
 </code></pre></div></p>
-<p>This builds and runs the FastAPI container with all Python dependencies + sample data (<code>Etabs_CSV/</code>). The <code>/docs</code> page auto-generates interactive Swagger UI for all 59 endpoints.</p>
+<p>This builds and runs the FastAPI container with all Python dependencies + sample data (<code>Etabs_CSV/</code>). The <code>/docs</code> page auto-generates interactive Swagger UI for all 60 endpoints.</p>
 <p>For development with hot-reload (code changes reflect without rebuild):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.dev.yml<span class="w"> </span>up<span class="w">          </span><span class="c1"># Mounts source + Etabs_CSV as volumes, auto-reloads</span>
 </code></pre></div></p>
