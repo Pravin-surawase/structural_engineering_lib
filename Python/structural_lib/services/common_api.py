@@ -407,7 +407,8 @@ def _check_frozen(code_id: str) -> tuple[bool, list[str]]:
 
     not_frozen: list[str] = []
     for cls in result_classes:
-        if not cls.__dataclass_params__.frozen:
+        params = getattr(cls, "__dataclass_params__", None)
+        if params is not None and not params.frozen:
             not_frozen.append(cls.__name__)
 
     if not_frozen:

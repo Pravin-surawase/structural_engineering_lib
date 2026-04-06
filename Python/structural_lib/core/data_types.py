@@ -851,13 +851,13 @@ class VersionInfo(DictCompatMixin):
 
     # -- display helpers (class-level, not dataclass fields) ----------------
 
-    _CODE_DISPLAY: dict[str, str] = field(  # type: ignore[misc]
+    _CODE_DISPLAY: dict[str, str] = field(
         default_factory=dict,
         init=False,
         repr=False,
         compare=False,
     )
-    _DEP_LABELS: dict[str, str] = field(  # type: ignore[misc]
+    _DEP_LABELS: dict[str, str] = field(
         default_factory=dict,
         init=False,
         repr=False,
@@ -919,11 +919,7 @@ class VersionInfo(DictCompatMixin):
 
     def keys(self) -> list[str]:
         """Public field names (excludes internal display helpers)."""
-        return [
-            f.name
-            for f in fields(self)  # type: ignore[arg-type]
-            if not f.name.startswith("_")
-        ]
+        return [f.name for f in fields(self) if not f.name.startswith("_")]
 
     def values(self) -> list[Any]:
         """Public field values."""
