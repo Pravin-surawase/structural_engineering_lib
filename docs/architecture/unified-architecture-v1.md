@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-04-06
-**Last Updated:** 2026-04-06
+**Last Updated:** 2026-07-09
 
 > THE single source of truth for architecture decisions, quality gates, and safety guarantees.
 > Every agent, every session, every change must comply with this document.
@@ -41,7 +41,7 @@ Build the **definitive, professional-grade** open-source structural engineering 
 │  Status: ✅ Active, 14 router files                              │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 3: Services                                               │
-│  services/api.py — Unified public API (37+ functions)            │
+│  services/api.py — Unified public API (104 exports, re-export hub) │
 │  services/adapters.py — CSV/Excel import (40+ column mappings)   │
 │  services/beam_pipeline.py — Multi-step design orchestration     │
 │  services/column_api.py, beam_api.py, common_api.py              │
@@ -108,7 +108,7 @@ Every **public** design function MUST have:
 |--------|-----------------|--------|
 | `codes/is456/beam/` | All public functions | ✅ |
 | `codes/is456/column/` | All public functions | ✅ |
-| `codes/is456/footing/` | 5/12 functions (helpers excluded) | 🖨 Gap |
+| `codes/is456/footing/` | 5/12 functions (helpers excluded) | 🔶 Gap |
 | `codes/is13920/` | All public functions | ✅ |
 
 > **Note:** The signature shown below reflects the **target naming convention** (§10.5). Current code uses `b`, `d`, `mu_knm` — parameter names will be migrated to unit-suffix convention in v0.24.
@@ -164,10 +164,10 @@ def design_singly_reinforced(
 | **E2E** | Full pipeline: design → detailing → BBS → DXF → report | test_full_pipeline_e2e.py |
 | **Coverage** | ≥85% branch coverage for production code | pytest-cov |
 | **Performance** | Regression detection: single beam < 5ms, batch 100 < 500ms | pytest-benchmark |
-| **Compliance** | All public code functions have @clause, return frozen dataclass, have golden vectors | test_code_contract.py |
-| **Smoke** | Quick (<5s) sanity check for CI fast-fail | pytest -m smoke |
+| **Compliance** | All public code functions have @clause, return frozen dataclass, have golden vectors | 🔲 Planned (`test_code_contract.py` does not exist yet) |
+| **Smoke** | Quick (<5s) sanity check for CI fast-fail | 🔲 Planned (`smoke` marker not yet registered) |
 
-**Current stats (v0.21.4):** 4527 tests collected, 4255+ passing baseline, 85%+ branch coverage.
+**Current stats (v0.21.4):** 4527 tests collected (4255 selected, 272 deselected by `addopts = -m "not slow"`), all selected tests pass (100%), 85%+ branch coverage.
 
 ### 3.5 Security Requirements
 
@@ -187,7 +187,7 @@ def design_singly_reinforced(
 | RBAC / scope enforcement | require_scope() dependency checked against User.scopes | 🔲 Planned |
 | Design audit trail | Structured audit log for all design calculations | 🔲 Planned |
 | Cross-field plausibility | Reject physically impossible parameter combinations | 🔲 Planned |
-| Dependency CVE scanning | pip-audit in CI pipeline | 🔲 Planned |
+| Dependency CVE scanning | pip-audit in CI (`security.yml`) | ✅ Active |
 | OpenAPI docs disabled in production | /docs, /redoc only in dev/debug | 🔲 Planned |
 
 ---
@@ -211,17 +211,23 @@ codes/{code_id}/
 │   ├── serviceability.py # Deflection + crack width
 │   └── torsion.py       # Torsion design
 ├── column/
+│   ├── _common.py       # Shared column utilities
 │   ├── axial.py         # Axial capacity + classification
-│   ├── uniaxial.py      # Uniaxial bending
 │   ├── biaxial.py       # Biaxial bending (Bresler)
-│   └── detailing.py     # Column detailing
-├── slab/                # One-way + two-way + flat slab
+│   ├── detailing.py     # Column detailing
+│   ├── helical.py       # Helical reinforcement (Cl 39.4)
+│   ├── long_column.py   # Long/slender column design
+│   ├── slenderness.py   # Slenderness classification
+│   └── uniaxial.py      # Uniaxial bending
+├── slab/                # 🔲 Planned — One-way + two-way + flat slab
 ├── footing/             # Isolated + combined
 ├── tables.py            # Design tables (code-specific)
 ├── materials.py         # Material models (code-specific)
 ├── traceability.py      # @clause() decorator
 └── clauses.json         # Clause database
 ```
+
+> **Note:** The `core/` layer contains 20 files (only the 5 key files are shown above). Additional files include: `constants.py`, `data_types.py`, `deprecation.py`, `error_messages.py`, `geometry.py`, `inputs.py`, `logging_config.py`, `models.py`, `numerics.py`, `result_base.py`, `types.py`, `utilities.py`. Run `ls Python/structural_lib/core/` for the full listing.
 
 ### 4.2 Services Layer Pattern
 
@@ -255,13 +261,22 @@ def design_beam(*, code: str, **kwargs) -> DesignEnvelope:
 # RULES:
 # 1. Pydantic models with Field(ge=..., le=...) for all inputs
 # 2. Standard response: {"success": true, "data": {...}}
-# 3. Error response: {"success": false, "error": {"code": "E_XXX", "message": "..."}}
+# 3. Error response: {"success": false, "data": null, "error": "<sanitized string>"}
 # 4. No str(e) in error details — sanitize all error messages
 # 5. Rate limiting applied via middleware
 # 6. Auth required on all non-health endpoints
 ```
 
-**Standard Error Shape** (consumed by frontend):
+**Current Error Shape** (v0.21.4):
+```json
+{
+  "success": false,
+  "data": null,
+  "error": "Sanitized error message string"
+}
+```
+
+**Target Structured Error Shape** (🔲 Planned v0.24 — consumed by frontend):
 ```json
 {
   "success": false,
@@ -285,25 +300,26 @@ def design_beam(*, code: str, **kwargs) -> DesignEnvelope:
 
 ```python
 class BeamDesignRequest(BaseModel):
-    """IS 456 beam design input — FastAPI schema."""
+    """Request model for beam design calculation."""
+    width: float = Field(gt=0, le=2000.0, description="Beam width b (mm)")
+    depth: float = Field(gt=0, le=3000.0, description="Overall beam depth D (mm)")
+    moment: float = Field(ge=0, description="Factored moment (kNm)")
+    shear: float = Field(ge=0, default=0, description="Factored shear (kN)")
     fck: float = Field(ge=15, le=80, description="Concrete grade (N/mm²)")
     fy: float = Field(ge=250, le=550, description="Steel grade (N/mm²)")
-    b_mm: float = Field(ge=100, le=2000, description="Beam width (mm)")
-    d_mm: float = Field(ge=100, le=3000, description="Effective depth (mm)")
-    Mu_kNm: float = Field(ge=0, description="Factored moment (kNm)")
-    Vu_kN: float = Field(ge=0, default=0, description="Factored shear (kN)")
-
-    model_config = ConfigDict(json_schema_extra={"examples": [...]})
+    clear_cover: float = Field(default=25.0, description="Clear cover (mm)")
 ```
+
+> **Note:** Current field names use descriptive English (`width`, `depth`, `moment`). The unit-suffix naming convention (`b_mm`, `d_mm`, `Mu_kNm`) is a v0.24 migration target (§10.5).
 
 ### 5.2 Result Dataclasses (Output Schema)
 
-All results are **frozen dataclasses** with `.to_dict()` method:
+Result dataclasses provide structured output. Most are **frozen** (`@dataclass(frozen=True)`), but `FlexureResult` is currently **mutable** pending refactor (TODO SM-6).
 
-> **Note:** The schema below shows the **target v0.24** design. The current `FlexureResult` in [core/data_types.py](../../Python/structural_lib/core/data_types.py) differs — field names and structure will be migrated in v0.24. See migration notes in §15.1.
+> **Note:** The schema below shows the **target v0.24** design (frozen, unit-suffix field names). The current `FlexureResult` in [core/data_types.py](../../Python/structural_lib/core/data_types.py) is **not frozen** (TODO SM-6) and uses different field names (`Mu_lim`, `Ast_required`, `xu`, `xu_max`, `is_safe`, `Asc_required`, `errors`, `Ast_min`, `Ast_max`, `clause_refs`). See migration notes in §15.1.
 
 ```python
-@dataclass(frozen=True)
+@dataclass(frozen=True)  # TARGET — current FlexureResult is NOT frozen (TODO SM-6)
 class FlexureResult:
     Ast_mm2: float           # Required tension steel area
     xu_mm: float             # Neutral axis depth
@@ -502,7 +518,7 @@ We use **patch releases** for focused, testable increments. Each v0.21.x release
 - 🔲 JSON body size limit (FastAPI middleware, 1MB default)
 - 🔲 Cross-field plausibility guards (e.g., `d_mm > b_mm` raises warning)
 - 🔲 Input validation audit completion (`scripts/audit_input_validation.py` exists)
-- 🔲 Dependency CVE scanning in CI (`pip-audit` or `safety`)
+- ✅ Dependency CVE scanning in CI (`pip-audit` — active in `security.yml`)
 
 **Quality Gate:** `audit_input_validation.py` reports 0 unresolved findings. `pip-audit` clean.
 
@@ -730,7 +746,7 @@ class CalculationProvenance:
     """Audit trail attached to every design result."""
     library_version: str          # "0.22.0"
     code_id: str                  # "IS456:2000"
-    code_amendments: tuple[str, ...]  # ("AMD1:2003", "AMD4:2016")
+    code_amendments: tuple[str, ...]  # ("AMD1:2003", "AMD4:2020")
     timestamp_utc: str            # ISO 8601 — "2026-04-06T14:30:00Z"
     input_hash: str               # SHA-256 of canonical input JSON
     input_echo: dict              # Exact inputs for reproducibility
@@ -756,13 +772,13 @@ Every design result dataclass WILL carry (once implemented in v1.0) a `provenanc
 
 ### 11.2 Code Amendment Tracking
 
-IS 456:2000 has 4 amendments (2003, 2005, 2006, 2016). Each code module must declare which amendments it implements:
+IS 456:2000 has 4 amendments (2003, 2005, 2006, 2020). Each code module must declare which amendments it implements:
 
 ```python
 # codes/is456/__init__.py
 __code_id__ = "IS456:2000"
-__amendments__ = ("AMD1:2003", "AMD2:2005", "AMD3:2006", "AMD4:2016")
-__implemented_amendments__ = ("AMD1:2003", "AMD4:2016")
+__amendments__ = ("AMD1:2003", "AMD2:2005", "AMD3:2006", "AMD4:2020")
+__implemented_amendments__ = ("AMD1:2003", "AMD4:2020")
 __reference_edition__ = "Reaffirmed 2021"
 ```
 
@@ -770,7 +786,7 @@ This metadata:
 - Feeds into `CalculationProvenance.code_amendments`
 - Is displayed by `show_versions()`
 - Is checked by `check_code()` — unimplemented amendments produce warnings
-- Enables future amendment-aware calculations (e.g., AMD4:2016 changed gamma values)
+- Enables future amendment-aware calculations (e.g., AMD4:2020 includes various clause corrections)
 
 | Status | Target Version |
 |--------|---------------|
@@ -786,7 +802,7 @@ All exported files (BBS, DXF, reports) must include provenance metadata:
 | Library version | File header/comment | `# structural_lib v0.22.0` |
 | Timestamp | File header/comment | ISO 8601 UTC |
 | Beam/element ID | File header/comment | User-provided identifier |
-| Code + amendments | File header/comment | `IS456:2000 (AMD1:2003, AMD4:2016)` |
+| Code + amendments | File header/comment | `IS456:2000 (AMD1:2003, AMD4:2020)` |
 
 For DXF files, provenance is stored in the XDATA section. For CSV/BBS, it is in comment lines at the top. For PDF reports, it is in the document metadata.
 
@@ -965,7 +981,7 @@ def test_flexure_capacity_increases_with_fck(fck, fy, b_mm, d_mm):
 
 | Status | Target Version |
 |--------|---------------|
-| 🔶 Partial (serviceability only) | v0.23 expand to all modules |
+| 🔶 Partial (5 modules: serviceability, shear, flexure, ductile, slenderness) | v0.23 expand to all modules |
 
 ### 14.2 Performance Benchmarks
 
@@ -976,6 +992,8 @@ def test_flexure_capacity_increases_with_fck(fck, fy, b_mm, d_mm):
 | CSV import (1000 rows) | < 2s | pytest-benchmark | 🔲 Planned |
 | 3D geometry generation | < 50ms | pytest-benchmark | 🔲 Planned |
 | JSON serialization (100 results) | < 10ms | pytest-benchmark | 🔲 Planned |
+
+> **Note (v0.21.4):** `test_benchmarks.py` exists with 13 benchmark tests. However, formal `pytest-benchmark` integration with regression detection (>20% slowdown blocks merge) is not yet active.
 
 **Regression policy:** >20% slowdown from baseline blocks merge. Benchmark results stored in `Python/test_stats.json` and tracked across versions.
 
@@ -1100,11 +1118,11 @@ warnings=["Default: Moderate exposure assumed (IS 456 Table 3)"]
 
 | Measure | Tool | Status |
 |---------|------|--------|
-| CVE scanning | pip-audit in CI | 🔲 Planned |
+| CVE scanning | pip-audit in CI (`security.yml`) | ✅ Active |
 | Hash verification | `requirements-lock.txt` with hashes | 🔶 Partial (lock exists, no hashes) |
 | Automated updates | Dependabot/Renovate for dependency PRs | 🔲 Planned |
 | Docker build | Uses lock file (not unpinned requirements.txt) | ✅ Implemented |
-| Minimal base image | `python:3.12-slim` | ✅ Implemented |
+| Minimal base image | `python:3.11-slim` | ✅ Implemented |
 
 ### 16.5 Pre-commit Hooks
 
@@ -1125,11 +1143,14 @@ repos:
     hooks: [black]
 ```
 
+> **Note:** In addition to the basic hygiene hooks, ruff v0.4.4 (lint + auto-fix) and mypy (structural_lib type checking) are **active** pre-commit hooks. black is also active for formatting.
+
 **Planned additions (v0.23):**
 
 | Hook | Purpose | Status |
 |------|---------|--------|
-| ruff lint + format | Replace black, add linting | 🔲 Planned |
+| ruff lint + format (v0.4.4) | Python linting + auto-fix | ✅ Active |
+| mypy (structural_lib) | Static type checking | ✅ Active |
 | architecture-check | Import boundary validation | 🔲 Planned |
 | api-surface-check | OpenAPI baseline diff | 🔲 Planned |
 | clause-coverage | IS 456 clause parity check | 🔲 Planned |
@@ -1178,9 +1199,9 @@ Systematic tracking of patterns adopted from mature scientific Python libraries:
 | `@clause` traceability | structuralcodes | `@clause()` decorator | ✅ Implemented |
 | `check_code()` validation | scikit-learn `check_estimator()` | Runtime code contract checker | 🔲 v0.24 |
 | `show_versions()` | scikit-learn, pandas | Environment diagnostic utility | 🔲 v0.24 |
-| Frozen dataclass results | Pythonic immutable design | All results are frozen dataclasses | ✅ Implemented |
+| Frozen dataclass results | Pythonic immutable design | Most results frozen; `FlexureResult` mutable (TODO SM-6) | 🔶 Partial |
 | `@deprecated` decorator | pandas, scikit-learn | `core/deprecation.py` | ✅ Implemented |
-| Property-based testing | pandas Hypothesis suite | Partial (serviceability only) | 🔶 Expand |
+| Property-based testing | pandas Hypothesis suite | 5 modules (serviceability, shear, flexure, ductile, slenderness) | 🔶 Expand |
 | Performance benchmarks | pandas ASV benchmarks | pytest-benchmark planned | 🔲 v0.23 |
 | Pre-commit hooks | pandas, scikit-learn | `.pre-commit-config.yaml` active (black, file hygiene) | ✅ Basic / 🔲 Advanced |
 | Client SDK generation | HTTPX patterns | Hand-written stubs in `clients/` | 🔲 v0.24 |
@@ -1347,8 +1368,8 @@ Every AI agent MUST complete this checklist before handing off:
 
 | Rule | Enforced By | Failure Mode |
 |------|-------------|--------------|
-| No upward imports | `check_architecture_boundaries.py` | CI blocks merge |
-| API surface stability | OpenAPI baseline diff | CI blocks merge |
+| No upward imports | `check_architecture_boundaries.py` | 🔲 Local script only — not yet in CI |
+| API surface stability | OpenAPI baseline diff | 🔲 Planned — baseline exists, CI check not wired |
 | Golden vectors exist | `pytest -m golden` | PR review catches |
 | Commit message format | `ai_commit.sh` hooks | Commit rejected |
 | PR required for prod code | `should_use_pr.sh` | Push rejected |
@@ -1420,7 +1441,7 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 | JSON body size limit (FastAPI middleware, 1MB default) | 🔲 | @api-developer |
 | Cross-field plausibility guards (API boundary validation) | 🔲 | @api-developer |
 | Input validation audit completion (`audit_input_validation.py`) | 🔲 | @security |
-| Dependency CVE scanning in CI (`pip-audit`) | 🔲 | @ops |
+| Dependency CVE scanning in CI (`pip-audit`) | ✅ Active (`security.yml`) | @ops |
 | WebSocket message rate limit (5 msg/s per session) | 🔲 | @api-developer |
 | Computation timeout (prevent pathological inputs) | 🔲 | @api-developer |
 
@@ -1433,7 +1454,7 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 | Deliverable | Status | Owner |
 |------------|--------|-------|
 | `pytest-benchmark` integration for hot-path functions | 🔲 | @tester |
-| Hypothesis tests for IS 456 flexure/shear/column (§14.1) | 🔲 | @tester |
+| Hypothesis tests for IS 456 — expand beyond current 5 modules (§14.1) | 🔶 Partial | @tester |
 | Performance regression baselines (>20% slowdown blocks merge) | 🔲 | @ops |
 | Benchmark results stored in `Python/test_stats.json` | 🔲 | @tester |
 
@@ -1476,8 +1497,8 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 | CodeRegistry thread-safe locking | 🔲 | @backend |
 | `DesignEnvelope` multi-code result wrapper (§5.3) | 🔲 | @backend |
 | `core/units.py` — unit conversion at boundary (in→mm, psi→MPa) | 🔲 | @backend |
-| `check_code()` implementation (§10.2) | 🔲 | @backend |
-| `show_versions()` implementation (§10.3) | 🔲 | @backend |
+| `check_code()` implementation (§10.2) — see v0.21.6 | Moved to v0.21.6 (§9.3) | @backend |
+| `show_versions()` implementation (§10.3) — see v0.21.6 | Moved to v0.21.6 (§9.3) | @backend |
 | Code Amendment Tracking metadata (§11.2) | 🔲 | @structural-math |
 | National annex support infrastructure | 🔲 | @backend |
 | Entry-point plugin discovery for third-party codes (§16.7) | 🔲 | @backend |
