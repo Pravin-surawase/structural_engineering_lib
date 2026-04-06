@@ -160,8 +160,10 @@ def generate_html_report(
         HTML string of the rendered report.
 
     Raises:
-        ImportError: If Jinja2 is not installed.
         ValueError: If template name is not recognized.
+
+    Note:
+        Falls back to basic HTML if Jinja2 is not installed.
 
     Example:
         >>> from structural_lib import api
@@ -173,10 +175,26 @@ def generate_html_report(
         ...     f.write(html)
     """
     if not JINJA2_AVAILABLE:
-        raise ImportError(
-            "Jinja2 is required for report generation. "
+        _logger.warning(
+            "Jinja2 not installed — using basic fallback report. "
             "Install with: pip install structural-lib-is456[report]"
         )
+        # Build minimal context for fallback
+        if hasattr(design_result, "to_dict"):
+            result_dict = design_result.to_dict()
+        elif isinstance(design_result, dict):
+            result_dict = design_result
+        else:
+            result_dict = {}
+        proj = project_info or {}
+        fallback_ctx = {
+            "beam_id": beam_id,
+            "project_name": proj.get("project_name", ""),
+            "is_ok": result_dict.get(
+                "is_ok", result_dict.get("results", {}).get("is_ok", False)
+            ),
+        }
+        return _generate_fallback_html(fallback_ctx)
 
     # Convert design result to dictionary if needed
     if hasattr(design_result, "to_dict"):
@@ -226,14 +244,17 @@ def generate_html_report_from_dict(
         HTML string of the rendered report.
 
     Raises:
-        ImportError: If Jinja2 is not installed.
         ValueError: If template name is not recognized.
+
+    Note:
+        Falls back to basic HTML if Jinja2 is not installed.
     """
     if not JINJA2_AVAILABLE:
-        raise ImportError(
-            "Jinja2 is required for report generation. "
+        _logger.warning(
+            "Jinja2 not installed — using basic fallback report. "
             "Install with: pip install structural-lib-is456[report]"
         )
+        return _generate_fallback_html(context)
 
     if template not in TEMPLATE_REGISTRY:
         available = ", ".join(TEMPLATE_REGISTRY.keys())

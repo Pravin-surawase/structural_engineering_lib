@@ -161,7 +161,6 @@ class TestImportSilence:
                         for skip in [
                             "ezdxf",  # third-party
                             "pyparsing",  # third-party
-                            "has moved to",  # intentional backward-compat shims
                         ]
                     )
                 ]
@@ -255,3 +254,144 @@ class TestReportTemplatesPackaged:
             "pyproject.toml [tool.setuptools.package-data] must include "
             "'reports/templates/*.j2'"
         )
+
+
+class TestImportStrictWarnings:
+    """EA-6 strict: validate import under -Werror flag."""
+
+    def test_import_strict_no_warnings(self):
+        """EA-6 strict: python -Werror -c 'import structural_lib' must succeed."""
+        result = subprocess.run(
+            [sys.executable, "-Werror", "-c", "import structural_lib"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        assert (
+            result.returncode == 0
+        ), f"Import with -Werror failed:\nstderr: {result.stderr}"
+
+
+class TestWheelSmokeTests:
+    """Smoke tests validating core workflows work after install.
+
+    These tests verify the critical paths that an end-user hits.
+    Audit recommendation: run these against built wheels before release.
+    """
+
+    def test_design_beam_roundtrip(self):
+        """Core beam design workflow produces valid results."""
+        from structural_lib import design_beam_is456
+
+        result = design_beam_is456(
+            units="IS456",
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            mu_knm=120,
+            vu_kn=80,
+        )
+        assert hasattr(result, "flexure"), "Result missing flexure attribute"
+        assert hasattr(result, "shear"), "Result missing shear attribute"
+
+    def test_detail_beam_roundtrip(self):
+        """Detailing workflow produces results."""
+        from structural_lib import detail_beam_is456
+
+        result = detail_beam_is456(
+            units="IS456",
+            beam_id="B-SMOKE",
+            story="S1",
+            b_mm=300,
+            D_mm=500,
+            span_mm=5000,
+            cover_mm=25,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            ast_start_mm2=800,
+            ast_mid_mm2=600,
+            ast_end_mm2=800,
+        )
+        assert result is not None
+
+    def test_bbs_generation(self):
+        """BBS generation from detailing results works."""
+        from structural_lib import detail_beam_is456
+        from structural_lib.services.bbs import generate_bbs_from_detailing
+
+        detail = detail_beam_is456(
+            units="IS456",
+            beam_id="B-BBS",
+            story="S1",
+            b_mm=300,
+            D_mm=500,
+            span_mm=5000,
+            cover_mm=25,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            ast_start_mm2=800,
+            ast_mid_mm2=600,
+            ast_end_mm2=800,
+        )
+        bbs = generate_bbs_from_detailing(detail)
+        assert bbs is not None
+        assert isinstance(bbs, list)
+
+    def test_report_fallback_without_jinja2(self):
+        """Report generation falls back gracefully without Jinja2."""
+        from structural_lib.reports.generator import _generate_fallback_html
+
+        html = _generate_fallback_html({"beam_id": "B1", "is_ok": True})
+        assert "<html" in html
+        assert "B1" in html
+
+    def test_csv_adapter_importable(self):
+        """GenericCSVAdapter is importable and instantiable."""
+        from structural_lib.services.adapters import GenericCSVAdapter
+
+        adapter = GenericCSVAdapter()
+        assert hasattr(adapter, "load_combined")
+        assert hasattr(adapter, "load_geometry")
+        assert hasattr(adapter, "load_forces")
+
+    def test_column_design_importable(self):
+        """Column design functions are importable."""
+        from structural_lib import (
+            classify_column_is456,
+            design_column_axial_is456,
+        )
+
+        assert callable(design_column_axial_is456)
+        assert callable(classify_column_is456)
+
+
+class TestREADMESnippets:
+    """Verify README code examples actually work.
+
+    Audit finding: README examples should be tested to prevent drift.
+    """
+
+    def test_readme_beam_design_snippet(self):
+        """README beam design example works."""
+        from structural_lib import design_beam_is456
+
+        result = design_beam_is456(
+            units="IS456",
+            b_mm=300,
+            D_mm=550,
+            d_mm=500,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            mu_knm=150,
+            vu_kn=100,
+        )
+        assert result is not None
+
+    def test_readme_csv_adapter_snippet(self):
+        """README CSV adapter import works."""
+        from structural_lib.services.adapters import GenericCSVAdapter
+
+        adapter = GenericCSVAdapter()
+        assert adapter is not None

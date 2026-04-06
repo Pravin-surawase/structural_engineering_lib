@@ -22,7 +22,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Literal, cast
 
-from structural_lib.codes.is456.detailing import (
+from structural_lib.codes.is456.beam.detailing import (
     STANDARD_BAR_DIAMETERS,
     BarArrangement,
     calculate_bar_spacing,
