@@ -5,6 +5,38 @@
 
 ---
 
+## Session — 2026-04-06 — Response Envelope Fix
+
+**Agent:** orchestrator → frontend → tester → doc-master → ops
+**Branch:** main
+
+### Changes
+- Fixed critical response envelope mismatch between FastAPI and React
+- FastAPI wraps all /api/v1/* responses in {success, data: {...}}
+- React was reading wrapper directly, causing undefined errors everywhere
+- Added unwrapResponse() helper, applied to all 16 API fetch calls
+- Fixed URL construction bug in useCSVImport.ts (new URL() on relative paths)
+- Added 3 contract tests for unwrapResponse, updated test mocks
+- All 132 React tests pass, production build succeeds
+
+### Files Changed (10)
+- react_app/src/api/client.ts
+- react_app/src/hooks/useCSVImport.ts
+- react_app/src/hooks/useBeamGeometry.ts
+- react_app/src/hooks/useGeometryAdvanced.ts
+- react_app/src/hooks/useInsights.ts
+- react_app/src/hooks/useRebarEditor.ts
+- react_app/src/components/import/ImportView.tsx
+- react_app/src/hooks/__tests__/useCSVImport.test.ts
+- react_app/src/api/__tests__/endpoints.test.ts
+
+### Impact
+- Import page: CSV upload, dual CSV, sample data all working
+- Design page: No more "Something went wrong" crash
+- All API-dependent features: Geometry, insights, rebar editor receiving correct data
+
+---
+
 ## 2026-04-05 — External PyPI Audit Resolution
 
 **Agent:** orchestrator → backend → reviewer → tester → ops

@@ -107,6 +107,26 @@ export interface Geometry3DResponse {
 import { API_BASE_URL } from '../config';
 
 /**
+ * Unwrap FastAPI's standard response envelope.
+ * All /api/v1/* endpoints return: {"success": true, "data": <actual payload>}
+ * This extracts the inner payload so callers get the type they expect.
+ */
+function unwrapResponse<T>(json: unknown): T {
+  if (
+    json !== null &&
+    typeof json === 'object' &&
+    'data' in json &&
+    'success' in json
+  ) {
+    return (json as { data: T }).data;
+  }
+  // Return as-is for endpoints that don't wrap (e.g., /health)
+  return json as T;
+}
+
+export { unwrapResponse };
+
+/**
  * Check API health status.
  */
 export async function checkHealth(): Promise<HealthResponse> {
@@ -134,7 +154,7 @@ export async function designBeam(
     throw new Error(`Design failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<BeamDesignResponse>);
 }
 
 /**
@@ -154,7 +174,7 @@ export async function generateBeamGeometry(
     throw new Error(`Geometry generation failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<Geometry3DResponse>);
 }
 
 export async function calculateGeometry(
@@ -208,7 +228,7 @@ export async function loadSampleData(): Promise<SampleDataResponse> {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
     throw new Error(`Sample data load failed: ${error.detail || response.status}`);
   }
-  return response.json();
+  return response.json().then(unwrapResponse<SampleDataResponse>);
 }
 
 // =============================================================================
@@ -267,7 +287,7 @@ export async function designBeamTorsion(
     throw new Error(`Torsion design failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<TorsionDesignResponse>);
 }
 
 // =============================================================================
@@ -324,7 +344,7 @@ export async function analyzeLoads(
     throw new Error(`Load analysis failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<LoadAnalysisResponse>);
 }
 
 // =============================================================================
@@ -386,7 +406,7 @@ export async function optimizeParetoFront(
     throw new Error(`Pareto optimization failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<ParetoResponse>);
 }
 
 export default {

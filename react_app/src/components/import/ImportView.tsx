@@ -46,7 +46,7 @@ export function ImportView() {
     setError(null);
     try {
       const data = await loadSampleData();
-      if (data.success) {
+      if (data.success && data.beams?.length) {
         const storeBeams: BeamCSVRow[] = applyMaterialOverrides(
           mapSampleBeamsToRows(data.beams),
           materialOverrides

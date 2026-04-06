@@ -5,9 +5,32 @@
  * Uses fetch mocking — no real server needed.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { unwrapResponse, designBeam, loadSampleData, generateBeamGeometry, checkHealth } from '../client';
 import * as fixtures from '../../test/api-fixtures';
 
 const API = 'http://localhost:8000';
+
+// ═══════════════════════════════════════════════════════════════════════
+// 0. RESPONSE UNWRAPPING
+// ═══════════════════════════════════════════════════════════════════════
+describe('unwrapResponse', () => {
+  it('unwraps standard APIResponse envelope', () => {
+    const wrapped = { success: true, data: { beams: [1, 2], count: 2 } };
+    const result = unwrapResponse<{ beams: number[]; count: number }>(wrapped);
+    expect(result).toEqual({ beams: [1, 2], count: 2 });
+  });
+
+  it('passes through non-wrapped responses', () => {
+    const direct = { status: 'healthy', version: '1.0' };
+    const result = unwrapResponse<typeof direct>(direct);
+    expect(result).toEqual(direct);
+  });
+
+  it('handles null input', () => {
+    const result = unwrapResponse<null>(null);
+    expect(result).toBeNull();
+  });
+});
 
 // Helper: mock a successful JSON response
 function mockFetch(body: unknown, status = 200) {
@@ -579,5 +602,106 @@ describe('Error Handling', () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new TypeError('Failed to fetch'));
 
     await expect(fetch(`${API}/health`)).rejects.toThrow('Failed to fetch');
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// REGRESSION: Response Envelope Unwrapping
+// Prevents the critical bug where React crashed because client functions
+// returned {success, data: {…}} instead of the inner payload.
+// ═══════════════════════════════════════════════════════════════════════
+describe('API Response Contract — unwrap enforcement', () => {
+  it('designBeam() unwraps response envelope', async () => {
+    const innerData = {
+      success: true,
+      message: 'OK',
+      flexure: { ast_required: 850, moment_capacity: 165, xu: 50, xu_max: 120, ast_min: 200, ast_max: 2000, is_under_reinforced: true },
+      shear: { tau_v: 0.65, tau_c: 0.48, tau_c_max: 3.1, asv_required: 0.45, stirrup_spacing: 150, sv_max: 300, shear_capacity: 90 },
+      ast_total: 850,
+      asc_total: 0,
+      utilization_ratio: 0.87,
+      warnings: [],
+    };
+    // Mock returns WRAPPED response (as FastAPI actually sends)
+    mockFetch({ success: true, data: innerData });
+
+    const result = await designBeam({ width: 300, depth: 500, moment: 150, fck: 25, fy: 500 });
+
+    // Should get unwrapped data — flexure should be directly accessible
+    expect(result.flexure).toBeDefined();
+    expect(result.flexure.ast_required).toBe(850);
+    expect(result.utilization_ratio).toBe(0.87);
+    // Should NOT have a nested .data property
+    expect((result as any).data).toBeUndefined();
+  });
+
+  it('loadSampleData() unwraps response envelope', async () => {
+    const innerData = {
+      success: true,
+      message: 'Loaded 5 beams',
+      beam_count: 1,
+      beams: [{ id: 'B1', story: 'GF', width_mm: 300, depth_mm: 500, span_mm: 5000, mu_knm: 100, vu_kn: 50, fck_mpa: 25, fy_mpa: 500, cover_mm: 40, point1: { x: 0, y: 0, z: 0 }, point2: { x: 5, y: 0, z: 0 } }],
+      format_detected: 'ETABS',
+      warnings: [],
+    };
+    mockFetch({ success: true, data: innerData });
+
+    const result = await loadSampleData();
+
+    // beams should be directly accessible (this was the crash site)
+    expect(result.beams).toBeDefined();
+    expect(Array.isArray(result.beams)).toBe(true);
+    expect(result.beams.length).toBe(1);
+    expect(result.beams[0].id).toBe('B1');
+  });
+
+  it('generateBeamGeometry() unwraps response envelope', async () => {
+    const innerData = {
+      success: true,
+      message: 'OK',
+      components: [],
+      bounding_box: { min_x: 0, max_x: 300, min_y: 0, max_y: 500, min_z: 0, max_z: 3000 },
+      center: [150, 250, 1500],
+      suggested_camera_distance: 2000,
+      total_vertices: 8,
+      total_faces: 12,
+    };
+    mockFetch({ success: true, data: innerData });
+
+    const result = await generateBeamGeometry({ width: 300, depth: 500, length: 3000 });
+
+    expect(result.components).toBeDefined();
+    expect(result.bounding_box).toBeDefined();
+    expect(result.bounding_box.max_x).toBe(300);
+    // Should NOT have a nested .data property
+    expect((result as any).data).toBeUndefined();
+  });
+
+  it('checkHealth() does NOT double-unwrap (health has no envelope)', async () => {
+    const healthData = { status: 'healthy', version: '0.22.0', timestamp: '2026-04-06T00:00:00Z' };
+    mockFetch(healthData);
+
+    const result = await checkHealth();
+
+    expect(result.status).toBe('healthy');
+    expect(result.version).toBe('0.22.0');
+  });
+
+  it('unwrapResponse is idempotent for non-wrapped responses', () => {
+    // If a response happens to not be wrapped, it should pass through unchanged
+    const directData = { beams: [{ id: 'B1' }], count: 1 };
+    const result = unwrapResponse<typeof directData>(directData);
+    expect(result.beams[0].id).toBe('B1');
+    expect(result.count).toBe(1);
+  });
+
+  it('double-wrapping is handled correctly (only one layer peeled)', () => {
+    // Edge case: what if somehow inner data also has success+data shape
+    const innerData = { success: true, data: { nested: true }, extra: 'field' };
+    const wrapped = { success: true, data: innerData };
+    const result = unwrapResponse<typeof innerData>(wrapped);
+    // Should peel one layer — result should be innerData
+    expect(result.extra).toBe('field');
+    expect(result.success).toBe(true);
   });
 });

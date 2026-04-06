@@ -7,6 +7,7 @@
  * geometry_3d.beam_to_3d_geometry() function.
  */
 import { useQuery } from "@tanstack/react-query";
+import { unwrapResponse } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -111,7 +112,7 @@ async function fetchBeamGeometry(
     throw new Error(`Geometry failed: ${error.detail || response.status}`);
   }
 
-  const data: GeometryResponse = await response.json();
+  const data: GeometryResponse = unwrapResponse<GeometryResponse>(await response.json());
 
   if (!data.success || !data.geometry) {
     throw new Error(data.message || "Failed to generate geometry");

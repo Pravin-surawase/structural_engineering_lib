@@ -7,6 +7,7 @@
  * structural_lib.visualization.geometry_3d functions.
  */
 import { useMutation } from "@tanstack/react-query";
+import { unwrapResponse } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -117,7 +118,7 @@ async function fetchBuildingGeometry(
     throw new Error(error.detail || "Building geometry generation failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<BuildingGeometryResponse>);
 }
 
 /**
@@ -152,7 +153,7 @@ async function fetchCrossSectionGeometry(
     throw new Error(error.detail || "Cross-section generation failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<CrossSectionResponse>);
 }
 
 /**
