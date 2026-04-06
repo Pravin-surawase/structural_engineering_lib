@@ -2,23 +2,16 @@
   "folder": "react_app/src",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-02",
-  "file_count": 6,
+  "last_updated": "2026-04-07",
+  "file_count": 5,
   "files": [
-    {
-      "name": "App.css",
-      "type": "stylesheet",
-      "size_lines": 6,
-      "last_updated": "2026-03-26",
-      "content_hash": "61df29c88f46"
-    },
     {
       "name": "App.tsx",
       "type": "react-component",
-      "size_lines": 147,
-      "last_updated": "2026-03-30",
+      "size_lines": 164,
+      "last_updated": "2026-04-05",
       "description": "Structural Engineering App",
-      "content_hash": "d8a83df7623e"
+      "content_hash": "f04cc58ccc78"
     },
     {
       "name": "config.ts",
@@ -35,9 +28,9 @@
     {
       "name": "index.css",
       "type": "stylesheet",
-      "size_lines": 47,
-      "last_updated": "2026-03-26",
-      "content_hash": "5215da23f9bf"
+      "size_lines": 72,
+      "last_updated": "2026-04-05",
+      "content_hash": "2d225fb757a1"
     },
     {
       "name": "main.tsx",
@@ -68,12 +61,12 @@
     {
       "name": "components",
       "path": "components/",
-      "file_count": 44
+      "file_count": 56
     },
     {
       "name": "hooks",
       "path": "hooks/",
-      "file_count": 20
+      "file_count": 23
     },
     {
       "name": "lib",
@@ -101,5 +94,5 @@
       "file_count": 5
     }
   ],
-  "content_hash": "d06386c6f0042d4b"
+  "content_hash": "85b284cebe12a7c7"
 }

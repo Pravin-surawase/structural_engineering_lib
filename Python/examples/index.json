@@ -1,18 +1,18 @@
 {
   "folder": "Python/examples",
   "type": "python-package",
-  "description": "> **Purpose:** Example scripts demonstrating library usage",
-  "last_updated": "2026-04-02",
-  "file_count": 17,
+  "description": "> **Purpose:** Example scripts demonstrating structural_lib usage",
+  "last_updated": "2026-04-07",
+  "file_count": 18,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 35,
-      "last_updated": "2026-03-26",
-      "title": "Examples - Python Usage Examples",
-      "description": "> **Purpose:** Example scripts demonstrating library usage > **Last Updated:** 2026-01-10",
-      "content_hash": "58e8a7725f7b"
+      "size_lines": 32,
+      "last_updated": "2026-04-05",
+      "title": "Examples — Python Usage Examples",
+      "description": "> **Purpose:** Example scripts demonstrating structural_lib usage > **Last Updated:** 2026-04-05",
+      "content_hash": "f515fb393bec"
     },
     {
       "name": "bmd_sfd_example.py",
@@ -88,20 +88,20 @@
       "name": "colab_workflow.py",
       "type": "python",
       "size_lines": 207,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Colab-friendly full workflow example.",
       "functions": [
         {
           "name": "main"
         }
       ],
-      "content_hash": "df1e76150d8e"
+      "content_hash": "dfa8a8a16d41"
     },
     {
       "name": "complete_beam_design.py",
       "type": "python",
       "size_lines": 433,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Sample: Complete Beam Design Workflow",
       "classes": [
         {
@@ -145,13 +145,13 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "06b6f49f2db6"
+      "content_hash": "efeb8a24b21f"
     },
     {
       "name": "demo_intelligence.py",
       "type": "python",
       "size_lines": 218,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Demo: Smart library features (Precheck + Sensitivity)",
       "functions": [
         {
@@ -182,13 +182,26 @@
           "description": "Demo: Combined workflow (precheck -> design -> sensitivity)."
         }
       ],
-      "content_hash": "31a58273e112"
+      "content_hash": "03de29b16ed8"
+    },
+    {
+      "name": "end_to_end_workflow.py",
+      "type": "python",
+      "size_lines": 83,
+      "last_updated": "2026-04-05",
+      "description": "End-to-end beam design workflow.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "267439a3ba72"
     },
     {
       "name": "full_pipeline_synthetic.py",
       "type": "python",
       "size_lines": 216,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Generate synthetic beam inputs and run the full CLI pipeline.",
       "functions": [
         {
@@ -198,13 +211,13 @@
       "constants": [
         "FIELDNAMES"
       ],
-      "content_hash": "d09ae4526ab8"
+      "content_hash": "6197688ef886"
     },
     {
       "name": "professional_workflow.py",
       "type": "python",
       "size_lines": 241,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Professional Engineering Workflow Example.",
       "functions": [
         {
@@ -212,7 +225,7 @@
           "description": "Run the professional workflow example."
         }
       ],
-      "content_hash": "34fff26b9f94"
+      "content_hash": "15e289dda489"
     },
     {
       "name": "sample_job_is456.json",
@@ -246,7 +259,7 @@
       "name": "simple_examples.py",
       "type": "python",
       "size_lines": 328,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Simple Examples for Beginners",
       "functions": [
         {
@@ -282,13 +295,13 @@
           "description": "Run all examples."
         }
       ],
-      "content_hash": "bfc6515e077a"
+      "content_hash": "500bc57e4ea0"
     },
     {
       "name": "validate_intelligence.py",
       "type": "python",
       "size_lines": 149,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Validate insights features against sample vectors.",
       "functions": [
         {
@@ -303,9 +316,9 @@
           "description": "Test insights features against sample vectors."
         }
       ],
-      "content_hash": "213725e9b5c5"
+      "content_hash": "535696ac584c"
     }
   ],
   "subfolders": [],
-  "content_hash": "22ce0c44d70a6755"
+  "content_hash": "79959aeb6dbaf1fc"
 }

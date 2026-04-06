@@ -57,6 +57,8 @@ from .services.api import (
     CalculationHash,
     # Calculation Report
     CalculationReport,
+    # Self-validation (TASK-724)
+    CheckCodeReport,
     # Return types (for type annotations)
     ComplianceCaseResult,
     ComplianceReport,
@@ -87,6 +89,7 @@ from .services.api import (
     # Torsion Design
     TorsionResult,
     ValidationReport,
+    VersionInfo,
     bearing_stress_enhancement,
     # Column Design
     biaxial_bending_check_is456,
@@ -103,6 +106,7 @@ from .services.api import (
     check_beam_is456,
     check_beam_slenderness,
     check_bearing_pressure,
+    check_code,
     check_column_ductility_is13920,
     check_compliance_report,
     check_crack_width,
@@ -147,6 +151,8 @@ from .services.api import (
     optimize_beam_cost,
     optimize_pareto_front,
     pm_interaction_curve_is456,
+    # Diagnostics (TASK-725)
+    show_versions,
     # Footing Design (IS 456 Cl 34)
     size_footing,
     smart_analyze_design,
@@ -223,6 +229,9 @@ __all__ = [
     "types",
     # Version
     "get_library_version",
+    # Diagnostics (TASK-725)
+    "show_versions",
+    "VersionInfo",
     # Validation
     "validate_job_spec",
     "validate_design_results",
@@ -348,6 +357,9 @@ __all__ = [
     "FootingFlexureResult",
     "FootingOneWayShearResult",
     "FootingPunchingResult",
+    # Self-validation (TASK-724)
+    "check_code",
+    "CheckCodeReport",
 ]
 
 

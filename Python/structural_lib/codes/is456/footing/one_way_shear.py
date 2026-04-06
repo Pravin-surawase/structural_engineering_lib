@@ -110,6 +110,18 @@ def footing_one_way_shear(
     Raises:
         DimensionError: If geometry is invalid
         ValidationError: If material properties are invalid
+
+    Limitations:
+        - Isolated footings only; continuous footings require different
+          critical section definitions.
+        - Uniform pressure distribution assumed (concentric load); does
+          not handle eccentric or trapezoidal pressure.
+        - Shear reinforcement is NOT designed; if τv > τc the only
+          remedy is to increase footing depth (shear reinforcement is
+          impractical in footings per standard practice).
+        - Table 19 τc values valid for fck = 15–40 N/mm² only.
+        - Does not consider enhanced shear strength near supports
+          (Cl. 40.3); footing cantilever behaviour differs from beams.
     """
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
 

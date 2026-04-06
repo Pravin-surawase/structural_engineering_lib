@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-02",
-  "file_count": 15,
+  "last_updated": "2026-04-07",
+  "file_count": 14,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 147,
-      "last_updated": "2026-04-01",
+      "size_lines": 148,
+      "last_updated": "2026-04-03",
       "description": "IS 456:2000 - Indian Standard for Plain and Reinforced Concrete.",
       "classes": [
         {
@@ -26,66 +26,12 @@
           ]
         }
       ],
-      "content_hash": "7b0c878e5dde"
-    },
-    {
-      "name": "clause_cli.py",
-      "type": "python",
-      "size_lines": 283,
-      "last_updated": "2026-03-26",
-      "description": "IS 456 Clause CLI",
-      "functions": [
-        {
-          "name": "format_clause_info",
-          "description": "Format clause information for display.",
-          "params": [
-            "clause_ref",
-            "info"
-          ]
-        },
-        {
-          "name": "cmd_lookup",
-          "description": "Look up a specific clause.",
-          "params": [
-            "clause_ref"
-          ]
-        },
-        {
-          "name": "cmd_search",
-          "description": "Search clauses by keyword.",
-          "params": [
-            "keyword"
-          ]
-        },
-        {
-          "name": "cmd_category",
-          "description": "List clauses in a category.",
-          "params": [
-            "category"
-          ]
-        },
-        {
-          "name": "cmd_report",
-          "description": "Generate traceability report.",
-          "params": [
-            "output_json"
-          ]
-        },
-        {
-          "name": "cmd_stats",
-          "description": "Show database statistics."
-        },
-        {
-          "name": "main",
-          "description": "Main CLI entry point."
-        }
-      ],
-      "content_hash": "2f040fb1cc5e"
+      "content_hash": "248d2465c012"
     },
     {
       "name": "clauses.json",
       "type": "config",
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-04-05",
       "top_level_keys": [
         "$schema",
         "metadata",
@@ -94,13 +40,13 @@
         "figures",
         "annexures"
       ],
-      "content_hash": "4795e122eb17"
+      "content_hash": "f974f3f59732"
     },
     {
       "name": "compliance.py",
       "type": "python",
-      "size_lines": 477,
-      "last_updated": "2026-03-31",
+      "size_lines": 483,
+      "last_updated": "2026-04-05",
       "description": "Module: compliance",
       "functions": [
         {
@@ -119,7 +65,7 @@
           ]
         }
       ],
-      "content_hash": "7bdac681707b"
+      "content_hash": "d1bcd872a5c5"
     },
     {
       "name": "detailing.py",
@@ -148,8 +94,8 @@
     {
       "name": "load_analysis.py",
       "type": "python",
-      "size_lines": 453,
-      "last_updated": "2026-03-29",
+      "size_lines": 627,
+      "last_updated": "2026-04-06",
       "description": "Module:       load_analysis",
       "functions": [
         {
@@ -191,6 +137,26 @@
           ]
         },
         {
+          "name": "compute_triangular_load_bmd_sfd",
+          "description": "Compute BMD and SFD for triangular load on simply supported beam.",
+          "params": [
+            "span_mm",
+            "w_max_kn_per_m",
+            "ascending",
+            "num_points"
+          ]
+        },
+        {
+          "name": "compute_applied_moment_bmd_sfd",
+          "description": "Compute BMD and SFD for applied concentrated moment on simply supported beam.",
+          "params": [
+            "span_mm",
+            "m_knm",
+            "a_mm",
+            "num_points"
+          ]
+        },
+        {
           "name": "compute_bmd_sfd",
           "description": "Compute BMD and SFD for a beam with specified loads.",
           "params": [
@@ -204,13 +170,13 @@
       "constants": [
         "DEFAULT_NUM_POINTS"
       ],
-      "content_hash": "fb44c022df41"
+      "content_hash": "eec451850955"
     },
     {
       "name": "materials.py",
       "type": "python",
-      "size_lines": 118,
-      "last_updated": "2026-03-29",
+      "size_lines": 128,
+      "last_updated": "2026-04-05",
       "description": "Module:       materials",
       "functions": [
         {
@@ -243,7 +209,7 @@
           ]
         }
       ],
-      "content_hash": "b5261d453d51"
+      "content_hash": "702bfdcb7344"
     },
     {
       "name": "serviceability.py",
@@ -342,16 +308,16 @@
     {
       "name": "torsion.py",
       "type": "python",
-      "size_lines": 28,
-      "last_updated": "2026-03-31",
+      "size_lines": 29,
+      "last_updated": "2026-04-06",
       "description": "Backward compatibility shim — torsion module moved to beam/ subpackage.",
-      "content_hash": "ca323b1d678f"
+      "content_hash": "93338352a274"
     },
     {
       "name": "traceability.py",
       "type": "python",
-      "size_lines": 367,
-      "last_updated": "2026-03-26",
+      "size_lines": 354,
+      "last_updated": "2026-04-05",
       "description": "IS 456 Traceability Module",
       "functions": [
         {
@@ -409,7 +375,7 @@
       "constants": [
         "F"
       ],
-      "content_hash": "4112e62236cb"
+      "content_hash": "499eb980fe5f"
     }
   ],
   "subfolders": [
@@ -422,7 +388,7 @@
     {
       "name": "column",
       "path": "column/",
-      "file_count": 5,
+      "file_count": 11,
       "is_package": true
     },
     {
@@ -430,9 +396,15 @@
       "path": "common/",
       "file_count": 5,
       "is_package": true
+    },
+    {
+      "name": "footing",
+      "path": "footing/",
+      "file_count": 8,
+      "is_package": true
     }
   ],
-  "content_hash": "b6d91031ac2b5ff9",
+  "content_hash": "d55ef1ae53680252",
   "has_init": true,
   "public_api": [
     "IS456Code",

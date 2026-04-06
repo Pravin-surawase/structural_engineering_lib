@@ -22,7 +22,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from structural_lib.codes.is456.detailing import BeamDetailingResult
+from structural_lib.codes.is456.beam.detailing import BeamDetailingResult
 from structural_lib.core.data_types import CuttingAssignment, CuttingPlan
 
 # =============================================================================

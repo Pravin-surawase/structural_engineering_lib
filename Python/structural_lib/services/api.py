@@ -38,6 +38,7 @@ from structural_lib.codes.is456.load_analysis import compute_bmd_sfd  # noqa: F4
 from structural_lib.core.data_types import (  # noqa: F401  # noqa: F401
     BearingPressureCheckResult,
     BearingStressEnhancementResult,
+    CheckCodeReport,
     ComplianceCaseResult,
     ComplianceReport,
     CriticalPoint,
@@ -49,6 +50,7 @@ from structural_lib.core.data_types import (  # noqa: F401  # noqa: F401
     LoadDiagramResult,
     LoadType,
     ValidationReport,
+    VersionInfo,
 )
 from structural_lib.core.inputs import (  # noqa: F401
     BeamGeometryInput,
@@ -114,7 +116,9 @@ from structural_lib.services.column_api import (  # noqa: F401
 from structural_lib.services.common_api import (  # noqa: F401
     _require_is456_units,
     _validate_plausibility,
+    check_code,
     get_library_version,
+    show_versions,
     validate_design_results,
     validate_job_spec,
 )
@@ -163,9 +167,15 @@ from .etabs_import import (  # noqa: F401
 __all__ = [
     # Version
     "get_library_version",
+    # Diagnostics (TASK-725)
+    "show_versions",
+    "VersionInfo",
     # Validation
     "validate_job_spec",
     "validate_design_results",
+    # Self-validation (TASK-724)
+    "check_code",
+    "CheckCodeReport",
     # Core design functions
     "design_beam_is456",
     "check_beam_is456",

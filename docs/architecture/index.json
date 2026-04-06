@@ -2,8 +2,8 @@
   "folder": "docs/architecture",
   "type": "mixed",
   "description": "Deep dives into project structure, design decisions, and system architecture.",
-  "last_updated": "2026-04-02",
-  "file_count": 12,
+  "last_updated": "2026-04-07",
+  "file_count": 13,
   "files": [
     {
       "name": "README.md",
@@ -34,10 +34,10 @@
       "name": "config-precedence.md",
       "type": "documentation",
       "size_lines": 92,
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-03",
       "title": "Configuration Precedence",
       "description": "| Tier | Location | Scope | Example | |------|----------|-------|---------|",
-      "content_hash": "17d6f5357a15"
+      "content_hash": "44bafd5f7557"
     },
     {
       "name": "data-flow-diagrams.md",
@@ -88,6 +88,15 @@
       "content_hash": "ccdbc42606c5"
     },
     {
+      "name": "unified-architecture-v1.md",
+      "type": "documentation",
+      "size_lines": 1562,
+      "last_updated": "2026-04-07",
+      "title": "Unified Architecture — structural_engineering_lib v1.0",
+      "description": "> THE single source of truth for architecture decisions, quality gates, and safety guarantees. > Every agent, every session, every change must comply with this document.",
+      "content_hash": "23abffc6fe67"
+    },
+    {
       "name": "visual-architecture.md",
       "type": "documentation",
       "size_lines": 155,
@@ -103,5 +112,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "693192cfe679d50a"
+  "content_hash": "995eeb2875d2509d"
 }

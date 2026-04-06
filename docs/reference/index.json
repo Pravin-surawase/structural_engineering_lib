@@ -2,8 +2,8 @@
   "folder": "docs/reference",
   "type": "mixed",
   "description": "",
-  "last_updated": "2026-04-02",
-  "file_count": 25,
+  "last_updated": "2026-04-07",
+  "file_count": 28,
   "files": [
     {
       "name": "3d-json-contract.md",
@@ -39,6 +39,15 @@
       "content_hash": "9636c17c09da"
     },
     {
+      "name": "api-levels.md",
+      "type": "documentation",
+      "size_lines": 89,
+      "last_updated": "2026-04-05",
+      "title": "Which API Should I Use?",
+      "description": "structural_lib exposes three API levels. Pick the one that matches your use case. python",
+      "content_hash": "8a668d9e2243"
+    },
+    {
       "name": "api-manifest.json",
       "type": "config",
       "last_updated": "2026-03-26",
@@ -54,18 +63,18 @@
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 470,
-      "last_updated": "2026-03-31",
+      "size_lines": 525,
+      "last_updated": "2026-04-06",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "6ced68b7fc06"
+      "content_hash": "2b07b3adb9c2"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 3298,
-      "last_updated": "2026-04-01",
+      "size_lines": 3776,
+      "last_updated": "2026-04-06",
       "description": "Machine-readable signatures live in docs/reference/api-manifest.json. bash",
-      "content_hash": "f03fb2a33b42"
+      "content_hash": "6ef199704595"
     },
     {
       "name": "automation-catalog.md",
@@ -82,6 +91,26 @@
       "last_updated": "2026-03-30",
       "description": "This document defines the stable contracts for Bar Bending Schedule (BBS) and DXF outputs. It is beam-only (IS 456) and is intended for integrators who need",
       "content_hash": "f44f739cd52e"
+    },
+    {
+      "name": "clause-map.json",
+      "type": "config",
+      "last_updated": "2026-04-04",
+      "top_level_keys": [
+        "metadata",
+        "mappings",
+        "not_implemented"
+      ],
+      "content_hash": "6f979ab7b54e"
+    },
+    {
+      "name": "clause-map.md",
+      "type": "documentation",
+      "size_lines": 189,
+      "last_updated": "2026-04-04",
+      "title": "IS 456 Clause-to-Function Mapping",
+      "description": "Maps IS 456:2000 (and IS 13920:2016) clauses to their implementing functions in structural_lib. - **Decorator:** @clause = function uses traceability decorator; clause_ref = clause referenced in error",
+      "content_hash": "b9ee1d1a7431"
     },
     {
       "name": "deferred-integrations.md",
@@ -127,17 +156,17 @@
       "name": "fastapi-rest-api.md",
       "type": "documentation",
       "size_lines": 585,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-04-06",
       "description": "The Structural Engineering Library provides a REST API via FastAPI for beam design, analysis, and detailing per IS 456:2000. | Environment | URL |",
-      "content_hash": "26203aff0d75"
+      "content_hash": "4dd1e969cdd6"
     },
     {
       "name": "insights-api.md",
       "type": "documentation",
       "size_lines": 994,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-04-04",
       "description": "> **Status:** Preview (v0.13.0+) > **Stability:** Experimental - API may change before v1.0",
-      "content_hash": "8125f9e3ff91"
+      "content_hash": "650ab7d23ada"
     },
     {
       "name": "is456-formulas.md",
@@ -175,9 +204,9 @@
       "name": "sdk-api-contract-v1.md",
       "type": "documentation",
       "size_lines": 928,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-04-04",
       "description": "This document defines the public API contract for the Structural SDK. All functions documented here are considered stable and will follow semantic versioning. python",
-      "content_hash": "e9c0960dfbb5"
+      "content_hash": "b0d1abf1029b"
     },
     {
       "name": "tech-stack-rationale.md",
@@ -211,5 +240,5 @@
       "file_count": 1762
     }
   ],
-  "content_hash": "f108c4cd6eec7918"
+  "content_hash": "0d6ef4767e340582"
 }

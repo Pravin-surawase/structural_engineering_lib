@@ -10,10 +10,10 @@
 > THE single source of truth for architecture decisions, quality gates, and safety guarantees.
 > Every agent, every session, every change must comply with this document.
 
-**Codebase snapshot (v0.21.5):**
+**Codebase snapshot (v0.21.6):**
 - 168 Python source files in `structural_lib/`, 132 exports in `__all__`
 - 55+ IS 456 design functions, 93+ `@clause` decorators
-- 4700+ tests collected, 85%+ branch coverage (99% on codes/is456/)
+- 5081+ tests collected, 85%+ branch coverage (99% on codes/is456/)
 - 13 routers, 60+ FastAPI endpoints
 - Pydantic ≥2.0 (2.12.5), Python ≥3.11 (3.11.15)
 
@@ -475,7 +475,7 @@ Every new structural function MUST:
 
 We use **patch releases** for focused, testable increments. Each v0.21.x release has a single theme, clear deliverables, and a quality gate that must pass before the next release begins. This prevents the "big bang" stabilization problem where too many changes ship at once and regressions slip through.
 
-**Current baseline:** v0.21.5 — 4700+ tests collected, pre-commit hooks active, architecture checker enforced, golden vectors and contract tests established.
+**Current baseline:** v0.21.6 — 5081+ tests collected, pre-commit hooks active, architecture checker enforced, golden vectors and contract tests established.
 
 | Version | Theme | Quality Gate |
 |---------|-------|-------------|
@@ -498,17 +498,17 @@ We use **patch releases** for focused, testable increments. Each v0.21.x release
 
 **Quality Gate:** `pytest -m golden` passes with 0 failures ✅, branch coverage 99% on `codes/is456/` ✅
 
-### 9.3 v0.21.6 — API Quality & Introspection
+### 9.3 v0.21.6 — API Quality & Introspection ✅ DONE
 
 **Theme:** Make the library self-describing and self-validating. Users can inspect capabilities and limitations without reading docs.
 
 **Deliverables:**
-- 🔲 `check_code()` — validates design inputs against IS 456 limits (returns warnings/errors without computing) (§10.2)
-- 🔲 `show_versions()` — prints library + dependency versions (like `np.show_config()`) (§10.3)
-- 🔲 API surface freeze: OpenAPI baseline diff in CI (`openapi_baseline.json` already exists)
-- 🔲 Function limitation documentation (explicit "what this function does NOT do")
+- ✅ `check_code()` — validates design inputs against IS 456 limits (returns warnings/errors without computing) (§10.2)
+- ✅ `show_versions()` — prints library + dependency versions (like `np.show_config()`) (§10.3)
+- ✅ API surface freeze: OpenAPI baseline diff in CI (`openapi_baseline.json` already exists)
+- ✅ Function limitation documentation (explicit "what this function does NOT do")
 
-**Quality Gate:** `check_code("IS456")` returns all-pass. OpenAPI diff integrated into CI.
+**Quality Gate:** `check_code("IS456")` returns report. OpenAPI diff integrated into CI. ✅
 
 ### 9.4 v0.21.7 — Security Hardening
 
@@ -604,7 +604,7 @@ This is **critical for v0.24+** when third-party codes (ACI 318, EC2) are added.
 
 | Status | Target Version |
 |--------|---------------|
-| 🔲 Planned | v0.24 |
+| ✅ Implemented | v0.21.6 |
 
 ### 10.3 `show_versions()` Diagnostic Utility
 
@@ -632,7 +632,7 @@ show_versions()
 
 | Status | Target Version |
 |--------|---------------|
-| 🔲 Planned | v0.24 |
+| ✅ Implemented | v0.21.6 |
 
 ### 10.4 CodeRegistry vs Global State (Design Decision)
 
@@ -1197,8 +1197,8 @@ Systematic tracking of patterns adopted from mature scientific Python libraries:
 | Flat imports | NumPy, pandas | `__init__.py` re-exports from `services/api.py` | ✅ Implemented |
 | ABC + Registry | scikit-learn `BaseEstimator` | `DesignCode` ABC + `CodeRegistry` | ✅ Implemented |
 | `@clause` traceability | structuralcodes | `@clause()` decorator | ✅ Implemented |
-| `check_code()` validation | scikit-learn `check_estimator()` | Runtime code contract checker | 🔲 v0.24 |
-| `show_versions()` | scikit-learn, pandas | Environment diagnostic utility | 🔲 v0.24 |
+| `check_code()` validation | scikit-learn `check_estimator()` | Runtime code contract checker | ✅ Implemented |
+| `show_versions()` | scikit-learn, pandas | Environment diagnostic utility | ✅ Implemented |
 | Frozen dataclass results | Pythonic immutable design | Most results frozen; `FlexureResult` mutable (TODO SM-6) | 🔶 Partial |
 | `@deprecated` decorator | pandas, scikit-learn | `core/deprecation.py` | ✅ Implemented |
 | Property-based testing | pandas Hypothesis suite | 5 modules (serviceability, shear, flexure, ductile, slenderness) | 🔶 Expand |
@@ -1419,18 +1419,18 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 
 **Quality Gate:** `pytest -m golden` passes with 0 failures ✅, branch coverage 99% on `codes/is456/` ✅
 
-### 20.2 v0.21.6 — API Quality & Introspection
+### 20.2 v0.21.6 — API Quality & Introspection ✅ DONE
 
 **Theme:** Self-describing, self-validating library.
 
 | Deliverable | Status | Owner |
 |------------|--------|-------|
-| `check_code("IS456")` — validates code implementation contract (§10.2) | 🔲 | @backend |
-| `show_versions()` — environment diagnostic utility (§10.3) | 🔲 | @backend |
-| API surface freeze: OpenAPI baseline diff in CI | 🔲 | @api-developer |
-| Function limitation documentation for all public functions | 🔲 | @doc-master |
+| `check_code("IS456")` — validates code implementation contract (§10.2) | ✅ | @backend |
+| `show_versions()` — environment diagnostic utility (§10.3) | ✅ | @backend |
+| API surface freeze: OpenAPI baseline diff in CI | ✅ | @api-developer |
+| Function limitation documentation for all public functions | ✅ | @doc-master |
 
-**Quality Gate:** `check_code("IS456")` returns all-pass. OpenAPI diff integrated into CI.
+**Quality Gate:** `check_code("IS456")` returns report. OpenAPI diff integrated into CI. ✅
 
 ### 20.3 v0.21.7 — Security Hardening
 

@@ -189,7 +189,7 @@ class JobSpec(TypedDict):
     job_id: str  # Job identifier
     schema_version: int  # Schema version (currently 1)
     code: str  # Design code (e.g., "IS456")
-    units: str  # Unit system (e.g., "SI-mm")
+    units: str  # Unit system (e.g., "IS456")
     beam: BeamGeometry  # Beam geometry and materials
     cases: list[LoadCase]  # List of load cases
 
@@ -822,6 +822,197 @@ class ValidationReport:
             "errors": self.errors,
             "warnings": self.warnings,
             "details": self.details,
+        }
+
+
+@dataclass(frozen=True)
+class VersionInfo(DictCompatMixin):
+    """Library and environment version information.
+
+    Returned by :func:`~structural_lib.show_versions` when
+    ``as_dict=True``.  Provides structured access to the library
+    version, Python runtime, platform, registered design codes,
+    and dependency availability.
+
+    Attributes:
+        library_version: Installed package version string.
+        python_version: Python interpreter version.
+        platform: OS / architecture description.
+        design_codes: Registered code identifiers (e.g. ``("IS456",)``).
+        dependencies: Mapping of package name to version string or
+            ``None`` when the package is not installed.
+    """
+
+    library_version: str
+    python_version: str
+    platform: str
+    design_codes: tuple[str, ...]
+    dependencies: dict[str, str | None]
+
+    # -- display helpers (class-level, not dataclass fields) ----------------
+
+    _CODE_DISPLAY: dict[str, str] = field(
+        default_factory=dict,
+        init=False,
+        repr=False,
+        compare=False,
+    )
+    _DEP_LABELS: dict[str, str] = field(
+        default_factory=dict,
+        init=False,
+        repr=False,
+        compare=False,
+    )
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "_CODE_DISPLAY",
+            {
+                "IS456": "IS 456:2000",
+                "ACI318": "ACI 318-19",
+            },
+        )
+        object.__setattr__(
+            self,
+            "_DEP_LABELS",
+            {
+                "pydantic": "required",
+                "numpy": "optional",
+                "pandas": "optional",
+                "hypothesis": "optional — property testing",
+                "ezdxf": "optional — DXF export",
+                "jinja2": "optional — reports",
+                "reportlab": "optional — PDF",
+                "pytest": "dev",
+                "httpx": "optional — client SDK",
+            },
+        )
+
+    def to_string(self) -> str:
+        """Human-readable version report."""
+        lines: list[str] = [
+            f"structural_lib: {self.library_version}",
+            f"Python: {self.python_version}",
+            f"Platform: {self.platform}",
+            "",
+            "Design Codes:",
+        ]
+        if self.design_codes:
+            for code_id in self.design_codes:
+                display = self._CODE_DISPLAY.get(code_id, code_id)
+                lines.append(f"  {display} — registered")
+        else:
+            lines.append("  (none registered)")
+
+        lines.append("")
+        lines.append("Dependencies:")
+        for name, ver in self.dependencies.items():
+            label = self._DEP_LABELS.get(name, "")
+            ver_str = ver if ver is not None else "not installed"
+            if label:
+                lines.append(f"  {name + ':':16s}{ver_str} ({label})")
+            else:
+                lines.append(f"  {name + ':':16s}{ver_str}")
+
+        return "\n".join(lines)
+
+    def keys(self) -> list[str]:
+        """Public field names (excludes internal display helpers)."""
+        return [f.name for f in fields(self) if not f.name.startswith("_")]
+
+    def values(self) -> list[Any]:
+        """Public field values."""
+        return [getattr(self, k) for k in self.keys()]
+
+    def items(self) -> list[tuple[str, Any]]:
+        """Public field (name, value) pairs."""
+        return [(k, getattr(self, k)) for k in self.keys()]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "library_version": self.library_version,
+            "python_version": self.python_version,
+            "platform": self.platform,
+            "design_codes": list(self.design_codes),
+            "dependencies": dict(self.dependencies),
+        }
+
+
+@dataclass(frozen=True)
+class CheckCodeReport(DictCompatMixin):
+    """Report from check_code() self-validation.
+
+    Validates that a design code implementation meets the library's API
+    contract: clause decorators, frozen results, named parameters, and
+    architecture boundary compliance.
+
+    Inspired by scikit-learn's ``check_estimator()``.
+
+    Attributes:
+        code_id: Code identifier (e.g. ``"IS456"``).
+        all_importable: All beam/column/footing/common modules importable.
+        all_decorated: All public functions have ``@clause`` decorator.
+        all_frozen: All result dataclasses are frozen.
+        all_results_valid: All result types have ``to_dict()`` method.
+        all_params_named: Dimensional params have unit suffixes.
+        no_boundary_violations: No import boundary violations.
+        issues: Tuple of issue description strings.
+    """
+
+    code_id: str
+    all_importable: bool
+    all_decorated: bool
+    all_frozen: bool
+    all_results_valid: bool
+    all_params_named: bool
+    no_boundary_violations: bool
+    issues: tuple[str, ...] = ()
+
+    @property
+    def all_pass(self) -> bool:
+        """True if every check category passed."""
+        return (
+            self.all_importable
+            and self.all_decorated
+            and self.all_frozen
+            and self.all_results_valid
+            and self.all_params_named
+            and self.no_boundary_violations
+        )
+
+    def summary(self) -> str:
+        """Human-readable summary of the check results."""
+        status = "PASS" if self.all_pass else "FAIL"
+        checks = {
+            "all_importable": self.all_importable,
+            "all_decorated": self.all_decorated,
+            "all_frozen": self.all_frozen,
+            "all_results_valid": self.all_results_valid,
+            "all_params_named": self.all_params_named,
+            "no_boundary_violations": self.no_boundary_violations,
+        }
+        lines = [f"check_code('{self.code_id}'): {status}"]
+        for name, passed in checks.items():
+            mark = "✓" if passed else "✗"
+            lines.append(f"  {mark} {name}")
+        if self.issues:
+            lines.append(f"  Issues ({len(self.issues)}):")
+            for issue in self.issues:
+                lines.append(f"    - {issue}")
+        return "\n".join(lines)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "code_id": self.code_id,
+            "all_pass": self.all_pass,
+            "all_importable": self.all_importable,
+            "all_decorated": self.all_decorated,
+            "all_frozen": self.all_frozen,
+            "all_results_valid": self.all_results_valid,
+            "all_params_named": self.all_params_named,
+            "no_boundary_violations": self.no_boundary_violations,
+            "issues": list(self.issues),
         }
 
 

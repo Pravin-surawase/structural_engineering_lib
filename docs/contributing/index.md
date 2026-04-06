@@ -3,7 +3,7 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-04-07
 **Files:** 24
 
 ## Documentation Files

@@ -1,10 +1,10 @@
 # Examples
 
-> **Purpose:** Example scripts demonstrating library usage
+> **Purpose:** Example scripts demonstrating structural_lib usage
 
 **Type:** Python Package
-**Last Updated:** 2026-04-02
-**Files:** 17
+**Last Updated:** 2026-04-07
+**Files:** 18
 
 ## Config Files
 
@@ -15,7 +15,7 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Examples - Python Usage Examples | > **Purpose:** Example scripts demonstrating library usage > | 35 |
+| [README.md](README.md) | Examples — Python Usage Examples | > **Purpose:** Example scripts demonstrating structural_lib  | 32 |
 
 ## Python Files
 
@@ -26,6 +26,7 @@
 | [colab_workflow.py](colab_workflow.py) | Colab-friendly full workflow example. | 0 | 1 | 207 |
 | [complete_beam_design.py](complete_beam_design.py) | Sample: Complete Beam Design Workflow | 1 | 5 | 433 |
 | [demo_intelligence.py](demo_intelligence.py) | Demo: Smart library features (Precheck + Sensitivity) | 0 | 5 | 218 |
+| [end_to_end_workflow.py](end_to_end_workflow.py) | End-to-end beam design workflow. | 0 | 1 | 83 |
 | [full_pipeline_synthetic.py](full_pipeline_synthetic.py) | Generate synthetic beam inputs and run the full CLI pipeline | 0 | 1 | 216 |
 | [professional_workflow.py](professional_workflow.py) | Professional Engineering Workflow Example. | 0 | 1 | 241 |
 | [simple_examples.py](simple_examples.py) | Simple Examples for Beginners | 0 | 8 | 328 |

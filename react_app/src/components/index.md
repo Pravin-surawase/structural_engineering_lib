@@ -1,14 +1,14 @@
 # Components
 
 **Type:** React Source
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-04-07
 **Files:** 2
 
 ## React Component Files
 
 | File | Exports | Lines |
 |------|---------|-------|
-| [CommandPalette.tsx](CommandPalette.tsx) | CommandItem, CommandPalette, useCommandPalette | 272 |
+| [CommandPalette.tsx](CommandPalette.tsx) | CommandItem, CommandPalette, useCommandPalette | 273 |
 
 ## Typescript Files
 
@@ -20,9 +20,9 @@
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [design/](design/) | 10 |  |
+| [design/](design/) | 11 |  |
 | [import/](import/) | 6 |  |
-| [layout/](layout/) | 2 |  |
+| [layout/](layout/) | 3 |  |
 | [pages/](pages/) | 7 |  |
-| [ui/](ui/) | 8 |  |
+| [ui/](ui/) | 10 |  |
 | [viewport/](viewport/) | 6 |  |

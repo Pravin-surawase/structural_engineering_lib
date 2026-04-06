@@ -7,44 +7,40 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-04-06
-**Last Session:** v0.21.5 completed — golden vectors, contract tests, coverage boost, report/3D tests
+**Last Session:** v0.21.6 completed — check_code(), show_versions(), OpenAPI CI check, limitation docs
 
 ## What Was Completed
-- **Golden vector baselines (TASK-720):** 42+ golden tests — 9 beam, 20 column, 13 footing (`@pytest.mark.golden`)
-- **Contract tests (TASK-721):** 18 API surface stability tests for column, footing, torsion (`@pytest.mark.contract`)
-- **conftest.py golden_vectors fixture (TASK-722):** SP:16 reference values fixture
-- **CI gate (TASK-723):** `pytest -m golden` added to GitHub Actions python-tests.yml
-- **Report/3D edge case tests (TASK-520):** 71 new tests for report generation and 3D visualization
-- **@clause("34.1") added to size_footing():** footing clause gap resolved
-- **Coverage boost:** 19 additional tests, `codes/is456/` at 99% branch coverage
-- **v0.21.5 quality gate passed:** all golden tests pass, 99% branch coverage (target was 90%)
+- **check_code("IS456") (TASK-724):** Self-validation function with CheckCodeReport — 6 checks (importable, decorated, frozen, results, params, boundaries)
+- **show_versions() (TASK-725):** Diagnostic utility with VersionInfo — reports library, Python, platform, codes, dependencies
+- **OpenAPI baseline drift check (TASK-726):** CI step + scripts/check_openapi_drift.py — prevents silent API breakage
+- **Function limitation docs (TASK-727):** Added Limitations sections to 22 IS 456 function docstrings across 12 modules
+- **76 new tests:** 35 for check_code, 41 for show_versions
+- **v0.21.6 quality gate passed:** all tests pass, OpenAPI drift check clean
 
 ## Priorities (Updated)
 
-### Immediate (v0.21.6 — API Quality & Introspection)
-1. **check_code("IS456")** implementation (TASK-724) — @backend
-2. **show_versions()** implementation (TASK-725) — @backend
-3. **API surface freeze** in CI (TASK-726) — @ops
-4. **Function limitation docs** (TASK-727) — @doc-master
+### Immediate (v0.21.7 — Security Hardening)
+1. **JSON body size limit middleware** (TASK-728) — @api-developer
+2. **Cross-field plausibility guards** (TASK-729) — @api-developer
+3. **Input validation audit** (TASK-730) — @security
+4. **WebSocket message rate limit** — @api-developer
+5. **Computation timeout** — @api-developer
 
-### Next (v0.21.7 — Security Hardening)
-5. **JSON body size limit middleware** (TASK-728) — @api-developer
-6. **Cross-field plausibility guards** (TASK-729) — @api-developer
-7. **Input validation audit** (TASK-730) — @security
-8. **Dependency CVE scanning** in CI (TASK-731) — @ops
+### Next (v0.21.8 — Performance & Property Testing)
+6. **pytest-benchmark integration** (TASK-732) — @tester
+7. **Hypothesis test expansion** (TASK-733) — @tester
+8. **Performance regression baselines** (TASK-734) — @ops
 
 ### Architecture Reference
-- Unified architecture: `docs/architecture/unified-architecture-v1.md` (1540 lines, 21 sections)
+- Unified architecture: `docs/architecture/unified-architecture-v1.md`
 - Complete roadmap: §20 of architecture doc (v0.21.5→v1.0)
 - Quality gates per version: §9 of architecture doc
-- Blueprint details: `docs/planning/library-expansion-blueprint-v5.md`
 
 ## Key Patterns Established
-- Pydantic IS the schema (no Protocol Buffers/GraphQL/SDL needed)
-- 4-layer validation: type hints → Pydantic → domain → output sanity
-- Golden vectors mandatory for ALL new IS 456 functions (SP:16 ±0.1%)
-- NumPy-style deprecation: warn for 2 minor versions before removal
-- Every release follows 5-step process: PREFLIGHT → UAT → QUALITY GATE → VERSION BUMP → POST-RELEASE
+- `check_code("IS456")` validates code implementation contract — reports tech debt (36 issues: unfrozen results, missing decorators, params without unit suffixes)
+- `show_versions()` follows scikit-learn pattern — both print and programmatic modes
+- OpenAPI baseline diffing in CI prevents silent API drift
+- Limitation docs prevent users from misapplying functions
 
 ## Blockers
 - None

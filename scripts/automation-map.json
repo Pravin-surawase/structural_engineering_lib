@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-04-02",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "110/110 scripts mapped",
+  "_coverage": "112/112 scripts mapped",
   "tasks": {
     "run all checks": {
       "group": "Quality",
@@ -291,6 +291,14 @@
       "options": {
         "--update": "Update baseline with current spec",
         "--json": "Machine-readable JSON output"
+      }
+    },
+    "check openapi baseline drift": {
+      "group": "CI",
+      "script": ".venv/bin/python scripts/check_openapi_drift.py",
+      "description": "CI guard — verify OpenAPI spec matches committed baseline (TASK-726)",
+      "options": {
+        "--update": "Update the baseline file from live spec"
       }
     },
     "validate streamlit session state": {

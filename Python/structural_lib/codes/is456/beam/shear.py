@@ -206,6 +206,12 @@ def calculate_tv(vu_kn: float, b: float, d: float) -> float:
 
     Raises:
         DimensionError: If b or d <= 0.
+
+    Limitations:
+        - For rectangular and flanged beam sections only; for circular
+          sections, tv calculation differs (not covered by IS 456 Cl. 40.1).
+        - Does not account for variable-depth beams where the inclined
+          compression chord affects shear (Cl. 40.1.1).
     """
     if b <= 0:
         raise DimensionError(
@@ -251,6 +257,13 @@ def enhanced_shear_strength(
 
     Raises:
         DimensionError: If d_mm ≤ 0 or av_mm ≤ 0.
+
+    Limitations:
+        - Concentrated loads only; enhancement does NOT apply to
+          distributed loads even if they act close to supports.
+        - Not applicable to deep beams (Cl. 29) which have different
+          shear behaviour.
+        - Base τc from Table 19 is valid for fck = 15–40 N/mm² only.
     """
     # Validate inputs
     if d_mm <= 0:
@@ -318,6 +331,21 @@ def design_shear(
         - Returns structured errors instead of raising for validation failures.
         - Applies max spacing limits per Cl. 26.5.1.5.
         - When av_mm is provided, enhanced shear strength Cl. 40.3 is applied.
+
+    Limitations:
+        - Does not handle deep beams (span/depth < 2.0); deep beam shear
+          design requires Cl. 29 provisions.
+        - Does not handle punching (two-way) shear; for slabs and footings
+          use the footing punching shear module (Cl. 31.6).
+        - Vertical stirrups only; inclined bars or bent-up bars
+          (Cl. 40.4(b)) are not considered.
+        - Does not consider torsion-shear interaction; for combined
+          torsion and shear use ``design_torsion`` (Cl. 41).
+        - Concrete shear strength τc from Table 19 is valid for
+          fck = 15–40 N/mm² only; values outside this range trigger
+          a warning but may not be code-compliant.
+        - Assumes uniform beam cross-section; haunched beams or
+          variable-depth members are not handled.
     """
     # Input validation with structured errors
     input_errors = []

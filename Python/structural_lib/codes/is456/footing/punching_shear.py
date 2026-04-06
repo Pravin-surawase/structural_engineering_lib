@@ -66,6 +66,20 @@ def footing_punching_shear(
     Raises:
         DimensionError: If geometry is invalid
         ValidationError: If material properties are invalid
+
+    Limitations:
+        - Interior columns only (full punching perimeter); edge and
+          corner columns have partial perimeters and require modified
+          critical sections not handled here.
+        - Concentric load only; does not account for unbalanced moment
+          transfer at the column-slab interface (Cl. 31.6.2.2).
+        - Shear reinforcement for punching is NOT designed; the only
+          remedies are increasing depth, footing size, or using a
+          pedestal/drop panel (shear studs outside IS 456 scope).
+        - Uniform footing depth assumed; stepped or sloped footings
+          are not handled.
+        - Does not consider prestress or axial tension effects on
+          punching capacity.
     """
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
 

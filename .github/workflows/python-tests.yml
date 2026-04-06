@@ -49,6 +49,11 @@ jobs:
         run: |
           python -m mypy
 
+      - name: Check OpenAPI baseline drift
+        run: |
+          pip install -r requirements.txt > /dev/null 2>&1
+          python scripts/check_openapi_drift.py
+
       - name: Doc version drift check
         run: |
           set -euo pipefail

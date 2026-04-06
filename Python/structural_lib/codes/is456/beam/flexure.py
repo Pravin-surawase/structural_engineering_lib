@@ -74,6 +74,17 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     Raises:
         DimensionError: If b or d <= 0
         MaterialError: If fck or fy <= 0
+
+    Limitations:
+        - Rectangular sections only; for flanged sections use
+          ``calculate_mu_lim_flanged`` (Cl. 23.1.2).
+        - Does not include axial load interaction; for beam-columns
+          use the column modules (Cl. 39.5).
+        - Assumes IS 456 parabolic-rectangular stress block; not valid
+          for high-strength concrete beyond fck = 80 N/mm² (outside
+          IS 456:2000 scope).
+        - Uses short-term xu_max/d ratios (Table J); does not apply
+          creep-adjusted neutral axis depth.
     """
     if b <= 0:
         raise DimensionError(
@@ -267,6 +278,14 @@ def calculate_ast_required(
 
     Notes:
         This is a formula-based helper and does not apply min/max steel checks.
+
+    Limitations:
+        - Rectangular sections only (Cl. 38.1).
+        - Returns raw Ast without min/max steel enforcement (Cl. 26.5.1);
+          caller must apply limits separately.
+        - Does not account for compression steel; returns -1.0 when moment
+          exceeds singly reinforced capacity—use ``design_doubly_reinforced``
+          for over-reinforced cases.
     """
     if b <= 0:
         raise DimensionError(
@@ -336,6 +355,21 @@ def design_singly_reinforced(
     Notes:
         - Applies min steel (Cl. 26.5.1.1) and max steel (Cl. 26.5.1.2) checks.
         - Returns structured validation errors using validation utilities.
+
+    Limitations:
+        - Rectangular sections only; for T-beam/L-beam flanged sections use
+          ``design_flanged_beam`` (Cl. 23.1.2).
+        - No axial load consideration; for beam-columns with combined axial
+          and bending use the column uniaxial/biaxial modules (Cl. 39.5/39.6).
+        - Does not check lateral stability of narrow beams (Cl. 23.3,
+          L/b > 60 or L/b > 250b/d).
+        - Valid for fck ≤ 80 N/mm²; high-strength concrete beyond IS 456
+          scope is not addressed.
+        - Assumes short-term loading; does not apply creep reduction on
+          xu_max/d (Annex C).
+        - Single layer of tension reinforcement assumed; for multi-layer
+          arrangements use ``calculate_effective_depth_multilayer`` to
+          compute an adjusted effective depth.
     """
     # Input validation with structured errors using validation utilities
     input_errors = validate_dimensions(b, d, d_total)
@@ -460,6 +494,19 @@ def design_doubly_reinforced(
     Notes:
         - Uses limiting depth xu_max from IS 456.
         - Applies max steel checks for Ast and Asc (4% of bD).
+
+    Limitations:
+        - Rectangular sections only; for doubly reinforced flanged beams
+          use ``design_flanged_beam`` which handles T-beam doubly reinforced
+          cases internally (Cl. 23.1.2, Annex G-2.2).
+        - No axial load consideration (Cl. 39.5).
+        - Compression steel stress derived from strain compatibility at
+          xu_max; does not iterate for exact neutral axis when steel is
+          in the strain-hardening range.
+        - Does not check lateral stability of the compression flange
+          (Cl. 23.3).
+        - Valid for fck ≤ 80 N/mm² (IS 456 scope).
+        - Assumes short-term loading; no creep reduction on xu_max/d.
     """
     # Input validation using validation utilities
     input_errors = validate_dimensions(b, d, d_total)
@@ -634,6 +681,16 @@ def calculate_mu_lim_flanged(
 
     Notes:
         Uses web contribution + flange contribution per IS 456 Cl. 23.1.2.
+
+    Limitations:
+        - T-beam and L-beam sections only; for rectangular sections use
+          ``calculate_mu_lim`` (Cl. 38.1).
+        - Flange must be in compression (sagging moment); does not handle
+          hogging moment where the flange is in tension.
+        - Effective flange width must be pre-computed by the caller using
+          ``calculate_effective_flange_width`` (Cl. 23.1.2).
+        - Does not include axial load interaction (Cl. 39.5).
+        - Valid for fck ≤ 80 N/mm² (IS 456 scope).
     """
     xu_max = materials.get_xu_max_d(fy) * d
 
@@ -696,6 +753,19 @@ def design_flanged_beam(
     Notes:
         - Uses IS 456 Cl. 23.1.2 and Cl. 38.1 limits.
         - Applies min/max steel checks and returns structured errors.
+
+    Limitations:
+        - Applicable to sagging moment (flange in compression) only; for
+          hogging at supports, the flange is in tension and the section
+          behaves as a rectangular beam of width bw—use
+          ``design_singly_reinforced`` with b=bw.
+        - Effective flange width bf must be pre-computed per Cl. 23.1.2;
+          this function does not verify span or slab geometry.
+        - No axial load consideration (Cl. 39.5).
+        - Does not check lateral stability (Cl. 23.3).
+        - Assumes monolithic construction with slab; precast composite
+          sections with shear connectors are outside scope.
+        - Valid for fck ≤ 80 N/mm² (IS 456 scope).
     """
     input_errors = []
     if bw <= 0:

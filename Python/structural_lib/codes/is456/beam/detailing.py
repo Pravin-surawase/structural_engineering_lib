@@ -1108,6 +1108,22 @@ def create_beam_detailing(
         - If Asc is not provided, uses 0.25 × Ast as a drafting heuristic.
         - Uses the maximum bar diameter for development and lap lengths.
         - Flags spacing violations via is_valid/remarks; does not raise.
+
+    Limitations:
+        - Rectangular beams only; flanged beam (T/L) detailing with slab
+          interface reinforcement is not generated.
+        - Three sections only (start, mid, end); does not generate
+          curtailment schedules or bar cut-off points along the span.
+        - Standard hook anchorage assumed; mechanical anchorage devices
+          are not considered.
+        - Seismic detailing (is_seismic=True) applies IS 13920 rules
+          as simplified checks only; full capacity-based design is not
+          performed.
+        - Bar selection uses standard diameters (10, 12, 16, 20, 25, 32);
+          bundled bars are not handled.
+        - Does not verify constructability constraints such as bar bending
+          schedules, congestion at beam-column joints, or rebar
+          placement sequence.
     """
     assumption_notes: list[str] = []
 

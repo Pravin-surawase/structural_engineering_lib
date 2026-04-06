@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-06
+last_updated: 2026-04-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -40,6 +40,11 @@ tags: []
 | 2026-04-06 | TASK-723 | CI gate: `pytest -m golden` added to GitHub Actions python-tests.yml | — |
 | 2026-04-06 | TASK-520 | Report/3D edge case tests: 71 new tests for report generation and 3D visualization | — |
 | 2026-04-06 | fix | @clause("34.1") added to size_footing() — footing clause gap resolved | — |
+| 2026-04-06 | TASK-724 | check_code("IS456") self-validation — CheckCodeReport, 6 checks, 35 tests | d823e708 |
+| 2026-04-06 | TASK-725 | show_versions() diagnostic — VersionInfo, print + dict modes, 41 tests | 36c97ad8 |
+| 2026-04-06 | TASK-726 | OpenAPI baseline drift check — CI step + scripts/check_openapi_drift.py | e1bcd739 |
+| 2026-04-06 | TASK-727 | Function limitation docs — 22 functions, 12 files, beam/column/footing | 1844408e |
+| 2026-04-06 | v0.21.6 | v0.21.6 release — API Quality & Introspection complete | — |
 | 2026-04-06 | test | Coverage boost: 19 tests, codes/is456/ at 99% branch coverage | — |
 | 2026-04-06 | fix | Fixed response envelope mismatch — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` in 16 API calls | — |
 | 2026-04-06 | fix | Fixed `new URL()` crash on relative paths in useCSVImport.ts (dev mode) | — |
@@ -48,6 +53,14 @@ tags: []
 | 2026-04-06 | TASK-528 | WorkflowBreadcrumb component integrated into ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage | cf281f0b |
 | 2026-04-06 | TASK-516 | Triangular + applied moment loads in load_analysis.py (compute_triangular_load_bmd_sfd, compute_applied_moment_bmd_sfd) + 23 tests | cf281f0b |
 | 2026-04-06 | TASK-519 | Pareto panel: wired optimize_pareto_front to API, POST /optimization/beam/pareto endpoint, useParetoDesign hook, ParetoPanel in DesignView | cf281f0b |
+| 2026-04-07 | EXT-AUDIT-P1 | ETABS job generator: fixed units from `"SI-mm"` to `"IS456"` | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | ETABS batch: group by `(story, beam_id)` — prevents cross-story collision | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | Geometry merge: key by `(story, label)` with fallback — prevents geometry overwrite | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | SmartDesigner CLI: use `design_single_beam()` returning correct `BeamDesignOutput` type | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | Report templates (`.j2`): included in wheel package data via pyproject.toml | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P2 | README batch example: `load_combined()` replaces non-existent `parse_file()` | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P2 | `bbs.py` import path: updated from deprecated shim to canonical `codes/is456/beam/detailing` | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P3 | README version updated from `0.21.3` to `0.21.5` | d823e708 |
 | 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | 98185046 |
 | 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | 98185046 |
 | 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | 98185046 |

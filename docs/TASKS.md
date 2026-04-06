@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-06 — v0.21.5 completed, v0.21.6 active
+**Updated:** 2026-04-06 — v0.21.6 completed (check_code, show_versions, OpenAPI freeze, limitation docs)
 
 ---
 
@@ -16,10 +16,10 @@
 
 ## Current Release
 
-- **Version:** v0.21.5 ✅ Released → micro-releases v0.21.6–v0.21.8 → v0.22.0 Stabilization
+- **Version:** v0.21.6 ✅ Released → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
-- **Target:** v0.21.6 next, then v0.21.7–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
+- **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -32,7 +32,7 @@
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
 | **v0.21.5** | Test Coverage & Regression Prevention | ✅ DONE | Golden vectors (42+), contract tests (18), 99% branch coverage |
-| **v0.21.6** | API Quality & Introspection | � ACTIVE | check_code(), show_versions(), API surface freeze |
+| **v0.21.6** | API Quality & Introspection | ✅ DONE | check_code(), show_versions(), OpenAPI freeze, limitation docs |
 | **v0.21.7** | Security Hardening | 📋 PLANNED | Input validation, body limits, CVE scanning |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | Provenance, SP:16 verification, release hardening |
@@ -81,6 +81,25 @@
 | v0.21.5 Stabilization | 8 items ✅ | CostProfile, sanitize_float, footing wiring, bearing pressure |
 | Recent Fixes | 21 items ✅ | Response envelope, CI, audit P0–P2, column math, git hardening, variable naming |
 | Audit P1 Batch 1 | 4 items ✅ | clause_cli, FlexureResult limits, streaming 404, Three.js cleanup |
+| External Audit Remediation | 8 items ✅ | ETABS units/batch/geometry, SmartDesigner CLI, .j2 packaging, README fixes, bbs import path |
+
+---
+
+## External Audit Remediation — v0.21.6 ✅ DONE
+
+**Theme:** Fix 8 external audit findings across ETABS import, SmartDesigner CLI, packaging, and documentation.
+**Completed:** 2026-04-07
+
+| ID | Finding | Priority | Status |
+|----|---------|----------|--------|
+| EXT-P1-1 | ETABS job generator uses `"SI-mm"` units → fixed to `"IS456"` | P1 | ✅ DONE |
+| EXT-P1-2 | ETABS batch groups by `beam_id` only → fixed to `(story, beam_id)` to prevent cross-story collision | P1 | ✅ DONE |
+| EXT-P1-3 | Geometry merge keys by `label` only → fixed to `(story, label)` with fallback to prevent overwrite | P1 | ✅ DONE |
+| EXT-P1-4 | SmartDesigner CLI uses wrong function → fixed to `design_single_beam()` returning `BeamDesignOutput` | P1 | ✅ DONE |
+| EXT-P1-5 | Report `.j2` templates missing from wheel → added to `pyproject.toml` package-data | P1 | ✅ DONE |
+| EXT-P2-1 | README batch example uses non-existent `parse_file()` → fixed to `load_combined()` | P2 | ✅ DONE |
+| EXT-P2-2 | `bbs.py` imports from deprecated shim → fixed to canonical `codes/is456/beam/detailing` | P2 | ✅ DONE |
+| EXT-P3-1 | README version `0.21.3` → updated to `0.21.5` | P3 | ✅ DONE |
 
 ---
 
@@ -100,18 +119,18 @@
 | — | 90%+ branch coverage on `codes/is456/` — 99% achieved | @tester | ✅ DONE |
 | — | Add `@clause("34.1")` to `size_footing()` | @structural-math | ✅ DONE |
 
-## v0.21.6 — API Quality & Introspection
+## v0.21.6 — API Quality & Introspection ✅ DONE
 
 **Theme:** Self-describing, self-validating library
-**Target:** 2-3 sessions after v0.21.5
-**Quality Gate:** `check_code("IS456")` returns all-pass. OpenAPI diff integrated into CI.
+**Completed:** 2026-04-06
+**Quality Gate:** check_code("IS456") returns report, OpenAPI drift check in CI ✅
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| TASK-724 | Implement `check_code("IS456")` — validates code implementation contract | @backend | 📋 |
-| TASK-725 | Implement `show_versions()` — library + dependency info | @backend | 📋 |
-| TASK-726 | API surface freeze: OpenAPI baseline diff in CI | @ops | 📋 |
-| TASK-727 | Function limitation docs — what each function does NOT do | @doc-master | 📋 |
+| TASK-724 | Implement `check_code("IS456")` — validates code implementation contract | @backend | ✅ DONE |
+| TASK-725 | Implement `show_versions()` — library + dependency info | @backend | ✅ DONE |
+| TASK-726 | API surface freeze: OpenAPI baseline diff in CI | @ops | ✅ DONE |
+| TASK-727 | Function limitation docs — what each function does NOT do | @doc-master | ✅ DONE |
 
 ## v0.21.7 — Security Hardening
 

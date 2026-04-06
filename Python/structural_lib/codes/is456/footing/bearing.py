@@ -56,6 +56,21 @@ def size_footing(
     Raises:
         ValidationError: If load or bearing capacity is non-positive
         DimensionError: If column dimensions are non-positive
+
+    Limitations:
+        - Isolated footings only (square or rectangular); does not handle
+          combined footings, strap footings, or raft/mat foundations.
+        - Concentric or uniaxial eccentric loading only; biaxial moment
+          (Mx + My simultaneously) is not considered.
+        - Self-weight of footing and soil overburden are NOT included;
+          caller should add 10-15% to P_service_kN to account for these
+          (common practice).
+        - Does not handle inclined or horizontal loads; for footings
+          with lateral loads, sliding and overturning checks must be
+          performed separately.
+        - Assumes uniform soil bearing capacity; stratified or varying
+          soil conditions are not modelled.
+        - Dimensions are rounded up to nearest 50mm for constructability.
     """
     if P_service_kN <= 0:
         raise ValidationError(
@@ -266,6 +281,14 @@ def check_bearing_pressure(
     References:
         IS 456:2000 Cl 34.4
         SP 16:1980 Section 3.5 -- Bearing stress on concrete
+
+    Limitations:
+        - Concentric axial load only; does not account for moment
+          transfer or eccentric loading at the column-footing interface.
+        - Assumes column is centred on footing; edge or corner columns
+          with asymmetric frustum geometry are not handled.
+        - Does not check dowel bar requirements for load transfer
+          (Cl. 34.4.1); use detailing checks separately.
     """
     # --- Input validation ---
     if Pu_kN <= 0:

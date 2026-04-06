@@ -315,6 +315,23 @@ def design_short_column_uniaxial(
         IS 456:2000, Cl. 25.4 (minimum eccentricity)
         IS 456:2000, Cl. 25.1.2 (column classification)
         SP:16:1980 Table I (stress-block coefficients for xu > D)
+
+    Limitations:
+        - Short columns only (le/D < 12 per Cl. 25.1.2); if the column
+          is classified as slender, a warning is issued but additional
+          moment due to P-delta is NOT applied—use the ``long_column``
+          module (Cl. 39.7) for slender columns.
+        - Rectangular sections only; circular column interaction curves
+          require a different stress-block integration.
+        - Uniaxial bending only (moment about one axis); for biaxial
+          bending use the ``biaxial`` module (Cl. 39.6, Bresler's
+          equation).
+        - Symmetrical reinforcement assumed (Asc/2 on each face); for
+          asymmetric steel layouts, the interaction curve must be
+          generated separately.
+        - Two layers of steel only (tension face + compression face);
+          intermediate bars along the depth are not considered.
+        - Valid for fck ≤ 80 N/mm² and fy ≤ 550 N/mm² (IS 456 scope).
     """
     # ===========================================================
     # 1. Input validation
@@ -680,6 +697,20 @@ def pm_interaction_curve(
         IS 456:2000, Cl. 39.5 (P-M interaction)
         IS 456:2000, Cl. 39.3 (pure axial capacity)
         SP:16:1980 Table I (stress-block coefficients for xu > D)
+
+    Limitations:
+        - Rectangular sections only; circular columns require polar
+          integration of the stress block.
+        - Symmetrical reinforcement assumed (Asc/2 on each face);
+          asymmetric arrangements produce a different envelope.
+        - Two layers of steel only (tension + compression face);
+          intermediate bars along the depth are not modelled.
+        - Does not include slenderness effects; the envelope is for
+          the cross-section only—P-delta amplification for slender
+          columns must be applied externally (Cl. 39.7).
+        - Tension (negative Pu) region is not generated; the curve
+          covers compression members only.
+        - Valid for fck ≤ 80 N/mm² and fy ≤ 550 N/mm² (IS 456 scope).
     """
     # ===========================================================
     # 1. Input validation
