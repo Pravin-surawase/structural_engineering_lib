@@ -16,6 +16,11 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - `check_code("IS456")` — self-validation function for IS 456 code implementation (TASK-724)
+- `show_versions()` — diagnostic utility reporting library, Python, platform, and dependency versions (TASK-725)
+- OpenAPI baseline drift check script (`scripts/check_openapi_drift.py`) and CI step (TASK-726)
+
+### Documentation
+- Added `Limitations:` sections to 22 IS 456 function docstrings across 12 modules — beam flexure, shear, torsion, serviceability, detailing; column axial, uniaxial, detailing; footing bearing, flexure, one-way shear, punching shear (TASK-727)
 
 ## [0.21.5] — 2026-04-06
 

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-07 — v0.21.5 completed, external audit remediation done, v0.21.6 active
+**Updated:** 2026-04-06 — v0.21.6 completed (check_code, show_versions, OpenAPI freeze, limitation docs)
 
 ---
 
@@ -16,10 +16,10 @@
 
 ## Current Release
 
-- **Version:** v0.21.5 ✅ Released → micro-releases v0.21.6–v0.21.8 → v0.22.0 Stabilization
+- **Version:** v0.21.6 ✅ Released → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
-- **Target:** v0.21.6 next, then v0.21.7–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
+- **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -32,7 +32,7 @@
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
 | **v0.21.5** | Test Coverage & Regression Prevention | ✅ DONE | Golden vectors (42+), contract tests (18), 99% branch coverage |
-| **v0.21.6** | API Quality & Introspection | � ACTIVE | check_code(), show_versions(), API surface freeze |
+| **v0.21.6** | API Quality & Introspection | ✅ DONE | check_code(), show_versions(), OpenAPI freeze, limitation docs |
 | **v0.21.7** | Security Hardening | 📋 PLANNED | Input validation, body limits, CVE scanning |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | Provenance, SP:16 verification, release hardening |
@@ -119,18 +119,18 @@
 | — | 90%+ branch coverage on `codes/is456/` — 99% achieved | @tester | ✅ DONE |
 | — | Add `@clause("34.1")` to `size_footing()` | @structural-math | ✅ DONE |
 
-## v0.21.6 — API Quality & Introspection
+## v0.21.6 — API Quality & Introspection ✅ DONE
 
 **Theme:** Self-describing, self-validating library
-**Target:** 2-3 sessions after v0.21.5
-**Quality Gate:** `check_code("IS456")` returns all-pass. OpenAPI diff integrated into CI.
+**Completed:** 2026-04-06
+**Quality Gate:** check_code("IS456") returns report, OpenAPI drift check in CI ✅
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| TASK-724 | Implement `check_code("IS456")` — validates code implementation contract | @backend | 📋 |
-| TASK-725 | Implement `show_versions()` — library + dependency info | @backend | 📋 |
-| TASK-726 | API surface freeze: OpenAPI baseline diff in CI | @ops | 📋 |
-| TASK-727 | Function limitation docs — what each function does NOT do | @doc-master | 📋 |
+| TASK-724 | Implement `check_code("IS456")` — validates code implementation contract | @backend | ✅ DONE |
+| TASK-725 | Implement `show_versions()` — library + dependency info | @backend | ✅ DONE |
+| TASK-726 | API surface freeze: OpenAPI baseline diff in CI | @ops | ✅ DONE |
+| TASK-727 | Function limitation docs — what each function does NOT do | @doc-master | ✅ DONE |
 
 ## v0.21.7 — Security Hardening
 

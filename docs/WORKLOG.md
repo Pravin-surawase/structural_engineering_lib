@@ -40,6 +40,11 @@ tags: []
 | 2026-04-06 | TASK-723 | CI gate: `pytest -m golden` added to GitHub Actions python-tests.yml | — |
 | 2026-04-06 | TASK-520 | Report/3D edge case tests: 71 new tests for report generation and 3D visualization | — |
 | 2026-04-06 | fix | @clause("34.1") added to size_footing() — footing clause gap resolved | — |
+| 2026-04-06 | TASK-724 | check_code("IS456") self-validation — CheckCodeReport, 6 checks, 35 tests | d823e708 |
+| 2026-04-06 | TASK-725 | show_versions() diagnostic — VersionInfo, print + dict modes, 41 tests | 36c97ad8 |
+| 2026-04-06 | TASK-726 | OpenAPI baseline drift check — CI step + scripts/check_openapi_drift.py | e1bcd739 |
+| 2026-04-06 | TASK-727 | Function limitation docs — 22 functions, 12 files, beam/column/footing | 1844408e |
+| 2026-04-06 | v0.21.6 | v0.21.6 release — API Quality & Introspection complete | — |
 | 2026-04-06 | test | Coverage boost: 19 tests, codes/is456/ at 99% branch coverage | — |
 | 2026-04-06 | fix | Fixed response envelope mismatch — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` in 16 API calls | — |
 | 2026-04-06 | fix | Fixed `new URL()` crash on relative paths in useCSVImport.ts (dev mode) | — |
