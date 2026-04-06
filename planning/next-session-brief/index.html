@@ -1553,9 +1553,12 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-06
-<strong>Last Session:</strong> v0.22 feature sprint — TopBar badges, workflow breadcrumb, triangular loads, Pareto panel</p>
+<strong>Last Session:</strong> Response envelope fix — unwrapResponse() applied to all 16 React API calls</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
+<li><strong>fix-envelope:</strong> Fixed critical response envelope mismatch between FastAPI and React — added <code>unwrapResponse()</code> helper, applied to all 16 API fetch calls across 7 hook/client files. Fixed Import page crash (<code>beams.map</code>), Design page crash (<code>result.flexure</code>), and silent data failures on geometry/insights/rebar pages.</li>
+<li>Fixed <code>new URL()</code> crash on relative paths in useCSVImport.ts (dev mode)</li>
+<li>Added 3 contract tests for <code>unwrapResponse</code>, updated test mocks — all 132 React tests pass, build succeeds</li>
 <li><strong>TASK-527:</strong> TopBar context badges (beam count on Editor, green dot on Dashboard) + SettingsPanel slide-over</li>
 <li><strong>TASK-528:</strong> WorkflowBreadcrumb component (Import → Editor → Batch → Dashboard) integrated into 4 pages</li>
 <li><strong>TASK-516:</strong> Triangular + applied moment loads in load_analysis.py — 23 new tests, all 48 load analysis tests pass</li>
@@ -1564,6 +1567,9 @@
 </ul>
 <h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
+<li><strong>Verify end-to-end:</strong> Run all React pages against live FastAPI backend to confirm envelope fix works in integration</li>
+<li><strong>Add API contract test in CI:</strong> Ensure <code>{success, data}</code> envelope shape is validated automatically</li>
+<li><strong>Key pattern:</strong> ALL new fetch calls to <code>/api/v1/*</code> MUST use <code>unwrapResponse()</code> from <code>api/client.ts</code></li>
 <li><strong>TASK-520:</strong> Report/3D test coverage (~15 tests for report.py, geometry_3d.py, dashboard.py)</li>
 <li><strong>TASK-521:</strong> Beam rationalization (new rationalization.py ~250 lines + FastAPI + React panel)</li>
 <li><strong>Footing remaining:</strong> Dowel bars (TASK-655), FastAPI endpoint (TASK-656)</li>

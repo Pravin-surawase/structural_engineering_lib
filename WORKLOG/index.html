@@ -1555,6 +1555,24 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <tbody>
 <tr>
 <td>2026-04-06</td>
+<td>fix</td>
+<td>Fixed response envelope mismatch — React client now unwraps FastAPI's <code>{success, data}</code> wrapper via <code>unwrapResponse()</code> in 16 API calls</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>fix</td>
+<td>Fixed <code>new URL()</code> crash on relative paths in useCSVImport.ts (dev mode)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>test</td>
+<td>Added 3 unwrapResponse contract tests + fixed useCSVImport test mocks</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
 <td>TASK-527</td>
 <td>TopBar context badges (beam count, green dot) + SettingsPanel slide-over</td>
 <td>cf281f0b</td>

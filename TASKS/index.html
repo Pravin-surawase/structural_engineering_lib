@@ -2681,6 +2681,12 @@ Full UX spec: <a href="../planning/react-ux-improvement-plan/">react-ux-improvem
 </thead>
 <tbody>
 <tr>
+<td>fix-envelope</td>
+<td>Fix response envelope mismatch — React client unwraps FastAPI <code>{success, data}</code> wrapper via <code>unwrapResponse()</code> in 16 API calls across 7 files. Fixed Import crash (<code>beams.map</code>), Design crash (<code>result.flexure</code>), silent data failures.</td>
+<td>frontend</td>
+<td>✅ Done</td>
+</tr>
+<tr>
 <td>TASK-CIFIX</td>
 <td>CI fix: React test mocks (5 hooks), Docker JWT_SECRET_KEY, ops hardening, finish_task_pr.sh escape hatch removal, WORKLOG cleanup, dead code removal</td>
 <td>Copilot</td>

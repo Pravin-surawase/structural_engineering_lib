@@ -1481,6 +1481,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#session-2026-04-06-response-envelope-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session — 2026-04-06 — Response Envelope Fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Session — 2026-04-06 — Response Envelope Fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-changed-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files Changed (10)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Impact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#2026-04-05-external-pypi-audit-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1855,6 +1905,38 @@
 <p>Append-only decision log for AI agent sessions.
 Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/">SESSION_LOG_through_session_100.md</a></p>
 </blockquote>
+<hr />
+<h2 id="session-2026-04-06-response-envelope-fix">Session — 2026-04-06 — Response Envelope Fix<a class="headerlink" href="#session-2026-04-06-response-envelope-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Agent:</strong> orchestrator → frontend → tester → doc-master → ops
+<strong>Branch:</strong> main</p>
+<h3 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed critical response envelope mismatch between FastAPI and React</li>
+<li>FastAPI wraps all /api/v1/* responses in {success, data: {...}}</li>
+<li>React was reading wrapper directly, causing undefined errors everywhere</li>
+<li>Added unwrapResponse() helper, applied to all 16 API fetch calls</li>
+<li>Fixed URL construction bug in useCSVImport.ts (new URL() on relative paths)</li>
+<li>Added 3 contract tests for unwrapResponse, updated test mocks</li>
+<li>All 132 React tests pass, production build succeeds</li>
+</ul>
+<h3 id="files-changed-10">Files Changed (10)<a class="headerlink" href="#files-changed-10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>react_app/src/api/client.ts</li>
+<li>react_app/src/hooks/useCSVImport.ts</li>
+<li>react_app/src/hooks/useBeamGeometry.ts</li>
+<li>react_app/src/hooks/useGeometryAdvanced.ts</li>
+<li>react_app/src/hooks/useInsights.ts</li>
+<li>react_app/src/hooks/useRebarEditor.ts</li>
+<li>react_app/src/components/import/ImportView.tsx</li>
+<li>react_app/src/hooks/<strong>tests</strong>/useCSVImport.test.ts</li>
+<li>react_app/src/api/<strong>tests</strong>/endpoints.test.ts</li>
+</ul>
+<h3 id="impact">Impact<a class="headerlink" href="#impact" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Import page: CSV upload, dual CSV, sample data all working</li>
+<li>Design page: No more "Something went wrong" crash</li>
+<li>All API-dependent features: Geometry, insights, rebar editor receiving correct data</li>
+</ul>
 <hr />
 <h2 id="2026-04-05-external-pypi-audit-resolution">2026-04-05 — External PyPI Audit Resolution<a class="headerlink" href="#2026-04-05-external-pypi-audit-resolution" title="Permanent link">&para;</a></h2>
 <p><strong>Agent:</strong> orchestrator → backend → reviewer → tester → ops
