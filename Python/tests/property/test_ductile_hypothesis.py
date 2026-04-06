@@ -16,7 +16,7 @@ import math
 
 from hypothesis import assume, given
 
-from structural_lib.codes.is456 import ductile
+from structural_lib.codes.is13920 import beam as ductile
 from tests.property.strategies import (
     bar_diameter,
     beam_width_ductile,

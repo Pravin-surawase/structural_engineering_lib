@@ -57,7 +57,7 @@ except Exception:
 units = _units
 TextEntityAlignment = _TextEntityAlignment
 
-from structural_lib.codes.is456.detailing import (
+from structural_lib.codes.is456.beam.detailing import (
     BarArrangement,
     BeamDetailingResult,
     StirrupArrangement,

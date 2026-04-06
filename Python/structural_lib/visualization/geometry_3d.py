@@ -52,7 +52,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from structural_lib.codes.is456.detailing import BeamDetailingResult
+    from structural_lib.codes.is456.beam.detailing import BeamDetailingResult
     from structural_lib.core.models import BeamGeometry
 
 

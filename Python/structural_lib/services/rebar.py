@@ -8,7 +8,7 @@ import math
 from collections.abc import Mapping
 from typing import Any
 
-from structural_lib.codes.is456 import detailing
+from structural_lib.codes.is456.beam import detailing
 from structural_lib.core.data_types import ValidationReport
 from structural_lib.visualization.geometry_3d import (
     Point3D,

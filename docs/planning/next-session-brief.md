@@ -10,6 +10,7 @@
 **Last Session:** Evolution batch — 9 EVO items applied to 5 agent files
 
 ## What Was Completed
+- **Audit remediation Batch 1+2:** Fixed 3 issues (ductile import warning, reports fallback, README version pin) + added 9 smoke tests
 - **Evolution batch apply:** 9 items (EVO-004, -007, -014 through -020) applied to 5 agent files
   - `api-developer.agent.md` — Rule 7: py_compile after bulk edits
   - `tester.agent.md` — MANDATORY integration tests for data imports
@@ -26,7 +27,7 @@
 ## Priorities (Updated)
 
 ### Immediate
-1. **v0.21.6 PyPI release** — when user is ready
+1. **v0.21.6 PyPI release** — when user is ready (audit Batch 1+2 remediation complete)
 2. **Remaining 5 MEDIUM EVO items** (EVO-005, -006, -011, -013, -021) — batch in next evolution cycle
 
 ### Next (v0.21.7 — Security Hardening)

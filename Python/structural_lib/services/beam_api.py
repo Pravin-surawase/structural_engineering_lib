@@ -15,12 +15,12 @@ from typing import Any
 
 from structural_lib.codes.is456 import (
     compliance,
-    detailing,
-    ductile,
     serviceability,
     slenderness,
 )
+from structural_lib.codes.is456.beam import detailing
 from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
+from structural_lib.codes.is13920 import beam as ductile
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,

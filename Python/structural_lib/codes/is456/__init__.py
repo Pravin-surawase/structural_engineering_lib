@@ -38,7 +38,6 @@ from structural_lib.codes.is456 import (
     beam,  # noqa: F401
     column,  # noqa: F401
     compliance,
-    ductile,
     footing,  # noqa: F401
     slenderness,
     tables,
@@ -78,7 +77,6 @@ class IS456Code(DesignCode):
     - detailing: Reinforcement detailing per Cl. 26
     - serviceability: Deflection/crack width per Cl. 42/43
     - compliance: Compliance checking orchestration
-    - ductile: Ductile detailing per IS 13920
     """
 
     @property
@@ -134,7 +132,6 @@ __all__ = [
     "detailing",
     "serviceability",
     "compliance",
-    "ductile",
     "slenderness",
     "torsion",
     "traceability",

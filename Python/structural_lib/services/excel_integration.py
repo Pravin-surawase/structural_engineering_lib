@@ -21,7 +21,7 @@ import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from structural_lib.codes.is456.detailing import (
+from structural_lib.codes.is456.beam.detailing import (
     BeamDetailingResult,
     create_beam_detailing,
 )

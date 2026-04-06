@@ -8,7 +8,7 @@ Per IS 456:2000 Clause 26.2.3.3.
 
 from __future__ import annotations
 
-from structural_lib.codes.is456.detailing import (
+from structural_lib.codes.is456.beam.detailing import (
     AnchorageCheckResult,
     check_anchorage_at_simple_support,
 )

@@ -100,6 +100,10 @@
 | EXT-P2-1 | README batch example uses non-existent `parse_file()` → fixed to `load_combined()` | P2 | ✅ DONE |
 | EXT-P2-2 | `bbs.py` imports from deprecated shim → fixed to canonical `codes/is456/beam/detailing` | P2 | ✅ DONE |
 | EXT-P3-1 | README version `0.21.3` → updated to `0.21.5` | P3 | ✅ DONE |
+| EA-6 | Internal `ductile` import triggering deprecation warnings — fixed in `is456/__init__.py` | P2 | ✅ DONE |
+| AUDIT-RPT | Wire reports `_generate_fallback_html` instead of raising `ImportError` | P2 | ✅ DONE |
+| AUDIT-PIN | Update README git pin from `v0.21.3` to `v0.21.5` | P3 | ✅ DONE |
+| AUDIT-SMOKE | Add 9 wheel smoke tests (`TestWheelSmokeTests`, `TestREADMESnippets`) | P2 | ✅ DONE |
 
 ---
 
