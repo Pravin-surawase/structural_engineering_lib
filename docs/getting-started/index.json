@@ -2,7 +2,7 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-07",
   "file_count": 18,
   "files": [
     {
@@ -25,10 +25,10 @@
     {
       "name": "agent-bootstrap.md",
       "type": "documentation",
-      "size_lines": 718,
-      "last_updated": "2026-04-02",
+      "size_lines": 749,
+      "last_updated": "2026-04-06",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
-      "content_hash": "d3130cedc222"
+      "content_hash": "59383707268f"
     },
     {
       "name": "agent-essentials.md",
@@ -50,9 +50,9 @@
       "name": "beginners-guide.md",
       "type": "documentation",
       "size_lines": 159,
-      "last_updated": "2026-04-01",
+      "last_updated": "2026-04-06",
       "description": "This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result. You have two ways to use this library:",
-      "content_hash": "48455ab55f67"
+      "content_hash": "760a790741e7"
     },
     {
       "name": "colab-workflow.md",
@@ -114,35 +114,35 @@
       "name": "mac-mini-setup.md",
       "type": "documentation",
       "size_lines": 398,
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-04",
       "description": "Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon). This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.",
-      "content_hash": "3c0ada236000"
+      "content_hash": "8959a8e36e33"
     },
     {
       "name": "python-quickstart.md",
       "type": "documentation",
-      "size_lines": 181,
-      "last_updated": "2026-03-30",
+      "size_lines": 198,
+      "last_updated": "2026-04-04",
       "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See beginners-guide.md for comprehensive",
-      "content_hash": "433a0bf1c924"
+      "content_hash": "0436bb92a8d0"
     },
     {
       "name": "releases.md",
       "type": "documentation",
-      "size_lines": 958,
-      "last_updated": "2026-03-31",
+      "size_lines": 1107,
+      "last_updated": "2026-04-06",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "content_hash": "992bd372634d"
+      "content_hash": "36e071757bb4"
     },
     {
       "name": "user-guide.md",
       "type": "documentation",
       "size_lines": 223,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-04-06",
       "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
-      "content_hash": "44f146ca53d4"
+      "content_hash": "7e64b19e4b85"
     }
   ],
   "subfolders": [],
-  "content_hash": "524e232737d72c41"
+  "content_hash": "d957d123f2f72130"
 }

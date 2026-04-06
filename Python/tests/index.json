@@ -2,8 +2,8 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-04-02",
-  "file_count": 34,
+  "last_updated": "2026-04-07",
+  "file_count": 44,
   "files": [
     {
       "name": "README.md",
@@ -15,12 +15,23 @@
       "content_hash": "706b48faeda0"
     },
     {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 1,
+      "last_updated": "2026-04-05",
+      "content_hash": "e3b0c44298fc"
+    },
+    {
       "name": "conftest.py",
       "type": "python",
-      "size_lines": 116,
-      "last_updated": "2026-03-29",
+      "size_lines": 131,
+      "last_updated": "2026-04-06",
       "description": "Pytest configuration and Hypothesis profiles for the test suite.",
       "functions": [
+        {
+          "name": "golden_vectors",
+          "description": "Load SP:16 golden vector test data."
+        },
         {
           "name": "m25_fe415",
           "description": "Standard M25 concrete + Fe415 steel combination."
@@ -48,7 +59,7 @@
           ]
         }
       ],
-      "content_hash": "1b40a8034c5c"
+      "content_hash": "2de3ed45159a"
     },
     {
       "name": "test_api_results.py",
@@ -91,10 +102,64 @@
       "content_hash": "5bb1f0f94b11"
     },
     {
+      "name": "test_api_stability.py",
+      "type": "python",
+      "size_lines": 227,
+      "last_updated": "2026-04-05",
+      "description": "EA-9: Wheel API stability tests.",
+      "classes": [
+        {
+          "name": "TestAllExportsImportable",
+          "description": "Every name in __all__ must be accessible via getattr.",
+          "public_methods": [
+            "test_all_exports_importable",
+            "test_all_count_minimum"
+          ]
+        },
+        {
+          "name": "TestKeyFunctionsCallable",
+          "description": "Core API functions must be callable (not just importable).",
+          "public_methods": [
+            "test_function_is_callable"
+          ]
+        },
+        {
+          "name": "TestKeyClassesInstantiable",
+          "description": "Core dataclasses / named types must be classes.",
+          "public_methods": [
+            "test_type_is_class"
+          ]
+        },
+        {
+          "name": "TestLazyModulesLoad",
+          "description": "Lazy-loaded modules must resolve on first access.",
+          "public_methods": [
+            "test_lazy_module_loads"
+          ]
+        },
+        {
+          "name": "TestOptionalModules",
+          "description": "Optional modules (dxf_export, reports) must not crash on access.",
+          "public_methods": [
+            "test_dxf_export_accessible",
+            "test_reports_accessible"
+          ]
+        },
+        {
+          "name": "TestEagerModulesLoaded",
+          "description": "Eagerly-imported sub-modules must be present.",
+          "public_methods": [
+            "test_eager_module_loaded"
+          ]
+        }
+      ],
+      "content_hash": "92cf56cfd140"
+    },
+    {
       "name": "test_api_surface_snapshot.py",
       "type": "python",
-      "size_lines": 120,
-      "last_updated": "2026-04-02",
+      "size_lines": 122,
+      "last_updated": "2026-04-05",
       "description": "Snapshot regression tests — assert minimum API surface counts.",
       "classes": [
         {
@@ -141,13 +206,13 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "18f0515a54af"
+      "content_hash": "581bafe58740"
     },
     {
       "name": "test_assertion_helpers.py",
       "type": "python",
-      "size_lines": 80,
-      "last_updated": "2026-03-30",
+      "size_lines": 82,
+      "last_updated": "2026-04-05",
       "description": "Tests for the IS 456 test assertion helpers.",
       "classes": [
         {
@@ -183,13 +248,13 @@
           ]
         }
       ],
-      "content_hash": "edcd0fb5b2d7"
+      "content_hash": "3e3c79ba82a4"
     },
     {
       "name": "test_audit.py",
       "type": "python",
       "size_lines": 468,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Tests for audit module (TASK-278).",
       "classes": [
         {
@@ -257,7 +322,7 @@
           ]
         }
       ],
-      "content_hash": "3525592018ee"
+      "content_hash": "d1ae24b61db3"
     },
     {
       "name": "test_boq.py",
@@ -288,8 +353,8 @@
     {
       "name": "test_calculation_report.py",
       "type": "python",
-      "size_lines": 612,
-      "last_updated": "2026-03-26",
+      "size_lines": 715,
+      "last_updated": "2026-04-05",
       "description": "Tests for the calculation_report module (TASK-277).",
       "classes": [
         {
@@ -378,6 +443,13 @@
             "test_special_characters_escaped_in_html",
             "test_verification_hash_in_exports"
           ]
+        },
+        {
+          "name": "TestWithRealObjects",
+          "description": "Tests using real dataclass objects instead of MagicMock.",
+          "public_methods": [
+            "test_from_design_result_real_shear"
+          ]
         }
       ],
       "functions": [
@@ -395,20 +467,20 @@
         },
         {
           "name": "mock_design_result",
-          "description": "Mock design result with all expected attributes.",
+          "description": "Design result with real objects — no MagicMock (TE-3).",
           "params": [
             "sample_input_section",
             "sample_result_section"
           ]
         }
       ],
-      "content_hash": "0cc4ab9a4261"
+      "content_hash": "b71e43aa32b2"
     },
     {
       "name": "test_clause_traceability.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-05",
       "description": "Tests for IS 456 Traceability Module",
       "classes": [
         {
@@ -520,7 +592,7 @@
           "description": "Create a sample decorated function for testing."
         }
       ],
-      "content_hash": "18e8d70d45a0"
+      "content_hash": "22b11238c669"
     },
     {
       "name": "test_column_axial.py",
@@ -726,6 +798,290 @@
       "content_hash": "faac96a7580c"
     },
     {
+      "name": "test_column_helical.py",
+      "type": "python",
+      "size_lines": 356,
+      "last_updated": "2026-04-03",
+      "description": "Tests for IS 456 Cl 39.4 helical reinforcement check.",
+      "classes": [
+        {
+          "name": "TestBasicAdequate",
+          "description": "Test 1: Adequate helical ratio and pitch → is_adequate=True.",
+          "public_methods": [
+            "test_basic_adequate"
+          ]
+        },
+        {
+          "name": "TestEnhancementFactor",
+          "description": "Test 2: Enhancement factor = 1.05 per IS 456 Cl 39.4.",
+          "public_methods": [
+            "test_enhancement_factor_1_05"
+          ]
+        },
+        {
+          "name": "TestRatioInadequate",
+          "description": "Test 3: Ratio below required → is_adequate=False.",
+          "public_methods": [
+            "test_ratio_inadequate"
+          ]
+        },
+        {
+          "name": "TestPitchLimits",
+          "description": "Tests 4-7: Pitch limit violations and boundary conditions.",
+          "public_methods": [
+            "test_pitch_too_small",
+            "test_pitch_too_large",
+            "test_pitch_exact_min",
+            "test_pitch_exact_max"
+          ]
+        },
+        {
+          "name": "TestInputValidation",
+          "description": "Tests 8-11: Input validation raises appropriate errors.",
+          "public_methods": [
+            "test_negative_diameter_raises",
+            "test_core_exceeds_outer_raises",
+            "test_negative_fck_raises",
+            "test_negative_fy_raises"
+          ]
+        },
+        {
+          "name": "TestBenchmarkCircularColumn",
+          "description": "Test 12: Hand-calculated benchmark for circular column.",
+          "public_methods": [
+            "test_benchmark_circular_column"
+          ]
+        },
+        {
+          "name": "TestResultStructure",
+          "description": "Tests 13-14: to_dict and summary.",
+          "public_methods": [
+            "result",
+            "test_result_to_dict",
+            "test_result_summary"
+          ]
+        }
+      ],
+      "content_hash": "6cdd5272ead0"
+    },
+    {
+      "name": "test_column_long.py",
+      "type": "python",
+      "size_lines": 640,
+      "last_updated": "2026-04-03",
+      "description": "Tests for IS 456 Cl 39.7 long (slender) column design.",
+      "classes": [
+        {
+          "name": "TestShortColumnBypass",
+          "description": "Test 1: Both axes short (le/D < 12) — no additional moment.",
+          "public_methods": [
+            "test_short_column_bypass"
+          ]
+        },
+        {
+          "name": "TestSlenderSingleAxis",
+          "description": "Tests 2-3: Slender on one axis only.",
+          "public_methods": [
+            "test_slender_x_only",
+            "test_slender_y_only"
+          ]
+        },
+        {
+          "name": "TestSlenderBothAxes",
+          "description": "Test 4: Slender on both axes with biaxial check.",
+          "public_methods": [
+            "test_slender_both_axes"
+          ]
+        },
+        {
+          "name": "TestInitialMomentBraced",
+          "description": "Test 5: Braced column initial moment calculation.",
+          "public_methods": [
+            "test_braced_initial_moment"
+          ]
+        },
+        {
+          "name": "TestInitialMomentUnbraced",
+          "description": "Test 6: Unbraced column — Mi = M2.",
+          "public_methods": [
+            "test_unbraced_initial_moment"
+          ]
+        },
+        {
+          "name": "TestDesignMomentLowerBound",
+          "description": "Test 7: M_design >= M2 always (lower bound).",
+          "public_methods": [
+            "test_design_moment_lower_bound"
+          ]
+        },
+        {
+          "name": "TestPureAxialSlender",
+          "description": "Test 8: Pu > 0, all moments zero → governed by Ma.",
+          "public_methods": [
+            "test_pure_axial_slender"
+          ]
+        },
+        {
+          "name": "TestKFactor",
+          "description": "Test 9: k-factor stays in [0, 1].",
+          "public_methods": [
+            "test_k_factor_clamped"
+          ]
+        },
+        {
+          "name": "TestSlendernessBoundary",
+          "description": "Tests 10-11: le/D boundary at 12.",
+          "public_methods": [
+            "test_slenderness_boundary_11_99",
+            "test_slenderness_boundary_12_0"
+          ]
+        },
+        {
+          "name": "TestPuExceedsPuz",
+          "description": "Test 12: Pu > Puz → k=0, unsafe warning.",
+          "public_methods": [
+            "test_pu_exceeds_puz"
+          ]
+        },
+        {
+          "name": "TestPuZeroNoAdditionalMoment",
+          "description": "Test 13: Pu=0 → Ma=0 (no additional moment regardless of slenderness).",
+          "public_methods": [
+            "test_pu_zero_no_additional_moment"
+          ]
+        },
+        {
+          "name": "TestDoubleCurvature",
+          "description": "Test 14: Opposite sign M1 and M2 (double curvature reduces Mi for braced).",
+          "public_methods": [
+            "test_double_curvature"
+          ]
+        },
+        {
+          "name": "TestInputValidation",
+          "description": "Tests 15-18: Input validation raises appropriate errors.",
+          "public_methods": [
+            "test_negative_pu_raises",
+            "test_zero_b_raises",
+            "test_zero_D_raises",
+            "test_slenderness_exceeds_60_raises",
+            "test_zero_steel_raises"
+          ]
+        },
+        {
+          "name": "TestResultStructure",
+          "description": "Tests 19-21: Result fields, to_dict, summary.",
+          "public_methods": [
+            "result",
+            "test_result_fields",
+            "test_result_to_dict",
+            "test_result_summary"
+          ]
+        },
+        {
+          "name": "TestBenchmarkBracedSlender",
+          "description": "Test 22: Hand-calculated benchmark for braced slender column.",
+          "public_methods": [
+            "test_benchmark_braced_slender"
+          ]
+        }
+      ],
+      "constants": [
+        "_BASE"
+      ],
+      "content_hash": "567bf0bd9069"
+    },
+    {
+      "name": "test_column_return_types.py",
+      "type": "python",
+      "size_lines": 281,
+      "last_updated": "2026-04-05",
+      "description": "Tests for UX-02: Column API return type unification.",
+      "classes": [
+        {
+          "name": "TestColumnAxialDataclass",
+          "description": "UX-02: design_column_axial_is456 returns typed ColumnAxialResult.",
+          "public_methods": [
+            "test_returns_dataclass_instance",
+            "test_attribute_access",
+            "test_pu_kn_is_positive",
+            "test_is_safe_is_bool"
+          ]
+        },
+        {
+          "name": "TestColumnUniaxialDataclass",
+          "description": "UX-02: design_short_column_uniaxial_is456 returns typed ColumnUniaxialResult.",
+          "public_methods": [
+            "test_returns_dataclass_instance",
+            "test_attribute_access",
+            "test_utilization_is_numeric",
+            "test_is_safe_is_bool"
+          ]
+        },
+        {
+          "name": "TestAxialDictCompat",
+          "description": "UX-02: ColumnAxialResult supports dict-style access for backward compat.",
+          "public_methods": [
+            "test_getitem",
+            "test_contains",
+            "test_get_with_default",
+            "test_keys",
+            "test_values",
+            "test_items",
+            "test_iter",
+            "test_getitem_missing_key_raises"
+          ]
+        },
+        {
+          "name": "TestUniaxialDictCompat",
+          "description": "UX-02: ColumnUniaxialResult supports dict-style access.",
+          "public_methods": [
+            "test_getitem",
+            "test_contains",
+            "test_get_with_default",
+            "test_getitem_missing_key_raises"
+          ]
+        },
+        {
+          "name": "TestAxialToDict",
+          "description": "UX-02: ColumnAxialResult.to_dict() returns a plain dict.",
+          "public_methods": [
+            "test_to_dict_returns_dict",
+            "test_to_dict_has_all_fields",
+            "test_to_dict_values_match"
+          ]
+        },
+        {
+          "name": "TestUniaxialToDict",
+          "description": "UX-02: ColumnUniaxialResult.to_dict() returns a plain dict.",
+          "public_methods": [
+            "test_to_dict_returns_dict",
+            "test_to_dict_has_all_fields",
+            "test_to_dict_values_match"
+          ]
+        },
+        {
+          "name": "TestFrozenDataclass",
+          "description": "UX-02: Column result dataclasses are frozen (immutable).",
+          "public_methods": [
+            "test_axial_result_is_frozen",
+            "test_uniaxial_result_is_frozen"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "axial_result",
+          "description": "Standard axial capacity result for a 300x300 column."
+        },
+        {
+          "name": "uniaxial_result",
+          "description": "Standard uniaxial result for a 300x450 column."
+        }
+      ],
+      "content_hash": "9b75a827afa5"
+    },
+    {
       "name": "test_core.py",
       "type": "python",
       "size_lines": 176,
@@ -798,8 +1154,8 @@
     {
       "name": "test_core_types.py",
       "type": "python",
-      "size_lines": 261,
-      "last_updated": "2026-03-31",
+      "size_lines": 391,
+      "last_updated": "2026-04-03",
       "description": "Tests for core types and error dataclasses.",
       "classes": [
         {
@@ -873,9 +1229,36 @@
             "test_shim_imports_match_data_types",
             "test_shim_re_exports_multiple_names"
           ]
+        },
+        {
+          "name": "TestFlexureResultBackwardCompat",
+          "description": "Verify deprecated @property aliases on FlexureResult emit warnings and return correct values.",
+          "public_methods": [
+            "test_mu_lim_alias_value",
+            "test_ast_required_alias_value",
+            "test_asc_required_alias_value"
+          ]
+        },
+        {
+          "name": "TestShearResultBackwardCompat",
+          "description": "Verify deprecated @property aliases on ShearResult emit warnings and return correct values.",
+          "public_methods": [
+            "test_tv_alias",
+            "test_tc_alias",
+            "test_tc_max_alias",
+            "test_vus_alias"
+          ]
+        },
+        {
+          "name": "TestNewFieldAccessNoWarning",
+          "description": "Verify canonical field names do NOT emit DeprecationWarning.",
+          "public_methods": [
+            "test_flexure_new_names_no_warning",
+            "test_shear_new_names_no_warning"
+          ]
         }
       ],
-      "content_hash": "c17ac5fc16e3"
+      "content_hash": "5740e79a74e9"
     },
     {
       "name": "test_dashboard.py",
@@ -935,7 +1318,7 @@
       "name": "test_design_from_input.py",
       "type": "python",
       "size_lines": 142,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Tests for design_from_input API function.",
       "classes": [
         {
@@ -952,7 +1335,7 @@
           ]
         }
       ],
-      "content_hash": "3510163d9ca5"
+      "content_hash": "a79e49ca6ed7"
     },
     {
       "name": "test_error_messages.py",
@@ -1159,10 +1542,176 @@
       "content_hash": "fb02e22b1877"
     },
     {
+      "name": "test_footing.py",
+      "type": "python",
+      "size_lines": 1564,
+      "last_updated": "2026-04-06",
+      "description": "Tests for IS 456 footing design — TASK-650/651/652.",
+      "classes": [
+        {
+          "name": "TestFootingBearing",
+          "description": "Tests for size_footing: footing sizing & bearing capacity check.",
+          "public_methods": [
+            "test_concentric_square_footing",
+            "test_concentric_rectangular_footing",
+            "test_eccentric_trapezoidal_pressure",
+            "test_eccentric_partial_contact",
+            "test_validation_negative_load",
+            "test_validation_zero_bearing_capacity",
+            "test_validation_negative_bearing_capacity",
+            "test_validation_negative_column_dims",
+            "test_validation_zero_column_dim",
+            "test_result_is_frozen"
+          ]
+        },
+        {
+          "name": "TestBearingStressEnhancement",
+          "description": "Tests for bearing_stress_enhancement: IS 456 Cl 34.4.",
+          "public_methods": [
+            "test_basic_no_enhancement",
+            "test_enhancement_factor_normal",
+            "test_enhancement_factor_capped_at_2",
+            "test_intermediate_enhancement",
+            "test_validation_negative_fck",
+            "test_validation_zero_fck",
+            "test_validation_negative_area",
+            "test_validation_zero_area",
+            "test_validation_A1_less_than_A2",
+            "test_result_is_frozen"
+          ]
+        },
+        {
+          "name": "TestCheckBearingPressure",
+          "description": "Tests for check_bearing_pressure: column-footing interface per IS 456 Cl 34.4.",
+          "public_methods": [
+            "test_bearing_pressure_safe",
+            "test_bearing_pressure_unsafe",
+            "test_bearing_pressure_enhancement_factor",
+            "test_bearing_pressure_edge_zero_load",
+            "test_bearing_pressure_utilization",
+            "test_bearing_pressure_invalid_negative_load",
+            "test_bearing_pressure_invalid_zero_fck",
+            "test_bearing_pressure_invalid_negative_column",
+            "test_bearing_pressure_invalid_footing_smaller",
+            "test_result_to_dict_and_summary"
+          ]
+        },
+        {
+          "name": "TestFootingFlexure",
+          "description": "Tests for footing_flexure: bending at column face.",
+          "public_methods": [
+            "test_benchmark_concentric_square",
+            "test_minimum_steel_check",
+            "test_symmetric_footing_equal_directions",
+            "test_rectangular_footing_asymmetric",
+            "test_validation_negative_fck",
+            "test_validation_column_larger_than_footing",
+            "test_result_is_frozen",
+            "test_result_to_dict",
+            "test_result_summary"
+          ]
+        },
+        {
+          "name": "TestFootingOneWayShear",
+          "description": "Tests for footing_one_way_shear: shear at d from column face.",
+          "public_methods": [
+            "test_normal_case_safe",
+            "test_auto_pass_cant_le_d",
+            "test_unsafe_shallow_footing",
+            "test_higher_steel_ratio_increases_tau_c",
+            "test_validation_negative_fck",
+            "test_result_is_frozen",
+            "test_result_to_dict",
+            "test_result_summary"
+          ]
+        },
+        {
+          "name": "TestFootingPunchingShear",
+          "description": "Tests for footing_punching_shear: two-way shear at d/2 from face.",
+          "public_methods": [
+            "test_benchmark_square_column",
+            "test_rectangular_column_ks_less_than_1",
+            "test_punching_exceeds_footing_auto_pass",
+            "test_unsafe_heavy_load_shallow",
+            "test_validation_negative_fck",
+            "test_validation_column_larger_than_footing",
+            "test_result_is_frozen",
+            "test_result_to_dict",
+            "test_result_summary",
+            "test_square_column_ks_equals_1"
+          ]
+        },
+        {
+          "name": "TestFootingCommon",
+          "description": "Tests for footing shared utilities in _common.py.",
+          "public_methods": [
+            "test_validate_negative_L",
+            "test_validate_zero_B",
+            "test_validate_zero_d",
+            "test_validate_column_exceeds_footing",
+            "test_validate_column_equal_footing",
+            "test_validate_valid_inputs_passes",
+            "test_validate_negative_col_dim",
+            "test_validate_min_depth_150mm",
+            "test_validate_min_depth_exactly_150_passes",
+            "test_net_pressure_benchmark"
+          ]
+        },
+        {
+          "name": "TestFootingTypes",
+          "description": "Tests for footing result type invariants.",
+          "public_methods": [
+            "test_footing_type_enum_values",
+            "test_bearing_result_frozen",
+            "test_flexure_result_frozen",
+            "test_one_way_shear_result_frozen",
+            "test_punching_result_frozen",
+            "test_all_results_have_to_dict",
+            "test_all_results_have_summary"
+          ]
+        },
+        {
+          "name": "TestFlexureBothDirections",
+          "description": "Verify BOTH-direction flexure design after critical fixes.",
+          "public_methods": [
+            "test_rectangular_b_direction_critical",
+            "test_rectangular_steel_distribution_beta_2",
+            "test_square_footing_central_band_fraction_1",
+            "test_rectangular_beta_1_5"
+          ]
+        },
+        {
+          "name": "TestOneWayShearBothDirections",
+          "description": "Verify BOTH-direction one-way shear after critical fixes.",
+          "public_methods": [
+            "test_b_direction_fails_l_passes",
+            "test_governing_direction_correct_l",
+            "test_both_directions_safe_symmetric",
+            "test_governing_direction_in_to_dict",
+            "test_summary_contains_governs"
+          ]
+        },
+        {
+          "name": "TestMinimumDepthEnforcement",
+          "description": "Verify d_mm >= 150mm enforcement in _common.py.",
+          "public_methods": [
+            "test_d_149_raises_dimension_error",
+            "test_d_150_passes",
+            "test_d_1_raises",
+            "test_d_150_flows_through_flexure",
+            "test_d_149_rejected_by_flexure",
+            "test_d_149_rejected_by_one_way_shear",
+            "test_d_149_rejected_by_punching_shear"
+          ]
+        }
+      ],
+      "content_hash": "633177b42dbe"
+    },
+    {
       "name": "test_inputs.py",
       "type": "python",
-      "size_lines": 442,
-      "last_updated": "2026-03-26",
+      "size_lines": 464,
+      "last_updated": "2026-04-03",
       "description": "Tests for the inputs module (TASK-276: Input Flexibility).",
       "classes": [
         {
@@ -1172,13 +1721,13 @@
             "test_basic_creation",
             "test_effective_depth_auto_calculation",
             "test_effective_depth_explicit",
+            "test_effective_depth_with_custom_stirrup_bar",
+            "test_effective_depth_explicit_d_overrides",
+            "test_effective_depth_always_less_than_d_minus_cover",
             "test_span_depth_ratio",
             "test_validation_negative_width",
             "test_validation_zero_depth",
-            "test_validation_effective_depth_exceeds_overall",
-            "test_immutability",
-            "test_to_dict",
-            "test_from_dict_canonical"
+            "test_validation_effective_depth_exceeds_overall"
           ]
         },
         {
@@ -1247,13 +1796,13 @@
           ]
         }
       ],
-      "content_hash": "cc8768fba576"
+      "content_hash": "7dd6bbb87680"
     },
     {
       "name": "test_is456_common.py",
       "type": "python",
-      "size_lines": 537,
-      "last_updated": "2026-04-01",
+      "size_lines": 747,
+      "last_updated": "2026-04-05",
       "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
       "classes": [
         {
@@ -1350,6 +1899,19 @@
           ]
         },
         {
+          "name": "TestSteelStressFromStrain",
+          "description": "Tests for bilinear steel stress-strain model (IS 456 Fig. 23).",
+          "public_methods": [
+            "test_zero_strain_gives_zero",
+            "test_elastic_region_fe415",
+            "test_yield_plateau_fe415",
+            "test_exact_yield_strain_boundary_fe415",
+            "test_negative_strain_elastic",
+            "test_negative_strain_yield",
+            "test_fe500_yield_plateau"
+          ]
+        },
+        {
           "name": "TestSteelStress5Point",
           "description": "Tests for steel_stress_from_strain_5point() — IS 456 Fig. 23 / SP:16 Table F.",
           "public_methods": [
@@ -1364,6 +1926,42 @@
             "test_very_small_strain_elastic",
             "test_interpolation_between_point2_and_point3_fe415"
           ]
+        },
+        {
+          "name": "TestGetEcZeroGuard",
+          "description": "SM-1: get_ec must reject fck <= 0.",
+          "public_methods": [
+            "test_fck_zero_raises",
+            "test_fck_negative_raises"
+          ]
+        },
+        {
+          "name": "TestGetFcrZeroGuard",
+          "description": "SM-1: get_fcr must reject fck <= 0.",
+          "public_methods": [
+            "test_fck_zero_raises",
+            "test_fck_negative_raises"
+          ]
+        },
+        {
+          "name": "TestValidatePlausibilityZeroGuards",
+          "description": "SM-1: _validate_plausibility must reject zero/negative fck and fy.",
+          "public_methods": [
+            "test_fck_zero_raises",
+            "test_fck_negative_raises",
+            "test_fy_zero_raises"
+          ]
+        },
+        {
+          "name": "TestValidatePlausibilityDepthGuards",
+          "description": "UX-01: _validate_plausibility must reject d_mm >= D_mm.",
+          "public_methods": [
+            "test_d_mm_greater_than_depth_raises",
+            "test_d_mm_equal_to_overall_depth_raises",
+            "test_d_mm_less_than_overall_depth_passes",
+            "test_d_mm_only_no_overall_depth_passes",
+            "test_overall_depth_only_no_d_mm_passes"
+          ]
         }
       ],
       "constants": [
@@ -1374,7 +1972,7 @@
         "_FE500_POINT1",
         "_FE500_POINT5"
       ],
-      "content_hash": "8e451160806a"
+      "content_hash": "f28916268cd3"
     },
     {
       "name": "test_is456_constants.py",
@@ -1516,10 +2114,74 @@
       "content_hash": "cf64f7cbac36"
     },
     {
+      "name": "test_packaging.py",
+      "type": "python",
+      "size_lines": 258,
+      "last_updated": "2026-04-07",
+      "description": "Tests for package distribution correctness.",
+      "classes": [
+        {
+          "name": "TestPackageDataFiles",
+          "description": "Verify required data files are accessible at runtime.",
+          "public_methods": [
+            "test_clauses_json_loadable",
+            "test_clause_38_1_exists",
+            "test_search_clauses_returns_results"
+          ]
+        },
+        {
+          "name": "TestPackageScope",
+          "description": "Verify no test/dev packages leak into the distribution.",
+          "public_methods": [
+            "test_no_tests_in_top_level"
+          ]
+        },
+        {
+          "name": "TestWheelContents",
+          "description": "Build the wheel and verify its contents directly.",
+          "public_methods": [
+            "wheel_path",
+            "wheel_filelist",
+            "test_clauses_json_in_wheel",
+            "test_no_tests_dir_in_wheel",
+            "test_no_examples_dir_in_wheel",
+            "test_no_scripts_dir_in_wheel",
+            "test_structural_lib_present"
+          ]
+        },
+        {
+          "name": "TestImportSilence",
+          "description": "EA-6: Importing structural_lib must produce zero user-facing warnings.",
+          "public_methods": [
+            "test_import_no_warnings"
+          ]
+        },
+        {
+          "name": "TestAPIStability",
+          "description": "Verify all __all__ exports are importable and not broken.",
+          "public_methods": [
+            "test_all_exports_importable",
+            "test_all_count_minimum",
+            "test_key_functions_callable",
+            "test_key_classes_instantiable"
+          ]
+        },
+        {
+          "name": "TestReportTemplatesPackaged",
+          "description": "Regression: report templates must be included in package data.",
+          "public_methods": [
+            "test_report_templates_accessible",
+            "test_pyproject_includes_template_glob"
+          ]
+        }
+      ],
+      "content_hash": "389be7bd9873"
+    },
+    {
       "name": "test_pipeline_state.py",
       "type": "python",
-      "size_lines": 351,
-      "last_updated": "2026-04-02",
+      "size_lines": 353,
+      "last_updated": "2026-04-05",
       "description": "Tests for scripts/pipeline_state.py — Pipeline step tracking + resume.",
       "classes": [
         {
@@ -1590,13 +2252,13 @@
       "constants": [
         "_REPO_ROOT"
       ],
-      "content_hash": "bfbf8adba8f8"
+      "content_hash": "a45107645a79"
     },
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 340,
-      "last_updated": "2026-03-31",
+      "size_lines": 342,
+      "last_updated": "2026-04-05",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
         {
@@ -1717,7 +2379,67 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "91c00a4ec349"
+      "content_hash": "65e6c8d7ceb1"
+    },
+    {
+      "name": "test_report_edge_cases.py",
+      "type": "python",
+      "size_lines": 290,
+      "last_updated": "2026-04-06",
+      "description": "Edge case tests for report generation modules (TASK-520).",
+      "classes": [
+        {
+          "name": "TestReportContextEdgeCases",
+          "description": "Edge case tests for ReportContext dataclass.",
+          "public_methods": [
+            "test_date_auto_filled_when_empty",
+            "test_date_preserved_when_provided",
+            "test_to_dict_fail_status",
+            "test_to_dict_pass_status",
+            "test_to_dict_contains_all_fields",
+            "test_empty_inputs_and_results"
+          ]
+        },
+        {
+          "name": "TestFallbackHtml",
+          "description": "Tests for _generate_fallback_html (when Jinja2 not installed).",
+          "public_methods": [
+            "test_fallback_produces_valid_html",
+            "test_fallback_fail_status",
+            "test_fallback_escapes_html",
+            "test_fallback_missing_keys",
+            "test_fallback_includes_results"
+          ]
+        },
+        {
+          "name": "TestTemplateFilters",
+          "description": "Tests for template filter functions.",
+          "public_methods": [
+            "test_format_number_none",
+            "test_format_number_invalid_string",
+            "test_format_number_zero",
+            "test_format_number_large",
+            "test_format_number_custom_decimals",
+            "test_format_mm_none",
+            "test_format_mm_valid",
+            "test_format_mm_with_decimals",
+            "test_format_mm_invalid",
+            "test_format_percent_none"
+          ]
+        },
+        {
+          "name": "TestGenerateReportInputTypes",
+          "description": "Tests for generate_html_report with various input types.",
+          "public_methods": [
+            "test_input_with_to_dict_method",
+            "test_input_with_dunder_dict",
+            "test_input_with_non_dict_non_object",
+            "test_is_ok_from_nested_results",
+            "test_full_project_info_fields"
+          ]
+        }
+      ],
+      "content_hash": "a198051acb7e"
     },
     {
       "name": "test_report_svg.py",
@@ -1857,6 +2579,80 @@
       "content_hash": "8cc3def509cb"
     },
     {
+      "name": "test_research_prototypes.py",
+      "type": "python",
+      "size_lines": 908,
+      "last_updated": "2026-04-03",
+      "description": "Tests for research prototypes: Sustainability, Generative Design, Design Companion.",
+      "classes": [
+        {
+          "name": "TestSustainabilityScoring",
+          "description": "Tests for score_beam_carbon() and compare_carbon().",
+          "public_methods": [
+            "test_basic_scoring_returns_carbon_score",
+            "test_carbon_per_meter_positive",
+            "test_carbon_per_knm_positive",
+            "test_monotonicity_higher_fck_higher_carbon",
+            "test_all_supported_grades",
+            "test_invalid_grade_raises",
+            "test_invalid_grade_15_raises",
+            "test_negative_width_raises",
+            "test_negative_depth_raises",
+            "test_zero_span_raises"
+          ]
+        },
+        {
+          "name": "TestGenerativeDesign",
+          "description": "Tests for explore_design_space().",
+          "public_methods": [
+            "design_result",
+            "test_exploration_produces_results",
+            "test_valid_designs_exist",
+            "test_pareto_front_non_empty",
+            "test_all_candidates_marked_pareto_or_not",
+            "test_pareto_front_no_dominated",
+            "test_all_persona_recommendations_exist",
+            "test_persona_recommendation_is_from_pareto",
+            "test_summary_generation",
+            "test_cost_range_valid"
+          ]
+        },
+        {
+          "name": "TestDesignCompanion",
+          "description": "Tests for design_with_companion().",
+          "public_methods": [
+            "companion",
+            "test_returns_companion_response",
+            "test_design_result_present",
+            "test_reasoning_chain_has_8_steps",
+            "test_reasoning_steps_sequential",
+            "test_clause_refs_format",
+            "test_reasoning_step_fields",
+            "test_rebar_options_at_least_3",
+            "test_rebar_recommended_exists",
+            "test_rebar_narrative_non_empty"
+          ]
+        },
+        {
+          "name": "TestDesignCompanionMultipleExamples",
+          "description": "Stress tests exercising the Design Companion with diverse, realistic scenarios.",
+          "public_methods": [
+            "all_responses",
+            "test_returns_companion_response",
+            "test_design_result_is_ok",
+            "test_reasoning_chain_has_8_steps",
+            "test_failure_story_critical_overload_ge_1",
+            "test_rebar_recommended_is_sufficient",
+            "test_executive_summary_non_empty_and_mentions_beam",
+            "test_full_report_generates_string",
+            "test_fingerprint_valid_classifications",
+            "test_deep_beam_anomaly_detects_b_d_ratio"
+          ]
+        }
+      ],
+      "content_hash": "71b62f0c2045"
+    },
+    {
       "name": "test_result_base.py",
       "type": "python",
       "size_lines": 217,
@@ -1928,8 +2724,8 @@
     {
       "name": "test_session_store.py",
       "type": "python",
-      "size_lines": 285,
-      "last_updated": "2026-04-02",
+      "size_lines": 287,
+      "last_updated": "2026-04-05",
       "description": "Tests for scripts/session_store.py — JSON session persistence.",
       "classes": [
         {
@@ -1995,7 +2791,7 @@
       "constants": [
         "_REPO_ROOT"
       ],
-      "content_hash": "80df4895cc57"
+      "content_hash": "7b025864cf41"
     },
     {
       "name": "test_slenderness.py",
@@ -2071,8 +2867,8 @@
     {
       "name": "test_testing_strategies.py",
       "type": "python",
-      "size_lines": 647,
-      "last_updated": "2026-03-26",
+      "size_lines": 681,
+      "last_updated": "2026-04-05",
       "description": "Tests for the testing_strategies module (TASK-279).",
       "classes": [
         {
@@ -2200,7 +2996,131 @@
           ]
         }
       ],
-      "content_hash": "ebe569ea6a27"
+      "content_hash": "178f8832ab9d"
+    },
+    {
+      "name": "test_visualization_edge_cases.py",
+      "type": "python",
+      "size_lines": 757,
+      "last_updated": "2026-04-06",
+      "description": "Edge case tests for 3D visualization / geometry module (TASK-520).",
+      "classes": [
+        {
+          "name": "TestMinimumDimensionBeam",
+          "description": "Test 3D geometry with minimum practical beam dimensions.",
+          "public_methods": [
+            "test_rebar_positions_fit_150x300",
+            "test_stirrup_path_fits_150x300",
+            "test_full_geometry_150x300"
+          ]
+        },
+        {
+          "name": "TestDenseRebarLayout",
+          "description": "Test 3D geometry with high reinforcement ratios.",
+          "public_methods": [
+            "test_max_bars_single_layer",
+            "test_multi_layer_6_bars",
+            "test_large_bar_diameter_25mm"
+          ]
+        },
+        {
+          "name": "TestCompressionReinforcement3D",
+          "description": "Test 3D geometry with compression reinforcement.",
+          "public_methods": [
+            "test_beam_with_compression_steel"
+          ]
+        },
+        {
+          "name": "TestStirrupPositionsEdgeCases",
+          "description": "Edge case tests for compute_stirrup_positions.",
+          "public_methods": [
+            "test_custom_zone_length",
+            "test_zone_length_half_span",
+            "test_zone_length_exceeds_half_span",
+            "test_negative_zone_length_raises",
+            "test_uniform_spacing",
+            "test_very_short_span",
+            "test_negative_span_raises",
+            "test_negative_mid_spacing_raises",
+            "test_negative_end_spacing_raises"
+          ]
+        },
+        {
+          "name": "TestBuildingBeam3DSerialization",
+          "description": "Tests for BuildingBeam3D.to_dict().",
+          "public_methods": [
+            "test_to_dict",
+            "test_frozen"
+          ]
+        },
+        {
+          "name": "TestBuilding3DGeometrySerialization",
+          "description": "Tests for Building3DGeometry.to_dict().",
+          "public_methods": [
+            "test_to_dict_structure",
+            "test_json_serializable"
+          ]
+        },
+        {
+          "name": "TestBuildingTo3DGeometryEdgeCases",
+          "description": "Edge case tests for building_to_3d_geometry function.",
+          "public_methods": [
+            "test_empty_beams_raises",
+            "test_frame_type_filter",
+            "test_filter_excludes_all_raises",
+            "test_custom_unit_scale"
+          ]
+        },
+        {
+          "name": "TestStirrupLoopDegenerate",
+          "description": "Degenerate cases for StirrupLoop.",
+          "public_methods": [
+            "test_perimeter_single_point",
+            "test_perimeter_two_points",
+            "test_to_dict_with_empty_path"
+          ]
+        },
+        {
+          "name": "TestRebarPathDegenerate",
+          "description": "Degenerate cases for RebarPath.",
+          "public_methods": [
+            "test_end_point_empty_segments",
+            "test_total_length_zero_length_segment",
+            "test_multiple_zones"
+          ]
+        },
+        {
+          "name": "TestBeamTo3DGeometryEdgeCases",
+          "description": "Edge cases for beam_to_3d_geometry integration.",
+          "public_methods": [
+            "test_seismic_vs_non_seismic",
+            "test_high_compression_steel",
+            "test_close_stirrup_spacing",
+            "test_json_round_trip"
+          ]
+        },
+        {
+          "name": "TestRebarPositionErrors",
+          "description": "Error case tests for compute_rebar_positions.",
+          "public_methods": [
+            "test_negative_beam_width_raises",
+            "test_zero_beam_depth_raises",
+            "test_negative_cover_raises",
+            "test_zero_bar_dia_raises",
+            "test_zero_stirrup_dia_raises"
+          ]
+        },
+        {
+          "name": "TestBeamOutlineEdgeCases",
+          "description": "Edge case tests for compute_beam_outline.",
+          "public_methods": [
+            "test_very_small_beam",
+            "test_very_large_beam",
+            "test_square_beam"
+          ]
+        }
+      ],
+      "content_hash": "87dde384b7fd"
     },
     {
       "name": "test_visualization_geometry_3d.py",
@@ -2363,7 +3283,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 7,
+      "file_count": 11,
       "is_package": true
     },
     {
@@ -2385,29 +3305,34 @@
     {
       "name": "integration",
       "path": "integration/",
-      "file_count": 41
+      "file_count": 43,
+      "is_package": true
     },
     {
       "name": "performance",
       "path": "performance/",
-      "file_count": 1
+      "file_count": 3,
+      "is_package": true
     },
     {
       "name": "property",
       "path": "property/",
-      "file_count": 8,
+      "file_count": 9,
       "is_package": true
     },
     {
       "name": "regression",
       "path": "regression/",
-      "file_count": 8
+      "file_count": 11,
+      "is_package": true
     },
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 27
+      "file_count": 32,
+      "is_package": true
     }
   ],
-  "content_hash": "f6118198a25b6c92"
+  "content_hash": "24711f0ae1ed5a8b",
+  "has_init": true
 }

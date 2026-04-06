@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-04-04",
+  "last_updated": "2026-04-07",
   "file_count": 51,
   "files": [
     {
@@ -17,16 +17,19 @@
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 288,
-      "last_updated": "2026-04-02",
+      "size_lines": 372,
+      "last_updated": "2026-04-07",
       "description": "Package:      structural_lib",
-      "content_hash": "9ac7bedb8169"
+      "constants": [
+        "_LAZY_MODULES"
+      ],
+      "content_hash": "379e55fcbde3"
     },
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1500,
-      "last_updated": "2026-03-31",
+      "size_lines": 1533,
+      "last_updated": "2026-04-07",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
         {
@@ -107,7 +110,7 @@
           ]
         }
       ],
-      "content_hash": "77c61138480a"
+      "content_hash": "8470657ab1e2"
     },
     {
       "name": "adapters.py",
@@ -495,9 +498,15 @@
   ],
   "subfolders": [
     {
+      "name": "cli",
+      "path": "cli/",
+      "file_count": 2,
+      "is_package": true
+    },
+    {
       "name": "codes",
       "path": "codes/",
-      "file_count": 51,
+      "file_count": 56,
       "is_package": true
     },
     {
@@ -527,7 +536,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 31,
+      "file_count": 35,
       "is_package": true
     },
     {
@@ -537,7 +546,7 @@
       "is_package": true
     }
   ],
-  "content_hash": "5d86ab01cf3dfdd4",
+  "content_hash": "adad6aca83d16e81",
   "has_init": true,
   "public_api": [
     "__version__",

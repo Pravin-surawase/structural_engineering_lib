@@ -3,8 +3,8 @@
 Deep dives into project structure, design decisions, and system architecture.
 
 **Type:** Mixed
-**Last Updated:** 2026-04-02
-**Files:** 12
+**Last Updated:** 2026-04-07
+**Files:** 13
 
 ## Documentation Files
 
@@ -20,6 +20,7 @@ Deep dives into project structure, design decisions, and system architecture.
 | [mission-and-principles.md](mission-and-principles.md) |  | Structural engineering today, especially in everyday practic | 301 |
 | [project-overview.md](project-overview.md) |  | - mission-and-principles.md for the deeper "why" and product | 169 |
 | [self-evolving-system.md](self-evolving-system.md) |  | As the project evolves, **information entropy increases**: | | 197 |
+| [unified-architecture-v1.md](unified-architecture-v1.md) | Unified Architecture — structural_engine | > THE single source of truth for architecture decisions, qua | 1562 |
 | [visual-architecture.md](visual-architecture.md) |  | Quick diagrams for layers, module groupings, and data flow.  | 155 |
 
 ## Subfolders

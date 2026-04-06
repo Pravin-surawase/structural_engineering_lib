@@ -3,7 +3,7 @@
 Quick onboarding guides for new users of the structural engineering library.
 
 **Type:** Mixed
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-04-07
 **Files:** 18
 
 ## Documentation Files
@@ -12,7 +12,7 @@ Quick onboarding guides for new users of the structural engineering library.
 |------|-------|-------------|-------|
 | [NEW-DEVELOPER-ONBOARDING.md](NEW-DEVELOPER-ONBOARDING.md) |  | This guide is for you if: - ✅ You're new to this project | 377 |
 | [README.md](README.md) | Getting Started | Quick onboarding guides for new users of the structural engi | 76 |
-| [agent-bootstrap.md](agent-bootstrap.md) |  | > **This is THE canonical bootstrap for all AI agents.** Ent | 718 |
+| [agent-bootstrap.md](agent-bootstrap.md) |  | > **This is THE canonical bootstrap for all AI agents.** Ent | 749 |
 | [agent-essentials.md](agent-essentials.md) |  | > **Merged.** This document's content has been consolidated  | 14 |
 | [ai-context-pack.md](ai-context-pack.md) |  | > **Merged.** This document's content has been consolidated  | 14 |
 | [beginners-guide.md](beginners-guide.md) |  | This guide is written for engineers and students who are new | 159 |
@@ -24,6 +24,6 @@ Quick onboarding guides for new users of the structural engineering library.
 | [insights-guide.md](insights-guide.md) |  | > **Stability:** Experimental - API may change before v1.0 A | 546 |
 | [installation-notes.md](installation-notes.md) |  | All required packages have been installed successfully: - ** | 89 |
 | [mac-mini-setup.md](mac-mini-setup.md) |  | Complete instructions to clone and run the full stack on a f | 398 |
-| [python-quickstart.md](python-quickstart.md) |  | This guide shows how to install, run, and verify the Python  | 181 |
-| [releases.md](releases.md) |  | This document serves as the **immutable source of truth** fo | 958 |
+| [python-quickstart.md](python-quickstart.md) |  | This guide shows how to install, run, and verify the Python  | 198 |
+| [releases.md](releases.md) |  | This document serves as the **immutable source of truth** fo | 1107 |
 | [user-guide.md](user-guide.md) |  | This guide walks you through a complete beam design workflow | 223 |

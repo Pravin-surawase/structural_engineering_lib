@@ -2,7 +2,7 @@
   "folder": "docs/guides",
   "type": "documentation",
   "description": "End-user and developer guides for specific workflows.",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-07",
   "file_count": 9,
   "files": [
     {
@@ -33,10 +33,10 @@
     {
       "name": "copilot-agents-usage-guide.md",
       "type": "documentation",
-      "size_lines": 578,
-      "last_updated": "2026-04-02",
+      "size_lines": 603,
+      "last_updated": "2026-04-03",
       "description": "You have **16 agents**, **10 skills**, and **16 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one. | What | How | Example |",
-      "content_hash": "14777f84737a"
+      "content_hash": "b9c274a364b9"
     },
     {
       "name": "fastapi-deployment-guide.md",
@@ -80,5 +80,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "5bd1bb51f5380287"
+  "content_hash": "12f164740ef0a17a"
 }

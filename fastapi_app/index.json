@@ -2,8 +2,8 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-04-02",
-  "file_count": 6,
+  "last_updated": "2026-04-07",
+  "file_count": 7,
   "files": [
     {
       "name": "README.md",
@@ -18,15 +18,15 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 11,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-04-06",
       "description": "FastAPI backend for structural_engineering_lib.",
-      "content_hash": "e9e00e5f71a5"
+      "content_hash": "1510644cf71b"
     },
     {
       "name": "auth.py",
       "type": "python",
-      "size_lines": 361,
-      "last_updated": "2026-03-31",
+      "size_lines": 376,
+      "last_updated": "2026-04-05",
       "description": "Authentication and Authorization Module.",
       "classes": [
         {
@@ -108,13 +108,13 @@
         "RATE_LIMIT_REQUESTS",
         "RATE_LIMIT_WINDOW_SECONDS"
       ],
-      "content_hash": "b7460cd91b1d"
+      "content_hash": "b07b15bac038"
     },
     {
       "name": "config.py",
       "type": "python",
-      "size_lines": 61,
-      "last_updated": "2026-03-31",
+      "size_lines": 80,
+      "last_updated": "2026-04-06",
       "description": "Application Configuration.",
       "classes": [
         {
@@ -128,15 +128,54 @@
           "description": "Get cached application settings."
         }
       ],
-      "content_hash": "845826dff9f5"
+      "content_hash": "eda8113d5e32"
+    },
+    {
+      "name": "error_utils.py",
+      "type": "python",
+      "size_lines": 52,
+      "last_updated": "2026-04-06",
+      "description": "Error sanitization utilities for API responses.",
+      "functions": [
+        {
+          "name": "sanitize_float",
+          "description": "Replace non-finite floats for JSON safety (RFC 8259).",
+          "params": [
+            "v"
+          ]
+        },
+        {
+          "name": "sanitize_error",
+          "description": "Return a safe error message for API responses.",
+          "params": [
+            "e",
+            "context"
+          ]
+        }
+      ],
+      "content_hash": "a17cd08e3bca"
     },
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 416,
-      "last_updated": "2026-04-01",
+      "size_lines": 503,
+      "last_updated": "2026-04-06",
       "description": "FastAPI Application Entry Point.",
       "classes": [
+        {
+          "name": "AuthMiddleware",
+          "description": "Enforce Bearer-token auth on all endpoints when AUTH_ENABLED=True.",
+          "public_methods": [
+            "dispatch"
+          ]
+        },
+        {
+          "name": "RateLimitMiddleware",
+          "description": "Global rate limiter — applies to all non-health endpoints.",
+          "public_methods": [
+            "dispatch"
+          ]
+        },
         {
           "name": "RequestIDMiddleware",
           "description": "Attach a unique X-Request-ID header to every request/response.",
@@ -171,15 +210,14 @@
         "API_TITLE",
         "API_DESCRIPTION",
         "API_TAGS_METADATA",
-        "ALLOWED_ORIGINS",
         "API_V1_PREFIX"
       ],
-      "content_hash": "ae3a551a548b"
+      "content_hash": "635a8bdaa704"
     },
     {
       "name": "openapi_baseline.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-07",
       "top_level_keys": [
         "components",
         "info",
@@ -187,7 +225,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "0a394b668dc3"
+      "content_hash": "8c4dfa60d929"
     }
   ],
   "subfolders": [
@@ -199,7 +237,7 @@
     {
       "name": "models",
       "path": "models/",
-      "file_count": 11,
+      "file_count": 12,
       "is_package": true
     },
     {
@@ -211,11 +249,11 @@
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 17,
+      "file_count": 25,
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
       "is_package": true
     }
   ],
-  "content_hash": "d8cc0a1cf04326f2",
+  "content_hash": "20c97c58500bcefb",
   "has_init": true
 }

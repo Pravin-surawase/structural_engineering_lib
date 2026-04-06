@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-04-04",
-  "file_count": 113,
+  "last_updated": "2026-04-07",
+  "file_count": 114,
   "files": [
     {
       "name": "README.md",
@@ -131,7 +131,7 @@
       "name": "agent_context.py",
       "type": "python",
       "size_lines": 579,
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-04",
       "description": "Agent Context Loader — gives each agent its tailored startup context.",
       "functions": [
         {
@@ -216,7 +216,7 @@
       "constants": [
         "ROOT"
       ],
-      "content_hash": "9feab3c10e32"
+      "content_hash": "ccabef936e8e"
     },
     {
       "name": "agent_drift_detector.py",
@@ -376,8 +376,8 @@
     {
       "name": "agent_feedback.py",
       "type": "python",
-      "size_lines": 380,
-      "last_updated": "2026-04-03",
+      "size_lines": 423,
+      "last_updated": "2026-04-05",
       "description": "Agent feedback collection and analysis.",
       "functions": [
         {
@@ -424,7 +424,7 @@
         "VALID_AGENTS",
         "FEEDBACK_CATEGORIES"
       ],
-      "content_hash": "dd1a1a8dc1e5"
+      "content_hash": "cb07bb4078e1"
     },
     {
       "name": "agent_mistakes_report.sh",
@@ -642,10 +642,10 @@
     {
       "name": "ai_commit.sh",
       "type": "shell-script",
-      "size_lines": 444,
-      "last_updated": "2026-04-03",
+      "size_lines": 451,
+      "last_updated": "2026-04-04",
       "description": "AI-friendly wrapper for safe commits and pushes",
-      "content_hash": "29facabea336"
+      "content_hash": "4fdccc50334f"
     },
     {
       "name": "archive_old_files.sh",
@@ -807,8 +807,8 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 773,
-      "last_updated": "2026-04-03",
+      "size_lines": 827,
+      "last_updated": "2026-04-05",
       "description": "Audit Readiness Report Generator",
       "classes": [
         {
@@ -898,12 +898,12 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "c8f0cccbbce1"
+      "content_hash": "5f90a2614cf7"
     },
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-04",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -912,13 +912,13 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "b73eca508fd7"
+      "content_hash": "746a502be009"
     },
     {
       "name": "batch_migrate_runner.py",
       "type": "python",
-      "size_lines": 439,
-      "last_updated": "2026-04-03",
+      "size_lines": 442,
+      "last_updated": "2026-04-05",
       "description": "Batch migration runner with per-operation rollback logs.",
       "classes": [
         {
@@ -940,13 +940,13 @@
         "REPO_ROOT",
         "TOOL_SCRIPTS"
       ],
-      "content_hash": "b47ec10ca29b"
+      "content_hash": "fea4cc5c2b43"
     },
     {
       "name": "benchmark_api.py",
       "type": "python",
-      "size_lines": 799,
-      "last_updated": "2026-04-03",
+      "size_lines": 837,
+      "last_updated": "2026-04-05",
       "description": "API Performance Benchmark Script.",
       "classes": [
         {
@@ -1045,7 +1045,7 @@
         "V3_THRESHOLDS",
         "STANDARD_DIRECT_BENCHMARKS"
       ],
-      "content_hash": "09dcbd9a276f"
+      "content_hash": "c2dbc8f4d454"
     },
     {
       "name": "bump_version.py",
@@ -1115,8 +1115,8 @@
     {
       "name": "check_api.py",
       "type": "python",
-      "size_lines": 379,
-      "last_updated": "2026-04-03",
+      "size_lines": 442,
+      "last_updated": "2026-04-05",
       "description": "Unified API validation — signatures, docs, and sync checks.",
       "classes": [
         {
@@ -1158,7 +1158,7 @@
         "PARAM_NAME_MAPPINGS",
         "_API_SYMBOL_RE"
       ],
-      "content_hash": "11fce0f2d73b"
+      "content_hash": "a1e14765dcf1"
     },
     {
       "name": "check_api_compat.py",
@@ -1192,8 +1192,8 @@
     {
       "name": "check_architecture_boundaries.py",
       "type": "python",
-      "size_lines": 518,
-      "last_updated": "2026-04-03",
+      "size_lines": 521,
+      "last_updated": "2026-04-04",
       "description": "Architecture Boundary Linter.",
       "classes": [
         {
@@ -1284,13 +1284,13 @@
         "BAD_PATTERNS",
         "EXCLUDE_PATTERNS"
       ],
-      "content_hash": "c72a8fa7591e"
+      "content_hash": "e453a0bf8106"
     },
     {
       "name": "check_bootstrap_freshness.py",
       "type": "python",
-      "size_lines": 262,
-      "last_updated": "2026-04-03",
+      "size_lines": 290,
+      "last_updated": "2026-04-05",
       "description": "Check if bootstrap docs are stale compared to actual codebase.",
       "functions": [
         {
@@ -1327,7 +1327,7 @@
         "COPILOT_INSTRUCTIONS",
         "CLAUDE_MD"
       ],
-      "content_hash": "743055c1e35f"
+      "content_hash": "c3ba1321d031"
     },
     {
       "name": "check_circular_imports.py",
@@ -1505,8 +1505,8 @@
     {
       "name": "check_docker_config.py",
       "type": "python",
-      "size_lines": 282,
-      "last_updated": "2026-04-03",
+      "size_lines": 295,
+      "last_updated": "2026-04-05",
       "description": "Docker Configuration Validator.",
       "functions": [
         {
@@ -1549,7 +1549,7 @@
       "constants": [
         "ROOT"
       ],
-      "content_hash": "cf4bd4ea9bad"
+      "content_hash": "5dde02a522a6"
     },
     {
       "name": "check_docs.py",
@@ -1609,8 +1609,8 @@
     {
       "name": "check_fastapi_issues.py",
       "type": "python",
-      "size_lines": 422,
-      "last_updated": "2026-04-03",
+      "size_lines": 450,
+      "last_updated": "2026-04-05",
       "description": "FastAPI Issues AST Scanner.",
       "classes": [
         {
@@ -1661,7 +1661,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "5b763b85c1b9"
+      "content_hash": "01867b78fb13"
     },
     {
       "name": "check_function_quality.py",
@@ -1771,8 +1771,8 @@
     {
       "name": "check_governance.py",
       "type": "python",
-      "size_lines": 1025,
-      "last_updated": "2026-03-31",
+      "size_lines": 1026,
+      "last_updated": "2026-04-04",
       "description": "Unified governance checker — folder structure + compliance validation.",
       "classes": [
         {
@@ -1919,13 +1919,13 @@
         "DEFAULT_RULES",
         "RULES"
       ],
-      "content_hash": "d0888d9ce702"
+      "content_hash": "cab3464da4cb"
     },
     {
       "name": "check_instruction_drift.py",
       "type": "python",
-      "size_lines": 210,
-      "last_updated": "2026-04-03",
+      "size_lines": 219,
+      "last_updated": "2026-04-05",
       "description": "Check for content drift between .github/instructions/ and .claude/rules/.",
       "functions": [
         {
@@ -1948,13 +1948,13 @@
         "CLAUDE_DIR",
         "PAIRS"
       ],
-      "content_hash": "b9a181155c7a"
+      "content_hash": "4338139561a9"
     },
     {
       "name": "check_links.py",
       "type": "python",
-      "size_lines": 327,
-      "last_updated": "2026-04-03",
+      "size_lines": 351,
+      "last_updated": "2026-04-05",
       "description": "Check and fix broken internal links in markdown files.",
       "functions": [
         {
@@ -1975,7 +1975,7 @@
         "SKIP_LINK_PATTERNS",
         "SKIP_DIRECTORIES"
       ],
-      "content_hash": "91383f089d5a"
+      "content_hash": "395101f09bfb"
     },
     {
       "name": "check_new_element_completeness.py",
@@ -2115,10 +2115,46 @@
       "content_hash": "515811cfdcae"
     },
     {
+      "name": "check_openapi_drift.py",
+      "type": "python",
+      "size_lines": 193,
+      "last_updated": "2026-04-07",
+      "description": "Check OpenAPI spec for drift against baseline.",
+      "functions": [
+        {
+          "name": "get_current_spec",
+          "description": "Import the FastAPI app and return its OpenAPI schema."
+        },
+        {
+          "name": "load_baseline",
+          "description": "Load the committed baseline spec."
+        },
+        {
+          "name": "update_baseline",
+          "description": "Write *spec* as the new baseline.",
+          "params": [
+            "spec"
+          ]
+        },
+        {
+          "name": "check_drift",
+          "description": "Return True when baseline matches the live spec (no drift)."
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "ROOT",
+        "BASELINE_PATH"
+      ],
+      "content_hash": "442f506763fb"
+    },
+    {
       "name": "check_openapi_snapshot.py",
       "type": "python",
-      "size_lines": 207,
-      "last_updated": "2026-04-03",
+      "size_lines": 231,
+      "last_updated": "2026-04-05",
       "description": "Check OpenAPI spec against baseline snapshot to detect API drift.",
       "functions": [
         {
@@ -2128,13 +2164,13 @@
       "constants": [
         "BASELINE_PATH"
       ],
-      "content_hash": "e709b9a77a56"
+      "content_hash": "ad352625ff27"
     },
     {
       "name": "check_python_version.py",
       "type": "python",
-      "size_lines": 215,
-      "last_updated": "2026-04-03",
+      "size_lines": 216,
+      "last_updated": "2026-04-05",
       "description": "Python Version Consistency Checker",
       "functions": [
         {
@@ -2176,13 +2212,13 @@
         "SUPPORTED_VERSIONS",
         "CHECK_FILES"
       ],
-      "content_hash": "e4244cd9f454"
+      "content_hash": "2453fce2a714"
     },
     {
       "name": "check_repo_hygiene.py",
       "type": "python",
       "size_lines": 44,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-04-05",
       "description": "Fail if tracked hygiene artifacts exist in the repository.",
       "functions": [
         {
@@ -2192,7 +2228,7 @@
       "constants": [
         "ARTIFACT_NAMES"
       ],
-      "content_hash": "31cf63a3c2e7"
+      "content_hash": "78e0197daf60"
     },
     {
       "name": "check_root_file_count.sh",
@@ -2205,8 +2241,8 @@
     {
       "name": "check_scripts_index.py",
       "type": "python",
-      "size_lines": 164,
-      "last_updated": "2026-04-03",
+      "size_lines": 180,
+      "last_updated": "2026-04-05",
       "description": "Ensure scripts/index.json and automation-map.json match the scripts folder contents.",
       "functions": [
         {
@@ -2220,13 +2256,13 @@
         "AUTOMATION_MAP_PATH",
         "SCRIPT_EXTENSIONS"
       ],
-      "content_hash": "7f53780e3577"
+      "content_hash": "51b27a57dcc1"
     },
     {
       "name": "check_tasks_format.py",
       "type": "python",
-      "size_lines": 160,
-      "last_updated": "2026-04-03",
+      "size_lines": 161,
+      "last_updated": "2026-04-05",
       "description": "Validate docs/TASKS.md structure and WIP rules.",
       "functions": [
         {
@@ -2238,13 +2274,13 @@
         "TASK_ID_RE",
         "REQUIRED_HEADINGS"
       ],
-      "content_hash": "7b7d584e9373"
+      "content_hash": "2544d7a459bf"
     },
     {
       "name": "check_type_annotations.py",
       "type": "python",
-      "size_lines": 542,
-      "last_updated": "2026-04-03",
+      "size_lines": 543,
+      "last_updated": "2026-04-05",
       "description": "Type Annotation Checker for Streamlit Application",
       "classes": [
         {
@@ -2289,7 +2325,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "d3676e7cb0bb"
+      "content_hash": "b8985a27f6ba"
     },
     {
       "name": "check_unfinished_merge.sh",
@@ -2327,7 +2363,7 @@
       "name": "cleanup_stale_branches.py",
       "type": "python",
       "size_lines": 187,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-04-05",
       "description": "Cleanup stale remote branches.",
       "functions": [
         {
@@ -2374,13 +2410,13 @@
           "name": "main"
         }
       ],
-      "content_hash": "74a55f79671f"
+      "content_hash": "75366306f248"
     },
     {
       "name": "collect_diagnostics.py",
       "type": "python",
-      "size_lines": 122,
-      "last_updated": "2026-04-03",
+      "size_lines": 123,
+      "last_updated": "2026-04-05",
       "description": "Collect a compact diagnostics bundle for debugging and support.",
       "functions": [
         {
@@ -2396,7 +2432,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "af5427fd7838"
+      "content_hash": "621b8f760e98"
     },
     {
       "name": "collect_metrics.sh",
@@ -2486,8 +2522,8 @@
     {
       "name": "create_doc.py",
       "type": "python",
-      "size_lines": 261,
-      "last_updated": "2026-04-03",
+      "size_lines": 260,
+      "last_updated": "2026-04-05",
       "description": "Create a new documentation file with proper metadata header.",
       "functions": [
         {
@@ -2527,7 +2563,7 @@
         "TYPE_FOLDER_MAP",
         "TEMPLATE"
       ],
-      "content_hash": "2b33224d281a"
+      "content_hash": "306a273f6652"
     },
     {
       "name": "create_task_pr.sh",
@@ -2540,8 +2576,8 @@
     {
       "name": "create_test_scaffold.py",
       "type": "python",
-      "size_lines": 236,
-      "last_updated": "2026-04-03",
+      "size_lines": 238,
+      "last_updated": "2026-04-05",
       "description": "Test Scaffold Generator (Solution 2)",
       "functions": [
         {
@@ -2566,36 +2602,105 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "3620935b3e2d"
+      "content_hash": "423d1b1b8768"
     },
     {
       "name": "diagnose_ci.py",
       "type": "python",
-      "size_lines": 278,
+      "size_lines": 339,
       "last_updated": "2026-04-04",
-      "description": "CI failure diagnosis, local reproduction, and auto-fix tool.",
+      "description": "CI failure diagnosis — check, reproduce, and fix CI failures locally.",
       "functions": [
         {
-          "name": "get_pr_checks",
-          "description": "Fetch CI check status for a PR.",
-          "params": ["pr_number"]
+          "name": "run_cmd",
+          "params": [
+            "cmd",
+            "cwd",
+            "timeout"
+          ]
         },
         {
-          "name": "run_local_checks",
-          "description": "Run CI checks locally.",
-          "params": ["fix"]
+          "name": "gh_ok"
+        },
+        {
+          "name": "current_branch"
+        },
+        {
+          "name": "truncate",
+          "params": [
+            "text",
+            "n"
+          ]
+        },
+        {
+          "name": "ci_runs_for_pr",
+          "params": [
+            "pr"
+          ]
+        },
+        {
+          "name": "ci_runs_for_branch",
+          "params": [
+            "branch"
+          ]
+        },
+        {
+          "name": "latest_run_id",
+          "params": [
+            "branch"
+          ]
+        },
+        {
+          "name": "failed_logs",
+          "params": [
+            "run_id"
+          ]
+        },
+        {
+          "name": "run_check",
+          "params": [
+            "chk",
+            "fix"
+          ]
+        },
+        {
+          "name": "run_all_local",
+          "params": [
+            "fix"
+          ]
+        },
+        {
+          "name": "print_ci_report",
+          "params": [
+            "jobs",
+            "source"
+          ]
+        },
+        {
+          "name": "print_local_report",
+          "params": [
+            "results",
+            "fix"
+          ]
         },
         {
           "name": "main"
         }
       ],
-      "content_hash": "new"
+      "constants": [
+        "REPO_ROOT",
+        "VENV_PY",
+        "REACT_APP",
+        "_DIRS",
+        "CI_JOB_MAP"
+      ],
+      "content_hash": "ebca1770bf56"
     },
     {
       "name": "discover_api_signatures.py",
       "type": "python",
-      "size_lines": 376,
-      "last_updated": "2026-04-03",
+      "size_lines": 391,
+      "last_updated": "2026-04-05",
       "description": "Discover and display structural_lib API function signatures.",
       "classes": [
         {
@@ -2647,13 +2752,13 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "adfe3cc51c4b"
+      "content_hash": "5edd972e41d6"
     },
     {
       "name": "dxf_render.py",
       "type": "python",
-      "size_lines": 128,
-      "last_updated": "2026-03-26",
+      "size_lines": 141,
+      "last_updated": "2026-04-05",
       "description": "Render DXF drawings to PNG or PDF using ezdxf + matplotlib.",
       "functions": [
         {
@@ -2669,13 +2774,13 @@
           "name": "main"
         }
       ],
-      "content_hash": "ddf14dec7245"
+      "content_hash": "c21a42af5a80"
     },
     {
       "name": "evolve.py",
       "type": "python",
-      "size_lines": 543,
-      "last_updated": "2026-04-03",
+      "size_lines": 567,
+      "last_updated": "2026-04-05",
       "description": "Self-evolution engine — orchestrates project health, feedback, and auto-fixes.",
       "functions": [
         {
@@ -2761,7 +2866,7 @@
         "AI_COMMIT",
         "TASKS_MD"
       ],
-      "content_hash": "ebe10b1153db"
+      "content_hash": "f27dd9d41f9b"
     },
     {
       "name": "export_paper_data.py",
@@ -2832,8 +2937,8 @@
     {
       "name": "external_cli_test.py",
       "type": "python",
-      "size_lines": 396,
-      "last_updated": "2026-04-03",
+      "size_lines": 385,
+      "last_updated": "2026-04-05",
       "description": "External CLI smoke test (S-007).",
       "classes": [
         {
@@ -2849,7 +2954,7 @@
         "SAMPLE_JOB_IS456_JSON",
         "SAMPLE_BEAM_DESIGN_CSV"
       ],
-      "content_hash": "d8d2534a4be2"
+      "content_hash": "3a19dc1f5de0"
     },
     {
       "name": "find_automation.py",
@@ -2924,16 +3029,16 @@
     {
       "name": "finish_task_pr.sh",
       "type": "shell-script",
-      "size_lines": 436,
-      "last_updated": "2026-04-03",
+      "size_lines": 444,
+      "last_updated": "2026-04-05",
       "description": "Finish task work and create PR",
-      "content_hash": "f8c6fe793c65"
+      "content_hash": "9cd194cf2d04"
     },
     {
       "name": "fix_broken_links.py",
       "type": "python",
-      "size_lines": 251,
-      "last_updated": "2026-04-03",
+      "size_lines": 268,
+      "last_updated": "2026-04-05",
       "description": "Fix broken internal links in markdown files.",
       "functions": [
         {
@@ -2982,7 +3087,7 @@
         "DELETED_TARGETS",
         "LINK_RE"
       ],
-      "content_hash": "2e9139ae0107"
+      "content_hash": "9f4e28e27e0a"
     },
     {
       "name": "generate_all_indexes.sh",
@@ -2995,8 +3100,8 @@
     {
       "name": "generate_api_manifest.py",
       "type": "python",
-      "size_lines": 157,
-      "last_updated": "2026-04-03",
+      "size_lines": 159,
+      "last_updated": "2026-04-05",
       "description": "Generate or validate the public API manifest for structural_lib.api.",
       "functions": [
         {
@@ -3006,13 +3111,13 @@
       "constants": [
         "DEFAULT_OUT"
       ],
-      "content_hash": "b4b6437781c7"
+      "content_hash": "15fd5b6498db"
     },
     {
       "name": "generate_client_sdks.py",
       "type": "python",
-      "size_lines": 526,
-      "last_updated": "2026-04-03",
+      "size_lines": 531,
+      "last_updated": "2026-04-05",
       "description": "Generate client SDKs from FastAPI OpenAPI specification.",
       "functions": [
         {
@@ -3059,13 +3164,13 @@
         "OPENAPI_SPEC",
         "OUTPUT_DIR"
       ],
-      "content_hash": "1ec2af11d0e8"
+      "content_hash": "e0a8cacb7bef"
     },
     {
       "name": "generate_docs_index.py",
       "type": "python",
-      "size_lines": 245,
-      "last_updated": "2026-04-03",
+      "size_lines": 246,
+      "last_updated": "2026-04-05",
       "description": "Generate machine-readable JSON index of documentation.",
       "functions": [
         {
@@ -3122,13 +3227,13 @@
         "SKIP_DIRS",
         "FOLDER_TAGS"
       ],
-      "content_hash": "b109d71599c3"
+      "content_hash": "4c2bbf6c01de"
     },
     {
       "name": "generate_enhanced_index.py",
       "type": "python",
-      "size_lines": 800,
-      "last_updated": "2026-04-03",
+      "size_lines": 816,
+      "last_updated": "2026-04-05",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
         {
@@ -3205,7 +3310,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "f45389dc7e4c"
+      "content_hash": "9f29e62813cb"
     },
     {
       "name": "generate_error_docs.py",
@@ -3297,8 +3402,8 @@
     {
       "name": "migrate_python_module.py",
       "type": "python",
-      "size_lines": 511,
-      "last_updated": "2026-04-03",
+      "size_lines": 517,
+      "last_updated": "2026-04-05",
       "description": "Migrate a Python module to a new location with import updates.",
       "functions": [
         {
@@ -3363,13 +3468,13 @@
         "SEARCH_DIRS",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "48b5e4909f80"
+      "content_hash": "d17fb30066ce"
     },
     {
       "name": "migrate_react_component.py",
       "type": "python",
-      "size_lines": 470,
-      "last_updated": "2026-04-03",
+      "size_lines": 478,
+      "last_updated": "2026-04-05",
       "description": "Migrate a React component to a new feature-grouped folder.",
       "functions": [
         {
@@ -3444,7 +3549,7 @@
         "SEARCH_EXTENSIONS",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "ee69f34529a0"
+      "content_hash": "a797adae1bf7"
     },
     {
       "name": "parity_dashboard.py",
@@ -3712,8 +3817,8 @@
     {
       "name": "project_health.py",
       "type": "python",
-      "size_lines": 741,
-      "last_updated": "2026-04-03",
+      "size_lines": 864,
+      "last_updated": "2026-04-05",
       "description": "Unified project health scanner with auto-fix capability.",
       "classes": [
         {
@@ -3808,7 +3913,7 @@
         "WEIGHTS",
         "SCANNERS"
       ],
-      "content_hash": "2a0abbb34d8a"
+      "content_hash": "79857a2539a1"
     },
     {
       "name": "prompt_router.py",
@@ -3849,10 +3954,10 @@
     {
       "name": "recover_git_state.sh",
       "type": "shell-script",
-      "size_lines": 162,
-      "last_updated": "2026-03-26",
+      "size_lines": 175,
+      "last_updated": "2026-04-03",
       "description": "Recover from common git workflow failure states",
-      "content_hash": "4fda2ded7e8b"
+      "content_hash": "036521145c8e"
     },
     {
       "name": "release.py",
@@ -3963,8 +4068,8 @@
     {
       "name": "safe_file_move.py",
       "type": "python",
-      "size_lines": 484,
-      "last_updated": "2026-04-03",
+      "size_lines": 505,
+      "last_updated": "2026-04-05",
       "description": "Safe file move script with automatic link updates.",
       "functions": [
         {
@@ -4012,15 +4117,15 @@
           "name": "main"
         }
       ],
-      "content_hash": "7e082e271dcd"
+      "content_hash": "dd51040c60ad"
     },
     {
       "name": "safe_push.sh",
       "type": "shell-script",
-      "size_lines": 669,
+      "size_lines": 705,
       "last_updated": "2026-04-03",
       "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
-      "content_hash": "98b803545679"
+      "content_hash": "0e06b6e459ab"
     },
     {
       "name": "session.py",
@@ -4243,10 +4348,10 @@
     {
       "name": "should_use_pr.sh",
       "type": "shell-script",
-      "size_lines": 412,
-      "last_updated": "2026-03-29",
+      "size_lines": 436,
+      "last_updated": "2026-04-04",
       "description": "Deprecation notice — use ai_commit.sh --pr-check instead",
-      "content_hash": "365ea3298455"
+      "content_hash": "0b4f93decb62"
     },
     {
       "name": "skill_tiers.py",
@@ -4311,8 +4416,8 @@
     {
       "name": "sync_numbers.py",
       "type": "python",
-      "size_lines": 389,
-      "last_updated": "2026-04-03",
+      "size_lines": 479,
+      "last_updated": "2026-04-05",
       "description": "Scan codebase and sync stale numbers across documentation files.",
       "classes": [
         {
@@ -4384,13 +4489,13 @@
       "constants": [
         "DOCS_TO_SYNC"
       ],
-      "content_hash": "b92645b03135"
+      "content_hash": "11ecfe7d1a9b"
     },
     {
       "name": "test_api_parity.py",
       "type": "python",
-      "size_lines": 444,
-      "last_updated": "2026-04-03",
+      "size_lines": 457,
+      "last_updated": "2026-04-05",
       "description": "API Parity Testing Script (V3 Preparation)",
       "classes": [
         {
@@ -4475,13 +4580,13 @@
         "TEST_CASES_PATH",
         "STANDARD_TEST_CASES"
       ],
-      "content_hash": "0fb4378bf7b8"
+      "content_hash": "d740c42560a1"
     },
     {
       "name": "test_changed.py",
       "type": "python",
-      "size_lines": 207,
-      "last_updated": "2026-04-03",
+      "size_lines": 216,
+      "last_updated": "2026-04-05",
       "description": "Smart test runner — run only tests related to changed files.",
       "functions": [
         {
@@ -4508,7 +4613,7 @@
         "SOURCE_TO_TEST_MAP",
         "VERBOSE"
       ],
-      "content_hash": "083adecc9a09"
+      "content_hash": "a9e377c53ec5"
     },
     {
       "name": "test_cli_smoke.py",
@@ -4545,8 +4650,8 @@
     {
       "name": "test_import_3d_pipeline.py",
       "type": "python",
-      "size_lines": 203,
-      "last_updated": "2026-04-03",
+      "size_lines": 211,
+      "last_updated": "2026-04-05",
       "description": "Import → Design → 3D Pipeline Test",
       "functions": [
         {
@@ -4554,13 +4659,13 @@
           "description": "Run the complete pipeline test."
         }
       ],
-      "content_hash": "5da05aa1f6b3"
+      "content_hash": "4f3e1b7f11a6"
     },
     {
       "name": "test_import_pipeline.py",
       "type": "python",
-      "size_lines": 249,
-      "last_updated": "2026-04-03",
+      "size_lines": 391,
+      "last_updated": "2026-04-05",
       "description": "End-to-end test of all import paths.",
       "functions": [
         {
@@ -4652,15 +4757,15 @@
         "PASS",
         "FAIL"
       ],
-      "content_hash": "2b115c76164b"
+      "content_hash": "47efaf582712"
     },
     {
       "name": "test_sample_endpoint.py",
       "type": "python",
-      "size_lines": 50,
-      "last_updated": "2026-04-03",
+      "size_lines": 55,
+      "last_updated": "2026-04-05",
       "description": "Quick test of the sample data endpoint.",
-      "content_hash": "0e76cffe0a7b"
+      "content_hash": "3333d465a711"
     },
     {
       "name": "tool_permissions.py",
@@ -4717,7 +4822,7 @@
       "name": "tool_registry.py",
       "type": "python",
       "size_lines": 535,
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-03",
       "description": "Unified tool registry — connects agents, skills, scripts, and operations.",
       "classes": [
         {
@@ -4827,7 +4932,7 @@
         "TOOL_ALIASES",
         "STOPWORDS"
       ],
-      "content_hash": "70da5630259d"
+      "content_hash": "1b5bf5e27e7d"
     },
     {
       "name": "update_test_stats.py",
@@ -4871,8 +4976,8 @@
     {
       "name": "validate_api_contracts.py",
       "type": "python",
-      "size_lines": 608,
-      "last_updated": "2026-04-03",
+      "size_lines": 620,
+      "last_updated": "2026-04-05",
       "description": "API Contract Validator.",
       "classes": [
         {
@@ -4954,7 +5059,7 @@
         "PROJECT_ROOT",
         "PYTHON_DIR"
       ],
-      "content_hash": "cd1393f8bd77"
+      "content_hash": "b74403b34d0e"
     },
     {
       "name": "validate_git_state.sh",
@@ -4967,8 +5072,8 @@
     {
       "name": "validate_imports.py",
       "type": "python",
-      "size_lines": 305,
-      "last_updated": "2026-04-03",
+      "size_lines": 372,
+      "last_updated": "2026-04-05",
       "description": "Validate Python imports across the project after migration.",
       "functions": [
         {
@@ -5016,13 +5121,13 @@
         "EXTERNAL_PACKAGES",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "18513ba3ed99"
+      "content_hash": "96971a164a23"
     },
     {
       "name": "validate_schema_snapshots.py",
       "type": "python",
-      "size_lines": 256,
-      "last_updated": "2026-04-03",
+      "size_lines": 257,
+      "last_updated": "2026-04-05",
       "description": "Schema Snapshot Validator.",
       "functions": [
         {
@@ -5068,13 +5173,13 @@
         "MODELS",
         "ENUMS"
       ],
-      "content_hash": "7265a99c1b89"
+      "content_hash": "0177a250676e"
     },
     {
       "name": "validate_script_refs.py",
       "type": "python",
-      "size_lines": 167,
-      "last_updated": "2026-04-03",
+      "size_lines": 169,
+      "last_updated": "2026-04-05",
       "description": "Validate that active scripts don't reference archived scripts at runtime.",
       "functions": [
         {
@@ -5108,7 +5213,7 @@
         "RUNTIME_PATTERNS_PY",
         "RUNTIME_PATTERNS_SH"
       ],
-      "content_hash": "490356394cb4"
+      "content_hash": "1551e4e55980"
     },
     {
       "name": "watch_tests.sh",
@@ -5132,5 +5237,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "cc4f3f4afed4e6be"
+  "content_hash": "134fddd81fc3b3b9"
 }

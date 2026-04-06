@@ -2,8 +2,8 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-04-02",
-  "file_count": 15,
+  "last_updated": "2026-04-07",
+  "file_count": 23,
   "files": [
     {
       "name": "README.md",
@@ -25,10 +25,17 @@
     {
       "name": "conftest.py",
       "type": "python",
-      "size_lines": 141,
-      "last_updated": "2026-03-26",
+      "size_lines": 159,
+      "last_updated": "2026-04-05",
       "description": "Test Fixtures for FastAPI Tests.",
       "functions": [
+        {
+          "name": "unwrap",
+          "description": "Extract data from APIResponse wrapper.",
+          "params": [
+            "response"
+          ]
+        },
         {
           "name": "client",
           "description": "Create a test client for the FastAPI application."
@@ -58,13 +65,13 @@
           "description": "Sample 3D geometry request data."
         }
       ],
-      "content_hash": "a02d7789729f"
+      "content_hash": "fc33194539c3"
     },
     {
       "name": "test_auth.py",
       "type": "python",
       "size_lines": 243,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-04-04",
       "description": "Tests for Authentication and Rate Limiting.",
       "classes": [
         {
@@ -108,13 +115,13 @@
           "description": "Dev token helper should create valid token."
         }
       ],
-      "content_hash": "576ef6b0053b"
+      "content_hash": "fea73f682b6c"
     },
     {
       "name": "test_column_additional_moment.py",
       "type": "python",
-      "size_lines": 202,
-      "last_updated": "2026-04-02",
+      "size_lines": 203,
+      "last_updated": "2026-04-05",
       "description": "Tests for POST /api/v1/design/column/additional-moment endpoint.",
       "classes": [
         {
@@ -135,13 +142,13 @@
       "constants": [
         "URL"
       ],
-      "content_hash": "e48fd1fd90df"
+      "content_hash": "e393d6aeb0d8"
     },
     {
       "name": "test_column_biaxial.py",
       "type": "python",
-      "size_lines": 181,
-      "last_updated": "2026-04-01",
+      "size_lines": 182,
+      "last_updated": "2026-04-05",
       "description": "Tests for POST /api/v1/design/column/biaxial-check endpoint.",
       "classes": [
         {
@@ -192,13 +199,63 @@
         "ENDPOINT",
         "SAFE_PAYLOAD"
       ],
-      "content_hash": "998a9d5fa346"
+      "content_hash": "8b7df6994047"
+    },
+    {
+      "name": "test_column_detailing.py",
+      "type": "python",
+      "size_lines": 150,
+      "last_updated": "2026-04-05",
+      "description": "Tests for POST /api/v1/design/column/detailing endpoint.",
+      "classes": [
+        {
+          "name": "TestColumnDetailingValidInput",
+          "description": "Tests for successful column detailing checks.",
+          "public_methods": [
+            "test_column_detailing_valid_input"
+          ]
+        },
+        {
+          "name": "TestColumnDetailingValidation",
+          "description": "Tests for input validation (422 errors).",
+          "public_methods": [
+            "test_column_detailing_invalid_width",
+            "test_column_detailing_invalid_num_bars",
+            "test_column_detailing_missing_required"
+          ]
+        },
+        {
+          "name": "TestColumnDetailingDefaults",
+          "description": "Tests for default values on optional fields.",
+          "public_methods": [
+            "test_column_detailing_defaults"
+          ]
+        },
+        {
+          "name": "TestColumnDetailingCircular",
+          "description": "Tests for circular column detailing.",
+          "public_methods": [
+            "test_column_detailing_circular"
+          ]
+        },
+        {
+          "name": "TestColumnDetailingAtLap",
+          "description": "Tests for detailing at lap splice location.",
+          "public_methods": [
+            "test_column_detailing_at_lap"
+          ]
+        }
+      ],
+      "constants": [
+        "ENDPOINT"
+      ],
+      "content_hash": "be145aa110e0"
     },
     {
       "name": "test_column_effective_length.py",
       "type": "python",
-      "size_lines": 168,
-      "last_updated": "2026-04-01",
+      "size_lines": 169,
+      "last_updated": "2026-04-05",
       "description": "Tests for POST /api/v1/design/column/effective-length endpoint.",
       "classes": [
         {
@@ -229,13 +286,13 @@
       "constants": [
         "ENDPOINT"
       ],
-      "content_hash": "253d891a9295"
+      "content_hash": "745e1507dd9d"
     },
     {
       "name": "test_column_pm_interaction.py",
       "type": "python",
-      "size_lines": 104,
-      "last_updated": "2026-04-01",
+      "size_lines": 106,
+      "last_updated": "2026-04-05",
       "description": "Tests for POST /api/v1/design/column/interaction-curve endpoint.",
       "classes": [
         {
@@ -262,13 +319,13 @@
         "ENDPOINT",
         "VALID_REQUEST"
       ],
-      "content_hash": "ea1fb2cddeab"
+      "content_hash": "f5c728aaad3e"
     },
     {
       "name": "test_column_uniaxial.py",
       "type": "python",
-      "size_lines": 141,
-      "last_updated": "2026-04-01",
+      "size_lines": 142,
+      "last_updated": "2026-04-06",
       "description": "Tests for POST /api/v1/design/column/uniaxial endpoint.",
       "classes": [
         {
@@ -306,13 +363,105 @@
         "ENDPOINT",
         "SAFE_REQUEST"
       ],
-      "content_hash": "a91768dd8e22"
+      "content_hash": "a125fc65ff16"
+    },
+    {
+      "name": "test_design_compliance.py",
+      "type": "python",
+      "size_lines": 381,
+      "last_updated": "2026-04-05",
+      "description": "Tests for design router compliance endpoints.",
+      "classes": [
+        {
+          "name": "TestEnhancedShear",
+          "description": "Tests for POST /api/v1/design/beam/enhanced-shear.",
+          "public_methods": [
+            "test_enhanced_shear_basic",
+            "test_enhanced_shear_no_enhancement",
+            "test_enhanced_shear_capped",
+            "test_enhanced_shear_invalid_fck"
+          ]
+        },
+        {
+          "name": "TestSlendernessCheck",
+          "description": "Tests for POST /api/v1/design/beam/slenderness-check.",
+          "public_methods": [
+            "test_slenderness_short_beam",
+            "test_slenderness_long_beam",
+            "test_slenderness_cantilever",
+            "test_slenderness_invalid_width"
+          ]
+        },
+        {
+          "name": "TestDeflectionCheck",
+          "description": "Tests for POST /api/v1/design/beam/deflection-check.",
+          "public_methods": [
+            "test_deflection_pass",
+            "test_deflection_fail_shallow",
+            "test_deflection_continuous",
+            "test_deflection_with_modification_factors",
+            "test_deflection_invalid_span"
+          ]
+        },
+        {
+          "name": "TestCrackWidthCheck",
+          "description": "Tests for POST /api/v1/design/beam/crack-width-check.",
+          "public_methods": [
+            "test_crack_width_moderate",
+            "test_crack_width_severe",
+            "test_crack_width_with_params"
+          ]
+        },
+        {
+          "name": "TestComplianceReport",
+          "description": "Tests for POST /api/v1/design/beam/compliance.",
+          "public_methods": [
+            "test_compliance_single_case",
+            "test_compliance_multiple_cases",
+            "test_compliance_empty_cases",
+            "test_compliance_with_deflection_defaults",
+            "test_compliance_invalid_d_gte_D"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client"
+        }
+      ],
+      "content_hash": "abb836fa73c7"
+    },
+    {
+      "name": "test_detailing_anchorage.py",
+      "type": "python",
+      "size_lines": 98,
+      "last_updated": "2026-04-05",
+      "description": "Tests for detailing router anchorage endpoint.",
+      "classes": [
+        {
+          "name": "TestAnchorageCheck",
+          "description": "Tests for POST /api/v1/detailing/anchorage-check.",
+          "public_methods": [
+            "test_anchorage_adequate",
+            "test_anchorage_inadequate_narrow_support",
+            "test_anchorage_plain_bars",
+            "test_anchorage_invalid_bar_dia",
+            "test_anchorage_missing_required_field"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client"
+        }
+      ],
+      "content_hash": "edb74d1a44b7"
     },
     {
       "name": "test_endpoints.py",
       "type": "python",
-      "size_lines": 761,
-      "last_updated": "2026-03-27",
+      "size_lines": 853,
+      "last_updated": "2026-04-05",
       "description": "Integration Tests for FastAPI Endpoints.",
       "classes": [
         {
@@ -419,15 +568,198 @@
             "test_cors_preflight",
             "test_cors_response_headers"
           ]
+        },
+        {
+          "name": "TestDepthValidationUX01",
+          "description": "UX-01: Pydantic model_validators reject effective_depth >= depth.",
+          "public_methods": [
+            "test_beam_design_rejects_effective_depth_gt_depth",
+            "test_beam_design_rejects_effective_depth_eq_depth",
+            "test_beam_design_accepts_valid_effective_depth",
+            "test_torsion_design_rejects_effective_depth_gt_depth",
+            "test_ductility_check_rejects_d_gte_D"
+          ]
         }
       ],
-      "content_hash": "f2bd478f4415"
+      "content_hash": "956da8f224d4"
+    },
+    {
+      "name": "test_export_bbs_dxf.py",
+      "type": "python",
+      "size_lines": 202,
+      "last_updated": "2026-04-05",
+      "description": "Tests for export router endpoints.",
+      "classes": [
+        {
+          "name": "TestBBSExport",
+          "description": "Tests for POST /api/v1/export/bbs.",
+          "public_methods": [
+            "test_bbs_export_csv",
+            "test_bbs_export_with_compression",
+            "test_bbs_export_zero_steel"
+          ]
+        },
+        {
+          "name": "TestDXFExport",
+          "description": "Tests for POST /api/v1/export/dxf.",
+          "public_methods": [
+            "test_dxf_export_basic",
+            "test_dxf_export_custom_beam_id"
+          ]
+        },
+        {
+          "name": "TestBuildingSummaryExport",
+          "description": "Tests for POST /api/v1/export/building-summary.",
+          "public_methods": [
+            "test_building_summary_html",
+            "test_building_summary_csv",
+            "test_building_summary_empty_beams"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client"
+        },
+        {
+          "name": "sample_beam_export",
+          "description": "Standard beam data for export endpoints."
+        }
+      ],
+      "content_hash": "2a7cab3f3e43"
+    },
+    {
+      "name": "test_geometry_full.py",
+      "type": "python",
+      "size_lines": 244,
+      "last_updated": "2026-04-05",
+      "description": "Tests for geometry router advanced endpoints.",
+      "classes": [
+        {
+          "name": "TestFullBeamGeometry",
+          "description": "Tests for POST /api/v1/geometry/beam/full.",
+          "public_methods": [
+            "test_full_geometry_basic",
+            "test_full_geometry_seismic",
+            "test_full_geometry_invalid_width",
+            "test_full_geometry_rebar_structure"
+          ]
+        },
+        {
+          "name": "TestBuildingGeometry",
+          "description": "Tests for POST /api/v1/geometry/building.",
+          "public_methods": [
+            "test_building_geometry_basic",
+            "test_building_geometry_empty",
+            "test_building_geometry_with_scale"
+          ]
+        },
+        {
+          "name": "TestCrossSectionGeometry",
+          "description": "Tests for POST /api/v1/geometry/cross-section.",
+          "public_methods": [
+            "test_cross_section_basic",
+            "test_cross_section_no_compression",
+            "test_cross_section_invalid_width",
+            "test_cross_section_dimensions_in_response"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client"
+        }
+      ],
+      "content_hash": "078233a153a6"
+    },
+    {
+      "name": "test_imports_formats.py",
+      "type": "python",
+      "size_lines": 82,
+      "last_updated": "2026-04-05",
+      "description": "Tests for import router extended endpoints.",
+      "classes": [
+        {
+          "name": "TestImportFormats",
+          "description": "Tests for GET /api/v1/import/formats.",
+          "public_methods": [
+            "test_formats_endpoint",
+            "test_formats_have_indicators"
+          ]
+        },
+        {
+          "name": "TestCSVTextImport",
+          "description": "Tests for POST /api/v1/import/csv/text.",
+          "public_methods": [
+            "test_csv_text_generic",
+            "test_csv_text_empty"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client"
+        }
+      ],
+      "content_hash": "95407d21e40f"
+    },
+    {
+      "name": "test_insights_dashboard.py",
+      "type": "python",
+      "size_lines": 339,
+      "last_updated": "2026-04-05",
+      "description": "Tests for insights router endpoints.",
+      "classes": [
+        {
+          "name": "TestDashboard",
+          "description": "Tests for POST /api/v1/insights/dashboard.",
+          "public_methods": [
+            "test_dashboard_single_beam",
+            "test_dashboard_multiple_beams",
+            "test_dashboard_empty_results",
+            "test_dashboard_story_breakdown"
+          ]
+        },
+        {
+          "name": "TestCodeChecks",
+          "description": "Tests for POST /api/v1/insights/code-checks.",
+          "public_methods": [
+            "test_code_checks_basic",
+            "test_code_checks_with_rebar",
+            "test_code_checks_undersized_beam"
+          ]
+        },
+        {
+          "name": "TestRebarSuggest",
+          "description": "Tests for POST /api/v1/insights/rebar-suggest.",
+          "public_methods": [
+            "test_rebar_suggest_basic",
+            "test_rebar_suggest_over_provided",
+            "test_rebar_suggest_exact_match"
+          ]
+        },
+        {
+          "name": "TestProjectBOQ",
+          "description": "Tests for POST /api/v1/insights/project-boq.",
+          "public_methods": [
+            "test_project_boq_basic",
+            "test_project_boq_custom_costs",
+            "test_project_boq_empty_beams"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "client"
+        }
+      ],
+      "content_hash": "9b0f66e89dcd"
     },
     {
       "name": "test_integration.py",
       "type": "python",
-      "size_lines": 388,
-      "last_updated": "2026-03-26",
+      "size_lines": 386,
+      "last_updated": "2026-04-05",
       "description": "Integration tests for FastAPI structural design endpoints.",
       "classes": [
         {
@@ -496,13 +828,13 @@
           "description": "Create test client."
         }
       ],
-      "content_hash": "e324d812ed6c"
+      "content_hash": "ed165009a24a"
     },
     {
       "name": "test_load.py",
       "type": "python",
       "size_lines": 286,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-06",
       "description": "Load Tests for FastAPI Application.",
       "classes": [
         {
@@ -567,13 +899,37 @@
         "LOAD_DEGRADATION_PCT",
         "LOAD_AVG_MS"
       ],
-      "content_hash": "0a5b61cc6a3f"
+      "content_hash": "2dc6ebdf8395"
+    },
+    {
+      "name": "test_optimization_pareto.py",
+      "type": "python",
+      "size_lines": 158,
+      "last_updated": "2026-04-06",
+      "description": "Tests for Pareto multi-objective beam optimization endpoint.",
+      "classes": [
+        {
+          "name": "TestParetoOptimization",
+          "description": "Tests for the Pareto beam optimization endpoint.",
+          "public_methods": [
+            "test_pareto_valid_request",
+            "test_pareto_invalid_negative_span",
+            "test_pareto_invalid_zero_moment",
+            "test_pareto_small_moment",
+            "test_pareto_response_candidate_structure",
+            "test_pareto_custom_objectives",
+            "test_pareto_best_by_fields",
+            "test_pareto_span_exceeds_max"
+          ]
+        }
+      ],
+      "content_hash": "bcfabea9e2ef"
     },
     {
       "name": "test_security.py",
       "type": "python",
       "size_lines": 407,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-04-04",
       "description": "Security Tests for FastAPI Application.",
       "classes": [
         {
@@ -655,13 +1011,13 @@
           "description": "Create an expired JWT token."
         }
       ],
-      "content_hash": "54c3b9f9c730"
+      "content_hash": "1045cfefe897"
     },
     {
       "name": "test_streaming.py",
       "type": "python",
-      "size_lines": 175,
-      "last_updated": "2026-03-26",
+      "size_lines": 174,
+      "last_updated": "2026-04-04",
       "description": "Tests for SSE Streaming Endpoint.",
       "classes": [
         {
@@ -684,7 +1040,7 @@
           ]
         }
       ],
-      "content_hash": "67705e129f46"
+      "content_hash": "04751b3c7bfc"
     },
     {
       "name": "test_websocket.py",
@@ -711,6 +1067,6 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "255808e4d8cfc68a",
+  "content_hash": "3529a084acfc5e34",
   "has_init": true
 }

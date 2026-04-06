@@ -2,14 +2,14 @@
   "folder": "react_app/src/components",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-07",
   "file_count": 2,
   "files": [
     {
       "name": "CommandPalette.tsx",
       "type": "react-component",
-      "size_lines": 272,
-      "last_updated": "2026-03-26",
+      "size_lines": 273,
+      "last_updated": "2026-04-05",
       "exports": [
         "CommandItem",
         "CommandPalette",
@@ -17,7 +17,7 @@
       ],
       "props_type": "CommandPaletteProps",
       "description": "CommandPalette Component",
-      "content_hash": "64d0f7d4e006"
+      "content_hash": "860720b469c7"
     },
     {
       "name": "index.ts",
@@ -42,7 +42,7 @@
     {
       "name": "design",
       "path": "design/",
-      "file_count": 10
+      "file_count": 11
     },
     {
       "name": "import",
@@ -52,7 +52,7 @@
     {
       "name": "layout",
       "path": "layout/",
-      "file_count": 2
+      "file_count": 3
     },
     {
       "name": "pages",
@@ -62,7 +62,7 @@
     {
       "name": "ui",
       "path": "ui/",
-      "file_count": 8
+      "file_count": 10
     },
     {
       "name": "viewport",
@@ -70,5 +70,5 @@
       "file_count": 6
     }
   ],
-  "content_hash": "f6a51eefa8ba624c"
+  "content_hash": "3265f2879e94f70b"
 }

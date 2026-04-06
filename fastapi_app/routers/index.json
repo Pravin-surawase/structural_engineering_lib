@@ -2,7 +2,7 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-07",
   "file_count": 14,
   "files": [
     {
@@ -16,8 +16,8 @@
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 319,
-      "last_updated": "2026-03-29",
+      "size_lines": 334,
+      "last_updated": "2026-04-05",
       "description": "Smart Analysis Router.",
       "functions": [
         {
@@ -39,13 +39,13 @@
           "description": "Get IS 456:2000 code clause references."
         }
       ],
-      "content_hash": "bcda1c6b5eec"
+      "content_hash": "c79a52368115"
     },
     {
       "name": "column.py",
       "type": "python",
-      "size_lines": 466,
-      "last_updated": "2026-04-02",
+      "size_lines": 736,
+      "last_updated": "2026-04-06",
       "description": "Column Design Router.",
       "functions": [
         {
@@ -103,15 +103,50 @@
           "params": [
             "request"
           ]
+        },
+        {
+          "name": "design_long_column",
+          "description": "Design a long (slender) column per IS 456 Cl 39.7.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "helical_check",
+          "description": "Check helical reinforcement per IS 456 Cl 39.4.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_column",
+          "description": "Unified column design per IS 456.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "column_ductile_detailing",
+          "description": "Check column ductile detailing per IS 13920:2016 Cl 7.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "column_detailing",
+          "description": "Column detailing check per IS 456 Cl 26.5.3.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "95f83b5a0747"
+      "content_hash": "9c761afc41ed"
     },
     {
       "name": "design.py",
       "type": "python",
-      "size_lines": 839,
-      "last_updated": "2026-04-02",
+      "size_lines": 882,
+      "last_updated": "2026-04-06",
       "description": "Beam Design Router.",
       "functions": [
         {
@@ -182,13 +217,13 @@
           ]
         }
       ],
-      "content_hash": "3b016850f0c3"
+      "content_hash": "24570368d5ff"
     },
     {
       "name": "detailing.py",
       "type": "python",
-      "size_lines": 381,
-      "last_updated": "2026-04-02",
+      "size_lines": 402,
+      "last_updated": "2026-04-05",
       "description": "Beam Detailing Router.",
       "functions": [
         {
@@ -220,13 +255,13 @@
           ]
         }
       ],
-      "content_hash": "f4abbbdbabe0"
+      "content_hash": "07db19cffb61"
     },
     {
       "name": "export.py",
       "type": "python",
-      "size_lines": 556,
-      "last_updated": "2026-03-27",
+      "size_lines": 579,
+      "last_updated": "2026-04-06",
       "description": "Export Router — BBS, DXF, and Report exports.",
       "classes": [
         {
@@ -247,6 +282,13 @@
         }
       ],
       "functions": [
+        {
+          "name": "sanitize_filename",
+          "description": "Sanitize a string for safe use in Content-Disposition headers.",
+          "params": [
+            "name"
+          ]
+        },
         {
           "name": "export_bbs",
           "description": "Generate and download a Bar Bending Schedule as CSV.",
@@ -276,13 +318,13 @@
           ]
         }
       ],
-      "content_hash": "a010a3eb82cb"
+      "content_hash": "4d16af60872e"
     },
     {
       "name": "geometry.py",
       "type": "python",
-      "size_lines": 626,
-      "last_updated": "2026-03-29",
+      "size_lines": 647,
+      "last_updated": "2026-04-05",
       "description": "3D Geometry Router.",
       "functions": [
         {
@@ -318,13 +360,13 @@
           ]
         }
       ],
-      "content_hash": "653931fd3de9"
+      "content_hash": "99664043694f"
     },
     {
       "name": "health.py",
       "type": "python",
-      "size_lines": 171,
-      "last_updated": "2026-03-26",
+      "size_lines": 208,
+      "last_updated": "2026-04-05",
       "description": "Health Check Router.",
       "classes": [
         {
@@ -354,13 +396,16 @@
           "description": "Get detailed system information."
         }
       ],
-      "content_hash": "3ff64d893431"
+      "constants": [
+        "_SMOKE_TTL"
+      ],
+      "content_hash": "f0b8fa957599"
     },
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 793,
-      "last_updated": "2026-03-29",
+      "size_lines": 930,
+      "last_updated": "2026-04-05",
       "description": "CSV Import Router.",
       "classes": [
         {
@@ -438,13 +483,13 @@
           "description": "Load sample building data from actual ETABS export CSV files."
         }
       ],
-      "content_hash": "6410975c0c83"
+      "content_hash": "2924c666ce78"
     },
     {
       "name": "insights.py",
       "type": "python",
-      "size_lines": 493,
-      "last_updated": "2026-03-30",
+      "size_lines": 507,
+      "last_updated": "2026-04-05",
       "description": "Insights Router.",
       "classes": [
         {
@@ -526,13 +571,13 @@
           ]
         }
       ],
-      "content_hash": "d737d7c78c67"
+      "content_hash": "5b167d8e29a4"
     },
     {
       "name": "optimization.py",
       "type": "python",
-      "size_lines": 229,
-      "last_updated": "2026-03-26",
+      "size_lines": 327,
+      "last_updated": "2026-04-06",
       "description": "Cost Optimization Router.",
       "functions": [
         {
@@ -545,15 +590,22 @@
         {
           "name": "get_cost_rates",
           "description": "Get default cost rates for optimization."
+        },
+        {
+          "name": "optimize_beam_pareto",
+          "description": "Multi-objective Pareto optimization for beam design.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "7602ccc3524a"
+      "content_hash": "606098b86400"
     },
     {
       "name": "rebar.py",
       "type": "python",
-      "size_lines": 247,
-      "last_updated": "2026-03-26",
+      "size_lines": 261,
+      "last_updated": "2026-04-05",
       "description": "Rebar Validation and Application Router.",
       "classes": [
         {
@@ -601,13 +653,13 @@
           ]
         }
       ],
-      "content_hash": "54188259e83e"
+      "content_hash": "80d763de4bf6"
     },
     {
       "name": "streaming.py",
       "type": "python",
-      "size_lines": 290,
-      "last_updated": "2026-03-26",
+      "size_lines": 308,
+      "last_updated": "2026-04-04",
       "description": "Server-Sent Events (SSE) Router for Batch Processing.",
       "classes": [
         {
@@ -640,13 +692,13 @@
           ]
         }
       ],
-      "content_hash": "b377cd771c50"
+      "content_hash": "4d0ea0c92e06"
     },
     {
       "name": "websocket.py",
       "type": "python",
-      "size_lines": 306,
-      "last_updated": "2026-03-26",
+      "size_lines": 355,
+      "last_updated": "2026-04-06",
       "description": "WebSocket Router for Live Design Updates.",
       "classes": [
         {
@@ -658,6 +710,14 @@
             "send_json",
             "broadcast"
           ]
+        },
+        {
+          "name": "WSDesignParams",
+          "description": "Validated parameters for design_beam WebSocket messages."
+        },
+        {
+          "name": "WSCheckParams",
+          "description": "Validated parameters for check_beam WebSocket messages."
         }
       ],
       "functions": [
@@ -687,11 +747,11 @@
           ]
         }
       ],
-      "content_hash": "873228f1cfec"
+      "content_hash": "3dc405e36039"
     }
   ],
   "subfolders": [],
-  "content_hash": "186aca92ba9b1c46",
+  "content_hash": "ccd5b3718e63b847",
   "has_init": true,
   "public_api": [
     "analysis",

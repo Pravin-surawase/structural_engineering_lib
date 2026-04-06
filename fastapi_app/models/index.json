@@ -2,8 +2,8 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-02",
-  "file_count": 9,
+  "last_updated": "2026-04-07",
+  "file_count": 10,
   "files": [
     {
       "name": "__init__.py",
@@ -16,8 +16,8 @@
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 235,
-      "last_updated": "2026-03-27",
+      "size_lines": 254,
+      "last_updated": "2026-04-04",
       "description": "Smart Analysis Pydantic Models.",
       "classes": [
         {
@@ -61,20 +61,24 @@
           "description": "Response model for smart analysis."
         }
       ],
-      "content_hash": "b289d557880c"
+      "content_hash": "5cfa55411c2e"
     },
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 486,
-      "last_updated": "2026-03-31",
+      "size_lines": 618,
+      "last_updated": "2026-04-05",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
+        {
+          "name": "RebarLayerConfig",
+          "description": "Configuration for a single rebar layer in multi-layer reinforcement."
+        },
         {
           "name": "BeamDesignRequest",
           "description": "Request model for beam design calculation.",
           "public_methods": [
-            "validate_depth_ratio"
+            "validate_depth_relationships"
           ]
         },
         {
@@ -92,6 +96,14 @@
         {
           "name": "ShearResult",
           "description": "Shear design result."
+        },
+        {
+          "name": "DeflectionCheckResult",
+          "description": "Result of deflection span/depth check."
+        },
+        {
+          "name": "CrackWidthCheckResult",
+          "description": "Result of crack width check."
         },
         {
           "name": "BeamDesignResponse",
@@ -115,28 +127,23 @@
         },
         {
           "name": "TorsionDesignRequest",
-          "description": "Request model for torsion design per IS 456 Cl 41."
+          "description": "Request model for torsion design per IS 456 Cl 41.",
+          "public_methods": [
+            "validate_depth_relationships"
+          ]
         },
         {
           "name": "TorsionDesignResponse",
           "description": "Response model for torsion design."
-        },
-        {
-          "name": "EnhancedShearRequest",
-          "description": "Request model for enhanced shear strength near supports (IS 456 Cl 40.3)."
-        },
-        {
-          "name": "EnhancedShearResponse",
-          "description": "Response model for enhanced shear strength calculation."
         }
       ],
-      "content_hash": "3fd964b8adb2"
+      "content_hash": "b866ec0fd49a"
     },
     {
       "name": "boq.py",
       "type": "python",
-      "size_lines": 75,
-      "last_updated": "2026-03-30",
+      "size_lines": 77,
+      "last_updated": "2026-04-04",
       "description": "Pydantic models for Project BOQ endpoint.",
       "classes": [
         {
@@ -164,13 +171,13 @@
           "description": "BOQ response with aggregated quantities and costs."
         }
       ],
-      "content_hash": "3819fe00ad52"
+      "content_hash": "3d1a134375d0"
     },
     {
       "name": "column.py",
       "type": "python",
-      "size_lines": 603,
-      "last_updated": "2026-04-02",
+      "size_lines": 1005,
+      "last_updated": "2026-04-04",
       "description": "Column Design Pydantic Models.",
       "classes": [
         {
@@ -234,7 +241,7 @@
           "description": "Response model for biaxial bending check per IS 456 Cl 39.6."
         }
       ],
-      "content_hash": "e0f95ec76a7a"
+      "content_hash": "e75eb4b2fec1"
     },
     {
       "name": "common.py",
@@ -276,13 +283,16 @@
     {
       "name": "compliance.py",
       "type": "python",
-      "size_lines": 315,
-      "last_updated": "2026-04-02",
+      "size_lines": 325,
+      "last_updated": "2026-04-05",
       "description": "IS 456 Compliance Check Pydantic Models.",
       "classes": [
         {
           "name": "DuctilityCheckRequest",
-          "description": "Request for IS 13920 beam ductility check."
+          "description": "Request for IS 13920 beam ductility check.",
+          "public_methods": [
+            "validate_depth_relationships"
+          ]
         },
         {
           "name": "DuctilityCheckResponse",
@@ -341,13 +351,13 @@
           "description": "Result for a single compliance case."
         }
       ],
-      "content_hash": "6e747cea865e"
+      "content_hash": "7e381857ccc2"
     },
     {
       "name": "geometry.py",
       "type": "python",
-      "size_lines": 368,
-      "last_updated": "2026-03-26",
+      "size_lines": 394,
+      "last_updated": "2026-04-04",
       "description": "3D Geometry Pydantic Models.",
       "classes": [
         {
@@ -411,13 +421,13 @@
           "description": "Axis-aligned bounding box."
         }
       ],
-      "content_hash": "ae9898fb758f"
+      "content_hash": "d9972f91b99f"
     },
     {
       "name": "optimization.py",
       "type": "python",
-      "size_lines": 209,
-      "last_updated": "2026-03-26",
+      "size_lines": 298,
+      "last_updated": "2026-04-06",
       "description": "Cost Optimization Pydantic Models.",
       "classes": [
         {
@@ -443,13 +453,59 @@
         {
           "name": "CostOptimizationResponse",
           "description": "Response model for cost optimization."
+        },
+        {
+          "name": "ParetoCandidateResponse",
+          "description": "A single Pareto-optimal beam design candidate."
+        },
+        {
+          "name": "ParetoRequest",
+          "description": "Request model for Pareto multi-objective beam optimization."
+        },
+        {
+          "name": "ParetoResponse",
+          "description": "Response model for Pareto multi-objective optimization."
         }
       ],
-      "content_hash": "30748125c080"
+      "content_hash": "9af28e132d7c"
+    },
+    {
+      "name": "response.py",
+      "type": "python",
+      "size_lines": 45,
+      "last_updated": "2026-04-05",
+      "description": "Standardized API response wrappers.",
+      "classes": [
+        {
+          "name": "APIResponse",
+          "description": "Standardized response wrapper for all API endpoints."
+        }
+      ],
+      "functions": [
+        {
+          "name": "success_response",
+          "description": "Wrap any response in standardized APIResponse format.",
+          "params": [
+            "data",
+            "clause_refs"
+          ]
+        },
+        {
+          "name": "error_response",
+          "description": "Wrap error in standardized APIResponse format.",
+          "params": [
+            "error"
+          ]
+        }
+      ],
+      "constants": [
+        "T"
+      ],
+      "content_hash": "6da6039abfee"
     }
   ],
   "subfolders": [],
-  "content_hash": "b45a46d87e3e8f02",
+  "content_hash": "87f2b9f5c0d2c08c",
   "has_init": true,
   "public_api": [
     "BeamDesignRequest",

@@ -2,14 +2,14 @@
   "folder": "react_app/src/hooks",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-02",
-  "file_count": 13,
+  "last_updated": "2026-04-07",
+  "file_count": 16,
   "files": [
     {
       "name": "index.ts",
       "type": "typescript",
-      "size_lines": 86,
-      "last_updated": "2026-03-30",
+      "size_lines": 87,
+      "last_updated": "2026-04-06",
       "exports": [
         "useAutoDesign",
         "useDesignWebSocket",
@@ -28,7 +28,7 @@
         "useCodeChecks"
       ],
       "description": "Hooks barrel export",
-      "content_hash": "732c7bd125fb"
+      "content_hash": "a9d3aff2d9fb"
     },
     {
       "name": "useAutoDesign.ts",
@@ -44,8 +44,8 @@
     {
       "name": "useBatchDesign.ts",
       "type": "react-hook",
-      "size_lines": 177,
-      "last_updated": "2026-03-30",
+      "size_lines": 180,
+      "last_updated": "2026-04-05",
       "exports": [
         "BatchProgress",
         "BatchResult",
@@ -54,13 +54,13 @@
         "useBatchDesign"
       ],
       "description": "useBatchDesign Hook",
-      "content_hash": "9e8e4a297290"
+      "content_hash": "50a45ffdc661"
     },
     {
       "name": "useBeamGeometry.ts",
       "type": "react-hook",
-      "size_lines": 161,
-      "last_updated": "2026-03-30",
+      "size_lines": 162,
+      "last_updated": "2026-04-06",
       "exports": [
         "Point3D",
         "RebarSegment",
@@ -71,13 +71,13 @@
         "useBeamGeometry"
       ],
       "description": "useBeamGeometry Hook",
-      "content_hash": "5b715ab30c26"
+      "content_hash": "c2d0c337e75b"
     },
     {
       "name": "useCSVImport.ts",
       "type": "react-hook",
-      "size_lines": 442,
-      "last_updated": "2026-03-30",
+      "size_lines": 450,
+      "last_updated": "2026-04-06",
       "exports": [
         "ImportedBeam",
         "BeamDesignPayload",
@@ -88,26 +88,26 @@
         "useSimpleBatchDesign"
       ],
       "description": "useCSVImport Hook",
-      "content_hash": "d3ad023b8ec8"
+      "content_hash": "818b77c89936"
     },
     {
       "name": "useDesignWebSocket.ts",
       "type": "react-hook",
-      "size_lines": 237,
-      "last_updated": "2026-03-30",
+      "size_lines": 235,
+      "last_updated": "2026-04-04",
       "exports": [
         "ConnectionStatus",
         "WebSocketState",
         "useDesignWebSocket"
       ],
       "description": "useDesignWebSocket Hook",
-      "content_hash": "ec086a10d8f5"
+      "content_hash": "2d61149cab04"
     },
     {
       "name": "useExport.ts",
       "type": "react-hook",
-      "size_lines": 183,
-      "last_updated": "2026-03-30",
+      "size_lines": 190,
+      "last_updated": "2026-04-05",
       "exports": [
         "ExportBeamParams",
         "ExportReportParams",
@@ -119,13 +119,13 @@
         "useExportBuildingSummary"
       ],
       "description": "useExport Hook",
-      "content_hash": "6a4d5246d4f2"
+      "content_hash": "1231f8f7837b"
     },
     {
       "name": "useGeometryAdvanced.ts",
       "type": "react-hook",
-      "size_lines": 171,
-      "last_updated": "2026-03-30",
+      "size_lines": 172,
+      "last_updated": "2026-04-06",
       "exports": [
         "Point3D",
         "BuildingBeamInput",
@@ -138,13 +138,13 @@
         "useCrossSectionGeometry"
       ],
       "description": "useGeometryAdvanced Hook",
-      "content_hash": "5dfb39e5e490"
+      "content_hash": "19cbdd44e1d3"
     },
     {
       "name": "useInsights.ts",
       "type": "react-hook",
-      "size_lines": 323,
-      "last_updated": "2026-03-30",
+      "size_lines": 324,
+      "last_updated": "2026-04-06",
       "exports": [
         "BeamResult",
         "StoryStats",
@@ -163,7 +163,7 @@
         "useProjectBOQ"
       ],
       "description": "useInsights Hook",
-      "content_hash": "5d98d25ad58c"
+      "content_hash": "cea3ad5b185f"
     },
     {
       "name": "useLiveDesign.ts",
@@ -188,10 +188,21 @@
       "content_hash": "e69931159ea1"
     },
     {
+      "name": "useParetoDesign.ts",
+      "type": "react-hook",
+      "size_lines": 18,
+      "last_updated": "2026-04-06",
+      "exports": [
+        "useParetoDesign"
+      ],
+      "description": "useParetoDesign — Hook for Pareto multi-objective beam optimization.",
+      "content_hash": "0ba46c86e8a8"
+    },
+    {
       "name": "useRebarEditor.ts",
       "type": "react-hook",
-      "size_lines": 158,
-      "last_updated": "2026-03-30",
+      "size_lines": 159,
+      "last_updated": "2026-04-06",
       "exports": [
         "BeamParams",
         "RebarConfig",
@@ -202,7 +213,17 @@
         "useRebarApply"
       ],
       "description": "useRebarEditor Hook",
-      "content_hash": "3170b85f02ed"
+      "content_hash": "c40ae5d7915f"
+    },
+    {
+      "name": "useReducedMotion.ts",
+      "type": "react-hook",
+      "size_lines": 19,
+      "last_updated": "2026-04-05",
+      "exports": [
+        "useReducedMotion"
+      ],
+      "content_hash": "6d1e0365de76"
     },
     {
       "name": "useTorsionDesign.ts",
@@ -214,8 +235,18 @@
       ],
       "description": "useTorsionDesign — React hook for torsion design via API.",
       "content_hash": "a9236d626bc7"
+    },
+    {
+      "name": "useWebGLContextLoss.ts",
+      "type": "react-hook",
+      "size_lines": 33,
+      "last_updated": "2026-04-05",
+      "exports": [
+        "useWebGLContextLoss"
+      ],
+      "content_hash": "b5e8b8453b58"
     }
   ],
   "subfolders": [],
-  "content_hash": "97a1cb7eba40f534"
+  "content_hash": "8a92a28c89451298"
 }
