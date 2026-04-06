@@ -1930,7 +1930,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-05 — Added External Audit (EA) tasks from comprehensive-library-audit-2026-04-04</p>
+<p><strong>Updated:</strong> 2026-04-06 — Fix stale version, defer AI assistant, library expansion focus</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1942,9 +1942,9 @@
 <hr />
 <h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Version:</strong> v0.21.2 ✅ Released → v0.22 (Full React + AI Assistant)</li>
-<li><strong>Focus:</strong> Full React migration + AI assistant + remaining UX tasks</li>
-<li><strong>Target:</strong> v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)</li>
+<li><strong>Version:</strong> v0.21.4 ✅ Released → v0.22 (Full React UX + Library Expansion)</li>
+<li><strong>Focus:</strong> Full React UX + library expansion + remaining tasks</li>
+<li><strong>Target:</strong> v0.22 — TopBar badges, workflow breadcrumb, Streamlit deprecation, remaining UX + library expansion</li>
 <li><strong>Vision:</strong> <a href="../planning/democratization-vision/">democratization-vision.md</a> — AI chat, automation, library evolution</li>
 <li><strong>Detailed Plan:</strong> <a href="../planning/next-phase-improvements-plan/">next-phase-improvements-plan.md</a> — code-level specs for all 8 tasks</li>
 </ul>
@@ -1978,10 +1978,16 @@
 <td>Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion</td>
 </tr>
 <tr>
+<td><strong>v0.21.4</strong></td>
+<td>Stabilization</td>
+<td>✅ Released (v0.21.4)</td>
+<td>CostProfile fix, float sanitization, footing API, bearing check, torsion shim</td>
+</tr>
+<tr>
 <td><strong>v0.22</strong></td>
-<td>Full React</td>
+<td>Full React UX + Library Expansion</td>
 <td>🔄 ACTIVE</td>
-<td>AI assistant port, learning center, Streamlit deprecation</td>
+<td>TopBar badges, workflow breadcrumb, Streamlit deprecation, library expansion</td>
 </tr>
 </tbody>
 </table>
@@ -2065,7 +2071,7 @@
 <td>✅</td>
 <td>--</td>
 <td>Partial</td>
-<td>🟡 Medium</td>
+<td>⏸ Deferred</td>
 </tr>
 <tr>
 <td>Learning center</td>
@@ -3260,8 +3266,8 @@ WIP limit: 2 active at once.</p>
 <tr>
 <td>TASK-513</td>
 <td>React: AI assistant port</td>
-<td>🟡 Medium</td>
-<td>Deferred to v0.22 — needs LLM API design</td>
+<td>⏸ Deferred</td>
+<td>Deferred — needs LLM API design, not in v0.22 scope</td>
 </tr>
 <tr>
 <td>—</td>
