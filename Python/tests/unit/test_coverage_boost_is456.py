@@ -3021,7 +3021,7 @@ class TestSlendernessUncoveredBranches:
 
     def test_classify_column_boundary_exactly_12(self):
         """Slenderness: le/D exactly 12 → short or slender boundary."""
-        from structural_lib.codes.is456.column.slenderness import classify_column
+        from structural_lib.codes.is456.column.axial import classify_column
 
         result = classify_column(le_mm=4800, D_mm=400)  # le/D = 12 exactly
         # IS 456 Cl 25.1.2: < 12 is short. At 12 it should be slender.
@@ -3029,7 +3029,7 @@ class TestSlendernessUncoveredBranches:
 
     def test_min_eccentricity_calculation(self):
         """Slenderness: min_eccentricity always >= 20mm."""
-        from structural_lib.codes.is456.column.slenderness import min_eccentricity
+        from structural_lib.codes.is456.column.axial import min_eccentricity
 
         e_min = min_eccentricity(l_unsupported_mm=3000, D_mm=400)
         assert e_min >= 20.0
