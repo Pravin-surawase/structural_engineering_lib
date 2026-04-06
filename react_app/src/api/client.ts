@@ -327,6 +327,68 @@ export async function analyzeLoads(
   return response.json();
 }
 
+// =============================================================================
+// Pareto Optimization
+// =============================================================================
+
+export interface ParetoCandidateResponse {
+  b_mm: number;
+  D_mm: number;
+  d_mm: number;
+  fck_nmm2: number;
+  fy_nmm2: number;
+  ast_required: number;
+  ast_provided: number;
+  bar_config: string;
+  cost: number;
+  steel_weight_kg: number;
+  utilization: number;
+  is_safe: boolean;
+  governing_clauses: string[];
+  rank: number;
+  crowding_distance: number;
+}
+
+export interface ParetoRequest {
+  span_mm: number;
+  mu_knm: number;
+  vu_kn: number;
+  objectives?: string[];
+  cover_mm?: number;
+  max_candidates?: number;
+}
+
+export interface ParetoResponse {
+  pareto_front: ParetoCandidateResponse[];
+  pareto_count: number;
+  total_candidates: number;
+  objectives_used: string[];
+  computation_time_sec: number;
+  best_by_cost: ParetoCandidateResponse | null;
+  best_by_utilization: ParetoCandidateResponse | null;
+  best_by_weight: ParetoCandidateResponse | null;
+}
+
+/**
+ * Find Pareto-optimal beam designs balancing cost, weight, and utilization.
+ */
+export async function optimizeParetoFront(
+  params: ParetoRequest
+): Promise<ParetoResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/optimization/beam/pareto`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(`Pareto optimization failed: ${error.detail || response.status}`);
+  }
+
+  return response.json();
+}
+
 export default {
   checkHealth,
   designBeam,
@@ -335,4 +397,5 @@ export default {
   generateBeamGeometry,
   calculateGeometry,
   loadSampleData,
+  optimizeParetoFront,
 };

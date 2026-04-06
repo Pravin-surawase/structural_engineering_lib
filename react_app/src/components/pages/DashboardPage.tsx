@@ -16,6 +16,7 @@ import { useExportBBS, useExportDXF, useExportReport } from "../../hooks";
 import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
 import { ProjectBOQPanel } from "../design/ProjectBOQPanel";
 import type { DashboardData, StoryStats } from "../../hooks/useInsights";
+import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -84,6 +85,9 @@ export function DashboardPage() {
 
   return (
     <div className="h-screen pt-14 overflow-y-auto bg-zinc-950">
+      {/* Workflow Breadcrumb */}
+      <WorkflowBreadcrumb />
+
       <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
 
         {/* Header */}

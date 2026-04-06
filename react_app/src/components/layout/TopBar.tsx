@@ -1,9 +1,13 @@
 /**
  * TopBar - Compact navigation bar with logo, nav links, breadcrumbs, and settings.
  */
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { Settings, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useImportedBeamsStore } from "../../store/importedBeamsStore";
+import { useDesignStore } from "../../store/designStore";
+import { SettingsPanel } from "./SettingsPanel";
 
 const routeLabels: Record<string, string> = {
   "/": "Home",
@@ -27,7 +31,14 @@ const navLinks = [
 
 export function TopBar() {
   const location = useLocation();
-  const navigate = useNavigate();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // Get context for badges
+  const beams = useImportedBeamsStore((state) => state.beams);
+  const designResult = useDesignStore((state) => state.result);
+
+  const beamCount = beams.length;
+  const hasDesignResults = designResult !== null;
 
   // Don't show on home page
   if (location.pathname === "/") return null;
@@ -67,17 +78,39 @@ export function TopBar() {
           {navLinks.map(link => {
             const isActive = location.pathname === link.path ||
               (link.path === "/design" && location.pathname.startsWith("/design"));
+
+            // Determine badge content
+            let badge: React.ReactNode = null;
+            if (link.path === "/editor" && beamCount > 0) {
+              badge = (
+                <span
+                  className="ml-1.5 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-zinc-700 text-white tabular-nums"
+                  aria-label={`${beamCount} beams imported`}
+                >
+                  {beamCount}
+                </span>
+              );
+            } else if (link.path === "/dashboard" && hasDesignResults) {
+              badge = (
+                <span
+                  className="ml-1.5 w-1.5 h-1.5 rounded-full bg-green-400"
+                  aria-label="Design results available"
+                />
+              );
+            }
+
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center ${
                   isActive
                     ? "bg-white/10 text-white"
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
                 }`}
               >
                 {link.label}
+                {badge}
               </Link>
             );
           })}
@@ -106,11 +139,14 @@ export function TopBar() {
       {/* Right: Settings */}
       <button
         aria-label="Settings"
-        onClick={() => navigate("/settings")}
+        onClick={() => setIsSettingsOpen(true)}
         className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
       >
         <Settings className="w-4.5 h-4.5" />
       </button>
+
+      {/* Settings Panel */}
+      <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </motion.header>
   );
 }

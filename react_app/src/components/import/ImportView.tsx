@@ -25,6 +25,7 @@ import { mapSampleBeamsToRows } from "../../utils/sampleData";
 import { applyMaterialOverrides } from "../../utils/materialOverrides";
 import { useDualCSVImport } from "../../hooks/useCSVImport";
 import { WorkflowHint } from "../ui/WorkflowHint";
+import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 
 type ImportStep = "upload" | "preview";
 
@@ -86,6 +87,9 @@ export function ImportView() {
 
   return (
     <div className="h-screen pt-14 flex flex-col bg-zinc-950">
+      {/* Workflow Breadcrumb */}
+      <WorkflowBreadcrumb />
+
       {/* Step indicator */}
       <div className="px-6 pt-4 pb-2 flex items-center gap-3">
         <StepPill active={step === "upload"} done={step === "preview"} label="1. Upload" />

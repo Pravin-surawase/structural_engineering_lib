@@ -34,6 +34,10 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-06 | TASK-527 | TopBar context badges (beam count, green dot) + SettingsPanel slide-over | cf281f0b |
+| 2026-04-06 | TASK-528 | WorkflowBreadcrumb component integrated into ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage | cf281f0b |
+| 2026-04-06 | TASK-516 | Triangular + applied moment loads in load_analysis.py (compute_triangular_load_bmd_sfd, compute_applied_moment_bmd_sfd) + 23 tests | cf281f0b |
+| 2026-04-06 | TASK-519 | Pareto panel: wired optimize_pareto_front to API, POST /optimization/beam/pareto endpoint, useParetoDesign hook, ParetoPanel in DesignView | cf281f0b |
 | 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | 98185046 |
 | 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | 98185046 |
 | 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | 98185046 |

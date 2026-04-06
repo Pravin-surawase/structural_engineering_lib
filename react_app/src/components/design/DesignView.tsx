@@ -18,6 +18,7 @@ import type { CheckDetail, SuggestionItem } from "../../hooks/useInsights";
 import { ConnectionStatus } from "../ui/ConnectionStatus";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { WorkflowHint } from "../ui/WorkflowHint";
+import { ParetoPanel } from "./ParetoPanel";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -377,6 +378,7 @@ export function DesignView() {
                 {torsionDesign.data && <TorsionResultsPanel data={torsionDesign.data} isPending={torsionDesign.isPending} />}
                 <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />
                 <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
+                <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} />
               </div>
             </div>
           )

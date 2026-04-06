@@ -121,6 +121,13 @@ from structural_lib.services.common_api import (  # noqa: F401
 
 # ── Domain modules (beam, column, common) ──────────────────────────────
 from structural_lib.services.costing import CostProfile  # noqa: F401
+
+# ── Multi-objective optimization ────────────────────────────────────────
+from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
+    ParetoCandidate,
+    ParetoOptimizationResult,
+    optimize_pareto_front,
+)
 from structural_lib.visualization.geometry_3d import (  # noqa: F401
     Beam3DGeometry,
     Point3D,
@@ -225,6 +232,10 @@ __all__ = [
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",
+    # Multi-objective optimization
+    "optimize_pareto_front",
+    "ParetoOptimizationResult",
+    "ParetoCandidate",
     # Torsion Design (IS 456 Clause 41)
     "design_torsion",
     "calculate_equivalent_shear",

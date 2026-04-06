@@ -206,3 +206,92 @@ class CostOptimizationResponse(BaseModel):
     warnings: list[str] = Field(
         default_factory=list, description="Optimization warnings"
     )
+
+
+# =============================================================================
+# Pareto Optimization Models
+# =============================================================================
+
+
+class ParetoCandidateResponse(BaseModel):
+    """A single Pareto-optimal beam design candidate."""
+
+    b_mm: int = Field(description="Beam width (mm)")
+    D_mm: int = Field(description="Beam total depth (mm)")
+    d_mm: int = Field(description="Effective depth (mm)")
+    fck_nmm2: int = Field(description="Concrete grade (N/mm²)")
+    fy_nmm2: int = Field(description="Steel grade (N/mm²)")
+    ast_required: float = Field(description="Required steel area (mm²)")
+    ast_provided: float = Field(description="Provided steel area (mm²)")
+    bar_config: str = Field(description="Bar configuration (e.g. '4-16mm')")
+    cost: float = Field(description="Total cost (INR)")
+    steel_weight_kg: float = Field(description="Steel weight (kg)")
+    utilization: float = Field(description="Capacity utilization ratio (0-1)")
+    is_safe: bool = Field(description="Meets IS 456 requirements")
+    governing_clauses: list[str] = Field(
+        default_factory=list, description="Governing IS 456 clauses"
+    )
+    rank: int = Field(description="Pareto rank (1 = best front)")
+    crowding_distance: float = Field(description="NSGA-II crowding distance")
+
+
+class ParetoRequest(BaseModel):
+    """Request model for Pareto multi-objective beam optimization."""
+
+    span_mm: float = Field(
+        ...,
+        gt=0,
+        le=30000,
+        description="Beam span (mm)",
+        examples=[5000.0, 6000.0],
+    )
+    mu_knm: float = Field(
+        ...,
+        gt=0,
+        description="Factored bending moment (kN·m)",
+        examples=[120.0, 200.0],
+    )
+    vu_kn: float = Field(
+        ...,
+        ge=0,
+        description="Factored shear force (kN)",
+        examples=[80.0, 100.0],
+    )
+    objectives: list[str] | None = Field(
+        default=None,
+        description="Objectives to optimize: 'cost', 'steel_weight', 'utilization'. Default: ['cost', 'utilization']",
+        examples=[["cost", "utilization"]],
+    )
+    cover_mm: int = Field(
+        default=40,
+        ge=20,
+        le=75,
+        description="Concrete cover (mm)",
+    )
+    max_candidates: int = Field(
+        default=50,
+        ge=5,
+        le=200,
+        description="Maximum number of candidates to generate",
+    )
+
+
+class ParetoResponse(BaseModel):
+    """Response model for Pareto multi-objective optimization."""
+
+    pareto_front: list[ParetoCandidateResponse] = Field(
+        description="Pareto-optimal designs (rank 1)"
+    )
+    pareto_count: int = Field(description="Number of Pareto-optimal designs")
+    total_candidates: int = Field(description="Total valid candidates evaluated")
+    objectives_used: list[str] = Field(description="Objectives optimized")
+    computation_time_sec: float = Field(description="Computation time (seconds)")
+    best_by_cost: ParetoCandidateResponse | None = Field(
+        default=None, description="Cheapest design"
+    )
+    best_by_utilization: ParetoCandidateResponse | None = Field(
+        default=None, description="Most efficient design"
+    )
+    best_by_weight: ParetoCandidateResponse | None = Field(
+        default=None, description="Lightest design"
+    )

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
 import { useBatchDesign, type BatchResult } from '../../hooks/useBatchDesign';
+import { WorkflowBreadcrumb } from '../ui/WorkflowBreadcrumb';
 
 export default function BatchDesignPage() {
   const navigate = useNavigate();
@@ -106,6 +107,9 @@ export default function BatchDesignPage() {
 
   return (
     <div className="h-screen pt-14 flex flex-col bg-zinc-950 text-white">
+      {/* Workflow Breadcrumb */}
+      <WorkflowBreadcrumb />
+
       {/* Header */}
       <div className="px-6 pt-4 pb-3 border-b border-white/8 flex items-center justify-between">
         <div className="flex items-center gap-3">
