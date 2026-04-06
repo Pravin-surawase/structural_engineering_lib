@@ -11,7 +11,7 @@ globs: fastapi_app/**
 grep -r "@router" fastapi_app/routers/ | head -30
 ```
 
-Key existing routes (13 routers, 59 endpoints):
+Key existing routes (13 routers, 60 endpoints):
 - `POST /api/v1/design/beam` — Beam design
 - `POST /api/v1/design/column` — Unified column design
 - `POST /api/v1/design/column/effective-length` — Effective length per IS 456 Table 28
