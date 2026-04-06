@@ -2,7 +2,7 @@
   "folder": "docs",
   "type": "documentation",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-07",
   "file_count": 6,
   "files": [
     {
@@ -17,33 +17,33 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 111,
-      "last_updated": "2026-04-02",
+      "size_lines": 269,
+      "last_updated": "2026-04-06",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "bf8dbf3fd7ee"
+      "content_hash": "2bfff9402519"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 325,
-      "last_updated": "2026-04-02",
+      "size_lines": 383,
+      "last_updated": "2026-04-07",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "b36e2b513e2b"
+      "content_hash": "5d0b56419814"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
-      "size_lines": 167,
-      "last_updated": "2026-04-02",
+      "size_lines": 279,
+      "last_updated": "2026-04-07",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
-      "content_hash": "a3c0d8f354d6"
+      "content_hash": "ccb439de32a7"
     },
     {
       "name": "docs-canonical.json",
       "type": "config",
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-06",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -52,7 +52,7 @@
         "naming_conventions",
         "forbidden_patterns"
       ],
-      "content_hash": "c57ccaa9d92f"
+      "content_hash": "52355ccef55b"
     },
     {
       "name": "docs-index.json",
@@ -89,13 +89,13 @@
     {
       "name": "architecture",
       "path": "architecture/",
-      "file_count": 15,
+      "file_count": 16,
       "description": "Deep dives into project structure, design decisions, and system architecture."
     },
     {
       "name": "audit",
       "path": "audit/",
-      "file_count": 8
+      "file_count": 9
     },
     {
       "name": "blog-drafts",
@@ -180,12 +180,12 @@
     {
       "name": "reference",
       "path": "reference/",
-      "file_count": 1790
+      "file_count": 1793
     },
     {
       "name": "research",
       "path": "research/",
-      "file_count": 3
+      "file_count": 6
     },
     {
       "name": "specs",
@@ -200,5 +200,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "70e6cc7ed5237d0f"
+  "content_hash": "3c9cd43e816c4968"
 }

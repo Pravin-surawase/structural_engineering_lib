@@ -1859,10 +1859,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#93-v0216-api-quality-introspection" class="md-nav__link">
+  <a href="#93-v0216-api-quality-introspection-done" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.3 v0.21.6 — API Quality &amp; Introspection
+        9.3 v0.21.6 — API Quality &amp; Introspection ✅ DONE
       
     </span>
   </a>
@@ -2563,10 +2563,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#202-v0216-api-quality-introspection" class="md-nav__link">
+  <a href="#202-v0216-api-quality-introspection-done" class="md-nav__link">
     <span class="md-ellipsis">
       
-        20.2 v0.21.6 — API Quality &amp; Introspection
+        20.2 v0.21.6 — API Quality &amp; Introspection ✅ DONE
       
     </span>
   </a>
@@ -2708,10 +2708,10 @@
 <p>THE single source of truth for architecture decisions, quality gates, and safety guarantees.
 Every agent, every session, every change must comply with this document.</p>
 </blockquote>
-<p><strong>Codebase snapshot (v0.21.5):</strong>
+<p><strong>Codebase snapshot (v0.21.6):</strong>
 - 168 Python source files in <code>structural_lib/</code>, 132 exports in <code>__all__</code>
 - 55+ IS 456 design functions, 93+ <code>@clause</code> decorators
-- 4700+ tests collected, 85%+ branch coverage (99% on codes/is456/)
+- 5081+ tests collected, 85%+ branch coverage (99% on codes/is456/)
 - 13 routers, 60+ FastAPI endpoints
 - Pydantic ≥2.0 (2.12.5), Python ≥3.11 (3.11.15)</p>
 <hr />
@@ -3414,7 +3414,7 @@ Every agent, every session, every change must comply with this document.</p>
 <h2 id="9-version-roadmap">9. Version Roadmap<a class="headerlink" href="#9-version-roadmap" title="Permanent link">&para;</a></h2>
 <h3 id="91-micro-release-strategy-v021x-series">9.1 Micro-Release Strategy (v0.21.x Series)<a class="headerlink" href="#91-micro-release-strategy-v021x-series" title="Permanent link">&para;</a></h3>
 <p>We use <strong>patch releases</strong> for focused, testable increments. Each v0.21.x release has a single theme, clear deliverables, and a quality gate that must pass before the next release begins. This prevents the "big bang" stabilization problem where too many changes ship at once and regressions slip through.</p>
-<p><strong>Current baseline:</strong> v0.21.5 — 4700+ tests collected, pre-commit hooks active, architecture checker enforced, golden vectors and contract tests established.</p>
+<p><strong>Current baseline:</strong> v0.21.6 — 5081+ tests collected, pre-commit hooks active, architecture checker enforced, golden vectors and contract tests established.</p>
 <table>
 <thead>
 <tr>
@@ -3460,14 +3460,14 @@ Every agent, every session, every change must comply with this document.</p>
 - ✅ <code>conftest.py</code> golden_vectors fixture with SP:16 reference values
 - ✅ Target: 99% branch coverage on <code>codes/is456/</code> (exceeded 90% target)</p>
 <p><strong>Quality Gate:</strong> <code>pytest -m golden</code> passes with 0 failures ✅, branch coverage 99% on <code>codes/is456/</code> ✅</p>
-<h3 id="93-v0216-api-quality-introspection">9.3 v0.21.6 — API Quality &amp; Introspection<a class="headerlink" href="#93-v0216-api-quality-introspection" title="Permanent link">&para;</a></h3>
+<h3 id="93-v0216-api-quality-introspection-done">9.3 v0.21.6 — API Quality &amp; Introspection ✅ DONE<a class="headerlink" href="#93-v0216-api-quality-introspection-done" title="Permanent link">&para;</a></h3>
 <p><strong>Theme:</strong> Make the library self-describing and self-validating. Users can inspect capabilities and limitations without reading docs.</p>
 <p><strong>Deliverables:</strong>
-- 🔲 <code>check_code()</code> — validates design inputs against IS 456 limits (returns warnings/errors without computing) (§10.2)
-- 🔲 <code>show_versions()</code> — prints library + dependency versions (like <code>np.show_config()</code>) (§10.3)
-- 🔲 API surface freeze: OpenAPI baseline diff in CI (<code>openapi_baseline.json</code> already exists)
-- 🔲 Function limitation documentation (explicit "what this function does NOT do")</p>
-<p><strong>Quality Gate:</strong> <code>check_code("IS456")</code> returns all-pass. OpenAPI diff integrated into CI.</p>
+- ✅ <code>check_code()</code> — validates design inputs against IS 456 limits (returns warnings/errors without computing) (§10.2)
+- ✅ <code>show_versions()</code> — prints library + dependency versions (like <code>np.show_config()</code>) (§10.3)
+- ✅ API surface freeze: OpenAPI baseline diff in CI (<code>openapi_baseline.json</code> already exists)
+- ✅ Function limitation documentation (explicit "what this function does NOT do")</p>
+<p><strong>Quality Gate:</strong> <code>check_code("IS456")</code> returns report. OpenAPI diff integrated into CI. ✅</p>
 <h3 id="94-v0217-security-hardening">9.4 v0.21.7 — Security Hardening<a class="headerlink" href="#94-v0217-security-hardening" title="Permanent link">&para;</a></h3>
 <p><strong>Theme:</strong> Close all OWASP-relevant gaps. Every input path validated, every output bounded.</p>
 <p><strong>Deliverables:</strong>
@@ -3567,8 +3567,8 @@ Every agent, every session, every change must comply with this document.</p>
 </thead>
 <tbody>
 <tr>
-<td>🔲 Planned</td>
-<td>v0.24</td>
+<td>✅ Implemented</td>
+<td>v0.21.6</td>
 </tr>
 </tbody>
 </table>
@@ -3601,8 +3601,8 @@ Every agent, every session, every change must comply with this document.</p>
 </thead>
 <tbody>
 <tr>
-<td>🔲 Planned</td>
-<td>v0.24</td>
+<td>✅ Implemented</td>
+<td>v0.21.6</td>
 </tr>
 </tbody>
 </table>
@@ -4564,13 +4564,13 @@ Every agent, every session, every change must comply with this document.</p>
 <td><code>check_code()</code> validation</td>
 <td>scikit-learn <code>check_estimator()</code></td>
 <td>Runtime code contract checker</td>
-<td>🔲 v0.24</td>
+<td>✅ Implemented</td>
 </tr>
 <tr>
 <td><code>show_versions()</code></td>
 <td>scikit-learn, pandas</td>
 <td>Environment diagnostic utility</td>
-<td>🔲 v0.24</td>
+<td>✅ Implemented</td>
 </tr>
 <tr>
 <td>Frozen dataclass results</td>
@@ -4976,7 +4976,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tbody>
 </table>
 <p><strong>Quality Gate:</strong> <code>pytest -m golden</code> passes with 0 failures ✅, branch coverage 99% on <code>codes/is456/</code> ✅</p>
-<h3 id="202-v0216-api-quality-introspection">20.2 v0.21.6 — API Quality &amp; Introspection<a class="headerlink" href="#202-v0216-api-quality-introspection" title="Permanent link">&para;</a></h3>
+<h3 id="202-v0216-api-quality-introspection-done">20.2 v0.21.6 — API Quality &amp; Introspection ✅ DONE<a class="headerlink" href="#202-v0216-api-quality-introspection-done" title="Permanent link">&para;</a></h3>
 <p><strong>Theme:</strong> Self-describing, self-validating library.</p>
 <table>
 <thead>
@@ -4989,27 +4989,27 @@ Every agent, every session, every change must comply with this document.</p>
 <tbody>
 <tr>
 <td><code>check_code("IS456")</code> — validates code implementation contract (§10.2)</td>
-<td>🔲</td>
+<td>✅</td>
 <td>@backend</td>
 </tr>
 <tr>
 <td><code>show_versions()</code> — environment diagnostic utility (§10.3)</td>
-<td>🔲</td>
+<td>✅</td>
 <td>@backend</td>
 </tr>
 <tr>
 <td>API surface freeze: OpenAPI baseline diff in CI</td>
-<td>🔲</td>
+<td>✅</td>
 <td>@api-developer</td>
 </tr>
 <tr>
 <td>Function limitation documentation for all public functions</td>
-<td>🔲</td>
+<td>✅</td>
 <td>@doc-master</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Quality Gate:</strong> <code>check_code("IS456")</code> returns all-pass. OpenAPI diff integrated into CI.</p>
+<p><strong>Quality Gate:</strong> <code>check_code("IS456")</code> returns report. OpenAPI diff integrated into CI. ✅</p>
 <h3 id="203-v0217-security-hardening">20.3 v0.21.7 — Security Hardening<a class="headerlink" href="#203-v0217-security-hardening" title="Permanent link">&para;</a></h3>
 <p><strong>Theme:</strong> Close all OWASP-relevant gaps.</p>
 <table>

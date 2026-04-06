@@ -1553,6 +1553,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#external-audit-remediation-v0216-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Audit Remediation — v0.21.6 ✅ DONE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0215-test-coverage-regression-prevention-done" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1564,10 +1575,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#v0216-api-quality-introspection" class="md-nav__link">
+  <a href="#v0216-api-quality-introspection-done" class="md-nav__link">
     <span class="md-ellipsis">
       
-        v0.21.6 — API Quality &amp; Introspection
+        v0.21.6 — API Quality &amp; Introspection ✅ DONE
       
     </span>
   </a>
@@ -1842,7 +1853,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-06 — v0.21.5 completed, v0.21.6 active</p>
+<p><strong>Updated:</strong> 2026-04-06 — v0.21.6 completed (check_code, show_versions, OpenAPI freeze, limitation docs)</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1854,10 +1865,10 @@
 <hr />
 <h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Version:</strong> v0.21.5 ✅ Released → micro-releases v0.21.6–v0.21.8 → v0.22.0 Stabilization</li>
+<li><strong>Version:</strong> v0.21.6 ✅ Released → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization</li>
 <li><strong>Strategy:</strong> Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)</li>
 <li><strong>Focus:</strong> API introspection → security hardening → performance baselines → stabilization</li>
-<li><strong>Target:</strong> v0.21.6 next, then v0.21.7–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)</li>
+<li><strong>Target:</strong> v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)</li>
 <li><strong>Vision:</strong> <a href="../planning/democratization-vision/">democratization-vision.md</a> — AI chat, automation, library evolution</li>
 <li><strong>Architecture:</strong> <a href="../architecture/unified-architecture-v1/">unified-architecture-v1.md</a> §20 — complete v0.21.5→v1.0 roadmap</li>
 </ul>
@@ -1905,8 +1916,8 @@
 <tr>
 <td><strong>v0.21.6</strong></td>
 <td>API Quality &amp; Introspection</td>
-<td>� ACTIVE</td>
-<td>check_code(), show_versions(), API surface freeze</td>
+<td>✅ DONE</td>
+<td>check_code(), show_versions(), OpenAPI freeze, limitation docs</td>
 </tr>
 <tr>
 <td><strong>v0.21.7</strong></td>
@@ -2116,6 +2127,75 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 <td>4 items ✅</td>
 <td>clause_cli, FlexureResult limits, streaming 404, Three.js cleanup</td>
 </tr>
+<tr>
+<td>External Audit Remediation</td>
+<td>8 items ✅</td>
+<td>ETABS units/batch/geometry, SmartDesigner CLI, .j2 packaging, README fixes, bbs import path</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="external-audit-remediation-v0216-done">External Audit Remediation — v0.21.6 ✅ DONE<a class="headerlink" href="#external-audit-remediation-v0216-done" title="Permanent link">&para;</a></h2>
+<p><strong>Theme:</strong> Fix 8 external audit findings across ETABS import, SmartDesigner CLI, packaging, and documentation.
+<strong>Completed:</strong> 2026-04-07</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EXT-P1-1</td>
+<td>ETABS job generator uses <code>"SI-mm"</code> units → fixed to <code>"IS456"</code></td>
+<td>P1</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P1-2</td>
+<td>ETABS batch groups by <code>beam_id</code> only → fixed to <code>(story, beam_id)</code> to prevent cross-story collision</td>
+<td>P1</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P1-3</td>
+<td>Geometry merge keys by <code>label</code> only → fixed to <code>(story, label)</code> with fallback to prevent overwrite</td>
+<td>P1</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P1-4</td>
+<td>SmartDesigner CLI uses wrong function → fixed to <code>design_single_beam()</code> returning <code>BeamDesignOutput</code></td>
+<td>P1</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P1-5</td>
+<td>Report <code>.j2</code> templates missing from wheel → added to <code>pyproject.toml</code> package-data</td>
+<td>P1</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P2-1</td>
+<td>README batch example uses non-existent <code>parse_file()</code> → fixed to <code>load_combined()</code></td>
+<td>P2</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P2-2</td>
+<td><code>bbs.py</code> imports from deprecated shim → fixed to canonical <code>codes/is456/beam/detailing</code></td>
+<td>P2</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>EXT-P3-1</td>
+<td>README version <code>0.21.3</code> → updated to <code>0.21.5</code></td>
+<td>P3</td>
+<td>✅ DONE</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -2177,10 +2257,10 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </tr>
 </tbody>
 </table>
-<h2 id="v0216-api-quality-introspection">v0.21.6 — API Quality &amp; Introspection<a class="headerlink" href="#v0216-api-quality-introspection" title="Permanent link">&para;</a></h2>
+<h2 id="v0216-api-quality-introspection-done">v0.21.6 — API Quality &amp; Introspection ✅ DONE<a class="headerlink" href="#v0216-api-quality-introspection-done" title="Permanent link">&para;</a></h2>
 <p><strong>Theme:</strong> Self-describing, self-validating library
-<strong>Target:</strong> 2-3 sessions after v0.21.5
-<strong>Quality Gate:</strong> <code>check_code("IS456")</code> returns all-pass. OpenAPI diff integrated into CI.</p>
+<strong>Completed:</strong> 2026-04-06
+<strong>Quality Gate:</strong> check_code("IS456") returns report, OpenAPI drift check in CI ✅</p>
 <table>
 <thead>
 <tr>
@@ -2195,25 +2275,25 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 <td>TASK-724</td>
 <td>Implement <code>check_code("IS456")</code> — validates code implementation contract</td>
 <td>@backend</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-725</td>
 <td>Implement <code>show_versions()</code> — library + dependency info</td>
 <td>@backend</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-726</td>
 <td>API surface freeze: OpenAPI baseline diff in CI</td>
 <td>@ops</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-727</td>
 <td>Function limitation docs — what each function does NOT do</td>
 <td>@doc-master</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 </tbody>
 </table>

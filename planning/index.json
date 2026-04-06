@@ -2,7 +2,7 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-04-02",
+  "last_updated": "2026-04-07",
   "file_count": 8,
   "files": [
     {
@@ -17,19 +17,19 @@
     {
       "name": "democratization-vision.md",
       "type": "documentation",
-      "size_lines": 268,
-      "last_updated": "2026-03-30",
+      "size_lines": 273,
+      "last_updated": "2026-04-04",
       "description": "> **\"What was not possible few years back, or only possible for big firms — now everyone can use them free.\"** This project is not just about building a structural engineering library. It's about **de",
-      "content_hash": "7f2f40f01b6e"
+      "content_hash": "cb9c1a9c3ed0"
     },
     {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
       "size_lines": 1131,
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-04-06",
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
-      "content_hash": "3ad851ef771d"
+      "content_hash": "fd8aebb9b551"
     },
     {
       "name": "memory.md",
@@ -50,19 +50,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 85,
-      "last_updated": "2026-04-02",
-      "description": "<!-- HANDOFF:START --> - TASK-621: Added recovery field to DesignError (39 error codes with step-by-step fix text)",
-      "content_hash": "6da5300dcc82"
+      "size_lines": 47,
+      "last_updated": "2026-04-07",
+      "title": "Next Session Brief",
+      "description": "<!-- HANDOFF:START --> - Date: 2026-04-06",
+      "content_hash": "1339dcf324f0"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 41,
-      "last_updated": "2026-04-01",
+      "size_lines": 43,
+      "last_updated": "2026-04-06",
       "title": "Pre-Release Checklist",
-      "description": "- **Version:** 0.20.0 - **Branch:** main",
-      "content_hash": "ef38e5b55bc5"
+      "description": "- **Version:** 0.21.5 - **Branch:** main",
+      "content_hash": "cec4da723326"
     },
     {
       "name": "react-ux-improvement-plan.md",
@@ -74,5 +75,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "06ee772acdaa666d"
+  "content_hash": "1984fac9409c6437"
 }

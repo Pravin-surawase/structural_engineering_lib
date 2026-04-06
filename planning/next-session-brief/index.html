@@ -1515,10 +1515,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#immediate-v0216-api-quality-introspection" class="md-nav__link">
+  <a href="#immediate-v0217-security-hardening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Immediate (v0.21.6 — API Quality &amp; Introspection)
+        Immediate (v0.21.7 — Security Hardening)
       
     </span>
   </a>
@@ -1526,10 +1526,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#next-v0217-security-hardening" class="md-nav__link">
+  <a href="#next-v0218-performance-property-testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next (v0.21.7 — Security Hardening)
+        Next (v0.21.8 — Performance &amp; Property Testing)
       
     </span>
   </a>
@@ -1603,47 +1603,43 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-06
-<strong>Last Session:</strong> v0.21.5 completed — golden vectors, contract tests, coverage boost, report/3D tests</p>
+<strong>Last Session:</strong> v0.21.6 completed — check_code(), show_versions(), OpenAPI CI check, limitation docs</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Golden vector baselines (TASK-720):</strong> 42+ golden tests — 9 beam, 20 column, 13 footing (<code>@pytest.mark.golden</code>)</li>
-<li><strong>Contract tests (TASK-721):</strong> 18 API surface stability tests for column, footing, torsion (<code>@pytest.mark.contract</code>)</li>
-<li><strong>conftest.py golden_vectors fixture (TASK-722):</strong> SP:16 reference values fixture</li>
-<li><strong>CI gate (TASK-723):</strong> <code>pytest -m golden</code> added to GitHub Actions python-tests.yml</li>
-<li><strong>Report/3D edge case tests (TASK-520):</strong> 71 new tests for report generation and 3D visualization</li>
-<li><strong>@clause("34.1") added to size_footing():</strong> footing clause gap resolved</li>
-<li><strong>Coverage boost:</strong> 19 additional tests, <code>codes/is456/</code> at 99% branch coverage</li>
-<li><strong>v0.21.5 quality gate passed:</strong> all golden tests pass, 99% branch coverage (target was 90%)</li>
+<li><strong>check_code("IS456") (TASK-724):</strong> Self-validation function with CheckCodeReport — 6 checks (importable, decorated, frozen, results, params, boundaries)</li>
+<li><strong>show_versions() (TASK-725):</strong> Diagnostic utility with VersionInfo — reports library, Python, platform, codes, dependencies</li>
+<li><strong>OpenAPI baseline drift check (TASK-726):</strong> CI step + scripts/check_openapi_drift.py — prevents silent API breakage</li>
+<li><strong>Function limitation docs (TASK-727):</strong> Added Limitations sections to 22 IS 456 function docstrings across 12 modules</li>
+<li><strong>76 new tests:</strong> 35 for check_code, 41 for show_versions</li>
+<li><strong>v0.21.6 quality gate passed:</strong> all tests pass, OpenAPI drift check clean</li>
 </ul>
 <h2 id="priorities-updated">Priorities (Updated)<a class="headerlink" href="#priorities-updated" title="Permanent link">&para;</a></h2>
-<h3 id="immediate-v0216-api-quality-introspection">Immediate (v0.21.6 — API Quality &amp; Introspection)<a class="headerlink" href="#immediate-v0216-api-quality-introspection" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>check_code("IS456")</strong> implementation (TASK-724) — @backend</li>
-<li><strong>show_versions()</strong> implementation (TASK-725) — @backend</li>
-<li><strong>API surface freeze</strong> in CI (TASK-726) — @ops</li>
-<li><strong>Function limitation docs</strong> (TASK-727) — @doc-master</li>
-</ol>
-<h3 id="next-v0217-security-hardening">Next (v0.21.7 — Security Hardening)<a class="headerlink" href="#next-v0217-security-hardening" title="Permanent link">&para;</a></h3>
+<h3 id="immediate-v0217-security-hardening">Immediate (v0.21.7 — Security Hardening)<a class="headerlink" href="#immediate-v0217-security-hardening" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>JSON body size limit middleware</strong> (TASK-728) — @api-developer</li>
 <li><strong>Cross-field plausibility guards</strong> (TASK-729) — @api-developer</li>
 <li><strong>Input validation audit</strong> (TASK-730) — @security</li>
-<li><strong>Dependency CVE scanning</strong> in CI (TASK-731) — @ops</li>
+<li><strong>WebSocket message rate limit</strong> — @api-developer</li>
+<li><strong>Computation timeout</strong> — @api-developer</li>
+</ol>
+<h3 id="next-v0218-performance-property-testing">Next (v0.21.8 — Performance &amp; Property Testing)<a class="headerlink" href="#next-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>pytest-benchmark integration</strong> (TASK-732) — @tester</li>
+<li><strong>Hypothesis test expansion</strong> (TASK-733) — @tester</li>
+<li><strong>Performance regression baselines</strong> (TASK-734) — @ops</li>
 </ol>
 <h3 id="architecture-reference">Architecture Reference<a class="headerlink" href="#architecture-reference" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Unified architecture: <code>docs/architecture/unified-architecture-v1.md</code> (1540 lines, 21 sections)</li>
+<li>Unified architecture: <code>docs/architecture/unified-architecture-v1.md</code></li>
 <li>Complete roadmap: §20 of architecture doc (v0.21.5→v1.0)</li>
 <li>Quality gates per version: §9 of architecture doc</li>
-<li>Blueprint details: <code>docs/planning/library-expansion-blueprint-v5.md</code></li>
 </ul>
 <h2 id="key-patterns-established">Key Patterns Established<a class="headerlink" href="#key-patterns-established" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Pydantic IS the schema (no Protocol Buffers/GraphQL/SDL needed)</li>
-<li>4-layer validation: type hints → Pydantic → domain → output sanity</li>
-<li>Golden vectors mandatory for ALL new IS 456 functions (SP:16 ±0.1%)</li>
-<li>NumPy-style deprecation: warn for 2 minor versions before removal</li>
-<li>Every release follows 5-step process: PREFLIGHT → UAT → QUALITY GATE → VERSION BUMP → POST-RELEASE</li>
+<li><code>check_code("IS456")</code> validates code implementation contract — reports tech debt (36 issues: unfrozen results, missing decorators, params without unit suffixes)</li>
+<li><code>show_versions()</code> follows scikit-learn pattern — both print and programmatic modes</li>
+<li>OpenAPI baseline diffing in CI prevents silent API drift</li>
+<li>Limitation docs prevent users from misapplying functions</li>
 </ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>

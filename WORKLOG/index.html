@@ -1591,6 +1591,36 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 </tr>
 <tr>
 <td>2026-04-06</td>
+<td>TASK-724</td>
+<td>check_code("IS456") self-validation — CheckCodeReport, 6 checks, 35 tests</td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>TASK-725</td>
+<td>show_versions() diagnostic — VersionInfo, print + dict modes, 41 tests</td>
+<td>36c97ad8</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>TASK-726</td>
+<td>OpenAPI baseline drift check — CI step + scripts/check_openapi_drift.py</td>
+<td>e1bcd739</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>TASK-727</td>
+<td>Function limitation docs — 22 functions, 12 files, beam/column/footing</td>
+<td>1844408e</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>v0.21.6</td>
+<td>v0.21.6 release — API Quality &amp; Introspection complete</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
 <td>test</td>
 <td>Coverage boost: 19 tests, codes/is456/ at 99% branch coverage</td>
 <td>—</td>
@@ -1636,6 +1666,54 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <td>TASK-519</td>
 <td>Pareto panel: wired optimize_pareto_front to API, POST /optimization/beam/pareto endpoint, useParetoDesign hook, ParetoPanel in DesignView</td>
 <td>cf281f0b</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P1</td>
+<td>ETABS job generator: fixed units from <code>"SI-mm"</code> to <code>"IS456"</code></td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P1</td>
+<td>ETABS batch: group by <code>(story, beam_id)</code> — prevents cross-story collision</td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P1</td>
+<td>Geometry merge: key by <code>(story, label)</code> with fallback — prevents geometry overwrite</td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P1</td>
+<td>SmartDesigner CLI: use <code>design_single_beam()</code> returning correct <code>BeamDesignOutput</code> type</td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P1</td>
+<td>Report templates (<code>.j2</code>): included in wheel package data via pyproject.toml</td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P2</td>
+<td>README batch example: <code>load_combined()</code> replaces non-existent <code>parse_file()</code></td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P2</td>
+<td><code>bbs.py</code> import path: updated from deprecated shim to canonical <code>codes/is456/beam/detailing</code></td>
+<td>d823e708</td>
+</tr>
+<tr>
+<td>2026-04-07</td>
+<td>EXT-AUDIT-P3</td>
+<td>README version updated from <code>0.21.3</code> to <code>0.21.5</code></td>
+<td>d823e708</td>
 </tr>
 <tr>
 <td>2026-04-06</td>
