@@ -119,6 +119,7 @@ Whenever @reviewer approves a change, you must:
 | **Check canonical first** | `docs/docs-canonical.json` before creating any doc |
 | **Append-only logs** | WORKLOG.md, SESSION_LOG.md — never rewrite history |
 | **Immutable releases** | CHANGELOG.md, releases.md — append only, never edit past entries |
+| **Update stale counts** | After any endpoint is added/removed, grep for the old count across ALL doc files and update. Use: `grep -rn 'N endpoints' docs/ .github/ AGENTS.md CLAUDE.md` |
 
 ## File Move/Delete (Safe Pattern)
 

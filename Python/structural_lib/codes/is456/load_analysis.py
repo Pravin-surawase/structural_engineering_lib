@@ -27,6 +27,7 @@ Units: All functions use explicit mm/kN/kN·m units.
 
 from __future__ import annotations
 
+import math
 from typing import Literal
 
 from structural_lib.core.data_types import (
@@ -582,7 +583,7 @@ def compute_bmd_sfd(
 
         elif load.load_type == LoadType.TRIANGULAR:
             # Ascending by default; position_mm=0 → ascending, else descending
-            ascending = load.position_mm == 0.0
+            ascending = math.isclose(load.position_mm, 0.0, abs_tol=1e-6)
             _, bmd, sfd, _ = compute_triangular_load_bmd_sfd(
                 span_mm, load.magnitude, ascending=ascending, num_points=num_points
             )

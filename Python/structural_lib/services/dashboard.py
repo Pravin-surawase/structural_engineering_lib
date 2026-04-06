@@ -13,6 +13,9 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
+_CRITICAL_UTILIZATION_THRESHOLD = 0.95
+_PT_MIN_COEFF = 0.85  # IS 456 Cl 26.5.1.1
+
 
 @dataclass
 class DashboardSummary:
@@ -174,7 +177,8 @@ def generate_dashboard(
 
         # Critical beams (utilization > 0.95 or failed)
         if not is_valid or (
-            isinstance(utilization, (int, float)) and utilization > 0.95
+            isinstance(utilization, (int, float))
+            and utilization > _CRITICAL_UTILIZATION_THRESHOLD
         ):
             summary.critical_beams.append(str(beam_id))
 
@@ -267,7 +271,7 @@ def code_checks_live(
     governing = ""
 
     # Check 1: Minimum steel (Cl. 26.5.1.1)
-    ast_min = 0.85 * b_mm * d_mm / fy
+    ast_min = _PT_MIN_COEFF * b_mm * d_mm / fy
     if ast_mm2 > 0:
         if ast_mm2 >= ast_min:
             checks.append(

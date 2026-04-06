@@ -43,6 +43,9 @@ from structural_lib.core.data_types import BeamGeometry, LoadCase
 
 from . import report_svg
 
+# Utilization thresholds for scorecard warnings
+UTILIZATION_WARNING_THRESHOLD = 0.9
+
 _REPORT_CSS = """
 /* Professional Structural Engineering Report Styles */
 * { box-sizing: border-box; }
@@ -903,7 +906,7 @@ def get_stability_scorecard(data: ReportData) -> list[ScorecardItem]:
                 shear_path,
             )
         )
-    elif shear_util >= 0.9:
+    elif shear_util >= UTILIZATION_WARNING_THRESHOLD:
         items.append(
             ScorecardItem(
                 "shear_margin",
@@ -922,7 +925,7 @@ def get_stability_scorecard(data: ReportData) -> list[ScorecardItem]:
             )
         )
 
-    if data.governing_utilization >= 0.9:
+    if data.governing_utilization >= UTILIZATION_WARNING_THRESHOLD:
         items.append(
             ScorecardItem(
                 "governing_utilization",
