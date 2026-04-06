@@ -10,9 +10,10 @@ Migration: Phase 1.5 restructure (TASK-705).
 from __future__ import annotations
 
 import warnings as _warnings
+from typing import Any
 
 
-def __getattr__(name):
+def __getattr__(name: str) -> Any:
     from structural_lib.codes.is456.beam import torsion as _real
 
     attr = getattr(_real, name, None)

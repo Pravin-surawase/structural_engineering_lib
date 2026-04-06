@@ -50,16 +50,16 @@ class DictCompatMixin:
             return default
 
     def keys(self) -> list[str]:
-        return [f.name for f in fields(self)]
+        return [f.name for f in fields(self)]  # type: ignore[arg-type]
 
     def values(self) -> list[Any]:
-        return [getattr(self, f.name) for f in fields(self)]
+        return [getattr(self, f.name) for f in fields(self)]  # type: ignore[arg-type]
 
     def items(self) -> list[tuple[str, Any]]:
-        return [(f.name, getattr(self, f.name)) for f in fields(self)]
+        return [(f.name, getattr(self, f.name)) for f in fields(self)]  # type: ignore[arg-type]
 
-    def __iter__(self):
-        return iter(f.name for f in fields(self))
+    def __iter__(self) -> Any:
+        return iter(f.name for f in fields(self))  # type: ignore[arg-type]
 
 
 # =============================================================================
