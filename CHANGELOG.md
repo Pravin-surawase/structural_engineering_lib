@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-_No changes yet._
+### Fixed
+- **Response envelope mismatch** — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` across all 16 API fetch calls. Fixed Import page crash (`beams.map` undefined), Design page crash (`result.flexure` undefined), and silent data failures on geometry/insights/rebar pages.
+- Fixed `new URL()` crash on relative paths in `useCSVImport.ts` (dev mode)
+- Fixed 3 wrong type names in `useInsights.ts`
+
+### Added
+- `unwrapResponse<T>()` helper in `react_app/src/api/client.ts` — standard contract for FastAPI response unwrapping
+- 3 contract tests for `unwrapResponse` in `endpoints.test.ts`
 
 ## [0.21.4] — 2026-04-05
 

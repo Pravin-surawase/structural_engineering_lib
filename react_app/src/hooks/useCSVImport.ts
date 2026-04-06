@@ -16,6 +16,7 @@ import { useImportedBeamsStore } from "../store/importedBeamsStore";
 import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materialOverrides";
 import { toast } from "../components/ui/Toast";
 import type { BeamCSVRow } from '../types/csv';
+import { unwrapResponse } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -113,12 +114,13 @@ async function importCSVFile(
   const formData = new FormData();
   formData.append("file", file);
 
-  const url = new URL(`${API_BASE_URL}/api/v1/import/csv`);
-  url.searchParams.set("format_hint", format);
+  const params = new URLSearchParams();
+  params.set("format_hint", format);
+  const url = `${API_BASE_URL}/api/v1/import/csv?${params.toString()}`;
 
   let response: Response;
   try {
-    response = await fetch(url.toString(), {
+    response = await fetch(url, {
       method: "POST",
       body: formData,
     });
@@ -131,7 +133,7 @@ async function importCSVFile(
     throw new Error(`Import failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<CSVImportResponse>);
 }
 
 /**
@@ -157,7 +159,7 @@ async function importCSVText(
     throw new Error(`Import failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<CSVImportResponse>);
 }
 
 /**
@@ -171,14 +173,16 @@ async function importDualCSVFiles(
   const formData = new FormData();
   formData.append("geometry_file", geometryFile);
   formData.append("forces_file", forcesFile);
-  const url = new URL(`${API_BASE_URL}/api/v1/import/dual-csv`);
+  const params = new URLSearchParams();
   if (format) {
-    url.searchParams.set("format_hint", format);
+    params.set("format_hint", format);
   }
+  const queryStr = params.toString();
+  const url = `${API_BASE_URL}/api/v1/import/dual-csv${queryStr ? `?${queryStr}` : ''}`;
 
   let response: Response;
   try {
-    response = await fetch(url.toString(), {
+    response = await fetch(url, {
       method: "POST",
       body: formData,
     });
@@ -191,7 +195,7 @@ async function importDualCSVFiles(
     throw new Error(`Dual CSV import failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<DualCSVImportResponse>);
 }
 
 /**
@@ -217,7 +221,7 @@ async function batchDesign(
     throw new Error(`Batch design failed: ${error.detail || response.status}`);
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<BatchDesignResponse>);
 }
 
 /**

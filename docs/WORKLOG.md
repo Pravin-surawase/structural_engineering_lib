@@ -34,6 +34,9 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-06 | fix | Fixed response envelope mismatch — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` in 16 API calls | — |
+| 2026-04-06 | fix | Fixed `new URL()` crash on relative paths in useCSVImport.ts (dev mode) | — |
+| 2026-04-06 | test | Added 3 unwrapResponse contract tests + fixed useCSVImport test mocks | — |
 | 2026-04-06 | TASK-527 | TopBar context badges (beam count, green dot) + SettingsPanel slide-over | cf281f0b |
 | 2026-04-06 | TASK-528 | WorkflowBreadcrumb component integrated into ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage | cf281f0b |
 | 2026-04-06 | TASK-516 | Triangular + applied moment loads in load_analysis.py (compute_triangular_load_bmd_sfd, compute_applied_moment_bmd_sfd) + 23 tests | cf281f0b |

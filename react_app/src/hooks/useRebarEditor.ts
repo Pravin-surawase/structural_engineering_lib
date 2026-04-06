@@ -7,6 +7,7 @@
  * structural_lib.rebar functions for IS 456 compliant checks.
  */
 import { useMutation } from "@tanstack/react-query";
+import { unwrapResponse } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -91,7 +92,7 @@ async function fetchRebarValidation(
     throw new Error(error.detail || "Rebar validation failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<RebarValidateResponse>);
 }
 
 /**
@@ -134,7 +135,7 @@ async function fetchRebarApply(
     throw new Error(error.detail || "Rebar apply failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<RebarApplyResponse>);
 }
 
 /**

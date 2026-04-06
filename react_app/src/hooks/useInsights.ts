@@ -8,6 +8,7 @@
  * structural_lib.dashboard module.
  */
 import { useMutation } from "@tanstack/react-query";
+import { unwrapResponse } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -118,7 +119,7 @@ async function fetchDashboard(
     throw new Error(error.detail || "Dashboard generation failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<DashboardData>);
 }
 
 /**
@@ -175,7 +176,7 @@ async function fetchCodeChecks(
     throw new Error(error.detail || "Code checks failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<CodeChecksResult>);
 }
 
 /**
@@ -223,7 +224,7 @@ async function fetchRebarSuggestions(
     throw new Error(error.detail || "Rebar suggestion failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<RebarSuggestionsResult>);
 }
 
 /**
@@ -304,7 +305,7 @@ async function fetchProjectBOQ(
     throw new Error(error.detail || "Project BOQ generation failed");
   }
 
-  return response.json();
+  return response.json().then(unwrapResponse<ProjectBOQResponse>);
 }
 
 /**
