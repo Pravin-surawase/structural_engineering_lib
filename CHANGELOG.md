@@ -4,7 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-_No unreleased changes._
+### Fixed
+- **ETABS job generator:** Units corrected from `"SI-mm"` to `"IS456"` (EXT-P1-1)
+- **ETABS batch processing:** Group by `(story, beam_id)` instead of just `beam_id` — prevents cross-story beam collision (EXT-P1-2)
+- **Geometry merge:** Key by `(story, label)` with fallback — prevents geometry overwrite when multiple stories share label names (EXT-P1-3)
+- **SmartDesigner CLI:** Now uses `design_single_beam()` returning correct `BeamDesignOutput` type (EXT-P1-4)
+- **Report templates:** `.j2` Jinja2 templates now included in wheel package data via `pyproject.toml` (EXT-P1-5)
+- **README batch example:** Corrected `parse_file()` → `load_combined()` (non-existent function reference) (EXT-P2-1)
+- **`bbs.py` import path:** Updated from deprecated shim to canonical `codes/is456/beam/detailing` (EXT-P2-2)
+- **README version:** Updated from `0.21.3` to `0.21.5` (EXT-P3-1)
+
+### Added
+- `check_code("IS456")` — self-validation function for IS 456 code implementation (TASK-724)
 
 ## [0.21.5] — 2026-04-06
 

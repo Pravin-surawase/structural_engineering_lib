@@ -3,21 +3,26 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-04-06
+- Date: 2026-04-07
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-04-06
-**Last Session:** v0.21.5 completed — golden vectors, contract tests, coverage boost, report/3D tests
+**Last Updated:** 2026-04-07
+**Last Session:** External audit remediation (8 findings fixed) + check_code() implementation (TASK-724)
 
 ## What Was Completed
+- **External audit remediation (8 findings):** All 8 external audit findings fixed (2026-04-07)
+  - **P1:** ETABS job generator units `"SI-mm"` → `"IS456"`
+  - **P1:** ETABS batch grouping by `(story, beam_id)` — prevents cross-story collision
+  - **P1:** Geometry merge keyed by `(story, label)` with fallback — prevents overwrite
+  - **P1:** SmartDesigner CLI uses `design_single_beam()` with correct `BeamDesignOutput` type
+  - **P1:** Report `.j2` templates included in wheel package data
+  - **P2:** README batch example uses `load_combined()` (was non-existent `parse_file()`)
+  - **P2:** `bbs.py` import path updated to canonical `codes/is456/beam/detailing`
+  - **P3:** README version `0.21.3` → `0.21.5`
+- **check_code() implementation (TASK-724):** Self-validation for IS 456 code
 - **Golden vector baselines (TASK-720):** 42+ golden tests — 9 beam, 20 column, 13 footing (`@pytest.mark.golden`)
 - **Contract tests (TASK-721):** 18 API surface stability tests for column, footing, torsion (`@pytest.mark.contract`)
-- **conftest.py golden_vectors fixture (TASK-722):** SP:16 reference values fixture
-- **CI gate (TASK-723):** `pytest -m golden` added to GitHub Actions python-tests.yml
-- **Report/3D edge case tests (TASK-520):** 71 new tests for report generation and 3D visualization
-- **@clause("34.1") added to size_footing():** footing clause gap resolved
-- **Coverage boost:** 19 additional tests, `codes/is456/` at 99% branch coverage
-- **v0.21.5 quality gate passed:** all golden tests pass, 99% branch coverage (target was 90%)
+- **v0.21.5 quality gate passed:** all golden tests pass, 99% branch coverage
 
 ## Priorities (Updated)
 

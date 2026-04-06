@@ -826,6 +826,124 @@ class ValidationReport:
 
 
 @dataclass(frozen=True)
+class VersionInfo(DictCompatMixin):
+    """Library and environment version information.
+
+    Returned by :func:`~structural_lib.show_versions` when
+    ``as_dict=True``.  Provides structured access to the library
+    version, Python runtime, platform, registered design codes,
+    and dependency availability.
+
+    Attributes:
+        library_version: Installed package version string.
+        python_version: Python interpreter version.
+        platform: OS / architecture description.
+        design_codes: Registered code identifiers (e.g. ``("IS456",)``).
+        dependencies: Mapping of package name to version string or
+            ``None`` when the package is not installed.
+    """
+
+    library_version: str
+    python_version: str
+    platform: str
+    design_codes: tuple[str, ...]
+    dependencies: dict[str, str | None]
+
+    # -- display helpers (class-level, not dataclass fields) ----------------
+
+    _CODE_DISPLAY: dict[str, str] = field(  # type: ignore[misc]
+        default_factory=dict,
+        init=False,
+        repr=False,
+        compare=False,
+    )
+    _DEP_LABELS: dict[str, str] = field(  # type: ignore[misc]
+        default_factory=dict,
+        init=False,
+        repr=False,
+        compare=False,
+    )
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "_CODE_DISPLAY",
+            {
+                "IS456": "IS 456:2000",
+                "ACI318": "ACI 318-19",
+            },
+        )
+        object.__setattr__(
+            self,
+            "_DEP_LABELS",
+            {
+                "pydantic": "required",
+                "numpy": "optional",
+                "pandas": "optional",
+                "hypothesis": "optional — property testing",
+                "ezdxf": "optional — DXF export",
+                "jinja2": "optional — reports",
+                "reportlab": "optional — PDF",
+                "pytest": "dev",
+                "httpx": "optional — client SDK",
+            },
+        )
+
+    def to_string(self) -> str:
+        """Human-readable version report."""
+        lines: list[str] = [
+            f"structural_lib: {self.library_version}",
+            f"Python: {self.python_version}",
+            f"Platform: {self.platform}",
+            "",
+            "Design Codes:",
+        ]
+        if self.design_codes:
+            for code_id in self.design_codes:
+                display = self._CODE_DISPLAY.get(code_id, code_id)
+                lines.append(f"  {display} — registered")
+        else:
+            lines.append("  (none registered)")
+
+        lines.append("")
+        lines.append("Dependencies:")
+        for name, ver in self.dependencies.items():
+            label = self._DEP_LABELS.get(name, "")
+            ver_str = ver if ver is not None else "not installed"
+            if label:
+                lines.append(f"  {name + ':':16s}{ver_str} ({label})")
+            else:
+                lines.append(f"  {name + ':':16s}{ver_str}")
+
+        return "\n".join(lines)
+
+    def keys(self) -> list[str]:
+        """Public field names (excludes internal display helpers)."""
+        return [
+            f.name
+            for f in fields(self)  # type: ignore[arg-type]
+            if not f.name.startswith("_")
+        ]
+
+    def values(self) -> list[Any]:
+        """Public field values."""
+        return [getattr(self, k) for k in self.keys()]
+
+    def items(self) -> list[tuple[str, Any]]:
+        """Public field (name, value) pairs."""
+        return [(k, getattr(self, k)) for k in self.keys()]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "library_version": self.library_version,
+            "python_version": self.python_version,
+            "platform": self.platform,
+            "design_codes": list(self.design_codes),
+            "dependencies": dict(self.dependencies),
+        }
+
+
+@dataclass(frozen=True)
 class CheckCodeReport(DictCompatMixin):
     """Report from check_code() self-validation.
 

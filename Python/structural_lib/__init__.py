@@ -89,6 +89,7 @@ from .services.api import (
     # Torsion Design
     TorsionResult,
     ValidationReport,
+    VersionInfo,
     bearing_stress_enhancement,
     # Column Design
     biaxial_bending_check_is456,
@@ -150,6 +151,8 @@ from .services.api import (
     optimize_beam_cost,
     optimize_pareto_front,
     pm_interaction_curve_is456,
+    # Diagnostics (TASK-725)
+    show_versions,
     # Footing Design (IS 456 Cl 34)
     size_footing,
     smart_analyze_design,
@@ -226,6 +229,9 @@ __all__ = [
     "types",
     # Version
     "get_library_version",
+    # Diagnostics (TASK-725)
+    "show_versions",
+    "VersionInfo",
     # Validation
     "validate_job_spec",
     "validate_design_results",

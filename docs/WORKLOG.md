@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-06
+last_updated: 2026-04-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -48,6 +48,14 @@ tags: []
 | 2026-04-06 | TASK-528 | WorkflowBreadcrumb component integrated into ImportView, BuildingEditorPage, BatchDesignPage, DashboardPage | cf281f0b |
 | 2026-04-06 | TASK-516 | Triangular + applied moment loads in load_analysis.py (compute_triangular_load_bmd_sfd, compute_applied_moment_bmd_sfd) + 23 tests | cf281f0b |
 | 2026-04-06 | TASK-519 | Pareto panel: wired optimize_pareto_front to API, POST /optimization/beam/pareto endpoint, useParetoDesign hook, ParetoPanel in DesignView | cf281f0b |
+| 2026-04-07 | EXT-AUDIT-P1 | ETABS job generator: fixed units from `"SI-mm"` to `"IS456"` | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | ETABS batch: group by `(story, beam_id)` — prevents cross-story collision | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | Geometry merge: key by `(story, label)` with fallback — prevents geometry overwrite | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | SmartDesigner CLI: use `design_single_beam()` returning correct `BeamDesignOutput` type | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P1 | Report templates (`.j2`): included in wheel package data via pyproject.toml | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P2 | README batch example: `load_combined()` replaces non-existent `parse_file()` | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P2 | `bbs.py` import path: updated from deprecated shim to canonical `codes/is456/beam/detailing` | d823e708 |
+| 2026-04-07 | EXT-AUDIT-P3 | README version updated from `0.21.3` to `0.21.5` | d823e708 |
 | 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | 98185046 |
 | 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | 98185046 |
 | 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | 98185046 |

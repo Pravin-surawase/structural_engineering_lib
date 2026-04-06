@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-06 — v0.21.5 completed, v0.21.6 active
+**Updated:** 2026-04-07 — v0.21.5 completed, external audit remediation done, v0.21.6 active
 
 ---
 
@@ -81,6 +81,25 @@
 | v0.21.5 Stabilization | 8 items ✅ | CostProfile, sanitize_float, footing wiring, bearing pressure |
 | Recent Fixes | 21 items ✅ | Response envelope, CI, audit P0–P2, column math, git hardening, variable naming |
 | Audit P1 Batch 1 | 4 items ✅ | clause_cli, FlexureResult limits, streaming 404, Three.js cleanup |
+| External Audit Remediation | 8 items ✅ | ETABS units/batch/geometry, SmartDesigner CLI, .j2 packaging, README fixes, bbs import path |
+
+---
+
+## External Audit Remediation — v0.21.6 ✅ DONE
+
+**Theme:** Fix 8 external audit findings across ETABS import, SmartDesigner CLI, packaging, and documentation.
+**Completed:** 2026-04-07
+
+| ID | Finding | Priority | Status |
+|----|---------|----------|--------|
+| EXT-P1-1 | ETABS job generator uses `"SI-mm"` units → fixed to `"IS456"` | P1 | ✅ DONE |
+| EXT-P1-2 | ETABS batch groups by `beam_id` only → fixed to `(story, beam_id)` to prevent cross-story collision | P1 | ✅ DONE |
+| EXT-P1-3 | Geometry merge keys by `label` only → fixed to `(story, label)` with fallback to prevent overwrite | P1 | ✅ DONE |
+| EXT-P1-4 | SmartDesigner CLI uses wrong function → fixed to `design_single_beam()` returning `BeamDesignOutput` | P1 | ✅ DONE |
+| EXT-P1-5 | Report `.j2` templates missing from wheel → added to `pyproject.toml` package-data | P1 | ✅ DONE |
+| EXT-P2-1 | README batch example uses non-existent `parse_file()` → fixed to `load_combined()` | P2 | ✅ DONE |
+| EXT-P2-2 | `bbs.py` imports from deprecated shim → fixed to canonical `codes/is456/beam/detailing` | P2 | ✅ DONE |
+| EXT-P3-1 | README version `0.21.3` → updated to `0.21.5` | P3 | ✅ DONE |
 
 ---
 

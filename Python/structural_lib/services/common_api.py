@@ -13,11 +13,16 @@ import ast
 import importlib
 import inspect
 import json
+import platform as _platform
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 
-from structural_lib.core.data_types import CheckCodeReport, ValidationReport
+from structural_lib.core.data_types import (
+    CheckCodeReport,
+    ValidationReport,
+    VersionInfo,
+)
 from structural_lib.services import beam_pipeline, job_runner
 
 # ============================================================================
@@ -610,3 +615,70 @@ def check_code(code_id: str) -> CheckCodeReport:
         no_boundary_violations=boundary_ok,
         issues=tuple(all_issues),
     )
+
+
+# ============================================================================
+# Diagnostic version report (TASK-725)
+# ============================================================================
+
+# Packages to check — order matters for display.
+_VERSION_DEPS: tuple[str, ...] = (
+    "pydantic",
+    "numpy",
+    "pandas",
+    "hypothesis",
+    "ezdxf",
+    "jinja2",
+    "reportlab",
+    "pytest",
+    "httpx",
+)
+
+
+def show_versions(*, as_dict: bool = False) -> VersionInfo | None:
+    """Print library and environment version information.
+
+    Inspired by ``sklearn.show_versions()`` and ``pd.show_versions()``.
+    Reports library version, Python version, platform, registered
+    design codes, and optional dependency versions.
+
+    Args:
+        as_dict: If ``True``, return a
+            :class:`~structural_lib.core.data_types.VersionInfo`
+            dataclass instead of printing.  If ``False`` (default),
+            print to stdout and return ``None``.
+
+    Returns:
+        :class:`~structural_lib.core.data_types.VersionInfo` when
+        *as_dict* is ``True``, otherwise ``None``.
+
+    Example:
+        >>> show_versions()
+        structural_lib: 0.21.5
+        Python: 3.12.4
+        Platform: macOS-14.5-arm64
+        ...
+    """
+    from structural_lib.core.registry import CodeRegistry
+
+    # -- dependency versions ------------------------------------------------
+    deps: dict[str, str | None] = {}
+    for pkg in _VERSION_DEPS:
+        try:
+            deps[pkg] = version(pkg)
+        except PackageNotFoundError:
+            deps[pkg] = None
+
+    info = VersionInfo(
+        library_version=get_library_version(),
+        python_version=_platform.python_version(),
+        platform=_platform.platform(),
+        design_codes=tuple(CodeRegistry.list_codes()),
+        dependencies=deps,
+    )
+
+    if as_dict:
+        return info
+
+    print(info.to_string())  # noqa: T201 – intentional diagnostic print
+    return None
