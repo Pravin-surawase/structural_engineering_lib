@@ -84,6 +84,23 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.5
+**Date:** 2026-04-06
+**Status:** ✅ Released
+**Mindset:** Test Coverage & Regression Prevention
+
+### v0.21.5 — 2026-04-06 (Test Coverage & Regression Prevention)
+- **42+ golden vector baselines** — beam (9), column (20), footing (13) with `@pytest.mark.golden`
+- **18 contract tests** — API surface stability for column, footing, torsion APIs
+- **conftest.py golden_vectors fixture** — session-scoped SP:16 reference data
+- **CI golden gate** — dedicated `pytest -m golden` step in GitHub Actions
+- **71 report/3D edge case tests** — XSS escaping, fallback HTML, minimum dimensions, dense rebar
+- **99% branch coverage** on `codes/is456/` (19 targeted tests)
+- **Response envelope fix** — `unwrapResponse()` across 16 React API calls
+- **@clause("34.1")** added to `size_footing()`
+
+---
+
 ## v0.21.4
 **Date:** 2026-04-05
 **Status:** ✅ Released

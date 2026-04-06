@@ -239,7 +239,7 @@ codes/{code_id}/
 # 3. EVERY function has a golden vector test
 # 4. Parameter names MUST match code conventions (b_mm, fck, etc.)
 
-# Current primary API (v0.21.4):
+# Current primary API (v0.21.5):
 def design_beam_is456(**kwargs) -> ComplianceCaseResult:
     """IS 456 beam design — direct entry point."""
     # Delegates to codes/is456/ for all math
@@ -267,7 +267,7 @@ def design_beam(*, code: str, **kwargs) -> DesignEnvelope:
 # 6. Auth required on all non-health endpoints
 ```
 
-**Current Error Shape** (v0.21.4):
+**Current Error Shape** (v0.21.5):
 ```json
 {
   "success": false,
@@ -653,7 +653,7 @@ We chose `CodeRegistry.get("IS456")` instead. Reasons:
 | Concurrent multi-code | ❌ One code at a time | ✅ Compare IS 456 vs ACI 318 in same request |
 | Explicit dependency | ❌ Implicit — which code is active? | ✅ `code="IS456"` passed explicitly |
 
-**Current status (v0.21.4):**
+**Current status (v0.21.5):**
 - `CodeRegistry` is **live code** — `IS456Code` is registered via `@register_code("IS456")` in `codes/is456/__init__.py`
 - ACI 318 and EC2 code classes exist as stubs with `@register_code` commented out
 - Instance caching uses a simple `dict` — effective under CPython GIL but **not explicitly thread-safe** (no `threading.Lock`). Adding explicit locks is planned for v0.24 when multi-code concurrent access becomes a real use case
@@ -993,7 +993,7 @@ def test_flexure_capacity_increases_with_fck(fck, fy, b_mm, d_mm):
 | 3D geometry generation | < 50ms | pytest-benchmark | 🔲 Planned |
 | JSON serialization (100 results) | < 10ms | pytest-benchmark | 🔲 Planned |
 
-> **Note (v0.21.4):** `test_benchmarks.py` exists with 13 benchmark tests. However, formal `pytest-benchmark` integration with regression detection (>20% slowdown blocks merge) is not yet active.
+> **Note (v0.21.5):** `test_benchmarks.py` exists with 13 benchmark tests. However, formal `pytest-benchmark` integration with regression detection (>20% slowdown blocks merge) is not yet active.
 
 **Regression policy:** >20% slowdown from baseline blocks merge. Benchmark results stored in `Python/test_stats.json` and tracked across versions.
 
@@ -1159,7 +1159,7 @@ Git hooks also exist via `ai_commit.sh`, which runs staging, formatting, and pus
 
 | Status | Target Version |
 |--------|---------------|
-| ✅ Active (basic hygiene + formatting) | v0.21.4 |
+| ✅ Active (basic hygiene + formatting) | v0.21.5 |
 | 🔲 Planned (architecture + API checks) | v0.23 |
 
 ### 16.6 Concurrency Model

@@ -9,8 +9,7 @@ tags: []
 
 # Validation Pack — Benchmark Beams & Columns
 
-**Version:** 0.21.4
-**Purpose:** Engineers can verify library accuracy using these benchmark beams and columns
+**Version:** 0.21.5
 
 This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trusted software.
 

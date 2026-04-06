@@ -12,7 +12,7 @@ Test Hierarchy:
 4. Batch design flow with multiple beams
 
 Path Rules:
-- Workspace root: /Users/pravinsurawase/VS_code_project/structural_engineering_lib
+- Workspace root: <repository root> (run pytest from here)
 - Sample data: Etabs_CSV/*.csv (relative to workspace root)
 - Run from workspace root: .venv/bin/pytest Python/tests/integration/test_adapter_e2e.py -v
 """
