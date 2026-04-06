@@ -245,4 +245,4 @@ Then continue from where I left off.
 
 React hooks: `useCSVFileImport`, `useCSVTextImport`, `useDualCSVImport`, `useBatchDesign` (useCSVImport.ts) | `useBeamGeometry` | `useLiveDesign`, `useAutoDesign` | `useBuildingGeometry`, `useCrossSectionGeometry` (useGeometryAdvanced.ts) | `useExport` (BBS/DXF/report) | `useInsights`, `useCodeChecks`, `useRebarSuggestions` | `useRebarValidation`, `useRebarApply` | `useDesignWebSocket`
 
-FastAPI routers (13 routers, 59 endpoints): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`, `column`
+FastAPI routers (13 routers, 60 endpoints): `design`, `detailing`, `analysis`, `geometry`, `imports`, `insights`, `optimization`, `rebar`, `export`, `streaming`, `websocket`, `health`, `column`

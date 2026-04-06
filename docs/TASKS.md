@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-06 — v0.21.6 completed (check_code, show_versions, OpenAPI freeze, limitation docs)
+**Updated:** 2026-04-06 — v0.21.6 complete (unreleased, pending PyPI publish)
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.6 ✅ Released → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization
+- **Version:** v0.21.6 ✅ COMPLETE (unreleased) → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)

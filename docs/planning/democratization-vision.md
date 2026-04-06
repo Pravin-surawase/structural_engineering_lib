@@ -189,8 +189,8 @@ actions:
 
 ### Current Tech Stack
 - **Backend:** Python 3.10+, Pydantic v2, NumPy/SciPy
-- **Frontend:** React 19 + React-Three-Fiber (R3F) + Tailwind CSS (fully operational, 59 API endpoints)
-- **API:** FastAPI (13 routers, 59 endpoints, REST + WebSocket)
+- **Frontend:** React 19 + React-Three-Fiber (R3F) + Tailwind CSS (fully operational, 60 API endpoints)
+- **API:** FastAPI (13 routers, 60 endpoints, REST + WebSocket)
 - **3D:** React-Three-Fiber (web), PyVista (planned server-side)
 - **Testing:** pytest, 85% coverage, 4,237+ tests
 - **Automation:** Pre-commit hooks, CI/CD, MkDocs Material

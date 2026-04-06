@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-04-06
+**Last Updated:** 2026-04-07
 
 ---
 
@@ -61,6 +61,10 @@ tags: []
 | 2026-04-07 | EXT-AUDIT-P2 | README batch example: `load_combined()` replaces non-existent `parse_file()` | d823e708 |
 | 2026-04-07 | EXT-AUDIT-P2 | `bbs.py` import path: updated from deprecated shim to canonical `codes/is456/beam/detailing` | d823e708 |
 | 2026-04-07 | EXT-AUDIT-P3 | README version updated from `0.21.3` to `0.21.5` | d823e708 |
+| 2026-04-07 | fix | Fixed version 0.21.5 → 0.21.6 in README.md, CITATION.cff, package.json | e609af0a |
+| 2026-04-07 | fix | Fixed TASKS.md: v0.21.6 "Released" → "COMPLETE (unreleased)" | e609af0a |
+| 2026-04-07 | fix | Fixed endpoint count 59 → 60 in 8 files (11 edits) | e609af0a |
+| 2026-04-07 | verify | Confirmed all 8 audit fixes on main (PR #544 merged) — 5081 tests pass | e609af0a |
 | 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | 98185046 |
 | 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | 98185046 |
 | 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | 98185046 |

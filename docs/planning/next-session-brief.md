@@ -3,19 +3,25 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-04-06
+- Date: 2026-04-07
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-04-06
-**Last Session:** v0.21.6 completed — check_code(), show_versions(), OpenAPI CI check, limitation docs
+**Last Updated:** 2026-04-07
+**Last Session:** Post-merge audit review — version accuracy fixes, endpoint count sync, PR #544 verified
 
 ## What Was Completed
-- **check_code("IS456") (TASK-724):** Self-validation function with CheckCodeReport — 6 checks (importable, decorated, frozen, results, params, boundaries)
-- **show_versions() (TASK-725):** Diagnostic utility with VersionInfo — reports library, Python, platform, codes, dependencies
-- **OpenAPI baseline drift check (TASK-726):** CI step + scripts/check_openapi_drift.py — prevents silent API breakage
-- **Function limitation docs (TASK-727):** Added Limitations sections to 22 IS 456 function docstrings across 12 modules
-- **76 new tests:** 35 for check_code, 41 for show_versions
-- **v0.21.6 quality gate passed:** all tests pass, OpenAPI drift check clean
+- **Audit remediation merged (PR #544):** All 8 external audit fixes confirmed on main (ETABS units, story collision, geometry merge, SmartDesigner CLI, template packaging, README batch example, bbs import, README version)
+- **Version accuracy:** Fixed 0.21.5 → 0.21.6 in README.md, CITATION.cff, package.json (pyproject.toml already correct)
+- **TASKS.md accuracy:** Changed v0.21.6 from "Released" to "COMPLETE (unreleased)"
+- **Endpoint count sync:** Fixed 59 → 60 in 8 files (11 edits)
+- **Full test pass:** 5081 tests passing on main
+
+## Current State
+- **v0.21.5** = last PyPI release (tag: v0.21.5)
+- **v0.21.6** = feature-complete, NOT yet released to PyPI (pyproject.toml says 0.21.6)
+- All version references synchronized across README.md, CITATION.cff, package.json, pyproject.toml
+- 60 endpoints, 13 routers — counts verified and synchronized across docs
+- 5081 tests passing, 99% branch coverage on codes/is456/
 
 ## Priorities (Updated)
 
@@ -41,6 +47,7 @@
 - `show_versions()` follows scikit-learn pattern — both print and programmatic modes
 - OpenAPI baseline diffing in CI prevents silent API drift
 - Limitation docs prevent users from misapplying functions
+- Version accuracy: v0.21.5 is last PyPI release, v0.21.6 is dev version (not "Released")
 
 ## Blockers
 - None

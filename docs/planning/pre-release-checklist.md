@@ -19,7 +19,7 @@
 
 - [x] Core beam design (flexure, shear, detailing) complete
 - [x] IS 456 clause compliance verified with SP:16 benchmarks
-- [x] FastAPI REST + WebSocket API operational (59 endpoints)
+- [x] FastAPI REST + WebSocket API operational (60 endpoints)
 - [x] React frontend with 3D visualization
 - [x] CSV/ETABS import pipeline working
 - [x] Export pipeline (BBS, DXF, HTML report)

@@ -19,7 +19,7 @@ v0.21.0 through v0.21.3 required 4 releases in 2 days because we shipped:
 - Missing `clauses.json` in wheel (silent failure)
 - Tests packaged in wheel (scope leak)
 - 32 instances of `str(e)` leaking internals
-- Rate limiting on only 2/59 endpoints
+- Rate limiting on only 2/60 endpoints
 - README advertising non-existent functions
 - Import-time warnings breaking user scripts
 
