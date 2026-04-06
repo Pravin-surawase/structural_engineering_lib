@@ -61,7 +61,22 @@ settings.load_profile("default")
 # COMMON MATERIAL FIXTURES
 # =============================================================================
 
+import json  # noqa: E402
+from pathlib import Path  # noqa: E402
+
 import pytest  # noqa: E402
+
+# =============================================================================
+# GOLDEN VECTORS FIXTURE
+# =============================================================================
+
+
+@pytest.fixture(scope="session")
+def golden_vectors():
+    """Load SP:16 golden vector test data."""
+    data_file = Path(__file__).parent / "data" / "golden_vectors_is456.json"
+    with open(data_file, encoding="utf-8") as f:
+        return json.load(f)
 
 
 @pytest.fixture()

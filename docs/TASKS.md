@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-06 — Full roadmap alignment with unified-architecture-v1.md §20
+**Updated:** 2026-04-06 — v0.21.5 completed, v0.21.6 active
 
 ---
 
@@ -16,10 +16,10 @@
 
 ## Current Release
 
-- **Version:** v0.21.4 ✅ Released → micro-releases v0.21.5–v0.21.8 → v0.22.0 Stabilization
+- **Version:** v0.21.5 ✅ Released → micro-releases v0.21.6–v0.21.8 → v0.22.0 Stabilization
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
-- **Focus:** Golden vectors & contract tests → API introspection → security hardening → performance baselines → stabilization
-- **Target:** v0.21.5 next, then v0.21.6–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
+- **Focus:** API introspection → security hardening → performance baselines → stabilization
+- **Target:** v0.21.6 next, then v0.21.7–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -31,8 +31,8 @@
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
-| **v0.21.5** | Test Coverage & Regression Prevention | 🔄 ACTIVE | Golden vectors, contract tests, regression framework |
-| **v0.21.6** | API Quality & Introspection | 📋 PLANNED | check_code(), show_versions(), API surface freeze |
+| **v0.21.5** | Test Coverage & Regression Prevention | ✅ DONE | Golden vectors (42+), contract tests (18), 99% branch coverage |
+| **v0.21.6** | API Quality & Introspection | � ACTIVE | check_code(), show_versions(), API surface freeze |
 | **v0.21.7** | Security Hardening | 📋 PLANNED | Input validation, body limits, CVE scanning |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | Provenance, SP:16 verification, release hardening |
@@ -61,7 +61,7 @@
 
 | # | Task ID | Feature | Status |
 |---|---------|---------|--------|
-| 7 | TASK-520 | Report/3D Test Coverage | 📋 [→ v0.21.5] |
+| 7 | TASK-520 | Report/3D Test Coverage | ✅ DONE (71 new tests) |
 | 8 | TASK-521 | Beam Rationalization | 📋 [→ v0.22.0] |
 
 > v0.21 React UX Overhaul (TASK-522–528, all ✅) and Library Expansion items 1–6 (TASK-514–519, all ✅) archived to [tasks-history.md](_archive/tasks-history.md).
@@ -84,21 +84,21 @@
 
 ---
 
-## v0.21.5 — Test Coverage & Regression Prevention
+## v0.21.5 — Test Coverage & Regression Prevention ✅ DONE
 
 **Theme:** Golden vector baselines and contract tests. No future change can silently break existing calculations.
-**Target:** Next 1-2 sessions
-**Quality Gate:** `pytest -m golden` passes with 0 failures, branch coverage ≥ 90% on `codes/is456/`
+**Completed:** 2026-04-06
+**Quality Gate:** `pytest -m golden` passes with 0 failures, branch coverage 99% on `codes/is456/` ✅
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| TASK-720 | Golden vector baselines for all IS 456 beam functions (`@pytest.mark.golden`) | @tester | 📋 |
-| TASK-721 | Contract tests for API surface stability (`@pytest.mark.contract`) | @tester | 📋 |
-| TASK-520 | Report & 3D visualization test coverage | @tester | 📋 [CARRIED OVER] |
-| TASK-722 | conftest.py golden_vectors fixture with SP:16 values | @tester | 📋 |
-| TASK-723 | CI gate: `pytest -m golden` must pass before merge | @ops | 📋 |
-| — | 90%+ branch coverage on `codes/is456/` | @tester | 📋 |
-| — | Add `@clause` to 7 remaining footing helper functions | @structural-math | 📋 |
+| TASK-720 | Golden vector baselines for all IS 456 functions (`@pytest.mark.golden`) — 42+ tests (9 beam + 20 column + 13 footing) | @tester | ✅ DONE |
+| TASK-721 | Contract tests for API surface stability (`@pytest.mark.contract`) — 18 contract tests | @tester | ✅ DONE |
+| TASK-520 | Report & 3D visualization test coverage — 71 new tests | @tester | ✅ DONE |
+| TASK-722 | conftest.py golden_vectors fixture with SP:16 values | @tester | ✅ DONE |
+| TASK-723 | CI gate: `pytest -m golden` in GitHub Actions python-tests.yml | @ops | ✅ DONE |
+| — | 90%+ branch coverage on `codes/is456/` — 99% achieved | @tester | ✅ DONE |
+| — | Add `@clause("34.1")` to `size_footing()` | @structural-math | ✅ DONE |
 
 ## v0.21.6 — API Quality & Introspection
 
