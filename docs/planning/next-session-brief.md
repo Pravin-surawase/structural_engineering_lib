@@ -6,30 +6,37 @@
 - Date: 2026-04-06
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-04-06
-**Last Session:** v0.21.6 completed — check_code(), show_versions(), OpenAPI CI check, limitation docs
+**Last Updated:** 2026-04-07
+**Last Session:** Post-merge audit remediation, version sync, endpoint count fix
 
 ## What Was Completed
-- **check_code("IS456") (TASK-724):** Self-validation function with CheckCodeReport — 6 checks (importable, decorated, frozen, results, params, boundaries)
-- **show_versions() (TASK-725):** Diagnostic utility with VersionInfo — reports library, Python, platform, codes, dependencies
-- **OpenAPI baseline drift check (TASK-726):** CI step + scripts/check_openapi_drift.py — prevents silent API breakage
-- **Function limitation docs (TASK-727):** Added Limitations sections to 22 IS 456 function docstrings across 12 modules
-- **76 new tests:** 35 for check_code, 41 for show_versions
-- **v0.21.6 quality gate passed:** all tests pass, OpenAPI drift check clean
+- **External audit remediation:** 8 findings fixed (PR #544 merged)
+- **Version synchronization:** 0.21.5→0.21.6 across README, CITATION.cff, package.json
+- **TASKS.md accuracy:** v0.21.6 marked "COMPLETE (unreleased)" not "Released"
+- **Endpoint count standardized:** 59→60 across 8 docs (11 edits)
+- **Post-merge verification:** 5081 tests pass, all fixes confirmed on main
+- **Agent evolution:** EVO-014 through EVO-017 proposed (integration test gaps)
+
+## Current Version State
+- **v0.21.5** = last PyPI release (tag: v0.21.5)
+- **v0.21.6** = feature-complete, unreleased — DO NOT mark as "Released" anywhere
 
 ## Priorities (Updated)
 
-### Immediate (v0.21.7 — Security Hardening)
-1. **JSON body size limit middleware** (TASK-728) — @api-developer
-2. **Cross-field plausibility guards** (TASK-729) — @api-developer
-3. **Input validation audit** (TASK-730) — @security
-4. **WebSocket message rate limit** — @api-developer
-5. **Computation timeout** — @api-developer
+### Immediate
+1. **v0.21.6 PyPI release** — when user is ready
 
-### Next (v0.21.8 — Performance & Property Testing)
-6. **pytest-benchmark integration** (TASK-732) — @tester
-7. **Hypothesis test expansion** (TASK-733) — @tester
-8. **Performance regression baselines** (TASK-734) — @ops
+### Next (v0.21.7 — Security Hardening)
+2. **JSON body size limit middleware** (TASK-728) — @api-developer
+3. **Cross-field plausibility guards** (TASK-729) — @api-developer
+4. **Input validation audit** (TASK-730) — @security
+5. **WebSocket message rate limit** (TASK-731) — @api-developer
+6. **Computation timeout** — @api-developer
+
+### Later (v0.21.8 — Performance & Property Testing)
+7. **pytest-benchmark integration** (TASK-732) — @tester
+8. **Hypothesis test expansion** (TASK-733) — @tester
+9. **Performance regression baselines** (TASK-734) — @ops
 
 ### Architecture Reference
 - Unified architecture: `docs/architecture/unified-architecture-v1.md`

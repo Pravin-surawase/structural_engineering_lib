@@ -52,7 +52,7 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 - 📋 **Bar Bending Schedules** — Auto-generate BBS from design results
 - 📐 **DXF Export** — CAD-ready reinforcement drawings
 - 📊 **Batch Processing** — Design hundreds of beams from CSV/JSON inputs
-- 🌐 **REST & WebSocket API** — 59 endpoints via FastAPI
+- 🌐 **REST & WebSocket API** — 60 endpoints via FastAPI
 - 🎨 **3D Visualization** — Interactive rebar geometry in React Three Fiber
 - 📑 **HTML & PDF Reports** — Comprehensive design reports
 - ⚡ **CLI Pipeline** — From input to design → detail → BBS → DXF in one flow
@@ -66,7 +66,7 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 | **Python tests** | 4,200+ tests across Ubuntu, Windows, macOS |
 | **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
 | **API functions** | 37 public functions in `structural_lib.api` |
-| **REST endpoints** | 59 endpoints across 13 routers + WebSocket |
+| **REST endpoints** | 60 endpoints across 13 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
 | **IS 456 clauses** | Flexure (Cl 38), shear (Cl 40), torsion (Cl 41), detailing (Cl 26), serviceability (Cl 43), columns (Cl 39), footings (Cl 34) + IS 13920 ductile detailing |
 | **AI agents** | 16 VS Code Copilot agents with 10 skills |
