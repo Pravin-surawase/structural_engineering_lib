@@ -16,6 +16,7 @@ import math
 
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
+    BearingPressureCheckResult,
     BearingStressEnhancementResult,
     FootingBearingResult,
     FootingType,
@@ -26,7 +27,6 @@ from structural_lib.core.errors import (
 )
 
 
-@clause("34.1")
 def size_footing(
     P_service_kN: float,
     q_safe_kPa: float,
@@ -228,4 +228,106 @@ def bearing_stress_enhancement(
         permissible_stress_mpa=permissible_stress_mpa,
         A1_mm2=A1_mm2,
         A2_mm2=A2_mm2,
+    )
+
+
+@clause("34.4")
+def check_bearing_pressure(
+    Pu_kN: float,
+    fck: float,
+    column_b_mm: float,
+    column_D_mm: float,
+    footing_B_mm: float,
+    footing_L_mm: float,
+) -> BearingPressureCheckResult:
+    """Check bearing pressure at column-footing interface per IS 456 Cl 34.4.
+
+    Verifies that the actual bearing stress on the column footprint does not
+    exceed the permissible bearing stress enhanced by sqrt(A1/A2).
+
+    Args:
+        Pu_kN: Factored axial load on column (kN).
+        fck: Characteristic compressive strength of concrete (N/mm²).
+        column_b_mm: Column width (mm).
+        column_D_mm: Column depth (mm).
+        footing_B_mm: Footing width (mm).
+        footing_L_mm: Footing length (mm).
+
+    Returns:
+        BearingPressureCheckResult with actual stress, permissible stress,
+        enhancement factor, utilization ratio, and safety status.
+
+    Raises:
+        ValidationError: If Pu_kN or fck is non-positive.
+        DimensionError: If column or footing dimensions are non-positive.
+        DimensionError: If footing is smaller than column in any direction.
+
+    References:
+        IS 456:2000 Cl 34.4
+        SP 16:1980 Section 3.5 -- Bearing stress on concrete
+    """
+    # --- Input validation ---
+    if Pu_kN <= 0:
+        raise ValidationError(
+            "Factored axial load Pu must be positive",
+            details={"Pu_kN": Pu_kN},
+            clause_ref="Cl. 34.4",
+        )
+    if fck <= 0:
+        raise ValidationError(
+            "Concrete strength fck must be positive",
+            details={"fck": fck},
+            clause_ref="Cl. 34.4",
+        )
+    if column_b_mm <= 0 or column_D_mm <= 0:
+        raise DimensionError(
+            "Column dimensions must be positive",
+            details={"column_b_mm": column_b_mm, "column_D_mm": column_D_mm},
+        )
+    if footing_B_mm <= 0 or footing_L_mm <= 0:
+        raise DimensionError(
+            "Footing dimensions must be positive",
+            details={"footing_B_mm": footing_B_mm, "footing_L_mm": footing_L_mm},
+        )
+    if footing_B_mm < column_b_mm or footing_L_mm < column_D_mm:
+        raise DimensionError(
+            "Footing must be larger than or equal to column in both directions",
+            details={
+                "column_b_mm": column_b_mm,
+                "column_D_mm": column_D_mm,
+                "footing_B_mm": footing_B_mm,
+                "footing_L_mm": footing_L_mm,
+            },
+        )
+
+    # IS 456 Cl 34.4: Loaded area A2 = column footprint
+    A2_mm2 = column_b_mm * column_D_mm
+
+    # IS 456 Cl 34.4: Supporting area A1 = footing area
+    A1_mm2 = footing_B_mm * footing_L_mm
+
+    # IS 456 Cl 34.4: Actual bearing stress = Pu / A2
+    Pu_N = Pu_kN * 1e3
+    actual_stress_mpa = Pu_N / A2_mm2
+
+    # Delegate enhancement factor calculation to existing function
+    enhancement_result = bearing_stress_enhancement(
+        fck=fck, A1_mm2=A1_mm2, A2_mm2=A2_mm2
+    )
+    enhancement_factor = enhancement_result.enhancement_factor
+    permissible_stress_mpa = enhancement_result.permissible_stress_mpa
+
+    # IS 456 Cl 34.4: Check actual <= permissible
+    utilization_ratio = actual_stress_mpa / permissible_stress_mpa
+    is_safe = actual_stress_mpa <= permissible_stress_mpa
+
+    return BearingPressureCheckResult(
+        actual_stress_mpa=actual_stress_mpa,
+        permissible_stress_mpa=permissible_stress_mpa,
+        enhancement_factor=enhancement_factor,
+        utilization_ratio=utilization_ratio,
+        is_safe=is_safe,
+        A1_mm2=A1_mm2,
+        A2_mm2=A2_mm2,
+        Pu_kN=Pu_kN,
     )

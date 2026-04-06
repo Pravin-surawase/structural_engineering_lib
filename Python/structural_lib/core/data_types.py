@@ -19,6 +19,50 @@ if TYPE_CHECKING:
 
 
 # =============================================================================
+# Dict-compat mixin for frozen dataclasses (UX-02 backward compat)
+# =============================================================================
+
+
+class DictCompatMixin:
+    """Mixin providing dict-style access on frozen dataclasses.
+
+    Enables ``result['key']``, ``'key' in result``, ``result.get()``,
+    ``result.keys()``, etc. for backward compatibility with code that
+    previously consumed plain dicts.
+    """
+
+    def __getitem__(self, key: str) -> Any:
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            raise KeyError(key)
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        object.__setattr__(self, key, value)
+
+    def __contains__(self, key: object) -> bool:
+        return isinstance(key, str) and hasattr(self, key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            return default
+
+    def keys(self) -> list[str]:
+        return [f.name for f in fields(self)]
+
+    def values(self) -> list[Any]:
+        return [getattr(self, f.name) for f in fields(self)]
+
+    def items(self) -> list[tuple[str, Any]]:
+        return [(f.name, getattr(self, f.name)) for f in fields(self)]
+
+    def __iter__(self):
+        return iter(f.name for f in fields(self))
+
+
+# =============================================================================
 # TypedDicts for Structured Data
 # =============================================================================
 
@@ -283,9 +327,7 @@ class FlexureResult:
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
     Ast_min: float = 0.0  # Min tension steel per Cl. 26.5.1.1 (mm²)
     Ast_max: float = 0.0  # Max tension steel per Cl. 26.5.1.2 (mm²)
-    clause_refs: dict[str, str] = field(
-        default_factory=dict
-    )  # IS 456 clause references
+    clause_refs: dict[str, str] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.error_message:
@@ -351,9 +393,7 @@ class ShearResult:
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
     errors: tuple[DesignError, ...] = field(default_factory=tuple)  # Structured errors
-    clause_refs: dict[str, str] = field(
-        default_factory=dict
-    )  # IS 456 clause references
+    clause_refs: dict[str, str] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.remarks:
@@ -461,9 +501,6 @@ class TorsionResult:
     is_safe: bool
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
-    clause_refs: dict[str, str] = field(
-        default_factory=dict
-    )  # IS 456 clause references
 
     @property
     def tu_knm(self) -> float:
@@ -717,9 +754,7 @@ class ComplianceCaseResult:
     utilizations: dict[str, float] = field(default_factory=dict)
     failed_checks: list[str] = field(default_factory=list)
     remarks: str = ""
-    clause_refs: dict[str, str] = field(
-        default_factory=dict
-    )  # IS 456 clause references
+    clause_refs: dict[str, str] = field(default_factory=dict)
 
     @property
     def mu_knm(self) -> float:
@@ -805,45 +840,6 @@ class CuttingPlan:
 # =============================================================================
 # Column Design Types — IS 456 Cl. 25, 39
 # =============================================================================
-
-
-class DictCompatMixin:
-    """Allow dict-style access on dataclasses for backward compatibility.
-
-    This mixin enables ``result['key']`` access alongside ``result.key``,
-    making dataclass return types a drop-in replacement for raw dicts.
-    """
-
-    def __getitem__(self, key: str) -> Any:
-        """Support ``result['key']`` access."""
-        try:
-            return getattr(self, key)
-        except AttributeError:
-            raise KeyError(key) from None
-
-    def __contains__(self, key: str) -> bool:
-        """Support ``'key' in result``."""
-        return hasattr(self, key)
-
-    def get(self, key: str, default: Any = None) -> Any:
-        """Support ``result.get('key', default)``."""
-        return getattr(self, key, default)
-
-    def keys(self) -> list[str]:
-        """Return field names, like ``dict.keys()``."""
-        return [f.name for f in fields(self)]  # type: ignore[arg-type]
-
-    def values(self) -> list[Any]:
-        """Return field values, like ``dict.values()``."""
-        return [getattr(self, f.name) for f in fields(self)]  # type: ignore[arg-type]
-
-    def items(self) -> list[tuple[str, Any]]:
-        """Return (name, value) pairs, like ``dict.items()``."""
-        return [(f.name, getattr(self, f.name)) for f in fields(self)]  # type: ignore[arg-type]
-
-    def __iter__(self) -> Any:
-        """Iterate over field names (like iterating a dict)."""
-        return iter(f.name for f in fields(self))  # type: ignore[arg-type]
 
 
 class ColumnClassification(Enum):
@@ -1486,6 +1482,53 @@ class BearingStressEnhancementResult:
             f"basic={self.basic_stress_mpa:.2f}MPa, "
             f"factor={self.enhancement_factor:.2f}, "
             f"permissible={self.permissible_stress_mpa:.2f}MPa"
+        )
+
+
+@dataclass(frozen=True)
+class BearingPressureCheckResult:
+    """Bearing pressure check at column-footing interface per IS 456 Cl 34.4.
+
+    Checks that the actual bearing stress on the column footprint does not
+    exceed the permissible bearing stress (enhanced by √(A1/A2)).
+    """
+
+    actual_stress_mpa: float  # Pu / A2 (N/mm²)
+    permissible_stress_mpa: float  # 0.45 × fck × enhancement_factor (N/mm²)
+    enhancement_factor: float  # √(A1/A2), capped at 2.0
+    utilization_ratio: float  # actual / permissible
+    is_safe: bool  # actual <= permissible
+    A1_mm2: float  # Supporting area — footing (mm²)
+    A2_mm2: float  # Loaded area — column footprint (mm²)
+    Pu_kN: float  # Factored axial load (kN)
+    clause_ref: str = "Cl. 34.4"
+
+    def is_ok(self) -> bool:
+        """Return True if bearing pressure is within permissible limit."""
+        return self.is_safe
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "actual_stress_mpa": self.actual_stress_mpa,
+            "permissible_stress_mpa": self.permissible_stress_mpa,
+            "enhancement_factor": self.enhancement_factor,
+            "utilization_ratio": self.utilization_ratio,
+            "is_safe": self.is_safe,
+            "A1_mm2": self.A1_mm2,
+            "A2_mm2": self.A2_mm2,
+            "Pu_kN": self.Pu_kN,
+            "clause_ref": self.clause_ref,
+        }
+
+    def summary(self) -> str:
+        """Return one-line human-readable summary."""
+        status = "OK" if self.is_safe else "FAIL"
+        return (
+            f"Bearing Check (Cl 34.4): "
+            f"actual={self.actual_stress_mpa:.2f}MPa, "
+            f"permissible={self.permissible_stress_mpa:.2f}MPa, "
+            f"util={self.utilization_ratio:.2f} [{status}]"
         )
 
 

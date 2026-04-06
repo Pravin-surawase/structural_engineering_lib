@@ -11,7 +11,7 @@ Tests cover:
 
 import pytest
 
-from structural_lib.codes.is456.torsion import (
+from structural_lib.codes.is456.beam.torsion import (
     TorsionResult,
     calculate_equivalent_moment,
     calculate_equivalent_shear,

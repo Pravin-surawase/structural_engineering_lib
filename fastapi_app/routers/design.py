@@ -5,12 +5,11 @@ Endpoints for beam flexure and shear design calculations.
 """
 
 import logging
-import math
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from fastapi_app.error_utils import sanitize_error
+from fastapi_app.error_utils import sanitize_error, sanitize_float
 from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.beam import (
     BeamDesignRequest,
@@ -41,13 +40,8 @@ from fastapi_app.models.compliance import (
 logger = logging.getLogger(__name__)
 
 
-def _sanitize_float(v: float) -> float:
-    """Replace non-finite floats for JSON safety (RFC 8259)."""
-    if math.isfinite(v):
-        return v
-    if math.isnan(v):
-        return 0.0
-    return 9999.0 if v > 0 else -9999.0
+# _sanitize_float moved to error_utils.sanitize_float
+_sanitize_float = sanitize_float
 
 
 router = APIRouter(

@@ -11,17 +11,17 @@ from __future__ import annotations
 
 import warnings as _warnings
 
-_warnings.warn(
-    "structural_lib.codes.is456.torsion has moved to "
-    "structural_lib.codes.is456.beam.torsion. "
-    "Update imports to suppress this warning.",
-    DeprecationWarning,
-    stacklevel=2,
-)
 
-from structural_lib.codes.is456.beam.torsion import *  # noqa: F401, F403, E402
+def __getattr__(name):
+    from structural_lib.codes.is456.beam import torsion as _real
 
-try:
-    from structural_lib.codes.is456.beam.torsion import __all__  # noqa: F401, E402
-except ImportError:
-    pass
+    attr = getattr(_real, name, None)
+    if attr is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    _warnings.warn(
+        f"{__name__} has moved to structural_lib.codes.is456.beam.torsion. "
+        f"Update your import for '{name}'.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return attr
