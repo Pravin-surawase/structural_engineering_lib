@@ -23,7 +23,7 @@
 
 ## What's Next (Priority Order)
 1. **v0.21.5 release:** Tag, publish, verify PyPI wheel
-2. **v0.22 work:** AI assistant port, learning center, Streamlit deprecation
+2. **v0.22 work:** TopBar badges (TASK-526), workflow breadcrumb (TASK-527), Streamlit deprecation
 3. **TASK-526:** TopBar context badges + settings panel
 4. **TASK-527:** Workflow breadcrumb for batch flow
 5. **Library expansion:** Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)

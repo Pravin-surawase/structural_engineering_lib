@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-05 — Added External Audit (EA) tasks from comprehensive-library-audit-2026-04-04
+**Updated:** 2026-04-06 — Fix stale version, defer AI assistant, library expansion focus
 
 ---
 
@@ -16,9 +16,9 @@
 
 ## Current Release
 
-- **Version:** v0.21.2 ✅ Released → v0.22 (Full React + AI Assistant)
-- **Focus:** Full React migration + AI assistant + remaining UX tasks
-- **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
+- **Version:** v0.21.4 ✅ Released → v0.22 (Full React UX + Library Expansion)
+- **Focus:** Full React UX + library expansion + remaining tasks
+- **Target:** v0.22 — TopBar badges, workflow breadcrumb, Streamlit deprecation, remaining UX + library expansion
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Detailed Plan:** [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) — code-level specs for all 8 tasks
 
@@ -29,7 +29,8 @@
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
-| **v0.22** | Full React | 🔄 ACTIVE | AI assistant port, learning center, Streamlit deprecation |
+| **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
+| **v0.22** | Full React UX + Library Expansion | 🔄 ACTIVE | TopBar badges, workflow breadcrumb, Streamlit deprecation, library expansion |
 
 ### Migration Status (React vs Streamlit)
 
@@ -44,7 +45,7 @@
 | **Batch design UI** | ✅ | ✅ | ✅ streaming.py | Done |
 | **Compliance checker** | ✅ | ✅ DesignView panel | ✅ insights.py | Done |
 | **Cost optimizer** | ✅ | ✅ DesignView rebar | ✅ optimization.py | Done |
-| **AI Assistant** | ✅ | -- | Partial | 🟡 Medium |
+| **AI Assistant** | ✅ | -- | Partial | ⏸ Deferred |
 | Learning center | ✅ | -- | -- | 🟢 Low |
 
 ### v0.21 Feature Matrix
@@ -336,7 +337,7 @@ See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.
 
 | ID | Task | Priority | Notes |
 |----|------|----------|-------|
-| TASK-513 | React: AI assistant port | 🟡 Medium | Deferred to v0.22 — needs LLM API design |
+| TASK-513 | React: AI assistant port | ⏸ Deferred | Deferred — needs LLM API design, not in v0.22 scope |
 | — | Wire BuildingEditor Cost tab (placeholder → real data) | 🟢 Low | Use `/optimization/cost-rates` |
 | — | 28 unit conversion warnings | 🟢 Low | Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
 | — | 287 legacy import warnings (Streamlit) | 🟢 Low | Won't fix — will go away when Streamlit is deprecated |

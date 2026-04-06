@@ -60,6 +60,7 @@ from .services.api import (
     # Return types (for type annotations)
     ComplianceCaseResult,
     ComplianceReport,
+    CostProfile,
     # Load Analysis
     CriticalPoint,
     DesignAndDetailResult,
@@ -270,6 +271,7 @@ __all__ = [
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
     # Smart features
+    "CostProfile",
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",

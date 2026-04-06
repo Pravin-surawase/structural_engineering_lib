@@ -37,6 +37,7 @@ tags: []
 | 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | pending |
 | 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | pending |
 | 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | pending |
+| 2026-04-06 | v0.21.5 verify | Multi-agent review, React localStorage fix, CostProfile __init__ export | pending |
 | 2026-04-05 | EA-20,16 | Security: CORS from settings, auth production docs | — |
 | 2026-04-05 | EA-19 | Security: WebSocket Pydantic validation (WSDesignParams, WSCheckParams) | — |
 | 2026-04-05 | EA-9 | Testing: 105 API stability tests for __all__ exports | — |
