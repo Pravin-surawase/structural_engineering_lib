@@ -1515,10 +1515,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#immediate-v0215-test-coverage-regression-prevention" class="md-nav__link">
+  <a href="#immediate-v0216-api-quality-introspection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Immediate (v0.21.5 — Test Coverage &amp; Regression Prevention)
+        Immediate (v0.21.6 — API Quality &amp; Introspection)
       
     </span>
   </a>
@@ -1526,10 +1526,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#next-v0216-api-quality-introspection" class="md-nav__link">
+  <a href="#next-v0217-security-hardening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next (v0.21.6 — API Quality &amp; Introspection)
+        Next (v0.21.7 — Security Hardening)
       
     </span>
   </a>
@@ -1603,36 +1603,32 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-06
-<strong>Last Session:</strong> Strategic architecture rewrite + full roadmap planning (v0.21.5→v1.0)</p>
+<strong>Last Session:</strong> v0.21.5 completed — golden vectors, contract tests, coverage boost, report/3D tests</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Architecture doc rewrite:</strong> unified-architecture-v1.md expanded from 1108→1540 lines with 3 new sections:</li>
-<li>§18: Regression Prevention Framework (golden vectors, contract tests, benchmarks)</li>
-<li>§19: Governance &amp; Release Process (NumPy/pandas-inspired, 5-step release, ADRs)</li>
-<li>§20: Complete Roadmap v0.21.5→v1.0 (10 sub-sections, all deliverables with owners)</li>
-<li><strong>Fixed contradictions:</strong> CodeRegistry status, @clause coverage claims, thread-safety claims</li>
-<li><strong>TASKS.md complete rewrite:</strong> Full roadmap with 50+ new task IDs (TASK-724→TASK-782), every version from v0.21.5 to v1.0 with quality gates and owners</li>
-<li><strong>Archived:</strong> v0.21 React UX Overhaul (TASK-522-528) + Library Expansion items 1-6 (TASK-514-519) to tasks-history.md</li>
-<li><strong>Schema answer:</strong> Pydantic IS the schema — no separate schema language needed</li>
-<li><strong>Library research:</strong> Studied NumPy, pandas, scikit-learn, Pydantic best practices</li>
+<li><strong>Golden vector baselines (TASK-720):</strong> 42+ golden tests — 9 beam, 20 column, 13 footing (<code>@pytest.mark.golden</code>)</li>
+<li><strong>Contract tests (TASK-721):</strong> 18 API surface stability tests for column, footing, torsion (<code>@pytest.mark.contract</code>)</li>
+<li><strong>conftest.py golden_vectors fixture (TASK-722):</strong> SP:16 reference values fixture</li>
+<li><strong>CI gate (TASK-723):</strong> <code>pytest -m golden</code> added to GitHub Actions python-tests.yml</li>
+<li><strong>Report/3D edge case tests (TASK-520):</strong> 71 new tests for report generation and 3D visualization</li>
+<li><strong>@clause("34.1") added to size_footing():</strong> footing clause gap resolved</li>
+<li><strong>Coverage boost:</strong> 19 additional tests, <code>codes/is456/</code> at 99% branch coverage</li>
+<li><strong>v0.21.5 quality gate passed:</strong> all golden tests pass, 99% branch coverage (target was 90%)</li>
 </ul>
 <h2 id="priorities-updated">Priorities (Updated)<a class="headerlink" href="#priorities-updated" title="Permanent link">&para;</a></h2>
-<h3 id="immediate-v0215-test-coverage-regression-prevention">Immediate (v0.21.5 — Test Coverage &amp; Regression Prevention)<a class="headerlink" href="#immediate-v0215-test-coverage-regression-prevention" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Golden vector baselines</strong> for all IS 456 beam functions (TASK-720) — @tester</li>
-<li><strong>Contract tests</strong> for API surface stability (TASK-721) — @tester</li>
-<li><strong>conftest.py golden_vectors fixture</strong> with SP:16 values (TASK-722) — @tester</li>
-<li><strong>CI gate:</strong> <code>pytest -m golden</code> must pass before merge (TASK-723) — @ops</li>
-<li><strong>Report/3D test coverage</strong> (TASK-520) — @tester [CARRIED OVER]</li>
-<li><strong>Add @clause to footing helpers</strong> (7 functions) — @structural-math</li>
-<li><strong>90%+ branch coverage</strong> on <code>codes/is456/</code> — @tester</li>
-</ol>
-<h3 id="next-v0216-api-quality-introspection">Next (v0.21.6 — API Quality &amp; Introspection)<a class="headerlink" href="#next-v0216-api-quality-introspection" title="Permanent link">&para;</a></h3>
+<h3 id="immediate-v0216-api-quality-introspection">Immediate (v0.21.6 — API Quality &amp; Introspection)<a class="headerlink" href="#immediate-v0216-api-quality-introspection" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>check_code("IS456")</strong> implementation (TASK-724) — @backend</li>
 <li><strong>show_versions()</strong> implementation (TASK-725) — @backend</li>
 <li><strong>API surface freeze</strong> in CI (TASK-726) — @ops</li>
 <li><strong>Function limitation docs</strong> (TASK-727) — @doc-master</li>
+</ol>
+<h3 id="next-v0217-security-hardening">Next (v0.21.7 — Security Hardening)<a class="headerlink" href="#next-v0217-security-hardening" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>JSON body size limit middleware</strong> (TASK-728) — @api-developer</li>
+<li><strong>Cross-field plausibility guards</strong> (TASK-729) — @api-developer</li>
+<li><strong>Input validation audit</strong> (TASK-730) — @security</li>
+<li><strong>Dependency CVE scanning</strong> in CI (TASK-731) — @ops</li>
 </ol>
 <h3 id="architecture-reference">Architecture Reference<a class="headerlink" href="#architecture-reference" title="Permanent link">&para;</a></h3>
 <ul>

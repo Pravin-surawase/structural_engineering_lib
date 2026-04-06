@@ -1553,10 +1553,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#v0215-test-coverage-regression-prevention" class="md-nav__link">
+  <a href="#v0215-test-coverage-regression-prevention-done" class="md-nav__link">
     <span class="md-ellipsis">
       
-        v0.21.5 — Test Coverage &amp; Regression Prevention
+        v0.21.5 — Test Coverage &amp; Regression Prevention ✅ DONE
       
     </span>
   </a>
@@ -1842,7 +1842,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-06 — Full roadmap alignment with unified-architecture-v1.md §20</p>
+<p><strong>Updated:</strong> 2026-04-06 — v0.21.5 completed, v0.21.6 active</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1854,10 +1854,10 @@
 <hr />
 <h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Version:</strong> v0.21.4 ✅ Released → micro-releases v0.21.5–v0.21.8 → v0.22.0 Stabilization</li>
+<li><strong>Version:</strong> v0.21.5 ✅ Released → micro-releases v0.21.6–v0.21.8 → v0.22.0 Stabilization</li>
 <li><strong>Strategy:</strong> Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)</li>
-<li><strong>Focus:</strong> Golden vectors &amp; contract tests → API introspection → security hardening → performance baselines → stabilization</li>
-<li><strong>Target:</strong> v0.21.5 next, then v0.21.6–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)</li>
+<li><strong>Focus:</strong> API introspection → security hardening → performance baselines → stabilization</li>
+<li><strong>Target:</strong> v0.21.6 next, then v0.21.7–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)</li>
 <li><strong>Vision:</strong> <a href="../planning/democratization-vision/">democratization-vision.md</a> — AI chat, automation, library evolution</li>
 <li><strong>Architecture:</strong> <a href="../architecture/unified-architecture-v1/">unified-architecture-v1.md</a> §20 — complete v0.21.5→v1.0 roadmap</li>
 </ul>
@@ -1899,13 +1899,13 @@
 <tr>
 <td><strong>v0.21.5</strong></td>
 <td>Test Coverage &amp; Regression Prevention</td>
-<td>🔄 ACTIVE</td>
-<td>Golden vectors, contract tests, regression framework</td>
+<td>✅ DONE</td>
+<td>Golden vectors (42+), contract tests (18), 99% branch coverage</td>
 </tr>
 <tr>
 <td><strong>v0.21.6</strong></td>
 <td>API Quality &amp; Introspection</td>
-<td>📋 PLANNED</td>
+<td>� ACTIVE</td>
 <td>check_code(), show_versions(), API surface freeze</td>
 </tr>
 <tr>
@@ -2058,7 +2058,7 @@
 <td>7</td>
 <td>TASK-520</td>
 <td>Report/3D Test Coverage</td>
-<td>📋 [→ v0.21.5]</td>
+<td>✅ DONE (71 new tests)</td>
 </tr>
 <tr>
 <td>8</td>
@@ -2119,10 +2119,10 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </tbody>
 </table>
 <hr />
-<h2 id="v0215-test-coverage-regression-prevention">v0.21.5 — Test Coverage &amp; Regression Prevention<a class="headerlink" href="#v0215-test-coverage-regression-prevention" title="Permanent link">&para;</a></h2>
+<h2 id="v0215-test-coverage-regression-prevention-done">v0.21.5 — Test Coverage &amp; Regression Prevention ✅ DONE<a class="headerlink" href="#v0215-test-coverage-regression-prevention-done" title="Permanent link">&para;</a></h2>
 <p><strong>Theme:</strong> Golden vector baselines and contract tests. No future change can silently break existing calculations.
-<strong>Target:</strong> Next 1-2 sessions
-<strong>Quality Gate:</strong> <code>pytest -m golden</code> passes with 0 failures, branch coverage ≥ 90% on <code>codes/is456/</code></p>
+<strong>Completed:</strong> 2026-04-06
+<strong>Quality Gate:</strong> <code>pytest -m golden</code> passes with 0 failures, branch coverage 99% on <code>codes/is456/</code> ✅</p>
 <table>
 <thead>
 <tr>
@@ -2135,45 +2135,45 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 <tbody>
 <tr>
 <td>TASK-720</td>
-<td>Golden vector baselines for all IS 456 beam functions (<code>@pytest.mark.golden</code>)</td>
+<td>Golden vector baselines for all IS 456 functions (<code>@pytest.mark.golden</code>) — 42+ tests (9 beam + 20 column + 13 footing)</td>
 <td>@tester</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-721</td>
-<td>Contract tests for API surface stability (<code>@pytest.mark.contract</code>)</td>
+<td>Contract tests for API surface stability (<code>@pytest.mark.contract</code>) — 18 contract tests</td>
 <td>@tester</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-520</td>
-<td>Report &amp; 3D visualization test coverage</td>
+<td>Report &amp; 3D visualization test coverage — 71 new tests</td>
 <td>@tester</td>
-<td>📋 [CARRIED OVER]</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-722</td>
 <td>conftest.py golden_vectors fixture with SP:16 values</td>
 <td>@tester</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-723</td>
-<td>CI gate: <code>pytest -m golden</code> must pass before merge</td>
+<td>CI gate: <code>pytest -m golden</code> in GitHub Actions python-tests.yml</td>
 <td>@ops</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>—</td>
-<td>90%+ branch coverage on <code>codes/is456/</code></td>
+<td>90%+ branch coverage on <code>codes/is456/</code> — 99% achieved</td>
 <td>@tester</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>—</td>
-<td>Add <code>@clause</code> to 7 remaining footing helper functions</td>
+<td>Add <code>@clause("34.1")</code> to <code>size_footing()</code></td>
 <td>@structural-math</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 </tbody>
 </table>
