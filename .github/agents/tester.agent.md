@@ -324,3 +324,4 @@ def test_column_too_slender_error():
 - **Cite benchmark sources** — SP:16 chart/table number, textbook page, ISBN
 - **Create property-based tests** — equilibrium, monotonicity, symmetry using Hypothesis
 - **Test error recovery** — every DesignError code must have a triggering test
+- **MANDATORY integration tests for data imports:** Every data import pipeline (ETABS, CSV, SAFE) MUST have integration tests with realistic multi-source data that verify: (1) unit conversions end-to-end, (2) story/group-level aggregation (not just single-beam parsing), (3) collision/deduplication with duplicate keys. The ETABS story collision bug (silently merging stories with same Z-coord) went undetected across 5000+ unit tests because no integration test covered multi-story import.

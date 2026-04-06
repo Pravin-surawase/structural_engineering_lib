@@ -280,3 +280,4 @@ tags: []
 | 2026-04-06 | TASKS.md Roadmap | Full roadmap update: 50+ new task IDs (TASK-724→TASK-782), archived v0.21 completed items, added v0.21.6 through v1.0 sections | — |
 | 2026-04-06 | tasks-history.md | Archived React UX Overhaul (TASK-522-528) and Library Expansion items 1-6 (TASK-514-519) | — |
 | 2026-04-06 | release | v0.21.5 release — golden vectors, contract tests, 99% branch coverage, CI gate | — |
+| 2026-04-07 | EVO batch | Applied 9 evolution items (EVO-004,-007,-014-020) to 5 agent files — api-developer, tester, ops, backend, reviewer | (pending commit) |

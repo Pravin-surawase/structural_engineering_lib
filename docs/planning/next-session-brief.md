@@ -7,15 +7,17 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-04-07
-**Last Session:** Post-merge audit remediation, version sync, endpoint count fix
+**Last Session:** Evolution batch — 9 EVO items applied to 5 agent files
 
 ## What Was Completed
-- **External audit remediation:** 8 findings fixed (PR #544 merged)
-- **Version synchronization:** 0.21.5→0.21.6 across README, CITATION.cff, package.json
-- **TASKS.md accuracy:** v0.21.6 marked "COMPLETE (unreleased)" not "Released"
-- **Endpoint count standardized:** 59→60 across 8 docs (11 edits)
-- **Post-merge verification:** 5081 tests pass, all fixes confirmed on main
-- **Agent evolution:** EVO-014 through EVO-017 proposed (integration test gaps)
+- **Evolution batch apply:** 9 items (EVO-004, -007, -014 through -020) applied to 5 agent files
+  - `api-developer.agent.md` — Rule 7: py_compile after bulk edits
+  - `tester.agent.md` — MANDATORY integration tests for data imports
+  - `ops.agent.md` — 3 rules: version sync, package data verification, verify commit existence
+  - `backend.agent.md` — 3 rules: verify edits persisted, update __init__.py exports, CLI smoke tests
+  - `reviewer.agent.md` — Data import/export review checklist
+- **Evolution totals:** 15/21 applied, 1 already addressed, 5 remain MEDIUM priority
+- **Previous session:** External audit remediation (8 findings fixed), version sync, endpoint count fix
 
 ## Current Version State
 - **v0.21.5** = last PyPI release (tag: v0.21.5)
@@ -25,13 +27,14 @@
 
 ### Immediate
 1. **v0.21.6 PyPI release** — when user is ready
+2. **Remaining 5 MEDIUM EVO items** (EVO-005, -006, -011, -013, -021) — batch in next evolution cycle
 
 ### Next (v0.21.7 — Security Hardening)
-2. **JSON body size limit middleware** (TASK-728) — @api-developer
-3. **Cross-field plausibility guards** (TASK-729) — @api-developer
-4. **Input validation audit** (TASK-730) — @security
-5. **WebSocket message rate limit** (TASK-731) — @api-developer
-6. **Computation timeout** — @api-developer
+3. **JSON body size limit middleware** (TASK-728) — @api-developer
+4. **Cross-field plausibility guards** (TASK-729) — @api-developer
+5. **Input validation audit** (TASK-730) — @security
+6. **WebSocket message rate limit** (TASK-731) — @api-developer
+7. **Computation timeout** — @api-developer
 
 ### Later (v0.21.8 — Performance & Property Testing)
 7. **pytest-benchmark integration** (TASK-732) — @tester
@@ -44,6 +47,7 @@
 - Quality gates per version: §9 of architecture doc
 
 ## Key Patterns Established
+- Evolution pipeline working — 9 items batch-applied with verification in single session
 - `check_code("IS456")` validates code implementation contract — reports tech debt (36 issues: unfrozen results, missing decorators, params without unit suffixes)
 - `show_versions()` follows scikit-learn pattern — both print and programmatic modes
 - OpenAPI baseline diffing in CI prevents silent API drift

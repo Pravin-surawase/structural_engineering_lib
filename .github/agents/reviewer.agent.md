@@ -283,3 +283,4 @@ Report format (append to your Review Result):
 - **Check tests exist** — no untested code in production paths
 - **Verify no duplication** — the #1 agent mistake is recreating existing code
 - You can run terminal commands (tests, checks) but minimize file edits
+- **Data import/export review checklist:** When reviewing data import or export code (ETABS, CSV adapters, geometry merge), ALWAYS verify: (1) Unit consistency — are source and target units explicitly documented? No hardcoded mm→m conversions. (2) Collision/dedup logic — are group keys comprehensive (story+beam_id, not just beam_id)? (3) Silent fallbacks — do fallback paths log warnings or silently mask data errors? All 3 were violated in ETABS import code that shipped undetected.

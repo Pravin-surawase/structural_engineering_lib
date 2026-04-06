@@ -459,4 +459,7 @@ After fixing: Hand back to @ops to retry the commit/PR.
 - **Execute scripts, don't create them** — delegate script creation to @backend
 - **One diagnostic command max** before acting — don't over-explore
 - **Always finish PRs** — never leave them open
+- **MANDATORY version sync:** After ANY version bump in pyproject.toml, IMMEDIATELY run `bump_version.py` to sync ALL 13+ version references (README.md, CITATION.cff, package.json, copilot-instructions.md, etc.). NEVER manually edit version strings. Version drift has required 4 dedicated fix commits across v0.21.x — each one wasted 30+ minutes of agent time. If `bump_version.py` doesn't exist or fails, create it.
+- **Package data verification:** After adding any non-.py file that the API references (templates `.j2`, data `.json`, `.html`), verify it's declared in pyproject.toml `package-data` AND included in the built wheel. Run: `pip wheel . --no-deps -w /tmp && unzip -l /tmp/*.whl | grep <extension>`. Reference: development-rules U-4.
+- **Verify commit existence:** When checking commit status, ALWAYS distinguish between 'no uncommitted changes because edits were committed' vs 'no uncommitted changes because edits were never applied'. Run `git log --oneline -3` alongside `git status --short` to verify the expected commit actually exists. An empty diff does NOT mean success if no commit was made.
 - Skills: `/session-management` for session workflow, `/safe-file-ops` for file operations, `/release-preflight` for pre-release validation, `/quality-gate` for pre-merge checks

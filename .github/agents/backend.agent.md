@@ -96,6 +96,12 @@ Before writing any Python code in `structural_lib/`, review these critical rules
 | PY-6 | Lazy imports for non-core modules |
 | PY-8 | Deprecation warnings gated behind function call, not module load |
 
+## Rules
+
+- **Verify edits persisted:** After making file edits, ALWAYS verify changes persisted with `git diff` or `git status --short`. Phantom edits (agent reports success but changes don't persist in workspace) have been observed. NEVER assume an edit succeeded without verification. If `git status` shows no changes after you edited files, your edits did NOT take effect — retry or report.
+- **Update `__init__.py` exports:** When adding a new type, class, or function to any module (especially `services/api.py`), always check and update the relevant `__init__.py` `__all__` list in the SAME commit. CostProfile was added to `api.py` but missed in `__init__.py`, causing 503 ImportError at runtime. Reference: development-rules U-3.
+- **CLI smoke tests:** Every `__main__.py` CLI path MUST have at least one smoke test that verifies the CLI entry point can be invoked without crashing. Dead CLI code paths (like `python -m structural_lib smart`) should be caught before release. When creating new CLI subcommands, add a matching `test_cli_<subcommand>_smoke` test.
+
 ## ⚠ DO NOT Over-Explore
 
 **Act on what you know — don't rediscover the project structure every time.**
