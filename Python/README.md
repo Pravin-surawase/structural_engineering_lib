@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.21.3 (development preview)
+**Version:** 0.21.5 (development preview)
 **Status:** [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -91,8 +91,15 @@ from structural_lib.services.adapters import GenericCSVAdapter
 from structural_lib import design_beam_is456
 
 adapter = GenericCSVAdapter()
-beams = adapter.parse_file("beams.csv")
-results = [design_beam_is456(**beam) for beam in beams]
+geometry_list, forces_list = adapter.load_combined("beams.csv")
+# Pair geometry with forces and design each beam
+for geom, forces in zip(geometry_list, forces_list):
+    result = design_beam_is456(
+        units="IS456", b_mm=geom.b_mm, D_mm=geom.D_mm, d_mm=geom.d_mm,
+        fck_nmm2=geom.fck_nmm2, fy_nmm2=geom.fy_nmm2,
+        mu_knm=forces.mu_knm, vu_kn=forces.vu_kn,
+    )
+    print(f"Ast = {result.flexure.Ast_required:.0f} mm²")
 ```
 
 ### Run the Full Pipeline (design → detail → BBS → report)

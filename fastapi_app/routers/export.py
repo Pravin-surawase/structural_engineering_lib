@@ -264,7 +264,7 @@ async def export_report(request: ExportReportRequest):
     report_data = ReportData(
         job_id=request.beam_id,
         code="IS456",
-        units="SI-mm",
+        units="IS456",
         beam=beam_geom,
         cases=cases,
         results=results,

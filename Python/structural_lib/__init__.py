@@ -57,6 +57,8 @@ from .services.api import (
     CalculationHash,
     # Calculation Report
     CalculationReport,
+    # Self-validation (TASK-724)
+    CheckCodeReport,
     # Return types (for type annotations)
     ComplianceCaseResult,
     ComplianceReport,
@@ -103,6 +105,7 @@ from .services.api import (
     check_beam_is456,
     check_beam_slenderness,
     check_bearing_pressure,
+    check_code,
     check_column_ductility_is13920,
     check_compliance_report,
     check_crack_width,
@@ -348,6 +351,9 @@ __all__ = [
     "FootingFlexureResult",
     "FootingOneWayShearResult",
     "FootingPunchingResult",
+    # Self-validation (TASK-724)
+    "check_code",
+    "CheckCodeReport",
 ]
 
 

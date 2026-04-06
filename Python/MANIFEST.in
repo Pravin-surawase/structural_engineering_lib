@@ -1,5 +1,6 @@
 include structural_lib/py.typed
 include structural_lib/codes/is456/clauses.json
+recursive-include structural_lib/reports/templates *.j2
 include LICENSE
 include README.md
 

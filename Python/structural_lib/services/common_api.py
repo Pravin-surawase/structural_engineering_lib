@@ -9,12 +9,15 @@ Split from services/api.py (ARCH-NEW-12) to support domain-based modules.
 
 from __future__ import annotations
 
+import ast
+import importlib
+import inspect
 import json
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 
-from structural_lib.core.data_types import ValidationReport
+from structural_lib.core.data_types import CheckCodeReport, ValidationReport
 from structural_lib.services import beam_pipeline, job_runner
 
 # ============================================================================
@@ -224,4 +227,386 @@ def validate_design_results(path: str | Path) -> ValidationReport:
 
     return ValidationReport(
         ok=not errors, errors=errors, warnings=warnings, details=details
+    )
+
+
+# ============================================================================
+# Code self-validation (check_code)
+# ============================================================================
+
+# Standard IS 456 symbols exempt from unit-suffix naming
+_EXEMPT_PARAMS = frozenset(
+    {
+        "fck",
+        "fy",
+        "fsc",
+        "Es",
+        "Ec",
+        # common non-dimensional / generic names
+        "self",
+        "cls",
+        "args",
+        "kwargs",
+        "return",
+        "n",
+        "n_bars",
+        "num_bars",
+        "num_legs",
+        "num_layers",
+        "pt",
+        "pc",
+        "k",
+        "beta",
+        "alpha",
+        "gamma",
+        "ratio",
+        "is_sway",
+        "braced",
+        "code_id",
+        "standard",
+        "section_type",
+        "bar_dia",
+        "stirrup_dia",
+        "cover",
+        "clear_cover",
+        "exposure",
+        "beam_type",
+        "support_condition",
+        "end_condition",
+        "end_condition_top",
+        "end_condition_bottom",
+        "load_type",
+        "span_type",
+        "grade",
+        "steel_grade",
+        "verbose",
+        "debug",
+        "strict",
+    }
+)
+
+# Known dimensional parameter stems that MUST have unit suffixes
+_DIMENSIONAL_STEMS = frozenset(
+    {
+        "b",
+        "d",
+        "D",
+        "L",
+        "span",
+        "width",
+        "depth",
+        "height",
+        "area",
+        "moment",
+        "shear",
+        "force",
+        "stress",
+        "load",
+        "pressure",
+        "weight",
+        "length",
+        "dia",
+        "diameter",
+        "spacing",
+        "pitch",
+        "cover",
+    }
+)
+
+
+def _check_importable(code_id: str) -> tuple[bool, list[str]]:
+    """Check that all expected sub-packages are importable."""
+    issues: list[str] = []
+    code_pkg = f"structural_lib.codes.{code_id.lower()}"
+    subpackages = ("beam", "column", "footing", "common")
+    for sub in subpackages:
+        mod_path = f"{code_pkg}.{sub}"
+        try:
+            importlib.import_module(mod_path)
+        except ImportError as exc:
+            issues.append(f"ImportError for {mod_path}: {exc}")
+    return (len(issues) == 0), issues
+
+
+def _check_decorated(code_id: str) -> tuple[bool, list[str]]:
+    """Check that public functions have @clause decorator."""
+    issues: list[str] = []
+    code_pkg = f"structural_lib.codes.{code_id.lower()}"
+
+    # Get all registered (decorated) functions from traceability
+    try:
+        traceability = importlib.import_module(f"{code_pkg}.traceability")
+        registered = traceability.get_all_registered_functions()
+    except (ImportError, AttributeError) as exc:
+        issues.append(f"Cannot access traceability: {exc}")
+        return False, issues
+
+    registered_qualnames = set(registered.keys())
+
+    # Scan subpackages for public functions
+    subpackages = ("beam", "column", "footing", "common")
+    undecorated: list[str] = []
+
+    for sub in subpackages:
+        mod_path = f"{code_pkg}.{sub}"
+        try:
+            pkg = importlib.import_module(mod_path)
+        except ImportError:
+            continue
+
+        # Check the package and its child modules
+        modules_to_check = [pkg]
+        if hasattr(pkg, "__path__"):
+            import pkgutil
+
+            for _importer, modname, _ispkg in pkgutil.iter_modules(pkg.__path__):
+                if modname.startswith("_"):
+                    continue
+                try:
+                    child = importlib.import_module(f"{mod_path}.{modname}")
+                    modules_to_check.append(child)
+                except ImportError:
+                    pass
+
+        for mod in modules_to_check:
+            for name, obj in inspect.getmembers(mod, inspect.isfunction):
+                if name.startswith("_"):
+                    continue
+                if obj.__module__ != mod.__name__:
+                    continue  # skip re-exports
+                func_key = f"{obj.__module__}.{obj.__qualname__}"
+                if func_key not in registered_qualnames:
+                    undecorated.append(func_key)
+
+    if undecorated:
+        for fn in undecorated[:10]:  # cap to avoid noise
+            issues.append(f"Missing @clause: {fn}")
+        if len(undecorated) > 10:
+            issues.append(f"... and {len(undecorated) - 10} more undecorated functions")
+
+    return (len(undecorated) == 0), issues
+
+
+def _check_frozen(code_id: str) -> tuple[bool, list[str]]:
+    """Check that result dataclasses are frozen."""
+    from structural_lib.core import data_types
+
+    issues: list[str] = []
+    result_classes: list[type] = []
+
+    for name, obj in inspect.getmembers(data_types, inspect.isclass):
+        if not name.endswith("Result"):
+            continue
+        if hasattr(obj, "__dataclass_params__"):
+            result_classes.append(obj)
+
+    not_frozen: list[str] = []
+    for cls in result_classes:
+        if not cls.__dataclass_params__.frozen:
+            not_frozen.append(cls.__name__)
+
+    if not_frozen:
+        for cls_name in not_frozen:
+            issues.append(f"Not frozen: {cls_name}")
+
+    return (len(not_frozen) == 0), issues
+
+
+def _check_results_valid(code_id: str) -> tuple[bool, list[str]]:
+    """Check that result dataclasses have to_dict() method."""
+    from structural_lib.core import data_types
+
+    issues: list[str] = []
+    missing_to_dict: list[str] = []
+
+    for name, obj in inspect.getmembers(data_types, inspect.isclass):
+        if not name.endswith("Result"):
+            continue
+        if not hasattr(obj, "__dataclass_params__"):
+            continue
+        if not hasattr(obj, "to_dict"):
+            missing_to_dict.append(name)
+
+    if missing_to_dict:
+        for cls_name in missing_to_dict:
+            issues.append(f"Missing to_dict(): {cls_name}")
+
+    return (len(missing_to_dict) == 0), issues
+
+
+def _check_params_named(code_id: str) -> tuple[bool, list[str]]:
+    """Check that dimensional parameters have unit suffixes (heuristic)."""
+    issues: list[str] = []
+    code_pkg = f"structural_lib.codes.{code_id.lower()}"
+    unit_suffixes = ("_mm", "_kn", "_knm", "_nmm2", "_m", "_mm2", "_kn_m")
+    subpackages = ("beam", "column", "footing", "common")
+    suspect_params: list[str] = []
+
+    for sub in subpackages:
+        mod_path = f"{code_pkg}.{sub}"
+        try:
+            pkg = importlib.import_module(mod_path)
+        except ImportError:
+            continue
+
+        modules_to_check = [pkg]
+        if hasattr(pkg, "__path__"):
+            import pkgutil
+
+            for _importer, modname, _ispkg in pkgutil.iter_modules(pkg.__path__):
+                if modname.startswith("_"):
+                    continue
+                try:
+                    child = importlib.import_module(f"{mod_path}.{modname}")
+                    modules_to_check.append(child)
+                except ImportError:
+                    pass
+
+        for mod in modules_to_check:
+            for name, obj in inspect.getmembers(mod, inspect.isfunction):
+                if name.startswith("_"):
+                    continue
+                if obj.__module__ != mod.__name__:
+                    continue
+                try:
+                    sig = inspect.signature(obj)
+                except (ValueError, TypeError):
+                    continue
+                for param_name in sig.parameters:
+                    if param_name in _EXEMPT_PARAMS:
+                        continue
+                    if any(param_name.endswith(s) for s in unit_suffixes):
+                        continue
+                    # Check if it looks dimensional
+                    param_lower = param_name.lower()
+                    if any(
+                        stem == param_lower or param_lower.startswith(stem + "_")
+                        for stem in _DIMENSIONAL_STEMS
+                    ):
+                        suspect_params.append(
+                            f"{obj.__module__}.{obj.__qualname__}({param_name})"
+                        )
+
+    if suspect_params:
+        for sp in suspect_params[:10]:
+            issues.append(f"Param without unit suffix: {sp}")
+        if len(suspect_params) > 10:
+            issues.append(
+                f"... and {len(suspect_params) - 10} more params without unit suffix"
+            )
+
+    return (len(suspect_params) == 0), issues
+
+
+def _check_boundary_violations(code_id: str) -> tuple[bool, list[str]]:
+    """Check that codes.is456 modules don't import from services/ or fastapi_app/."""
+    issues: list[str] = []
+    code_pkg_name = f"codes.{code_id.lower()}"
+
+    # Find the codes/is456 directory
+    try:
+        code_mod = importlib.import_module(f"structural_lib.{code_pkg_name}")
+    except ImportError as exc:
+        issues.append(f"Cannot import code package: {exc}")
+        return False, issues
+
+    if not hasattr(code_mod, "__path__"):
+        return True, issues
+
+    code_dir = Path(code_mod.__path__[0])
+    forbidden_imports = (
+        "structural_lib.services",
+        "structural_lib.fastapi_app",
+        "fastapi_app",
+        "services",
+    )
+
+    for py_file in code_dir.rglob("*.py"):
+        try:
+            source = py_file.read_text(encoding="utf-8")
+            tree = ast.parse(source, filename=str(py_file))
+        except (SyntaxError, UnicodeDecodeError) as exc:
+            issues.append(f"Parse error in {py_file.name}: {exc}")
+            continue
+
+        rel_path = py_file.relative_to(code_dir)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if any(alias.name.startswith(f) for f in forbidden_imports):
+                        issues.append(
+                            f"Boundary violation in {rel_path}: " f"import {alias.name}"
+                        )
+            elif isinstance(node, ast.ImportFrom):
+                if node.module and any(
+                    node.module.startswith(f) for f in forbidden_imports
+                ):
+                    issues.append(
+                        f"Boundary violation in {rel_path}: "
+                        f"from {node.module} import ..."
+                    )
+
+    return (len(issues) == 0), issues
+
+
+def check_code(code_id: str) -> CheckCodeReport:
+    """Validate that a design code implementation meets the API contract.
+
+    Inspired by scikit-learn's ``check_estimator()``. Checks that a
+    registered design code has proper clause decorators, frozen results,
+    named parameters, and respects architecture boundaries.
+
+    Args:
+        code_id: Code identifier, e.g. ``"IS456"``.
+
+    Returns:
+        :class:`~structural_lib.core.data_types.CheckCodeReport` with
+        pass/fail for each check category.
+
+    Raises:
+        KeyError: If *code_id* is not registered in
+            :class:`~structural_lib.core.registry.CodeRegistry`.
+
+    Example:
+        >>> from structural_lib import check_code
+        >>> report = check_code("IS456")
+        >>> print(report.summary())
+    """
+    from structural_lib.core.registry import CodeRegistry
+
+    if not CodeRegistry.is_registered(code_id):
+        available = ", ".join(CodeRegistry.list_codes()) or "none"
+        raise KeyError(
+            f"Design code '{code_id}' not registered. Available: {available}"
+        )
+
+    all_issues: list[str] = []
+
+    importable_ok, importable_issues = _check_importable(code_id)
+    all_issues.extend(importable_issues)
+
+    decorated_ok, decorated_issues = _check_decorated(code_id)
+    all_issues.extend(decorated_issues)
+
+    frozen_ok, frozen_issues = _check_frozen(code_id)
+    all_issues.extend(frozen_issues)
+
+    results_ok, results_issues = _check_results_valid(code_id)
+    all_issues.extend(results_issues)
+
+    params_ok, params_issues = _check_params_named(code_id)
+    all_issues.extend(params_issues)
+
+    boundary_ok, boundary_issues = _check_boundary_violations(code_id)
+    all_issues.extend(boundary_issues)
+
+    return CheckCodeReport(
+        code_id=code_id,
+        all_importable=importable_ok,
+        all_decorated=decorated_ok,
+        all_frozen=frozen_ok,
+        all_results_valid=results_ok,
+        all_params_named=params_ok,
+        no_boundary_violations=boundary_ok,
+        issues=tuple(all_issues),
     )

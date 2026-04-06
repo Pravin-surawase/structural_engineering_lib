@@ -226,3 +226,32 @@ class TestAPIStability:
 
         for cls in [ComplianceCaseResult, DesignAndDetailResult, TorsionResult]:
             assert isinstance(cls, type), f"{cls.__name__} is not a class"
+
+
+class TestReportTemplatesPackaged:
+    """Regression: report templates must be included in package data.
+
+    Audit finding: Jinja2 .j2 templates in reports/templates/ were not
+    listed in pyproject.toml package-data, causing FileNotFoundError
+    at runtime when generating reports.
+    """
+
+    def test_report_templates_accessible(self):
+        """Report .j2 templates must be accessible via importlib.resources."""
+        templates_dir = importlib.resources.files("structural_lib.reports").joinpath(
+            "templates"
+        )
+        j2_files = [p.name for p in templates_dir.iterdir() if str(p).endswith(".j2")]
+        assert len(j2_files) >= 1, (
+            "No .j2 templates found in structural_lib/reports/templates/ — "
+            "update pyproject.toml package-data to include 'reports/templates/*.j2'"
+        )
+
+    def test_pyproject_includes_template_glob(self):
+        """pyproject.toml package-data must include the template glob."""
+        pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
+        content = pyproject.read_text(encoding="utf-8")
+        assert "reports/templates/*.j2" in content, (
+            "pyproject.toml [tool.setuptools.package-data] must include "
+            "'reports/templates/*.j2'"
+        )

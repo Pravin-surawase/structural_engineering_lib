@@ -189,7 +189,7 @@ class JobSpec(TypedDict):
     job_id: str  # Job identifier
     schema_version: int  # Schema version (currently 1)
     code: str  # Design code (e.g., "IS456")
-    units: str  # Unit system (e.g., "SI-mm")
+    units: str  # Unit system (e.g., "IS456")
     beam: BeamGeometry  # Beam geometry and materials
     cases: list[LoadCase]  # List of load cases
 
@@ -822,6 +822,83 @@ class ValidationReport:
             "errors": self.errors,
             "warnings": self.warnings,
             "details": self.details,
+        }
+
+
+@dataclass(frozen=True)
+class CheckCodeReport(DictCompatMixin):
+    """Report from check_code() self-validation.
+
+    Validates that a design code implementation meets the library's API
+    contract: clause decorators, frozen results, named parameters, and
+    architecture boundary compliance.
+
+    Inspired by scikit-learn's ``check_estimator()``.
+
+    Attributes:
+        code_id: Code identifier (e.g. ``"IS456"``).
+        all_importable: All beam/column/footing/common modules importable.
+        all_decorated: All public functions have ``@clause`` decorator.
+        all_frozen: All result dataclasses are frozen.
+        all_results_valid: All result types have ``to_dict()`` method.
+        all_params_named: Dimensional params have unit suffixes.
+        no_boundary_violations: No import boundary violations.
+        issues: Tuple of issue description strings.
+    """
+
+    code_id: str
+    all_importable: bool
+    all_decorated: bool
+    all_frozen: bool
+    all_results_valid: bool
+    all_params_named: bool
+    no_boundary_violations: bool
+    issues: tuple[str, ...] = ()
+
+    @property
+    def all_pass(self) -> bool:
+        """True if every check category passed."""
+        return (
+            self.all_importable
+            and self.all_decorated
+            and self.all_frozen
+            and self.all_results_valid
+            and self.all_params_named
+            and self.no_boundary_violations
+        )
+
+    def summary(self) -> str:
+        """Human-readable summary of the check results."""
+        status = "PASS" if self.all_pass else "FAIL"
+        checks = {
+            "all_importable": self.all_importable,
+            "all_decorated": self.all_decorated,
+            "all_frozen": self.all_frozen,
+            "all_results_valid": self.all_results_valid,
+            "all_params_named": self.all_params_named,
+            "no_boundary_violations": self.no_boundary_violations,
+        }
+        lines = [f"check_code('{self.code_id}'): {status}"]
+        for name, passed in checks.items():
+            mark = "✓" if passed else "✗"
+            lines.append(f"  {mark} {name}")
+        if self.issues:
+            lines.append(f"  Issues ({len(self.issues)}):")
+            for issue in self.issues:
+                lines.append(f"    - {issue}")
+        return "\n".join(lines)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "code_id": self.code_id,
+            "all_pass": self.all_pass,
+            "all_importable": self.all_importable,
+            "all_decorated": self.all_decorated,
+            "all_frozen": self.all_frozen,
+            "all_results_valid": self.all_results_valid,
+            "all_params_named": self.all_params_named,
+            "no_boundary_violations": self.no_boundary_violations,
+            "issues": list(self.issues),
         }
 
 

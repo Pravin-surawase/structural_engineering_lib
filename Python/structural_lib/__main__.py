@@ -764,31 +764,51 @@ def cmd_smart(args: argparse.Namespace) -> int:
 
             # Use first beam for now (could enhance to process all)
             beam = data["beams"][0]
-            design_result = beam  # Assume it's a ComplianceCaseResult dict
 
             # Extract parameters from metadata or beam dict
             span_mm = args.span or beam.get("span_mm", 5000.0)
             mu_knm = beam.get("loads", {}).get("mu_knm", beam.get("mu_knm", 120.0))
             vu_kn = beam.get("loads", {}).get("vu_kn", beam.get("vu_kn", 80.0))
+
+            # design_single_beam returns the correct BeamDesignOutput type
+            from .services.beam_pipeline import design_single_beam
+
+            design_result = design_single_beam(
+                units="IS456",
+                beam_id=beam.get("beam_id", "B1"),
+                story=beam.get("story", "Story1"),
+                b_mm=beam.get("b_mm", 300.0),
+                D_mm=beam.get("D_mm", 500.0),
+                d_mm=beam.get("d_mm", 450.0),
+                span_mm=span_mm,
+                cover_mm=beam.get("cover_mm", 30.0),
+                fck_nmm2=beam.get("fck_nmm2", 25.0),
+                fy_nmm2=beam.get("fy_nmm2", 500.0),
+                mu_knm=mu_knm,
+                vu_kn=vu_kn,
+            )
         else:
-            # Raw parameters - need to design first
-            from . import api as lib_api
+            # Raw parameters - design via pipeline for correct BeamDesignOutput type
+            from .services.beam_pipeline import design_single_beam
 
-            params = {
-                "units": "IS456",
-                "b_mm": data.get("b_mm", 300.0),
-                "D_mm": data.get("D_mm", 500.0),
-                "d_mm": data.get("d_mm", 450.0),
-                "fck_nmm2": data.get("fck_nmm2", 25.0),
-                "fy_nmm2": data.get("fy_nmm2", 500.0),
-                "mu_knm": data.get("mu_knm", 120.0),
-                "vu_kn": data.get("vu_kn", 80.0),
-            }
-
-            design_result = lib_api.design_beam_is456(**params)
             span_mm = args.span or data.get("span_mm", 5000.0)
-            mu_knm = params["mu_knm"]
-            vu_kn = params["vu_kn"]
+            mu_knm = data.get("mu_knm", 120.0)
+            vu_kn = data.get("vu_kn", 80.0)
+
+            design_result = design_single_beam(
+                units="IS456",
+                beam_id=data.get("beam_id", "B1"),
+                story=data.get("story", "Story1"),
+                b_mm=data.get("b_mm", 300.0),
+                D_mm=data.get("D_mm", 500.0),
+                d_mm=data.get("d_mm", 450.0),
+                span_mm=span_mm,
+                cover_mm=data.get("cover_mm", 30.0),
+                fck_nmm2=data.get("fck_nmm2", 25.0),
+                fy_nmm2=data.get("fy_nmm2", 500.0),
+                mu_knm=mu_knm,
+                vu_kn=vu_kn,
+            )
 
         # Import SmartDesigner
         from .insights import SmartDesigner

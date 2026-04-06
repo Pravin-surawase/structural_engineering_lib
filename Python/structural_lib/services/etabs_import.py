@@ -612,7 +612,7 @@ def create_job_from_etabs(
         "schema_version": 1,
         "job_id": job_id,
         "code": "IS456",
-        "units": "SI-mm",
+        "units": "IS456",
         "beam": {
             "b_mm": b_mm,
             "D_mm": D_mm,
@@ -661,16 +661,17 @@ def create_jobs_from_etabs_csv(
     """
     envelopes = normalize_etabs_forces(csv_path, station_multiplier=station_multiplier)
 
-    # Group by beam_id
+    # Group by story + beam_id to avoid cross-story collision
     beams: dict[str, list[ETABSEnvelopeResult]] = defaultdict(list)
     for env in envelopes:
-        beams[env.beam_id].append(env)
+        beams[f"{env.story}_{env.beam_id}"].append(env)
 
     jobs: list[dict[str, Any]] = []
 
     for beam_id, beam_envs in beams.items():
-        # Get geometry for this beam
-        geom = geometry.get(beam_id, {})
+        # When looking up geometry, try composite key first, fall back to beam label alone
+        beam_label = beam_id.split("_", 1)[1] if "_" in beam_id else beam_id
+        geom = geometry.get(beam_label, geometry.get(beam_id, {}))
         if "b_mm" not in geom or "D_mm" not in geom:
             # Skip beams without geometry
             continue
@@ -822,14 +823,16 @@ def merge_forces_and_geometry(
         ...     if geom:
         ...         print(f"{uid}: {env.mu_knm} kNm at ({geom.point1_x}, {geom.point1_y})")
     """
-    # Build geometry lookup by label (beam_id in envelopes)
-    geom_by_label = {f.label: f for f in frames}
+    # Build geometry lookup by (story, label) to avoid cross-story collision
+    geom_by_key = {(f.story, f.label): f for f in frames}
 
     merged = {}
     for env in envelopes:
-        # Try to match by beam_id (which is Label in frames_geometry)
-        geom = geom_by_label.get(env.beam_id)
-        key = env.beam_id  # Use beam_id as key
+        geom = geom_by_key.get((env.story, env.beam_id))
+        # Fallback: try label-only for backward compat
+        if geom is None:
+            geom = next((f for f in frames if f.label == env.beam_id), None)
+        key = f"{env.story}_{env.beam_id}"
         merged[key] = (env, geom)
 
     return merged

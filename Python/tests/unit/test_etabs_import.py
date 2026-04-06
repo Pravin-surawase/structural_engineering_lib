@@ -233,7 +233,7 @@ class TestCreateJobFromETABS:
 
         assert job["schema_version"] == 1
         assert job["code"] == "IS456"
-        assert job["units"] == "SI-mm"
+        assert job["units"] == "IS456"
         assert job["job_id"] == "ETABS_Story1_B1"
         assert job["beam"]["b_mm"] == 300
         assert job["beam"]["D_mm"] == 500
@@ -306,7 +306,7 @@ class TestCreateJobsFromETABSCSV:
 
         jobs = create_jobs_from_etabs_csv(csv_file, geometry)
 
-        assert len(jobs) == 2
+        assert len(jobs) == 3
         job_ids = {j["job_id"] for j in jobs}
         assert any("B1" in jid for jid in job_ids)
         assert any("B2" in jid for jid in job_ids)
@@ -335,9 +335,9 @@ class TestCreateJobsFromETABSCSV:
 
         jobs = create_jobs_from_etabs_csv(csv_file, geometry)
 
-        # Only B1 should be in jobs
-        assert len(jobs) == 1
-        assert "B1" in jobs[0]["job_id"]
+        # B1 appears on Story1 and Story2, both get geometry via label fallback
+        assert len(jobs) == 2
+        assert all("B1" in j["job_id"] for j in jobs)
 
     def test_create_jobs_uses_defaults(self, tmp_path: Path) -> None:
         """Default fck and fy are used when not in geometry."""
@@ -529,3 +529,133 @@ class TestMergeForcesAndGeometry:
             assert env.beam_id == "B1"
             if geom:
                 assert geom.unique_name == "B1"
+
+    def test_merge_same_label_different_stories(self) -> None:
+        """Regression: same label on different stories must not collide.
+
+        Audit finding: merge_forces_and_geometry() used to key by label only,
+        causing Story2/B1 to overwrite Story1/B1. Now keys by (story, label).
+        """
+        envelopes = [
+            ETABSEnvelopeResult("Story1", "B1", "DL+LL", 100.0, 50.0, 3),
+            ETABSEnvelopeResult("Story2", "B1", "DL+LL", 120.0, 60.0, 3),
+        ]
+        frames = [
+            FrameGeometry(
+                unique_name="B1_S1",
+                label="B1",
+                story="Story1",
+                frame_type="Beam",
+                section_name="RB300x500",
+                point1_name="1",
+                point2_name="2",
+                point1_x=0.0,
+                point1_y=0.0,
+                point1_z=3.0,
+                point2_x=4.5,
+                point2_y=0.0,
+                point2_z=3.0,
+                angle=0.0,
+                cardinal_point=10,
+            ),
+            FrameGeometry(
+                unique_name="B1_S2",
+                label="B1",
+                story="Story2",
+                frame_type="Beam",
+                section_name="RB300x500",
+                point1_name="3",
+                point2_name="4",
+                point1_x=0.0,
+                point1_y=0.0,
+                point1_z=6.0,
+                point2_x=4.5,
+                point2_y=0.0,
+                point2_z=6.0,
+                angle=0.0,
+                cardinal_point=10,
+            ),
+        ]
+
+        merged = merge_forces_and_geometry(envelopes, frames)
+
+        # Must have 2 separate entries, not 1
+        assert (
+            len(merged) == 2
+        ), f"Expected 2 entries for B1 on 2 stories, got {len(merged)}"
+        assert "Story1_B1" in merged
+        assert "Story2_B1" in merged
+
+        # Verify each entry has correct geometry (not cross-story)
+        env1, geom1 = merged["Story1_B1"]
+        env2, geom2 = merged["Story2_B1"]
+        assert env1.mu_knm == pytest.approx(100.0)
+        assert env2.mu_knm == pytest.approx(120.0)
+        assert geom1 is not None, "Story1/B1 geometry must not be lost"
+        assert geom2 is not None, "Story2/B1 geometry must not be lost"
+        assert geom1.story == "Story1"
+        assert geom2.story == "Story2"
+
+
+class TestAuditRegressions:
+    """Regression tests for critical audit findings."""
+
+    def test_etabs_job_units_accepted_by_validator(self) -> None:
+        """Regression: ETABS job generator must produce units the runner accepts.
+
+        Audit finding: create_job_from_etabs() set units='IS456' but
+        beam_pipeline.validate_units() didn't accept that string, causing
+        UnitsValidationError at runtime.
+        """
+        from structural_lib.services.beam_pipeline import (
+            UnitsValidationError,
+            validate_units,
+        )
+
+        env = ETABSEnvelopeResult("Story1", "B1", "DL+LL", 100.0, 50.0)
+        job = create_job_from_etabs(env, b_mm=300, D_mm=500, fck_nmm2=25)
+
+        # The units produced by the job generator must pass validation
+        try:
+            validated = validate_units(job["units"])
+        except UnitsValidationError as exc:
+            pytest.fail(
+                f"ETABS job units '{job['units']}' rejected by validate_units(): {exc}"
+            )
+        assert validated == "IS456"
+
+    def test_etabs_batch_same_beam_id_different_stories(self, tmp_path: Path) -> None:
+        """Regression: same beam_id on different stories must produce separate jobs.
+
+        Audit finding: create_jobs_from_etabs_csv() grouped by beam_id only,
+        causing Story2/B1 to merge into Story1/B1's job. Now groups by
+        (story, beam_id).
+        """
+        # CSV with B1 on two stories
+        csv_content = (
+            "Story,Label,Output Case,Station,M3,V2,P\n"
+            "Story1,B1,1.5(DL+LL),0,100.0,50.0,0\n"
+            "Story1,B1,1.5(DL+LL),4000,-40.0,75.0,0\n"
+            "Story2,B1,1.5(DL+LL),0,120.0,60.0,0\n"
+            "Story2,B1,1.5(DL+LL),4000,-35.0,65.0,0\n"
+        )
+        csv_file = tmp_path / "etabs_multi_story.csv"
+        csv_file.write_text(csv_content)
+
+        geometry = {
+            "B1": {"b_mm": 300.0, "D_mm": 500.0},
+        }
+
+        jobs = create_jobs_from_etabs_csv(csv_file, geometry)
+
+        # Must produce 2 separate jobs, not 1
+        assert (
+            len(jobs) == 2
+        ), f"Expected 2 jobs for B1 on Story1+Story2, got {len(jobs)}"
+        job_ids = {j["job_id"] for j in jobs}
+        assert any(
+            "Story1" in jid for jid in job_ids
+        ), f"No job for Story1 B1 in {job_ids}"
+        assert any(
+            "Story2" in jid for jid in job_ids
+        ), f"No job for Story2 B1 in {job_ids}"
