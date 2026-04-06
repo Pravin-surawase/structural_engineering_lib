@@ -458,6 +458,21 @@ def create_column_detailing(
 
     References:
         IS 456:2000, Cl. 26.5.3
+
+    Limitations:
+        - Rectangular and circular sections only; polygonal, L-shaped,
+          or other irregular column sections are not handled.
+        - Lateral ties only; helical (spiral) reinforcement detailing
+          requires the ``helical`` module (Cl. 39.4).
+        - Does not check cover requirements per Cl. 26.4 / Table 16;
+          caller must verify cover against exposure conditions.
+        - Uniform bar diameter assumed; mixed bar sizes in the same
+          column are not handled (tie diameter is based on the single
+          provided bar_dia_mm).
+        - Seismic detailing requirements per IS 13920 (special
+          confining reinforcement) are not applied.
+        - Does not verify splice locations or staggering requirements
+          (Cl. 26.2.5); only checks steel ratio at lap sections.
     """
     # ===========================================================
     # 1. Input validation

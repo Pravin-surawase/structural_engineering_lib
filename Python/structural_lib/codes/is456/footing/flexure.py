@@ -116,6 +116,20 @@ def footing_flexure(
     Raises:
         DimensionError: If geometry is invalid
         ValidationError: If material properties are invalid
+
+    Limitations:
+        - Isolated footings only; combined and raft footings require
+          continuous beam/plate analysis.
+        - Uniform pressure distribution assumed (concentric load); for
+          eccentric loading, the trapezoidal or partial pressure
+          distribution must be handled externally.
+        - Singly reinforced section only; if the calculated moment
+          exceeds singly reinforced capacity, a ValidationError is raised—
+          increase footing depth rather than using compression steel.
+        - Does not account for footing self-weight or soil overburden
+          in the moment calculation (conservative for gravity loads).
+        - One-directional bending per direction; does not consider
+          biaxial moment effects on steel distribution.
     """
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
 

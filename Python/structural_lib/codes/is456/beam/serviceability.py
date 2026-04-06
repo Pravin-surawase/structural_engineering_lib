@@ -148,6 +148,19 @@ def check_deflection_span_depth(
     - Computes L/d.
     - Computes allowable L/d = base_allowable_ld × mf_tension_steel × mf_compression_steel × mf_flanged.
     - Records any assumed defaults in `assumptions`.
+
+    Limitations:
+        - Rectangular beams and one-way slabs only; two-way slabs use
+          different span/depth ratios (IS 456 Cl. 24.1).
+        - Modification factors must be supplied by the caller; if omitted,
+          defaults to 1.0 which may be unconservative for high steel
+          percentages (Cl. 23.2.1, Fig. 4).
+        - Does not compute actual deflection; this is a deemed-to-satisfy
+          check only. For precise deflection values use
+          ``check_deflection_level_b`` or ``check_deflection_level_c``.
+        - Continuous beams use a single base L/d; does not distinguish
+          between end span and interior span values.
+        - Does not account for construction loading or propping conditions.
     """
 
     assumptions = []
@@ -250,6 +263,18 @@ def check_crack_width(
     - `epsilon_m` can be supplied directly, or estimated as fs_service_nmm2 / es_nmm2.
     - This function is strict about required inputs: if core parameters are missing,
       it returns is_ok=False with a clear remark (rather than guessing).
+
+    Limitations:
+        - Rectangular sections only; flanged sections require modified
+          acr calculations for the flange region.
+        - Uses simplified Annex-F formula; does not implement the full
+          CEB-FIP or Eurocode crack spacing model.
+        - Service (unfactored) stresses must be supplied by the caller;
+          this function does not perform load factoring.
+        - Applicable to flexural cracks only; does not cover shear cracks
+          or cracks due to restrained shrinkage/thermal effects.
+        - Does not account for bar coating (epoxy-coated bars have
+          different bond characteristics affecting crack width).
     """
 
     assumptions = []
@@ -765,6 +790,23 @@ def check_deflection_level_b(
 
     Returns:
         DeflectionLevelBResult with detailed outputs
+
+    Limitations:
+        - Rectangular sections only; flanged beam (T/L) sections require
+          separate Igross and Icr calculations with flange contribution.
+        - Simply supported, cantilever, and continuous beams with
+          standard deflection coefficients; irregular loading patterns
+          or multi-span continuous beams require frame analysis.
+        - Long-term deflection uses simplified multiplier method
+          (IS 456 Cl. 23.2); does not use age-adjusted effective
+          modulus or step-by-step creep integration.
+        - Service (unfactored) moment must be supplied; the function
+          does not perform load factoring or combination.
+        - Shrinkage deflection is estimated via long-term factor only;
+          separate shrinkage curvature calculation available in
+          ``check_deflection_level_c`` for more accurate results.
+        - Does not account for construction sequence, shoring removal
+          timing, or composite action with non-structural elements.
     """
     assumptions = []
     inputs = {

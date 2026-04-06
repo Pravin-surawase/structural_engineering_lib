@@ -252,6 +252,21 @@ def short_axial_capacity(
     References:
         IS 456:2000, Cl 39.3
         SP:16 Design Aids, Chart 27
+
+    Limitations:
+        - Short columns only (le/D < 12 per Cl. 25.1.2); for slender
+          columns use the ``long_column`` module which applies additional
+          moment due to P-delta effects (Cl. 39.7).
+        - Rectangular and circular sections only; irregular or composite
+          sections are not handled.
+        - Does not account for bending moment; valid only when eccentricity
+          e_min ≤ 0.05D. For uniaxial bending use
+          ``design_short_column_uniaxial`` (Cl. 39.5), for biaxial
+          bending use the ``biaxial`` module (Cl. 39.6).
+        - Does not check detailing requirements (tie spacing, min bars);
+          use ``create_column_detailing`` for Cl. 26.5.3 checks.
+        - IS 456 scope limits fck to 60 N/mm² for columns; values above
+          60 N/mm² trigger a warning.
     """
     # --- Validate material properties ---
     if fck <= 0:

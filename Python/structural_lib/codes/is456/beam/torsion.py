@@ -445,6 +445,24 @@ def design_torsion(
 
     Reference:
         IS 456:2000, Clause 41
+
+    Limitations:
+        - Rectangular solid sections only; hollow sections, box girders,
+          and flanged sections under torsion require different treatment
+          (thin-walled torsion theory).
+        - Uses IS 456 equivalent shear/moment approach (Cl. 41.3-41.4);
+          does not implement the more rigorous space-truss analogy used
+          in Eurocode 2 or ACI 318.
+        - Compatibility torsion is not distinguished from equilibrium
+          torsion; the caller must determine if the applied torsion can
+          be redistributed (Cl. 41.1 Note).
+        - Does not handle combined torsion with axial load; for
+          columns or prestressed members under torsion, separate
+          analysis is required.
+        - Stirrup design assumes two-legged closed stirrups; multi-leg
+          stirrup arrangements are not generated.
+        - Valid for fck = 15–40 N/mm² (Table 19/20 range) and
+          fy ≤ 500 N/mm².
     """
     errors: list[DesignError] = []
 
