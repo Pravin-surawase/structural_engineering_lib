@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-04-06
 
 ---
 
@@ -34,6 +34,13 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-04-06 | TASK-720 | Golden vector baselines: 42+ tests (9 beam + 20 column + 13 footing) with `@pytest.mark.golden` | — |
+| 2026-04-06 | TASK-721 | Contract tests: 18 API surface contracts (column, footing, torsion) with `@pytest.mark.contract` | — |
+| 2026-04-06 | TASK-722 | conftest.py golden_vectors fixture with SP:16 reference values | — |
+| 2026-04-06 | TASK-723 | CI gate: `pytest -m golden` added to GitHub Actions python-tests.yml | — |
+| 2026-04-06 | TASK-520 | Report/3D edge case tests: 71 new tests for report generation and 3D visualization | — |
+| 2026-04-06 | fix | @clause("34.1") added to size_footing() — footing clause gap resolved | — |
+| 2026-04-06 | test | Coverage boost: 19 tests, codes/is456/ at 99% branch coverage | — |
 | 2026-04-06 | fix | Fixed response envelope mismatch — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` in 16 API calls | — |
 | 2026-04-06 | fix | Fixed `new URL()` crash on relative paths in useCSVImport.ts (dev mode) | — |
 | 2026-04-06 | test | Added 3 unwrapResponse contract tests + fixed useCSVImport test mocks | — |

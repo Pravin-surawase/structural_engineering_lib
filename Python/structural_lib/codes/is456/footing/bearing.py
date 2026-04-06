@@ -27,6 +27,7 @@ from structural_lib.core.errors import (
 )
 
 
+@clause("34.1")
 def size_footing(
     P_service_kN: float,
     q_safe_kPa: float,

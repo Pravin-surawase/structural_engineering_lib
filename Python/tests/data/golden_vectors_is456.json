@@ -1,12 +1,17 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "units": {
     "system": "IS456",
     "mu_knm": "kN·m",
     "vu_kn": "kN",
+    "tu_knm": "kN·m",
     "b_mm": "mm",
     "D_mm": "mm",
     "d_mm": "mm",
+    "bf_mm": "mm",
+    "df_mm": "mm",
+    "bw_mm": "mm",
+    "span_mm": "mm",
     "fck_nmm2": "N/mm²",
     "fy_nmm2": "N/mm²"
   },
@@ -19,9 +24,13 @@
     "d_dash_mm": 50.0,
     "asv_mm2": 100.0
   },
-  "cases": [
+  "beam_flexure_cases": [
     {
       "case_id": "G1",
+      "category": "beam_flexure",
+      "description": "Singly reinforced rectangular beam — under-reinforced, M25/Fe500",
+      "source": "Library baseline golden vector",
+      "tolerance": 1e-12,
       "mu_knm": 80.0,
       "vu_kn": 60.0,
       "expected": {
@@ -43,6 +52,10 @@
     },
     {
       "case_id": "G2",
+      "category": "beam_flexure",
+      "description": "Singly reinforced rectangular beam — moderate shear, M25/Fe500",
+      "source": "Library baseline golden vector",
+      "tolerance": 1e-12,
       "mu_knm": 120.0,
       "vu_kn": 200.0,
       "expected": {
@@ -65,6 +78,10 @@
     },
     {
       "case_id": "G3",
+      "category": "beam_flexure",
+      "description": "Singly reinforced rectangular beam — higher moment, M25/Fe500",
+      "source": "Library baseline golden vector",
+      "tolerance": 1e-12,
       "mu_knm": 160.0,
       "vu_kn": 120.0,
       "expected": {
@@ -82,6 +99,809 @@
           "spacing": 300.0,
           "is_safe": true
         }
+      }
+    },
+    {
+      "case_id": "G4",
+      "category": "beam_flexure",
+      "description": "Singly reinforced beam — SP:16 Example 1 (M20/Fe415, b=230mm, d=400mm, Mu=60kNm)",
+      "source": "SP:16:1980, Design Aids for Reinforced Concrete, Example 1",
+      "tolerance": 0.001,
+      "inputs": {
+        "b_mm": 230.0,
+        "D_mm": 450.0,
+        "d_mm": 400.0,
+        "fck_nmm2": 20.0,
+        "fy_nmm2": 415.0,
+        "d_dash_mm": 50.0,
+        "asv_mm2": 100.0
+      },
+      "mu_knm": 60.0,
+      "vu_kn": 40.0,
+      "expected": {
+        "is_ok": true,
+        "flexure": {
+          "mu_lim": 101.54115071999999,
+          "ast_required": 464.27985099101863,
+          "asc_required": 0.0,
+          "xu": 101.22478272965417,
+          "xu_max": 192.0,
+          "is_safe": true
+        },
+        "shear": {
+          "tv": 0.43478260869565216,
+          "tc": 0.48148864382296297,
+          "tc_max": 2.8,
+          "spacing": 300.0,
+          "is_safe": true
+        }
+      }
+    },
+    {
+      "case_id": "G5",
+      "category": "beam_flexure",
+      "description": "Doubly reinforced beam — Mu exceeds Mu_lim (M25/Fe500, b=300mm, d=500mm, Mu=350kNm)",
+      "source": "SP:16:1980, Design Aids for Reinforced Concrete, doubly reinforced beam tables",
+      "tolerance": 0.001,
+      "inputs": {
+        "b_mm": 300.0,
+        "D_mm": 550.0,
+        "d_mm": 500.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 500.0,
+        "d_dash_mm": 50.0,
+        "asv_mm2": 100.0
+      },
+      "mu_knm": 350.0,
+      "vu_kn": 100.0,
+      "expected": {
+        "is_ok": true,
+        "flexure": {
+          "mu_lim": 250.5114,
+          "ast_required": 1930.184598454358,
+          "asc_required": 551.9740674637147,
+          "xu": 230.0,
+          "xu_max": 230.0,
+          "is_safe": true
+        },
+        "shear": {
+          "tv": 0.6666666666666666,
+          "tc": 0.7058863571684648,
+          "tc_max": 3.1,
+          "spacing": 300.0,
+          "is_safe": true
+        }
+      }
+    }
+  ],
+  "beam_flanged_cases": [
+    {
+      "case_id": "G6",
+      "category": "beam_flanged",
+      "description": "T-beam with NA in flange — M25/Fe415, bw=300mm, bf=1200mm, Df=120mm, Mu=400kNm",
+      "source": "SP:16:1980, Annex G, flanged beam design (NA in flange)",
+      "tolerance": 0.001,
+      "inputs": {
+        "bw_mm": 300.0,
+        "bf_mm": 1200.0,
+        "d_mm": 500.0,
+        "df_mm": 120.0,
+        "D_mm": 550.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 415.0,
+        "d_dash_mm": 50.0
+      },
+      "mu_knm": 400.0,
+      "expected": {
+        "flexure": {
+          "mu_lim": 1034.7263999999998,
+          "ast_required": 2372.610959747542,
+          "asc_required": 0.0,
+          "xu": 79.31770250156019,
+          "xu_max": 240.0,
+          "is_safe": true,
+          "pt_provided": 0.39543515995792367,
+          "_note": "xu=79.3mm < Df=120mm confirms NA in flange"
+        }
+      }
+    }
+  ],
+  "beam_torsion_cases": [
+    {
+      "case_id": "G7",
+      "category": "beam_torsion",
+      "description": "Torsion design — IS 456 Cl 41.4 (Tu=15kNm, Vu=80kN, Mu=100kNm, M25/Fe415)",
+      "source": "IS 456:2000, Cl 41.3.1 (Ve), Cl 41.4.2 (Me), Cl 41.4.3 (Asv)",
+      "tolerance": 0.001,
+      "inputs": {
+        "tu_knm": 15.0,
+        "vu_kn": 80.0,
+        "mu_knm": 100.0,
+        "b_mm": 300.0,
+        "D_mm": 550.0,
+        "d_mm": 500.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 415.0,
+        "cover_mm": 25.0,
+        "stirrup_dia_mm": 8.0,
+        "pt_percent": 1.0
+      },
+      "expected": {
+        "is_safe": true,
+        "Ve_kn": 160.0,
+        "Me_knm": 125.0,
+        "tau_ve": 1.067,
+        "tau_c": 0.64,
+        "tau_c_max": 3.1,
+        "Asv_torsion": 0.3489,
+        "Al_torsion": 256.0,
+        "stirrup_spacing": 175,
+        "requires_closed_stirrups": true,
+        "Asv_total": 0.3489
+      }
+    }
+  ],
+  "beam_serviceability_cases": [
+    {
+      "case_id": "G8",
+      "category": "beam_serviceability",
+      "description": "Deflection check — span/depth ratio, simply supported beam (IS 456 Cl 23.2.1)",
+      "source": "IS 456:2000, Cl 23.2.1 (basic L/d ratios), Table 4",
+      "tolerance": 0.001,
+      "inputs": {
+        "span_mm": 5000.0,
+        "d_mm": 450.0,
+        "support_condition": "simply_supported",
+        "mf_tension_steel": 1.4
+      },
+      "expected": {
+        "is_ok": true,
+        "ld_ratio": 11.11111111111111,
+        "allowable_ld": 28.0,
+        "base_allowable_ld": 20.0,
+        "mf_tension_steel": 1.4,
+        "mf_compression_steel": 1.0,
+        "mf_flanged": 1.0,
+        "_note": "L/d=11.1 ≤ allowable=28.0, beam is OK for deflection"
+      }
+    }
+  ],
+  "footing_bearing_cases": [
+    {
+      "case_id": "GF1",
+      "category": "footing_bearing",
+      "description": "Concentric square footing sizing — P=800kN, q_safe=200kPa, col 400×400mm",
+      "source": "IS 456:2000 Cl 34.1 — A_req = P/q_safe = 4.0 m², L=B=2000mm",
+      "tolerance": 1e-12,
+      "function": "size_footing",
+      "inputs": {
+        "P_service_kN": 800,
+        "q_safe_kPa": 200,
+        "a_mm": 400,
+        "b_mm": 400,
+        "footing_type": "ISOLATED_SQUARE"
+      },
+      "expected": {
+        "L_mm": 2000,
+        "B_mm": 2000,
+        "q_max_kPa": 200.0,
+        "q_min_kPa": 200.0,
+        "pressure_type": "uniform",
+        "utilization_ratio": 1.0,
+        "is_safe": true
+      }
+    },
+    {
+      "case_id": "GF2",
+      "category": "footing_bearing",
+      "description": "Eccentric square footing — P=800kN, M=40kNm, q_safe=200kPa, col 400×400mm → trapezoidal, unsafe",
+      "source": "IS 456:2000 Cl 34.1 — e=M/P=50mm < L/6=333mm → trapezoidal, q_max=230kPa > q_safe",
+      "tolerance": 1e-12,
+      "function": "size_footing",
+      "inputs": {
+        "P_service_kN": 800,
+        "q_safe_kPa": 200,
+        "a_mm": 400,
+        "b_mm": 400,
+        "M_service_kNm": 40,
+        "footing_type": "ISOLATED_SQUARE"
+      },
+      "expected": {
+        "L_mm": 2000,
+        "B_mm": 2000,
+        "q_max_kPa": 229.99999999999997,
+        "q_min_kPa": 170.0,
+        "pressure_type": "trapezoidal",
+        "utilization_ratio": 1.15,
+        "is_safe": false
+      }
+    },
+    {
+      "case_id": "GF3",
+      "category": "footing_bearing",
+      "description": "Bearing stress enhancement — A1/A2=14.0625, capped at 2.0 per IS 456 Cl 34.4",
+      "source": "IS 456:2000 Cl 34.4 — sqrt(2250000/160000)=3.75, capped at 2.0",
+      "tolerance": 1e-12,
+      "function": "bearing_stress_enhancement",
+      "inputs": {
+        "fck": 25,
+        "A1_mm2": 2250000,
+        "A2_mm2": 160000
+      },
+      "expected": {
+        "basic_stress_mpa": 11.25,
+        "enhancement_factor": 2.0,
+        "permissible_stress_mpa": 22.5
+      }
+    },
+    {
+      "case_id": "GF4",
+      "category": "footing_bearing",
+      "description": "Bearing stress enhancement — A1/A2=2.25, factor=1.5 (uncapped) per IS 456 Cl 34.4",
+      "source": "IS 456:2000 Cl 34.4 — sqrt(360000/160000)=1.5, below cap of 2.0",
+      "tolerance": 1e-12,
+      "function": "bearing_stress_enhancement",
+      "inputs": {
+        "fck": 25,
+        "A1_mm2": 360000,
+        "A2_mm2": 160000
+      },
+      "expected": {
+        "basic_stress_mpa": 11.25,
+        "enhancement_factor": 1.5,
+        "permissible_stress_mpa": 16.875
+      }
+    },
+    {
+      "case_id": "GF5",
+      "category": "footing_bearing",
+      "description": "Bearing pressure check — safe, Pu=1200kN, col 400×400, footing 1500×1500 (IS 456 Cl 34.4)",
+      "source": "IS 456:2000 Cl 34.4 — actual=7.5MPa vs permissible=22.5MPa",
+      "tolerance": 1e-12,
+      "function": "check_bearing_pressure",
+      "inputs": {
+        "Pu_kN": 1200,
+        "fck": 25,
+        "column_b_mm": 400,
+        "column_D_mm": 400,
+        "footing_B_mm": 1500,
+        "footing_L_mm": 1500
+      },
+      "expected": {
+        "actual_stress_mpa": 7.5,
+        "permissible_stress_mpa": 22.5,
+        "enhancement_factor": 2.0,
+        "utilization_ratio": 0.3333333333333333,
+        "is_safe": true
+      }
+    },
+    {
+      "case_id": "GF6",
+      "category": "footing_bearing",
+      "description": "Bearing pressure check — UNSAFE, Pu=2000kN, col 300×300, footing 1000×1000 (IS 456 Cl 34.4)",
+      "source": "IS 456:2000 Cl 34.4 — actual=22.22MPa vs permissible=18.0MPa → UNSAFE",
+      "tolerance": 1e-12,
+      "function": "check_bearing_pressure",
+      "inputs": {
+        "Pu_kN": 2000,
+        "fck": 20,
+        "column_b_mm": 300,
+        "column_D_mm": 300,
+        "footing_B_mm": 1000,
+        "footing_L_mm": 1000
+      },
+      "expected": {
+        "actual_stress_mpa": 22.22222222222222,
+        "permissible_stress_mpa": 18.0,
+        "enhancement_factor": 2.0,
+        "utilization_ratio": 1.2345679012345678,
+        "is_safe": false
+      }
+    }
+  ],
+  "footing_flexure_cases": [
+    {
+      "case_id": "GF7",
+      "category": "footing_flexure",
+      "description": "Square footing flexure — Pu=1200kN, 1500×1500mm, col 400×400, d=400mm, M25/Fe415",
+      "source": "IS 456:2000 Cl 34.2.3.1 — Mu = qu×B×cant²/2, cant=(1500-400)/2=550mm",
+      "tolerance": 1e-12,
+      "function": "footing_flexure",
+      "inputs": {
+        "Pu_kN": 1200,
+        "L_mm": 1500,
+        "B_mm": 1500,
+        "d_mm": 400,
+        "a_mm": 400,
+        "b_mm": 400,
+        "fck": 25,
+        "fy": 415
+      },
+      "expected": {
+        "Mu_L_kNm": 121.0,
+        "Ast_L_mm2": 858.6511413659359,
+        "pt_L_percent": 0.14310852356098933,
+        "cantilever_L_mm": 550.0,
+        "Mu_B_kNm": 121.0,
+        "Ast_B_mm2": 858.6511413659359,
+        "pt_B_percent": 0.14310852356098933,
+        "cantilever_B_mm": 550.0,
+        "is_safe": true,
+        "central_band_fraction": 1.0
+      }
+    },
+    {
+      "case_id": "GF8",
+      "category": "footing_flexure",
+      "description": "Rectangular footing flexure — Pu=1000kN, 2000×1500mm, col 450×300, d=350, M25/Fe415, Cl 34.3.1 band",
+      "source": "IS 456:2000 Cl 34.2.3.1 + Cl 34.3.1 — rectangular: β=1.33, central_band=2/(β+1)=0.857",
+      "tolerance": 1e-12,
+      "function": "footing_flexure",
+      "inputs": {
+        "Pu_kN": 1000,
+        "L_mm": 2000,
+        "B_mm": 1500,
+        "d_mm": 350,
+        "a_mm": 450,
+        "b_mm": 300,
+        "fck": 25,
+        "fy": 415
+      },
+      "expected": {
+        "Mu_L_kNm": 150.15625,
+        "Ast_L_mm2": 1237.2464298740977,
+        "pt_L_percent": 0.23566598664268526,
+        "cantilever_L_mm": 775.0,
+        "Mu_B_kNm": 120.0,
+        "Ast_B_mm2": 972.5146690530621,
+        "pt_B_percent": 0.1389306670075803,
+        "cantilever_B_mm": 600.0,
+        "is_safe": true,
+        "central_band_fraction": 0.8571428571428572
+      }
+    }
+  ],
+  "footing_shear_cases": [
+    {
+      "case_id": "GF9",
+      "category": "footing_shear",
+      "description": "Square footing one-way shear — safe, Pu=1200kN, 1500×1500, col 400×400, d=400, fck=25, pt=0.25%",
+      "source": "IS 456:2000 Cl 34.2.4.1(a) — Lv=(550-400)=150mm, Vu=qu×B×Lv, τv=0.2 vs τc=0.36",
+      "tolerance": 1e-12,
+      "function": "footing_one_way_shear",
+      "inputs": {
+        "Pu_kN": 1200,
+        "L_mm": 1500,
+        "B_mm": 1500,
+        "d_mm": 400,
+        "a_mm": 400,
+        "b_mm": 400,
+        "fck": 25,
+        "pt": 0.25
+      },
+      "expected": {
+        "tau_v_nmm2": 0.2,
+        "tau_c_nmm2": 0.36,
+        "Vu_kN": 120.0,
+        "utilization_ratio": 0.5555555555555556,
+        "is_safe": true,
+        "governing_direction": "L"
+      }
+    },
+    {
+      "case_id": "GF10",
+      "category": "footing_shear",
+      "description": "Rectangular footing one-way shear — UNSAFE, Pu=1000kN, 2000×1500, col 450×300, d=350, fck=25",
+      "source": "IS 456:2000 Cl 34.2.4.1(a) — governs L-dir, τv=0.405 > τc=0.325 → UNSAFE",
+      "tolerance": 1e-12,
+      "function": "footing_one_way_shear",
+      "inputs": {
+        "Pu_kN": 1000,
+        "L_mm": 2000,
+        "B_mm": 1500,
+        "d_mm": 350,
+        "a_mm": 450,
+        "b_mm": 300,
+        "fck": 25,
+        "pt": 0.20
+      },
+      "expected": {
+        "tau_v_nmm2": 0.40476190476190477,
+        "tau_c_nmm2": 0.325,
+        "Vu_kN": 212.5,
+        "utilization_ratio": 1.2454212454212454,
+        "is_safe": false,
+        "governing_direction": "L"
+      }
+    }
+  ],
+  "footing_punching_cases": [
+    {
+      "case_id": "GF11",
+      "category": "footing_punching",
+      "description": "Square footing punching shear — safe, Pu=1200kN, 1500×1500, col 400×400, d=400, fck=25",
+      "source": "IS 456:2000 Cl 31.6.1 — b0=2×(800+800)=3200mm, βc=1.0, ks=1.0, τc=1.25",
+      "tolerance": 1e-12,
+      "function": "footing_punching_shear",
+      "inputs": {
+        "Pu_kN": 1200,
+        "L_mm": 1500,
+        "B_mm": 1500,
+        "d_mm": 400,
+        "a_mm": 400,
+        "b_mm": 400,
+        "fck": 25
+      },
+      "expected": {
+        "tau_v_nmm2": 0.6708333333333334,
+        "tau_c_nmm2": 1.25,
+        "perimeter_mm": 3200.0,
+        "Vu_punch_kN": 858.6666666666667,
+        "beta_c": 1.0,
+        "ks": 1.0,
+        "utilization_ratio": 0.5366666666666667,
+        "is_safe": true
+      }
+    },
+    {
+      "case_id": "GF12",
+      "category": "footing_punching",
+      "description": "Rectangular col punching shear — safe, Pu=1500kN, 2000×2000, col 600×300, d=450, fck=30",
+      "source": "IS 456:2000 Cl 31.6.1 — βc=0.5, ks=min(1.0,0.5+0.5)=1.0, b0=3600mm",
+      "tolerance": 1e-12,
+      "function": "footing_punching_shear",
+      "inputs": {
+        "Pu_kN": 1500,
+        "L_mm": 2000,
+        "B_mm": 2000,
+        "d_mm": 450,
+        "a_mm": 600,
+        "b_mm": 300,
+        "fck": 30
+      },
+      "expected": {
+        "tau_v_nmm2": 0.7436342592592593,
+        "tau_c_nmm2": 1.3693063937629153,
+        "perimeter_mm": 3600.0,
+        "Vu_punch_kN": 1204.6875,
+        "beta_c": 0.5,
+        "ks": 1.0,
+        "utilization_ratio": 0.543073677773255,
+        "is_safe": true
+      }
+    }
+  ],
+  "column_effective_length_cases": [
+    {
+      "case_id": "GC-EL1",
+      "category": "column_effective_length",
+      "description": "Both ends fixed — IS 456 Table 28 Case 1 (recommended)",
+      "source": "IS 456:2000, Table 28, Case 1 — ratio = 0.65",
+      "tolerance": 1e-12,
+      "inputs": {
+        "l_mm": 3000,
+        "end_condition": "FIXED_FIXED",
+        "use_theoretical": false
+      },
+      "expected": { "le_mm": 1950.0 }
+    },
+    {
+      "case_id": "GC-EL2",
+      "category": "column_effective_length",
+      "description": "One fixed, one hinged — IS 456 Table 28 Case 2 (recommended)",
+      "source": "IS 456:2000, Table 28, Case 2 — ratio = 0.80",
+      "tolerance": 1e-12,
+      "inputs": {
+        "l_mm": 3000,
+        "end_condition": "FIXED_HINGED",
+        "use_theoretical": false
+      },
+      "expected": { "le_mm": 2400.0 }
+    },
+    {
+      "case_id": "GC-EL3",
+      "category": "column_effective_length",
+      "description": "Both ends hinged — IS 456 Table 28 Case 5 (recommended)",
+      "source": "IS 456:2000, Table 28, Case 5 — ratio = 1.00",
+      "tolerance": 1e-12,
+      "inputs": {
+        "l_mm": 3000,
+        "end_condition": "HINGED_HINGED",
+        "use_theoretical": false
+      },
+      "expected": { "le_mm": 3000.0 }
+    },
+    {
+      "case_id": "GC-EL4",
+      "category": "column_effective_length",
+      "description": "Cantilever (fixed-free) — IS 456 Table 28 Case 4 (recommended)",
+      "source": "IS 456:2000, Table 28, Case 4 — ratio = 2.00",
+      "tolerance": 1e-12,
+      "inputs": {
+        "l_mm": 3000,
+        "end_condition": "FIXED_FREE",
+        "use_theoretical": false
+      },
+      "expected": { "le_mm": 6000.0 }
+    },
+    {
+      "case_id": "GC-EL5",
+      "category": "column_effective_length",
+      "description": "Both fixed with sway — IS 456 Table 28 Case 3 (recommended)",
+      "source": "IS 456:2000, Table 28, Case 3 — ratio = 1.20",
+      "tolerance": 1e-12,
+      "inputs": {
+        "l_mm": 3000,
+        "end_condition": "FIXED_FIXED_SWAY",
+        "use_theoretical": false
+      },
+      "expected": { "le_mm": 3600.0 }
+    }
+  ],
+  "column_classification_cases": [
+    {
+      "case_id": "GC-CL1",
+      "category": "column_classification",
+      "description": "Short column — le/D = 4.875 < 12",
+      "source": "IS 456:2000, Cl 25.1.2 — le/D < 12 → SHORT",
+      "inputs": { "le_mm": 1950, "D_mm": 400 },
+      "expected": { "classification": "SHORT" }
+    },
+    {
+      "case_id": "GC-CL2",
+      "category": "column_classification",
+      "description": "Slender column — le/D = 15.0 >= 12",
+      "source": "IS 456:2000, Cl 25.1.2 — le/D >= 12 → SLENDER",
+      "inputs": { "le_mm": 6000, "D_mm": 400 },
+      "expected": { "classification": "SLENDER" }
+    },
+    {
+      "case_id": "GC-CL3",
+      "category": "column_classification",
+      "description": "Boundary case — le/D = 12.0 exactly (should be SLENDER per strict <12)",
+      "source": "IS 456:2000, Cl 25.1.2 — le/D < 12 is short, == 12 is SLENDER",
+      "inputs": { "le_mm": 4800, "D_mm": 400 },
+      "expected": { "classification": "SLENDER" }
+    }
+  ],
+  "column_min_eccentricity_cases": [
+    {
+      "case_id": "GC-ME1",
+      "category": "column_min_eccentricity",
+      "description": "Min eccentricity governed by 20mm floor — L=3000, D=400",
+      "source": "IS 456:2000, Cl 25.4 — e_min = max(3000/500+400/30, 20) = max(19.33, 20) = 20mm",
+      "tolerance": 1e-12,
+      "inputs": { "l_unsupported_mm": 3000, "D_mm": 400 },
+      "expected": { "e_min_mm": 20.0 }
+    },
+    {
+      "case_id": "GC-ME2",
+      "category": "column_min_eccentricity",
+      "description": "Min eccentricity governed by formula — L=6000, D=400",
+      "source": "IS 456:2000, Cl 25.4 — e_min = max(6000/500+400/30, 20) = max(25.33, 20) = 25.33mm",
+      "tolerance": 1e-12,
+      "inputs": { "l_unsupported_mm": 6000, "D_mm": 400 },
+      "expected": { "e_min_mm": 25.333333333333336 }
+    },
+    {
+      "case_id": "GC-ME3",
+      "category": "column_min_eccentricity",
+      "description": "Min eccentricity — shorter column L=4000, D=300",
+      "source": "IS 456:2000, Cl 25.4 — e_min = max(4000/500+300/30, 20) = max(18, 20) = 20mm",
+      "tolerance": 1e-12,
+      "inputs": { "l_unsupported_mm": 4000, "D_mm": 300 },
+      "expected": { "e_min_mm": 20.0 }
+    }
+  ],
+  "column_axial_cases": [
+    {
+      "case_id": "GC-AX1",
+      "category": "column_axial",
+      "description": "400×400 column, M25/Fe415, 4-25mm bars — IS 456 Cl 39.3",
+      "source": "IS 456:2000, Cl 39.3 — Pu = 0.4×25×158037 + 0.67×415×1963.5 = 2126.3 kN",
+      "tolerance": 0.001,
+      "inputs": {
+        "fck": 25,
+        "fy": 415,
+        "Ag_mm2": 160000,
+        "Asc_mm2": 1963.4954084936207
+      },
+      "expected": {
+        "Pu_kN": 2126.3149442467147,
+        "Ac_mm2": 158036.50459150638,
+        "steel_ratio": 0.01227184630308513
+      }
+    },
+    {
+      "case_id": "GC-AX2",
+      "category": "column_axial",
+      "description": "300×500 column, M30/Fe500, 6-20mm bars — IS 456 Cl 39.3",
+      "source": "IS 456:2000, Cl 39.3 — Pu = 0.4×30×148115 + 0.67×500×1885.0 = 2408.8 kN",
+      "tolerance": 0.001,
+      "inputs": {
+        "fck": 30,
+        "fy": 500,
+        "Ag_mm2": 150000,
+        "Asc_mm2": 1884.9555921538758
+      },
+      "expected": {
+        "Pu_kN": 2408.8406562657015,
+        "Ac_mm2": 148115.04440784612,
+        "steel_ratio": 0.012566370614359171
+      }
+    }
+  ],
+  "column_pm_curve_cases": [
+    {
+      "case_id": "GC-PM1",
+      "category": "column_pm_curve",
+      "description": "P-M interaction curve — 400×400, M25/Fe415, 8-16mm bars, d'=50mm",
+      "source": "IS 456:2000, Cl 39.5, SP:16 Charts 27-62",
+      "tolerance": 0.001,
+      "inputs": {
+        "b_mm": 400,
+        "D_mm": 400,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 1608.495438637974,
+        "d_prime_mm": 50
+      },
+      "expected": {
+        "Pu_0_kN": 2031.157202326909,
+        "Pu_bal_kN": 580.7071246473993,
+        "Mu_bal_kNm": 161.87619333626915,
+        "Mu_0_kNm": 92.26859241630802,
+        "_note": "8-16mm bars, Asc=1608.5 mm², p=1.0%"
+      }
+    }
+  ],
+  "column_uniaxial_cases": [
+    {
+      "case_id": "GC-UNI1",
+      "category": "column_uniaxial",
+      "description": "Short column uniaxial check — 400×400, M25/Fe415, Pu=1000kN, Mu=100kNm",
+      "source": "IS 456:2000, Cl 39.5 (P-M interaction), 4-25mm bars",
+      "tolerance": 0.01,
+      "inputs": {
+        "Pu_kN": 1000,
+        "Mu_kNm": 100,
+        "b_mm": 400,
+        "D_mm": 400,
+        "le_mm": 2600,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 1963.4954084936207,
+        "d_prime_mm": 50
+      },
+      "expected": {
+        "is_safe": true,
+        "Pu_cap_kN": 1385.55,
+        "Mu_cap_kNm": 138.56,
+        "utilization_ratio": 0.7217,
+        "eccentricity_mm": 100.0,
+        "_note": "le/D=6.5 → short, utilization ~72%"
+      }
+    }
+  ],
+  "column_biaxial_cases": [
+    {
+      "case_id": "GC-BI1",
+      "category": "column_biaxial",
+      "description": "Biaxial bending — 400×500, M25/Fe415, Pu=1200kN, Mux=80kNm, Muy=60kNm",
+      "source": "IS 456:2000, Cl 39.6 — Bresler load contour with Asc=2400mm²",
+      "tolerance": 0.01,
+      "inputs": {
+        "Pu_kN": 1200,
+        "Mux_kNm": 80,
+        "Muy_kNm": 60,
+        "b_mm": 400,
+        "D_mm": 500,
+        "le_mm": 3000,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 2400,
+        "d_prime_mm": 50
+      },
+      "expected": {
+        "is_safe": true,
+        "Puz_kN": 2970.0,
+        "alpha_n": 1.3401,
+        "interaction_ratio": 0.3631,
+        "Mux1_kNm": 282.75,
+        "Muy1_kNm": 216.7,
+        "_note": "Pu/Puz=0.404, alpha_n=1.34, well within capacity"
+      }
+    }
+  ],
+  "column_additional_moment_cases": [
+    {
+      "case_id": "GC-AM1",
+      "category": "column_additional_moment",
+      "description": "Slender column additional moment — 300×500, M25/Fe415, lex=7000, ley=5000",
+      "source": "IS 456:2000, Cl 39.7.1 — eadd_x = 7000²/(2000×500) = 49mm",
+      "tolerance": 0.01,
+      "inputs": {
+        "Pu_kN": 800,
+        "b_mm": 300,
+        "D_mm": 500,
+        "lex_mm": 7000,
+        "ley_mm": 5000,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 2400,
+        "d_prime_mm": 50
+      },
+      "expected": {
+        "is_slender_x": true,
+        "is_slender_y": true,
+        "eadd_x_mm": 49.0,
+        "eadd_y_mm": 41.67,
+        "Max_kNm": 39.2,
+        "May_kNm": 33.33,
+        "k": 0.8661,
+        "_note": "Slender both axes, k=0.866 (Puz=2407.5, Pb=551.4)"
+      }
+    }
+  ],
+  "column_long_design_cases": [
+    {
+      "case_id": "GC-LC1",
+      "category": "column_long_design",
+      "description": "Long column braced — 300×500, M25/Fe415, slender both axes",
+      "source": "IS 456:2000, Cl 39.7 — Mi + Ma_reduced, biaxial check",
+      "tolerance": 0.01,
+      "inputs": {
+        "Pu_kN": 800,
+        "M1x_kNm": 40,
+        "M2x_kNm": 80,
+        "M1y_kNm": 20,
+        "M2y_kNm": 50,
+        "b_mm": 300,
+        "D_mm": 500,
+        "lex_mm": 7000,
+        "ley_mm": 5000,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 2400,
+        "d_prime_mm": 50,
+        "braced": true
+      },
+      "expected": {
+        "is_safe": true,
+        "is_slender_x": true,
+        "is_slender_y": true,
+        "Mux_design_kNm": 97.95,
+        "Muy_design_kNm": 66.87,
+        "interaction_ratio": 0.7257,
+        "governing_check": "biaxial",
+        "k": 0.8661,
+        "_note": "Braced, Mi_x=0.4×40+0.6×80=64, + 33.95 reduced Ma = 97.95"
+      }
+    }
+  ],
+  "column_helical_cases": [
+    {
+      "case_id": "GC-HE1",
+      "category": "column_helical",
+      "description": "Adequate helical reinforcement — D=450mm, D_core=380mm, 8mm helix, p=50mm",
+      "source": "IS 456:2000, Cl 39.4, Cl 26.5.3.2",
+      "tolerance": 0.001,
+      "inputs": {
+        "D_mm": 450,
+        "D_core_mm": 380,
+        "fck": 25,
+        "fy": 415,
+        "d_helix_mm": 8,
+        "pitch_mm": 50,
+        "Pu_axial_kN": 1800
+      },
+      "expected": {
+        "is_adequate": true,
+        "Pu_enhanced_kN": 1890.0,
+        "helical_ratio_provided": 0.010582,
+        "helical_ratio_required": 0.008726,
+        "pitch_ok": true,
+        "_note": "1.05 enhancement applicable, ratio 0.0106 > required 0.0087"
       }
     }
   ]

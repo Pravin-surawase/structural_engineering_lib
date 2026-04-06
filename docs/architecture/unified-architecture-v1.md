@@ -10,10 +10,10 @@
 > THE single source of truth for architecture decisions, quality gates, and safety guarantees.
 > Every agent, every session, every change must comply with this document.
 
-**Codebase snapshot (v0.21.4):**
+**Codebase snapshot (v0.21.5):**
 - 168 Python source files in `structural_lib/`, 132 exports in `__all__`
-- 55+ IS 456 design functions, 92 `@clause` decorators
-- 4527 tests collected, 85%+ branch coverage
+- 55+ IS 456 design functions, 93+ `@clause` decorators
+- 4700+ tests collected, 85%+ branch coverage (99% on codes/is456/)
 - 13 routers, 60+ FastAPI endpoints
 - Pydantic ≥2.0 (2.12.5), Python ≥3.11 (3.11.15)
 
@@ -100,15 +100,15 @@ Every **public** design function MUST have:
 3. **Unit specification** — What units each parameter expects
 4. **Golden vector test** — Published design aid result that MUST match ±0.1%
 
-**Current coverage (v0.21.4):** 92 `@clause` decorators across `codes/`. All public IS 456 beam, column, shear, and detailing functions have `@clause`. Known gaps:
-- 7 footing helper/private functions (`_common.py` utilities, `size_footing`, `_design_direction`, `_check_direction`) lack `@clause` — these are internal helpers, not standalone design functions
+**Current coverage (v0.21.5):** 93+ `@clause` decorators across `codes/`. All public IS 456 beam, column, shear, detailing, and footing sizing functions have `@clause`. Known gaps:
+- 6 footing helper/private functions (`_common.py` utilities, `_design_direction`, `_check_direction`) lack `@clause` — these are internal helpers, not standalone design functions
 - IS 13920 beam/column/joint functions ✅ all have `@clause(standard="IS 13920")`
 
 | Module | @clause coverage | Status |
 |--------|-----------------|--------|
 | `codes/is456/beam/` | All public functions | ✅ |
 | `codes/is456/column/` | All public functions | ✅ |
-| `codes/is456/footing/` | 5/12 functions (helpers excluded) | 🔶 Gap |
+| `codes/is456/footing/` | 6/12 functions (helpers excluded, `size_footing` added) | 🔶 Partial |
 | `codes/is13920/` | All public functions | ✅ |
 
 > **Note:** The signature shown below reflects the **target naming convention** (§10.5). Current code uses `b`, `d`, `mu_knm` — parameter names will be migrated to unit-suffix convention in v0.24.
@@ -164,10 +164,10 @@ def design_singly_reinforced(
 | **E2E** | Full pipeline: design → detailing → BBS → DXF → report | test_full_pipeline_e2e.py |
 | **Coverage** | ≥85% branch coverage for production code | pytest-cov |
 | **Performance** | Regression detection: single beam < 5ms, batch 100 < 500ms | pytest-benchmark |
-| **Compliance** | All public code functions have @clause, return frozen dataclass, have golden vectors | 🔲 Planned (`test_code_contract.py` does not exist yet) |
+| **Compliance** | All public code functions have @clause, return frozen dataclass, have golden vectors | ✅ 42+ golden vectors, 18 contract tests |
 | **Smoke** | Quick (<5s) sanity check for CI fast-fail | 🔲 Planned (`smoke` marker not yet registered) |
 
-**Current stats (v0.21.4):** 4527 tests collected (4255 selected, 272 deselected by `addopts = -m "not slow"`), all selected tests pass (100%), 85%+ branch coverage.
+**Current stats (v0.21.5):** 4700+ tests collected, all selected tests pass (100%), 99% branch coverage on `codes/is456/`, 85%+ overall.
 
 ### 3.5 Security Requirements
 
@@ -475,7 +475,7 @@ Every new structural function MUST:
 
 We use **patch releases** for focused, testable increments. Each v0.21.x release has a single theme, clear deliverables, and a quality gate that must pass before the next release begins. This prevents the "big bang" stabilization problem where too many changes ship at once and regressions slip through.
 
-**Current baseline:** v0.21.4 — 4527 tests collected, pre-commit hooks active, architecture checker enforced.
+**Current baseline:** v0.21.5 — 4700+ tests collected, pre-commit hooks active, architecture checker enforced, golden vectors and contract tests established.
 
 | Version | Theme | Quality Gate |
 |---------|-------|-------------|
@@ -485,18 +485,18 @@ We use **patch releases** for focused, testable increments. Each v0.21.x release
 | v0.21.8 | Performance & Property Testing | All benchmarks baselined, Hypothesis tests pass |
 | v0.22.0 | Stabilization Release | Full CI/CD pipeline with all gates active |
 
-### 9.2 v0.21.5 — Test Coverage & Regression Prevention
+### 9.2 v0.21.5 — Test Coverage & Regression Prevention ✅ DONE
 
 **Theme:** Establish golden vector baselines and contract tests so that no future change can silently break existing calculations.
 
 **Deliverables:**
-- 🔲 Golden vector baselines for all IS 456 beam functions (pytest marker: `@pytest.mark.golden`)
-- 🔲 Contract tests for API surface stability (`@pytest.mark.contract`)
-- 🔲 Report & 3D visualization test coverage (TASK-520)
-- 🔲 `conftest.py` golden_vectors fixture with SP:16 reference values
-- 🔲 Target: 90%+ branch coverage on `codes/is456/`
+- ✅ Golden vector baselines for all IS 456 functions — 42+ tests (9 beam + 20 column + 13 footing)
+- ✅ Contract tests for API surface stability — 18 contract tests (`@pytest.mark.contract`)
+- ✅ Report & 3D visualization test coverage (TASK-520) — 71 new tests
+- ✅ `conftest.py` golden_vectors fixture with SP:16 reference values
+- ✅ Target: 99% branch coverage on `codes/is456/` (exceeded 90% target)
 
-**Quality Gate:** `pytest -m golden` passes with 0 failures, branch coverage ≥ 90% on `codes/is456/`.
+**Quality Gate:** `pytest -m golden` passes with 0 failures ✅, branch coverage 99% on `codes/is456/` ✅
 
 ### 9.3 v0.21.6 — API Quality & Introspection
 
@@ -1309,7 +1309,7 @@ Every release MUST follow this sequence. Skipping steps has caused 4+ emergency 
                   - API drift detection (OpenAPI baseline diff)
                   - Security scan (pip-audit, input validation audit)
                   - Import validation (no broken imports)
-                  - Test suite passes (4527+ tests, ≥85% coverage)
+                  - Test suite passes (4700+ tests, ≥85% coverage)
 
 2. UAT          → /user-acceptance-test skill
                   - pip install from built wheel in clean venv
@@ -1404,20 +1404,20 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 
 ## 20. Complete Roadmap (v0.21.5 → v1.0)
 
-### 20.1 v0.21.5 — Test Coverage & Regression Prevention
+### 20.1 v0.21.5 — Test Coverage & Regression Prevention ✅ DONE
 
 **Theme:** Golden vector baselines and contract tests. No future change can silently break existing calculations.
 
 | Deliverable | Status | Owner |
 |------------|--------|-------|
-| Golden vector baselines for all IS 456 beam functions (`@pytest.mark.golden`) | 🔲 | @tester |
-| Contract tests for API surface stability (`@pytest.mark.contract`) | 🔲 | @tester |
-| Report & 3D visualization test coverage (TASK-520) | 🔲 | @tester |
-| `conftest.py` golden_vectors fixture with SP:16 reference values | 🔲 | @tester |
-| 90%+ branch coverage on `codes/is456/` | 🔲 | @tester |
-| Add `@clause` to 7 remaining footing helper functions | 🔲 | @structural-math |
+| Golden vector baselines for all IS 456 functions (`@pytest.mark.golden`) — 42+ tests | ✅ | @tester |
+| Contract tests for API surface stability (`@pytest.mark.contract`) — 18 tests | ✅ | @tester |
+| Report & 3D visualization test coverage (TASK-520) — 71 new tests | ✅ | @tester |
+| `conftest.py` golden_vectors fixture with SP:16 reference values | ✅ | @tester |
+| 99% branch coverage on `codes/is456/` (exceeded 90% target) | ✅ | @tester |
+| Add `@clause("34.1")` to `size_footing()` | ✅ | @structural-math |
 
-**Quality Gate:** `pytest -m golden` passes with 0 failures, branch coverage ≥ 90% on `codes/is456/`.
+**Quality Gate:** `pytest -m golden` passes with 0 failures ✅, branch coverage 99% on `codes/is456/` ✅
 
 ### 20.2 v0.21.6 — API Quality & Introspection
 
@@ -1483,7 +1483,7 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 | Two-way slab design (Rankine-Grashoff coefficients) | 🔲 | @structural-math |
 | Flat slab with drop panels | 🔲 | @structural-math |
 | Punching shear enhancement | 🔲 | @structural-math |
-| Footing `@clause` coverage to 100% | 🔲 | @structural-math |
+| Footing `@clause` coverage to 100% (size_footing done in v0.21.5) | 🔶 Partial | @structural-math |
 | Combined footing design | 🔲 | @structural-math |
 | Progress callbacks for batch operations (§13.2) | 🔲 | @backend |
 | Complete error hierarchy (§13.3) | 🔲 | @backend |

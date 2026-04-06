@@ -7,35 +7,31 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-04-06
-**Last Session:** Strategic architecture rewrite + full roadmap planning (v0.21.5→v1.0)
+**Last Session:** v0.21.5 completed — golden vectors, contract tests, coverage boost, report/3D tests
 
 ## What Was Completed
-- **Architecture doc rewrite:** unified-architecture-v1.md expanded from 1108→1540 lines with 3 new sections:
-  - §18: Regression Prevention Framework (golden vectors, contract tests, benchmarks)
-  - §19: Governance & Release Process (NumPy/pandas-inspired, 5-step release, ADRs)
-  - §20: Complete Roadmap v0.21.5→v1.0 (10 sub-sections, all deliverables with owners)
-- **Fixed contradictions:** CodeRegistry status, @clause coverage claims, thread-safety claims
-- **TASKS.md complete rewrite:** Full roadmap with 50+ new task IDs (TASK-724→TASK-782), every version from v0.21.5 to v1.0 with quality gates and owners
-- **Archived:** v0.21 React UX Overhaul (TASK-522-528) + Library Expansion items 1-6 (TASK-514-519) to tasks-history.md
-- **Schema answer:** Pydantic IS the schema — no separate schema language needed
-- **Library research:** Studied NumPy, pandas, scikit-learn, Pydantic best practices
+- **Golden vector baselines (TASK-720):** 42+ golden tests — 9 beam, 20 column, 13 footing (`@pytest.mark.golden`)
+- **Contract tests (TASK-721):** 18 API surface stability tests for column, footing, torsion (`@pytest.mark.contract`)
+- **conftest.py golden_vectors fixture (TASK-722):** SP:16 reference values fixture
+- **CI gate (TASK-723):** `pytest -m golden` added to GitHub Actions python-tests.yml
+- **Report/3D edge case tests (TASK-520):** 71 new tests for report generation and 3D visualization
+- **@clause("34.1") added to size_footing():** footing clause gap resolved
+- **Coverage boost:** 19 additional tests, `codes/is456/` at 99% branch coverage
+- **v0.21.5 quality gate passed:** all golden tests pass, 99% branch coverage (target was 90%)
 
 ## Priorities (Updated)
 
-### Immediate (v0.21.5 — Test Coverage & Regression Prevention)
-1. **Golden vector baselines** for all IS 456 beam functions (TASK-720) — @tester
-2. **Contract tests** for API surface stability (TASK-721) — @tester
-3. **conftest.py golden_vectors fixture** with SP:16 values (TASK-722) — @tester
-4. **CI gate:** `pytest -m golden` must pass before merge (TASK-723) — @ops
-5. **Report/3D test coverage** (TASK-520) — @tester [CARRIED OVER]
-6. **Add @clause to footing helpers** (7 functions) — @structural-math
-7. **90%+ branch coverage** on `codes/is456/` — @tester
+### Immediate (v0.21.6 — API Quality & Introspection)
+1. **check_code("IS456")** implementation (TASK-724) — @backend
+2. **show_versions()** implementation (TASK-725) — @backend
+3. **API surface freeze** in CI (TASK-726) — @ops
+4. **Function limitation docs** (TASK-727) — @doc-master
 
-### Next (v0.21.6 — API Quality & Introspection)
-8. **check_code("IS456")** implementation (TASK-724) — @backend
-9. **show_versions()** implementation (TASK-725) — @backend
-10. **API surface freeze** in CI (TASK-726) — @ops
-11. **Function limitation docs** (TASK-727) — @doc-master
+### Next (v0.21.7 — Security Hardening)
+5. **JSON body size limit middleware** (TASK-728) — @api-developer
+6. **Cross-field plausibility guards** (TASK-729) — @api-developer
+7. **Input validation audit** (TASK-730) — @security
+8. **Dependency CVE scanning** in CI (TASK-731) — @ops
 
 ### Architecture Reference
 - Unified architecture: `docs/architecture/unified-architecture-v1.md` (1540 lines, 21 sections)

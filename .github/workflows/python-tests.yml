@@ -108,6 +108,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev,dxf]"
 
+      - name: Golden Vector Regression Tests
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        working-directory: Python
+        run: |
+          python -m pytest -m golden --tb=short -v
+
       - name: Run tests (with coverage)
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         working-directory: Python
