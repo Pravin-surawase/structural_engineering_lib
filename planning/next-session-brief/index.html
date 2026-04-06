@@ -1625,15 +1625,17 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-07
-<strong>Last Session:</strong> Post-merge audit remediation, version sync, endpoint count fix</p>
+<strong>Last Session:</strong> Evolution batch — 9 EVO items applied to 5 agent files</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>External audit remediation:</strong> 8 findings fixed (PR #544 merged)</li>
-<li><strong>Version synchronization:</strong> 0.21.5→0.21.6 across README, CITATION.cff, package.json</li>
-<li><strong>TASKS.md accuracy:</strong> v0.21.6 marked "COMPLETE (unreleased)" not "Released"</li>
-<li><strong>Endpoint count standardized:</strong> 59→60 across 8 docs (11 edits)</li>
-<li><strong>Post-merge verification:</strong> 5081 tests pass, all fixes confirmed on main</li>
-<li><strong>Agent evolution:</strong> EVO-014 through EVO-017 proposed (integration test gaps)</li>
+<li><strong>Evolution batch apply:</strong> 9 items (EVO-004, -007, -014 through -020) applied to 5 agent files</li>
+<li><code>api-developer.agent.md</code> — Rule 7: py_compile after bulk edits</li>
+<li><code>tester.agent.md</code> — MANDATORY integration tests for data imports</li>
+<li><code>ops.agent.md</code> — 3 rules: version sync, package data verification, verify commit existence</li>
+<li><code>backend.agent.md</code> — 3 rules: verify edits persisted, update <strong>init</strong>.py exports, CLI smoke tests</li>
+<li><code>reviewer.agent.md</code> — Data import/export review checklist</li>
+<li><strong>Evolution totals:</strong> 15/21 applied, 1 already addressed, 5 remain MEDIUM priority</li>
+<li><strong>Previous session:</strong> External audit remediation (8 findings fixed), version sync, endpoint count fix</li>
 </ul>
 <h2 id="current-version-state">Current Version State<a class="headerlink" href="#current-version-state" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1644,6 +1646,7 @@
 <h3 id="immediate">Immediate<a class="headerlink" href="#immediate" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>v0.21.6 PyPI release</strong> — when user is ready</li>
+<li><strong>Remaining 5 MEDIUM EVO items</strong> (EVO-005, -006, -011, -013, -021) — batch in next evolution cycle</li>
 </ol>
 <h3 id="next-v0217-security-hardening">Next (v0.21.7 — Security Hardening)<a class="headerlink" href="#next-v0217-security-hardening" title="Permanent link">&para;</a></h3>
 <ol>
@@ -1667,6 +1670,7 @@
 </ul>
 <h2 id="key-patterns-established">Key Patterns Established<a class="headerlink" href="#key-patterns-established" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Evolution pipeline working — 9 items batch-applied with verification in single session</li>
 <li><code>check_code("IS456")</code> validates code implementation contract — reports tech debt (36 issues: unfrozen results, missing decorators, params without unit suffixes)</li>
 <li><code>show_versions()</code> follows scikit-learn pattern — both print and programmatic modes</li>
 <li>OpenAPI baseline diffing in CI prevents silent API drift</li>
