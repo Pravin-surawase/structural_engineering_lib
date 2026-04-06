@@ -1532,7 +1532,7 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <strong>Status:</strong> Approved
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-03-25
-<strong>Last Updated:</strong> 2026-04-05</p>
+<strong>Last Updated:</strong> 2026-04-04</p>
 <hr />
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1554,10 +1554,22 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 </thead>
 <tbody>
 <tr>
-<td>2026-04-05</td>
-<td>AUDIT</td>
-<td>v0.21.3 deep audit: 7 agents, 90 findings (3 CRITICAL, 18 HIGH, 34 MEDIUM, 35 LOW), score 8.0/10, audit doc updated (§25-§32)</td>
-<td>—</td>
+<td>2026-04-06</td>
+<td>v0.21.5 fixes</td>
+<td>Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>TASK-654</td>
+<td>check_bearing_pressure() IS 456 Cl 34.4 + 10 tests</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>2026-04-06</td>
+<td>API docs</td>
+<td>Footing/column/torsion wired to public API, README table updated (30+ functions)</td>
+<td>pending</td>
 </tr>
 <tr>
 <td>2026-04-05</td>
@@ -1636,96 +1648,6 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <td>EA-17,18</td>
 <td>Security: RateLimitMiddleware, str(e) sanitization (7 routers)</td>
 <td>b1a4351b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>EXT-AUDIT</td>
-<td>fix: DXF CLI KeyError — moved schema extraction before beam['story'] access</td>
-<td>ea4baf3b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>EXT-AUDIT</td>
-<td>fix: traceability logger switched to centralized get_logger(), figures/tables lookup</td>
-<td>ea4baf3b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>EXT-AUDIT</td>
-<td>feat: 6 column functions + EndCondition enum exported at top-level package</td>
-<td>ea4baf3b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>EXT-AUDIT</td>
-<td>docs: README examples fixed (compute_dxf, optimize_beam_cost signatures)</td>
-<td>ea4baf3b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>EXT-AUDIT</td>
-<td>fix: sdist packaging — global-exclude tests, repo_only marker</td>
-<td>ea4baf3b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>EXT-AUDIT</td>
-<td>fix: clauses.json — 7 missing clause/annex/figure entries added</td>
-<td>ea4baf3b</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>T-NEW-01</td>
-<td>Replace 17 MagicMock with real dataclass fixtures (test_calculation_report, test_testing_strategies)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>IS-NEW-01/02</td>
-<td>Add 18 @clause decorators (4 footing + 14 serviceability functions)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>T-NEW-08</td>
-<td>Add 62 FastAPI router tests (6 new test files, 7 routers covered)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>ARCH-NEW-09</td>
-<td>Replace 49 bare except Exception blocks with specific types across 11 routers</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>UX-05</td>
-<td>Add clause_refs field to FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>FE-NEW-02</td>
-<td>WCAG AA form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend (4 components)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>API-NEW-01</td>
-<td>Standardize all API responses with success_response()/error_response() wrapper (9 routers)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>ARCH-NEW-12</td>
-<td>Split services/api.py God module: beam_api.py(1895L), column_api.py(1387L), common_api.py(230L)</td>
-<td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>RELEASE</td>
-<td>v0.21.4 released — P0/P1 sprint + external audit fixes, 4758 tests pass</td>
-<td>—</td>
 </tr>
 <tr>
 <td>2026-04-05</td>
@@ -2878,42 +2800,6 @@ Format: <code>DATE | TASK-ID | what changed | commit</code></p>
 <td>CIFIX</td>
 <td>Fix React test (DesignView export hook mocks), Docker CI (JWT env), ops agent CI bypass rule</td>
 <td>—</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>QC-OVERHAUL</td>
-<td>Quality control overhaul: 4 new skills (release-preflight, UAT, quality-gate, dev-rules), 12 agent updates, 46 dev rules, 3-level quality gates, mandatory evolve</td>
-<td>docs-only</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>TASK-P0</td>
-<td>S-NEW-03: Add CSV upload 10MB size limit</td>
-<td>06ec1b68</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>TASK-P0</td>
-<td>S-NEW-01: Sanitize 26 str(e) info leaks with error_utils.py</td>
-<td>06ec1b68</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>TASK-P0</td>
-<td>UX-01: Add d_mm &lt; D_mm validation to design_beam_is456</td>
-<td>06ec1b68</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>TASK-P0</td>
-<td>FE-NEW-01: Three.js dispose() cleanup in HomePage</td>
-<td>06ec1b68</td>
-</tr>
-<tr>
-<td>2026-04-05</td>
-<td>TASK-P0</td>
-<td>UX-02: Column return types → dataclass with DictCompatMixin</td>
-<td>06ec1b68</td>
 </tr>
 </tbody>
 </table>

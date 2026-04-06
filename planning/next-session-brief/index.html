@@ -1503,32 +1503,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
+  <a href="#whats-next-priority-order" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's Next
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes-for-next-agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes for Next Agent
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#audit-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Audit Status
+        What's Next (Priority Order)
       
     </span>
   </a>
@@ -1570,53 +1548,36 @@
 <h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
 <!-- HANDOFF:START -->
 <ul>
-<li>Date: 2026-04-05</li>
+<li>Date: 2026-04-06</li>
 </ul>
 <!-- HANDOFF:END -->
 
-<p><strong>Last Updated:</strong> 2026-04-05
-<strong>Last Session:</strong> v0.21.4 Release — P0/P1 Sprint + External Audit Fixes</p>
+<p><strong>Last Updated:</strong> 2026-04-06
+<strong>Last Session:</strong> v0.21.5 stabilization — 8 fixes, TASK-654 done, API docs updated</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>v0.21.4 released</strong> (2026-04-05) — comprehensive P0/P1 sprint + external audit resolution:</li>
-<li>49 bare except blocks → specific exception types (11 routers)</li>
-<li>18 @clause decorators on footing + serviceability functions</li>
-<li>62 FastAPI tests across 6 new test files (7 routers)</li>
-<li>God module split: api.py → beam_api.py + column_api.py + common_api.py</li>
-<li>WCAG AA form accessibility (4 components)</li>
-<li>API response standardization (9 routers)</li>
-<li>Column exports at top-level (6 functions + EndCondition)</li>
-<li>Clause DB completion (7 missing entries + clause_refs fields)</li>
-<li>17 MagicMock → real dataclass fixtures</li>
-<li>4758 tests pass, zero import warnings, 17/17 CI green</li>
+<li><strong>Fix CostProfile import</strong> in optimization router (broken import → 503 on every call)</li>
+<li><strong>Extract sanitize_float</strong> to error_utils.py and apply to all column router endpoints</li>
+<li><strong>Fix benchmark test ERRORs</strong> (added conftest.py with pytest.importorskip)</li>
+<li><strong>Fix torsion deprecation warning</strong> (refactored shim to lazy <strong>getattr</strong> pattern)</li>
+<li><strong>Fix column uniaxial Pu=0</strong> inf/NaN → now passes (removed xfail marker)</li>
+<li><strong>Wire footing functions</strong> into services/api.py and <strong>init</strong>.py (5 functions + types)</li>
+<li><strong>TASK-654:</strong> Implement check_bearing_pressure() for IS 456 Cl 34.4 + 10 tests</li>
+<li><strong>Update README API table</strong> — added 30+ missing function docs (columns, footings, torsion, IS 13920)</li>
 </ul>
-<h2 id="whats-next">What's Next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>v0.22.0 planning</strong> — scope AI assistant port, learning center, Streamlit deprecation</li>
-<li><strong>TopBar context badges + SettingsPanel</strong> (TASK-527) — remaining React UX</li>
-<li><strong>Workflow breadcrumb</strong> (TASK-528) — batch flow navigation</li>
-<li><strong>Footing API wrappers</strong> in services/ (TASK-654/655/656) — currently only pure math layer</li>
-<li>Consider P2 audit items (lower priority)</li>
-<li>WCAG testing of remaining components</li>
-<li>Clause registry update for new Annex C/serviceability clauses</li>
+<li><strong>v0.21.5 release:</strong> Tag, publish, verify PyPI wheel</li>
+<li><strong>v0.22 work:</strong> AI assistant port, learning center, Streamlit deprecation</li>
+<li><strong>TASK-526:</strong> TopBar context badges + settings panel</li>
+<li><strong>TASK-527:</strong> Workflow breadcrumb for batch flow</li>
+<li><strong>Library expansion:</strong> Triangular loads (TASK-516), Pareto panel (TASK-519), rationalization (TASK-521)</li>
+<li><strong>Footing remaining:</strong> Dowel bars (TASK-655), FastAPI endpoint (TASK-656)</li>
+<li><strong>Test coverage:</strong> Report/3D tests (TASK-520)</li>
 </ol>
-<h2 id="notes-for-next-agent">Notes for Next Agent<a class="headerlink" href="#notes-for-next-agent" title="Permanent link">&para;</a></h2>
-<ul>
-<li>All P0 + P1 + external audit findings resolved in v0.21.4</li>
-<li>Import is clean — zero warnings on <code>import structural_lib</code></li>
-<li>13 column functions now exported at top-level (6 new + existing), plus <code>EndCondition</code> enum</li>
-<li>God module split complete: api.py is now a re-export hub — new functions go to beam_api.py, column_api.py, etc.</li>
-<li>APIResponse wrapper: all endpoints return {"success": true, "data": {...}} — update any client code</li>
-<li>2 pre-existing FastAPI test failures: column uniaxial inf/NaN, cost optimizer 503</li>
-</ul>
-<h2 id="audit-status">Audit Status<a class="headerlink" href="#audit-status" title="Permanent link">&para;</a></h2>
-<ul>
-<li>v0.21.4: All P0 + P1 + external audit resolved, 4758 tests passing</li>
-<li>Total: 90 findings from deep audit — all critical/high resolved</li>
-</ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
-<li>None</li>
+<li>None — clean state, all tests pass</li>
 </ul>
 
 
