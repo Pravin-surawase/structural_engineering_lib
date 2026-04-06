@@ -113,7 +113,7 @@ class TestColumnCommonPuz:
         with pytest.raises(ValueError, match="Dimensions must be positive"):
             _calculate_puz(b_mm=-300, D_mm=400, fck=25, fy=415, Asc_mm2=1200)
 
-    def test_zero_D_raises(self):
+    def test_zero_d_raises(self):
         from structural_lib.codes.is456.column._common import _calculate_puz
 
         with pytest.raises(ValueError, match="Dimensions must be positive"):
@@ -360,7 +360,7 @@ class TestSlendernessValidation:
                 d_prime_mm=50,
             )
 
-    def test_zero_D_raises(self):
+    def test_zero_d_raises(self):
         from structural_lib.codes.is456.column.slenderness import (
             calculate_additional_moment,
         )
@@ -711,7 +711,7 @@ class TestFlexureEdgeCases:
         with pytest.raises(MaterialError):
             calculate_mu_lim(300, 450, 25, -415)
 
-    def test_effective_flange_width_beam_type_string_T(self):
+    def test_effective_flange_width_beam_type_string_t(self):
         """Test string beam_type parsing for T-beam."""
         from structural_lib.codes.is456.beam.flexure import (
             calculate_effective_flange_width,
@@ -727,7 +727,7 @@ class TestFlexureEdgeCases:
         )
         assert bf > 300
 
-    def test_effective_flange_width_beam_type_string_L(self):
+    def test_effective_flange_width_beam_type_string_l(self):
         from structural_lib.codes.is456.beam.flexure import (
             calculate_effective_flange_width,
         )
@@ -742,7 +742,7 @@ class TestFlexureEdgeCases:
         )
         assert bf > 300
 
-    def test_effective_flange_width_beam_type_string_RECT(self):
+    def test_effective_flange_width_beam_type_string_rect(self):
         from structural_lib.codes.is456.beam.flexure import (
             calculate_effective_flange_width,
         )
@@ -978,20 +978,20 @@ class TestLongColumnValidation:
     """Test validation branches in design_long_column."""
 
     # Common kwargs for valid long column calls (includes required positional args)
-    _BASE = dict(
-        M1x_kNm=20,
-        M2x_kNm=80,
-        M1y_kNm=10,
-        M2y_kNm=40,
-        b_mm=300,
-        D_mm=400,
-        lex_mm=6000,
-        ley_mm=6000,
-        fck=25,
-        fy=415,
-        Asc_mm2=1200,
-        d_prime_mm=50,
-    )
+    _BASE = {
+        "M1x_kNm": 20,
+        "M2x_kNm": 80,
+        "M1y_kNm": 10,
+        "M2y_kNm": 40,
+        "b_mm": 300,
+        "D_mm": 400,
+        "lex_mm": 6000,
+        "ley_mm": 6000,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 1200,
+        "d_prime_mm": 50,
+    }
 
     def test_negative_pu_raises(self):
         from structural_lib.codes.is456.column.long_column import design_long_column
@@ -1007,7 +1007,7 @@ class TestLongColumnValidation:
         with pytest.raises(DimensionError, match="b_mm"):
             design_long_column(Pu_kN=500, **{**self._BASE, "b_mm": 0})
 
-    def test_zero_D_raises(self):
+    def test_zero_d_raises(self):
         from structural_lib.codes.is456.column.long_column import design_long_column
         from structural_lib.core.errors import DimensionError
 
@@ -1288,7 +1288,7 @@ class TestColumnDetailingValidation:
         with pytest.raises(DimensionError, match="b_mm"):
             calculate_tie_spacing(b_mm=0, D_mm=400, smallest_long_bar_dia_mm=16)
 
-    def test_tie_spacing_zero_D_raises(self):
+    def test_tie_spacing_zero_d_raises(self):
         from structural_lib.codes.is456.column.detailing import calculate_tie_spacing
         from structural_lib.core.errors import DimensionError
 
@@ -1402,7 +1402,7 @@ class TestColumnDetailingValidation:
 class TestHelicalValidation:
     """Test validation branches in helical reinforcement check."""
 
-    def test_negative_D_raises(self):
+    def test_negative_d_raises(self):
         from structural_lib.codes.is456.column.helical import (
             check_helical_reinforcement,
         )
@@ -1419,7 +1419,7 @@ class TestHelicalValidation:
                 Pu_axial_kN=1000,
             )
 
-    def test_negative_D_core_raises(self):
+    def test_negative_d_core_raises(self):
         from structural_lib.codes.is456.column.helical import (
             check_helical_reinforcement,
         )
@@ -1555,7 +1555,7 @@ class TestServiceabilityEdgeCases:
         with pytest.raises(ValueError, match="b_mm"):
             calculate_cracking_moment(b_mm=-300, D_mm=500, fck_nmm2=25)
 
-    def test_cracking_moment_negative_D_raises(self):
+    def test_cracking_moment_negative_d_raises(self):
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_cracking_moment,
         )
@@ -1587,7 +1587,7 @@ class TestServiceabilityEdgeCases:
         with pytest.raises(ValueError, match="b_mm"):
             calculate_gross_moment_of_inertia(b_mm=-300, D_mm=500)
 
-    def test_gross_moment_inertia_negative_D_raises(self):
+    def test_gross_moment_inertia_negative_d_raises(self):
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_gross_moment_of_inertia,
         )
@@ -2054,7 +2054,7 @@ class TestFootingBearingEdgeCases:
         with pytest.raises(ValidationError, match="Areas"):
             bearing_stress_enhancement(fck=25, A1_mm2=-1e6, A2_mm2=1e5)
 
-    def test_bearing_stress_enhancement_A1_less_than_A2_raises(self):
+    def test_bearing_stress_enhancement_a1_less_than_a2_raises(self):
         from structural_lib.codes.is456.footing.bearing import (
             bearing_stress_enhancement,
         )
@@ -2230,7 +2230,7 @@ class TestIS456CodeClass:
 class TestTorsionDesignEdgeCases:
     """Target uncovered branches in beam/torsion.py (lines 459, 465, 544)."""
 
-    def test_design_torsion_D_zero_raises(self):
+    def test_design_torsion_d_zero_raises(self):
         """Line 459: D <= 0 in design_torsion raises DimensionError."""
         from structural_lib.codes.is456.beam.torsion import design_torsion
         from structural_lib.core.errors import DimensionError
@@ -2322,7 +2322,7 @@ class TestTorsionDesignEdgeCases:
                 cover=40,
             )
 
-    def test_equivalent_moment_D_mm_deprecation(self):
+    def test_equivalent_moment_d_mm_deprecation(self):
         """Torsion: D_mm=None triggers deprecation warning fallback."""
         from structural_lib.codes.is456.beam.torsion import calculate_equivalent_moment
 
@@ -3345,7 +3345,6 @@ class TestServiceabilityBranchCoverage:
             d_mm=400,
             support_condition="cantilever",
         )
-        expected_ld = 2000 / 400  # 5.0
         assert result.is_ok  # 5.0 <= 7.0
         assert result.computed["base_allowable_ld"] == 7.0
 
@@ -3566,7 +3565,7 @@ class TestServiceabilityBranchCoverage:
         with pytest.raises(ValueError, match="b_mm"):
             calculate_cracking_moment(b_mm=0, D_mm=500, fck_nmm2=25)
 
-    def test_gross_moment_of_inertia_zero_D_raises(self):
+    def test_gross_moment_of_inertia_zero_d_raises(self):
         """D_mm <= 0 raises ValueError."""
         from structural_lib.codes.is456.beam.serviceability import (
             calculate_gross_moment_of_inertia,
@@ -4180,7 +4179,7 @@ class TestColumnDetailingBranchCoverage:
         assert not is_max
         assert any("exceeds maximum" in w for w in warns)
 
-    def test_check_longitudinal_limits_Ag_zero_raises(self):
+    def test_check_longitudinal_limits_ag_zero_raises(self):
         """Ag <= 0 raises DimensionError."""
         from structural_lib.codes.is456.column.detailing import (
             check_longitudinal_limits,
@@ -4190,7 +4189,7 @@ class TestColumnDetailingBranchCoverage:
         with pytest.raises(DimensionError):
             check_longitudinal_limits(0, 1000)
 
-    def test_check_longitudinal_limits_Asc_negative_raises(self):
+    def test_check_longitudinal_limits_asc_negative_raises(self):
         """Asc < 0 raises DimensionError."""
         from structural_lib.codes.is456.column.detailing import (
             check_longitudinal_limits,

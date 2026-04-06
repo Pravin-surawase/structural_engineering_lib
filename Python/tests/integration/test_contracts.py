@@ -429,14 +429,14 @@ def test_api_return_types():
     Functions that return built-in types (dict, str, float) are checked
     separately since they don't carry type annotations in the same way.
     """
-    BUILTIN_RETURN_TYPES = {"dict", "str", "float", "int", "bool"}
+    builtin_return_types = {"dict", "str", "float", "int", "bool"}
 
     for func_name, contract in API_CONTRACTS.items():
         expected = contract["return_type"]
 
         # Skip built-in return types — they can't be verified from annotations
         # reliably (some functions lack return annotations for builtins)
-        if expected in BUILTIN_RETURN_TYPES:
+        if expected in builtin_return_types:
             continue
 
         func = getattr(api, func_name)
