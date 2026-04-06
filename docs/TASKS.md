@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-05 — v0.21.4 released, v0.22.0 planning next
+**Updated:** 2026-04-05 — Added External Audit (EA) tasks from comprehensive-library-audit-2026-04-04
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.4 ✅ Released (2026-04-05) → v0.22 (Full React + AI Assistant)
+- **Version:** v0.21.2 ✅ Released → v0.22 (Full React + AI Assistant)
 - **Focus:** Full React migration + AI assistant + remaining UX tasks
 - **Target:** v0.22 — AI assistant port, learning center, Streamlit deprecation, remaining UX (TopBar, breadcrumb)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
@@ -29,9 +29,7 @@
 | **v0.19.1** | AI Tools + UX | ✅ DONE | Dashboard insights, code checks, ExportPanel, rebar suggestions |
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
-| **v0.21.4** | P0/P1 Sprint + External Audit Fixes | ✅ Released | 49 bare excepts fixed, 18 @clause decorators, 62 FastAPI tests, god module split, WCAG AA, API response standardization, column exports, clause DB completion |
-| **v0.22.0** | Full React + AI Assistant | 🔄 NEXT | AI assistant port, learning center, Streamlit deprecation, TopBar badges, workflow breadcrumb |
-| **v0.22** | Full React | 🔄 NEXT | AI assistant port, learning center, Streamlit deprecation |
+| **v0.22** | Full React | 🔄 ACTIVE | AI assistant port, learning center, Streamlit deprecation |
 
 ### Migration Status (React vs Streamlit)
 
@@ -102,12 +100,13 @@
 | TASK-PKG-5 | **Add Python version note to README** — State "Requires Python 3.11+. Users on 3.9-3.10 get older v0.16.5." | LOW | @doc-master | ✅ Done |
 | TASK-PKG-6 | **Add CI wheel content test** — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level. Implemented in `Python/tests/test_packaging.py` (5 tests). PR #525. | MEDIUM | @tester | ✅ Done |
 
-## v0.21.3 External Audit Fixes ✅ Complete
+## v0.21.2 External Audit Fixes
 
-> External audit of PyPI v0.21.2 found 23 packaging, API ergonomics, testing, security, and docs issues. All 23 resolved in v0.21.3.
-> See [comprehensive-library-audit-2026-04-04.md](audit/comprehensive-library-audit-2026-04-04.md) §24.
+> External audit of PyPI v0.21.2 found 23 packaging, API ergonomics, testing, security, and docs issues. See [comprehensive-library-audit-2026-04-04.md](audit/comprehensive-library-audit-2026-04-04.md) §24.
+> **Branch:** `audit/external-v0.21.2` — isolated from v0.22 work on main.
+> **Pipeline:** Each batch goes through Plan → Execute → Test → Review → Document → Commit.
 
-### Batch 1 — Test Infrastructure ✅
+### Batch 1 — Test Infrastructure (lowest risk, immediate ROI)
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
@@ -115,14 +114,14 @@
 | EA-6 | **Add import silence smoke test** — Test that `import structural_lib` emits zero warnings. Currently pytest.ini suppresses them instead of testing absence. | P1 | @tester | ✅ Done |
 | EA-1 | **Verify sdist test isolation** — Confirm tests separated by `repo_only` marker won't fail in sdist context. | P0 | @tester | ✅ Done |
 
-### Batch 2 — Import Cleanup ✅
+### Batch 2 — Import Cleanup (highest user-facing impact)
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
 | EA-2 | **Silence import-time warnings** — Lazy-load clause DB in traceability.py. Gate deprecation stubs behind actual import, not module load. | P1 | @backend | ✅ Done |
 | EA-10 | **Lazy-load non-core modules** — Use `__getattr__` pattern in `__init__.py` for: adapters, etabs_import, batch, costing, testing_strategies, visualization. | P2 | @backend | ✅ Done |
 
-### Batch 3 — API Consistency ✅
+### Batch 3 — API Consistency (user-facing API fixes)
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
@@ -130,27 +129,27 @@
 | EA-4 | **Add `.to_dict()` to core dataclasses** — Add to ComplianceCaseResult, FlexureResult, ShearResult, ColumnAxialResult, BBSDocument (~10 classes). | P1 | @backend | ✅ Done |
 | EA-5 | **Add schema builder for `compute_detailing()`** — Add `from_design_result(ComplianceCaseResult)` factory or `DetailingInput` class. | P1 | @backend | ✅ Done |
 
-### Batch 4 — Testing Improvements ✅
+### Batch 4 — Testing Improvements
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
 | EA-7 | **Add e2e pipeline test** — `test_full_pipeline_e2e.py`: design → detailing → BBS → DXF → report chain. | P1 | @tester | ✅ Done |
 | EA-9 | **Add wheel API stability test** — Build wheel, install in temp venv, verify all `__all__` members importable. | P2 | @tester | ✅ Done |
 
-### Batch 5 — Security Hardening ✅
+### Batch 5 — Security Hardening
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
 | EA-18 | **Sanitize all `str(e)` in routers** — Replace 32 instances of `detail=str(e)` with generic messages. Log original error server-side. | P1 | @api-developer | ✅ Done |
 | EA-17 | **Add global rate limiter middleware** — Apply rate limiting to all endpoints, not just 2 streaming routes. | P1 | @api-developer | ✅ Done |
 
-### Batch 6 — Frontend ✅
+### Batch 6 — Frontend
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
 | EA-15 | **Custom form validation** — Add validation error display, cross-field checks (depth > cover), Zod/custom validators in BeamForm. | P1 | @frontend | ✅ Done |
 
-### Batch 7 — Documentation ✅
+### Batch 7 — Documentation
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
@@ -158,36 +157,35 @@
 | EA-13 | **Copy-pasteable e2e example** — Python script: design → detailing → BBS → report in one file. | P2 | @doc-master | ✅ Done |
 | EA-14 | **Task-oriented README** — Rewrite around "If you want X, call Y" structure. | P2 | @doc-master | ✅ Done |
 
-### Remaining items (resolved in v0.21.3) ✅
+### Deferred (lower priority, future versions)
 
 | ID | Task | Severity | Agent | Status |
 |----|------|----------|-------|--------|
-| EA-11 | Canonical workflow guidance in UI (WorkflowHint component) | P2 | @frontend | ✅ Done |
-| EA-16 | Auth enabled by default in production deployments (production warning) | P1 | @ops | ✅ Done |
+| EA-11 | Canonical workflow guidance in UI | P2 | @frontend | ✅ Done |
+| EA-16 | Auth enabled by default in production deployments | P1 | @ops | ✅ Done |
 | EA-19 | WebSocket Pydantic validation | P2 | @api-developer | ✅ Done |
 | EA-20 | Wire CORS Settings to middleware | P2 | @api-developer | ✅ Done |
 | EA-21 | Torsion D parameter fix (IS-1) | P2 | @structural-math | ✅ Done |
 | EA-22 | Footing Cl 34.4 bearing enhancement (IS-6) | P2 | @structural-math | ✅ Done |
 | EA-23 | SCWB joint check (IS 13920 Cl 7.2.1) | P2 | @structural-math | ✅ Done |
 
-## v0.21.3 External PyPI Audit — Post-EA Fixes ✅ Complete
+## v0.21.5 Stabilization (2026-04-06)
 
-> Second external audit of PyPI v0.21.3 found 6 additional issues (DXF CLI, traceability, column exports, README examples, sdist hygiene, clause DB gaps). All 6 resolved in PR #532 (ea4baf3b). 4491 tests pass, zero import warnings.
-
-| # | Fix | Severity | Status |
-|---|-----|----------|--------|
-| 1 | DXF CLI `KeyError: 'story'` — moved schema extraction before field access in `__main__.py` | P1 | ✅ Done |
-| 2 | Traceability logger — switched to centralized `get_logger()`, added figures/tables lookup | P1 | ✅ Done |
-| 3 | Column exports — added 6 functions + `EndCondition` enum to top-level `__init__.py` | P1 | ✅ Done |
-| 4 | README examples — fixed `compute_dxf`, `optimize_beam_cost` signatures, examples link | P2 | ✅ Done |
-| 5 | Sdist hygiene — `global-exclude`/`prune` in MANIFEST.in, `repo_only` marker | P2 | ✅ Done |
-| 6 | Clause DB — added 7 missing clause/annex/figure entries, updated total count | P2 | ✅ Done |
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| v0.21.5-1 | Fix CostProfile import in optimization router (broken import → 503 on every call) | Copilot | ✅ Done |
+| v0.21.5-2 | Extract sanitize_float to error_utils.py and apply to all column router endpoints | Copilot | ✅ Done |
+| v0.21.5-3 | Fix benchmark test ERRORs (added conftest.py with pytest.importorskip) | Copilot | ✅ Done |
+| v0.21.5-4 | Fix torsion deprecation warning (refactored shim to lazy __getattr__ pattern) | Copilot | ✅ Done |
+| v0.21.5-5 | Fix column uniaxial Pu=0 inf/NaN → now passes (removed xfail marker) | Copilot | ✅ Done |
+| v0.21.5-6 | Wire footing functions into services/api.py and __init__.py (5 functions + types) | Copilot | ✅ Done |
+| TASK-654 | Implement check_bearing_pressure() for IS 456 Cl 34.4 + 10 tests | Copilot | ✅ Done |
+| v0.21.5-8 | Update README API table (added 30+ missing function docs: columns, footings, torsion, IS 13920) | Copilot | ✅ Done |
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| QC-OVERHAUL | Quality control overhaul: 4 new skills (release-preflight, UAT, quality-gate, dev-rules), 12 agent updates, 46 development rules, 3-level quality gates, mandatory evolve | Copilot | ✅ Done |
 | TASK-CIFIX | CI fix: React test mocks (5 hooks), Docker JWT_SECRET_KEY, ops hardening, finish_task_pr.sh escape hatch removal, WORKLOG cleanup, dead code removal | Copilot | ✅ Done |
 | AUDIT-P0 | All 5 P0 audit findings fixed (auth, CI, WCAG, batch limits, bilinear tests) | Copilot | ✅ Done |
 | AUDIT-P1 (partial) | 6 P1 audit findings fixed (SM-1/2/3, IS-5/7, FE-6) | Copilot | ✅ Done |
@@ -216,18 +214,6 @@
 | A-3 | Ast_min/Ast_max in FlexureResult | ✅ Done |
 | API-6 | Streaming 404 + job_id validation | ✅ Done |
 | FE-7 | Three.js material memory cleanup | ✅ Done |
-
-### v0.21.3 Deep Audit Findings (90 findings, 3 CRITICAL)
-
-- [x] P0-FE: Three.js dispose() calls — memory leak (FE-NEW-01) — ✅ DONE (06ec1b68)
-- [x] P0-UX: Validate d_mm < D_mm in design_beam_is456 (UX-01) — ✅ DONE (06ec1b68)
-- [x] P0-UX: Unify beam/column API return types (UX-02) — ✅ DONE (06ec1b68)
-- [x] P0-SEC: Replace 22 str(e) info leaks in routers (S-NEW-01) — ✅ DONE (06ec1b68)
-- [x] P0-SEC: Add CSV upload file size limit (S-NEW-03) — ✅ DONE (06ec1b68)
-- [ ] P1-ARCH: Split services/api.py God module into domain files (ARCH-NEW-12)
-- [ ] P1-TEST: Replace MagicMock with real objects (T-NEW-01)
-- [ ] P1-TEST: Add FastAPI tests for 7 untested routers (T-NEW-08)
-- [ ] P1-IS456: Add @clause decorators to 21 functions (IS-NEW-01, IS-NEW-02)
 
 ### Audit P1 Fixes — Batch 2 (Next)
 | API-5 | OpenAPI examples on Pydantic models | 🔄 Planned |
@@ -293,11 +279,11 @@
 | TASK-651 | Isolated footing design (bearing sizing + flexure) | `size_footing`, `footing_flexure` | Cl 34.1, 34.2.3.1 | ✅ Done |
 | TASK-652 | Punching shear check | `footing_punching_shear` | Cl 31.6.1 | ✅ Done |
 | TASK-653 | One-way shear check | `footing_one_way_shear` | Cl 34.2.4.1(a) | ✅ Done |
-| TASK-654 | Bearing pressure | `calculate_bearing_pressure` | Cl 34.4 | 📋 |
+| TASK-654 | Bearing pressure | `check_bearing_pressure` | Cl 34.4 | ✅ Done |
 | TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
 | TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
 
-> Phase 3 in progress: 4/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1). 6 new modules in `codes/is456/footing/`. 79 tests, 0 failures. Fixes applied: both-direction flexure + shear design, Cl 34.3.1 steel distribution for rectangular footings, 150mm minimum depth enforcement. Remaining: TASK-654 (bearing at column-footing interface), TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
+> Phase 3 in progress: 5/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1), bearing pressure (Cl 34.4). 6 new modules in `codes/is456/footing/`. 89+ tests, 0 failures. Fixes applied: both-direction flexure + shear design, Cl 34.3.1 steel distribution for rectangular footings, 150mm minimum depth enforcement. Remaining: TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
 
 ### Variable Naming Migration (TASK-660)
 

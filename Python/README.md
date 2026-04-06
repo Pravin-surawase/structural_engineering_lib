@@ -140,20 +140,59 @@ python -m structural_lib --help                                  # All options
 
 ## What's Available
 
+### Beam Design & Detailing
+
 | Category | Functions | Description |
 |----------|-----------|-------------|
 | **Beam Design** | `design_beam_is456`, `design_and_detail_beam_is456`, `design_from_input` | IS 456 flexure + shear |
 | **Detailing** | `build_detailing_input`, `compute_detailing`, `detail_beam_is456` | Bar sizes, stirrups, cut lengths |
-| **BBS / Export** | `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report` | BBS, DXF, HTML reports |
-| **Column Design** | `design_column_axial_is456`, `design_short_column_uniaxial_is456`, `classify_column_is456` | Axial, uniaxial, biaxial |
 | **Optimization** | `optimize_beam_cost`, `smart_analyze_design`, `suggest_beam_design_improvements` | Cost optimization, smart analysis |
-| **Compliance** | `check_beam_is456`, `check_compliance_report`, `check_beam_slenderness` | Multi-case IS 456 checks |
-| **Torsion** | `design_torsion`, `calculate_equivalent_shear`, `calculate_torsion_shear_stress` | IS 456 torsion design |
+| **Compliance** | `check_beam_is456`, `check_compliance_report`, `check_beam_slenderness`, `check_beam_ductility` | Multi-case IS 456 checks |
+| **Torsion** | `design_torsion`, `calculate_equivalent_shear`, `calculate_equivalent_moment`, `calculate_torsion_shear_stress`, `calculate_torsion_stirrup_area`, `calculate_longitudinal_torsion_steel` | IS 456 Cl 41 torsion design |
 | **Serviceability** | `check_deflection_span_depth`, `check_crack_width` | Deflection + crack width |
+| **Shear** | `enhanced_shear_strength_is456` | Enhanced shear near supports (IS 456 Cl 40.5) |
+| **Load Analysis** | `compute_bmd_sfd` | Bending moment & shear force diagrams |
+
+### Column Design (IS 456 Cl 25, 39.3–39.7)
+
+| Category | Functions | Description |
+|----------|-----------|-------------|
+| **Unified Design** | `design_column_is456` | Full column design orchestration |
+| **Axial Capacity** | `design_column_axial_is456` | Short column axial capacity (Cl 39.3) |
+| **Uniaxial Bending** | `design_short_column_uniaxial_is456` | Short column with uniaxial moment (Cl 39.5) |
+| **Biaxial Bending** | `biaxial_bending_check_is456` | Biaxial bending check (Cl 39.6) |
+| **Long/Slender Columns** | `design_long_column_is456`, `calculate_additional_moment_is456` | Slender column design with additional moment (Cl 39.7) |
+| **Classification** | `classify_column_is456`, `calculate_effective_length_is456`, `min_eccentricity_is456` | Short/slender classification, effective length (Table 28) |
+| **Interaction Curve** | `pm_interaction_curve_is456` | P-M interaction diagram generation |
+| **Helical Reinforcement** | `check_helical_reinforcement_is456` | Helical reinforcement check (Cl 39.4) |
+| **Column Detailing** | `detail_column_is456` | Reinforcement detailing (Cl 26.5.3) |
+
+### Footing Design (IS 456 Cl 34)
+
+| Category | Functions | Description |
+|----------|-----------|-------------|
+| **Sizing** | `size_footing` | Footing plan dimensions from load & SBC |
+| **Flexure** | `footing_flexure` | Critical section bending design |
+| **One-Way Shear** | `footing_one_way_shear` | One-way shear check at d from face |
+| **Punching Shear** | `footing_punching_shear` | Two-way punching shear at d/2 perimeter |
+| **Bearing** | `check_bearing_pressure`, `bearing_stress_enhancement` | Bearing pressure & stress enhancement |
+
+### IS 13920 Ductile Detailing
+
+| Category | Functions | Description |
+|----------|-----------|-------------|
+| **Ductile Detailing** | `check_column_ductility_is13920` | IS 13920 seismic ductile detailing checks |
+
+### Export, Import & Visualization
+
+| Category | Functions | Description |
+|----------|-----------|-------------|
+| **BBS / Export** | `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report` | BBS, DXF, HTML reports |
 | **CSV Import** | `GenericCSVAdapter` (via `structural_lib.services.adapters`) | 40+ column mappings |
-| **ETABS Integration** | `load_etabs_csv`, `create_job_from_etabs`, `validate_etabs_csv` | ETABS CSV import |
-| **3D Geometry** | `beam_to_3d_geometry`, `compute_rebar_positions`, `compute_stirrup_positions` | 3D rebar visualization |
+| **ETABS Integration** | `load_etabs_csv`, `create_job_from_etabs`, `create_jobs_from_etabs_csv`, `validate_etabs_csv`, `normalize_etabs_forces` | ETABS CSV import |
+| **3D Geometry** | `beam_to_3d_geometry`, `compute_rebar_positions`, `compute_stirrup_positions`, `compute_beam_outline` | 3D rebar visualization |
 | **Validation** | `validate_job_spec`, `validate_design_results`, `verify_calculation` | Input/output validation |
+| **Audit** | `compute_hash`, `create_calculation_certificate`, `generate_calculation_report` | Calculation audit trail |
 
 > Full API reference: see [docs/reference/api.md](../docs/reference/api.md)
 

@@ -26,12 +26,14 @@ from structural_lib.codes.is456.footing._common import (
 )
 from structural_lib.codes.is456.footing.bearing import (
     bearing_stress_enhancement,
+    check_bearing_pressure,
     size_footing,
 )
 from structural_lib.codes.is456.footing.flexure import footing_flexure
 from structural_lib.codes.is456.footing.one_way_shear import footing_one_way_shear
 from structural_lib.codes.is456.footing.punching_shear import footing_punching_shear
 from structural_lib.core.data_types import (
+    BearingPressureCheckResult,
     BearingStressEnhancementResult,
     FootingBearingResult,
     FootingFlexureResult,
@@ -349,6 +351,207 @@ class TestBearingStressEnhancement:
         assert isinstance(s, str)
         assert len(s) > 10
         assert "34.4" in s
+
+
+# ===========================================================================
+# 1c. Bearing Pressure Check Tests — check_bearing_pressure (IS 456 Cl 34.4)
+# ===========================================================================
+
+
+class TestCheckBearingPressure:
+    """Tests for check_bearing_pressure: column-footing interface per IS 456 Cl 34.4."""
+
+    def test_bearing_pressure_safe(self):
+        """IS 456 Cl 34.4: Moderate load on large footing — should be safe.
+        Pu=500kN, fck=25, col 300×300, footing 1500×1500.
+        A2 = 90000mm², actual = 500e3/90000 = 5.556 MPa.
+        A1 = 2250000mm², √(A1/A2) = √25 = 5.0 → capped at 2.0.
+        basic = 0.45×25 = 11.25 MPa, permissible = 22.5 MPa.
+        utilization = 5.556/22.5 ≈ 0.247 → SAFE.
+        """
+        result = check_bearing_pressure(
+            Pu_kN=500,
+            fck=25,
+            column_b_mm=300,
+            column_D_mm=300,
+            footing_B_mm=1500,
+            footing_L_mm=1500,
+        )
+        assert isinstance(result, BearingPressureCheckResult)
+        assert result.actual_stress_mpa == pytest.approx(5.556, rel=0.01)
+        assert result.permissible_stress_mpa == pytest.approx(22.5, rel=0.01)
+        assert result.actual_stress_mpa < result.permissible_stress_mpa
+        assert result.is_safe is True
+        assert result.utilization_ratio < 1.0
+
+    def test_bearing_pressure_unsafe(self):
+        """IS 456 Cl 34.4: Very high load on small footing — should fail.
+        Pu=5000kN, fck=20, col 250×250, footing 800×800.
+        A2 = 62500mm², actual = 5000e3/62500 = 80.0 MPa.
+        √(A1/A2) = √(640000/62500) ≈ 3.2 → capped at 2.0.
+        basic = 0.45×20 = 9.0 MPa, permissible = 18.0 MPa.
+        utilization = 80/18 ≈ 4.44 → UNSAFE.
+        """
+        result = check_bearing_pressure(
+            Pu_kN=5000,
+            fck=20,
+            column_b_mm=250,
+            column_D_mm=250,
+            footing_B_mm=800,
+            footing_L_mm=800,
+        )
+        assert isinstance(result, BearingPressureCheckResult)
+        assert result.actual_stress_mpa == pytest.approx(80.0, rel=0.01)
+        assert result.permissible_stress_mpa == pytest.approx(18.0, rel=0.01)
+        assert result.is_safe is False
+        assert result.utilization_ratio > 1.0
+
+    def test_bearing_pressure_enhancement_factor(self):
+        """IS 456 Cl 34.4: Enhancement factor matches standalone function.
+        Verify check_bearing_pressure delegates correctly to
+        bearing_stress_enhancement for the same A1/A2 areas.
+        """
+        col_b, col_D = 400, 400
+        ftg_B, ftg_L = 1200, 1200
+        A2 = col_b * col_D
+        A1 = ftg_B * ftg_L
+
+        result = check_bearing_pressure(
+            Pu_kN=600,
+            fck=25,
+            column_b_mm=col_b,
+            column_D_mm=col_D,
+            footing_B_mm=ftg_B,
+            footing_L_mm=ftg_L,
+        )
+        standalone = bearing_stress_enhancement(fck=25, A1_mm2=A1, A2_mm2=A2)
+
+        assert result.enhancement_factor == pytest.approx(
+            standalone.enhancement_factor, rel=1e-6
+        )
+        assert result.permissible_stress_mpa == pytest.approx(
+            standalone.permissible_stress_mpa, rel=1e-6
+        )
+        assert result.A1_mm2 == pytest.approx(A1)
+        assert result.A2_mm2 == pytest.approx(A2)
+
+    def test_bearing_pressure_edge_zero_load(self):
+        """Edge: Pu_kN=0 is rejected — factored load must be positive.
+        IS 456 Cl 34.4 check meaningless for zero load.
+        """
+        with pytest.raises(ValidationError, match="positive"):
+            check_bearing_pressure(
+                Pu_kN=0,
+                fck=25,
+                column_b_mm=300,
+                column_D_mm=300,
+                footing_B_mm=1500,
+                footing_L_mm=1500,
+            )
+
+    def test_bearing_pressure_utilization(self):
+        """IS 456 Cl 34.4: utilization_ratio = actual_stress / permissible_stress.
+        Pu=1000kN, fck=30, col 350×350, footing 1400×1400.
+        A2 = 122500mm², actual = 1e6/122500 = 8.163 MPa.
+        A1 = 1960000mm², √(A1/A2) = √16 = 4.0 → capped at 2.0.
+        basic = 0.45×30 = 13.5, permissible = 27.0.
+        utilization = 8.163/27.0 ≈ 0.302.
+        """
+        result = check_bearing_pressure(
+            Pu_kN=1000,
+            fck=30,
+            column_b_mm=350,
+            column_D_mm=350,
+            footing_B_mm=1400,
+            footing_L_mm=1400,
+        )
+        expected_actual = 1000e3 / (350 * 350)
+        expected_permissible = 0.45 * 30 * 2.0
+        expected_util = expected_actual / expected_permissible
+
+        assert result.actual_stress_mpa == pytest.approx(expected_actual, rel=0.001)
+        assert result.permissible_stress_mpa == pytest.approx(
+            expected_permissible, rel=0.001
+        )
+        assert result.utilization_ratio == pytest.approx(expected_util, rel=0.001)
+        assert result.is_safe is True
+
+    def test_bearing_pressure_invalid_negative_load(self):
+        """Validation: Negative Pu_kN → ValidationError."""
+        with pytest.raises(ValidationError, match="positive"):
+            check_bearing_pressure(
+                Pu_kN=-100,
+                fck=25,
+                column_b_mm=300,
+                column_D_mm=300,
+                footing_B_mm=1500,
+                footing_L_mm=1500,
+            )
+
+    def test_bearing_pressure_invalid_zero_fck(self):
+        """Validation: fck=0 → ValidationError."""
+        with pytest.raises(ValidationError, match="positive"):
+            check_bearing_pressure(
+                Pu_kN=500,
+                fck=0,
+                column_b_mm=300,
+                column_D_mm=300,
+                footing_B_mm=1500,
+                footing_L_mm=1500,
+            )
+
+    def test_bearing_pressure_invalid_negative_column(self):
+        """Validation: Negative column dimension → DimensionError."""
+        with pytest.raises(DimensionError, match="positive"):
+            check_bearing_pressure(
+                Pu_kN=500,
+                fck=25,
+                column_b_mm=-300,
+                column_D_mm=300,
+                footing_B_mm=1500,
+                footing_L_mm=1500,
+            )
+
+    def test_bearing_pressure_invalid_footing_smaller(self):
+        """Validation: Footing smaller than column → DimensionError."""
+        with pytest.raises(DimensionError, match="larger"):
+            check_bearing_pressure(
+                Pu_kN=500,
+                fck=25,
+                column_b_mm=500,
+                column_D_mm=500,
+                footing_B_mm=400,
+                footing_L_mm=400,
+            )
+
+    def test_result_to_dict_and_summary(self):
+        """Result type: to_dict and summary work correctly."""
+        result = check_bearing_pressure(
+            Pu_kN=500,
+            fck=25,
+            column_b_mm=300,
+            column_D_mm=300,
+            footing_B_mm=1500,
+            footing_L_mm=1500,
+        )
+        d = result.to_dict()
+        assert isinstance(d, dict)
+        for key in (
+            "actual_stress_mpa",
+            "permissible_stress_mpa",
+            "enhancement_factor",
+            "utilization_ratio",
+            "is_safe",
+            "A1_mm2",
+            "A2_mm2",
+            "Pu_kN",
+        ):
+            assert key in d
+
+        s = result.summary()
+        assert isinstance(s, str)
+        assert "34.4" in s
+        assert "OK" in s
 
 
 # ===========================================================================

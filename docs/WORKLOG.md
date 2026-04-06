@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-04
+last_updated: 2026-04-06
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-04-05
+**Last Updated:** 2026-04-04
 
 ---
 
@@ -34,7 +34,9 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
-| 2026-04-05 | AUDIT | v0.21.3 deep audit: 7 agents, 90 findings (3 CRITICAL, 18 HIGH, 34 MEDIUM, 35 LOW), score 8.0/10, audit doc updated (§25-§32) | — |
+| 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | pending |
+| 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | pending |
+| 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | pending |
 | 2026-04-05 | EA-20,16 | Security: CORS from settings, auth production docs | — |
 | 2026-04-05 | EA-19 | Security: WebSocket Pydantic validation (WSDesignParams, WSCheckParams) | — |
 | 2026-04-05 | EA-9 | Testing: 105 API stability tests for __all__ exports | — |
@@ -48,21 +50,6 @@ tags: []
 | 2026-04-05 | EA-3,4,5 | API consistency: compute_report docs, to_dict(), build_detailing_input | b1a4351b |
 | 2026-04-05 | EA-7 | E2E pipeline test: 8 tests in test_full_pipeline_e2e.py | b1a4351b |
 | 2026-04-05 | EA-17,18 | Security: RateLimitMiddleware, str(e) sanitization (7 routers) | b1a4351b |
-| 2026-04-05 | EXT-AUDIT | fix: DXF CLI KeyError — moved schema extraction before beam['story'] access | ea4baf3b |
-| 2026-04-05 | EXT-AUDIT | fix: traceability logger switched to centralized get_logger(), figures/tables lookup | ea4baf3b |
-| 2026-04-05 | EXT-AUDIT | feat: 6 column functions + EndCondition enum exported at top-level package | ea4baf3b |
-| 2026-04-05 | EXT-AUDIT | docs: README examples fixed (compute_dxf, optimize_beam_cost signatures) | ea4baf3b |
-| 2026-04-05 | EXT-AUDIT | fix: sdist packaging — global-exclude tests, repo_only marker | ea4baf3b |
-| 2026-04-05 | EXT-AUDIT | fix: clauses.json — 7 missing clause/annex/figure entries added | ea4baf3b |
-| 2026-04-05 | T-NEW-01 | Replace 17 MagicMock with real dataclass fixtures (test_calculation_report, test_testing_strategies) | — |
-| 2026-04-05 | IS-NEW-01/02 | Add 18 @clause decorators (4 footing + 14 serviceability functions) | — |
-| 2026-04-05 | T-NEW-08 | Add 62 FastAPI router tests (6 new test files, 7 routers covered) | — |
-| 2026-04-05 | ARCH-NEW-09 | Replace 49 bare except Exception blocks with specific types across 11 routers | — |
-| 2026-04-05 | UX-05 | Add clause_refs field to FlexureResult, ShearResult, TorsionResult, ComplianceCaseResult | — |
-| 2026-04-05 | FE-NEW-02 | WCAG AA form accessibility: aria-required, aria-invalid, aria-describedby, fieldset+legend (4 components) | — |
-| 2026-04-05 | API-NEW-01 | Standardize all API responses with success_response()/error_response() wrapper (9 routers) | — |
-| 2026-04-05 | ARCH-NEW-12 | Split services/api.py God module: beam_api.py(1895L), column_api.py(1387L), common_api.py(230L) | — |
-| 2026-04-05 | RELEASE | v0.21.4 released — P0/P1 sprint + external audit fixes, 4758 tests pass | — |
 | 2026-04-05 | EA-15 | Frontend: BeamForm validation with cross-field checks | b1a4351b |
 | 2026-04-05 | EA-12,13 | Docs: API levels guide, e2e workflow example | b1a4351b |
 | 2025-07-24 | TASK-CIFIX2 | Close remaining CI bypass escape hatches (finish_task_pr.sh warnings + global FORBIDDEN sync) | 47a44722 |
@@ -255,9 +242,3 @@ tags: []
 2026-04-05 | P2-B5 | UX-7: Added prefers-reduced-motion support (CSS + hook + HomePage guards) | —
 2026-04-05 | P2-B5 | FE-8: WebGL context loss handling (hook + recovery UI in Viewport3D) | —
 2026-04-05 | CIFIX | Fix React test (DesignView export hook mocks), Docker CI (JWT env), ops agent CI bypass rule | —
-| 2026-04-05 | QC-OVERHAUL | Quality control overhaul: 4 new skills (release-preflight, UAT, quality-gate, dev-rules), 12 agent updates, 46 dev rules, 3-level quality gates, mandatory evolve | docs-only |
-| 2026-04-05 | TASK-P0 | S-NEW-03: Add CSV upload 10MB size limit | 06ec1b68 |
-| 2026-04-05 | TASK-P0 | S-NEW-01: Sanitize 26 str(e) info leaks with error_utils.py | 06ec1b68 |
-| 2026-04-05 | TASK-P0 | UX-01: Add d_mm < D_mm validation to design_beam_is456 | 06ec1b68 |
-| 2026-04-05 | TASK-P0 | FE-NEW-01: Three.js dispose() cleanup in HomePage | 06ec1b68 |
-| 2026-04-05 | TASK-P0 | UX-02: Column return types → dataclass with DictCompatMixin | 06ec1b68 |

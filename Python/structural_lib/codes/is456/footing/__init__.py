@@ -19,6 +19,7 @@ from structural_lib.codes.is456.footing import (
 )
 from structural_lib.codes.is456.footing.bearing import (
     bearing_stress_enhancement,
+    check_bearing_pressure,
     size_footing,
 )
 from structural_lib.codes.is456.footing.flexure import footing_flexure
@@ -32,6 +33,7 @@ __all__ = [
     "punching_shear",
     "size_footing",
     "bearing_stress_enhancement",
+    "check_bearing_pressure",
     "footing_flexure",
     "footing_one_way_shear",
     "footing_punching_shear",

@@ -52,6 +52,8 @@ from .services.api import (
     # Input dataclasses
     BeamGeometryInput,
     BeamInput,
+    BearingPressureCheckResult,
+    BearingStressEnhancementResult,
     CalculationHash,
     # Calculation Report
     CalculationReport,
@@ -65,6 +67,10 @@ from .services.api import (
     # ETABS Integration
     ETABSEnvelopeResult,
     ETABSForceRow,
+    FootingBearingResult,
+    FootingFlexureResult,
+    FootingOneWayShearResult,
+    FootingPunchingResult,
     InputSection,
     LoadCaseInput,
     LoadDefinition,
@@ -77,6 +83,7 @@ from .services.api import (
     # Torsion Design
     TorsionResult,
     ValidationReport,
+    bearing_stress_enhancement,
     # Column Design
     biaxial_bending_check_is456,
     build_detailing_input,
@@ -91,6 +98,7 @@ from .services.api import (
     check_beam_ductility,
     check_beam_is456,
     check_beam_slenderness,
+    check_bearing_pressure,
     check_column_ductility_is13920,
     check_compliance_report,
     check_crack_width,
@@ -122,6 +130,9 @@ from .services.api import (
     # Shear
     enhanced_shear_strength_is456,
     export_bbs,
+    footing_flexure,
+    footing_one_way_shear,
+    footing_punching_shear,
     generate_calculation_report,
     # Version
     get_library_version,
@@ -131,6 +142,8 @@ from .services.api import (
     # Smart features
     optimize_beam_cost,
     pm_interaction_curve_is456,
+    # Footing Design (IS 456 Cl 34)
+    size_footing,
     smart_analyze_design,
     suggest_beam_design_improvements,
     validate_design_results,
@@ -312,6 +325,19 @@ __all__ = [
     "EndCondition",
     # IS 13920 Ductile Detailing
     "check_column_ductility_is13920",
+    # Footing Design (IS 456 Cl 34)
+    "size_footing",
+    "bearing_stress_enhancement",
+    "check_bearing_pressure",
+    "footing_flexure",
+    "footing_one_way_shear",
+    "footing_punching_shear",
+    "FootingBearingResult",
+    "BearingPressureCheckResult",
+    "BearingStressEnhancementResult",
+    "FootingFlexureResult",
+    "FootingOneWayShearResult",
+    "FootingPunchingResult",
 ]
 
 

@@ -22,11 +22,29 @@ from structural_lib.codes.is456.beam.torsion import (  # noqa: F401
     calculate_torsion_stirrup_area,
     design_torsion,
 )
+from structural_lib.codes.is456.footing.bearing import (  # noqa: F401
+    bearing_stress_enhancement,
+    check_bearing_pressure,
+    size_footing,
+)
+from structural_lib.codes.is456.footing.flexure import footing_flexure  # noqa: F401
+from structural_lib.codes.is456.footing.one_way_shear import (
+    footing_one_way_shear,
+)  # noqa: F401
+from structural_lib.codes.is456.footing.punching_shear import (
+    footing_punching_shear,
+)  # noqa: F401
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd  # noqa: F401
-from structural_lib.core.data_types import (  # noqa: F401
+from structural_lib.core.data_types import (  # noqa: F401  # noqa: F401
+    BearingPressureCheckResult,
+    BearingStressEnhancementResult,
     ComplianceCaseResult,
     ComplianceReport,
     CriticalPoint,
+    FootingBearingResult,
+    FootingFlexureResult,
+    FootingOneWayShearResult,
+    FootingPunchingResult,
     LoadDefinition,
     LoadDiagramResult,
     LoadType,
@@ -45,8 +63,6 @@ from structural_lib.core.models import (
     DesignDefaults,
     FrameType,
 )  # noqa: F401
-
-# ── Domain modules (beam, column, common) ──────────────────────────────
 from structural_lib.services.beam_api import (  # noqa: F401
     _detailing_result_to_dict,
     _extract_beam_params_from_schema,
@@ -102,6 +118,9 @@ from structural_lib.services.common_api import (  # noqa: F401
     validate_design_results,
     validate_job_spec,
 )
+
+# ── Domain modules (beam, column, common) ──────────────────────────────
+from structural_lib.services.costing import CostProfile  # noqa: F401
 from structural_lib.visualization.geometry_3d import (  # noqa: F401
     Beam3DGeometry,
     Point3D,
@@ -200,6 +219,8 @@ __all__ = [
     "check_column_ductility_is13920",
     # Shear (IS 456 Clause 40)
     "enhanced_shear_strength_is456",
+    # Costing
+    "CostProfile",
     # Smart features
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
@@ -240,4 +261,17 @@ __all__ = [
     "compute_stirrup_positions",
     "compute_beam_outline",
     "beam_to_3d_geometry",
+    # Footing Design (IS 456 Cl 34)
+    "size_footing",
+    "bearing_stress_enhancement",
+    "check_bearing_pressure",
+    "footing_flexure",
+    "footing_one_way_shear",
+    "footing_punching_shear",
+    "FootingBearingResult",
+    "BearingPressureCheckResult",
+    "BearingStressEnhancementResult",
+    "FootingFlexureResult",
+    "FootingOneWayShearResult",
+    "FootingPunchingResult",
 ]

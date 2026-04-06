@@ -8,9 +8,19 @@ Prevents CWE-209 (Information Exposure Through Error Message) by:
 """
 
 import logging
+import math
 import uuid
 
 logger = logging.getLogger(__name__)
+
+
+def sanitize_float(v: float) -> float:
+    """Replace non-finite floats for JSON safety (RFC 8259)."""
+    if math.isfinite(v):
+        return v
+    if math.isnan(v):
+        return 0.0
+    return 9999.0 if v > 0 else -9999.0
 
 
 def sanitize_error(e: Exception, context: str = "operation") -> str:

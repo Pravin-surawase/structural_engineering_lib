@@ -6,10 +6,12 @@ calculations per IS 456:2000.
 """
 
 import logging
+from dataclasses import asdict
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
+from fastapi_app.error_utils import sanitize_float
 from fastapi_app.models.response import error_response, success_response
 
 from fastapi_app.models.column import (
@@ -83,8 +85,8 @@ async def calculate_effective_length(
 
         return success_response(
             EffectiveLengthResponse(
-                le_mm=round(result["le_mm"], 2),
-                ratio=round(result["ratio"], 4),
+                le_mm=round(sanitize_float(result["le_mm"]), 2),
+                ratio=round(sanitize_float(result["ratio"]), 4),
                 end_condition=result["end_condition"],
                 method=result["method"],
             )
@@ -229,13 +231,13 @@ async def column_axial_capacity(
 
         return success_response(
             ColumnAxialResponse(
-                Pu_kN=round(result["Pu_kN"], 2),
+                Pu_kN=round(sanitize_float(result["Pu_kN"]), 2),
                 fck=request.fck,
                 fy=request.fy,
                 Ag_mm2=request.Ag_mm2,
                 Asc_mm2=request.Asc_mm2,
-                Ac_mm2=round(Ac_mm2, 2),
-                steel_ratio=round(steel_ratio, 4),
+                Ac_mm2=round(sanitize_float(Ac_mm2), 2),
+                steel_ratio=round(sanitize_float(steel_ratio), 4),
                 is_safe=is_safe,
                 warnings=result["warnings"],
             )
@@ -295,17 +297,17 @@ async def design_column_uniaxial(
         return success_response(
             ColumnUniaxialResponse(
                 ok=result["is_safe"],
-                utilization=round(result["utilization_ratio"], 4),
-                Pu_cap_kN=round(result["Pu_cap_kN"], 2),
-                Mu_cap_kNm=round(result["Mu_cap_kNm"], 2),
+                utilization=round(sanitize_float(result["utilization_ratio"]), 4),
+                Pu_cap_kN=round(sanitize_float(result["Pu_cap_kN"]), 2),
+                Mu_cap_kNm=round(sanitize_float(result["Mu_cap_kNm"]), 2),
                 classification=(
                     result["classification"].name
                     if hasattr(result["classification"], "name")
                     else str(result["classification"])
                 ),
-                eccentricity_mm=round(result["eccentricity_mm"], 2),
+                eccentricity_mm=round(sanitize_float(result["eccentricity_mm"]), 2),
                 e_min_mm=(
-                    round(result["e_min_mm"], 2)
+                    round(sanitize_float(result["e_min_mm"]), 2)
                     if result.get("e_min_mm") is not None
                     else None
                 ),
@@ -414,7 +416,6 @@ async def biaxial_check(
     """
     try:
         from structural_lib.services.api import biaxial_bending_check_is456
-        import math
 
         result = biaxial_bending_check_is456(
             Pu_kN=request.Pu_kN,
@@ -430,21 +431,16 @@ async def biaxial_check(
             l_unsupported_mm=request.l_unsupported_mm,
         )
 
-        # Cap inf to a large finite value for JSON serialization
-        ratio = result["interaction_ratio"]
-        if math.isinf(ratio) or math.isnan(ratio):
-            ratio = 9999.0
-
         return success_response(
             BiaxialCheckResponse(
                 Pu_kN=result["Pu_kN"],
                 Mux_kNm=result["Mux_kNm"],
                 Muy_kNm=result["Muy_kNm"],
-                Mux1_kNm=round(result["Mux1_kNm"], 2),
-                Muy1_kNm=round(result["Muy1_kNm"], 2),
-                Puz_kN=round(result["Puz_kN"], 2),
-                alpha_n=round(result["alpha_n"], 4),
-                interaction_ratio=round(ratio, 4),
+                Mux1_kNm=round(sanitize_float(result["Mux1_kNm"]), 2),
+                Muy1_kNm=round(sanitize_float(result["Muy1_kNm"]), 2),
+                Puz_kN=round(sanitize_float(result["Puz_kN"]), 2),
+                alpha_n=round(sanitize_float(result["alpha_n"]), 4),
+                interaction_ratio=round(sanitize_float(result["interaction_ratio"]), 4),
                 is_safe=result["is_safe"],
                 classification=result["classification"],
                 clause_ref=result.get("clause_ref", "Cl. 39.6"),
@@ -492,7 +488,7 @@ async def additional_moment(request: AdditionalMomentRequest):
             d_prime_mm=request.d_prime_mm,
         )
 
-        return success_response(AdditionalMomentResponse(**result))
+        return success_response(AdditionalMomentResponse(**asdict(result)))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for additional moment calculation")
