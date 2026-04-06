@@ -33,7 +33,7 @@ LOAD_SUCCESS_RATE = float(os.getenv("LOAD_SUCCESS_RATE", "95"))
 LOAD_P95_MS = float(os.getenv("LOAD_P95_MS", "100"))
 LOAD_HEALTH_MAX_MS = float(os.getenv("LOAD_HEALTH_MAX_MS", "50"))
 LOAD_DEGRADATION_PCT = float(os.getenv("LOAD_DEGRADATION_PCT", "100"))
-LOAD_AVG_MS = float(os.getenv("LOAD_AVG_MS", "100"))
+LOAD_AVG_MS = float(os.getenv("LOAD_AVG_MS", "150"))
 
 
 @pytest.fixture

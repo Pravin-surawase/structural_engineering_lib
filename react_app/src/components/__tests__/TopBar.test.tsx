@@ -17,7 +17,10 @@ vi.mock('framer-motion', () => ({
   motion: {
     header: React.forwardRef(({ children, ...props }: any, ref: any) =>
       React.createElement('header', { ...props, ref }, children)),
+    div: React.forwardRef(({ children, ...props }: any, ref: any) =>
+      React.createElement('div', { ...props, ref }, children)),
   },
+  AnimatePresence: ({ children }: any) => React.createElement(React.Fragment, null, children),
 }));
 
 describe('TopBar', () => {
