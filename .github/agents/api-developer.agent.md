@@ -106,7 +106,7 @@ Before writing any FastAPI code, review these critical rules from `/development-
 3. **Check existing before adding** — avoid route duplication
 4. **Test with Docker:** `docker compose up --build` (start Colima first)
 5. **API docs auto-generated** at `http://localhost:8000/docs`
-6. **After any return type change in `services/api.py`**, verify ALL router files that consume the changed function use the new field names. Dict keys like `ok` → dataclass fields like `is_safe` will silently break routers. Run: `grep -r "<old_field>" fastapi_app/routers/` to find stale references. (Sprint 1 v0.21.4: router key mismatch caused test failures.)
+6. **After any return type change in `services/api.py`**, verify ALL router files that consume the changed function use the new field names. Dict keys like `ok` → dataclass fields like `is_safe` will silently break routers. Run: `grep -r "<old_field>" fastapi_app/routers/` to find stale references. (Sprint 1 v0.21.5: router key mismatch caused test failures.)
 
 ## Architecture
 

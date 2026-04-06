@@ -4,14 +4,27 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+_No unreleased changes._
+
+## [0.21.5] — 2026-04-06
+
+Test Coverage & Regression Prevention release.
+
+### Added
+- **Golden vector baselines (TASK-720):** 42+ regression tests with `@pytest.mark.golden` — 9 beam (flexure, torsion, serviceability), 20 column (effective length, classification, axial, uniaxial, biaxial, P-M, helical, long column), 13 footing (bearing, flexure, shear, punching)
+- **Contract tests (TASK-721):** 18 API surface stability tests with `@pytest.mark.contract` — freezes parameter names and return types for column, footing, torsion APIs
+- **conftest.py golden fixture (TASK-722):** Session-scoped `golden_vectors` fixture loading SP:16 reference data
+- **CI golden gate (TASK-723):** Dedicated `pytest -m golden` step in GitHub Actions `python-tests.yml` (Ubuntu + Python 3.12)
+- **Report/3D edge case tests (TASK-520):** 71 new tests — 29 report edge cases (XSS escaping, fallback HTML, template filters) + 42 visualization edge cases (minimum dimensions, dense rebar, stirrup positions, serialization)
+- Coverage boost: 19 targeted tests pushing `codes/is456/` to 99% branch coverage
+- `unwrapResponse<T>()` helper in `react_app/src/api/client.ts` — standard contract for FastAPI response unwrapping
+- 3 contract tests for `unwrapResponse` in `endpoints.test.ts`
+
 ### Fixed
+- Added `@clause("34.1")` to `size_footing()` — resolved footing clause coverage gap
 - **Response envelope mismatch** — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` across all 16 API fetch calls. Fixed Import page crash (`beams.map` undefined), Design page crash (`result.flexure` undefined), and silent data failures on geometry/insights/rebar pages.
 - Fixed `new URL()` crash on relative paths in `useCSVImport.ts` (dev mode)
 - Fixed 3 wrong type names in `useInsights.ts`
-
-### Added
-- `unwrapResponse<T>()` helper in `react_app/src/api/client.ts` — standard contract for FastAPI response unwrapping
-- 3 contract tests for `unwrapResponse` in `endpoints.test.ts`
 
 ## [0.21.4] — 2026-04-05
 

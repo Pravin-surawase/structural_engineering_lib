@@ -99,7 +99,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-zinc-400">App:</span>
-                    <span className="text-sm font-mono text-zinc-300">v0.21.4</span>
+                    <span className="text-sm font-mono text-zinc-300">v0.21.5</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-zinc-400">IS 456:</span>
