@@ -1,6 +1,6 @@
 {
   "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
-  "_updated": "2026-04-02",
+  "_updated": "2026-04-06",
   "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
 
   "topics": {
@@ -65,9 +65,14 @@
       "also_see": []
     },
     "architecture": {
-      "canonical": "docs/architecture/project-overview.md",
-      "description": "System architecture and layer design",
-      "also_see": []
+      "canonical": "docs/architecture/unified-architecture-v1.md",
+      "description": "Comprehensive system architecture — 4-layer design, API principles, provenance, security, testing, observability (1,108 lines, 9-agent reviewed)",
+      "also_see": ["docs/architecture/project-overview.md", "docs/architecture/mission-and-principles.md"]
+    },
+    "unified-architecture": {
+      "canonical": "docs/architecture/unified-architecture-v1.md",
+      "description": "Single source of truth for architecture decisions, quality gates, safety guarantees, and development workflow — enhanced to 1,108 lines with 8 new sections (API Design, Provenance, Security, Client SDK, Testing, Backward Compat, Observability, Library Comparison) via 9-agent review",
+      "also_see": ["docs/architecture/project-overview.md", "docs/architecture/mission-and-principles.md", "docs/planning/library-expansion-blueprint-v5.md"]
     },
     "agent-mistakes": {
       "canonical": "docs/agents/guides/agent-8-mistakes-prevention-guide.md",

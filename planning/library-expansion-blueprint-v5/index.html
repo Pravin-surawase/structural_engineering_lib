@@ -2570,7 +2570,7 @@
 <strong>Status:</strong> Active
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-03-31
-<strong>Last Updated:</strong> 2026-04-01
+<strong>Last Updated:</strong> 2026-04-06
 <strong>Supersedes:</strong> <a href="../../_archive/planning-completed-2026-03/library-expansion-blueprint-v4/">library-expansion-blueprint-v4.md</a> (IS 456-only)</p>
 <blockquote>
 <p>Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.</p>
@@ -3023,7 +3023,7 @@
 <tr>
 <td>Column</td>
 <td>Cl 25, 39, Annex E/G</td>
-<td>✅ COMPLETE — 11/11 functions done: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1%</td>
+<td>✅ COMPLETE — 14/14 tasks: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1%</td>
 </tr>
 <tr>
 <td>One-way slab</td>
@@ -3038,7 +3038,7 @@
 <tr>
 <td>Footing</td>
 <td>Cl 34, 31.6</td>
-<td>P1</td>
+<td>🔄 5/7 done — bearing sizing, flexure, one-way shear, punching shear, bearing pressure done. Missing: dowel bars (TASK-655), FastAPI endpoint (TASK-656)</td>
 </tr>
 <tr>
 <td>Wall</td>
@@ -3450,6 +3450,7 @@
 <th>#</th>
 <th>Function</th>
 <th>IS 456 Reference</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -3457,31 +3458,37 @@
 <td>1</td>
 <td><code>size_footing()</code></td>
 <td>Cl 34.1 (bearing capacity)</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>2</td>
 <td><code>footing_flexure()</code></td>
 <td>Cl 34.2.1–34.2.3</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>3</td>
 <td><code>footing_oneway_shear()</code></td>
 <td>Cl 34.2.4 (at d from face)</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>4</td>
 <td><code>footing_punching_shear()</code></td>
 <td>Cl 31.6 (at d/2 from face)</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>5</td>
 <td><code>footing_detailing()</code></td>
 <td>Cl 34.3 (rebar distribution)</td>
+<td>📋</td>
 </tr>
 <tr>
 <td>6</td>
 <td><code>bearing_check()</code></td>
 <td>Cl 34.4 (σbr ≤ 0.45·fck·√(A1/A2))</td>
+<td>✅ Done</td>
 </tr>
 </tbody>
 </table>
@@ -3563,7 +3570,7 @@
 </code></pre></div>
 <h3 id="57-phase-1-success-criteria">5.7 Phase 1 Success Criteria<a class="headerlink" href="#57-phase-1-success-criteria" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[x] IS 456 column design: 11/11 functions COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, detailing + IS 13920 ductile detailing). 500+ column tests, SP:16 benchmarks passing ±0.1%</li>
+<li>[x] IS 456 column design: 14/14 tasks COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, column_detailing, ductile_detailing (IS 13920)). 500+ column tests, SP:16 benchmarks passing ±0.1%</li>
 <li>[ ] IS 456 one-way slab: 4 functions</li>
 <li>[ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases</li>
 <li>[ ] IS 456 footing: 6 functions including punching shear</li>
@@ -4201,7 +4208,7 @@
 <td>5</td>
 <td><strong>Enhanced shear NOT implemented</strong></td>
 <td>IS 456 currently unconservative</td>
-<td>~~HIGH~~ RESOLVED</td>
+<td>✅ RESOLVED</td>
 <td>✅ Fixed in TASK-712 (PR #468)</td>
 </tr>
 <tr>

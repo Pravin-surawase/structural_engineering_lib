@@ -1503,10 +1503,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-next-priority-order" class="md-nav__link">
+  <a href="#priorities-updated" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's Next (Priority Order)
+        Priorities (Updated)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priorities (Updated)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-v0215-test-coverage-regression-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate (v0.21.5 — Test Coverage &amp; Regression Prevention)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next-v0216-api-quality-introspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next (v0.21.6 — API Quality &amp; Introspection)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-patterns-established" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Patterns Established
       
     </span>
   </a>
@@ -1553,30 +1603,52 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-06
-<strong>Last Session:</strong> Response envelope fix — unwrapResponse() applied to all 16 React API calls</p>
+<strong>Last Session:</strong> Strategic architecture rewrite + full roadmap planning (v0.21.5→v1.0)</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>fix-envelope:</strong> Fixed critical response envelope mismatch between FastAPI and React — added <code>unwrapResponse()</code> helper, applied to all 16 API fetch calls across 7 hook/client files. Fixed Import page crash (<code>beams.map</code>), Design page crash (<code>result.flexure</code>), and silent data failures on geometry/insights/rebar pages.</li>
-<li>Fixed <code>new URL()</code> crash on relative paths in useCSVImport.ts (dev mode)</li>
-<li>Added 3 contract tests for <code>unwrapResponse</code>, updated test mocks — all 132 React tests pass, build succeeds</li>
-<li><strong>TASK-527:</strong> TopBar context badges (beam count on Editor, green dot on Dashboard) + SettingsPanel slide-over</li>
-<li><strong>TASK-528:</strong> WorkflowBreadcrumb component (Import → Editor → Batch → Dashboard) integrated into 4 pages</li>
-<li><strong>TASK-516:</strong> Triangular + applied moment loads in load_analysis.py — 23 new tests, all 48 load analysis tests pass</li>
-<li><strong>TASK-519:</strong> Pareto alternatives panel — optimize_pareto_front wired to API, new endpoint + hook + ParetoPanel in DesignView</li>
-<li><strong>Review:</strong> APPROVED — 4524 Python tests pass, React build clean, architecture boundaries maintained</li>
-<li><strong>fix-revert:</strong> Identified and reverted 4 accidental regressions (torsion.py clause_refs, config.py version+upload limit, main.py JWT handling, websocket.py sanitize_error)</li>
+<li><strong>Architecture doc rewrite:</strong> unified-architecture-v1.md expanded from 1108→1540 lines with 3 new sections:</li>
+<li>§18: Regression Prevention Framework (golden vectors, contract tests, benchmarks)</li>
+<li>§19: Governance &amp; Release Process (NumPy/pandas-inspired, 5-step release, ADRs)</li>
+<li>§20: Complete Roadmap v0.21.5→v1.0 (10 sub-sections, all deliverables with owners)</li>
+<li><strong>Fixed contradictions:</strong> CodeRegistry status, @clause coverage claims, thread-safety claims</li>
+<li><strong>TASKS.md complete rewrite:</strong> Full roadmap with 50+ new task IDs (TASK-724→TASK-782), every version from v0.21.5 to v1.0 with quality gates and owners</li>
+<li><strong>Archived:</strong> v0.21 React UX Overhaul (TASK-522-528) + Library Expansion items 1-6 (TASK-514-519) to tasks-history.md</li>
+<li><strong>Schema answer:</strong> Pydantic IS the schema — no separate schema language needed</li>
+<li><strong>Library research:</strong> Studied NumPy, pandas, scikit-learn, Pydantic best practices</li>
 </ul>
-<h2 id="whats-next-priority-order">What's Next (Priority Order)<a class="headerlink" href="#whats-next-priority-order" title="Permanent link">&para;</a></h2>
+<h2 id="priorities-updated">Priorities (Updated)<a class="headerlink" href="#priorities-updated" title="Permanent link">&para;</a></h2>
+<h3 id="immediate-v0215-test-coverage-regression-prevention">Immediate (v0.21.5 — Test Coverage &amp; Regression Prevention)<a class="headerlink" href="#immediate-v0215-test-coverage-regression-prevention" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Verify end-to-end:</strong> Run all React pages against live FastAPI backend to confirm envelope fix works in integration</li>
-<li><strong>Add API contract test in CI:</strong> Ensure <code>{success, data}</code> envelope shape is validated automatically</li>
-<li><strong>Key pattern:</strong> ALL new fetch calls to <code>/api/v1/*</code> MUST use <code>unwrapResponse()</code> from <code>api/client.ts</code></li>
-<li><strong>TASK-520:</strong> Report/3D test coverage (~15 tests for report.py, geometry_3d.py, dashboard.py)</li>
-<li><strong>TASK-521:</strong> Beam rationalization (new rationalization.py ~250 lines + FastAPI + React panel)</li>
-<li><strong>Footing remaining:</strong> Dowel bars (TASK-655), FastAPI endpoint (TASK-656)</li>
-<li><strong>TASK-643:</strong> Verify SP:16 Table I normalization convention</li>
-<li><strong>v0.22 release:</strong> Tag + publish when remaining tasks complete</li>
+<li><strong>Golden vector baselines</strong> for all IS 456 beam functions (TASK-720) — @tester</li>
+<li><strong>Contract tests</strong> for API surface stability (TASK-721) — @tester</li>
+<li><strong>conftest.py golden_vectors fixture</strong> with SP:16 values (TASK-722) — @tester</li>
+<li><strong>CI gate:</strong> <code>pytest -m golden</code> must pass before merge (TASK-723) — @ops</li>
+<li><strong>Report/3D test coverage</strong> (TASK-520) — @tester [CARRIED OVER]</li>
+<li><strong>Add @clause to footing helpers</strong> (7 functions) — @structural-math</li>
+<li><strong>90%+ branch coverage</strong> on <code>codes/is456/</code> — @tester</li>
 </ol>
+<h3 id="next-v0216-api-quality-introspection">Next (v0.21.6 — API Quality &amp; Introspection)<a class="headerlink" href="#next-v0216-api-quality-introspection" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>check_code("IS456")</strong> implementation (TASK-724) — @backend</li>
+<li><strong>show_versions()</strong> implementation (TASK-725) — @backend</li>
+<li><strong>API surface freeze</strong> in CI (TASK-726) — @ops</li>
+<li><strong>Function limitation docs</strong> (TASK-727) — @doc-master</li>
+</ol>
+<h3 id="architecture-reference">Architecture Reference<a class="headerlink" href="#architecture-reference" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Unified architecture: <code>docs/architecture/unified-architecture-v1.md</code> (1540 lines, 21 sections)</li>
+<li>Complete roadmap: §20 of architecture doc (v0.21.5→v1.0)</li>
+<li>Quality gates per version: §9 of architecture doc</li>
+<li>Blueprint details: <code>docs/planning/library-expansion-blueprint-v5.md</code></li>
+</ul>
+<h2 id="key-patterns-established">Key Patterns Established<a class="headerlink" href="#key-patterns-established" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Pydantic IS the schema (no Protocol Buffers/GraphQL/SDL needed)</li>
+<li>4-layer validation: type hints → Pydantic → domain → output sanity</li>
+<li>Golden vectors mandatory for ALL new IS 456 functions (SP:16 ±0.1%)</li>
+<li>NumPy-style deprecation: warn for 2 minor versions before removal</li>
+<li>Every release follows 5-step process: PREFLIGHT → UAT → QUALITY GATE → VERSION BUMP → POST-RELEASE</li>
+</ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>
 <li>None</li>
