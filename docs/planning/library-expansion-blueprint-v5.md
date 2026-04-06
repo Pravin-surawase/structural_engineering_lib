@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-03-31
-**Last Updated:** 2026-04-01
+**Last Updated:** 2026-04-06
 **Supersedes:** [library-expansion-blueprint-v4.md](../_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md) (IS 456-only)
 
 > Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.
@@ -237,10 +237,10 @@ class DesignEnvelope:
 
 | Element | Clauses | Priority |
 |---------|---------|----------|
-| Column | Cl 25, 39, Annex E/G | ✅ COMPLETE — 11/11 functions done: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1% |
+| Column | Cl 25, 39, Annex E/G | ✅ COMPLETE — 14/14 tasks: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1% |
 | One-way slab | Cl 24.1–24.2 | P1 |
 | Two-way slab | Cl 24.3, Annex D, Table 26 | P1 |
-| Footing | Cl 34, 31.6 | P1 |
+| Footing | Cl 34, 31.6 | 🔄 5/7 done — bearing sizing, flexure, one-way shear, punching shear, bearing pressure done. Missing: dowel bars (TASK-655), FastAPI endpoint (TASK-656) |
 | Wall | Cl 32 | P2 |
 | Staircase | Cl 33 | P2 |
 | Deep beam | Cl 29 | P2 |
@@ -371,14 +371,14 @@ warnings.warn(
 
 ### 5.4 Footing Design (IS 456 Cl 34)
 
-| # | Function | IS 456 Reference |
-|---|----------|-----------------|
-| 1 | `size_footing()` | Cl 34.1 (bearing capacity) |
-| 2 | `footing_flexure()` | Cl 34.2.1–34.2.3 |
-| 3 | `footing_oneway_shear()` | Cl 34.2.4 (at d from face) |
-| 4 | `footing_punching_shear()` | Cl 31.6 (at d/2 from face) |
-| 5 | `footing_detailing()` | Cl 34.3 (rebar distribution) |
-| 6 | `bearing_check()` | Cl 34.4 (σbr ≤ 0.45·fck·√(A1/A2)) |
+| # | Function | IS 456 Reference | Status |
+|---|----------|-----------------|--------|
+| 1 | `size_footing()` | Cl 34.1 (bearing capacity) | ✅ Done |
+| 2 | `footing_flexure()` | Cl 34.2.1–34.2.3 | ✅ Done |
+| 3 | `footing_oneway_shear()` | Cl 34.2.4 (at d from face) | ✅ Done |
+| 4 | `footing_punching_shear()` | Cl 31.6 (at d/2 from face) | ✅ Done |
+| 5 | `footing_detailing()` | Cl 34.3 (rebar distribution) | 📋 |
+| 6 | `bearing_check()` | Cl 34.4 (σbr ≤ 0.45·fck·√(A1/A2)) | ✅ Done |
 
 **Edge Cases:**
 - Eccentric loading → trapezoidal/triangular pressure
@@ -428,7 +428,7 @@ class LoadCombination(ABC):
 ```
 
 ### 5.7 Phase 1 Success Criteria
-- [x] IS 456 column design: 11/11 functions COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, detailing + IS 13920 ductile detailing). 500+ column tests, SP:16 benchmarks passing ±0.1%
+- [x] IS 456 column design: 14/14 tasks COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, column_detailing, ductile_detailing (IS 13920)). 500+ column tests, SP:16 benchmarks passing ±0.1%
 - [ ] IS 456 one-way slab: 4 functions
 - [ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases
 - [ ] IS 456 footing: 6 functions including punching shear
@@ -683,7 +683,7 @@ class LoadCombination:
 | 2 | **φ vs γ architecture mismatch** | ACI code produces wrong results | HIGH | Each code's math is self-contained, never abstract safety factors |
 | 3 | **National Annex proliferation (EC2)** | 150 parameters × N countries | MEDIUM | Start with "recommended" + UK NA only |
 | 4 | **Variable strut inclination (EC2)** | No precedent in codebase | MEDIUM | Start with θ = 21.8° (conservative), add optimizer later |
-| 5 | **Enhanced shear NOT implemented** | IS 456 currently unconservative | ~~HIGH~~ RESOLVED | ✅ Fixed in TASK-712 (PR #468) |
+| 5 | **Enhanced shear NOT implemented** | IS 456 currently unconservative | ✅ RESOLVED | ✅ Fixed in TASK-712 (PR #468) |
 | 6 | **Column P-M interaction complexity** | Most complex IS 456 calculation | ✅ RESOLVED | Implemented incrementally: axial → uniaxial → biaxial → P-M curve → slenderness → detailing. 11/11 functions done. Phase 2 Column COMPLETE |
 | 7 | **Load combination explosion** | 50+ combinations per code | MEDIUM | Build combination engine early (Phase 2) |
 | 8 | **ACI/EC2 code review expertise** | Team has IS 456 expertise only | HIGH | Require professional review for non-IS 456 code |

@@ -477,3 +477,26 @@ All Public API Maintenance tasks are complete.
 | TASK-623 | check_clause_coverage.py | — | ✅ Done |
 | TASK-624 | check_new_element_completeness.py | — | ✅ Done |
 | TASK-625 | maintenance-playbook.md | — | ✅ Done |
+
+### v0.21 React UX Overhaul (archived 2026-04-06)
+
+| # | Task ID | Feature | Files | Status |
+|---|---------|---------|-------|--------|
+| A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage | `BeamDetailPanel.tsx`, `BuildingEditorPage.tsx`, `Viewport3D.tsx` | ✅ Done |
+| A2 | TASK-523 | Activate FloatingDock + BentoGrid Dashboard | `App.tsx`, `DashboardPage.tsx` | ✅ Done |
+| A3 | TASK-524 | DesignView dynamic layout | `DesignView.tsx` | ✅ Done |
+| A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | `HubPage.tsx`, `App.tsx` | ✅ Done |
+| A5 | TASK-526 | Cross-section annotations | `CrossSectionView.tsx` | ✅ Done |
+| A6 | TASK-527 | TopBar context badges + SettingsPanel | `TopBar.tsx`, `SettingsPanel.tsx` | ✅ Done |
+| A7 | TASK-528 | Workflow breadcrumb for batch flow | `WorkflowBreadcrumb.tsx` | ✅ Done |
+
+### v0.21 Library Expansion (items 1–6, archived 2026-04-06)
+
+| # | Task ID | Feature | Status |
+|---|---------|---------|--------|
+| 1 | TASK-514 | PDF Export | ✅ Done |
+| 2 | TASK-515 | Load Calculator | ✅ Done |
+| 3 | TASK-516 | Triangular + Moment loads | ✅ Done |
+| 4 | TASK-517 | Project BOQ | ✅ Done |
+| 5 | TASK-518 | Torsion API + React | ✅ Done |
+| 6 | TASK-519 | Alternatives Panel (Pareto) | ✅ Done |

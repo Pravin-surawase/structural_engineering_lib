@@ -251,3 +251,7 @@ tags: []
 2026-04-05 | P2-B5 | UX-7: Added prefers-reduced-motion support (CSS + hook + HomePage guards) | —
 2026-04-05 | P2-B5 | FE-8: WebGL context loss handling (hook + recovery UI in Viewport3D) | —
 2026-04-05 | CIFIX | Fix React test (DesignView export hook mocks), Docker CI (JWT env), ops agent CI bypass rule | —
+| 2026-04-06 | Architecture | Enhanced unified-architecture-v1.md (413→1108 lines, 8 new sections, 9-agent review) | pending-commit |
+| 2026-04-06 | Architecture Rewrite | unified-architecture-v1.md rewritten: 1108→1540 lines, fixed contradictions, added §18 Regression Prevention, §19 Governance & Release, §20 Complete Roadmap v0.21.5→v1.0 | — |
+| 2026-04-06 | TASKS.md Roadmap | Full roadmap update: 50+ new task IDs (TASK-724→TASK-782), archived v0.21 completed items, added v0.21.6 through v1.0 sections | — |
+| 2026-04-06 | tasks-history.md | Archived React UX Overhaul (TASK-522-528) and Library Expansion items 1-6 (TASK-514-519) | — |

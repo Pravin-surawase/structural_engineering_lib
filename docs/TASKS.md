@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-06 — TASK-527, TASK-528, TASK-516, TASK-519 completed (v0.22 sprint)
+**Updated:** 2026-04-06 — Full roadmap alignment with unified-architecture-v1.md §20
 
 ---
 
@@ -16,11 +16,12 @@
 
 ## Current Release
 
-- **Version:** v0.21.4 ✅ Released → v0.22 (Full React UX + Library Expansion)
-- **Focus:** Full React UX + library expansion + remaining tasks
-- **Target:** v0.22 — TopBar badges, workflow breadcrumb, Streamlit deprecation, remaining UX + library expansion
+- **Version:** v0.21.4 ✅ Released → micro-releases v0.21.5–v0.21.8 → v0.22.0 Stabilization
+- **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
+- **Focus:** Golden vectors & contract tests → API introspection → security hardening → performance baselines → stabilization
+- **Target:** v0.21.5 next, then v0.21.6–v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
-- **Detailed Plan:** [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) — code-level specs for all 8 tasks
+- **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
 ### Release Roadmap
 
@@ -30,7 +31,15 @@
 | **v0.20** | V3 Foundation | ✅ Released (v0.20.0) | Batch design React UI, compliance checker, cost optimizer, 86 API tests |
 | **v0.21** | React UX + Library Expansion | ✅ Released (v0.21.0) | Editor-centric UX, BeamDetailPanel, FloatingDock, PDF export, load calc, BOQ, torsion |
 | **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
-| **v0.22** | Full React UX + Library Expansion | 🔄 ACTIVE | TopBar badges, workflow breadcrumb, Streamlit deprecation, library expansion |
+| **v0.21.5** | Test Coverage & Regression Prevention | 🔄 ACTIVE | Golden vectors, contract tests, regression framework |
+| **v0.21.6** | API Quality & Introspection | 📋 PLANNED | check_code(), show_versions(), API surface freeze |
+| **v0.21.7** | Security Hardening | 📋 PLANNED | Input validation, body limits, CVE scanning |
+| **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
+| **v0.22.0** | Stabilization Release | 📋 PLANNED | Provenance, SP:16 verification, release hardening |
+| **v0.23** | IS 456 Slabs + Footing Completion | 📋 PLANNED | One-way slab, two-way slab, footing dowels + API, punching shear |
+| **v0.24** | Multi-Code Infrastructure | 📋 PLANNED | CodeRegistry activation, DesignEnvelope, units.py, API v2 routes |
+| **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
+| **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
 
 ### Migration Status (React vs Streamlit)
 
@@ -48,190 +57,105 @@
 | **AI Assistant** | ✅ | -- | Partial | ⏸ Deferred |
 | Learning center | ✅ | -- | -- | 🟢 Low |
 
-### v0.21 Feature Matrix
+### v0.21 Remaining Items (Library Expansion)
 
-#### React UX Overhaul (new — Phase A quick wins first)
+| # | Task ID | Feature | Status |
+|---|---------|---------|--------|
+| 7 | TASK-520 | Report/3D Test Coverage | 📋 [→ v0.21.5] |
+| 8 | TASK-521 | Beam Rationalization | 📋 [→ v0.22.0] |
 
-| # | Task ID | Feature | Files | Status |
-|---|---------|---------|-------|--------|
-| A1 | TASK-522 | BeamDetailPanel in BuildingEditorPage — beam click → split 3D rebar + results + redesign + edit rebar | `BeamDetailPanel.tsx`, `BuildingEditorPage.tsx`, `Viewport3D.tsx` | ✅ Done (`a242878`, `a5612b0`) |
-| A2 | TASK-523 | Activate FloatingDock (already built) + BentoGrid Dashboard (already built) | `App.tsx`, `DashboardPage.tsx` | ✅ Done (`a242878`) |
-| A3 | TASK-524 | DesignView dynamic layout — 3D expands when no result, export dropdown | `DesignView.tsx` | ✅ Done (`a242878`) |
-| A4 | TASK-525 | Smart HubPage replacing ModeSelectPage | new `HubPage.tsx`, update `App.tsx` | ✅ Done |
-| A5 | TASK-526 | Cross-section annotations — utilization color, actual barDia/barCount, ascRequired | `CrossSectionView.tsx` | ✅ Done (`a242878`, `a5612b0`) |
-| A6 | TASK-527 | TopBar context badges + SettingsPanel slide-over (replaces /settings route) | `TopBar.tsx`, new `SettingsPanel.tsx` | ✅ Done |
-| A7 | TASK-528 | Workflow breadcrumb for batch flow (Import → Editor → Batch → Dashboard) | new `WorkflowBreadcrumb.tsx`, 4 page files | ✅ Done |
-
-> **Design principle:** Editor is the workstation. Manual beam form lives only in `/design`. No redundant forms in batch flow.
-> Full UX spec: [react-ux-improvement-plan.md](planning/react-ux-improvement-plan.md)
-
-#### Library Expansion (original v0.21 plan)
-
-| # | Task ID | Feature | Python | FastAPI | React | Tests | Status |
-|---|---------|---------|--------|---------|-------|-------|--------|
-| 1 | TASK-514 | PDF Export | `report.py` +15 lines | extend export router | extend useExport type | 4 | ✅ Done |
-| 2 | TASK-515 | Load Calculator | — (existing) | new `/analysis/loads/simple` | new `useLoadAnalysis` + panel | 7 | ✅ Done |
-| 3 | TASK-516 | Triangular + Moment loads | `load_analysis.py` +120 lines | — (extends TASK-515) | — | 23 | ✅ Done |
-| 4 | TASK-517 | Project BOQ | new `boq.py` ~120 lines | new `/insights/project-boq` | new `useProjectBOQ` + panel | 5 | ✅ Done |
-| 5 | TASK-518 | Torsion API + React | `api.py` +60 lines | new `/design/beam/torsion` | new `useTorsionDesign` + toggle | 5 | ✅ Done |
-| 6 | TASK-519 | Alternatives Panel (Pareto) | wired `optimize_pareto_front` to API | new `/optimization/beam/pareto` | new `useParetoDesign` + `ParetoPanel` | 3 | ✅ Done |
-| 7 | TASK-520 | Report/3D Test Coverage | — | — | — | ~15 | 📋 |
-| 8 | TASK-521 | Beam Rationalization | new `rationalization.py` ~250 lines | new `/insights/rationalize` | new panel in BuildingEditor | 4 | 📋 |
-
-> Detailed specs (function signatures, Pydantic models, React hooks, UI wireframes) in [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) Part 2.
+> v0.21 React UX Overhaul (TASK-522–528, all ✅) and Library Expansion items 1–6 (TASK-514–519, all ✅) archived to [tasks-history.md](_archive/tasks-history.md).
+> Detailed specs: [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) Part 2.
 
 ---
 
-## Active
+## Completed (Archived)
 
-| ID | Task | Agent | Status |
+> All completed items below have been archived. See [tasks-history.md](_archive/tasks-history.md) for full details.
+
+| Section | Items | Summary |
+|---------|-------|---------|
+| Architecture Doc Enhancement | 1 ✅ | unified-architecture-v1.md enhanced 413→1108 lines, 8 new sections, 9-agent review (library-expert, security, structural-engineer, reviewer, frontend, api-developer, innovator, tester, governance) |
+| v0.21.2 Packaging Fixes | TASK-PKG-1–6 ✅ | Wheel content, package discovery, CI tests |
+| v0.21.2 External Audit | EA-1–23 ✅ | 23 audit findings fixed (test infra, imports, API, security, frontend, docs) |
+| v0.21.5 Stabilization | 8 items ✅ | CostProfile, sanitize_float, footing wiring, bearing pressure |
+| Recent Fixes | 21 items ✅ | Response envelope, CI, audit P0–P2, column math, git hardening, variable naming |
+| Audit P1 Batch 1 | 4 items ✅ | clause_cli, FlexureResult limits, streaming 404, Three.js cleanup |
+
+---
+
+## v0.21.5 — Test Coverage & Regression Prevention
+
+**Theme:** Golden vector baselines and contract tests. No future change can silently break existing calculations.
+**Target:** Next 1-2 sessions
+**Quality Gate:** `pytest -m golden` passes with 0 failures, branch coverage ≥ 90% on `codes/is456/`
+
+| ID | Task | Owner | Status |
 |----|------|-------|--------|
-| TASK-800 | Agent evolver infrastructure (P3-P11 done, P12 burn-in) | Copilot | Monitoring (burn-in) |
+| TASK-720 | Golden vector baselines for all IS 456 beam functions (`@pytest.mark.golden`) | @tester | 📋 |
+| TASK-721 | Contract tests for API surface stability (`@pytest.mark.contract`) | @tester | 📋 |
+| TASK-520 | Report & 3D visualization test coverage | @tester | 📋 [CARRIED OVER] |
+| TASK-722 | conftest.py golden_vectors fixture with SP:16 values | @tester | 📋 |
+| TASK-723 | CI gate: `pytest -m golden` must pass before merge | @ops | 📋 |
+| — | 90%+ branch coverage on `codes/is456/` | @tester | 📋 |
+| — | Add `@clause` to 7 remaining footing helper functions | @structural-math | 📋 |
 
-## v0.21.2 Packaging Fixes (External Audit)
+## v0.21.6 — API Quality & Introspection
 
-> External audit of PyPI v0.21.1 found packaging issues. All calculations are correct — these are distribution/packaging problems.
+**Theme:** Self-describing, self-validating library
+**Target:** 2-3 sessions after v0.21.5
+**Quality Gate:** `check_code("IS456")` returns all-pass. OpenAPI diff integrated into CI.
 
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| TASK-PKG-1 | **Fix missing clauses.json in wheel** — Add `codes/is456/clauses.json` to pyproject.toml package-data. Without this, clause traceability silently returns empty results. | HIGH | @backend | ✅ Done |
-| TASK-PKG-2 | **Add warning for missing clause DB** — In traceability.py, narrow `except Exception` to `except (FileNotFoundError, json.JSONDecodeError)` and add `warnings.warn()` when fallback to `{}` | HIGH | @backend | ✅ Done |
-| TASK-PKG-3 | **Scope package discovery** — Add `exclude = ["tests*", "examples*", "scripts*"]` to pyproject.toml packages.find. Remove internal packages from wheel. | HIGH | @backend | ✅ Done |
-| TASK-PKG-4 | **Fix optimize_pareto_front API gap** — Either add to api.py __all__ or remove from Python/README.md claims. Auditor found README advertises it but it's not importable from top-level. | MEDIUM | @backend | ✅ Done |
-| TASK-PKG-5 | **Add Python version note to README** — State "Requires Python 3.11+. Users on 3.9-3.10 get older v0.16.5." | LOW | @doc-master | ✅ Done |
-| TASK-PKG-6 | **Add CI wheel content test** — Test that builds wheel and verifies clauses.json, no tests/ dir, correct top_level. Implemented in `Python/tests/test_packaging.py` (5 tests). PR #525. | MEDIUM | @tester | ✅ Done |
-
-## v0.21.2 External Audit Fixes
-
-> External audit of PyPI v0.21.2 found 23 packaging, API ergonomics, testing, security, and docs issues. See [comprehensive-library-audit-2026-04-04.md](audit/comprehensive-library-audit-2026-04-04.md) §24.
-> **Branch:** `audit/external-v0.21.2` — isolated from v0.22 work on main.
-> **Pipeline:** Each batch goes through Plan → Execute → Test → Review → Document → Commit.
-
-### Batch 1 — Test Infrastructure (lowest risk, immediate ROI)
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-8 | **Add `repo_only` pytest marker** — Mark 4+ tests that need full repo (`test_api_surface_snapshot`, `test_pipeline_state`, `test_session_store`, `test_release_scripts`). Add `repo_only` marker to `pytest.ini`. | P1 | @tester | ✅ Done |
-| EA-6 | **Add import silence smoke test** — Test that `import structural_lib` emits zero warnings. Currently pytest.ini suppresses them instead of testing absence. | P1 | @tester | ✅ Done |
-| EA-1 | **Verify sdist test isolation** — Confirm tests separated by `repo_only` marker won't fail in sdist context. | P0 | @tester | ✅ Done |
-
-### Batch 2 — Import Cleanup (highest user-facing impact)
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-2 | **Silence import-time warnings** — Lazy-load clause DB in traceability.py. Gate deprecation stubs behind actual import, not module load. | P1 | @backend | ✅ Done |
-| EA-10 | **Lazy-load non-core modules** — Use `__getattr__` pattern in `__init__.py` for: adapters, etabs_import, batch, costing, testing_strategies, visualization. | P2 | @backend | ✅ Done |
-
-### Batch 3 — API Consistency (user-facing API fixes)
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-3 | **Normalize `compute_report()` return type** — Split into `compute_report()` → str and `compute_report_to_files()` → list[Path], or use overloads. | P1 | @backend | ✅ Done |
-| EA-4 | **Add `.to_dict()` to core dataclasses** — Add to ComplianceCaseResult, FlexureResult, ShearResult, ColumnAxialResult, BBSDocument (~10 classes). | P1 | @backend | ✅ Done |
-| EA-5 | **Add schema builder for `compute_detailing()`** — Add `from_design_result(ComplianceCaseResult)` factory or `DetailingInput` class. | P1 | @backend | ✅ Done |
-
-### Batch 4 — Testing Improvements
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-7 | **Add e2e pipeline test** — `test_full_pipeline_e2e.py`: design → detailing → BBS → DXF → report chain. | P1 | @tester | ✅ Done |
-| EA-9 | **Add wheel API stability test** — Build wheel, install in temp venv, verify all `__all__` members importable. | P2 | @tester | ✅ Done |
-
-### Batch 5 — Security Hardening
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-18 | **Sanitize all `str(e)` in routers** — Replace 32 instances of `detail=str(e)` with generic messages. Log original error server-side. | P1 | @api-developer | ✅ Done |
-| EA-17 | **Add global rate limiter middleware** — Apply rate limiting to all endpoints, not just 2 streaming routes. | P1 | @api-developer | ✅ Done |
-
-### Batch 6 — Frontend
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-15 | **Custom form validation** — Add validation error display, cross-field checks (depth > cover), Zod/custom validators in BeamForm. | P1 | @frontend | ✅ Done |
-
-### Batch 7 — Documentation
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-12 | **"Which API?" decision doc** — Document when to use `api.design_beam_is456()` vs `flexure.design_singly_reinforced()` vs module-level imports. | P2 | @doc-master | ✅ Done |
-| EA-13 | **Copy-pasteable e2e example** — Python script: design → detailing → BBS → report in one file. | P2 | @doc-master | ✅ Done |
-| EA-14 | **Task-oriented README** — Rewrite around "If you want X, call Y" structure. | P2 | @doc-master | ✅ Done |
-
-### Deferred (lower priority, future versions)
-
-| ID | Task | Severity | Agent | Status |
-|----|------|----------|-------|--------|
-| EA-11 | Canonical workflow guidance in UI | P2 | @frontend | ✅ Done |
-| EA-16 | Auth enabled by default in production deployments | P1 | @ops | ✅ Done |
-| EA-19 | WebSocket Pydantic validation | P2 | @api-developer | ✅ Done |
-| EA-20 | Wire CORS Settings to middleware | P2 | @api-developer | ✅ Done |
-| EA-21 | Torsion D parameter fix (IS-1) | P2 | @structural-math | ✅ Done |
-| EA-22 | Footing Cl 34.4 bearing enhancement (IS-6) | P2 | @structural-math | ✅ Done |
-| EA-23 | SCWB joint check (IS 13920 Cl 7.2.1) | P2 | @structural-math | ✅ Done |
-
-## v0.21.5 Stabilization (2026-04-06)
-
-| ID | Task | Agent | Status |
+| ID | Task | Owner | Status |
 |----|------|-------|--------|
-| v0.21.5-1 | Fix CostProfile import in optimization router (broken import → 503 on every call) | Copilot | ✅ Done |
-| v0.21.5-2 | Extract sanitize_float to error_utils.py and apply to all column router endpoints | Copilot | ✅ Done |
-| v0.21.5-3 | Fix benchmark test ERRORs (added conftest.py with pytest.importorskip) | Copilot | ✅ Done |
-| v0.21.5-4 | Fix torsion deprecation warning (refactored shim to lazy __getattr__ pattern) | Copilot | ✅ Done |
-| v0.21.5-5 | Fix column uniaxial Pu=0 inf/NaN → now passes (removed xfail marker) | Copilot | ✅ Done |
-| v0.21.5-6 | Wire footing functions into services/api.py and __init__.py (5 functions + types) | Copilot | ✅ Done |
-| TASK-654 | Implement check_bearing_pressure() for IS 456 Cl 34.4 + 10 tests | Copilot | ✅ Done |
-| v0.21.5-8 | Update README API table (added 30+ missing function docs: columns, footings, torsion, IS 13920) | Copilot | ✅ Done |
+| TASK-724 | Implement `check_code("IS456")` — validates code implementation contract | @backend | 📋 |
+| TASK-725 | Implement `show_versions()` — library + dependency info | @backend | 📋 |
+| TASK-726 | API surface freeze: OpenAPI baseline diff in CI | @ops | 📋 |
+| TASK-727 | Function limitation docs — what each function does NOT do | @doc-master | 📋 |
 
-## Recently Done
+## v0.21.7 — Security Hardening
 
-| ID | Task | Agent | Status |
+**Theme:** Close all OWASP-relevant gaps (see architecture doc §12)
+**Target:** 2-3 sessions after v0.21.6
+**Quality Gate:** `audit_input_validation.py` reports 0 unresolved findings. `pip-audit` clean.
+
+| ID | Task | Owner | Status |
 |----|------|-------|--------|
-| fix-envelope | Fix response envelope mismatch — React client unwraps FastAPI `{success, data}` wrapper via `unwrapResponse()` in 16 API calls across 7 files. Fixed Import crash (`beams.map`), Design crash (`result.flexure`), silent data failures. | frontend | ✅ Done |
-| TASK-CIFIX | CI fix: React test mocks (5 hooks), Docker JWT_SECRET_KEY, ops hardening, finish_task_pr.sh escape hatch removal, WORKLOG cleanup, dead code removal | Copilot | ✅ Done |
-| AUDIT-P0 | All 5 P0 audit findings fixed (auth, CI, WCAG, batch limits, bilinear tests) | Copilot | ✅ Done |
-| AUDIT-P1 (partial) | 6 P1 audit findings fixed (SM-1/2/3, IS-5/7, FE-6) | Copilot | ✅ Done |
-| AUDIT-P1-B1 | 9 P1 audit findings resolved (U-1, API-1/2/11, GOV-5 verified; A-1, A-3, API-6, FE-7 fixed) | Copilot | ✅ Done |
-| AUDIT-P2-B1 | 7 P2 audit findings fixed (S-15, S-18, SM-6, SM-8, SM-10, API-8, API-10) | Copilot | ✅ Done |
-| AUDIT-P2-B2 | 7 P2 fixes + 2 closures (OPS-4, SM-7, SM-9, FE-5, BE-6, S-17, DOC-7; S-16/S-22 closed invalid) | Copilot | ✅ Done |
-| TASK-681 | Migrate python-jose → PyJWT in auth.py | Copilot | ✅ Done |
-| TASK-690 | Column P-M interaction math fixes (SP:16 Table I continuity, Cl 38.1 modified strain, xu_bal inelastic strain, Pu_0 cap) | Copilot | ✅ Done |
-| TASK-691 | Column biaxial e_min enforcement (Cl 25.4 both axes before Bresler) | Copilot | ✅ Done |
-| TASK-692 | Column router exception sanitization (OWASP CWE-209) | Copilot | ✅ Done |
-| TASK-900 | Git workflow hardening — all phases complete (13/14 tasks) | Copilot | ✅ Done |
-| TASK-671 | Fix 4 known limitations (effective depth, serviceability, multi-layer rebar, failure story) | Copilot | ✅ Done |
-| TASK-670 | Fix calculation_report.py shear field bug (4 non-existent ShearResult fields, masked by MagicMock) | Copilot | ✅ Done |
-| TASK-660 | Standardize variable naming to IS 456 industry convention (21 fields, 4 dataclasses) | Copilot | ✅ Done |
-| TASK-650/651/652/653 | Phase 3 Footing: types, bearing/flexure, one-way shear, punching shear (61 tests) | Copilot | ✅ Done |
-| TASK-712 | Enhanced shear near supports (Cl 40.3) — shear.py + 14 tests + API endpoint (PR #468) | Copilot | ✅ Done |
-| TASK-709 | Move ductile.py → codes/is13920/beam.py + shim (PR #467) | Copilot | ✅ Done |
-| TASK-710 | Fix upward import in detailing.py (PR #467) | Copilot | ✅ Done |
-| TASK-642 | Five-point steel stress-strain curve (IS 456 Fig 23) — 26 tests | Copilot | ✅ Done |
-| TASK-800.P2-P11 | Agent evolver: 10 scripts + agent-evolver.agent.md + skill + run.sh | Copilot | ✅ Done |
+| TASK-728 | JSON body size limit middleware (1MB default) | @api-developer | 📋 |
+| TASK-729 | Cross-field plausibility guards (API boundary validation) | @api-developer | 📋 |
+| TASK-730 | Input validation audit completion (`audit_input_validation.py`) | @security | 📋 |
+| TASK-731 | Dependency CVE scanning in CI (`pip-audit`) | @ops | 📋 |
+| — | WebSocket message rate limit (5 msg/s per session) | @api-developer | 📋 |
+| — | Computation timeout (prevent pathological inputs) | @api-developer | 📋 |
 
-## Up Next
+## v0.21.8 — Performance & Property Testing
 
-### Audit P1 Fixes — Batch 1 ✅
-| A-1 | Move clause_cli.py to cli/ | ✅ Done |
-| A-3 | Ast_min/Ast_max in FlexureResult | ✅ Done |
-| API-6 | Streaming 404 + job_id validation | ✅ Done |
-| FE-7 | Three.js material memory cleanup | ✅ Done |
+**Theme:** Performance baselines and property-based invariants
+**Target:** 2-3 sessions after v0.21.7
+**Quality Gate:** All benchmarks baselined. Hypothesis tests pass 10,000 examples.
 
-### Audit P1 Fixes — Batch 2 (Next)
-| API-5 | OpenAPI examples on Pydantic models | 🔄 Planned |
-| OPS-3 | Python dependency lock file | 🔄 Planned |
-| DOC-4 | Footing section in api.md | 🔄 Planned |
-| DOC-5 | Clause-to-function mapping | 🔄 Planned |
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| TASK-732 | pytest-benchmark integration for hot-path functions | @tester | 📋 |
+| TASK-733 | Property-based testing with Hypothesis (flexure/shear/column) | @tester | 📋 |
+| TASK-734 | Performance regression baselines in CI (>20% slowdown blocks merge) | @ops | 📋 |
+| — | Benchmark results stored in `Python/test_stats.json` | @tester | 📋 |
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| TASK-527 | TopBar context badges + SettingsPanel slide-over | — | 2h | 🟡 Medium | ✅ Done |
-| TASK-528 | Workflow breadcrumb for batch flow | — | 1h | 🟢 Low | ✅ Done |
-| TASK-516 | Triangular + Moment load stubs in load_analysis.py | — | 1d | 🟡 Medium | ✅ Done |
-| TASK-519 | Alternatives Panel — Pareto front in DesignView | — | 3–4d | 🟡 Medium | ✅ Done |
-| TASK-520 | Test coverage: report.py, geometry_3d.py, dashboard.py | — | 2–3d | 🟡 Medium | 📋 |
-| TASK-521 | Beam Rationalization (new algo + FastAPI + React) | — | 1–2w | 🟢 Low | 📋 |
-| TASK-643 | Verify SP:16 Table I normalization convention against physical publication | — | 0.5d | 🟡 Medium | 📋 |
+## v0.22.0 — Stabilization Release
+
+**Theme:** Production-quality release with full provenance and CI gates
+**Target:** After all v0.21.x complete
+**Quality Gate:** All v0.21.x quality gates pass simultaneously. SP:16 verification ±0.1%. Release preflight clean.
+
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| TASK-735 | CalculationProvenance foundation (`core/provenance.py`) — see arch doc §11 | @backend | 📋 |
+| TASK-736 | SP:16 full verification | @structural-engineer | 📋 |
+| TASK-521 | Beam rationalization | @backend | 📋 [CARRIED OVER] |
+| TASK-643 | SP:16 chart verification completion | @structural-engineer | 📋 [CARRIED OVER] |
+| — | Deprecate old architecture docs | @doc-master | 📋 |
+| — | Full CI/CD pipeline with all quality gates active | @ops | 📋 |
+| — | Release checklist automation | @ops | 📋 |
 
 ## Library Expansion — Multi-Code, Multi-Element
 
@@ -239,109 +163,188 @@
 > See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) for full plan.
 > Use `/function-quality-pipeline` skill for every new function.
 
-### Phase 0: Quality Infrastructure ✅ Done (11/11)
+### Completed Phases (Summary)
 
-> TASK-600–610 complete. Function quality pipeline, agent updates, blueprint v4.0. See [tasks-history.md](_archive/tasks-history.md).
+| Phase | Scope | Tasks | Status |
+|-------|-------|-------|--------|
+| Phase 0 | Quality Infrastructure | TASK-600–610 (11/11) | ✅ Done |
+| Phase 1 | Foundation Cleanup | TASK-611–625 (15/15) | ✅ Done |
+| Phase 1.5 | IS 456 Beam Restructure | TASK-700–712 (13/13) | ✅ Done |
+| Phase 2 | Column Design | TASK-630–646 (14/14) | ✅ Done |
+| Phase 3 (partial) | Footing Design | TASK-650–654 (5/7) | 🔄 5/7 |
+| Variable Naming | IS 456 convention migration | TASK-660 (1/1) | ✅ Done |
+| Agent Evolver | Self-evolving agent system | TASK-800.P3–P11 | ✅ Done (P12 burn-in) |
+| Agent Infrastructure | claw-code adaptation | TASK-850–872 (23/23) | ✅ Done |
+| Git Hardening | Git workflow automation | TASK-900–913 (13/14) | ✅ 13/14 |
 
-### Phase 1: Foundation Cleanup ✅ Done (15/15)
+> Full details for all completed phases: [tasks-history.md](_archive/tasks-history.md)
 
-> TASK-611–625 complete. core/numerics.py, is456/common/, @deprecated decorator, clauses.json, plausibility guards, check scripts. See [tasks-history.md](_archive/tasks-history.md).
-
-### Phase 1.5: IS 456 Beam Restructure ✅ Done (13/13)
-
-> TASK-700–712 complete. Beam modules → `codes/is456/beam/`, ductile → `codes/is13920/`, backward-compat shims, enhanced shear (Cl 40.3). PRs #466, #467, #468. See [tasks-history.md](_archive/tasks-history.md).
-
-### Phase 2: Column Design ✅ Done (14/14)
-
-| ID | Task | Function | IS 456 Clause | Priority | Status |
-|----|------|----------|---------------|----------|--------|
-| TASK-630 | Column types (ColumnClassification, ColumnAxialResult, E_COLUMN errors) | Types | — | 🔴 P0 | ✅ Done |
-| TASK-631 | classify_column + min_eccentricity | `classify_column`, `min_eccentricity` | Cl 25.1.2, 25.4 | 🔴 P0 | ✅ Done |
-| TASK-632 | Short column axial | `short_axial_capacity` | Cl 39.3 | 🔴 P0 | ✅ Done |
-| TASK-633 | Short column uniaxial | `design_short_column_uniaxial` | Cl 39.5 | 🔴 High | ✅ Done |
-| TASK-634 | P-M interaction curve | `pm_interaction_curve` | Cl 39.5, Annex G | 🔴 High | ✅ Done |
-| TASK-635 | Biaxial bending check | `biaxial_bending_check` | Cl 39.6 | 🔴 High | ✅ Done |
-| TASK-636 | Effective length | `calculate_effective_length` | Cl 25.2 | 🟡 Medium | ✅ Done (PR #481) |
-| TASK-637 | Additional moment | `calculate_additional_moment` | Cl 39.7.1 | 🟡 Medium | ✅ Done |
-| TASK-638 | Long column design | `design_long_column` | Cl 39.7 | 🟡 Medium | ✅ Done — long_column.py (395 lines), braced/unbraced, k-factor, additional moments, 23 tests |
-| TASK-639 | Helical reinforcement | `check_helical_reinforcement` | Cl 39.4 | 🟢 Low | ✅ Done — helical.py (236 lines), volume ratio, pitch limits, 1.05 enhancement, 14 tests |
-| TASK-640 | Column orchestrator | `design_column_is456` | All | 🟡 Medium | ✅ Done — services/api.py (~300 lines), routes short→axial/uniaxial/biaxial, slender→long_column |
-| TASK-641 | Column FastAPI endpoint | `POST /api/v1/design/column` | — | 🟡 Medium | ✅ Done — 3 endpoints (long-column, helical-check, design/column), 6 Pydantic models |
-
-| TASK-645 | Column detailing | `column_detailing` | Cl 26.5.3 | 🟡 Medium | ✅ Done — detailing.py (617 lines, 8 functions), ColumnDetailingResult, 5 error codes, API + FastAPI endpoint, 47 tests |
-| TASK-646 | Column ductile detailing | `column_ductile_detailing` | IS 13920 Cl 7 | 🟡 Medium | ✅ Done — codes/is13920/column.py (280 lines, 8 functions), DuctileColumnResult, 5 error codes, API + FastAPI endpoint, 18 tests |
-
-> Phase 2 progress: **14/14 tasks done — Phase 2 Column COMPLETE.** Full IS 456 column design: axial, uniaxial, biaxial, P-M curves, effective length, slender columns, helical reinforcement, detailing (Cl 26.5.3), ductile detailing (IS 13920 Cl 7), orchestrator + FastAPI.
-
-### Phase 3: Footing Design (After Phase 2)
+### Phase 3: Footing Design (Remaining)
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-650 | Footing types + errors (FootingType enum, 4 result dataclasses, 8 error codes) | Types | — | ✅ Done |
-| TASK-651 | Isolated footing design (bearing sizing + flexure) | `size_footing`, `footing_flexure` | Cl 34.1, 34.2.3.1 | ✅ Done |
-| TASK-652 | Punching shear check | `footing_punching_shear` | Cl 31.6.1 | ✅ Done |
-| TASK-653 | One-way shear check | `footing_one_way_shear` | Cl 34.2.4.1(a) | ✅ Done |
-| TASK-654 | Bearing pressure | `check_bearing_pressure` | Cl 34.4 | ✅ Done |
 | TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
 | TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
 
-> Phase 3 in progress: 5/7 tasks done. Footing types, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1), bearing pressure (Cl 34.4). 6 new modules in `codes/is456/footing/`. 89+ tests, 0 failures. Fixes applied: both-direction flexure + shear design, Cl 34.3.1 steel distribution for rectangular footings, 150mm minimum depth enforcement. Remaining: TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
+> Phase 3: 5/7 tasks done (TASK-650–654 ✅). Covers: types+errors, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1), bearing pressure (Cl 34.4). 89+ tests. Remaining: TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
 
-### Variable Naming Migration (TASK-660)
+---
 
-| ID | Task | Scope | Priority | Status |
-|----|------|-------|----------|--------|
-| TASK-660 | Standardize variable naming to IS 456 industry convention | FlexureResult, ShearResult, TorsionResult, LoadCase, ComplianceCaseResult | 🟡 Medium | ✅ Done |
+## v0.23 — IS 456 Slabs & Footing Completion
 
-> TASK-660 complete. 21 field renames across 4 dataclasses. @property backward-compat aliases added (deprecation warnings, removal in v1.0.0). ~60 files updated. JSON API backward compatible. 4165 Python + 180 FastAPI tests pass.
+**Ref:** Architecture doc §20.6
 
-### Phase 4-6: Slab, Staircase, Shear Wall (Future)
+### Footing Remaining
 
-See [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) for full multi-code, multi-element plan.
+| ID | Task | Function | IS 456 Clause | Status |
+|----|------|----------|---------------|--------|
+| TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
+| TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
+| — | Combined footing design | — | — | 📋 |
+| — | Footing `@clause` coverage to 100% | — | — | 📋 |
 
-### Agent Evolver Infrastructure (TASK-800)
+### One-Way Slab Design (IS 456 Cl 24.1–24.2)
 
-> Self-evolving agent system. P3–P11 + tests complete. See [tasks-history.md](_archive/tasks-history.md).
+| ID | Task | Function | IS 456 Clause | Status |
+|----|------|----------|---------------|--------|
+| TASK-737 | One-way slab design (umbrella) | — | Cl 24.1–24.2 | 📋 |
+| TASK-750 | Slab types + errors | Types (SlabClassification, SlabDesignResult) | — | 📋 |
+| TASK-751 | classify_slab | `classify_slab()` | ly/lx ratio | 📋 |
+| TASK-752 | One-way coefficients | `oneway_coefficients()` | Table 12/13 | 📋 |
+| TASK-753 | Design one-way slab | `design_oneway_slab()` | Cl 24.1–24.2 | 📋 |
+| TASK-754 | Slab detailing | `slab_detailing()` | Cl 26.5 | 📋 |
 
-| ID | Task | Phase | Status |
+### Two-Way Slab Design (IS 456 Cl 24.3, Annex D)
+
+| ID | Task | Function | IS 456 Clause | Status |
+|----|------|----------|---------------|--------|
+| TASK-738 | Two-way slab design (umbrella) | — | Cl 24.3, Annex D | 📋 |
+| TASK-760 | Two-way moment coefficients | `twoway_moment_coefficients()` | Table 26 | 📋 |
+| TASK-761 | Two-way shear coefficients | `twoway_shear_coefficients()` | Table 27 | 📋 |
+| TASK-762 | Design two-way slab | `design_twoway_slab()` | Annex D-1 | 📋 |
+| TASK-763 | Torsion reinforcement | `torsion_reinforcement()` | Annex D-1.7/D-1.8 | 📋 |
+| TASK-764 | Strip distribution | `strip_distribution()` | Annex D-1.2 | 📋 |
+| — | Flat slab with drop panels | — | IS 456 Cl 31 | 📋 |
+
+### Punching Shear (Shared — Slab + Footing)
+
+| ID | Task | Function | IS 456 Clause | Status |
+|----|------|----------|---------------|--------|
+| TASK-770 | General punching shear module | `punching_shear_check()` | Cl 31.6 | 📋 |
+
+### Slab FastAPI + React
+
+| ID | Task | Status |
+|----|------|--------|
+| TASK-780 | Slab API wiring (services/api.py) | 📋 |
+| TASK-781 | Slab FastAPI endpoints | 📋 |
+| TASK-782 | Slab React form + results panel | 📋 |
+
+### Additional v0.23 Deliverables (from architecture doc §20.6)
+
+| ID | Task | Owner | Status |
 |----|------|-------|--------|
-| TASK-800.P12 | Burn-in validation (15-20 sessions) | P12 | 👀 Monitoring |
+| — | Progress callbacks for batch operations (§13.2) | @backend | 📋 |
+| — | Complete error hierarchy (§13.3) | @backend | 📋 |
+| — | Property-based testing expansion to all modules (§14.1) | @tester | 📋 |
+| — | Performance benchmarks baselined (§14.2) | @tester | 📋 |
 
-### Agent Infrastructure (claw-code adaptation) ✅ Done (23/23)
+---
 
-> TASK-850–872 complete. Agent registry, tool registry, prompt router, permission enforcement, hooks, parity dashboard, skill tiers. See [tasks-history.md](_archive/tasks-history.md).
+## v0.24 — Multi-Code Infrastructure
 
-### Git Workflow Hardening (TASK-900)
+**Ref:** Architecture doc §20.7 + [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) Phase 2
 
-> **Hardening the git automation infrastructure** based on 9-script audit and TASK-640 root-cause analysis.
-> Full plan: [git-workflow-hardening-plan.md](_active/git-workflow-hardening-plan.md)
-> WIP limit: 2 active at once.
+| ID | Task | Description | Owner | Status |
+|----|------|-------------|-------|--------|
+| TASK-739 | CodeRegistry thread-safe locking | Make CodeRegistry safe for concurrent use | @backend | 📋 |
+| TASK-740 | DesignEnvelope wrapper | Multi-code result wrapper (§5.3) | @backend | 📋 |
+| TASK-741 | core/units.py | Unit conversion at boundary (in→mm, psi→MPa) | @backend | 📋 |
+| TASK-800-INFRA-1 | Activate CodeRegistry | `services/api.py` uses `CodeRegistry.get()` for dispatch | @backend | 📋 |
+| TASK-800-INFRA-2 | IS456Code implements ABCs | FlexureDesigner, ShearDesigner, ColumnDesigner | @backend | 📋 |
+| TASK-800-INFRA-3 | Code-specific input dataclasses | IS456BeamInput, ACI318BeamInput, EC2BeamInput | @backend | 📋 |
+| — | Code Amendment Tracking metadata (§11.2) | @structural-math | 📋 |
+| — | National annex support infrastructure | @backend | 📋 |
+| — | Entry-point plugin discovery for third-party codes (§16.7) | @backend | 📋 |
+| — | Auto-generated client SDKs (Python + TypeScript, §13.1) | @api-developer | 📋 |
+| — | API v2 routes: `/api/v2/{code}/design/beam` | @api-developer | 📋 |
+| TASK-800-INFRA-6 | Namespace clauses.json v2 | Add code field to clause entries | @backend | 📋 |
+| TASK-800-INFRA-7 | Code discovery API | `list_codes()`, `get_capabilities()` | @backend | 📋 |
+| TASK-800-INFRA-8 | FastAPI v2 routes | `/api/v2/{code}/design/beam` | @api-developer | 📋 |
+| TASK-800-INFRA-9 | Feature flags for experimental codes | EXPERIMENTAL_CODES config | @ops | 📋 |
 
-| ID | Task | Phase | Priority | Status |
-|----|------|-------|----------|--------|
-| TASK-900 | Fix safe_push.sh Step 6 divergence detection | Phase 1 | 🔴 Critical | ✅ Done |
-| TASK-901 | Block --amend on main/develop/release branches | Phase 1 | 🔴 Critical | ✅ Done |
-| TASK-902 | Route --push through safe_push.sh | Phase 1 | 🔴 Critical | ✅ Done |
-| TASK-903 | Wire or delete validate_git_state.sh | Phase 1 | 🟡 Medium | ✅ Done |
-| TASK-904 | Persist --finish state (.git/FINISH_STATE) | Phase 2 | 🔴 High | ✅ Done |
-| TASK-905 | Squash-merge divergence detection | Phase 2 | 🔴 High | ✅ Done (merged into TASK-900/906) |
-| TASK-906 | Actionable push error messages | Phase 2 | 🔴 High | ✅ Done |
-| TASK-907 | Log all bypass events | Phase 3 | 🟡 Medium | ✅ Done |
-| TASK-908 | bats-core tests for failure paths | Phase 3 | 🟡 Medium | 📋 (deferred — requires bats-core install) |
-| TASK-909 | Consolidate finish_task_pr.sh duplicates | Phase 3 | 🟡 Medium | ✅ Done |
-| TASK-910 | Script line budget in check_all.py | Phase 3 | 🟢 Low | ✅ Done |
-| TASK-911 | Task ID validation in create_task_pr.sh | Phase 4 | 🟢 Low | ✅ Done |
-| TASK-912 | Log rotation for git_workflow.log | Phase 4 | 🟢 Low | ✅ Done |
-| TASK-913 | Agent instruction updates (FORBIDDEN commands) | Phase 4 | 🟢 Low | ✅ Done |
+---
+
+## v0.25 — ACI 318-19 Beam
+
+**Ref:** Architecture doc §20.8 + [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) Phase 3
+
+| ID | Task | Description | Owner | Status |
+|----|------|-------------|-------|--------|
+| TASK-742 | ACI 318-19 beam flexure | `codes/aci318/beam_flexure.py` | @structural-math | 📋 |
+| TASK-743 | ACI 318-19 beam shear | `codes/aci318/beam_shear.py` | @structural-math | 📋 |
+| — | PCA Notes (12th Ed.) benchmarks ±0.1% | @tester | 📋 |
+| — | `@register_code("ACI318")` activation | @backend | 📋 |
+| — | ACI318 FastAPI endpoints | @api-developer | 📋 |
+
+### v0.26–v0.28 (Future)
+
+| Version | Code | Elements | Benchmark Source |
+|---------|------|----------|-----------------|
+| v0.26 | ACI 318-19 | Column + Slab | PCA Notes |
+| v0.27 | EC2 | Beam (flexure + shear) | Concrete Centre ±0.1% |
+| v0.28 | EC2 | Column + Slab | Concrete Centre |
+
+---
+
+## v1.0 — Production Multi-Code Release
+
+**Ref:** Architecture doc §20.9
+
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| — | IS 456 complete (beam + column + slab + footing) | @structural-math | 📋 |
+| — | ACI 318 beam + column | @structural-math | 📋 |
+| — | EC2 beam (basic) | @structural-math | 📋 |
+| — | CalculationProvenance on all results (§11) | @backend | 📋 |
+| — | Export integrity/watermarking (§11.3) | @backend | 📋 |
+| — | Full OWASP compliance (§12) | @security | 📋 |
+| — | API stability guarantee (no breaking changes without major version) | @backend | 📋 |
+| — | Complete documentation coverage | @doc-master | 📋 |
+| — | Performance benchmarks all met (§14.2) | @tester | 📋 |
+| — | RBAC / scope enforcement (§3.5) | @api-developer | 📋 |
+| — | Design audit trail middleware (§11.1) | @api-developer | 📋 |
+
+### Post-v1.0 Research (from architecture doc §20.10)
+
+| Item | Description | Status |
+|------|-------------|--------|
+| WASM compilation path | Layer 2 pure math → Pyodide/Rust for client-side calc | 🔲 Research |
+| msgspec serialization | Benchmark vs frozen dataclass for batch perf | 🔲 Research |
+| structuralcodes integration | Material models as optional backend | 🔲 Research |
+| IS 16700 (tall buildings) | Wind/seismic response spectra | 🔲 Research |
+| IS 1893 integration | Seismic load generation | 🔲 Research |
+
+---
 
 ## Backlog
 
 | ID | Task | Priority | Notes |
 |----|------|----------|-------|
 | TASK-513 | React: AI assistant port | ⏸ Deferred | Deferred — needs LLM API design, not in v0.22 scope |
+| TASK-908 | bats-core tests for git scripts | 🟢 Low | Deferred — requires bats-core install |
+| API-5 | OpenAPI examples on Pydantic models | 🟢 Low | Moved from v0.22 — non-blocking |
+| OPS-3 | Python dependency lock file | 🟢 Low | Moved from v0.22 — non-blocking |
+| DOC-4 | Footing section in api.md | 🟢 Low | Moved from v0.22 — non-blocking |
+| DOC-5 | Clause-to-function mapping | 🟢 Low | Moved from v0.22 — non-blocking |
+| — | E2E integration test (React against live FastAPI) | 🟡 Medium | Target v0.21.6+ |
 | — | Wire BuildingEditor Cost tab (placeholder → real data) | 🟢 Low | Use `/optimization/cost-rates` |
 | — | 28 unit conversion warnings | 🟢 Low | Informational, not bugs. Self-documenting via `_nmm`/`_knm` var names. |
 | — | 287 legacy import warnings (Streamlit) | 🟢 Low | Won't fix — will go away when Streamlit is deprecated |
+| — | IS 456 extended elements (Wall Cl 32, Staircase Cl 33, Deep beam Cl 29) | 🟢 Low | Post v1.0 |
+| — | Companion codes (IS 875, IS 1893, ASCE 7, EN 1990/1991) | 🟢 Low | Post v1.0 |
+
+---
 
 ## Archive
 

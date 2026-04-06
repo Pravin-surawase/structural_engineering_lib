@@ -1,36 +1,54 @@
 # Next Session Brief
 
-
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
 - Date: 2026-04-06
 <!-- HANDOFF:END -->
 
-
 **Last Updated:** 2026-04-06
-**Last Session:** Response envelope fix — unwrapResponse() applied to all 16 React API calls
+**Last Session:** Strategic architecture rewrite + full roadmap planning (v0.21.5→v1.0)
 
 ## What Was Completed
-- **fix-envelope:** Fixed critical response envelope mismatch between FastAPI and React — added `unwrapResponse()` helper, applied to all 16 API fetch calls across 7 hook/client files. Fixed Import page crash (`beams.map`), Design page crash (`result.flexure`), and silent data failures on geometry/insights/rebar pages.
-- Fixed `new URL()` crash on relative paths in useCSVImport.ts (dev mode)
-- Added 3 contract tests for `unwrapResponse`, updated test mocks — all 132 React tests pass, build succeeds
-- **TASK-527:** TopBar context badges (beam count on Editor, green dot on Dashboard) + SettingsPanel slide-over
-- **TASK-528:** WorkflowBreadcrumb component (Import → Editor → Batch → Dashboard) integrated into 4 pages
-- **TASK-516:** Triangular + applied moment loads in load_analysis.py — 23 new tests, all 48 load analysis tests pass
-- **TASK-519:** Pareto alternatives panel — optimize_pareto_front wired to API, new endpoint + hook + ParetoPanel in DesignView
-- **Review:** APPROVED — 4524 Python tests pass, React build clean, architecture boundaries maintained
-- **fix-revert:** Identified and reverted 4 accidental regressions (torsion.py clause_refs, config.py version+upload limit, main.py JWT handling, websocket.py sanitize_error)
+- **Architecture doc rewrite:** unified-architecture-v1.md expanded from 1108→1540 lines with 3 new sections:
+  - §18: Regression Prevention Framework (golden vectors, contract tests, benchmarks)
+  - §19: Governance & Release Process (NumPy/pandas-inspired, 5-step release, ADRs)
+  - §20: Complete Roadmap v0.21.5→v1.0 (10 sub-sections, all deliverables with owners)
+- **Fixed contradictions:** CodeRegistry status, @clause coverage claims, thread-safety claims
+- **TASKS.md complete rewrite:** Full roadmap with 50+ new task IDs (TASK-724→TASK-782), every version from v0.21.5 to v1.0 with quality gates and owners
+- **Archived:** v0.21 React UX Overhaul (TASK-522-528) + Library Expansion items 1-6 (TASK-514-519) to tasks-history.md
+- **Schema answer:** Pydantic IS the schema — no separate schema language needed
+- **Library research:** Studied NumPy, pandas, scikit-learn, Pydantic best practices
 
-## What's Next (Priority Order)
-1. **Verify end-to-end:** Run all React pages against live FastAPI backend to confirm envelope fix works in integration
-2. **Add API contract test in CI:** Ensure `{success, data}` envelope shape is validated automatically
-3. **Key pattern:** ALL new fetch calls to `/api/v1/*` MUST use `unwrapResponse()` from `api/client.ts`
-4. **TASK-520:** Report/3D test coverage (~15 tests for report.py, geometry_3d.py, dashboard.py)
-5. **TASK-521:** Beam rationalization (new rationalization.py ~250 lines + FastAPI + React panel)
-6. **Footing remaining:** Dowel bars (TASK-655), FastAPI endpoint (TASK-656)
-7. **TASK-643:** Verify SP:16 Table I normalization convention
-8. **v0.22 release:** Tag + publish when remaining tasks complete
+## Priorities (Updated)
+
+### Immediate (v0.21.5 — Test Coverage & Regression Prevention)
+1. **Golden vector baselines** for all IS 456 beam functions (TASK-720) — @tester
+2. **Contract tests** for API surface stability (TASK-721) — @tester
+3. **conftest.py golden_vectors fixture** with SP:16 values (TASK-722) — @tester
+4. **CI gate:** `pytest -m golden` must pass before merge (TASK-723) — @ops
+5. **Report/3D test coverage** (TASK-520) — @tester [CARRIED OVER]
+6. **Add @clause to footing helpers** (7 functions) — @structural-math
+7. **90%+ branch coverage** on `codes/is456/` — @tester
+
+### Next (v0.21.6 — API Quality & Introspection)
+8. **check_code("IS456")** implementation (TASK-724) — @backend
+9. **show_versions()** implementation (TASK-725) — @backend
+10. **API surface freeze** in CI (TASK-726) — @ops
+11. **Function limitation docs** (TASK-727) — @doc-master
+
+### Architecture Reference
+- Unified architecture: `docs/architecture/unified-architecture-v1.md` (1540 lines, 21 sections)
+- Complete roadmap: §20 of architecture doc (v0.21.5→v1.0)
+- Quality gates per version: §9 of architecture doc
+- Blueprint details: `docs/planning/library-expansion-blueprint-v5.md`
+
+## Key Patterns Established
+- Pydantic IS the schema (no Protocol Buffers/GraphQL/SDL needed)
+- 4-layer validation: type hints → Pydantic → domain → output sanity
+- Golden vectors mandatory for ALL new IS 456 functions (SP:16 ±0.1%)
+- NumPy-style deprecation: warn for 2 minor versions before removal
+- Every release follows 5-step process: PREFLIGHT → UAT → QUALITY GATE → VERSION BUMP → POST-RELEASE
 
 ## Blockers
 - None
