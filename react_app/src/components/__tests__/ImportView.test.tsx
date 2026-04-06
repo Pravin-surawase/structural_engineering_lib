@@ -6,6 +6,7 @@ import { ImportView } from '../import/ImportView';
 // Mock react-router-dom
 vi.mock('react-router-dom', () => ({
   useNavigate: vi.fn(() => vi.fn()),
+  useLocation: vi.fn(() => ({ pathname: '/import' })),
   useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
 
