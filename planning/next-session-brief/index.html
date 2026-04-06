@@ -1503,6 +1503,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#current-version-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Version State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#priorities-updated" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1515,10 +1526,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#immediate-v0217-security-hardening" class="md-nav__link">
+  <a href="#immediate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Immediate (v0.21.7 — Security Hardening)
+        Immediate
       
     </span>
   </a>
@@ -1526,10 +1537,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#next-v0218-performance-property-testing" class="md-nav__link">
+  <a href="#next-v0217-security-hardening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next (v0.21.8 — Performance &amp; Property Testing)
+        Next (v0.21.7 — Security Hardening)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#later-v0218-performance-property-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Later (v0.21.8 — Performance &amp; Property Testing)
       
     </span>
   </a>
@@ -1602,27 +1624,36 @@
 </ul>
 <!-- HANDOFF:END -->
 
-<p><strong>Last Updated:</strong> 2026-04-06
-<strong>Last Session:</strong> v0.21.6 completed — check_code(), show_versions(), OpenAPI CI check, limitation docs</p>
+<p><strong>Last Updated:</strong> 2026-04-07
+<strong>Last Session:</strong> Post-merge audit remediation, version sync, endpoint count fix</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>check_code("IS456") (TASK-724):</strong> Self-validation function with CheckCodeReport — 6 checks (importable, decorated, frozen, results, params, boundaries)</li>
-<li><strong>show_versions() (TASK-725):</strong> Diagnostic utility with VersionInfo — reports library, Python, platform, codes, dependencies</li>
-<li><strong>OpenAPI baseline drift check (TASK-726):</strong> CI step + scripts/check_openapi_drift.py — prevents silent API breakage</li>
-<li><strong>Function limitation docs (TASK-727):</strong> Added Limitations sections to 22 IS 456 function docstrings across 12 modules</li>
-<li><strong>76 new tests:</strong> 35 for check_code, 41 for show_versions</li>
-<li><strong>v0.21.6 quality gate passed:</strong> all tests pass, OpenAPI drift check clean</li>
+<li><strong>External audit remediation:</strong> 8 findings fixed (PR #544 merged)</li>
+<li><strong>Version synchronization:</strong> 0.21.5→0.21.6 across README, CITATION.cff, package.json</li>
+<li><strong>TASKS.md accuracy:</strong> v0.21.6 marked "COMPLETE (unreleased)" not "Released"</li>
+<li><strong>Endpoint count standardized:</strong> 59→60 across 8 docs (11 edits)</li>
+<li><strong>Post-merge verification:</strong> 5081 tests pass, all fixes confirmed on main</li>
+<li><strong>Agent evolution:</strong> EVO-014 through EVO-017 proposed (integration test gaps)</li>
+</ul>
+<h2 id="current-version-state">Current Version State<a class="headerlink" href="#current-version-state" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>v0.21.5</strong> = last PyPI release (tag: v0.21.5)</li>
+<li><strong>v0.21.6</strong> = feature-complete, unreleased — DO NOT mark as "Released" anywhere</li>
 </ul>
 <h2 id="priorities-updated">Priorities (Updated)<a class="headerlink" href="#priorities-updated" title="Permanent link">&para;</a></h2>
-<h3 id="immediate-v0217-security-hardening">Immediate (v0.21.7 — Security Hardening)<a class="headerlink" href="#immediate-v0217-security-hardening" title="Permanent link">&para;</a></h3>
+<h3 id="immediate">Immediate<a class="headerlink" href="#immediate" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>v0.21.6 PyPI release</strong> — when user is ready</li>
+</ol>
+<h3 id="next-v0217-security-hardening">Next (v0.21.7 — Security Hardening)<a class="headerlink" href="#next-v0217-security-hardening" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>JSON body size limit middleware</strong> (TASK-728) — @api-developer</li>
 <li><strong>Cross-field plausibility guards</strong> (TASK-729) — @api-developer</li>
 <li><strong>Input validation audit</strong> (TASK-730) — @security</li>
-<li><strong>WebSocket message rate limit</strong> — @api-developer</li>
+<li><strong>WebSocket message rate limit</strong> (TASK-731) — @api-developer</li>
 <li><strong>Computation timeout</strong> — @api-developer</li>
 </ol>
-<h3 id="next-v0218-performance-property-testing">Next (v0.21.8 — Performance &amp; Property Testing)<a class="headerlink" href="#next-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
+<h3 id="later-v0218-performance-property-testing">Later (v0.21.8 — Performance &amp; Property Testing)<a class="headerlink" href="#later-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>pytest-benchmark integration</strong> (TASK-732) — @tester</li>
 <li><strong>Hypothesis test expansion</strong> (TASK-733) — @tester</li>
