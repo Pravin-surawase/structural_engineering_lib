@@ -53,6 +53,7 @@ tags: []
 | 2026-04-05 | EA-23 | IS 13920: check_scwb() joint check per Cl 7.2.1 | — |
 | 2026-04-05 | EA-11 | Frontend: WorkflowHint component on DesignView, ImportView, BuildingEditorPage | — |
 | 2026-04-05 | EA-14 | Docs: Task-oriented README rewrite | — |
+| 2026-04-06 | fix-revert | Reverted 4 accidental regressions: torsion.py clause_refs, config.py version+upload limit, main.py JWT handling, websocket.py sanitize_error | pending |
 | 2026-04-05 | EA-1,6,8 | Test infra: repo_only marker, import silence test | b1a4351b |
 | 2026-04-05 | EA-2,10 | Import cleanup: lazy clause DB, lazy __init__ (7 modules) | b1a4351b |
 | 2026-04-05 | EA-3,4,5 | API consistency: compute_report docs, to_dict(), build_detailing_input | b1a4351b |

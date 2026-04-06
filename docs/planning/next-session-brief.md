@@ -20,6 +20,7 @@
 - **TASK-516:** Triangular + applied moment loads in load_analysis.py — 23 new tests, all 48 load analysis tests pass
 - **TASK-519:** Pareto alternatives panel — optimize_pareto_front wired to API, new endpoint + hook + ParetoPanel in DesignView
 - **Review:** APPROVED — 4524 Python tests pass, React build clean, architecture boundaries maintained
+- **fix-revert:** Identified and reverted 4 accidental regressions (torsion.py clause_refs, config.py version+upload limit, main.py JWT handling, websocket.py sanitize_error)
 
 ## What's Next (Priority Order)
 1. **Verify end-to-end:** Run all React pages against live FastAPI backend to confirm envelope fix works in integration
