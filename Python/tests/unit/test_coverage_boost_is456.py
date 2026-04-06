@@ -2248,7 +2248,7 @@ class TestTorsionDesignEdgeCases:
                 cover=40,
             )
 
-    def test_design_torsion_d_zero_raises(self):
+    def test_design_torsion_eff_depth_zero_raises(self):
         """Line 465: d <= 0 in design_torsion raises DimensionError."""
         from structural_lib.codes.is456.beam.torsion import design_torsion
         from structural_lib.core.errors import DimensionError
@@ -2816,20 +2816,20 @@ class TestComplianceUncoveredBranches:
 class TestLongColumnUncoveredBranches:
     """Target remaining uncovered branches in column/long_column.py."""
 
-    _BASE = dict(
-        M1x_kNm=20,
-        M2x_kNm=80,
-        M1y_kNm=10,
-        M2y_kNm=40,
-        b_mm=300,
-        D_mm=400,
-        lex_mm=6000,
-        ley_mm=6000,
-        fck=25,
-        fy=415,
-        Asc_mm2=1200,
-        d_prime_mm=50,
-    )
+    _BASE = {
+        "M1x_kNm": 20,
+        "M2x_kNm": 80,
+        "M1y_kNm": 10,
+        "M2y_kNm": 40,
+        "b_mm": 300,
+        "D_mm": 400,
+        "lex_mm": 6000,
+        "ley_mm": 6000,
+        "fck": 25,
+        "fy": 415,
+        "Asc_mm2": 1200,
+        "d_prime_mm": 50,
+    }
 
     def test_ley_excessive_slenderness_raises(self):
         """Line 191: ley/b > 60 raises."""
