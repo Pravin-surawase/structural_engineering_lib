@@ -1520,6 +1520,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0215" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.5
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v0.21.5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v0215-2026-04-06-test-coverage-regression-prevention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.21.5 — 2026-04-06 (Test Coverage &amp; Regression Prevention)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0214" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2298,6 +2326,22 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0215">v0.21.5<a class="headerlink" href="#v0215" title="Permanent link">&para;</a></h2>
+<p><strong>Date:</strong> 2026-04-06
+<strong>Status:</strong> ✅ Released
+<strong>Mindset:</strong> Test Coverage &amp; Regression Prevention</p>
+<h3 id="v0215-2026-04-06-test-coverage-regression-prevention">v0.21.5 — 2026-04-06 (Test Coverage &amp; Regression Prevention)<a class="headerlink" href="#v0215-2026-04-06-test-coverage-regression-prevention" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>42+ golden vector baselines</strong> — beam (9), column (20), footing (13) with <code>@pytest.mark.golden</code></li>
+<li><strong>18 contract tests</strong> — API surface stability for column, footing, torsion APIs</li>
+<li><strong>conftest.py golden_vectors fixture</strong> — session-scoped SP:16 reference data</li>
+<li><strong>CI golden gate</strong> — dedicated <code>pytest -m golden</code> step in GitHub Actions</li>
+<li><strong>71 report/3D edge case tests</strong> — XSS escaping, fallback HTML, minimum dimensions, dense rebar</li>
+<li><strong>99% branch coverage</strong> on <code>codes/is456/</code> (19 targeted tests)</li>
+<li><strong>Response envelope fix</strong> — <code>unwrapResponse()</code> across 16 React API calls</li>
+<li><strong>@clause("34.1")</strong> added to <code>size_footing()</code></li>
+</ul>
 <hr />
 <h2 id="v0214">v0.21.4<a class="headerlink" href="#v0214" title="Permanent link">&para;</a></h2>
 <p><strong>Date:</strong> 2026-04-05

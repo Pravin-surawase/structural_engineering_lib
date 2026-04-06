@@ -3097,7 +3097,7 @@ Every agent, every session, every change must comply with this document.</p>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># 3. EVERY function has a golden vector test</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># 4. Parameter names MUST match code conventions (b_mm, fck, etc.)</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># Current primary API (v0.21.4):</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># Current primary API (v0.21.5):</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplianceCaseResult</span><span class="p">:</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;IS 456 beam design — direct entry point.&quot;&quot;&quot;</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="c1"># Delegates to codes/is456/ for all math</span>
@@ -3122,7 +3122,7 @@ Every agent, every session, every change must comply with this document.</p>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># 5. Rate limiting applied via middleware</span>
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># 6. Auth required on all non-health endpoints</span>
 </code></pre></div>
-<p><strong>Current Error Shape</strong> (v0.21.4):
+<p><strong>Current Error Shape</strong> (v0.21.5):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
@@ -3644,7 +3644,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Current status (v0.21.4):</strong>
+<p><strong>Current status (v0.21.5):</strong>
 - <code>CodeRegistry</code> is <strong>live code</strong> — <code>IS456Code</code> is registered via <code>@register_code("IS456")</code> in <code>codes/is456/__init__.py</code>
 - ACI 318 and EC2 code classes exist as stubs with <code>@register_code</code> commented out
 - Instance caching uses a simple <code>dict</code> — effective under CPython GIL but <strong>not explicitly thread-safe</strong> (no <code>threading.Lock</code>). Adding explicit locks is planned for v0.24 when multi-code concurrent access becomes a real use case
@@ -4210,7 +4210,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tbody>
 </table>
 <blockquote>
-<p><strong>Note (v0.21.4):</strong> <code>test_benchmarks.py</code> exists with 13 benchmark tests. However, formal <code>pytest-benchmark</code> integration with regression detection (&gt;20% slowdown blocks merge) is not yet active.</p>
+<p><strong>Note (v0.21.5):</strong> <code>test_benchmarks.py</code> exists with 13 benchmark tests. However, formal <code>pytest-benchmark</code> integration with regression detection (&gt;20% slowdown blocks merge) is not yet active.</p>
 </blockquote>
 <p><strong>Regression policy:</strong> &gt;20% slowdown from baseline blocks merge. Benchmark results stored in <code>Python/test_stats.json</code> and tracked across versions.</p>
 <h3 id="143-automated-compliance-checker">14.3 Automated Compliance Checker<a class="headerlink" href="#143-automated-compliance-checker" title="Permanent link">&para;</a></h3>
@@ -4508,7 +4508,7 @@ Every agent, every session, every change must comply with this document.</p>
 <tbody>
 <tr>
 <td>✅ Active (basic hygiene + formatting)</td>
-<td>v0.21.4</td>
+<td>v0.21.5</td>
 </tr>
 <tr>
 <td>🔲 Planned (architecture + API checks)</td>
