@@ -10,13 +10,14 @@
 **Last Session:** Batch 3 API naming convention — complete
 
 ## What Was Completed
-- **Batch 3 Phase 1+2: API Naming Convention — COMPLETE**
-  - `column_api.py`: 10 functions renamed (`fck`→`fck_nmm2`, `fy`→`fy_nmm2`)
-  - `beam_api.py`: 2 functions renamed (`check_beam_ductility`, `check_anchorage_at_simple_support`)
-  - FastAPI Pydantic models updated with `alias` for backward compat in JSON payloads
-  - 40 deprecation tests added in `test_param_deprecation.py`
-  - Old param names work as deprecated aliases with `DeprecationWarning` (removal in v0.24)
-  - Architecture doc §10.5 updated with two-tier convention documentation
+- **Type-Safety Audit — COMPLETE**
+  - Fixed 28+ Pylance type errors in `column_api.py` — changed `_resolve_deprecated_param` return from `Any` to `TypeVar[_T]`
+  - Applied same TypeVar fix in `beam_api.py`
+  - Created `pyrightconfig.json` at workspace root — resolves Pylance import errors for `structural_lib`
+  - Added `# type: ignore` comments to 12 deliberate wrong-type tests in `test_coverage_boost_is456.py`
+  - Deprecation audit: confirmed no items overdue (current v0.21.6, removals at v0.24 and v1.0.0)
+  - Inventory: 23 field deprecations (v1.0.0), 29 param deprecations (v0.24), 9 stubs
+- **Previous: Batch 3 Phase 1+2: API Naming Convention — COMPLETE**
   - TASK-740 through TASK-744 all marked ✅ Done
 
 ## Current Version State
@@ -52,6 +53,8 @@ Migration strategy: Add new param names, keep old as deprecated aliases with war
 - No action needed now — just document stable vs experimental tiers
 
 ### Immediate — Next Priorities
+- [ ] Consolidate `_resolve_deprecated_param` from `beam_api.py` + `column_api.py` into `common_api.py` (reduces duplication)
+- [ ] Add direct unit tests for `_resolve_deprecated_param` TypeVar helper
 - TASK-745: Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+)
 - v0.21.7 Security Hardening:
   - JSON body size limit middleware (TASK-728)

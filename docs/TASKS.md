@@ -177,6 +177,8 @@
 | TASK-743 | Add deprecation warning tests for old param names | @tester | ✅ |
 | TASK-744 | Document two-tier naming convention in architecture doc | @doc-master | ✅ |
 | TASK-745 | Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+) | @library-expert | 📋 |
+| TASK-746 | Consolidate `_resolve_deprecated_param` from beam_api.py + column_api.py into common_api.py | @backend | 📋 [P4] |
+| TASK-747 | Add direct unit tests for `_resolve_deprecated_param` TypeVar helper | @tester | 📋 [P4] |
 
 ---
 

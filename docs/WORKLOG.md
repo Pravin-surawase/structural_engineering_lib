@@ -288,3 +288,8 @@ tags: []
 | 2026-04-06 | release | v0.21.5 release — golden vectors, contract tests, 99% branch coverage, CI gate | — |
 | 2026-04-07 | EVO batch | Applied 9 evolution items (EVO-004,-007,-014-020) to 5 agent files — api-developer, tester, ops, backend, reviewer | (pending commit) |
 | 2026-04-07 | TASK-740-744 | Batch 3: API naming convention — fck→fck_nmm2, fy→fy_nmm2 across 12 functions, FastAPI models, 40 deprecation tests | TBD |
+| 2026-04-07 | Type Safety | Fix 28+ Pylance type errors in column_api.py via TypeVar | — |
+| 2026-04-07 | Type Safety | Fix beam_api.py _resolve_deprecated_param TypeVar | — |
+| 2026-04-07 | Config | Create pyrightconfig.json for Pylance import resolution | — |
+| 2026-04-07 | Tests | Add # type: ignore comments to deliberate wrong-type tests | — |
+| 2026-04-07 | Audit | Deprecation inventory: 23 field (v1.0.0), 29 param (v0.24), 9 stubs | — |
