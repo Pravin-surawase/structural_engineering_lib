@@ -253,9 +253,9 @@
   ],
   "_meta": {
     "version": "1.0.0",
-    "updated": "2026-04-03",
+    "updated": "2026-04-07",
     "agent_count": 16,
-    "skill_count": 10,
+    "skill_count": 14,
     "description": "Centralized agent metadata registry — enables routing, permission enforcement, and discovery"
   }
 }
