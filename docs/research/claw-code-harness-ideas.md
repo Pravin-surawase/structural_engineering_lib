@@ -760,3 +760,1011 @@ Four parallel agent reviews were conducted:
 | Parity tracking | None | 4-dimension dashboard |
 | Hook execution points | 0 | 6 (across 3 modules) |
 | Config precedence | Undocumented | 3-tier documented + validated |
+
+---
+
+# PART 2: Deep Research — Agent Architecture & Library Tooling Best Practices (2025-2026)
+
+> **Date:** 2025-07-20
+> **Author:** innovator agent
+> **Scope:** Two-track deep research — (1) VS Code Copilot agent architecture, (2) Python library tooling patterns from top OSS projects
+> **Status:** Complete
+
+---
+
+## TRACK 1: VS Code Copilot Agent Architecture (2025-2026 Latest)
+
+### 1A. Complete Customization System Reference
+
+The VS Code Copilot customization system (as of July 2025) provides **6 file types** for agent customization:
+
+#### 1. `.agent.md` — Custom Agent Definitions
+
+**Location:** `.github/agents/` or `.vscode/agents/` (workspace-level)
+
+**YAML Frontmatter Fields (complete schema):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | No | Display name in `@` mentions |
+| `description` | string | Yes | Semantic matching for auto-invocation (max 1024 chars) |
+| `argument-hint` | string | No | Placeholder text in input box |
+| `tools` | array | No | Tool restrictions: `["tool1", "tool2"]` or `[{"tool1": "description"}]` |
+| `agents` | array | No | Sub-agents accessible via `@name` within this agent |
+| `model` | string or array | No | LLM model: `"claude-sonnet-4"` or `["claude-sonnet-4", "gpt-4o"]` (prioritized) |
+| `handoffs` | array | No | Sequential workflow buttons (see below) |
+| `hooks` | object | No | Agent-scoped hooks (Preview) |
+| `user-invocable` | boolean | No | Whether user can invoke directly (default true) |
+| `disable-model-invocation` | boolean | No | If true, only manual invocation works |
+| `target` | string | No | `"chat"` (default) or `"edits"` |
+
+**Handoff Protocol (production pattern):**
+```yaml
+handoffs:
+  - label: "Review changes"
+    agent: reviewer
+    prompt: "Review the changes I just made to {{files}}"
+    send: true          # Auto-submit (no user click needed)
+    model: claude-sonnet-4
+```
+
+**Tool Restriction Examples:**
+```yaml
+# Restrict to read-only tools (for reviewer agents)
+tools:
+  - read_file
+  - grep_search
+  - file_search
+  - semantic_search
+
+# Full edit access (for implementer agents)
+tools:
+  - read_file
+  - replace_string_in_file
+  - run_in_terminal
+  - semantic_search
+```
+
+**Key Design Insight:** Tools listed in `.agent.md` are the ONLY tools that agent can use. This is the primary security/permission mechanism.
+
+#### 2. `.instructions.md` — Contextual Instructions
+
+**Location:** `.github/instructions/` (repo-level) or `~/.github/instructions/` (personal)
+
+**YAML Frontmatter:**
+```yaml
+---
+name: python-core-rules        # Optional display name
+description: Rules for editing the Python core    # Semantic match description
+applyTo: "**/structural_lib/**"  # Glob pattern for auto-activation
+---
+```
+
+**Activation modes:**
+1. **Glob match:** Applied automatically when editing files matching `applyTo` pattern
+2. **Semantic match:** Applied when task description semantically matches the `description` field
+3. **Manual:** User can reference via `#instructions` in chat
+
+**Priority (high → low):** Personal (user-level) → Repository → Organization
+
+#### 3. `.prompt.md` — Reusable Prompt Templates
+
+**Location:** `.github/prompts/`
+
+**YAML Frontmatter:**
+```yaml
+---
+description: Run IS 456 verification tests
+name: is456-verify
+argument-hint: Enter clause number or test category
+agent: structural-engineer    # Route to specific agent
+model: claude-sonnet-4
+tools:
+  - run_in_terminal
+  - read_file
+---
+```
+
+Invoked via `/is456-verify` slash command. Tools specified here take PRIORITY over agent-level tools.
+
+#### 4. `SKILL.md` — Packaged Domain Knowledge
+
+**Location:** `.github/skills/<skill-name>/SKILL.md`
+
+**YAML Frontmatter (complete schema):**
+```yaml
+---
+name: function-quality-pipeline   # MUST match directory name
+description: "Mandatory 9-step quality pipeline..."  # Max 1024 chars, semantic matching
+argument-hint: "Enter function name"
+user-invocable: true              # Default true
+disable-model-invocation: false   # Default false
+---
+```
+
+**3-Level Loading (efficient context management):**
+1. **Discovery:** Only `name` + `description` loaded initially (all skills)
+2. **Instructions:** Full SKILL.md content loaded when skill is invoked
+3. **Resources:** Additional files in skill directory loaded on-demand via tool calls
+
+**Open Standard:** Skills follow the agentskills.io open standard — portable across tools.
+
+#### 5. `AGENTS.md` / `CLAUDE.md` — Always-On Instructions
+
+- **`AGENTS.md`** — Detected in workspace root, always applied. Cross-tool compatible.
+- **`CLAUDE.md`** — Detected in workspace root, `.claude/`, or `~/.claude/`. Claude-specific.
+- **`.github/copilot-instructions.md`** — Auto-applies to all Copilot requests.
+
+**Nested files (experimental):** Enable `chat.useNestedAgentsMdFiles` to load `AGENTS.md` files from subdirectories.
+
+#### 6. Hooks — Lifecycle Event Handlers (Preview)
+
+**Location:** `.github/hooks/*.json`
+
+**8 Lifecycle Events:**
+
+| Event | When | Use Cases |
+|-------|------|-----------|
+| `SessionStart` | New chat session begins | Load context, set env vars |
+| `UserPromptSubmit` | Before processing user message | Input validation, transformation |
+| `PreToolUse` | Before any tool execution | Permission checks, blocking dangerous ops |
+| `PostToolUse` | After tool execution | Logging, validation, cost tracking |
+| `PreCompact` | Before context compaction | Save important state |
+| `SubagentStart` | Before handoff to sub-agent | Context injection |
+| `SubagentStop` | After sub-agent completes | Result validation |
+| `Stop` | Agent finishes response | Summary, cleanup |
+
+**Hook Config Format:**
+```json
+{
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": ".venv/bin/python scripts/hooks/pre_tool_check.py",
+        "events": ["run_in_terminal", "replace_string_in_file"],
+        "timeout": 5000
+      }
+    ]
+  }
+}
+```
+
+**Agent-Scoped Hooks (in `.agent.md` frontmatter):**
+```yaml
+hooks:
+  preToolUse:
+    - command: ".venv/bin/python scripts/hooks/permission_check.py"
+      events: ["run_in_terminal"]
+```
+
+**Hook I/O:** JSON via stdin/stdout. Exit code 0 = success, exit code 2 = blocking error (stops the tool call).
+
+**Permission Decisions (PreToolUse output):**
+```json
+{"decision": "allow"}       // Proceed
+{"decision": "deny", "message": "Blocked by policy"}  // Stop with message
+{"decision": "ask", "message": "This will delete files. Continue?"}  // Ask user
+```
+
+---
+
+### 1B. Agent Patterns from Production Systems
+
+Based on analysis of claw-code (176K stars), VS Code Copilot internals, and production agent architectures:
+
+#### Pattern 1: Focused Agent Design (3-5 Agents, Not 16)
+
+**Problem:** Our 16-agent setup has massive context overhead. Each agent needs ~2000 tokens of instructions. The orchestrator must understand all 16 to route correctly.
+
+**Production pattern:** 3-5 agents with clear, non-overlapping boundaries:
+- claw-code uses 5 built-in modes (plan, explore, code, verification, custom)
+- Each mode has a single, clear mandate — no overlap
+- Tools are the permission boundary, not instructions
+
+**For a Python library like ours, the OPTIMAL split is:**
+
+| Agent | Mandate | Tools |
+|-------|---------|-------|
+| `builder` | Write code, fix bugs, implement features | Full edit + terminal |
+| `reviewer` | Code review, testing, quality checks | Read-only + terminal |
+| `researcher` | Web research, documentation, planning | Read + web + edit (docs only) |
+
+**Why 3, not 16:** Every agent beyond 3 creates routing ambiguity. "Should column design go to @structural-math or @backend?" — this question shouldn't exist. There should be ONE agent that writes code.
+
+#### Pattern 2: Instructions Over Agents
+
+**Key insight from VS Code Copilot docs:** `.instructions.md` files with `applyTo` globs are MORE powerful than separate agents for file-type rules. They:
+- Auto-activate based on the files being edited (no routing needed)
+- Stack with each other (Python rules + IS 456 rules + testing rules)
+- Don't consume agent slots or create routing ambiguity
+- Are the RIGHT tool for "when editing X, follow rules Y"
+
+**Production pattern:**
+- Use `.instructions.md` for FILE-SPECIFIC rules (Python style, React conventions, test patterns)
+- Use `.agent.md` for ROLE-SPECIFIC behavior (builder vs reviewer vs researcher)
+- Use `SKILL.md` for TASK-SPECIFIC workflows (new element, release, quality gate)
+- Use `.prompt.md` for COMMON OPERATIONS (commit, test, deploy)
+
+#### Pattern 3: Memory Architecture
+
+**Effective memory hierarchy:**
+1. **`AGENTS.md`** — Always loaded, cross-session. Keep SMALL (<2000 tokens). Core rules only.
+2. **`.instructions.md`** — Conditional on file type. Bulk of domain knowledge.
+3. **`SKILL.md`** — On-demand task knowledge. Loaded only when invoked.
+4. **Session state** — JSON files in `logs/sessions/` for pipeline continuity.
+5. **Git history** — `git log --oneline -20` for context recovery.
+
+**Anti-pattern:** Putting everything in `AGENTS.md` / `copilot-instructions.md`. These files are always loaded — every token counts. Our current `copilot-instructions.md` is ~400 lines — that's 10x too much.
+
+#### Pattern 4: Testing Agents via Hooks
+
+**Production approach to agent testing:**
+1. `PreToolUse` hooks validate that agents only use permitted tools
+2. `PostToolUse` hooks log every action for audit
+3. `Stop` hooks validate output quality (e.g., "did the code compile?")
+4. CI runs agent tasks in headless mode and checks results
+
+#### Pattern 5: Handoff Protocol
+
+**Effective handoff pattern (from VS Code docs):**
+```yaml
+handoffs:
+  - label: "Run tests"
+    agent: reviewer
+    prompt: "Run tests for the files I just modified: {{files}}"
+    send: true
+```
+
+Key: `send: true` auto-submits — no user click needed. This creates automated pipelines.
+
+**Anti-pattern:** Long handoff chains (orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops). Each handoff loses context. Maximum effective chain: 2-3 agents.
+
+#### Pattern 6: Agent Versioning
+
+**Production pattern:** Agent instructions ARE code. They live in git, get reviewed in PRs, have CHANGELOG entries. Our `agent-evolver` pattern is correct but over-engineered — git versioning is sufficient.
+
+---
+
+### 1C. OPTIMAL Agent Setup for IS 456 Structural Engineering Library
+
+Based on all research, here is the recommended setup for a focused Python structural engineering library.
+
+#### Recommended Architecture: 3 Agents + Instructions + Skills
+
+```
+.github/
+├── agents/
+│   ├── builder.agent.md          # Write/fix code (ONE agent for all code)
+│   ├── reviewer.agent.md         # Review, test, quality
+│   └── researcher.agent.md       # Research, docs, planning
+├── instructions/
+│   ├── python-core.instructions.md    # Python structural_lib rules
+│   ├── fastapi.instructions.md        # FastAPI backend rules
+│   ├── react.instructions.md          # React frontend rules
+│   ├── testing.instructions.md        # Test conventions
+│   └── terminal-rules.instructions.md # Terminal safety
+├── prompts/
+│   ├── commit.prompt.md               # Safe commit workflow
+│   ├── new-feature.prompt.md          # Feature implementation
+│   ├── fix-test.prompt.md             # Test failure diagnosis
+│   └── session-end.prompt.md          # Session end checklist
+├── skills/
+│   ├── is456-verification/SKILL.md    # IS 456 compliance checks
+│   ├── new-element/SKILL.md           # New structural element workflow
+│   ├── quality-gate/SKILL.md          # Pre-merge quality checks
+│   └── release-preflight/SKILL.md     # Pre-release validation
+└── copilot-instructions.md            # MINIMAL core rules (~50 lines)
+AGENTS.md                              # MINIMAL cross-tool rules (~30 lines)
+```
+
+#### Agent File: `builder.agent.md`
+
+```yaml
+---
+name: builder
+description: >
+  Write, fix, and refactor code across the full stack: Python structural_lib
+  (IS 456 math, services, API), FastAPI routers, React components.
+  Handles feature implementation, bug fixes, and code changes.
+argument-hint: Describe the code change needed
+tools:
+  - read_file
+  - replace_string_in_file
+  - multi_replace_string_in_file
+  - run_in_terminal
+  - grep_search
+  - file_search
+  - semantic_search
+  - list_dir
+model:
+  - claude-sonnet-4
+  - gpt-4o
+handoffs:
+  - label: "Review & test"
+    agent: reviewer
+    prompt: "Review and test the changes I just made."
+    send: false
+---
+
+# Builder Agent
+
+You implement code changes for structural_engineering_lib — an IS 456 RC design library.
+
+## Architecture (4 layers — STRICT)
+- Core types (`core/`) → base classes, constants — no IS 456 math
+- IS 456 Code (`codes/is456/`) → pure math, NO I/O, explicit units (mm, N/mm², kN, kNm)
+- Services (`services/`) → orchestration: api.py, adapters.py
+- UI/IO → react_app/, fastapi_app/
+
+Import rule: Core ← IS 456 ← Services ← UI. Never import upward.
+
+## Before Coding
+1. Search existing code: `grep_search` for related functions
+2. Check API signatures: `.venv/bin/python scripts/discover_api_signatures.py <func>`
+3. Never guess parameter names — it's `b_mm` not `width`, `fck` not `concrete_grade`
+
+## Git
+ALWAYS use `./scripts/ai_commit.sh "type: message"`. NEVER manual git.
+
+## Key Paths
+- `.venv/bin/pytest Python/tests/ -v` — Run tests
+- `.venv/bin/python` — Python binary (never bare `python`)
+- `cd react_app && npm run build` — React build check
+```
+
+#### Agent File: `reviewer.agent.md`
+
+```yaml
+---
+name: reviewer
+description: >
+  Code review, testing, quality checks, and validation. Reviews PRs,
+  runs test suites, checks architecture boundaries, validates IS 456
+  compliance. Read-only access to code, terminal for running tests.
+argument-hint: Describe what to review or test
+tools:
+  - read_file
+  - grep_search
+  - file_search
+  - semantic_search
+  - list_dir
+  - run_in_terminal
+model: claude-sonnet-4
+---
+
+# Reviewer Agent
+
+You review code and run quality checks. You do NOT modify source files.
+
+## Review Checklist
+1. Architecture boundaries (core → codes → services → UI, no upward imports)
+2. Units are explicit (mm, N/mm², kN, kNm) — no hidden conversions
+3. IS 456 clause references are correct
+4. Tests exist for new code
+5. No duplicate code (check existing hooks, components, API functions)
+
+## Quality Commands
+- `.venv/bin/pytest Python/tests/ -v` — Full test suite
+- `.venv/bin/pytest Python/tests/ -v -k "test_shear"` — Specific tests
+- `cd react_app && npm run build` — React build check
+- `.venv/bin/python scripts/check_all.py --quick` — Quick validation (28 checks)
+
+## Architecture Validation
+- `.venv/bin/python scripts/validate_imports.py --scope structural_lib`
+- Core CANNOT import from Services or UI
+- Safety factors (γc=1.5, γs=1.15) are NEVER parameters — hardcoded constants
+```
+
+#### Agent File: `researcher.agent.md`
+
+```yaml
+---
+name: researcher
+description: >
+  Research, documentation, planning, and web investigation. Writes docs,
+  research proposals, session logs. Investigates IS 456 clauses, industry
+  best practices, and competitive analysis. Has web access.
+argument-hint: Describe the research topic or documentation task
+tools:
+  - read_file
+  - grep_search
+  - file_search
+  - semantic_search
+  - list_dir
+  - fetch_webpage
+  - replace_string_in_file
+  - run_in_terminal
+model:
+  - claude-sonnet-4
+  - gpt-4o
+---
+
+# Researcher Agent
+
+You research topics, write documentation, and plan features. You edit docs/
+files but NOT production code. For production code changes, hand off to @builder.
+
+## Research Outputs
+- Innovation proposals: `docs/research/`
+- Architecture decisions: `docs/adr/`
+- Planning docs: `docs/planning/`
+- Session logs: `docs/SESSION_LOG.md`
+
+## Web Research
+You have web access — use it for:
+- IS 456 clause verification against published standards
+- Academic papers on structural optimization
+- Open-source tool comparison
+- Industry best practices
+
+## LIFE-SAFETY RULE
+All research outputs carry: "RESEARCH — NOT FOR STRUCTURAL DESIGN"
+Safety factors (γc=1.5, γs=1.15) are NEVER parameters.
+IS 456 code minimums are HARD CONSTRAINTS, never soft objectives.
+```
+
+#### Minimal `copilot-instructions.md` (~50 lines)
+
+```markdown
+# structural_engineering_lib
+
+IS 456 RC design library. Python core → FastAPI → React 19.
+
+## Git (THE ONE RULE)
+`./scripts/ai_commit.sh "type: message"` — ALWAYS. NEVER manual git.
+
+## Terminal
+All commands from workspace root. `.venv/bin/python` always, never bare `python`.
+
+## Architecture
+Core → IS 456 codes → Services → UI/IO. Never import upward.
+Units always explicit: mm, N/mm², kN, kNm.
+
+## Before Coding
+Check existing code first:
+- `grep "^def " Python/structural_lib/services/api.py | head -20`
+- `.venv/bin/python scripts/discover_api_signatures.py <func>`
+- `ls react_app/src/hooks/`
+
+## Key Paths
+| Path | Purpose |
+|------|---------|
+| `.venv/bin/pytest Python/tests/ -v` | Run tests |
+| `cd react_app && npm run build` | React build |
+| `docs/TASKS.md` | Current priorities |
+| `docs/planning/next-session-brief.md` | Session handoff |
+
+## Context Recovery
+If lost, read: next-session-brief.md → TASKS.md → git log --oneline -20
+```
+
+#### Minimal `AGENTS.md` (~30 lines)
+
+```markdown
+# AGENTS.md
+
+IS 456 RC design library. Git: `./scripts/ai_commit.sh "type: message"` ALWAYS.
+
+## Rules
+1. Never manual git (add/commit/push/pull)
+2. Architecture: Core → IS 456 → Services → UI (never import upward)
+3. Units explicit: mm, N/mm², kN, kNm
+4. Safety factors hardcoded: γc=1.5, γs=1.15 (NEVER parameters)
+5. `.venv/bin/python` always, never bare `python`
+6. Check existing code before writing new code
+7. IS 456 code checks are HARD CONSTRAINTS
+
+## Quick Reference
+- Tests: `.venv/bin/pytest Python/tests/ -v`
+- React: `cd react_app && npm run build`
+- API params: `.venv/bin/python scripts/discover_api_signatures.py <func>`
+- Tasks: `docs/TASKS.md`
+- Handoff: `docs/planning/next-session-brief.md`
+```
+
+**Why this is better than our current 16-agent setup:**
+1. **Zero routing ambiguity** — "write code" → @builder, "review" → @reviewer, "research" → @researcher
+2. **~90% less instruction overhead** — 50-line copilot-instructions.md vs 400+ lines
+3. **Instructions do the heavy lifting** — file-type rules auto-activate, no agent needed
+4. **Skills for complex workflows** — IS 456 verification, new element, release — invoked explicitly
+5. **Handoffs are 1-hop** — builder → reviewer, not 8-agent chains
+
+---
+
+## TRACK 2: Python Library Tooling Patterns (Top OSS Projects)
+
+### 2A. pyproject.toml Patterns from 5 Major Libraries
+
+#### FastAPI (84K stars)
+
+**Build system:** `pdm-backend`
+```toml
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+```
+
+**Key patterns:**
+- `requires-python = ">=3.10"` — supports 5 Python versions
+- Ruff config with `per-file-ignores` for docs:
+  ```toml
+  [tool.ruff.lint.per-file-ignores]
+  "docs_src/dependencies/tutorial*.py" = ["F821"]
+  ```
+- Uses `uv` for CI (migrated 3 months ago from pip): `uv sync --no-dev --group tests --extra all`
+- **CI matrix:** 3 OSes × 5 Python versions × 2 resolution strategies (highest + lowest-direct)
+- **100% test coverage enforced:** `uv run coverage report --fail-under=100`
+- **Benchmarks in CI:** CodSpeed benchmarks run on every PR
+- **Path-based CI filtering:** `dorny/paths-filter` to skip tests when only docs change
+
+#### scipy (13.6K stars)
+
+**Build system:** `meson-python`
+```toml
+[build-system]
+requires = ["meson-python>=0.18.0", "Cython>=3.1.1", "numpy>=2.2.0"]
+build-backend = "mesonpy"
+```
+
+**Key patterns:**
+- Uses `tach.toml` for **module boundary enforcement** (~30 modules with explicit dependency declarations):
+  ```toml
+  [[modules]]
+  path = "scipy.stats"
+  depends_on = [
+    { path = "scipy._lib" },
+    { path = "scipy.special" },
+    { path = "scipy.linalg" },
+    { path = "scipy.optimize" },
+    # ... 16 total dependencies
+  ]
+  ```
+- This is effectively a **dependency graph for internal modules** — prevents architecture drift
+- Uses `spin` CLI for custom development commands
+- `requires-python = ">=3.12"` — aggressive Python version floor
+
+**Tach — Module Boundary Tool (KEY INSIGHT):**
+`tach` enforces import boundaries at the module level. Exactly what our 4-layer architecture needs but enforces manually. A `tach.toml` for structural_engineering_lib would look like:
+```toml
+[[modules]]
+path = "structural_lib.core"
+depends_on = []  # Core depends on NOTHING
+
+[[modules]]
+path = "structural_lib.codes.is456"
+depends_on = [{ path = "structural_lib.core" }]  # Codes depend only on Core
+
+[[modules]]
+path = "structural_lib.services"
+depends_on = [
+  { path = "structural_lib.core" },
+  { path = "structural_lib.codes.is456" },
+]
+
+[[modules]]
+path = "structural_lib.insights"
+depends_on = [
+  { path = "structural_lib.core" },
+  { path = "structural_lib.codes.is456" },
+  { path = "structural_lib.services" },
+]
+```
+Run `tach check` in CI → architectural violations are caught automatically.
+
+#### numpy (29.3K stars)
+
+**Build system:** `meson-python`
+```toml
+[build-system]
+requires = ["Cython>=3.0.6", "meson-python>=0.16.0"]
+build-backend = "mesonpy"
+```
+
+**Key patterns:**
+- Uses `spin` CLI with extensive custom commands (704 lines in `.spin/cmds.py`):
+  - `spin build` — build with Meson
+  - `spin test` — run test suite with configurable parallelism
+  - `spin mypy` / `spin pyrefly` — type checking
+  - `spin bench` — benchmarks
+  - `spin docs` — documentation build
+  - `spin lint` — linting
+  - `spin notes` — release notes from Towncrier
+- `spin` replaces Makefile/shell scripts with a Python-based command runner
+- **Lesson:** Custom CLI wrapper around common dev tasks = better DX than raw commands
+
+#### rich (51.3K stars)
+
+**Build system:** `poetry`
+```toml
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+```
+
+**Key patterns:**
+- MINIMAL pyproject.toml (69 lines) — stark contrast to scipy/numpy
+- `python = ">=3.8.0"` — widest Python compatibility
+- Very few dev dependencies — keeps it simple
+- **Lesson:** For a pure-Python library, simplicity wins. No build tooling complexity needed.
+
+#### Django (82.7K stars)
+
+**Build system:** `setuptools>=77.0.3`
+```toml
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.backends._legacy:_Backend"
+```
+
+**Key patterns:**
+- `.editorconfig` for cross-editor consistency:
+  ```ini
+  [*.py]
+  indent_style = space
+  indent_size = 4
+  max_line_length = 79    # PEP 8 strict
+
+  [*.html]
+  indent_style = space
+  indent_size = 2
+
+  [Makefile]
+  indent_style = tab
+  ```
+- `requires-python = ">= 3.12"` — aggressive floor (matches scipy)
+- Uses `setuptools` — the most conservative, stable choice
+- **Lesson:** For maximum compatibility and longevity, setuptools is fine. No need to chase build system fashions.
+
+### 2B. Our pyproject.toml Assessment
+
+**Current state:** `setuptools>=77.0` — solid choice, matches Django.
+
+**Recommended improvements based on research:**
+
+| Area | Current | Recommended | Source |
+|------|---------|-------------|--------|
+| Ruff rules | F, E, W, I, N, UP, B, C4, PIE | Add: `"SIM"` (simplify), `"RUF"` (ruff-specific), `"PT"` (pytest) | FastAPI |
+| Per-file ignores | Only excel_bridge.py | Add: tests/ ignore some rules | FastAPI, scipy |
+| Module boundaries | Manual (validate_imports.py) | Add `tach.toml` | scipy |
+| .editorconfig | None | Add for cross-editor consistency | Django |
+| Test coverage | 85% branch required | Consider 100% for core math | FastAPI |
+| CI matrix | Single Python version | Multi-version: 3.11, 3.12, 3.13 | FastAPI |
+
+---
+
+### 2C. Modern Developer Tools
+
+#### ruff (v0.15.9, 46.9K stars)
+
+**What it is:** Linter + formatter replacing flake8, isort, black, pyupgrade, and 10+ other tools.
+
+**Key features for our project:**
+- **900+ lint rules** from 70+ plugins — we currently use 9 rule groups
+- **Preview mode:** Enables expanded defaults (useful for gradual adoption)
+- **Pre-commit hook:**
+  ```yaml
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  ```
+- **Per-file ignores** are critical for structural engineering (uppercase variable names like `D`, `Mu`, `Ast` — which we already handle)
+
+**Recommended additions to our ruff config:**
+```toml
+[tool.ruff.lint]
+select = [
+  "F", "E", "W", "I", "N", "UP", "B", "C4", "PIE",
+  "SIM",   # flake8-simplify (simplify code patterns)
+  "RUF",   # Ruff-specific rules (unused noqa, etc.)
+  "PT",    # flake8-pytest-style (consistent test patterns)
+  "T20",   # flake8-print (no print statements in lib code)
+  "DTZ",   # flake8-datetimez (timezone-aware datetimes)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"Python/tests/**" = ["T20"]  # Allow print in tests
+```
+
+#### uv (v0.11.3, 82.8K stars)
+
+**What it is:** All-in-one Python package manager replacing pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv. 10-100x faster.
+
+**Key features relevant to us:**
+- `uv sync` — deterministic installs from lockfile
+- `uv run` — run commands in managed environment
+- `uv build` / `uv publish` — package building and publishing
+- `uv python install` — manage Python versions
+- Has its own `AGENTS.md` and `CLAUDE.md` — follows the same agent patterns we do
+
+**Migration path for our project:**
+```bash
+# Current (pip + venv)
+python -m venv .venv && pip install -e ".[dev]"
+
+# uv equivalent (10-100x faster)
+uv venv && uv sync --extra dev
+```
+
+**CI benefit (from FastAPI):**
+```yaml
+- uses: astral-sh/setup-uv@v7
+  with:
+    enable-cache: true
+    cache-dependency-glob: "pyproject.toml"
+- run: uv sync --no-dev --group tests --extra all
+```
+
+**Assessment:** Migration to uv is LOW RISK and HIGH REWARD. FastAPI already migrated. The `uv.lock` file provides deterministic builds.
+
+#### pre-commit (v4.5.1, 15.1K stars)
+
+**What it is:** Framework for managing multi-language pre-commit hooks.
+
+**Recommended `.pre-commit-config.yaml` for our project:**
+```yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [pydantic>=2.0]
+        args: [--ignore-missing-imports]
+```
+
+#### just (Command Runner)
+
+**What it is:** A command runner (like make, but without build system complexity). Stores project-specific commands in a `justfile`.
+
+**Key features:**
+- **Cross-platform** (Linux, macOS, Windows)
+- **Recipes can accept arguments** — unlike make targets
+- **Loads `.env` files** automatically
+- **Recipes in arbitrary languages** (Python, Node, etc. via shebangs)
+- **Invocable from any subdirectory**
+
+**Comparison with our `run.sh`:**
+
+| Feature | `run.sh` | `justfile` |
+|---------|----------|------------|
+| Cross-platform | No (bash) | Yes |
+| Tab completion | No | Yes (built-in) |
+| Argument handling | Manual | Built-in |
+| Listing recipes | Manual | `just --list` |
+| .env loading | Manual | Automatic |
+| Error handling | Manual | Built-in |
+
+**Example `justfile` for our project:**
+```justfile
+# Default recipe — list available commands
+default:
+    @just --list
+
+# Run tests
+test *args:
+    .venv/bin/pytest Python/tests/ -v {{args}}
+
+# Safe commit
+commit msg:
+    ./scripts/ai_commit.sh "{{msg}}"
+
+# Quick validation
+check:
+    .venv/bin/python scripts/check_all.py --quick
+
+# Full validation
+check-full:
+    .venv/bin/python scripts/check_all.py
+
+# Start dev stack
+dev *args:
+    bash scripts/launch_stack.sh {{args}}
+
+# API signature lookup
+api func:
+    .venv/bin/python scripts/discover_api_signatures.py {{func}}
+
+# React build
+build-react:
+    cd react_app && npm run build
+```
+
+**Assessment:** `just` is a strict upgrade over `run.sh` for developer UX. Cross-platform support + tab completion + built-in argument handling. However, migration is LOW priority — `run.sh` works fine.
+
+---
+
+### 2D. README Patterns from Top Libraries
+
+#### Pydantic (21K stars) — Badge-Heavy, Feature-Focused
+
+**Structure:**
+1. Logo + tagline
+2. Badge row: CI, Coverage, PyPI, Conda, Downloads, Versions, License
+3. Brief description (2 sentences)
+4. Installation (`pip install pydantic`)
+5. Simple code example (< 20 lines)
+6. Feature list
+7. Contributing + Security links
+
+**Key badge pattern:**
+```markdown
+[![CI](https://img.shields.io/github/actions/workflow/status/pydantic/pydantic/ci.yml?branch=main&logo=github&label=CI)](...)
+[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/pydantic/pydantic.svg)](...)
+[![pypi](https://img.shields.io/pypi/v/pydantic.svg)](...)
+[![CondaForge](https://img.shields.io/conda/v/conda-forge/pydantic)](...)
+[![downloads](https://img.shields.io/pypi/dm/pydantic.svg)](...)
+[![versions](https://img.shields.io/pypi/pyversions/pydantic.svg)](...)
+[![license](https://img.shields.io/github/license/pydantic/pydantic.svg)](...)
+```
+
+**Notable:** Pydantic has a `llms.txt` badge — linking to an LLM-friendly documentation page. We should consider this too.
+
+#### httpx (14K stars) — Clean, Minimal
+
+**Structure:**
+1. Logo
+2. Tagline ("A next-generation HTTP client for Python")
+3. Badge row: Test Suite, Package version
+4. Install command
+5. Quick example (< 10 lines)
+6. CLI example
+7. Feature bullet list
+8. Documentation link
+9. Dependencies + Credits
+
+**Key pattern:** httpx leads with the QUICKEST possible path to "try it" — install + one example. Everything else is secondary.
+
+#### Recommended README Structure for Our Library
+
+```markdown
+# structural-lib-is456
+
+> IS 456:2000 RC Design — beams, columns & footings
+
+[![CI](badge)](link) [![Coverage](badge)](link) [![PyPI](badge)](link)
+[![Python](badge)](link) [![License](badge)](link) [![llms.txt](badge)](link)
+
+## Install
+pip install structural-lib-is456
+
+## Quick Example
+[10-line beam design example]
+
+## Features
+- IS 456:2000 compliant beam, column & footing design
+- Flexure, shear, torsion, bond, development length
+- DXF export, 3D rebar geometry, BBS generation
+- Cost optimization, sustainability scoring
+- FastAPI backend + React 19 frontend
+
+## Documentation
+[link to docs site]
+
+## Contributing
+[link to CONTRIBUTING.md]
+```
+
+---
+
+## SYNTHESIS: Top Recommendations (Ranked by Impact)
+
+### Tier 1: High Impact, Low Effort
+
+| # | Recommendation | Source | Effort |
+|---|---------------|--------|--------|
+| 1 | **Reduce to 3 agents** (builder/reviewer/researcher) | Track 1B analysis | 1 session |
+| 2 | **Slim copilot-instructions.md to ~50 lines** | Production patterns | 1 hour |
+| 3 | **Add `tach.toml` for architecture enforcement** | scipy | 1 hour |
+| 4 | **Add .editorconfig** | Django | 15 min |
+| 5 | **Expand ruff rules** (SIM, RUF, PT, T20) | FastAPI | 30 min |
+
+### Tier 2: High Impact, Medium Effort
+
+| # | Recommendation | Source | Effort |
+|---|---------------|--------|--------|
+| 6 | **Migrate to uv** from pip | FastAPI | 1 session |
+| 7 | **Add pre-commit hooks** (ruff + standard checks) | FastAPI | 1 session |
+| 8 | **Implement VS Code hooks** (PreToolUse for permissions) | VS Code docs | 2 sessions |
+| 9 | **Multi-version CI matrix** (3.11, 3.12, 3.13) | FastAPI | 1 session |
+| 10 | **100% coverage for core math** | FastAPI | 2-3 sessions |
+
+### Tier 3: Nice to Have
+
+| # | Recommendation | Source | Effort |
+|---|---------------|--------|--------|
+| 11 | **Replace run.sh with justfile** | just.systems | 1 session |
+| 12 | **Add CodSpeed benchmarks** | FastAPI | 1 session |
+| 13 | **Redesign README** (pydantic/httpx pattern) | Track 2D | 1 hour |
+| 14 | **Add llms.txt** | Pydantic | 30 min |
+
+---
+
+## IS 456 Clause Map
+
+This research does not modify IS 456 calculations. Clauses affected: **NONE**.
+All recommendations are infrastructure/tooling — no structural math changes.
+
+---
+
+## Appendix A: FastAPI CI Workflow Pattern (Reference)
+
+FastAPI's test.yml:
+- **Trigger:** push to master, PRs (opened + synchronize), weekly cron
+- **Path filtering:** `dorny/paths-filter` — only runs tests when source files change
+- **Matrix:** 3 OSes × 5 Python versions × 2 dependency resolution strategies
+- **Coverage:** Combine across matrix, upload to Smokeshow, fail at <100%
+- **Benchmarks:** CodSpeed on every PR (simulation mode)
+- **All-green check:** `re-actors/alls-green` as branch protection prerequisite
+
+Key snippet:
+```yaml
+- uses: astral-sh/setup-uv@v7
+  with:
+    enable-cache: true
+- run: uv sync --no-dev --group tests --extra all
+- run: uv run --no-sync bash scripts/test-cov.sh
+```
+
+## Appendix B: scipy tach.toml Module Boundaries (Reference)
+
+scipy uses ~30 module declarations with explicit `depends_on` lists. Example:
+
+```toml
+[[modules]]
+path = "scipy.stats"
+depends_on = [
+  { path = "scipy._lib" },
+  { path = "scipy.special" },
+  { path = "scipy.linalg" },
+  { path = "scipy.optimize" },
+  { path = "scipy.integrate" },
+  { path = "scipy.interpolate" },
+  { path = "scipy.sparse" },
+  # ... total of 16 dependencies
+]
+
+[[modules]]
+path = "scipy.linalg"
+depends_on = [
+  { path = "scipy._lib" },
+]
+```
+
+This pattern directly maps to our 4-layer architecture enforcement needs.
+
+## Appendix C: numpy spin CLI Commands (Reference)
+
+numpy's `.spin/cmds.py` (704 lines) provides:
+
+| Command | Purpose |
+|---------|---------|
+| `spin build` | Meson build with configurable options |
+| `spin test` | pytest with parallelism, markers, coverage |
+| `spin mypy` | Type checking |
+| `spin pyrefly` | Alternative type checker |
+| `spin stubtest` | Validate type stubs |
+| `spin lint` | Ruff linting |
+| `spin bench` | ASV benchmarks |
+| `spin docs` | Sphinx documentation build |
+| `spin notes` | Release notes via Towncrier |
+| `spin config_openblas` | BLAS configuration |
+
+This is equivalent to our `run.sh` but more structured. The `just` command runner would give us similar benefits without writing Python CLI code.
