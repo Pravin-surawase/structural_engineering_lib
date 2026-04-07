@@ -1,4 +1,4 @@
-# Next Session Brief
+# Next Session Briefing
 
 ## Latest Handoff (auto)
 

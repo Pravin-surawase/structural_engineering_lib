@@ -232,6 +232,16 @@ dxf_export.generate_beam_dxf(detailing, "beam_detail.dxf")
 dxf_export.generate_multi_beam_dxf(detailing_list, "all_beams.dxf")
 ```
 
+### Core Data Types
+
+```python
+from structural_lib import api
+
+api.BeamGeometry       # Core beam geometry data type
+api.DesignDefaults     # Core design defaults data type
+api.FrameType          # Frame type enum (braced/unbraced)
+```
+
 ### Load Analysis Types (v0.18+)
 
 ```python
@@ -306,7 +316,85 @@ api.classify_column_is456(...)
 api.biaxial_bending_check_is456(...)
 
 # Column detailing (IS 456 Cl 26.5.3)
-api.column_detailing_is456(...)
+api.detail_column_is456(...)
+
+# Effective length per IS 456 Table 28
+api.calculate_effective_length_is456(...)
+
+# Minimum eccentricity (IS 456 Cl 25.4)
+api.min_eccentricity_is456(...)
+
+# Additional moment for slender columns (IS 456 Cl 39.7.1)
+api.calculate_additional_moment_is456(...)
+
+# P-M interaction curve (IS 456)
+api.pm_interaction_curve_is456(...)
+
+# Helical reinforcement check (IS 456 Cl 39.4)
+api.check_helical_reinforcement_is456(...)
+
+# Ductile detailing check (IS 13920)
+api.check_column_ductility_is13920(...)
+```
+
+### Diagnostics & Code Quality (Added v0.21.6)
+
+```python
+from structural_lib import api
+
+# Library version info
+api.show_versions()
+api.VersionInfo
+
+# Code quality gate
+api.check_code("is456")
+api.CheckCodeReport
+```
+
+### Beam Helpers (Added v0.21.0)
+
+```python
+# Build validated detailing input
+api.build_detailing_input(result, beam_id="B1")
+
+# Anchorage check at simple support (IS 456 Cl 26.2.3.3)
+api.check_anchorage_at_simple_support(bar_dia_mm=16, fck_nmm2=25, fy_nmm2=415, vu_kn=80, support_width_mm=300)
+
+# Enhanced shear strength near supports (IS 456 Cl 40.2.1.1)
+api.enhanced_shear_strength_is456(...)
+
+# Validation report type
+api.ValidationReport
+```
+
+### Cost & Optimization (Added v0.21.0)
+
+```python
+# Cost profile configuration
+api.CostProfile
+
+# Multi-objective optimization (NSGA-II)
+api.optimize_pareto_front(span_mm=6000, mu_knm=200, vu_kn=120)
+api.ParetoOptimizationResult
+api.ParetoCandidate
+```
+
+### Footing Bearing & Types (Added v0.21.4)
+
+```python
+# Bearing stress enhancement (IS 456 Cl 34.4)
+api.bearing_stress_enhancement(fck=25, A1_mm2=160000, A2_mm2=40000)
+api.BearingStressEnhancementResult
+
+# Bearing pressure check (IS 456 Cl 34.4)
+api.check_bearing_pressure(Pu_kN=900, fck=25, column_b_mm=400, column_D_mm=400, footing_B_mm=2000, footing_L_mm=2000)
+api.BearingPressureCheckResult
+
+# Footing result types
+api.FootingBearingResult
+api.FootingFlexureResult
+api.FootingOneWayShearResult
+api.FootingPunchingResult
 ```
 
 ---
@@ -375,6 +463,9 @@ envelope = api.normalize_etabs_forces("ETABS_export.csv")
 
 # Create design job from ETABS data
 job = api.create_job_from_etabs(envelope_row, b_mm=300, D_mm=500, ...)
+
+# Create multiple jobs from ETABS CSV export
+api.create_jobs_from_etabs_csv(...)
 ```
 
 **Status:** Preview - CSV column mapping and normalization may change.

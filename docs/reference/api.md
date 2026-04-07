@@ -101,6 +101,36 @@ Notes:
 
 ---
 
+## 1A-pre. Diagnostics & Code Quality
+
+### `show_versions(as_dict=False) → VersionInfo | None`
+
+Print library + dependency versions (inspired by sklearn's `show_versions`). Returns `api.VersionInfo` if `as_dict=True`.
+
+```python
+api.show_versions()          # prints to stdout
+info = api.show_versions(as_dict=True)  # returns VersionInfo
+```
+
+### `api.VersionInfo`
+
+Frozen dataclass: `library_version`, `python_version`, `os_info`, `key_dependencies`.
+
+### `check_code(code_id: str) → CheckCodeReport`
+
+Validates a design code implementation — checks importability, clause decorators, frozen results, param naming. Returns `api.CheckCodeReport`.
+
+```python
+report = api.check_code("is456")
+assert report.all_importable
+```
+
+### `api.CheckCodeReport`
+
+Frozen dataclass: `code_id`, `all_importable`, `all_decorated`, `all_frozen`, `all_results_valid`, `all_params_named`, `no_boundary_violations`, `issues`.
+
+---
+
 ## 1A. Public Entry Points (Python) (`api.py`)
 
 These entrypoints are intended to remain stable even as internal modules evolve.
@@ -764,6 +794,37 @@ for name, passed, msg in results:
 
 ### 1A.5 API Helpers
 
+#### Beam Detailing Helpers
+
+### `build_detailing_input(result, *, beam_id='B1', b_mm=300.0, D_mm=500.0, d_mm=450.0, span_mm=4000.0, cover_mm=40.0, fck_nmm2=25.0, fy_nmm2=500.0) → dict`
+
+Factory that builds a validated detailing input dict for `api.compute_detailing()` from a `ComplianceCaseResult`.
+
+```python
+design = api.design_beam_is456(b_mm=300, D_mm=500, fck=25, fy=415, Mu_kNm=120, Vu_kN=80)
+inp = api.build_detailing_input(design, beam_id="B1", span_mm=6000)
+```
+
+### `check_anchorage_at_simple_support(bar_dia_mm, fck_nmm2, fy_nmm2, vu_kn, support_width_mm, cover_mm=40.0, bar_type='deformed', has_standard_bend=True) → AnchorageCheckResult`
+
+IS 456 Cl 26.2.3.3 — Checks anchorage at simple supports.
+
+```python
+result = api.check_anchorage_at_simple_support(
+    bar_dia_mm=16, fck_nmm2=25, fy_nmm2=415,
+    vu_kn=80, support_width_mm=300,
+)
+assert result.is_adequate
+```
+
+#### Validation
+
+### `api.ValidationReport`
+
+Frozen dataclass: `ok: bool`, `errors: list[str]`, `warnings: list[str]`, `details: dict | None`. Returned by `api.validate_job_spec()`, `api.validate_design_results()`.
+
+#### General Helpers
+
 ```python
 def get_library_version() -> str
 def validate_job_spec(path: str) -> ValidationReport
@@ -843,6 +904,34 @@ Notes:
   optimization, design suggestions, sensitivity analysis, and constructability assessment.
   Runs full design pipeline internally and returns comprehensive dashboard with overall scores,
   ratings, and recommendations. Supports dict, JSON, or text output formats.
+
+---
+
+### 1A.6 Cost & Multi-Objective Optimization
+
+### `api.CostProfile`
+
+Frozen dataclass for cost estimation: `currency`, `concrete_costs`, `steel_cost_per_kg`, `formwork_cost_per_m2`, `congestion_threshold_pt`, `congestion_multiplier`, `location_factor`, `wastage_factor`.
+
+### `optimize_pareto_front(span_mm, mu_knm, vu_kn, objectives=None, cost_profile=None, cover_mm=40, max_candidates=50, random_seed=None) → ParetoOptimizationResult`
+
+NSGA-II multi-objective beam optimization. Objectives: cost, steel_weight, utilization. Returns `api.ParetoOptimizationResult`.
+
+```python
+result = api.optimize_pareto_front(
+    span_mm=6000, mu_knm=200, vu_kn=120,
+    objectives=["cost", "steel_weight"], max_candidates=100,
+)
+print(result.best_by_cost)
+```
+
+### `api.ParetoOptimizationResult`
+
+Frozen dataclass: `pareto_front: list[ParetoCandidate]`, `all_candidates`, `objectives_used`, `generations`, `computation_time_sec`, `best_by_cost`, `best_by_utilization`, `best_by_weight`.
+
+### `api.ParetoCandidate`
+
+Frozen dataclass: `b_mm`, `D_mm`, `d_mm`, `fck_nmm2`, `fy_nmm2`, `ast_required`, `ast_provided`, `bar_config`, `cost`, `steel_weight_kg`, `utilization`, `is_safe`, `governing_clauses`, `rank`, `crowding_distance`.
 
 ---
 
@@ -3708,6 +3797,57 @@ ows = footing_one_way_shear(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=
 # Step 4: Check punching shear
 punch = footing_punching_shear(Pu_kN=900, L_mm=L, B_mm=B, d_mm=450, a_mm=400, b_mm=400, fck=25)
 ```
+
+---
+
+### 17.6 Bearing Stress & Pressure Checks
+
+### `bearing_stress_enhancement(fck, A1_mm2, A2_mm2) → BearingStressEnhancementResult`
+
+IS 456 Cl 34.4 — Bearing stress enhancement factor = √(A1/A2), capped at 2.0. Returns `api.BearingStressEnhancementResult`.
+
+```python
+result = api.bearing_stress_enhancement(fck=25, A1_mm2=160000, A2_mm2=40000)
+print(result.enhancement_factor)  # 2.0 (capped)
+```
+
+### `api.BearingStressEnhancementResult`
+
+Frozen dataclass: `basic_stress_mpa`, `enhancement_factor`, `permissible_stress_mpa`, `A1_mm2`, `A2_mm2`, `clause_ref`.
+
+### `check_bearing_pressure(Pu_kN, fck, column_b_mm, column_D_mm, footing_B_mm, footing_L_mm) → BearingPressureCheckResult`
+
+IS 456 Cl 34.4 — Column-footing interface bearing pressure check. Returns `api.BearingPressureCheckResult`.
+
+```python
+result = api.check_bearing_pressure(
+    Pu_kN=900, fck=25, column_b_mm=400, column_D_mm=400,
+    footing_B_mm=2000, footing_L_mm=2000,
+)
+assert result.is_safe
+```
+
+### `api.BearingPressureCheckResult`
+
+Frozen dataclass: `actual_stress_mpa`, `permissible_stress_mpa`, `enhancement_factor`, `utilization_ratio`, `is_safe`, `A1_mm2`, `A2_mm2`, `Pu_kN`, `clause_ref`.
+
+### 17.7 Footing Result Types
+
+### `api.FootingBearingResult`
+
+Frozen dataclass: `L_mm`, `B_mm`, `q_max_kPa`, `q_min_kPa`, `q_safe_kPa`, `pressure_type`, `utilization_ratio`, `is_safe`, `clause_ref`, `warnings`.
+
+### `api.FootingFlexureResult`
+
+Frozen dataclass: `Mu_L_kNm`, `Ast_L_mm2`, `pt_L_percent`, `cantilever_L_mm`, `Mu_B_kNm`, `Ast_B_mm2`, `pt_B_percent`, `cantilever_B_mm`, `d_mm`, `is_safe`. IS 456 Cl 34.5.
+
+### `api.FootingOneWayShearResult`
+
+Frozen dataclass: `tau_v_nmm2`, `tau_c_nmm2`, `Vu_kN`, `d_mm`, `critical_section_mm`, `utilization_ratio`, `is_safe`, `governing_direction`, `clause_ref`, `warnings`. IS 456 Cl 34.2.4.1(a).
+
+### `api.FootingPunchingResult`
+
+Frozen dataclass: `tau_v_nmm2`, `tau_c_nmm2`, `perimeter_mm`, `Vu_punch_kN`, `d_mm`, `beta_c`, `ks`, `utilization_ratio`, `is_safe`, `clause_ref`, `warnings`. IS 456 Cl 31.6.1.
 
 ---
 
