@@ -47,8 +47,8 @@
             "examples": [
               50.0
             ],
+            "exclusiveMinimum": 0.0,
             "maximum": 200.0,
-            "minimum": 0.0,
             "title": "D Prime Mm",
             "type": "number"
           },
@@ -57,8 +57,8 @@
             "examples": [
               25.0
             ],
-            "exclusiveMinimum": 0.0,
-            "maximum": 100.0,
+            "maximum": 80.0,
+            "minimum": 15.0,
             "title": "Fck",
             "type": "number"
           },
@@ -67,8 +67,8 @@
             "examples": [
               415.0
             ],
-            "exclusiveMinimum": 0.0,
             "maximum": 600.0,
+            "minimum": 250.0,
             "title": "Fy",
             "type": "number"
           },
@@ -381,6 +381,19 @@
             "maximum": 3000.0,
             "title": "Depth",
             "type": "number"
+          },
+          "effective_depth": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Effective depth d (mm). Auto-calculated if not provided.",
+            "title": "Effective Depth"
           },
           "fck": {
             "default": 25.0,
@@ -1616,8 +1629,8 @@
             "examples": [
               25.0
             ],
-            "exclusiveMinimum": 0.0,
-            "maximum": 100.0,
+            "maximum": 80.0,
+            "minimum": 15.0,
             "title": "Fck",
             "type": "number"
           },
@@ -1627,8 +1640,8 @@
             "examples": [
               415.0
             ],
-            "exclusiveMinimum": 0.0,
             "maximum": 600.0,
+            "minimum": 250.0,
             "title": "Fy",
             "type": "number"
           },
@@ -3320,8 +3333,8 @@
             "examples": [
               25.0
             ],
-            "exclusiveMinimum": 0.0,
-            "maximum": 100.0,
+            "maximum": 80.0,
+            "minimum": 15.0,
             "title": "Fck",
             "type": "number"
           },
@@ -3330,8 +3343,8 @@
             "examples": [
               415.0
             ],
-            "exclusiveMinimum": 0.0,
             "maximum": 600.0,
+            "minimum": 250.0,
             "title": "Fy",
             "type": "number"
           },
@@ -3546,8 +3559,8 @@
             "examples": [
               25.0
             ],
-            "exclusiveMinimum": 0.0,
-            "maximum": 100.0,
+            "maximum": 80.0,
+            "minimum": 15.0,
             "title": "Fck",
             "type": "number"
           },
@@ -3556,8 +3569,8 @@
             "examples": [
               415.0
             ],
-            "exclusiveMinimum": 0.0,
             "maximum": 600.0,
+            "minimum": 250.0,
             "title": "Fy",
             "type": "number"
           },
