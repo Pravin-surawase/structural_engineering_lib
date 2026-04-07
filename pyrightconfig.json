@@ -1,0 +1,5 @@
+{
+  "extraPaths": ["Python", "scripts"],
+  "venvPath": ".",
+  "venv": ".venv"
+}

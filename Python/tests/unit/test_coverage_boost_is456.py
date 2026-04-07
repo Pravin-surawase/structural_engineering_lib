@@ -7,6 +7,7 @@ Organized by module.
 
 import math
 import warnings
+from typing import Any
 
 import pytest
 
@@ -588,7 +589,7 @@ class TestComplianceUtilization:
                 "d_mm": 450,
                 "support_condition": "simply_supported",
             },
-            crack_width_params={
+            crack_width_params={  # type: ignore[arg-type]
                 "exposure_class": "moderate",
                 "limit_mm": 0.3,
             },
@@ -628,7 +629,7 @@ class TestComplianceUtilization:
                 fck_nmm2=25,
                 fy_nmm2=415,
                 asv_mm2=100,
-                deflection_defaults="not_a_dict",
+                deflection_defaults="not_a_dict",  # type: ignore[arg-type]
             )
 
     def test_compliance_report_crack_defaults_validation(self):
@@ -643,7 +644,7 @@ class TestComplianceUtilization:
                 fck_nmm2=25,
                 fy_nmm2=415,
                 asv_mm2=100,
-                crack_width_defaults="not_a_dict",
+                crack_width_defaults="not_a_dict",  # type: ignore[arg-type]
             )
 
     def test_compliance_report_non_dict_case_raises(self):
@@ -651,7 +652,7 @@ class TestComplianceUtilization:
 
         with pytest.raises(ValueError, match="Each case must be a dict"):
             check_compliance_report(
-                cases=["not a dict"],
+                cases=["not a dict"],  # type: ignore[arg-type]
                 b_mm=230,
                 D_mm=500,
                 d_mm=450,
@@ -784,7 +785,7 @@ class TestFlexureEdgeCases:
                 bw_mm=300,
                 span_mm=6000,
                 df_mm=120,
-                beam_type=42,
+                beam_type=42,  # type: ignore[arg-type]
                 flange_overhang_left_mm=0,
                 flange_overhang_right_mm=0,
             )
@@ -978,7 +979,7 @@ class TestLongColumnValidation:
     """Test validation branches in design_long_column."""
 
     # Common kwargs for valid long column calls (includes required positional args)
-    _BASE = {
+    _BASE: dict[str, Any] = {
         "M1x_kNm": 20,
         "M2x_kNm": 80,
         "M1y_kNm": 10,
@@ -2197,28 +2198,28 @@ class TestIS456CodeClass:
         from structural_lib.codes.is456 import IS456Code
 
         code = IS456Code()
-        fcd = code.get_design_strength_concrete(25)
+        fcd = code.get_design_strength_concrete(25)  # type: ignore[attr-defined]
         assert fcd == pytest.approx(0.67 * 25 / 1.5, rel=0.01)
 
     def test_design_strength_steel(self):
         from structural_lib.codes.is456 import IS456Code
 
         code = IS456Code()
-        fyd = code.get_design_strength_steel(415)
+        fyd = code.get_design_strength_steel(415)  # type: ignore[attr-defined]
         assert fyd == pytest.approx(415 / 1.15, rel=0.01)
 
     def test_get_tau_c(self):
         from structural_lib.codes.is456 import IS456Code
 
         code = IS456Code()
-        tc = code.get_tau_c(25, 1.0)
+        tc = code.get_tau_c(25, 1.0)  # type: ignore[attr-defined]
         assert tc > 0
 
     def test_get_tau_c_max(self):
         from structural_lib.codes.is456 import IS456Code
 
         code = IS456Code()
-        tc_max = code.get_tau_c_max(25)
+        tc_max = code.get_tau_c_max(25)  # type: ignore[attr-defined]
         assert tc_max > 0
 
 
@@ -2480,7 +2481,7 @@ class TestServiceabilityUncoveredBranches:
         result = check_deflection_span_depth(
             span_mm=5000,
             d_mm=400,
-            support_condition=12345,
+            support_condition=12345,  # type: ignore[arg-type]
         )
         assert result.is_ok is not None
         assert any("defaulted" in a.lower() for a in result.assumptions)
@@ -2503,7 +2504,7 @@ class TestServiceabilityUncoveredBranches:
         from structural_lib.codes.is456.beam.serviceability import check_crack_width
 
         result = check_crack_width(
-            exposure_class=99999,
+            exposure_class=99999,  # type: ignore[arg-type]
             acr_mm=50,
             cmin_mm=25,
             h_mm=500,
@@ -2816,7 +2817,7 @@ class TestComplianceUncoveredBranches:
 class TestLongColumnUncoveredBranches:
     """Target remaining uncovered branches in column/long_column.py."""
 
-    _BASE = {
+    _BASE: dict[str, Any] = {
         "M1x_kNm": 20,
         "M2x_kNm": 80,
         "M1y_kNm": 10,
@@ -4541,7 +4542,7 @@ class TestDeflectionLevelBInvalidSupport:
             ma_service_knm=60,
             ast_mm2=942,
             fck_nmm2=25,
-            support_condition=42,
+            support_condition=42,  # type: ignore[arg-type]
         )
         assert any("Invalid support condition" in a for a in result.assumptions)
 

@@ -12,7 +12,7 @@ from __future__ import annotations
 import warnings
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
 
 from structural_lib.codes.is456 import (
     compliance,
@@ -52,14 +52,16 @@ from .costing import CostProfile
 # Deprecated-parameter resolution helper
 # ============================================================================
 
+_T = TypeVar("_T")
+
 
 def _resolve_deprecated_param(
-    new_val: Any,
-    old_val: Any,
+    new_val: _T | None,
+    old_val: _T | None,
     new_name: str,
     old_name: str,
     func_name: str,
-) -> Any:
+) -> _T:
     """Resolve new vs deprecated param, warn if old is used."""
     if old_val is not None and new_val is not None:
         raise ValueError(

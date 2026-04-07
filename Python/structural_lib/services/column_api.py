@@ -10,7 +10,7 @@ Split from services/api.py (ARCH-NEW-12).
 from __future__ import annotations
 
 import warnings
-from typing import Any
+from typing import Any, TypeVar
 
 from structural_lib.codes.is456.column.axial import (
     classify_column,
@@ -41,14 +41,16 @@ from structural_lib.core.data_types import (
 # Deprecated-parameter resolution helper
 # ============================================================================
 
+_T = TypeVar("_T")
+
 
 def _resolve_deprecated_param(
-    new_val: Any,
-    old_val: Any,
+    new_val: _T | None,
+    old_val: _T | None,
     new_name: str,
     old_name: str,
     func_name: str,
-) -> Any:
+) -> _T:
     """Resolve new vs deprecated param, warn if old is used."""
     if old_val is not None and new_val is not None:
         raise ValueError(
