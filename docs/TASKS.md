@@ -276,7 +276,6 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 ## v0.21.7 — Security Hardening (In Progress)
 
 **Theme:** Input validation, error sanitization, packaging gates, CI hardening
-**Execution Plan:** [v0217-execution-plan.md](_active/v0217-execution-plan.md)
 **Target:** 2-3 sessions after v0.21.6
 **Quality Gate:** `audit_input_validation.py` reports 0 unresolved findings. `pip-audit` clean.
 
