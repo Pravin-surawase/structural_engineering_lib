@@ -234,6 +234,34 @@ colima stop                                   # Free RAM when done
 ⚠️ `docker ps` permission denied = Colima not running → `colima start`
 ⚠️ Use `--host "::"` not `--host 0.0.0.0` for uvicorn (IPv6 dual-stack for Mac)
 
+## Post-Merge CI Verification (MANDATORY)
+
+After `--finish` completes (or any merge to `main`), ALWAYS verify CI health:
+
+```bash
+# MANDATORY after every --finish or merge
+gh run list --branch main --limit 3 --json conclusion,name | python3 -c "
+import json,sys
+runs=json.load(sys.stdin)
+failing=[r for r in runs if r['conclusion'] not in ('success', None, '')]
+if failing:
+    print('⚠️  FAILING CI on main:')
+    for r in failing: print(f'  ❌ {r["name"]}: {r["conclusion"]}')
+    print('DO NOT mark task complete — fix these first.')
+else:
+    print('✅ All CI workflows passing on main.')
+"
+```
+
+**Do NOT mark a task as complete if any workflow on `main` is failing.** This rule exists because 5 CI failures ran daily for ~10 days undetected (Session 14, PR #550).
+
+Before committing, verify your current branch is NOT already merged:
+```bash
+git log main..HEAD --oneline | head -1   # If empty → branch is merged, switch to main
+```
+
+Pushing to a stale/merged branch silently loses work (March 28 incident: commit logged as "success" but never reached `main`).
+
 ## After Committing (MANDATORY)
 
 ### 1. Fix post-commit warnings immediately
