@@ -1680,7 +1680,7 @@ def design_with_companion(
     if D_mm <= cover_mm:
         raise ValueError(f"D_mm ({D_mm}) must be greater than cover_mm ({cover_mm})")
 
-    start_time = time.time()
+    start_time = time.perf_counter()
     d_mm = D_mm - cover_mm
 
     # ── 1. Run the real design ──
@@ -1783,7 +1783,7 @@ def design_with_companion(
         carbon.rating,
     )
 
-    computation_time = time.time() - start_time
+    computation_time = time.perf_counter() - start_time
 
     return CompanionResponse(
         design_result=result,

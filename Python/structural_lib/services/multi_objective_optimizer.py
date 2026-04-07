@@ -449,7 +449,7 @@ def optimize_pareto_front(
         ...     print(f"  {design.bar_config}: ₹{design.cost:,.0f}, "
         ...           f"{design.steel_weight_kg:.1f}kg, {design.utilization:.0%}")
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     if objectives is None:
         objectives = ["cost", "utilization"]
@@ -578,7 +578,7 @@ def optimize_pareto_front(
         max(candidates, key=lambda c: c.utilization) if candidates else None
     )
 
-    computation_time = time.time() - start_time
+    computation_time = time.perf_counter() - start_time
 
     return ParetoOptimizationResult(
         pareto_front=pareto_front,

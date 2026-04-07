@@ -325,7 +325,7 @@ class SmartDesigner:
         if cost_profile is None:
             cost_profile = CostProfile()
 
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         # Cost optimization analysis
         cost_analysis = None
@@ -578,7 +578,7 @@ class SmartDesigner:
         )
 
         # Metadata
-        elapsed = time.time() - start_time
+        elapsed = time.perf_counter() - start_time
         metadata = {
             "timestamp": datetime.now().isoformat(),
             "library_version": get_library_version(),

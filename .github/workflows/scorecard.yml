@@ -23,21 +23,19 @@ on:
   # Allow manual trigger for ad-hoc assessment
   workflow_dispatch:
 
-# Required permissions for Scorecard
+# Minimal top-level permissions; jobs widen as needed
 permissions:
-  # Needed to upload results to code-scanning dashboard
-  security-events: write
-  # Needed to read repository contents
   contents: read
-  # Needed for dependency graph
-  actions: read
-  # Needed for OIDC token (Scorecard publishing)
-  id-token: write
 
 jobs:
   scorecard-analysis:
     name: Scorecard Analysis
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+      id-token: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
