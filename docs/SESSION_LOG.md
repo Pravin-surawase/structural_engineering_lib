@@ -5,6 +5,37 @@
 
 ---
 
+## 2026-04-07 — Session — CI Fixes & v0.21.6 Release
+
+**Agent:** orchestrator → backend → doc-master → ops
+**Branch:** main
+**Focus:** CI fixes, v0.21.6 release, version pattern warnings, security hardening
+
+### Changes
+- Released v0.21.6 to PyPI (version sync + preflight docs, PR #552)
+- Updated OpenAPI baseline to match current schema — 23 drift diffs (PR #551)
+- Resolved 5 daily CI failures on main (PR #550)
+- v0.21.7 P1-P3 security hardening — 4 tasks completed (PR #549)
+- Resolved 28+ Pylance type errors via TypeVar in deprecated param helper (PR #547)
+- Batch 3 API naming convention — 12 functions renamed with backward-compat aliases (PR #546)
+- Audit remediation — ductile import, reports fallback, README pin, smoke tests (PR #545)
+- Remediated 8 external audit findings: ETABS units, story collision, template packaging (PR #544)
+- Fixed 3 CI failures: api.md __all__ symbols, api-stability sync, session heading
+- Fixed 7 version pattern warnings across docs
+- Added Required Reading and Current/Next rows to next-session-brief.md
+- Agent evolution updates — 6 instruction improvements (EVO-022–027)
+- Applied 9 evolution items (EVO-004,-007,-014-020) to 5 agent files
+
+### Commits
+18 commits, 7 PRs merged (#544–#552)
+
+### Key Deliverables
+- v0.21.6 released to PyPI
+- All CI checks green (version patterns, API docs, API sync, headings)
+- Security hardening in progress (4/14 tasks done)
+
+---
+
 ## Session — 2026-04-06 — Response Envelope Fix
 
 **Agent:** orchestrator → frontend → tester → doc-master → ops
