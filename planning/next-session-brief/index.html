@@ -1644,6 +1644,12 @@
 <li><strong>TASK-730: Input validation audit</strong> ✅ — Security audit found 16 gaps, all fixed, 49 tests written</li>
 <li><strong>TASK-802: Column API export</strong> ✅ — Column functions already exported; fixed 6 missing contract test assertions</li>
 <li><strong>TASK-796: ImportError path leak fix</strong> ✅ — Added sanitize_error_string(), sanitized 4 router response patterns, 15 tests</li>
+<li><strong>TASK-CI-FIX: 5 daily CI failures fixed</strong> ✅ (PR #550):</li>
+<li><code>time.time()</code> → <code>time.perf_counter()</code> in 6 library files (Windows CI timing)</li>
+<li>CycloneDX SBOM CLI syntax fixed + version pinned (cyclonedx-bom v7+)</li>
+<li>OpenSSF Scorecard permissions narrowed to job-level (least-privilege)</li>
+<li>OpenAPI baseline updated for BiaxialCheckRequest description drift</li>
+<li>Nightly QA smoke test failure guard added</li>
 </ul>
 <h2 id="current-version-state">Current Version State<a class="headerlink" href="#current-version-state" title="Permanent link">&para;</a></h2>
 <ul>
