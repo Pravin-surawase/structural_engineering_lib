@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-07 — v0.21.6 complete (unreleased); Batch 3 API naming done (TASK-740–744 ✅)
+**Updated:** 2026-04-07 — v0.21.6 audit + online research root cause analysis; 16 new issues from OWASP 2025/PyPI best practices
 
 ---
 
@@ -136,6 +136,143 @@
 | TASK-726 | API surface freeze: OpenAPI baseline diff in CI | @ops | ✅ DONE |
 | TASK-727 | Function limitation docs — what each function does NOT do | @doc-master | ✅ DONE |
 
+## v0.21.6 Pre-Release Audit (2026-04-07)
+
+**Theme:** Comprehensive 14-agent audit before PyPI release
+**Overall Score:** A+ (9.0/10)
+**Audit Report:** [comprehensive-library-audit-2026-04-04.md](audit/comprehensive-library-audit-2026-04-04.md)
+
+### Release Blockers — NONE ✅
+
+No critical or high-severity findings blocking this release.
+
+### Version Fixes Required Before Tag
+
+| Item | File | Fix | Status |
+|------|------|-----|--------|
+| CHANGELOG heading | CHANGELOG.md | `[Unreleased]` → `[0.21.6] — 2026-04-07` | 📋 |
+| CHANGELOG link | CHANGELOG.md bottom | Add `[0.21.6]` compare link | 📋 |
+| API docs version | docs/reference/api.md | `0.21.5` → `0.21.6` | 📋 |
+| Python README git pin | Python/README.md | `@v0.21.5` → `@v0.21.6` | 📋 |
+| Git-automation version | docs/git-automation/README.md | `0.21.5` → `0.21.6` | 📋 |
+
+### Known Issues — Accepted Deferrals
+
+These findings are documented in the comprehensive audit and planned for future releases. They are NOT release-blocking because they represent planned improvements, not regressions.
+
+| ID | Finding | Severity | Deferred To | Reason for Deferral |
+|----|---------|----------|-------------|---------------------|
+| FE-NEW-01 | Three.js memory leak — no dispose() on unmount | CRITICAL | v0.22.0 | Requires R3F architecture change; no crash in normal usage, affects only rapid route switching |
+| UX-01 | d_mm > D_mm accepted silently (impossible geometry) | ~~CRITICAL~~ | ✅ FIXED | _validate_plausibility in common_api.py now raises ValueError |
+| UX-02 | Column returns dict, beam returns dataclass | CRITICAL | v0.22.0 | Breaking API change — requires major version or deprecation cycle |
+| ARCH-NEW-12 | services/api.py god module (3610 lines) | HIGH | v0.22.0 | Structural refactor, no functional impact |
+| S-NEW-01 | ImportError messages leak internal paths (22 instances) | HIGH | v0.21.7 | Security hardening release |
+| H-01 | WebSocket connections lack rate limiting | HIGH | v0.21.7 | Security hardening release |
+| M-04 | create_dev_token() importable in production | MEDIUM | v0.21.7 | No auth enabled by default, defense-in-depth improvement |
+| M-05 | No per-endpoint scope checking | MEDIUM | v0.21.7 | Auth disabled by default, planned for security release |
+| T-NEW-01 | MagicMock in 2 test files (TE-3 violation) | HIGH | v0.22.0 | Test quality, not production code |
+| IS-NEW-01 | 4 footing functions lack @clause decorators | HIGH | v0.22.0 | Traceability enhancement, not math error |
+| IS-NEW-02 | 17 serviceability functions lack @clause | HIGH | v0.22.0 | Traceability enhancement, not math error |
+
+### Audit Highlights
+
+- **Test Infrastructure:** 5003/5003 tests passing, 99% branch coverage on IS 456 code, 42+ golden vectors, 18 contract tests
+- **Security:** 0 CVEs, Docker hardened (non-root, cap_drop ALL), JWT production safeguard, rate limiting on REST endpoints
+- **Agent Infrastructure:** 16/16 agents, 14/14 skills, 16/16 prompts, all cross-references valid
+- **Architecture:** 4-layer boundary intact, 108 API exports, consistent parameter naming with unit suffixes
+- **IS 456 Compliance:** All formulas verified correct, 42 clauses + 8 IS 13920 covered, A+ compliance score
+- **Packaging:** pyproject.toml v0.21.6, .j2 templates in wheel, all 19 modules have __init__.py
+- **CI/CD:** 18 workflows, CodeQL + pip-audit + OpenSSF Scorecard, golden gate in CI
+
+### Infrastructure Issues (non-blocking)
+
+| Issue | Location | Impact | Fix Plan |
+|-------|----------|--------|----------|
+| skill_count=10 in registry metadata | agents/agent_registry.json | Cosmetic — actual count is 14 | Update _meta.skill_count |
+| session_summary.py referenced but doesn't exist | CLAUDE.md, terminal-rules | Use `session.py summary` instead | Update 4 doc references |
+| 3 architecture import violations in FastAPI | main.py, design.py, geometry.py | Non-functional, code works | Refactor in v0.22.0 |
+
+## v0.21.6 Post-Audit: Online Research & Root Cause Analysis
+
+**Source:** Online best practices (OWASP 2025, PyPI Trusted Publishers, PEP 740 attestations, IStructE software validation guidance) + External Audit EA-1 through EA-23 root cause patterns.
+
+### NEW Issues Found (from online research)
+
+These were NOT caught by the 14-agent audit. They come from comparing our setup against 2025 industry best practices.
+
+| ID | Category | Issue | Severity | Target | How Found |
+|----|----------|-------|----------|--------|-----------|
+| OL-01 | Supply Chain | No `check-wheel-contents` validation in CI — malformed metadata can ship to PyPI | HIGH | v0.21.7 | PyPI packaging best practices |
+| OL-02 | Supply Chain | No `twine check` in CI — README rendering errors discovered only post-publish | MEDIUM | v0.21.7 | PyPI publishing guide |
+| OL-03 | Supply Chain | No SLSA provenance attestation — OWASP 2025 A03 (Supply Chain Failures) | HIGH | v0.22.0 | OWASP Top 10:2025 A03 |
+| OL-04 | Supply Chain | No artifact signing (sigstore) — PEP 740 digital attestations now standard | MEDIUM | v0.22.0 | PyPI attestations blog (Nov 2024) |
+| OL-05 | Docker | Base image `python:3.11-slim` not pinned to digest — reproducibility risk | MEDIUM | v0.21.7 | Container security best practices |
+| OL-06 | Docker | No multi-stage build — dev tools included in production image (~1GB) | LOW | v0.22.0 | Docker security hardening guide |
+| OL-07 | Docker | Container CVE scan exists but Trivy action unpinned (@master) | LOW | v0.21.7 | OWASP A03 + A06. Trivy scan already in docker-build.yml; pin action to SHA |
+| OL-08 | Security | OWASP 2025 A10 "Mishandling of Exceptional Conditions" — 2-4 HTTP-exposed ImportError leaks (38 total catch sites, all properly sanitized via sanitize_error()) | LOW | v0.21.7 | OWASP Top 10:2025 (NEW category) |
+| OL-09 | Security | No security logging / alerting — OWASP 2025 A09 has no implementation | MEDIUM | v0.22.0 | OWASP Top 10:2025 A09 |
+| OL-10 | Packaging | No TestPyPI dry-run before production release | LOW | v0.21.7 | PyPI publishing workflow guide. TestPyPI job exists but only on workflow_dispatch, not mandatory gate |
+| OL-11 | Packaging | No sdist contents verification (only wheel checked) | LOW | v0.22.0 | Python packaging best practices |
+| OL-12 | Packaging | Optional dependency groups untested (`.[dxf]`, `.[report]`) | LOW | v0.21.7 | pip install variations |
+| OL-13 | Licensing | No license compliance scan — BSD dependency chain could break GPL | LOW | v0.22.0 | FOSSA / pip-licenses |
+| OL-14 | Struct Eng | No consolidated verification methodology doc — V&V infrastructure exists (42+ golden vectors, verification-checklist.md, validation-pack.md) but fragmented across 6+ files | MEDIUM | v0.22.0 | IStructE software validation guidance |
+| OL-15 | Struct Eng | MERGED into TASK-735 — services/audit.py already provides basic audit trail; CalculationProvenance extends it | LOW | v0.22.0 | Building standards guidance on computer programs |
+| OL-16 | API | No OpenAPI drift check in publish workflow — API clients break silently | MEDIUM | v0.21.7 | API versioning best practices |
+
+### Additional Findings from 4-Agent Review (2026-04-07)
+
+| ID | Finding | Severity | Source | Target |
+|----|---------|----------|--------|--------|
+| AR-01 | Trivy action@master unpinned (supply chain risk) | LOW | @security | v0.21.7 |
+| AR-02 | Auth default-off even when JWT_SECRET_KEY is set in production | MEDIUM | @security | v0.21.7 |
+| AR-03 | requirements.txt uses floor versions; Dockerfile installs unpinned deps | LOW | @security | v0.21.7 |
+| AR-04 | Documentation drift — code fixes ahead of task board (e.g., UX-01 already fixed) | MEDIUM | @library-expert | Ongoing |
+| AR-05 | No deprecation policy for 46 backward-compat stubs | LOW | @library-expert | v1.0 |
+| AR-06 | Import time ~3-5s — ezdxf/pydantic eager loading in __init__.py | MEDIUM | @library-expert | v0.22.0 |
+| AR-07 | Negative Mu silently abs-valued — no hogging/sagging guidance | MEDIUM | @library-expert | v0.21.7 |
+| AR-08 | Column API not exported from structural_lib.__init__.py | HIGH | @library-expert | v0.21.7 |
+| AR-09 | show_versions() reports stale version (0.21.1) from source install | LOW | @library-expert | v0.21.7 |
+
+### Missing Root Cause Patterns (from @library-expert)
+
+| # | Pattern | Severity | Description |
+|---|---------|----------|-------------|
+| 7 | Documentation Drift | MEDIUM | Code moves faster than docs; version strings, task statuses, verification checklist version all lag behind code |
+| 8 | API Stability / No Deprecation Policy | LOW (HIGH at v1.0) | 46 backward-compat stubs with no formal removal timeline |
+| 9 | Import Performance | MEDIUM | Cold start ~3-5s due to eager imports of ezdxf, pydantic, all stubs |
+
+### External Audit Root Cause Analysis (EA-1 through EA-23)
+
+We analyzed WHY each external audit finding was missed. Six patterns emerge:
+
+| Pattern | Findings | Root Cause | Prevention Measure | Status |
+|---------|----------|-----------|-------------------|--------|
+| **Repo ≠ Installed** | EA-1, EA-6, EA-8, EA-9 | Tests only run in dev environment, never tested installed wheel | `@repo_only` marker, wheel smoke tests in CI | ✅ Fixed |
+| **Dev-centric defaults** | EA-2, EA-10, EA-11, EA-16 | Config optimized for developer experience, not production safety | `.env.example`, auth-on-by-default in prod, lazy imports | ✅ Fixed |
+| **Undocumented API ergonomics** | EA-3, EA-5, EA-12, EA-13 | API grew incrementally without UX design review | API levels doc, build_detailing_input() factory, e2e examples | ✅ Fixed |
+| **Mixed API patterns** | EA-4, EA-14 | Features added fast without consistency enforcement | to_dict() added, task-oriented README | ✅ Fixed |
+| **Security in exception messages** | EA-17, EA-18, EA-20 | Error messages treated as debug output, CORS hardcoded | sanitize_error() utility, Settings-based CORS, RateLimitMiddleware | ✅ Fixed |
+| **Incomplete IS 456 coverage** | EA-21, EA-22, EA-23 | Code added without IS 456 clause coverage checklist | Clause audit list created, bearing_stress_enhancement(), SCWB check, D_mm param | ✅ Fixed |
+
+### Are We Protected Against Recurrence?
+
+| Prevention | Implemented? | Gap? |
+|------------|-------------|------|
+| Wheel smoke test in CI | ✅ Yes — python-tests.yml lines 147-158 | No gap |
+| Clean import test | ✅ Yes — TestImportSilence, TestImportStrictWarnings | No gap |
+| API stability test (105 functions) | ✅ Yes — TestAPIStability | No gap |
+| E2E pipeline test | ✅ Yes — test_full_pipeline_e2e.py (8 tests) | No gap |
+| RateLimitMiddleware on all endpoints | ✅ Yes — global middleware | No gap |
+| sanitize_error() for all routers | ⚠️ Partial — 2-4 HTTP-exposed ImportError leaks (38 total catch sites properly sanitized) | OL-08 above |
+| IS 456 clause checklist | ⚠️ Partial — @clause decorators exist but ~26 public IS 456 functions lack them (detailing: 11, common/: 8, footing/_common: 4, slenderness: 3; serviceability has full coverage) | IS-NEW-01, IS-NEW-02 |
+| Cross-field input validation | ✅ Yes — _validate_plausibility in common_api.py raises ValueError for d>D | ✅ Fixed (was UX-01) |
+| TestPyPI before prod publish | ❌ No — publish goes direct to PyPI | OL-10 above |
+| OWASP 2025 A03 (Supply Chain) | ⚠️ Partial — Trusted Publishers ✅, but no attestations/provenance | OL-03, OL-04 |
+| OWASP 2025 A09 (Logging) | ❌ No — no security event logging | OL-09 |
+| OWASP 2025 A10 (Exceptions) | ⚠️ Partial — sanitize_error exists but not applied everywhere | OL-08 |
+| Structural eng verification methodology | ⚠️ Partial — V&V infrastructure exists (42+ golden vectors, verification-checklist.md, validation-pack.md) but fragmented across 6+ files | OL-14 |
+| Container security scanning | ✅ Yes — Trivy scan in docker-build.yml (action unpinned, needs SHA pin) | OL-07 above |
+
 ## v0.21.7 — Security Hardening
 
 **Theme:** Close all OWASP-relevant gaps (see architecture doc §12)
@@ -150,6 +287,25 @@
 | TASK-731 | Dependency CVE scanning in CI (`pip-audit`) | @ops | 📋 |
 | — | WebSocket message rate limit (5 msg/s per session) | @api-developer | 📋 |
 | — | Computation timeout (prevent pathological inputs) | @api-developer | 📋 |
+| TASK-790 | `check-wheel-contents` + `twine check` in publish workflow (OL-01, OL-02) | @ops | 📋 |
+| TASK-791 | TestPyPI dry-run step before production PyPI publish (OL-10) | @ops | 📋 |
+| TASK-792 | Container image security scan with Trivy in CI (OL-07) — Already exists in docker-build.yml; verify coverage only | @ops | 📋 |
+| TASK-793 | Optional dependency group tests: `.[dxf]`, `.[report]` (OL-12) | @tester | 📋 |
+| TASK-794 | Docker base image digest pinning (OL-05) | @ops | 📋 |
+| TASK-795 | OpenAPI drift check in publish workflow (OL-16) | @ops | 📋 |
+| TASK-796 | Fix remaining 2-4 HTTP-exposed ImportError path leaks — OWASP 2025 A10 (OL-08) | @security (audit) + @api-developer (fix) | 📋 |
+| TASK-802 | Export column API functions to structural_lib.__init__.py (AR-08) | @backend | 📋 |
+| TASK-803 | Document negative Mu abs-value behavior + add hogging guidance (AR-07) | @doc-master + @structural-math | 📋 |
+| TASK-804 | Auto-enable auth or log CRITICAL when JWT_SECRET_KEY set but AUTH_ENABLED=false (AR-02) | @api-developer | 📋 |
+
+**Recommended action order (4-agent consensus):**
+1. TASK-729 + TASK-730 (Input Safety — cross-field + validation audit)
+2. TASK-802 (Column API export — HIGH user impact)
+3. TASK-796 (ImportError leaks — 2-4 actual HTTP-exposed)
+4. TASK-790 + TASK-791 + TASK-793 (Packaging gates)
+5. TASK-795 (OpenAPI drift in publish)
+6. TASK-794 (Docker digest pin)
+7. TASK-728 (JSON body size limit)
 
 ## v0.21.8 — Performance & Property Testing
 
@@ -192,6 +348,12 @@
 |----|------|-------|--------|
 | TASK-735 | CalculationProvenance foundation (`core/provenance.py`) — see arch doc §11 | @backend | 📋 |
 | TASK-736 | SP:16 full verification | @structural-engineer | 📋 |
+| TASK-797 | SLSA provenance + PEP 740 digital attestations (OL-03, OL-04) | @ops | 📋 |
+| TASK-798 | Security event logging framework — OWASP 2025 A09 (OL-09) | @security (define) + @api-developer (implement) | 📋 |
+| TASK-799 | Multi-stage Dockerfile (builder→runtime, reduce image to ~400MB) (OL-06) | @ops | 📋 |
+| TASK-800 | Independent verification methodology doc — IStructE guidance (OL-14) | @structural-engineer | 📋 |
+| — | ~~TASK-761~~ Calculation audit trail — MERGED into TASK-735 (CalculationProvenance); services/audit.py already provides basic audit trail | — | ✅ Merged |
+| TASK-801 | License compliance scan with pip-licenses (OL-13) | @security | 📋 |
 | TASK-521 | Beam rationalization | @backend | 📋 [CARRIED OVER] |
 | TASK-643 | SP:16 chart verification completion | @structural-engineer | 📋 [CARRIED OVER] |
 | — | Deprecate old architecture docs | @doc-master | 📋 |
