@@ -43,8 +43,12 @@ from structural_lib.core.data_types import (
 
 
 def _resolve_deprecated_param(
-    new_val, old_val, new_name: str, old_name: str, func_name: str
-):
+    new_val: Any,
+    old_val: Any,
+    new_name: str,
+    old_name: str,
+    func_name: str,
+) -> Any:
     """Resolve new vs deprecated param, warn if old is used."""
     if old_val is not None and new_val is not None:
         raise ValueError(
