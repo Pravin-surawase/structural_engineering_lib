@@ -13,7 +13,7 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from fastapi_app.error_utils import sanitize_error
+from fastapi_app.error_utils import sanitize_error, sanitize_error_string
 from fastapi_app.models.response import error_response, success_response
 
 logger = logging.getLogger(__name__)
@@ -162,8 +162,14 @@ async def validate_rebar(request: RebarValidateRequest):
                 ),
                 validation=ValidationResult(
                     ok=report.ok,
-                    errors=report.errors,
-                    warnings=report.warnings,
+                    errors=[
+                        sanitize_error_string(e, "rebar validation")
+                        for e in report.errors
+                    ],
+                    warnings=[
+                        sanitize_error_string(w, "rebar validation")
+                        for w in report.warnings
+                    ],
                     details=report.details,
                 ),
             )

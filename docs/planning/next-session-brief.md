@@ -7,81 +7,59 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-04-07
-**Last Session:** Batch 3 API naming convention — complete
+**Last Session:** v0.21.7 Session 1 — Security Hardening (P1–P3 complete)
 
-## What Was Completed
-- **Type-Safety Audit — COMPLETE**
-  - Fixed 28+ Pylance type errors in `column_api.py` — changed `_resolve_deprecated_param` return from `Any` to `TypeVar[_T]`
-  - Applied same TypeVar fix in `beam_api.py`
-  - Created `pyrightconfig.json` at workspace root — resolves Pylance import errors for `structural_lib`
-  - Added `# type: ignore` comments to 12 deliberate wrong-type tests in `test_coverage_boost_is456.py`
-  - Deprecation audit: confirmed no items overdue (current v0.21.6, removals at v0.24 and v1.0.0)
-  - Inventory: 23 field deprecations (v1.0.0), 29 param deprecations (v0.24), 9 stubs
-- **Previous: Batch 3 Phase 1+2: API Naming Convention — COMPLETE**
-  - TASK-740 through TASK-744 all marked ✅ Done
+## What Was Completed (v0.21.7 Session 1)
+- **v0.21.6 version refs fixed** — CHANGELOG.md, Python/README.md, docs/git-automation/README.md
+- **TASK-729: Cross-field plausibility guards** ✅ — 14 @model_validator checks across beam, column, geometry, analysis models
+- **TASK-730: Input validation audit** ✅ — Security audit found 16 gaps, all fixed, 49 tests written
+- **TASK-802: Column API export** ✅ — Column functions already exported; fixed 6 missing contract test assertions
+- **TASK-796: ImportError path leak fix** ✅ — Added sanitize_error_string(), sanitized 4 router response patterns, 15 tests
 
 ## Current Version State
 - **v0.21.5** = last PyPI release (tag: v0.21.5)
-- **v0.21.6** = feature-complete, unreleased
+- **v0.21.6** = feature-complete, audited — still needs PyPI tag + publish
+- **v0.21.7** = in progress — 4/14 tasks done (P1–P3)
 
-## Priorities (Updated)
+## Priorities — v0.21.7 Remaining
 
-### Immediate — Batch 3: API Naming Convention (v0.22.0)
+### P4 — Packaging Gates (next)
+- TASK-790: `check-wheel-contents` + `twine check` in CI
+- TASK-791: TestPyPI dry-run before prod
+- TASK-793: Optional dependency group tests (`.[dxf]`, `.[report]`)
 
-**Issue 15 fix — 12 functions need parameter rename:**
+### P5 — CI Hardening
+- TASK-795: OpenAPI drift check in publish workflow
+- TASK-794: Docker base image digest pin
+- TASK-792: Pin Trivy action to SHA
 
-Phase 1 (P0+P1 — column_api.py, single PR):
-- `design_column_axial_is456`: `fck`→`fck_nmm2`, `fy`→`fy_nmm2`
-- `design_short_column_uniaxial_is456`: same
-- `pm_interaction_curve_is456`: same
-- `biaxial_bending_check_is456`: same
-- `calculate_additional_moment_is456`: same
-- `design_long_column_is456`: same
-- `check_helical_reinforcement_is456`: same
-- `design_column_is456`: same
-- `detail_column_is456`: same
-- `check_column_ductility_is13920`: same
+### P6 — API Security
+- TASK-728: JSON body size limit middleware (1MB)
+- TASK-804: Auth auto-enable when JWT secret set
 
-Phase 2 (P2 — beam_api.py, separate PR):
-- `check_beam_ductility`: `b`→`b_mm`, `D`→`D_mm`, `d`→`d_mm`, `fck`→`fck_nmm2`, `fy`→`fy_nmm2`
-- `check_anchorage_at_simple_support`: `fck`→`fck_nmm2`, `fy`→`fy_nmm2`
+### P7 — Docs & CVE
+- TASK-803: Document negative Mu behavior
+- TASK-731: Dependency CVE scanning (pip-audit)
+### Later — v0.21.8 Performance & Property Testing
+- TASK-732: pytest-benchmark for hot paths
+- TASK-733: Hypothesis test expansion
+- TASK-734: Performance regression baselines
 
-Migration strategy: Add new param names, keep old as deprecated aliases with warnings, update all callers.
+### v0.22.0 — Stabilization
+- ARCH-NEW-12: Split services/api.py god module
+- FE-NEW-01: Three.js dispose() on unmount
+- UX-02: Typed return consistency (column dict → dataclass)
+- IS-NEW-01/02: @clause decorators for ~26 functions (detailing: 11, common: 8, footing: 4, slenderness: 3)
+- T-NEW-01: Remove MagicMock from test files
+- Beam rationalization (TASK-521)
+- CalculationProvenance foundation (TASK-735, includes merged OL-15 audit trail)
+- TASK-797: SLSA provenance + PEP 740 attestations
+- TASK-798: Security event logging (OWASP A09)
+- TASK-799: Multi-stage Dockerfile
+- TASK-800: Verification methodology doc consolidation
+- TASK-801: License compliance scan
 
-**Issue 16 — Public surface audit (defer to v0.23+):**
-- 107 exports is reasonable for the library's scope
-- No action needed now — just document stable vs experimental tiers
-
-### Immediate — Next Priorities
-- [ ] Consolidate `_resolve_deprecated_param` from `beam_api.py` + `column_api.py` into `common_api.py` (reduces duplication)
-- [ ] Add direct unit tests for `_resolve_deprecated_param` TypeVar helper
-- TASK-745: Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+)
-- v0.21.7 Security Hardening:
-  - JSON body size limit middleware (TASK-728)
-  - Cross-field plausibility guards (TASK-729)
-  - Input validation audit (TASK-730)
-  - WebSocket message rate limit (TASK-731)
-
-### Later (v0.21.8 — Performance & Property Testing)
-- pytest-benchmark integration (TASK-732)
-- Hypothesis test expansion (TASK-733)
-- Performance regression baselines (TASK-734)
-
-## Batch 3 Summary (COMPLETED)
-
-All 5 tasks (TASK-740 through TASK-744) done. Files changed:
-- `Python/structural_lib/services/column_api.py` — 10 functions renamed
-- `Python/structural_lib/services/beam_api.py` — 2 functions renamed
-- `fastapi_app/routers/column.py` + `fastapi_app/models/` — Pydantic alias backward compat
-- `Python/tests/test_param_deprecation.py` — 40 new deprecation tests
-- `docs/architecture/unified-architecture-v1.md` — §10.5 updated with two-tier convention
-
-### Key decisions made:
-- Two-tier convention: full suffixes at L3, IS 456 shorthand at L2
-- `fck_nmm2` (not `fck_MPa`) — matches IS 456 notation (N/mm²)
-- `Mu_kNm` (not `mu_knm`) — matches IS 456 uppercase notation
-- Backward compat via deprecated aliases + DeprecationWarning (removal in v0.24)
-- Layer 2 functions (codes/) keep bare `fck`, `fy` — no change needed
-
-## Blockers
-- None
+## Infrastructure Notes
+- `session_summary.py` doesn't exist — use `scripts/session.py summary`
+- Registry metadata skill_count=10 should be 14 (cosmetic)
+- 3 FastAPI import violations (non-blocking, planned for v0.22.0)

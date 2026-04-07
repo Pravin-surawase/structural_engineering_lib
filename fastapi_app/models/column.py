@@ -7,7 +7,7 @@ All dimensions in mm, forces in kN, stresses in N/mm².
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 # =============================================================================
 # Request Models
@@ -160,6 +160,15 @@ class ColumnAxialRequest(BaseModel):
         examples=[1256.64, 1800.0, 2513.27],
     )
 
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "ColumnAxialRequest":
+        """Validate cross-field constraints."""
+        if self.Asc_mm2 >= self.Ag_mm2:
+            raise ValueError(
+                f"Asc_mm2 ({self.Asc_mm2}) must be less than " f"Ag_mm2 ({self.Ag_mm2})"
+            )
+        return self
+
 
 # =============================================================================
 # Response Models
@@ -302,6 +311,16 @@ class ColumnUniaxialRequest(BaseModel):
         examples=[3000.0, 4500.0],
     )
 
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "ColumnUniaxialRequest":
+        """Validate cross-field constraints."""
+        if self.d_prime_mm >= self.D_mm / 2:
+            raise ValueError(
+                f"d_prime_mm ({self.d_prime_mm}) must be less than "
+                f"D_mm/2 ({self.D_mm / 2})"
+            )
+        return self
+
 
 class ColumnUniaxialResponse(BaseModel):
     """Response model for short column uniaxial bending design."""
@@ -397,6 +416,16 @@ class PMInteractionRequest(BaseModel):
         description="Number of points on the interaction curve (default 50, min 10)",
         examples=[50, 100],
     )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "PMInteractionRequest":
+        """Validate cross-field constraints."""
+        if self.d_prime_mm >= self.D_mm / 2:
+            raise ValueError(
+                f"d_prime_mm ({self.d_prime_mm}) must be less than "
+                f"D_mm/2 ({self.D_mm / 2})"
+            )
+        return self
 
 
 class PMPoint(BaseModel):
@@ -513,6 +542,16 @@ class BiaxialCheckRequest(BaseModel):
         examples=[3000.0, 4500.0],
     )
 
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "BiaxialCheckRequest":
+        """Validate cross-field constraints."""
+        if self.d_prime_mm >= self.D_mm / 2:
+            raise ValueError(
+                f"d_prime_mm ({self.d_prime_mm}) must be less than "
+                f"D_mm/2 ({self.D_mm / 2})"
+            )
+        return self
+
 
 class BiaxialCheckResponse(BaseModel):
     """Response model for biaxial bending check per IS 456 Cl 39.6."""
@@ -587,15 +626,15 @@ class AdditionalMomentRequest(BaseModel):
     )
     fck_nmm2: float = Field(
         ...,
-        gt=0,
-        le=100,
+        ge=15,
+        le=80,
         alias="fck",
         description="Concrete strength (N/mm²)",
         examples=[25.0],
     )
     fy_nmm2: float = Field(
         ...,
-        gt=0,
+        ge=250,
         le=600,
         alias="fy",
         description="Steel yield strength (N/mm²)",
@@ -606,11 +645,21 @@ class AdditionalMomentRequest(BaseModel):
     )
     d_prime_mm: float = Field(
         ...,
-        ge=0,
+        gt=0,
         le=200,
         description="Cover to steel centroid (mm)",
         examples=[50.0],
     )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "AdditionalMomentRequest":
+        """Validate cross-field constraints."""
+        if self.d_prime_mm >= self.D_mm / 2:
+            raise ValueError(
+                f"d_prime_mm ({self.d_prime_mm}) must be less than "
+                f"D_mm/2 ({self.D_mm / 2})"
+            )
+        return self
 
 
 class AdditionalMomentResponse(BaseModel):
@@ -693,15 +742,15 @@ class LongColumnRequest(BaseModel):
     )
     fck_nmm2: float = Field(
         ...,
-        gt=0,
-        le=100,
+        ge=15,
+        le=80,
         alias="fck",
         description="Concrete strength (N/mm²)",
         examples=[25.0],
     )
     fy_nmm2: float = Field(
         ...,
-        gt=0,
+        ge=250,
         le=600,
         alias="fy",
         description="Steel yield strength (N/mm²)",
@@ -714,6 +763,16 @@ class LongColumnRequest(BaseModel):
         ..., gt=0, description="Cover to steel centroid (mm)", examples=[50.0]
     )
     braced: bool = Field(True, description="True if column is braced against sway")
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "LongColumnRequest":
+        """Validate cross-field constraints."""
+        if self.d_prime_mm >= self.D_mm / 2:
+            raise ValueError(
+                f"d_prime_mm ({self.d_prime_mm}) must be less than "
+                f"D_mm/2 ({self.D_mm / 2})"
+            )
+        return self
 
 
 class LongColumnResponse(BaseModel):
@@ -765,15 +824,15 @@ class HelicalCheckRequest(BaseModel):
     )
     fck_nmm2: float = Field(
         ...,
-        gt=0,
-        le=100,
+        ge=15,
+        le=80,
         alias="fck",
         description="Concrete strength (N/mm²)",
         examples=[25.0],
     )
     fy_nmm2: float = Field(
         ...,
-        gt=0,
+        ge=250,
         le=600,
         alias="fy",
         description="Steel yield strength (N/mm²)",
@@ -786,6 +845,15 @@ class HelicalCheckRequest(BaseModel):
     Pu_axial_kN: float = Field(
         ..., gt=0, description="Short column axial capacity (kN)", examples=[2000.0]
     )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "HelicalCheckRequest":
+        """Validate cross-field constraints."""
+        if self.D_core_mm >= self.D_mm:
+            raise ValueError(
+                f"D_core_mm ({self.D_core_mm}) must be less than " f"D_mm ({self.D_mm})"
+            )
+        return self
 
 
 class HelicalCheckResponse(BaseModel):
@@ -840,15 +908,15 @@ class ColumnDesignRequest(BaseModel):
     )
     fck_nmm2: float = Field(
         25.0,
-        gt=0,
-        le=100,
+        ge=15,
+        le=80,
         alias="fck",
         description="Concrete strength (N/mm²)",
         examples=[25.0],
     )
     fy_nmm2: float = Field(
         415.0,
-        gt=0,
+        ge=250,
         le=600,
         alias="fy",
         description="Steel yield strength (N/mm²)",
@@ -878,6 +946,16 @@ class ColumnDesignRequest(BaseModel):
     M2y_kNm: float | None = Field(
         None, description="Larger end moment about y (for slender)", examples=[60.0]
     )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "ColumnDesignRequest":
+        """Validate cross-field constraints."""
+        if self.d_prime_mm >= self.D_mm / 2:
+            raise ValueError(
+                f"d_prime_mm ({self.d_prime_mm}) must be less than "
+                f"D_mm/2 ({self.D_mm / 2})"
+            )
+        return self
 
 
 class ColumnDesignResponse(BaseModel):

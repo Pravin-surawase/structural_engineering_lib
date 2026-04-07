@@ -9,7 +9,11 @@ import logging
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from fastapi_app.error_utils import sanitize_error, sanitize_float
+from fastapi_app.error_utils import (
+    sanitize_error,
+    sanitize_error_string,
+    sanitize_float,
+)
 from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.beam import (
     BeamDesignRequest,
@@ -398,7 +402,7 @@ async def design_beam_torsion(
         if result.requires_closed_stirrups:
             warnings.append("Closed stirrups mandatory for torsion (IS 456 Cl 41.4.3)")
         for err in result.errors:
-            warnings.append(str(err))
+            warnings.append(sanitize_error(err, "torsion design"))
 
         return success_response(
             TorsionDesignResponse(
@@ -629,8 +633,13 @@ async def check_slenderness(
                 utilization=result.utilization,
                 depth_to_width_ratio=result.depth_to_width_ratio,
                 remarks=result.remarks,
-                errors=result.errors,
-                warnings=result.warnings,
+                errors=[
+                    sanitize_error_string(e, "slenderness check") for e in result.errors
+                ],
+                warnings=[
+                    sanitize_error_string(w, "slenderness check")
+                    for w in result.warnings
+                ],
             )
         )
 

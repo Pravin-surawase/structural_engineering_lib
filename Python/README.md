@@ -14,7 +14,7 @@ pip install structural-lib-is456           # from PyPI
 pip install "structural-lib-is456[dxf]"    # with DXF export support
 
 # Or pin to a release tag
-pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.5#subdirectory=Python"
+pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.6#subdirectory=Python"
 ```
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).

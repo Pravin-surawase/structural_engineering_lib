@@ -193,6 +193,27 @@ class BeamCheckRequest(BaseModel):
     fy: float = Field(default=500.0, ge=250.0, le=600.0, description="fy (N/mm²)")
     clear_cover: float = Field(default=25.0, ge=20.0, le=75.0, description="Cover (mm)")
 
+    effective_depth: float | None = Field(
+        default=None,
+        gt=0,
+        description="Effective depth d (mm). Auto-calculated if not provided.",
+    )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "BeamCheckRequest":
+        """Validate cross-field depth constraints."""
+        if self.effective_depth is not None and self.effective_depth >= self.depth:
+            raise ValueError(
+                f"effective_depth ({self.effective_depth}mm) must be less than "
+                f"depth ({self.depth}mm)"
+            )
+        if self.clear_cover >= self.depth:
+            raise ValueError(
+                f"clear_cover ({self.clear_cover}mm) must be less than "
+                f"depth ({self.depth}mm)"
+            )
+        return self
+
 
 # =============================================================================
 # Detailing Request Models
@@ -250,6 +271,16 @@ class BeamDetailingRequest(BaseModel):
         default=False,
         description="Whether beam is part of continuous system",
     )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "BeamDetailingRequest":
+        """Validate cross-field depth constraints."""
+        if self.clear_cover >= self.depth:
+            raise ValueError(
+                f"clear_cover ({self.clear_cover}mm) must be less than "
+                f"depth ({self.depth}mm)"
+            )
+        return self
 
 
 # =============================================================================

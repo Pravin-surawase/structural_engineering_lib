@@ -9,7 +9,7 @@ import logging
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from fastapi_app.error_utils import sanitize_error
+from fastapi_app.error_utils import sanitize_error, sanitize_error_string
 from fastapi_app.models.response import error_response, success_response
 from fastapi_app.models.beam import (
     BeamDetailingRequest,
@@ -377,8 +377,12 @@ async def check_anchorage(
                 ld_available=result.ld_available,
                 m1_enhancement=result.m1_enhancement,
                 utilization=result.utilization,
-                errors=result.errors,
-                warnings=result.warnings,
+                errors=[
+                    sanitize_error_string(e, "anchorage check") for e in result.errors
+                ],
+                warnings=[
+                    sanitize_error_string(w, "anchorage check") for w in result.warnings
+                ],
             )
         )
 
