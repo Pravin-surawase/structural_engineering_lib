@@ -104,21 +104,44 @@ After every session, append to `logs/agent-performance/session-evolution.jsonl`:
 
 This data feeds into weekly and monthly trend analysis.
 
-## 11 Scoring Dimensions
+## 12 Scoring Dimensions
 
 | # | Dimension | Weight | Source |
 |---|-----------|--------|--------|
-| 1 | Task Completion | 20% | Manual |
-| 2 | Code Quality | 15% | Manual |
-| 3 | Terminal Efficiency | 8% | Auto (retries, path errors) |
-| 4 | Context Utilization | 10% | Manual |
-| 5 | Pipeline Compliance | 10% | Auto (session-end checklist) |
-| 6 | Error Rate | 8% | Auto (lint, test failures) |
-| 7 | Instruction Adherence | 10% | Auto (drift rules) |
+| 1 | Task Completion | 18% | Manual |
+| 2 | Code Quality | 14% | Manual |
+| 3 | Terminal Efficiency | 7% | Auto (retries, path errors) |
+| 4 | Context Utilization | 9% | Manual |
+| 5 | Pipeline Compliance | 9% | Auto (session-end checklist) |
+| 6 | Error Rate | 7% | Auto (lint, test failures) |
+| 7 | Instruction Adherence | 9% | Auto (drift rules) |
 | 8 | Handoff Quality | 5% | Manual |
 | 9 | Regression Avoidance | 4% | Auto (repeated mistakes) |
-| 10 | Engineering Accuracy | 15% | Auto (SP:16 benchmarks) |
-| 11 | Collaboration | — | Reserved |
+| 10 | Engineering Accuracy | 13% | Auto (SP:16 benchmarks) |
+| 11 | CI Health | 5% | Auto (gh run list) |
+| 12 | Collaboration | — | Reserved |
+
+### CI Health Dimension (#11) — NEW (Session 14)
+
+At session end, query CI status and factor into agent scoring:
+
+```bash
+gh run list --branch main --limit 5 --json conclusion,name | python3 -c "
+import json,sys
+runs=json.load(sys.stdin)
+total=len(runs); passing=sum(1 for r in runs if r['conclusion']=='success')
+print(f'CI Health: {passing}/{total} passing ({100*passing//max(total,1)}%)')
+if passing < total: print('⚠️  Agents owning failing workflows get score penalty')
+"
+```
+
+**Scoring rules:**
+- All CI green → no adjustment
+- Any CI failing → agent who owns the failing workflow gets -2 to Task Completion
+- CI failing for >3 days undetected → agent gets -3 to Instruction Adherence
+- Agent-evolver itself gets -2 if CI failures were not flagged in previous session
+
+This dimension was added because 5 CI failures ran daily for ~10 days while agents were scored B+ (Session 14, PR #550).
 
 > **Note:** structural-engineer and structural-math get boosted engineering_accuracy weight (25%).
 

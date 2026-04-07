@@ -61,6 +61,14 @@ git diff
 - [ ] OWASP A09 — Logging Failures (no sensitive data in logs)
 - [ ] OWASP A10 — SSRF (no unvalidated URL fetching)
 
+### CI Pipeline Security (added Session 14 — PR #550 fix)
+
+- [ ] Workflow permissions follow least-privilege (job-level `permissions:`, NOT workflow-level `write-all`)
+- [ ] CI tool dependencies pinned to major version (e.g., `actions/checkout@v4`, NOT `@main` or unpinned)
+- [ ] No global `write-all` permissions without documented justification
+- [ ] SBOM generation tool (`cyclonedx-bom`) version pinned and CLI flags verified against current API
+- [ ] Scorecard workflow uses `scorecard-action` with minimal permissions (`id-token: write`, `contents: read`)
+
 ## Skills: Use `/development-rules` for security rules (SE-1 through SE-5), `/quality-gate` for automated security checks.
 
 ## Development Rules Quick Reference

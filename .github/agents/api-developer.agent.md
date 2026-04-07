@@ -108,6 +108,7 @@ Before writing any FastAPI code, review these critical rules from `/development-
 5. **API docs auto-generated** at `http://localhost:8000/docs`
 6. **After any return type change in `services/api.py`**, verify ALL router files that consume the changed function use the new field names. Dict keys like `ok` → dataclass fields like `is_safe` will silently break routers. Run: `grep -r "<old_field>" fastapi_app/routers/` to find stale references. (Sprint 1 v0.21.5: router key mismatch caused test failures.)
 7. **Syntax-verify after bulk edits:** After any mechanical bulk edit (wrapping returns in `success_response()`, renaming fields, adding decorators), run `python -m py_compile <file>` on EVERY modified file before handoff. Sprint 2 had 10 missing closing parens from `success_response()` wrapping — same class as Sprint 1 structural-math errors. This is the #1 source of preventable CI failures.
+8. **Update OpenAPI baseline after model changes:** After ANY change to Pydantic model `Field(description=...)`, response model fields, or route metadata, run `.venv/bin/python scripts/check_openapi_drift.py --update` and commit the updated `fastapi_app/openapi_baseline.json`. Failure to do this causes CI `openapi-drift` check to fail silently on `main`. (Session 14, PR #550: OpenAPI baseline drift was 1 of 5 undetected daily CI failures.)
 
 ## Architecture
 
