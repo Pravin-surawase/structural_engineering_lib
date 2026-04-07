@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- Fix Windows CI test failures: `time.time()` → `time.perf_counter()` in 6 library files (#550)
+- Fix CycloneDX SBOM generation: update CLI flags for cyclonedx-bom v7+ (#550)
+- Fix OpenSSF Scorecard: narrow workflow permissions to job-level (#550)
+- Fix OpenAPI baseline drift for BiaxialCheckRequest (#550)
+- Fix Nightly QA: add smoke test failure guard (#550)
+
 ## [0.21.6] — 2026-04-07
 
 ### Fixed

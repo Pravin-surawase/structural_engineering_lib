@@ -297,6 +297,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | TASK-802 | Export column API to __init__.py (already exported — 6 contract test assertions fixed) | @backend | ✅ DONE |
 | TASK-803 | Document negative Mu abs-value behavior + add hogging guidance (AR-07) | @doc-master + @structural-math | 📋 |
 | TASK-804 | Auto-enable auth or log CRITICAL when JWT_SECRET_KEY set but AUTH_ENABLED=false (AR-02) | @api-developer | 📋 |
+| TASK-CI-FIX | Fix 5 daily CI failures on main (Windows timing, SBOM CLI, Scorecard perms, OpenAPI drift, Nightly QA) | @ops/@backend | ✅ DONE (PR #550) |
 
 **Recommended action order (4-agent consensus):**
 1. TASK-729 + TASK-730 (Input Safety — cross-field + validation audit)

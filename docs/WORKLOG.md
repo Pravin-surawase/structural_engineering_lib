@@ -293,3 +293,8 @@ tags: []
 | 2026-04-07 | Config | Create pyrightconfig.json for Pylance import resolution | — |
 | 2026-04-07 | Tests | Add # type: ignore comments to deliberate wrong-type tests | — |
 | 2026-04-07 | Audit | Deprecation inventory: 23 field (v1.0.0), 29 param (v0.24), 9 stubs | — |
+| 2026-04-07 | CI-FIX | fix: time.perf_counter() in 6 files (Windows CI) | PR #550 |
+| 2026-04-07 | CI-FIX | fix: cyclonedx-bom CLI flags + version pin | PR #550 |
+| 2026-04-07 | CI-FIX | fix: scorecard/sbom workflow permissions (least-privilege) | PR #550 |
+| 2026-04-07 | CI-FIX | fix: OpenAPI baseline drift (BiaxialCheckRequest) | PR #550 |
+| 2026-04-07 | CI-FIX | fix: nightly QA smoke test failure guard | PR #550 |

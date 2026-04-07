@@ -15,6 +15,12 @@
 - **TASK-730: Input validation audit** ✅ — Security audit found 16 gaps, all fixed, 49 tests written
 - **TASK-802: Column API export** ✅ — Column functions already exported; fixed 6 missing contract test assertions
 - **TASK-796: ImportError path leak fix** ✅ — Added sanitize_error_string(), sanitized 4 router response patterns, 15 tests
+- **TASK-CI-FIX: 5 daily CI failures fixed** ✅ (PR #550):
+  - `time.time()` → `time.perf_counter()` in 6 library files (Windows CI timing)
+  - CycloneDX SBOM CLI syntax fixed + version pinned (cyclonedx-bom v7+)
+  - OpenSSF Scorecard permissions narrowed to job-level (least-privilege)
+  - OpenAPI baseline updated for BiaxialCheckRequest description drift
+  - Nightly QA smoke test failure guard added
 
 ## Current Version State
 - **v0.21.5** = last PyPI release (tag: v0.21.5)
