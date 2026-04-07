@@ -84,6 +84,20 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.21.6 — API Quality & Introspection (2026-04-07)
+
+**Highlights:**
+- `check_code("IS456")` self-validation function
+- `show_versions()` diagnostic utility
+- OpenAPI baseline drift check in CI
+- 8 external audit fixes (ETABS import, SmartDesigner CLI, packaging)
+- Function limitation docs added to 22 IS 456 functions
+- 5143 tests, 69 golden vectors, 18 contract tests
+
+**Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0216--2026-04-07)
+
+---
+
 ## v0.21.5
 **Date:** 2026-04-06
 **Status:** ✅ Released

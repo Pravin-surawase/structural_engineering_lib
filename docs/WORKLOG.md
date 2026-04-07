@@ -71,6 +71,10 @@ tags: []
 | 2026-04-07 | Audit | Wire reports fallback HTML path in generator.py | |
 | 2026-04-07 | Audit | Update README git pin v0.21.3 → v0.21.5 | |
 | 2026-04-07 | Audit | Add 9 wheel smoke tests (TestWheelSmokeTests, TestREADMESnippets) | |
+| 2026-04-07 | v0.21.6 | Version sync: 10 stale 0.21.5 refs fixed across fastapi, react, docs | — |
+| 2026-04-07 | v0.21.6 | bump_version.py: added 4 missing files (fastapi __init__, config, openapi baseline, SettingsPanel) | — |
+| 2026-04-07 | v0.21.6 | Release preflight passed: 5143 tests, 69 golden, 18 contract, packaging OK, security OK | — |
+| 2026-04-07 | v0.21.6 | Agent evolution check: version drift 5th occurrence, bump_version.py fix applied | — |
 | 2026-04-06 | v0.21.5 fixes | Fix CostProfile import, sanitize_float extraction, benchmark conftest guard, torsion lazy shim | 98185046 |
 | 2026-04-06 | TASK-654 | check_bearing_pressure() IS 456 Cl 34.4 + 10 tests | 98185046 |
 | 2026-04-06 | API docs | Footing/column/torsion wired to public API, README table updated (30+ functions) | 98185046 |

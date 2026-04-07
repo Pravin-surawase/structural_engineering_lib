@@ -655,7 +655,7 @@ def show_versions(*, as_dict: bool = False) -> VersionInfo | None:
 
     Example:
         >>> show_versions()
-        structural_lib: 0.21.5
+        structural_lib: 0.21.6
         Python: 3.12.4
         Platform: macOS-14.5-arm64
         ...
