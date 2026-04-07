@@ -1492,10 +1492,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-was-completed" class="md-nav__link">
+  <a href="#what-was-completed-v0217-session-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What Was Completed
+        What Was Completed (v0.21.7 Session 1)
       
     </span>
   </a>
@@ -1514,22 +1514,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#priorities-updated" class="md-nav__link">
+  <a href="#priorities-v0217-remaining" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Priorities (Updated)
+        Priorities — v0.21.7 Remaining
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Priorities (Updated)">
+    <nav class="md-nav" aria-label="Priorities — v0.21.7 Remaining">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#immediate-batch-3-api-naming-convention-v0220" class="md-nav__link">
+  <a href="#p4-packaging-gates-next" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Immediate — Batch 3: API Naming Convention (v0.22.0)
+        P4 — Packaging Gates (next)
       
     </span>
   </a>
@@ -1537,10 +1537,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#immediate-next-priorities" class="md-nav__link">
+  <a href="#p5-ci-hardening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Immediate — Next Priorities
+        P5 — CI Hardening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p6-api-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P6 — API Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p7-docs-cve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P7 — Docs &amp; CVE
       
     </span>
   </a>
@@ -1551,35 +1573,18 @@
   <a href="#later-v0218-performance-property-testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Later (v0.21.8 — Performance &amp; Property Testing)
+        Later — v0.21.8 Performance &amp; Property Testing
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#batch-3-summary-completed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Batch 3 Summary (COMPLETED)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Batch 3 Summary (COMPLETED)">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#key-decisions-made" class="md-nav__link">
+  <a href="#v0220-stabilization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key decisions made:
+        v0.22.0 — Stabilization
       
     </span>
   </a>
@@ -1592,10 +1597,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#blockers" class="md-nav__link">
+  <a href="#infrastructure-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Blockers
+        Infrastructure Notes
       
     </span>
   </a>
@@ -1631,80 +1636,70 @@
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-07
-<strong>Last Session:</strong> Batch 3 API naming convention — complete</p>
-<h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
+<strong>Last Session:</strong> v0.21.7 Session 1 — Security Hardening (P1–P3 complete)</p>
+<h2 id="what-was-completed-v0217-session-1">What Was Completed (v0.21.7 Session 1)<a class="headerlink" href="#what-was-completed-v0217-session-1" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Type-Safety Audit — COMPLETE</strong></li>
-<li>Fixed 28+ Pylance type errors in <code>column_api.py</code> — changed <code>_resolve_deprecated_param</code> return from <code>Any</code> to <code>TypeVar[_T]</code></li>
-<li>Applied same TypeVar fix in <code>beam_api.py</code></li>
-<li>Created <code>pyrightconfig.json</code> at workspace root — resolves Pylance import errors for <code>structural_lib</code></li>
-<li>Added <code># type: ignore</code> comments to 12 deliberate wrong-type tests in <code>test_coverage_boost_is456.py</code></li>
-<li>Deprecation audit: confirmed no items overdue (current v0.21.6, removals at v0.24 and v1.0.0)</li>
-<li>Inventory: 23 field deprecations (v1.0.0), 29 param deprecations (v0.24), 9 stubs</li>
-<li><strong>Previous: Batch 3 Phase 1+2: API Naming Convention — COMPLETE</strong></li>
-<li>TASK-740 through TASK-744 all marked ✅ Done</li>
+<li><strong>v0.21.6 version refs fixed</strong> — CHANGELOG.md, Python/README.md, docs/git-automation/README.md</li>
+<li><strong>TASK-729: Cross-field plausibility guards</strong> ✅ — 14 @model_validator checks across beam, column, geometry, analysis models</li>
+<li><strong>TASK-730: Input validation audit</strong> ✅ — Security audit found 16 gaps, all fixed, 49 tests written</li>
+<li><strong>TASK-802: Column API export</strong> ✅ — Column functions already exported; fixed 6 missing contract test assertions</li>
+<li><strong>TASK-796: ImportError path leak fix</strong> ✅ — Added sanitize_error_string(), sanitized 4 router response patterns, 15 tests</li>
 </ul>
 <h2 id="current-version-state">Current Version State<a class="headerlink" href="#current-version-state" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>v0.21.5</strong> = last PyPI release (tag: v0.21.5)</li>
-<li><strong>v0.21.6</strong> = feature-complete, unreleased</li>
+<li><strong>v0.21.6</strong> = feature-complete, audited — still needs PyPI tag + publish</li>
+<li><strong>v0.21.7</strong> = in progress — 4/14 tasks done (P1–P3)</li>
 </ul>
-<h2 id="priorities-updated">Priorities (Updated)<a class="headerlink" href="#priorities-updated" title="Permanent link">&para;</a></h2>
-<h3 id="immediate-batch-3-api-naming-convention-v0220">Immediate — Batch 3: API Naming Convention (v0.22.0)<a class="headerlink" href="#immediate-batch-3-api-naming-convention-v0220" title="Permanent link">&para;</a></h3>
-<p><strong>Issue 15 fix — 12 functions need parameter rename:</strong></p>
-<p>Phase 1 (P0+P1 — column_api.py, single PR):
-- <code>design_column_axial_is456</code>: <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code>
-- <code>design_short_column_uniaxial_is456</code>: same
-- <code>pm_interaction_curve_is456</code>: same
-- <code>biaxial_bending_check_is456</code>: same
-- <code>calculate_additional_moment_is456</code>: same
-- <code>design_long_column_is456</code>: same
-- <code>check_helical_reinforcement_is456</code>: same
-- <code>design_column_is456</code>: same
-- <code>detail_column_is456</code>: same
-- <code>check_column_ductility_is13920</code>: same</p>
-<p>Phase 2 (P2 — beam_api.py, separate PR):
-- <code>check_beam_ductility</code>: <code>b</code>→<code>b_mm</code>, <code>D</code>→<code>D_mm</code>, <code>d</code>→<code>d_mm</code>, <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code>
-- <code>check_anchorage_at_simple_support</code>: <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code></p>
-<p>Migration strategy: Add new param names, keep old as deprecated aliases with warnings, update all callers.</p>
-<p><strong>Issue 16 — Public surface audit (defer to v0.23+):</strong>
-- 107 exports is reasonable for the library's scope
-- No action needed now — just document stable vs experimental tiers</p>
-<h3 id="immediate-next-priorities">Immediate — Next Priorities<a class="headerlink" href="#immediate-next-priorities" title="Permanent link">&para;</a></h3>
+<h2 id="priorities-v0217-remaining">Priorities — v0.21.7 Remaining<a class="headerlink" href="#priorities-v0217-remaining" title="Permanent link">&para;</a></h2>
+<h3 id="p4-packaging-gates-next">P4 — Packaging Gates (next)<a class="headerlink" href="#p4-packaging-gates-next" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[ ] Consolidate <code>_resolve_deprecated_param</code> from <code>beam_api.py</code> + <code>column_api.py</code> into <code>common_api.py</code> (reduces duplication)</li>
-<li>[ ] Add direct unit tests for <code>_resolve_deprecated_param</code> TypeVar helper</li>
-<li>TASK-745: Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+)</li>
-<li>v0.21.7 Security Hardening:</li>
-<li>JSON body size limit middleware (TASK-728)</li>
-<li>Cross-field plausibility guards (TASK-729)</li>
-<li>Input validation audit (TASK-730)</li>
-<li>WebSocket message rate limit (TASK-731)</li>
+<li>TASK-790: <code>check-wheel-contents</code> + <code>twine check</code> in CI</li>
+<li>TASK-791: TestPyPI dry-run before prod</li>
+<li>TASK-793: Optional dependency group tests (<code>.[dxf]</code>, <code>.[report]</code>)</li>
 </ul>
-<h3 id="later-v0218-performance-property-testing">Later (v0.21.8 — Performance &amp; Property Testing)<a class="headerlink" href="#later-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
+<h3 id="p5-ci-hardening">P5 — CI Hardening<a class="headerlink" href="#p5-ci-hardening" title="Permanent link">&para;</a></h3>
 <ul>
-<li>pytest-benchmark integration (TASK-732)</li>
-<li>Hypothesis test expansion (TASK-733)</li>
-<li>Performance regression baselines (TASK-734)</li>
+<li>TASK-795: OpenAPI drift check in publish workflow</li>
+<li>TASK-794: Docker base image digest pin</li>
+<li>TASK-792: Pin Trivy action to SHA</li>
 </ul>
-<h2 id="batch-3-summary-completed">Batch 3 Summary (COMPLETED)<a class="headerlink" href="#batch-3-summary-completed" title="Permanent link">&para;</a></h2>
-<p>All 5 tasks (TASK-740 through TASK-744) done. Files changed:
-- <code>Python/structural_lib/services/column_api.py</code> — 10 functions renamed
-- <code>Python/structural_lib/services/beam_api.py</code> — 2 functions renamed
-- <code>fastapi_app/routers/column.py</code> + <code>fastapi_app/models/</code> — Pydantic alias backward compat
-- <code>Python/tests/test_param_deprecation.py</code> — 40 new deprecation tests
-- <code>docs/architecture/unified-architecture-v1.md</code> — §10.5 updated with two-tier convention</p>
-<h3 id="key-decisions-made">Key decisions made:<a class="headerlink" href="#key-decisions-made" title="Permanent link">&para;</a></h3>
+<h3 id="p6-api-security">P6 — API Security<a class="headerlink" href="#p6-api-security" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Two-tier convention: full suffixes at L3, IS 456 shorthand at L2</li>
-<li><code>fck_nmm2</code> (not <code>fck_MPa</code>) — matches IS 456 notation (N/mm²)</li>
-<li><code>Mu_kNm</code> (not <code>mu_knm</code>) — matches IS 456 uppercase notation</li>
-<li>Backward compat via deprecated aliases + DeprecationWarning (removal in v0.24)</li>
-<li>Layer 2 functions (codes/) keep bare <code>fck</code>, <code>fy</code> — no change needed</li>
+<li>TASK-728: JSON body size limit middleware (1MB)</li>
+<li>TASK-804: Auth auto-enable when JWT secret set</li>
 </ul>
-<h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
+<h3 id="p7-docs-cve">P7 — Docs &amp; CVE<a class="headerlink" href="#p7-docs-cve" title="Permanent link">&para;</a></h3>
 <ul>
-<li>None</li>
+<li>TASK-803: Document negative Mu behavior</li>
+<li>TASK-731: Dependency CVE scanning (pip-audit)</li>
+</ul>
+<h3 id="later-v0218-performance-property-testing">Later — v0.21.8 Performance &amp; Property Testing<a class="headerlink" href="#later-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
+<ul>
+<li>TASK-732: pytest-benchmark for hot paths</li>
+<li>TASK-733: Hypothesis test expansion</li>
+<li>TASK-734: Performance regression baselines</li>
+</ul>
+<h3 id="v0220-stabilization">v0.22.0 — Stabilization<a class="headerlink" href="#v0220-stabilization" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ARCH-NEW-12: Split services/api.py god module</li>
+<li>FE-NEW-01: Three.js dispose() on unmount</li>
+<li>UX-02: Typed return consistency (column dict → dataclass)</li>
+<li>IS-NEW-01/02: @clause decorators for ~26 functions (detailing: 11, common: 8, footing: 4, slenderness: 3)</li>
+<li>T-NEW-01: Remove MagicMock from test files</li>
+<li>Beam rationalization (TASK-521)</li>
+<li>CalculationProvenance foundation (TASK-735, includes merged OL-15 audit trail)</li>
+<li>TASK-797: SLSA provenance + PEP 740 attestations</li>
+<li>TASK-798: Security event logging (OWASP A09)</li>
+<li>TASK-799: Multi-stage Dockerfile</li>
+<li>TASK-800: Verification methodology doc consolidation</li>
+<li>TASK-801: License compliance scan</li>
+</ul>
+<h2 id="infrastructure-notes">Infrastructure Notes<a class="headerlink" href="#infrastructure-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>session_summary.py</code> doesn't exist — use <code>scripts/session.py summary</code></li>
+<li>Registry metadata skill_count=10 should be 14 (cosmetic)</li>
+<li>3 FastAPI import violations (non-blocking, planned for v0.22.0)</li>
 </ul>
 
 
