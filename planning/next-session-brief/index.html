@@ -1634,13 +1634,14 @@
 <strong>Last Session:</strong> Batch 3 API naming convention — complete</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Batch 3 Phase 1+2: API Naming Convention — COMPLETE</strong></li>
-<li><code>column_api.py</code>: 10 functions renamed (<code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code>)</li>
-<li><code>beam_api.py</code>: 2 functions renamed (<code>check_beam_ductility</code>, <code>check_anchorage_at_simple_support</code>)</li>
-<li>FastAPI Pydantic models updated with <code>alias</code> for backward compat in JSON payloads</li>
-<li>40 deprecation tests added in <code>test_param_deprecation.py</code></li>
-<li>Old param names work as deprecated aliases with <code>DeprecationWarning</code> (removal in v0.24)</li>
-<li>Architecture doc §10.5 updated with two-tier convention documentation</li>
+<li><strong>Type-Safety Audit — COMPLETE</strong></li>
+<li>Fixed 28+ Pylance type errors in <code>column_api.py</code> — changed <code>_resolve_deprecated_param</code> return from <code>Any</code> to <code>TypeVar[_T]</code></li>
+<li>Applied same TypeVar fix in <code>beam_api.py</code></li>
+<li>Created <code>pyrightconfig.json</code> at workspace root — resolves Pylance import errors for <code>structural_lib</code></li>
+<li>Added <code># type: ignore</code> comments to 12 deliberate wrong-type tests in <code>test_coverage_boost_is456.py</code></li>
+<li>Deprecation audit: confirmed no items overdue (current v0.21.6, removals at v0.24 and v1.0.0)</li>
+<li>Inventory: 23 field deprecations (v1.0.0), 29 param deprecations (v0.24), 9 stubs</li>
+<li><strong>Previous: Batch 3 Phase 1+2: API Naming Convention — COMPLETE</strong></li>
 <li>TASK-740 through TASK-744 all marked ✅ Done</li>
 </ul>
 <h2 id="current-version-state">Current Version State<a class="headerlink" href="#current-version-state" title="Permanent link">&para;</a></h2>
@@ -1671,6 +1672,8 @@
 - No action needed now — just document stable vs experimental tiers</p>
 <h3 id="immediate-next-priorities">Immediate — Next Priorities<a class="headerlink" href="#immediate-next-priorities" title="Permanent link">&para;</a></h3>
 <ul>
+<li>[ ] Consolidate <code>_resolve_deprecated_param</code> from <code>beam_api.py</code> + <code>column_api.py</code> into <code>common_api.py</code> (reduces duplication)</li>
+<li>[ ] Add direct unit tests for <code>_resolve_deprecated_param</code> TypeVar helper</li>
 <li>TASK-745: Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+)</li>
 <li>v0.21.7 Security Hardening:</li>
 <li>JSON body size limit middleware (TASK-728)</li>
