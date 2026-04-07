@@ -1526,10 +1526,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#immediate" class="md-nav__link">
+  <a href="#immediate-batch-3-api-naming-convention-v0220" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Immediate
+        Immediate — Batch 3: API Naming Convention (v0.22.0)
       
     </span>
   </a>
@@ -1558,11 +1558,50 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#architecture-reference" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-3-implementation-plan-for-next-session" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Architecture Reference
+        Batch 3 Implementation Plan (for next session)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Batch 3 Implementation Plan (for next session)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Pipeline:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#files-to-modify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files to modify:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-decisions-made" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key decisions made:
       
     </span>
   </a>
@@ -1571,17 +1610,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-patterns-established" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Patterns Established
-      
-    </span>
-  </a>
   
 </li>
       
@@ -1620,62 +1648,88 @@
 <h2 id="latest-handoff-auto">Latest Handoff (auto)<a class="headerlink" href="#latest-handoff-auto" title="Permanent link">&para;</a></h2>
 <!-- HANDOFF:START -->
 <ul>
-<li>Date: 2026-04-06</li>
+<li>Date: 2026-04-07</li>
 </ul>
 <!-- HANDOFF:END -->
 
 <p><strong>Last Updated:</strong> 2026-04-07
-<strong>Last Session:</strong> Evolution batch — 9 EVO items applied to 5 agent files</p>
+<strong>Last Session:</strong> Audit remediation review + Batch 3 planning</p>
 <h2 id="what-was-completed">What Was Completed<a class="headerlink" href="#what-was-completed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Audit remediation Batch 1+2:</strong> Fixed 3 issues (ductile import warning, reports fallback, README version pin) + added 9 smoke tests</li>
-<li><strong>Evolution batch apply:</strong> 9 items (EVO-004, -007, -014 through -020) applied to 5 agent files</li>
-<li><code>api-developer.agent.md</code> — Rule 7: py_compile after bulk edits</li>
-<li><code>tester.agent.md</code> — MANDATORY integration tests for data imports</li>
-<li><code>ops.agent.md</code> — 3 rules: version sync, package data verification, verify commit existence</li>
-<li><code>backend.agent.md</code> — 3 rules: verify edits persisted, update <strong>init</strong>.py exports, CLI smoke tests</li>
-<li><code>reviewer.agent.md</code> — Data import/export review checklist</li>
-<li><strong>Evolution totals:</strong> 15/21 applied, 1 already addressed, 5 remain MEDIUM priority</li>
-<li><strong>Previous session:</strong> External audit remediation (8 findings fixed), version sync, endpoint count fix</li>
+<li><strong>Post-commit review:</strong> All 15 files from Batch 1+2 verified by @reviewer — APPROVED</li>
+<li><strong>2 minor fixes:</strong> Stale deprecated import paths in geometry_3d.py docstring + test_visualization_integration.py</li>
+<li><strong>Security review:</strong> PASS — fallback HTML uses html.escape(), no XSS</li>
+<li><strong>Batch 3 planning complete:</strong> Full analysis by @library-expert, @structural-engineer, @security</li>
+<li>API naming: 12 functions, ~26 params to rename (all in column_api.py + 2 beam outliers)</li>
+<li>Public surface: 107 exports mapped and categorized (56 functions, 29 classes, 21 submodules)</li>
+<li>Two-tier naming convention approved by @structural-engineer</li>
 </ul>
 <h2 id="current-version-state">Current Version State<a class="headerlink" href="#current-version-state" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>v0.21.5</strong> = last PyPI release (tag: v0.21.5)</li>
-<li><strong>v0.21.6</strong> = feature-complete, unreleased — DO NOT mark as "Released" anywhere</li>
+<li><strong>v0.21.6</strong> = feature-complete, unreleased</li>
 </ul>
 <h2 id="priorities-updated">Priorities (Updated)<a class="headerlink" href="#priorities-updated" title="Permanent link">&para;</a></h2>
-<h3 id="immediate">Immediate<a class="headerlink" href="#immediate" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>v0.21.6 PyPI release</strong> — when user is ready (audit Batch 1+2 remediation complete)</li>
-<li><strong>Remaining 5 MEDIUM EVO items</strong> (EVO-005, -006, -011, -013, -021) — batch in next evolution cycle</li>
-</ol>
+<h3 id="immediate-batch-3-api-naming-convention-v0220">Immediate — Batch 3: API Naming Convention (v0.22.0)<a class="headerlink" href="#immediate-batch-3-api-naming-convention-v0220" title="Permanent link">&para;</a></h3>
+<p><strong>Issue 15 fix — 12 functions need parameter rename:</strong></p>
+<p>Phase 1 (P0+P1 — column_api.py, single PR):
+- <code>design_column_axial_is456</code>: <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code>
+- <code>design_short_column_uniaxial_is456</code>: same
+- <code>pm_interaction_curve_is456</code>: same
+- <code>biaxial_bending_check_is456</code>: same
+- <code>calculate_additional_moment_is456</code>: same
+- <code>design_long_column_is456</code>: same
+- <code>check_helical_reinforcement_is456</code>: same
+- <code>design_column_is456</code>: same
+- <code>detail_column_is456</code>: same
+- <code>check_column_ductility_is13920</code>: same</p>
+<p>Phase 2 (P2 — beam_api.py, separate PR):
+- <code>check_beam_ductility</code>: <code>b</code>→<code>b_mm</code>, <code>D</code>→<code>D_mm</code>, <code>d</code>→<code>d_mm</code>, <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code>
+- <code>check_anchorage_at_simple_support</code>: <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code></p>
+<p>Migration strategy: Add new param names, keep old as deprecated aliases with warnings, update all callers.</p>
+<p><strong>Issue 16 — Public surface audit (defer to v0.23+):</strong>
+- 107 exports is reasonable for the library's scope
+- No action needed now — just document stable vs experimental tiers</p>
 <h3 id="next-v0217-security-hardening">Next (v0.21.7 — Security Hardening)<a class="headerlink" href="#next-v0217-security-hardening" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>JSON body size limit middleware</strong> (TASK-728) — @api-developer</li>
-<li><strong>Cross-field plausibility guards</strong> (TASK-729) — @api-developer</li>
-<li><strong>Input validation audit</strong> (TASK-730) — @security</li>
-<li><strong>WebSocket message rate limit</strong> (TASK-731) — @api-developer</li>
-<li><strong>Computation timeout</strong> — @api-developer</li>
-</ol>
-<h3 id="later-v0218-performance-property-testing">Later (v0.21.8 — Performance &amp; Property Testing)<a class="headerlink" href="#later-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>pytest-benchmark integration</strong> (TASK-732) — @tester</li>
-<li><strong>Hypothesis test expansion</strong> (TASK-733) — @tester</li>
-<li><strong>Performance regression baselines</strong> (TASK-734) — @ops</li>
-</ol>
-<h3 id="architecture-reference">Architecture Reference<a class="headerlink" href="#architecture-reference" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Unified architecture: <code>docs/architecture/unified-architecture-v1.md</code></li>
-<li>Complete roadmap: §20 of architecture doc (v0.21.5→v1.0)</li>
-<li>Quality gates per version: §9 of architecture doc</li>
+<li>JSON body size limit middleware (TASK-728)</li>
+<li>Cross-field plausibility guards (TASK-729)</li>
+<li>Input validation audit (TASK-730)</li>
+<li>WebSocket message rate limit (TASK-731)</li>
 </ul>
-<h2 id="key-patterns-established">Key Patterns Established<a class="headerlink" href="#key-patterns-established" title="Permanent link">&para;</a></h2>
+<h3 id="later-v0218-performance-property-testing">Later (v0.21.8 — Performance &amp; Property Testing)<a class="headerlink" href="#later-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Evolution pipeline working — 9 items batch-applied with verification in single session</li>
-<li><code>check_code("IS456")</code> validates code implementation contract — reports tech debt (36 issues: unfrozen results, missing decorators, params without unit suffixes)</li>
-<li><code>show_versions()</code> follows scikit-learn pattern — both print and programmatic modes</li>
-<li>OpenAPI baseline diffing in CI prevents silent API drift</li>
-<li>Limitation docs prevent users from misapplying functions</li>
+<li>pytest-benchmark integration (TASK-732)</li>
+<li>Hypothesis test expansion (TASK-733)</li>
+<li>Performance regression baselines (TASK-734)</li>
+</ul>
+<h2 id="batch-3-implementation-plan-for-next-session">Batch 3 Implementation Plan (for next session)<a class="headerlink" href="#batch-3-implementation-plan-for-next-session" title="Permanent link">&para;</a></h2>
+<h3 id="agent-pipeline">Agent Pipeline:<a class="headerlink" href="#agent-pipeline" title="Permanent link">&para;</a></h3>
+<ol>
+<li>@backend — Add deprecated param aliases to column_api.py (Phase 1)</li>
+<li>@backend — Add deprecated param aliases to beam_api.py (Phase 2)</li>
+<li>@api-developer — Update FastAPI column router to use new param names</li>
+<li>@tester — Update column tests + add deprecation warning tests</li>
+<li>@reviewer — Review all changes</li>
+<li>@doc-master — Update API docs, architecture doc §10.5</li>
+<li>@ops — Commit as <code>refactor(api): standardize parameter naming convention</code></li>
+</ol>
+<h3 id="files-to-modify">Files to modify:<a class="headerlink" href="#files-to-modify" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Python/structural_lib/services/column_api.py</code> — 10 functions</li>
+<li><code>Python/structural_lib/services/beam_api.py</code> — 2 functions</li>
+<li><code>fastapi_app/routers/column.py</code> — update request model field names</li>
+<li><code>fastapi_app/models/</code> — update Pydantic models</li>
+<li><code>Python/tests/</code> — update test call sites</li>
+<li><code>docs/architecture/unified-architecture-v1.md</code> — document convention</li>
+</ul>
+<h3 id="key-decisions-made">Key decisions made:<a class="headerlink" href="#key-decisions-made" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Two-tier convention: full suffixes at L3, IS 456 shorthand at L2</li>
+<li><code>fck_nmm2</code> (not <code>fck_MPa</code>) — matches IS 456 notation (N/mm²)</li>
+<li><code>Mu_kNm</code> (not <code>mu_knm</code>) — matches IS 456 uppercase notation</li>
+<li>Backward compat via deprecated aliases + DeprecationWarning</li>
+<li>Layer 2 functions (codes/) keep bare <code>fck</code>, <code>fy</code> — no change needed</li>
 </ul>
 <h2 id="blockers">Blockers<a class="headerlink" href="#blockers" title="Permanent link">&para;</a></h2>
 <ul>

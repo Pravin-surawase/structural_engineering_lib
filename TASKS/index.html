@@ -1608,6 +1608,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#batch-3-api-naming-convention-v0220" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch 3: API Naming Convention (v0.22.0)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0220-stabilization-release" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1853,7 +1864,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-07 — v0.21.6 complete (unreleased, pending PyPI publish)</p>
+<p><strong>Updated:</strong> 2026-04-07 — v0.21.6 complete (unreleased); Batch 3 API naming planned (v0.22.0)</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1935,7 +1946,7 @@
 <td><strong>v0.22.0</strong></td>
 <td>Stabilization Release</td>
 <td>📋 PLANNED</td>
-<td>Provenance, SP:16 verification, release hardening</td>
+<td>API naming convention (Batch 3), provenance, SP:16 verification</td>
 </tr>
 <tr>
 <td><strong>v0.23</strong></td>
@@ -2413,6 +2424,58 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </tr>
 </tbody>
 </table>
+<h2 id="batch-3-api-naming-convention-v0220">Batch 3: API Naming Convention (v0.22.0)<a class="headerlink" href="#batch-3-api-naming-convention-v0220" title="Permanent link">&para;</a></h2>
+<p><strong>Theme:</strong> Standardize parameter naming across L3 (services) API — <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code>
+<strong>Ref:</strong> Issue 15, architecture doc §10.5</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Owner</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TASK-740</td>
+<td>Standardize column_api.py param names (fck→fck_nmm2, fy→fy_nmm2) — 10 functions</td>
+<td>@backend</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-741</td>
+<td>Standardize beam_api.py outliers (check_beam_ductility, check_anchorage) — 2 functions</td>
+<td>@backend</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-742</td>
+<td>Update FastAPI column router + Pydantic models for new param names</td>
+<td>@api-developer</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-743</td>
+<td>Add deprecation warning tests for old param names</td>
+<td>@tester</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-744</td>
+<td>Document two-tier naming convention in architecture doc</td>
+<td>@doc-master</td>
+<td>📋</td>
+</tr>
+<tr>
+<td>TASK-745</td>
+<td>Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+)</td>
+<td>@library-expert</td>
+<td>📋</td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="v0220-stabilization-release">v0.22.0 — Stabilization Release<a class="headerlink" href="#v0220-stabilization-release" title="Permanent link">&para;</a></h2>
 <p><strong>Theme:</strong> Production-quality release with full provenance and CI gates
 <strong>Target:</strong> After all v0.21.x complete
