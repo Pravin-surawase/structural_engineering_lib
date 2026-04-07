@@ -189,7 +189,7 @@ When handing off to a specialist, use this template:
 ```
 Task: [specific description]
 Files to check first: [list files to read before coding]
-Agent instructions: Read your agent file first: .github/agents/<agent-name>.agent.md
+Agent instructions: Read your ENTIRE agent file: .github/agents/<agent-name>.agent.md — ALL sections, every rule, every historical mistake. Do NOT skim or stop after the first few lines. Confirm you read it by listing the section count.
 Expected output: [what the change should do]
 After completing: Hand off to @reviewer with a summary of:
   - Files changed
@@ -197,7 +197,7 @@ After completing: Hand off to @reviewer with a summary of:
   - How to test it
 ```
 
-**IMPORTANT:** Always tell agents to read their `.agent.md` file at the start of every task. Agents lose context across conversations — their agent file contains critical rules, patterns to avoid, and historical mistakes they must not repeat.
+**IMPORTANT:** Always tell agents to read their ENTIRE `.agent.md` file (every section, every table, every rule) at the start of every task. Agents lose context across conversations and tend to skim only the first few lines — but critical rules like FORBIDDEN commands, Historical Mistakes, and CI protocols are at the bottom. If an agent doesn't confirm they read the full file, re-instruct them.
 
 ### Status Tracking
 
@@ -329,3 +329,4 @@ This file is read by `agent_brief.sh --handoff` for the next agent's context.
 - **Releases MUST pass all 5 preflight phases** — packaging, UAT, security, API/doc consistency, CI
 - **Doc-master MUST verify all 6 docs** with the mandatory checklist — partial updates are not acceptable
 - **All agents read `/development-rules`** for their domain before writing code — these rules come from real failures
+- **Enforce full file reading** — when delegating, explicitly tell agents to read their ENTIRE `.agent.md` file (all sections). Agents historically skip bottom sections containing FORBIDDEN commands and Historical Mistakes, causing repeated violations.
