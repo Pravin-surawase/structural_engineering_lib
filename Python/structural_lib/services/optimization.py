@@ -81,7 +81,7 @@ def optimize_beam_cost(
         >>> print(f"Optimal design costs ₹{result.optimal_candidate.cost_breakdown.total_cost}")
         >>> print(f"Savings: {result.savings_percent:.1f}%")
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     if cost_profile is None:
         cost_profile = CostProfile()
@@ -255,7 +255,7 @@ def optimize_beam_cost(
     # Top 3 alternatives
     alternatives = valid_candidates[1:4]  # Skip optimal (index 0), get next 3
 
-    computation_time = time.time() - start_time
+    computation_time = time.perf_counter() - start_time
 
     return CostOptimizationResult(
         optimal_candidate=optimal,

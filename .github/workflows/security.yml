@@ -117,15 +117,15 @@ jobs:
 
       - name: Install CycloneDX
         run: |
-          python -m pip install cyclonedx-bom
+          python -m pip install 'cyclonedx-bom>=7,<8'
 
       - name: Generate SBOM
         run: |
           # Generate CycloneDX SBOM in JSON format
-          cyclonedx-py environment --format json --output sbom.json
+          cyclonedx-py environment --output-format JSON --output-file sbom.json
 
           # Also generate in XML format for broader compatibility
-          cyclonedx-py environment --format xml --output sbom.xml
+          cyclonedx-py environment --output-format XML --output-file sbom.xml
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v7

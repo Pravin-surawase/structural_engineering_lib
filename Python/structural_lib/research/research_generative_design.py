@@ -534,7 +534,7 @@ def explore_design_space(
         >>> for rec in result.recommendations.values():
         ...     print(f"{rec.persona.name}: {rec.narrative}")
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     if cost_profile is None:
         cost_profile = CostProfile()
@@ -696,7 +696,7 @@ def explore_design_space(
         utilization_range=util_range,
     )
 
-    computation_time = time.time() - start_time
+    computation_time = time.perf_counter() - start_time
 
     return GenerativeDesignResult(
         span_mm=span_mm,

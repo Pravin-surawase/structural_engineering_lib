@@ -24,13 +24,14 @@ on:
         type: boolean
 
 permissions:
-  contents: write
-  id-token: write
+  contents: read
 
 jobs:
   generate-sbom:
     name: Generate CycloneDX SBOM
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -47,16 +48,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
-          python -m pip install cyclonedx-bom
+          python -m pip install 'cyclonedx-bom>=7,<8'
 
       - name: Generate CycloneDX SBOM
         working-directory: Python
         run: |
           # Generate SBOM from installed packages
           cyclonedx-py environment \
-            --output sbom.json \
-            --format json \
-            --schema-version 1.6
+            --output-file sbom.json \
+            --output-format JSON \
+            --spec-version 1.6
 
           # Add metadata about this build
           python -c "

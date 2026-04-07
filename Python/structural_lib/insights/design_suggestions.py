@@ -132,7 +132,7 @@ def suggest_improvements(
         >>> for s in suggestions.suggestions[:3]:  # Top 3 suggestions
         ...     print(f"{s.title} ({s.impact.value}) - {s.estimated_benefit}")
     """
-    start_time = time.time()
+    start_time = time.perf_counter()
     suggestions: list[DesignSuggestion] = []
 
     # Extract design parameters
@@ -165,7 +165,7 @@ def suggest_improvements(
     medium_count = sum(1 for s in suggestions if s.impact == ImpactLevel.MEDIUM)
     low_count = sum(1 for s in suggestions if s.impact == ImpactLevel.LOW)
 
-    elapsed_ms = (time.time() - start_time) * 1000
+    elapsed_ms = (time.perf_counter() - start_time) * 1000
 
     return SuggestionReport(
         suggestions=suggestions,
