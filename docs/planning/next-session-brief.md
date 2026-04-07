@@ -7,16 +7,17 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-04-07
-**Last Session:** Audit remediation review + Batch 3 planning
+**Last Session:** Batch 3 API naming convention — complete
 
 ## What Was Completed
-- **Post-commit review:** All 15 files from Batch 1+2 verified by @reviewer — APPROVED
-- **2 minor fixes:** Stale deprecated import paths in geometry_3d.py docstring + test_visualization_integration.py
-- **Security review:** PASS — fallback HTML uses html.escape(), no XSS
-- **Batch 3 planning complete:** Full analysis by @library-expert, @structural-engineer, @security
-  - API naming: 12 functions, ~26 params to rename (all in column_api.py + 2 beam outliers)
-  - Public surface: 107 exports mapped and categorized (56 functions, 29 classes, 21 submodules)
-  - Two-tier naming convention approved by @structural-engineer
+- **Batch 3 Phase 1+2: API Naming Convention — COMPLETE**
+  - `column_api.py`: 10 functions renamed (`fck`→`fck_nmm2`, `fy`→`fy_nmm2`)
+  - `beam_api.py`: 2 functions renamed (`check_beam_ductility`, `check_anchorage_at_simple_support`)
+  - FastAPI Pydantic models updated with `alias` for backward compat in JSON payloads
+  - 40 deprecation tests added in `test_param_deprecation.py`
+  - Old param names work as deprecated aliases with `DeprecationWarning` (removal in v0.24)
+  - Architecture doc §10.5 updated with two-tier convention documentation
+  - TASK-740 through TASK-744 all marked ✅ Done
 
 ## Current Version State
 - **v0.21.5** = last PyPI release (tag: v0.21.5)
@@ -50,41 +51,33 @@ Migration strategy: Add new param names, keep old as deprecated aliases with war
 - 107 exports is reasonable for the library's scope
 - No action needed now — just document stable vs experimental tiers
 
-### Next (v0.21.7 — Security Hardening)
-- JSON body size limit middleware (TASK-728)
-- Cross-field plausibility guards (TASK-729)
-- Input validation audit (TASK-730)
-- WebSocket message rate limit (TASK-731)
+### Immediate — Next Priorities
+- TASK-745: Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+)
+- v0.21.7 Security Hardening:
+  - JSON body size limit middleware (TASK-728)
+  - Cross-field plausibility guards (TASK-729)
+  - Input validation audit (TASK-730)
+  - WebSocket message rate limit (TASK-731)
 
 ### Later (v0.21.8 — Performance & Property Testing)
 - pytest-benchmark integration (TASK-732)
 - Hypothesis test expansion (TASK-733)
 - Performance regression baselines (TASK-734)
 
-## Batch 3 Implementation Plan (for next session)
+## Batch 3 Summary (COMPLETED)
 
-### Agent Pipeline:
-1. @backend — Add deprecated param aliases to column_api.py (Phase 1)
-2. @backend — Add deprecated param aliases to beam_api.py (Phase 2)
-3. @api-developer — Update FastAPI column router to use new param names
-4. @tester — Update column tests + add deprecation warning tests
-5. @reviewer — Review all changes
-6. @doc-master — Update API docs, architecture doc §10.5
-7. @ops — Commit as `refactor(api): standardize parameter naming convention`
-
-### Files to modify:
-- `Python/structural_lib/services/column_api.py` — 10 functions
-- `Python/structural_lib/services/beam_api.py` — 2 functions
-- `fastapi_app/routers/column.py` — update request model field names
-- `fastapi_app/models/` — update Pydantic models
-- `Python/tests/` — update test call sites
-- `docs/architecture/unified-architecture-v1.md` — document convention
+All 5 tasks (TASK-740 through TASK-744) done. Files changed:
+- `Python/structural_lib/services/column_api.py` — 10 functions renamed
+- `Python/structural_lib/services/beam_api.py` — 2 functions renamed
+- `fastapi_app/routers/column.py` + `fastapi_app/models/` — Pydantic alias backward compat
+- `Python/tests/test_param_deprecation.py` — 40 new deprecation tests
+- `docs/architecture/unified-architecture-v1.md` — §10.5 updated with two-tier convention
 
 ### Key decisions made:
 - Two-tier convention: full suffixes at L3, IS 456 shorthand at L2
 - `fck_nmm2` (not `fck_MPa`) — matches IS 456 notation (N/mm²)
 - `Mu_kNm` (not `mu_knm`) — matches IS 456 uppercase notation
-- Backward compat via deprecated aliases + DeprecationWarning
+- Backward compat via deprecated aliases + DeprecationWarning (removal in v0.24)
 - Layer 2 functions (codes/) keep bare `fck`, `fy` — no change needed
 
 ## Blockers

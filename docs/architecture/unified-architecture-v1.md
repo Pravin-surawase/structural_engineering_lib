@@ -111,7 +111,7 @@ Every **public** design function MUST have:
 | `codes/is456/footing/` | 6/12 functions (helpers excluded, `size_footing` added) | 🔶 Partial |
 | `codes/is13920/` | All public functions | ✅ |
 
-> **Note:** The signature shown below reflects the **target naming convention** (§10.5). Current code uses `b`, `d`, `mu_knm` — parameter names will be migrated to unit-suffix convention in v0.24.
+> **Note:** The signature below uses Layer 2 (codes/) naming — bare IS 456 shorthand (`fck`, `fy`, `b`, `d`). At Layer 3 (services/), these become `fck_nmm2`, `fy_nmm2`, `b_mm`, `d_mm` per the two-tier naming convention (§10.5).
 
 ```python
 @clause("38.1")
@@ -310,7 +310,7 @@ class BeamDesignRequest(BaseModel):
     clear_cover: float = Field(default=25.0, description="Clear cover (mm)")
 ```
 
-> **Note:** Current field names use descriptive English (`width`, `depth`, `moment`). The unit-suffix naming convention (`b_mm`, `d_mm`, `Mu_kNm`) is a v0.24 migration target (§10.5).
+> **Note:** FastAPI Pydantic models use descriptive English (`width`, `depth`, `moment`) with `alias` fields for backward compat. The Layer 3 API uses unit-suffix names (`b_mm`, `d_mm`, `Mu_kNm`) per the two-tier naming convention (§10.5).
 
 ### 5.2 Result Dataclasses (Output Schema)
 
@@ -667,15 +667,54 @@ This design decision stands for the v1.0 architecture. The registry pattern is t
 
 **Rule:** Dimensional parameters MUST have unit suffixes.
 
+#### Two-Tier Convention (Implemented v0.22.0)
+
+The library uses a **two-tier naming convention** that respects both IS 456 textbook notation and API explicitness:
+
+| Layer | Scope | Convention | Example |
+|-------|-------|------------|--------|
+| **Layer 2** (`codes/is456/`) | Pure IS 456 math | Bare IS 456 shorthand — no suffixes | `fck`, `fy`, `Mu`, `Vu`, `b`, `d` |
+| **Layer 3** (`services/`) | Public API surface | Full unit-suffix names | `fck_nmm2`, `fy_nmm2`, `Mu_kNm`, `b_mm`, `d_mm` |
+
+**Why two tiers?**
+- Layer 2 matches textbook notation exactly — engineers reading IS 456 code see familiar symbols
+- Layer 3 makes units explicit for API consumers who may not know IS 456 conventions
+- The boundary between L2 and L3 handles the translation
+
+#### Unit Suffix Rules
+
 | Category | Convention | Examples |
 |----------|-----------|----------|
 | Length | `_mm` suffix | `b_mm`, `d_mm`, `cover_mm`, `Ld_mm` |
 | Force | `_kN` suffix | `Vu_kN`, `Pu_kN` |
 | Moment | `_kNm` suffix | `Mu_kNm`, `Mcr_kNm` |
-| Stress | `_nmm2` suffix (when ambiguous) | `fck_nmm2`, `sigma_nmm2` |
-| IS 456 symbols | No suffix required | `fck`, `fy`, `fsc` |
+| Stress | `_nmm2` suffix | `fck_nmm2`, `fy_nmm2`, `sigma_nmm2` |
 
-**Exception:** Standard IS 456 symbols (`fck`, `fy`) DO NOT require suffixes — they are universally understood as N/mm² per IS 456 clause 5.2. This is a **documented exception**, not an inconsistency.
+**Naming choices follow IS 456 notation:**
+- `fck_nmm2` — **not** `fck_MPa`. IS 456 writes "N/mm²", not "MPa".
+- `Mu_kNm` — **not** `mu_knm`. IS 456 uses uppercase $M_u$, $V_u$.
+- `fy_nmm2` — **not** `fy_mpa`. Consistent with IS 456 clause 5.2.
+
+#### Backward Compatibility
+
+Old parameter names (`fck`, `fy`, `b`, `d`, etc.) continue to work at Layer 3 as **deprecated aliases**. They emit a `DeprecationWarning` with migration guidance and will be **removed in v0.24**.
+
+```python
+# ✅ New convention (preferred)
+result = design_column_axial_is456(fck_nmm2=25, fy_nmm2=415, ...)
+
+# ⚠️ Old names still work but emit DeprecationWarning
+result = design_column_axial_is456(fck=25, fy=415, ...)  # warns: use fck_nmm2
+```
+
+#### Functions Migrated (Batch 3)
+
+| Module | Functions | Parameters Renamed |
+|--------|-----------|-------------------|
+| `column_api.py` | 10 functions | `fck`→`fck_nmm2`, `fy`→`fy_nmm2` |
+| `beam_api.py` | `check_beam_ductility` | `b`→`b_mm`, `D`→`D_mm`, `d`→`d_mm`, `fck`→`fck_nmm2`, `fy`→`fy_nmm2` |
+| `beam_api.py` | `check_anchorage_at_simple_support` | `fck`→`fck_nmm2`, `fy`→`fy_nmm2` |
+| FastAPI models | Pydantic `alias` | Backward compat in JSON payloads |
 
 **Rationale:** Unit suffixes prevent the most dangerous class of structural engineering bugs — unit confusion. A beam designed with `b=300` (mm) vs `b=300` (cm) vs `b=300` (in) gives wildly different results.
 
