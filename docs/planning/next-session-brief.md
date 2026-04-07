@@ -23,6 +23,10 @@
   - Nightly QA smoke test failure guard added
 
 ## Current Version State
+
+| **Current** | v0.21.6 | Released to PyPI |
+| **Next** | v0.21.7 | Security Hardening — in progress (4/14 tasks done) |
+
 - **v0.21.5** = last PyPI release (tag: v0.21.5)
 - **v0.21.6** = Released to PyPI
 - v0.21.6 released on 2026-04-07 with all preflight checks passed (5143 tests, 69 golden vectors, 18 contracts)
@@ -70,3 +74,8 @@
 - `session_summary.py` doesn't exist — use `scripts/session.py summary`
 - Registry metadata skill_count=10 should be 14 (cosmetic)
 - 3 FastAPI import violations (non-blocking, planned for v0.22.0)
+
+## Required Reading
+- [TASKS.md](../TASKS.md) — active task board
+- [agent-bootstrap.md](../getting-started/agent-bootstrap.md) — project rules & architecture
+- [api.md](../reference/api.md) — API reference (19 new symbols added)

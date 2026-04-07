@@ -16,7 +16,7 @@
 
 ## Current Release
 
-- **Version:** v0.21.6 ✅ COMPLETE → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization
+| **Current** | v0.21.6 | ✅ COMPLETE → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization |
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)

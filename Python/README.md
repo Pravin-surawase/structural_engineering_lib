@@ -7,6 +7,13 @@ IS 456 RC Beam Design Library (Python package).
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
 
+## New in v0.21.6
+
+- **Security hardening:** 14 cross-field plausibility validators, error sanitization
+- **Code quality:** `check_code()` and `show_versions()` diagnostics
+- **Column API:** Full column design pipeline (axial, uniaxial, biaxial, slender, detailing)
+- **OpenAPI freeze:** Baseline drift detection in CI
+
 ## Install
 
 ```bash
