@@ -91,7 +91,7 @@ Detailed system information.
 {
   "version": "0.1.0",
   "python_version": "3.11.8",
-  "structural_lib_version": "0.21.5"
+  "structural_lib_version": "0.21.6"
 }
 ```
 

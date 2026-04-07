@@ -41,6 +41,25 @@ VERSION_FILES = {
         (r"^version: [0-9]+\.[0-9]+\.[0-9]+", "version: {version}"),
         (r"^date-released: .+", "date-released: {date}"),
     ],
+    # FastAPI backend version
+    "fastapi_app/__init__.py": [
+        (r'^__version__ = "[^"]+"', '__version__ = "{version}"'),
+    ],
+    # FastAPI config (api_version field)
+    "fastapi_app/config.py": [
+        (r'api_version: str = "[^"]+"', 'api_version: str = "{version}"'),
+    ],
+    # OpenAPI baseline (top-level info block)
+    "fastapi_app/openapi_baseline.json": [
+        (
+            r'("title": "Structural Engineering API",\s*"version": ")[^"]+"',
+            r'\g<1>{version}"',
+        ),
+    ],
+    # React settings panel version display
+    "react_app/src/components/layout/SettingsPanel.tsx": [
+        (r"v[0-9]+\.[0-9]+\.[0-9]+</span>", "v{version}</span>"),
+    ],
 }
 
 # Documentation references that should track the library version.

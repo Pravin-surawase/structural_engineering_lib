@@ -24,7 +24,8 @@
 
 ## Current Version State
 - **v0.21.5** = last PyPI release (tag: v0.21.5)
-- **v0.21.6** = feature-complete, audited — still needs PyPI tag + publish
+- **v0.21.6** = Released to PyPI
+- v0.21.6 released on 2026-04-07 with all preflight checks passed (5143 tests, 69 golden vectors, 18 contracts)
 - **v0.21.7** = in progress — 4/14 tasks done (P1–P3)
 
 ## Priorities — v0.21.7 Remaining
