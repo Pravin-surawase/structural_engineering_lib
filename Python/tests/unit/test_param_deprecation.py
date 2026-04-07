@@ -36,44 +36,49 @@ from structural_lib.services.beam_api import check_anchorage_at_simple_support
 # Helpers — common kwargs for each function (using new param names)
 # ============================================================================
 
-_AXIAL_KWARGS = dict(fck_nmm2=25.0, fy_nmm2=415.0, Ag_mm2=90_000.0, Asc_mm2=1_800.0)
+_AXIAL_KWARGS = {
+    "fck_nmm2": 25.0,
+    "fy_nmm2": 415.0,
+    "Ag_mm2": 90_000.0,
+    "Asc_mm2": 1_800.0,
+}
 
-_COLUMN_IS456_KWARGS = dict(
-    Pu_kN=800.0,
-    Mux_kNm=120.0,
-    b_mm=300.0,
-    D_mm=450.0,
-    l_mm=3000.0,
-    fck_nmm2=25.0,
-    fy_nmm2=415.0,
-    Asc_mm2=2400.0,
-    d_prime_mm=50.0,
-)
+_COLUMN_IS456_KWARGS = {
+    "Pu_kN": 800.0,
+    "Mux_kNm": 120.0,
+    "b_mm": 300.0,
+    "D_mm": 450.0,
+    "l_mm": 3000.0,
+    "fck_nmm2": 25.0,
+    "fy_nmm2": 415.0,
+    "Asc_mm2": 2400.0,
+    "d_prime_mm": 50.0,
+}
 
-_DUCTILITY_COL_KWARGS = dict(
-    b_mm=400.0,
-    D_mm=500.0,
-    clear_height_mm=3000.0,
-    bar_dia_mm=16.0,
-    fck_nmm2=25.0,
-    fy_nmm2=415.0,
-)
+_DUCTILITY_COL_KWARGS = {
+    "b_mm": 400.0,
+    "D_mm": 500.0,
+    "clear_height_mm": 3000.0,
+    "bar_dia_mm": 16.0,
+    "fck_nmm2": 25.0,
+    "fy_nmm2": 415.0,
+}
 
-_BEAM_DUCTILITY_KWARGS = dict(
-    b_mm=230.0,
-    D_mm=450.0,
-    d_mm=410.0,
-    fck_nmm2=25.0,
-    fy_nmm2=415.0,
-)
+_BEAM_DUCTILITY_KWARGS = {
+    "b_mm": 230.0,
+    "D_mm": 450.0,
+    "d_mm": 410.0,
+    "fck_nmm2": 25.0,
+    "fy_nmm2": 415.0,
+}
 
-_ANCHORAGE_KWARGS = dict(
-    bar_dia_mm=12.0,
-    fck_nmm2=25.0,
-    fy_nmm2=415.0,
-    vu_kn=50.0,
-    support_width_mm=300.0,
-)
+_ANCHORAGE_KWARGS = {
+    "bar_dia_mm": 12.0,
+    "fck_nmm2": 25.0,
+    "fy_nmm2": 415.0,
+    "vu_kn": 50.0,
+    "support_width_mm": 300.0,
+}
 
 
 # ============================================================================
@@ -247,7 +252,7 @@ class TestCheckBeamDuctilityDeprecation:
         with pytest.warns(DeprecationWarning, match="'b' is deprecated"):
             check_beam_ductility(**kwargs, b=230)
 
-    def test_old_D_emits_warning(self):
+    def test_old_depth_d_emits_warning(self):  # noqa: N802
         """Old 'D' emits DeprecationWarning."""
         kwargs = {k: v for k, v in _BEAM_DUCTILITY_KWARGS.items() if k != "D_mm"}
         with pytest.warns(DeprecationWarning, match="'D' is deprecated"):
@@ -276,7 +281,7 @@ class TestCheckBeamDuctilityDeprecation:
         with pytest.raises(ValueError, match="specify 'b_mm' or 'b', not both"):
             check_beam_ductility(**_BEAM_DUCTILITY_KWARGS, b=230)
 
-    def test_both_D_raises(self):
+    def test_both_depth_d_raises(self):
         """Passing both D_mm and D raises ValueError."""
         with pytest.raises(ValueError, match="specify 'D_mm' or 'D', not both"):
             check_beam_ductility(**_BEAM_DUCTILITY_KWARGS, D=450)
