@@ -49,3 +49,25 @@ def sanitize_error(e: Exception, context: str = "operation") -> str:
         return msg
 
     return f"Internal error during {context}. Reference: {request_id}"
+
+
+def sanitize_error_string(msg: str, context: str = "operation") -> str:
+    """Sanitize a raw error string for API responses.
+
+    Strips messages containing file paths or tracebacks to prevent
+    CWE-209 information exposure.
+
+    Args:
+        msg: The error message string.
+        context: A short description of the operation.
+
+    Returns:
+        The original message if safe, or a generic message if it contains paths.
+    """
+    if "/" in msg or "\\" in msg or "Traceback" in msg:
+        request_id = uuid.uuid4().hex[:8]
+        logger.warning(
+            "Sanitized error string in %s [%s]: %s", context, request_id, msg
+        )
+        return f"Error during {context}. Reference: {request_id}"
+    return msg

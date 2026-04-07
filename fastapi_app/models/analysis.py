@@ -6,7 +6,7 @@ Models for AI-assisted design analysis API endpoints.
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 # =============================================================================
 # Load Analysis Models
@@ -137,6 +137,16 @@ class SmartAnalysisRequest(BaseModel):
         default=True,
         description="Analyze design efficiency and cost-effectiveness",
     )
+
+    @model_validator(mode="after")
+    def validate_cross_fields(self) -> "SmartAnalysisRequest":
+        """Validate cross-field constraints."""
+        if self.depth / self.width > 6:
+            raise ValueError(
+                f"Depth/width ratio {self.depth / self.width:.1f} exceeds "
+                f"practical limit of 6"
+            )
+        return self
 
 
 # =============================================================================

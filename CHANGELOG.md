@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.21.6] — 2026-04-07
+
 ### Fixed
 - **ETABS job generator:** Units corrected from `"SI-mm"` to `"IS456"` (EXT-P1-1)
 - **ETABS batch processing:** Group by `(story, beam_id)` instead of just `beam_id` — prevents cross-story beam collision (EXT-P1-2)
@@ -1365,4 +1367,6 @@ V3 Foundation release — everything built since v0.19.1. Full-stack maturity mi
 
 Format: Keep a section per release with Added/Changed/Fixed as needed. Tag releases as `vX.Y.Z`.
 
+[Unreleased]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.6...HEAD
+[0.21.6]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.5...v0.21.6
 [0.21.4]: https://github.com/Pravin-surawase/structural_engineering_lib/compare/v0.21.3...v0.21.4
