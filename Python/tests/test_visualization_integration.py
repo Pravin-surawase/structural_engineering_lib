@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import pytest
 
-from structural_lib.codes.is456.detailing import create_beam_detailing
+from structural_lib.codes.is456.beam.detailing import create_beam_detailing
 from structural_lib.visualization.geometry_3d import (
     Beam3DGeometry,
     beam_to_3d_geometry,

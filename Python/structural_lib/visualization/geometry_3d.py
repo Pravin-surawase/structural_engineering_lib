@@ -797,7 +797,7 @@ def beam_to_3d_geometry(
         Beam3DGeometry ready for JSON serialization
 
     Example:
-        >>> from structural_lib.codes.is456.detailing import create_beam_detailing
+        >>> from structural_lib.codes.is456.beam.detailing import create_beam_detailing
         >>> detailing = create_beam_detailing(...)
         >>> geometry = beam_to_3d_geometry(detailing)
         >>> json_data = geometry.to_dict()  # For Three.js
