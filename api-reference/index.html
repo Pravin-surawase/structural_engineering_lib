@@ -30678,7 +30678,7 @@ print(f"Savings: {result.savings_percent:.1f}%")</p>
 <a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Optimal design costs ₹{result.optimal_candidate.cost_breakdown.total_cost}&quot;)</span>
 <a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Savings: {result.savings_percent:.1f}%&quot;)</span>
 <a id="__codelineno-0-83" name="__codelineno-0-83"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 <a id="__codelineno-0-85" name="__codelineno-0-85"></a>
 <a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="k">if</span> <span class="n">cost_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-87" name="__codelineno-0-87"></a>        <span class="n">cost_profile</span> <span class="o">=</span> <span class="n">CostProfile</span><span class="p">()</span>
@@ -30852,7 +30852,7 @@ print(f"Savings: {result.savings_percent:.1f}%")</p>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a>    <span class="c1"># Top 3 alternatives</span>
 <a id="__codelineno-0-256" name="__codelineno-0-256"></a>    <span class="n">alternatives</span> <span class="o">=</span> <span class="n">valid_candidates</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>  <span class="c1"># Skip optimal (index 0), get next 3</span>
 <a id="__codelineno-0-257" name="__codelineno-0-257"></a>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a>    <span class="n">computation_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a>    <span class="n">computation_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 <a id="__codelineno-0-259" name="__codelineno-0-259"></a>
 <a id="__codelineno-0-260" name="__codelineno-0-260"></a>    <span class="k">return</span> <span class="n">CostOptimizationResult</span><span class="p">(</span>
 <a id="__codelineno-0-261" name="__codelineno-0-261"></a>        <span class="n">optimal_candidate</span><span class="o">=</span><span class="n">optimal</span><span class="p">,</span>
@@ -32528,7 +32528,7 @@ dashboard.to_json("analysis.json")</p>
 <a id="__codelineno-0-325" name="__codelineno-0-325"></a>        <span class="k">if</span> <span class="n">cost_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-326" name="__codelineno-0-326"></a>            <span class="n">cost_profile</span> <span class="o">=</span> <span class="n">CostProfile</span><span class="p">()</span>
 <a id="__codelineno-0-327" name="__codelineno-0-327"></a>
-<a id="__codelineno-0-328" name="__codelineno-0-328"></a>        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<a id="__codelineno-0-328" name="__codelineno-0-328"></a>        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 <a id="__codelineno-0-329" name="__codelineno-0-329"></a>
 <a id="__codelineno-0-330" name="__codelineno-0-330"></a>        <span class="c1"># Cost optimization analysis</span>
 <a id="__codelineno-0-331" name="__codelineno-0-331"></a>        <span class="n">cost_analysis</span> <span class="o">=</span> <span class="kc">None</span>
@@ -32781,7 +32781,7 @@ dashboard.to_json("analysis.json")</p>
 <a id="__codelineno-0-578" name="__codelineno-0-578"></a>        <span class="p">)</span>
 <a id="__codelineno-0-579" name="__codelineno-0-579"></a>
 <a id="__codelineno-0-580" name="__codelineno-0-580"></a>        <span class="c1"># Metadata</span>
-<a id="__codelineno-0-581" name="__codelineno-0-581"></a>        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<a id="__codelineno-0-581" name="__codelineno-0-581"></a>        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 <a id="__codelineno-0-582" name="__codelineno-0-582"></a>        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-583" name="__codelineno-0-583"></a>            <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
 <a id="__codelineno-0-584" name="__codelineno-0-584"></a>            <span class="s2">&quot;library_version&quot;</span><span class="p">:</span> <span class="n">get_library_version</span><span class="p">(),</span>
@@ -33462,7 +33462,7 @@ dashboard.to_json("analysis.json")</p>
 <a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="k">if</span> <span class="n">cost_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-326" name="__codelineno-0-326"></a>        <span class="n">cost_profile</span> <span class="o">=</span> <span class="n">CostProfile</span><span class="p">()</span>
 <a id="__codelineno-0-327" name="__codelineno-0-327"></a>
-<a id="__codelineno-0-328" name="__codelineno-0-328"></a>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<a id="__codelineno-0-328" name="__codelineno-0-328"></a>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 <a id="__codelineno-0-329" name="__codelineno-0-329"></a>
 <a id="__codelineno-0-330" name="__codelineno-0-330"></a>    <span class="c1"># Cost optimization analysis</span>
 <a id="__codelineno-0-331" name="__codelineno-0-331"></a>    <span class="n">cost_analysis</span> <span class="o">=</span> <span class="kc">None</span>
@@ -33715,7 +33715,7 @@ dashboard.to_json("analysis.json")</p>
 <a id="__codelineno-0-578" name="__codelineno-0-578"></a>    <span class="p">)</span>
 <a id="__codelineno-0-579" name="__codelineno-0-579"></a>
 <a id="__codelineno-0-580" name="__codelineno-0-580"></a>    <span class="c1"># Metadata</span>
-<a id="__codelineno-0-581" name="__codelineno-0-581"></a>    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<a id="__codelineno-0-581" name="__codelineno-0-581"></a>    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 <a id="__codelineno-0-582" name="__codelineno-0-582"></a>    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-583" name="__codelineno-0-583"></a>        <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
 <a id="__codelineno-0-584" name="__codelineno-0-584"></a>        <span class="s2">&quot;library_version&quot;</span><span class="p">:</span> <span class="n">get_library_version</span><span class="p">(),</span>
