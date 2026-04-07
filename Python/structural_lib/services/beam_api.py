@@ -9,6 +9,7 @@ Split from services/api.py (ARCH-NEW-12).
 
 from __future__ import annotations
 
+import warnings
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
@@ -46,6 +47,32 @@ from .api_results import (
     SmartAnalysisResult,
 )
 from .costing import CostProfile
+
+# ============================================================================
+# Deprecated-parameter resolution helper
+# ============================================================================
+
+
+def _resolve_deprecated_param(
+    new_val, old_val, new_name: str, old_name: str, func_name: str
+):
+    """Resolve new vs deprecated param, warn if old is used."""
+    if old_val is not None and new_val is not None:
+        raise ValueError(
+            f"{func_name}(): specify '{new_name}' or '{old_name}', not both"
+        )
+    if old_val is not None:
+        warnings.warn(
+            f"{func_name}(): '{old_name}' is deprecated, use '{new_name}' instead. "
+            f"'{old_name}' will be removed in v0.24.",
+            DeprecationWarning,
+            stacklevel=3,
+        )
+        return old_val
+    if new_val is not None:
+        return new_val
+    raise TypeError(f"{func_name}() requires '{new_name}'")
+
 
 # ============================================================================
 # Internal helpers (beam-specific)
@@ -678,23 +705,47 @@ def compute_critical(
 
 
 def check_beam_ductility(
-    b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float
+    b_mm: float | None = None,
+    D_mm: float | None = None,
+    d_mm: float | None = None,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    min_long_bar_dia: float = 0.0,
+    *,
+    b: float | None = None,  # Deprecated
+    D: float | None = None,  # Deprecated
+    d: float | None = None,  # Deprecated
+    fck: float | None = None,  # Deprecated
+    fy: float | None = None,  # Deprecated
 ) -> ductile.DuctileBeamResult:
     """
     Run IS 13920 beam ductility checks for a single section.
 
     Args:
-        b: Beam width (mm).
-        D: Overall depth (mm).
-        d: Effective depth (mm).
-        fck: Concrete strength (N/mm²).
-        fy: Steel yield strength (N/mm²).
+        b_mm: Beam width (mm).
+        D_mm: Overall depth (mm).
+        d_mm: Effective depth (mm).
+        fck_nmm2: Concrete strength (N/mm²).
+        fy_nmm2: Steel yield strength (N/mm²).
         min_long_bar_dia: Minimum longitudinal bar diameter (mm).
 
     Returns:
         DuctileBeamResult with pass/fail flags and limiting values.
+
+    .. deprecated:: 0.22
+        Parameters ``b``, ``D``, ``d``, ``fck``, ``fy`` are renamed to
+        ``b_mm``, ``D_mm``, ``d_mm``, ``fck_nmm2``, ``fy_nmm2``.
+        Old names will be removed in v0.24.
     """
-    return ductile.check_beam_ductility(b, D, d, fck, fy, min_long_bar_dia)
+    _fn = "check_beam_ductility"
+    b_mm = _resolve_deprecated_param(b_mm, b, "b_mm", "b", _fn)
+    D_mm = _resolve_deprecated_param(D_mm, D, "D_mm", "D", _fn)
+    d_mm = _resolve_deprecated_param(d_mm, d, "d_mm", "d", _fn)
+    fck_nmm2 = _resolve_deprecated_param(fck_nmm2, fck, "fck_nmm2", "fck", _fn)
+    fy_nmm2 = _resolve_deprecated_param(fy_nmm2, fy, "fy_nmm2", "fy", _fn)
+    return ductile.check_beam_ductility(
+        b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, min_long_bar_dia
+    )
 
 
 def check_beam_slenderness(
@@ -745,14 +796,17 @@ def check_beam_slenderness(
 
 
 def check_anchorage_at_simple_support(
-    bar_dia_mm: float,
-    fck: float,
-    fy: float,
-    vu_kn: float,
-    support_width_mm: float,
+    bar_dia_mm: float = 0.0,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    vu_kn: float = 0.0,
+    support_width_mm: float = 0.0,
     cover_mm: float = 40.0,
     bar_type: str = "deformed",
     has_standard_bend: bool = True,
+    *,
+    fck: float | None = None,  # Deprecated
+    fy: float | None = None,  # Deprecated
 ) -> detailing.AnchorageCheckResult:
     """Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.
 
@@ -767,8 +821,8 @@ def check_anchorage_at_simple_support(
 
     Args:
         bar_dia_mm: Bottom bar diameter in mm.
-        fck: Concrete strength in N/mm².
-        fy: Steel yield strength in N/mm².
+        fck_nmm2: Concrete strength in N/mm².
+        fy_nmm2: Steel yield strength in N/mm².
         vu_kn: Factored shear force at support in kN.
         support_width_mm: Width of support in mm.
         cover_mm: Clear cover at support in mm (default 40mm).
@@ -781,8 +835,8 @@ def check_anchorage_at_simple_support(
     Example:
         >>> result = check_anchorage_at_simple_support(
         ...     bar_dia_mm=12,
-        ...     fck=25,
-        ...     fy=500,
+        ...     fck_nmm2=25,
+        ...     fy_nmm2=500,
         ...     vu_kn=50,
         ...     support_width_mm=300
         ... )
@@ -791,11 +845,18 @@ def check_anchorage_at_simple_support(
 
     References:
         IS 456:2000 Cl 26.2.3.3: Anchorage of bars at simple supports
+
+    .. deprecated:: 0.22
+        Parameters ``fck``, ``fy`` are renamed to ``fck_nmm2``, ``fy_nmm2``.
+        Old names will be removed in v0.24.
     """
+    _fn = "check_anchorage_at_simple_support"
+    fck_nmm2 = _resolve_deprecated_param(fck_nmm2, fck, "fck_nmm2", "fck", _fn)
+    fy_nmm2 = _resolve_deprecated_param(fy_nmm2, fy, "fy_nmm2", "fy", _fn)
     return detailing.check_anchorage_at_simple_support(
         bar_dia=bar_dia_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         vu_kn=vu_kn,
         support_width=support_width_mm,
         cover=cover_mm,

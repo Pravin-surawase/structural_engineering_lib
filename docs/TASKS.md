@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-07 — v0.21.6 complete (unreleased); Batch 3 API naming planned (v0.22.0)
+**Updated:** 2026-04-07 — v0.21.6 complete (unreleased); Batch 3 API naming done (TASK-740–744 ✅)
 
 ---
 
@@ -171,11 +171,11 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| TASK-740 | Standardize column_api.py param names (fck→fck_nmm2, fy→fy_nmm2) — 10 functions | @backend | 📋 |
-| TASK-741 | Standardize beam_api.py outliers (check_beam_ductility, check_anchorage) — 2 functions | @backend | 📋 |
-| TASK-742 | Update FastAPI column router + Pydantic models for new param names | @api-developer | 📋 |
-| TASK-743 | Add deprecation warning tests for old param names | @tester | 📋 |
-| TASK-744 | Document two-tier naming convention in architecture doc | @doc-master | 📋 |
+| TASK-740 | Standardize column_api.py param names (fck→fck_nmm2, fy→fy_nmm2) — 10 functions | @backend | ✅ |
+| TASK-741 | Standardize beam_api.py outliers (check_beam_ductility, check_anchorage) — 2 functions | @backend | ✅ |
+| TASK-742 | Update FastAPI column router + Pydantic models for new param names | @api-developer | ✅ |
+| TASK-743 | Add deprecation warning tests for old param names | @tester | ✅ |
+| TASK-744 | Document two-tier naming convention in architecture doc | @doc-master | ✅ |
 | TASK-745 | Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+) | @library-expert | 📋 |
 
 ---

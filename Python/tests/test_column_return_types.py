@@ -35,8 +35,8 @@ from structural_lib.core.data_types import (
 def axial_result() -> ColumnAxialResult:
     """Standard axial capacity result for a 300x300 column."""
     return design_column_axial_is456(
-        fck=25.0,
-        fy=415.0,
+        fck_nmm2=25.0,
+        fy_nmm2=415.0,
         Ag_mm2=90_000.0,  # 300x300
         Asc_mm2=1_800.0,  # 2% steel
     )
@@ -51,8 +51,8 @@ def uniaxial_result() -> ColumnUniaxialResult:
         b_mm=300.0,
         D_mm=450.0,
         le_mm=3000.0,
-        fck=25.0,
-        fy=415.0,
+        fck_nmm2=25.0,
+        fy_nmm2=415.0,
         Asc_mm2=2700.0,
         d_prime_mm=50.0,
         l_unsupported_mm=3000.0,

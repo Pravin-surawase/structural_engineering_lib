@@ -9,6 +9,7 @@ Split from services/api.py (ARCH-NEW-12).
 
 from __future__ import annotations
 
+import warnings
 from typing import Any
 
 from structural_lib.codes.is456.column.axial import (
@@ -35,6 +36,32 @@ from structural_lib.core.data_types import (
     LongColumnResult,
     PMInteractionResult,
 )
+
+# ============================================================================
+# Deprecated-parameter resolution helper
+# ============================================================================
+
+
+def _resolve_deprecated_param(
+    new_val, old_val, new_name: str, old_name: str, func_name: str
+):
+    """Resolve new vs deprecated param, warn if old is used."""
+    if old_val is not None and new_val is not None:
+        raise ValueError(
+            f"{func_name}(): specify '{new_name}' or '{old_name}', not both"
+        )
+    if old_val is not None:
+        warnings.warn(
+            f"{func_name}(): '{old_name}' is deprecated, use '{new_name}' instead. "
+            f"'{old_name}' will be removed in v0.24.",
+            DeprecationWarning,
+            stacklevel=3,
+        )
+        return old_val
+    if new_val is not None:
+        return new_val
+    raise TypeError(f"{func_name}() requires '{new_name}'")
+
 
 # ============================================================================
 # Column Design Functions (IS 456:2000 Clause 39)
@@ -191,10 +218,13 @@ def min_eccentricity_is456(
 
 
 def design_column_axial_is456(
-    fck: float,
-    fy: float,
-    Ag_mm2: float,
-    Asc_mm2: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    Ag_mm2: float = 0.0,
+    Asc_mm2: float = 0.0,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> ColumnAxialResult:
     """Calculate axial load capacity for a short column (IS 456 Cl 39.3).
 
@@ -211,8 +241,8 @@ def design_column_axial_is456(
     For slender columns or significant eccentricity, use interaction diagrams.
 
     Args:
-        fck: Characteristic concrete strength (N/mm²). Must be > 0.
-        fy: Yield strength of steel (N/mm²). Must be > 0.
+        fck_nmm2: Characteristic concrete strength (N/mm²). Must be > 0.
+        fy_nmm2: Yield strength of steel (N/mm²). Must be > 0.
         Ag_mm2: Gross cross-sectional area (mm²). Must be > 0.
         Asc_mm2: Area of longitudinal reinforcement (mm²). Must be ≥ 0.
 
@@ -233,8 +263,8 @@ def design_column_axial_is456(
 
     Examples:
         >>> result = design_column_axial_is456(
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Ag_mm2=90000.0,
         ...     Asc_mm2=1800.0
         ... )
@@ -243,10 +273,16 @@ def design_column_axial_is456(
         >>> result['steel_ratio']
         0.02
     """
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "design_column_axial_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "design_column_axial_is456"
+    )
 
     result: ColumnAxialResult = short_axial_capacity(
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Ag_mm2=Ag_mm2,
         Asc_mm2=Asc_mm2,
     )
@@ -260,11 +296,14 @@ def design_short_column_uniaxial_is456(
     b_mm: float,
     D_mm: float,
     le_mm: float,
-    fck: float,
-    fy: float,
-    Asc_mm2: float,
-    d_prime_mm: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    Asc_mm2: float = 0.0,
+    d_prime_mm: float = 0.0,
     l_unsupported_mm: float | None = None,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> ColumnUniaxialResult:
     """Design short column for uniaxial bending per IS 456 Cl 39.5.
 
@@ -282,8 +321,8 @@ def design_short_column_uniaxial_is456(
         b_mm: Column width perpendicular to bending axis (mm). Typical: 100-2000.
         D_mm: Column depth in direction of bending (mm). Typical: 100-2000.
         le_mm: Effective length of column (mm). Must be > 0.
-        fck: Characteristic concrete strength (N/mm²). IS 456 range: 15-80.
-        fy: Yield strength of steel (N/mm²). IS 456 range: 250-550.
+        fck_nmm2: Characteristic concrete strength (N/mm²). IS 456 range: 15-80.
+        fy_nmm2: Yield strength of steel (N/mm²). IS 456 range: 250-550.
         Asc_mm2: Total longitudinal reinforcement area (mm²), symmetrically placed.
         d_prime_mm: Distance from face to steel centroid (mm). Must be > 0 and < D_mm/2.
         l_unsupported_mm: Unsupported length (mm) for min eccentricity per Cl 25.4.
@@ -318,8 +357,8 @@ def design_short_column_uniaxial_is456(
         ...     b_mm=300.0,
         ...     D_mm=450.0,
         ...     le_mm=3000.0,
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
         ...     l_unsupported_mm=3000.0,
@@ -340,6 +379,14 @@ def design_short_column_uniaxial_is456(
     if Mu_kNm < 0:
         raise ValueError(f"Moment Mu_kNm must be >= 0, got {Mu_kNm}")
 
+    # Resolve deprecated parameter aliases
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "design_short_column_uniaxial_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "design_short_column_uniaxial_is456"
+    )
+
     # Dimension checks
     if not (100 <= b_mm <= 2000):
         raise ValueError(
@@ -353,14 +400,14 @@ def design_short_column_uniaxial_is456(
         )
 
     # Material checks
-    if not (15 <= fck <= 80):
+    if not (15 <= fck_nmm2 <= 80):
         raise ValueError(
-            f"fck should be 15-80 N/mm² per IS 456 (got {fck}). "
+            f"fck_nmm2 should be 15-80 N/mm² per IS 456 (got {fck_nmm2}). "
             "If intentional, adjust validation."
         )
-    if not (250 <= fy <= 550):
+    if not (250 <= fy_nmm2 <= 550):
         raise ValueError(
-            f"fy should be 250-550 N/mm² per IS 456 (got {fy}). "
+            f"fy_nmm2 should be 250-550 N/mm² per IS 456 (got {fy_nmm2}). "
             "If intentional, adjust validation."
         )
 
@@ -371,8 +418,8 @@ def design_short_column_uniaxial_is456(
         b_mm=b_mm,
         D_mm=D_mm,
         le_mm=le_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
         l_unsupported_mm=l_unsupported_mm,
@@ -385,11 +432,14 @@ def design_short_column_uniaxial_is456(
 def pm_interaction_curve_is456(
     b_mm: float,
     D_mm: float,  # noqa: N803
-    fck: float,
-    fy: float,
-    Asc_mm2: float,  # noqa: N803
-    d_prime_mm: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    Asc_mm2: float = 0.0,  # noqa: N803
+    d_prime_mm: float = 0.0,
     n_points: int = 50,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> PMInteractionResult:
     """Produces the complete P-M interaction diagram for a rectangular column
     section with symmetrically placed reinforcement. Returns key points
@@ -398,8 +448,8 @@ def pm_interaction_curve_is456(
     Args:
         b_mm: Column width (mm). Must be > 0.
         D_mm: Column depth in bending direction (mm). Must be > 0.
-        fck: Characteristic compressive strength of concrete (N/mm²).
-        fy: Characteristic yield strength of steel (N/mm²).
+        fck_nmm2: Characteristic compressive strength of concrete (N/mm²).
+        fy_nmm2: Characteristic yield strength of steel (N/mm²).
         Asc_mm2: Total area of longitudinal reinforcement (mm²).
         d_prime_mm: Cover to steel centroid from nearest face (mm).
         n_points: Number of points on the curve (default 50, min 10).
@@ -422,7 +472,7 @@ def pm_interaction_curve_is456(
 
     Example:
         >>> result = pm_interaction_curve_is456(
-        ...     b_mm=300, D_mm=500, fck=25, fy=415,
+        ...     b_mm=300, D_mm=500, fck_nmm2=25, fy_nmm2=415,
         ...     Asc_mm2=3000, d_prime_mm=50,
         ... )
         >>> result["Pu_0_kN"]  # Pure axial capacity
@@ -431,12 +481,18 @@ def pm_interaction_curve_is456(
     See Also:
         - codes.is456.column.uniaxial.pm_interaction_curve: Core implementation
     """
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "pm_interaction_curve_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "pm_interaction_curve_is456"
+    )
 
     result: PMInteractionResult = pm_interaction_curve(
         b_mm=b_mm,
         D_mm=D_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
         n_points=n_points,
@@ -451,11 +507,14 @@ def biaxial_bending_check_is456(
     b_mm: float,
     D_mm: float,
     le_mm: float,
-    fck: float,
-    fy: float,
-    Asc_mm2: float,
-    d_prime_mm: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    Asc_mm2: float = 0.0,
+    d_prime_mm: float = 0.0,
     l_unsupported_mm: float | None = None,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> ColumnBiaxialResult:
     """Check column under biaxial bending per IS 456 Cl 39.6.
 
@@ -482,8 +541,8 @@ def biaxial_bending_check_is456(
         D_mm: Column depth in x-axis bending direction (mm).
             Typical: 100-2000.
         le_mm: Effective length of column (mm). Must be > 0.
-        fck: Characteristic concrete strength (N/mm²). IS 456 range: 15-80.
-        fy: Yield strength of steel (N/mm²). IS 456 range: 250-550.
+        fck_nmm2: Characteristic concrete strength (N/mm²). IS 456 range: 15-80.
+        fy_nmm2: Yield strength of steel (N/mm²). IS 456 range: 250-550.
         Asc_mm2: Total longitudinal reinforcement area (mm²),
             symmetrically placed.
         d_prime_mm: Distance from face to steel centroid (mm).
@@ -528,8 +587,8 @@ def biaxial_bending_check_is456(
         ...     b_mm=300.0,
         ...     D_mm=450.0,
         ...     le_mm=3000.0,
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
         ... )
@@ -551,6 +610,14 @@ def biaxial_bending_check_is456(
     if Muy_kNm < 0:
         raise ValueError(f"Moment Muy_kNm must be >= 0, got {Muy_kNm}")
 
+    # Resolve deprecated parameter aliases
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "biaxial_bending_check_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "biaxial_bending_check_is456"
+    )
+
     # Dimension checks
     if not (100 <= b_mm <= 2000):
         raise ValueError(
@@ -564,14 +631,14 @@ def biaxial_bending_check_is456(
         )
 
     # Material checks
-    if not (15 <= fck <= 80):
+    if not (15 <= fck_nmm2 <= 80):
         raise ValueError(
-            f"fck should be 15-80 N/mm² per IS 456 (got {fck}). "
+            f"fck_nmm2 should be 15-80 N/mm² per IS 456 (got {fck_nmm2}). "
             "If intentional, adjust validation."
         )
-    if not (250 <= fy <= 550):
+    if not (250 <= fy_nmm2 <= 550):
         raise ValueError(
-            f"fy should be 250-550 N/mm² per IS 456 (got {fy}). "
+            f"fy_nmm2 should be 250-550 N/mm² per IS 456 (got {fy_nmm2}). "
             "If intentional, adjust validation."
         )
 
@@ -583,8 +650,8 @@ def biaxial_bending_check_is456(
         b_mm=b_mm,
         D_mm=D_mm,
         le_mm=le_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
         l_unsupported_mm=l_unsupported_mm,
@@ -600,10 +667,13 @@ def calculate_additional_moment_is456(
     D_mm: float,
     lex_mm: float,
     ley_mm: float,
-    fck: float,
-    fy: float,
-    Asc_mm2: float,
-    d_prime_mm: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    Asc_mm2: float = 0.0,
+    d_prime_mm: float = 0.0,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> AdditionalMomentResult:
     """Calculate additional moment for slender columns per IS 456 Cl 39.7.1.
 
@@ -616,8 +686,8 @@ def calculate_additional_moment_is456(
         D_mm: Column depth (mm). Must be > 0.
         lex_mm: Effective length about x-axis (mm). Must be > 0.
         ley_mm: Effective length about y-axis (mm). Must be > 0.
-        fck: Concrete characteristic strength (N/mm²).
-        fy: Steel yield strength (N/mm²).
+        fck_nmm2: Concrete characteristic strength (N/mm²).
+        fy_nmm2: Steel yield strength (N/mm²).
         Asc_mm2: Total longitudinal steel area (mm²).
         d_prime_mm: Cover to centroid of reinforcement (mm).
 
@@ -641,8 +711,8 @@ def calculate_additional_moment_is456(
         ...     D_mm=450.0,
         ...     lex_mm=5400.0,
         ...     ley_mm=3600.0,
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
         ... )
@@ -656,6 +726,14 @@ def calculate_additional_moment_is456(
     """
     from structural_lib.codes.is456.column.slenderness import (
         calculate_additional_moment,
+    )
+
+    # Resolve deprecated parameter aliases
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "calculate_additional_moment_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "calculate_additional_moment_is456"
     )
 
     # Plausibility guards (unit confusion detection)
@@ -675,8 +753,8 @@ def calculate_additional_moment_is456(
         D_mm=D_mm,
         lex_mm=lex_mm,
         ley_mm=ley_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
     )
@@ -694,11 +772,14 @@ def design_long_column_is456(
     D_mm: float,
     lex_mm: float,
     ley_mm: float,
-    fck: float,
-    fy: float,
-    Asc_mm2: float,
-    d_prime_mm: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    Asc_mm2: float = 0.0,
+    d_prime_mm: float = 0.0,
     braced: bool = True,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> LongColumnResult:
     """For slender columns (le/D >= 12), the design must account for additional
     moments due to P-delta effects. This function:
@@ -721,8 +802,8 @@ def design_long_column_is456(
         D_mm: Column depth in x-direction (mm). Typical: 100-2000.
         lex_mm: Effective length about x-axis (mm). Must be > 0.
         ley_mm: Effective length about y-axis (mm). Must be > 0.
-        fck: Concrete characteristic strength (N/mm²). IS 456 range: 15-80.
-        fy: Steel yield strength (N/mm²). IS 456 range: 250-550.
+        fck_nmm2: Concrete characteristic strength (N/mm²). IS 456 range: 15-80.
+        fy_nmm2: Steel yield strength (N/mm²). IS 456 range: 250-550.
         Asc_mm2: Total longitudinal steel area (mm²), symmetrically placed.
         d_prime_mm: Cover to centroid of reinforcement (mm). Must be > 0.
         braced: If True, assumes braced frame (sway prevented). Default: True.
@@ -761,8 +842,8 @@ def design_long_column_is456(
         ...     D_mm=450.0,
         ...     lex_mm=5400.0,
         ...     ley_mm=3600.0,
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ...     d_prime_mm=50.0,
         ... )
@@ -777,6 +858,14 @@ def design_long_column_is456(
     """
     from structural_lib.codes.is456.column.long_column import design_long_column
 
+    # Resolve deprecated parameter aliases
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "design_long_column_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "design_long_column_is456"
+    )
+
     # Plausibility guards (unit confusion detection)
     if Pu_kN < 0:
         raise ValueError(f"Axial load Pu_kN must be >= 0, got {Pu_kN}")
@@ -790,14 +879,14 @@ def design_long_column_is456(
             f"Column depth D_mm should be 100-2000mm (got {D_mm}). "
             "If intentional, adjust validation."
         )
-    if not (15 <= fck <= 80):
+    if not (15 <= fck_nmm2 <= 80):
         raise ValueError(
-            f"fck should be 15-80 N/mm² per IS 456 (got {fck}). "
+            f"fck_nmm2 should be 15-80 N/mm² per IS 456 (got {fck_nmm2}). "
             "If intentional, adjust validation."
         )
-    if not (250 <= fy <= 550):
+    if not (250 <= fy_nmm2 <= 550):
         raise ValueError(
-            f"fy should be 250-550 N/mm² per IS 456 (got {fy}). "
+            f"fy_nmm2 should be 250-550 N/mm² per IS 456 (got {fy_nmm2}). "
             "If intentional, adjust validation."
         )
 
@@ -812,8 +901,8 @@ def design_long_column_is456(
         D_mm=D_mm,
         lex_mm=lex_mm,
         ley_mm=ley_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
         braced=braced,
@@ -826,11 +915,14 @@ def design_long_column_is456(
 def check_helical_reinforcement_is456(
     D_mm: float,
     D_core_mm: float,
-    fck: float,
-    fy: float,
-    d_helix_mm: float,
-    pitch_mm: float,
-    Pu_axial_kN: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
+    d_helix_mm: float = 0.0,
+    pitch_mm: float = 0.0,
+    Pu_axial_kN: float = 0.0,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> HelicalReinforcementResult:
     """For circular columns with helical (spiral) reinforcement, IS 456 Cl 39.4
     provides an alternative design approach where the helically reinforced
@@ -851,8 +943,8 @@ def check_helical_reinforcement_is456(
     Args:
         D_mm: Overall column diameter (mm). Must be > 200 (typical: 200-2000).
         D_core_mm: Core diameter to centerline of helix (mm). Must be < D_mm.
-        fck: Concrete characteristic strength (N/mm²). IS 456 range: 15-80.
-        fy: Steel yield strength (N/mm²). IS 456 range: 250-550.
+        fck_nmm2: Concrete characteristic strength (N/mm²). IS 456 range: 15-80.
+        fy_nmm2: Steel yield strength (N/mm²). IS 456 range: 250-550.
         d_helix_mm: Diameter of helical bar (mm). Typical: 8-20.
         pitch_mm: Pitch of helix (mm). Must satisfy: 25mm ≤ pitch ≤ 75mm
             or pitch ≤ D_core/6 per Cl 26.5.3.2(c).
@@ -883,8 +975,8 @@ def check_helical_reinforcement_is456(
         >>> result = check_helical_reinforcement_is456(
         ...     D_mm=500.0,
         ...     D_core_mm=440.0,
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     d_helix_mm=10.0,
         ...     pitch_mm=50.0,
         ...     Pu_axial_kN=2000.0,
@@ -898,6 +990,14 @@ def check_helical_reinforcement_is456(
     """
     from structural_lib.codes.is456.column.helical import check_helical_reinforcement
 
+    # Resolve deprecated parameter aliases
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "check_helical_reinforcement_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "check_helical_reinforcement_is456"
+    )
+
     # Plausibility guards (unit confusion detection)
     if D_mm > 5000:
         raise ValueError("D_mm > 5000 — did you pass meters instead of mm?")
@@ -905,14 +1005,14 @@ def check_helical_reinforcement_is456(
         raise ValueError(
             f"Core diameter D_core_mm ({D_core_mm}) must be < overall diameter D_mm ({D_mm})"
         )
-    if not (15 <= fck <= 80):
+    if not (15 <= fck_nmm2 <= 80):
         raise ValueError(
-            f"fck should be 15-80 N/mm² per IS 456 (got {fck}). "
+            f"fck_nmm2 should be 15-80 N/mm² per IS 456 (got {fck_nmm2}). "
             "If intentional, adjust validation."
         )
-    if not (250 <= fy <= 550):
+    if not (250 <= fy_nmm2 <= 550):
         raise ValueError(
-            f"fy should be 250-550 N/mm² per IS 456 (got {fy}). "
+            f"fy_nmm2 should be 250-550 N/mm² per IS 456 (got {fy_nmm2}). "
             "If intentional, adjust validation."
         )
 
@@ -920,8 +1020,8 @@ def check_helical_reinforcement_is456(
     result: HelicalReinforcementResult = check_helical_reinforcement(
         D_mm=D_mm,
         D_core_mm=D_core_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         d_helix_mm=d_helix_mm,
         pitch_mm=pitch_mm,
         Pu_axial_kN=Pu_axial_kN,
@@ -939,8 +1039,8 @@ def design_column_is456(
     D_mm: float = 0.0,
     l_mm: float = 0.0,
     end_condition: str = "FIXED_FIXED",
-    fck: float = 25.0,
-    fy: float = 415.0,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
     Asc_mm2: float = 0.0,
     d_prime_mm: float = 50.0,
     l_unsupported_mm: float | None = None,
@@ -949,6 +1049,9 @@ def design_column_is456(
     M2x_kNm: float | None = None,
     M1y_kNm: float | None = None,
     M2y_kNm: float | None = None,
+    *,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> dict[str, Any]:
     """Design column per IS 456:2000 — unified orchestrator.
 
@@ -975,9 +1078,9 @@ def design_column_is456(
         end_condition: End restraint condition. Default: 'FIXED_FIXED'.
             Options: 'FIXED_FIXED', 'FIXED_HINGED', 'FIXED_FIXED_SWAY',
             'FIXED_FREE', 'HINGED_HINGED', 'FIXED_PARTIAL', 'HINGED_PARTIAL'.
-        fck: Concrete characteristic strength (N/mm²). Default: 25.0.
+        fck_nmm2: Concrete characteristic strength (N/mm²). Default: 25.0.
             IS 456 range: 15-80.
-        fy: Steel yield strength (N/mm²). Default: 415.0.
+        fy_nmm2: Steel yield strength (N/mm²). Default: 415.0.
             IS 456 range: 250-550.
         Asc_mm2: Total longitudinal steel area (mm²). Default: 0.0.
             For initial sizing, use 0.8-6% of gross area.
@@ -1032,8 +1135,8 @@ def design_column_is456(
         ...     b_mm=300.0,
         ...     D_mm=450.0,
         ...     l_mm=3000.0,
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Asc_mm2=2400.0,
         ... )
         >>> print(f"Safe: {result['is_safe']}")
@@ -1049,8 +1152,8 @@ def design_column_is456(
         ...     D_mm=450.0,
         ...     l_mm=6000.0,
         ...     end_condition='HINGED_HINGED',
-        ...     fck=25.0,
-        ...     fy=415.0,
+        ...     fck_nmm2=25.0,
+        ...     fy_nmm2=415.0,
         ...     Asc_mm2=2700.0,
         ... )
         >>> print(f"Classification: {result['classification']}")  # SLENDER
@@ -1071,6 +1174,20 @@ def design_column_is456(
         raise ValueError(f"Column length l_mm must be > 0 (got {l_mm})")
     if Pu_kN < 0:
         raise ValueError(f"Axial load Pu_kN must be >= 0 (got {Pu_kN})")
+
+    # Resolve deprecated parameter aliases (with defaults)
+    if fck_nmm2 is None and fck is None:
+        fck_nmm2 = 25.0
+    else:
+        fck_nmm2 = _resolve_deprecated_param(
+            fck_nmm2, fck, "fck_nmm2", "fck", "design_column_is456"
+        )
+    if fy_nmm2 is None and fy is None:
+        fy_nmm2 = 415.0
+    else:
+        fy_nmm2 = _resolve_deprecated_param(
+            fy_nmm2, fy, "fy_nmm2", "fy", "design_column_is456"
+        )
 
     # Step 1: Calculate effective lengths in both directions
     le_result = calculate_effective_length_is456(l_mm, end_condition)
@@ -1138,8 +1255,8 @@ def design_column_is456(
                 b_mm=b_mm,
                 D_mm=D_mm,
                 le_mm=le_mm,
-                fck=fck,
-                fy=fy,
+                fck_nmm2=fck_nmm2,
+                fy_nmm2=fy_nmm2,
                 Asc_mm2=Asc_mm2,
                 d_prime_mm=d_prime_mm,
                 l_unsupported_mm=l_unsup,
@@ -1158,8 +1275,8 @@ def design_column_is456(
                     b_mm=b_mm,
                     D_mm=D_mm,
                     le_mm=le_mm,
-                    fck=fck,
-                    fy=fy,
+                    fck_nmm2=fck_nmm2,
+                    fy_nmm2=fy_nmm2,
                     Asc_mm2=Asc_mm2,
                     d_prime_mm=d_prime_mm,
                 )
@@ -1174,8 +1291,8 @@ def design_column_is456(
                     b_mm=D_mm,  # Swap for y-axis bending
                     D_mm=b_mm,
                     le_mm=le_mm,
-                    fck=fck,
-                    fy=fy,
+                    fck_nmm2=fck_nmm2,
+                    fy_nmm2=fy_nmm2,
                     Asc_mm2=Asc_mm2,
                     d_prime_mm=d_prime_mm,
                 )
@@ -1206,8 +1323,8 @@ def design_column_is456(
             D_mm=D_mm,
             lex_mm=le_x_mm,
             ley_mm=le_y_mm,
-            fck=fck,
-            fy=fy,
+            fck_nmm2=fck_nmm2,
+            fy_nmm2=fy_nmm2,
             Asc_mm2=Asc_mm2,
             d_prime_mm=d_prime_mm,
             braced=braced,
@@ -1235,13 +1352,15 @@ def detail_column_is456(
     b_mm: float,
     D_mm: float,
     cover_mm: float = 40.0,
-    fck: float = 25.0,
-    fy: float = 415.0,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
     num_bars: int,
     bar_dia_mm: float,
     tie_dia_mm: float | None = None,
     is_circular: bool = False,
     at_lap_section: bool = False,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> ColumnDetailingResult:
     """Validates longitudinal reinforcement limits, bar spacing, tie diameter,
     tie spacing, and cross-tie requirements for a column section.
@@ -1250,8 +1369,8 @@ def detail_column_is456(
         b_mm: Column width (mm). Range: 100–5000.
         D_mm: Column depth (mm). Range: 100–5000.
         cover_mm: Clear cover (mm). Range: 15–100. Default: 40.0.
-        fck: Characteristic concrete strength (N/mm²). Range: 15–80. Default: 25.0.
-        fy: Yield strength of steel (N/mm²). Range: 250–600. Default: 415.0.
+        fck_nmm2: Characteristic concrete strength (N/mm²). Range: 15–80. Default: 25.0.
+        fy_nmm2: Yield strength of steel (N/mm²). Range: 250–600. Default: 415.0.
         num_bars: Number of longitudinal bars. Range: 3–60.
         bar_dia_mm: Longitudinal bar diameter (mm). Range: 8–50.
         tie_dia_mm: Tie bar diameter (mm). If None, auto-selected per code.
@@ -1274,6 +1393,20 @@ def detail_column_is456(
         >>> result['is_valid']
         True
     """
+    # Resolve deprecated aliases (defaults: fck=25.0, fy=415.0)
+    if fck_nmm2 is None and fck is None:
+        fck_nmm2 = 25.0
+    else:
+        fck_nmm2 = _resolve_deprecated_param(
+            fck_nmm2, fck, "fck_nmm2", "fck", "detail_column_is456"
+        )
+    if fy_nmm2 is None and fy is None:
+        fy_nmm2 = 415.0
+    else:
+        fy_nmm2 = _resolve_deprecated_param(
+            fy_nmm2, fy, "fy_nmm2", "fy", "detail_column_is456"
+        )
+
     # Boundary validation
     if not (100 <= b_mm <= 5000):
         raise ValueError(f"Column width b_mm should be 100–5000mm (got {b_mm}).")
@@ -1281,10 +1414,10 @@ def detail_column_is456(
         raise ValueError(f"Column depth D_mm should be 100–5000mm (got {D_mm}).")
     if not (15 <= cover_mm <= 100):
         raise ValueError(f"Cover cover_mm should be 15–100mm (got {cover_mm}).")
-    if not (15 <= fck <= 80):
-        raise ValueError(f"fck should be 15–80 N/mm² per IS 456 (got {fck}).")
-    if not (250 <= fy <= 600):
-        raise ValueError(f"fy should be 250–600 N/mm² per IS 456 (got {fy}).")
+    if not (15 <= fck_nmm2 <= 80):
+        raise ValueError(f"fck_nmm2 should be 15–80 N/mm² per IS 456 (got {fck_nmm2}).")
+    if not (250 <= fy_nmm2 <= 600):
+        raise ValueError(f"fy_nmm2 should be 250–600 N/mm² per IS 456 (got {fy_nmm2}).")
     if not (3 <= num_bars <= 60):
         raise ValueError(f"num_bars should be 3–60 (got {num_bars}).")
     if not (8 <= bar_dia_mm <= 50):
@@ -1294,8 +1427,8 @@ def detail_column_is456(
         b_mm=b_mm,
         D_mm=D_mm,
         cover_mm=cover_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         num_bars=num_bars,
         bar_dia_mm=bar_dia_mm,
         tie_dia_mm=tie_dia_mm,
@@ -1312,10 +1445,12 @@ def check_column_ductility_is13920(
     D_mm: float,
     clear_height_mm: float,
     bar_dia_mm: float,
-    fck: float,
-    fy: float,
+    fck_nmm2: float | None = None,
+    fy_nmm2: float | None = None,
     Ag_mm2: float | None = None,
     Ak_mm2: float | None = None,
+    fck: float | None = None,  # Deprecated alias
+    fy: float | None = None,  # Deprecated alias
 ) -> dict:
     """Check column ductile detailing per IS 13920:2016 Cl 7.
 
@@ -1327,8 +1462,8 @@ def check_column_ductility_is13920(
         D_mm: Column depth — longer dimension (mm). Range: 200–5000.
         clear_height_mm: Clear height of column between floors (mm).
         bar_dia_mm: Smallest longitudinal bar diameter (mm). Range: 8–50.
-        fck: Concrete compressive strength (N/mm²). Range: 15–80.
-        fy: Steel yield strength (N/mm²). Range: 250–600.
+        fck_nmm2: Concrete compressive strength (N/mm²). Range: 15–80.
+        fy_nmm2: Steel yield strength (N/mm²). Range: 250–600.
         Ag_mm2: Gross area of column (mm²). If None, computed as b_mm × D_mm.
         Ak_mm2: Confined core area to hoop centerline (mm²). If None,
             estimated as (b_mm - 80) × (D_mm - 80) assuming 40 mm cover.
@@ -1350,6 +1485,13 @@ def check_column_ductility_is13920(
         >>> result['is_compliant']
         True
     """
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "check_column_ductility_is13920"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "check_column_ductility_is13920"
+    )
+
     # Boundary validation
     if not (200 <= b_mm <= 5000):
         raise ValueError(f"Column width b_mm should be 200–5000mm (got {b_mm}).")
@@ -1359,10 +1501,10 @@ def check_column_ductility_is13920(
         raise ValueError(f"clear_height_mm must be positive (got {clear_height_mm}).")
     if not (8 <= bar_dia_mm <= 50):
         raise ValueError(f"bar_dia_mm should be 8–50mm (got {bar_dia_mm}).")
-    if not (15 <= fck <= 80):
-        raise ValueError(f"fck should be 15–80 N/mm² (got {fck}).")
-    if not (250 <= fy <= 600):
-        raise ValueError(f"fy should be 250–600 N/mm² (got {fy}).")
+    if not (15 <= fck_nmm2 <= 80):
+        raise ValueError(f"fck_nmm2 should be 15–80 N/mm² (got {fck_nmm2}).")
+    if not (250 <= fy_nmm2 <= 600):
+        raise ValueError(f"fy_nmm2 should be 250–600 N/mm² (got {fy_nmm2}).")
 
     # Default areas for rectangular section
     if Ag_mm2 is None:
@@ -1375,8 +1517,8 @@ def check_column_ductility_is13920(
         D_mm=D_mm,
         clear_height_mm=clear_height_mm,
         bar_dia_mm=bar_dia_mm,
-        fck=fck,
-        fy=fy,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
         Ag_mm2=Ag_mm2,
         Ak_mm2=Ak_mm2,
     )

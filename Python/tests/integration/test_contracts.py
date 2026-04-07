@@ -97,12 +97,7 @@ API_CONTRACTS = {
         "return_type": "float",
     },
     "design_column_axial_is456": {
-        "required_params": [
-            "fck",
-            "fy",
-            "Ag_mm2",
-            "Asc_mm2",
-        ],
+        "required_params": [],
         "return_type": "ColumnAxialResult",
     },
     "design_short_column_uniaxial_is456": {
@@ -112,10 +107,6 @@ API_CONTRACTS = {
             "b_mm",
             "D_mm",
             "le_mm",
-            "fck",
-            "fy",
-            "Asc_mm2",
-            "d_prime_mm",
         ],
         "return_type": "ColumnUniaxialResult",
     },
@@ -123,10 +114,6 @@ API_CONTRACTS = {
         "required_params": [
             "b_mm",
             "D_mm",
-            "fck",
-            "fy",
-            "Asc_mm2",
-            "d_prime_mm",
         ],
         "return_type": "PMInteractionResult",
     },
@@ -138,10 +125,6 @@ API_CONTRACTS = {
             "b_mm",
             "D_mm",
             "le_mm",
-            "fck",
-            "fy",
-            "Asc_mm2",
-            "d_prime_mm",
         ],
         "return_type": "ColumnBiaxialResult",
     },
@@ -533,7 +516,7 @@ def test_column_min_eccentricity_contract():
 def test_column_axial_contract():
     """Verify design_column_axial_is456 returns ColumnAxialResult with expected fields."""
     result = api.design_column_axial_is456(
-        fck=25.0, fy=415.0, Ag_mm2=90000.0, Asc_mm2=1800.0
+        fck_nmm2=25.0, fy_nmm2=415.0, Ag_mm2=90000.0, Asc_mm2=1800.0
     )
     assert isinstance(result, ColumnAxialResult)
     assert hasattr(result, "Pu_kN")
@@ -550,8 +533,8 @@ def test_column_uniaxial_contract():
         b_mm=300.0,
         D_mm=450.0,
         le_mm=3000.0,
-        fck=25.0,
-        fy=415.0,
+        fck_nmm2=25.0,
+        fy_nmm2=415.0,
         Asc_mm2=2700.0,
         d_prime_mm=50.0,
     )
@@ -567,8 +550,8 @@ def test_column_pm_curve_contract():
     result = api.pm_interaction_curve_is456(
         b_mm=300.0,
         D_mm=450.0,
-        fck=25.0,
-        fy=415.0,
+        fck_nmm2=25.0,
+        fy_nmm2=415.0,
         Asc_mm2=2700.0,
         d_prime_mm=50.0,
     )
@@ -589,8 +572,8 @@ def test_column_biaxial_contract():
         b_mm=300.0,
         D_mm=450.0,
         le_mm=3000.0,
-        fck=25.0,
-        fy=415.0,
+        fck_nmm2=25.0,
+        fy_nmm2=415.0,
         Asc_mm2=2700.0,
         d_prime_mm=50.0,
     )

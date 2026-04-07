@@ -287,3 +287,4 @@ tags: []
 | 2026-04-06 | tasks-history.md | Archived React UX Overhaul (TASK-522-528) and Library Expansion items 1-6 (TASK-514-519) | — |
 | 2026-04-06 | release | v0.21.5 release — golden vectors, contract tests, 99% branch coverage, CI gate | — |
 | 2026-04-07 | EVO batch | Applied 9 evolution items (EVO-004,-007,-014-020) to 5 agent files — api-developer, tester, ops, backend, reviewer | (pending commit) |
+| 2026-04-07 | TASK-740-744 | Batch 3: API naming convention — fck→fck_nmm2, fy→fy_nmm2 across 12 functions, FastAPI models, 40 deprecation tests | TBD |

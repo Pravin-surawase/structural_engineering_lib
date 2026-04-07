@@ -117,6 +117,7 @@ class ColumnAxialRequest(BaseModel):
     """Request model for short column axial capacity calculation."""
 
     model_config = ConfigDict(
+        populate_by_name=True,
         json_schema_extra={
             "examples": [
                 {
@@ -126,20 +127,22 @@ class ColumnAxialRequest(BaseModel):
                     "Asc_mm2": 1884.96,
                 }
             ]
-        }
+        },
     )
 
-    fck: float = Field(
+    fck_nmm2: float = Field(
         ...,
         ge=15,
         le=80,
+        alias="fck",
         description="Characteristic compressive strength of concrete (N/mm²)",
         examples=[20.0, 25.0, 30.0, 40.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         ...,
         ge=250,
         le=600,
+        alias="fy",
         description="Yield strength of reinforcement steel (N/mm²)",
         examples=[415.0, 500.0, 550.0],
     )
@@ -226,6 +229,8 @@ class ColumnAxialResponse(BaseModel):
 class ColumnUniaxialRequest(BaseModel):
     """Request model for short column uniaxial bending design per IS 456 Cl 39.5."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     Pu_kN: float = Field(
         ...,
         ge=0,
@@ -259,17 +264,19 @@ class ColumnUniaxialRequest(BaseModel):
         description="Effective length of column (mm)",
         examples=[3000.0, 4500.0, 6000.0],
     )
-    fck: float = Field(
+    fck_nmm2: float = Field(
         ...,
         ge=15,
         le=80,
+        alias="fck",
         description="Characteristic concrete strength (N/mm²)",
         examples=[20.0, 25.0, 30.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         ...,
         ge=250,
         le=550,
+        alias="fy",
         description="Steel yield strength (N/mm²)",
         examples=[415.0, 500.0],
     )
@@ -337,6 +344,8 @@ class ColumnUniaxialResponse(BaseModel):
 class PMInteractionRequest(BaseModel):
     """Request model for P-M interaction curve generation."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     b_mm: float = Field(
         ...,
         gt=0,
@@ -351,17 +360,19 @@ class PMInteractionRequest(BaseModel):
         description="Column depth in bending direction (mm)",
         examples=[400.0, 500.0, 600.0],
     )
-    fck: float = Field(
+    fck_nmm2: float = Field(
         ...,
         ge=15,
         le=80,
+        alias="fck",
         description="Characteristic compressive strength of concrete (N/mm²)",
         examples=[25.0, 30.0, 40.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         ...,
         ge=250,
         le=550,
+        alias="fy",
         description="Characteristic yield strength of steel (N/mm²)",
         examples=[415.0, 500.0],
     )
@@ -423,6 +434,8 @@ class PMInteractionResponse(BaseModel):
 class BiaxialCheckRequest(BaseModel):
     """Request model for biaxial bending check per IS 456 Cl 39.6 (Bresler load contour)."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     Pu_kN: float = Field(
         ...,
         ge=0,
@@ -462,18 +475,20 @@ class BiaxialCheckRequest(BaseModel):
         description="Effective length in mm",
         examples=[3000.0, 4500.0, 6000.0],
     )
-    fck: float = Field(
+    fck_nmm2: float = Field(
         ...,
         ge=15,
         le=80,
-        description="Concrete grade in N/mm²",
+        alias="fck",
+        description="Concrete grade (N/mm²)",
         examples=[20.0, 25.0, 30.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         ...,
         ge=250,
         le=600,
-        description="Steel yield strength in N/mm²",
+        alias="fy",
+        description="Steel yield strength (N/mm²)",
         examples=[415.0, 500.0],
     )
     Asc_mm2: float = Field(
@@ -537,6 +552,8 @@ class BiaxialCheckResponse(BaseModel):
 class AdditionalMomentRequest(BaseModel):
     """Request for additional moment calculation per IS 456 Cl 39.7.1."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     Pu_kN: float = Field(
         ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
     )
@@ -568,17 +585,19 @@ class AdditionalMomentRequest(BaseModel):
         description="Effective length about y-axis (mm)",
         examples=[4500.0],
     )
-    fck: float = Field(
+    fck_nmm2: float = Field(
         ...,
         gt=0,
         le=100,
+        alias="fck",
         description="Concrete strength (N/mm²)",
         examples=[25.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         ...,
         gt=0,
         le=600,
+        alias="fy",
         description="Steel yield strength (N/mm²)",
         examples=[415.0],
     )
@@ -635,6 +654,8 @@ class AdditionalMomentResponse(BaseModel):
 class LongColumnRequest(BaseModel):
     """Request for long (slender) column design per IS 456 Cl 39.7."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     Pu_kN: float = Field(
         ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
     )
@@ -670,11 +691,21 @@ class LongColumnRequest(BaseModel):
         description="Effective length about y (mm)",
         examples=[4500.0],
     )
-    fck: float = Field(
-        ..., gt=0, le=100, description="Concrete strength (N/mm²)", examples=[25.0]
+    fck_nmm2: float = Field(
+        ...,
+        gt=0,
+        le=100,
+        alias="fck",
+        description="Concrete strength (N/mm²)",
+        examples=[25.0],
     )
-    fy: float = Field(
-        ..., gt=0, le=600, description="Steel yield strength (N/mm²)", examples=[415.0]
+    fy_nmm2: float = Field(
+        ...,
+        gt=0,
+        le=600,
+        alias="fy",
+        description="Steel yield strength (N/mm²)",
+        examples=[415.0],
     )
     Asc_mm2: float = Field(
         ..., gt=0, description="Total steel area (mm²)", examples=[2400.0]
@@ -724,17 +755,29 @@ class LongColumnResponse(BaseModel):
 class HelicalCheckRequest(BaseModel):
     """Request for helical reinforcement check per IS 456 Cl 39.4."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     D_mm: float = Field(
         ..., gt=0, description="Column outer diameter (mm)", examples=[450.0]
     )
     D_core_mm: float = Field(
         ..., gt=0, description="Core diameter inside helix (mm)", examples=[350.0]
     )
-    fck: float = Field(
-        ..., gt=0, le=100, description="Concrete strength (N/mm²)", examples=[25.0]
+    fck_nmm2: float = Field(
+        ...,
+        gt=0,
+        le=100,
+        alias="fck",
+        description="Concrete strength (N/mm²)",
+        examples=[25.0],
     )
-    fy: float = Field(
-        ..., gt=0, le=600, description="Steel yield strength (N/mm²)", examples=[415.0]
+    fy_nmm2: float = Field(
+        ...,
+        gt=0,
+        le=600,
+        alias="fy",
+        description="Steel yield strength (N/mm²)",
+        examples=[415.0],
     )
     d_helix_mm: float = Field(
         ..., gt=0, description="Helix bar diameter (mm)", examples=[8.0]
@@ -770,6 +813,8 @@ class HelicalCheckResponse(BaseModel):
 class ColumnDesignRequest(BaseModel):
     """Request for unified column design per IS 456."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     Pu_kN: float = Field(
         ..., ge=0, description="Factored axial load (kN)", examples=[1500.0]
     )
@@ -793,13 +838,19 @@ class ColumnDesignRequest(BaseModel):
         description="End condition per Table 28",
         examples=["FIXED_FIXED", "FIXED_HINGED"],
     )
-    fck: float = Field(
-        25.0, gt=0, le=100, description="Concrete strength (N/mm²)", examples=[25.0]
+    fck_nmm2: float = Field(
+        25.0,
+        gt=0,
+        le=100,
+        alias="fck",
+        description="Concrete strength (N/mm²)",
+        examples=[25.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         415.0,
         gt=0,
         le=600,
+        alias="fy",
         description="Steel yield strength (N/mm²)",
         examples=[415.0],
     )
@@ -847,6 +898,8 @@ class ColumnDesignResponse(BaseModel):
 class ColumnDetailingRequest(BaseModel):
     """Request for column detailing check per IS 456 Cl 26.5.3."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     b_mm: float = Field(
         ...,
         ge=100,
@@ -868,17 +921,19 @@ class ColumnDetailingRequest(BaseModel):
         description="Clear cover (mm)",
         examples=[40.0, 50.0],
     )
-    fck: float = Field(
+    fck_nmm2: float = Field(
         25.0,
         ge=15,
         le=80,
+        alias="fck",
         description="Concrete grade (N/mm²)",
         examples=[20.0, 25.0, 30.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         415.0,
         ge=250,
         le=600,
+        alias="fy",
         description="Steel yield strength (N/mm²)",
         examples=[415.0, 500.0],
     )
@@ -948,6 +1003,8 @@ class ColumnDetailingResponse(BaseModel):
 class ColumnDuctileDetailingRequest(BaseModel):
     """Request for column ductile detailing check per IS 13920:2016 Cl 7."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     b_mm: float = Field(
         ...,
         ge=200,
@@ -976,17 +1033,19 @@ class ColumnDuctileDetailingRequest(BaseModel):
         description="Smallest longitudinal bar diameter (mm)",
         examples=[16.0, 20.0, 25.0],
     )
-    fck: float = Field(
+    fck_nmm2: float = Field(
         ...,
         ge=15,
         le=80,
+        alias="fck",
         description="Characteristic concrete strength (N/mm²)",
         examples=[20.0, 25.0, 30.0],
     )
-    fy: float = Field(
+    fy_nmm2: float = Field(
         ...,
         ge=250,
         le=600,
+        alias="fy",
         description="Yield strength of steel (N/mm²)",
         examples=[415.0, 500.0],
     )
