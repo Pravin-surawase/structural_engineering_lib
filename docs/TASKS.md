@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-07 — v0.21.6 complete (unreleased, pending PyPI publish)
+**Updated:** 2026-04-07 — v0.21.6 complete (unreleased); Batch 3 API naming planned (v0.22.0)
 
 ---
 
@@ -35,7 +35,7 @@
 | **v0.21.6** | API Quality & Introspection | ✅ DONE | check_code(), show_versions(), OpenAPI freeze, limitation docs |
 | **v0.21.7** | Security Hardening | 📋 PLANNED | Input validation, body limits, CVE scanning |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
-| **v0.22.0** | Stabilization Release | 📋 PLANNED | Provenance, SP:16 verification, release hardening |
+| **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | IS 456 Slabs + Footing Completion | 📋 PLANNED | One-way slab, two-way slab, footing dowels + API, punching shear |
 | **v0.24** | Multi-Code Infrastructure | 📋 PLANNED | CodeRegistry activation, DesignEnvelope, units.py, API v2 routes |
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
@@ -163,6 +163,22 @@
 | TASK-733 | Property-based testing with Hypothesis (flexure/shear/column) | @tester | 📋 |
 | TASK-734 | Performance regression baselines in CI (>20% slowdown blocks merge) | @ops | 📋 |
 | — | Benchmark results stored in `Python/test_stats.json` | @tester | 📋 |
+
+## Batch 3: API Naming Convention (v0.22.0)
+
+**Theme:** Standardize parameter naming across L3 (services) API — `fck`→`fck_nmm2`, `fy`→`fy_nmm2`
+**Ref:** Issue 15, architecture doc §10.5
+
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| TASK-740 | Standardize column_api.py param names (fck→fck_nmm2, fy→fy_nmm2) — 10 functions | @backend | 📋 |
+| TASK-741 | Standardize beam_api.py outliers (check_beam_ductility, check_anchorage) — 2 functions | @backend | 📋 |
+| TASK-742 | Update FastAPI column router + Pydantic models for new param names | @api-developer | 📋 |
+| TASK-743 | Add deprecation warning tests for old param names | @tester | 📋 |
+| TASK-744 | Document two-tier naming convention in architecture doc | @doc-master | 📋 |
+| TASK-745 | Decide stable vs experimental API tiers (Issue 16 — defer to v0.23+) | @library-expert | 📋 |
+
+---
 
 ## v0.22.0 — Stabilization Release
 

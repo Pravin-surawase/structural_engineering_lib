@@ -48,6 +48,8 @@ tags: []
 | 2026-04-06 | test | Coverage boost: 19 tests, codes/is456/ at 99% branch coverage | — |
 | 2026-04-06 | fix | Fixed response envelope mismatch — React client now unwraps FastAPI's `{success, data}` wrapper via `unwrapResponse()` in 16 API calls | — |
 | 2026-04-06 | fix | Fixed `new URL()` crash on relative paths in useCSVImport.ts (dev mode) | — |
+| 2026-04-07 | Audit | Fix 2 stale deprecated import paths (geometry_3d docstring, test_visualization_integration) | — |
+| 2026-04-07 | Audit | Batch 3 detailed planning: API naming convention + public surface audit | — |
 | 2026-04-07 | Post-merge | Version sync: 0.21.5→0.21.6 in README, CITATION.cff, package.json | — |
 | 2026-04-07 | Post-merge | TASKS.md: v0.21.6 "Released" → "COMPLETE (unreleased)" | — |
 | 2026-04-07 | Post-merge | Endpoint count 59→60 in 8 doc files (11 edits) | — |
