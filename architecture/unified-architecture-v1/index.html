@@ -1983,6 +1983,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="10.5 Parameter Naming Convention">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-tier-convention-implemented-v0220" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two-Tier Convention (Implemented v0.22.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unit-suffix-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit Suffix Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backward Compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions-migrated-batch-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions Migrated (Batch 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2860,7 +2910,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tbody>
 </table>
 <blockquote>
-<p><strong>Note:</strong> The signature shown below reflects the <strong>target naming convention</strong> (§10.5). Current code uses <code>b</code>, <code>d</code>, <code>mu_knm</code> — parameter names will be migrated to unit-suffix convention in v0.24.</p>
+<p><strong>Note:</strong> The signature below uses Layer 2 (codes/) naming — bare IS 456 shorthand (<code>fck</code>, <code>fy</code>, <code>b</code>, <code>d</code>). At Layer 3 (services/), these become <code>fck_nmm2</code>, <code>fy_nmm2</code>, <code>b_mm</code>, <code>d_mm</code> per the two-tier naming convention (§10.5).</p>
 </blockquote>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@clause</span><span class="p">(</span><span class="s2">&quot;38.1&quot;</span><span class="p">)</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_singly_reinforced</span><span class="p">(</span>
@@ -3156,7 +3206,7 @@ Every agent, every session, every change must comply with this document.</p>
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">clear_cover</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Clear cover (mm)&quot;</span><span class="p">)</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Note:</strong> Current field names use descriptive English (<code>width</code>, <code>depth</code>, <code>moment</code>). The unit-suffix naming convention (<code>b_mm</code>, <code>d_mm</code>, <code>Mu_kNm</code>) is a v0.24 migration target (§10.5).</p>
+<p><strong>Note:</strong> FastAPI Pydantic models use descriptive English (<code>width</code>, <code>depth</code>, <code>moment</code>) with <code>alias</code> fields for backward compat. The Layer 3 API uses unit-suffix names (<code>b_mm</code>, <code>d_mm</code>, <code>Mu_kNm</code>) per the two-tier naming convention (§10.5).</p>
 </blockquote>
 <h3 id="52-result-dataclasses-output-schema">5.2 Result Dataclasses (Output Schema)<a class="headerlink" href="#52-result-dataclasses-output-schema" title="Permanent link">&para;</a></h3>
 <p>Result dataclasses provide structured output. Most are <strong>frozen</strong> (<code>@dataclass(frozen=True)</code>), but <code>FlexureResult</code> is currently <strong>mutable</strong> pending refactor (TODO SM-6).</p>
@@ -3653,6 +3703,37 @@ Every agent, every session, every change must comply with this document.</p>
 <p>This design decision stands for the v1.0 architecture. The registry pattern is the correct choice for a multi-code library with concurrent API access.</p>
 <h3 id="105-parameter-naming-convention">10.5 Parameter Naming Convention<a class="headerlink" href="#105-parameter-naming-convention" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> Dimensional parameters MUST have unit suffixes.</p>
+<h4 id="two-tier-convention-implemented-v0220">Two-Tier Convention (Implemented v0.22.0)<a class="headerlink" href="#two-tier-convention-implemented-v0220" title="Permanent link">&para;</a></h4>
+<p>The library uses a <strong>two-tier naming convention</strong> that respects both IS 456 textbook notation and API explicitness:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Scope</th>
+<th>Convention</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Layer 2</strong> (<code>codes/is456/</code>)</td>
+<td>Pure IS 456 math</td>
+<td>Bare IS 456 shorthand — no suffixes</td>
+<td><code>fck</code>, <code>fy</code>, <code>Mu</code>, <code>Vu</code>, <code>b</code>, <code>d</code></td>
+</tr>
+<tr>
+<td><strong>Layer 3</strong> (<code>services/</code>)</td>
+<td>Public API surface</td>
+<td>Full unit-suffix names</td>
+<td><code>fck_nmm2</code>, <code>fy_nmm2</code>, <code>Mu_kNm</code>, <code>b_mm</code>, <code>d_mm</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why two tiers?</strong>
+- Layer 2 matches textbook notation exactly — engineers reading IS 456 code see familiar symbols
+- Layer 3 makes units explicit for API consumers who may not know IS 456 conventions
+- The boundary between L2 and L3 handles the translation</p>
+<h4 id="unit-suffix-rules">Unit Suffix Rules<a class="headerlink" href="#unit-suffix-rules" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
 <tr>
@@ -3679,17 +3760,55 @@ Every agent, every session, every change must comply with this document.</p>
 </tr>
 <tr>
 <td>Stress</td>
-<td><code>_nmm2</code> suffix (when ambiguous)</td>
-<td><code>fck_nmm2</code>, <code>sigma_nmm2</code></td>
-</tr>
-<tr>
-<td>IS 456 symbols</td>
-<td>No suffix required</td>
-<td><code>fck</code>, <code>fy</code>, <code>fsc</code></td>
+<td><code>_nmm2</code> suffix</td>
+<td><code>fck_nmm2</code>, <code>fy_nmm2</code>, <code>sigma_nmm2</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Exception:</strong> Standard IS 456 symbols (<code>fck</code>, <code>fy</code>) DO NOT require suffixes — they are universally understood as N/mm² per IS 456 clause 5.2. This is a <strong>documented exception</strong>, not an inconsistency.</p>
+<p><strong>Naming choices follow IS 456 notation:</strong>
+- <code>fck_nmm2</code> — <strong>not</strong> <code>fck_MPa</code>. IS 456 writes "N/mm²", not "MPa".
+- <code>Mu_kNm</code> — <strong>not</strong> <code>mu_knm</code>. IS 456 uses uppercase <span class="arithmatex">\(M_u\)</span>, <span class="arithmatex">\(V_u\)</span>.
+- <code>fy_nmm2</code> — <strong>not</strong> <code>fy_mpa</code>. Consistent with IS 456 clause 5.2.</p>
+<h4 id="backward-compatibility">Backward Compatibility<a class="headerlink" href="#backward-compatibility" title="Permanent link">&para;</a></h4>
+<p>Old parameter names (<code>fck</code>, <code>fy</code>, <code>b</code>, <code>d</code>, etc.) continue to work at Layer 3 as <strong>deprecated aliases</strong>. They emit a <code>DeprecationWarning</code> with migration guidance and will be <strong>removed in v0.24</strong>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># ✅ New convention (preferred)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_column_axial_is456</span><span class="p">(</span><span class="n">fck_nmm2</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># ⚠️ Old names still work but emit DeprecationWarning</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_column_axial_is456</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>  <span class="c1"># warns: use fck_nmm2</span>
+</code></pre></div>
+<h4 id="functions-migrated-batch-3">Functions Migrated (Batch 3)<a class="headerlink" href="#functions-migrated-batch-3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Functions</th>
+<th>Parameters Renamed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>column_api.py</code></td>
+<td>10 functions</td>
+<td><code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code></td>
+</tr>
+<tr>
+<td><code>beam_api.py</code></td>
+<td><code>check_beam_ductility</code></td>
+<td><code>b</code>→<code>b_mm</code>, <code>D</code>→<code>D_mm</code>, <code>d</code>→<code>d_mm</code>, <code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code></td>
+</tr>
+<tr>
+<td><code>beam_api.py</code></td>
+<td><code>check_anchorage_at_simple_support</code></td>
+<td><code>fck</code>→<code>fck_nmm2</code>, <code>fy</code>→<code>fy_nmm2</code></td>
+</tr>
+<tr>
+<td>FastAPI models</td>
+<td>Pydantic <code>alias</code></td>
+<td>Backward compat in JSON payloads</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Rationale:</strong> Unit suffixes prevent the most dangerous class of structural engineering bugs — unit confusion. A beam designed with <code>b=300</code> (mm) vs <code>b=300</code> (cm) vs <code>b=300</code> (in) gives wildly different results.</p>
 <h3 id="106-error-handling-policy">10.6 Error Handling Policy<a class="headerlink" href="#106-error-handling-policy" title="Permanent link">&para;</a></h3>
 <p>Every error from Layer 2 (Codes) or Layer 3 (Services) MUST be a <code>StructuralLibError</code> subclass. Raw <code>ValueError</code>/<code>TypeError</code> are FORBIDDEN outside Layer 1 validation.</p>
@@ -3720,34 +3839,34 @@ Every agent, every session, every change must comply with this document.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># ❌ WRONG — unhelpful</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Depth too small&quot;</span><span class="p">)</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># ✅ RIGHT — actionable, traceable</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">raise</span> <span class="n">DesignInputError</span><span class="p">(</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Effective depth insufficient for the applied moment&quot;</span><span class="p">,</span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">suggestion</span><span class="o">=</span><span class="s2">&quot;Increase beam depth to at least 300mm per IS 456 Cl 23.1&quot;</span><span class="p">,</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="n">clause_ref</span><span class="o">=</span><span class="s2">&quot;IS456:23.1&quot;</span><span class="p">,</span>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="n">d_mm</span><span class="p">,</span> <span class="s2">&quot;min_d_mm&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="s2">&quot;Mu_kNm&quot;</span><span class="p">:</span> <span class="n">Mu_kNm</span><span class="p">}</span>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># ❌ WRONG — unhelpful</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Depth too small&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># ✅ RIGHT — actionable, traceable</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">raise</span> <span class="n">DesignInputError</span><span class="p">(</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Effective depth insufficient for the applied moment&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="n">suggestion</span><span class="o">=</span><span class="s2">&quot;Increase beam depth to at least 300mm per IS 456 Cl 23.1&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="n">clause_ref</span><span class="o">=</span><span class="s2">&quot;IS456:23.1&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="n">d_mm</span><span class="p">,</span> <span class="s2">&quot;min_d_mm&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="s2">&quot;Mu_kNm&quot;</span><span class="p">:</span> <span class="n">Mu_kNm</span><span class="p">}</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="107-function-limitation-documentation">10.7 Function Limitation Documentation<a class="headerlink" href="#107-function-limitation-documentation" title="Permanent link">&para;</a></h3>
 <p>Every code function docstring MUST include a <code>Limitations:</code> section that explicitly states what the function does NOT handle:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_singly_reinforced</span><span class="p">(</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="p">:</span> <span class="nb">float</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FlexureResult</span><span class="p">:</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;IS 456 Cl 38.1 — Singly reinforced rectangular beam flexure.</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="sd">    Mu = 0.36·fck·b·xu·(d - 0.42·xu)</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="sd">    Ast = 0.5·(fck/fy)·b·d·[1 - √(1 - 4.6·Mu/(fck·b·d²))]</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="sd">    Limitations:</span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="sd">        - Rectangular sections only (for T-beam use design_flanged_beam)</span>
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="sd">        - No axial load consideration (for beam-columns use column modules)</span>
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="sd">        - Does not check lateral stability (L/b &gt; 60)</span>
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="sd">        - Valid for fck ≤ 80 N/mm² (high-strength concrete outside IS 456 scope)</span>
-<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="sd">        - Assumes short-term loading (no creep reduction on xu_max)</span>
-<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="sd">    &quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_singly_reinforced</span><span class="p">(</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FlexureResult</span><span class="p">:</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;IS 456 Cl 38.1 — Singly reinforced rectangular beam flexure.</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="sd">    Mu = 0.36·fck·b·xu·(d - 0.42·xu)</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="sd">    Ast = 0.5·(fck/fy)·b·d·[1 - √(1 - 4.6·Mu/(fck·b·d²))]</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="sd">    Limitations:</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="sd">        - Rectangular sections only (for T-beam use design_flanged_beam)</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="sd">        - No axial load consideration (for beam-columns use column modules)</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="sd">        - Does not check lateral stability (L/b &gt; 60)</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="sd">        - Valid for fck ≤ 80 N/mm² (high-strength concrete outside IS 456 scope)</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="sd">        - Assumes short-term loading (no creep reduction on xu_max)</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
 <p>This prevents the most dangerous failure mode: a user applying a function outside its valid scope and getting silently incorrect results.</p>
 <hr />
@@ -3758,21 +3877,21 @@ Every agent, every session, every change must comply with this document.</p>
 - Exact inputs used (for reproducibility)
 - When the calculation was performed</p>
 <h3 id="111-calculationprovenance-dataclass">11.1 CalculationProvenance Dataclass<a class="headerlink" href="#111-calculationprovenance-dataclass" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">CalculationProvenance</span><span class="p">:</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Audit trail attached to every design result.&quot;&quot;&quot;</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">library_version</span><span class="p">:</span> <span class="nb">str</span>          <span class="c1"># &quot;0.22.0&quot;</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">code_id</span><span class="p">:</span> <span class="nb">str</span>                  <span class="c1"># &quot;IS456:2000&quot;</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">code_amendments</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  <span class="c1"># (&quot;AMD1:2003&quot;, &quot;AMD4:2020&quot;)</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">timestamp_utc</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># ISO 8601 — &quot;2026-04-06T14:30:00Z&quot;</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">input_hash</span><span class="p">:</span> <span class="nb">str</span>               <span class="c1"># SHA-256 of canonical input JSON</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="n">input_echo</span><span class="p">:</span> <span class="nb">dict</span>              <span class="c1"># Exact inputs for reproducibility</span>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="n">compute_time_ms</span><span class="p">:</span> <span class="nb">float</span>        <span class="c1"># Profiling data</span>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    <span class="n">result_hash</span><span class="p">:</span> <span class="nb">str</span>              <span class="c1"># SHA-256 of output for tamper detection</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">warnings</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>     <span class="c1"># Conservative defaults applied (see §15.2)</span>
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">element_id</span><span class="p">:</span> <span class="nb">str</span>               <span class="c1"># Beam/column/footing ID (e.g. &quot;B1-3F&quot;)</span>
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="n">design_status</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># &quot;SAFE&quot; / &quot;UNSAFE&quot; / &quot;WARNING&quot;</span>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">safety_factors</span><span class="p">:</span> <span class="nb">dict</span>           <span class="c1"># {&quot;gamma_c&quot;: 1.5, &quot;gamma_s&quot;: 1.15}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">CalculationProvenance</span><span class="p">:</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Audit trail attached to every design result.&quot;&quot;&quot;</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">library_version</span><span class="p">:</span> <span class="nb">str</span>          <span class="c1"># &quot;0.22.0&quot;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">code_id</span><span class="p">:</span> <span class="nb">str</span>                  <span class="c1"># &quot;IS456:2000&quot;</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">code_amendments</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  <span class="c1"># (&quot;AMD1:2003&quot;, &quot;AMD4:2020&quot;)</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">timestamp_utc</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># ISO 8601 — &quot;2026-04-06T14:30:00Z&quot;</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="n">input_hash</span><span class="p">:</span> <span class="nb">str</span>               <span class="c1"># SHA-256 of canonical input JSON</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="n">input_echo</span><span class="p">:</span> <span class="nb">dict</span>              <span class="c1"># Exact inputs for reproducibility</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>    <span class="n">compute_time_ms</span><span class="p">:</span> <span class="nb">float</span>        <span class="c1"># Profiling data</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>    <span class="n">result_hash</span><span class="p">:</span> <span class="nb">str</span>              <span class="c1"># SHA-256 of output for tamper detection</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>    <span class="n">warnings</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>     <span class="c1"># Conservative defaults applied (see §15.2)</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="n">element_id</span><span class="p">:</span> <span class="nb">str</span>               <span class="c1"># Beam/column/footing ID (e.g. &quot;B1-3F&quot;)</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>    <span class="n">design_status</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># &quot;SAFE&quot; / &quot;UNSAFE&quot; / &quot;WARNING&quot;</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    <span class="n">safety_factors</span><span class="p">:</span> <span class="nb">dict</span>           <span class="c1"># {&quot;gamma_c&quot;: 1.5, &quot;gamma_s&quot;: 1.15}</span>
 </code></pre></div>
 <p>Every design result dataclass WILL carry (once implemented in v1.0) a <code>provenance: CalculationProvenance</code> field. This is non-optional and automatically populated by the services layer.</p>
 <p><strong>Implementation plan:</strong>
@@ -3796,11 +3915,11 @@ Every agent, every session, every change must comply with this document.</p>
 </table>
 <h3 id="112-code-amendment-tracking">11.2 Code Amendment Tracking<a class="headerlink" href="#112-code-amendment-tracking" title="Permanent link">&para;</a></h3>
 <p>IS 456:2000 has 4 amendments (2003, 2005, 2006, 2020). Each code module must declare which amendments it implements:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># codes/is456/__init__.py</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">__code_id__</span> <span class="o">=</span> <span class="s2">&quot;IS456:2000&quot;</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="n">__amendments__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;AMD1:2003&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD2:2005&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD3:2006&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD4:2020&quot;</span><span class="p">)</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="n">__implemented_amendments__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;AMD1:2003&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD4:2020&quot;</span><span class="p">)</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">__reference_edition__</span> <span class="o">=</span> <span class="s2">&quot;Reaffirmed 2021&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># codes/is456/__init__.py</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">__code_id__</span> <span class="o">=</span> <span class="s2">&quot;IS456:2000&quot;</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">__amendments__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;AMD1:2003&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD2:2005&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD3:2006&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD4:2020&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">__implemented_amendments__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;AMD1:2003&quot;</span><span class="p">,</span> <span class="s2">&quot;AMD4:2020&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">__reference_edition__</span> <span class="o">=</span> <span class="s2">&quot;Reaffirmed 2021&quot;</span>
 </code></pre></div>
 <p>This metadata:
 - Feeds into <code>CalculationProvenance.code_amendments</code>
@@ -3975,13 +4094,13 @@ Every agent, every session, every change must comply with this document.</p>
 <h3 id="122-structural-engineering-specific-security">12.2 Structural Engineering Specific Security<a class="headerlink" href="#122-structural-engineering-specific-security" title="Permanent link">&para;</a></h3>
 <p>Beyond standard OWASP controls, structural engineering APIs have domain-specific security needs:</p>
 <p><strong>Cross-field plausibility guards (API boundary):</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Reject physically impossible parameter combinations</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">if</span> <span class="n">Mu_kNm</span> <span class="o">&gt;</span> <span class="mf">0.138</span> <span class="o">*</span> <span class="n">fck</span> <span class="o">*</span> <span class="n">b_mm</span> <span class="o">*</span> <span class="n">d_mm</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="mf">5.0</span><span class="p">:</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="k">raise</span> <span class="n">DesignInputError</span><span class="p">(</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Applied moment far exceeds section capacity&quot;</span><span class="p">,</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>        <span class="n">suggestion</span><span class="o">=</span><span class="s2">&quot;Check units — Mu_kNm should be in kNm, not Nm&quot;</span><span class="p">,</span>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        <span class="n">clause_ref</span><span class="o">=</span><span class="s2">&quot;IS456:38.1&quot;</span>
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Reject physically impossible parameter combinations</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">if</span> <span class="n">Mu_kNm</span> <span class="o">&gt;</span> <span class="mf">0.138</span> <span class="o">*</span> <span class="n">fck</span> <span class="o">*</span> <span class="n">b_mm</span> <span class="o">*</span> <span class="n">d_mm</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="mf">5.0</span><span class="p">:</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="k">raise</span> <span class="n">DesignInputError</span><span class="p">(</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Applied moment far exceeds section capacity&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>        <span class="n">suggestion</span><span class="o">=</span><span class="s2">&quot;Check units — Mu_kNm should be in kNm, not Nm&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>        <span class="n">clause_ref</span><span class="o">=</span><span class="s2">&quot;IS456:38.1&quot;</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="p">)</span>
 </code></pre></div></p>
 <p><strong>Design calculation audit trail:</strong>
 - Middleware logs every design request with inputs, outputs, and provenance
@@ -4029,31 +4148,31 @@ Every agent, every session, every change must comply with this document.</p>
 - Generated code committed to <code>clients/python/</code> and <code>clients/typescript/</code>
 - CI generates and tests SDKs on every API change</p>
 <p><strong>HTTPX-based Python client pattern:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuralLibClient</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">StructuralLibClient</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">)</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">design_beam</span><span class="p">(</span>
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">120</span>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">)</span>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">Ast_mm2</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuralLibClient</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">StructuralLibClient</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">design_beam</span><span class="p">(</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">120</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="p">)</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">Ast_mm2</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="132-progress-callbacks">13.2 Progress Callbacks<a class="headerlink" href="#132-progress-callbacks" title="Permanent link">&para;</a></h3>
 <p>Batch operations (beam_pipeline, adapters) should support optional progress callbacks for UI integration:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">ProgressCallback</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># (current, total, stage)</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">batch_design_beams</span><span class="p">(</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="n">beams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>    <span class="n">on_progress</span><span class="p">:</span> <span class="n">ProgressCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ComplianceCaseResult</span><span class="p">]:</span>
-<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Design multiple beams with optional progress reporting.&quot;&quot;&quot;</span>
-<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">beam</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">beams</span><span class="p">):</span>
-<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>        <span class="k">if</span> <span class="n">on_progress</span><span class="p">:</span>
-<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>            <span class="n">on_progress</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">beams</span><span class="p">),</span> <span class="s2">&quot;designing&quot;</span><span class="p">)</span>
-<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>        <span class="c1"># ... design logic ...</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">ProgressCallback</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># (current, total, stage)</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">batch_design_beams</span><span class="p">(</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>    <span class="n">beams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>    <span class="n">on_progress</span><span class="p">:</span> <span class="n">ProgressCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ComplianceCaseResult</span><span class="p">]:</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Design multiple beams with optional progress reporting.&quot;&quot;&quot;</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">beam</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">beams</span><span class="p">):</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>        <span class="k">if</span> <span class="n">on_progress</span><span class="p">:</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>            <span class="n">on_progress</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">beams</span><span class="p">),</span> <span class="s2">&quot;designing&quot;</span><span class="p">)</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>        <span class="c1"># ... design logic ...</span>
 </code></pre></div>
 <p>This enables:
 - React progress bars via WebSocket
@@ -4078,16 +4197,16 @@ Every agent, every session, every change must comply with this document.</p>
 <blockquote>
 <p><strong>Note:</strong> The hierarchy below shows the <strong>target design</strong>. Current actual exceptions in <code>core/errors.py</code> include <code>StructuralLibError</code>, <code>DesignConstraintError</code>, <code>ComplianceError</code>, <code>DimensionError</code>, <code>LoadError</code>. The additional subclasses listed below are planned for v0.24+.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>StructuralLibError (base)
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>├── ValidationError
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>│   ├── DesignInputError      — Invalid design parameters
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>│   └── MaterialError         — Invalid material properties
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>├── CalculationError
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>│   ├── ConvergenceError      — Iterative solution didn&#39;t converge
-<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>│   └── CapacityExceededError — Section capacity exceeded
-<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>└── ConfigurationError
-<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>    ├── CodeNotFoundError     — Requested code not registered
-<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>    └── MissingAmendmentError — Required amendment not implemented
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>StructuralLibError (base)
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>├── ValidationError
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>│   ├── DesignInputError      — Invalid design parameters
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>│   └── MaterialError         — Invalid material properties
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>├── CalculationError
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>│   ├── ConvergenceError      — Iterative solution didn&#39;t converge
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>│   └── CapacityExceededError — Section capacity exceeded
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>└── ConfigurationError
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    ├── CodeNotFoundError     — Requested code not registered
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>    └── MissingAmendmentError — Required amendment not implemented
 </code></pre></div>
 <p>Every exception carries <code>suggestion</code>, <code>clause_ref</code>, and <code>details</code> per §10.6.</p>
 <table>
@@ -4138,19 +4257,19 @@ Every agent, every session, every change must comply with this document.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nd">@given</span><span class="p">(</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">fck</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">sampled_from</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">]),</span>
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">fy</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">sampled_from</span><span class="p">([</span><span class="mi">415</span><span class="p">,</span> <span class="mi">500</span><span class="p">]),</span>
-<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">floats</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
-<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>    <span class="n">d_mm</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">floats</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">1500</span><span class="p">),</span>
-<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="p">)</span>
-<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_flexure_capacity_increases_with_fck</span><span class="p">(</span><span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">):</span>
-<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Higher concrete grade → higher moment capacity (monotonicity).&quot;&quot;&quot;</span>
-<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>    <span class="n">result_low</span> <span class="o">=</span> <span class="n">design_singly_reinforced</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">fy</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>    <span class="n">result_high</span> <span class="o">=</span> <span class="n">design_singly_reinforced</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">fy</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>    <span class="k">assert</span> <span class="n">result_high</span><span class="o">.</span><span class="n">Mu_cap_kNm</span> <span class="o">&gt;=</span> <span class="n">result_low</span><span class="o">.</span><span class="n">Mu_cap_kNm</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="nd">@given</span><span class="p">(</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>    <span class="n">fck</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">sampled_from</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">]),</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="n">fy</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">sampled_from</span><span class="p">([</span><span class="mi">415</span><span class="p">,</span> <span class="mi">500</span><span class="p">]),</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">floats</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>    <span class="n">d_mm</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">floats</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">1500</span><span class="p">),</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="p">)</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_flexure_capacity_increases_with_fck</span><span class="p">(</span><span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">):</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Higher concrete grade → higher moment capacity (monotonicity).&quot;&quot;&quot;</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>    <span class="n">result_low</span> <span class="o">=</span> <span class="n">design_singly_reinforced</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">fy</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>    <span class="n">result_high</span> <span class="o">=</span> <span class="n">design_singly_reinforced</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">fy</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>    <span class="k">assert</span> <span class="n">result_high</span><span class="o">.</span><span class="n">Mu_cap_kNm</span> <span class="o">&gt;=</span> <span class="n">result_low</span><span class="o">.</span><span class="n">Mu_cap_kNm</span>
 </code></pre></div>
 <table>
 <thead>
@@ -4215,34 +4334,34 @@ Every agent, every session, every change must comply with this document.</p>
 <p><strong>Regression policy:</strong> &gt;20% slowdown from baseline blocks merge. Benchmark results stored in <code>Python/test_stats.json</code> and tracked across versions.</p>
 <h3 id="143-automated-compliance-checker">14.3 Automated Compliance Checker<a class="headerlink" href="#143-automated-compliance-checker" title="Permanent link">&para;</a></h3>
 <p>Pytest fixtures that verify ALL code functions meet the API contract:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_type_hints</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">get_all_code_functions</span><span class="p">())</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_function_has_clause_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Every IS 456 function must have @clause traceability.&quot;&quot;&quot;</span>
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s1">&#39;_clause_ref&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> missing @clause decorator&quot;</span>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">get_all_code_functions</span><span class="p">())</span>
-<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_function_returns_frozen_dataclass</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Every IS 456 function must return a frozen dataclass.&quot;&quot;&quot;</span>
-<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>    <span class="n">result_type</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return&#39;</span><span class="p">)</span>
-<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>    <span class="k">assert</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">result_type</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> doesn&#39;t return a dataclass&quot;</span>
-<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>    <span class="k">assert</span> <span class="n">result_type</span><span class="o">.</span><span class="n">__dataclass_params__</span><span class="o">.</span><span class="n">frozen</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> result is not frozen&quot;</span>
-<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a>
-<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">get_all_code_functions</span><span class="p">())</span>
-<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_function_params_have_units</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Dimensional parameters must have unit suffixes.&quot;&quot;&quot;</span>
-<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
-<a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a>    <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-<a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a>    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
-<a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a>        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="s1">&#39;cls&#39;</span><span class="p">):</span>
-<a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>            <span class="k">continue</span>
-<a id="__codelineno-24-24" name="__codelineno-24-24" href="#__codelineno-24-24"></a>        <span class="c1"># Standard IS 456 symbols exempt</span>
-<a id="__codelineno-24-25" name="__codelineno-24-25" href="#__codelineno-24-25"></a>        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;fck&#39;</span><span class="p">,</span> <span class="s1">&#39;fy&#39;</span><span class="p">,</span> <span class="s1">&#39;fsc&#39;</span><span class="p">,</span> <span class="s1">&#39;Es&#39;</span><span class="p">,</span> <span class="s1">&#39;Ec&#39;</span><span class="p">):</span>
-<a id="__codelineno-24-26" name="__codelineno-24-26" href="#__codelineno-24-26"></a>            <span class="k">continue</span>
-<a id="__codelineno-24-27" name="__codelineno-24-27" href="#__codelineno-24-27"></a>        <span class="c1"># Check dimensional params have unit suffix</span>
-<a id="__codelineno-24-28" name="__codelineno-24-28" href="#__codelineno-24-28"></a>        <span class="c1"># (heuristic — not all params are dimensional)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_type_hints</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">get_all_code_functions</span><span class="p">())</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_function_has_clause_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Every IS 456 function must have @clause traceability.&quot;&quot;&quot;</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s1">&#39;_clause_ref&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> missing @clause decorator&quot;</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">get_all_code_functions</span><span class="p">())</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_function_returns_frozen_dataclass</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Every IS 456 function must return a frozen dataclass.&quot;&quot;&quot;</span>
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>    <span class="n">result_type</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return&#39;</span><span class="p">)</span>
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>    <span class="k">assert</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">result_type</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> doesn&#39;t return a dataclass&quot;</span>
+<a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>    <span class="k">assert</span> <span class="n">result_type</span><span class="o">.</span><span class="n">__dataclass_params__</span><span class="o">.</span><span class="n">frozen</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> result is not frozen&quot;</span>
+<a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>
+<a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">get_all_code_functions</span><span class="p">())</span>
+<a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_function_params_have_units</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Dimensional parameters must have unit suffixes.&quot;&quot;&quot;</span>
+<a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a>    <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+<a id="__codelineno-25-22" name="__codelineno-25-22" href="#__codelineno-25-22"></a>        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="s1">&#39;cls&#39;</span><span class="p">):</span>
+<a id="__codelineno-25-23" name="__codelineno-25-23" href="#__codelineno-25-23"></a>            <span class="k">continue</span>
+<a id="__codelineno-25-24" name="__codelineno-25-24" href="#__codelineno-25-24"></a>        <span class="c1"># Standard IS 456 symbols exempt</span>
+<a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a>        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;fck&#39;</span><span class="p">,</span> <span class="s1">&#39;fy&#39;</span><span class="p">,</span> <span class="s1">&#39;fsc&#39;</span><span class="p">,</span> <span class="s1">&#39;Es&#39;</span><span class="p">,</span> <span class="s1">&#39;Ec&#39;</span><span class="p">):</span>
+<a id="__codelineno-25-26" name="__codelineno-25-26" href="#__codelineno-25-26"></a>            <span class="k">continue</span>
+<a id="__codelineno-25-27" name="__codelineno-25-27" href="#__codelineno-25-27"></a>        <span class="c1"># Check dimensional params have unit suffix</span>
+<a id="__codelineno-25-28" name="__codelineno-25-28" href="#__codelineno-25-28"></a>        <span class="c1"># (heuristic — not all params are dimensional)</span>
 </code></pre></div>
 <table>
 <thead>
@@ -4270,16 +4389,16 @@ Every agent, every session, every change must comply with this document.</p>
 - New functions: ✅ OK (additive change)
 - Removed functions: ❌ BLOCK merge (breaking change)
 - Changed signatures: ⚠️ WARN (may be breaking)</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.core.deprecation</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="nd">@deprecated</span><span class="p">(</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.22.0&quot;</span><span class="p">,</span>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>    <span class="n">remove_version</span><span class="o">=</span><span class="s2">&quot;0.24.0&quot;</span><span class="p">,</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="n">alternative</span><span class="o">=</span><span class="s2">&quot;design_beam(code=&#39;is456&#39;, ...)&quot;</span>
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="p">)</span>
-<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Backward-compatible — use design_beam() instead.&quot;&quot;&quot;</span>
-<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="k">return</span> <span class="n">design_beam</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;is456&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.core.deprecation</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="nd">@deprecated</span><span class="p">(</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;0.22.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="n">remove_version</span><span class="o">=</span><span class="s2">&quot;0.24.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>    <span class="n">alternative</span><span class="o">=</span><span class="s2">&quot;design_beam(code=&#39;is456&#39;, ...)&quot;</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="p">)</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Backward-compatible — use design_beam() instead.&quot;&quot;&quot;</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>    <span class="k">return</span> <span class="n">design_beam</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;is456&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="152-conservative-defaults-registry">15.2 Conservative Defaults Registry<a class="headerlink" href="#152-conservative-defaults-registry" title="Permanent link">&para;</a></h3>
 <p>When input is ambiguous or unspecified, the library MUST use conservative (safe-side) defaults. These are documented and traceable:</p>
@@ -4344,7 +4463,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tbody>
 </table>
 <p><strong>Rule:</strong> If a default is used, the result MUST include a warning indicating which defaults were applied:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">warnings</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Default: Moderate exposure assumed (IS 456 Table 3)&quot;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">warnings</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Default: Moderate exposure assumed (IS 456 Table 3)&quot;</span><span class="p">]</span>
 </code></pre></div></p>
 <hr />
 <h2 id="16-observability-operations">16. Observability &amp; Operations<a class="headerlink" href="#16-observability-operations" title="Permanent link">&para;</a></h2>
@@ -4444,18 +4563,18 @@ Every agent, every session, every change must comply with this document.</p>
 </table>
 <h3 id="165-pre-commit-hooks">16.5 Pre-commit Hooks<a class="headerlink" href="#165-pre-commit-hooks" title="Permanent link">&para;</a></h3>
 <p><code>.pre-commit-config.yaml</code> is <strong>active</strong> and <code>.git/hooks/pre-commit</code> is installed. Current hooks:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">repos</span><span class="p">:</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="c1"># General file hygiene</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v5.0.0</span>
-<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">check-yaml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">check-toml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">check-json</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">end-of-file-fixer</span><span class="p p-Indicator">,</span>
-<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">            </span><span class="nv">trailing-whitespace</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">mixed-line-ending</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">check-merge-conflict</span><span class="p p-Indicator">,</span>
-<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">            </span><span class="nv">check-added-large-files</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>
-<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">  </span><span class="c1"># Python formatting</span>
-<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span>
-<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25.9.0</span>
-<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">black</span><span class="p p-Indicator">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">repos</span><span class="p">:</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="c1"># General file hygiene</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v5.0.0</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">check-yaml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">check-toml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">check-json</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">end-of-file-fixer</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">            </span><span class="nv">trailing-whitespace</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">mixed-line-ending</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">check-merge-conflict</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">            </span><span class="nv">check-added-large-files</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">  </span><span class="c1"># Python formatting</span>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25.9.0</span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">black</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> In addition to the basic hygiene hooks, ruff v0.4.4 (lint + auto-fix) and mypy (structural_lib type checking) are <strong>active</strong> pre-commit hooks. black is also active for formatting.</p>
@@ -4523,9 +4642,9 @@ Every agent, every session, every change must comply with this document.</p>
 <h3 id="167-future-architecture-considerations-v10">16.7 Future Architecture Considerations (v1.0+)<a class="headerlink" href="#167-future-architecture-considerations-v10" title="Permanent link">&para;</a></h3>
 <p><strong>WASM Compilation Path:</strong> Layer 2 (pure math, no I/O) is a natural candidate for WebAssembly compilation via Pyodide or Rust rewrite. Client-side calculation would enable offline-capable progressive web apps. The 4-layer architecture already isolates pure math — this requires no refactoring. 🔲 Planned post-v1.0.</p>
 <p><strong>Entry-Point Plugin Discovery:</strong> The <code>CodeRegistry</code> (§10.4) currently requires manual <code>register()</code> calls. For third-party codes (<code>pip install structural-lib-aci318</code>), Python's <code>importlib.metadata.entry_points()</code> pattern (used by pytest, tox, flake8) would enable auto-registration. 🔲 Planned v0.24.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># pyproject.toml — third-party code plugin</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="p">[</span><span class="n">project</span><span class="o">.</span><span class="n">entry</span><span class="o">-</span><span class="n">points</span><span class="o">.</span><span class="s2">&quot;structural_lib.codes&quot;</span><span class="p">]</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">aci318</span> <span class="o">=</span> <span class="s2">&quot;structural_lib_aci318:ACI318Code&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># pyproject.toml — third-party code plugin</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="p">[</span><span class="n">project</span><span class="o">.</span><span class="n">entry</span><span class="o">-</span><span class="n">points</span><span class="o">.</span><span class="s2">&quot;structural_lib.codes&quot;</span><span class="p">]</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="n">aci318</span> <span class="o">=</span> <span class="s2">&quot;structural_lib_aci318:ACI318Code&quot;</span>
 </code></pre></div>
 <p><strong>Serialization Performance:</strong> For batch operations at scale (§14.2 targets), benchmark <code>msgspec.Struct</code> vs frozen dataclass <code>.to_dict()</code> for the <code>DesignEnvelope</code> wrapper — <code>msgspec</code> is 5-20x faster for JSON serialization. 🔲 Benchmark in v0.24.</p>
 <hr />
@@ -4707,16 +4826,16 @@ Every agent, every session, every change must comply with this document.</p>
 <h2 id="18-regression-prevention-framework">18. Regression Prevention Framework<a class="headerlink" href="#18-regression-prevention-framework" title="Permanent link">&para;</a></h2>
 <h3 id="181-golden-vector-testing">18.1 Golden Vector Testing<a class="headerlink" href="#181-golden-vector-testing" title="Permanent link">&para;</a></h3>
 <p>Every IS 456 function MUST have golden vectors — known-good input/output pairs from SP:16 or textbook examples.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># conftest.py</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">golden_beam_vectors</span><span class="p">():</span>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;SP:16 Example 1 — Simply supported beam.&quot;&quot;&quot;</span>
-<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="k">return</span> <span class="p">{</span>
-<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b_mm&quot;</span><span class="p">:</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="mi">450</span><span class="p">,</span> <span class="s2">&quot;fck&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;fy&quot;</span><span class="p">:</span> <span class="mi">415</span><span class="p">,</span> <span class="s2">&quot;Mu_kNm&quot;</span><span class="p">:</span> <span class="mi">120</span><span class="p">},</span>
-<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>        <span class="s2">&quot;expected&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Ast_mm2&quot;</span><span class="p">:</span> <span class="mf">821.5</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;Under-reinforced&quot;</span><span class="p">},</span>
-<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>        <span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>  <span class="c1"># ±0.1%</span>
-<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;SP:16 Example 1, p.12&quot;</span>
-<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># conftest.py</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">golden_beam_vectors</span><span class="p">():</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;SP:16 Example 1 — Simply supported beam.&quot;&quot;&quot;</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b_mm&quot;</span><span class="p">:</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="mi">450</span><span class="p">,</span> <span class="s2">&quot;fck&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;fy&quot;</span><span class="p">:</span> <span class="mi">415</span><span class="p">,</span> <span class="s2">&quot;Mu_kNm&quot;</span><span class="p">:</span> <span class="mi">120</span><span class="p">},</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>        <span class="s2">&quot;expected&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Ast_mm2&quot;</span><span class="p">:</span> <span class="mf">821.5</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;Under-reinforced&quot;</span><span class="p">},</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>        <span class="s2">&quot;tolerance&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>  <span class="c1"># ±0.1%</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;SP:16 Example 1, p.12&quot;</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>    <span class="p">}</span>
 </code></pre></div>
 <p><strong>Rules:</strong>
 - Mark with <code>@pytest.mark.golden</code> — run separately: <code>pytest -m golden</code>
@@ -4741,12 +4860,12 @@ Every agent, every session, every change must comply with this document.</p>
 <li>Run: <code>pytest --benchmark-only -m performance</code></li>
 </ul>
 <h3 id="185-contract-testing">18.5 Contract Testing<a class="headerlink" href="#185-contract-testing" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">contract</span>
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_design_beam_returns_required_keys</span><span class="p">():</span>
-<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;API contract: design_beam_is456 must return these keys.&quot;&quot;&quot;</span>
-<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">230</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
-<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>    <span class="n">required</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Ast_mm2&quot;</span><span class="p">,</span> <span class="s2">&quot;xu_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;xu_max_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;Mu_capacity_kNm&quot;</span><span class="p">}</span>
-<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>    <span class="k">assert</span> <span class="n">required</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">contract</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_design_beam_returns_required_keys</span><span class="p">():</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;API contract: design_beam_is456 must return these keys.&quot;&quot;&quot;</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">230</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>    <span class="n">required</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Ast_mm2&quot;</span><span class="p">,</span> <span class="s2">&quot;xu_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;xu_max_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;Mu_capacity_kNm&quot;</span><span class="p">}</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>    <span class="k">assert</span> <span class="n">required</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </code></pre></div>
 <h3 id="186-regression-test-categories">18.6 Regression Test Categories<a class="headerlink" href="#186-regression-test-categories" title="Permanent link">&para;</a></h3>
 <table>
@@ -4796,34 +4915,34 @@ Every agent, every session, every change must comply with this document.</p>
 <p>Inspired by NumPy's NEP process and pandas' release engineering. Adapted for a structural engineering library where <strong>incorrect releases can cause building failures</strong>.</p>
 <h3 id="191-release-process-mandatory-steps">19.1 Release Process (Mandatory Steps)<a class="headerlink" href="#191-release-process-mandatory-steps" title="Permanent link">&para;</a></h3>
 <p>Every release MUST follow this sequence. Skipping steps has caused 4+ emergency re-releases historically.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>1. PREFLIGHT    → ./run.sh release preflight 0.X.Y
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>                  - Packaging verification (wheel contents, clauses.json present)
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>                  - API drift detection (OpenAPI baseline diff)
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>                  - Security scan (pip-audit, input validation audit)
-<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>                  - Import validation (no broken imports)
-<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>                  - Test suite passes (4700+ tests, ≥85% coverage)
-<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
-<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>2. UAT          → /user-acceptance-test skill
-<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>                  - pip install from built wheel in clean venv
-<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>                  - Import all public API functions
-<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>                  - Run end-to-end design pipeline
-<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>                  - Verify CLI examples work
-<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>
-<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>3. QUALITY GATE → /quality-gate skill (3 levels)
-<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a>                  Level 1 (Commit):  lint, type-check, architecture check
-<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>                  Level 2 (PR):      full test suite, coverage, API surface
-<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a>                  Level 3 (Release): UAT, security, packaging, benchmark
-<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a>
-<a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a>4. VERSION BUMP → ./run.sh release run 0.X.Y
-<a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a>                  - Updates pyproject.toml version
-<a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a>                  - Updates CHANGELOG.md
-<a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a>                  - Creates git tag
-<a id="__codelineno-31-23" name="__codelineno-31-23" href="#__codelineno-31-23"></a>                  - Builds wheel + sdist
-<a id="__codelineno-31-24" name="__codelineno-31-24" href="#__codelineno-31-24"></a>
-<a id="__codelineno-31-25" name="__codelineno-31-25" href="#__codelineno-31-25"></a>5. POST-RELEASE → Verify on PyPI test index
-<a id="__codelineno-31-26" name="__codelineno-31-26" href="#__codelineno-31-26"></a>                  - pip install from test PyPI
-<a id="__codelineno-31-27" name="__codelineno-31-27" href="#__codelineno-31-27"></a>                  - Smoke test: import + design_beam_is456()
-<a id="__codelineno-31-28" name="__codelineno-31-28" href="#__codelineno-31-28"></a>                  - Update docs/reference/api.md if API changed
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>1. PREFLIGHT    → ./run.sh release preflight 0.X.Y
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>                  - Packaging verification (wheel contents, clauses.json present)
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>                  - API drift detection (OpenAPI baseline diff)
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>                  - Security scan (pip-audit, input validation audit)
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>                  - Import validation (no broken imports)
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>                  - Test suite passes (4700+ tests, ≥85% coverage)
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>2. UAT          → /user-acceptance-test skill
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>                  - pip install from built wheel in clean venv
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a>                  - Import all public API functions
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>                  - Run end-to-end design pipeline
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>                  - Verify CLI examples work
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a>3. QUALITY GATE → /quality-gate skill (3 levels)
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>                  Level 1 (Commit):  lint, type-check, architecture check
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a>                  Level 2 (PR):      full test suite, coverage, API surface
+<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a>                  Level 3 (Release): UAT, security, packaging, benchmark
+<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a>
+<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a>4. VERSION BUMP → ./run.sh release run 0.X.Y
+<a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a>                  - Updates pyproject.toml version
+<a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a>                  - Updates CHANGELOG.md
+<a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a>                  - Creates git tag
+<a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a>                  - Builds wheel + sdist
+<a id="__codelineno-32-24" name="__codelineno-32-24" href="#__codelineno-32-24"></a>
+<a id="__codelineno-32-25" name="__codelineno-32-25" href="#__codelineno-32-25"></a>5. POST-RELEASE → Verify on PyPI test index
+<a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a>                  - pip install from test PyPI
+<a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a>                  - Smoke test: import + design_beam_is456()
+<a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a>                  - Update docs/reference/api.md if API changed
 </code></pre></div>
 <h3 id="192-version-numbering">19.2 Version Numbering<a class="headerlink" href="#192-version-numbering" title="Permanent link">&para;</a></h3>
 <table>
@@ -4916,10 +5035,10 @@ Every agent, every session, every change must comply with this document.</p>
 - <code>logs/agent-performance/</code> — historical scores
 - Dashboard: <code>./run.sh evolve --status</code></p>
 <h3 id="195-continuous-improvement-loop">19.5 Continuous Improvement Loop<a class="headerlink" href="#195-continuous-improvement-loop" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Agent makes mistake → logs/feedback/ captures it
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>→ @agent-evolver detects pattern
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>→ .agent.md instruction updated
-<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>→ Next session: mistake prevented
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Agent makes mistake → logs/feedback/ captures it
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>→ @agent-evolver detects pattern
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>→ .agent.md instruction updated
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>→ Next session: mistake prevented
 </code></pre></div>
 <p>This loop has prevented 70+ recurring issues since v0.21.0. All violations are logged to <code>logs/feedback/</code> with agent name, timestamp, rule violated, impact, and the instruction fix that prevents recurrence.</p>
 <h3 id="196-contribution-guidelines">19.6 Contribution Guidelines<a class="headerlink" href="#196-contribution-guidelines" title="Permanent link">&para;</a></h3>
