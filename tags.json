@@ -1,1 +1,1 @@
-{"mappings": [{"item": {"url": "migration/01-adr-library-separation/", "title": "ADR 0004: Library Separation &amp; Professional Packaging Strategy"}, "tags": ["architecture", "is456", "library", "packaging", "professional", "pypi", "separation"]}]}
+{"mappings": [{"item": {"url": "migration/01-adr-library-separation/", "title": "ADR 0004: Library Separation &amp; Professional Packaging Strategy"}, "tags": ["aci318", "architecture", "ec2", "is456", "library", "multi-code", "packaging", "professional", "pypi", "separation"]}]}

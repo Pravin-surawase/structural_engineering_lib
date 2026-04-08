@@ -1563,6 +1563,95 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#multi-code-frontend-needs-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Code Frontend Needs (v2.0)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Code Frontend Needs (v2.0)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-selector-dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Selector Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison View
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grade-mapping-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grade Mapping Display
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-code-api-endpoints-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Code API Endpoints (v2.0)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Code API Endpoints (v2.0)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-multi-code-comparison-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Multi-Code Comparison Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-grade-mapping-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Grade Mapping Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1585,6 +1674,7 @@
 
 <h1 id="app-repository-blueprint">App Repository Blueprint<a class="headerlink" href="#app-repository-blueprint" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Reference
+<strong>Version:</strong> 2.0
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Draft
 <strong>Importance:</strong> Critical
@@ -1592,8 +1682,11 @@
 <strong>Last Updated:</strong> 2026-04-08</p>
 <hr />
 <h2 id="repository-name">Repository Name<a class="headerlink" href="#repository-name" title="Permanent link">&para;</a></h2>
-<p><code>structural-design-app</code> or <code>rcdesign-app</code></p>
-<p><strong>Recommendation:</strong> <code>rcdesign-app</code> — maintains branding consistency with the library.</p>
+<p><code>structural-design-app</code> or <code>&lt;PACKAGE_NAME&gt;-app</code></p>
+<p><strong>Recommendation:</strong> <code>&lt;PACKAGE_NAME&gt;-app</code> — maintains branding consistency with the library.</p>
+<blockquote>
+<p>⚠️ <strong>Name Update:</strong> <code>rcdesign</code> is TAKEN on PyPI (v0.4.18, Satish Annigeri). New name pending — see <a href="../08-naming-and-accounts/">08-naming-and-accounts.md</a>. All references use <code>&lt;PACKAGE_NAME&gt;</code> placeholder.</p>
+</blockquote>
 <hr />
 <h2 id="folder-structure">Folder Structure<a class="headerlink" href="#folder-structure" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>rcdesign-app/
@@ -1693,10 +1786,10 @@
 <h2 id="key-dependency">Key Dependency<a class="headerlink" href="#key-dependency" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># backend/pyproject.toml</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">[project]</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rcdesign-app&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;PACKAGE_NAME&gt;-app&quot;</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.11&quot;</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s2">&quot;rcdesign&gt;=1.0,&lt;2.0&quot;</span><span class="p">,</span><span class="w">         </span><span class="c1"># The IS 456 library (from PyPI)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s2">&quot;&lt;PACKAGE_NAME&gt;&gt;=1.0,&lt;2.0&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># The IS 456 library (from PyPI) — name TBD</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="s2">&quot;fastapi&gt;=0.115&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="s2">&quot;uvicorn[standard]&gt;=0.30&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="s2">&quot;pydantic&gt;=2.0&quot;</span><span class="p">,</span>
@@ -1839,7 +1932,7 @@
 <hr />
 <h2 id="app-library-import-pattern">App ↔ Library Import Pattern<a class="headerlink" href="#app-library-import-pattern" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># backend/app/routers/design.py</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rcdesign</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_beam</span><span class="p">,</span> <span class="n">BeamDesignResult</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">PACKAGE_NAME</span><span class="o">&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">design_beam</span><span class="o">,</span><span class="w"> </span><span class="nn">BeamDesignResult</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/api/v1/design/beam&quot;</span><span class="p">)</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">design_beam_endpoint</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">BeamDesignRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeamDesignResponse</span><span class="p">:</span>
@@ -1852,7 +1945,96 @@
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="p">)</span>
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="k">return</span> <span class="n">BeamDesignResponse</span><span class="o">.</span><span class="n">from_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </code></pre></div>
-<p>This is the clean boundary: the app imports the library (<code>rcdesign</code>) as a pip-installed dependency, never from local paths.</p>
+<p>This is the clean boundary: the app imports the library (<code>&lt;PACKAGE_NAME&gt;</code>) as a pip-installed dependency, never from local paths.</p>
+<hr />
+<h2 id="multi-code-frontend-needs-v20">Multi-Code Frontend Needs (v2.0)<a class="headerlink" href="#multi-code-frontend-needs-v20" title="Permanent link">&para;</a></h2>
+<p>When multi-code support lands in the library (Phase 3–4), the app frontend needs these additions:</p>
+<h3 id="code-selector-dropdown">Code Selector Dropdown<a class="headerlink" href="#code-selector-dropdown" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Global code selector: IS 456 / ACI 318 / EC2</li>
+<li>Persisted in Zustand store (<code>useDesignStore</code>)</li>
+<li>Affects all design forms — beam, column, footing, slab</li>
+<li>Default: IS 456 (maintains backward compatibility)</li>
+</ul>
+<h3 id="comparison-view">Comparison View<a class="headerlink" href="#comparison-view" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Side-by-side results panel showing design output from 2–3 codes simultaneously</li>
+<li>Highlights differences: required steel area, safety factors, governing clauses</li>
+<li>Color-coded: green (all codes safe), yellow (divergent results), red (any code fails)</li>
+</ul>
+<h3 id="grade-mapping-display">Grade Mapping Display<a class="headerlink" href="#grade-mapping-display" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Shows equivalent material grades across codes (e.g., M25 ≈ C25/30 ≈ f'c=25 MPa)</li>
+<li>Auto-maps user-selected grade to equivalent grades in other codes</li>
+<li>Displayed as a lookup panel accessible from any design form</li>
+</ul>
+<hr />
+<h2 id="multi-code-api-endpoints-v20">Multi-Code API Endpoints (v2.0)<a class="headerlink" href="#multi-code-api-endpoints-v20" title="Permanent link">&para;</a></h2>
+<p>New v2 API endpoints to support multi-code design:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v2/design/beam</code></td>
+<td>Beam design with <code>code</code> parameter (<code>IS456</code>, <code>ACI318</code>, <code>EC2</code>)</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v2/compare/beam</code></td>
+<td>Multi-code beam comparison — returns results from all requested codes</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v2/codes</code></td>
+<td>List available design codes with version info</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v2/grades/map</code></td>
+<td>Grade mapping lookup (e.g., M25 → C25/30 → f'c=25 MPa)</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v2/compare/column</code></td>
+<td>Multi-code column comparison</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v2/design/column</code></td>
+<td>Column design with <code>code</code> parameter</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-multi-code-comparison-request">Example: Multi-Code Comparison Request<a class="headerlink" href="#example-multi-code-comparison-request" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;b_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;d_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;Mu_kNm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">&quot;fck&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">&quot;fy&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">&quot;codes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ACI318&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;EC2&quot;</span><span class="p">]</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="example-grade-mapping-response">Example: Grade Mapping Response<a class="headerlink" href="#example-grade-mapping-response" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;base_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;base_grade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;M25&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">&quot;mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">&quot;ACI318&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;grade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;f&#39;c = 25 MPa&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Direct equivalent&quot;</span><span class="p">},</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">&quot;EC2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;grade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C25/30&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fck=25, fck,cube=30&quot;</span><span class="p">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> v1 endpoints remain unchanged for backward compatibility. v2 endpoints are additive.</p>
+</blockquote>
 
 
 

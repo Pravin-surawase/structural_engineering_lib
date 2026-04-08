@@ -1885,6 +1885,112 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#multi-code-agent-needs-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Code Agent Needs (v2.0)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Code Agent Needs (v2.0)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-specialist-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Specialist Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#math-verifier-expanded-role-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Math Verifier — Expanded Role (v2.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claw-code-patterns-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Claw-Code Patterns (v2.0)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Claw-Code Patterns (v2.0)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-patterns-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Patterns Adopted
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-skills-for-migration-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Skills for Migration (v2.0)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Skills for Migration (v2.0)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-skills-needed-for-multi-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Skills Needed for Multi-Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1907,6 +2013,7 @@
 
 <h1 id="github-copilot-agents-automation">GitHub Copilot Agents &amp; Automation<a class="headerlink" href="#github-copilot-agents-automation" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Reference
+<strong>Version:</strong> 2.0
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Draft
 <strong>Importance:</strong> Critical
@@ -2031,15 +2138,18 @@
 - Use <code>pytest-benchmark</code> for performance regression</p>
 <p><strong>Handoff:</strong> → coder for fixes if tests fail</p>
 <h3 id="4-math-verifieragentmd">4. math-verifier.agent.md<a class="headerlink" href="#4-math-verifieragentmd" title="Permanent link">&para;</a></h3>
-<p><strong>Role:</strong> IS 456 formula verification, SP:16 benchmark checking
-<strong>Tools:</strong> search, readFile, web (for IS 456 reference lookup)
+<p><strong>Role:</strong> IS 456 formula verification, SP:16 benchmark checking, <strong>multi-code validation (v2.0)</strong>
+<strong>Tools:</strong> search, readFile, web (for IS 456/ACI 318/EC2 reference lookup)
 <strong>Permission:</strong> ReadOnly</p>
 <p><strong>Rules:</strong>
 - Verify every formula against IS 456:2000 clause text
 - Check numerical accuracy against SP:16 Charts 1–62
 - Cross-reference with Pillai &amp; Menon, Varghese textbooks
 - Flag any deviation &gt; 0.1% from published values
-- Maintain clause traceability</p>
+- Maintain clause traceability
+- <strong>(v2.0)</strong> Verify ACI 318 functions against PCA Notes on ACI 318
+- <strong>(v2.0)</strong> Verify EC2 functions against fib Model Code and Designers' Guide to EN 1992-1-1
+- <strong>(v2.0)</strong> Validate multi-code comparison results for consistency</p>
 <hr />
 <h3 id="claw-code-patterns-adopted">Claw-Code Patterns Adopted<a class="headerlink" href="#claw-code-patterns-adopted" title="Permanent link">&para;</a></h3>
 <p>From our analysis of the claw-code harness (114K stars):</p>
@@ -2225,8 +2335,141 @@
 <li><strong>Always use explicit units</strong> (<code>b_mm</code> not <code>width</code>, <code>fck</code> not <code>concrete_grade</code>)</li>
 <li><strong>Always run full test suite</strong> before commit</li>
 <li><strong>Never manual git</strong> — always use the commit script</li>
-<li><strong>Search before coding</strong> — duplication is the #1 agent mistake</li>
 </ol>
+<hr />
+<h2 id="multi-code-agent-needs-v20">Multi-Code Agent Needs (v2.0)<a class="headerlink" href="#multi-code-agent-needs-v20" title="Permanent link">&para;</a></h2>
+<p>As the library expands to support ACI 318 and EC2, agent roles need to evolve:</p>
+<h3 id="code-specialist-agent">Code Specialist Agent<a class="headerlink" href="#code-specialist-agent" title="Permanent link">&para;</a></h3>
+<p>Each design code has unique clauses, terminology, and design philosophy. For accurate implementation:</p>
+<ul>
+<li><strong>IS 456 specialist</strong> — Current structural-engineer agent covers this. Knows SP:16, IS 13920, Indian practice.</li>
+<li><strong>ACI 318 specialist</strong> — Needs familiarity with PCA Notes on ACI 318, ACI SP-17 column interaction diagrams, US rebar sizes (#3–#11), and strength reduction factors (φ).</li>
+<li><strong>EC2 specialist</strong> — Needs familiarity with fib Model Code, UK National Annex, Designers' Guide to EN 1992-1-1, European rebar sizes (H8–H40), and partial safety factors (γc, γs).</li>
+</ul>
+<blockquote>
+<p><strong>Decision:</strong> Initially, the existing math-verifier agent handles all codes. If multi-code errors increase, split into per-code specialists.</p>
+</blockquote>
+<h3 id="comparison-agent">Comparison Agent<a class="headerlink" href="#comparison-agent" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Validates that multi-code comparison results are self-consistent</li>
+<li>Checks that grade mappings (M25 → C25/30 → f'c=25 MPa) are correct</li>
+<li>Verifies that design results follow expected trends (e.g., EC2 generally requires less steel than IS 456 for same load)</li>
+<li>Flags suspicious outliers in comparison tables</li>
+</ul>
+<h3 id="math-verifier-expanded-role-v20">Math Verifier — Expanded Role (v2.0)<a class="headerlink" href="#math-verifier-expanded-role-v20" title="Permanent link">&para;</a></h3>
+<p>The math-verifier agent must now verify against multiple reference sources:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Primary Reference</th>
+<th>Secondary Reference</th>
+<th>Benchmark Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS 456</td>
+<td>IS 456:2000 clause text</td>
+<td>Pillai &amp; Menon, 8th Ed.</td>
+<td>SP:16 Charts 1–62</td>
+</tr>
+<tr>
+<td>ACI 318</td>
+<td>ACI 318-19 clause text</td>
+<td>PCA Notes on ACI 318</td>
+<td>ACI SP-17 interaction diagrams</td>
+</tr>
+<tr>
+<td>EC2</td>
+<td>EN 1992-1-1:2004</td>
+<td>fib Model Code 2010</td>
+<td>Designers' Guide worked examples</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="claw-code-patterns-v20">Claw-Code Patterns (v2.0)<a class="headerlink" href="#claw-code-patterns-v20" title="Permanent link">&para;</a></h2>
+<p>Based on analysis of the claw-code harness (114K stars) and our own agent evolution data.</p>
+<blockquote>
+<p>For detailed patterns and implementation ideas, see <a href="../../research/claw-code-harness-ideas/">docs/research/claw-code-harness-ideas.md</a>.</p>
+</blockquote>
+<h3 id="key-patterns-adopted">Key Patterns Adopted<a class="headerlink" href="#key-patterns-adopted" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Clause-Tagging</strong> — Every math function has <code>@clause("IS 456:2000", "38.1")</code> decorator or equivalent docstring reference. This enables automated clause coverage tracking across all three codes.</p>
+</li>
+<li>
+<p><strong>Calculation Trace</strong> — Each design result carries a full trace of intermediate values, allowing verification that the correct code path was followed. Essential for multi-code comparison (showing exactly where IS 456 and ACI 318 diverge).</p>
+</li>
+<li>
+<p><strong>Benchmark Automation</strong> — SP:16 Charts (IS 456), ACI SP-17 diagrams (ACI 318), and fib worked examples (EC2) are encoded as JSON golden vectors. CI runs all benchmarks on every commit. Accuracy regression = CI failure.</p>
+</li>
+<li>
+<p><strong>Architecture Enforcement</strong> — <code>tach</code> (boundary enforcement tool) validates the 5-layer import direction on every commit. Agents should run <code>tach check</code> before handoff. This replaces manual import-direction review.</p>
+</li>
+</ol>
+<hr />
+<h2 id="agent-skills-for-migration-v20">Agent Skills for Migration (v2.0)<a class="headerlink" href="#agent-skills-for-migration-v20" title="Permanent link">&para;</a></h2>
+<p>Existing skills that are directly useful during the migration process:</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Slash Command</th>
+<th>Migration Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api-discovery</code></td>
+<td>API param verification</td>
+<td>Verify all 123 function signatures are preserved during extraction</td>
+</tr>
+<tr>
+<td><code>/is456-verification</code></td>
+<td>IS 456 compliance testing</td>
+<td>Run SP:16 benchmarks against new repo structure to confirm no accuracy regression</td>
+</tr>
+<tr>
+<td><code>/architecture-check</code></td>
+<td>5-layer boundary validation</td>
+<td>Validate that the new 5-layer architecture (<code>core ← common ← codes ← services ← ui</code>) is respected</td>
+</tr>
+<tr>
+<td><code>/function-quality-pipeline</code></td>
+<td>9-step quality gate</td>
+<td>Every new function (ACI 318, EC2) must pass the full pipeline: research → implement → test → benchmark → review → document → type-check → integrate → release</td>
+</tr>
+</tbody>
+</table>
+<h3 id="new-skills-needed-for-multi-code">New Skills Needed for Multi-Code<a class="headerlink" href="#new-skills-needed-for-multi-code" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Proposed Skill</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/multi-code-compare</code></td>
+<td>Run same design through IS 456 + ACI 318 + EC2, validate results are consistent</td>
+</tr>
+<tr>
+<td><code>/grade-mapping-verify</code></td>
+<td>Verify concrete/steel grade equivalence tables across codes</td>
+</tr>
+<tr>
+<td><code>/clause-coverage</code></td>
+<td>Report clause coverage per code: "IS 456: 70%, ACI 318: 12%, EC2: 0%"</td>
+</tr>
+<tr>
+<td>8. <strong>Search before coding</strong> — duplication is the #1 agent mistake</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 

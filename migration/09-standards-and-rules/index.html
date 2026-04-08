@@ -1763,6 +1763,122 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#architecture-rules-40-numbered-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Rules (40+ Numbered Rules)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Rules (40+ Numbered Rules)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ar-architecture-rules-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AR — Architecture Rules (7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fn-function-rules-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FN — Function Rules (6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mt-math-safety-rules-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MT — Math Safety Rules (5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tc-type-checking-rules-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TC — Type Checking Rules (4)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ts-testing-rules-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TS — Testing Rules (5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dc-documentation-rules-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DC — Documentation Rules (3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mc-multi-code-rules-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MC — Multi-Code Rules (5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sc-security-rules-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SC — Security Rules (3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-quick-reference-all-38-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Quick Reference (All 38 Rules)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1784,7 +1900,8 @@
 
 
 <h1 id="standards-rules-knowledge">Standards, Rules &amp; Knowledge<a class="headerlink" href="#standards-rules-knowledge" title="Permanent link">&para;</a></h1>
-<p><strong>Type:</strong> Reference
+<p><strong>Version:</strong> 2.0
+<strong>Type:</strong> Reference
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Draft
 <strong>Importance:</strong> Critical
@@ -1793,6 +1910,9 @@
 <hr />
 <h2 id="coding-standards">Coding Standards<a class="headerlink" href="#coding-standards" title="Permanent link">&para;</a></h2>
 <h3 id="units-convention-mandatory">Units Convention (MANDATORY)<a class="headerlink" href="#units-convention-mandatory" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rule FN-01 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <ul>
 <li><strong>Dimensions</strong> get unit suffixes: <code>b_mm</code>, <code>d_mm</code>, <code>Mu_kNm</code>, <code>Vu_kN</code></li>
 <li><strong>Material properties</strong> use IS 456 standard symbols WITHOUT suffix: <code>fck</code>, <code>fy</code>, <code>Es</code></li>
@@ -1810,6 +1930,9 @@
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam</span><span class="p">(</span><span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">moment</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">grade</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 </code></pre></div>
 <h3 id="clause-referencing-mandatory">Clause Referencing (Mandatory)<a class="headerlink" href="#clause-referencing-mandatory" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rules FN-04 and DC-03 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <p>Every IS 456 function MUST reference the specific clause, table, or annex in its docstring:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">tau_c</span><span class="p">(</span><span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Design shear strength of concrete.</span>
@@ -1866,6 +1989,9 @@
 <li>Drop redundant prefixes: <code>design_beam()</code> not <code>design_beam_is456()</code></li>
 </ul>
 <h3 id="type-safety">Type Safety<a class="headerlink" href="#type-safety" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rules FN-02, TC-01 through TC-04 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <ul>
 <li>All functions: fully typed parameters AND return types</li>
 <li>Return Pydantic BaseModel or frozen dataclass, <strong>never raw dict</strong></li>
@@ -1874,6 +2000,9 @@
 <li><code>pyright</code> basic check in CI (for IDE support)</li>
 </ul>
 <h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rules DC-01 through DC-03 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <p>Every public function requires:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="sd">Calculate limiting moment of resistance per IS 456 Cl. 38.1.</span>
@@ -1918,6 +2047,9 @@
 <a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 <h3 id="import-rules">Import Rules<a class="headerlink" href="#import-rules" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rules AR-03 and AR-07 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <ul>
 <li><strong>No relative imports</strong> — following Polars pattern: <code>ban-relative-imports = "all"</code> in ruff</li>
 <li>Clean public API via <code>__init__.py</code> with explicit <code>__all__</code></li>
@@ -1927,6 +2059,9 @@
 <hr />
 <h2 id="testing-standards">Testing Standards<a class="headerlink" href="#testing-standards" title="Permanent link">&para;</a></h2>
 <h3 id="6-test-types-for-every-is-456-function">6 Test Types (for Every IS 456 Function)<a class="headerlink" href="#6-test-types-for-every-is-456-function" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rules TS-01 through TS-05 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1976,6 +2111,9 @@
 </tbody>
 </table>
 <h3 id="quality-gates">Quality Gates<a class="headerlink" href="#quality-gates" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>See also:</strong> Rules TC-01, TC-02, TS-05 in <a href="#architecture-rules-40-numbered-rules">Architecture Rules</a> below.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2308,6 +2446,307 @@
 <tr>
 <td><code>dev</code></td>
 <td>pre-commit</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="architecture-rules-40-numbered-rules">Architecture Rules (40+ Numbered Rules)<a class="headerlink" href="#architecture-rules-40-numbered-rules" title="Permanent link">&para;</a></h2>
+<p>These rules are the definitive coding standards for the library, synthesized from 70+ audit findings, best practices from structuralcodes/polars/pydantic, and @library-expert research. Every rule has an ID for cross-referencing in code reviews and agent instructions.</p>
+<h3 id="ar-architecture-rules-7">AR — Architecture Rules (7)<a class="headerlink" href="#ar-architecture-rules-7" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AR-01</strong></td>
+<td><strong>Five-layer strict dependency:</strong> core ← common ← codes ← services ← ui/io. Enforce via <code>tach.toml</code>. No exceptions.</td>
+</tr>
+<tr>
+<td><strong>AR-02</strong></td>
+<td><strong>No I/O in codes layer</strong> — pure math only. No file reads, no API calls, no logging side effects.</td>
+</tr>
+<tr>
+<td><strong>AR-03</strong></td>
+<td><strong>No relative imports</strong> — <code>ban-relative-imports = "all"</code> in ruff. All imports are absolute.</td>
+</tr>
+<tr>
+<td><strong>AR-04</strong></td>
+<td><strong>Core has zero code-specific knowledge.</strong> Core defines <code>BeamSection</code>, <code>DesignCode</code> protocol — but never mentions IS 456, ACI, or EC2.</td>
+</tr>
+<tr>
+<td><strong>AR-05</strong></td>
+<td><strong>Shared math used by 2+ codes moves to <code>common/</code>.</strong> If only one code uses it, it stays in <code>codes/&lt;code&gt;/</code>.</td>
+</tr>
+<tr>
+<td><strong>AR-06</strong></td>
+<td><strong>Registry-based code discovery.</strong> <code>CodeRegistry.register("is456", IS456Code)</code> / <code>CodeRegistry.get("is456")</code>. No <code>if/elif</code> chains.</td>
+</tr>
+<tr>
+<td><strong>AR-07</strong></td>
+<td><strong>Each code is a self-contained package</strong> with its own <code>__init__.py</code>, constants, tables, and submodules.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fn-function-rules-6">FN — Function Rules (6)<a class="headerlink" href="#fn-function-rules-6" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FN-01</strong></td>
+<td><strong>Unit suffixes on dimensional params</strong> (<code>b_mm</code>, <code>d_mm</code>, <code>Mu_kNm</code>, <code>Vu_kN</code>). Material properties use IS 456 standard symbols WITHOUT suffix (<code>fck</code>, <code>fy</code>, <code>Es</code> — always N/mm²).</td>
+</tr>
+<tr>
+<td><strong>FN-02</strong></td>
+<td><strong>Return frozen dataclasses or Pydantic BaseModel, never raw dicts.</strong> Every result has <code>.is_safe()</code>, <code>.to_dict()</code>, <code>.summary()</code>.</td>
+</tr>
+<tr>
+<td><strong>FN-03</strong></td>
+<td><strong>Safety factors are constants, never function parameters.</strong> <code>GAMMA_C = 1.5</code> is in <code>constants.py</code>, never passed as <code>gamma_c=1.5</code>.</td>
+</tr>
+<tr>
+<td><strong>FN-04</strong></td>
+<td><strong><code>@clause()</code> decorator on every math function</strong> — <code>clause_ref</code>, <code>table_ref</code>, <code>formula</code> fields for traceability.</td>
+</tr>
+<tr>
+<td><strong>FN-05</strong></td>
+<td><strong>Monotonicity note in docstring</strong> where applicable (e.g., "increasing <code>d_mm</code> → increasing <code>Mu_lim</code>").</td>
+</tr>
+<tr>
+<td><strong>FN-06</strong></td>
+<td><strong>Error accumulation pattern</strong> — collect errors as tuples in result objects, not exceptions mid-calculation. Fail at the end with all issues, not on the first one.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mt-math-safety-rules-5">MT — Math Safety Rules (5)<a class="headerlink" href="#mt-math-safety-rules-5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MT-01</strong></td>
+<td><strong>No float equality</strong> — use <code>approx_equal(a, b, tol=1e-6)</code> or <code>math.isclose()</code>. Never <code>==</code> on floats.</td>
+</tr>
+<tr>
+<td><strong>MT-02</strong></td>
+<td><strong><code>safe_divide()</code> everywhere</strong> — handles zero denominator gracefully instead of raising <code>ZeroDivisionError</code>.</td>
+</tr>
+<tr>
+<td><strong>MT-03</strong></td>
+<td><strong>NaN/Inf guard on output</strong> via <code>BaseResult.__post_init__()</code>. If any result field is NaN or Inf, raise immediately.</td>
+</tr>
+<tr>
+<td><strong>MT-04</strong></td>
+<td><strong>No extrapolation beyond table bounds</strong> — raise <code>InterpolationError</code>, don't silently clamp. IS 456 tables have specific valid ranges.</td>
+</tr>
+<tr>
+<td><strong>MT-05</strong></td>
+<td><strong>Monotonicity invariant testing via Hypothesis.</strong> Property: increasing depth → increasing moment capacity (etc.).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tc-type-checking-rules-4">TC — Type Checking Rules (4)<a class="headerlink" href="#tc-type-checking-rules-4" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TC-01</strong></td>
+<td><strong>basedpyright v1.39.0 as primary type checker</strong> — stricter than standard pyright, catches more issues.</td>
+</tr>
+<tr>
+<td><strong>TC-02</strong></td>
+<td><strong>mypy <code>--strict</code> as CI backup</strong> — catches different categories of issues than basedpyright. Both must pass.</td>
+</tr>
+<tr>
+<td><strong>TC-03</strong></td>
+<td><strong><code>py.typed</code> PEP 561 marker required</strong> in package root. Downstream users get type information.</td>
+</tr>
+<tr>
+<td><strong>TC-04</strong></td>
+<td><strong>All public functions fully typed</strong> — parameters AND return types. No <code>Any</code> in public API.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ts-testing-rules-5">TS — Testing Rules (5)<a class="headerlink" href="#ts-testing-rules-5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TS-01</strong></td>
+<td><strong>6 test types mandatory for every IS 456 function:</strong> unit, edge case, degenerate, SP:16 benchmark, textbook example, Hypothesis property.</td>
+</tr>
+<tr>
+<td><strong>TS-02</strong></td>
+<td><strong>SP:16 benchmarks at ±0.1% accuracy.</strong> Charts 1–62 from SP:16:1980 are the gold standard for IS 456.</td>
+</tr>
+<tr>
+<td><strong>TS-03</strong></td>
+<td><strong>Hypothesis for monotonicity and dimensional consistency.</strong> Property-based testing catches edge cases humans miss.</td>
+</tr>
+<tr>
+<td><strong>TS-04</strong></td>
+<td><strong>mutmut mutation testing for safety-critical functions.</strong> Line coverage alone is insufficient for life-safety code.</td>
+</tr>
+<tr>
+<td><strong>TS-05</strong></td>
+<td><strong><code>xfail_strict = true</code>, <code>strict_markers = true</code>, <code>strict_config = true</code>.</strong> A passing xfail is a real bug. Undefined markers are errors.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dc-documentation-rules-3">DC — Documentation Rules (3)<a class="headerlink" href="#dc-documentation-rules-3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DC-01</strong></td>
+<td><strong>NumPy-style docstrings</strong> (structuralcodes/polars convention). Sections: Parameters, Returns, Raises, References, Examples.</td>
+</tr>
+<tr>
+<td><strong>DC-02</strong></td>
+<td><strong>Every public function has:</strong> Parameters, Returns, References (IS 456 clause), and Examples sections. No exceptions.</td>
+</tr>
+<tr>
+<td><strong>DC-03</strong></td>
+<td><strong>Clause reference mandatory in docstring</strong> for every IS 456 function — <code>IS 456:2000, Cl. XX.X</code> or <code>Table YY</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mc-multi-code-rules-5">MC — Multi-Code Rules (5)<a class="headerlink" href="#mc-multi-code-rules-5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MC-01</strong></td>
+<td><strong>Code-native parameter names internally.</strong> IS 456 uses <code>fck</code>; ACI 318 uses <code>fc_prime</code>; EC2 uses <code>fck</code>. Don't force one convention.</td>
+</tr>
+<tr>
+<td><strong>MC-02</strong></td>
+<td><strong>SI units at API boundaries, code-native internally.</strong> The <code>services/</code> layer converts. Code modules use their natural units.</td>
+</tr>
+<tr>
+<td><strong>MC-03</strong></td>
+<td><strong>Comparison only on shared features.</strong> Don't compare IS 456 torsion with ACI 318 torsion if the approaches are fundamentally different.</td>
+</tr>
+<tr>
+<td><strong>MC-04</strong></td>
+<td><strong>Grade mapping explicit, never silent conversion.</strong> M25 (IS 456) → C25/30 (EC2) must be an explicit mapping, not assumed equal.</td>
+</tr>
+<tr>
+<td><strong>MC-05</strong></td>
+<td><strong>Each code self-contained, no cross-code imports.</strong> <code>codes/is456/</code> NEVER imports from <code>codes/aci318/</code>. Shared logic goes to <code>common/</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sc-security-rules-3">SC — Security Rules (3)<a class="headerlink" href="#sc-security-rules-3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SC-01</strong></td>
+<td><strong>Input validation at API boundaries.</strong> Validate dimensions (b ≥ 150mm), material ranges (fck 15–80), and reinforcement ratios at the service layer.</td>
+</tr>
+<tr>
+<td><strong>SC-02</strong></td>
+<td><strong>Error messages never expose internal paths.</strong> User sees "Invalid beam width" not "Error in /src/<PACKAGE_NAME>/codes/is456/beam/flexure.py:142".</td>
+</tr>
+<tr>
+<td><strong>SC-03</strong></td>
+<td><strong>Dependencies pinned with hashes in lock file.</strong> <code>uv.lock</code> provides hash verification. CI runs <code>uv sync --locked</code> to enforce.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="rule-quick-reference-all-38-rules">Rule Quick Reference (All 38 Rules)<a class="headerlink" href="#rule-quick-reference-all-38-rules" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Count</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Architecture (AR)</td>
+<td>7</td>
+<td>AR-01 through AR-07</td>
+</tr>
+<tr>
+<td>Function (FN)</td>
+<td>6</td>
+<td>FN-01 through FN-06</td>
+</tr>
+<tr>
+<td>Math Safety (MT)</td>
+<td>5</td>
+<td>MT-01 through MT-05</td>
+</tr>
+<tr>
+<td>Type Checking (TC)</td>
+<td>4</td>
+<td>TC-01 through TC-04</td>
+</tr>
+<tr>
+<td>Testing (TS)</td>
+<td>5</td>
+<td>TS-01 through TS-05</td>
+</tr>
+<tr>
+<td>Documentation (DC)</td>
+<td>3</td>
+<td>DC-01 through DC-03</td>
+</tr>
+<tr>
+<td>Multi-Code (MC)</td>
+<td>5</td>
+<td>MC-01 through MC-05</td>
+</tr>
+<tr>
+<td>Security (SC)</td>
+<td>3</td>
+<td>SC-01 through SC-03</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>38</strong></td>
+<td></td>
 </tr>
 </tbody>
 </table>

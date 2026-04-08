@@ -1492,22 +1492,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-rcdesign-is-the-chosen-name" class="md-nav__link">
+  <a href="#decision-pending-new-name-required" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision: rcdesign is the Chosen Name
+        Decision: PENDING — New Name Required
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Decision: rcdesign is the Chosen Name">
+    <nav class="md-nav" aria-label="Decision: PENDING — New Name Required">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#why-rcdesign" class="md-nav__link">
+  <a href="#why-rcdesign-was-originally-chosen" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why rcdesign
+        Why rcdesign Was Originally Chosen
       
     </span>
   </a>
@@ -1515,10 +1515,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-names-if-rcdesign-is-taken-on-pypi" class="md-nav__link">
+  <a href="#why-calcrete-is-the-top-alternative" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fallback Names (if rcdesign is taken on PyPI)
+        Why calcrete Is the Top Alternative
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fallback-names-if-top-choice-is-also-taken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fallback Names (if top choice is also taken)
       
     </span>
   </a>
@@ -1535,6 +1546,23 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pypi-availability-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyPI Availability Verification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PyPI Availability Verification">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#keyword-strategy-is456-as-discoverability-keyword" class="md-nav__link">
@@ -1740,11 +1768,19 @@
 
 <h1 id="naming-accounts-setup">Naming, Accounts &amp; Setup<a class="headerlink" href="#naming-accounts-setup" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Guide
+<strong>Version:</strong> 2.0
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Draft
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-04-07
 <strong>Last Updated:</strong> 2026-04-08</p>
+<hr />
+<blockquote>
+<p>⚠️ <strong>BLOCKER: <code>rcdesign</code> is TAKEN on PyPI</strong>
+Package <code>rcdesign</code> v0.4.18 by Satish Annigeri (May 2025) — active IS 456 design tool.
+GitHub: github.com/satish-annigeri/rcdesign | Docs: rcdesign.readthedocs.io
+<strong>A new name must be chosen before migration can begin.</strong></p>
+</blockquote>
 <hr />
 <h2 id="library-name-options">Library Name Options<a class="headerlink" href="#library-name-options" title="Permanent link">&para;</a></h2>
 <table>
@@ -1754,8 +1790,10 @@
 <th>Name</th>
 <th>PyPI</th>
 <th>Import</th>
+<th>Length</th>
 <th>Pros</th>
 <th>Cons</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -1764,82 +1802,106 @@
 <td><strong>rcdesign</strong></td>
 <td><code>rcdesign</code></td>
 <td><code>rcdesign</code></td>
+<td>8</td>
 <td>Short, professional, universally understood</td>
-<td>May conflict with other RC design tools</td>
+<td>—</td>
+<td>❌ <strong>TAKEN</strong> (v0.4.18, Satish Annigeri, May 2025)</td>
 </tr>
 <tr>
 <td>2</td>
-<td><strong>concretepy</strong></td>
-<td><code>concretepy</code></td>
-<td><code>concretepy</code></td>
-<td>Clear domain + "py" suffix</td>
-<td>Longer</td>
+<td><strong>calcrete</strong></td>
+<td><code>calcrete</code></td>
+<td><code>calcrete</code></td>
+<td>8</td>
+<td>"calc + concrete", unique, memorable, same length as rcdesign</td>
+<td>Made-up word</td>
+<td>✅ Available</td>
 </tr>
 <tr>
 <td>3</td>
-<td><strong>rcdcodes</strong></td>
-<td><code>rcdcodes</code></td>
-<td><code>rcdcodes</code></td>
-<td>"RCD Codes" — signals code compliance</td>
-<td>Less memorable</td>
+<td><strong>concretedesign</strong></td>
+<td><code>concretedesign</code></td>
+<td><code>concretedesign</code></td>
+<td>14</td>
+<td>Clear domain meaning, immediately understood</td>
+<td>Too long for frequent imports</td>
+<td>✅ Available</td>
 </tr>
 <tr>
 <td>4</td>
-<td><strong>structlib</strong></td>
-<td><code>structlib</code></td>
-<td><code>structlib</code></td>
-<td>Short, expandable beyond IS 456</td>
-<td>Generic</td>
+<td><strong>rcdesigner</strong></td>
+<td><code>rcdesigner</code></td>
+<td><code>rcdesigner</code></td>
+<td>10</td>
+<td>Close to rcdesign, clear meaning</td>
+<td>May confuse with taken <code>rcdesign</code> package</td>
+<td>✅ Available</td>
 </tr>
 <tr>
 <td>5</td>
-<td><strong>is456py</strong></td>
-<td><code>is456py</code></td>
-<td><code>is456py</code></td>
-<td>Direct IS 456 reference</td>
-<td>Too specific if expanding to other codes</td>
+<td><strong>rccodes</strong></td>
+<td><code>rccodes</code></td>
+<td><code>rccodes</code></td>
+<td>7</td>
+<td>"RC Codes", signals multi-code support</td>
+<td>Could be misread as "return codes"</td>
+<td>✅ Available</td>
 </tr>
 <tr>
 <td>6</td>
-<td><strong>designcodes</strong></td>
-<td><code>designcodes</code></td>
-<td><code>designcodes</code></td>
-<td>Expandable to multi-code (ACI, Eurocode)</td>
-<td>Generic</td>
+<td><strong>rclib</strong></td>
+<td><code>rclib</code></td>
+<td><code>rclib</code></td>
+<td>5</td>
+<td>Shortest option, "RC Library"</td>
+<td>Generic, doesn't convey domain</td>
+<td>✅ Available</td>
 </tr>
 <tr>
 <td>7</td>
-<td><strong>rcdetail</strong></td>
-<td><code>rcdetail</code></td>
-<td><code>rcdetail</code></td>
-<td>Design + detailing emphasis</td>
-<td>Limits scope perception</td>
+<td><strong>concretelib</strong></td>
+<td><code>concretelib</code></td>
+<td><code>concretelib</code></td>
+<td>11</td>
+<td>Clear domain, "concrete library"</td>
+<td>Medium length</td>
+<td>✅ Available</td>
 </tr>
 <tr>
 <td>8</td>
-<td><strong>indiarc</strong></td>
-<td><code>indiarc</code></td>
-<td><code>indiarc</code></td>
-<td>Geographic focus, catchy</td>
-<td>Too narrow for international use</td>
+<td><strong>structcodes</strong></td>
+<td><code>structcodes</code></td>
+<td><code>structcodes</code></td>
+<td>11</td>
+<td>Echoes <code>structuralcodes</code>, signals multi-code</td>
+<td>Similar to existing PyPI package <code>structuralcodes</code></td>
+<td>✅ Available</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Recommendation:</strong> <code>rcdesign</code> — best balance of short, professional, and memorable. "RC Design" is universally understood in structural engineering.</p>
+<p><strong>Top suggestion:</strong> <code>calcrete</code> — unique, 8 chars (same as rcdesign), memorable, available.</p>
+<p><strong>Decision is pending user input.</strong> See "PyPI Availability Verification" below.</p>
 <hr />
-<h2 id="decision-rcdesign-is-the-chosen-name">Decision: <code>rcdesign</code> is the Chosen Name<a class="headerlink" href="#decision-rcdesign-is-the-chosen-name" title="Permanent link">&para;</a></h2>
+<h2 id="decision-pending-new-name-required">Decision: PENDING — New Name Required<a class="headerlink" href="#decision-pending-new-name-required" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p><strong><code>rcdesign</code></strong> is the decided package name — both PyPI name and Python import name.</p>
+<p><strong><code>rcdesign</code> was the original choice but is TAKEN on PyPI.</strong>
+A new name must be selected from the verified-available alternatives above.</p>
 </blockquote>
-<h3 id="why-rcdesign">Why <code>rcdesign</code><a class="headerlink" href="#why-rcdesign" title="Permanent link">&para;</a></h3>
+<h3 id="why-rcdesign-was-originally-chosen">Why <code>rcdesign</code> Was Originally Chosen<a class="headerlink" href="#why-rcdesign-was-originally-chosen" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Short</strong> (8 chars) — comparable to <code>numpy</code> (5), <code>scipy</code> (5), <code>flask</code> (5)</li>
 <li><strong>Professional</strong> — "RC Design" is universally understood in structural/civil engineering</li>
 <li><strong>Expandable</strong> — works for IS 456 today, ACI 318 or Eurocode 2 tomorrow</li>
-<li><strong>PyPI = import</strong> — no discrepancy: <code>pip install rcdesign</code> → <code>import rcdesign</code></li>
-<li><strong>Valid Python identifier</strong> — unlike <code>is456</code> which starts with digits</li>
 </ul>
-<h3 id="fallback-names-if-rcdesign-is-taken-on-pypi">Fallback Names (if <code>rcdesign</code> is taken on PyPI)<a class="headerlink" href="#fallback-names-if-rcdesign-is-taken-on-pypi" title="Permanent link">&para;</a></h3>
+<h3 id="why-calcrete-is-the-top-alternative">Why <code>calcrete</code> Is the Top Alternative<a class="headerlink" href="#why-calcrete-is-the-top-alternative" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Same length</strong> (8 chars) as <code>rcdesign</code></li>
+<li><strong>Unique</strong> — no similar packages on PyPI</li>
+<li><strong>Memorable</strong> — "calc" (calculate) + "crete" (concrete)</li>
+<li><strong>Expandable</strong> — doesn't lock to one code or element type</li>
+<li><strong>Valid Python identifier</strong> — <code>import calcrete as rc</code></li>
+</ul>
+<h3 id="fallback-names-if-top-choice-is-also-taken">Fallback Names (if top choice is also taken)<a class="headerlink" href="#fallback-names-if-top-choice-is-also-taken" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1852,65 +1914,124 @@
 <tbody>
 <tr>
 <td>1st</td>
-<td><code>rcdesign</code></td>
-<td><code>rcdesign</code></td>
-<td><code>rcdesign</code></td>
+<td><code>calcrete</code></td>
+<td><code>calcrete</code></td>
+<td><code>calcrete</code></td>
 </tr>
 <tr>
 <td>2nd</td>
-<td><code>rcdesign-py</code></td>
-<td><code>rcdesign-py</code></td>
-<td><code>rcdesign_py</code></td>
+<td><code>rccodes</code></td>
+<td><code>rccodes</code></td>
+<td><code>rccodes</code></td>
 </tr>
 <tr>
 <td>3rd</td>
-<td><code>rc-design</code></td>
-<td><code>rc-design</code></td>
-<td><code>rc_design</code></td>
+<td><code>rclib</code></td>
+<td><code>rclib</code></td>
+<td><code>rclib</code></td>
 </tr>
 </tbody>
 </table>
 <h3 id="pypi-availability-check">PyPI Availability Check<a class="headerlink" href="#pypi-availability-check" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Check if the name is available</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>index<span class="w"> </span>versions<span class="w"> </span>rcdesign
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Or visit: https://pypi.org/project/rcdesign/</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Check if a name is available</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>index<span class="w"> </span>versions<span class="w"> </span>&lt;PACKAGE_NAME&gt;
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Or visit: https://pypi.org/project/&lt;PACKAGE_NAME&gt;/</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># &quot;No versions found&quot; = available</span>
 </code></pre></div>
+<hr />
+<h2 id="pypi-availability-verification">PyPI Availability Verification<a class="headerlink" href="#pypi-availability-verification" title="Permanent link">&para;</a></h2>
+<p>All 7 alternatives verified available on PyPI as of <strong>2026-04-08</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>PyPI URL</th>
+<th>Status</th>
+<th>Verified</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calcrete</code></td>
+<td>pypi.org/project/calcrete/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+<tr>
+<td><code>concretedesign</code></td>
+<td>pypi.org/project/concretedesign/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+<tr>
+<td><code>rcdesigner</code></td>
+<td>pypi.org/project/rcdesigner/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+<tr>
+<td><code>rccodes</code></td>
+<td>pypi.org/project/rccodes/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+<tr>
+<td><code>rclib</code></td>
+<td>pypi.org/project/rclib/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+<tr>
+<td><code>concretelib</code></td>
+<td>pypi.org/project/concretelib/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+<tr>
+<td><code>structcodes</code></td>
+<td>pypi.org/project/structcodes/</td>
+<td>✅ Available</td>
+<td>2026-04-08</td>
+</tr>
+</tbody>
+</table>
 <h3 id="keyword-strategy-is456-as-discoverability-keyword">Keyword Strategy: <code>is456</code> as Discoverability Keyword<a class="headerlink" href="#keyword-strategy-is456-as-discoverability-keyword" title="Permanent link">&para;</a></h3>
 <p>Use <code>is456</code> in pyproject.toml <strong>keywords</strong> and <strong>classifiers</strong>, not in the package name:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[project]</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rcdesign&quot;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;PACKAGE_NAME&gt;&quot;</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="s2">&quot;structural-engineering&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="s2">&quot;reinforced-concrete&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s2">&quot;is456&quot;</span><span class="p">,</span><span class="w">             </span><span class="c1"># ← discoverability: engineers searching for IS 456</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="s2">&quot;beam-design&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="s2">&quot;column-design&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="s2">&quot;civil-engineering&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="s2">&quot;concrete-design&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="s2">&quot;indian-standard&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">]</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="s2">&quot;Development Status :: 4 - Beta&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="s2">&quot;Intended Audience :: Science/Research&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="s2">&quot;Intended Audience :: Education&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="s2">&quot;Topic :: Scientific/Engineering&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="s2">&quot;Topic :: Scientific/Engineering :: Physics&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="s2">&quot;Typing :: Typed&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">]</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="s2">&quot;aci318&quot;</span><span class="p">,</span><span class="w">            </span><span class="c1"># ← multi-code discoverability</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="s2">&quot;eurocode2&quot;</span><span class="p">,</span><span class="w">         </span><span class="c1"># ← multi-code discoverability</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="s2">&quot;beam-design&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="s2">&quot;column-design&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="s2">&quot;civil-engineering&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="s2">&quot;concrete-design&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="s2">&quot;indian-standard&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">]</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="s2">&quot;Development Status :: 4 - Beta&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="s2">&quot;Intended Audience :: Science/Research&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="s2">&quot;Intended Audience :: Education&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="s2">&quot;Topic :: Scientific/Engineering&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">    </span><span class="s2">&quot;Topic :: Scientific/Engineering :: Physics&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">    </span><span class="s2">&quot;Typing :: Typed&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="p">]</span>
 </code></pre></div>
-<p>This way, <code>pip search</code> and PyPI search for "is456" will find <code>rcdesign</code>.</p>
+<p>This way, <code>pip search</code> and PyPI search for "is456", "aci318", or "eurocode2" will find <code>&lt;PACKAGE_NAME&gt;</code>.</p>
 <h3 id="install-import-example">Install &amp; Import Example<a class="headerlink" href="#install-import-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>rcdesign
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>&lt;PACKAGE_NAME&gt;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rcdesign</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_beam</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">PACKAGE_NAME</span><span class="o">&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">design_beam</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_beam</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">230</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">)</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Steel: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Ast_mm2</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> mm²&quot;</span><span class="p">)</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">is_safe</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Or with alias:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">rcdesign</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rc</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="o">&lt;</span><span class="n">PACKAGE_NAME</span><span class="o">&gt;</span> <span class="k">as</span> <span class="n">rc</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">design_beam</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">230</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">)</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">stress</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">tau_c</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">pt</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>  <span class="c1"># IS 456 Table 19</span>
@@ -1957,9 +2078,9 @@
 <li>Go to https://pypi.org → Register/Login</li>
 <li>Navigate to <strong>"Your projects"</strong> → <strong>"Publishing"</strong> → <strong>"Add a new pending publisher"</strong></li>
 <li>Fill in:</li>
-<li><strong>PyPI Project Name:</strong> <code>rcdesign</code> (or chosen name)</li>
+<li><strong>PyPI Project Name:</strong> <code>&lt;PACKAGE_NAME&gt;</code> (once decided)</li>
 <li><strong>Owner:</strong> Your GitHub username or org</li>
-<li><strong>Repository name:</strong> <code>rcdesign</code></li>
+<li><strong>Repository name:</strong> <code>&lt;PACKAGE_NAME&gt;</code></li>
 <li><strong>Workflow name:</strong> <code>publish.yml</code></li>
 <li><strong>Environment name:</strong> <code>pypi</code></li>
 <li>Click <strong>"Add"</strong></li>
@@ -1971,7 +2092,7 @@
 <li>Same Trusted Publisher setup as above, but:</li>
 <li>Environment name: <code>testpypi</code></li>
 <li>Add a separate job in <code>publish.yml</code> for TestPyPI (runs on pre-release tags)</li>
-<li>Test with: <code>pip install --index-url https://test.pypi.org/simple/ rcdesign</code></li>
+<li>Test with: <code>pip install --index-url https://test.pypi.org/simple/ &lt;PACKAGE_NAME&gt;</code></li>
 </ol>
 <h3 id="4-codecov-coverage-tracking">4. Codecov — Coverage Tracking<a class="headerlink" href="#4-codecov-coverage-tracking" title="Permanent link">&para;</a></h3>
 <ol>

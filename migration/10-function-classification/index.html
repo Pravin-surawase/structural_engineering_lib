@@ -1618,6 +1618,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#multi-code-expansion-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Code Expansion Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1640,13 +1651,18 @@
 
 <h1 id="function-classification-complete-audit">Function Classification — Complete Audit<a class="headerlink" href="#function-classification-complete-audit" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Reference
+<strong>Version:</strong> 2.0
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Draft
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-04-07
-<strong>Last Updated:</strong> 2026-04-07</p>
+<strong>Last Updated:</strong> 2026-04-08</p>
 <hr />
-<p>All 123 exports from <code>structural_lib.__init__.py</code> classified as:</p>
+<blockquote>
+<p>For the complete <strong>564-function enumeration</strong> across all 3 codes (IS 456, ACI 318, EC2),
+see <a href="../11-complete-function-enumeration/">11-complete-function-enumeration.md</a>.</p>
+</blockquote>
+<p>All 123 <strong>current</strong> exports from <code>structural_lib.__init__.py</code> classified as:</p>
 <table>
 <thead>
 <tr>
@@ -1673,6 +1689,11 @@
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p><strong>Note:</strong> These 123 functions are the current IS 456-only exports. The full multi-code
+target is <strong>564 functions</strong> across IS 456 (160), ACI 318 (146), EC2 (156), and shared/common (102).
+See the Multi-Code Expansion Summary below.</p>
+</blockquote>
 <hr />
 <h2 id="core-functions-73-stay-in-library">CORE Functions (73) — Stay in Library<a class="headerlink" href="#core-functions-73-stay-in-library" title="Permanent link">&para;</a></h2>
 <h3 id="beam-flexure-from-codesis456beamflexurepy">Beam Flexure (from <code>codes/is456/beam/flexure.py</code>)<a class="headerlink" href="#beam-flexure-from-codesis456beamflexurepy" title="Permanent link">&para;</a></h3>
@@ -2444,7 +2465,87 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Decision rule:</strong> If you can use the function in a pure Python script with <code>pip install rcdesign</code> and no other dependencies, it's CORE or ORCH. If it needs ezdxf, jinja2, CSV files, or a web server, it's APP.</p>
+<p><strong>Decision rule:</strong> If you can use the function in a pure Python script with <code>pip install &lt;PACKAGE_NAME&gt;</code> and no other dependencies, it's CORE or ORCH. If it needs ezdxf, jinja2, CSV files, or a web server, it's APP.</p>
+<hr />
+<h2 id="multi-code-expansion-summary">Multi-Code Expansion Summary<a class="headerlink" href="#multi-code-expansion-summary" title="Permanent link">&para;</a></h2>
+<p>The full multi-code library targets <strong>564 functions</strong> across 3 design codes and 5 structural elements:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Shared</th>
+<th>IS 456</th>
+<th>ACI 318</th>
+<th>EC2</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Beam</td>
+<td>24</td>
+<td>52</td>
+<td>48</td>
+<td>50</td>
+<td>174</td>
+</tr>
+<tr>
+<td>Column</td>
+<td>14</td>
+<td>32</td>
+<td>30</td>
+<td>32</td>
+<td>108</td>
+</tr>
+<tr>
+<td>Slab</td>
+<td>16</td>
+<td>28</td>
+<td>26</td>
+<td>28</td>
+<td>98</td>
+</tr>
+<tr>
+<td>Footing</td>
+<td>12</td>
+<td>20</td>
+<td>18</td>
+<td>20</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Staircase</td>
+<td>6</td>
+<td>10</td>
+<td>8</td>
+<td>8</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Common</td>
+<td>30</td>
+<td>18</td>
+<td>16</td>
+<td>18</td>
+<td>82</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>102</strong></td>
+<td><strong>160</strong></td>
+<td><strong>146</strong></td>
+<td><strong>156</strong></td>
+<td><strong>564</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Shared (102):</strong> Protocol interfaces, common utilities, stress block math, material models</li>
+<li><strong>IS 456 (160):</strong> Current 123 exports + new slab, footing expansion, staircase</li>
+<li><strong>ACI 318 (146):</strong> Full parallel implementation via <code>FlexuralCode</code>, <code>ShearCode</code>, etc. protocols</li>
+<li><strong>EC2 (156):</strong> Full parallel implementation via same protocol interfaces</li>
+</ul>
+<p>For the complete function-by-function breakdown, see <a href="../11-complete-function-enumeration/">11-complete-function-enumeration.md</a>.</p>
 
 
 

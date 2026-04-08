@@ -1592,13 +1592,141 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tooling-stack" class="md-nav__link">
+  <a href="#tooling-stack-2026" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tooling Stack
+        Tooling Stack (2026)
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#superseded-tools-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Superseded Tools (AVOID)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Enforcement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Enforcement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tach-v0341-primary-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tach v0.34.1 (Primary — NEW)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-linter-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        import-linter (Backup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutation-testing-safety-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutation Testing (Safety-Critical)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mutation Testing (Safety-Critical)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mutmut-3x-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mutmut 3.x (NEW)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supply-chain-security-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supply Chain Security (NEW)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Supply Chain Security (NEW)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sigstore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sigstore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pip-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pip-audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cyclonedx-bom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cyclonedx-bom
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1708,6 +1836,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#watch-list-not-yet-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watch List (Not Yet Adopted)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1729,7 +1868,8 @@
 
 
 <h1 id="cicd-and-tooling-setup">CI/CD and Tooling Setup<a class="headerlink" href="#cicd-and-tooling-setup" title="Permanent link">&para;</a></h1>
-<p><strong>Type:</strong> Reference
+<p><strong>Version:</strong> 2.0
+<strong>Type:</strong> Reference
 <strong>Audience:</strong> All Agents
 <strong>Status:</strong> Draft
 <strong>Importance:</strong> Critical
@@ -1761,48 +1901,52 @@
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install uv</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v4</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v8</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">          </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python ${{ matrix.python-version }}</span>
 <a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv python install ${{ matrix.python-version }}</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --group test --group lint</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lint (ruff)</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --group test --group lint --group arch</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lint (ruff 0.15.9)</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">          </span><span class="no">uv run ruff check src/ tests/</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">          </span><span class="no">uv run ruff format --check src/ tests/</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Type check (mypy)</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mypy src/</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test with coverage</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run pytest --cov --cov-report=xml -v</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload coverage</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">matrix.os == &#39;ubuntu-latest&#39; &amp;&amp; matrix.python-version == &#39;3.12&#39;</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codecov/codecov-action@v4</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">          </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CODECOV_TOKEN }}</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">          </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coverage.xml</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">          </span><span class="nt">fail_ci_if_error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>
-<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">  </span><span class="nt">benchmark</span><span class="p">:</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v4</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv python install 3.12</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --group test</span>
-<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SP:16 Benchmarks</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run pytest -m benchmark -v --tb=short</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>
-<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">  </span><span class="nt">check</span><span class="p">:</span><span class="w">  </span><span class="c1"># Single required status check</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
-<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">test</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">benchmark</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">re-actors/alls-green@release/v1</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">          </span><span class="nt">jobs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ toJSON(needs) }}</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Type check (basedpyright — primary)</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run basedpyright src/</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Type check (mypy strict — backup)</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mypy --strict src/</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Architecture boundaries (tach)</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run tach check</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test with coverage</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run pytest --cov --cov-report=xml -v</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload coverage</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">matrix.os == &#39;ubuntu-latest&#39; &amp;&amp; matrix.python-version == &#39;3.12&#39;</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codecov/codecov-action@v4</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">          </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CODECOV_TOKEN }}</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">          </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coverage.xml</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">          </span><span class="nt">fail_ci_if_error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="nt">benchmark</span><span class="p">:</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v8</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv python install 3.12</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --group test</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SP:16 Benchmarks</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run pytest -m benchmark -v --tb=short</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>
+<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">  </span><span class="nt">check</span><span class="p">:</span><span class="w">  </span><span class="c1"># Single required status check</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">test</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">benchmark</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">re-actors/alls-green@release/v1</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a><span class="w">          </span><span class="nt">jobs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ toJSON(needs) }}</span>
 </code></pre></div>
 <blockquote>
 <p><strong><code>re-actors/alls-green</code></strong> is used as the single required status check on the <code>main</code> branch.
@@ -1843,7 +1987,7 @@ Only <code>check</code> needs to be required — it gates on all upstream jobs.<
 <a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v4</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v8</span>
 <a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv build</span>
 <a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publish to TestPyPI</span>
 <a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pypa/gh-action-pypi-publish@release/v1</span>
@@ -1872,7 +2016,7 @@ pipeline is always exercised, not just at release time.</p>
 <a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">  </span><span class="c1"># Full history for hatch-vcs</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v4</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v8</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv build</span>
 <a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v4</span>
 <a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
@@ -1906,7 +2050,7 @@ pipeline is always exercised, not just at release time.</p>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v4</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v8</span>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv python install 3.12</span>
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">working-directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backend</span>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -1964,12 +2108,12 @@ pipeline is always exercised, not just at release time.</p>
 <hr />
 <h2 id="pre-commit-configuration">Pre-commit Configuration<a class="headerlink" href="#pre-commit-configuration" title="Permanent link">&para;</a></h2>
 <h3 id="pre-commit-configyaml-library">.pre-commit-config.yaml (Library)<a class="headerlink" href="#pre-commit-configyaml-library" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># .pre-commit-config.yaml for rcdesign</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># .pre-commit-config.yaml for &lt;PACKAGE_NAME&gt;</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">minimum_pre_commit_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4.0.0&quot;</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">repos</span><span class="p">:</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/astral-sh/ruff-pre-commit</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.15.0</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.15.9</span>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff</span>
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--fix</span><span class="p p-Indicator">]</span>
@@ -2007,97 +2151,275 @@ pipeline is always exercised, not just at release time.</p>
 <a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sp-repo-review</span>
 </code></pre></div>
 <hr />
-<h2 id="tooling-stack">Tooling Stack<a class="headerlink" href="#tooling-stack" title="Permanent link">&para;</a></h2>
+<h2 id="tooling-stack-2026">Tooling Stack (2026)<a class="headerlink" href="#tooling-stack-2026" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Tool</th>
+<th>Version</th>
 <th>Purpose</th>
-<th>Why</th>
+<th>Replaces</th>
 <th>Config Location</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>uv</strong></td>
-<td>Package management</td>
-<td>82.8k⭐, replaces pip/poetry/pipx, 10-100x faster</td>
+<td>0.11.3</td>
+<td>Package management, 10–100× faster</td>
+<td>pip, poetry, Rye</td>
 <td><code>uv.lock</code></td>
 </tr>
 <tr>
 <td><strong>ruff</strong></td>
-<td>Lint + format</td>
-<td>46.9k⭐, replaces flake8+black+isort+pyupgrade</td>
+<td>0.15.9</td>
+<td>Lint + format (19 rule sets)</td>
+<td>black, isort, flake8, bandit, darglint</td>
 <td><code>[tool.ruff]</code> in pyproject.toml</td>
 </tr>
 <tr>
+<td><strong>basedpyright</strong></td>
+<td>v1.39.0</td>
+<td>Primary type checker (stricter than pyright)</td>
+<td>pyright basic</td>
+<td><code>[tool.basedpyright]</code> in pyproject.toml</td>
+</tr>
+<tr>
 <td><strong>mypy</strong></td>
-<td>Type checking</td>
-<td>Industry standard, strict mode catches bugs</td>
+<td>strict</td>
+<td>Backup type checker in CI</td>
+<td>—</td>
 <td><code>[tool.mypy]</code> in pyproject.toml</td>
 </tr>
 <tr>
-<td><strong>pyright</strong></td>
-<td>Type checking (IDE)</td>
-<td>Powers Pylance in VS Code</td>
-<td><code>pyrightconfig.json</code></td>
+<td><strong>tach</strong></td>
+<td>v0.34.1</td>
+<td>Architecture boundary enforcement (NEW)</td>
+<td>import-linter</td>
+<td><code>tach.toml</code></td>
 </tr>
 <tr>
 <td><strong>pytest</strong></td>
-<td>Testing</td>
-<td>Gold standard for Python testing</td>
+<td>9.0.3</td>
+<td>Testing (strict mode)</td>
+<td>—</td>
 <td><code>[tool.pytest]</code> in pyproject.toml</td>
 </tr>
 <tr>
+<td><strong>mutmut</strong></td>
+<td>3.x</td>
+<td>Mutation testing for safety-critical math (NEW)</td>
+<td>—</td>
+<td><code>[tool.mutmut]</code> in pyproject.toml</td>
+</tr>
+<tr>
 <td><strong>hypothesis</strong></td>
-<td>Property testing</td>
-<td>Discovers edge cases automatically</td>
+<td>≥6.100</td>
+<td>Property-based testing</td>
+<td>—</td>
 <td>Part of test deps</td>
 </tr>
 <tr>
 <td><strong>pytest-benchmark</strong></td>
-<td>Performance</td>
-<td>Regression detection for critical paths</td>
+<td>≥5.0</td>
+<td>Performance regression detection</td>
+<td>—</td>
+<td>Part of test deps</td>
+</tr>
+<tr>
+<td><strong>inline-snapshot</strong></td>
+<td>≥0.10</td>
+<td>Snapshot testing</td>
+<td>—</td>
 <td>Part of test deps</td>
 </tr>
 <tr>
 <td><strong>codecov</strong></td>
-<td>Coverage tracking</td>
-<td>Track coverage over time, fail on regression</td>
+<td>—</td>
+<td>Coverage tracking, fail on regression</td>
+<td>—</td>
 <td><code>.codecov.yml</code></td>
 </tr>
 <tr>
 <td><strong>towncrier</strong></td>
-<td>Changelogs</td>
-<td>Structured, contributor-friendly changelog</td>
+<td>—</td>
+<td>Structured changelogs</td>
+<td>—</td>
 <td><code>[tool.towncrier]</code></td>
 </tr>
 <tr>
 <td><strong>pre-commit</strong></td>
+<td>≥4.0</td>
 <td>Git hooks</td>
-<td>Consistent quality on every commit</td>
+<td>—</td>
 <td><code>.pre-commit-config.yaml</code></td>
 </tr>
 <tr>
 <td><strong>zizmor</strong></td>
-<td>GH Actions security</td>
-<td>Catches injection, unpinned actions, missing permissions</td>
+<td>v1.23.0</td>
+<td>GitHub Actions security linter</td>
+<td>—</td>
 <td><code>.pre-commit-config.yaml</code></td>
 </tr>
 <tr>
 <td><strong>MkDocs Material</strong></td>
-<td>Documentation</td>
-<td>Beautiful docs with API auto-generation</td>
+<td>9.7.6</td>
+<td>Documentation site</td>
+<td>—</td>
 <td><code>mkdocs.yml</code></td>
 </tr>
 <tr>
 <td><strong>mkdocstrings</strong></td>
-<td>API docs</td>
-<td>Auto-generate from docstrings</td>
+<td>1.0.3</td>
+<td>Auto-generate API docs from docstrings</td>
+<td>—</td>
 <td>Part of docs deps</td>
+</tr>
+<tr>
+<td><strong>Sigstore</strong></td>
+<td>—</td>
+<td>Supply chain security for releases (NEW)</td>
+<td>—</td>
+<td>CI workflow</td>
+</tr>
+<tr>
+<td><strong>pip-audit</strong></td>
+<td>—</td>
+<td>Dependency CVE scanning (NEW)</td>
+<td>—</td>
+<td>CI workflow</td>
+</tr>
+<tr>
+<td><strong>cyclonedx-bom</strong></td>
+<td>—</td>
+<td>SBOM generation (NEW)</td>
+<td>—</td>
+<td>CI workflow</td>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="superseded-tools-avoid">Superseded Tools (AVOID)<a class="headerlink" href="#superseded-tools-avoid" title="Permanent link">&para;</a></h2>
+<p>These tools are <strong>fully replaced</strong> by modern alternatives. Do NOT add them to new projects.</p>
+<table>
+<thead>
+<tr>
+<th>❌ Superseded Tool</th>
+<th>✅ Use Instead</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>black</td>
+<td><code>ruff format</code></td>
+<td>ruff is 10–100× faster, same output</td>
+</tr>
+<tr>
+<td>isort</td>
+<td><code>ruff</code> (I rules)</td>
+<td>Built into ruff</td>
+</tr>
+<tr>
+<td>flake8</td>
+<td><code>ruff</code> (E, W, F rules)</td>
+<td>Built into ruff, plus 700+ additional rules</td>
+</tr>
+<tr>
+<td>bandit</td>
+<td><code>ruff</code> (S rules)</td>
+<td>Security rules built into ruff</td>
+</tr>
+<tr>
+<td>darglint</td>
+<td><code>ruff</code> (D rules)</td>
+<td>Docstring linting built into ruff</td>
+</tr>
+<tr>
+<td>pip</td>
+<td><code>uv</code></td>
+<td>10–100× faster, lockfile support, Python management</td>
+</tr>
+<tr>
+<td>poetry</td>
+<td><code>uv</code></td>
+<td>uv replaces all poetry functionality</td>
+</tr>
+<tr>
+<td>Rye</td>
+<td><code>uv</code></td>
+<td>Rye creator (Armin) recommends uv as successor</td>
+</tr>
+<tr>
+<td>pyright (standalone)</td>
+<td><code>basedpyright</code></td>
+<td>Stricter defaults, better error messages</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="architecture-enforcement">Architecture Enforcement<a class="headerlink" href="#architecture-enforcement" title="Permanent link">&para;</a></h2>
+<h3 id="tach-v0341-primary-new">tach v0.34.1 (Primary — NEW)<a class="headerlink" href="#tach-v0341-primary-new" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/gauge-sh/tach">tach</a> enforces the 5-layer import boundary at CI time. If any module imports from a forbidden layer, CI fails.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># tach.toml</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">[modules]</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">core</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">depends_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">common</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">depends_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;core&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s2">&quot;codes.*&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">depends_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;common&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;core&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">services</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">depends_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;common&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;core&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># CI step (add to ci.yml)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Architecture boundaries (tach)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run tach check</span>
+</code></pre></div>
+<h3 id="import-linter-backup">import-linter (Backup)<a class="headerlink" href="#import-linter-backup" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># pyproject.toml</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">[tool.importlinter]</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">root_packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;PACKAGE_NAME&gt;&quot;</span><span class="p">]</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">[[tool.importlinter.contracts]]</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5-layer architecture&quot;</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;layers&quot;</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">layers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;services&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;codes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;common&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;core&quot;</span><span class="p">]</span>
+</code></pre></div>
+<hr />
+<h2 id="mutation-testing-safety-critical">Mutation Testing (Safety-Critical)<a class="headerlink" href="#mutation-testing-safety-critical" title="Permanent link">&para;</a></h2>
+<h3 id="mutmut-3x-new">mutmut 3.x (NEW)<a class="headerlink" href="#mutmut-3x-new" title="Permanent link">&para;</a></h3>
+<p>For safety-critical IS 456 math functions, line coverage alone is insufficient. <strong>Mutation testing</strong> verifies that tests actually catch bugs by introducing small code mutations and checking that tests fail.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Run mutation tests on safety-critical modules</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>uv<span class="w"> </span>run<span class="w"> </span>mutmut<span class="w"> </span>run<span class="w"> </span>--paths-to-mutate<span class="o">=</span>src/&lt;PACKAGE_NAME&gt;/codes/is456/beam/flexure.py
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>uv<span class="w"> </span>run<span class="w"> </span>mutmut<span class="w"> </span>results
+</code></pre></div>
+<p><strong>Priority targets for mutation testing:</strong>
+- <code>flexure.py</code> — moment capacity, steel area (life-safety)
+- <code>shear.py</code> — shear strength (life-safety)
+- <code>tables.py</code> — IS 456 table interpolation (accuracy-critical)
+- <code>stress_block.py</code> — stress block calculations (shared by all codes)</p>
+<p><strong>CI Integration:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mutation testing (safety-critical)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="no">uv run mutmut run --paths-to-mutate=src/&lt;PACKAGE_NAME&gt;/codes/is456/beam/flexure.py --no-progress</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="no">uv run mutmut results --survived-only &amp;&amp; exit 1 || true</span>
+</code></pre></div></p>
+<hr />
+<h2 id="supply-chain-security-new">Supply Chain Security (NEW)<a class="headerlink" href="#supply-chain-security-new" title="Permanent link">&para;</a></h2>
+<h3 id="sigstore">Sigstore<a class="headerlink" href="#sigstore" title="Permanent link">&para;</a></h3>
+<p>Sign releases using Sigstore (keyless signing via OIDC). Used by pip, CPython, and all major Python projects.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># In publish.yml</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sign with Sigstore</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sigstore/gh-action-sigstore-python@v3</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dist/*</span>
+</code></pre></div>
+<h3 id="pip-audit">pip-audit<a class="headerlink" href="#pip-audit" title="Permanent link">&para;</a></h3>
+<p>Scan dependencies for known CVEs:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Audit dependencies</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run pip-audit --require-hashes --desc</span>
+</code></pre></div></p>
+<h3 id="cyclonedx-bom">cyclonedx-bom<a class="headerlink" href="#cyclonedx-bom" title="Permanent link">&para;</a></h3>
+<p>Generate SBOM (Software Bill of Materials) for each release:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>uv<span class="w"> </span>run<span class="w"> </span>cyclonedx-py<span class="w"> </span>environment<span class="w"> </span>-o<span class="w"> </span>sbom.json
+</code></pre></div></p>
 <hr />
 <h2 id="zizmor-github-actions-security-linter">Zizmor — GitHub Actions Security Linter<a class="headerlink" href="#zizmor-github-actions-security-linter" title="Permanent link">&para;</a></h2>
 <blockquote>
@@ -2109,90 +2431,116 @@ pipeline is always exercised, not just at release time.</p>
 </blockquote>
 <p>zizmor runs as a pre-commit hook (see <code>.pre-commit-config.yaml</code> above) with <code>--fix --no-progress</code>
 to auto-remediate simple issues. For CI, add it as a standalone step:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Audit GitHub Actions (zizmor)</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uvx zizmor --fix --no-progress .github/workflows/</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Audit GitHub Actions (zizmor)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uvx zizmor --fix --no-progress .github/workflows/</span>
 </code></pre></div>
 <p>See <a href="https://woodruffw.github.io/zizmor/">zizmor docs</a> for full rule reference.</p>
 <hr />
 <h2 id="dependabot-configuration">Dependabot Configuration<a class="headerlink" href="#dependabot-configuration" title="Permanent link">&para;</a></h2>
 <h3 id="dependabotyml">dependabot.yml<a class="headerlink" href="#dependabotyml" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># .github/dependabot.yml</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">updates</span><span class="p">:</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;github-actions&quot;</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">groups</span><span class="p">:</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="nt">actions</span><span class="p">:</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="nt">patterns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pip&quot;</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="nt">groups</span><span class="p">:</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">      </span><span class="nt">dev-deps</span><span class="p">:</span>
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">        </span><span class="nt">patterns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">        </span><span class="nt">dependency-type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;development&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># .github/dependabot.yml</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nt">updates</span><span class="p">:</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;github-actions&quot;</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="nt">groups</span><span class="p">:</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">      </span><span class="nt">actions</span><span class="p">:</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">        </span><span class="nt">patterns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pip&quot;</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">    </span><span class="nt">groups</span><span class="p">:</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">      </span><span class="nt">dev-deps</span><span class="p">:</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="w">        </span><span class="nt">patterns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="w">        </span><span class="nt">dependency-type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;development&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="editorconfig">.editorconfig<a class="headerlink" href="#editorconfig" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="na">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">[*]</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">space</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="na">indent_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="na">end_of_line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lf</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="na">charset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">utf-8</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="na">trim_trailing_whitespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="na">insert_final_newline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="k">[*.{yml,yaml,json,toml}]</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="na">indent_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="k">[*.md]</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="na">trim_trailing_whitespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">false</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="k">[Makefile]</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tab</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="na">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="k">[*]</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">space</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="na">indent_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="na">end_of_line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lf</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="na">charset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">utf-8</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="na">trim_trailing_whitespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="na">insert_final_newline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="k">[*.{yml,yaml,json,toml}]</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="na">indent_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="k">[*.md]</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="na">trim_trailing_whitespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">false</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="k">[Makefile]</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tab</span>
 </code></pre></div>
 <hr />
 <h2 id="codecov-configuration">Codecov Configuration<a class="headerlink" href="#codecov-configuration" title="Permanent link">&para;</a></h2>
 <h3 id="codecovyml">.codecov.yml<a class="headerlink" href="#codecovyml" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># .codecov.yml</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">coverage</span><span class="p">:</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">status</span><span class="p">:</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">project</span><span class="p">:</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">95%</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2%</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">patch</span><span class="p">:</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">90%</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">        </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5%</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">  </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;80...100&quot;</span>
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="nt">comment</span><span class="p">:</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">  </span><span class="nt">layout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;reach,diff,flags,files&quot;</span>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">  </span><span class="nt">behavior</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">  </span><span class="nt">require_changes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># .codecov.yml</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">coverage</span><span class="p">:</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">status</span><span class="p">:</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nt">project</span><span class="p">:</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">95%</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">        </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2%</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nt">patch</span><span class="p">:</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">90%</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">        </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5%</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">  </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;80...100&quot;</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="nt">comment</span><span class="p">:</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">  </span><span class="nt">layout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;reach,diff,flags,files&quot;</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">  </span><span class="nt">behavior</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">  </span><span class="nt">require_changes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 <hr />
 <h2 id="readthedocs-configuration">ReadTheDocs Configuration<a class="headerlink" href="#readthedocs-configuration" title="Permanent link">&para;</a></h2>
 <h3 id="readthedocsyaml">.readthedocs.yaml<a class="headerlink" href="#readthedocsyaml" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">build</span><span class="p">:</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-22.04</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="nt">tools</span><span class="p">:</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.12&quot;</span>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">  </span><span class="nt">commands</span><span class="p">:</span>
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install uv</span>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --group docs</span>
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mkdocs build -d $READTHEDOCS_OUTPUT/html</span>
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="nt">mkdocs</span><span class="p">:</span>
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docs/mkdocs.yml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nt">build</span><span class="p">:</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-22.04</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.12&quot;</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">  </span><span class="nt">commands</span><span class="p">:</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install uv</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --group docs</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mkdocs build -d $READTHEDOCS_OUTPUT/html</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="nt">mkdocs</span><span class="p">:</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docs/mkdocs.yml</span>
 </code></pre></div>
+<hr />
+<h2 id="watch-list-not-yet-adopted">Watch List (Not Yet Adopted)<a class="headerlink" href="#watch-list-not-yet-adopted" title="Permanent link">&para;</a></h2>
+<p>Tools that are promising but not yet stable enough for production use:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Version</th>
+<th>Status</th>
+<th>What It Does</th>
+<th>When to Adopt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ty</strong></td>
+<td>v0.0.29</td>
+<td>Beta (18.2K ⭐)</td>
+<td>Astral's new type checker (by ruff team)</td>
+<td>When it reaches v1.0 or gains full basedpyright parity</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>ty</strong> is Astral's (ruff company) new type checker. It's extremely fast and will likely become the default Python type checker. However, at v0.0.29 it's too early for production safety-critical code. Monitor progress at <a href="https://github.com/astral-sh/ty">github.com/astral-sh/ty</a>.</p>
+</blockquote>
 
 
 
