@@ -29,6 +29,7 @@ Master index for splitting the monorepo into:
 | 09 | [09-standards-and-rules.md](09-standards-and-rules.md) | Standards: `fck` convention, 19 ruff rule sets, 6 test types, clause referencing |
 | 10 | [10-function-classification.md](10-function-classification.md) | Classification: Canonical table — all 123 current functions categorized (CORE/ORCH/APP) |
 | 11 | [11-complete-function-enumeration.md](11-complete-function-enumeration.md) | Complete 564-function enumeration across IS 456, ACI 318, EC2 (5 elements) |
+| 12 | [12-innovation-ideas.md](12-innovation-ideas.md) | Innovation: 10 breakthrough ideas — cutting stock, compliance proof, clash detection, load combos, retrofit, arbitrary sections |
 
 ## Summary
 
