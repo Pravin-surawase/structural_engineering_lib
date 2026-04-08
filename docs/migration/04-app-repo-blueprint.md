@@ -1,6 +1,7 @@
 # App Repository Blueprint
 
 **Type:** Reference
+**Version:** 2.0
 **Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
@@ -11,9 +12,11 @@
 
 ## Repository Name
 
-`structural-design-app` or `rcdesign-app`
+`structural-design-app` or `<PACKAGE_NAME>-app`
 
-**Recommendation:** `rcdesign-app` — maintains branding consistency with the library.
+**Recommendation:** `<PACKAGE_NAME>-app` — maintains branding consistency with the library.
+
+> ⚠️ **Name Update:** `rcdesign` is TAKEN on PyPI (v0.4.18, Satish Annigeri). New name pending — see [08-naming-and-accounts.md](08-naming-and-accounts.md). All references use `<PACKAGE_NAME>` placeholder.
 
 ---
 
@@ -121,10 +124,10 @@ rcdesign-app/
 ```toml
 # backend/pyproject.toml
 [project]
-name = "rcdesign-app"
+name = "<PACKAGE_NAME>-app"
 requires-python = ">=3.11"
 dependencies = [
-    "rcdesign>=1.0,<2.0",         # The IS 456 library (from PyPI)
+    "<PACKAGE_NAME>>=1.0,<2.0",   # The IS 456 library (from PyPI) — name TBD
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
     "pydantic>=2.0",
@@ -186,7 +189,7 @@ dev = [
 
 ```python
 # backend/app/routers/design.py
-from rcdesign import design_beam, BeamDesignResult
+from <PACKAGE_NAME> import design_beam, BeamDesignResult
 
 @router.post("/api/v1/design/beam")
 async def design_beam_endpoint(request: BeamDesignRequest) -> BeamDesignResponse:
@@ -200,4 +203,72 @@ async def design_beam_endpoint(request: BeamDesignRequest) -> BeamDesignResponse
     return BeamDesignResponse.from_result(result)
 ```
 
-This is the clean boundary: the app imports the library (`rcdesign`) as a pip-installed dependency, never from local paths.
+This is the clean boundary: the app imports the library (`<PACKAGE_NAME>`) as a pip-installed dependency, never from local paths.
+
+---
+
+## Multi-Code Frontend Needs (v2.0)
+
+When multi-code support lands in the library (Phase 3–4), the app frontend needs these additions:
+
+### Code Selector Dropdown
+
+- Global code selector: IS 456 / ACI 318 / EC2
+- Persisted in Zustand store (`useDesignStore`)
+- Affects all design forms — beam, column, footing, slab
+- Default: IS 456 (maintains backward compatibility)
+
+### Comparison View
+
+- Side-by-side results panel showing design output from 2–3 codes simultaneously
+- Highlights differences: required steel area, safety factors, governing clauses
+- Color-coded: green (all codes safe), yellow (divergent results), red (any code fails)
+
+### Grade Mapping Display
+
+- Shows equivalent material grades across codes (e.g., M25 ≈ C25/30 ≈ f'c=25 MPa)
+- Auto-maps user-selected grade to equivalent grades in other codes
+- Displayed as a lookup panel accessible from any design form
+
+---
+
+## Multi-Code API Endpoints (v2.0)
+
+New v2 API endpoints to support multi-code design:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v2/design/beam` | Beam design with `code` parameter (`IS456`, `ACI318`, `EC2`) |
+| `POST` | `/api/v2/compare/beam` | Multi-code beam comparison — returns results from all requested codes |
+| `GET` | `/api/v2/codes` | List available design codes with version info |
+| `GET` | `/api/v2/grades/map` | Grade mapping lookup (e.g., M25 → C25/30 → f'c=25 MPa) |
+| `POST` | `/api/v2/compare/column` | Multi-code column comparison |
+| `POST` | `/api/v2/design/column` | Column design with `code` parameter |
+
+### Example: Multi-Code Comparison Request
+
+```json
+{
+  "b_mm": 300,
+  "d_mm": 500,
+  "Mu_kNm": 200,
+  "fck": 25,
+  "fy": 415,
+  "codes": ["IS456", "ACI318", "EC2"]
+}
+```
+
+### Example: Grade Mapping Response
+
+```json
+{
+  "base_code": "IS456",
+  "base_grade": "M25",
+  "mappings": {
+    "ACI318": {"grade": "f'c = 25 MPa", "note": "Direct equivalent"},
+    "EC2": {"grade": "C25/30", "note": "fck=25, fck,cube=30"}
+  }
+}
+```
+
+> **Note:** v1 endpoints remain unchanged for backward compatibility. v2 endpoints are additive.

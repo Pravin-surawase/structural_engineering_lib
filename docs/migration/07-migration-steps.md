@@ -1,94 +1,91 @@
 # Step-by-Step Migration Checklist
 
 **Type:** Guide
+**Version:** 2.0
 **Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
 **Created:** 2026-04-07
 **Last Updated:** 2026-04-08
 
+## Version History
+
+- **v2.0 (2026-04-08):** Restructured phases for consistency with multi-code scope, added rollback plan and success criteria per phase, fixed phase numbering
+- **v1.0 (2026-04-07):** Initial 4-phase migration plan (IS 456 only)
+
 ---
 
 ## Overview
 
-| Phase | Duration | Focus |
-|-------|----------|-------|
-| **Pre-Migration** | Week 0 | Setup accounts, finalize naming, prepare benchmarks |
-| **Phase 1** | Weeks 1–2 | Library extraction — create repo, migrate 73 CORE + 35 ORCH functions |
-| **Phase 2** | Weeks 3–4 | App extraction — create repo, migrate 30 APP functions + FastAPI + React |
-| **Phase 3** | Week 5 | Validation — full test suite, SP:16 benchmarks, integration tests |
-| **Phase 4** | Week 6 | Release — publish to PyPI, deploy app, cleanup |
+| Phase | Duration | Focus | Success Gate |
+|-------|----------|-------|-------------|
+| **Phase 0** | Week 0 | Pre-migration setup, naming, benchmarks | Repo created, tach.toml configured, name chosen |
+| **Phase 1** | Weeks 1–2 | Extract IS 456 core (123 functions → new structure) | `pip install <pkg>` works, all IS 456 tests pass |
+| **Phase 2** | Weeks 3–4 | Validate & test | 95% coverage, SP:16 ±0.1%, type checks pass |
+| **Phase 3** | Week 5 | Release IS 456 v1.0 to PyPI | Package live, deprecation notice on old package |
+| **Phase 4** | Weeks 6+ | Multi-code expansion (ACI 318, EC2) | 564 total functions, cross-code comparison works |
 
 ---
 
-## Pre-Migration (Week 0)
+## Phase 0 — Pre-Migration (Week 0)
 
-### Naming & Accounts
+### Tasks
 
-- [ ] Choose library name — check PyPI availability with `pip index versions <name>`
+- [ ] **Choose package name** — ⚠️ BLOCKED: `rcdesign` is taken on PyPI. See [08-naming-and-accounts.md](08-naming-and-accounts.md)
+- [ ] Set up new GitHub repository with MIT license, README, .gitignore (Python)
+- [ ] Initialize with `uv init <name> --lib` (creates src/ layout)
+- [ ] Configure `pyproject.toml` — see [03-library-repo-blueprint.md](03-library-repo-blueprint.md)
+- [ ] Set up `tach.toml` for 5-layer architecture enforcement:
+  ```toml
+  [[modules]]
+  path = "core"
+  depends_on = []
+
+  [[modules]]
+  path = "common"
+  depends_on = ["core"]
+
+  [[modules]]
+  path = "codes"
+  depends_on = ["core", "common"]
+
+  [[modules]]
+  path = "services"
+  depends_on = ["core", "common", "codes"]
+  ```
+- [ ] Set up CI skeleton: pytest, ruff, basedpyright, tach check
 - [ ] Set up PyPI account and configure Trusted Publisher
 - [ ] Set up TestPyPI account and configure Trusted Publisher
 - [ ] Set up Codecov account and connect to GitHub
-- [ ] Set up ReadTheDocs account and import repo
-- [ ] Decide on GitHub organization (optional)
-
-### Preparation in Current Monorepo
-
-- [ ] Review and finalize function classification (see [10-function-classification.md](10-function-classification.md))
 - [ ] Create SP:16 benchmark golden vector test suite (Charts 1–62)
-- [ ] Run full test suite — ensure everything passes before migration
+- [ ] Create Pillai & Menon textbook test suite
+- [ ] Run full test suite in current monorepo — ensure 100% pass before migration
 - [ ] Document all public API signatures with `discover_api_signatures.py`
-- [ ] Export current test coverage baseline
-- [ ] Archive stale docs and clean up `docs/_archive/`
+- [ ] Review and finalize function classification (see [10-function-classification.md](10-function-classification.md))
+
+### Rollback Plan
+
+- **Trigger:** Naming blocked, tooling doesn't work, or team decides against split
+- **Action:** Delete the new repo. Monorepo continues unchanged.
+- **Impact:** Zero — no changes to existing package or users
+
+### Success Criteria
+
+| Criterion | Target |
+|-----------|--------|
+| Package name decided | ✅ Name available on PyPI and importable |
+| Repo initialized | ✅ `uv sync --dev` resolves cleanly |
+| CI skeleton green | ✅ Empty test suite passes |
+| tach.toml configured | ✅ `tach check` passes with 5-layer rules |
+| Benchmark suite ready | ✅ SP:16 Charts 1–62 encoded as JSON golden vectors |
 
 ---
 
-## Phase 1: Library Extraction (Weeks 1–2)
+## Phase 1 — Extract IS 456 Core (Weeks 1–2)
 
-### Step 1: Create New Repository
+### Tasks
 
-- [ ] Create GitHub repo with MIT license, README, .gitignore (Python)
-- [ ] Enable branch protection: require PR reviews, require CI status checks
-- [ ] Enable Dependabot security alerts + dependency updates
-- [ ] Enable secret scanning
-- [ ] Add repository topics: `structural-engineering`, `is456`, `reinforced-concrete`, `python-library`
-- [ ] Add CODEOWNERS file (owner auto-reviews all PRs)
-- [ ] Create `pypi` environment in repo settings for releases
-
-### Step 2: Set Up Project Structure
-
-- [ ] Initialize with `uv init <name> --lib` (creates src/ layout)
-- [ ] Create `src/<package>/` folder structure per [03-library-repo-blueprint.md](03-library-repo-blueprint.md)
-- [ ] Add `py.typed` marker (PEP 561)
-- [ ] Configure `pyproject.toml` — see complete template in blueprint
-- [ ] Add `.pre-commit-config.yaml` — see [06-ci-cd-and-tooling.md](06-ci-cd-and-tooling.md)
-- [ ] Add `.editorconfig` for cross-editor consistency
-- [ ] Add `.python-version` file (`3.12`)
-- [ ] Run `uv sync --dev` to verify dependencies resolve
-
-### Step 3: Set Up CI/CD
-
-- [ ] Create `.github/workflows/ci.yml` — test matrix (3 Python × 3 OS)
-- [ ] Create `.github/workflows/publish.yml` — Trusted Publishers (OIDC)
-- [ ] Configure PyPI Trusted Publisher (repo → workflow → environment)
-- [ ] Configure TestPyPI Trusted Publisher
-- [ ] Set up Codecov with `CODECOV_TOKEN` in repo secrets
-- [ ] Verify CI runs green with empty src/ and a trivial test
-
-### Step 4: Set Up AI Agents
-
-- [ ] Create `.github/copilot-instructions.md` — global instructions
-- [ ] Create 4 agent files: `coder.agent.md`, `reviewer.agent.md`, `tester.agent.md`, `math-verifier.agent.md`
-- [ ] Create 3 instruction files: `python.instructions.md`, `tests.instructions.md`, `docs.instructions.md`
-- [ ] Create 4 prompt files: `new-feature.prompt.md`, `fix-bug.prompt.md`, `add-clause.prompt.md`, `release.prompt.md`
-- [ ] Create 2 skill files: `test-pipeline/SKILL.md`, `is456-verify/SKILL.md`
-- [ ] Create `AGENTS.md` — cross-agent instructions
-
-### Step 5: Migrate Core Functions (73 CORE)
-
-Migration order: dependencies first, then dependents.
-
-#### 5a: Core types (no dependencies)
+#### 1a: Core types (no dependencies)
 
 - [ ] Copy `core/types.py` → `src/<pkg>/core/types.py`
 - [ ] Copy `core/constants.py` → `src/<pkg>/core/constants.py`
@@ -101,16 +98,17 @@ Migration order: dependencies first, then dependents.
 - [ ] Refactor imports to new package structure
 - [ ] Verify: `uv run pytest tests/test_core.py -v`
 
-#### 5b: Common math (depends on core)
+#### 1b: Common math (depends on core)
 
 - [ ] Copy `common/stress_blocks.py` → `src/<pkg>/common/stress_block.py`
 - [ ] Copy `common/tables.py` → `src/<pkg>/common/tables.py`
 - [ ] Copy `common/reinforcement.py` → `src/<pkg>/common/reinforcement.py`
 - [ ] Copy BBS math (cut lengths, shape codes only) → `src/<pkg>/common/bbs.py`
+- [ ] Copy `common/detailing.py` → `src/<pkg>/common/detailing.py`
 - [ ] Refactor imports
 - [ ] Verify: `uv run pytest tests/test_common.py -v`
 
-#### 5c: Beam math (depends on core + common)
+#### 1c: Beam math (depends on core + common)
 
 - [ ] Copy beam `flexure.py` (8 functions)
 - [ ] Copy beam `shear.py` (5 functions)
@@ -120,7 +118,7 @@ Migration order: dependencies first, then dependents.
 - [ ] Refactor imports, remove `_is456` suffix from function names
 - [ ] Verify: `uv run pytest tests/test_beam_*.py -v`
 
-#### 5d: Column math (depends on core + common)
+#### 1d: Column math (depends on core + common)
 
 - [ ] Copy column `axial.py` (classify, effective_length, axial_capacity, min_eccentricity)
 - [ ] Copy column `uniaxial.py` (pm_interaction_curve, design_short_column_uniaxial)
@@ -130,168 +128,188 @@ Migration order: dependencies first, then dependents.
 - [ ] Refactor imports
 - [ ] Verify: `uv run pytest tests/test_column_*.py -v`
 
-#### 5e: Footing math (depends on core + common)
+#### 1e: Footing math (depends on core + common)
 
 - [ ] Copy footing `bearing.py`, `flexure.py`, `one_way_shear.py`, `punching_shear.py`
 - [ ] Refactor imports
 - [ ] Verify: `uv run pytest tests/test_footing.py -v`
 
-#### 5f: Clean public API
-
-- [ ] Create `src/<pkg>/__init__.py` with clean `__all__` (~40 public functions)
-- [ ] Drop `_is456` suffix from all function names
-- [ ] Verify: `from <pkg> import design_beam` works
-
-### Step 6: Migrate Tests
-
-- [ ] Copy all existing unit tests for CORE functions
-- [ ] Adapt imports to new package structure
-- [ ] Create SP:16 benchmark suite (`test_benchmarks_sp16.py`)
-- [ ] Create textbook benchmark suite (`test_benchmarks_textbook.py`)
-- [ ] Add Hypothesis property-based tests (`test_property_based.py`)
-- [ ] Add edge case tests (`test_edge_cases.py`)
-- [ ] Verify 95%+ branch coverage: `uv run pytest --cov --cov-report=term-missing`
-- [ ] Verify all SP:16 benchmarks pass at ±0.1%
-
-### Step 7: Migrate Orchestration Functions (35 ORCH)
+#### 1f: Orchestration API + clean public surface
 
 - [ ] Copy high-level design functions: `design_beam()`, `design_column()`
 - [ ] Copy detail functions: `detail_beam()`, `detail_column()`
 - [ ] Copy check functions: `check_beam()`, `check_deflection()`, `check_crack_width()`
 - [ ] Copy batch functions: `design_beams()`, `design_beams_iter()`
-- [ ] Copy combined workflows: `design_and_detail_beam()`
-- [ ] Wire into clean API in `__init__.py`
-- [ ] Verify: `uv run pytest -v` — all tests pass
+- [ ] Create `src/<pkg>/__init__.py` with clean `__all__` (~40 public functions)
+- [ ] Drop `_is456` suffix from all function names
+- [ ] Verify: `from <pkg> import design_beam` works
+- [ ] Goal: `pip install <package>` works with IS 456 beams + columns + footings
 
----
+### Rollback Plan
 
-## Phase 2: App Extraction (Weeks 3–4)
-
-### Step 8: Create App Repository
-
-- [ ] Create GitHub repo: `rcdesign-app` (or chosen name)
-- [ ] Set up monorepo structure: `backend/` + `frontend/`
-- [ ] Configure `backend/pyproject.toml` with dependency on library: `rcdesign>=1.0,<2.0`
-- [ ] Configure Docker: `docker-compose.yml`, `docker-compose.dev.yml`
-- [ ] Create Dockerfiles: `Dockerfile.backend`, `Dockerfile.frontend`
-
-### Step 9: Migrate APP Functions (30 APP)
-
-- [ ] Move `services/adapters.py` (71KB) → `backend/app/services/adapters.py`
-- [ ] Move `visualization/geometry_3d.py` → `backend/app/services/visualization.py`
-- [ ] Move `insights/` (9 files) → `backend/app/services/insights/`
-- [ ] Move `reports/` → `backend/app/services/reports.py`
-- [ ] Move `services/dxf_export.py` → `backend/app/services/dxf_export.py`
-- [ ] Move BBS export functions → `backend/app/services/bbs_export.py`
-- [ ] Move `services/costing.py` → `backend/app/services/optimization.py`
-- [ ] Move streaming/batch → `backend/app/services/`
-- [ ] Update all imports to use installed library: `from rcdesign import design_beam`
-
-### Step 10: Migrate FastAPI
-
-- [ ] Copy 13 routers → `backend/app/routers/`
-- [ ] Copy Pydantic models → `backend/app/models/`
-- [ ] Copy `main.py`, `config.py`, auth, error handling
-- [ ] Update imports: `from rcdesign import design_beam` (not local import)
-- [ ] Verify all 60 endpoints respond: `uv run pytest backend/tests/ -v`
-
-### Step 11: Migrate React
-
-- [ ] Copy `react_app/` → `frontend/`
-- [ ] Update API base URL configuration
-- [ ] Verify build: `cd frontend && npm run build`
-- [ ] Verify tests: `cd frontend && npx vitest run`
-- [ ] Test all hooks and components against backend
-
----
-
-## Phase 3: Validation (Week 5)
-
-### Step 12: Library Validation
-
-- [ ] Publish to TestPyPI: create a pre-release tag
-- [ ] Install from TestPyPI: `pip install --index-url https://test.pypi.org/simple/ rcdesign`
-- [ ] Run full test suite against installed package (not source)
-- [ ] SP:16 benchmarks: verify ±0.1% accuracy
-- [ ] `mypy --strict src/`: zero errors
-- [ ] `ruff check src/`: zero issues
-- [ ] CI completes in < 60 seconds
-- [ ] Package size < 500KB
-- [ ] Verify `py.typed` marker is in wheel
-
-### Step 13: App Validation
-
-- [ ] `docker compose up --build` — all containers start
-- [ ] Verify all 60 API endpoints respond at `localhost:8000/docs`
-- [ ] React build succeeds and serves at `localhost:5173` (dev) or via Docker
-- [ ] App imports library from PyPI (not local path)
-- [ ] All user workflows work end-to-end (import CSV → design → export)
-
-### Step 14: Integration Test
-
-- [ ] App uses library via `pip install rcdesign` (not local path or editable install)
-- [ ] All user workflows work end-to-end
-- [ ] Performance regression check with `pytest-benchmark`
-- [ ] Verify library upgrade path: `pip install rcdesign==1.0.1` doesn't break app
-
----
-
-## Phase 4: Release (Week 6)
-
-### Step 15: Library Release
-
-- [ ] Update version to 1.0.0 in `_version.py` (or let hatch-vcs from git tag)
-- [ ] Write CHANGELOG.md entry for v1.0.0
-- [ ] Create GitHub Release with tag `v1.0.0`
-- [ ] CI auto-publishes to PyPI via Trusted Publishers
-- [ ] Verify: `pip install rcdesign` works globally
-- [ ] Documentation live on ReadTheDocs
-- [ ] Announce on relevant forums/channels
-
-### Step 16: App Release
-
-- [ ] Docker images built and pushed to registry
-- [ ] README updated with setup instructions
-- [ ] Demo deployment (optional — Render, Fly.io, Railway)
-- [ ] Verify fresh deploy works from scratch
-
-### Step 17: Cleanup
-
-- [ ] Archive old monorepo or add deprecation notice to README
-- [ ] Update all external references (docs, links, citations)
-- [ ] Final documentation pass — verify all cross-references
-- [ ] Close migration-related GitHub issues
-- [ ] Retrospective: what went well, what to improve
-
----
-
-## Rollback Plan
-
-### Phase 1 Failure (PREPARE)
-- **Trigger:** Repository setup fails, tooling doesn't work, or team decides against split
-- **Action:** Delete the new `rcdesign` repo. Monorepo continues unchanged.
-- **Impact:** Zero — no changes to existing package or users
-
-### Phase 2 Failure (EXTRACT)
 - **Trigger:** Code extraction breaks imports, tests fail, or coverage drops below 90%
-- **Action:** Library repo exists but monorepo remains primary. Revert any dependency pinning changes.
+- **Action:** Library repo exists but monorepo remains primary. Revert any dependency pinning.
 - **Impact:** Low — new repo is abandoned, monorepo unaffected
 
-### Phase 3 Failure (BUILD)
-- **Trigger:** CI/CD setup fails, Trusted Publishers not working, or packaging issues
-- **Action:** Library repo stays in development. Publish to TestPyPI only (not PyPI).
+### Success Criteria
+
+| Criterion | Target |
+|-----------|--------|
+| 123 functions extracted | ✅ All 73 CORE + 35 ORCH + BBS math |
+| Import structure correct | ✅ `tach check` passes |
+| Tests pass | ✅ `uv run pytest -v` — all green |
+| Package installable | ✅ `pip install .` works in clean venv |
+| `_is456` suffixes removed | ✅ Clean API names |
+
+---
+
+## Phase 2 — Validate & Test (Weeks 3–4)
+
+### Tasks
+
+- [ ] Run full test suite against new structure: `uv run pytest tests/ -v`
+- [ ] SP:16 benchmarks pass at ±0.1% (62 test cases)
+- [ ] Pillai & Menon textbook benchmarks pass at ±1% (~30 test cases)
+- [ ] Hypothesis property-based tests pass (monotonicity, dimensional consistency)
+- [ ] Architecture boundaries enforced:
+  - [ ] `tach check` — 5-layer import direction
+  - [ ] `import-linter` — no upward imports
+- [ ] Type checking passes:
+  - [ ] `basedpyright --strict src/` — zero errors
+  - [ ] `mypy --strict src/` — zero errors
+- [ ] Linting passes:
+  - [ ] `ruff check src/` — zero issues
+  - [ ] `ruff format --check src/` — no formatting violations
+- [ ] Coverage: 95% branch minimum: `uv run pytest --cov --cov-report=term-missing`
+- [ ] Package size < 500KB
+- [ ] `py.typed` marker is in built wheel
+- [ ] CI completes in < 60 seconds
+- [ ] Publish to TestPyPI: `uv run pytest` on installed TestPyPI package
+
+### Rollback Plan
+
+- **Trigger:** Coverage below 95%, SP:16 benchmarks fail, type errors can't be resolved
+- **Action:** Library stays in development. Fix issues and re-run Phase 2.
 - **Impact:** Low — no public release, can retry
 
-### Phase 4 Failure (SHIP)
-- **Trigger:** PyPI publish fails, or critical bug found post-release
-- **Action:** Yank the PyPI release (`pip install rcdesign==X.Y.Z` still works but won't auto-install). Fix and re-release.
-- **Impact:** Medium — users may have installed broken version
+### Success Criteria
 
-### General Rollback Principles
-1. **Monorepo is always the fallback** — it continues working regardless of new repo status
-2. **No destructive changes to monorepo** until Phase 4 is confirmed successful
-3. **TestPyPI before PyPI** — always verify install + import + test on TestPyPI first
-4. **Git history preserved** — use `git filter-branch` or `git subtree split`, never manual copy
+| Criterion | Target |
+|-----------|--------|
+| SP:16 accuracy | ±0.1% on all 62 charts |
+| Textbook accuracy | ±1% on ~30 examples |
+| Branch coverage | ≥ 95% |
+| Type check | Zero errors (basedpyright + mypy strict) |
+| Lint | Zero issues (ruff) |
+| Architecture | `tach check` passes |
+| CI time | < 60 seconds |
+| Package size | < 500KB |
+| TestPyPI install | `pip install` + `import` + tests pass |
+
+---
+
+## Phase 3 — Release IS 456 v1.0 (Week 5)
+
+### Tasks
+
+- [ ] Update version to 1.0.0 (or let hatch-vcs from git tag)
+- [ ] Write CHANGELOG.md entry for v1.0.0
+- [ ] **TestPyPI dry run first:**
+  - [ ] Publish pre-release to TestPyPI
+  - [ ] Install from TestPyPI in clean venv
+  - [ ] Run full test suite against installed package
+  - [ ] Verify `py.typed` marker in wheel
+- [ ] **PyPI release:**
+  - [ ] Create GitHub Release with tag `v1.0.0`
+  - [ ] CI auto-publishes via Trusted Publishers (OIDC — no secrets)
+  - [ ] Sigstore signing for supply chain security
+  - [ ] Verify: `pip install <package>` works globally
+- [ ] **Documentation:**
+  - [ ] API docs live on MkDocs (mkdocstrings auto-generated)
+  - [ ] README with badges, examples, benchmark results
+  - [ ] Theory pages for derivations and assumptions
+- [ ] **Deprecation notice on old package:**
+  - [ ] Final release of `structural-lib-is456` with `DeprecationWarning`
+  - [ ] PyPI description updated with migration notice
+  - [ ] Keep `structural-lib-is456` on PyPI indefinitely (don't delete)
+- [ ] Announce on relevant forums/channels
+
+### Rollback Plan
+
+- **Trigger:** PyPI publish fails, or critical bug found post-release
+- **Action:** Yank the PyPI release. Fix and re-release as v1.0.1.
+- **Impact:** Medium — users may have installed broken version, but yank prevents new installs
+
+### Success Criteria
+
+| Criterion | Target |
+|-----------|--------|
+| `pip install <package>` | ✅ Works in <5 seconds |
+| `import <package>` | ✅ Zero config, zero warnings |
+| Docs live | ✅ MkDocs deployed to ReadTheDocs/GitHub Pages |
+| Old package deprecated | ✅ DeprecationWarning in `structural-lib-is456` |
+| Sigstore signed | ✅ Supply chain attestation present |
+| README examples runnable | ✅ Verified in CI |
+
+---
+
+## Phase 4 — Multi-Code Expansion (Weeks 6+)
+
+> **New in v2.0** — This phase was not in v1.0 of the migration plan.
+
+### Phase 4a: ACI 318 Beam Module (Weeks 6–8)
+
+- [ ] Create `src/<pkg>/codes/aci318/` directory structure
+- [ ] Implement ACI 318-19 beam flexure (rectangular stress block, φMn)
+- [ ] Implement ACI 318-19 beam shear (Vc, Vs, stirrup design)
+- [ ] Implement ACI 318-19 beam torsion
+- [ ] Add PCA Notes benchmark suite (~30 test cases, ±0.1%)
+- [ ] Wire into multi-code API: `design_beam(code="ACI318")`
+- [ ] ~50 new functions
+
+### Phase 4b: EC2 Beam Module (Weeks 9–11)
+
+- [ ] Create `src/<pkg>/codes/ec2/` directory structure
+- [ ] Implement EC2 beam flexure (parabolic-rectangular stress block)
+- [ ] Implement EC2 beam shear (variable angle truss model)
+- [ ] Implement EC2 beam torsion
+- [ ] Add fib Model Code benchmark suite (~30 test cases, ±0.1%)
+- [ ] Wire into multi-code API: `design_beam(code="EC2")`
+- [ ] ~50 new functions
+
+### Phase 4c: Multi-Code Comparison API (Week 12)
+
+- [ ] Implement `compare_beam_design()` — run same inputs through IS456 + ACI318 + EC2
+- [ ] Implement grade mapping lookup (M25 → C25/30 → f'c=25 MPa)
+- [ ] Add comparison result model with side-by-side output
+- [ ] Add app API endpoints: `POST /api/v2/compare/beam`, `GET /api/v2/codes`
+
+### Phase 4d: Expand to Columns, Slabs, Footings (Weeks 13+)
+
+- [ ] ACI 318 column design (axial, uniaxial, biaxial)
+- [ ] EC2 column design
+- [ ] IS 456 slab design (one-way + two-way — Tier 1 gap)
+- [ ] IS 456 load combinations (Table 18 — Tier 1 gap)
+- [ ] ACI 318 slab design
+- [ ] EC2 slab design
+- [ ] Target: 564 total functions across all codes
+
+### Rollback Plan
+
+- **Trigger:** Multi-code architecture doesn't work with Protocol pattern, or quality drops
+- **Action:** Revert to IS 456-only library. Phase 4 work stays on a branch.
+- **Impact:** Low — IS 456 v1.0 is already released and stable
+
+### Success Criteria
+
+| Criterion | Target |
+|-----------|--------|
+| ACI 318 beam functions | ~50 functions, PCA Notes ±0.1% |
+| EC2 beam functions | ~50 functions, fib Model Code ±0.1% |
+| Cross-code comparison | `compare_beam_design()` returns consistent results |
+| Total functions | 564 across IS 456 + ACI 318 + EC2 |
+| Architecture | `tach check` passes with all 3 code modules |
+| Grade mapping | All concrete/steel equivalences verified |
 
 ---
 

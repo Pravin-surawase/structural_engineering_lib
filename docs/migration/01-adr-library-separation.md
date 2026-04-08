@@ -1,20 +1,27 @@
 ---
 owner: Pravin Surawase
 status: proposed
+version: "2.0"
 last_updated: 2026-04-08
 doc_type: adr
 complexity: critical
-tags: [architecture, packaging, separation, library, professional, is456, pypi]
+tags: [architecture, packaging, separation, library, professional, is456, pypi, multi-code, aci318, ec2]
 ---
 
 # ADR 0004: Library Separation & Professional Packaging Strategy
 
 **Date:** 2026-04-07
+**Version:** 2.0
 **Status:** Proposed
 **Owners:** Pravin Surawase
 **Supersedes:** Extends ADR 0001 (3-Layer Architecture)
 **Impact:** Critical — affects repository structure, CI/CD, imports, PyPI publishing, versioning, naming, API surface
-**Research Basis:** Online best practices survey, library-expert assessment, structural-engineer audit, complete function audit (123 exports classified)
+**Research Basis:** Online best practices survey, library-expert assessment, structural-engineer audit, complete function audit (123 current IS 456 exports, 564 target multi-code functions)
+
+## Version History
+
+- **v2.0 (2026-04-08):** Added multi-code scope (ACI 318, EC2), 5-layer architecture, 564 target functions, name blocker documented, Protocol + Registry pattern
+- **v1.0 (2026-04-07):** Initial ADR — IS 456 only, 123 functions, rcdesign naming
 
 ---
 
@@ -85,8 +92,8 @@ The library (`codes/is456/`, `core/`, `services/api.py`) is ~50 files of clean, 
 
 | | Repository A: **Library** | Repository B: **Application** |
 |---|---|---|
-| **PyPI name** | `rcdesign` | N/A (Docker-distributed) |
-| **Package import** | `import rcdesign` or `from rcdesign import ...` | N/A |
+| **PyPI name** | `<PACKAGE_NAME>` ⚠️ | N/A (Docker-distributed) |
+| **Package import** | `import <PACKAGE_NAME>` or `from <PACKAGE_NAME> import ...` | N/A |
 | **Purpose** | Pure IS 456:2000 structural calculations | Full-stack engineering platform |
 | **Users** | Engineers, researchers, Python devs | End-users via browser |
 | **Distribution** | PyPI: `pip install rcdesign` | Docker / hosted |
@@ -106,9 +113,68 @@ The library (`codes/is456/`, `core/`, `services/api.py`) is ~50 files of clean, 
 6. **Trust signal** — A focused repo with 50 files inspires more trust than one with 500
 7. **Competitor parity** — `sectionproperties`, `COMPAS`, `openseespy` all use this pattern
 
+### Multi-Code Expansion Decision
+
+> **Added in v2.0** — Extends the library scope beyond IS 456 to support ACI 318-19 and Eurocode 2 (EN 1992-1-1).
+
+The library will support **multi-code design** via a **Protocol + CodeRegistry** pattern, enabling engineers to switch between design codes while using the same API surface.
+
+**9 Protocol Interfaces Defined:**
+
+| Protocol | Purpose | IS 456 | ACI 318 | EC2 |
+|----------|---------|--------|---------|-----|
+| `MaterialCode` | Concrete/steel grade definitions | ✅ | Phase 3 | Phase 4 |
+| `FlexuralCode` | Beam flexure design | ✅ | Phase 3 | Phase 4 |
+| `ShearCode` | Shear design & detailing | ✅ | Phase 3 | Phase 4 |
+| `TorsionCode` | Torsion design | ✅ | Phase 3 | Phase 4 |
+| `ColumnCode` | Column design (axial + bending) | ✅ | Phase 3 | Phase 4 |
+| `SlabCode` | Slab design (one-way + two-way) | Phase 2 | Phase 4 | Phase 4 |
+| `FootingCode` | Footing/foundation design | ✅ | Phase 4 | Phase 4 |
+| `ServiceabilityCode` | Deflection + crack width | ✅ | Phase 3 | Phase 4 |
+| `DetailingCode` | Rebar detailing rules | ✅ | Phase 3 | Phase 4 |
+
+**Implementation Order:**
+1. **Phase 1:** IS 456 beams + columns (current — 123 functions)
+2. **Phase 2:** IS 456 all elements (slabs, load combos, remaining gaps)
+3. **Phase 3:** ACI 318 beams + columns (~150 additional functions)
+4. **Phase 4:** EC2 beams + columns (~150 additional functions)
+
+**Total target: 564 functions** across all three codes.
+
+**Cross-code comparison** is a first-class feature:
+```python
+from <PACKAGE_NAME> import compare_beam_design
+
+results = compare_beam_design(
+    b_mm=300, d_mm=500, Mu_kNm=200,
+    codes=["IS456", "ACI318", "EC2"]
+)
+# Returns comparison table with each code's Ast, safety factor, governing clause
+```
+
+> See [03-library-repo-blueprint.md](03-library-repo-blueprint.md) for detailed 5-layer architecture.
+
+### 5-Layer Architecture (v2.0)
+
+The library adopts a **5-layer architecture** to support multi-code design:
+
+```
+Layer 1: core/          ← Base types, constants, errors (no code-specific math)
+Layer 2: common/        ← Shared math: stress blocks, reinforcement, tables
+Layer 3: codes/         ← Code-specific pure math (is456/, aci318/, ec2/)
+Layer 4: services/      ← Orchestration: design_beam(), compare_codes()
+Layer 5: ui/            ← External interfaces (NOT in library repo)
+```
+
+**Import rule:** Each layer may only import from layers below it. `codes/` cannot import from `services/`. `common/` cannot import from `codes/`.
+
+> This extends the original 4-layer architecture (v1.0) by adding the `common/` layer between `core/` and `codes/`, which is essential for sharing stress block calculations and reinforcement utilities across IS 456, ACI 318, and EC2 implementations.
+
 ---
 
 ## 3. Naming Strategy
+
+> ⚠️ **Name Blocker (v2.0):** `rcdesign` is **TAKEN on PyPI** (v0.4.18, by Satish Annigeri). The package name decision is blocked pending resolution. All references to `rcdesign` in this ADR should be read as `<PACKAGE_NAME>` until a new name is chosen. See [08-naming-and-accounts.md](08-naming-and-accounts.md) for the naming investigation and fallback options.
 
 ### Recommended: `rcdesign` on PyPI
 
@@ -153,8 +219,10 @@ stress = tau_c(fck=25, pt=0.8)
 
 ### Mission
 
-> A **professional, accurate, minimal** IS 456:2000 structural design library for Python.
+> A **professional, accurate, minimal** structural design library for Python.
+> IS 456:2000 first, with multi-code expansion to ACI 318-19 and EC2 (EN 1992-1-1).
 > Zero unnecessary dependencies. Every function traceable to a clause. Every result verifiable.
+> 123 current IS 456 exports → 564 target multi-code functions.
 
 ### Directory Structure (src/ layout)
 
@@ -614,9 +682,9 @@ async def design_beam_endpoint(req: BeamRequest):
 
 ---
 
-## 6. Complete Classification Table — 123 Exports Audited
+## 6. Complete Classification Table — 123 Exports Audited (564 Target)
 
-Every export in the current `rcdesign` (formerly `structural_lib`) has been classified into one of three categories.
+Every export in the current `structural_lib` has been classified into one of three categories. Multi-code expansion (ACI 318, EC2) targets 564 total functions — see §2 Multi-Code Expansion Decision.
 
 ### CORE — 73 Functions (Stay in Library)
 
@@ -966,7 +1034,7 @@ def test_increasing_moment_increases_steel(fck, Mu1, Mu2):
 | 0.2 | Remove all deprecated shim files at `structural_lib/` root (pre-migration cleanup) | ☐ |
 | 0.3 | Remove `scripts/_archive/` (120+ dead files) | ☐ |
 | 0.4 | Remove backward-compat `structural_lib/api.py` stub | ☐ |
-| 0.5 | Document exact current API surface (123 exports → 73 CORE + 35 ORCH + 30 APP) | ✅ Done (§6) |
+| 0.5 | Document exact current API surface (123 IS 456 exports → 73 CORE + 35 ORCH + 30 APP; 564 target multi-code) | ✅ Done (§6) |
 | 0.6 | Create SP:16 benchmark test suite (Charts 1–62) | ☐ |
 | 0.7 | Create Pillai & Menon textbook test suite | ☐ |
 | 0.8 | Run full test suite — confirm 100% pass | ☐ |
@@ -1174,11 +1242,12 @@ React adds SlabForm component
 
 ### Risk 5: PyPI Name `rcdesign` Already Taken
 
-- **Impact:** Medium — requires fallback name
-- **Likelihood:** Low (checked — not currently taken)
+- **Impact:** High — **CONFIRMED BLOCKER** (v2.0 update)
+- **Likelihood:** ~~Low~~ → **Certain** — `rcdesign` v0.4.18 exists on PyPI (Satish Annigeri)
 - **Mitigation:**
-  - Fallback chain: `rcdesign` → `rcdesign-py` → `rc-design`
-  - PyPI and import name are identical — no discrepancy
+  - ⚠️ Must choose alternative name — see [08-naming-and-accounts.md](08-naming-and-accounts.md)
+  - All docs use `<PACKAGE_NAME>` placeholder until resolved
+  - Fallback chain being evaluated in doc 08
 
 ### Risk 6: Agent Infrastructure Disruption
 
@@ -1269,7 +1338,7 @@ Most previously-open questions have been answered by the research. Remaining:
 
 | # | Question | Status | Notes |
 |---|----------|--------|-------|
-| 1 | **PyPI name availability** | ⚠️ Need to check | `rcdesign` — need to verify on PyPI. Fallback: `rcdesign-py` |
+| 1 | **PyPI name availability** | ❌ BLOCKED | `rcdesign` is TAKEN (v0.4.18, Satish Annigeri). New name pending — see [08-naming-and-accounts.md](08-naming-and-accounts.md) |
 | 2 | **Current repo disposition** | Open | Rename to app repo? Archive + redirect? |
 | 3 | **GitHub organization** | Open | Both repos under same user? Dedicated org `rcdesign-org`? |
 | 4 | **Backward compat timeline** | Resolved | v0.22.0 deprecation warnings → v1.0.0 removal (1 minor version transition) |
@@ -1447,8 +1516,10 @@ For each file in Python/structural_lib/:
 **Package import:** `import rcdesign` / `import rcdesign as rc`
 
 **Next Steps:**
-1. ✅ Research complete (4 sources integrated)
-2. ✅ Function audit complete (123 exports classified)
-3. ☐ Review this ADR with stakeholders
-4. ☐ Begin Phase 0: cleanup and benchmark suite creation
-5. ☐ Execute Phase 1–3 across 4–6 weeks
+1. ✅ Research complete (4 sources integrated + 2026 toolchain report + state-of-art report)
+2. ✅ Function audit complete (123 IS 456 exports classified; 564 multi-code target identified)
+3. ❌ **BLOCKED:** Choose package name — `rcdesign` is taken on PyPI. See [08-naming-and-accounts.md](08-naming-and-accounts.md)
+4. ☐ Review this ADR with stakeholders
+5. ☐ Begin Phase 0: cleanup and benchmark suite creation
+6. ☐ Execute Phase 1–3 across 4–6 weeks
+7. ☐ Plan Phase 4: multi-code expansion (ACI 318, EC2)

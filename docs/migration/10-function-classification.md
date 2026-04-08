@@ -1,21 +1,29 @@
 # Function Classification — Complete Audit
 
 **Type:** Reference
+**Version:** 2.0
 **Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
 **Created:** 2026-04-07
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-04-08
 
 ---
 
-All 123 exports from `structural_lib.__init__.py` classified as:
+> For the complete **564-function enumeration** across all 3 codes (IS 456, ACI 318, EC2),
+> see [11-complete-function-enumeration.md](11-complete-function-enumeration.md).
+
+All 123 **current** exports from `structural_lib.__init__.py` classified as:
 
 | Category | Count | Destination |
 |----------|-------|-------------|
 | **CORE** | 73 | Pure IS 456 math → stays in library |
 | **ORCH** | 35 | High-level orchestration → stays in library (top-level API) |
 | **APP** | 30 | I/O, exports, visualization → moves to app repo |
+
+> **Note:** These 123 functions are the current IS 456-only exports. The full multi-code
+> target is **564 functions** across IS 456 (160), ACI 318 (146), EC2 (156), and shared/common (102).
+> See the Multi-Code Expansion Summary below.
 
 ---
 
@@ -217,4 +225,27 @@ These exist only for backward compatibility and should NOT be carried to either 
 | **ORCH** | Composes CORE functions, stateless, may validate input, returns typed models | `design_beam`, `check_deflection`, `design_and_detail_beam` |
 | **APP** | Involves I/O (files, CSV, DXF), visualization, HTTP, databases, or is app-specific logic | `export_dxf`, `GenericCSVAdapter`, `beam_to_3d_geometry` |
 
-**Decision rule:** If you can use the function in a pure Python script with `pip install rcdesign` and no other dependencies, it's CORE or ORCH. If it needs ezdxf, jinja2, CSV files, or a web server, it's APP.
+**Decision rule:** If you can use the function in a pure Python script with `pip install <PACKAGE_NAME>` and no other dependencies, it's CORE or ORCH. If it needs ezdxf, jinja2, CSV files, or a web server, it's APP.
+
+---
+
+## Multi-Code Expansion Summary
+
+The full multi-code library targets **564 functions** across 3 design codes and 5 structural elements:
+
+| Category | Shared | IS 456 | ACI 318 | EC2 | Total |
+|----------|--------|--------|---------|-----|-------|
+| Beam | 24 | 52 | 48 | 50 | 174 |
+| Column | 14 | 32 | 30 | 32 | 108 |
+| Slab | 16 | 28 | 26 | 28 | 98 |
+| Footing | 12 | 20 | 18 | 20 | 70 |
+| Staircase | 6 | 10 | 8 | 8 | 32 |
+| Common | 30 | 18 | 16 | 18 | 82 |
+| **TOTAL** | **102** | **160** | **146** | **156** | **564** |
+
+- **Shared (102):** Protocol interfaces, common utilities, stress block math, material models
+- **IS 456 (160):** Current 123 exports + new slab, footing expansion, staircase
+- **ACI 318 (146):** Full parallel implementation via `FlexuralCode`, `ShearCode`, etc. protocols
+- **EC2 (156):** Full parallel implementation via same protocol interfaces
+
+For the complete function-by-function breakdown, see [11-complete-function-enumeration.md](11-complete-function-enumeration.md).

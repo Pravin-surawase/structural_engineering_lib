@@ -1,6 +1,7 @@
 # Library Research — 20 Top Python Libraries Analyzed
 
 **Type:** Research
+**Version:** 2.0
 **Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
@@ -8,6 +9,9 @@
 **Last Updated:** 2026-04-08
 
 ---
+
+> **v2.0 Update:** For 2026 toolchain recommendations (uv 0.11.3, ruff 0.15.9, basedpyright, tach, mutmut, pytest 9.0.3), see [2026-python-toolchain-report.md](../research/2026-python-toolchain-report.md).
+> For competitive analysis and multi-code state of the art, see [2026-state-of-the-art-report.md](../research/2026-state-of-the-art-report.md).
 
 ## Purpose
 
@@ -438,15 +442,16 @@ Used by pytest — worth adding to our pre-commit config since we rely heavily o
 | **Academic** | JOSS paper provides citable DOI |
 | **Key insight** | Cleanest build/CI of any structural engineering library |
 
-### structuralcodes (Multi-Code Architecture)
+### structuralcodes (Multi-Code Architecture) — fib International
 
 | Aspect | Detail |
 |--------|--------|
+| **Publisher** | fib (Fédération Internationale du Béton) — the international concrete standards body |
 | **Pattern** | Multi-code: `codes/` → `materials/` → `sections/` directory structure |
 | **API design** | `set_design_code("is456")` then call generic functions |
 | **Clause referencing** | Each function has `@clause("IS 456:2000", "38.1")` decorator |
 | **Materials** | `CONCRETES` registry with pre-defined grades |
-| **Key insight** | Best model for multi-code support if we ever add ACI 318 / Eurocode 2 |
+| **Key insight** | **Closest multi-code peer** — best model for our ACI 318 / EC2 expansion. Maintained by the organization that publishes the fib Model Code, giving it institutional authority |
 
 ### PyNite (What NOT to Do)
 

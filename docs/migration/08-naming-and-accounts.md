@@ -1,6 +1,7 @@
 # Naming, Accounts & Setup
 
 **Type:** Guide
+**Version:** 2.0
 **Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
@@ -9,51 +10,83 @@
 
 ---
 
-## Library Name Options
-
-| # | Name | PyPI | Import | Pros | Cons |
-|---|------|------|--------|------|------|
-| 1 | **rcdesign** | `rcdesign` | `rcdesign` | Short, professional, universally understood | May conflict with other RC design tools |
-| 2 | **concretepy** | `concretepy` | `concretepy` | Clear domain + "py" suffix | Longer |
-| 3 | **rcdcodes** | `rcdcodes` | `rcdcodes` | "RCD Codes" — signals code compliance | Less memorable |
-| 4 | **structlib** | `structlib` | `structlib` | Short, expandable beyond IS 456 | Generic |
-| 5 | **is456py** | `is456py` | `is456py` | Direct IS 456 reference | Too specific if expanding to other codes |
-| 6 | **designcodes** | `designcodes` | `designcodes` | Expandable to multi-code (ACI, Eurocode) | Generic |
-| 7 | **rcdetail** | `rcdetail` | `rcdetail` | Design + detailing emphasis | Limits scope perception |
-| 8 | **indiarc** | `indiarc` | `indiarc` | Geographic focus, catchy | Too narrow for international use |
-
-**Recommendation:** `rcdesign` — best balance of short, professional, and memorable. "RC Design" is universally understood in structural engineering.
+> ⚠️ **BLOCKER: `rcdesign` is TAKEN on PyPI**
+> Package `rcdesign` v0.4.18 by Satish Annigeri (May 2025) — active IS 456 design tool.
+> GitHub: github.com/satish-annigeri/rcdesign | Docs: rcdesign.readthedocs.io
+> **A new name must be chosen before migration can begin.**
 
 ---
 
-## Decision: `rcdesign` is the Chosen Name
+## Library Name Options
 
-> **`rcdesign`** is the decided package name — both PyPI name and Python import name.
+| # | Name | PyPI | Import | Length | Pros | Cons | Status |
+|---|------|------|--------|--------|------|------|--------|
+| 1 | **rcdesign** | `rcdesign` | `rcdesign` | 8 | Short, professional, universally understood | — | ❌ **TAKEN** (v0.4.18, Satish Annigeri, May 2025) |
+| 2 | **calcrete** | `calcrete` | `calcrete` | 8 | "calc + concrete", unique, memorable, same length as rcdesign | Made-up word | ✅ Available |
+| 3 | **concretedesign** | `concretedesign` | `concretedesign` | 14 | Clear domain meaning, immediately understood | Too long for frequent imports | ✅ Available |
+| 4 | **rcdesigner** | `rcdesigner` | `rcdesigner` | 10 | Close to rcdesign, clear meaning | May confuse with taken `rcdesign` package | ✅ Available |
+| 5 | **rccodes** | `rccodes` | `rccodes` | 7 | "RC Codes", signals multi-code support | Could be misread as "return codes" | ✅ Available |
+| 6 | **rclib** | `rclib` | `rclib` | 5 | Shortest option, "RC Library" | Generic, doesn't convey domain | ✅ Available |
+| 7 | **concretelib** | `concretelib` | `concretelib` | 11 | Clear domain, "concrete library" | Medium length | ✅ Available |
+| 8 | **structcodes** | `structcodes` | `structcodes` | 11 | Echoes `structuralcodes`, signals multi-code | Similar to existing PyPI package `structuralcodes` | ✅ Available |
 
-### Why `rcdesign`
+**Top suggestion:** `calcrete` — unique, 8 chars (same as rcdesign), memorable, available.
+
+**Decision is pending user input.** See "PyPI Availability Verification" below.
+
+---
+
+## Decision: PENDING — New Name Required
+
+> **`rcdesign` was the original choice but is TAKEN on PyPI.**
+> A new name must be selected from the verified-available alternatives above.
+
+### Why `rcdesign` Was Originally Chosen
 
 - **Short** (8 chars) — comparable to `numpy` (5), `scipy` (5), `flask` (5)
 - **Professional** — "RC Design" is universally understood in structural/civil engineering
 - **Expandable** — works for IS 456 today, ACI 318 or Eurocode 2 tomorrow
-- **PyPI = import** — no discrepancy: `pip install rcdesign` → `import rcdesign`
-- **Valid Python identifier** — unlike `is456` which starts with digits
 
-### Fallback Names (if `rcdesign` is taken on PyPI)
+### Why `calcrete` Is the Top Alternative
+
+- **Same length** (8 chars) as `rcdesign`
+- **Unique** — no similar packages on PyPI
+- **Memorable** — "calc" (calculate) + "crete" (concrete)
+- **Expandable** — doesn't lock to one code or element type
+- **Valid Python identifier** — `import calcrete as rc`
+
+### Fallback Names (if top choice is also taken)
 
 | Priority | Name | PyPI | Import |
 |----------|------|------|--------|
-| 1st | `rcdesign` | `rcdesign` | `rcdesign` |
-| 2nd | `rcdesign-py` | `rcdesign-py` | `rcdesign_py` |
-| 3rd | `rc-design` | `rc-design` | `rc_design` |
+| 1st | `calcrete` | `calcrete` | `calcrete` |
+| 2nd | `rccodes` | `rccodes` | `rccodes` |
+| 3rd | `rclib` | `rclib` | `rclib` |
 
 ### PyPI Availability Check
 
 ```bash
-# Check if the name is available
-pip index versions rcdesign
-# Or visit: https://pypi.org/project/rcdesign/
+# Check if a name is available
+pip index versions <PACKAGE_NAME>
+# Or visit: https://pypi.org/project/<PACKAGE_NAME>/
 # "No versions found" = available
 ```
+
+---
+
+## PyPI Availability Verification
+
+All 7 alternatives verified available on PyPI as of **2026-04-08**:
+
+| Name | PyPI URL | Status | Verified |
+|------|----------|--------|----------|
+| `calcrete` | pypi.org/project/calcrete/ | ✅ Available | 2026-04-08 |
+| `concretedesign` | pypi.org/project/concretedesign/ | ✅ Available | 2026-04-08 |
+| `rcdesigner` | pypi.org/project/rcdesigner/ | ✅ Available | 2026-04-08 |
+| `rccodes` | pypi.org/project/rccodes/ | ✅ Available | 2026-04-08 |
+| `rclib` | pypi.org/project/rclib/ | ✅ Available | 2026-04-08 |
+| `concretelib` | pypi.org/project/concretelib/ | ✅ Available | 2026-04-08 |
+| `structcodes` | pypi.org/project/structcodes/ | ✅ Available | 2026-04-08 |
 
 ### Keyword Strategy: `is456` as Discoverability Keyword
 
@@ -61,11 +94,13 @@ Use `is456` in pyproject.toml **keywords** and **classifiers**, not in the packa
 
 ```toml
 [project]
-name = "rcdesign"
+name = "<PACKAGE_NAME>"
 keywords = [
     "structural-engineering",
     "reinforced-concrete",
     "is456",             # ← discoverability: engineers searching for IS 456
+    "aci318",            # ← multi-code discoverability
+    "eurocode2",         # ← multi-code discoverability
     "beam-design",
     "column-design",
     "civil-engineering",
@@ -82,16 +117,16 @@ classifiers = [
 ]
 ```
 
-This way, `pip search` and PyPI search for "is456" will find `rcdesign`.
+This way, `pip search` and PyPI search for "is456", "aci318", or "eurocode2" will find `<PACKAGE_NAME>`.
 
 ### Install & Import Example
 
 ```bash
-pip install rcdesign
+pip install <PACKAGE_NAME>
 ```
 
 ```python
-from rcdesign import design_beam
+from <PACKAGE_NAME> import design_beam
 
 result = design_beam(b_mm=230, d_mm=450, Mu_kNm=85, fck=25, fy=415)
 print(f"Steel: {result.Ast_mm2:.0f} mm²")
@@ -101,7 +136,7 @@ print(f"Safe: {result.is_safe()}")
 Or with alias:
 
 ```python
-import rcdesign as rc
+import <PACKAGE_NAME> as rc
 
 result = rc.design_beam(b_mm=230, d_mm=450, Mu_kNm=85, fck=25, fy=415)
 stress = rc.tau_c(fck=25, pt=0.8)  # IS 456 Table 19
@@ -153,9 +188,9 @@ Trusted Publishers use OIDC — no API tokens needed. The GitHub Actions workflo
 1. Go to https://pypi.org → Register/Login
 2. Navigate to **"Your projects"** → **"Publishing"** → **"Add a new pending publisher"**
 3. Fill in:
-   - **PyPI Project Name:** `rcdesign` (or chosen name)
+   - **PyPI Project Name:** `<PACKAGE_NAME>` (once decided)
    - **Owner:** Your GitHub username or org
-   - **Repository name:** `rcdesign`
+   - **Repository name:** `<PACKAGE_NAME>`
    - **Workflow name:** `publish.yml`
    - **Environment name:** `pypi`
 4. Click **"Add"**
@@ -167,7 +202,7 @@ Trusted Publishers use OIDC — no API tokens needed. The GitHub Actions workflo
 2. Same Trusted Publisher setup as above, but:
    - Environment name: `testpypi`
    - Add a separate job in `publish.yml` for TestPyPI (runs on pre-release tags)
-3. Test with: `pip install --index-url https://test.pypi.org/simple/ rcdesign`
+3. Test with: `pip install --index-url https://test.pypi.org/simple/ <PACKAGE_NAME>`
 
 ### 4. Codecov — Coverage Tracking
 

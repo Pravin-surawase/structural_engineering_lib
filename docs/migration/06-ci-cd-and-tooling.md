@@ -1,5 +1,6 @@
 # CI/CD and Tooling Setup
 
+**Version:** 2.0
 **Type:** Reference
 **Audience:** All Agents
 **Status:** Draft
@@ -37,19 +38,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v8
         with:
           enable-cache: true
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv sync --group test --group lint
-      - name: Lint (ruff)
+        run: uv sync --group test --group lint --group arch
+      - name: Lint (ruff 0.15.9)
         run: |
           uv run ruff check src/ tests/
           uv run ruff format --check src/ tests/
-      - name: Type check (mypy)
-        run: uv run mypy src/
+      - name: Type check (basedpyright — primary)
+        run: uv run basedpyright src/
+      - name: Type check (mypy strict — backup)
+        run: uv run mypy --strict src/
+      - name: Architecture boundaries (tach)
+        run: uv run tach check
       - name: Test with coverage
         run: uv run pytest --cov --cov-report=xml -v
       - name: Upload coverage
@@ -65,7 +70,7 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v8
       - run: uv python install 3.12
       - run: uv sync --group test
       - name: SP:16 Benchmarks
@@ -121,7 +126,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v8
       - run: uv build
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -152,7 +157,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Full history for hatch-vcs
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v8
       - run: uv build
       - uses: actions/upload-artifact@v4
         with:
@@ -189,7 +194,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v8
       - run: uv python install 3.12
       - working-directory: backend
         run: |
@@ -258,12 +263,12 @@ jobs:
 ### .pre-commit-config.yaml (Library)
 
 ```yaml
-# .pre-commit-config.yaml for rcdesign
+# .pre-commit-config.yaml for <PACKAGE_NAME>
 minimum_pre_commit_version: "4.0.0"
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.0
+    rev: v0.15.9
     hooks:
       - id: ruff
         args: [--fix]
@@ -303,23 +308,142 @@ repos:
 
 ---
 
-## Tooling Stack
+## Tooling Stack (2026)
 
-| Tool | Purpose | Why | Config Location |
-|---|---|---|---|
-| **uv** | Package management | 82.8k⭐, replaces pip/poetry/pipx, 10-100x faster | `uv.lock` |
-| **ruff** | Lint + format | 46.9k⭐, replaces flake8+black+isort+pyupgrade | `[tool.ruff]` in pyproject.toml |
-| **mypy** | Type checking | Industry standard, strict mode catches bugs | `[tool.mypy]` in pyproject.toml |
-| **pyright** | Type checking (IDE) | Powers Pylance in VS Code | `pyrightconfig.json` |
-| **pytest** | Testing | Gold standard for Python testing | `[tool.pytest]` in pyproject.toml |
-| **hypothesis** | Property testing | Discovers edge cases automatically | Part of test deps |
-| **pytest-benchmark** | Performance | Regression detection for critical paths | Part of test deps |
-| **codecov** | Coverage tracking | Track coverage over time, fail on regression | `.codecov.yml` |
-| **towncrier** | Changelogs | Structured, contributor-friendly changelog | `[tool.towncrier]` |
-| **pre-commit** | Git hooks | Consistent quality on every commit | `.pre-commit-config.yaml` |
-| **zizmor** | GH Actions security | Catches injection, unpinned actions, missing permissions | `.pre-commit-config.yaml` |
-| **MkDocs Material** | Documentation | Beautiful docs with API auto-generation | `mkdocs.yml` |
-| **mkdocstrings** | API docs | Auto-generate from docstrings | Part of docs deps |
+| Tool | Version | Purpose | Replaces | Config Location |
+|---|---|---|---|---|
+| **uv** | 0.11.3 | Package management, 10–100× faster | pip, poetry, Rye | `uv.lock` |
+| **ruff** | 0.15.9 | Lint + format (19 rule sets) | black, isort, flake8, bandit, darglint | `[tool.ruff]` in pyproject.toml |
+| **basedpyright** | v1.39.0 | Primary type checker (stricter than pyright) | pyright basic | `[tool.basedpyright]` in pyproject.toml |
+| **mypy** | strict | Backup type checker in CI | — | `[tool.mypy]` in pyproject.toml |
+| **tach** | v0.34.1 | Architecture boundary enforcement (NEW) | import-linter | `tach.toml` |
+| **pytest** | 9.0.3 | Testing (strict mode) | — | `[tool.pytest]` in pyproject.toml |
+| **mutmut** | 3.x | Mutation testing for safety-critical math (NEW) | — | `[tool.mutmut]` in pyproject.toml |
+| **hypothesis** | ≥6.100 | Property-based testing | — | Part of test deps |
+| **pytest-benchmark** | ≥5.0 | Performance regression detection | — | Part of test deps |
+| **inline-snapshot** | ≥0.10 | Snapshot testing | — | Part of test deps |
+| **codecov** | — | Coverage tracking, fail on regression | — | `.codecov.yml` |
+| **towncrier** | — | Structured changelogs | — | `[tool.towncrier]` |
+| **pre-commit** | ≥4.0 | Git hooks | — | `.pre-commit-config.yaml` |
+| **zizmor** | v1.23.0 | GitHub Actions security linter | — | `.pre-commit-config.yaml` |
+| **MkDocs Material** | 9.7.6 | Documentation site | — | `mkdocs.yml` |
+| **mkdocstrings** | 1.0.3 | Auto-generate API docs from docstrings | — | Part of docs deps |
+| **Sigstore** | — | Supply chain security for releases (NEW) | — | CI workflow |
+| **pip-audit** | — | Dependency CVE scanning (NEW) | — | CI workflow |
+| **cyclonedx-bom** | — | SBOM generation (NEW) | — | CI workflow |
+
+---
+
+## Superseded Tools (AVOID)
+
+These tools are **fully replaced** by modern alternatives. Do NOT add them to new projects.
+
+| ❌ Superseded Tool | ✅ Use Instead | Why |
+|--------------------|---------------|-----|
+| black | `ruff format` | ruff is 10–100× faster, same output |
+| isort | `ruff` (I rules) | Built into ruff |
+| flake8 | `ruff` (E, W, F rules) | Built into ruff, plus 700+ additional rules |
+| bandit | `ruff` (S rules) | Security rules built into ruff |
+| darglint | `ruff` (D rules) | Docstring linting built into ruff |
+| pip | `uv` | 10–100× faster, lockfile support, Python management |
+| poetry | `uv` | uv replaces all poetry functionality |
+| Rye | `uv` | Rye creator (Armin) recommends uv as successor |
+| pyright (standalone) | `basedpyright` | Stricter defaults, better error messages |
+
+---
+
+## Architecture Enforcement
+
+### tach v0.34.1 (Primary — NEW)
+
+[tach](https://github.com/gauge-sh/tach) enforces the 5-layer import boundary at CI time. If any module imports from a forbidden layer, CI fails.
+
+```toml
+# tach.toml
+[modules]
+core = { depends_on = [] }
+common = { depends_on = ["core"] }
+"codes.*" = { depends_on = ["common", "core"] }
+services = { depends_on = ["codes", "common", "core"] }
+```
+
+```yaml
+# CI step (add to ci.yml)
+- name: Architecture boundaries (tach)
+  run: uv run tach check
+```
+
+### import-linter (Backup)
+
+```toml
+# pyproject.toml
+[tool.importlinter]
+root_packages = ["<PACKAGE_NAME>"]
+
+[[tool.importlinter.contracts]]
+name = "5-layer architecture"
+type = "layers"
+layers = ["services", "codes", "common", "core"]
+```
+
+---
+
+## Mutation Testing (Safety-Critical)
+
+### mutmut 3.x (NEW)
+
+For safety-critical IS 456 math functions, line coverage alone is insufficient. **Mutation testing** verifies that tests actually catch bugs by introducing small code mutations and checking that tests fail.
+
+```bash
+# Run mutation tests on safety-critical modules
+uv run mutmut run --paths-to-mutate=src/<PACKAGE_NAME>/codes/is456/beam/flexure.py
+uv run mutmut results
+```
+
+**Priority targets for mutation testing:**
+- `flexure.py` — moment capacity, steel area (life-safety)
+- `shear.py` — shear strength (life-safety)
+- `tables.py` — IS 456 table interpolation (accuracy-critical)
+- `stress_block.py` — stress block calculations (shared by all codes)
+
+**CI Integration:**
+```yaml
+- name: Mutation testing (safety-critical)
+  run: |
+    uv run mutmut run --paths-to-mutate=src/<PACKAGE_NAME>/codes/is456/beam/flexure.py --no-progress
+    uv run mutmut results --survived-only && exit 1 || true
+```
+
+---
+
+## Supply Chain Security (NEW)
+
+### Sigstore
+
+Sign releases using Sigstore (keyless signing via OIDC). Used by pip, CPython, and all major Python projects.
+
+```yaml
+# In publish.yml
+- name: Sign with Sigstore
+  uses: sigstore/gh-action-sigstore-python@v3
+  with:
+    inputs: dist/*
+```
+
+### pip-audit
+
+Scan dependencies for known CVEs:
+```yaml
+- name: Audit dependencies
+  run: uv run pip-audit --require-hashes --desc
+```
+
+### cyclonedx-bom
+
+Generate SBOM (Software Bill of Materials) for each release:
+```bash
+uv run cyclonedx-py environment -o sbom.json
+```
 
 ---
 
@@ -439,3 +563,15 @@ build:
 mkdocs:
   configuration: docs/mkdocs.yml
 ```
+
+---
+
+## Watch List (Not Yet Adopted)
+
+Tools that are promising but not yet stable enough for production use:
+
+| Tool | Version | Status | What It Does | When to Adopt |
+|------|---------|--------|--------------|---------------|
+| **ty** | v0.0.29 | Beta (18.2K ⭐) | Astral's new type checker (by ruff team) | When it reaches v1.0 or gains full basedpyright parity |
+
+> **ty** is Astral's (ruff company) new type checker. It's extremely fast and will likely become the default Python type checker. However, at v0.0.29 it's too early for production safety-critical code. Monitor progress at [github.com/astral-sh/ty](https://github.com/astral-sh/ty).

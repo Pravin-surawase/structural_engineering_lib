@@ -1,6 +1,7 @@
 # GitHub Copilot Agents & Automation
 
 **Type:** Reference
+**Version:** 2.0
 **Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
@@ -100,8 +101,8 @@ Research findings:
 
 ### 4. math-verifier.agent.md
 
-**Role:** IS 456 formula verification, SP:16 benchmark checking
-**Tools:** search, readFile, web (for IS 456 reference lookup)
+**Role:** IS 456 formula verification, SP:16 benchmark checking, **multi-code validation (v2.0)**
+**Tools:** search, readFile, web (for IS 456/ACI 318/EC2 reference lookup)
 **Permission:** ReadOnly
 
 **Rules:**
@@ -110,6 +111,9 @@ Research findings:
 - Cross-reference with Pillai & Menon, Varghese textbooks
 - Flag any deviation > 0.1% from published values
 - Maintain clause traceability
+- **(v2.0)** Verify ACI 318 functions against PCA Notes on ACI 318
+- **(v2.0)** Verify EC2 functions against fib Model Code and Designers' Guide to EN 1992-1-1
+- **(v2.0)** Validate multi-code comparison results for consistency
 
 ---
 
@@ -324,4 +328,76 @@ From the current monorepo's 70+ audit findings — encode these into agent instr
 5. **Always use explicit units** (`b_mm` not `width`, `fck` not `concrete_grade`)
 6. **Always run full test suite** before commit
 7. **Never manual git** — always use the commit script
+
+---
+
+## Multi-Code Agent Needs (v2.0)
+
+As the library expands to support ACI 318 and EC2, agent roles need to evolve:
+
+### Code Specialist Agent
+
+Each design code has unique clauses, terminology, and design philosophy. For accurate implementation:
+
+- **IS 456 specialist** — Current structural-engineer agent covers this. Knows SP:16, IS 13920, Indian practice.
+- **ACI 318 specialist** — Needs familiarity with PCA Notes on ACI 318, ACI SP-17 column interaction diagrams, US rebar sizes (#3–#11), and strength reduction factors (φ).
+- **EC2 specialist** — Needs familiarity with fib Model Code, UK National Annex, Designers' Guide to EN 1992-1-1, European rebar sizes (H8–H40), and partial safety factors (γc, γs).
+
+> **Decision:** Initially, the existing math-verifier agent handles all codes. If multi-code errors increase, split into per-code specialists.
+
+### Comparison Agent
+
+- Validates that multi-code comparison results are self-consistent
+- Checks that grade mappings (M25 → C25/30 → f'c=25 MPa) are correct
+- Verifies that design results follow expected trends (e.g., EC2 generally requires less steel than IS 456 for same load)
+- Flags suspicious outliers in comparison tables
+
+### Math Verifier — Expanded Role (v2.0)
+
+The math-verifier agent must now verify against multiple reference sources:
+
+| Code | Primary Reference | Secondary Reference | Benchmark Source |
+|------|------------------|--------------------|-----------------|
+| IS 456 | IS 456:2000 clause text | Pillai & Menon, 8th Ed. | SP:16 Charts 1–62 |
+| ACI 318 | ACI 318-19 clause text | PCA Notes on ACI 318 | ACI SP-17 interaction diagrams |
+| EC2 | EN 1992-1-1:2004 | fib Model Code 2010 | Designers' Guide worked examples |
+
+---
+
+## Claw-Code Patterns (v2.0)
+
+Based on analysis of the claw-code harness (114K stars) and our own agent evolution data.
+
+> For detailed patterns and implementation ideas, see [docs/research/claw-code-harness-ideas.md](../research/claw-code-harness-ideas.md).
+
+### Key Patterns Adopted
+
+1. **Clause-Tagging** — Every math function has `@clause("IS 456:2000", "38.1")` decorator or equivalent docstring reference. This enables automated clause coverage tracking across all three codes.
+
+2. **Calculation Trace** — Each design result carries a full trace of intermediate values, allowing verification that the correct code path was followed. Essential for multi-code comparison (showing exactly where IS 456 and ACI 318 diverge).
+
+3. **Benchmark Automation** — SP:16 Charts (IS 456), ACI SP-17 diagrams (ACI 318), and fib worked examples (EC2) are encoded as JSON golden vectors. CI runs all benchmarks on every commit. Accuracy regression = CI failure.
+
+4. **Architecture Enforcement** — `tach` (boundary enforcement tool) validates the 5-layer import direction on every commit. Agents should run `tach check` before handoff. This replaces manual import-direction review.
+
+---
+
+## Agent Skills for Migration (v2.0)
+
+Existing skills that are directly useful during the migration process:
+
+| Skill | Slash Command | Migration Use |
+|-------|--------------|---------------|
+| `/api-discovery` | API param verification | Verify all 123 function signatures are preserved during extraction |
+| `/is456-verification` | IS 456 compliance testing | Run SP:16 benchmarks against new repo structure to confirm no accuracy regression |
+| `/architecture-check` | 5-layer boundary validation | Validate that the new 5-layer architecture (`core ← common ← codes ← services ← ui`) is respected |
+| `/function-quality-pipeline` | 9-step quality gate | Every new function (ACI 318, EC2) must pass the full pipeline: research → implement → test → benchmark → review → document → type-check → integrate → release |
+
+### New Skills Needed for Multi-Code
+
+| Proposed Skill | Purpose |
+|---------------|---------|
+| `/multi-code-compare` | Run same design through IS 456 + ACI 318 + EC2, validate results are consistent |
+| `/grade-mapping-verify` | Verify concrete/steel grade equivalence tables across codes |
+| `/clause-coverage` | Report clause coverage per code: "IS 456: 70%, ACI 318: 12%, EC2: 0%" |
 8. **Search before coding** — duplication is the #1 agent mistake
