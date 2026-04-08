@@ -1,0 +1,2516 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/10-function-classification/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Function Classification — Complete Audit - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#function-classification-complete-audit" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Function Classification — Complete Audit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-functions-73-stay-in-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CORE Functions (73) — Stay in Library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CORE Functions (73) — Stay in Library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beam-flexure-from-codesis456beamflexurepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beam Flexure (from codes/is456/beam/flexure.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beam-shear-from-codesis456beamshearpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beam Shear (from codes/is456/beam/shear.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beam-torsion-from-codesis456beamtorsionpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beam Torsion (from codes/is456/beam/torsion.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beam-serviceability-detailing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beam Serviceability &amp; Detailing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-from-codesis456column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column (from codes/is456/column/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#footing-from-codesis456footing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Footing (from codes/is456/footing/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-stress-blocks-from-codesis456common" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common / Stress Blocks (from codes/is456/common/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orchestration-functions-35-stay-in-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ORCHESTRATION Functions (35) — Stay in Library
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#app-functions-30-move-to-app-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        APP Functions (30) — Move to App Repo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-to-remove-deprecated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions to Remove (Deprecated)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classification-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classification Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="function-classification-complete-audit">Function Classification — Complete Audit<a class="headerlink" href="#function-classification-complete-audit" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> Draft
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-04-07
+<strong>Last Updated:</strong> 2026-04-07</p>
+<hr />
+<p>All 123 exports from <code>structural_lib.__init__.py</code> classified as:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Count</th>
+<th>Destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CORE</strong></td>
+<td>73</td>
+<td>Pure IS 456 math → stays in library</td>
+</tr>
+<tr>
+<td><strong>ORCH</strong></td>
+<td>35</td>
+<td>High-level orchestration → stays in library (top-level API)</td>
+</tr>
+<tr>
+<td><strong>APP</strong></td>
+<td>30</td>
+<td>I/O, exports, visualization → moves to app repo</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="core-functions-73-stay-in-library">CORE Functions (73) — Stay in Library<a class="headerlink" href="#core-functions-73-stay-in-library" title="Permanent link">&para;</a></h2>
+<h3 id="beam-flexure-from-codesis456beamflexurepy">Beam Flexure (from <code>codes/is456/beam/flexure.py</code>)<a class="headerlink" href="#beam-flexure-from-codesis456beamflexurepy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calculate_mu_lim</code></td>
+<td>Cl 38.1, G-1.1</td>
+<td>Limiting moment of resistance</td>
+</tr>
+<tr>
+<td><code>calculate_ast_required</code></td>
+<td>Cl 38.1</td>
+<td>Required tension steel area</td>
+</tr>
+<tr>
+<td><code>design_singly_reinforced</code></td>
+<td>Cl 38.1</td>
+<td>Singly reinforced beam design</td>
+</tr>
+<tr>
+<td><code>design_doubly_reinforced</code></td>
+<td>Cl 38.1, G-1.2</td>
+<td>Doubly reinforced beam design (Mu &gt; Mu_lim)</td>
+</tr>
+<tr>
+<td><code>calculate_flanged_mu</code></td>
+<td>Cl 23.1.2, Annex G</td>
+<td>Flanged beam (T/L) moment capacity</td>
+</tr>
+<tr>
+<td><code>design_flanged_beam</code></td>
+<td>Cl 23.1.2, Annex G</td>
+<td>Complete flanged beam design</td>
+</tr>
+<tr>
+<td><code>compute_xu_for_given_ast</code></td>
+<td>Cl 38.1</td>
+<td>Neutral axis depth from steel area</td>
+</tr>
+<tr>
+<td><code>calculate_mu_for_given_ast</code></td>
+<td>Cl 38.1</td>
+<td>Moment capacity from steel area</td>
+</tr>
+</tbody>
+</table>
+<h3 id="beam-shear-from-codesis456beamshearpy">Beam Shear (from <code>codes/is456/beam/shear.py</code>)<a class="headerlink" href="#beam-shear-from-codesis456beamshearpy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calculate_tv</code></td>
+<td>Cl 40.1</td>
+<td>Nominal shear stress</td>
+</tr>
+<tr>
+<td><code>design_shear_reinforcement</code></td>
+<td>Cl 40.1–40.4</td>
+<td>Complete stirrup design</td>
+</tr>
+<tr>
+<td><code>enhanced_shear_strength</code></td>
+<td>Cl 40.5</td>
+<td>Enhanced shear near supports (av/d)</td>
+</tr>
+<tr>
+<td><code>round_to_practical_spacing</code></td>
+<td>—</td>
+<td>Practical stirrup spacing rounding</td>
+</tr>
+<tr>
+<td><code>select_stirrup_diameter</code></td>
+<td>Cl 26.5.1.6</td>
+<td>Stirrup bar diameter selection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="beam-torsion-from-codesis456beamtorsionpy">Beam Torsion (from <code>codes/is456/beam/torsion.py</code>)<a class="headerlink" href="#beam-torsion-from-codesis456beamtorsionpy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calculate_equivalent_shear</code></td>
+<td>Cl 41.3.1</td>
+<td>Equivalent shear from torsion</td>
+</tr>
+<tr>
+<td><code>calculate_equivalent_moment</code></td>
+<td>Cl 41.4.2</td>
+<td>Equivalent moment from torsion</td>
+</tr>
+<tr>
+<td><code>torsion_shear_stress</code></td>
+<td>Cl 41.3</td>
+<td>Torsional shear stress</td>
+</tr>
+<tr>
+<td><code>torsion_stirrup_area</code></td>
+<td>Cl 41.4.3</td>
+<td>Transverse reinforcement for torsion</td>
+</tr>
+<tr>
+<td><code>longitudinal_torsion_steel</code></td>
+<td>Cl 41.4.2</td>
+<td>Longitudinal steel for torsion</td>
+</tr>
+<tr>
+<td><code>design_torsion</code></td>
+<td>Cl 41</td>
+<td>Complete torsion design</td>
+</tr>
+</tbody>
+</table>
+<h3 id="beam-serviceability-detailing">Beam Serviceability &amp; Detailing<a class="headerlink" href="#beam-serviceability-detailing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check_deflection_span_depth</code></td>
+<td>Cl 23.2</td>
+<td>Basic span/depth ratio check</td>
+</tr>
+<tr>
+<td><code>check_crack_width</code></td>
+<td>Annex F</td>
+<td>Crack width estimation</td>
+</tr>
+<tr>
+<td><code>check_beam_slenderness</code></td>
+<td>Cl 23.3</td>
+<td>Lateral stability check</td>
+</tr>
+<tr>
+<td><code>check_beam_ductility</code></td>
+<td>Annex G</td>
+<td>Ductility index verification</td>
+</tr>
+<tr>
+<td><code>check_anchorage_at_simple_support</code></td>
+<td>Cl 26.2.3.3</td>
+<td>Ld check at supports</td>
+</tr>
+<tr>
+<td><code>compute_critical</code></td>
+<td>Cl 22.6</td>
+<td>Critical section for shear</td>
+</tr>
+<tr>
+<td><code>enhanced_shear_strength_is456</code></td>
+<td>Cl 40.5</td>
+<td>av/d enhanced shear</td>
+</tr>
+<tr>
+<td><code>calculate_effective_depth_multilayer</code></td>
+<td>Cl 26.2</td>
+<td>Centroid of multi-layer reinforcement</td>
+</tr>
+<tr>
+<td><code>calculate_effective_flange_width</code></td>
+<td>Cl 23.1.2</td>
+<td>Effective flange width (T/L beams)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="column-from-codesis456column">Column (from <code>codes/is456/column/</code>)<a class="headerlink" href="#column-from-codesis456column" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>classify_column</code></td>
+<td>Cl 25.1.2</td>
+<td>Short vs slender classification</td>
+</tr>
+<tr>
+<td><code>minimum_eccentricity</code></td>
+<td>Cl 25.4</td>
+<td>Minimum eccentricity</td>
+</tr>
+<tr>
+<td><code>axial_capacity</code></td>
+<td>Cl 39.3</td>
+<td>Short column axial load capacity</td>
+</tr>
+<tr>
+<td><code>effective_length</code></td>
+<td>Table 28</td>
+<td>Effective length per end conditions</td>
+</tr>
+<tr>
+<td><code>design_short_column_uniaxial</code></td>
+<td>Cl 39.5</td>
+<td>Uniaxial bending design</td>
+</tr>
+<tr>
+<td><code>design_column_axial</code></td>
+<td>Cl 39.3</td>
+<td>Short column pure axial</td>
+</tr>
+<tr>
+<td><code>pm_interaction_curve</code></td>
+<td>Cl 39.5</td>
+<td>P-M interaction diagram generation</td>
+</tr>
+<tr>
+<td><code>biaxial_bending_check</code></td>
+<td>Cl 39.6</td>
+<td>Bresler's equation check</td>
+</tr>
+<tr>
+<td><code>calculate_additional_moment</code></td>
+<td>Cl 39.7.1</td>
+<td>Slender column additional moments</td>
+</tr>
+<tr>
+<td><code>design_long_column</code></td>
+<td>Cl 39.7</td>
+<td>Complete long column design</td>
+</tr>
+<tr>
+<td><code>check_helical_reinforcement</code></td>
+<td>Cl 39.4</td>
+<td>Helical column capacity increase</td>
+</tr>
+<tr>
+<td><code>create_column_detailing</code></td>
+<td>Cl 26.5.3</td>
+<td>Detailing rules verification</td>
+</tr>
+<tr>
+<td><code>check_column_ductility_is13920</code></td>
+<td>IS 13920 Cl 6–7</td>
+<td>Seismic ductile detailing</td>
+</tr>
+<tr>
+<td><code>min_eccentricity</code></td>
+<td>Cl 25.4</td>
+<td>Minimum eccentricity per IS 456</td>
+</tr>
+</tbody>
+</table>
+<h3 id="footing-from-codesis456footing">Footing (from <code>codes/is456/footing/</code>)<a class="headerlink" href="#footing-from-codesis456footing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check_bearing_pressure</code></td>
+<td>Cl 34.1</td>
+<td>Soil bearing pressure vs SBC</td>
+</tr>
+<tr>
+<td><code>design_footing_flexure</code></td>
+<td>Cl 34.2.3</td>
+<td>Critical section bending</td>
+</tr>
+<tr>
+<td><code>check_one_way_shear</code></td>
+<td>Cl 34.2.4</td>
+<td>One-way shear at d from face</td>
+</tr>
+<tr>
+<td><code>check_punching_shear</code></td>
+<td>Cl 31.6</td>
+<td>Two-way punching shear</td>
+</tr>
+<tr>
+<td><code>design_isolated_footing</code></td>
+<td>Cl 34</td>
+<td>Complete isolated footing design</td>
+</tr>
+<tr>
+<td><code>compute_footing_depth</code></td>
+<td>—</td>
+<td>Minimum depth from shear</td>
+</tr>
+<tr>
+<td><code>compute_footing_reinforcement</code></td>
+<td>Cl 34.3</td>
+<td>Steel area in each direction</td>
+</tr>
+<tr>
+<td><code>check_development_length</code></td>
+<td>Cl 26.2</td>
+<td>Ld check for footing bars</td>
+</tr>
+<tr>
+<td><code>bearing_stress_at_column</code></td>
+<td>Cl 34.4</td>
+<td>Column-footing bearing</td>
+</tr>
+<tr>
+<td><code>compute_transfer_reinforcement</code></td>
+<td>Cl 34.4.1</td>
+<td>Dowel bar requirement</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-stress-blocks-from-codesis456common">Common / Stress Blocks (from <code>codes/is456/common/</code>)<a class="headerlink" href="#common-stress-blocks-from-codesis456common" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>IS 456 Clause</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>neutral_axis_depth</code></td>
+<td>Cl 38.1</td>
+<td>xu from strain compatibility</td>
+</tr>
+<tr>
+<td><code>xu_max_ratio</code></td>
+<td>Cl 38.1</td>
+<td>Limiting xu/d for given fy</td>
+</tr>
+<tr>
+<td><code>compression_force</code></td>
+<td>Cl 38.1</td>
+<td>0.36·fck·b·xu</td>
+</tr>
+<tr>
+<td><code>lever_arm</code></td>
+<td>Cl 38.1</td>
+<td>d − 0.42·xu</td>
+</tr>
+<tr>
+<td><code>moment_capacity</code></td>
+<td>Cl 38.1</td>
+<td>Force × lever arm</td>
+</tr>
+<tr>
+<td><code>tau_c_table</code></td>
+<td>Table 19</td>
+<td>Design shear strength of concrete</td>
+</tr>
+<tr>
+<td><code>tau_c_max_table</code></td>
+<td>Table 20</td>
+<td>Maximum shear stress</td>
+</tr>
+<tr>
+<td><code>modification_factor_tension</code></td>
+<td>Cl 23.2.1</td>
+<td>kt factor for deflection</td>
+</tr>
+<tr>
+<td><code>modification_factor_compression</code></td>
+<td>Cl 23.2.1</td>
+<td>kc factor for deflection</td>
+</tr>
+<tr>
+<td><code>bar_weight</code></td>
+<td>IS 2502</td>
+<td>Bar weight per meter (math only)</td>
+</tr>
+<tr>
+<td><code>cut_length</code></td>
+<td>IS 2502</td>
+<td>Bar cut length calculation</td>
+</tr>
+<tr>
+<td><code>shape_code_length</code></td>
+<td>IS 2502</td>
+<td>Shape code bent length</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="orchestration-functions-35-stay-in-library">ORCHESTRATION Functions (35) — Stay in Library<a class="headerlink" href="#orchestration-functions-35-stay-in-library" title="Permanent link">&para;</a></h2>
+<p>High-level design workflows that compose CORE functions. These remain in the library as the public API.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Source</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>design_beam</code></td>
+<td><code>services/api.py</code></td>
+<td>Complete beam design (flexure + shear + detailing)</td>
+</tr>
+<tr>
+<td><code>check_beam</code></td>
+<td><code>services/api.py</code></td>
+<td>Check existing beam against applied loads</td>
+</tr>
+<tr>
+<td><code>detail_beam</code></td>
+<td><code>services/api.py</code></td>
+<td>Generate detailing summary</td>
+</tr>
+<tr>
+<td><code>design_and_detail_beam</code></td>
+<td><code>services/api.py</code></td>
+<td>Design + detail in one call</td>
+</tr>
+<tr>
+<td><code>compute_detailing</code></td>
+<td><code>services/api.py</code></td>
+<td>Detailing computation</td>
+</tr>
+<tr>
+<td><code>build_detailing_input</code></td>
+<td><code>services/api.py</code></td>
+<td>Construct detailing input from design result</td>
+</tr>
+<tr>
+<td><code>check_compliance_report</code></td>
+<td><code>services/api.py</code></td>
+<td>IS 456 compliance report</td>
+</tr>
+<tr>
+<td><code>design_column</code></td>
+<td><code>services/api.py</code></td>
+<td>Unified column design</td>
+</tr>
+<tr>
+<td><code>design_long_column</code></td>
+<td><code>services/api.py</code></td>
+<td>Long column with additional moments</td>
+</tr>
+<tr>
+<td><code>detail_column</code></td>
+<td><code>services/api.py</code></td>
+<td>Column detailing summary</td>
+</tr>
+<tr>
+<td><code>design_beams</code></td>
+<td><code>services/api.py</code></td>
+<td>Batch beam design (list input)</td>
+</tr>
+<tr>
+<td><code>design_beams_iter</code></td>
+<td><code>services/api.py</code></td>
+<td>Batch beam design (generator)</td>
+</tr>
+<tr>
+<td><code>check_beam_ductility</code></td>
+<td><code>services/api.py</code></td>
+<td>Ductility verification</td>
+</tr>
+<tr>
+<td><code>check_deflection</code></td>
+<td><code>services/api.py</code></td>
+<td>Span/depth ratio check</td>
+</tr>
+<tr>
+<td><code>check_crack_width</code></td>
+<td><code>services/api.py</code></td>
+<td>Crack width check</td>
+</tr>
+<tr>
+<td><code>tau_c</code></td>
+<td><code>services/api.py</code></td>
+<td>Table 19 lookup (convenience)</td>
+</tr>
+<tr>
+<td><code>Mu_lim</code></td>
+<td><code>services/api.py</code></td>
+<td>Limiting moment (convenience)</td>
+</tr>
+<tr>
+<td><code>calculate_stress_block</code></td>
+<td><code>services/api.py</code></td>
+<td>Stress block computation</td>
+</tr>
+<tr>
+<td><code>validate_beam_input</code></td>
+<td><code>services/api.py</code></td>
+<td>Input validation</td>
+</tr>
+<tr>
+<td><code>validate_column_input</code></td>
+<td><code>services/api.py</code></td>
+<td>Input validation</td>
+</tr>
+<tr>
+<td><code>create_beam_section</code></td>
+<td><code>services/api.py</code></td>
+<td>Section builder</td>
+</tr>
+<tr>
+<td><code>create_column_section</code></td>
+<td><code>services/api.py</code></td>
+<td>Section builder</td>
+</tr>
+<tr>
+<td><code>get_concrete_grade</code></td>
+<td><code>services/api.py</code></td>
+<td>Grade lookup</td>
+</tr>
+<tr>
+<td><code>get_steel_grade</code></td>
+<td><code>services/api.py</code></td>
+<td>Grade lookup</td>
+</tr>
+<tr>
+<td><code>show_versions</code></td>
+<td><code>__init__.py</code></td>
+<td>Debug info (like pd.show_versions())</td>
+</tr>
+<tr>
+<td>...</td>
+<td></td>
+<td><em>(remaining orchestration functions)</em></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="app-functions-30-move-to-app-repo">APP Functions (30) — Move to App Repo<a class="headerlink" href="#app-functions-30-move-to-app-repo" title="Permanent link">&para;</a></h2>
+<p>These functions involve I/O, file export, visualization, or application-specific logic. They move to the app repository's backend services.</p>
+<table>
+<thead>
+<tr>
+<th>Function / Class</th>
+<th>Current Location</th>
+<th>App Destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>beam_to_3d_geometry</code></td>
+<td><code>visualization/geometry_3d.py</code></td>
+<td><code>backend/app/services/visualization.py</code></td>
+</tr>
+<tr>
+<td><code>compute_bbs</code></td>
+<td><code>services/bbs.py</code></td>
+<td><code>backend/app/services/bbs_export.py</code></td>
+</tr>
+<tr>
+<td><code>export_bbs_to_csv</code></td>
+<td><code>services/bbs.py</code></td>
+<td><code>backend/app/services/bbs_export.py</code></td>
+</tr>
+<tr>
+<td><code>generate_bbs_dataframe</code></td>
+<td><code>services/bbs.py</code></td>
+<td><code>backend/app/services/bbs_export.py</code></td>
+</tr>
+<tr>
+<td><code>generate_report</code></td>
+<td><code>services/report.py</code></td>
+<td><code>backend/app/services/reports.py</code></td>
+</tr>
+<tr>
+<td><code>generate_html_report</code></td>
+<td><code>reports/html_report.py</code></td>
+<td><code>backend/app/services/reports.py</code></td>
+</tr>
+<tr>
+<td><code>export_dxf</code></td>
+<td><code>services/dxf_export.py</code></td>
+<td><code>backend/app/services/dxf_export.py</code></td>
+</tr>
+<tr>
+<td><code>optimize_beam_cost</code></td>
+<td><code>services/optimization.py</code></td>
+<td><code>backend/app/services/optimization.py</code></td>
+</tr>
+<tr>
+<td><code>suggest_design_improvements</code></td>
+<td><code>insights/design_suggestions.py</code></td>
+<td><code>backend/app/services/insights.py</code></td>
+</tr>
+<tr>
+<td><code>smart_analyze_design</code></td>
+<td><code>insights/smart_designer.py</code></td>
+<td><code>backend/app/services/insights.py</code></td>
+</tr>
+<tr>
+<td><code>generate_insights</code></td>
+<td><code>insights/</code></td>
+<td><code>backend/app/services/insights.py</code></td>
+</tr>
+<tr>
+<td><code>code_compliance_check</code></td>
+<td><code>insights/compliance.py</code></td>
+<td><code>backend/app/services/insights.py</code></td>
+</tr>
+<tr>
+<td><code>rebar_suggestions</code></td>
+<td><code>insights/rebar_advisor.py</code></td>
+<td><code>backend/app/services/insights.py</code></td>
+</tr>
+<tr>
+<td><code>design_comparison</code></td>
+<td><code>insights/comparisons.py</code></td>
+<td><code>backend/app/services/insights.py</code></td>
+</tr>
+<tr>
+<td><code>GenericCSVAdapter</code></td>
+<td><code>services/adapters.py</code></td>
+<td><code>backend/app/services/adapters.py</code></td>
+</tr>
+<tr>
+<td><code>ETABSAdapter</code></td>
+<td><code>services/adapters.py</code></td>
+<td><code>backend/app/services/adapters.py</code></td>
+</tr>
+<tr>
+<td><code>SAFEAdapter</code></td>
+<td><code>services/adapters.py</code></td>
+<td><code>backend/app/services/adapters.py</code></td>
+</tr>
+<tr>
+<td><code>STAADAdapter</code></td>
+<td><code>services/adapters.py</code></td>
+<td><code>backend/app/services/adapters.py</code></td>
+</tr>
+<tr>
+<td><code>batch_design</code></td>
+<td><code>services/batch.py</code></td>
+<td><code>backend/app/services/batch.py</code></td>
+</tr>
+<tr>
+<td><code>stream_design_updates</code></td>
+<td><code>services/streaming.py</code></td>
+<td><code>backend/app/services/</code></td>
+</tr>
+<tr>
+<td><code>compute_stirrup_positions</code></td>
+<td><code>visualization/geometry_3d.py</code></td>
+<td><code>backend/app/services/visualization.py</code></td>
+</tr>
+<tr>
+<td><code>compute_rebar_positions</code></td>
+<td><code>visualization/geometry_3d.py</code></td>
+<td><code>backend/app/services/visualization.py</code></td>
+</tr>
+<tr>
+<td><code>create_cross_section_geometry</code></td>
+<td><code>visualization/geometry_3d.py</code></td>
+<td><code>backend/app/services/visualization.py</code></td>
+</tr>
+<tr>
+<td><code>design_optimizer</code></td>
+<td><code>services/optimization.py</code></td>
+<td><code>backend/app/services/optimization.py</code></td>
+</tr>
+<tr>
+<td><code>cost_estimate</code></td>
+<td><code>services/costing.py</code></td>
+<td><code>backend/app/services/optimization.py</code></td>
+</tr>
+<tr>
+<td><code>rebar_weight_summary</code></td>
+<td><code>services/bbs.py</code></td>
+<td><code>backend/app/services/bbs_export.py</code></td>
+</tr>
+<tr>
+<td><code>calculate_audit_hash</code></td>
+<td><code>_internals/audit.py</code></td>
+<td><code>backend/app/services/audit.py</code></td>
+</tr>
+<tr>
+<td><code>log_calculation</code></td>
+<td><code>_internals/audit.py</code></td>
+<td><code>backend/app/services/audit.py</code></td>
+</tr>
+<tr>
+<td><code>validate_csv_input</code></td>
+<td><code>services/adapters.py</code></td>
+<td><code>backend/app/services/adapters.py</code></td>
+</tr>
+<tr>
+<td><code>parse_etabs_csv</code></td>
+<td><code>services/adapters.py</code></td>
+<td><code>backend/app/services/adapters.py</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="functions-to-remove-deprecated">Functions to Remove (Deprecated)<a class="headerlink" href="#functions-to-remove-deprecated" title="Permanent link">&para;</a></h2>
+<p>These exist only for backward compatibility and should NOT be carried to either repo:</p>
+<table>
+<thead>
+<tr>
+<th>Function / Module</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Python/structural_lib/api.py</code> (root stub)</td>
+<td>Backward-compat shim → real code in <code>services/api.py</code></td>
+</tr>
+<tr>
+<td><code>Python/structural_lib/adapters.py</code> (root stub)</td>
+<td>Backward-compat shim → real code in <code>services/adapters.py</code></td>
+</tr>
+<tr>
+<td><code>Python/structural_lib/beam_pipeline.py</code> (root stub)</td>
+<td>Backward-compat shim → real code in <code>services/beam_pipeline.py</code></td>
+</tr>
+<tr>
+<td>Deprecated helper functions</td>
+<td>Identified in <code>__init__.py</code> with deprecation warnings</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="classification-criteria">Classification Criteria<a class="headerlink" href="#classification-criteria" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Criteria</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CORE</strong></td>
+<td>Pure math, IS 456 clause reference, no I/O, no file access, stateless</td>
+<td><code>calculate_mu_lim</code>, <code>tau_c</code>, <code>biaxial_check</code></td>
+</tr>
+<tr>
+<td><strong>ORCH</strong></td>
+<td>Composes CORE functions, stateless, may validate input, returns typed models</td>
+<td><code>design_beam</code>, <code>check_deflection</code>, <code>design_and_detail_beam</code></td>
+</tr>
+<tr>
+<td><strong>APP</strong></td>
+<td>Involves I/O (files, CSV, DXF), visualization, HTTP, databases, or is app-specific logic</td>
+<td><code>export_dxf</code>, <code>GenericCSVAdapter</code>, <code>beam_to_3d_geometry</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision rule:</strong> If you can use the function in a pure Python script with <code>pip install rcdesign</code> and no other dependencies, it's CORE or ORCH. If it needs ezdxf, jinja2, CSV files, or a web server, it's APP.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

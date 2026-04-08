@@ -1,0 +1,2968 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/research/2026-state-of-the-art-report/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>2026 State-of-the-Art: What a Cutting-Edge Structural Engineering Python Library Must Be - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2026-state-of-the-art-what-a-cutting-edge-structural-engineering-python-library-must-be" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2026 State-of-the-Art: What a Cutting-Edge Structural Engineering Python Library Must Be
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-engineer-persona-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Engineer Persona Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Engineer Persona Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entry-level-engineer-0-4-years" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entry-Level Engineer (0-4 years)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#senior-engineer-10-20-years" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Senior Engineer (10-20 years)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firm-owner-technical-director" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firm Owner / Technical Director
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-pain-points-with-current-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pain Points with Current Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Pain Points with Current Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etabs-sap2000-safe-csi-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETABS / SAP2000 / SAFE (CSI Products)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staadpro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STAAD.Pro
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tedds-tekla-tedds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TEDDS (Tekla Tedds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#excel-spreadsheets-the-industry-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Excel Spreadsheets (The Industry Reality)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emerging-open-source-tools-competitive-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emerging Open-Source Tools (Competitive Landscape)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-proof-verification-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Proof &amp; Verification Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Proof &amp; Verification Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-calculation-audit-trail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Calculation Audit Trail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-verification-against-known-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Verification Against Known Benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-professional-liability-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Professional Liability Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-verification-stamp-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Verification Stamp System
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-innovative-2026-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Innovative 2026 Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Innovative 2026 Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-transparent-calculations-handcalcs-inspired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Transparent Calculations (handcalcs-Inspired)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-generative-design-with-pareto-front" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Generative Design with Pareto Front
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-sustainability-scoring-first-in-industry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Sustainability Scoring (First in Industry)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-natural-language-design-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Natural Language Design Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-etabs-integration-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 ETABS Integration Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-what-if-parametric-analysis-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 What-If / Parametric Analysis Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-report-output-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Report &amp; Output Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Report &amp; Output Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-required-report-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Required Report Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-report-quality-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Report Quality Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-output-format-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Output Format Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-multi-code-ux-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Multi-Code UX Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Multi-Code UX Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-how-users-should-interact-with-multi-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 How Users Should Interact with Multi-Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-design-principles-for-multi-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Design Principles for Multi-Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-how-commercial-tools-handle-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 How Commercial Tools Handle This
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-firm-adoption-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Firm Adoption Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Firm Adoption Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-what-makes-a-firm-adopt-a-python-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 What Makes a Firm Adopt a Python Library
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-critical-success-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Critical Success Factors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-killer-use-cases-for-firm-adoption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Killer Use Cases for Firm Adoption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-professional-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Professional Standards
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Professional Standards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-disclaimers-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Disclaimers Required
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-what-the-library-must-not-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 What the Library Must NOT Do
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-verification-stamp-vs-pe-stamp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Verification Stamp vs PE Stamp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-top-10-features-that-would-make-this-the-best-structural-engineering-library-in-the-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Top 10 Features That Would Make This the BEST Structural Engineering Library in the World
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Top 10 Features That Would Make This the BEST Structural Engineering Library in the World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-combination-wins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Combination Wins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-action-items-by-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Action Items by Priority
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Action Items by Priority">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-this-quarter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate (This Quarter)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next-quarter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Quarter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-competitive-positioning-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Competitive Positioning Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-research-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix B: Research Sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="2026-state-of-the-art-what-a-cutting-edge-structural-engineering-python-library-must-be">2026 State-of-the-Art: What a Cutting-Edge Structural Engineering Python Library Must Be<a class="headerlink" href="#2026-state-of-the-art-what-a-cutting-edge-structural-engineering-python-library-must-be" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>See also:</strong> <a href="../2026-python-toolchain-report/">2026 Python Toolchain Report</a> for the definitive tools/versions guide.</p>
+</blockquote>
+<p><strong>Research Method:</strong> Web research (anaStruct, handcalcs, efficalc, IfcOpenShell, buildingSMART IFC, efficalc.com), codebase analysis of existing capabilities, competitive landscape review, and domain expertise synthesis.</p>
+<hr />
+<h2 id="1-engineer-persona-analysis">1. Engineer Persona Analysis<a class="headerlink" href="#1-engineer-persona-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="entry-level-engineer-0-4-years">Entry-Level Engineer (0-4 years)<a class="headerlink" href="#entry-level-engineer-0-4-years" title="Permanent link">&para;</a></h3>
+<p><strong>Profile:</strong> Recently graduated, comfortable with Python, unfamiliar with design codes, overwhelmed by ETABS/SAFE complexity.</p>
+<p><strong>Needs:</strong>
+- <strong>Learning mode</strong>: Show formulas alongside results. "Why is Ast = 1256 mm²?" not just "Ast = 1256 mm²"
+- <strong>Code clause references</strong>: Every result should cite its IS 456 clause (e.g., "per Cl 26.5.1.1(b)")
+- <strong>Worked examples</strong> that mirror textbook problems (Varghese, Pillai &amp; Menon, Jain)
+- <strong>Guardrails</strong>: Warn when inputs are unreasonable (span &gt; 20m for a beam, b &lt; 200mm)
+- <strong>Quick start</strong>: <code>pip install structural-lib-is456</code> → design a beam in 5 lines of code
+- <strong>Visual feedback</strong>: Cross-section diagrams, moment diagrams, rebar layout</p>
+<p><strong>What they'd say:</strong> <em>"I want to understand what IS 456 Clause 26.5.1.1(b) actually means by running it with different inputs and seeing how the result changes."</em></p>
+<h3 id="senior-engineer-10-20-years">Senior Engineer (10-20 years)<a class="headerlink" href="#senior-engineer-10-20-years" title="Permanent link">&para;</a></h3>
+<p><strong>Profile:</strong> Expert in IS 456, skeptical of automation, needs to verify every result, handles complex projects with irregular geometry and multiple load combinations.</p>
+<p><strong>Needs:</strong>
+- <strong>Transparency</strong>: Full calculation trace with intermediate values, not a black box
+- <strong>Verification</strong>: Results must match hand calculations and commercial tools to 4 significant figures
+- <strong>Parametric studies</strong>: "What if I change fck from M25 to M30? Show me cost, reinforcement, and utilization changes"
+- <strong>Batch processing</strong>: 200+ beams from an ETABS model, designed in one go with a comprehensive report
+- <strong>Professional reports</strong>: PDF output matching the quality of TEDDS / Hilti PROFIS reports
+- <strong>Multi-code awareness</strong>: "We do projects in the Middle East too — I need ACI 318 eventually"
+- <strong>Override capability</strong>: Ability to override automatic selections (bar sizes, spacing) with engineering judgment</p>
+<p><strong>What they'd say:</strong> <em>"I won't trust it until its numbers match my hand calc sheet for 50 different beam configurations."</em></p>
+<h3 id="firm-owner-technical-director">Firm Owner / Technical Director<a class="headerlink" href="#firm-owner-technical-director" title="Permanent link">&para;</a></h3>
+<p><strong>Profile:</strong> Responsible for quality, liability, and profitability. Evaluates tools for the entire team.</p>
+<p><strong>Needs:</strong>
+- <strong>Audit trail</strong>: Who designed beam B12? When? With what inputs? Did it change since the last revision?
+- <strong>Quality assurance</strong>: Verified against published benchmarks (SP 16 charts, IS 456 examples)
+- <strong>Productivity gain</strong>: Must save at least 40% time vs current workflow to justify adoption
+- <strong>Risk management</strong>: Professional disclaimer language, version pinning, reproducible results
+- <strong>Integration</strong>: Must work alongside ETABS/SAP2000, not replace them — import ETABS CSV → design → export BBS
+- <strong>Training cost</strong>: How quickly can a junior engineer become productive? (&lt; 1 week is the target)
+- <strong>Licensing</strong>: Open-source is fine for in-house tools. For client deliverables, needs professional indemnity language</p>
+<p><strong>What they'd say:</strong> <em>"Can I point a reviewer to the source code to verify the formulas? That's more trustworthy than a black-box commercial tool."</em></p>
+<hr />
+<h2 id="2-pain-points-with-current-tools">2. Pain Points with Current Tools<a class="headerlink" href="#2-pain-points-with-current-tools" title="Permanent link">&para;</a></h2>
+<h3 id="etabs-sap2000-safe-csi-products">ETABS / SAP2000 / SAFE (CSI Products)<a class="headerlink" href="#etabs-sap2000-safe-csi-products" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Black box calculations</strong>: Results cannot be traced step-by-step. "Why did it pick 6#20 instead of 4#25?"</li>
+<li><strong>Expensive licensing</strong>: ₹2-5 lakh/year per seat. Small firms can't afford multi-seat licenses</li>
+<li><strong>Clunky API</strong>: ETABS OAPI exists but is COM-based, poorly documented, and Windows-only</li>
+<li><strong>No parametric design</strong>: Want to try 10 concrete grades × 5 section sizes = manual iteration</li>
+<li><strong>Report generation</strong>: ETABS reports are database dumps, not engineering narratives</li>
+<li><strong>Black box IS 456 design</strong>: No visibility into which clauses were applied or skipped</li>
+<li><strong>Lock-in</strong>: Proprietary file formats, no easy way to move to another tool</li>
+</ul>
+<h3 id="staadpro">STAAD.Pro<a class="headerlink" href="#staadpro" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Legacy architecture</strong>: Feels like software from 2005 with a modern skin</li>
+<li><strong>Inconsistent IS 456 implementation</strong>: Known discrepancies with hand calculations for certain clause combinations</li>
+<li><strong>Post-processing nightmare</strong>: Getting usable output requires third-party tools or VB macros</li>
+<li><strong>Windows-only</strong>: No Linux/Mac support, limiting use in cloud and CI pipelines</li>
+</ul>
+<h3 id="tedds-tekla-tedds">TEDDS (Tekla Tedds)<a class="headerlink" href="#tedds-tekla-tedds" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Closed calculation templates</strong>: Cannot inspect or modify the underlying formulas</li>
+<li><strong>Limited Indian code support</strong>: IS 456 module exists but is basic compared to Eurocode or ACI modules</li>
+<li><strong>No programmability</strong>: Cannot script batch designs or integrate into pipelines</li>
+<li><strong>Expensive add-on</strong>: Sold as a module on top of Tekla, not standalone</li>
+</ul>
+<h3 id="excel-spreadsheets-the-industry-reality">Excel Spreadsheets (The Industry Reality)<a class="headerlink" href="#excel-spreadsheets-the-industry-reality" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>70%+ of structural calculations still happen in Excel</strong> (industry estimate)</li>
+<li>No version control, no audit trail, formulas hidden in cells</li>
+<li>Copy-paste errors are the #1 source of design errors</li>
+<li>Cannot be tested, reviewed as code, or reproduced reliably</li>
+<li><strong>This is our biggest competitor and our biggest opportunity</strong></li>
+</ul>
+<h3 id="emerging-open-source-tools-competitive-landscape">Emerging Open-Source Tools (Competitive Landscape)<a class="headerlink" href="#emerging-open-source-tools-competitive-landscape" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Stars</th>
+<th>What It Does</th>
+<th>Gap vs Our Library</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>anaStruct</strong></td>
+<td>441</td>
+<td>2D frame analysis (FEM)</td>
+<td>Analysis only, no IS 456 design, no reports</td>
+</tr>
+<tr>
+<td><strong>handcalcs</strong></td>
+<td>5,800</td>
+<td>Renders Python calcs as LaTeX</td>
+<td>Rendering only, no engineering knowledge</td>
+</tr>
+<tr>
+<td><strong>efficalc</strong></td>
+<td>48</td>
+<td>Calculation templates → reports</td>
+<td>Generic framework, no code-specific design</td>
+</tr>
+<tr>
+<td><strong>IfcOpenShell</strong></td>
+<td>2,400</td>
+<td>IFC/BIM manipulation</td>
+<td>Geometry/data only, no structural design</td>
+</tr>
+<tr>
+<td><strong>OpenSees</strong></td>
+<td>—</td>
+<td>Advanced nonlinear FEM</td>
+<td>Research tool, not design tool, steep learning curve</td>
+</tr>
+<tr>
+<td><strong>PyNite</strong></td>
+<td>~200</td>
+<td>3D structural analysis</td>
+<td>Analysis only, no code-based design</td>
+</tr>
+<tr>
+<td><strong>ClearCalcs</strong></td>
+<td>SaaS</td>
+<td>Cloud-based design</td>
+<td>Commercial, AUS-focused, not IS 456</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key insight:</strong> No open-source tool combines <strong>code-based design + verification trail + professional reports + IS 456</strong>. This is our unique position.</p>
+<hr />
+<h2 id="3-proof-verification-framework">3. Proof &amp; Verification Framework<a class="headerlink" href="#3-proof-verification-framework" title="Permanent link">&para;</a></h2>
+<p>This is the #1 missing capability in structural engineering software and the #1 reason firms are reluctant to adopt new tools.</p>
+<h3 id="31-calculation-audit-trail">3.1 Calculation Audit Trail<a class="headerlink" href="#31-calculation-audit-trail" title="Permanent link">&para;</a></h3>
+<p>Every design result should carry a complete provenance record:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">CalculationAuditRecord</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="c1"># Identity</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">calculation_id</span><span class="p">:</span> <span class="nb">str</span>           <span class="c1"># UUID</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">timestamp</span><span class="p">:</span> <span class="n">datetime</span>           <span class="c1"># When calculated</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">library_version</span><span class="p">:</span> <span class="nb">str</span>          <span class="c1"># e.g., &quot;0.21.4&quot;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="c1"># Inputs</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span>                  <span class="c1"># All input parameters with units</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">input_source</span><span class="p">:</span> <span class="nb">str</span>             <span class="c1"># &quot;manual&quot; | &quot;etabs_csv&quot; | &quot;api&quot;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="c1"># Method</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">design_code</span><span class="p">:</span> <span class="nb">str</span>              <span class="c1"># &quot;IS 456:2000&quot;</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">clauses_applied</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>    <span class="c1"># [&quot;Cl 38.1&quot;, &quot;Cl 26.5.1.1(b)&quot;, &quot;Cl 40.4&quot;]</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">assumptions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>        <span class="c1"># [&quot;Rectangular section&quot;, &quot;Singly reinforced&quot;]</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="c1"># Results</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">outputs</span><span class="p">:</span> <span class="nb">dict</span>                 <span class="c1"># All output values with units</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">intermediate_values</span><span class="p">:</span> <span class="nb">dict</span>     <span class="c1"># Every intermediate calculation step</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="c1"># Verification</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">status_checks</span><span class="p">:</span> <span class="nb">dict</span>           <span class="c1"># {&quot;flexure&quot;: &quot;SAFE&quot;, &quot;shear&quot;: &quot;SAFE&quot;, ...}</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">utilization_ratios</span><span class="p">:</span> <span class="nb">dict</span>      <span class="c1"># {&quot;flexure&quot;: 0.87, &quot;shear&quot;: 0.65}</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">warnings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>           <span class="c1"># Any engineering warnings</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="c1"># Traceability</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">computed_by</span><span class="p">:</span> <span class="nb">str</span>              <span class="c1"># User/system identifier</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">reviewed_by</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>       <span class="c1"># Reviewer (if applicable)</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="n">revision</span><span class="p">:</span> <span class="nb">int</span>                 <span class="c1"># Revision number</span>
+</code></pre></div>
+<h3 id="32-verification-against-known-benchmarks">3.2 Verification Against Known Benchmarks<a class="headerlink" href="#32-verification-against-known-benchmarks" title="Permanent link">&para;</a></h3>
+<p><strong>Benchmark categories:</strong>
+1. <strong>SP 16 chart verification</strong>: Every design result must match SP 16 charts to within 1%
+2. <strong>Textbook examples</strong>: Reproduce examples from Varghese, Pillai &amp; Menon, Jain — with exact match
+3. <strong>ETABS comparison</strong>: For a reference building, match ETABS IS 456 design results within 2%
+4. <strong>Hand calculation verification</strong>: For every function, provide a worked example that can be verified by hand
+5. <strong>Round-trip tests</strong>: Design → extract inputs → redesign → same result (deterministic)</p>
+<p><strong>Implementation approach:</strong>
+- <code>tests/benchmarks/</code> directory with categorized verification tests
+- Each test cites its source (book, page number, ETABS model file)
+- CI runs benchmarks on every commit — any regression fails the build
+- Public benchmark report published with each release</p>
+<h3 id="33-professional-liability-framework">3.3 Professional Liability Framework<a class="headerlink" href="#33-professional-liability-framework" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>DISCLAIMER (Required on every output):
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>────────────────────────────────────────
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>This calculation was produced by structural-lib-is456 v{version}.
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>It implements IS 456:2000 as amended up to {amendment_date}.
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>This software is a CALCULATION TOOL, not a substitute for engineering judgment.
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>All outputs must be independently verified by a qualified structural engineer
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>before use in any structural design.
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>The authors accept no liability for structural designs based on this software.
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>All designs must comply with local building codes and be approved by the
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>relevant authority having jurisdiction.
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>License: {license}
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>Verification status: {test_count} benchmark tests passing
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>────────────────────────────────────────
+</code></pre></div>
+<h3 id="34-verification-stamp-system">3.4 Verification Stamp System<a class="headerlink" href="#34-verification-stamp-system" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">VerificationLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">UNVERIFIED</span> <span class="o">=</span> <span class="s2">&quot;unverified&quot;</span>          <span class="c1"># Raw calculation output</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">SELF_CHECKED</span> <span class="o">=</span> <span class="s2">&quot;self_checked&quot;</span>      <span class="c1"># Automated benchmark match</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">PEER_REVIEWED</span> <span class="o">=</span> <span class="s2">&quot;peer_reviewed&quot;</span>    <span class="c1"># Another engineer has reviewed</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">INDEPENDENTLY_VERIFIED</span> <span class="o">=</span> <span class="s2">&quot;verified&quot;</span> <span class="c1"># Verified against independent calc</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">VerificationStamp</span><span class="p">:</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">level</span><span class="p">:</span> <span class="n">VerificationLevel</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">checker</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">benchmark_ref</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>     <span class="c1"># &quot;SP16-Table-2, Row 12&quot;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">notes</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div>
+<hr />
+<h2 id="4-innovative-2026-features">4. Innovative 2026 Features<a class="headerlink" href="#4-innovative-2026-features" title="Permanent link">&para;</a></h2>
+<h3 id="41-transparent-calculations-handcalcs-inspired">4.1 Transparent Calculations (handcalcs-Inspired)<a class="headerlink" href="#41-transparent-calculations-handcalcs-inspired" title="Permanent link">&para;</a></h3>
+<p><strong>The killer feature no competitor has</strong>: Show every step, every formula, every substitution — like writing by hand, but automated.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># result.calculation_trace returns:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="sd">Design of RC Beam per IS 456:2000</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="sd">═══════════════════════════════════</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="sd">Input Parameters (Cl 38.1):</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="sd">  b = 300 mm, d = 500 mm</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="sd">  fck = 25 N/mm², fy = 500 N/mm²</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="sd">  Mu = 180 kN·m</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="sd">Step 1: Limiting Moment of Resistance (Cl 38.1, Annex G)</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="sd">  xu_max/d = 0.46  (for Fe 500, Table G-1.1)</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="sd">  xu_max = 0.46 × 500 = 230.0 mm</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="sd">  Mu_lim = 0.36 × fck × b × xu_max × (d - 0.42 × xu_max)</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="sd">         = 0.36 × 25 × 300 × 230 × (500 - 0.42 × 230)</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="sd">         = 0.36 × 25 × 300 × 230 × 403.4</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="sd">         = 250.5 kN·m</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="sd">  Since Mu (180) &lt; Mu_lim (250.5): SINGLY REINFORCED ✓</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="sd">Step 2: Depth of Neutral Axis (Cl 38.1)</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="sd">  Mu = 0.36 × fck × b × xu × (d - 0.42 × xu)</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="sd">  180 × 10⁶ = 0.36 × 25 × 300 × xu × (500 - 0.42 × xu)</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="sd">  Solving: xu = 148.2 mm</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="sd">  xu/d = 148.2/500 = 0.296 &lt; 0.46 ✓ (Under-reinforced)</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="sd">Step 3: Area of Tension Steel (Cl 38.1)</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="sd">  Ast = Mu / (0.87 × fy × (d - 0.42 × xu))</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="sd">      = 180 × 10⁶ / (0.87 × 500 × (500 - 0.42 × 148.2))</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="sd">      = 180 × 10⁶ / (435 × 437.8)</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="sd">      = 945.1 mm²</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+<p>This is inspired by <code>handcalcs</code> (5.8K stars) but built into the design engine itself — not a rendering layer. Every result is self-documenting.</p>
+<h3 id="42-generative-design-with-pareto-front">4.2 Generative Design with Pareto Front<a class="headerlink" href="#42-generative-design-with-pareto-front" title="Permanent link">&para;</a></h3>
+<p>Not just "find the cheapest" — generate ALL valid designs and let the engineer CHOOSE:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">designs</span> <span class="o">=</span> <span class="n">generate_design_space</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">span_m</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span> <span class="n">load_kN_per_m</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">objectives</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="s2">&quot;carbon&quot;</span><span class="p">,</span> <span class="s2">&quot;utilization&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="s2">&quot;max_depth_mm&quot;</span><span class="p">:</span> <span class="mi">600</span><span class="p">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Returns 50-200 valid designs on a Pareto front:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># Design 1: 300×500, M25, 4#16 — ₹2,100 | 42 kgCO₂ | utilization 0.89</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># Design 2: 250×550, M30, 3#20 — ₹2,350 | 38 kgCO₂ | utilization 0.78</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># Design 3: 350×450, M25, 5#16 — ₹2,050 | 45 kgCO₂ | utilization 0.92</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># ...</span>
+</code></pre></div>
+<p><strong>Why this changes everything:</strong> Current tools give ONE answer. This gives engineers the TRADE-OFF SPACE. "I can save 10% carbon for just 5% more cost" is a decision only a human should make.</p>
+<h3 id="43-sustainability-scoring-first-in-industry">4.3 Sustainability Scoring (First in Industry)<a class="headerlink" href="#43-sustainability-scoring-first-in-industry" title="Permanent link">&para;</a></h3>
+<p>Already in research phase — see <a href="../innovation-sustainability-scoring/">innovation-sustainability-scoring.md</a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">carbon</span> <span class="o">=</span> <span class="n">score_embodied_carbon</span><span class="p">(</span><span class="n">design_result</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Returns: CarbonScore(</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1">#   concrete_kgCO2=312.5,    # 0.15 m³ × M25 factor</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">#   steel_kgCO2=188.4,       # 23.55 kg × steel factor</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">#   total_kgCO2=500.9,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1">#   rating=&quot;B&quot;,               # A-F scale</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1">#   benchmark_percentile=62,  # vs typical Indian practice</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1">#   net_zero_gap_pct=34       # distance from 2050 target</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># )</span>
+</code></pre></div>
+<p><strong>No open-source structural design library scores individual element designs for carbon.</strong> ETABS, SAP2000, SAFE — none do this at element level.</p>
+<h3 id="44-natural-language-design-interface">4.4 Natural Language Design Interface<a class="headerlink" href="#44-natural-language-design-interface" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_from_description</span><span class="p">(</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="s2">&quot;Design a simply supported beam spanning 6 meters, &quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="s2">&quot;carrying a superimposed dead load of 10 kN/m and live load of 15 kN/m, &quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="s2">&quot;using M25 concrete and Fe500 steel, &quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="s2">&quot;with 25mm cover for mild exposure&quot;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># Step 1: Parse → confirmed parameters shown to user</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Step 2: Calculate self-weight iteratively</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># Step 3: Apply load factors (IS 456 Table 18)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="c1"># Step 4: Design → full result with audit trail</span>
+</code></pre></div>
+<h3 id="45-etabs-integration-pipeline">4.5 ETABS Integration Pipeline<a class="headerlink" href="#45-etabs-integration-pipeline" title="Permanent link">&para;</a></h3>
+<p><strong>The most requested feature by Indian structural firms:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">ETABSPipeline</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">ETABSPipeline</span><span class="p">(</span><span class="s2">&quot;path/to/etabs_csvs/&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">design_all_beams</span><span class="p">()</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_bbs</span><span class="p">(</span><span class="s2">&quot;output/bbs.xlsx&quot;</span><span class="p">)</span>    <span class="c1"># Bar Bending Schedule</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_report</span><span class="p">(</span><span class="s2">&quot;output/calc.pdf&quot;</span><span class="p">)</span>  <span class="c1"># Full design calculation book</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_dxf</span><span class="p">(</span><span class="s2">&quot;output/rebar.dxf&quot;</span><span class="p">)</span>    <span class="c1"># AutoCAD reinforcement layout</span>
+</code></pre></div>
+<p>This turns a 2-week manual process into a 2-hour automated pipeline.</p>
+<h3 id="46-what-if-parametric-analysis-engine">4.6 What-If / Parametric Analysis Engine<a class="headerlink" href="#46-what-if-parametric-analysis-engine" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">study</span> <span class="o">=</span> <span class="n">parametric_study</span><span class="p">(</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">base_design</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;b_mm&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;fck&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;Mu_kNm&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">},</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">vary</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fck&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">50</span><span class="p">)},</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Ast&quot;</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="s2">&quot;carbon&quot;</span><span class="p">,</span> <span class="s2">&quot;utilization&quot;</span><span class="p">]</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">study</span><span class="o">.</span><span class="n">plot_heatmap</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;fck&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;d_mm&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;cost&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="n">study</span><span class="o">.</span><span class="n">plot_sensitivity</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;Ast&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">study</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;parametric_results.xlsx&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="5-report-output-requirements">5. Report &amp; Output Requirements<a class="headerlink" href="#5-report-output-requirements" title="Permanent link">&para;</a></h2>
+<h3 id="51-required-report-types">5.1 Required Report Types<a class="headerlink" href="#51-required-report-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Report Type</th>
+<th>Format</th>
+<th>Audience</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Design Calculation</td>
+<td>PDF, HTML</td>
+<td>Reviewer/authority</td>
+<td>Full step-by-step calc with clause refs</td>
+</tr>
+<tr>
+<td>Design Summary</td>
+<td>PDF, Excel</td>
+<td>Client/architect</td>
+<td>Key results: section, reinforcement, checks</td>
+</tr>
+<tr>
+<td>Bar Bending Schedule</td>
+<td>Excel, PDF</td>
+<td>Contractor/site</td>
+<td>Rebar cutting lengths, bending shapes, weight</td>
+</tr>
+<tr>
+<td>Beam Schedule</td>
+<td>Excel</td>
+<td>Drafter</td>
+<td>b, D, reinforcement at each section</td>
+</tr>
+<tr>
+<td>DXF Drawing</td>
+<td>DXF/DWG</td>
+<td>Drafter/CAD</td>
+<td>Cross-section with rebar positions</td>
+</tr>
+<tr>
+<td>Comparison Report</td>
+<td>HTML, PDF</td>
+<td>Design team</td>
+<td>Side-by-side alternatives with trade-offs</td>
+</tr>
+<tr>
+<td>Parametric Study</td>
+<td>HTML, Excel</td>
+<td>Engineer</td>
+<td>Sensitivity analysis results</td>
+</tr>
+<tr>
+<td>Carbon Report</td>
+<td>PDF</td>
+<td>Green building cert</td>
+<td>Embodied carbon per element</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-report-quality-standards">5.2 Report Quality Standards<a class="headerlink" href="#52-report-quality-standards" title="Permanent link">&para;</a></h3>
+<p><strong>A professional calculation report must include:</strong>
+1. <strong>Cover page</strong>: Project name, engineer, date, revision, company logo placeholder
+2. <strong>Table of contents</strong>: Auto-generated from design elements
+3. <strong>Input summary</strong>: All inputs in a parameter table with units
+4. <strong>Design methodology</strong>: Which code, which clauses, which assumptions
+5. <strong>Step-by-step calculations</strong>: Formula → substitution → result (handcalcs-style)
+6. <strong>Code check summary</strong>: Pass/fail table for all applicable checks
+7. <strong>Cross-section diagram</strong>: With dimensions and rebar positions
+8. <strong>Bar Bending Schedule</strong>: If detailing is requested
+9. <strong>Disclaimer</strong>: Professional liability statement
+10. <strong>Revision history</strong>: Change log for the document</p>
+<h3 id="53-output-format-requirements">5.3 Output Format Requirements<a class="headerlink" href="#53-output-format-requirements" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>PDF</strong>: Professional, printable, signable. Use <code>reportlab</code> or <code>weasyprint</code></li>
+<li><strong>HTML</strong>: Interactive, linkable, embeddable in web apps. Already supported via React frontend</li>
+<li><strong>Excel/CSV</strong>: For data exchange, further processing, and client familiarity</li>
+<li><strong>DXF</strong>: For import into AutoCAD (already partially implemented via <code>export_dxf</code>)</li>
+<li><strong>IFC</strong>: For BIM integration — structural elements with properties (future, via IfcOpenShell)</li>
+<li><strong>JSON</strong>: Machine-readable results for API consumers (already the primary format)</li>
+</ul>
+<hr />
+<h2 id="6-multi-code-ux-design">6. Multi-Code UX Design<a class="headerlink" href="#6-multi-code-ux-design" title="Permanent link">&para;</a></h2>
+<h3 id="61-how-users-should-interact-with-multi-code">6.1 How Users Should Interact with Multi-Code<a class="headerlink" href="#61-how-users-should-interact-with-multi-code" title="Permanent link">&para;</a></h3>
+<p><strong>Recommended approach: Configuration-based with sensible defaults</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Option A: Module-level selection (recommended for single-code projects)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_beam</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_beam</span><span class="p">(</span><span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Option B: Explicit code parameter (for comparison workflows)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_beam</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">result_is456</span> <span class="o">=</span> <span class="n">design_beam</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">Mu</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">result_aci</span> <span class="o">=</span> <span class="n">design_beam</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;ACI318&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">Mu</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># Option C: Config file for project-wide settings</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="c1"># structural_lib.toml</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="c1"># [design]</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="c1"># code = &quot;IS456&quot;</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="c1"># units = &quot;SI&quot;</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="c1"># safety_factors = &quot;code_default&quot;  # NEVER allow overriding safety factors</span>
+</code></pre></div>
+<h3 id="62-design-principles-for-multi-code">6.2 Design Principles for Multi-Code<a class="headerlink" href="#62-design-principles-for-multi-code" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Each code is a complete, independent module</strong> — never mix safety factor systems</li>
+<li><strong>Parameter names follow each code's conventions</strong> — IS 456 uses <code>fck</code>, ACI uses <code>f'c</code>, EC2 uses <code>fck</code></li>
+<li><strong>Units follow each code's conventions</strong> — IS 456 uses mm/N, ACI often uses inches/lb</li>
+<li><strong>Safety factors are HARDCODED per code</strong> — never exposed as parameters</li>
+<li><strong>Comparison mode</strong> shows results side by side with different formatting per code</li>
+<li><strong>import path makes the code explicit</strong> — <code>from structural_lib.codes.is456 import ...</code></li>
+</ol>
+<h3 id="63-how-commercial-tools-handle-this">6.3 How Commercial Tools Handle This<a class="headerlink" href="#63-how-commercial-tools-handle-this" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Multi-code Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ETABS</td>
+<td>Dropdown menu: "Design Code → IS 456:2000" — applies to entire model</td>
+</tr>
+<tr>
+<td>STAAD.Pro</td>
+<td>Parameter in input file: <code>DEFINE IS456 DESIGN</code></td>
+</tr>
+<tr>
+<td>TEDDS</td>
+<td>Separate calculation templates per code</td>
+</tr>
+<tr>
+<td>IDEA StatiCa</td>
+<td>Code selection at project level, never per-element</td>
+</tr>
+<tr>
+<td>ClearCalcs</td>
+<td>Separate products per code region</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our approach combines the best</strong>: Module-level separation (like TEDDS) with comparison capability (unique to us).</p>
+<hr />
+<h2 id="7-firm-adoption-strategy">7. Firm Adoption Strategy<a class="headerlink" href="#7-firm-adoption-strategy" title="Permanent link">&para;</a></h2>
+<h3 id="71-what-makes-a-firm-adopt-a-python-library">7.1 What Makes a Firm Adopt a Python Library<a class="headerlink" href="#71-what-makes-a-firm-adopt-a-python-library" title="Permanent link">&para;</a></h3>
+<p>Based on industry patterns, the adoption funnel is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>AWARENESS:  &quot;There&#39;s an open-source IS 456 design library&quot;
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  ↓
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>TRIAL:      pip install → design one beam → compare with hand calc
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  ↓
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>VALIDATION: Design 10 beams from a real project → match ETABS results
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  ↓
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>PILOT:      One engineer uses it for a small project (non-critical)
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>  ↓
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>ADOPTION:   Team-wide use for specific workflows (batch design, BBS)
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>  ↓
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>DEPENDENCE: Embedded in firm&#39;s automation pipeline
+</code></pre></div>
+<h3 id="72-critical-success-factors">7.2 Critical Success Factors<a class="headerlink" href="#72-critical-success-factors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Threshold</th>
+<th>Current State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>&lt; 1% deviation from SP 16 / hand calc</td>
+<td>✅ Tested</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>Complete API docs + worked examples</td>
+<td>🔄 Partial</td>
+</tr>
+<tr>
+<td><strong>Benchmarks</strong></td>
+<td>Published verification against ETABS</td>
+<td>🔲 Not yet</td>
+</tr>
+<tr>
+<td><strong>Installation</strong></td>
+<td><code>pip install</code> works first time</td>
+<td>✅ Working</td>
+</tr>
+<tr>
+<td><strong>First result</strong></td>
+<td>&lt; 5 minutes from install to first design</td>
+<td>✅ Quick</td>
+</tr>
+<tr>
+<td><strong>Report quality</strong></td>
+<td>PDF matching TEDDS quality</td>
+<td>🔄 Basic</td>
+</tr>
+<tr>
+<td><strong>ETABS integration</strong></td>
+<td>Import CSV → design → export</td>
+<td>✅ Working</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>GitHub Issues with &lt; 48h response</td>
+<td>🔄 Informal</td>
+</tr>
+<tr>
+<td><strong>Stability</strong></td>
+<td>Semantic versioning, no breaking changes</td>
+<td>✅ v0.21.x</td>
+</tr>
+<tr>
+<td><strong>Indian code focus</strong></td>
+<td>IS 456 as first-class, not afterthought</td>
+<td>✅ Core focus</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-killer-use-cases-for-firm-adoption">7.3 Killer Use Cases for Firm Adoption<a class="headerlink" href="#73-killer-use-cases-for-firm-adoption" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>ETABS post-processing</strong>: Import beam forces → design all beams → generate BBS + reports. Saves 60-80% time.</li>
+<li><strong>Parametric optimization</strong>: "What's the cheapest section for 200 beams?" — impossible in ETABS, trivial here.</li>
+<li><strong>Quality audit</strong>: "Show me every beam where utilization &gt; 0.95" — instant query on design database.</li>
+<li><strong>Carbon reporting</strong>: Required for GRIHA/LEED projects, no tool does this today.</li>
+<li><strong>Training tool</strong>: Juniors learn IS 456 by seeing every calculation step — better than any textbook.</li>
+</ol>
+<hr />
+<h2 id="8-professional-standards">8. Professional Standards<a class="headerlink" href="#8-professional-standards" title="Permanent link">&para;</a></h2>
+<h3 id="81-disclaimers-required">8.1 Disclaimers Required<a class="headerlink" href="#81-disclaimers-required" title="Permanent link">&para;</a></h3>
+<p>Every output from the library must include:</p>
+<ol>
+<li><strong>Software disclaimer</strong>: "This is a calculation aid, not a substitute for engineering judgment"</li>
+<li><strong>Code version</strong>: "Implements IS 456:2000 as amended up to [date]"</li>
+<li><strong>Verification status</strong>: "This version has passed N benchmark tests"</li>
+<li><strong>Limitation statement</strong>: "This software handles [list] and does NOT handle [list]"</li>
+<li><strong>License notice</strong>: Open-source license terms</li>
+</ol>
+<h3 id="82-what-the-library-must-not-do">8.2 What the Library Must NOT Do<a class="headerlink" href="#82-what-the-library-must-not-do" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Never auto-approve a design</strong> — always present results for engineer review</li>
+<li><strong>Never hide failing checks</strong> — if a check fails, it must be prominently displayed</li>
+<li><strong>Never silently change inputs</strong> — if the library adjusts inputs (e.g., minimum steel), it must say so</li>
+<li><strong>Never claim to replace an engineer</strong> — it's a tool, not a designer</li>
+<li><strong>Never produce results outside its validated domain</strong> — if inputs are outside tested ranges, refuse or warn</li>
+</ul>
+<h3 id="83-verification-stamp-vs-pe-stamp">8.3 Verification Stamp vs PE Stamp<a class="headerlink" href="#83-verification-stamp-vs-pe-stamp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Our verification stamp</strong> = "This calculation was produced by verified, tested software"</li>
+<li><strong>PE stamp</strong> = "A licensed professional engineer has reviewed and approved this design"</li>
+<li>These are DIFFERENT and must never be conflated</li>
+<li>The library can facilitate the PE review process (by making calculations transparent) but cannot replace it</li>
+</ul>
+<hr />
+<h2 id="9-top-10-features-that-would-make-this-the-best-structural-engineering-library-in-the-world">9. Top 10 Features That Would Make This the BEST Structural Engineering Library in the World<a class="headerlink" href="#9-top-10-features-that-would-make-this-the-best-structural-engineering-library-in-the-world" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Feature</th>
+<th>Why It Wins</th>
+<th>Difficulty</th>
+<th>Current State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>Transparent Calculation Traces</strong></td>
+<td>No competitor shows every step. handcalcs does rendering, but not design. We do both. Engineers can verify by reading the output.</td>
+<td>M</td>
+<td>🔄 Partial (reports/)</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>ETABS → Design → BBS Pipeline</strong></td>
+<td>The #1 workflow for Indian structural firms. No open-source tool does this end-to-end.</td>
+<td>M</td>
+<td>✅ Working</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>Published Benchmark Verification</strong></td>
+<td>A public matrix showing our results vs SP 16 / ETABS / hand calcs. Trust through transparency.</td>
+<td>M</td>
+<td>🔲 Not yet</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Embodied Carbon Scoring</strong></td>
+<td>First structural design library to score individual elements for CO₂. Industry-changing.</td>
+<td>S</td>
+<td>🔄 Research</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>Generative Multi-Objective Design</strong></td>
+<td>Generate 50+ valid designs, Pareto-optimize cost × carbon × utilization. Engineers CHOOSE, not accept.</td>
+<td>L</td>
+<td>🔲 Research</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>Professional PDF Reports</strong></td>
+<td>Calculation book quality matching TEDDS. Cover page, TOC, diagrams, BBS, disclaimer.</td>
+<td>M</td>
+<td>🔄 Basic</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td><strong>Parametric What-If Engine</strong></td>
+<td>Vary any input, see impact on all outputs. Heatmaps, sensitivity plots, response surfaces.</td>
+<td>M</td>
+<td>🔄 Partial (sensitivity.py)</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>Natural Language Interface</strong></td>
+<td>"Design a 6m beam for 30 kN/m" → parse → confirm → design → report. Democratizes access.</td>
+<td>L</td>
+<td>🔄 Partial (smart_designer.py)</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>Multi-Code Comparison</strong></td>
+<td>Same beam designed per IS 456 vs ACI 318 vs EC2 — side by side. No tool does this for Indian code.</td>
+<td>XL</td>
+<td>🔲 Not yet</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td><strong>IFC/BIM Export</strong></td>
+<td>Export designed elements as IFC entities with structural properties. Bridges design → BIM gap.</td>
+<td>L</td>
+<td>🔲 Not yet</td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-this-combination-wins">Why This Combination Wins<a class="headerlink" href="#why-this-combination-wins" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>handcalcs</strong> (5.8K stars) does rendering but has zero engineering knowledge</li>
+<li><strong>anaStruct</strong> (441 stars) does analysis but has zero design capability</li>
+<li><strong>efficalc</strong> (48 stars) does reports but has zero code-specific design</li>
+<li><strong>ETABS/SAFE</strong> do design but are black boxes, expensive, and Windows-only</li>
+<li><strong>Excel spreadsheets</strong> are the real incumbent — and they have zero transparency, zero testing, zero version control</li>
+</ul>
+<p><strong>Our library is the only tool in the world that combines:</strong>
+1. IS 456 design knowledge (code-based, not generic)
+2. Transparent calculation traces (handcalcs-quality, built-in)
+3. Professional report generation (TEDDS-quality output)
+4. Open-source verifiability (any engineer can read the source)
+5. Python programmability (batch, parametric, integrated)
+6. Carbon scoring (industry first)
+7. Active AI agent development (16 agents, continuous improvement)</p>
+<hr />
+<h2 id="10-action-items-by-priority">10. Action Items by Priority<a class="headerlink" href="#10-action-items-by-priority" title="Permanent link">&para;</a></h2>
+<h3 id="immediate-this-quarter">Immediate (This Quarter)<a class="headerlink" href="#immediate-this-quarter" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Published benchmark matrix</strong> — SP 16 tables, textbook examples, ETABS comparison</li>
+<li><strong>Calculation trace in every result</strong> — clause references, intermediate values, formula + substitution</li>
+<li><strong>Professional PDF report template</strong> — cover page, TOC, cross-section diagrams</li>
+<li><strong>Embodied carbon scoring</strong> — prototype to production (research already done)</li>
+</ol>
+<h3 id="next-quarter">Next Quarter<a class="headerlink" href="#next-quarter" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Parametric study engine</strong> — extend sensitivity.py to full factorial with visualization</li>
+<li><strong>Generative design prototype</strong> — multi-objective optimization with Pareto front</li>
+<li><strong>Multi-code architecture</strong> — abstract <code>DesignCode</code> interface, ACI 318 as second code</li>
+<li><strong>Natural language parser</strong> — extend smart_designer.py with confirmation workflow</li>
+</ol>
+<h3 id="future">Future<a class="headerlink" href="#future" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>IFC export</strong> — via IfcOpenShell integration</li>
+<li><strong>Load combination intelligence</strong> — IS 456 Table 18 + IS 875 + IS 1893 auto-combinations</li>
+</ol>
+<hr />
+<h2 id="appendix-a-competitive-positioning-matrix">Appendix A: Competitive Positioning Matrix<a class="headerlink" href="#appendix-a-competitive-positioning-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th style="text-align: center;">Our Library</th>
+<th style="text-align: center;">ETABS</th>
+<th style="text-align: center;">Excel</th>
+<th style="text-align: center;">handcalcs</th>
+<th style="text-align: center;">efficalc</th>
+<th style="text-align: center;">anaStruct</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS 456 design</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>Transparent calcs</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>Professional reports</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>Open source</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Programmable/API</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Carbon scoring</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>Batch design</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>Parametric study</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>BIM integration</td>
+<td style="text-align: center;">🔲</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>Multi-code</td>
+<td style="text-align: center;">🔲</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td style="text-align: center;">Free</td>
+<td style="text-align: center;">₹2-5L/yr</td>
+<td style="text-align: center;">Free</td>
+<td style="text-align: center;">Free</td>
+<td style="text-align: center;">Free/SaaS</td>
+<td style="text-align: center;">Free</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">🔄</td>
+<td style="text-align: center;">❌</td>
+</tr>
+</tbody>
+</table>
+<p>Legend: ✅ Full | 🔄 Partial | 🔲 Planned | ❌ None</p>
+<h2 id="appendix-b-research-sources">Appendix B: Research Sources<a class="headerlink" href="#appendix-b-research-sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li>anaStruct: https://github.com/anastruct/anaStruct (441 stars, GPL-3.0, 2D frame analysis)</li>
+<li>handcalcs: https://github.com/connorferster/handcalcs (5.8K stars, Apache-2.0, LaTeX rendering)</li>
+<li>efficalc: https://github.com/youandvern/efficalc (48 stars, MIT, calculation reports)</li>
+<li>IfcOpenShell: https://github.com/IfcOpenShell/IfcOpenShell (2.4K stars, LGPL-3.0, BIM/IFC)</li>
+<li>buildingSMART IFC: https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/</li>
+<li>efficalc.com: https://efficalc.com/ (SaaS platform for engineering calculations)</li>
+<li>Wikipedia Structural Engineering: https://en.wikipedia.org/wiki/Structural_engineering</li>
+<li>Existing codebase research: docs/research/claw-code-harness-ideas.md, innovation-sustainability-scoring.md</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

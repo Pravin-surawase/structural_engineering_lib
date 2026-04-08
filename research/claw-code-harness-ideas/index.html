@@ -3496,6 +3496,1165 @@ Feed into <code>agent_scorer.py</code> as efficiency dimension.</p>
 </tr>
 </tbody>
 </table>
+<hr />
+<h1 id="part-2-deep-research-agent-architecture-library-tooling-best-practices-2025-2026">PART 2: Deep Research — Agent Architecture &amp; Library Tooling Best Practices (2025-2026)<a class="headerlink" href="#part-2-deep-research-agent-architecture-library-tooling-best-practices-2025-2026" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Date:</strong> 2025-07-20
+<strong>Author:</strong> innovator agent
+<strong>Scope:</strong> Two-track deep research — (1) VS Code Copilot agent architecture, (2) Python library tooling patterns from top OSS projects
+<strong>Status:</strong> Complete</p>
+</blockquote>
+<hr />
+<h2 id="track-1-vs-code-copilot-agent-architecture-2025-2026-latest">TRACK 1: VS Code Copilot Agent Architecture (2025-2026 Latest)<a class="headerlink" href="#track-1-vs-code-copilot-agent-architecture-2025-2026-latest" title="Permanent link">&para;</a></h2>
+<h3 id="1a-complete-customization-system-reference">1A. Complete Customization System Reference<a class="headerlink" href="#1a-complete-customization-system-reference" title="Permanent link">&para;</a></h3>
+<p>The VS Code Copilot customization system (as of July 2025) provides <strong>6 file types</strong> for agent customization:</p>
+<h4 id="1-agentmd-custom-agent-definitions">1. <code>.agent.md</code> — Custom Agent Definitions<a class="headerlink" href="#1-agentmd-custom-agent-definitions" title="Permanent link">&para;</a></h4>
+<p><strong>Location:</strong> <code>.github/agents/</code> or <code>.vscode/agents/</code> (workspace-level)</p>
+<p><strong>YAML Frontmatter Fields (complete schema):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Display name in <code>@</code> mentions</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>Semantic matching for auto-invocation (max 1024 chars)</td>
+</tr>
+<tr>
+<td><code>argument-hint</code></td>
+<td>string</td>
+<td>No</td>
+<td>Placeholder text in input box</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td>array</td>
+<td>No</td>
+<td>Tool restrictions: <code>["tool1", "tool2"]</code> or <code>[{"tool1": "description"}]</code></td>
+</tr>
+<tr>
+<td><code>agents</code></td>
+<td>array</td>
+<td>No</td>
+<td>Sub-agents accessible via <code>@name</code> within this agent</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string or array</td>
+<td>No</td>
+<td>LLM model: <code>"claude-sonnet-4"</code> or <code>["claude-sonnet-4", "gpt-4o"]</code> (prioritized)</td>
+</tr>
+<tr>
+<td><code>handoffs</code></td>
+<td>array</td>
+<td>No</td>
+<td>Sequential workflow buttons (see below)</td>
+</tr>
+<tr>
+<td><code>hooks</code></td>
+<td>object</td>
+<td>No</td>
+<td>Agent-scoped hooks (Preview)</td>
+</tr>
+<tr>
+<td><code>user-invocable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether user can invoke directly (default true)</td>
+</tr>
+<tr>
+<td><code>disable-model-invocation</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>If true, only manual invocation works</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td>string</td>
+<td>No</td>
+<td><code>"chat"</code> (default) or <code>"edits"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Handoff Protocol (production pattern):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">handoffs</span><span class="p">:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Review</span><span class="nv"> </span><span class="s">changes&quot;</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="nt">agent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reviewer</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nt">prompt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Review</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">changes</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">just</span><span class="nv"> </span><span class="s">made</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">{{files}}&quot;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># Auto-submit (no user click needed)</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-sonnet-4</span>
+</code></pre></div></p>
+<p><strong>Tool Restriction Examples:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Restrict to read-only tools (for reviewer agents)</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read_file</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grep_search</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file_search</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_search</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="c1"># Full edit access (for implementer agents)</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read_file</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace_string_in_file</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">run_in_terminal</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_search</span>
+</code></pre></div></p>
+<p><strong>Key Design Insight:</strong> Tools listed in <code>.agent.md</code> are the ONLY tools that agent can use. This is the primary security/permission mechanism.</p>
+<h4 id="2-instructionsmd-contextual-instructions">2. <code>.instructions.md</code> — Contextual Instructions<a class="headerlink" href="#2-instructionsmd-contextual-instructions" title="Permanent link">&para;</a></h4>
+<p><strong>Location:</strong> <code>.github/instructions/</code> (repo-level) or <code>~/.github/instructions/</code> (personal)</p>
+<p><strong>YAML Frontmatter:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nn">---</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python-core-rules</span><span class="w">        </span><span class="c1"># Optional display name</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Rules for editing the Python core</span><span class="w">    </span><span class="c1"># Semantic match description</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="nt">applyTo</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;**/structural_lib/**&quot;</span><span class="w">  </span><span class="c1"># Glob pattern for auto-activation</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="nn">---</span>
+</code></pre></div></p>
+<p><strong>Activation modes:</strong>
+1. <strong>Glob match:</strong> Applied automatically when editing files matching <code>applyTo</code> pattern
+2. <strong>Semantic match:</strong> Applied when task description semantically matches the <code>description</code> field
+3. <strong>Manual:</strong> User can reference via <code>#instructions</code> in chat</p>
+<p><strong>Priority (high → low):</strong> Personal (user-level) → Repository → Organization</p>
+<h4 id="3-promptmd-reusable-prompt-templates">3. <code>.prompt.md</code> — Reusable Prompt Templates<a class="headerlink" href="#3-promptmd-reusable-prompt-templates" title="Permanent link">&para;</a></h4>
+<p><strong>Location:</strong> <code>.github/prompts/</code></p>
+<p><strong>YAML Frontmatter:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nn">---</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run IS 456 verification tests</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">is456-verify</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="nt">argument-hint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enter clause number or test category</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="nt">agent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">structural-engineer</span><span class="w">    </span><span class="c1"># Route to specific agent</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-sonnet-4</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">run_in_terminal</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read_file</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="nn">---</span>
+</code></pre></div></p>
+<p>Invoked via <code>/is456-verify</code> slash command. Tools specified here take PRIORITY over agent-level tools.</p>
+<h4 id="4-skillmd-packaged-domain-knowledge">4. <code>SKILL.md</code> — Packaged Domain Knowledge<a class="headerlink" href="#4-skillmd-packaged-domain-knowledge" title="Permanent link">&para;</a></h4>
+<p><strong>Location:</strong> <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code></p>
+<p><strong>YAML Frontmatter (complete schema):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nn">---</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">function-quality-pipeline</span><span class="w">   </span><span class="c1"># MUST match directory name</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Mandatory</span><span class="nv"> </span><span class="s">9-step</span><span class="nv"> </span><span class="s">quality</span><span class="nv"> </span><span class="s">pipeline...&quot;</span><span class="w">  </span><span class="c1"># Max 1024 chars, semantic matching</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="nt">argument-hint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Enter</span><span class="nv"> </span><span class="s">function</span><span class="nv"> </span><span class="s">name&quot;</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="nt">user-invocable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1"># Default true</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="nt">disable-model-invocation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># Default false</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="nn">---</span>
+</code></pre></div></p>
+<p><strong>3-Level Loading (efficient context management):</strong>
+1. <strong>Discovery:</strong> Only <code>name</code> + <code>description</code> loaded initially (all skills)
+2. <strong>Instructions:</strong> Full SKILL.md content loaded when skill is invoked
+3. <strong>Resources:</strong> Additional files in skill directory loaded on-demand via tool calls</p>
+<p><strong>Open Standard:</strong> Skills follow the agentskills.io open standard — portable across tools.</p>
+<h4 id="5-agentsmd-claudemd-always-on-instructions">5. <code>AGENTS.md</code> / <code>CLAUDE.md</code> — Always-On Instructions<a class="headerlink" href="#5-agentsmd-claudemd-always-on-instructions" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong><code>AGENTS.md</code></strong> — Detected in workspace root, always applied. Cross-tool compatible.</li>
+<li><strong><code>CLAUDE.md</code></strong> — Detected in workspace root, <code>.claude/</code>, or <code>~/.claude/</code>. Claude-specific.</li>
+<li><strong><code>.github/copilot-instructions.md</code></strong> — Auto-applies to all Copilot requests.</li>
+</ul>
+<p><strong>Nested files (experimental):</strong> Enable <code>chat.useNestedAgentsMdFiles</code> to load <code>AGENTS.md</code> files from subdirectories.</p>
+<h4 id="6-hooks-lifecycle-event-handlers-preview">6. Hooks — Lifecycle Event Handlers (Preview)<a class="headerlink" href="#6-hooks-lifecycle-event-handlers-preview" title="Permanent link">&para;</a></h4>
+<p><strong>Location:</strong> <code>.github/hooks/*.json</code></p>
+<p><strong>8 Lifecycle Events:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>When</th>
+<th>Use Cases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>New chat session begins</td>
+<td>Load context, set env vars</td>
+</tr>
+<tr>
+<td><code>UserPromptSubmit</code></td>
+<td>Before processing user message</td>
+<td>Input validation, transformation</td>
+</tr>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>Before any tool execution</td>
+<td>Permission checks, blocking dangerous ops</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>After tool execution</td>
+<td>Logging, validation, cost tracking</td>
+</tr>
+<tr>
+<td><code>PreCompact</code></td>
+<td>Before context compaction</td>
+<td>Save important state</td>
+</tr>
+<tr>
+<td><code>SubagentStart</code></td>
+<td>Before handoff to sub-agent</td>
+<td>Context injection</td>
+</tr>
+<tr>
+<td><code>SubagentStop</code></td>
+<td>After sub-agent completes</td>
+<td>Result validation</td>
+</tr>
+<tr>
+<td><code>Stop</code></td>
+<td>Agent finishes response</td>
+<td>Summary, cleanup</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Hook Config Format:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">&quot;hooks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nt">&quot;preToolUse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">      </span><span class="p">{</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">        </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.venv/bin/python scripts/hooks/pre_tool_check.py&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">        </span><span class="nt">&quot;events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;run_in_terminal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;replace_string_in_file&quot;</span><span class="p">],</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">        </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Agent-Scoped Hooks (in <code>.agent.md</code> frontmatter):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">preToolUse</span><span class="p">:</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;.venv/bin/python</span><span class="nv"> </span><span class="s">scripts/hooks/permission_check.py&quot;</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">      </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;run_in_terminal&quot;</span><span class="p p-Indicator">]</span>
+</code></pre></div></p>
+<p><strong>Hook I/O:</strong> JSON via stdin/stdout. Exit code 0 = success, exit code 2 = blocking error (stops the tool call).</p>
+<p><strong>Permission Decisions (PreToolUse output):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span><span class="nt">&quot;decision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;allow&quot;</span><span class="p">}</span><span class="w">       </span><span class="c1">// Proceed</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="p">{</span><span class="nt">&quot;decision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deny&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Blocked by policy&quot;</span><span class="p">}</span><span class="w">  </span><span class="c1">// Stop with message</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="p">{</span><span class="nt">&quot;decision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ask&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;This will delete files. Continue?&quot;</span><span class="p">}</span><span class="w">  </span><span class="c1">// Ask user</span>
+</code></pre></div></p>
+<hr />
+<h3 id="1b-agent-patterns-from-production-systems">1B. Agent Patterns from Production Systems<a class="headerlink" href="#1b-agent-patterns-from-production-systems" title="Permanent link">&para;</a></h3>
+<p>Based on analysis of claw-code (176K stars), VS Code Copilot internals, and production agent architectures:</p>
+<h4 id="pattern-1-focused-agent-design-3-5-agents-not-16">Pattern 1: Focused Agent Design (3-5 Agents, Not 16)<a class="headerlink" href="#pattern-1-focused-agent-design-3-5-agents-not-16" title="Permanent link">&para;</a></h4>
+<p><strong>Problem:</strong> Our 16-agent setup has massive context overhead. Each agent needs ~2000 tokens of instructions. The orchestrator must understand all 16 to route correctly.</p>
+<p><strong>Production pattern:</strong> 3-5 agents with clear, non-overlapping boundaries:
+- claw-code uses 5 built-in modes (plan, explore, code, verification, custom)
+- Each mode has a single, clear mandate — no overlap
+- Tools are the permission boundary, not instructions</p>
+<p><strong>For a Python library like ours, the OPTIMAL split is:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Mandate</th>
+<th>Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>builder</code></td>
+<td>Write code, fix bugs, implement features</td>
+<td>Full edit + terminal</td>
+</tr>
+<tr>
+<td><code>reviewer</code></td>
+<td>Code review, testing, quality checks</td>
+<td>Read-only + terminal</td>
+</tr>
+<tr>
+<td><code>researcher</code></td>
+<td>Web research, documentation, planning</td>
+<td>Read + web + edit (docs only)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why 3, not 16:</strong> Every agent beyond 3 creates routing ambiguity. "Should column design go to @structural-math or @backend?" — this question shouldn't exist. There should be ONE agent that writes code.</p>
+<h4 id="pattern-2-instructions-over-agents">Pattern 2: Instructions Over Agents<a class="headerlink" href="#pattern-2-instructions-over-agents" title="Permanent link">&para;</a></h4>
+<p><strong>Key insight from VS Code Copilot docs:</strong> <code>.instructions.md</code> files with <code>applyTo</code> globs are MORE powerful than separate agents for file-type rules. They:
+- Auto-activate based on the files being edited (no routing needed)
+- Stack with each other (Python rules + IS 456 rules + testing rules)
+- Don't consume agent slots or create routing ambiguity
+- Are the RIGHT tool for "when editing X, follow rules Y"</p>
+<p><strong>Production pattern:</strong>
+- Use <code>.instructions.md</code> for FILE-SPECIFIC rules (Python style, React conventions, test patterns)
+- Use <code>.agent.md</code> for ROLE-SPECIFIC behavior (builder vs reviewer vs researcher)
+- Use <code>SKILL.md</code> for TASK-SPECIFIC workflows (new element, release, quality gate)
+- Use <code>.prompt.md</code> for COMMON OPERATIONS (commit, test, deploy)</p>
+<h4 id="pattern-3-memory-architecture">Pattern 3: Memory Architecture<a class="headerlink" href="#pattern-3-memory-architecture" title="Permanent link">&para;</a></h4>
+<p><strong>Effective memory hierarchy:</strong>
+1. <strong><code>AGENTS.md</code></strong> — Always loaded, cross-session. Keep SMALL (&lt;2000 tokens). Core rules only.
+2. <strong><code>.instructions.md</code></strong> — Conditional on file type. Bulk of domain knowledge.
+3. <strong><code>SKILL.md</code></strong> — On-demand task knowledge. Loaded only when invoked.
+4. <strong>Session state</strong> — JSON files in <code>logs/sessions/</code> for pipeline continuity.
+5. <strong>Git history</strong> — <code>git log --oneline -20</code> for context recovery.</p>
+<p><strong>Anti-pattern:</strong> Putting everything in <code>AGENTS.md</code> / <code>copilot-instructions.md</code>. These files are always loaded — every token counts. Our current <code>copilot-instructions.md</code> is ~400 lines — that's 10x too much.</p>
+<h4 id="pattern-4-testing-agents-via-hooks">Pattern 4: Testing Agents via Hooks<a class="headerlink" href="#pattern-4-testing-agents-via-hooks" title="Permanent link">&para;</a></h4>
+<p><strong>Production approach to agent testing:</strong>
+1. <code>PreToolUse</code> hooks validate that agents only use permitted tools
+2. <code>PostToolUse</code> hooks log every action for audit
+3. <code>Stop</code> hooks validate output quality (e.g., "did the code compile?")
+4. CI runs agent tasks in headless mode and checks results</p>
+<h4 id="pattern-5-handoff-protocol">Pattern 5: Handoff Protocol<a class="headerlink" href="#pattern-5-handoff-protocol" title="Permanent link">&para;</a></h4>
+<p><strong>Effective handoff pattern (from VS Code docs):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">handoffs</span><span class="p">:</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Run</span><span class="nv"> </span><span class="s">tests&quot;</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">agent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reviewer</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span><span class="nt">prompt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Run</span><span class="nv"> </span><span class="s">tests</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">files</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">just</span><span class="nv"> </span><span class="s">modified:</span><span class="nv"> </span><span class="s">{{files}}&quot;</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">    </span><span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div></p>
+<p>Key: <code>send: true</code> auto-submits — no user click needed. This creates automated pipelines.</p>
+<p><strong>Anti-pattern:</strong> Long handoff chains (orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops). Each handoff loses context. Maximum effective chain: 2-3 agents.</p>
+<h4 id="pattern-6-agent-versioning">Pattern 6: Agent Versioning<a class="headerlink" href="#pattern-6-agent-versioning" title="Permanent link">&para;</a></h4>
+<p><strong>Production pattern:</strong> Agent instructions ARE code. They live in git, get reviewed in PRs, have CHANGELOG entries. Our <code>agent-evolver</code> pattern is correct but over-engineered — git versioning is sufficient.</p>
+<hr />
+<h3 id="1c-optimal-agent-setup-for-is-456-structural-engineering-library">1C. OPTIMAL Agent Setup for IS 456 Structural Engineering Library<a class="headerlink" href="#1c-optimal-agent-setup-for-is-456-structural-engineering-library" title="Permanent link">&para;</a></h3>
+<p>Based on all research, here is the recommended setup for a focused Python structural engineering library.</p>
+<h4 id="recommended-architecture-3-agents-instructions-skills">Recommended Architecture: 3 Agents + Instructions + Skills<a class="headerlink" href="#recommended-architecture-3-agents-instructions-skills" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>.github/
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>├── agents/
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>│   ├── builder.agent.md          # Write/fix code (ONE agent for all code)
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>│   ├── reviewer.agent.md         # Review, test, quality
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>│   └── researcher.agent.md       # Research, docs, planning
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>├── instructions/
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>│   ├── python-core.instructions.md    # Python structural_lib rules
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>│   ├── fastapi.instructions.md        # FastAPI backend rules
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>│   ├── react.instructions.md          # React frontend rules
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>│   ├── testing.instructions.md        # Test conventions
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>│   └── terminal-rules.instructions.md # Terminal safety
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>├── prompts/
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a>│   ├── commit.prompt.md               # Safe commit workflow
+<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a>│   ├── new-feature.prompt.md          # Feature implementation
+<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a>│   ├── fix-test.prompt.md             # Test failure diagnosis
+<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a>│   └── session-end.prompt.md          # Session end checklist
+<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a>├── skills/
+<a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a>│   ├── is456-verification/SKILL.md    # IS 456 compliance checks
+<a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a>│   ├── new-element/SKILL.md           # New structural element workflow
+<a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a>│   ├── quality-gate/SKILL.md          # Pre-merge quality checks
+<a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a>│   └── release-preflight/SKILL.md     # Pre-release validation
+<a id="__codelineno-27-22" name="__codelineno-27-22" href="#__codelineno-27-22"></a>└── copilot-instructions.md            # MINIMAL core rules (~50 lines)
+<a id="__codelineno-27-23" name="__codelineno-27-23" href="#__codelineno-27-23"></a>AGENTS.md                              # MINIMAL cross-tool rules (~30 lines)
+</code></pre></div>
+<h4 id="agent-file-builderagentmd">Agent File: <code>builder.agent.md</code><a class="headerlink" href="#agent-file-builderagentmd" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nn">---</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">builder</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="no">Write, fix, and refactor code across the full stack: Python structural_lib</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="no">(IS 456 math, services, API), FastAPI routers, React components.</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="no">Handles feature implementation, bug fixes, and code changes.</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="nt">argument-hint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Describe the code change needed</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read_file</span>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace_string_in_file</span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multi_replace_string_in_file</span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">run_in_terminal</span>
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grep_search</span>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file_search</span>
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_search</span>
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">list_dir</span>
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="nt">model</span><span class="p">:</span>
+<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-sonnet-4</span>
+<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
+<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a><span class="nt">handoffs</span><span class="p">:</span>
+<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Review</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">test&quot;</span>
+<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a><span class="w">    </span><span class="nt">agent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reviewer</span>
+<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a><span class="w">    </span><span class="nt">prompt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Review</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">test</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">changes</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">just</span><span class="nv"> </span><span class="s">made.&quot;</span>
+<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a><span class="w">    </span><span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a><span class="nn">---</span>
+<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a>
+<a id="__codelineno-28-27" name="__codelineno-28-27" href="#__codelineno-28-27"></a><span class="c1"># Builder Agent</span>
+<a id="__codelineno-28-28" name="__codelineno-28-28" href="#__codelineno-28-28"></a>
+<a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a><span class="l l-Scalar l-Scalar-Plain">You implement code changes for structural_engineering_lib — an IS 456 RC design library.</span>
+<a id="__codelineno-28-30" name="__codelineno-28-30" href="#__codelineno-28-30"></a>
+<a id="__codelineno-28-31" name="__codelineno-28-31" href="#__codelineno-28-31"></a><span class="l l-Scalar l-Scalar-Plain">## Architecture (4 layers — STRICT)</span>
+<a id="__codelineno-28-32" name="__codelineno-28-32" href="#__codelineno-28-32"></a><span class="l l-Scalar l-Scalar-Plain">- Core types (`core/`) → base classes, constants — no IS 456 math</span>
+<a id="__codelineno-28-33" name="__codelineno-28-33" href="#__codelineno-28-33"></a><span class="l l-Scalar l-Scalar-Plain">- IS 456 Code (`codes/is456/`) → pure math, NO I/O, explicit units (mm, N/mm², kN, kNm)</span>
+<a id="__codelineno-28-34" name="__codelineno-28-34" href="#__codelineno-28-34"></a><span class="l l-Scalar l-Scalar-Plain">- Services (`services/`) → orchestration</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.py, adapters.py</span>
+<a id="__codelineno-28-35" name="__codelineno-28-35" href="#__codelineno-28-35"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UI/IO → react_app/, fastapi_app/</span>
+<a id="__codelineno-28-36" name="__codelineno-28-36" href="#__codelineno-28-36"></a>
+<a id="__codelineno-28-37" name="__codelineno-28-37" href="#__codelineno-28-37"></a><span class="nt">Import rule</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Core ← IS 456 ← Services ← UI. Never import upward.</span>
+<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a>
+<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a><span class="c1">## Before Coding</span>
+<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a><span class="nt">1. Search existing code</span><span class="p">:</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">grep_search` for related functions</span>
+<a id="__codelineno-28-41" name="__codelineno-28-41" href="#__codelineno-28-41"></a><span class="nt">2. Check API signatures</span><span class="p">:</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">.venv/bin/python scripts/discover_api_signatures.py &lt;func&gt;`</span>
+<a id="__codelineno-28-42" name="__codelineno-28-42" href="#__codelineno-28-42"></a><span class="l l-Scalar l-Scalar-Plain">3. Never guess parameter names — it&#39;s `b_mm` not `width`, `fck` not `concrete_grade`</span>
+<a id="__codelineno-28-43" name="__codelineno-28-43" href="#__codelineno-28-43"></a>
+<a id="__codelineno-28-44" name="__codelineno-28-44" href="#__codelineno-28-44"></a><span class="c1">## Git</span>
+<a id="__codelineno-28-45" name="__codelineno-28-45" href="#__codelineno-28-45"></a><span class="l l-Scalar l-Scalar-Plain">ALWAYS use `./scripts/ai_commit.sh &quot;type</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">message&quot;`. NEVER manual git.</span>
+<a id="__codelineno-28-46" name="__codelineno-28-46" href="#__codelineno-28-46"></a>
+<a id="__codelineno-28-47" name="__codelineno-28-47" href="#__codelineno-28-47"></a><span class="c1">## Key Paths</span>
+<a id="__codelineno-28-48" name="__codelineno-28-48" href="#__codelineno-28-48"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">.venv/bin/pytest Python/tests/ -v` — Run tests</span>
+<a id="__codelineno-28-49" name="__codelineno-28-49" href="#__codelineno-28-49"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">.venv/bin/python` — Python binary (never bare `python`)</span>
+<a id="__codelineno-28-50" name="__codelineno-28-50" href="#__codelineno-28-50"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">cd react_app &amp;&amp; npm run build` — React build check</span>
+</code></pre></div>
+<h4 id="agent-file-revieweragentmd">Agent File: <code>reviewer.agent.md</code><a class="headerlink" href="#agent-file-revieweragentmd" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nn">---</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reviewer</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">  </span><span class="no">Code review, testing, quality checks, and validation. Reviews PRs,</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">  </span><span class="no">runs test suites, checks architecture boundaries, validates IS 456</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">  </span><span class="no">compliance. Read-only access to code, terminal for running tests.</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="nt">argument-hint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Describe what to review or test</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read_file</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grep_search</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file_search</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_search</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">list_dir</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">run_in_terminal</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-sonnet-4</span>
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a><span class="nn">---</span>
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a>
+<a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a><span class="c1"># Reviewer Agent</span>
+<a id="__codelineno-29-19" name="__codelineno-29-19" href="#__codelineno-29-19"></a>
+<a id="__codelineno-29-20" name="__codelineno-29-20" href="#__codelineno-29-20"></a><span class="l l-Scalar l-Scalar-Plain">You review code and run quality checks. You do NOT modify source files.</span>
+<a id="__codelineno-29-21" name="__codelineno-29-21" href="#__codelineno-29-21"></a>
+<a id="__codelineno-29-22" name="__codelineno-29-22" href="#__codelineno-29-22"></a><span class="l l-Scalar l-Scalar-Plain">## Review Checklist</span>
+<a id="__codelineno-29-23" name="__codelineno-29-23" href="#__codelineno-29-23"></a><span class="l l-Scalar l-Scalar-Plain">1. Architecture boundaries (core → codes → services → UI, no upward imports)</span>
+<a id="__codelineno-29-24" name="__codelineno-29-24" href="#__codelineno-29-24"></a><span class="l l-Scalar l-Scalar-Plain">2. Units are explicit (mm, N/mm², kN, kNm) — no hidden conversions</span>
+<a id="__codelineno-29-25" name="__codelineno-29-25" href="#__codelineno-29-25"></a><span class="l l-Scalar l-Scalar-Plain">3. IS 456 clause references are correct</span>
+<a id="__codelineno-29-26" name="__codelineno-29-26" href="#__codelineno-29-26"></a><span class="l l-Scalar l-Scalar-Plain">4. Tests exist for new code</span>
+<a id="__codelineno-29-27" name="__codelineno-29-27" href="#__codelineno-29-27"></a><span class="l l-Scalar l-Scalar-Plain">5. No duplicate code (check existing hooks, components, API functions)</span>
+<a id="__codelineno-29-28" name="__codelineno-29-28" href="#__codelineno-29-28"></a>
+<a id="__codelineno-29-29" name="__codelineno-29-29" href="#__codelineno-29-29"></a><span class="l l-Scalar l-Scalar-Plain">## Quality Commands</span>
+<a id="__codelineno-29-30" name="__codelineno-29-30" href="#__codelineno-29-30"></a><span class="l l-Scalar l-Scalar-Plain">- `.venv/bin/pytest Python/tests/ -v` — Full test suite</span>
+<a id="__codelineno-29-31" name="__codelineno-29-31" href="#__codelineno-29-31"></a><span class="l l-Scalar l-Scalar-Plain">- `.venv/bin/pytest Python/tests/ -v -k &quot;test_shear&quot;` — Specific tests</span>
+<a id="__codelineno-29-32" name="__codelineno-29-32" href="#__codelineno-29-32"></a><span class="l l-Scalar l-Scalar-Plain">- `cd react_app &amp;&amp; npm run build` — React build check</span>
+<a id="__codelineno-29-33" name="__codelineno-29-33" href="#__codelineno-29-33"></a><span class="l l-Scalar l-Scalar-Plain">- `.venv/bin/python scripts/check_all.py --quick` — Quick validation (28 checks)</span>
+<a id="__codelineno-29-34" name="__codelineno-29-34" href="#__codelineno-29-34"></a>
+<a id="__codelineno-29-35" name="__codelineno-29-35" href="#__codelineno-29-35"></a><span class="l l-Scalar l-Scalar-Plain">## Architecture Validation</span>
+<a id="__codelineno-29-36" name="__codelineno-29-36" href="#__codelineno-29-36"></a><span class="l l-Scalar l-Scalar-Plain">- `.venv/bin/python scripts/validate_imports.py --scope structural_lib`</span>
+<a id="__codelineno-29-37" name="__codelineno-29-37" href="#__codelineno-29-37"></a><span class="l l-Scalar l-Scalar-Plain">- Core CANNOT import from Services or UI</span>
+<a id="__codelineno-29-38" name="__codelineno-29-38" href="#__codelineno-29-38"></a><span class="l l-Scalar l-Scalar-Plain">- Safety factors (γc=1.5, γs=1.15) are NEVER parameters — hardcoded constants</span>
+</code></pre></div>
+<h4 id="agent-file-researcheragentmd">Agent File: <code>researcher.agent.md</code><a class="headerlink" href="#agent-file-researcheragentmd" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nn">---</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">researcher</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">  </span><span class="no">Research, documentation, planning, and web investigation. Writes docs,</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">  </span><span class="no">research proposals, session logs. Investigates IS 456 clauses, industry</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">  </span><span class="no">best practices, and competitive analysis. Has web access.</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="nt">argument-hint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Describe the research topic or documentation task</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read_file</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grep_search</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file_search</span>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_search</span>
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">list_dir</span>
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fetch_webpage</span>
+<a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace_string_in_file</span>
+<a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">run_in_terminal</span>
+<a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a><span class="nt">model</span><span class="p">:</span>
+<a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-sonnet-4</span>
+<a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
+<a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a><span class="nn">---</span>
+<a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a>
+<a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a><span class="c1"># Researcher Agent</span>
+<a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a>
+<a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a><span class="l l-Scalar l-Scalar-Plain">You research topics, write documentation, and plan features. You edit docs/</span>
+<a id="__codelineno-30-25" name="__codelineno-30-25" href="#__codelineno-30-25"></a><span class="l l-Scalar l-Scalar-Plain">files but NOT production code. For production code changes, hand off to @builder.</span>
+<a id="__codelineno-30-26" name="__codelineno-30-26" href="#__codelineno-30-26"></a>
+<a id="__codelineno-30-27" name="__codelineno-30-27" href="#__codelineno-30-27"></a><span class="l l-Scalar l-Scalar-Plain">## Research Outputs</span>
+<a id="__codelineno-30-28" name="__codelineno-30-28" href="#__codelineno-30-28"></a><span class="l l-Scalar l-Scalar-Plain">- Innovation proposals</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">docs/research/`</span>
+<a id="__codelineno-30-29" name="__codelineno-30-29" href="#__codelineno-30-29"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Architecture decisions</span><span class="p">:</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">docs/adr/`</span>
+<a id="__codelineno-30-30" name="__codelineno-30-30" href="#__codelineno-30-30"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Planning docs</span><span class="p">:</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">docs/planning/`</span>
+<a id="__codelineno-30-31" name="__codelineno-30-31" href="#__codelineno-30-31"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Session logs</span><span class="p">:</span><span class="w"> </span><span class="err">`</span><span class="l l-Scalar l-Scalar-Plain">docs/SESSION_LOG.md`</span>
+<a id="__codelineno-30-32" name="__codelineno-30-32" href="#__codelineno-30-32"></a>
+<a id="__codelineno-30-33" name="__codelineno-30-33" href="#__codelineno-30-33"></a><span class="c1">## Web Research</span>
+<a id="__codelineno-30-34" name="__codelineno-30-34" href="#__codelineno-30-34"></a><span class="nt">You have web access — use it for</span><span class="p">:</span>
+<a id="__codelineno-30-35" name="__codelineno-30-35" href="#__codelineno-30-35"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IS 456 clause verification against published standards</span>
+<a id="__codelineno-30-36" name="__codelineno-30-36" href="#__codelineno-30-36"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Academic papers on structural optimization</span>
+<a id="__codelineno-30-37" name="__codelineno-30-37" href="#__codelineno-30-37"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Open-source tool comparison</span>
+<a id="__codelineno-30-38" name="__codelineno-30-38" href="#__codelineno-30-38"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Industry best practices</span>
+<a id="__codelineno-30-39" name="__codelineno-30-39" href="#__codelineno-30-39"></a>
+<a id="__codelineno-30-40" name="__codelineno-30-40" href="#__codelineno-30-40"></a><span class="c1">## LIFE-SAFETY RULE</span>
+<a id="__codelineno-30-41" name="__codelineno-30-41" href="#__codelineno-30-41"></a><span class="nt">All research outputs carry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RESEARCH</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">NOT</span><span class="nv"> </span><span class="s">FOR</span><span class="nv"> </span><span class="s">STRUCTURAL</span><span class="nv"> </span><span class="s">DESIGN&quot;</span>
+<a id="__codelineno-30-42" name="__codelineno-30-42" href="#__codelineno-30-42"></a><span class="l l-Scalar l-Scalar-Plain">Safety factors (γc=1.5, γs=1.15) are NEVER parameters.</span>
+<a id="__codelineno-30-43" name="__codelineno-30-43" href="#__codelineno-30-43"></a><span class="l l-Scalar l-Scalar-Plain">IS 456 code minimums are HARD CONSTRAINTS, never soft objectives.</span>
+</code></pre></div>
+<h4 id="minimal-copilot-instructionsmd-50-lines">Minimal <code>copilot-instructions.md</code> (~50 lines)<a class="headerlink" href="#minimal-copilot-instructionsmd-50-lines" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="gh"># structural_engineering_lib</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>IS 456 RC design library. Python core → FastAPI → React 19.
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="gu">## Git (THE ONE RULE)</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="sb">`./scripts/ai_commit.sh &quot;type: message&quot;`</span> — ALWAYS. NEVER manual git.
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="gu">## Terminal</span>
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>All commands from workspace root. <span class="sb">`.venv/bin/python`</span> always, never bare <span class="sb">`python`</span>.
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>
+<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="gu">## Architecture</span>
+<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>Core → IS 456 codes → Services → UI/IO. Never import upward.
+<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>Units always explicit: mm, N/mm², kN, kNm.
+<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>
+<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="gu">## Before Coding</span>
+<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>Check existing code first:
+<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a><span class="k">-</span><span class="w"> </span><span class="sb">`grep &quot;^def &quot; Python/structural_lib/services/api.py | head -20`</span>
+<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a><span class="k">-</span><span class="w"> </span><span class="sb">`.venv/bin/python scripts/discover_api_signatures.py &lt;func&gt;`</span>
+<a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a><span class="k">-</span><span class="w"> </span><span class="sb">`ls react_app/src/hooks/`</span>
+<a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a>
+<a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a><span class="gu">## Key Paths</span>
+<a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a>| Path | Purpose |
+<a id="__codelineno-31-23" name="__codelineno-31-23" href="#__codelineno-31-23"></a>|------|---------|
+<a id="__codelineno-31-24" name="__codelineno-31-24" href="#__codelineno-31-24"></a>| <span class="sb">`.venv/bin/pytest Python/tests/ -v`</span> | Run tests |
+<a id="__codelineno-31-25" name="__codelineno-31-25" href="#__codelineno-31-25"></a>| <span class="sb">`cd react_app &amp;&amp; npm run build`</span> | React build |
+<a id="__codelineno-31-26" name="__codelineno-31-26" href="#__codelineno-31-26"></a>| <span class="sb">`docs/TASKS.md`</span> | Current priorities |
+<a id="__codelineno-31-27" name="__codelineno-31-27" href="#__codelineno-31-27"></a>| <span class="sb">`docs/planning/next-session-brief.md`</span> | Session handoff |
+<a id="__codelineno-31-28" name="__codelineno-31-28" href="#__codelineno-31-28"></a>
+<a id="__codelineno-31-29" name="__codelineno-31-29" href="#__codelineno-31-29"></a><span class="gu">## Context Recovery</span>
+<a id="__codelineno-31-30" name="__codelineno-31-30" href="#__codelineno-31-30"></a>If lost, read: next-session-brief.md → TASKS.md → git log --oneline -20
+</code></pre></div>
+<h4 id="minimal-agentsmd-30-lines">Minimal <code>AGENTS.md</code> (~30 lines)<a class="headerlink" href="#minimal-agentsmd-30-lines" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="gh"># AGENTS.md</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>IS 456 RC design library. Git: <span class="sb">`./scripts/ai_commit.sh &quot;type: message&quot;`</span> ALWAYS.
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="gu">## Rules</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="k">1.</span> Never manual git (add/commit/push/pull)
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="k">2.</span> Architecture: Core → IS 456 → Services → UI (never import upward)
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="k">3.</span> Units explicit: mm, N/mm², kN, kNm
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="k">4.</span> Safety factors hardcoded: γc=1.5, γs=1.15 (NEVER parameters)
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="k">5.</span> <span class="sb">`.venv/bin/python`</span> always, never bare <span class="sb">`python`</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="k">6.</span> Check existing code before writing new code
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="k">7.</span> IS 456 code checks are HARD CONSTRAINTS
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="gu">## Quick Reference</span>
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="k">-</span><span class="w"> </span>Tests: <span class="sb">`.venv/bin/pytest Python/tests/ -v`</span>
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="k">-</span><span class="w"> </span>React: <span class="sb">`cd react_app &amp;&amp; npm run build`</span>
+<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="k">-</span><span class="w"> </span>API params: <span class="sb">`.venv/bin/python scripts/discover_api_signatures.py &lt;func&gt;`</span>
+<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a><span class="k">-</span><span class="w"> </span>Tasks: <span class="sb">`docs/TASKS.md`</span>
+<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="k">-</span><span class="w"> </span>Handoff: <span class="sb">`docs/planning/next-session-brief.md`</span>
+</code></pre></div>
+<p><strong>Why this is better than our current 16-agent setup:</strong>
+1. <strong>Zero routing ambiguity</strong> — "write code" → @builder, "review" → @reviewer, "research" → @researcher
+2. <strong>~90% less instruction overhead</strong> — 50-line copilot-instructions.md vs 400+ lines
+3. <strong>Instructions do the heavy lifting</strong> — file-type rules auto-activate, no agent needed
+4. <strong>Skills for complex workflows</strong> — IS 456 verification, new element, release — invoked explicitly
+5. <strong>Handoffs are 1-hop</strong> — builder → reviewer, not 8-agent chains</p>
+<hr />
+<h2 id="track-2-python-library-tooling-patterns-top-oss-projects">TRACK 2: Python Library Tooling Patterns (Top OSS Projects)<a class="headerlink" href="#track-2-python-library-tooling-patterns-top-oss-projects" title="Permanent link">&para;</a></h2>
+<h3 id="2a-pyprojecttoml-patterns-from-5-major-libraries">2A. pyproject.toml Patterns from 5 Major Libraries<a class="headerlink" href="#2a-pyprojecttoml-patterns-from-5-major-libraries" title="Permanent link">&para;</a></h3>
+<h4 id="fastapi-84k-stars">FastAPI (84K stars)<a class="headerlink" href="#fastapi-84k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>Build system:</strong> <code>pdm-backend</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">[build-system]</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+</code></pre></div></p>
+<p><strong>Key patterns:</strong>
+- <code>requires-python = "&gt;=3.10"</code> — supports 5 Python versions
+- Ruff config with <code>per-file-ignores</code> for docs:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">[tool.ruff.lint.per-file-ignores]</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="s2">&quot;docs_src/dependencies/tutorial*.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;F821&quot;</span><span class="p">]</span>
+</code></pre></div>
+- Uses <code>uv</code> for CI (migrated 3 months ago from pip): <code>uv sync --no-dev --group tests --extra all</code>
+- <strong>CI matrix:</strong> 3 OSes × 5 Python versions × 2 resolution strategies (highest + lowest-direct)
+- <strong>100% test coverage enforced:</strong> <code>uv run coverage report --fail-under=100</code>
+- <strong>Benchmarks in CI:</strong> CodSpeed benchmarks run on every PR
+- <strong>Path-based CI filtering:</strong> <code>dorny/paths-filter</code> to skip tests when only docs change</p>
+<h4 id="scipy-136k-stars">scipy (13.6K stars)<a class="headerlink" href="#scipy-136k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>Build system:</strong> <code>meson-python</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">[build-system]</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;meson-python&gt;=0.18.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Cython&gt;=3.1.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;numpy&gt;=2.2.0&quot;</span><span class="p">]</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mesonpy&quot;</span>
+</code></pre></div></p>
+<p><strong>Key patterns:</strong>
+- Uses <code>tach.toml</code> for <strong>module boundary enforcement</strong> (~30 modules with explicit dependency declarations):
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;scipy.stats&quot;</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy._lib&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.special&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.linalg&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.optimize&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">  </span><span class="c1"># ... 16 total dependencies</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="p">]</span>
+</code></pre></div>
+- This is effectively a <strong>dependency graph for internal modules</strong> — prevents architecture drift
+- Uses <code>spin</code> CLI for custom development commands
+- <code>requires-python = "&gt;=3.12"</code> — aggressive Python version floor</p>
+<p><strong>Tach — Module Boundary Tool (KEY INSIGHT):</strong>
+<code>tach</code> enforces import boundaries at the module level. Exactly what our 4-layer architecture needs but enforces manually. A <code>tach.toml</code> for structural_engineering_lib would look like:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.core&quot;</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span><span class="w">  </span><span class="c1"># Core depends on NOTHING</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.codes.is456&quot;</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.core&quot;</span><span class="w"> </span><span class="p">}]</span><span class="w">  </span><span class="c1"># Codes depend only on Core</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a>
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.services&quot;</span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.core&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.codes.is456&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="p">]</span>
+<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a>
+<a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.insights&quot;</span>
+<a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.core&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.codes.is456&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;structural_lib.services&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-37-22" name="__codelineno-37-22" href="#__codelineno-37-22"></a><span class="p">]</span>
+</code></pre></div>
+Run <code>tach check</code> in CI → architectural violations are caught automatically.</p>
+<h4 id="numpy-293k-stars">numpy (29.3K stars)<a class="headerlink" href="#numpy-293k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>Build system:</strong> <code>meson-python</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">[build-system]</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Cython&gt;=3.0.6&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;meson-python&gt;=0.16.0&quot;</span><span class="p">]</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mesonpy&quot;</span>
+</code></pre></div></p>
+<p><strong>Key patterns:</strong>
+- Uses <code>spin</code> CLI with extensive custom commands (704 lines in <code>.spin/cmds.py</code>):
+  - <code>spin build</code> — build with Meson
+  - <code>spin test</code> — run test suite with configurable parallelism
+  - <code>spin mypy</code> / <code>spin pyrefly</code> — type checking
+  - <code>spin bench</code> — benchmarks
+  - <code>spin docs</code> — documentation build
+  - <code>spin lint</code> — linting
+  - <code>spin notes</code> — release notes from Towncrier
+- <code>spin</code> replaces Makefile/shell scripts with a Python-based command runner
+- <strong>Lesson:</strong> Custom CLI wrapper around common dev tasks = better DX than raw commands</p>
+<h4 id="rich-513k-stars">rich (51.3K stars)<a class="headerlink" href="#rich-513k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>Build system:</strong> <code>poetry</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">[build-system]</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;poetry-core&quot;</span><span class="p">]</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;poetry.core.masonry.api&quot;</span>
+</code></pre></div></p>
+<p><strong>Key patterns:</strong>
+- MINIMAL pyproject.toml (69 lines) — stark contrast to scipy/numpy
+- <code>python = "&gt;=3.8.0"</code> — widest Python compatibility
+- Very few dev dependencies — keeps it simple
+- <strong>Lesson:</strong> For a pure-Python library, simplicity wins. No build tooling complexity needed.</p>
+<h4 id="django-827k-stars">Django (82.7K stars)<a class="headerlink" href="#django-827k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>Build system:</strong> <code>setuptools&gt;=77.0.3</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">[build-system]</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=77.0.3&quot;</span><span class="p">]</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.backends._legacy:_Backend&quot;</span>
+</code></pre></div></p>
+<p><strong>Key patterns:</strong>
+- <code>.editorconfig</code> for cross-editor consistency:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">[*.py]</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">space</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="na">indent_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="na">max_line_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">79</span><span class="w">    </span><span class="c1"># PEP 8 strict</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="k">[*.html]</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">space</span>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="na">indent_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span>
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a>
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="k">[Makefile]</span>
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="na">indent_style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tab</span>
+</code></pre></div>
+- <code>requires-python = "&gt;= 3.12"</code> — aggressive floor (matches scipy)
+- Uses <code>setuptools</code> — the most conservative, stable choice
+- <strong>Lesson:</strong> For maximum compatibility and longevity, setuptools is fine. No need to chase build system fashions.</p>
+<h3 id="2b-our-pyprojecttoml-assessment">2B. Our pyproject.toml Assessment<a class="headerlink" href="#2b-our-pyprojecttoml-assessment" title="Permanent link">&para;</a></h3>
+<p><strong>Current state:</strong> <code>setuptools&gt;=77.0</code> — solid choice, matches Django.</p>
+<p><strong>Recommended improvements based on research:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current</th>
+<th>Recommended</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ruff rules</td>
+<td>F, E, W, I, N, UP, B, C4, PIE</td>
+<td>Add: <code>"SIM"</code> (simplify), <code>"RUF"</code> (ruff-specific), <code>"PT"</code> (pytest)</td>
+<td>FastAPI</td>
+</tr>
+<tr>
+<td>Per-file ignores</td>
+<td>Only excel_bridge.py</td>
+<td>Add: tests/ ignore some rules</td>
+<td>FastAPI, scipy</td>
+</tr>
+<tr>
+<td>Module boundaries</td>
+<td>Manual (validate_imports.py)</td>
+<td>Add <code>tach.toml</code></td>
+<td>scipy</td>
+</tr>
+<tr>
+<td>.editorconfig</td>
+<td>None</td>
+<td>Add for cross-editor consistency</td>
+<td>Django</td>
+</tr>
+<tr>
+<td>Test coverage</td>
+<td>85% branch required</td>
+<td>Consider 100% for core math</td>
+<td>FastAPI</td>
+</tr>
+<tr>
+<td>CI matrix</td>
+<td>Single Python version</td>
+<td>Multi-version: 3.11, 3.12, 3.13</td>
+<td>FastAPI</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="2c-modern-developer-tools">2C. Modern Developer Tools<a class="headerlink" href="#2c-modern-developer-tools" title="Permanent link">&para;</a></h3>
+<h4 id="ruff-v0159-469k-stars">ruff (v0.15.9, 46.9K stars)<a class="headerlink" href="#ruff-v0159-469k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>What it is:</strong> Linter + formatter replacing flake8, isort, black, pyupgrade, and 10+ other tools.</p>
+<p><strong>Key features for our project:</strong>
+- <strong>900+ lint rules</strong> from 70+ plugins — we currently use 9 rule groups
+- <strong>Preview mode:</strong> Enables expanded defaults (useful for gradual adoption)
+- <strong>Pre-commit hook:</strong>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/astral-sh/ruff-pre-commit</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.15.9</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff</span>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--fix</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff-format</span>
+</code></pre></div>
+- <strong>Per-file ignores</strong> are critical for structural engineering (uppercase variable names like <code>D</code>, <code>Mu</code>, <code>Ast</code> — which we already handle)</p>
+<p><strong>Recommended additions to our ruff config:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="k">[tool.ruff.lint]</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="w">  </span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;W&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;N&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;UP&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;C4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PIE&quot;</span><span class="p">,</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="w">  </span><span class="s2">&quot;SIM&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-simplify (simplify code patterns)</span>
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="w">  </span><span class="s2">&quot;RUF&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># Ruff-specific rules (unused noqa, etc.)</span>
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="w">  </span><span class="s2">&quot;PT&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># flake8-pytest-style (consistent test patterns)</span>
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="w">  </span><span class="s2">&quot;T20&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-print (no print statements in lib code)</span>
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="w">  </span><span class="s2">&quot;DTZ&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-datetimez (timezone-aware datetimes)</span>
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a><span class="p">]</span>
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a>
+<a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a><span class="k">[tool.ruff.lint.per-file-ignores]</span>
+<a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="s2">&quot;Python/tests/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;T20&quot;</span><span class="p">]</span><span class="w">  </span><span class="c1"># Allow print in tests</span>
+</code></pre></div></p>
+<h4 id="uv-v0113-828k-stars">uv (v0.11.3, 82.8K stars)<a class="headerlink" href="#uv-v0113-828k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>What it is:</strong> All-in-one Python package manager replacing pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv. 10-100x faster.</p>
+<p><strong>Key features relevant to us:</strong>
+- <code>uv sync</code> — deterministic installs from lockfile
+- <code>uv run</code> — run commands in managed environment
+- <code>uv build</code> / <code>uv publish</code> — package building and publishing
+- <code>uv python install</code> — manage Python versions
+- Has its own <code>AGENTS.md</code> and <code>CLAUDE.md</code> — follows the same agent patterns we do</p>
+<p><strong>Migration path for our project:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="c1"># Current (pip + venv)</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="c1"># uv equivalent (10-100x faster)</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>uv<span class="w"> </span>venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>dev
+</code></pre></div></p>
+<p><strong>CI benefit (from FastAPI):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v7</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">    </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --no-dev --group tests --extra all</span>
+</code></pre></div></p>
+<p><strong>Assessment:</strong> Migration to uv is LOW RISK and HIGH REWARD. FastAPI already migrated. The <code>uv.lock</code> file provides deterministic builds.</p>
+<h4 id="pre-commit-v451-151k-stars">pre-commit (v4.5.1, 15.1K stars)<a class="headerlink" href="#pre-commit-v451-151k-stars" title="Permanent link">&para;</a></h4>
+<p><strong>What it is:</strong> Framework for managing multi-language pre-commit hooks.</p>
+<p><strong>Recommended <code>.pre-commit-config.yaml</code> for our project:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="nt">repos</span><span class="p">:</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/astral-sh/ruff-pre-commit</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.15.9</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--fix</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff-format</span>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a>
+<a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
+<a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v5.0.0</span>
+<a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trailing-whitespace</span>
+<a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">end-of-file-fixer</span>
+<a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-yaml</span>
+<a id="__codelineno-46-15" name="__codelineno-46-15" href="#__codelineno-46-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-toml</span>
+<a id="__codelineno-46-16" name="__codelineno-46-16" href="#__codelineno-46-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-merge-conflict</span>
+<a id="__codelineno-46-17" name="__codelineno-46-17" href="#__codelineno-46-17"></a>
+<a id="__codelineno-46-18" name="__codelineno-46-18" href="#__codelineno-46-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/mirrors-mypy</span>
+<a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.15.0</span>
+<a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<a id="__codelineno-46-21" name="__codelineno-46-21" href="#__codelineno-46-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypy</span>
+<a id="__codelineno-46-22" name="__codelineno-46-22" href="#__codelineno-46-22"></a><span class="w">        </span><span class="nt">additional_dependencies</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">pydantic&gt;=2.0</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-46-23" name="__codelineno-46-23" href="#__codelineno-46-23"></a><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--ignore-missing-imports</span><span class="p p-Indicator">]</span>
+</code></pre></div></p>
+<h4 id="just-command-runner">just (Command Runner)<a class="headerlink" href="#just-command-runner" title="Permanent link">&para;</a></h4>
+<p><strong>What it is:</strong> A command runner (like make, but without build system complexity). Stores project-specific commands in a <code>justfile</code>.</p>
+<p><strong>Key features:</strong>
+- <strong>Cross-platform</strong> (Linux, macOS, Windows)
+- <strong>Recipes can accept arguments</strong> — unlike make targets
+- <strong>Loads <code>.env</code> files</strong> automatically
+- <strong>Recipes in arbitrary languages</strong> (Python, Node, etc. via shebangs)
+- <strong>Invocable from any subdirectory</strong></p>
+<p><strong>Comparison with our <code>run.sh</code>:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><code>run.sh</code></th>
+<th><code>justfile</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cross-platform</td>
+<td>No (bash)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Tab completion</td>
+<td>No</td>
+<td>Yes (built-in)</td>
+</tr>
+<tr>
+<td>Argument handling</td>
+<td>Manual</td>
+<td>Built-in</td>
+</tr>
+<tr>
+<td>Listing recipes</td>
+<td>Manual</td>
+<td><code>just --list</code></td>
+</tr>
+<tr>
+<td>.env loading</td>
+<td>Manual</td>
+<td>Automatic</td>
+</tr>
+<tr>
+<td>Error handling</td>
+<td>Manual</td>
+<td>Built-in</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example <code>justfile</code> for our project:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a># Default recipe — list available commands
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>default:
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>    @just --list
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a># Run tests
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>test *args:
+<a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a>    .venv/bin/pytest Python/tests/ -v {{args}}
+<a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a>
+<a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a># Safe commit
+<a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a>commit msg:
+<a id="__codelineno-47-11" name="__codelineno-47-11" href="#__codelineno-47-11"></a>    ./scripts/ai_commit.sh &quot;{{msg}}&quot;
+<a id="__codelineno-47-12" name="__codelineno-47-12" href="#__codelineno-47-12"></a>
+<a id="__codelineno-47-13" name="__codelineno-47-13" href="#__codelineno-47-13"></a># Quick validation
+<a id="__codelineno-47-14" name="__codelineno-47-14" href="#__codelineno-47-14"></a>check:
+<a id="__codelineno-47-15" name="__codelineno-47-15" href="#__codelineno-47-15"></a>    .venv/bin/python scripts/check_all.py --quick
+<a id="__codelineno-47-16" name="__codelineno-47-16" href="#__codelineno-47-16"></a>
+<a id="__codelineno-47-17" name="__codelineno-47-17" href="#__codelineno-47-17"></a># Full validation
+<a id="__codelineno-47-18" name="__codelineno-47-18" href="#__codelineno-47-18"></a>check-full:
+<a id="__codelineno-47-19" name="__codelineno-47-19" href="#__codelineno-47-19"></a>    .venv/bin/python scripts/check_all.py
+<a id="__codelineno-47-20" name="__codelineno-47-20" href="#__codelineno-47-20"></a>
+<a id="__codelineno-47-21" name="__codelineno-47-21" href="#__codelineno-47-21"></a># Start dev stack
+<a id="__codelineno-47-22" name="__codelineno-47-22" href="#__codelineno-47-22"></a>dev *args:
+<a id="__codelineno-47-23" name="__codelineno-47-23" href="#__codelineno-47-23"></a>    bash scripts/launch_stack.sh {{args}}
+<a id="__codelineno-47-24" name="__codelineno-47-24" href="#__codelineno-47-24"></a>
+<a id="__codelineno-47-25" name="__codelineno-47-25" href="#__codelineno-47-25"></a># API signature lookup
+<a id="__codelineno-47-26" name="__codelineno-47-26" href="#__codelineno-47-26"></a>api func:
+<a id="__codelineno-47-27" name="__codelineno-47-27" href="#__codelineno-47-27"></a>    .venv/bin/python scripts/discover_api_signatures.py {{func}}
+<a id="__codelineno-47-28" name="__codelineno-47-28" href="#__codelineno-47-28"></a>
+<a id="__codelineno-47-29" name="__codelineno-47-29" href="#__codelineno-47-29"></a># React build
+<a id="__codelineno-47-30" name="__codelineno-47-30" href="#__codelineno-47-30"></a>build-react:
+<a id="__codelineno-47-31" name="__codelineno-47-31" href="#__codelineno-47-31"></a>    cd react_app &amp;&amp; npm run build
+</code></pre></div></p>
+<p><strong>Assessment:</strong> <code>just</code> is a strict upgrade over <code>run.sh</code> for developer UX. Cross-platform support + tab completion + built-in argument handling. However, migration is LOW priority — <code>run.sh</code> works fine.</p>
+<hr />
+<h3 id="2d-readme-patterns-from-top-libraries">2D. README Patterns from Top Libraries<a class="headerlink" href="#2d-readme-patterns-from-top-libraries" title="Permanent link">&para;</a></h3>
+<h4 id="pydantic-21k-stars-badge-heavy-feature-focused">Pydantic (21K stars) — Badge-Heavy, Feature-Focused<a class="headerlink" href="#pydantic-21k-stars-badge-heavy-feature-focused" title="Permanent link">&para;</a></h4>
+<p><strong>Structure:</strong>
+1. Logo + tagline
+2. Badge row: CI, Coverage, PyPI, Conda, Downloads, Versions, License
+3. Brief description (2 sentences)
+4. Installation (<code>pip install pydantic</code>)
+5. Simple code example (&lt; 20 lines)
+6. Feature list
+7. Contributing + Security links</p>
+<p><strong>Key badge pattern:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>[<span class="nt">![CI</span>](<span class="na">https://img.shields.io/github/actions/workflow/status/pydantic/pydantic/ci.yml?branch=main&amp;logo=github&amp;label=CI</span>)](...)
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>[<span class="nt">![Coverage</span>](<span class="na">https://coverage-badge.samuelcolvin.workers.dev/pydantic/pydantic.svg</span>)](...)
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>[<span class="nt">![pypi</span>](<span class="na">https://img.shields.io/pypi/v/pydantic.svg</span>)](...)
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>[<span class="nt">![CondaForge</span>](<span class="na">https://img.shields.io/conda/v/conda-forge/pydantic</span>)](...)
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>[<span class="nt">![downloads</span>](<span class="na">https://img.shields.io/pypi/dm/pydantic.svg</span>)](...)
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>[<span class="nt">![versions</span>](<span class="na">https://img.shields.io/pypi/pyversions/pydantic.svg</span>)](...)
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a>[<span class="nt">![license</span>](<span class="na">https://img.shields.io/github/license/pydantic/pydantic.svg</span>)](...)
+</code></pre></div></p>
+<p><strong>Notable:</strong> Pydantic has a <code>llms.txt</code> badge — linking to an LLM-friendly documentation page. We should consider this too.</p>
+<h4 id="httpx-14k-stars-clean-minimal">httpx (14K stars) — Clean, Minimal<a class="headerlink" href="#httpx-14k-stars-clean-minimal" title="Permanent link">&para;</a></h4>
+<p><strong>Structure:</strong>
+1. Logo
+2. Tagline ("A next-generation HTTP client for Python")
+3. Badge row: Test Suite, Package version
+4. Install command
+5. Quick example (&lt; 10 lines)
+6. CLI example
+7. Feature bullet list
+8. Documentation link
+9. Dependencies + Credits</p>
+<p><strong>Key pattern:</strong> httpx leads with the QUICKEST possible path to "try it" — install + one example. Everything else is secondary.</p>
+<h4 id="recommended-readme-structure-for-our-library">Recommended README Structure for Our Library<a class="headerlink" href="#recommended-readme-structure-for-our-library" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="gh"># structural-lib-is456</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="k">&gt; </span><span class="ge">IS 456:2000 RC Design — beams, columns &amp; footings</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>[<span class="nt">![CI</span>](<span class="na">badge</span>)](link) [<span class="nt">![Coverage</span>](<span class="na">badge</span>)](link) [<span class="nt">![PyPI</span>](<span class="na">badge</span>)](link)
+<a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a>[<span class="nt">![Python</span>](<span class="na">badge</span>)](link) [<span class="nt">![License</span>](<span class="na">badge</span>)](link) [<span class="nt">![llms.txt</span>](<span class="na">badge</span>)](link)
+<a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a>
+<a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a><span class="gu">## Install</span>
+<a id="__codelineno-49-9" name="__codelineno-49-9" href="#__codelineno-49-9"></a>pip install structural-lib-is456
+<a id="__codelineno-49-10" name="__codelineno-49-10" href="#__codelineno-49-10"></a>
+<a id="__codelineno-49-11" name="__codelineno-49-11" href="#__codelineno-49-11"></a><span class="gu">## Quick Example</span>
+<a id="__codelineno-49-12" name="__codelineno-49-12" href="#__codelineno-49-12"></a>[10-line beam design example]
+<a id="__codelineno-49-13" name="__codelineno-49-13" href="#__codelineno-49-13"></a>
+<a id="__codelineno-49-14" name="__codelineno-49-14" href="#__codelineno-49-14"></a><span class="gu">## Features</span>
+<a id="__codelineno-49-15" name="__codelineno-49-15" href="#__codelineno-49-15"></a><span class="k">-</span><span class="w"> </span>IS 456:2000 compliant beam, column &amp; footing design
+<a id="__codelineno-49-16" name="__codelineno-49-16" href="#__codelineno-49-16"></a><span class="k">-</span><span class="w"> </span>Flexure, shear, torsion, bond, development length
+<a id="__codelineno-49-17" name="__codelineno-49-17" href="#__codelineno-49-17"></a><span class="k">-</span><span class="w"> </span>DXF export, 3D rebar geometry, BBS generation
+<a id="__codelineno-49-18" name="__codelineno-49-18" href="#__codelineno-49-18"></a><span class="k">-</span><span class="w"> </span>Cost optimization, sustainability scoring
+<a id="__codelineno-49-19" name="__codelineno-49-19" href="#__codelineno-49-19"></a><span class="k">-</span><span class="w"> </span>FastAPI backend + React 19 frontend
+<a id="__codelineno-49-20" name="__codelineno-49-20" href="#__codelineno-49-20"></a>
+<a id="__codelineno-49-21" name="__codelineno-49-21" href="#__codelineno-49-21"></a><span class="gu">## Documentation</span>
+<a id="__codelineno-49-22" name="__codelineno-49-22" href="#__codelineno-49-22"></a>[link to docs site]
+<a id="__codelineno-49-23" name="__codelineno-49-23" href="#__codelineno-49-23"></a>
+<a id="__codelineno-49-24" name="__codelineno-49-24" href="#__codelineno-49-24"></a><span class="gu">## Contributing</span>
+<a id="__codelineno-49-25" name="__codelineno-49-25" href="#__codelineno-49-25"></a>[link to CONTRIBUTING.md]
+</code></pre></div>
+<hr />
+<h2 id="synthesis-top-recommendations-ranked-by-impact">SYNTHESIS: Top Recommendations (Ranked by Impact)<a class="headerlink" href="#synthesis-top-recommendations-ranked-by-impact" title="Permanent link">&para;</a></h2>
+<h3 id="tier-1-high-impact-low-effort">Tier 1: High Impact, Low Effort<a class="headerlink" href="#tier-1-high-impact-low-effort" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Recommendation</th>
+<th>Source</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Reduce to 3 agents</strong> (builder/reviewer/researcher)</td>
+<td>Track 1B analysis</td>
+<td>1 session</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Slim copilot-instructions.md to ~50 lines</strong></td>
+<td>Production patterns</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Add <code>tach.toml</code> for architecture enforcement</strong></td>
+<td>scipy</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Add .editorconfig</strong></td>
+<td>Django</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Expand ruff rules</strong> (SIM, RUF, PT, T20)</td>
+<td>FastAPI</td>
+<td>30 min</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-2-high-impact-medium-effort">Tier 2: High Impact, Medium Effort<a class="headerlink" href="#tier-2-high-impact-medium-effort" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Recommendation</th>
+<th>Source</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td><strong>Migrate to uv</strong> from pip</td>
+<td>FastAPI</td>
+<td>1 session</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Add pre-commit hooks</strong> (ruff + standard checks)</td>
+<td>FastAPI</td>
+<td>1 session</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Implement VS Code hooks</strong> (PreToolUse for permissions)</td>
+<td>VS Code docs</td>
+<td>2 sessions</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Multi-version CI matrix</strong> (3.11, 3.12, 3.13)</td>
+<td>FastAPI</td>
+<td>1 session</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>100% coverage for core math</strong></td>
+<td>FastAPI</td>
+<td>2-3 sessions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-3-nice-to-have">Tier 3: Nice to Have<a class="headerlink" href="#tier-3-nice-to-have" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Recommendation</th>
+<th>Source</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td><strong>Replace run.sh with justfile</strong></td>
+<td>just.systems</td>
+<td>1 session</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Add CodSpeed benchmarks</strong></td>
+<td>FastAPI</td>
+<td>1 session</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Redesign README</strong> (pydantic/httpx pattern)</td>
+<td>Track 2D</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Add llms.txt</strong></td>
+<td>Pydantic</td>
+<td>30 min</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="is-456-clause-map">IS 456 Clause Map<a class="headerlink" href="#is-456-clause-map" title="Permanent link">&para;</a></h2>
+<p>This research does not modify IS 456 calculations. Clauses affected: <strong>NONE</strong>.
+All recommendations are infrastructure/tooling — no structural math changes.</p>
+<hr />
+<h2 id="appendix-a-fastapi-ci-workflow-pattern-reference">Appendix A: FastAPI CI Workflow Pattern (Reference)<a class="headerlink" href="#appendix-a-fastapi-ci-workflow-pattern-reference" title="Permanent link">&para;</a></h2>
+<p>FastAPI's test.yml:
+- <strong>Trigger:</strong> push to master, PRs (opened + synchronize), weekly cron
+- <strong>Path filtering:</strong> <code>dorny/paths-filter</code> — only runs tests when source files change
+- <strong>Matrix:</strong> 3 OSes × 5 Python versions × 2 dependency resolution strategies
+- <strong>Coverage:</strong> Combine across matrix, upload to Smokeshow, fail at &lt;100%
+- <strong>Benchmarks:</strong> CodSpeed on every PR (simulation mode)
+- <strong>All-green check:</strong> <code>re-actors/alls-green</code> as branch protection prerequisite</p>
+<p>Key snippet:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v7</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --no-dev --group tests --extra all</span>
+<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run --no-sync bash scripts/test-cov.sh</span>
+</code></pre></div></p>
+<h2 id="appendix-b-scipy-tachtoml-module-boundaries-reference">Appendix B: scipy tach.toml Module Boundaries (Reference)<a class="headerlink" href="#appendix-b-scipy-tachtoml-module-boundaries-reference" title="Permanent link">&para;</a></h2>
+<p>scipy uses ~30 module declarations with explicit <code>depends_on</code> lists. Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;scipy.stats&quot;</span>
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy._lib&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.special&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.linalg&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.optimize&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.integrate&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-9" name="__codelineno-51-9" href="#__codelineno-51-9"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.interpolate&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-10" name="__codelineno-51-10" href="#__codelineno-51-10"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy.sparse&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-11" name="__codelineno-51-11" href="#__codelineno-51-11"></a><span class="w">  </span><span class="c1"># ... total of 16 dependencies</span>
+<a id="__codelineno-51-12" name="__codelineno-51-12" href="#__codelineno-51-12"></a><span class="p">]</span>
+<a id="__codelineno-51-13" name="__codelineno-51-13" href="#__codelineno-51-13"></a>
+<a id="__codelineno-51-14" name="__codelineno-51-14" href="#__codelineno-51-14"></a><span class="k">[[modules]]</span>
+<a id="__codelineno-51-15" name="__codelineno-51-15" href="#__codelineno-51-15"></a><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;scipy.linalg&quot;</span>
+<a id="__codelineno-51-16" name="__codelineno-51-16" href="#__codelineno-51-16"></a><span class="n">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-51-17" name="__codelineno-51-17" href="#__codelineno-51-17"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;scipy._lib&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-51-18" name="__codelineno-51-18" href="#__codelineno-51-18"></a><span class="p">]</span>
+</code></pre></div>
+<p>This pattern directly maps to our 4-layer architecture enforcement needs.</p>
+<h2 id="appendix-c-numpy-spin-cli-commands-reference">Appendix C: numpy spin CLI Commands (Reference)<a class="headerlink" href="#appendix-c-numpy-spin-cli-commands-reference" title="Permanent link">&para;</a></h2>
+<p>numpy's <code>.spin/cmds.py</code> (704 lines) provides:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spin build</code></td>
+<td>Meson build with configurable options</td>
+</tr>
+<tr>
+<td><code>spin test</code></td>
+<td>pytest with parallelism, markers, coverage</td>
+</tr>
+<tr>
+<td><code>spin mypy</code></td>
+<td>Type checking</td>
+</tr>
+<tr>
+<td><code>spin pyrefly</code></td>
+<td>Alternative type checker</td>
+</tr>
+<tr>
+<td><code>spin stubtest</code></td>
+<td>Validate type stubs</td>
+</tr>
+<tr>
+<td><code>spin lint</code></td>
+<td>Ruff linting</td>
+</tr>
+<tr>
+<td><code>spin bench</code></td>
+<td>ASV benchmarks</td>
+</tr>
+<tr>
+<td><code>spin docs</code></td>
+<td>Sphinx documentation build</td>
+</tr>
+<tr>
+<td><code>spin notes</code></td>
+<td>Release notes via Towncrier</td>
+</tr>
+<tr>
+<td><code>spin config_openblas</code></td>
+<td>BLAS configuration</td>
+</tr>
+</tbody>
+</table>
+<p>This is equivalent to our <code>run.sh</code> but more structured. The <code>just</code> command runner would give us similar benefits without writing Python CLI code.</p>
 
 
 
