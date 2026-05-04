@@ -119,7 +119,7 @@ jobs:
       - name: Add PR comment (if PR and alerts present)
         if: github.event_name == 'pull_request' && steps.analyze.outputs.alert_count != '0'
         continue-on-error: true
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const alertCount = '${{ steps.analyze.outputs.alert_count }}';

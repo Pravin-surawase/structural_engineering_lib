@@ -155,7 +155,7 @@ jobs:
 
       - name: Attach SBOM to release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: Python/sbom.json
           token: ${{ secrets.GITHUB_TOKEN }}
