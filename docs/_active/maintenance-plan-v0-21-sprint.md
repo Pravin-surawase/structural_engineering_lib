@@ -20,16 +20,17 @@ tags: [maintenance, planning]
 v0.20.0 shipped successfully to PyPI on 2026-03-31. This plan covers post-release maintenance across 7 workstreams, prioritized by impact. Each item includes the agent pipeline, scripts to run, and docs to update.
 
 **Project Health Score:** 100/100 (local scan 2026-08-07)
-**Tests:** 5,138 core + 326 FastAPI + 139 React passing | **Architecture:** 4-layer checks pass
+**Tests:** 5,138 core + 336 FastAPI + 142 React passing | **Architecture:** 4-layer checks pass
 
 ### 2026-08-07 execution note
 
 The post-v0.20 workstreams are being executed through MAINT-001–005 in
 `docs/TASKS.md`. Environment recovery, nightly/import contracts, dependency
 security, and canonical governance are complete or checkpointed. Remaining
-work is Mac Mini control-plane recovery (GitHub CLI and Colima) plus MAINT-005:
-eight direct FastAPI route tests, critical browser-flow confidence, and the
-v0.21.7 release finish line.
+work is Mac Mini control-plane recovery (GitHub CLI and Colima) plus the last
+MAINT-005 checkpoint: interactive export-download verification and the v0.21.7
+release finish line. Route coverage is 60/60 and the live browser flow is green
+through the completed 153-beam dashboard.
 
 ---
 

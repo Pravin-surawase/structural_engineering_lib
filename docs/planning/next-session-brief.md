@@ -4,18 +4,18 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
-- Focus: MAINT-005 direct route tests, critical browser flow, and v0.21.7 finish line
+- Focus: MAINT-005 interactive exports, v0.21.7 finish line, and Mac control-plane recovery
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-07
-**Current Session:** Maintenance Recovery — canonical baseline restored; frontend confidence next
+**Current Session:** Maintenance Recovery — full-stack confidence green through dashboard; exports next
 
 ## Start Here
 
-1. Start MAINT-005: add direct FastAPI coverage for the eight reported routes, then exercise the critical import → design → 3D → export flow in a real browser.
+1. Finish MAINT-005 by exercising BBS, DXF, report, building-summary, and BOQ CSV downloads in the UI. Route/API coverage and the browser flow through the dashboard are already green.
 2. MAINT-001 is preserved in pushed checkpoint `b28ee4e3`, but GitHub CLI authorization must be rerun and completed in the browser.
 3. Restart macOS before retrying Colima. Do not delete/recreate the transferred VM until Docker data is backed up or deletion is explicitly approved.
-4. Preserve the restored baseline: 28/28 canonical checks, 22/22 audit checks, 100/100 health, and 92% actionable parity.
+4. Preserve the restored baseline: 28/28 canonical checks, 22/22 audit checks, 100/100 health, and 96% actionable parity.
 5. Keep `docs/TASKS.md`, `docs/WORKLOG.md`, `docs/SESSION_LOG.md`, and this handoff synchronized at each checkpoint.
 
 Full evidence and accepted risks are in
@@ -26,15 +26,17 @@ Full evidence and accepted risks are in
 - Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
 - Local/remote `main`: `fa854e0f`; published package: v0.21.6.
 - Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
-- Passing baselines: Python 5,138; FastAPI 326; React 139; React production build; wheel install/design/detail/BBS/report smoke test.
-- Current red gates: 17.74% React statement coverage, eight routes without direct FastAPI tests, GitHub CLI authorization, and the transferred Colima VM state.
+- Passing baselines: Python 5,138; FastAPI 336; React 142; React production build; wheel install/design/detail/BBS/report smoke test.
+- Current red gates: interactive UI downloads, 17.74% React statement coverage, GitHub CLI authorization, and the transferred Colima VM state.
 - Local environment: Python 3.11 ARM64 editable install is repaired at v0.21.6; Node 24.19.0 is installed keg-only and React passes on it; Colima VZ requires a Mac restart; GitHub CLI authentication must be renewed.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.
 - MAINT-003: clean Python lock audits at zero known vulnerabilities and passes 5,138 core plus 326 FastAPI tests; npm has one narrowly allowlisted RSC-only advisory and all 139 React tests/lint/build pass.
-- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, 15/16 feedback records resolved, and completed active plans archived with zero broken links.
-- Parity: 15/17 curated IS 456 areas, 52/60 direct FastAPI route tests, 13/13 API-connected React hooks; 38 Python-only public functions are informational, not route defects.
+- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, and completed active plans archived with zero broken links. Current feedback is 19/23 resolved; four maintenance watches remain.
+- MAINT-005 checkpoint `6f119132`: 60/60 direct FastAPI route tests, 13/13 API-connected React hooks, and 96% actionable parity.
+- Browser evidence: the 153-beam ETABS sample imports, auto-designs, renders in R3F, and reaches a 153/153-pass dashboard with max utilization 100% and no new warnings. Dashboard and BOQ steel totals agree at 1,928.5 kg.
+- Mac launcher evidence: `.nvmrc` Node 24 is selected even when a stale unversioned Node is first on `PATH`; port cleanup targets listeners only and no longer kills connected browser/client helpers.
 
 ## Maintenance Sequence
 

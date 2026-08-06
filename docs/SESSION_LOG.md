@@ -9,19 +9,22 @@
 
 **Agent:** Codex
 **Branch:** `task/MAINT-001`
-**Focus:** Preserve inherited work, restore the Mac Mini baseline, and establish a trustworthy v0.21.7 maintenance plan
+**Focus:** Preserve inherited work, restore the Mac Mini baseline, and establish a trustworthy v0.21.7 maintenance plan and full-stack checkpoint
 
 ### Summary
 - Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.
 - Completed a repository, migration, architecture, test, packaging, CI,
-  security, documentation, and agent-infrastructure audit.
+  security, documentation, agent-infrastructure, and live-browser audit.
 - Preserved inherited work in `b28ee4e3`, restored the runtime/nightly baseline
-  in `1a573c18`, and pushed the canonical maintenance baseline as `9ae38d13`.
-- Completed MAINT-002, MAINT-003, and MAINT-004; MAINT-001 remains externally
-  blocked and MAINT-005 is the next controlled workstream.
+  in `1a573c18`, restored canonical maintenance in `9ae38d13`, finalized the
+  recovery handoff in `70c622dd`, and pushed the full-stack checkpoint as
+  `6f119132`.
+- Completed MAINT-002, MAINT-003, and MAINT-004; advanced MAINT-005 through
+  direct route coverage and the completed dashboard. MAINT-001 remains
+  externally blocked and interactive export downloads remain for MAINT-005.
 - The required auto-summary command was run, but its last-session marker was
-  2026-04-07 and therefore included historical April commits; this manually
-  reconciled summary is the authoritative record for the recovery session.
+  still 2026-04-07 and therefore included historical April commits and rewound
+  the handoff. This manually reconciled summary is the authoritative record.
 
 ### PRs Merged
 | PR | Summary |
@@ -41,7 +44,10 @@
 - Full canonical check passes 28/28; audit readiness passes 22/22; health is 100/100.
 - Parity reports 15/17 curated IS 456 areas implemented, 52/60 FastAPI routes directly tested, and 13/13 API-connected React hooks; intentional Python-only exports are informational rather than defects.
 - The completed March agent audit and unified CLI plan were moved from `docs/_active/` through the safe mover with zero broken links.
-- Fifteen of sixteen feedback records are resolved after confirming their safeguards or historical nature; the tester empty-output recurrence remains pending at occurrence two of its threshold three.
+- Nineteen of twenty-three feedback records are resolved. Remaining items cover the stale session-summary marker, a launcher listener regression check, and the tester empty-output watch at occurrence two of three.
+- MAINT-005 checkpoint `6f119132` adds direct tests for the eight missing routes; FastAPI now passes 336 tests and parity reports 60/60 tested routes with a 96% actionable score.
+- The full local stack launches on Node 24 and the live 153-beam sample passes import, auto-design, R3F editor, status/utilization, and dashboard verification with no new browser warnings.
+- Canonical governing utilization now keeps valid doubly reinforced beams at 100%/Pass; the sample dashboard and BOQ agree at 1,928.5 kg of steel.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
@@ -50,9 +56,18 @@
 - GitHub device authentication expired before approval; rerun `gh auth login` when the owner can complete the browser step.
 - Colima VZ startup still reports the transferred disk in use after graceful daemon/orphan cleanup. A macOS restart is the next non-destructive recovery step; VM deletion is not approved.
 - The transferred `.venv` reported 98 findings across 21 packages because it accumulated undeclared/stale packages. It is retained only as a diagnostic artifact; clean-install declarations and locks are now authoritative.
-- Eight routes lack direct FastAPI tests: six column utility/design routes plus `/rebar/validate` and `/rebar/apply`. These are scoped into MAINT-005 alongside the critical browser workflow and low React coverage.
+- The final MAINT-005 UI boundary is download behavior for BBS, DXF, report, building summary, and BOQ CSV. Endpoint tests pass, but interactive downloads were not claimed during this checkpoint.
 - `scripts/_tmp_write_days.py` was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored `tmp/deleted_backups/`.
 - Session-end evolution status was observed without applying changes: health trend is 48 → 100, and the monthly review is 124 days overdue.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: The transferred unversioned Homebrew Node 25 failed at startup because `libsimdjson.29.dylib` was missing → `scripts/launch_stack.sh` now selects the `.nvmrc` Node 24 keg and enforces the required major.
+- ⚠️ TERMINAL ISSUE: macOS port discovery used `lsof -ti :PORT` and included connected clients, terminating a Codex browser helper → listener discovery is now restricted to `-sTCP:LISTEN`.
+- ⚠️ TERMINAL ISSUE: `./run.sh dev --check-only --verbose` treated the deliberately running stack as a failed preflight and triggered cleanup → the stack was restarted with `./run.sh dev --local`; this behavior remains documented for future launcher UX work.
+- ⚠️ TERMINAL ISSUE: the optional `agent-browser` CLI was unavailable → the maintained in-app Browser control path completed the live verification.
+- ⚠️ TERMINAL ISSUE: `./run.sh pr status` returns GitHub HTTP 401 because the transferred CLI credential expired → the enforced `ai_commit.sh` workflow committed and pushed over working SSH without bypass flags; PR creation still requires renewed auth.
+- ⚠️ TERMINAL ISSUE: `./run.sh session summary` still anchors to 2026-04-07 and overwrites the current handoff with historical data → its output was manually reconciled; fix the session marker logic before trusting auto-generated summaries.
 
 
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release

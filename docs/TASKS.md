@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-07 — maintenance recovery after Mac Mini transfer and four-month pause
+**Updated:** 2026-08-07 — MAINT-005 full-stack confidence checkpoint
 
 ---
 
@@ -25,16 +25,17 @@
 | MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
-| MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | 📋 QUEUED | Critical import→design→3D→export browser flow is covered; stabilization scope is approved |
+| MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | 🚧 IN PROGRESS | Critical import→design→3D→export browser flow is covered; stabilization scope is approved |
 
 ### Maintenance evidence captured 2026-08-07
 
 - Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
-- Baseline tests: 5,138 Python passed, 326 FastAPI passed, 139 React passed; package wheel and full beam workflow pass.
+- Current tests: 5,138 Python passed, 336 FastAPI passed, 142 React passed; package wheel and full beam workflow pass.
 - Release blockers: nightly CLI contract failure, stale local GitHub auth/toolchain metadata, high dependency risk, 17.74% React statement coverage, and conflicting governance dashboards.
-- MAINT-004 validation: canonical check 28/28, audit 22/22, health 100/100, parity 92%, 15/16 feedback records resolved, and all generated API/schema/index checks agree.
-- Parity now distinguishes 38 intentional library-only functions from route gaps. Eight FastAPI routes still need direct API tests and are part of MAINT-005.
+- Canonical validation remains 28/28 checks, 22/22 audit readiness, and 100/100 health. Feedback is 19/23 resolved; the four pending items cover session-summary marker repair, a port-cleanup regression check, and the existing tester-output watch.
+- MAINT-005 checkpoint `6f119132`: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.
+- Runtime/product repairs from the browser sweep: the launcher selects Node 24 from `.nvmrc` and kills listeners only; canonical compliance utilization replaces misleading `Mu/Mu_lim`; imported spans are rounded; dashboard and BOQ steel totals agree.
 
 ### Recovery progress
 
@@ -107,12 +108,13 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | MAINT-001 | Complete Mac Mini recovery: renew GitHub CLI auth and recover transferred Colima state without deleting its disk | Main Agent + owner | ⚠️ BLOCKED |
+| MAINT-005 | Complete interactive export-download verification and approve the evidence-based v0.21.7 finish line | Main Agent | 🚧 IN PROGRESS |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-005 | Restore critical frontend-flow coverage and approve the v0.21.7 stabilization finish line | frontend + tester | 1–2 sessions | P1 | 📋 QUEUED |
+| MAINT-005 | Verify BBS/DXF/report/building-summary downloads in the UI and approve the v0.21.7 stabilization finish line | frontend + tester | <1 session | P1 | 🚧 IN PROGRESS |
 
 ## Backlog
 

@@ -310,3 +310,5 @@ tags: []
 | 2026-08-07 | MAINT-004 | Repaired canonical scanners/manifests/indexes and restored 28/28 checks, 22/22 audit readiness, and 100/100 project health | 9ae38d13 |
 | 2026-08-07 | MAINT-004 | Archived two completed active-work documents safely; reconciled feedback to one evidence-based watch item | 9ae38d13 |
 | 2026-08-07 | MAINT-005 | Recorded eight direct FastAPI route-test gaps and the critical browser-flow/React coverage finish line | 9ae38d13 |
+| 2026-08-07 | MAINT-005 | Closed all eight direct route-test gaps; parity reached 60/60 routes and 96% actionable coverage | 6f119132 |
+| 2026-08-07 | MAINT-005 | Repaired Node 24 launch selection, listener-safe cleanup, beam utilization semantics, sample metadata, editor state, and dashboard BOQ consistency | 6f119132 |
