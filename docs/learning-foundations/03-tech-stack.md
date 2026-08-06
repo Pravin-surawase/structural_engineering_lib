@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: tutorial
+complexity: beginner
+tags: [learning, foundations]
+---
+
 # Module 3: The Tech Stack — Languages, Tools, and Why
 
 ## The Big Idea

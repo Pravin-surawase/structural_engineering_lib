@@ -1,10 +1,10 @@
 ---
 owner: Pravin Surawase
-status: proposed
+status: draft
 version: "2.0"
 last_updated: 2026-04-08
-doc_type: adr
-complexity: critical
+doc_type: spec
+complexity: advanced
 tags: [architecture, packaging, separation, library, professional, is456, pypi, multi-code, aci318, ec2]
 ---
 

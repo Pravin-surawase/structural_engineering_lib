@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, roles]
+---
+
 # UI (User Interface) Agent — Role Document
 
 **Role:** Excel UX/UI Specialist & Frontend Developer.

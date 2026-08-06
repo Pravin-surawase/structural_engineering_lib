@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-04-02
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-08-07
 **Related Tasks:** TASK-900 through TASK-913
 **Abstract:** Comprehensive improvement plan for git automation infrastructure based on 9-script audit and TASK-640 root-cause analysis
 
@@ -23,6 +23,16 @@ During Phase 2 Column Design, the git workflow broke down when:
 4. Multiple recovery attempts before PR was finally created
 
 This plan addresses 19 identified gaps across 4 severity levels, organized into 4 implementation phases.
+
+### Maintenance status (2026-08-07)
+
+- TASK-900 through TASK-907 and TASK-909 through TASK-913 are complete.
+- TASK-908 (bats-core failure-path tests) remains deferred because bats-core is
+  not part of the current toolchain.
+- The recovery rules and forbidden-command safeguards are present in the agent
+  instructions, and the full project readiness audit passes.
+- This document remains active only for TASK-908; archive it after that decision
+  is implemented or formally cancelled.
 
 ---
 

@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, roles]
+---
+
 # CLIENT (Stakeholder) Agent — Role Document
 
 **Role:** Practicing Structural Engineer / End User Proxy.

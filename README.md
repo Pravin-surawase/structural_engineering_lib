@@ -65,7 +65,7 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 |--------|-------|
 | **Python tests** | 4,200+ tests across Ubuntu, Windows, macOS |
 | **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
-| **API functions** | 37 public functions in `structural_lib.api` |
+| **API functions** | 68 public functions in `structural_lib.api` |
 | **REST endpoints** | 60 endpoints across 13 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
 | **IS 456 clauses** | Flexure (Cl 38), shear (Cl 40), torsion (Cl 41), detailing (Cl 26), serviceability (Cl 43), columns (Cl 39), footings (Cl 34) + IS 13920 ductile detailing |
@@ -213,7 +213,7 @@ Units are explicit at the API boundary: `mm`, `kN`, `kN·m`, and `N/mm²`.
 
 ## API Surface
 
-The Python library exposes 37 public functions through `structural_lib.api`. The FastAPI backend provides 59 REST/WebSocket/SSE endpoints across 13 routers.
+The Python library exposes 68 public functions through `structural_lib.api`. The FastAPI backend provides 60 REST/WebSocket/SSE endpoints across 13 routers.
 
 - [Python API Reference](docs/reference/api.md)
 - [FastAPI Swagger UI](http://localhost:8000/docs) (when running locally)

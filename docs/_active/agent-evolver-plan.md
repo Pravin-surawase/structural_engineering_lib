@@ -2,7 +2,7 @@
 owner: Orchestrator
 status: active
 last_updated: 2026-04-01
-doc_type: planning
+doc_type: spec
 complexity: advanced
 tags: [agent-evolver, self-improvement, meta-agent, metrics, paper-data]
 ---

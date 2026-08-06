@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: tutorial
+complexity: beginner
+tags: [learning, foundations]
+---
+
 # Module 6: Testing — How You Know It Works
 
 ## The Big Idea

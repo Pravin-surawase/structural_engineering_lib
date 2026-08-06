@@ -20,6 +20,9 @@
 - Repaired the local Python package version, installed Node 24 LTS side-by-side, and passed the complete React gate on Node 24.
 - Completed MAINT-002: nightly/link/E2E contract repaired; 18/18 live import pipeline checks pass.
 - Restored the quick canonical gate to 8/8 by fixing optional import handling and archiving the removed Streamlit pipeline test.
+- Completed MAINT-003 with clean Python/npm dependency baselines, enforced CI audits, and full Dependabot coverage.
+- Completed MAINT-004: repaired generated indexes/manifests/snapshots and made the canonical check, audit, health, and parity dashboards agree.
+- Reconciled the active-work directory and April feedback queue without erasing the one still-valid recurrence watch.
 
 ### PRs Merged
 | PR | Summary |
@@ -34,6 +37,12 @@
 - `.nvmrc`, `.python-version`, React engines, lock metadata, CI runtime, and Mac Mini setup guide aligned.
 - Nightly link checker now invokes a supported command; 1,056 internal links validate.
 - Live API verifies all 153 ETABS sample beams and all import/design/3D payload contracts.
+- Clean Python 3.11 dependency graph: 147 packages, zero known vulnerabilities, no broken requirements, 5,138 core tests passed (8 skipped), and 326 FastAPI tests passed.
+- npm dependency graph reduced from 13 findings to one RSC-only React Router advisory; the browser-only applicability decision and strict exception are recorded in `docs/planning/dependency-security-baseline.md`.
+- Full canonical check passes 28/28; audit readiness passes 22/22; health is 100/100.
+- Parity reports 15/17 curated IS 456 areas implemented, 52/60 FastAPI routes directly tested, and 13/13 API-connected React hooks; intentional Python-only exports are informational rather than defects.
+- The completed March agent audit and unified CLI plan were moved from `docs/_active/` through the safe mover with zero broken links.
+- Thirteen feedback records were resolved after confirming their safeguards or historical nature; the tester empty-output recurrence remains pending at occurrence two of its threshold three.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
@@ -41,7 +50,9 @@
 - No formatter, bulk cleanup, dependency auto-fix, or feature work is authorized before the recovery checkpoint.
 - GitHub device authentication expired before approval; rerun `gh auth login` when the owner can complete the browser step.
 - Colima VZ startup still reports the transferred disk in use after graceful daemon/orphan cleanup. A macOS restart is the next non-destructive recovery step; VM deletion is not approved.
-- React install reports 13 vulnerabilities (11 high, 1 moderate, 1 low); MAINT-003 will resolve them deliberately rather than running `npm audit fix` blindly.
+- The transferred `.venv` reported 98 findings across 21 packages because it accumulated undeclared/stale packages. It is retained only as a diagnostic artifact; clean-install declarations and locks are now authoritative.
+- Eight routes lack direct FastAPI tests: six column utility/design routes plus `/rebar/validate` and `/rebar/apply`. These are scoped into MAINT-005 alongside the critical browser workflow and low React coverage.
+- `scripts/_tmp_write_days.py` was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored `tmp/deleted_backups/`.
 
 
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release

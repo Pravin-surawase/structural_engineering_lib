@@ -148,8 +148,6 @@ def get_git_info() -> Dict[str, str]:
 
 def collect_testing_evidence(report: AuditReport) -> None:
     """Collect testing-related evidence."""
-    scripts_dir = Path("scripts")
-
     # Check if pytest exists and can run
     pytest_available = (
         subprocess.run(
@@ -229,6 +227,7 @@ def collect_testing_evidence(report: AuditReport) -> None:
 
     # Check coverage configuration
     pytest_ini = Path("Python/pytest.ini")
+    coverage_rc = Path("Python/.coveragerc")
     pyproject = Path("Python/pyproject.toml")
     coverage_configured = False
     if pytest_ini.exists():
@@ -238,6 +237,8 @@ def collect_testing_evidence(report: AuditReport) -> None:
     if not coverage_configured and pyproject.exists():
         content = pyproject.read_text()
         coverage_configured = "coverage" in content.lower()
+    if not coverage_configured and coverage_rc.exists():
+        coverage_configured = True
 
     report.add_evidence(
         EvidenceItem(
@@ -512,7 +513,7 @@ def collect_security_evidence(report: AuditReport) -> None:
     )
 
     # Check for SECURITY.md
-    security_md = Path("SECURITY.md")
+    security_md = Path(".github/SECURITY.md")
     report.add_evidence(
         EvidenceItem(
             category="Security",
@@ -574,8 +575,15 @@ def collect_change_control_evidence(report: AuditReport) -> None:
     )
 
     # Check commit message hooks
-    commit_hook = Path(".git/hooks/commit-msg")
-    hook_exists = commit_hook.exists() if Path(".git").exists() else False
+    hooks_path = subprocess.run(
+        ["git", "config", "--get", "core.hooksPath"],
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    commit_hook = (
+        Path(hooks_path) / "commit-msg" if hooks_path else Path(".git/hooks/commit-msg")
+    )
+    hook_exists = commit_hook.exists()
     report.add_evidence(
         EvidenceItem(
             category="ChangeControl",

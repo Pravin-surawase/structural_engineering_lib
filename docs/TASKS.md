@@ -14,16 +14,17 @@
 
 ---
 
-## Active
+## Maintenance Recovery Dashboard
 
 > Maintenance baseline comes before feature work. Preserve the inherited April worktree before cleanup.
+> Consolidated evidence: [maintenance recovery audit](audit/maintenance-recovery-audit-2026-08-07.md).
 
 | ID | Task | Priority | Status | Exit condition |
 |----|------|----------|--------|----------------|
 | MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | ⚠️ BLOCKED | Recovery task branch/checkpoint exists; GitHub auth, Python/Node versions, Colima, and dirty-tree provenance are documented |
 | MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
-| MAINT-003 | Rebuild dependency and security baseline | P0 | 🔄 IN PROGRESS | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
-| MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | 📋 QUEUED | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
+| MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
+| MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | 📋 QUEUED | Critical import→design→3D→export browser flow is covered; stabilization scope is approved |
 
 ### Maintenance evidence captured 2026-08-07
@@ -32,7 +33,8 @@
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
 - Baseline tests: 5,138 Python passed, 326 FastAPI passed, 139 React passed; package wheel and full beam workflow pass.
 - Release blockers: nightly CLI contract failure, stale local GitHub auth/toolchain metadata, high dependency risk, 17.74% React statement coverage, and conflicting governance dashboards.
-- Do not run bulk cleanup, formatter, dependency auto-fix, or `health --fix` until MAINT-001 is checkpointed.
+- MAINT-004 validation: canonical check 28/28, audit 22/22, health 100/100, parity 92%, 13/14 feedback records resolved, and all generated API/schema/index checks agree.
+- Parity now distinguishes 38 intentional library-only functions from route gaps. Eight FastAPI routes still need direct API tests and are part of MAINT-005.
 
 ### Recovery progress
 
@@ -41,6 +43,7 @@
 - Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
 - MAINT-001 blockers: GitHub device authorization expired before approval; Colima's transferred VZ disk remains marked in use even after orphan-process cleanup. Restart macOS before another start attempt; do not delete the VM disk without a backup/approval.
 - MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
+- MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities and passes 5,138 core plus 326 FastAPI tests; npm dropped from 13 findings to one documented RSC-only advisory, with 139 tests/lint/build green.
 
 ---
 
@@ -98,6 +101,36 @@
 > Detailed specs: [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) Part 2.
 
 ---
+
+## Active
+
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| MAINT-001 | Complete Mac Mini recovery: renew GitHub CLI auth and recover transferred Colima state without deleting its disk | Main Agent + owner | ⚠️ BLOCKED |
+
+## Up Next
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| MAINT-005 | Restore critical frontend-flow coverage and approve the v0.21.7 stabilization finish line | frontend + tester | 1–2 sessions | P1 | 📋 QUEUED |
+
+## Backlog
+
+The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
+feature work until MAINT-001, MAINT-004, and MAINT-005 have explicit exit evidence.
+
+## Recently Done
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| MAINT-004 | Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback | Main Agent | ✅ DONE |
+| MAINT-002 | Repair nightly QA, maintained import E2E contracts, and documentation links | Main Agent | ✅ DONE |
+| MAINT-003 | Rebuild clean Python/npm dependency locks and enforce security audits | Main Agent | ✅ DONE |
+
+## Archive
+
+Completed historical tasks live in [tasks-history.md](_archive/tasks-history.md)
+(`docs/_archive/tasks-history.md`).
 
 ## Completed (Archived)
 

@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [api, reference]
+---
+
 # Which API Should I Use?
 
 **Type:** Reference | **Audience:** Developers | **Status:** Active

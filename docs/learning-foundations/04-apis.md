@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: tutorial
+complexity: beginner
+tags: [learning, foundations]
+---
+
 # Module 4: APIs — How Software Talks to Software
 
 ## The Big Idea

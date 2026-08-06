@@ -151,6 +151,11 @@ Every task — no exceptions — flows through this pipeline:
 
 **CI Failure Delegation:** If CI fails at Step 7 (COMMIT) or Step 8, @ops diagnoses the failure type and delegates the fix to the appropriate specialist (Python failures → @backend/@tester, React failures → @frontend, FastAPI failures → @api-developer, etc.) before retrying. Ops does NOT blindly retry or attempt code fixes outside its domain. See the CI Failure Delegation Protocol in `ops.agent.md` for the full decision table.
 
+**API contract co-delegation:** When an API response shape, field name, or
+status/envelope changes, assign the implementation specialist and `@tester` in
+the same task scope. Contract tests and consumer assertions are part of the
+change, not a later cleanup handoff.
+
 **No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
 
 ### IS 456 Function Pipeline (ADDITIONAL — for structural math tasks)

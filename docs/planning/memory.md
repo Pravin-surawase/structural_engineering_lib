@@ -29,9 +29,9 @@ tags: []
 
 - Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer.
 - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.
-- The inherited April worktree is not yet checkpointed: 73 tracked files were modified and 47 files were untracked before session startup.
+- The inherited April worktree began with 73 tracked modifications and 47 untracked files and is preserved in pushed checkpoint `b28ee4e3`.
 - Seventy modified Python files are AST-equivalent formatter output; untracked learning/migration/master-plan docs contain roughly 25,000 lines and require human/editorial triage.
-- Never reset or bulk-clean this tree before MAINT-001 creates a recovery checkpoint using the enforced Git workflow.
+- Do not reset or bulk-clean the preserved history; continue through the enforced Git workflow on `task/MAINT-001`.
 
 ### Product and Engineering Baseline
 
@@ -48,10 +48,10 @@ tags: []
 2. **Stabilization before features:** v0.21.7 should restore CI, security, environment, tests, and documentation truth.
 3. **Nightly root cause:** workflow calls `scripts/check_links.py --fail-fast`, but the script has no such argument.
 4. **Live import data is intact:** `/api/v1/import/sample` returns 153 beams; standalone scripts fail because they expect the old flat response instead of the response envelope.
-5. **Environment drift:** source/wheel are v0.21.6 while editable metadata reports v0.21.1; Node 25 differs from CI Node 20; dependency lock is stale.
-6. **Security debt:** npm reports high-severity React Router findings; the broad Python environment has substantial vulnerability debt and current CI under-scans it.
-7. **One source of truth:** `run.sh check`, `audit`, `health`, parity, agent registries, and generated indexes currently disagree and must be reconciled.
-8. **Documentation is evidence, not truth by default:** active docs contain stale absolute Mac paths, counts, API architecture, commands, and release claims.
+5. **Environment drift repaired:** source, editable metadata, and module report v0.21.6; Python 3.11 and Node 24 are recorded; the dependency locks come from clean installs.
+6. **Security baseline:** the clean Python graph audits at zero known vulnerabilities. npm has one exact React Router RSC-only exception; the browser-only app does not use the affected mode, and CI rejects any additional advisory.
+7. **One source of truth restored:** `run.sh check` passes 28/28, audit passes 22/22, health is 100/100, and parity clearly separates informational Python-only exports from actionable test gaps.
+8. **Documentation remains evidence:** completed plans were removed from `_active`, counts and commands were reconciled, and future maintenance must keep these records synchronized.
 
 ### Recovery Progress (2026-08-07)
 
@@ -63,6 +63,12 @@ tags: []
 - Maintained import E2E scripts understand the standard response envelope and pass 18/18 against a live API with all 153 sample beams.
 - Import validation excludes archives, recognizes optional `xlwings`, and resolves all scanned imports; quick gate is 8/8.
 - Colima's transferred VZ disk remains marked in use despite process cleanup. Preserve the disk; restart macOS before retrying, and require backup/approval before VM recreation.
+- Root requirements now declare the previously implicit `pytest-asyncio` plugin and patched security floors. A clean environment passes 5,138 core tests (8 skipped) and all 326 FastAPI tests.
+- The Python lock excludes editable/local Git references and retired `python-jose` residue; pip-audit reports zero known vulnerabilities across 147 installed dependencies.
+- npm audit is reduced from 13 findings to one underlying React Router RSC-only advisory. Its exact scope, rationale, CI allowlist, and removal condition are recorded in `dependency-security-baseline.md`.
+- MAINT-004 is complete: API manifest, schema snapshot, script indexes, bootstrap counts, hooks, import scanner, health scanner, audit scanner, and parity scanner now agree.
+- Project health is 100/100 with 13 of 14 historical feedback records resolved. The remaining tester-output item is intentionally open until its third recurrence.
+- Actionable parity is 92%: 15/17 curated clause areas, 52/60 direct route tests, and 13/13 connected hooks. MAINT-005 owns the eight route-test gaps and browser-flow confidence work.
 
 ### Canonical Maintenance Records
 

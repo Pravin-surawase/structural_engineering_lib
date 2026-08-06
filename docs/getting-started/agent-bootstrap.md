@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -98,7 +98,13 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `useCodeChecks` | Live IS 456 clause check badges | `useInsights.ts` |
 | `useRebarSuggestions` | AI rebar suggestion options | `useInsights.ts` |
 | `useDesignWebSocket` | Low-level WebSocket connection | `useDesignWebSocket.ts` |
-| `useBatchProgress` | SSE batch design progress tracking | `useBatchProgress.ts` |
+| `useSimpleBatchDesign` | Lightweight batch-design orchestration | `useSimpleBatchDesign.ts` |
+| `useLoadAnalysis` | Load-analysis API state | `useLoadAnalysis.ts` |
+| `useParetoDesign` | Pareto optimization request/state | `useParetoDesign.ts` |
+| `useProjectBOQ` | Project bill-of-quantities request/state | `useProjectBOQ.ts` |
+| `useExportBuildingSummary` | Building-summary export | `useExportBuildingSummary.ts` |
+| `useReducedMotion` | Accessibility motion preference | `useReducedMotion.ts` |
+| `useWebGLContextLoss` | WebGL context-loss recovery | `useWebGLContextLoss.ts` |
 
 ### React Components (`react_app/src/components/`)
 
@@ -116,6 +122,16 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `FileDropZone` | Drag-drop CSV upload |
 | `CommandPalette` | Global keyboard-driven command palette |
 | `BatchProgressBar` | SSE-driven batch design progress bar |
+| `HomePage`, `HubPage`, `ModeSelectPage` | Entry, workflow hub, and mode-selection routes |
+| `BatchDesignPage`, `BeamDetailPage` | Batch and individual beam workflow routes |
+| `BeamForm`, `BeamTable`, `CSVImportPanel`, `ResultsPanel` | Core beam input/import/result surfaces |
+| `ParetoPanel`, `ProjectBOQPanel`, `SettingsPanel` | Optimization, quantity, and application settings panels |
+| `ModernAppLayout`, `WorkspaceLayout`, `TopBar` | Primary application shells and navigation |
+| `WorkflowBreadcrumb`, `WorkflowHint`, `ConnectionStatus`, `ToastContainer` | Workflow guidance and system feedback |
+| `BentoGrid`, `BentoCard`, `BentoCardHeader` | Dashboard layout primitives |
+| `Skeleton`, `SkeletonCard`, `SkeletonForm`, `SkeletonTableRow` | Generic loading-state primitives |
+| `SkeletonBeamTable`, `SkeletonResultsPanel`, `SkeletonViewport` | Domain loading states |
+| `LandingView` | Legacy/alternate landing surface retained for compatibility |
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
@@ -188,7 +204,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 44 functions (37 public + 7 private) — key entry points: `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
+| `services/api.py` | 68 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (15 private helpers) |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
@@ -224,7 +240,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 ```bash
 ls react_app/src/hooks/                                         # React hooks
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes
-grep "^def " Python/structural_lib/services/api.py | head -20   # Library functions
+./run.sh find --api <func>                                   # Exact public API signature
 ```
 
 ---

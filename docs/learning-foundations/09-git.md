@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: tutorial
+complexity: beginner
+tags: [learning, foundations]
+---
+
 # Module 9: Git and Version Control
 
 ## The Big Idea

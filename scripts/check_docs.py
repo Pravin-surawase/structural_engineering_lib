@@ -96,6 +96,13 @@ def _parse_frontmatter(content: str) -> tuple[dict[str, Any] | None, str]:
 
 def _validate_frontmatter_fields(fm: dict[str, Any]) -> list[str]:
     """Validate front-matter field values."""
+    # Older project documents use the legacy metadata schema inside the YAML
+    # fence (Type/Audience/Status/Last Updated). It is still structured
+    # front-matter and is validated by check_metadata(), so do not require a
+    # second, incompatible lowercase schema in the same file.
+    if all(field in fm for field in META_REQUIRED_FIELDS):
+        return []
+
     errors = []
     for field in FM_REQUIRED_FIELDS:
         if field not in fm:
@@ -306,7 +313,20 @@ def _validate_metadata(content: str) -> tuple[list[str], list[str]]:
     """Validate metadata fields. Returns (errors, warnings)."""
     errors = []
     warnings = []
-    metadata = _extract_metadata(content)
+    frontmatter, _ = _parse_frontmatter(content)
+
+    # Canonical lowercase YAML front-matter is checked separately and fully
+    # satisfies the metadata requirement. This prevents every modern document
+    # from needing duplicate **Type/Audience/Status** body fields.
+    if frontmatter and all(field in frontmatter for field in FM_REQUIRED_FIELDS):
+        return errors, warnings
+
+    # During the migration, many documents placed the established TitleCase
+    # metadata fields inside the YAML fence. Accept and validate that data.
+    if frontmatter and all(field in frontmatter for field in META_REQUIRED_FIELDS):
+        metadata = {field: str(frontmatter[field]) for field in frontmatter}
+    else:
+        metadata = _extract_metadata(content)
     for field in META_REQUIRED_FIELDS:
         if field not in metadata:
             errors.append(f"Missing required field: **{field}:**")
@@ -347,7 +367,9 @@ def check_metadata(
                 cwd=REPO_ROOT,
             )
             md_files = [
-                Path(l) for l in result.stdout.strip().split("\n") if l.endswith(".md")
+                Path(line)
+                for line in result.stdout.strip().split("\n")
+                if line.endswith(".md")
             ]
         except Exception:
             md_files = []

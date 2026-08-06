@@ -3,8 +3,8 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 
 **Type:** Python Package
-**Last Updated:** 2026-04-07
-**Files:** 114
+**Last Updated:** 2026-08-07
+**Files:** 113
 
 ## Config Files
 
@@ -35,7 +35,7 @@
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 827 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 442 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
-| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 432 |
+| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 451 |
 | [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 714 |
 | [check_api.py](check_api.py) | Unified API validation — signatures, docs, and sync checks. | 1 | 4 | 442 |
 | [check_api_compat.py](check_api_compat.py) | Check API backward compatibility. | 0 | 3 | 152 |
@@ -46,7 +46,7 @@
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
-| [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 653 |
+| [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 673 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 450 |
 | [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 668 |
 | [check_git_script_budget.py](check_git_script_budget.py) | Check that git automation scripts stay within line budget (T | 0 | 1 | 63 |
@@ -65,7 +65,7 @@
 | [cleanup_stale_branches.py](cleanup_stale_branches.py) | Cleanup stale remote branches. | 0 | 7 | 187 |
 | [collect_diagnostics.py](collect_diagnostics.py) | Collect a compact diagnostics bundle for debugging and suppo | 0 | 2 | 123 |
 | [config_precedence.py](config_precedence.py) | Configuration precedence auditing for instruction files. | 2 | 10 | 562 |
-| [create_doc.py](create_doc.py) | Create a new documentation file with proper metadata header. | 0 | 5 | 260 |
+| [create_doc.py](create_doc.py) | Create a new documentation file with proper metadata header. | 0 | 5 | 259 |
 | [create_test_scaffold.py](create_test_scaffold.py) | Test Scaffold Generator (Solution 2) | 0 | 3 | 238 |
 | [diagnose_ci.py](diagnose_ci.py) | CI failure diagnosis — check, reproduce, and fix CI failures | 0 | 13 | 339 |
 | [discover_api_signatures.py](discover_api_signatures.py) | Discover and display structural_lib API function signatures. | 2 | 6 | 391 |
@@ -98,14 +98,13 @@
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script (V3 Preparation) | 2 | 10 | 457 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 216 |
 | [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 294 |
-| [test_import_3d_pipeline.py](test_import_3d_pipeline.py) | Import → Design → 3D Pipeline Test | 0 | 1 | 211 |
-| [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 391 |
-| [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 0 | 55 |
+| [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 406 |
+| [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 1 | 72 |
 | [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 4 | 346 |
 | [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 13 | 535 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 620 |
-| [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 372 |
+| [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 380 |
 | [validate_schema_snapshots.py](validate_schema_snapshots.py) | Schema Snapshot Validator. | 0 | 6 | 257 |
 | [validate_script_refs.py](validate_script_refs.py) | Validate that active scripts don't reference archived script | 0 | 4 | 169 |
 

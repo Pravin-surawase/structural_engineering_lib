@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, governance]
+---
+
 # Agent 9 Research Plan - Quick Reference Card
 **⚡ Print/Pin This | 1-Page Essentials**
 

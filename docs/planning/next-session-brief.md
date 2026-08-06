@@ -7,27 +7,33 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-07
-**Current Session:** Maintenance Recovery — audit complete, preservation in progress
+**Current Session:** Maintenance Recovery — canonical baseline restored; frontend confidence next
 
 ## Start Here
 
-1. Continue MAINT-003: resolve npm/Python vulnerability findings through explicit compatible upgrades and regenerate the dependency baseline.
+1. Start MAINT-005: add direct FastAPI coverage for the eight reported routes, then exercise the critical import → design → 3D → export flow in a real browser.
 2. MAINT-001 is preserved in pushed checkpoint `b28ee4e3`, but GitHub CLI authorization must be rerun and completed in the browser.
 3. Restart macOS before retrying Colima. Do not delete/recreate the transferred VM until Docker data is backed up or deletion is explicitly approved.
-4. Continue MAINT-004 after security: repair full-check manifests, schemas, generated indexes, hooks, and registry drift.
+4. Preserve the restored baseline: 28/28 canonical checks, 22/22 audit checks, 100/100 health, and 92% actionable parity.
 5. Keep `docs/TASKS.md`, `docs/WORKLOG.md`, `docs/SESSION_LOG.md`, and this handoff synchronized at each checkpoint.
+
+Full evidence and accepted risks are in
+[maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
 
 ## Current Evidence
 
 - Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
 - Local/remote `main`: `fa854e0f`; published package: v0.21.6.
-- Pre-session dirty tree: 73 modified tracked files and 47 untracked files. Session startup adds the current `SESSION_LOG.md` entry.
+- Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
 - Passing baselines: Python 5,138; FastAPI 326; React 139; React production build; wheel install/design/detail/BBS/report smoke test.
-- Current red gates: nightly QA, dependency/security inventory, React coverage, root legacy Streamlit test, stale indexes/scanners, and documentation/agent drift.
+- Current red gates: 17.74% React statement coverage, eight routes without direct FastAPI tests, GitHub CLI authorization, and the transferred Colima VM state.
 - Local environment: Python 3.11 ARM64 editable install is repaired at v0.21.6; Node 24.19.0 is installed keg-only and React passes on it; Colima VZ requires a Mac restart; GitHub CLI authentication must be renewed.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.
+- MAINT-003: clean Python lock audits at zero known vulnerabilities and passes 5,138 core plus 326 FastAPI tests; npm has one narrowly allowlisted RSC-only advisory and all 139 React tests/lint/build pass.
+- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, 13/14 feedback records resolved, and completed active plans archived with zero broken links.
+- Parity: 15/17 curated IS 456 areas, 52/60 direct FastAPI route tests, 13/13 API-connected React hooks; 38 Python-only public functions are informational, not route defects.
 
 ## Maintenance Sequence
 

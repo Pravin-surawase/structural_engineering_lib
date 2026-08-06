@@ -139,7 +139,7 @@
       ],
       "size_bytes": 1195
     },
-    "docs/_active/unified-cli-upgrade-plan.md": {
+    "docs/_archive/planning-completed-2026-03/unified-cli-upgrade-plan.md": {
       "title": "Unified CLI Upgrade Plan",
       "type": "documentation",
       "complexity": "advanced",
@@ -159,7 +159,7 @@
       ],
       "size_bytes": 31685
     },
-    "docs/_active/agent-testing-audit-2026-03-28.md": {
+    "docs/audit/agent-testing-audit-2026-03-28.md": {
       "title": "Agent System Testing & Audit Report",
       "type": "documentation",
       "complexity": "advanced",

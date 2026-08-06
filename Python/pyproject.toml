@@ -37,6 +37,7 @@ Issues = "https://github.com/Pravin-surawase/structural_engineering_lib/issues"
 [project.optional-dependencies]
 dev = [
   "pytest",
+  "pytest-asyncio>=1.3,<2.0",
   "pytest-cov",
   "pytest-benchmark",
   "black",

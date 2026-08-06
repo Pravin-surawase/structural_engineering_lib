@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: guide
+complexity: intermediate
+tags: [agents, governance]
+---
+
 # Agent 9: Session Planning Templates
 
 **Purpose:** Pre-filled templates for planning governance sessions

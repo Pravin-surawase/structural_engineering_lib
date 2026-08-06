@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: spec
+complexity: advanced
+tags: [maintenance, planning]
+---
+
 # Maintenance Plan — Post v0.20.0 Sprint
 
 **Type:** Planning | **Status:** Draft | **Created:** 2026-03-31
@@ -10,8 +19,17 @@
 
 v0.20.0 shipped successfully to PyPI on 2026-03-31. This plan covers post-release maintenance across 7 workstreams, prioritized by impact. Each item includes the agent pipeline, scripts to run, and docs to update.
 
-**Project Health Score:** 62/100 (last scan 2026-03-28) — target: 80+
-**Tests:** 3,399 passing | **CI:** 17/17 green | **Architecture:** 4-layer intact
+**Project Health Score:** 100/100 (local scan 2026-08-07)
+**Tests:** 5,138 core + 326 FastAPI + 139 React passing | **Architecture:** 4-layer checks pass
+
+### 2026-08-07 execution note
+
+The post-v0.20 workstreams are being executed through MAINT-001–005 in
+`docs/TASKS.md`. Environment recovery, nightly/import contracts, dependency
+security, and canonical governance are complete or checkpointed. Remaining
+work is Mac Mini control-plane recovery (GitHub CLI and Colima) plus MAINT-005:
+eight direct FastAPI route tests, critical browser-flow confidence, and the
+v0.21.7 release finish line.
 
 ---
 
@@ -224,7 +242,7 @@ grep -r "allow_headers\|allow_origins" fastapi_app/ -n      # CORS config locati
 
 ### Docs to Update
 - `docs/docs-canonical.json` — Add 6+ new topics, remove stale ones
-- `docs/_active/unified-cli-upgrade-plan.md` — Move or archive
+- `docs/_archive/planning-completed-2026-03/unified-cli-upgrade-plan.md` — Move or archive
 - `logs/handoff_latest.md` — Populate with current state
 
 ### Estimated Effort: 2-3 hours

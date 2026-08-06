@@ -152,7 +152,7 @@ def scan_docs(fix: bool = False) -> CategoryResult:
     result.checks_run += 1
     args = ["--fix"] if fix else []
     code, output = _run_check_script("sync_numbers.py", args)
-    if code == 0 and "no drift" in output.lower():
+    if code == 0 and ("no drift" in output.lower() or "up to date" in output.lower()):
         result.checks_passed += 1
     elif code == 0 and fix:
         # Fixed some drift
@@ -172,9 +172,9 @@ def scan_docs(fix: bool = False) -> CategoryResult:
     else:
         # Count drift items from output
         drift_lines = [
-            l
-            for l in output.splitlines()
-            if "drift" in l.lower() or "stale" in l.lower()
+            line
+            for line in output.splitlines()
+            if "drift" in line.lower() or "stale" in line.lower()
         ]
         result.issues.append(
             Issue(
@@ -193,7 +193,11 @@ def scan_docs(fix: bool = False) -> CategoryResult:
         result.checks_passed += 1
     else:
         broken = len(
-            [l for l in output.splitlines() if "broken" in l.lower() or "FAIL" in l]
+            [
+                line
+                for line in output.splitlines()
+                if "broken" in line.lower() or "FAIL" in line
+            ]
         )
         result.issues.append(
             Issue(
@@ -276,7 +280,9 @@ def scan_code(fix: bool = False) -> CategoryResult:
     if code == 0:
         result.checks_passed += 1
     else:
-        violations = len([l for l in output.splitlines() if "violation" in l.lower()])
+        violations = len(
+            [line for line in output.splitlines() if "violation" in line.lower()]
+        )
         result.issues.append(
             Issue(
                 category="code",
@@ -356,6 +362,22 @@ def scan_agents(fix: bool = False) -> CategoryResult:
     # Check 2: Agent file references validity
     result.checks_run += 1
     invalid_refs: list[str] = []
+    reference_roots = [
+        REPO_ROOT / "Python",
+        REPO_ROOT / "fastapi_app",
+        REPO_ROOT / "react_app" / "src",
+        SCRIPTS_DIR,
+        REPO_ROOT / "docs",
+        REPO_ROOT / "agents",
+        REPO_ROOT / ".github",
+    ]
+    known_basenames = {
+        path.name
+        for base in reference_roots
+        if base.exists()
+        for path in base.rglob("*")
+        if path.is_file()
+    }
     if AGENT_DIR.exists():
         for agent_file in AGENT_DIR.glob("*.agent.md"):
             try:
@@ -368,8 +390,19 @@ def scan_agents(fix: bool = False) -> CategoryResult:
                 # Skip if it looks like a command or pattern, not a path
                 if ref_path.startswith("-") or "*" in ref_path or " " in ref_path:
                     continue
-                full = REPO_ROOT / ref_path
-                if not full.exists() and not ref_path.startswith("scripts/"):
+                if "<" in ref_path or ref_path.endswith(".agent.md"):
+                    continue
+                candidates = [
+                    REPO_ROOT / ref_path,
+                    REPO_ROOT / "Python" / "structural_lib" / ref_path,
+                    REPO_ROOT / "react_app" / "src" / "hooks" / ref_path,
+                    SCRIPTS_DIR / ref_path,
+                ]
+                basename_exists = Path(ref_path).name in known_basenames
+                if (
+                    not any(path.exists() for path in candidates)
+                    and not basename_exists
+                ):
                     invalid_refs.append(f"{agent_file.name}: {ref_path}")
     if invalid_refs:
         result.issues.append(
@@ -480,17 +513,21 @@ def scan_infra(fix: bool = False) -> CategoryResult:
 
     # Check 1: Git hooks installed
     result.checks_run += 1
-    hooks_dir = REPO_ROOT / ".git" / "hooks"
-    pre_commit = hooks_dir / "pre-commit"
-    post_commit = hooks_dir / "post-commit"
-    if pre_commit.exists() and post_commit.exists():
+    hooks_path_result = subprocess.run(
+        ["git", "config", "--get", "core.hooksPath"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+    configured_path = hooks_path_result.stdout.strip()
+    hooks_dir = (
+        Path(configured_path) if configured_path else REPO_ROOT / ".git" / "hooks"
+    )
+    required_hooks = ("pre-commit", "pre-push", "commit-msg")
+    missing = [name for name in required_hooks if not (hooks_dir / name).exists()]
+    if not missing:
         result.checks_passed += 1
     else:
-        missing = []
-        if not pre_commit.exists():
-            missing.append("pre-commit")
-        if not post_commit.exists():
-            missing.append("post-commit")
         result.issues.append(
             Issue(
                 category="infra",
@@ -568,17 +605,17 @@ def scan_infra(fix: bool = False) -> CategoryResult:
             )
         )
 
-    # Check 5: OpenAPI baseline current
+    # Check 5: OpenAPI baseline matches the live application schema
     result.checks_run += 1
     baseline = REPO_ROOT / "fastapi_app" / "openapi_baseline.json"
     if baseline.exists():
-        age = _file_age_days(baseline)
-        if age > 30:
+        code, _output = _run_check_script("check_openapi_snapshot.py")
+        if code != 0:
             result.issues.append(
                 Issue(
                     category="infra",
-                    severity="info",
-                    message=f"OpenAPI baseline is {age} days old. Run: check_openapi_snapshot.py --update",
+                    severity="error",
+                    message="OpenAPI baseline drift detected. Review before running check_openapi_snapshot.py --update",
                     fixable=True,
                 )
             )

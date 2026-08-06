@@ -22,6 +22,7 @@
 #   route     Route tasks to the right agent
 #   tools     Tool & script discovery
 #   pipeline  Pipeline state tracking
+#   parity    Cross-layer implementation/test parity dashboard
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 set -euo pipefail
 
@@ -721,6 +722,20 @@ _cmd_coverage() {
     "$VENV" "$SCRIPTS/check_clause_coverage.py" "$@"
 }
 
+_cmd_parity() {
+    _require_venv
+    "$VENV" "$SCRIPTS/parity_dashboard.py" "$@"
+}
+
+_help_parity() {
+    cat <<'EOF'
+Usage: ./run.sh parity [--json] [--missing] [--section <name>]
+
+Show cross-layer coverage for IS 456 clauses, public API functions, FastAPI
+endpoints/tests, and frontend API hooks.
+EOF
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -747,6 +762,7 @@ _print_usage() {
     echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
+    echo -e "  ${GREEN}parity${NC}      Cross-layer implementation/test parity dashboard"
     echo -e "  ${GREEN}diagnose${NC}    Diagnose CI failures (--pr N, --local, --fix)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -779,6 +795,7 @@ _dispatch_help() {
         tools)    _cmd_tools ;;
         pipeline) _cmd_pipeline ;;
         coverage) _cmd_coverage ;;
+        parity)   _help_parity ;;
         *)        _print_usage ;;
     esac
 }
@@ -807,6 +824,7 @@ _run_sh() {
         'route:Route tasks to the right agent'
         'tools:Tool and script discovery'
         'pipeline:Pipeline state tracking'
+        'parity:Cross-layer parity dashboard'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -900,6 +918,7 @@ main() {
         route)    _cmd_route "$@" ;;
         tools)    _cmd_tools "$@" ;;
         coverage) _cmd_coverage "$@" ;;
+        parity)    _cmd_parity "$@" ;;
         diagnose) _require_venv; "$VENV" "$SCRIPTS/diagnose_ci.py" "$@" ;;
         pipeline) _cmd_pipeline "$@" ;;
         *)

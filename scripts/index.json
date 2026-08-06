@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
-  "last_updated": "2026-04-07",
-  "file_count": 114,
+  "last_updated": "2026-08-07",
+  "file_count": 113,
   "files": [
     {
       "name": "README.md",
@@ -903,7 +903,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-08-07",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -912,7 +912,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "746a502be009"
+      "content_hash": "0686e252adfc"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -946,7 +946,7 @@
       "name": "benchmark_api.py",
       "type": "python",
       "size_lines": 837,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "API Performance Benchmark Script.",
       "classes": [
         {
@@ -1045,13 +1045,13 @@
         "V3_THRESHOLDS",
         "STANDARD_DIRECT_BENCHMARKS"
       ],
-      "content_hash": "c2dbc8f4d454"
+      "content_hash": "deafad4f545f"
     },
     {
       "name": "bump_version.py",
       "type": "python",
-      "size_lines": 432,
-      "last_updated": "2026-04-01",
+      "size_lines": 451,
+      "last_updated": "2026-04-07",
       "description": "Version Bump Script — Single Source of Truth",
       "functions": [
         {
@@ -1079,7 +1079,7 @@
         "DOC_DATE_FILES",
         "EVERGREEN_NOTES"
       ],
-      "content_hash": "fe0d5fc018a0"
+      "content_hash": "986fdb4ceb01"
     },
     {
       "name": "check_all.py",
@@ -1116,7 +1116,7 @@
       "name": "check_api.py",
       "type": "python",
       "size_lines": 442,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "Unified API validation — signatures, docs, and sync checks.",
       "classes": [
         {
@@ -1158,7 +1158,7 @@
         "PARAM_NAME_MAPPINGS",
         "_API_SYMBOL_RE"
       ],
-      "content_hash": "a1e14765dcf1"
+      "content_hash": "12a6e810d330"
     },
     {
       "name": "check_api_compat.py",
@@ -1554,8 +1554,8 @@
     {
       "name": "check_docs.py",
       "type": "python",
-      "size_lines": 653,
-      "last_updated": "2026-03-30",
+      "size_lines": 673,
+      "last_updated": "2026-08-07",
       "description": "Unified documentation checker — consolidates 4 doc validation scripts.",
       "functions": [
         {
@@ -1604,7 +1604,7 @@
         "META_REQUIRED_FIELDS",
         "META_VALID_VALUES"
       ],
-      "content_hash": "7e349d643984"
+      "content_hash": "ccb5e5875880"
     },
     {
       "name": "check_fastapi_issues.py",
@@ -2522,8 +2522,8 @@
     {
       "name": "create_doc.py",
       "type": "python",
-      "size_lines": 260,
-      "last_updated": "2026-04-05",
+      "size_lines": 259,
+      "last_updated": "2026-08-07",
       "description": "Create a new documentation file with proper metadata header.",
       "functions": [
         {
@@ -2563,7 +2563,7 @@
         "TYPE_FOLDER_MAP",
         "TEMPLATE"
       ],
-      "content_hash": "306a273f6652"
+      "content_hash": "3a177956dac0"
     },
     {
       "name": "create_task_pr.sh",
@@ -2700,7 +2700,7 @@
       "name": "discover_api_signatures.py",
       "type": "python",
       "size_lines": 391,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "Discover and display structural_lib API function signatures.",
       "classes": [
         {
@@ -2752,7 +2752,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "5edd972e41d6"
+      "content_hash": "9a8d5c898826"
     },
     {
       "name": "dxf_render.py",
@@ -2938,7 +2938,7 @@
       "name": "external_cli_test.py",
       "type": "python",
       "size_lines": 385,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "External CLI smoke test (S-007).",
       "classes": [
         {
@@ -2954,7 +2954,7 @@
         "SAMPLE_JOB_IS456_JSON",
         "SAMPLE_BEAM_DESIGN_CSV"
       ],
-      "content_hash": "3a19dc1f5de0"
+      "content_hash": "0050b2a8997c"
     },
     {
       "name": "find_automation.py",
@@ -3038,7 +3038,7 @@
       "name": "fix_broken_links.py",
       "type": "python",
       "size_lines": 268,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "Fix broken internal links in markdown files.",
       "functions": [
         {
@@ -4648,26 +4648,19 @@
       "content_hash": "b68d1be5207b"
     },
     {
-      "name": "test_import_3d_pipeline.py",
-      "type": "python",
-      "size_lines": 211,
-      "last_updated": "2026-04-05",
-      "description": "Import → Design → 3D Pipeline Test",
-      "functions": [
-        {
-          "name": "main",
-          "description": "Run the complete pipeline test."
-        }
-      ],
-      "content_hash": "4f3e1b7f11a6"
-    },
-    {
       "name": "test_import_pipeline.py",
       "type": "python",
-      "size_lines": 391,
-      "last_updated": "2026-04-05",
+      "size_lines": 406,
+      "last_updated": "2026-08-07",
       "description": "End-to-end test of all import paths.",
       "functions": [
+        {
+          "name": "unwrap_response",
+          "description": "Return data from the standard API envelope, or a direct response.",
+          "params": [
+            "payload"
+          ]
+        },
         {
           "name": "test",
           "params": [
@@ -4746,9 +4739,6 @@
         },
         {
           "name": "test_dual_csv_mapping"
-        },
-        {
-          "name": "test_batch_design"
         }
       ],
       "constants": [
@@ -4757,15 +4747,24 @@
         "PASS",
         "FAIL"
       ],
-      "content_hash": "47efaf582712"
+      "content_hash": "8e1fe2f9cf0c"
     },
     {
       "name": "test_sample_endpoint.py",
       "type": "python",
-      "size_lines": 55,
-      "last_updated": "2026-04-05",
+      "size_lines": 72,
+      "last_updated": "2026-08-07",
       "description": "Quick test of the sample data endpoint.",
-      "content_hash": "3333d465a711"
+      "functions": [
+        {
+          "name": "unwrap_response",
+          "description": "Return data from the standard API envelope, or a direct response.",
+          "params": [
+            "payload"
+          ]
+        }
+      ],
+      "content_hash": "d831d03229a4"
     },
     {
       "name": "tool_permissions.py",
@@ -5072,8 +5071,8 @@
     {
       "name": "validate_imports.py",
       "type": "python",
-      "size_lines": 372,
-      "last_updated": "2026-04-05",
+      "size_lines": 380,
+      "last_updated": "2026-08-07",
       "description": "Validate Python imports across the project after migration.",
       "functions": [
         {
@@ -5121,7 +5120,7 @@
         "EXTERNAL_PACKAGES",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "96971a164a23"
+      "content_hash": "115f468be111"
     },
     {
       "name": "validate_schema_snapshots.py",
@@ -5237,5 +5236,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "134fddd81fc3b3b9"
+  "content_hash": "1b85cbbbdccefbfc"
 }
