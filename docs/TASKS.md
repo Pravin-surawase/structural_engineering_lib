@@ -33,7 +33,7 @@
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
 - Baseline tests: 5,138 Python passed, 326 FastAPI passed, 139 React passed; package wheel and full beam workflow pass.
 - Release blockers: nightly CLI contract failure, stale local GitHub auth/toolchain metadata, high dependency risk, 17.74% React statement coverage, and conflicting governance dashboards.
-- MAINT-004 validation: canonical check 28/28, audit 22/22, health 100/100, parity 92%, 13/14 feedback records resolved, and all generated API/schema/index checks agree.
+- MAINT-004 validation: canonical check 28/28, audit 22/22, health 100/100, parity 92%, 15/16 feedback records resolved, and all generated API/schema/index checks agree.
 - Parity now distinguishes 38 intentional library-only functions from route gaps. Eight FastAPI routes still need direct API tests and are part of MAINT-005.
 
 ### Recovery progress

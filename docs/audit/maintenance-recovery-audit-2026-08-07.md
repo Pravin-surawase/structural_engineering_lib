@@ -74,7 +74,7 @@ objects, symlinks, and migration records relevant to the current architecture.
   parameterized routes match concrete test URLs, and slab/footing clauses are
   labeled accurately.
 - Safely archived the historical agent audit and completed unified CLI plan.
-- Resolved 13 historical feedback items with repository evidence; retained one
+- Resolved 15 feedback items with repository evidence; retained one
   tester-output recurrence watch at occurrence two of threshold three.
 - Safely removed tracked placeholder `scripts/_tmp_write_days.py`; a recovery
   copy exists in ignored `tmp/deleted_backups/`.

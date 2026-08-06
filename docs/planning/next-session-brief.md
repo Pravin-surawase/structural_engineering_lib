@@ -4,6 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
+- Focus: MAINT-005 direct route tests, critical browser flow, and v0.21.7 finish line
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-07
@@ -32,7 +33,7 @@ Full evidence and accepted risks are in
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.
 - MAINT-003: clean Python lock audits at zero known vulnerabilities and passes 5,138 core plus 326 FastAPI tests; npm has one narrowly allowlisted RSC-only advisory and all 139 React tests/lint/build pass.
-- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, 13/14 feedback records resolved, and completed active plans archived with zero broken links.
+- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, 15/16 feedback records resolved, and completed active plans archived with zero broken links.
 - Parity: 15/17 curated IS 456 areas, 52/60 direct FastAPI route tests, 13/13 API-connected React hooks; 38 Python-only public functions are informational, not route defects.
 
 ## Maintenance Sequence

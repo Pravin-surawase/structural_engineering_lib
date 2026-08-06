@@ -13,16 +13,15 @@
 
 ### Summary
 - Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.
-- Completed a read-only repository, migration, architecture, test, packaging, CI, security, documentation, and agent-infrastructure audit.
-- Confirmed repository/source/sample integrity and identified environment/control-plane drift as the primary maintenance risk.
-- Started MAINT-001 to preserve the inherited April worktree before cleanup or repair.
-- Pushed recovery checkpoint `b28ee4e3` on `task/MAINT-001`.
-- Repaired the local Python package version, installed Node 24 LTS side-by-side, and passed the complete React gate on Node 24.
-- Completed MAINT-002: nightly/link/E2E contract repaired; 18/18 live import pipeline checks pass.
-- Restored the quick canonical gate to 8/8 by fixing optional import handling and archiving the removed Streamlit pipeline test.
-- Completed MAINT-003 with clean Python/npm dependency baselines, enforced CI audits, and full Dependabot coverage.
-- Completed MAINT-004: repaired generated indexes/manifests/snapshots and made the canonical check, audit, health, and parity dashboards agree.
-- Reconciled the active-work directory and April feedback queue without erasing the one still-valid recurrence watch.
+- Completed a repository, migration, architecture, test, packaging, CI,
+  security, documentation, and agent-infrastructure audit.
+- Preserved inherited work in `b28ee4e3`, restored the runtime/nightly baseline
+  in `1a573c18`, and pushed the canonical maintenance baseline as `9ae38d13`.
+- Completed MAINT-002, MAINT-003, and MAINT-004; MAINT-001 remains externally
+  blocked and MAINT-005 is the next controlled workstream.
+- The required auto-summary command was run, but its last-session marker was
+  2026-04-07 and therefore included historical April commits; this manually
+  reconciled summary is the authoritative record for the recovery session.
 
 ### PRs Merged
 | PR | Summary |
@@ -42,7 +41,7 @@
 - Full canonical check passes 28/28; audit readiness passes 22/22; health is 100/100.
 - Parity reports 15/17 curated IS 456 areas implemented, 52/60 FastAPI routes directly tested, and 13/13 API-connected React hooks; intentional Python-only exports are informational rather than defects.
 - The completed March agent audit and unified CLI plan were moved from `docs/_active/` through the safe mover with zero broken links.
-- Thirteen feedback records were resolved after confirming their safeguards or historical nature; the tester empty-output recurrence remains pending at occurrence two of its threshold three.
+- Fifteen of sixteen feedback records are resolved after confirming their safeguards or historical nature; the tester empty-output recurrence remains pending at occurrence two of its threshold three.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
@@ -53,6 +52,7 @@
 - The transferred `.venv` reported 98 findings across 21 packages because it accumulated undeclared/stale packages. It is retained only as a diagnostic artifact; clean-install declarations and locks are now authoritative.
 - Eight routes lack direct FastAPI tests: six column utility/design routes plus `/rebar/validate` and `/rebar/apply`. These are scoped into MAINT-005 alongside the critical browser workflow and low React coverage.
 - `scripts/_tmp_write_days.py` was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored `tmp/deleted_backups/`.
+- Session-end evolution status was observed without applying changes: health trend is 48 → 100, and the monthly review is 124 days overdue.
 
 
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release

@@ -67,7 +67,7 @@ tags: []
 - The Python lock excludes editable/local Git references and retired `python-jose` residue; pip-audit reports zero known vulnerabilities across 147 installed dependencies.
 - npm audit is reduced from 13 findings to one underlying React Router RSC-only advisory. Its exact scope, rationale, CI allowlist, and removal condition are recorded in `dependency-security-baseline.md`.
 - MAINT-004 is complete: API manifest, schema snapshot, script indexes, bootstrap counts, hooks, import scanner, health scanner, audit scanner, and parity scanner now agree.
-- Project health is 100/100 with 13 of 14 historical feedback records resolved. The remaining tester-output item is intentionally open until its third recurrence.
+- Project health is 100/100 with 15 of 16 feedback records resolved. The remaining tester-output item is intentionally open until its third recurrence.
 - Actionable parity is 92%: 15/17 curated clause areas, 52/60 direct route tests, and 13/13 connected hooks. MAINT-005 owns the eight route-test gaps and browser-flow confidence work.
 
 ### Canonical Maintenance Records
