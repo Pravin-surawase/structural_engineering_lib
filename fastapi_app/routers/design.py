@@ -136,23 +136,29 @@ async def design_beam(request: BeamDesignRequest):
                 ),
             )
 
-        # Calculate utilization
-        moment_capacity = flexure_result.Mu_lim
-        utilization = request.moment / moment_capacity if moment_capacity > 0 else 1.0
+        # Reuse the canonical compliance utilization. In particular, a valid
+        # doubly reinforced design is 1.0 rather than Mu/Mu_lim > 1.0 because
+        # Mu_lim is only the singly reinforced limit, not the final capacity.
+        utilization = result.governing_utilization
 
         # Collect warnings
         warnings = []
-        if utilization > 1.0:
+        if flexure_result.Asc_required > 0:
             warnings.append(
-                "Section is overstressed - increase section or use compression steel"
+                "Doubly reinforced design required because moment demand exceeds "
+                "the singly reinforced limit"
             )
         if flexure_result.xu > flexure_result.xu_max:
             warnings.append("Section is over-reinforced - consider increasing depth")
 
         return success_response(
             BeamDesignResponse(
-                success=True,
-                message=f"Design complete: Ast = {flexure.ast_required:.0f} mm²",
+                success=result.is_ok,
+                message=(
+                    f"Design complete: Ast = {flexure.ast_required:.0f} mm²"
+                    if result.is_ok
+                    else f"Design failed: {result.remarks}"
+                ),
                 flexure=flexure,
                 shear=shear_result,
                 ast_total=flexure.ast_required,

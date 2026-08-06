@@ -17,6 +17,7 @@ import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
 import { ProjectBOQPanel } from "../design/ProjectBOQPanel";
 import type { DashboardData, StoryStats } from "../../hooks/useInsights";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
+import { calculateSteelWeightKg } from "../../utils/quantities";
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ export function DashboardPage() {
       D_mm: b.D,
       span_mm: b.span,
       fck: b.fck ?? 25,
-      steel_weight_kg: b.ast_provided ? b.ast_provided * 7850 / 1e6 : 0,
+      steel_weight_kg: calculateSteelWeightKg(b.ast_provided ?? 0, b.span),
     }));
     boq.mutate({ beams: boqBeams });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -259,7 +260,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
           <div>
             <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Steel</p>
             <p className="text-xl font-bold text-blue-400 tabular-nums">
-              {data.total_steel_kg.toFixed(0)}
+              {data.total_steel_kg.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
               <span className="text-xs text-zinc-500 ml-1">kg</span>
             </p>
           </div>

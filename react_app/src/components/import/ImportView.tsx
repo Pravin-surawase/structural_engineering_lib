@@ -253,7 +253,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
                     <FileSpreadsheet className="w-8 h-8 text-blue-400" />
                     <div className="text-center">
                       <p className="text-sm text-white font-medium">Sample Building</p>
-                      <p className="text-[11px] text-zinc-400">154 beams from ETABS</p>
+                      <p className="text-[11px] text-zinc-400">Bundled ETABS sample</p>
                     </div>
                   </>
                 )}
@@ -313,7 +313,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
                 className="text-xs text-blue-400/70 hover:text-blue-400 transition-colors flex items-center gap-1.5"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" />
-                Or load sample building (154 beams)
+                Or load the bundled ETABS sample building
               </button>
             </div>
           </div>

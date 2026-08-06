@@ -69,6 +69,27 @@ class TestDesignEndpoints:
         assert "ast_total" in data
         assert data["ast_total"] > 0
 
+    def test_doubly_reinforced_design_uses_compliance_utilization(self, client):
+        """A valid doubly reinforced design must not be reported as >100% unsafe."""
+        response = client.post(
+            "/api/v1/design/beam",
+            json={
+                "width": 230,
+                "depth": 450,
+                "moment": 178.912,
+                "shear": 186.183,
+                "fck": 25,
+                "fy": 500,
+                "clear_cover": 40,
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+        data = unwrap(response)
+        assert data["success"] is True
+        assert data["asc_total"] > 0
+        assert 0 < data["utilization_ratio"] <= 1.0
+        assert any("Doubly reinforced" in item for item in data["warnings"])
+
     def test_design_beam_validation_error(self, client):
         """Test validation error for invalid request."""
         invalid_request = {
@@ -477,6 +498,32 @@ class TestImportEndpoints:
         assert r["success"] is True
         assert r["is_safe"] is True
         assert r["stirrup_spacing"] > 0
+
+    def test_batch_doubly_reinforced_result_is_safety_consistent(self, client):
+        """Batch status and utilization must agree for doubly reinforced beams."""
+        response = client.post(
+            "/api/v1/import/batch-design",
+            json=[
+                {
+                    "id": "B15_1",
+                    "story": "1",
+                    "width_mm": 230,
+                    "depth_mm": 450,
+                    "span_mm": 2300,
+                    "mu_knm": 178.912,
+                    "vu_kn": 186.183,
+                    "fck_mpa": 25,
+                    "fy_mpa": 500,
+                    "cover_mm": 40,
+                }
+            ],
+        )
+        assert response.status_code == status.HTTP_200_OK
+        result = unwrap(response)["results"][0]
+        assert result["success"] is True
+        assert result["is_safe"] is True
+        assert result["asc_required"] > 0
+        assert 0 < result["utilization_ratio"] <= 1.0
 
 
 class TestOptimizationEndpoints:

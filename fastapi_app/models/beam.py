@@ -297,7 +297,9 @@ class FlexureResult(BaseModel):
     xu: float = Field(description="Neutral axis depth (mm)")
     xu_max: float = Field(description="Limiting neutral axis depth (mm)")
     is_under_reinforced: bool = Field(description="Whether section is under-reinforced")
-    moment_capacity: float = Field(description="Moment capacity Mu,cap (kN·m)")
+    moment_capacity: float = Field(
+        description="Singly reinforced limiting moment Mu,lim (kN·m)"
+    )
     asc_required: float = Field(
         default=0.0, description="Compression steel if needed (mm²)"
     )
@@ -348,7 +350,9 @@ class BeamDesignResponse(BaseModel):
     ast_total: float = Field(description="Total tension steel required (mm²)")
     asc_total: float = Field(default=0.0, description="Total compression steel (mm²)")
     utilization_ratio: float = Field(
-        ge=0, le=2.0, description="Mu/Mu_cap utilization ratio"
+        ge=0,
+        le=2.0,
+        description="Governing IS 456 compliance utilization ratio",
     )
     effective_depth_used: float | None = Field(
         default=None,
