@@ -222,12 +222,12 @@ def assert_capacity_monotonic(
     for i in range(1, len(values)):
         if increasing:
             assert values[i] >= values[i - 1], (
-                f"{param_name}[{i}]={values[i]} < {param_name}[{i-1}]={values[i-1]} "
+                f"{param_name}[{i}]={values[i]} < {param_name}[{i - 1}]={values[i - 1]} "
                 f"(expected monotonically increasing)"
             )
         else:
             assert values[i] <= values[i - 1], (
-                f"{param_name}[{i}]={values[i]} > {param_name}[{i-1}]={values[i-1]} "
+                f"{param_name}[{i}]={values[i]} > {param_name}[{i - 1}]={values[i - 1]} "
                 f"(expected monotonically decreasing)"
             )
 
@@ -310,7 +310,7 @@ def assert_capacity_exceeds_demand(
         ctx = f" [{label}]" if label else ""
         raise AssertionError(
             f"Capacity ({capacity:.2f}) < Demand ({demand:.2f}){ctx}. "
-            f"Utilization ratio = {demand/capacity:.3f} > 1.0"
+            f"Utilization ratio = {demand / capacity:.3f} > 1.0"
         )
 
 
@@ -337,7 +337,7 @@ def assert_spacing_valid(
         ctx = f" [{label}]" if label else ""
         raise AssertionError(
             f"Spacing {spacing_mm:.0f}mm > max {max_spacing:.0f}mm "
-            f"(IS 456 Cl. 26.5.1.5: min(0.75d={0.75*d_mm:.0f}, 300)){ctx}"
+            f"(IS 456 Cl. 26.5.1.5: min(0.75d={0.75 * d_mm:.0f}, 300)){ctx}"
         )
     if spacing_mm <= 0:
         raise AssertionError(

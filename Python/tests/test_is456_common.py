@@ -363,7 +363,7 @@ class TestSteelStress5Point:
     @pytest.mark.parametrize(
         "point_idx, ratio, inelastic, expected_stress, total_strain",
         [(i + 1, *p) for i, p in enumerate(_FE415_POINTS)],
-        ids=[f"Fe415_Point{i+1}" for i in range(5)],
+        ids=[f"Fe415_Point{i + 1}" for i in range(5)],
     )
     def test_fe415_all_5_points(
         self, point_idx, ratio, inelastic, expected_stress, total_strain
@@ -539,7 +539,7 @@ class TestSteelStress5Point:
         stresses = [steel_stress_from_strain_5point(s, 415) for s in strains]
         for i in range(len(stresses) - 1):
             assert stresses[i + 1] >= stresses[i], (
-                f"Monotonicity violated: stress({strains[i+1]})={stresses[i+1]} "
+                f"Monotonicity violated: stress({strains[i + 1]})={stresses[i + 1]} "
                 f"< stress({strains[i]})={stresses[i]}"
             )
 

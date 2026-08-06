@@ -274,7 +274,7 @@ def main() -> int:
             for msg in messages:
                 print(msg)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("📊 Summary:")
     print(f"   Links checked: {total_checked}")
     print(f"   Links {'fixed' if args.fix else 'to fix'}: {total_fixed}")

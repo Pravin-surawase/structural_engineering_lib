@@ -5,6 +5,34 @@
 
 ---
 
+## 2026-08-07 — Maintenance Recovery Session
+
+**Agent:** Codex
+**Branch:** `task/MAINT-001`
+**Focus:** Preserve inherited work, restore the Mac Mini baseline, and establish a trustworthy v0.21.7 maintenance plan
+
+### Summary
+- Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.
+- Completed a read-only repository, migration, architecture, test, packaging, CI, security, documentation, and agent-infrastructure audit.
+- Confirmed repository/source/sample integrity and identified environment/control-plane drift as the primary maintenance risk.
+- Started MAINT-001 to preserve the inherited April worktree before cleanup or repair.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | Recovery session in progress |
+
+### Key Deliverables
+- Maintenance task sequence recorded in `docs/TASKS.md`.
+- Current recovery evidence and exact restart point recorded in `docs/planning/next-session-brief.md`.
+- Persistent project state updated in `docs/planning/memory.md`.
+
+### Notes
+- Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
+- Recovery branch created through `scripts/ai_commit.sh --branch`; GitHub CLI device authentication remains in progress for PR operations.
+- No formatter, bulk cleanup, dependency auto-fix, or feature work is authorized before the recovery checkpoint.
+
+
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release
 
 **Agent:** orchestrator → backend → doc-master → ops
@@ -296,4 +324,3 @@
 `--host "::"` is now the canonical uvicorn start command for this project (not `0.0.0.0`).
 
 ---
-

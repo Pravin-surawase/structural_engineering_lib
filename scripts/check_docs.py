@@ -637,13 +637,13 @@ def main() -> int:
 
     # Overall exit code: 0 if all pass, 1 if any fail
     if any(rc != 0 for rc in results):
-        print(f"\n{'='*40}")
+        print(f"\n{'=' * 40}")
         print(
             f"❌ {sum(1 for rc in results if rc != 0)}/{len(results)} check(s) failed"
         )
         return 1
     else:
-        print(f"\n{'='*40}")
+        print(f"\n{'=' * 40}")
         print(f"✅ All {len(results)} check(s) passed")
         return 0
 

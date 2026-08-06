@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-07 — v0.21.6 audit + online research root cause analysis; 16 new issues from OWASP 2025/PyPI best practices
+**Updated:** 2026-08-07 — maintenance recovery after Mac Mini transfer and four-month pause
 
 ---
 
@@ -11,6 +11,28 @@
 - **Done = tests pass + docs updated + scanner passes**
 - **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items
 - **No new Streamlit work** — all new features go to React. Bug fixes only for Streamlit-only features.
+
+---
+
+## Active
+
+> Maintenance baseline comes before feature work. Preserve the inherited April worktree before cleanup.
+
+| ID | Task | Priority | Status | Exit condition |
+|----|------|----------|--------|----------------|
+| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | 🔄 IN PROGRESS | Recovery task branch/checkpoint exists; GitHub auth, Python/Node versions, Colima, and dirty-tree provenance are documented |
+| MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | 📋 QUEUED | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
+| MAINT-003 | Rebuild dependency and security baseline | P0 | 📋 QUEUED | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
+| MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | 📋 QUEUED | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
+| MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | 📋 QUEUED | Critical import→design→3D→export browser flow is covered; stabilization scope is approved |
+
+### Maintenance evidence captured 2026-08-07
+
+- Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
+- Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
+- Baseline tests: 5,138 Python passed, 326 FastAPI passed, 139 React passed; package wheel and full beam workflow pass.
+- Release blockers: nightly CLI contract failure, stale local GitHub auth/toolchain metadata, high dependency risk, 17.74% React statement coverage, and conflicting governance dashboards.
+- Do not run bulk cleanup, formatter, dependency auto-fix, or `health --fix` until MAINT-001 is checkpointed.
 
 ---
 

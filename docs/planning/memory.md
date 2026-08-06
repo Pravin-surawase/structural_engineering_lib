@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Active
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-08-07
 
 ---
 
@@ -23,7 +23,47 @@ tags: []
 
 ---
 
-## Current State (2026-01-07)
+## Current Maintenance State (2026-08-07)
+
+### Recovery Context
+
+- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer.
+- Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.
+- The inherited April worktree is not yet checkpointed: 73 tracked files were modified and 47 files were untracked before session startup.
+- Seventy modified Python files are AST-equivalent formatter output; untracked learning/migration/master-plan docs contain roughly 25,000 lines and require human/editorial triage.
+- Never reset or bulk-clean this tree before MAINT-001 creates a recovery checkpoint using the enforced Git workflow.
+
+### Product and Engineering Baseline
+
+- **Published:** v0.21.6 on PyPI; post-tag repository commits are documentation-only.
+- **Python:** 5,138 tests pass; 85% branch coverage; core IS 456 calculation modules are generally 89–100% covered.
+- **FastAPI:** 326 tests pass; 60 endpoints across 13 routers; response contract is `{success, data}`.
+- **React:** 139 tests and production build pass; statement coverage is only 17.74% and key workstation flows remain weakly tested.
+- **Package:** fresh wheel installs and completes beam design → detailing → BBS → HTML report successfully.
+- **Elements:** beam workflow is mature; column and footing mathematics/API exist; UI completeness and future slab/wall/stair scope must be decided separately.
+
+### Current Risks and Decisions
+
+1. **Preservation first:** recovery branch/checkpoint before modifying inherited work.
+2. **Stabilization before features:** v0.21.7 should restore CI, security, environment, tests, and documentation truth.
+3. **Nightly root cause:** workflow calls `scripts/check_links.py --fail-fast`, but the script has no such argument.
+4. **Live import data is intact:** `/api/v1/import/sample` returns 153 beams; standalone scripts fail because they expect the old flat response instead of the response envelope.
+5. **Environment drift:** source/wheel are v0.21.6 while editable metadata reports v0.21.1; Node 25 differs from CI Node 20; dependency lock is stale.
+6. **Security debt:** npm reports high-severity React Router findings; the broad Python environment has substantial vulnerability debt and current CI under-scans it.
+7. **One source of truth:** `run.sh check`, `audit`, `health`, parity, agent registries, and generated indexes currently disagree and must be reconciled.
+8. **Documentation is evidence, not truth by default:** active docs contain stale absolute Mac paths, counts, API architecture, commands, and release claims.
+
+### Canonical Maintenance Records
+
+- `docs/TASKS.md` — active priorities and exit conditions.
+- `docs/WORKLOG.md` — completed changes only, one line per meaningful change.
+- `docs/SESSION_LOG.md` — decisions, evidence, and session outcomes.
+- `docs/planning/next-session-brief.md` — exact restart point and blockers.
+- This file — durable project state and architectural decisions, not command-by-command history.
+
+---
+
+## Historical State (2026-01-07)
 
 ### Recent Release
 - **v0.15.0** released (2026-01-07)

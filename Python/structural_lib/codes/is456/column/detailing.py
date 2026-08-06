@@ -537,8 +537,7 @@ def create_column_detailing(
     min_bars_ok = num_bars >= min_bars
     if not min_bars_ok:
         all_warnings.append(
-            f"Number of bars {num_bars} is below minimum "
-            f"{min_bars} per Cl 26.5.3.1(b)"
+            f"Number of bars {num_bars} is below minimum {min_bars} per Cl 26.5.3.1(b)"
         )
 
     # ===========================================================

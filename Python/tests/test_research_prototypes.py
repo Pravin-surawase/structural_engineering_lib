@@ -490,7 +490,7 @@ class TestDesignCompanion:
         for i in range(1, len(scenarios)):
             assert scenarios[i].ast_required_mm2 >= scenarios[i - 1].ast_required_mm2, (
                 f"ast_required_mm2 decreased from factor "
-                f"{scenarios[i-1].overload_factor} to {scenarios[i].overload_factor}"
+                f"{scenarios[i - 1].overload_factor} to {scenarios[i].overload_factor}"
             )
 
     # ── Anomaly detection returns list ──

@@ -165,7 +165,7 @@ class ColumnAxialRequest(BaseModel):
         """Validate cross-field constraints."""
         if self.Asc_mm2 >= self.Ag_mm2:
             raise ValueError(
-                f"Asc_mm2 ({self.Asc_mm2}) must be less than " f"Ag_mm2 ({self.Ag_mm2})"
+                f"Asc_mm2 ({self.Asc_mm2}) must be less than Ag_mm2 ({self.Ag_mm2})"
             )
         return self
 
@@ -851,7 +851,7 @@ class HelicalCheckRequest(BaseModel):
         """Validate cross-field constraints."""
         if self.D_core_mm >= self.D_mm:
             raise ValueError(
-                f"D_core_mm ({self.D_core_mm}) must be less than " f"D_mm ({self.D_mm})"
+                f"D_core_mm ({self.D_core_mm}) must be less than D_mm ({self.D_mm})"
             )
         return self
 

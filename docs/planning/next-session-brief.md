@@ -3,11 +3,39 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-04-07
+- Date: 2026-08-07
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-04-07
-**Last Session:** v0.21.7 Session 1 — Security Hardening (P1–P3 complete)
+**Last Updated:** 2026-08-07
+**Current Session:** Maintenance Recovery — audit complete, preservation in progress
+
+## Start Here
+
+1. Finish MAINT-001: authenticate GitHub and create the recovery task branch/checkpoint using `scripts/ai_commit.sh`.
+2. Do not discard the inherited April changes. The large documentation set needs editorial triage; 70 Python diffs are formatter-only but must still be preserved first.
+3. Repair MAINT-002 next: nightly passes an unsupported `--fail-fast` argument, and import E2E scripts still assert the pre-envelope API response.
+4. Keep `docs/TASKS.md`, `docs/WORKLOG.md`, `docs/SESSION_LOG.md`, and this handoff synchronized at each checkpoint.
+
+## Current Evidence
+
+- Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
+- Local/remote `main`: `fa854e0f`; published package: v0.21.6.
+- Pre-session dirty tree: 73 modified tracked files and 47 untracked files. Session startup adds the current `SESSION_LOG.md` entry.
+- Passing baselines: Python 5,138; FastAPI 326; React 139; React production build; wheel install/design/detail/BBS/report smoke test.
+- Current red gates: nightly QA, dependency/security inventory, React coverage, root legacy Streamlit test, stale indexes/scanners, and documentation/agent drift.
+- Local environment: Python 3.11 ARM64 is usable, editable metadata is stale at v0.21.1, Node 25 differs from CI Node 20, Colima is stopped, and GitHub CLI authentication must be renewed.
+
+## Maintenance Sequence
+
+| Order | Task | Outcome |
+|-------|------|---------|
+| 1 | MAINT-001 recovery checkpoint | No inherited work can be lost |
+| 2 | MAINT-002 CI + E2E contract | Nightly stops failing/spamming; live import flow is enforced |
+| 3 | MAINT-003 environment/security | Reproducible Mac Mini baseline and deliberate dependency upgrades |
+| 4 | MAINT-004 canonical automation/docs | One trustworthy project status signal |
+| 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
+
+## Previous Handoff (2026-04-07)
 
 ## What Was Completed (v0.21.7 Session 1)
 - **v0.21.6 version refs fixed** — CHANGELOG.md, Python/README.md, docs/git-automation/README.md

@@ -695,7 +695,7 @@ class TestUniaxialPropertyBased:
         )
         # Higher fck should give lower or equal utilization (more capacity)
         assert r2.utilization_ratio <= r1.utilization_ratio + 0.01, (
-            f"fck increase from {fck} to {fck+5} should not increase utilization. "
+            f"fck increase from {fck} to {fck + 5} should not increase utilization. "
             f"Got {r1.utilization_ratio} -> {r2.utilization_ratio}"
         )
 
@@ -728,7 +728,7 @@ class TestUniaxialPropertyBased:
             d_prime_mm=50.0,
         )
         assert r2.utilization_ratio <= r1.utilization_ratio + 0.01, (
-            f"Steel increase from {Asc} to {Asc+500} should not increase utilization. "
+            f"Steel increase from {Asc} to {Asc + 500} should not increase utilization. "
             f"Got {r1.utilization_ratio} -> {r2.utilization_ratio}"
         )
 
@@ -766,7 +766,7 @@ class TestUniaxialPropertyBased:
             d_prime_mm=50.0,
         )
         assert r2.utilization_ratio <= r1.utilization_ratio + 0.01, (
-            f"D increase from {D} to {D+100} should not increase utilization. "
+            f"D increase from {D} to {D + 100} should not increase utilization. "
             f"Got {r1.utilization_ratio} -> {r2.utilization_ratio}"
         )
 

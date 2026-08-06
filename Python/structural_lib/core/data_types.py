@@ -1359,8 +1359,7 @@ class AdditionalMomentResult(DictCompatMixin):
                 f"— SHORT, no additional moment"
             )
         lines.append(
-            f"  k = {self.k:.3f} "
-            f"(Puz = {self.Puz_kN:.1f} kN, Pb = {self.Pb_kN:.1f} kN)"
+            f"  k = {self.k:.3f} (Puz = {self.Puz_kN:.1f} kN, Pb = {self.Pb_kN:.1f} kN)"
         )
         return "\n".join(lines)
 
