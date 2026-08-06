@@ -161,7 +161,7 @@ Subdivided by purpose:
 | `ci_local.sh` | 40 | Full local CI run |
 | `external_cli_test.py` | 395 | CLI smoke test |
 | `test_api_parity.py` | 441 | FastAPI ↔ library parity |
-| `test_import_3d_pipeline.py` | 200 | Import→Design→3D integration |
+| `test_import_pipeline.py` | 400 | Import→Design→3D integration |
 | `test_vba_adapter.py` | 150 | VBA adapter tests |
 | `update_test_stats.py` | 210 | Pytest stats → test_stats.json |
 | `benchmark_api.py` | 455 | API endpoint benchmarks |
@@ -402,7 +402,7 @@ Delegates to `ai_commit.sh` with all its existing safety:
 ```bash
 ./run.sh test                   # → .venv/bin/pytest Python/tests/ -v
 ./run.sh test --parity          # → test_api_parity.py
-./run.sh test --pipeline        # → test_import_3d_pipeline.py
+./run.sh test --pipeline        # → test_import_pipeline.py
 ./run.sh test --vba             # → run_vba_smoke_tests.py + test_vba_adapter.py
 ./run.sh test --cli             # → external_cli_test.py
 ./run.sh test --benchmark       # → benchmark_api.py
@@ -471,7 +471,7 @@ Every active script mapped to exactly one `run.sh` subcommand:
 | `governance_health_score.py` | `audit --score` |
 | `collect_diagnostics.py` | `audit --diagnostics` |
 | `test_api_parity.py` | `test --parity` |
-| `test_import_3d_pipeline.py` | `test --pipeline` |
+| `test_import_pipeline.py` | `test --pipeline` |
 | `test_vba_adapter.py` | `test --vba` |
 | `benchmark_api.py` | `test --benchmark` |
 | `external_cli_test.py` | `test --cli` |

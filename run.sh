@@ -390,7 +390,7 @@ _cmd_test() {
             ;;
         --pipeline)
             _require_venv
-            "$VENV" "$SCRIPTS/test_import_3d_pipeline.py" "${@:2}"
+            "$VENV" "$SCRIPTS/test_import_pipeline.py" "${@:2}"
             ;;
         --vba)
             _require_venv

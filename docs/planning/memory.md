@@ -53,6 +53,17 @@ tags: []
 7. **One source of truth:** `run.sh check`, `audit`, `health`, parity, agent registries, and generated indexes currently disagree and must be reconciled.
 8. **Documentation is evidence, not truth by default:** active docs contain stale absolute Mac paths, counts, API architecture, commands, and release claims.
 
+### Recovery Progress (2026-08-07)
+
+- `task/MAINT-001` and pushed checkpoint `b28ee4e3` preserve all inherited April work.
+- Python editable metadata and module version now match v0.21.6.
+- Node 24.19.0 LTS is installed keg-only; `.nvmrc`, React engines, lock metadata, CI, and setup docs target Node 24.
+- React passes 139 tests, lint (two known hook warnings), and production build on Node 24.
+- Nightly no longer uses the unsupported link-checker flag; all 1,056 internal links pass.
+- Maintained import E2E scripts understand the standard response envelope and pass 18/18 against a live API with all 153 sample beams.
+- Import validation excludes archives, recognizes optional `xlwings`, and resolves all scanned imports; quick gate is 8/8.
+- Colima's transferred VZ disk remains marked in use despite process cleanup. Preserve the disk; restart macOS before retrying, and require backup/approval before VM recreation.
+
 ### Canonical Maintenance Records
 
 - `docs/TASKS.md` — active priorities and exit conditions.

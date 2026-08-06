@@ -650,6 +650,6 @@ Test your understanding. Try to answer in 2–3 sentences:
 
 ## What's Next?
 
-**Day 6: Full Design Pipeline — From CSV to 3D Model** will tie everything together. You'll import a building's beam schedule from CSV, run batch design through the API, generate bar bending schedules, and visualize the 3D rebar layout — the complete workflow from structural analysis output to detailed drawings.
+**Day 6: Footings** moves from vertical members to the foundation system, covering sizing, bearing, flexure, one-way shear, and punching shear.
 
-[<< Day 4: Beam Detailing & Serviceability](day-04-beam-detailing.md) | [Day 6: Full Design Pipeline >>](day-06-pipeline.md)
+[<< Day 4: Beam Detailing & Serviceability](day-04-beam-detailing.md) | [Day 6: Footings >>](day-06-footings.md)

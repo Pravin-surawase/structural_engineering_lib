@@ -11,10 +11,11 @@
 
 ## Start Here
 
-1. Finish MAINT-001: authenticate GitHub and create the recovery task branch/checkpoint using `scripts/ai_commit.sh`.
-2. Do not discard the inherited April changes. The large documentation set needs editorial triage; 70 Python diffs are formatter-only but must still be preserved first.
-3. Repair MAINT-002 next: nightly passes an unsupported `--fail-fast` argument, and import E2E scripts still assert the pre-envelope API response.
-4. Keep `docs/TASKS.md`, `docs/WORKLOG.md`, `docs/SESSION_LOG.md`, and this handoff synchronized at each checkpoint.
+1. Continue MAINT-003: resolve npm/Python vulnerability findings through explicit compatible upgrades and regenerate the dependency baseline.
+2. MAINT-001 is preserved in pushed checkpoint `b28ee4e3`, but GitHub CLI authorization must be rerun and completed in the browser.
+3. Restart macOS before retrying Colima. Do not delete/recreate the transferred VM until Docker data is backed up or deletion is explicitly approved.
+4. Continue MAINT-004 after security: repair full-check manifests, schemas, generated indexes, hooks, and registry drift.
+5. Keep `docs/TASKS.md`, `docs/WORKLOG.md`, `docs/SESSION_LOG.md`, and this handoff synchronized at each checkpoint.
 
 ## Current Evidence
 
@@ -23,7 +24,10 @@
 - Pre-session dirty tree: 73 modified tracked files and 47 untracked files. Session startup adds the current `SESSION_LOG.md` entry.
 - Passing baselines: Python 5,138; FastAPI 326; React 139; React production build; wheel install/design/detail/BBS/report smoke test.
 - Current red gates: nightly QA, dependency/security inventory, React coverage, root legacy Streamlit test, stale indexes/scanners, and documentation/agent drift.
-- Local environment: Python 3.11 ARM64 is usable, editable metadata is stale at v0.21.1, Node 25 differs from CI Node 20, Colima is stopped, and GitHub CLI authentication must be renewed.
+- Local environment: Python 3.11 ARM64 editable install is repaired at v0.21.6; Node 24.19.0 is installed keg-only and React passes on it; Colima VZ requires a Mac restart; GitHub CLI authentication must be renewed.
+- Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
+- MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
+- Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.
 
 ## Maintenance Sequence
 

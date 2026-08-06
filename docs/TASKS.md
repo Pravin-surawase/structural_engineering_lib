@@ -20,9 +20,9 @@
 
 | ID | Task | Priority | Status | Exit condition |
 |----|------|----------|--------|----------------|
-| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | 🔄 IN PROGRESS | Recovery task branch/checkpoint exists; GitHub auth, Python/Node versions, Colima, and dirty-tree provenance are documented |
-| MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | 📋 QUEUED | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
-| MAINT-003 | Rebuild dependency and security baseline | P0 | 📋 QUEUED | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
+| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | ⚠️ BLOCKED | Recovery task branch/checkpoint exists; GitHub auth, Python/Node versions, Colima, and dirty-tree provenance are documented |
+| MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
+| MAINT-003 | Rebuild dependency and security baseline | P0 | 🔄 IN PROGRESS | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | 📋 QUEUED | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | 📋 QUEUED | Critical import→design→3D→export browser flow is covered; stabilization scope is approved |
 
@@ -33,6 +33,14 @@
 - Baseline tests: 5,138 Python passed, 326 FastAPI passed, 139 React passed; package wheel and full beam workflow pass.
 - Release blockers: nightly CLI contract failure, stale local GitHub auth/toolchain metadata, high dependency risk, 17.74% React statement coverage, and conflicting governance dashboards.
 - Do not run bulk cleanup, formatter, dependency auto-fix, or `health --fix` until MAINT-001 is checkpointed.
+
+### Recovery progress
+
+- Recovery checkpoint `b28ee4e3` is pushed on `task/MAINT-001`.
+- Python editable metadata/module version repaired to v0.21.6; Node 24.19.0 installed keg-only and React passes 139 tests, lint, and build on it.
+- Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
+- MAINT-001 blockers: GitHub device authorization expired before approval; Colima's transferred VZ disk remains marked in use even after orphan-process cleanup. Restart macOS before another start attempt; do not delete the VM disk without a backup/approval.
+- MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
 
 ---
 

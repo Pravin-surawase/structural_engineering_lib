@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-26
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-07
 
 Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon).
 This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.
@@ -29,11 +29,11 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 | Homebrew | Latest | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
 | Git | 2.39+ | `brew install git` (or use Xcode CLT) |
 | Python | 3.11.x | `brew install python@3.11` |
-| Node.js | 18+ (v20 LTS or newer) | `brew install node@20` or use `nvm` |
+| Node.js | 24 LTS | Use `nvm install` from the repository root (`.nvmrc` is authoritative) |
 | Docker + Colima | Latest | `brew install docker docker-compose colima` |
 | VS Code | Latest | `brew install --cask visual-studio-code` |
 
-> **Note:** Node v20+ and v25+ both work. The codebase requires Node 18 minimum.
+> **Note:** Node 20 and Node 25 are end-of-life. Local development and React CI use Node 24 LTS; run `nvm use` from the repository root.
 >
 > **Why Colima over Docker Desktop?** Colima is lightweight, CLI-based, uses less RAM, and is faster for dev machines. Docker Desktop works too but runs a heavier background VM.
 
@@ -48,7 +48,7 @@ brew install cairo pango libffi
 ## Step 1: Clone the Repository
 
 ```bash
-cd ~/Project_VS_code   # or your preferred workspace
+cd ~/VS_code_project   # current Mac Mini workspace, or your preferred workspace
 git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
 cd structural_engineering_lib
 ```
@@ -100,7 +100,7 @@ pre-commit install
 
 ```bash
 .venv/bin/python -c "import structural_lib; print(structural_lib.__version__)"
-# Should print: 0.20.0 (or current version)
+# Should print: 0.21.6 (or the current `Python/pyproject.toml` version)
 ```
 
 ---
@@ -113,7 +113,7 @@ cd Python
 cd ..
 ```
 
-**Expected:** 3,100+ tests pass, 0 failures.
+**Expected:** 5,100+ tests pass, 0 failures.
 
 ---
 

@@ -16,6 +16,10 @@
 - Completed a read-only repository, migration, architecture, test, packaging, CI, security, documentation, and agent-infrastructure audit.
 - Confirmed repository/source/sample integrity and identified environment/control-plane drift as the primary maintenance risk.
 - Started MAINT-001 to preserve the inherited April worktree before cleanup or repair.
+- Pushed recovery checkpoint `b28ee4e3` on `task/MAINT-001`.
+- Repaired the local Python package version, installed Node 24 LTS side-by-side, and passed the complete React gate on Node 24.
+- Completed MAINT-002: nightly/link/E2E contract repaired; 18/18 live import pipeline checks pass.
+- Restored the quick canonical gate to 8/8 by fixing optional import handling and archiving the removed Streamlit pipeline test.
 
 ### PRs Merged
 | PR | Summary |
@@ -26,11 +30,18 @@
 - Maintenance task sequence recorded in `docs/TASKS.md`.
 - Current recovery evidence and exact restart point recorded in `docs/planning/next-session-brief.md`.
 - Persistent project state updated in `docs/planning/memory.md`.
+- Python editable metadata and module version now agree at v0.21.6.
+- `.nvmrc`, `.python-version`, React engines, lock metadata, CI runtime, and Mac Mini setup guide aligned.
+- Nightly link checker now invokes a supported command; 1,056 internal links validate.
+- Live API verifies all 153 ETABS sample beams and all import/design/3D payload contracts.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
 - Recovery branch created through `scripts/ai_commit.sh --branch`; GitHub CLI device authentication remains in progress for PR operations.
 - No formatter, bulk cleanup, dependency auto-fix, or feature work is authorized before the recovery checkpoint.
+- GitHub device authentication expired before approval; rerun `gh auth login` when the owner can complete the browser step.
+- Colima VZ startup still reports the transferred disk in use after graceful daemon/orphan cleanup. A macOS restart is the next non-destructive recovery step; VM deletion is not approved.
+- React install reports 13 vulnerabilities (11 high, 1 moderate, 1 low); MAINT-003 will resolve them deliberately rather than running `npm audit fix` blindly.
 
 
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release

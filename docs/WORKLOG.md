@@ -302,3 +302,7 @@ tags: []
 | 2026-04-07 | CI-FIX | fix: scorecard/sbom workflow permissions (least-privilege) | PR #550 |
 | 2026-04-07 | CI-FIX | fix: OpenAPI baseline drift (BiaxialCheckRequest) | PR #550 |
 | 2026-04-07 | CI-FIX | fix: nightly QA smoke test failure guard | PR #550 |
+| 2026-08-07 | MAINT-001 | Preserved inherited April worktree and maintenance control records on recovery branch | b28ee4e3 |
+| 2026-08-07 | MAINT-001 | Repaired editable package metadata to v0.21.6; pinned Python 3.11.15 and Node 24 LTS; documented transferred Colima VZ blocker | pending |
+| 2026-08-07 | MAINT-002 | Fixed nightly link command, API response-envelope E2E scripts, and three broken documentation links | pending |
+| 2026-08-07 | MAINT-004 | Repointed pipeline command to maintained E2E test, archived removed Streamlit pipeline, and restored 8/8 quick gate | pending |

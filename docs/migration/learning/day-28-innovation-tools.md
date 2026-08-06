@@ -385,4 +385,4 @@ print(f'Found {count} functions in services/api.py')
 
 ---
 
-*Next module: [Day 29](day-29-release-workflow.md) — Release Workflow & CI/CD*
+*Next module: [Day 29](day-29-performance-scale.md) — Performance & Scale*

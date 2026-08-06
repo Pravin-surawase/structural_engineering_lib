@@ -455,8 +455,8 @@
     },
     "test import 3d pipeline": {
       "group": "Testing",
-      "script": ".venv/bin/python scripts/test_import_3d_pipeline.py",
-      "description": "End-to-end test: CSV import → beam design → 3D geometry pipeline"
+      "script": ".venv/bin/python scripts/test_import_pipeline.py",
+      "description": "Compatibility alias for the maintained import, batch-design, and 3D geometry E2E test"
     },
     "test import pipeline": {
       "group": "Testing",

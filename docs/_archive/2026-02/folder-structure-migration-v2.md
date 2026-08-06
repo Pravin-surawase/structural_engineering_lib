@@ -433,7 +433,7 @@ fastapi_app/
 
 **290 broken imports** are concentrated in:
 - `streamlit_app/` — Uses old module paths that no longer exist
-- `scripts/test_import_3d_pipeline.py` — References non-existent `utils.api_wrapper`
+- `scripts/_archive/test_import_3d_pipeline.py` — References non-existent `utils.api_wrapper`
 - Root `tests/` — Some test files reference streamlit components
 
 ### 6.3 Orphan Files (184 found)

@@ -196,7 +196,7 @@ Or move `excel_bridge.py` out of the main package since VBA/Excel is gitignored.
 | `tests/test_lod_performance.py` | 19 × `from utils.lod_manager`, `from components.visualizations_3d` | Streamlit removed |
 | `tests/test_report_export_component.py` | 6 × `from components.report_export` | Streamlit removed |
 | `tests/test_visualizations_3d.py` | 4 × `from components.visualizations_3d` | Streamlit removed |
-| `scripts/test_import_3d_pipeline.py` | 2 × `from utils.api_wrapper`, `from components.visualizations_3d` | Streamlit removed |
+| `scripts/_archive/test_import_3d_pipeline.py` | 2 × `from utils.api_wrapper`, `from components.visualizations_3d` | Streamlit removed |
 
 ### Fix
 
@@ -207,7 +207,7 @@ rm tests/test_lod_manager.py
 rm tests/test_lod_performance.py
 rm tests/test_report_export_component.py
 rm tests/test_visualizations_3d.py
-rm scripts/test_import_3d_pipeline.py
+rm scripts/_archive/test_import_3d_pipeline.py
 ```
 
 Or use the safe delete script:
@@ -282,7 +282,7 @@ streamlit check group. In `run.sh`, remove it from the categories array and help
 | `scripts/check_architecture_boundaries.py` | UI layer defined as `streamlit_app` |
 | `scripts/check_circular_imports.py` | Scans `streamlit_app/pages`, `streamlit_app/utils` |
 | `scripts/create_test_scaffold.py` | Generates tests for `streamlit_app` modules |
-| `scripts/test_import_3d_pipeline.py` | Imports from `streamlit_app` |
+| `scripts/_archive/test_import_3d_pipeline.py` | Imports from `streamlit_app` |
 | `scripts/check_all.py` | Streamlit check category |
 | `scripts/agent_start.sh` | References streamlit |
 | `scripts/safe_push.sh` | References streamlit |
@@ -436,7 +436,7 @@ cp VBA/ETABS_Export_v2/Etabs_output/2026-01-17_222801/*.csv \
 # Issue 5: Delete orphaned test files
 rm tests/test_lod_manager.py tests/test_lod_performance.py \
    tests/test_report_export_component.py tests/test_visualizations_3d.py \
-   scripts/test_import_3d_pipeline.py
+   scripts/_archive/test_import_3d_pipeline.py
 
 # Issue 6: Auto-fix doc links
 .venv/bin/python scripts/check_links.py --fix
