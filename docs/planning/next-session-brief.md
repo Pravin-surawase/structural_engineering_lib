@@ -34,6 +34,7 @@ Full evidence and accepted risks are in
 - Low-token policy checkpoint `6e8e4a31` adds project Codex defaults, a two-subagent cap, focused handoffs, `./run.sh efficiency`, and a 9/9 quick gate.
 - The analytics-calibrated model picker is in `agents/model_policy.json` and `./run.sh model`; it recommends Luna-first for repeatable work and never auto-selects approval-gated Sol.
 - Model-routing checkpoint `fe55d130` is pushed on PR #676. Focused Ruff/tests pass; the full gate's 22 non-doc checks passed and the corrected Docs category passes 7/7.
+- Sol High orchestrator checkpoint `ff6d525d` is pushed. Project defaults, picker, role instructions, worker-packet contract, and verification tests agree.
 - Current gate: PR #676 has two diagnosed CI failures awaiting approval—three empty template links and Ruff 0.16.1 dependency drift. React coverage remains an accepted follow-up risk.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.

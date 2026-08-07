@@ -61,6 +61,7 @@
 - `agents/model_policy.json`, `scripts/model_picker.py`, and `./run.sh model` now compare Luna/Terra/Sol reasoning profiles, state equal-token relative rates, recommend the cheapest credible start, and retain explicit approval for Sol.
 - Model-routing checkpoint `fe55d130` is pushed. Thirteen focused tests and Ruff pass; the full gate passed all 22 non-doc checks, then the two introduced doc/index findings were corrected and the Docs category passed 7/7.
 - The owner made Sol High mandatory for the main orchestrator's intake, planning, delegation, integration, and final review. Luna/Terra remain execution workers. The orchestrator must provide exact scope, non-goals, pitfalls, acceptance criteria, tests, and return format, then independently verify returned work.
+- Orchestrator-policy checkpoint `ff6d525d` is pushed; 17 focused tests, Ruff, the 9/9 quick gate, and Docs 7/7 pass.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
