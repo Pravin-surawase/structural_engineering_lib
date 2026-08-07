@@ -37,12 +37,14 @@ FORBIDDEN_ACTIVE_TEXT = (
 
 TASK_PREAMBLE = """Work in low-token mode.
 
-Use one parent task. Default to Terra at medium reasoning and keep Fast mode
-off. Do not use Sol without asking me first. Default to no subagents; use no
-more than two only for independent, bounded work. Give them a concise task
-packet and no full conversation history. Inspect only affected indexes and
-files. Use targeted tests while developing and run the full gate once at
-closeout. Close subagents immediately, report the result, and stop."""
+Use one Sol High main orchestrator for intake, planning, delegation, integration,
+and final review. Keep Fast mode off. Use Luna for clear repetitive work and
+Terra for normal implementation. Ask before using Sol profiles other than Sol
+High. Default to no subagents; use no more than two only for independent,
+bounded work. Give each a concise packet with objective, exact files, non-goals,
+pitfalls, acceptance criteria, tests, and return format—never full conversation
+history. Verify every result before accepting it. Run targeted tests during
+development and the full gate once at closeout. Close subagents and stop when done."""
 
 
 def _load_config() -> dict:
@@ -73,8 +75,8 @@ def validate() -> dict:
     features = config.get("features", {})
 
     expected = {
-        "model": "gpt-5.6-terra",
-        "model_reasoning_effort": "medium",
+        "model": "gpt-5.6-sol",
+        "model_reasoning_effort": "high",
         "model_verbosity": "low",
     }
     for key, value in expected.items():
@@ -107,6 +109,8 @@ def validate() -> dict:
             errors.append("model policy must cap concurrent subagents at 2")
         if model_policy.get("defaults", {}).get("subagent_profile") != "luna-low":
             errors.append("model policy must default subagents to luna-low")
+        if model_policy.get("defaults", {}).get("parent_profile") != "sol-high":
+            errors.append("model policy must default the main orchestrator to sol-high")
         profile_ids = {
             profile.get("id") for profile in model_policy.get("profiles", [])
         }

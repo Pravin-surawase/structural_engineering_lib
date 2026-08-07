@@ -13,6 +13,8 @@
         "--risk LEVEL": "Set auto, low, normal, high, or critical risk",
         "--repeatable": "Mark a task as deterministic and repeatable",
         "--ambiguous": "Mark a task as requiring ambiguity resolution",
+        "--important": "Use the standing Sol High authorization for important work",
+        "--orchestrator": "Always select Sol High for the main orchestrator",
         "--json": "Machine-readable recommendation"
       }
     },

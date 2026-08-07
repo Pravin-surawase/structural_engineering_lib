@@ -15,17 +15,19 @@ Open-source IS 456 RC beam design library. Full stack:
 
 The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project defaults are enforced by [`.codex/config.toml`](.codex/config.toml).
 
-- Keep one parent task active for this project. Default to Terra at medium reasoning; use Luna for simple work when available. Do not use Sol without user approval.
+- Keep one parent task active. The main orchestrator always uses Sol High for intake, planning, delegation, integration, and final review. Use Luna for clear repeatable work and Terra for normal implementation; other Sol profiles still require approval.
 - Keep Fast mode off unless the user explicitly prioritizes speed over usage.
 - Default to no subagents. Use at most two concurrent subagents, only for independent bounded work that materially benefits from delegation.
 - Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
+- The Sol High orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
 - Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
 - Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
 - Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
 - Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
 - Run `./run.sh model "task"` before choosing a model for bounded work. The
   picker is advisory: Luna-first for clear repeatable work, Terra for normal or
-  high-risk implementation, and Sol only after explicit user approval.
+  high-risk implementation, and standing-approved Sol High for important
+  planning or complicated work.
 
 ## Git — THE ONE RULE
 

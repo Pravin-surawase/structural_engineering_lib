@@ -912,7 +912,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "af9e91a98e11"
+      "content_hash": "65c759c4c257"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -2279,7 +2279,7 @@
     {
       "name": "check_token_efficiency.py",
       "type": "python",
-      "size_lines": 204,
+      "size_lines": 208,
       "last_updated": "2026-08-07",
       "description": "Validate repository-side Codex token-efficiency controls.",
       "functions": [
@@ -2299,7 +2299,7 @@
         "FORBIDDEN_ACTIVE_TEXT",
         "TASK_PREAMBLE"
       ],
-      "content_hash": "e5c045689b57"
+      "content_hash": "485d5a1aa6fb"
     },
     {
       "name": "check_type_annotations.py",
@@ -3579,7 +3579,7 @@
     {
       "name": "model_picker.py",
       "type": "python",
-      "size_lines": 247,
+      "size_lines": 297,
       "last_updated": "2026-08-07",
       "description": "Recommend a GPT-5.6 model and reasoning effort for a repository task.",
       "classes": [
@@ -3605,9 +3605,11 @@
         "BOUNDED",
         "IMPLEMENTATION",
         "COMPLEX",
+        "PLANNING",
+        "IMPORTANT",
         "HIGH_RISK"
       ],
-      "content_hash": "31fbaa18c422"
+      "content_hash": "3bbb2040229f"
     },
     {
       "name": "parity_dashboard.py",
@@ -5295,5 +5297,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "792d15fa51dc1a86"
+  "content_hash": "812d73d8c7e3b5d2"
 }

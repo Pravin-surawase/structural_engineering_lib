@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.0",
+    "version": "1.1",
     "last_verified": "2026-08-07",
     "source": "https://help.openai.com/en/articles/20001106",
-    "note": "Relative rates assume the same input, cached-input, and output token mix. Reasoning effort changes token volume and has no fixed multiplier."
+    "note": "Relative rates assume the same input, cached-input, and output token mix. Reasoning effort changes token volume and has no fixed multiplier.",
+    "standing_user_approval": "The main orchestrator always uses Sol High for task intake, planning, delegation, integration, and final quality review. Sol High may also be used for genuinely important or complicated work. Other Sol profiles still require approval."
   },
   "defaults": {
-    "parent_profile": "terra-medium",
+    "parent_profile": "sol-high",
     "subagent_profile": "luna-low",
     "fast_mode": false,
     "max_concurrent_subagents": 2
@@ -93,9 +94,9 @@
       "id": "sol-high",
       "model": "gpt-5.6-sol",
       "reasoning": "high",
-      "approval_required": true,
-      "use_for": "High-stakes structural, security, or migration decisions with multiple tradeoffs",
-      "tradeoff": "Use only when measured quality gain justifies cost"
+      "approval_required": false,
+      "use_for": "Main orchestration plus standing-approved important, complicated, or high-stakes execution work",
+      "tradeoff": "Orchestrator default, not worker default; decompose execution for Luna or Terra when practical"
     },
     {
       "id": "sol-xhigh",
@@ -107,4 +108,3 @@
     }
   ]
 }
-

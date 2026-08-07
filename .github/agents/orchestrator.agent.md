@@ -66,6 +66,11 @@ grep -r "@router" fastapi_app/routers/ | head -20  # Check routes before assigni
 
 ## Your Role
 
+**Model policy:** Always run the main orchestrator on GPT-5.6 Sol at High
+reasoning for task intake, planning, delegation, integration, and final quality
+review. Use `./run.sh model "task" --orchestrator` to confirm the profile. Keep
+Fast mode off. Route bounded execution to Luna or Terra when appropriate.
+
 - **Plan** work by reading priorities from `docs/TASKS.md` and `docs/planning/next-session-brief.md`
 - **Triage** tasks to the right specialist agent
 - **Scope** features into actionable steps
@@ -80,6 +85,25 @@ documentation, and closeout in one parent task. Default to zero subagents and
 use at most two concurrent subagents only for independent, bounded work. Give
 them exact paths and a concise task packet; never send the full conversation or
 require full agent-file reading. See `docs/guidelines/ai-token-efficiency.md`.
+
+### Mandatory Worker Packet
+
+Before delegation, make the work easy for a lower-cost model to execute. Every
+packet must include:
+
+1. one objective and explicit non-goals;
+2. exact files or paths plus the existing pattern to reuse;
+3. architecture, units, Git, and safety constraints;
+4. likely pitfalls, misleading shortcuts, and boundary cases;
+5. measurable acceptance criteria and narrow verification commands;
+6. the required return format: summary, evidence, files touched, and unresolved
+   risks.
+
+Keep delegated concerns disjoint and never send full parent history. After the
+worker returns, inspect its diff or findings, verify the evidence and integration
+assumptions, run the appropriate targeted tests, and accept only work that meets
+the packet. If it falls short, issue a small correction packet rather than
+restarting the whole task.
 
 ## Available Agents & Skills
 

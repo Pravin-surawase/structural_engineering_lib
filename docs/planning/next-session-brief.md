@@ -15,7 +15,7 @@
 1. Obtain explicit approval before applying the two focused PR #676 CI fixes: replace three empty template links and pin Ruff 0.15.8 consistently instead of accepting unbounded 0.16.1 drift.
 2. Re-run only the affected link/lint checks, push through `ai_commit.sh`, and monitor PR #676 required checks. Do not merge or release without explicit user approval.
 3. Preserve the recovered Mac baseline: GitHub API/SSH pass, Colima/Docker are healthy with the transferred disk intact, and Docker release preflight is green.
-4. Use `./run.sh model "task"` before new bounded work. Default to Terra/medium for the parent, Luna/low for bounded subagents, Fast off, zero subagents by default, and at most two focused subagents.
+4. Run the main orchestrator on Sol High for intake, planning, delegation, integration, and final review. Give Luna/Terra workers compact packets with exact scope, non-goals, pitfalls, acceptance criteria, tests, and return format; verify their work before acceptance.
 5. Treat 17.74% React statement coverage, one hook lint warning, and one RSC-only advisory as recorded risks—not reasons to reopen completed maintenance without a focused task.
 
 Full evidence and accepted risks are in

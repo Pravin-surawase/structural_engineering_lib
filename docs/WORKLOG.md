@@ -320,3 +320,4 @@ tags: []
 | 2026-08-07 | MAINT-001 | Recovered the preserved Colima VZ disk non-destructively, verified GitHub CLI/SSH, hardened Docker preflight, and opened PR #676 | 3da587aa |
 | 2026-08-07 | MAINT-006 | Enforced Terra-first low-token defaults, Fast-off mode, a two-subagent cap, focused context packets, and a canonical efficiency check | 6e8e4a31 |
 | 2026-08-07 | MAINT-006 | Added authenticated-analytics-calibrated Luna/Terra/Sol routing, reasoning comparisons, and the advisory `run.sh model` picker | fe55d130 |
+| 2026-08-07 | MAINT-006 | Made Sol High mandatory for main orchestration and added lower-model task-packet and independent-verification requirements | pending-commit |

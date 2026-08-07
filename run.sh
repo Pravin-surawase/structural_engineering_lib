@@ -785,6 +785,8 @@ Options:
   --risk auto|low|normal|high|critical
   --repeatable
   --ambiguous
+  --important
+  --orchestrator
   --json
 EOF
 }

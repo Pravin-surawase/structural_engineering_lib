@@ -15,13 +15,15 @@ engineering, test, or Git safety gates.
 
 1. Keep one parent task active for this project. Finish, pause, or stop it
    before starting a separate parent task.
-2. Use GPT-5.6 Terra at medium reasoning for normal implementation, testing,
-   documentation, and review.
+2. The main orchestrator uses GPT-5.6 Sol High for task intake, planning,
+   delegation, integration, and final quality review. It shapes work so cheaper
+   worker profiles can execute safely.
 3. Use Luna, when the active client exposes it, for simple searches, status
-   checks, extraction, formatting, and small mechanical edits.
-4. Use Sol only after user approval for genuinely difficult architecture,
-   conflicting safety constraints, structural-math risk, or a final high-risk
-   review.
+   checks, extraction, formatting, and small mechanical edits. Use Terra for
+   normal implementation, testing, documentation, and focused worker review.
+4. Sol High also has standing approval for genuinely important or complicated
+   execution work. Sol Medium, Extra High, Max, and Ultra still require
+   case-specific approval.
 5. Keep Fast mode off. Enable it only when the user explicitly chooses speed
    over credit efficiency for a time-sensitive task.
 
@@ -44,10 +46,11 @@ that reliably completes the work.
 | Terra Medium | Normal implementation and maintenance | Architecture, safety, or multiple systems interact |
 | Terra High | Cross-layer debugging, architecture, security, release, IS 456 | A concrete unresolved quality gap justifies Sol |
 | Terra Extra High | Rare, critical but bounded work | Sol may materially improve a high-value decision |
-| Sol Medium/High/Extra High | Approved difficult architecture, root cause, or final high-risk review | Never automatic; obtain user approval first |
+| Sol High | Main orchestration; important, complicated, or high-stakes execution | Decompose bounded execution for Luna/Terra when practical |
+| Sol Medium/Extra High | Exceptional alternate Sol profiles | Obtain case-specific user approval |
 
 Max is a quality-first single-agent mode. Ultra may create subagents. Both are
-outside the routine project profiles and require explicit approval. Fast mode
+outside the routine project profiles and require case-specific approval. Fast mode
 uses 2.5x the standard credits for currently documented GPT-5.6/5.5 models.
 
 ## Task-Aware Picker
@@ -58,12 +61,33 @@ Use the deterministic picker before selecting a model for a new bounded task:
 ./run.sh model --table
 ./run.sh model "fix the known FastAPI validation error"
 ./run.sh model "verify the release calculation" --risk critical
+./run.sh model "plan the next architecture milestone" --important
+./run.sh model "start and delegate the maintenance task" --orchestrator
 ```
 
 The policy is stored in [`agents/model_policy.json`](../../agents/model_policy.json).
-The picker is advisory: it does not silently switch the running task, and Sol
-recommendations remain approval-gated. Apply the recommendation with `/model`
-in Codex desktop. Use a fresh task when changing to a genuinely different issue.
+The picker is advisory and does not silently switch the running task. It may
+recommend standing-approved Sol High for in-scope work; every other Sol profile
+remains approval-gated. Apply the recommendation with `/model` in Codex desktop.
+Use a fresh task when changing to a genuinely different issue.
+
+## Orchestrator Contract
+
+The Sol High orchestrator owns decomposition and acceptance, not just routing.
+Before handing work to Luna or Terra, it provides a compact task packet with:
+
+- one objective and explicit non-goals;
+- exact files/paths and existing patterns to reuse;
+- constraints, architecture/units/Git rules, and likely pitfalls;
+- measurable acceptance criteria and the narrow test commands;
+- expected return format: findings or changes, evidence, unresolved risks, and
+  files touched.
+
+The orchestrator keeps disjoint workstreams, avoids overlapping writes, and
+does not pass full conversation history. After each handoff it reviews the diff
+or findings, checks the requested evidence, tests integration assumptions, and
+either accepts the result or returns a precise correction packet. It never
+equates a subagent's confident report with verified completion.
 
 Project-local defaults live in [`.codex/config.toml`](../../.codex/config.toml).
 An explicit model choice by the user still takes precedence.
@@ -142,12 +166,14 @@ IS 456 quality gate.
 ```text
 Work in low-token mode.
 
-Use one parent task. Default to Terra at medium reasoning and keep Fast mode
-off. Do not use Sol without asking me first. Default to no subagents; use no
-more than two only for independent, bounded work. Give them a concise task
-packet and no full conversation history. Inspect only affected indexes and
-files. Use targeted tests while developing and run the full gate once at
-closeout. Close subagents immediately, report the result, and stop.
+Use one Sol High main orchestrator for intake, planning, delegation, integration,
+and final review. Keep Fast mode off. Use Luna for clear repetitive work and
+Terra for normal implementation. Ask before using Sol profiles other than Sol
+High. Default to no subagents; use no more than two only for independent,
+bounded work. Give each a concise packet with objective, exact files, non-goals,
+pitfalls, acceptance criteria, tests, and return format—never full conversation
+history. Verify every result before accepting it. Run targeted tests during
+development and the full gate once at closeout. Close subagents and stop when done.
 ```
 
 ## Official References

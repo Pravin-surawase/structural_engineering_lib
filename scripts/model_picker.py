@@ -73,6 +73,8 @@ COMPLEX = {
     "root-cause",
     "unknown",
 }
+PLANNING = {"brainstorm", "plan", "planning", "roadmap", "strategy"}
+IMPORTANT = {"complicated", "critical", "high-value", "important"}
 HIGH_RISK = {
     "authorization",
     "capacity",
@@ -123,6 +125,8 @@ def recommend(
     risk: str = "auto",
     repeatable: bool = False,
     ambiguous: bool = False,
+    important: bool = False,
+    orchestrator: bool = False,
 ) -> ModelRecommendation:
     policy = _load_policy()
     tokens = _tokens(query)
@@ -132,13 +136,32 @@ def recommend(
     is_repetitive = repeatable or bool(tokens & REPETITIVE)
     is_bounded = bool(tokens & BOUNDED)
     is_implementation = bool(tokens & IMPLEMENTATION)
+    is_planning = bool(tokens & PLANNING)
+    is_important = important or bool(tokens & IMPORTANT)
 
-    if risk == "critical":
-        selected, fallback = "terra-xhigh", "sol-high"
-        rationale = "Critical risk: use the strongest non-Sol profile, with approved Sol escalation."
+    if orchestrator:
+        selected, fallback = "sol-high", "sol-xhigh"
+        rationale = (
+            "The main orchestrator always uses Sol High for intake, planning, "
+            "delegation, integration, and final quality review."
+        )
+    elif risk == "critical" or is_important or ambiguous:
+        selected, fallback = "sol-high", "sol-xhigh"
+        rationale = (
+            "Important or explicitly complicated work is covered by the standing "
+            "Sol High authorization; higher Sol profiles still need approval."
+        )
+    elif is_planning and not is_bounded and not is_repetitive:
+        selected, fallback = "sol-high", "sol-xhigh"
+        rationale = (
+            "Substantial planning is covered by the standing Sol High authorization."
+        )
     elif is_high_risk or is_complex:
-        selected, fallback = "terra-high", "sol-medium"
-        rationale = "High risk or ambiguity needs stronger planning and verification before Sol escalation."
+        selected, fallback = "terra-high", "sol-high"
+        rationale = (
+            "Start complex or high-risk implementation on Terra High; Sol High is "
+            "pre-authorized if a concrete quality gap remains."
+        )
     elif is_repetitive and not is_implementation:
         selected, fallback = "luna-low", "luna-medium"
         rationale = (
@@ -188,6 +211,11 @@ def _print_recommendation(result: ModelRecommendation, query: str) -> None:
     print(f"  Reasoning: {result.reasoning_effort}")
     print(f"  Relative per-token rate: {result.relative_token_rate}x Luna")
     print(f"  Approval required: {'yes' if result.approval_required else 'no'}")
+    if result.profile == "sol-high":
+        print(
+            "  Authorization: standing approval for main orchestration and "
+            "important/complicated work"
+        )
     print(f"  Fallback: {result.fallback_profile}")
     if result.fallback_requires_approval:
         print("  Fallback approval: required")
@@ -227,6 +255,12 @@ def main() -> int:
     )
     parser.add_argument("--repeatable", action="store_true")
     parser.add_argument("--ambiguous", action="store_true")
+    parser.add_argument("--important", action="store_true")
+    parser.add_argument(
+        "--orchestrator",
+        action="store_true",
+        help="apply the standing Sol High main-orchestrator policy",
+    )
     parser.add_argument(
         "--table", action="store_true", help="compare all supported profiles"
     )
@@ -248,6 +282,8 @@ def main() -> int:
         risk=args.risk,
         repeatable=args.repeatable,
         ambiguous=args.ambiguous,
+        important=args.important,
+        orchestrator=args.orchestrator,
     )
     if args.json:
         print(json.dumps(asdict(result), indent=2))

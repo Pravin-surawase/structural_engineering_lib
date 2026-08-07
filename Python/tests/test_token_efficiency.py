@@ -14,8 +14,8 @@ def test_project_codex_defaults_are_low_token() -> None:
     with (REPO_ROOT / ".codex" / "config.toml").open("rb") as handle:
         config = tomllib.load(handle)
 
-    assert config["model"] == "gpt-5.6-terra"
-    assert config["model_reasoning_effort"] == "medium"
+    assert config["model"] == "gpt-5.6-sol"
+    assert config["model_reasoning_effort"] == "high"
     assert config["model_verbosity"] == "low"
     assert config["agents"]["max_concurrent_threads_per_session"] == 2
     assert config["agents"]["default_subagent_model"] == "gpt-5.6-luna"
@@ -55,8 +55,10 @@ def test_low_token_prompt_is_bounded_and_actionable() -> None:
 
     prompt = " ".join(result.stdout.split())
     assert "no more than two" in prompt
-    assert "no full conversation history" in prompt
-    assert "Do not use Sol without asking" in prompt
+    assert "never full conversation history" in prompt
+    assert "Sol High main orchestrator" in prompt
+    assert "Ask before using Sol profiles other than Sol High" in prompt
+    assert "pitfalls, acceptance criteria, tests, and return format" in prompt
     assert len(result.stdout.splitlines()) <= 12
 
 

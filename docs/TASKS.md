@@ -26,7 +26,7 @@
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
-| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | Terra parent/Luna subagent defaults, task-aware model picker, two-subagent cap, focused-context rules, and quick-gate policy check pass |
+| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | Sol High main orchestrator, Luna/Terra workers, mandatory delegation packets and verification, two-subagent cap, task-aware picker, and quick-gate check pass |
 
 ### Maintenance evidence captured 2026-08-07
 

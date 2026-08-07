@@ -3,7 +3,7 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-07
 **Files:** 24
 
 ## Documentation Files
@@ -12,7 +12,7 @@ Guides for developers and maintainers of the structural engineering library.
 |------|-------|-------------|-------|
 | [README.md](README.md) | Contributing | Guides for developers and maintainers of the structural engi | 100 |
 | [agent-coding-standards.md](agent-coding-standards.md) |  | This guide ensures AI agents write code that is: - ✅ Compati | 753 |
-| [agent-collaboration-framework.md](agent-collaboration-framework.md) |  | This project uses **agent-driven maintenance** where special | 675 |
+| [agent-collaboration-framework.md](agent-collaboration-framework.md) |  | This project uses **agent-assisted maintenance** where speci | 687 |
 | [agent-onboarding-message.md](agent-onboarding-message.md) |  | > **Copy-paste this exact message to any new agent starting  | 54 |
 | [background-agent-guide.md](background-agent-guide.md) |  | - **Background AI Agents:** Other AI assistant instances (Cl | 594 |
 | [changelog-deprecation-template.md](changelog-deprecation-template.md) |  | This template guides you when adding deprecation entries to  | 186 |

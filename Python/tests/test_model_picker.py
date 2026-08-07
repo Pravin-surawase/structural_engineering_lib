@@ -32,13 +32,38 @@ def test_model_picker_routes_task_shape(query: str, profile: str) -> None:
     assert picker.recommend(query).profile == profile
 
 
-def test_critical_work_stops_before_sol_without_approval() -> None:
+def test_critical_work_uses_standing_sol_high_approval() -> None:
     result = picker.recommend("production structural release", risk="critical")
 
-    assert result.profile == "terra-xhigh"
+    assert result.profile == "sol-high"
     assert result.approval_required is False
-    assert result.fallback_profile == "sol-high"
+    assert result.fallback_profile == "sol-xhigh"
     assert result.fallback_requires_approval is True
+
+
+@pytest.mark.parametrize(
+    "query",
+    [
+        "plan the next important architecture milestone",
+        "brainstorm a complicated migration strategy",
+    ],
+)
+def test_substantial_planning_uses_standing_sol_high_approval(query: str) -> None:
+    result = picker.recommend(query)
+
+    assert result.profile == "sol-high"
+    assert result.approval_required is False
+
+
+def test_mechanical_planning_doc_update_stays_on_luna() -> None:
+    assert picker.recommend("format the planning docs").profile == "luna-low"
+
+
+def test_main_orchestrator_always_uses_sol_high() -> None:
+    result = picker.recommend("format a simple status note", orchestrator=True)
+
+    assert result.profile == "sol-high"
+    assert result.approval_required is False
 
 
 def test_low_risk_override_prefers_luna() -> None:
@@ -57,4 +82,5 @@ def test_model_policy_profiles_are_unique_and_complete() -> None:
 
     assert len(ids) == len(profiles)
     assert {"luna-high", "luna-xhigh", "terra-high", "sol-medium", "sol-high"} <= ids
+    assert policy["defaults"]["parent_profile"] == "sol-high"
     assert policy["defaults"]["max_concurrent_subagents"] == 2

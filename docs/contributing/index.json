@@ -2,7 +2,7 @@
   "folder": "docs/contributing",
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-07",
   "file_count": 24,
   "files": [
     {
@@ -25,10 +25,10 @@
     {
       "name": "agent-collaboration-framework.md",
       "type": "documentation",
-      "size_lines": 675,
-      "last_updated": "2026-03-30",
-      "description": "This project uses **agent-driven maintenance** where specialized AI agents (researcher, tester, devops, pm, dev) work in parallel on isolated tasks. This framework defines roles, workflows, and coordi",
-      "content_hash": "aa9d2fc7d71e"
+      "size_lines": 687,
+      "last_updated": "2026-08-07",
+      "description": "This project uses **agent-assisted maintenance** where specialist names describe quality roles. One parent task owns the outcome. It may use up to **2 concurrent",
+      "content_hash": "e91cb2d1027f"
     },
     {
       "name": "agent-onboarding-message.md",
@@ -200,5 +200,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "b74b5456c9639624"
+  "content_hash": "69423c9a40f052c1"
 }

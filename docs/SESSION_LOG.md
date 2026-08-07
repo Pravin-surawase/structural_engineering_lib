@@ -60,6 +60,7 @@
 - The authenticated one-month analytics view reported 1,858 turns: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older-model turns. The last seven days contained 632 turns, including 105 Sol versus only 32 Luna and 15 Terra. This supports Luna-first repeatable work and Terra-first implementation.
 - `agents/model_policy.json`, `scripts/model_picker.py`, and `./run.sh model` now compare Luna/Terra/Sol reasoning profiles, state equal-token relative rates, recommend the cheapest credible start, and retain explicit approval for Sol.
 - Model-routing checkpoint `fe55d130` is pushed. Thirteen focused tests and Ruff pass; the full gate passed all 22 non-doc checks, then the two introduced doc/index findings were corrected and the Docs category passed 7/7.
+- The owner made Sol High mandatory for the main orchestrator's intake, planning, delegation, integration, and final review. Luna/Terra remain execution workers. The orchestrator must provide exact scope, non-goals, pitfalls, acceptance criteria, tests, and return format, then independently verify returned work.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
