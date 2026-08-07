@@ -2,8 +2,8 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-04-07",
-  "file_count": 8,
+  "last_updated": "2026-08-07",
+  "file_count": 10,
   "files": [
     {
       "name": "README.md",
@@ -18,9 +18,26 @@
       "name": "democratization-vision.md",
       "type": "documentation",
       "size_lines": 273,
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-04-07",
       "description": "> **\"What was not possible few years back, or only possible for big firms — now everyone can use them free.\"** This project is not just about building a structural engineering library. It's about **de",
-      "content_hash": "cb9c1a9c3ed0"
+      "content_hash": "248d22c61e51"
+    },
+    {
+      "name": "dependency-security-baseline.md",
+      "type": "documentation",
+      "size_lines": 69,
+      "last_updated": "2026-08-07",
+      "description": "This record makes MAINT-003 reproducible. It separates confirmed vulnerabilities from transferred-environment residue and records every temporary exception.",
+      "content_hash": "4cf44e4dbfef"
+    },
+    {
+      "name": "etabs-killer-masterplan.md",
+      "type": "documentation",
+      "size_lines": 2855,
+      "last_updated": "2026-08-07",
+      "title": "Project BHEEM: Open-Source Structural Design Software Masterplan",
+      "description": "> **BHEEM** — **B**uilding **H**olistic **E**ngineering **E**nvironment with **M**achine-intelligence > An open-source, AI-native structural design platform that aims to surpass ETABS in usability, tr",
+      "content_hash": "88e3dfd24f78"
     },
     {
       "name": "library-expansion-blueprint-v5.md",
@@ -34,10 +51,10 @@
     {
       "name": "memory.md",
       "type": "documentation",
-      "size_lines": 285,
-      "last_updated": "2026-03-30",
-      "description": "- **v0.15.0** released (2026-01-07) - Focus: Code Quality Excellence",
-      "content_hash": "d9920fbc9294"
+      "size_lines": 350,
+      "last_updated": "2026-08-07",
+      "description": "- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer. - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.",
+      "content_hash": "8eb7a5bab91b"
     },
     {
       "name": "next-phase-improvements-plan.md",
@@ -50,20 +67,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 47,
-      "last_updated": "2026-04-07",
-      "title": "Next Session Brief",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-04-06",
-      "content_hash": "1339dcf324f0"
+      "size_lines": 126,
+      "last_updated": "2026-08-07",
+      "title": "Next Session Briefing",
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-07",
+      "content_hash": "2e28dec3c097"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 43,
-      "last_updated": "2026-04-06",
+      "size_lines": 44,
+      "last_updated": "2026-04-07",
       "title": "Pre-Release Checklist",
-      "description": "- **Version:** 0.21.5 - **Branch:** main",
-      "content_hash": "cec4da723326"
+      "description": "Version: 0.21.6 - **Branch:** main",
+      "content_hash": "a392f9f05b24"
     },
     {
       "name": "react-ux-improvement-plan.md",
@@ -75,5 +92,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "1984fac9409c6437"
+  "content_hash": "893afe2006b03792"
 }

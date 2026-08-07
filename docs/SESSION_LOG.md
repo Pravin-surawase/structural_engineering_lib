@@ -24,6 +24,10 @@
 - MAINT-001 remains externally blocked only on GitHub CLI browser authorization
   and a macOS restart before retrying the preserved Colima VM.
 
+**Completed:**
+- MAINT-002, MAINT-003, MAINT-004, and MAINT-005 with evidence recorded below.
+- v0.21.7 release preflight and isolated-wheel UAT; release intentionally not executed.
+
 ### PRs Merged
 | PR | Summary |
 |----|---------|
