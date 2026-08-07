@@ -5,6 +5,7 @@ All bump operations use --dry-run to remain non-destructive.
 """
 
 import hashlib
+import importlib
 import subprocess
 import sys
 from pathlib import Path
@@ -14,9 +15,12 @@ import pytest
 pytestmark = pytest.mark.repo_only
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 PYTHON = sys.executable  # Use current Python interpreter
 BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 RELEASE_SCRIPT = REPO_ROOT / "scripts" / "release.py"
+release = importlib.import_module("scripts.release")
 
 # Files that bump_version.py would modify — snapshot checksums to detect changes
 VERSION_TRACKED_FILES = [
@@ -240,6 +244,46 @@ class TestReleaseVerifyDependencies:
 
 class TestReleasePreflight:
     """Tests for the preflight subcommand."""
+
+    def test_docker_preflight_uses_project_node_major(self):
+        compose = (REPO_ROOT / "docker-compose.preflight.yml").read_text(
+            encoding="utf-8"
+        )
+        node_major = (REPO_ROOT / ".nvmrc").read_text(encoding="utf-8").strip()
+        assert f"image: node:{node_major}-alpine" in compose
+
+    def test_docker_preflight_mounts_repo_only_test_inputs(self):
+        compose = (REPO_ROOT / "docker-compose.preflight.yml").read_text(
+            encoding="utf-8"
+        )
+        for mount in (
+            "./scripts:/app/scripts:ro",
+            "./agents:/app/agents:ro",
+            "./.github/agents:/app/.github/agents:ro",
+            "./react_app/package.json:/app/react_app/package.json:ro",
+            "./CITATION.cff:/app/CITATION.cff:ro",
+        ):
+            assert mount in compose
+        assert '"-m", "not slow"' in compose
+        assert '"-p", "no:cacheprovider"' in compose
+
+    def test_fastapi_image_retries_slow_dependency_downloads(self):
+        dockerfile = (REPO_ROOT / "Dockerfile.fastapi").read_text(encoding="utf-8")
+        assert "PIP_DEFAULT_TIMEOUT=120" in dockerfile
+        assert "PIP_RETRIES=5" in dockerfile
+        assert "--timeout 120 --retries 5" in dockerfile
+
+    def test_failure_tail_reports_bounded_diagnostics(self, capsys):
+        result = subprocess.CompletedProcess(
+            ["docker", "compose"], 1, "x" * 5000, "final-error"
+        )
+
+        release._print_failure_tail(result, max_chars=100)
+
+        output = capsys.readouterr().out
+        assert "Last command output" in output
+        assert "final-error" in output
+        assert len(output) < 200
 
     @pytest.mark.slow
     def test_preflight_runs(self):

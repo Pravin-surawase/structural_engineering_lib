@@ -94,6 +94,18 @@ def _run_with_timeout(
         raise
 
 
+def _print_failure_tail(
+    result: subprocess.CompletedProcess, *, max_chars: int = 4000
+) -> None:
+    """Print useful subprocess diagnostics without flooding preflight output."""
+    parts = [part.strip() for part in (result.stdout, result.stderr) if part.strip()]
+    if not parts:
+        return
+    print("  ↳ Last command output:")
+    for line in "\n".join(parts)[-max_chars:].splitlines():
+        print(f"    {line}")
+
+
 def _available_ram_gb() -> float | None:
     """Return reclaimable memory, not only immediately free pages."""
     try:
@@ -780,6 +792,7 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             )
             if test_result.returncode != 0:
                 print("  ✗ Tests FAILED (in Docker)")
+                _print_failure_tail(test_result)
                 errors += 1
             else:
                 print("  ✓ Tests passed (in Docker)")
@@ -808,6 +821,7 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             )
             if react_result.returncode != 0:
                 print("  ✗ Build FAILED (in Docker)")
+                _print_failure_tail(react_result)
                 errors += 1
             else:
                 print("  ✓ Build succeeds (in Docker)")
