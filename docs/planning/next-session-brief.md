@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
-- Focus: Close the two approved PR #676 CI failures, then finish maintenance documentation and request the v0.21.7 release decision
+- Focus: Obtain approval for the two focused PR #676 CI fixes, validate required checks, and request the v0.21.7 release decision
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-07
@@ -33,10 +33,11 @@ Full evidence and accepted risks are in
 - Docker preflight passes 5,158 Python tests, 8 skips, 6 deselections, plus the Node 24 React production build.
 - Low-token policy checkpoint `6e8e4a31` adds project Codex defaults, a two-subagent cap, focused handoffs, `./run.sh efficiency`, and a 9/9 quick gate.
 - The analytics-calibrated model picker is in `agents/model_policy.json` and `./run.sh model`; it recommends Luna-first for repeatable work and never auto-selects approval-gated Sol.
+- Model-routing checkpoint `fe55d130` is pushed on PR #676. Focused Ruff/tests pass; the full gate's 22 non-doc checks passed and the corrected Docs category passes 7/7.
 - Current gate: PR #676 has two diagnosed CI failures awaiting approval—three empty template links and Ruff 0.16.1 dependency drift. React coverage remains an accepted follow-up risk.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
-- Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.
+- Quick canonical gate: 9/9 green; all 3,248 scanned imports resolve.
 - MAINT-003: clean Python lock audits at zero known vulnerabilities; npm has one narrowly allowlisted RSC-only advisory.
 - MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, completed active plans archived, and feedback is 22/23 resolved.
 - MAINT-005 checkpoint `6f119132`: 60/60 direct FastAPI route tests, 13/13 API-connected React hooks, and 96% actionable parity.
@@ -54,6 +55,7 @@ Full evidence and accepted risks are in
 | 3 | MAINT-003 environment/security | Reproducible Mac Mini baseline and deliberate dependency upgrades |
 | 4 | MAINT-004 canonical automation/docs | One trustworthy project status signal |
 | 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
+| 6 | MAINT-006 token/model policy | Analytics-calibrated low-token routing with enforced safety limits |
 
 ## Previous Handoff (2026-04-07)
 

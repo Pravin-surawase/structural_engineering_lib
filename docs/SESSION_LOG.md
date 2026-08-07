@@ -15,17 +15,16 @@
 - Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.
 - Completed a repository, migration, architecture, test, packaging, CI,
   security, documentation, agent-infrastructure, and live-browser audit.
-- Preserved inherited work in `b28ee4e3` and completed the maintenance series
-  through `f9696cf9`, covering the runtime, nightly checks, dependency/security
-  baseline, canonical governance, live UI/API contracts, release tooling, and
-  session automation.
+- Preserved inherited work in `b28ee4e3` and completed 19 maintenance commits
+  through `fe55d130`, touching 222 files across recovery and stabilization.
 - Completed MAINT-002 through MAINT-006. The repository/product maintenance,
-  Mac control plane, and Docker preflight are green; no release was executed.
+  Mac control plane, Docker preflight, and low-token model policy are green; no
+  release was executed.
 - MAINT-001 now remains open only for the two diagnosed PR #676 CI failures and
   final required-check validation.
 
 **Completed:**
-- MAINT-002, MAINT-003, MAINT-004, and MAINT-005 with evidence recorded below.
+- MAINT-002, MAINT-003, MAINT-004, MAINT-005, and MAINT-006 with evidence below.
 - v0.21.7 release preflight and isolated-wheel UAT; release intentionally not executed.
 
 ### PRs Merged
@@ -60,6 +59,7 @@
 - MAINT-006 adds `.codex/config.toml`, the canonical token-efficiency guide, a maximum of two subagents, focused no-history task packets, `./run.sh efficiency`, regression tests, and enforcement in the 9/9 quick gate.
 - The authenticated one-month analytics view reported 1,858 turns: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older-model turns. The last seven days contained 632 turns, including 105 Sol versus only 32 Luna and 15 Terra. This supports Luna-first repeatable work and Terra-first implementation.
 - `agents/model_policy.json`, `scripts/model_picker.py`, and `./run.sh model` now compare Luna/Terra/Sol reasoning profiles, state equal-token relative rates, recommend the cheapest credible start, and retain explicit approval for Sol.
+- Model-routing checkpoint `fe55d130` is pushed. Thirteen focused tests and Ruff pass; the full gate passed all 22 non-doc checks, then the two introduced doc/index findings were corrected and the Docs category passed 7/7.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
