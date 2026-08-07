@@ -31,7 +31,7 @@
 
 - Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
-- Final release preflight: 5,156 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.
+- Final release preflight: 5,159 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.
 - Repository release gates are green. Remaining blockers are external: renew GitHub CLI authorization and restart macOS before retrying the preserved Colima VM. React's 17.74% statement coverage is an accepted stabilization risk, not an unreported pass.
 - Canonical validation is 28/28 checks, 22/22 audit readiness, 100/100 health, and 96% parity. Feedback is 22/23 resolved; only the existing tester-output recurrence watch remains open.
 - MAINT-005 checkpoint `6f119132`: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.
@@ -46,7 +46,7 @@
 - Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
 - MAINT-001 blockers: GitHub device authorization expired before approval; Colima's transferred VZ disk remains marked in use even after orphan-process cleanup. Restart macOS before another start attempt; do not delete the VM disk without a backup/approval.
 - MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
-- MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,156 Python, 336 FastAPI, and 146 React tests.
+- MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,159 Python, 336 FastAPI, and 146 React tests.
 
 ---
 

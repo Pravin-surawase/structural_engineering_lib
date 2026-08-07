@@ -36,7 +36,7 @@ tags: []
 ### Product and Engineering Baseline
 
 - **Published:** v0.21.6 on PyPI; post-tag repository commits are documentation-only.
-- **Python:** final preflight passes 5,156 tests (3 skipped, 6 deselected); core IS 456 calculation modules are generally 89–100% covered.
+- **Python:** final preflight passes 5,159 tests (3 skipped, 6 deselected); core IS 456 calculation modules are generally 89–100% covered.
 - **FastAPI:** 336 tests pass; 60 endpoints across 13 routers; response contract is `{success, data}`.
 - **React:** 146 tests and production build pass; statement coverage is only 17.74%, but the critical live workstation flow is browser-verified through exports.
 - **Package:** a fresh built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) and the packaged job → critical-case → HTML-report CLI workflow.
@@ -67,7 +67,7 @@ tags: []
 - Maintained import E2E scripts understand the standard response envelope and pass 18/18 against a live API with all 153 sample beams.
 - Import validation excludes archives, recognizes optional `xlwings`, and resolves all scanned imports; quick gate is 8/8.
 - Colima's transferred VZ disk remains marked in use despite process cleanup. Preserve the disk; restart macOS before retrying, and require backup/approval before VM recreation.
-- Root requirements now declare the previously implicit `pytest-asyncio` plugin and patched security floors. The final preflight passes 5,156 tests (3 skipped, 6 deselected) and all 336 FastAPI tests.
+- Root requirements now declare the previously implicit `pytest-asyncio` plugin and patched security floors. The final preflight passes 5,159 tests (3 skipped, 6 deselected) and all 336 FastAPI tests.
 - The Python lock excludes editable/local Git references and retired `python-jose` residue; pip-audit reports zero known vulnerabilities across 147 installed dependencies.
 - npm audit is reduced from 13 findings to one underlying React Router RSC-only advisory. Its exact scope, rationale, CI allowlist, and removal condition are recorded in `dependency-security-baseline.md`.
 - MAINT-004 is complete: API manifest, schema snapshot, script indexes, bootstrap counts, hooks, import scanner, health scanner, audit scanner, and parity scanner now agree.

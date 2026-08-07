@@ -33,7 +33,7 @@ objects, symlinks, and migration records relevant to the current architecture.
 |---------|----------|
 | Git and transfer | Reachable objects valid; local/remote `main` both `fa854e0f`; ETABS samples present; no broken symlinks or submodules |
 | Python package | Editable source/module metadata agree at v0.21.6; clean Python 3.11 install works |
-| Core tests | Release preflight: 5,156 passed, 3 skipped, 6 deselected; isolated wheel: 5,120 passed, 41 skipped, 6 deselected |
+| Core tests | Release preflight: 5,159 passed, 3 skipped, 6 deselected; isolated wheel: 5,120 passed, 41 skipped, 6 deselected |
 | FastAPI | 336 tests pass; 60 routes across 13 routers |
 | React | 146 tests pass; lint has one pre-existing hook warning; production build passes on Node 24 |
 | Live data flow | 18/18 import E2E checks and 153/153 sample beams pass |

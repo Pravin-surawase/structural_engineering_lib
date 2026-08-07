@@ -26,7 +26,7 @@ Full evidence and accepted risks are in
 - Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
 - Local/remote `main`: `fa854e0f`; published package: v0.21.6.
 - Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
-- Passing baselines: release preflight 5,156 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
+- Passing baselines: release preflight 5,159 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
 - Clean-wheel UAT: 5,120 passed, 41 skipped, 6 deselected plus packaged job, critical-case CSV, and HTML-report CLI workflows.
 - Current external gates: GitHub CLI authorization and the transferred Colima VM state. React coverage is an accepted, documented follow-up risk.
 - Local environment: Python 3.11 ARM64 editable install is repaired at v0.21.6; Node 24.19.0 is installed keg-only and React passes on it; Colima VZ requires a Mac restart; GitHub CLI authentication must be renewed.

@@ -37,7 +37,7 @@
 - `.nvmrc`, `.python-version`, React engines, lock metadata, CI runtime, and Mac Mini setup guide aligned.
 - Nightly link checker now invokes a supported command; 1,056 internal links validate.
 - Live API verifies all 153 ETABS sample beams and all import/design/3D payload contracts.
-- Clean Python 3.11 dependency graph: 147 packages, zero known vulnerabilities, no broken requirements; final preflight passes 5,156 tests (3 skipped, 6 deselected), and 336 FastAPI tests pass.
+- Clean Python 3.11 dependency graph: 147 packages, zero known vulnerabilities, no broken requirements; final preflight passes 5,159 tests (3 skipped, 6 deselected), and 336 FastAPI tests pass.
 - npm dependency graph reduced from 13 findings to one RSC-only React Router advisory; the browser-only applicability decision and strict exception are recorded in `docs/planning/dependency-security-baseline.md`.
 - Full canonical check passes 28/28; audit readiness passes 22/22; health is 100/100.
 - Parity reports 15/17 curated IS 456 areas implemented, 52/60 FastAPI routes directly tested, and 13/13 API-connected React hooks; intentional Python-only exports are informational rather than defects.
