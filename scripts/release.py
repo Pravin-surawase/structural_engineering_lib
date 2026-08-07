@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import shutil
 import signal
 import subprocess
 import sys
@@ -93,19 +94,40 @@ def _run_with_timeout(
         raise
 
 
-def _check_available_ram(min_gb: float = 2.0) -> bool:
-    """Check if enough RAM is available for heavy operations."""
+def _available_ram_gb() -> float | None:
+    """Return reclaimable memory, not only immediately free pages."""
     try:
+        pressure = subprocess.run(
+            ["memory_pressure", "-Q"], capture_output=True, text=True, timeout=5
+        )
+        total = subprocess.run(
+            ["sysctl", "-n", "hw.memsize"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        match = re.search(
+            r"System-wide memory free percentage:\s*(\d+)%", pressure.stdout
+        )
+        if pressure.returncode == 0 and total.returncode == 0 and match:
+            return int(total.stdout.strip()) * int(match.group(1)) / 100 / (1024**3)
+
+        # Fallback for macOS versions without ``memory_pressure -Q``. Inactive
+        # and purgeable pages are reclaimable and must not be treated as used.
         result = subprocess.run(["vm_stat"], capture_output=True, text=True, timeout=5)
         if result.returncode == 0:
-            lines = result.stdout.splitlines()
-            free_pages = 0
-            for line in lines:
-                if "Pages free" in line or "Pages speculative" in line:
+            available_pages = 0
+            reclaimable = (
+                "Pages free",
+                "Pages inactive",
+                "Pages speculative",
+                "Pages purgeable",
+            )
+            for line in result.stdout.splitlines():
+                if any(label in line for label in reclaimable):
                     parts = line.split(":")
                     if len(parts) == 2:
-                        free_pages += int(parts[1].strip().rstrip("."))
-            # macOS page size is 16384 on ARM, 4096 on Intel
+                        available_pages += int(parts[1].strip().rstrip("."))
             page_size_result = subprocess.run(
                 ["sysctl", "-n", "hw.pagesize"],
                 capture_output=True,
@@ -117,20 +139,99 @@ def _check_available_ram(min_gb: float = 2.0) -> bool:
                 if page_size_result.returncode == 0
                 else 16384
             )
-            available_gb = (free_pages * page_size) / (1024**3)
-            if available_gb < min_gb:
-                print(
-                    f"  ⚠ Low RAM: {available_gb:.1f}GB available (recommend {min_gb}GB)"
-                )
-                print(
-                    "    Close other apps or use: ./run.sh release preflight --docker"
-                )
-                return False
-            print(f"  ✓ Available RAM: {available_gb:.1f}GB")
-            return True
-    except Exception:
-        pass
-    return True  # Can't check, proceed optimistically
+            return (available_pages * page_size) / (1024**3)
+    except (subprocess.TimeoutExpired, FileNotFoundError, ValueError, OSError):
+        return None
+
+    return None
+
+
+def _check_available_ram(min_gb: float = 2.0) -> bool:
+    """Check if enough reclaimable RAM is available for heavy operations."""
+    available_gb = _available_ram_gb()
+    if available_gb is None:
+        print("  ⚠ Could not determine available RAM — continuing")
+        return True
+    if available_gb < min_gb:
+        print(f"  ⚠ Low RAM: {available_gb:.1f}GB available (recommend {min_gb}GB)")
+        print("    Close other apps or use: ./run.sh release preflight --docker")
+        return False
+    print(f"  ✓ RAM available: {available_gb:.1f}GB")
+    return True
+
+
+def _required_node_major() -> str | None:
+    nvmrc = REPO_ROOT / ".nvmrc"
+    if not nvmrc.exists():
+        return None
+    match = re.search(r"\d+", nvmrc.read_text(encoding="utf-8"))
+    return match.group(0) if match else None
+
+
+def _node_bin_candidates(required_major: str) -> list[Path]:
+    candidates: list[Path] = []
+    brew = shutil.which("brew")
+    if brew:
+        result = subprocess.run(
+            [brew, "--prefix", f"node@{required_major}"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            candidates.append(Path(result.stdout.strip()) / "bin")
+
+    candidates.extend(
+        [
+            Path(f"/opt/homebrew/opt/node@{required_major}/bin"),
+            Path(f"/usr/local/opt/node@{required_major}/bin"),
+        ]
+    )
+    current_node = shutil.which("node")
+    if current_node:
+        candidates.append(Path(current_node).parent)
+    candidates.extend(
+        path / "bin"
+        for path in sorted(
+            (Path.home() / ".nvm" / "versions" / "node").glob(f"v{required_major}.*"),
+            reverse=True,
+        )
+    )
+    return candidates
+
+
+def _node_runtime_env(
+    candidate_bins: list[Path] | None = None,
+) -> tuple[dict[str, str] | None, str]:
+    """Select the healthy Node major declared by .nvmrc for release checks."""
+    required_major = _required_node_major()
+    if not required_major:
+        return dict(os.environ), "Node version not pinned"
+
+    candidates = candidate_bins or _node_bin_candidates(required_major)
+    seen: set[Path] = set()
+    for bin_dir in candidates:
+        resolved = bin_dir.expanduser().resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        node = resolved / "node"
+        npm = resolved / "npm"
+        if not node.is_file() or not npm.exists():
+            continue
+        try:
+            result = subprocess.run(
+                [str(node), "--version"], capture_output=True, text=True, timeout=5
+            )
+        except (subprocess.TimeoutExpired, OSError):
+            continue
+        match = re.search(r"v?(\d+)", result.stdout.strip())
+        if result.returncode == 0 and match and match.group(1) == required_major:
+            env = dict(os.environ)
+            env["PATH"] = str(resolved) + os.pathsep + env.get("PATH", "")
+            return env, result.stdout.strip()
+
+    return None, f"Node {required_major}.x from .nvmrc is not available"
 
 
 def _print_checklist(version: str) -> None:
@@ -758,17 +859,25 @@ def cmd_preflight(args: argparse.Namespace) -> int:
         print("\n4. React Build")
         react_dir = REPO_ROOT / "react_app"
         if react_dir.exists():
-            try:
-                react_result = _run_with_timeout(
-                    ["npm", "run", "build"],
-                    timeout=300,
-                    cwd=react_dir,
-                    env={**os.environ, "NODE_OPTIONS": "--max-old-space-size=1536"},
-                )
-            except subprocess.TimeoutExpired:
-                print("  ✗ React build TIMED OUT (>300s)")
+            node_env, node_status = _node_runtime_env()
+            if node_env is None:
+                print(f"  ✗ {node_status}")
                 errors += 1
                 react_result = None
+            else:
+                print(f"  → Selected {node_status}")
+                node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
+                try:
+                    react_result = _run_with_timeout(
+                        ["npm", "run", "build"],
+                        timeout=300,
+                        cwd=react_dir,
+                        env=node_env,
+                    )
+                except subprocess.TimeoutExpired:
+                    print("  ✗ React build TIMED OUT (>300s)")
+                    errors += 1
+                    react_result = None
 
             if react_result is None:
                 pass
