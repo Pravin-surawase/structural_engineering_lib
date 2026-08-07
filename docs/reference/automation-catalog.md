@@ -87,7 +87,7 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 - `enhance_readme.py` — Enhance README content
 - `generate_all_indexes.sh` — Generate all index files
 - `generate_docs_index.py` — Generate docs-index.json
-- `generate_folder_index.py` — Generate folder index files
+- `generate_enhanced_index.py <folder>` — Generate current `index.json` and `index.md` folder summaries
 
 ### file_operations
 - `archive_deprecated_docs.py` — Archive deprecated docs

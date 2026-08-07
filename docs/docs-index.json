@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-07T16:06:03.006311",
+  "generated": "2026-08-07T16:11:01.414599",
   "total_docs": 282,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -5177,7 +5177,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 3446
+      "size_bytes": 3423
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -5335,7 +5335,7 @@
         "Code Quality",
         "Streamlit QA"
       ],
-      "size_bytes": 70500
+      "size_bytes": 70545
     },
     "docs/reference/insights-api.md": {
       "title": "Insights API Reference",
