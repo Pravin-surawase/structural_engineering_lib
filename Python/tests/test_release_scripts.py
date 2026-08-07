@@ -220,6 +220,24 @@ class TestReleaseHelp:
         assert "--source" in output
 
 
+class TestReleaseVerifyDependencies:
+    """The isolated wheel verifier must install its declared test tools."""
+
+    def test_dev_extra_declares_hypothesis(self):
+        pyproject = (REPO_ROOT / "Python" / "pyproject.toml").read_text(
+            encoding="utf-8"
+        )
+        dev_section = pyproject.split("dev = [", 1)[1].split("]", 1)[0]
+        assert "hypothesis" in dev_section
+
+    def test_wheel_verify_installs_dev_extra(self):
+        source = RELEASE_SCRIPT.read_text(encoding="utf-8")
+        verify_block = source.split("def cmd_verify", 1)[1].split(
+            "# ─── Check Docs", 1
+        )[0]
+        assert 'f"{wheel}[dev]"' in verify_block
+
+
 class TestReleasePreflight:
     """Tests for the preflight subcommand."""
 

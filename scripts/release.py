@@ -493,12 +493,14 @@ def cmd_verify(args: argparse.Namespace) -> int:
 
         if args.source == "wheel":
             wheel = _find_wheel(wheel_dir, args.version)
-            _run_check([str(pip), "install", str(wheel)])
+            _run_check([str(pip), "install", f"{wheel}[dev]"])
         else:
             if not args.version:
                 print("error: --version is required when using --source pypi")
                 return 2
-            _run_check([str(pip), "install", f"structural-lib-is456=={args.version}"])
+            _run_check(
+                [str(pip), "install", f"structural-lib-is456[dev]=={args.version}"]
+            )
 
         _run_check(
             [
@@ -510,7 +512,6 @@ def cmd_verify(args: argparse.Namespace) -> int:
 
         # Run core tests
         print("\nRunning core tests in clean venv...")
-        _run_check([str(pip), "install", "pytest"])
         _run_check(
             [
                 str(python),
