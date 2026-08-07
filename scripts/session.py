@@ -38,7 +38,11 @@ PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 NEXT_BRIEF = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
 TRUST_STATE_FILE = REPO_ROOT / "logs" / "session_trust.json"
 
-DATE_RE = re.compile(r"##\s+(\d{4}-\d{2}-\d{2})\s+—\s+Session")
+# Accept both the canonical ``— Session`` heading and descriptive variants such
+# as ``— Maintenance Recovery Session``.  Several session commands use this
+# marker to select the latest block, so an overly strict expression can make a
+# current entry invisible and accidentally target an older handoff.
+DATE_RE = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})\s+—\s+.*\bSession\b")
 HANDOFF_START = "<!-- HANDOFF:START -->"
 HANDOFF_END = "<!-- HANDOFF:END -->"
 HANDOFF_DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
@@ -188,27 +192,32 @@ def get_active_tasks() -> list[tuple[str, str, str]]:
     try:
         content = TASKS_MD.read_text()
         active_match = re.search(
-            r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL
+            r"^##\s+(?:🔴\s+)?Active\s*$\n(.*?)(?=^##\s|\Z)",
+            content,
+            re.DOTALL | re.MULTILINE,
         )
         if not active_match:
             return [("", "No Active section found", "")]
         active_section = active_match.group(1)
         tasks = []
         for line in active_section.split("\n"):
-            match = re.match(
-                r"\|\s*\*\*([^*]+)\*\*\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)", line
-            )
-            if match:
-                task_id = match.group(1).strip()
-                task_desc = match.group(2).strip()
-                status = match.group(4).strip()
-                hint = ""
-                status_lower = status.lower()
-                if any(kw in status_lower for kw in ("human", "waiting", "manual")):
-                    hint = "BLOCKER - requires human"
-                elif "⏳" in status:
-                    hint = "waiting"
-                tasks.append((task_id, task_desc, hint))
+            if not line.strip().startswith("|"):
+                continue
+            cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+            if len(cells) < 4:
+                continue
+            task_id = cells[0].strip("*").strip()
+            if task_id.lower() == "id" or not task_id or set(task_id) <= {"-", ":"}:
+                continue
+            task_desc = cells[1].strip()
+            status = cells[3].strip()
+            hint = ""
+            status_lower = status.lower()
+            if any(kw in status_lower for kw in ("human", "waiting", "manual")):
+                hint = "BLOCKER - requires human"
+            elif "⏳" in status:
+                hint = "waiting"
+            tasks.append((task_id, task_desc, hint))
         return tasks if tasks else [("", "No active tasks in table", "")]
     except Exception as e:
         return [("", f"Error reading TASKS.md: {e}", "")]
@@ -265,7 +274,6 @@ def archive_completed_tasks(fix: bool = False) -> tuple[int, int]:
 
     # Split: keep recent, archive old
     rows_to_archive = rows[:-MAX_COMPLETED_ROWS]
-    rows_to_keep = rows[-MAX_COMPLETED_ROWS:]
     archived_count = len(rows_to_archive)
 
     if not fix:
@@ -476,7 +484,9 @@ def _log_session_cost(agent: str = "unknown") -> None:
         capture_output=True,
         text=True,
     )
-    files_changed = len({l.strip() for l in result.stdout.splitlines() if l.strip()})
+    files_changed = len(
+        {line.strip() for line in result.stdout.splitlines() if line.strip()}
+    )
 
     # Count commits today
     result = subprocess.run(
@@ -485,7 +495,7 @@ def _log_session_cost(agent: str = "unknown") -> None:
         capture_output=True,
         text=True,
     )
-    commits = len([l for l in result.stdout.strip().splitlines() if l.strip()])
+    commits = len([line for line in result.stdout.strip().splitlines() if line.strip()])
 
     # Count lines added/removed today
     result = subprocess.run(
@@ -1226,7 +1236,10 @@ def _get_commits_since(since_date: str | None) -> list[dict[str, str]]:
     """Get commits since a date. Returns list of {hash, type, message, files_changed}."""
     args = ["git", "log", "--format=%H|%s", "--no-merges"]
     if since_date:
-        args.append(f"--since={since_date}")
+        # Session headings represent a completed day boundary.  ``--since`` is
+        # inclusive and previously pulled the prior session's same-day commits
+        # back into a new summary, so use an exclusive end-of-day boundary.
+        args.append(f"--after={since_date} 23:59:59")
     else:
         args.append("-n20")
 
@@ -1545,7 +1558,6 @@ def cmd_context(args: argparse.Namespace) -> int:
         text = brief_path.read_text()
         lines = text.strip().split("\n")
         content_lines = []
-        skip_metadata = True
         for line in lines:
             stripped = line.strip()
             # Skip title, metadata, separators, empty, HTML comments
@@ -1561,8 +1573,6 @@ def cmd_context(args: argparse.Namespace) -> int:
                 or stripped.startswith("<!--")
                 or not stripped
             ):
-                if stripped == "---":
-                    skip_metadata = False
                 continue
             content_lines.append(stripped)
             if len(content_lines) >= 10:
@@ -1600,7 +1610,7 @@ def cmd_context(args: argparse.Namespace) -> int:
     result = subprocess.run(
         ["git", "status", "--porcelain"], capture_output=True, text=True, cwd=REPO_ROOT
     )
-    changes = len([l for l in result.stdout.strip().split("\n") if l.strip()])
+    changes = len([line for line in result.stdout.strip().split("\n") if line.strip()])
     result2 = subprocess.run(
         ["git", "rev-parse", "--abbrev-ref", "HEAD"],
         capture_output=True,
