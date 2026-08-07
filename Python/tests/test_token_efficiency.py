@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import tomllib
 from pathlib import Path
@@ -17,6 +18,7 @@ def test_project_codex_defaults_are_low_token() -> None:
     assert config["model_reasoning_effort"] == "medium"
     assert config["model_verbosity"] == "low"
     assert config["agents"]["max_concurrent_threads_per_session"] == 2
+    assert config["agents"]["default_subagent_model"] == "gpt-5.6-luna"
     assert config["agents"]["default_subagent_reasoning_effort"] == "low"
     assert config["features"]["fast_mode"] is False
 
@@ -63,3 +65,15 @@ def test_quick_gate_enforces_token_policy() -> None:
 
     assert 'Check("Token efficiency", _py("check_token_efficiency.py"))' in check_all
     assert '"governance": ["Repo hygiene", "Token efficiency"]' in check_all
+
+
+def test_verified_model_rates_are_checked_in() -> None:
+    policy = json.loads(
+        (REPO_ROOT / "agents" / "model_policy.json").read_text(encoding="utf-8")
+    )
+
+    assert policy["relative_token_rates"] == {
+        "gpt-5.6-luna": 1,
+        "gpt-5.6-terra": 10,
+        "gpt-5.6-sol": 25,
+    }

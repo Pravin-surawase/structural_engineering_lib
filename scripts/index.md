@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-07
-**Files:** 114
+**Files:** 115
 
 ## Config Files
 
@@ -61,7 +61,7 @@
 | [check_repo_hygiene.py](check_repo_hygiene.py) | Fail if tracked hygiene artifacts exist in the repository. | 0 | 1 | 44 |
 | [check_scripts_index.py](check_scripts_index.py) | Ensure scripts/index.json and automation-map.json match the  | 0 | 1 | 180 |
 | [check_tasks_format.py](check_tasks_format.py) | Validate docs/TASKS.md structure and WIP rules. | 0 | 1 | 161 |
-| [check_token_efficiency.py](check_token_efficiency.py) | Validate repository-side Codex token-efficiency controls. | 0 | 2 | 160 |
+| [check_token_efficiency.py](check_token_efficiency.py) | Validate repository-side Codex token-efficiency controls. | 0 | 2 | 204 |
 | [check_type_annotations.py](check_type_annotations.py) | Type Annotation Checker for Streamlit Application | 4 | 1 | 543 |
 | [cleanup_stale_branches.py](cleanup_stale_branches.py) | Cleanup stale remote branches. | 0 | 7 | 187 |
 | [collect_diagnostics.py](collect_diagnostics.py) | Collect a compact diagnostics bundle for debugging and suppo | 0 | 2 | 123 |
@@ -84,6 +84,7 @@
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 517 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 478 |
+| [model_picker.py](model_picker.py) | Recommend a GPT-5.6 model and reasoning effort for a reposit | 1 | 2 | 247 |
 | [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 517 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 200 |

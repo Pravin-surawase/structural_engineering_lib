@@ -1,9 +1,30 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-04-02",
+  "_updated": "2026-08-07",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "112/112 scripts mapped",
+  "_coverage": "113/113 scripts mapped",
   "tasks": {
+    "choose codex model": {
+      "group": "Agent Infrastructure",
+      "script": ".venv/bin/python scripts/model_picker.py \"task description\"",
+      "description": "Recommend a GPT-5.6 model and reasoning level using the checked-in token-efficiency policy (also: ./run.sh model)",
+      "options": {
+        "--table": "Compare all supported profiles",
+        "--risk LEVEL": "Set auto, low, normal, high, or critical risk",
+        "--repeatable": "Mark a task as deterministic and repeatable",
+        "--ambiguous": "Mark a task as requiring ambiguity resolution",
+        "--json": "Machine-readable recommendation"
+      }
+    },
+    "validate token efficiency": {
+      "group": "Agent Infrastructure",
+      "script": ".venv/bin/python scripts/check_token_efficiency.py",
+      "description": "Validate project Codex defaults, model policy, context controls, and the reusable low-token prompt",
+      "options": {
+        "--json": "Machine-readable policy report",
+        "--prompt": "Print the reusable low-token task preamble"
+      }
+    },
     "run all checks": {
       "group": "Quality",
       "script": ".venv/bin/python scripts/check_all.py",
@@ -879,6 +900,8 @@
       "agent context"
     ],
     "agent_infrastructure": [
+      "choose codex model",
+      "validate token efficiency",
       "agent feedback",
       "self evolve",
       "project health",

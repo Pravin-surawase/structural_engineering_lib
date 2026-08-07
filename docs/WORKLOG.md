@@ -317,3 +317,6 @@ tags: []
 | 2026-08-07 | v0.21.7 | Made release preflight honor `.nvmrc` Node 24 and macOS reclaimable memory | 78f1453c |
 | 2026-08-07 | v0.21.7 | Installed package `[dev]` dependencies for isolated wheel verification; clean-wheel tests and CLI UAT pass | 6e01af36 |
 | 2026-08-07 | MAINT-004 | Made session-history date detection work across multiline logs and added regression coverage | f9696cf9 |
+| 2026-08-07 | MAINT-001 | Recovered the preserved Colima VZ disk non-destructively, verified GitHub CLI/SSH, hardened Docker preflight, and opened PR #676 | 3da587aa |
+| 2026-08-07 | MAINT-006 | Enforced Terra-first low-token defaults, Fast-off mode, a two-subagent cap, focused context packets, and a canonical efficiency check | 6e8e4a31 |
+| 2026-08-07 | MAINT-006 | Added authenticated-analytics-calibrated Luna/Terra/Sol routing, reasoning comparisons, and the advisory `run.sh model` picker | pending-commit |

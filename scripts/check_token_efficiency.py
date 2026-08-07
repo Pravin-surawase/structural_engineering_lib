@@ -3,6 +3,8 @@
 
 This checks configuration and context-size proxies. It deliberately does not
 claim to read provider billing or account usage.
+
+When to use: At session start or after editing Codex/model policy files.
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG = REPO_ROOT / ".codex" / "config.toml"
 POLICY_DOC = REPO_ROOT / "docs" / "guidelines" / "ai-token-efficiency.md"
+MODEL_POLICY = REPO_ROOT / "agents" / "model_policy.json"
 
 ACTIVE_INSTRUCTIONS = (
     REPO_ROOT / "AGENTS.md",
@@ -80,8 +83,8 @@ def validate() -> dict:
 
     if agents.get("max_concurrent_threads_per_session") != 2:
         errors.append("agents.max_concurrent_threads_per_session must be 2")
-    if agents.get("default_subagent_model") != "gpt-5.6-terra":
-        errors.append("agents.default_subagent_model must be 'gpt-5.6-terra'")
+    if agents.get("default_subagent_model") != "gpt-5.6-luna":
+        errors.append("agents.default_subagent_model must be 'gpt-5.6-luna'")
     if agents.get("default_subagent_reasoning_effort") != "low":
         errors.append("agents.default_subagent_reasoning_effort must be 'low'")
     if features.get("fast_mode") is not False:
@@ -89,6 +92,36 @@ def validate() -> dict:
 
     if not POLICY_DOC.exists():
         errors.append("missing canonical token-efficiency guideline")
+    if not MODEL_POLICY.exists():
+        errors.append("missing agents/model_policy.json")
+    else:
+        model_policy = json.loads(MODEL_POLICY.read_text(encoding="utf-8"))
+        rates = model_policy.get("relative_token_rates", {})
+        if rates != {
+            "gpt-5.6-luna": 1,
+            "gpt-5.6-terra": 10,
+            "gpt-5.6-sol": 25,
+        }:
+            errors.append("model policy relative token rates are stale")
+        if model_policy.get("defaults", {}).get("max_concurrent_subagents") != 2:
+            errors.append("model policy must cap concurrent subagents at 2")
+        if model_policy.get("defaults", {}).get("subagent_profile") != "luna-low":
+            errors.append("model policy must default subagents to luna-low")
+        profile_ids = {
+            profile.get("id") for profile in model_policy.get("profiles", [])
+        }
+        required_profiles = {
+            "luna-low",
+            "luna-medium",
+            "luna-high",
+            "terra-low",
+            "terra-medium",
+            "terra-high",
+            "sol-medium",
+            "sol-high",
+        }
+        if not required_profiles <= profile_ids:
+            errors.append("model policy is missing required routing profiles")
 
     for path in ACTIVE_INSTRUCTIONS:
         if not path.exists():

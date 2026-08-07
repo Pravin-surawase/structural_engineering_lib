@@ -3,12 +3,13 @@
 > **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlie
 
 **Type:** Documentation
-**Last Updated:** 2026-04-07
-**Files:** 2
+**Last Updated:** 2026-08-07
+**Files:** 3
 
 ## Config Files
 
 - [agent_registry.json](agent_registry.json)
+- [model_policy.json](model_policy.json)
 
 ## Documentation Files
 

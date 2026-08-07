@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-07 — repository maintenance complete; external Mac recovery remains
+**Updated:** 2026-08-07 — Mac recovery complete; PR #676 CI closeout remains
 
 ---
 
@@ -21,11 +21,12 @@
 
 | ID | Task | Priority | Status | Exit condition |
 |----|------|----------|--------|----------------|
-| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | ⚠️ BLOCKED | Recovery task branch/checkpoint exists; GitHub auth, Python/Node versions, Colima, and dirty-tree provenance are documented |
+| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | 🚧 IN PROGRESS | GitHub/SSH, Python/Node, Colima/Docker, and release preflight pass; PR #676 required checks are green |
 | MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
+| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | Terra parent/Luna subagent defaults, task-aware model picker, two-subagent cap, focused-context rules, and quick-gate policy check pass |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -38,13 +39,17 @@
 - Runtime/product repairs from the browser sweep: the launcher selects Node 24 from `.nvmrc` and kills listeners only; canonical compliance utilization replaces misleading `Mu/Mu_lim`; imported spans are rounded; dashboard and BOQ steel totals agree.
 - MAINT-005 exit evidence: WebSocket designs now preserve the complete REST response contract; the live 153-beam flow passes 153/153 and exports valid BBS, DXF, HTML/PDF reports, building HTML/PDF/CSV summaries, and BOQ CSV. Current BOQ totals are 2,663.4 kg steel and 114.8 m³ concrete.
 - Release automation now selects `.nvmrc` Node 24, evaluates reclaimable macOS memory, and installs wheel `[dev]` dependencies for isolated verification. `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
+- GitHub CLI API and SSH auth now pass end to end. Colima's stale transferred-disk lock was released only after Lima confirmed the VM was stopped; the existing VZ disk was preserved and Docker is healthy.
+- Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. PR #676 is open on `task/MAINT-001`.
+- Low-token policy checkpoint `6e8e4a31` defaults Codex to Terra/medium, disables Fast mode, caps subagents at two, replaces full-history handoffs, and adds a ninth canonical quick check.
+- Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. The checked-in picker now favors Luna for clear/repeatable work, Terra for normal/high-risk implementation, and approval-gates Sol.
 
 ### Recovery progress
 
 - Recovery checkpoint `b28ee4e3` is pushed on `task/MAINT-001`.
 - Python editable metadata/module version repaired to v0.21.6; Node 24.19.0 installed keg-only and React passes 139 tests, lint, and build on it.
 - Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
-- MAINT-001 blockers: GitHub device authorization expired before approval; Colima's transferred VZ disk remains marked in use even after orphan-process cleanup. Restart macOS before another start attempt; do not delete the VM disk without a backup/approval.
+- MAINT-001 recovery is complete. Remaining closeout is PR #676 CI: three empty template links and Ruff 0.16.1 toolchain drift were diagnosed; their focused fixes await explicit approval.
 - MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
 - MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,159 Python, 336 FastAPI, and 146 React tests.
 
@@ -109,23 +114,24 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| MAINT-001 | Complete Mac Mini recovery: renew GitHub CLI auth and recover transferred Colima state without deleting its disk | Main Agent + owner | ⚠️ BLOCKED |
+| MAINT-001 | Close PR #676 required checks and record the final maintenance handoff | Main Agent + owner | 🚧 IN PROGRESS |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| v0.21.7 | Renew GitHub CLI auth, open/validate the PR, then run the approved release workflow | ops + owner | <1 session | P1 | ✅ READY |
+| v0.21.7 | Apply the approved focused CI fixes, validate PR #676, then request release approval | ops + owner | <1 session | P1 | ⏳ WAITING APPROVAL |
 
 ## Backlog
 
 The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
-feature work until the MAINT-001 external recovery steps and v0.21.7 release decision are handled.
+feature work until PR #676 is green and the v0.21.7 release decision is handled.
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |
 | MAINT-005 | Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line | Main Agent | ✅ DONE |
 | MAINT-004 | Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback | Main Agent | ✅ DONE |
 | MAINT-002 | Repair nightly QA, maintained import E2E contracts, and documentation links | Main Agent | ✅ DONE |

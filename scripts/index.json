@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-08-07",
-  "file_count": 114,
+  "file_count": 115,
   "files": [
     {
       "name": "README.md",
@@ -912,7 +912,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "d35ec8827eb1"
+      "content_hash": "af9e91a98e11"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -2279,7 +2279,7 @@
     {
       "name": "check_token_efficiency.py",
       "type": "python",
-      "size_lines": 160,
+      "size_lines": 204,
       "last_updated": "2026-08-07",
       "description": "Validate repository-side Codex token-efficiency controls.",
       "functions": [
@@ -2294,11 +2294,12 @@
         "REPO_ROOT",
         "CONFIG",
         "POLICY_DOC",
+        "MODEL_POLICY",
         "ACTIVE_INSTRUCTIONS",
         "FORBIDDEN_ACTIVE_TEXT",
         "TASK_PREAMBLE"
       ],
-      "content_hash": "aa809ea3bc98"
+      "content_hash": "e5c045689b57"
     },
     {
       "name": "check_type_annotations.py",
@@ -3574,6 +3575,39 @@
         "SKIP_PATTERNS"
       ],
       "content_hash": "a797adae1bf7"
+    },
+    {
+      "name": "model_picker.py",
+      "type": "python",
+      "size_lines": 247,
+      "last_updated": "2026-08-07",
+      "description": "Recommend a GPT-5.6 model and reasoning effort for a repository task.",
+      "classes": [
+        {
+          "name": "ModelRecommendation"
+        }
+      ],
+      "functions": [
+        {
+          "name": "recommend",
+          "params": [
+            "query"
+          ]
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "POLICY_PATH",
+        "REPETITIVE",
+        "BOUNDED",
+        "IMPLEMENTATION",
+        "COMPLEX",
+        "HIGH_RISK"
+      ],
+      "content_hash": "31fbaa18c422"
     },
     {
       "name": "parity_dashboard.py",
@@ -5261,5 +5295,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "b1e4b4c2f032d08b"
+  "content_hash": "792d15fa51dc1a86"
 }

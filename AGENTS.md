@@ -23,6 +23,9 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
 - Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
 - Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
+- Run `./run.sh model "task"` before choosing a model for bounded work. The
+  picker is advisory: Luna-first for clear repeatable work, Terra for normal or
+  high-risk implementation, and Sol only after explicit user approval.
 
 ## Git — THE ONE RULE
 

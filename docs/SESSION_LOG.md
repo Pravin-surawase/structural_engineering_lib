@@ -19,10 +19,10 @@
   through `f9696cf9`, covering the runtime, nightly checks, dependency/security
   baseline, canonical governance, live UI/API contracts, release tooling, and
   session automation.
-- Completed MAINT-002 through MAINT-005. The repository/product maintenance
-  scope is green and v0.21.7 preflight is ready; the release was not executed.
-- MAINT-001 remains externally blocked only on GitHub CLI browser authorization
-  and a macOS restart before retrying the preserved Colima VM.
+- Completed MAINT-002 through MAINT-006. The repository/product maintenance,
+  Mac control plane, and Docker preflight are green; no release was executed.
+- MAINT-001 now remains open only for the two diagnosed PR #676 CI failures and
+  final required-check validation.
 
 **Completed:**
 - MAINT-002, MAINT-003, MAINT-004, and MAINT-005 with evidence recorded below.
@@ -31,7 +31,7 @@
 ### PRs Merged
 | PR | Summary |
 |----|---------|
-| None | Recovery session in progress |
+| [#676](https://github.com/Pravin-surawase/structural_engineering_lib/pull/676) | Open — maintenance recovery and v0.21.7 stabilization |
 
 ### Key Deliverables
 - Maintenance task sequence recorded in `docs/TASKS.md`.
@@ -54,13 +54,18 @@
 - React passes 146 tests, production build, and lint with one existing hook warning. Canonical check is 28/28, audit 22/22, health 100/100, and parity 96%.
 - Release preflight now honors `.nvmrc` Node 24 and macOS reclaimable memory. A clean built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) plus packaged CLI job/critical/report workflows.
 - Session automation recognizes descriptive/multiline session history and current `TASKS.md` Active formats, preventing historical summary rewinds.
+- GitHub CLI API and SSH verification pass end to end after browser reauthorization; PR #676 is open and receives pushed maintenance checkpoints.
+- Colima's transferred disk was confirmed stopped and unlocked with Lima's targeted emergency-recovery command; the existing VM data was preserved and Docker is healthy.
+- Docker preflight now uses resilient pip downloads, Node 24, bounded diagnostics, and repo-only test mounts; 5,158 Python tests and the React production build pass in containers.
+- MAINT-006 adds `.codex/config.toml`, the canonical token-efficiency guide, a maximum of two subagents, focused no-history task packets, `./run.sh efficiency`, regression tests, and enforcement in the 9/9 quick gate.
+- The authenticated one-month analytics view reported 1,858 turns: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older-model turns. The last seven days contained 632 turns, including 105 Sol versus only 32 Luna and 15 Terra. This supports Luna-first repeatable work and Terra-first implementation.
+- `agents/model_policy.json`, `scripts/model_picker.py`, and `./run.sh model` now compare Luna/Terra/Sol reasoning profiles, state equal-token relative rates, recommend the cheapest credible start, and retain explicit approval for Sol.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
 - Recovery branch created through `scripts/ai_commit.sh --branch`; GitHub CLI device authentication remains in progress for PR operations.
 - No formatter, bulk cleanup, dependency auto-fix, or feature work is authorized before the recovery checkpoint.
-- GitHub device authentication expired before approval; rerun `gh auth login` when the owner can complete the browser step.
-- Colima VZ startup still reports the transferred disk in use after graceful daemon/orphan cleanup. A macOS restart is the next non-destructive recovery step; VM deletion is not approved.
+- PR #676 is not merge-ready: Link Check reports three empty template links, and FastAPI Validation installed unbounded Ruff 0.16.1 while the proven local gate uses 0.15.8. Focused fixes await explicit approval.
 - The transferred `.venv` reported 98 findings across 21 packages because it accumulated undeclared/stale packages. It is retained only as a diagnostic artifact; clean-install declarations and locks are now authoritative.
 - The browser harness does not expose programmatic Blob downloads as native download events. Export confidence therefore combines live UI-to-API 200 evidence with byte-level validation of the same response artifacts.
 - `scripts/_tmp_write_days.py` was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored `tmp/deleted_backups/`.
@@ -81,6 +86,11 @@
 - ⚠️ TERMINAL ISSUE: a compound `find` command used an invalid escaped `-exec` terminator → the artifact directory was resolved with a simple validated `/tmp` lookup.
 - ⚠️ TERMINAL ISSUE: the hidden browser file-input interaction timed out and reset the automation kernel → the visible “click to browse” path completed the import safely.
 - ⚠️ TERMINAL ISSUE: session summary did not detect dates across multiline log content and fell back to the last 20 commits → line-wise date parsing is now regression-tested; this handoff was reconciled after the fix.
+- ⚠️ TERMINAL ISSUE: `colima daemon stop` without a profile failed → `colima daemon stop default` stopped the daemon before the targeted stale-disk unlock.
+- ⚠️ TERMINAL ISSUE: `./run.sh pr create` required execution from `main` even though the task branch already existed → the documented direct `gh pr create` fallback opened PR #676.
+- ⚠️ TERMINAL ISSUE: `./run.sh pr status` and `bash run.sh pr status` returned no visible output → `./scripts/ai_commit.sh --status` provided the required branch/PR state without bypassing safeguards.
+- ⚠️ TERMINAL ISSUE: the documented direct `scripts/generate_folder_index.py` path did not exist → `./run.sh generate indexes` used the maintained generator; unrelated generated churn was then narrowed to affected indexes only.
+
 
 
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release

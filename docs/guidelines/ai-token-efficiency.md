@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-08-07
-doc_type: guideline
+doc_type: guide
 ---
 
 # AI Token-Efficiency Policy
@@ -24,6 +24,46 @@ engineering, test, or Git safety gates.
    review.
 5. Keep Fast mode off. Enable it only when the user explicitly chooses speed
    over credit efficiency for a time-sensitive task.
+
+## Model and Reasoning Matrix
+
+The verified token rate card makes Luna the reference rate: Terra is 10x and
+Sol is 25x for the same input/cached-input/output token mix. Reasoning effort
+changes how many tokens a task may consume, but OpenAI does not publish a fixed
+Low/Medium/High/Extra High multiplier. Therefore, do not assume that Luna Extra
+High is always cheaper than Terra Low for a real task; use the lowest profile
+that reliably completes the work.
+
+| Profile | Default use | Escalate when |
+|---|---|---|
+| Luna Low | Search, status, extraction, formatting, indexes | The task is not deterministic |
+| Luna Medium | Bounded docs, tests, summaries, mechanical edits | Tool use or requirements become unclear |
+| Luna High | Structured audits, log triage, constrained repetitive code | The problem becomes cross-layer or ambiguous |
+| Luna Extra High | Rare, highly structured work needing extensive checking | Prefer Terra if ambiguity is the difficulty |
+| Terra Low | Small code fixes with an obvious pattern | Targeted verification does not explain a failure |
+| Terra Medium | Normal implementation and maintenance | Architecture, safety, or multiple systems interact |
+| Terra High | Cross-layer debugging, architecture, security, release, IS 456 | A concrete unresolved quality gap justifies Sol |
+| Terra Extra High | Rare, critical but bounded work | Sol may materially improve a high-value decision |
+| Sol Medium/High/Extra High | Approved difficult architecture, root cause, or final high-risk review | Never automatic; obtain user approval first |
+
+Max is a quality-first single-agent mode. Ultra may create subagents. Both are
+outside the routine project profiles and require explicit approval. Fast mode
+uses 2.5x the standard credits for currently documented GPT-5.6/5.5 models.
+
+## Task-Aware Picker
+
+Use the deterministic picker before selecting a model for a new bounded task:
+
+```bash
+./run.sh model --table
+./run.sh model "fix the known FastAPI validation error"
+./run.sh model "verify the release calculation" --risk critical
+```
+
+The policy is stored in [`agents/model_policy.json`](../../agents/model_policy.json).
+The picker is advisory: it does not silently switch the running task, and Sol
+recommendations remain approval-gated. Apply the recommendation with `/model`
+in Codex desktop. Use a fresh task when changing to a genuinely different issue.
 
 Project-local defaults live in [`.codex/config.toml`](../../.codex/config.toml).
 An explicit model choice by the user still takes precedence.
@@ -94,6 +134,8 @@ IS 456 quality gate.
 - Run `./run.sh efficiency check` to validate repository-side controls. This
   checks configuration and context proxies; it cannot read OpenAI billing.
 - Run `./run.sh efficiency prompt` to print a reusable task preamble.
+- Run `./run.sh model --table` to compare profiles, or pass a task description
+  to receive a deterministic recommendation and explicit escalation trigger.
 
 ## Reusable Task Preamble
 
@@ -113,7 +155,6 @@ closeout. Close subagents immediately, report the result, and stop.
 - [Codex models](https://learn.chatgpt.com/docs/models)
 - [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
 - [Codex Speed and Fast mode](https://learn.chatgpt.com/docs/agent-configuration/speed)
-- [Codex pricing and usage](https://learn.chatgpt.com/docs/pricing)
+- [Codex pricing and usage](https://help.openai.com/en/articles/20001106)
 - [Codex slash commands](https://learn.chatgpt.com/docs/reference/slash-commands)
 - [Codex project configuration](https://learn.chatgpt.com/docs/config-file/config-basic)
-

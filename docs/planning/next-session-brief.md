@@ -4,18 +4,18 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
-- Focus: Renew GitHub CLI auth, validate the maintenance PR, release v0.21.7, and recover Colima after a Mac restart
+- Focus: Close the two approved PR #676 CI failures, then finish maintenance documentation and request the v0.21.7 release decision
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-07
-**Current Session:** Maintenance Recovery — repository/product maintenance complete; external control-plane steps remain
+**Current Session:** Maintenance Recovery — Mac/GitHub/Docker recovery complete; PR CI closeout remains
 
 ## Start Here
 
-1. Renew GitHub CLI authorization and create/validate the existing `task/MAINT-001` PR without bypassing required CI. SSH push already works.
-2. Run the approved v0.21.7 release workflow only after the PR and required checks are green. Preflight is ready; no release was made in this session.
-3. Restart macOS before retrying Colima. Do not delete/recreate the transferred VM until Docker data is backed up or deletion is explicitly approved.
-4. Preserve the restored baseline: 28/28 canonical checks, 22/22 audit checks, 100/100 health, 96% actionable parity, and all live export artifacts verified.
+1. Obtain explicit approval before applying the two focused PR #676 CI fixes: replace three empty template links and pin Ruff 0.15.8 consistently instead of accepting unbounded 0.16.1 drift.
+2. Re-run only the affected link/lint checks, push through `ai_commit.sh`, and monitor PR #676 required checks. Do not merge or release without explicit user approval.
+3. Preserve the recovered Mac baseline: GitHub API/SSH pass, Colima/Docker are healthy with the transferred disk intact, and Docker release preflight is green.
+4. Use `./run.sh model "task"` before new bounded work. Default to Terra/medium for the parent, Luna/low for bounded subagents, Fast off, zero subagents by default, and at most two focused subagents.
 5. Treat 17.74% React statement coverage, one hook lint warning, and one RSC-only advisory as recorded risks—not reasons to reopen completed maintenance without a focused task.
 
 Full evidence and accepted risks are in
@@ -28,8 +28,12 @@ Full evidence and accepted risks are in
 - Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
 - Passing baselines: release preflight 5,159 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
 - Clean-wheel UAT: 5,120 passed, 41 skipped, 6 deselected plus packaged job, critical-case CSV, and HTML-report CLI workflows.
-- Current external gates: GitHub CLI authorization and the transferred Colima VM state. React coverage is an accepted, documented follow-up risk.
-- Local environment: Python 3.11 ARM64 editable install is repaired at v0.21.6; Node 24.19.0 is installed keg-only and React passes on it; Colima VZ requires a Mac restart; GitHub CLI authentication must be renewed.
+- GitHub CLI keyring/API, repository queries, PR access, SSH, and remote Git transport pass. PR #676 is open from `task/MAINT-001`.
+- Colima is healthy on the preserved VZ disk after a targeted stale-lock recovery; Docker reports 4 CPUs/~4 GB and Compose config passes.
+- Docker preflight passes 5,158 Python tests, 8 skips, 6 deselections, plus the Node 24 React production build.
+- Low-token policy checkpoint `6e8e4a31` adds project Codex defaults, a two-subagent cap, focused handoffs, `./run.sh efficiency`, and a 9/9 quick gate.
+- The analytics-calibrated model picker is in `agents/model_policy.json` and `./run.sh model`; it recommends Luna-first for repeatable work and never auto-selects approval-gated Sol.
+- Current gate: PR #676 has two diagnosed CI failures awaiting approval—three empty template links and Ruff 0.16.1 dependency drift. React coverage remains an accepted follow-up risk.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.

@@ -13,7 +13,7 @@
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Guidelines Index | Development standards and best practices for the structural  | 74 |
-| [ai-token-efficiency.md](ai-token-efficiency.md) |  | This is the canonical low-token operating policy for AI-assi | 120 |
+| [ai-token-efficiency.md](ai-token-efficiency.md) |  | This is the canonical low-token operating policy for AI-assi | 161 |
 | [api-design-guidelines.md](api-design-guidelines.md) |  | This document consolidates all Phase 1 and Phase 2 API resea | 2626 |
 | [api-evolution-standard.md](api-evolution-standard.md) |  | > **Standard for API versioning, deprecation, and backward c | 1691 |
 | [blog-writing-guide.md](blog-writing-guide.md) |  | | Audience | Tone | Example | |----------|------|---------| | 860 |

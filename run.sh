@@ -766,6 +766,29 @@ Provider usage is available through Codex /status and Settings > Usage.
 EOF
 }
 
+# ── Command: model ────────────────────────────────────────────────────────
+
+_cmd_model() {
+    _require_venv
+    "$VENV" "$SCRIPTS/model_picker.py" "$@"
+}
+
+_help_model() {
+    cat <<'EOF'
+Usage: ./run.sh model <task description> [options]
+       ./run.sh model --table
+
+Recommend a GPT-5.6 model and reasoning profile from the checked-in policy.
+The command advises only; apply the result with /model in Codex desktop.
+
+Options:
+  --risk auto|low|normal|high|critical
+  --repeatable
+  --ambiguous
+  --json
+EOF
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -794,6 +817,7 @@ _print_usage() {
     echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
     echo -e "  ${GREEN}parity${NC}      Cross-layer implementation/test parity dashboard"
     echo -e "  ${GREEN}efficiency${NC}  Validate low-token agent and context controls"
+    echo -e "  ${GREEN}model${NC}       Recommend a model and reasoning level for a task"
     echo -e "  ${GREEN}diagnose${NC}    Diagnose CI failures (--pr N, --local, --fix)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -828,6 +852,7 @@ _dispatch_help() {
         coverage) _cmd_coverage ;;
         parity)   _help_parity ;;
         efficiency) _help_efficiency ;;
+        model)      _help_model ;;
         *)        _print_usage ;;
     esac
 }
@@ -858,6 +883,7 @@ _run_sh() {
         'pipeline:Pipeline state tracking'
         'parity:Cross-layer parity dashboard'
         'efficiency:Validate low-token controls'
+        'model:Recommend model and reasoning profile'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -957,6 +983,7 @@ main() {
         diagnose) _require_venv; "$VENV" "$SCRIPTS/diagnose_ci.py" "$@" ;;
         pipeline) _cmd_pipeline "$@" ;;
         efficiency) _cmd_efficiency "$@" ;;
+        model)      _cmd_model "$@" ;;
         *)
             _error "Unknown command: $cmd"
             echo ""
