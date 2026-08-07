@@ -736,6 +736,36 @@ endpoints/tests, and frontend API hooks.
 EOF
 }
 
+# ── Command: efficiency ───────────────────────────────────────────────────
+
+_cmd_efficiency() {
+    _require_venv
+    local subcmd="${1:-check}"
+    case "$subcmd" in
+        check)
+            shift || true
+            "$VENV" "$SCRIPTS/check_token_efficiency.py" "$@"
+            ;;
+        prompt)
+            "$VENV" "$SCRIPTS/check_token_efficiency.py" --prompt
+            ;;
+        *)
+            _error "Unknown efficiency subcommand: $subcmd"
+            _help_efficiency
+            return 1
+            ;;
+    esac
+}
+
+_help_efficiency() {
+    cat <<'EOF'
+Usage: ./run.sh efficiency [check|prompt] [--json]
+
+Validate project-side low-token controls or print the reusable task preamble.
+Provider usage is available through Codex /status and Settings > Usage.
+EOF
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -763,6 +793,7 @@ _print_usage() {
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
     echo -e "  ${GREEN}parity${NC}      Cross-layer implementation/test parity dashboard"
+    echo -e "  ${GREEN}efficiency${NC}  Validate low-token agent and context controls"
     echo -e "  ${GREEN}diagnose${NC}    Diagnose CI failures (--pr N, --local, --fix)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -796,6 +827,7 @@ _dispatch_help() {
         pipeline) _cmd_pipeline ;;
         coverage) _cmd_coverage ;;
         parity)   _help_parity ;;
+        efficiency) _help_efficiency ;;
         *)        _print_usage ;;
     esac
 }
@@ -825,6 +857,7 @@ _run_sh() {
         'tools:Tool and script discovery'
         'pipeline:Pipeline state tracking'
         'parity:Cross-layer parity dashboard'
+        'efficiency:Validate low-token controls'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
@@ -837,6 +870,7 @@ _run_sh() {
     local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
+    local -a efficiency_subs=('check' 'prompt')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -852,6 +886,7 @@ _run_sh() {
             test) _values 'option' $test_opts ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
+            efficiency) _values 'subcommand' $efficiency_subs ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -921,6 +956,7 @@ main() {
         parity)    _cmd_parity "$@" ;;
         diagnose) _require_venv; "$VENV" "$SCRIPTS/diagnose_ci.py" "$@" ;;
         pipeline) _cmd_pipeline "$@" ;;
+        efficiency) _cmd_efficiency "$@" ;;
         *)
             _error "Unknown command: $cmd"
             echo ""

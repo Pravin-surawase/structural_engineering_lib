@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks",
   "last_updated": "2026-08-07",
-  "file_count": 113,
+  "file_count": 114,
   "files": [
     {
       "name": "README.md",
@@ -807,8 +807,8 @@
     {
       "name": "audit_readiness_report.py",
       "type": "python",
-      "size_lines": 827,
-      "last_updated": "2026-04-05",
+      "size_lines": 835,
+      "last_updated": "2026-08-07",
       "description": "Audit Readiness Report Generator",
       "classes": [
         {
@@ -898,7 +898,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "5f90a2614cf7"
+      "content_hash": "89a1c584f3f4"
     },
     {
       "name": "automation-map.json",
@@ -912,7 +912,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "0686e252adfc"
+      "content_hash": "d35ec8827eb1"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1084,8 +1084,8 @@
     {
       "name": "check_all.py",
       "type": "python",
-      "size_lines": 714,
-      "last_updated": "2026-04-03",
+      "size_lines": 715,
+      "last_updated": "2026-08-07",
       "description": "Unified check orchestrator — runs all validation scripts in parallel.",
       "classes": [
         {
@@ -1110,7 +1110,7 @@
         "VENV_PYTHON",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "6be9d8bd8583"
+      "content_hash": "08bb03f2f92c"
     },
     {
       "name": "check_api.py",
@@ -1554,7 +1554,7 @@
     {
       "name": "check_docs.py",
       "type": "python",
-      "size_lines": 673,
+      "size_lines": 675,
       "last_updated": "2026-08-07",
       "description": "Unified documentation checker — consolidates 4 doc validation scripts.",
       "functions": [
@@ -1604,7 +1604,7 @@
         "META_REQUIRED_FIELDS",
         "META_VALID_VALUES"
       ],
-      "content_hash": "ccb5e5875880"
+      "content_hash": "3c86f758effd"
     },
     {
       "name": "check_fastapi_issues.py",
@@ -2275,6 +2275,30 @@
         "REQUIRED_HEADINGS"
       ],
       "content_hash": "2544d7a459bf"
+    },
+    {
+      "name": "check_token_efficiency.py",
+      "type": "python",
+      "size_lines": 160,
+      "last_updated": "2026-08-07",
+      "description": "Validate repository-side Codex token-efficiency controls.",
+      "functions": [
+        {
+          "name": "validate"
+        },
+        {
+          "name": "main"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "CONFIG",
+        "POLICY_DOC",
+        "ACTIVE_INSTRUCTIONS",
+        "FORBIDDEN_ACTIVE_TEXT",
+        "TASK_PREAMBLE"
+      ],
+      "content_hash": "aa809ea3bc98"
     },
     {
       "name": "check_type_annotations.py",
@@ -3394,10 +3418,10 @@
     {
       "name": "launch_stack.sh",
       "type": "shell-script",
-      "size_lines": 839,
-      "last_updated": "2026-03-30",
+      "size_lines": 885,
+      "last_updated": "2026-08-07",
       "description": "launch_stack.sh — Full-stack development launcher for structural_engineering_lib",
-      "content_hash": "d819a53192ce"
+      "content_hash": "954547578d89"
     },
     {
       "name": "migrate_python_module.py",
@@ -3554,8 +3578,8 @@
     {
       "name": "parity_dashboard.py",
       "type": "python",
-      "size_lines": 479,
-      "last_updated": "2026-04-02",
+      "size_lines": 517,
+      "last_updated": "2026-08-07",
       "description": "Parity Dashboard — coverage/parity across IS 456, API, endpoints, and React hooks.",
       "functions": [
         {
@@ -3564,7 +3588,7 @@
         },
         {
           "name": "check_api_endpoint_coverage",
-          "description": "Dimension 2: API functions → FastAPI endpoint coverage."
+          "description": "Dimension 2: public API functions used directly by FastAPI routers."
         },
         {
           "name": "check_endpoint_test_coverage",
@@ -3589,9 +3613,10 @@
         "API_PY",
         "ROUTERS_DIR",
         "FASTAPI_TESTS",
-        "HOOKS_DIR"
+        "HOOKS_DIR",
+        "LOCAL_ONLY_HOOKS"
       ],
-      "content_hash": "ddf4ee307015"
+      "content_hash": "ffd1b4f96d2d"
     },
     {
       "name": "pipeline_state.py",
@@ -3817,8 +3842,8 @@
     {
       "name": "project_health.py",
       "type": "python",
-      "size_lines": 864,
-      "last_updated": "2026-04-05",
+      "size_lines": 901,
+      "last_updated": "2026-08-07",
       "description": "Unified project health scanner with auto-fix capability.",
       "classes": [
         {
@@ -3913,7 +3938,7 @@
         "WEIGHTS",
         "SCANNERS"
       ],
-      "content_hash": "79857a2539a1"
+      "content_hash": "b60d194dfd7b"
     },
     {
       "name": "prompt_router.py",
@@ -3962,8 +3987,8 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 919,
-      "last_updated": "2026-03-31",
+      "size_lines": 1043,
+      "last_updated": "2026-08-07",
       "description": "Unified release management CLI.",
       "functions": [
         {
@@ -4012,7 +4037,7 @@
         "VERSION_RE",
         "REQUIRED_HEADINGS"
       ],
-      "content_hash": "9d313bb34bc6"
+      "content_hash": "32dcb42add97"
     },
     {
       "name": "repo_health_check.sh",
@@ -4122,16 +4147,16 @@
     {
       "name": "safe_push.sh",
       "type": "shell-script",
-      "size_lines": 705,
-      "last_updated": "2026-04-03",
+      "size_lines": 701,
+      "last_updated": "2026-08-07",
       "description": "Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS",
-      "content_hash": "0e06b6e459ab"
+      "content_hash": "7fa3802c5b05"
     },
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2035,
-      "last_updated": "2026-04-02",
+      "size_lines": 2049,
+      "last_updated": "2026-08-07",
       "description": "Unified session management CLI.",
       "functions": [
         {
@@ -4230,7 +4255,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "2501309dc649"
+      "content_hash": "bb6a06d5b556"
     },
     {
       "name": "session_store.py",
@@ -4416,8 +4441,8 @@
     {
       "name": "sync_numbers.py",
       "type": "python",
-      "size_lines": 479,
-      "last_updated": "2026-04-05",
+      "size_lines": 502,
+      "last_updated": "2026-08-07",
       "description": "Scan codebase and sync stale numbers across documentation files.",
       "classes": [
         {
@@ -4454,7 +4479,7 @@
         },
         {
           "name": "scan_api_functions",
-          "description": "Count public and private functions in services/api.py. Returns (public, private)."
+          "description": "Count exported API functions and split-module private helpers."
         },
         {
           "name": "scan_components",
@@ -4489,7 +4514,7 @@
       "constants": [
         "DOCS_TO_SYNC"
       ],
-      "content_hash": "11ecfe7d1a9b"
+      "content_hash": "badc89620ae7"
     },
     {
       "name": "test_api_parity.py",
@@ -5236,5 +5261,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "1b85cbbbdccefbfc"
+  "content_hash": "b1e4b4c2f032d08b"
 }

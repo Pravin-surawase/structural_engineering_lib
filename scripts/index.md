@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-07
-**Files:** 113
+**Files:** 114
 
 ## Config Files
 
@@ -32,11 +32,11 @@
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit Input Validation Coverage for structural_lib. | 2 | 5 | 393 |
 | [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 2 | 394 |
-| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 827 |
+| [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 835 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 442 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
 | [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 451 |
-| [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 714 |
+| [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 715 |
 | [check_api.py](check_api.py) | Unified API validation — signatures, docs, and sync checks. | 1 | 4 | 442 |
 | [check_api_compat.py](check_api_compat.py) | Check API backward compatibility. | 0 | 3 | 152 |
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 521 |
@@ -46,7 +46,7 @@
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
-| [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 673 |
+| [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 450 |
 | [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 668 |
 | [check_git_script_budget.py](check_git_script_budget.py) | Check that git automation scripts stay within line budget (T | 0 | 1 | 63 |
@@ -61,6 +61,7 @@
 | [check_repo_hygiene.py](check_repo_hygiene.py) | Fail if tracked hygiene artifacts exist in the repository. | 0 | 1 | 44 |
 | [check_scripts_index.py](check_scripts_index.py) | Ensure scripts/index.json and automation-map.json match the  | 0 | 1 | 180 |
 | [check_tasks_format.py](check_tasks_format.py) | Validate docs/TASKS.md structure and WIP rules. | 0 | 1 | 161 |
+| [check_token_efficiency.py](check_token_efficiency.py) | Validate repository-side Codex token-efficiency controls. | 0 | 2 | 160 |
 | [check_type_annotations.py](check_type_annotations.py) | Type Annotation Checker for Streamlit Application | 4 | 1 | 543 |
 | [cleanup_stale_branches.py](cleanup_stale_branches.py) | Cleanup stale remote branches. | 0 | 7 | 187 |
 | [collect_diagnostics.py](collect_diagnostics.py) | Collect a compact diagnostics bundle for debugging and suppo | 0 | 2 | 123 |
@@ -83,18 +84,18 @@
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 517 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 478 |
-| [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 479 |
+| [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 517 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 200 |
-| [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 864 |
+| [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 901 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 492 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 7 | 919 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 7 | 1043 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 505 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2035 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2049 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 372 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 8 | 516 |
-| [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 479 |
+| [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script (V3 Preparation) | 2 | 10 | 457 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 216 |
 | [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 294 |

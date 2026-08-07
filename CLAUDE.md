@@ -102,7 +102,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
-./run.sh session costs --summary    # Agent cost/efficiency tracking
+./run.sh efficiency check           # Validate low-token project controls
 ./run.sh session trust              # Check session trust state
 ```
 

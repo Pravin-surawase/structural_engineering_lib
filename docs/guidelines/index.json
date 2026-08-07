@@ -2,157 +2,143 @@
   "folder": "docs/guidelines",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-25",
+  "last_updated": "2026-08-07",
   "file_count": 16,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 74,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-03-29",
       "title": "Guidelines Index",
       "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |",
-      "content_hash": "edb33bf981fb"
+      "content_hash": "33a845020aca"
+    },
+    {
+      "name": "ai-token-efficiency.md",
+      "type": "documentation",
+      "size_lines": 120,
+      "last_updated": "2026-08-07",
+      "description": "This is the canonical low-token operating policy for AI-assisted work in this repository. It controls avoidable context and agent fan-out without weakening",
+      "content_hash": "f012de06e5ff"
     },
     {
       "name": "api-design-guidelines.md",
       "type": "documentation",
-      "size_lines": 2617,
-      "last_updated": "2026-01-23",
-      "title": "API Design Guidelines",
+      "size_lines": 2626,
+      "last_updated": "2026-03-30",
       "description": "This document consolidates all Phase 1 and Phase 2 API research into a **single, actionable reference** for developing structural_engineering_lib APIs. Use this as the \"north star\" for all API design ",
-      "content_hash": "fe3ee38c5157"
+      "content_hash": "69b32bfec1a0"
     },
     {
       "name": "api-evolution-standard.md",
       "type": "documentation",
-      "size_lines": 1682,
-      "last_updated": "2026-01-23",
-      "title": "API Evolution & Migration Standard",
+      "size_lines": 1691,
+      "last_updated": "2026-03-30",
       "description": "> **Standard for API versioning, deprecation, and backward compatibility** > Part of: API Improvement Research (TASK-207)",
-      "content_hash": "9804291aa436"
+      "content_hash": "5816feab7380"
     },
     {
       "name": "blog-writing-guide.md",
       "type": "documentation",
-      "size_lines": 851,
-      "last_updated": "2026-01-23",
-      "title": "Blog Writing Guidelines for Structural Engineering Library",
+      "size_lines": 860,
+      "last_updated": "2026-04-01",
       "description": "| Audience | Tone | Example | |----------|------|---------|",
-      "content_hash": "325735e21f96"
+      "content_hash": "b7c4234e5431"
     },
     {
       "name": "doc-naming-conventions.md",
       "type": "documentation",
-      "size_lines": 83,
-      "last_updated": "2026-01-23",
-      "title": "Document Naming Conventions",
+      "size_lines": 92,
+      "last_updated": "2026-03-30",
       "description": "Reduce duplication, improve findability, and ensure every topic has a clear canonical home. 1. **One topic = one canonical file.** Check docs/docs-canonical.json first.",
-      "content_hash": "46a428811edd"
+      "content_hash": "e9614c2283ad"
     },
     {
       "name": "documentation-standard.md",
       "type": "documentation",
-      "size_lines": 1605,
-      "last_updated": "2026-01-23",
-      "title": "API Documentation & Discoverability Standard",
+      "size_lines": 1614,
+      "last_updated": "2026-03-30",
       "description": "> **Standard for documentation, docstrings, and API discoverability** > Part of: API Improvement Research (TASK-206)",
-      "content_hash": "6418e281f763"
+      "content_hash": "6931309770e9"
     },
     {
       "name": "error-handling-standard.md",
       "type": "documentation",
-      "size_lines": 1926,
-      "last_updated": "2026-01-23",
-      "title": "Error Handling & Exception Design Standard",
+      "size_lines": 1935,
+      "last_updated": "2026-03-30",
       "description": "> **Standard for exception design, error messages, and validation patterns** > Part of: API Improvement Research (TASK-204)",
-      "content_hash": "df934362458b"
+      "content_hash": "5e23a429bea3"
     },
     {
       "name": "file-operations-safety-guide.md",
       "type": "documentation",
-      "size_lines": 298,
-      "last_updated": "2026-02-11",
-      "title": "File Operations Safety Guide",
+      "size_lines": 302,
+      "last_updated": "2026-03-31",
       "description": "File operations (delete, move, rename) can break: - Internal markdown links",
-      "content_hash": "bd3bdec763ad"
+      "content_hash": "dcbdf13b3d9c"
     },
     {
       "name": "folder-cleanup-workflow.md",
       "type": "documentation",
-      "size_lines": 279,
-      "last_updated": "2026-01-23",
-      "title": "Folder Cleanup Workflow",
+      "size_lines": 288,
+      "last_updated": "2026-03-30",
       "description": "This workflow provides a systematic approach to cleaning up folders: 1. **Audit** - Identify cleanup candidates",
-      "content_hash": "3dd8d8be95b1"
+      "content_hash": "de78a15cf215"
     },
     {
       "name": "folder-structure-governance.md",
       "type": "documentation",
-      "size_lines": 521,
-      "last_updated": "2026-02-27",
-      "title": "Folder Structure Governance",
+      "size_lines": 530,
+      "last_updated": "2026-03-30",
       "description": "1. **Progressive Disclosure** - Short entry docs, detailed content one level down 2. **Clear Ownership** - Every folder has a clear purpose and maintainer",
-      "content_hash": "e762d9496775"
+      "content_hash": "0e47662a1fa4"
     },
     {
       "name": "function-signature-standard.md",
       "type": "documentation",
-      "size_lines": 1343,
-      "last_updated": "2026-01-23",
-      "title": "Function Signature Design Standard",
+      "size_lines": 1352,
+      "last_updated": "2026-04-04",
       "description": "This document defines the standard for function signatures in the structural_engineering_lib to ensure: - **Discoverability**: IDE autocomplete and type checkers work effectively",
-      "content_hash": "0840fae239af"
+      "content_hash": "4feea637cd31"
     },
     {
       "name": "governance-limits.json",
       "type": "config",
-      "last_updated": "2026-03-24",
+      "last_updated": "2026-04-07",
       "top_level_keys": [
         "root",
         "docs_root",
         "agents_root",
         "python_lib"
       ],
-      "content_hash": "d8217354fdfa"
+      "content_hash": "31da7daa6541"
     },
     {
       "name": "migration-preflight-checklist.md",
       "type": "documentation",
-      "size_lines": 275,
-      "last_updated": "2026-01-23",
-      "title": "IS 456 Migration Pre-Flight Checklist",
+      "size_lines": 284,
+      "last_updated": "2026-03-30",
       "description": "bash .venv/bin/python scripts/pre_migration_check.py",
-      "content_hash": "ffe971b7b0d7"
+      "content_hash": "be5802ce0399"
     },
     {
       "name": "migration-workflow-guide.md",
       "type": "documentation",
-      "size_lines": 450,
-      "last_updated": "2026-02-11",
-      "title": "IS 456 Module Migration Workflow",
+      "size_lines": 459,
+      "last_updated": "2026-03-30",
       "description": "bash .venv/bin/python scripts/pre_migration_check.py",
-      "content_hash": "9ebda9e24159"
+      "content_hash": "e8b78737134b"
     },
     {
       "name": "result-object-standard.md",
       "type": "documentation",
-      "size_lines": 1428,
-      "last_updated": "2026-01-23",
-      "title": "Result Object Design Standard",
+      "size_lines": 1437,
+      "last_updated": "2026-03-30",
       "description": "This document defines standards for result objects returned by functions in structural_engineering_lib. Result objects replace primitive returns (tuples, dicts) with structured, self-documenting, type",
-      "content_hash": "faa022c64a29"
-    },
-    {
-      "name": "streamlit-fragment-best-practices.md",
-      "type": "documentation",
-      "size_lines": 414,
-      "last_updated": "2026-03-24",
-      "title": "Streamlit Fragment Best Practices",
-      "description": "This guide establishes best practices for using Streamlit's @st.fragment decorator to prevent API violations and runtime errors. python",
-      "content_hash": "7233ed29bfc0"
+      "content_hash": "c613ac1f4ae5"
     }
   ],
   "subfolders": [],
-  "content_hash": "dd095d1899548811"
+  "content_hash": "80204f255738d0c7"
 }

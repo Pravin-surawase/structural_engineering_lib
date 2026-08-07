@@ -11,6 +11,19 @@ Open-source IS 456 RC beam design library. Full stack:
 - **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (60 endpoints, 13 routers)
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
+## Token-Efficiency Policy (MANDATORY)
+
+The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project defaults are enforced by [`.codex/config.toml`](.codex/config.toml).
+
+- Keep one parent task active for this project. Default to Terra at medium reasoning; use Luna for simple work when available. Do not use Sol without user approval.
+- Keep Fast mode off unless the user explicitly prioritizes speed over usage.
+- Default to no subagents. Use at most two concurrent subagents, only for independent bounded work that materially benefits from delegation.
+- Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
+- Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
+- Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
+- Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
+- Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
+
 ## Git — THE ONE RULE
 
 ```bash
@@ -118,7 +131,7 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
-./run.sh session costs --summary    # Agent cost/efficiency tracking
+./run.sh efficiency check           # Validate low-token project controls
 ./run.sh session trust              # Check session trust state
 ```
 
@@ -265,6 +278,10 @@ docs/TASKS.md                                   # Task board
 | `innovation-research` | Innovation research cycle workflow |
 
 ### Handoff Chains
+
+These chains define required quality concerns and ownership. They do not require
+spawning every named role; the active parent performs them sequentially unless
+the token-efficiency policy justifies one or two bounded subagents.
 
 - **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
 - **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops

@@ -12,13 +12,16 @@ tags: []
 **Version:** 1.0
 **Last Updated:** 2026-03-29
 **Status:** ACTIVE
-**Purpose:** Enable professional multi-agent maintenance with parallel workflows
+**Purpose:** Enable professional AI-assisted maintenance with bounded delegation
 
 ---
 
 ## Executive Summary
 
-This project uses **agent-driven maintenance** where specialized AI agents (researcher, tester, devops, pm, dev) work in parallel on isolated tasks. This framework defines roles, workflows, and coordination protocols for up to **5 concurrent agents** working safely without conflicts.
+This project uses **agent-assisted maintenance** where specialist names describe
+quality roles. One parent task owns the outcome. It may use up to **2 concurrent
+subagents** for independent, bounded work; routine work stays single-agent. See
+[AI Token-Efficiency Policy](../guidelines/ai-token-efficiency.md).
 
 **Key Principles:**
 1. **Specialization:** Each agent has a defined role and expertise

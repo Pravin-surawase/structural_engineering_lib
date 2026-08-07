@@ -586,6 +586,15 @@
       "script": "./scripts/agent_brief.sh --agent <name>",
       "description": "Fast 20-line actionable brief for AI agent session start"
     },
+    "token efficiency": {
+      "group": "Session",
+      "script": "./run.sh efficiency check",
+      "description": "Validate low-token Codex defaults, subagent limits, and active instructions",
+      "options": {
+        "prompt": "Print the reusable low-token task preamble",
+        "--json": "Machine-readable policy check output"
+      }
+    },
     "agent context": {
       "group": "Session",
       "script": ".venv/bin/python scripts/agent_context.py <agent_name>",
