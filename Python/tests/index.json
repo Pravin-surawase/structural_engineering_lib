@@ -2837,7 +2837,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 190,
+      "size_lines": 249,
       "last_updated": "2026-08-07",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -2890,12 +2890,26 @@
         },
         {
           "name": "test_generated_indexes_do_not_emit_trailing_space_hard_breaks"
+        },
+        {
+          "name": "test_session_end_preserves_current_same_day_handoff",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "28f47e836aca"
+      "content_hash": "65215bd3652e"
     },
     {
       "name": "test_session_store.py",
@@ -3557,6 +3571,6 @@
       "is_package": true
     }
   ],
-  "content_hash": "81fe96f46cdf34d6",
+  "content_hash": "a18a3fdaebe8e81f",
   "has_init": true
 }

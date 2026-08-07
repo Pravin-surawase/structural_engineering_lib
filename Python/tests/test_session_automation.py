@@ -187,3 +187,62 @@ def test_generated_indexes_do_not_emit_trailing_space_hard_breaks():
 
     assert 'f"**Type:** {type_label}  "' not in generator
     assert "f\"**Last Updated:** {index['last_updated']}  \"" not in generator
+
+
+def test_session_end_preserves_current_same_day_handoff(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    session_log = tmp_path / "SESSION_LOG.md"
+    next_brief = tmp_path / "next-session-brief.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-07 — Maintenance Session
+**Focus:** broad session-start scope
+
+**Completed:**
+- old completion
+""",
+        encoding="utf-8",
+    )
+    expected = """# Brief
+
+## Latest Handoff (auto)
+
+<!-- HANDOFF:START -->
+- Date: 2026-08-07
+- Focus: obtain approval for the focused CI fixes
+<!-- HANDOFF:END -->
+"""
+    next_brief.write_text(expected, encoding="utf-8")
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+
+    ok, message = session._do_handoff(preserve_current_same_day=True)
+
+    assert ok is True
+    assert "Preserved" in message
+    assert next_brief.read_text(encoding="utf-8") == expected
+
+
+def test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    calls: list[list[str]] = []
+
+    def fake_run(command, **kwargs):
+        calls.append(command)
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    cost_log = tmp_path / "agent_costs.jsonl"
+    monkeypatch.setattr(session, "COST_LOG", cost_log)
+    monkeypatch.setattr(session.subprocess, "run", fake_run)
+    monkeypatch.setattr(session, "_get_session_number", lambda: 1)
+
+    session._log_session_cost("orchestrator")
+
+    assert all("--since=midnight" in command for command in calls)
+    entry = json.loads(cost_log.read_text(encoding="utf-8"))
+    assert entry["duration_min"] is None
+    assert entry["billing_tokens"] is None
+    assert entry["billing_cost"] is None

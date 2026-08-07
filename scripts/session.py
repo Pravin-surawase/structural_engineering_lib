@@ -469,15 +469,13 @@ MODEL_USAGE_LOG = REPO_ROOT / "logs" / "model_usage.jsonl"
 
 def _log_session_cost(agent: str = "unknown") -> None:
     """Append session cost entry to logs/agent_costs.jsonl."""
-    today = date.today().strftime("%Y-%m-%d")
-
     # Count files changed today
     result = subprocess.run(
         [
             "git",
             "log",
             "--oneline",
-            f"--since={today}",
+            "--since=midnight",
             "--diff-filter=ACDMRT",
             "--name-only",
             "--pretty=format:",
@@ -492,7 +490,7 @@ def _log_session_cost(agent: str = "unknown") -> None:
 
     # Count commits today
     result = subprocess.run(
-        ["git", "log", "--oneline", f"--since={today}"],
+        ["git", "log", "--oneline", "--since=midnight"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -501,7 +499,7 @@ def _log_session_cost(agent: str = "unknown") -> None:
 
     # Count lines added/removed today
     result = subprocess.run(
-        ["git", "log", f"--since={today}", "--pretty=tformat:", "--numstat"],
+        ["git", "log", "--since=midnight", "--pretty=tformat:", "--numstat"],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
@@ -521,7 +519,7 @@ def _log_session_cost(agent: str = "unknown") -> None:
                 pass
 
     entry = {
-        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
         "agent": agent,
         "session_id": f"S{_get_session_number()}",
         "task_id": "",
@@ -529,7 +527,10 @@ def _log_session_cost(agent: str = "unknown") -> None:
         "git_commits": commits,
         "lines_added": lines_added,
         "lines_removed": lines_removed,
-        "duration_min": 0,
+        "duration_min": None,
+        "metric_scope": "local-calendar-day Git activity proxy",
+        "billing_tokens": None,
+        "billing_cost": None,
     }
 
     COST_LOG.parent.mkdir(parents=True, exist_ok=True)
@@ -917,16 +918,15 @@ def update_folder_readmes(folders: list[Path], fix: bool = False) -> int:
 
 def get_today_prs() -> list[str]:
     try:
-        today_str = date.today().strftime("%Y-%m-%d")
         result = subprocess.run(
-            ["git", "log", "--oneline", f"--since={today_str}", "--merges", "-n", "10"],
+            ["git", "log", "--oneline", "--since=midnight", "--merges", "-n", "10"],
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
         )
         if not result.stdout.strip():
             result = subprocess.run(
-                ["git", "log", "--oneline", f"--since={today_str}", "-n", "10"],
+                ["git", "log", "--oneline", "--since=midnight", "-n", "10"],
                 cwd=REPO_ROOT,
                 capture_output=True,
                 text=True,
@@ -963,7 +963,7 @@ def cmd_end(args: argparse.Namespace) -> int:
     # 2. Handoff brief update (if --fix)
     if args.fix:
         print("🧭 Handoff Brief:")
-        ok, msg = _do_handoff()
+        ok, msg = _do_handoff(preserve_current_same_day=True)
         if ok:
             print(f"  ✅ {msg}")
         else:
@@ -1207,7 +1207,7 @@ def _update_next_brief(handoff_lines: list[str]) -> None:
     NEXT_BRIEF.write_text(new_text.strip() + "\n", encoding="utf-8")
 
 
-def _do_handoff() -> tuple[bool, str]:
+def _do_handoff(*, preserve_current_same_day: bool = False) -> tuple[bool, str]:
     if not SESSION_LOG.exists():
         return False, "docs/SESSION_LOG.md not found"
     if not NEXT_BRIEF.exists():
@@ -1215,6 +1215,15 @@ def _do_handoff() -> tuple[bool, str]:
     try:
         lines = SESSION_LOG.read_text(encoding="utf-8").splitlines()
         date_str, block = _latest_session_block(lines)
+        if preserve_current_same_day:
+            current_brief = NEXT_BRIEF.read_text(encoding="utf-8")
+            current_match = re.search(
+                re.escape(HANDOFF_START) + r"([\s\S]*?)" + re.escape(HANDOFF_END),
+                current_brief,
+            )
+            current_block = current_match.group(1) if current_match else ""
+            if f"- Date: {date_str}" in current_block and "- Focus:" in current_block:
+                return True, "Preserved current same-day handoff block"
         handoff_lines = _build_handoff_lines(date_str, block)
         if not handoff_lines:
             return False, "Could not build handoff lines from SESSION_LOG.md"
