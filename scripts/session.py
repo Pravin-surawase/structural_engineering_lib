@@ -1223,7 +1223,11 @@ def _get_last_session_date() -> str | None:
     if not SESSION_LOG.exists():
         return None
     content = SESSION_LOG.read_text(encoding="utf-8")
-    dates = DATE_RE.findall(content)
+    dates = [
+        match.group(1)
+        for line in content.splitlines()
+        if (match := DATE_RE.match(line.strip())) is not None
+    ]
     today_str = date.today().strftime("%Y-%m-%d")
     # Return the first date that isn't today (i.e., last session)
     for d in dates:

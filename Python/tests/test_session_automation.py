@@ -48,6 +48,26 @@ def test_latest_session_block_does_not_rewind_descriptive_heading():
     assert "old release" not in "\n".join(block)
 
 
+def test_last_session_date_reads_multiline_log(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    session_log = tmp_path / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Session Log
+
+## 2026-08-07 — Maintenance Recovery Session
+**Focus:** current recovery
+
+## 2026-04-07 — Session — Old work
+**Focus:** old release
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+
+    assert session._get_last_session_date() == "2026-04-07"
+
+
 @pytest.mark.parametrize("heading", ["## Active", "## 🔴 Active"])
 @pytest.mark.parametrize("task_id", ["MAINT-005", "**MAINT-005**"])
 def test_active_task_reader_accepts_current_and_legacy_headings(
