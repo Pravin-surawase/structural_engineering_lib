@@ -4,19 +4,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
-- Focus: MAINT-005 interactive exports, v0.21.7 finish line, and Mac control-plane recovery
+- Focus: Renew GitHub CLI auth, validate the maintenance PR, release v0.21.7, and recover Colima after a Mac restart
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-07
-**Current Session:** Maintenance Recovery — full-stack confidence green through dashboard; exports next
+**Current Session:** Maintenance Recovery — repository/product maintenance complete; external control-plane steps remain
 
 ## Start Here
 
-1. Finish MAINT-005 by exercising BBS, DXF, report, building-summary, and BOQ CSV downloads in the UI. Route/API coverage and the browser flow through the dashboard are already green.
-2. MAINT-001 is preserved in pushed checkpoint `b28ee4e3`, but GitHub CLI authorization must be rerun and completed in the browser.
+1. Renew GitHub CLI authorization and create/validate the existing `task/MAINT-001` PR without bypassing required CI. SSH push already works.
+2. Run the approved v0.21.7 release workflow only after the PR and required checks are green. Preflight is ready; no release was made in this session.
 3. Restart macOS before retrying Colima. Do not delete/recreate the transferred VM until Docker data is backed up or deletion is explicitly approved.
-4. Preserve the restored baseline: 28/28 canonical checks, 22/22 audit checks, 100/100 health, and 96% actionable parity.
-5. Keep `docs/TASKS.md`, `docs/WORKLOG.md`, `docs/SESSION_LOG.md`, and this handoff synchronized at each checkpoint.
+4. Preserve the restored baseline: 28/28 canonical checks, 22/22 audit checks, 100/100 health, 96% actionable parity, and all live export artifacts verified.
+5. Treat 17.74% React statement coverage, one hook lint warning, and one RSC-only advisory as recorded risks—not reasons to reopen completed maintenance without a focused task.
 
 Full evidence and accepted risks are in
 [maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
@@ -26,17 +26,20 @@ Full evidence and accepted risks are in
 - Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
 - Local/remote `main`: `fa854e0f`; published package: v0.21.6.
 - Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
-- Passing baselines: Python 5,138; FastAPI 336; React 142; React production build; wheel install/design/detail/BBS/report smoke test.
-- Current red gates: interactive UI downloads, 17.74% React statement coverage, GitHub CLI authorization, and the transferred Colima VM state.
+- Passing baselines: release preflight 5,156 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
+- Clean-wheel UAT: 5,120 passed, 41 skipped, 6 deselected plus packaged job, critical-case CSV, and HTML-report CLI workflows.
+- Current external gates: GitHub CLI authorization and the transferred Colima VM state. React coverage is an accepted, documented follow-up risk.
 - Local environment: Python 3.11 ARM64 editable install is repaired at v0.21.6; Node 24.19.0 is installed keg-only and React passes on it; Colima VZ requires a Mac restart; GitHub CLI authentication must be renewed.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 8/8 green; all 3,248 scanned imports resolve.
-- MAINT-003: clean Python lock audits at zero known vulnerabilities and passes 5,138 core plus 326 FastAPI tests; npm has one narrowly allowlisted RSC-only advisory and all 139 React tests/lint/build pass.
-- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, and completed active plans archived with zero broken links. Current feedback is 19/23 resolved; four maintenance watches remain.
+- MAINT-003: clean Python lock audits at zero known vulnerabilities; npm has one narrowly allowlisted RSC-only advisory.
+- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, completed active plans archived, and feedback is 22/23 resolved.
 - MAINT-005 checkpoint `6f119132`: 60/60 direct FastAPI route tests, 13/13 API-connected React hooks, and 96% actionable parity.
-- Browser evidence: the 153-beam ETABS sample imports, auto-designs, renders in R3F, and reaches a 153/153-pass dashboard with max utilization 100% and no new warnings. Dashboard and BOQ steel totals agree at 1,928.5 kg.
+- Browser/export evidence: the 153-beam ETABS sample imports, auto-designs, renders in R3F, reaches a 153/153-pass dashboard, and exercises BBS, DXF, single report, building summary, and BOQ exports with no new warnings. Byte-level checks validate CSV/DXF/PDF artifacts; final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
 - Mac launcher evidence: `.nvmrc` Node 24 is selected even when a stale unversioned Node is first on `PATH`; port cleanup targets listeners only and no longer kills connected browser/client helpers.
+- Live-design evidence: WebSocket payloads now retain the complete REST response contract, including real capacities and governing utilization; current and legacy payload shapes are normalized in the frontend.
+- Release evidence: macOS reclaimable-memory and Node-runtime detection are repaired; `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
 
 ## Maintenance Sequence
 

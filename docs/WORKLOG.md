@@ -312,3 +312,8 @@ tags: []
 | 2026-08-07 | MAINT-005 | Recorded eight direct FastAPI route-test gaps and the critical browser-flow/React coverage finish line | 9ae38d13 |
 | 2026-08-07 | MAINT-005 | Closed all eight direct route-test gaps; parity reached 60/60 routes and 96% actionable coverage | 6f119132 |
 | 2026-08-07 | MAINT-005 | Repaired Node 24 launch selection, listener-safe cleanup, beam utilization semantics, sample metadata, editor state, and dashboard BOQ consistency | 6f119132 |
+| 2026-08-07 | MAINT-005 | Recorded the 60/60-route browser confidence checkpoint and remaining export boundary | 1724e3bc |
+| 2026-08-07 | MAINT-005 | Aligned WebSocket live-design payloads with the REST contract and repaired session/task parsing regressions | e5dd7eb0 |
+| 2026-08-07 | v0.21.7 | Made release preflight honor `.nvmrc` Node 24 and macOS reclaimable memory | 78f1453c |
+| 2026-08-07 | v0.21.7 | Installed package `[dev]` dependencies for isolated wheel verification; clean-wheel tests and CLI UAT pass | 6e01af36 |
+| 2026-08-07 | MAINT-004 | Made session-history date detection work across multiline logs and added regression coverage | f9696cf9 |

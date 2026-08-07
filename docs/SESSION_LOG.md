@@ -9,22 +9,20 @@
 
 **Agent:** Codex
 **Branch:** `task/MAINT-001`
-**Focus:** Preserve inherited work, restore the Mac Mini baseline, and establish a trustworthy v0.21.7 maintenance plan and full-stack checkpoint
+**Focus:** Preserve inherited work, restore the Mac Mini baseline, complete product/repository maintenance, and establish a trustworthy v0.21.7 release boundary
 
 ### Summary
 - Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.
 - Completed a repository, migration, architecture, test, packaging, CI,
   security, documentation, agent-infrastructure, and live-browser audit.
-- Preserved inherited work in `b28ee4e3`, restored the runtime/nightly baseline
-  in `1a573c18`, restored canonical maintenance in `9ae38d13`, finalized the
-  recovery handoff in `70c622dd`, and pushed the full-stack checkpoint as
-  `6f119132`.
-- Completed MAINT-002, MAINT-003, and MAINT-004; advanced MAINT-005 through
-  direct route coverage and the completed dashboard. MAINT-001 remains
-  externally blocked and interactive export downloads remain for MAINT-005.
-- The required auto-summary command was run, but its last-session marker was
-  still 2026-04-07 and therefore included historical April commits and rewound
-  the handoff. This manually reconciled summary is the authoritative record.
+- Preserved inherited work in `b28ee4e3` and completed the maintenance series
+  through `f9696cf9`, covering the runtime, nightly checks, dependency/security
+  baseline, canonical governance, live UI/API contracts, release tooling, and
+  session automation.
+- Completed MAINT-002 through MAINT-005. The repository/product maintenance
+  scope is green and v0.21.7 preflight is ready; the release was not executed.
+- MAINT-001 remains externally blocked only on GitHub CLI browser authorization
+  and a macOS restart before retrying the preserved Colima VM.
 
 ### PRs Merged
 | PR | Summary |
@@ -39,15 +37,19 @@
 - `.nvmrc`, `.python-version`, React engines, lock metadata, CI runtime, and Mac Mini setup guide aligned.
 - Nightly link checker now invokes a supported command; 1,056 internal links validate.
 - Live API verifies all 153 ETABS sample beams and all import/design/3D payload contracts.
-- Clean Python 3.11 dependency graph: 147 packages, zero known vulnerabilities, no broken requirements, 5,138 core tests passed (8 skipped), and 326 FastAPI tests passed.
+- Clean Python 3.11 dependency graph: 147 packages, zero known vulnerabilities, no broken requirements; final preflight passes 5,156 tests (3 skipped, 6 deselected), and 336 FastAPI tests pass.
 - npm dependency graph reduced from 13 findings to one RSC-only React Router advisory; the browser-only applicability decision and strict exception are recorded in `docs/planning/dependency-security-baseline.md`.
 - Full canonical check passes 28/28; audit readiness passes 22/22; health is 100/100.
 - Parity reports 15/17 curated IS 456 areas implemented, 52/60 FastAPI routes directly tested, and 13/13 API-connected React hooks; intentional Python-only exports are informational rather than defects.
 - The completed March agent audit and unified CLI plan were moved from `docs/_active/` through the safe mover with zero broken links.
-- Nineteen of twenty-three feedback records are resolved. Remaining items cover the stale session-summary marker, a launcher listener regression check, and the tester empty-output watch at occurrence two of three.
+- Twenty-two of twenty-three feedback records are resolved. Only the tester empty-output watch at occurrence two of three remains.
 - MAINT-005 checkpoint `6f119132` adds direct tests for the eight missing routes; FastAPI now passes 336 tests and parity reports 60/60 tested routes with a 96% actionable score.
-- The full local stack launches on Node 24 and the live 153-beam sample passes import, auto-design, R3F editor, status/utilization, and dashboard verification with no new browser warnings.
-- Canonical governing utilization now keeps valid doubly reinforced beams at 100%/Pass; the sample dashboard and BOQ agree at 1,928.5 kg of steel.
+- The full local stack launches on Node 24 and the live 153-beam sample passes import, auto-design, R3F editor, status/utilization, dashboard, and export verification with no new browser warnings.
+- WebSocket designs now preserve the full REST contract; the UI displays real capacities and canonical governing utilization rather than fallback zeroes.
+- All export boundaries pass: BBS CSV, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV. Byte-level checks confirm CSV structure, DXF sections/EOF, and PDF signatures; final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
+- React passes 146 tests, production build, and lint with one existing hook warning. Canonical check is 28/28, audit 22/22, health 100/100, and parity 96%.
+- Release preflight now honors `.nvmrc` Node 24 and macOS reclaimable memory. A clean built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) plus packaged CLI job/critical/report workflows.
+- Session automation recognizes descriptive/multiline session history and current `TASKS.md` Active formats, preventing historical summary rewinds.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
@@ -56,7 +58,7 @@
 - GitHub device authentication expired before approval; rerun `gh auth login` when the owner can complete the browser step.
 - Colima VZ startup still reports the transferred disk in use after graceful daemon/orphan cleanup. A macOS restart is the next non-destructive recovery step; VM deletion is not approved.
 - The transferred `.venv` reported 98 findings across 21 packages because it accumulated undeclared/stale packages. It is retained only as a diagnostic artifact; clean-install declarations and locks are now authoritative.
-- The final MAINT-005 UI boundary is download behavior for BBS, DXF, report, building summary, and BOQ CSV. Endpoint tests pass, but interactive downloads were not claimed during this checkpoint.
+- The browser harness does not expose programmatic Blob downloads as native download events. Export confidence therefore combines live UI-to-API 200 evidence with byte-level validation of the same response artifacts.
 - `scripts/_tmp_write_days.py` was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored `tmp/deleted_backups/`.
 - Session-end evolution status was observed without applying changes: health trend is 48 → 100, and the monthly review is 124 days overdue.
 
@@ -67,7 +69,14 @@
 - ⚠️ TERMINAL ISSUE: `./run.sh dev --check-only --verbose` treated the deliberately running stack as a failed preflight and triggered cleanup → the stack was restarted with `./run.sh dev --local`; this behavior remains documented for future launcher UX work.
 - ⚠️ TERMINAL ISSUE: the optional `agent-browser` CLI was unavailable → the maintained in-app Browser control path completed the live verification.
 - ⚠️ TERMINAL ISSUE: `./run.sh pr status` returns GitHub HTTP 401 because the transferred CLI credential expired → the enforced `ai_commit.sh` workflow committed and pushed over working SSH without bypass flags; PR creation still requires renewed auth.
-- ⚠️ TERMINAL ISSUE: `./run.sh session summary` still anchors to 2026-04-07 and overwrites the current handoff with historical data → its output was manually reconciled; fix the session marker logic before trusting auto-generated summaries.
+- ⚠️ TERMINAL ISSUE: `./run.sh session start` reported no Active section despite current rows under `## Active` → the parser now accepts current/legacy headings and plain/bold task IDs.
+- ⚠️ TERMINAL ISSUE: the initial targeted pytest node used a stale class path and collected nothing → the exact class was located with `rg` and the corrected target passed.
+- ⚠️ TERMINAL ISSUE: release preflight counted only immediately free macOS pages and incorrectly blocked at 1.0 GB → it now uses reclaimable memory and passed with 10.4 GB.
+- ⚠️ TERMINAL ISSUE: bare npm resolved the transferred broken Node 25 and failed on missing `libsimdjson.29.dylib` → verification used Node 24 and preflight now selects the `.nvmrc` runtime.
+- ⚠️ TERMINAL ISSUE: clean-wheel release verification installed only pytest and failed importing Hypothesis → the verifier now installs the wheel's `[dev]` extra and the isolated 5,120-test/CLI UAT passes.
+- ⚠️ TERMINAL ISSUE: a compound `find` command used an invalid escaped `-exec` terminator → the artifact directory was resolved with a simple validated `/tmp` lookup.
+- ⚠️ TERMINAL ISSUE: the hidden browser file-input interaction timed out and reset the automation kernel → the visible “click to browse” path completed the import safely.
+- ⚠️ TERMINAL ISSUE: session summary did not detect dates across multiline log content and fell back to the last 20 commits → line-wise date parsing is now regression-tested; this handoff was reconciled after the fix.
 
 
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release

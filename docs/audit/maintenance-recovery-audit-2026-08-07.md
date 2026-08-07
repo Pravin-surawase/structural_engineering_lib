@@ -17,10 +17,10 @@ uncommitted work, stale local runtimes, transferred VM state, expired GitHub
 credentials, dependency drift, and governance scanners that disagreed.
 
 The inherited work is preserved on `task/MAINT-001`. Local application,
-package, test, documentation, browser, and maintenance gates are green through
-the completed dashboard. Two external control-plane blockers remain: GitHub
-CLI authentication and Colima's transferred VZ disk state. Interactive export
-downloads remain the last MAINT-005 browser checkpoint.
+package, test, documentation, browser, export, and maintenance gates are green.
+MAINT-005 is complete and v0.21.7 is ready for its controlled release workflow.
+Two external control-plane blockers remain: GitHub CLI authentication and
+Colima's transferred VZ disk state.
 
 ## Audit scope
 
@@ -33,11 +33,12 @@ objects, symlinks, and migration records relevant to the current architecture.
 |---------|----------|
 | Git and transfer | Reachable objects valid; local/remote `main` both `fa854e0f`; ETABS samples present; no broken symlinks or submodules |
 | Python package | Editable source/module metadata agree at v0.21.6; clean Python 3.11 install works |
-| Core tests | 5,146 collected; 5,138 passed, 8 skipped |
+| Core tests | Release preflight: 5,156 passed, 3 skipped, 6 deselected; isolated wheel: 5,120 passed, 41 skipped, 6 deselected |
 | FastAPI | 336 tests pass; 60 routes across 13 routers |
-| React | 142 tests pass; lint has two pre-existing hook warnings; production build passes on Node 24 |
+| React | 146 tests pass; lint has one pre-existing hook warning; production build passes on Node 24 |
 | Live data flow | 18/18 import E2E checks and 153/153 sample beams pass |
-| Browser flow | Sample import → auto-design → R3F editor → dashboard passes; 153/153 beams, max utilization 100%, zero new browser warnings |
+| Browser flow | Sample import → auto-design → R3F editor → dashboard → exports passes; 153/153 beams and zero new browser warnings |
+| Export artifacts | Valid BBS CSV, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV; byte-level API validation completed |
 | Documentation | 1,059 internal links checked after archival; zero broken |
 | Canonical maintenance | `run.sh check` 28/28; audit 22/22; health 100/100 |
 | Parity | 15/17 curated clause areas; 60/60 direct route tests; 13/13 connected hooks; actionable score 96% |
@@ -81,7 +82,7 @@ objects, symlinks, and migration records relevant to the current architecture.
 - Safely removed tracked placeholder `scripts/_tmp_write_days.py`; a recovery
   copy exists in ignored `tmp/deleted_backups/`.
 
-### MAINT-005 — full-stack confidence (in progress)
+### MAINT-005 — full-stack confidence (complete)
 
 - Added direct FastAPI tests for the six column and two rebar routes that had
   been invisible to the parity scanner; endpoint coverage is now 60/60.
@@ -94,10 +95,22 @@ objects, symlinks, and migration records relevant to the current architecture.
 - Preserved explicit `pending` state after editor changes, updated AG Grid's
   selection API, removed the stale 154-beam claim, and rounded sample spans.
 - Corrected BOQ steel weight to include member length and made the dashboard
-  and project BOQ show the same 1,928.5 kg for the bundled 153-beam sample.
+  and project BOQ agree; the final live design reports 2,663.4 kg for the
+  bundled 153-beam sample.
+- Aligned WebSocket design messages with `BeamDesignResponse`; the frontend
+  accepts the current contract and normalizes legacy payloads without replacing
+  real capacities or utilization with zeroes.
 - Browser-verified import, auto-design, 3D building rendering, editor status,
-  and dashboard analytics with no new warnings. Actual UI download handling is
-  still intentionally unclaimed and remains the final checkpoint.
+  dashboard analytics, and all export actions with no new warnings. Because the
+  browser harness does not surface programmatic Blob downloads as download
+  events, the same live responses were also validated byte-for-byte: CSV row
+  counts, DXF sections/EOF, and PDF signatures all pass.
+- Verified all 153 imported beams and the final project quantities: 2,663.4 kg
+  steel and 114.8 m³ concrete.
+- Repaired release preflight for macOS reclaimable-memory reporting and
+  `.nvmrc` Node selection. Repaired clean-wheel verification to install the
+  package's `[dev]` test dependencies. v0.21.7 preflight is READY TO RELEASE
+  with zero warnings.
 
 ## Open findings
 
@@ -105,23 +118,19 @@ objects, symlinks, and migration records relevant to the current architecture.
 |----------|---------|------------------------|
 | P0 external | GitHub CLI credentials expired | Rerun `gh auth login` and complete browser authorization; SSH push already works |
 | P0 external | Colima VZ disk reports “in use” after orphan cleanup | Restart macOS, retry non-destructively, then back up VM data before considering recreation |
-| P1 frontend | Interactive exports are not yet browser-verified | Exercise BBS, DXF, report, building summary, and BOQ CSV downloads without changing their content contracts |
 | P2 frontend | React statement coverage is 17.74% | Critical live flow is verified; add focused automated flow tests before broad percentage chasing |
-| P1 release | v0.21.7 finish line is not approved | Define exit criteria from verified security, route, browser, and packaging evidence |
-| P2 tooling | Session summary still anchors to 2026-04-07 | Repair marker selection before trusting auto-generated summary/handoff content |
 | P2 security | React Router RSC-only advisory remains | Keep exact CI exception only while the Vite browser app has no RSC; remove on patched release |
 | P2 product | Slab design and Annex D remain planned | Keep outside stabilization unless the owner explicitly changes scope |
-| P3 ops | Listener-only launcher cleanup lacks a regression test | Add a shell-level check that connected clients are never selected for termination |
 | P3 agent | Tester empty-output seen twice | Keep watch item open; update instructions on a third recurrence |
 
 ## Maintenance sequence
 
 1. Preserve the current green local baseline and commit through
    `scripts/ai_commit.sh`.
-2. Complete the remaining MAINT-005 interactive export-download workflow.
-3. Recover GitHub authentication and create the PR without bypassing checks.
+2. Recover GitHub authentication and create/validate the PR without bypassing checks.
+3. Run the approved v0.21.7 release workflow after required CI passes.
 4. Restart the Mac Mini and retry Colima; do not delete the transferred disk.
-5. Approve an evidence-based v0.21.7 release scope before feature work resumes.
+5. Resume feature planning only after these external control-plane steps are recorded.
 
 ## Guardrails retained
 

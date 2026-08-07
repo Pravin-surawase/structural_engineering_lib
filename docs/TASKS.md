@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-07 — MAINT-005 full-stack confidence checkpoint
+**Updated:** 2026-08-07 — repository maintenance complete; external Mac recovery remains
 
 ---
 
@@ -25,17 +25,19 @@
 | MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
-| MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | 🚧 IN PROGRESS | Critical import→design→3D→export browser flow is covered; stabilization scope is approved |
+| MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 
 ### Maintenance evidence captured 2026-08-07
 
 - Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
-- Current tests: 5,138 Python passed, 336 FastAPI passed, 142 React passed; package wheel and full beam workflow pass.
-- Release blockers: nightly CLI contract failure, stale local GitHub auth/toolchain metadata, high dependency risk, 17.74% React statement coverage, and conflicting governance dashboards.
-- Canonical validation remains 28/28 checks, 22/22 audit readiness, and 100/100 health. Feedback is 19/23 resolved; the four pending items cover session-summary marker repair, a port-cleanup regression check, and the existing tester-output watch.
+- Final release preflight: 5,156 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.
+- Repository release gates are green. Remaining blockers are external: renew GitHub CLI authorization and restart macOS before retrying the preserved Colima VM. React's 17.74% statement coverage is an accepted stabilization risk, not an unreported pass.
+- Canonical validation is 28/28 checks, 22/22 audit readiness, 100/100 health, and 96% parity. Feedback is 22/23 resolved; only the existing tester-output recurrence watch remains open.
 - MAINT-005 checkpoint `6f119132`: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.
 - Runtime/product repairs from the browser sweep: the launcher selects Node 24 from `.nvmrc` and kills listeners only; canonical compliance utilization replaces misleading `Mu/Mu_lim`; imported spans are rounded; dashboard and BOQ steel totals agree.
+- MAINT-005 exit evidence: WebSocket designs now preserve the complete REST response contract; the live 153-beam flow passes 153/153 and exports valid BBS, DXF, HTML/PDF reports, building HTML/PDF/CSV summaries, and BOQ CSV. Current BOQ totals are 2,663.4 kg steel and 114.8 m³ concrete.
+- Release automation now selects `.nvmrc` Node 24, evaluates reclaimable macOS memory, and installs wheel `[dev]` dependencies for isolated verification. `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
 
 ### Recovery progress
 
@@ -44,7 +46,7 @@
 - Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
 - MAINT-001 blockers: GitHub device authorization expired before approval; Colima's transferred VZ disk remains marked in use even after orphan-process cleanup. Restart macOS before another start attempt; do not delete the VM disk without a backup/approval.
 - MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
-- MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities and passes 5,138 core plus 326 FastAPI tests; npm dropped from 13 findings to one documented RSC-only advisory, with 139 tests/lint/build green.
+- MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,156 Python, 336 FastAPI, and 146 React tests.
 
 ---
 
@@ -67,7 +69,7 @@
 | **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
 | **v0.21.5** | Test Coverage & Regression Prevention | ✅ DONE | Golden vectors (42+), contract tests (18), 99% branch coverage |
 | **v0.21.6** | API Quality & Introspection | ✅ Released | check_code(), show_versions(), OpenAPI freeze, limitation docs |
-| **v0.21.7** | Security Hardening | � IN PROGRESS | Input validation, error sanitization, packaging gates, CI hardening |
+| **v0.21.7** | Security Hardening | ✅ READY FOR RELEASE | Input validation, error sanitization, packaging gates, CI hardening |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | IS 456 Slabs + Footing Completion | 📋 PLANNED | One-way slab, two-way slab, footing dowels + API, punching shear |
@@ -108,23 +110,23 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | MAINT-001 | Complete Mac Mini recovery: renew GitHub CLI auth and recover transferred Colima state without deleting its disk | Main Agent + owner | ⚠️ BLOCKED |
-| MAINT-005 | Complete interactive export-download verification and approve the evidence-based v0.21.7 finish line | Main Agent | 🚧 IN PROGRESS |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-005 | Verify BBS/DXF/report/building-summary downloads in the UI and approve the v0.21.7 stabilization finish line | frontend + tester | <1 session | P1 | 🚧 IN PROGRESS |
+| v0.21.7 | Renew GitHub CLI auth, open/validate the PR, then run the approved release workflow | ops + owner | <1 session | P1 | ✅ READY |
 
 ## Backlog
 
 The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
-feature work until MAINT-001, MAINT-004, and MAINT-005 have explicit exit evidence.
+feature work until the MAINT-001 external recovery steps and v0.21.7 release decision are handled.
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-005 | Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line | Main Agent | ✅ DONE |
 | MAINT-004 | Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback | Main Agent | ✅ DONE |
 | MAINT-002 | Repair nightly QA, maintained import E2E contracts, and documentation links | Main Agent | ✅ DONE |
 | MAINT-003 | Rebuild clean Python/npm dependency locks and enforce security audits | Main Agent | ✅ DONE |

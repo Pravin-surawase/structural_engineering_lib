@@ -36,10 +36,10 @@ tags: []
 ### Product and Engineering Baseline
 
 - **Published:** v0.21.6 on PyPI; post-tag repository commits are documentation-only.
-- **Python:** 5,138 tests pass; 85% branch coverage; core IS 456 calculation modules are generally 89–100% covered.
+- **Python:** final preflight passes 5,156 tests (3 skipped, 6 deselected); core IS 456 calculation modules are generally 89–100% covered.
 - **FastAPI:** 336 tests pass; 60 endpoints across 13 routers; response contract is `{success, data}`.
-- **React:** 142 tests and production build pass; statement coverage is only 17.74%, but the critical live workstation flow is browser-verified through the dashboard.
-- **Package:** fresh wheel installs and completes beam design → detailing → BBS → HTML report successfully.
+- **React:** 146 tests and production build pass; statement coverage is only 17.74%, but the critical live workstation flow is browser-verified through exports.
+- **Package:** a fresh built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) and the packaged job → critical-case → HTML-report CLI workflow.
 - **Elements:** beam workflow is mature; column and footing mathematics/API exist; UI completeness and future slab/wall/stair scope must be decided separately.
 
 ### Current Risks and Decisions
@@ -54,25 +54,29 @@ tags: []
 8. **Documentation remains evidence:** completed plans were removed from `_active`, counts and commands were reconciled, and future maintenance must keep these records synchronized.
 9. **Utilization contract:** UI/API beam utilization must use `ComplianceCaseResult.governing_utilization`; `Mu_lim` is the singly reinforced limit and is not the final capacity of a valid doubly reinforced design.
 10. **Mac port safety:** local cleanup may target only `LISTEN` processes. Plain `lsof -ti :PORT` also returns connected clients and is forbidden in the launcher.
+11. **Live design contract:** WebSocket results must preserve the full REST `BeamDesignResponse`; frontend compatibility normalization may fill legacy shapes but must never overwrite live capacity or utilization data.
+12. **Release runtime truth:** macOS preflight uses reclaimable memory and the Node major in `.nvmrc`; isolated wheel verification installs the package `[dev]` extra before running the source test suite.
 
 ### Recovery Progress (2026-08-07)
 
 - `task/MAINT-001` and pushed checkpoint `b28ee4e3` preserve all inherited April work.
 - Python editable metadata and module version now match v0.21.6.
 - Node 24.19.0 LTS is installed keg-only; `.nvmrc`, React engines, lock metadata, CI, and setup docs target Node 24.
-- React passes 142 tests, lint (two known hook warnings), and production build on Node 24.
+- React passes 146 tests, lint (one known hook warning), and production build on Node 24.
 - Nightly no longer uses the unsupported link-checker flag; all 1,056 internal links pass.
 - Maintained import E2E scripts understand the standard response envelope and pass 18/18 against a live API with all 153 sample beams.
 - Import validation excludes archives, recognizes optional `xlwings`, and resolves all scanned imports; quick gate is 8/8.
 - Colima's transferred VZ disk remains marked in use despite process cleanup. Preserve the disk; restart macOS before retrying, and require backup/approval before VM recreation.
-- Root requirements now declare the previously implicit `pytest-asyncio` plugin and patched security floors. A clean environment passes 5,138 core tests (8 skipped) and all 336 FastAPI tests.
+- Root requirements now declare the previously implicit `pytest-asyncio` plugin and patched security floors. The final preflight passes 5,156 tests (3 skipped, 6 deselected) and all 336 FastAPI tests.
 - The Python lock excludes editable/local Git references and retired `python-jose` residue; pip-audit reports zero known vulnerabilities across 147 installed dependencies.
 - npm audit is reduced from 13 findings to one underlying React Router RSC-only advisory. Its exact scope, rationale, CI allowlist, and removal condition are recorded in `dependency-security-baseline.md`.
 - MAINT-004 is complete: API manifest, schema snapshot, script indexes, bootstrap counts, hooks, import scanner, health scanner, audit scanner, and parity scanner now agree.
-- Project health is 100/100 with 19 of 23 feedback records resolved. Pending items are the stale session-summary marker and its fix, a launcher listener regression check, and the tester-output watch at occurrence two of three.
+- Project health is 100/100 with 22 of 23 feedback records resolved. Only the tester-output watch at occurrence two of three remains pending.
 - MAINT-005 checkpoint `6f119132` raises actionable parity to 96%: 15/17 curated clause areas, 60/60 direct route tests, and 13/13 connected hooks.
-- The live 153-beam sample import, auto-design, R3F editor, and dashboard path passes. Valid doubly reinforced beams report 100%/Pass, spans are rounded, and dashboard/BOQ steel both report 1,928.5 kg.
-- Interactive BBS/DXF/report/building-summary/BOQ downloads remain the last unverified MAINT-005 browser boundary; do not claim the full browser exit condition until they are exercised.
+- The live 153-beam sample import, auto-design, R3F editor, dashboard, and export path passes. WebSocket designs preserve the full REST result; valid doubly reinforced beams report governing utilization and real capacities.
+- BBS, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV actions reach the live API; byte-level artifact checks confirm valid CSV structure, DXF sections/EOF, and PDF signatures. Final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
+- MAINT-005 is complete. `./run.sh release preflight 0.21.7` is green with zero warnings; v0.21.7 is ready but has not been released.
+- MAINT-001 remains blocked only on GitHub CLI browser authorization and a macOS restart before non-destructive Colima recovery. SSH push works; do not delete the transferred VM disk.
 
 ### Canonical Maintenance Records
 
