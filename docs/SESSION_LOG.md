@@ -66,6 +66,7 @@
 - `./run.sh session usage` now records local start/milestone/closeout evidence: model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state. Billing token/cost fields remain explicitly empty.
 - `./run.sh pr status` no longer calls `gh pr view --web` by default. It prints PR details in the terminal; `./run.sh pr status --web` is the explicit browser action.
 - MAINT-007 verification passes 32 focused tests, Ruff/Black, instruction and bootstrap drift checks, the 9/9 quick gate, the 29/29 full gate, audit readiness 22/22, and health 100/100. The authoritative Python collection is 5,193 tests.
+- MAINT-007 implementation and synchronized indexes were pushed in `4d5b9eb5`.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.

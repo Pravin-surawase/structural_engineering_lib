@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-07T16:05:15.061096",
+  "generated": "2026-08-07T16:06:03.006311",
   "total_docs": 282,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-03-28 \u2014 Session 104",
         "2026-03-27 \u2014 Session 103 (Mac Mini sync + IPv6 fix)"
       ],
-      "size_bytes": 25292
+      "size_bytes": 25371
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -73,7 +73,7 @@
         "Rules",
         "Log"
       ],
-      "size_bytes": 34759
+      "size_bytes": 34760
     },
     "docs/index.md": {
       "title": "Docs",
@@ -1804,7 +1804,7 @@
         "Infrastructure Notes",
         "Required Reading"
       ],
-      "size_bytes": 9463
+      "size_bytes": 9519
     },
     "docs/planning/next-phase-improvements-plan.md": {
       "title": "Next Phase: What to Build and Why",

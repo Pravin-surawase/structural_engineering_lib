@@ -16,7 +16,7 @@
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | > **For AI Agents:** This index uses semantic metadata to he | 254 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 394 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 395 |
 | [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 645 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 325 |
 
